@@ -15,7 +15,7 @@
         "seasonal_amplitude": 36,
         "lapse_rate_per_km": 6,
         "update_interval_ticks": 12,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "09c50fd3706421903a00f561385a8b1439a683842a048140ebc8b72ef31f52c9",
         "extensions": {
           "description": "Canonical EARTH-2 macro seasonal climate parameters for deterministic Earth temperature/daylight refresh.",
           "epoch_offset_ticks": 0,
@@ -31,6 +31,16 @@
           "default_max_tiles_per_update": 32,
           "altitude_units_per_km": 1000,
           "source": "EARTH2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace MVP Earth and Sol proxies with contract-pinned generator, material, and illumination domain models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4aeea9cd71b2868dc619a2763ef8ea5fd4b065c8ec3cd6facbe5de685f1763f6",
+          "extensions": {}
         }
       }
     ],

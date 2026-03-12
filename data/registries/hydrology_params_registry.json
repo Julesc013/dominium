@@ -10,12 +10,22 @@
         "params_id": "params.hydrology.default_stub",
         "accumulation_threshold": 7,
         "lake_elevation_delta_threshold": 220,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e2f36e2aeb636fcff0097e583b2584b04081e21f6e5abc13f5857a0065b38453",
         "extensions": {
           "analysis_radius": 2,
           "local_recompute_radius": 2,
           "max_window_tiles": 32,
           "source": "EARTH1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

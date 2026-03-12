@@ -17,7 +17,17 @@
           "freecam.speed.base": 1.0
         },
         "notes": "Observer exploration defaults.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "parameter_bundle_id": "survival.params.default",
@@ -34,7 +44,17 @@
           "exposure.daylight_multiplier": 0.85
         },
         "notes": "Baseline survival rates.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "parameter_bundle_id": "survival.params.harsh",
@@ -51,7 +71,17 @@
           "exposure.daylight_multiplier": 1.0
         },
         "notes": "Hardcore tuning delta only.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "parameter_bundle_id": "creative.params.default",
@@ -62,7 +92,17 @@
           "spawn.cost.scalar": 0.0
         },
         "notes": "Creative authoring defaults.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "parameter_bundle_id": "lab.params.default",
@@ -73,7 +113,17 @@
           "attribution.rank.limit": 16
         },
         "notes": "Lab defaults for analysis tooling.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "parameter_bundle_id": "mission.params.default",
@@ -84,7 +134,17 @@
           "mission.time.scale": 1.0
         },
         "notes": "Mission player defaults.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "parameter_bundle_id": "params.civ.nobirths",
@@ -97,7 +157,17 @@
           "civ.migration.delay_multiplier": 1.0
         },
         "notes": "CIV demography tuning for no-procreation worlds.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "parameter_bundle_id": "params.civ.basic_births",
@@ -110,7 +180,17 @@
           "civ.migration.delay_multiplier": 1.0
         },
         "notes": "CIV demography tuning for basic abstract procreation.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {

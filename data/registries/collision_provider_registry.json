@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "provider_id": "collision.macro_heightfield_default",
         "kind": "macro_heightfield",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "01b48d2d06edcd5803048e70d39f58448d8503669637ccb6614b115d86e9bbcb",
         "extensions": {
           "description": "Canonical EARTH-6 macro terrain collision provider using surface tile height proxies and GEO neighbor ordering.",
           "height_sample_mode": "nearest",
@@ -19,6 +19,16 @@
           "cache_quantization_mm": 256,
           "contact_snap_tolerance_mm": 180,
           "source": "EARTH6-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

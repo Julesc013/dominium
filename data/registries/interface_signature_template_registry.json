@@ -14,36 +14,56 @@
             "port_id": "port.fuel_in",
             "port_type_id": "port.fluid.fuel",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.fluid_basic"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.fluid_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.air_in",
             "port_type_id": "port.fluid.air",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.fluid_basic"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.fluid_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.power_out",
             "port_type_id": "port.power.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.power_phasor"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.power_phasor"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.heat_out",
             "port_type_id": "port.thermal.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.thermal_basic"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.thermal_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.exhaust_out",
             "port_type_id": "port.fluid.exhaust",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.fluid_basic"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.fluid_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           }
         ],
         "signal_descriptors": [
@@ -54,9 +74,21 @@
             "access_policy_id": "ctrl.policy.player.diegetic"
           }
         ],
-        "required_spec_type_ids": ["spec.vehicle_interface"],
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "required_spec_type_ids": [
+          "spec.vehicle_interface"
+        ],
+        "deterministic_fingerprint": "9d58c274c197391a9c5cc2fb96d21268c4e03931a7e9167dbb7aff421c8af194",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -67,22 +99,34 @@
             "port_id": "port.fuel_in",
             "port_type_id": "port.fluid.fuel",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.fluid_basic"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.fluid_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.power_out",
             "port_type_id": "port.power.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.power_phasor"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.power_phasor"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.heat_out",
             "port_type_id": "port.thermal.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.thermal_basic"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.thermal_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           }
         ],
         "signal_descriptors": [
@@ -93,9 +137,21 @@
             "access_policy_id": "ctrl.policy.player.diegetic"
           }
         ],
-        "required_spec_type_ids": ["spec.vehicle_interface"],
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "required_spec_type_ids": [
+          "spec.vehicle_interface"
+        ],
+        "deterministic_fingerprint": "e444c74871128a098234c1b4b64d04f8b319acb033bac5b5d8f766c4019e6518",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -106,22 +162,34 @@
             "port_id": "port.power_in",
             "port_type_id": "port.power.input",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.power_phasor"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.power_phasor"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.fluid_in",
             "port_type_id": "port.fluid.input",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.fluid_basic"],
-            "spec_limit_refs": ["spec.track"]
+            "allowed_bundle_ids": [
+              "bundle.fluid_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.track"
+            ]
           },
           {
             "port_id": "port.fluid_out",
             "port_type_id": "port.fluid.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.fluid_basic"],
-            "spec_limit_refs": ["spec.track"]
+            "allowed_bundle_ids": [
+              "bundle.fluid_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.track"
+            ]
           }
         ],
         "signal_descriptors": [
@@ -132,9 +200,22 @@
             "access_policy_id": "ctrl.policy.player.diegetic"
           }
         ],
-        "required_spec_type_ids": ["spec.track", "spec.vehicle_interface"],
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "required_spec_type_ids": [
+          "spec.track",
+          "spec.vehicle_interface"
+        ],
+        "deterministic_fingerprint": "30f4c35e09fc43ec1a9d32e0d00663ab94c0e367e036073597c267b78a7e5ae1",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -145,29 +226,45 @@
             "port_id": "port.thermal_in",
             "port_type_id": "port.thermal.input",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.thermal_basic"],
-            "spec_limit_refs": ["spec.bridge"]
+            "allowed_bundle_ids": [
+              "bundle.thermal_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.bridge"
+            ]
           },
           {
             "port_id": "port.thermal_out",
             "port_type_id": "port.thermal.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.thermal_basic"],
-            "spec_limit_refs": ["spec.bridge"]
+            "allowed_bundle_ids": [
+              "bundle.thermal_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.bridge"
+            ]
           },
           {
             "port_id": "port.fluid_in",
             "port_type_id": "port.fluid.input",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.fluid_basic"],
-            "spec_limit_refs": ["spec.track"]
+            "allowed_bundle_ids": [
+              "bundle.fluid_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.track"
+            ]
           },
           {
             "port_id": "port.fluid_out",
             "port_type_id": "port.fluid.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.fluid_basic"],
-            "spec_limit_refs": ["spec.track"]
+            "allowed_bundle_ids": [
+              "bundle.fluid_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.track"
+            ]
           }
         ],
         "signal_descriptors": [
@@ -178,9 +275,22 @@
             "access_policy_id": "ctrl.policy.player.diegetic"
           }
         ],
-        "required_spec_type_ids": ["spec.bridge", "spec.track"],
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "required_spec_type_ids": [
+          "spec.bridge",
+          "spec.track"
+        ],
+        "deterministic_fingerprint": "19984d213e70bdf4d5c2f8596009f2bf6ab6281e164a3952ad2031e417a8d9b4",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -191,22 +301,34 @@
             "port_id": "port.powertrain_in",
             "port_type_id": "port.power.input",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.power_phasor"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.power_phasor"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.traction_out",
             "port_type_id": "port.force.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.power_phasor"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.power_phasor"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           },
           {
             "port_id": "port.heat_out",
             "port_type_id": "port.thermal.output",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.thermal_basic"],
-            "spec_limit_refs": ["spec.vehicle_interface"]
+            "allowed_bundle_ids": [
+              "bundle.thermal_basic"
+            ],
+            "spec_limit_refs": [
+              "spec.vehicle_interface"
+            ]
           }
         ],
         "signal_descriptors": [
@@ -217,9 +339,21 @@
             "access_policy_id": "ctrl.policy.player.diegetic"
           }
         ],
-        "required_spec_type_ids": ["spec.vehicle_interface"],
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "required_spec_type_ids": [
+          "spec.vehicle_interface"
+        ],
+        "deterministic_fingerprint": "56d92cafee8d7ca22998543d5a54e4417291204bffcbcbfca06e34cf2e4b4377",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -230,15 +364,23 @@
             "port_id": "port.signal_in",
             "port_type_id": "port.signal_in",
             "direction": "in",
-            "allowed_bundle_ids": ["bundle.signal_logic"],
-            "spec_limit_refs": ["spec.logic_interface"]
+            "allowed_bundle_ids": [
+              "bundle.signal_logic"
+            ],
+            "spec_limit_refs": [
+              "spec.logic_interface"
+            ]
           },
           {
             "port_id": "port.signal_out",
             "port_type_id": "port.signal_out",
             "direction": "out",
-            "allowed_bundle_ids": ["bundle.signal_logic"],
-            "spec_limit_refs": ["spec.logic_interface"]
+            "allowed_bundle_ids": [
+              "bundle.signal_logic"
+            ],
+            "spec_limit_refs": [
+              "spec.logic_interface"
+            ]
           }
         ],
         "signal_descriptors": [
@@ -249,11 +391,23 @@
             "access_policy_id": "ctrl.policy.player.diegetic"
           }
         ],
-        "required_spec_type_ids": ["spec.logic_interface"],
-        "deterministic_fingerprint": "",
+        "required_spec_type_ids": [
+          "spec.logic_interface"
+        ],
+        "deterministic_fingerprint": "78012f02a00554a67946d8e9586e7ed397e9541bb0b491aabab843196eb8a53a",
         "extensions": {
           "source": "LOGIC6-6",
           "supports_compiled_logic_capsules": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -270,13 +424,23 @@
           }
         ],
         "required_spec_type_ids": [],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "55ce7bc06f7ab83e17d38b49e3ebf6416781d82e8c080f2d194f0c5687c98df5",
         "extensions": {
           "source": "EMB0-2",
           "body_control_channels": [
             "control.move_vector_local",
             "control.look_vector"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

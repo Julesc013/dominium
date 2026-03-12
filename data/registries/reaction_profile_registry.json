@@ -21,12 +21,22 @@
           "material.pollutant_coarse_stub": 1
         },
         "rate_model_id": "model.therm_combust_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f281b935733ef3e5b9c9306a9cb80fea6eeadb163eae6652a3f90f8c1ccb982a",
         "extensions": {
           "combustion_profile_id": "material.wood_basic",
           "efficiency_model_id": "model.chem_combust_efficiency_stub",
           "mixture_ratio_mode": "stoich_stub",
           "source": "CHEM1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -45,12 +55,22 @@
           "material.pollutant_coarse_stub": 2
         },
         "rate_model_id": "model.therm_combust_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6e4281deeb82cdf4ebf603689c8ad3e4f345b592eda4e01045ca35fdaa80fb7c",
         "extensions": {
           "combustion_profile_id": "material.fuel_oil_stub",
           "efficiency_model_id": "model.chem_combust_efficiency_stub",
           "mixture_ratio_mode": "rich_stub",
           "source": "CHEM1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -69,13 +89,23 @@
           "material.pollutant_coarse_stub": 2
         },
         "rate_model_id": "model.therm_combust_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "822de743323ab284fc5b4c004b4a30a9e6bf566a727d0c4a66cfa02b840427eb",
         "extensions": {
           "combustion_profile_id": "material.fuel_oil_stub",
           "efficiency_model_id": "model.chem_combust_efficiency_stub",
           "explosive_profile": true,
           "impulse_energy_ratio_permille": 300,
           "source": "CHEM1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -94,11 +124,21 @@
           "material.pollutant_coarse_stub": 1
         },
         "rate_model_id": "model.chem_rate_pressure_temp_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "36d5193fee76e068523dbef5ddbc480288e76c2d87df74a999db1d1e926acc55",
         "extensions": {
           "process_type": "smelting",
           "yield_model_id": "yield.basic_windowed",
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -116,11 +156,21 @@
           "material.pollutant_coarse_stub": 1
         },
         "rate_model_id": "model.chem_rate_pressure_temp_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b2ef6e39c7bc1850584ca9249dc8721772192542c7bc13977c6e5ad73287d5a3",
         "extensions": {
           "process_type": "refining",
           "yield_model_id": "yield.entropy_penalty",
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -135,11 +185,21 @@
         "energy_transformation_id": "transform.chemical_to_thermal",
         "emission_species": {},
         "rate_model_id": "model.chem_rate_catalyst_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9c4e8ba33d3394fc58cef9d6f8598ab26d57d606436d7dda2c439d5ffb1d2c0c",
         "extensions": {
           "process_type": "polymerization",
           "yield_model_id": "yield.catalyst_boost",
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -155,11 +215,21 @@
         "energy_transformation_id": "transform.chemical_to_thermal",
         "emission_species": {},
         "rate_model_id": "model.chem_rate_pressure_temp_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "971de45310c6d89df79a9eb96612a4ccbf2fafb78b80785474a375cf5e7d0e78",
         "extensions": {
           "process_type": "distillation",
           "yield_model_id": "yield.basic_windowed",
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -177,11 +247,21 @@
           "material.pollutant_coarse_stub": 1
         },
         "rate_model_id": "model.chem_rate_catalyst_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ba4926073f274e6781e02b4e594a2ea8c5e44daf861485249ee865ebe53db093",
         "extensions": {
           "process_type": "cracking",
           "yield_model_id": "yield.catalyst_boost",
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

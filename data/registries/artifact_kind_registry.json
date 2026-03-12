@@ -8,57 +8,127 @@
       {
         "artifact_kind_id": "artifact.blueprint",
         "store_category": "blueprints",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2ed96344d833c982a20f8d7a32b27ac816ef47dbb87f9254c73b89fff8599998",
         "extensions": {
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
         "artifact_kind_id": "artifact.logic_program",
         "store_category": "logic_programs",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4f52eca86e918c93c8dd89ef9452aa0fb25747617d356f23c56b5db6fb0e8a9c",
         "extensions": {
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
         "artifact_kind_id": "artifact.process_definition",
         "store_category": "process_definitions",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "70c1a384a5ffe1baf835430f85b2f4e292728d5f2415786e1c863e14ef3bb1d2",
         "extensions": {
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
         "artifact_kind_id": "artifact.profile_bundle",
         "store_category": "profiles",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "de1a8838d9cba76f43c5da14282d98c4c5ac205ab29530da660cfd81e2a5af5d",
         "extensions": {
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
         "artifact_kind_id": "artifact.resource_pack_stub",
         "store_category": "resource_pack_stubs",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "278be024c81aa0ff17e27a6f8ca697846f7477ccbb13dd49ce588cf46ded3b39",
         "extensions": {
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
         "artifact_kind_id": "artifact.system_template",
         "store_category": "system_templates",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5e63870c7d5ab39750f0312acf9d903816cd101ad00402e41976b5c97a366e21",
         "extensions": {
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
         "artifact_kind_id": "artifact.view_preset",
         "store_category": "view_presets",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bf0d36b0fef2f319bd942a3d5d7981ba8252e4408520f6cf3292af5c74c2cb13",
         "extensions": {
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       }
     ],

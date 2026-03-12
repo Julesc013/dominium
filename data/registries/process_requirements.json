@@ -13,7 +13,17 @@
         "requires_heat": false,
         "requires_binding": false,
         "description": "Gather basic resource nodes.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
+        }
       },
       {
         "process_id": "process.craft_basic_tool",
@@ -27,7 +37,17 @@
         "requires_heat": false,
         "requires_binding": true,
         "description": "Craft deterministic baseline tool chain.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
+        }
       },
       {
         "process_id": "process.build_shelter",
@@ -41,7 +61,17 @@
         "requires_heat": false,
         "requires_binding": true,
         "description": "Build baseline shelter assembly.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
+        }
       },
       {
         "process_id": "process.consume_resource",
@@ -52,7 +82,17 @@
         "requires_heat": false,
         "requires_binding": false,
         "description": "Consume basic survival resource.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
+        }
       },
       {
         "process_id": "process.consume_item",
@@ -63,7 +103,17 @@
         "requires_heat": false,
         "requires_binding": false,
         "description": "Consume item alias mapped to consume resource contracts.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
+        }
       },
       {
         "process_id": "process.need_tick",
@@ -72,7 +122,17 @@
         "requires_heat": false,
         "requires_binding": false,
         "description": "Need decay step with no extra material/tool requirement.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
+        }
       },
       {
         "process_id": "process.exposure_tick",
@@ -81,7 +141,17 @@
         "requires_heat": false,
         "requires_binding": false,
         "description": "Exposure decay step with optional shelter mitigation.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
+        }
       },
       {
         "process_id": "process.death_process",
@@ -90,7 +160,17 @@
         "requires_heat": false,
         "requires_binding": false,
         "description": "Death transition process contract.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

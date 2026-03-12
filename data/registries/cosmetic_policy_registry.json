@@ -17,6 +17,16 @@
         ],
         "extensions": {
           "warn_on_unsigned": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -31,6 +41,16 @@
         ],
         "extensions": {
           "warn_on_unsigned": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -51,6 +71,16 @@
         ],
         "extensions": {
           "warn_on_unsigned": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       }
     ],

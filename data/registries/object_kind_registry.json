@@ -9,50 +9,100 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.galaxy_cell",
         "description": "Deterministic coarse spatial partition object representing a galaxy-scale generation cell.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d973c9fbcb5d76426e5f0b3be4398d2d554c190f177cb8b4b1859b6b7bf38e5a",
         "extensions": {
           "category": "spatial_partition",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.star_system",
         "description": "Deterministic star-system scale procedural or authored object anchored to a GEO cell lineage.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f50a77d44fe6fb6c1f2ee0c6dbf94e74fe6f1db9996cd3ed0e441567e20e4ed9",
         "extensions": {
           "category": "celestial_system",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.star",
         "description": "Deterministic stellar object anchored to a GEO cell lineage and local subkey ordering.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "1dd4f469ed8a8547608af5213a94a20d542c54d14ae289ea748a5a4bca75b8a1",
         "extensions": {
           "category": "celestial_body",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.planet",
         "description": "Deterministic planetary object anchored to a GEO cell lineage and local subkey ordering.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e8c90c1df3313cad37d13a9eb5fc06727d77b3abdeafb873fc427dfb8d301052",
         "extensions": {
           "category": "celestial_body",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.moon",
         "description": "Deterministic satellite body anchored to a GEO cell lineage and local subkey ordering.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b1d2399ef67ad8eda142db4e6ccedb691995138a9dbd8d3385241c3a7230143d",
         "extensions": {
           "category": "celestial_body",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -119,60 +169,120 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.surface_tile",
         "description": "Deterministic surface or atlas tile object derived from a GEO partition cell.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e5f102b417373ff94c81943c620d52b42dabccde429351f4a1928712090ceef1",
         "extensions": {
           "category": "surface_partition",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.interior_cell",
         "description": "Deterministic interior-space partition object derived from a GEO partition cell.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0e4ab4903a89d871403e428dc83da54b0444c99bcccb5e2a3c7debf39961faa0",
         "extensions": {
           "category": "interior_partition",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.structure",
         "description": "Deterministic built or authored structure object anchored to a GEO cell lineage.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ef28f3e640d95a6bd2d515bd29076502d50888edd8dafb002e03e354c0c08a83",
         "extensions": {
           "category": "artifact",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.vehicle",
         "description": "Deterministic vehicle or mobile assembly object anchored to a GEO cell lineage when spatially indexed.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "20c112987f5aafae6774814649e90dbba8d91f9329958333c6778cc55d218df7",
         "extensions": {
           "category": "artifact_mobile",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.signal_node",
         "description": "Deterministic logic or signaling node anchored to a GEO cell lineage when spatialized.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d363e31d29a768c0f3b8ed0d3a12667dc4f65ecbe16c750fe35c31a2cec12abc",
         "extensions": {
           "category": "network_node",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "object_kind_id": "kind.logic_network",
         "description": "Deterministic logic network aggregate anchored to a GEO cell lineage and stable local subkey.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "93c2abcdd1626b6a9451bf5de06bf35bef1b04616a26c84a86444c284cd459a6",
         "extensions": {
           "category": "network_aggregate",
           "source": "GEO1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       }
     ],

@@ -14,7 +14,18 @@
         "description": "Canonical kilogram unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -25,7 +36,18 @@
         "description": "Canonical meter unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -36,7 +58,18 @@
         "description": "Canonical second unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -47,7 +80,18 @@
         "description": "Canonical coulomb unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -58,7 +102,18 @@
         "description": "Canonical kelvin unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -69,7 +124,18 @@
         "description": "Canonical newton unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -80,7 +146,18 @@
         "description": "Canonical newton-meter torque unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -91,7 +168,18 @@
         "description": "Canonical newton-second linear momentum unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -102,7 +190,18 @@
         "description": "Canonical newton-meter-second angular momentum unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -113,7 +212,18 @@
         "description": "Canonical joule unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -124,7 +234,18 @@
         "description": "Canonical watt unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -135,7 +256,18 @@
         "description": "Canonical joule-per-kelvin stub unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -146,7 +278,18 @@
         "description": "Canonical pascal unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -157,7 +300,18 @@
         "description": "Canonical meters-per-second unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -168,7 +322,18 @@
         "description": "Canonical meters-per-second-squared unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -179,7 +344,18 @@
         "description": "Canonical kilograms-per-cubic-meter unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -190,7 +366,18 @@
         "description": "Canonical joules-per-kilogram unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -201,7 +388,18 @@
         "description": "Canonical ledger currency unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -212,7 +410,18 @@
         "description": "Canonical kilograms-per-second unit.",
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -225,6 +434,17 @@
         "deprecated": false,
         "extensions": {
           "source": "LOGIC2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
         }
       },
       {
@@ -238,6 +458,17 @@
         "deprecated": false,
         "extensions": {
           "source": "LOGIC2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
         }
       }
     ],

@@ -11,6 +11,93 @@
       "model.fluid_cavitation_stub",
       "model.fluid_leak_rate_stub"
     ],
+    "models": [
+      {
+        "model_id": "model.fluid_pump_curve_stub",
+        "deterministic_fingerprint": "a6c4f5f4fb96d7a30a986fa0e087939080527b4f04f4f299d6f84cf4d777d9e1",
+        "extensions": {
+          "source_registry_key": "model_id"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
+      },
+      {
+        "model_id": "model.fluid_valve_curve_stub",
+        "deterministic_fingerprint": "4743b72fb67a2303a992dd6db1d2c49fc69d72d84d71985e2ad86a1e4ca5fc0e",
+        "extensions": {
+          "source_registry_key": "model_id"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
+      },
+      {
+        "model_id": "model.fluid_pipe_loss_stub",
+        "deterministic_fingerprint": "cdb558ba024d247bc6364016e88f79bd9826a0c07b19467866e2d1ee083240d3",
+        "extensions": {
+          "source_registry_key": "model_id"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
+      },
+      {
+        "model_id": "model.fluid_cavitation_stub",
+        "deterministic_fingerprint": "05f110b7668b63ab552f96c727d8b003f8bd10445f4881f386b171fe7e2cc162",
+        "extensions": {
+          "source_registry_key": "model_id"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
+      },
+      {
+        "model_id": "model.fluid_leak_rate_stub",
+        "deterministic_fingerprint": "3cf43a25eadabb69b7ef5d50e79fb457dd611450add916bbda2184e0cf51baa7",
+        "extensions": {
+          "source_registry_key": "model_id"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
+      }
+    ],
     "extensions": {
       "source": "FLUID0-3",
       "ids_only": true

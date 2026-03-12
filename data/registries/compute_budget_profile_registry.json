@@ -13,9 +13,19 @@
         "evaluation_cap_per_tick": 256,
         "degrade_policy_id": "degrade.default_order",
         "power_coupling_enabled": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ba13fc39923940a1a68532011e81ecc473954e300d7f4d09c801d042311c9b62",
         "extensions": {
           "source": "META-COMPUTE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -26,9 +36,19 @@
         "evaluation_cap_per_tick": 192,
         "degrade_policy_id": "degrade.strict_shutdown",
         "power_coupling_enabled": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f30495235a15dfab7eddc437d44a2e6415cf40130019c4467e09e64c153fbca0",
         "extensions": {
           "source": "META-COMPUTE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -39,9 +59,19 @@
         "evaluation_cap_per_tick": 1024,
         "degrade_policy_id": "degrade.default_order",
         "power_coupling_enabled": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "246aa9f3d5bf0f8e562eaebb84f59ec61794c0efa6a7cd4d7bce2f9b46af6577",
         "extensions": {
           "source": "META-COMPUTE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       }
     ],

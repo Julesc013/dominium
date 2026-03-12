@@ -11,7 +11,7 @@
         "efficiency_degradation_curve_id": "curve.entropy.efficiency.default",
         "hazard_multiplier_curve_id": "curve.entropy.hazard.default",
         "maintenance_interval_modifier_id": "curve.entropy.maintenance.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "8645ea419d5b1665d1175ebc8804295f910ae07ea4b3819ede63b671454c7757",
         "extensions": {
           "entropy_unit_scale": 1000,
           "efficiency_loss_per_unit": 2,
@@ -20,6 +20,16 @@
           "hazard_multiplier_cap_permille": 2500,
           "maintenance_interval_loss_per_unit": 2,
           "maintenance_interval_floor_permille": 400
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -28,7 +38,7 @@
         "efficiency_degradation_curve_id": "curve.entropy.efficiency.none",
         "hazard_multiplier_curve_id": "curve.entropy.hazard.none",
         "maintenance_interval_modifier_id": "curve.entropy.maintenance.none",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "acd6af2b9b41c95aa5388b7d62bf842ed436a81077ad9115e13dfc2022220c6b",
         "extensions": {
           "entropy_unit_scale": 1000,
           "efficiency_loss_per_unit": 0,
@@ -37,6 +47,16 @@
           "hazard_multiplier_cap_permille": 1000,
           "maintenance_interval_loss_per_unit": 0,
           "maintenance_interval_floor_permille": 1000
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -45,7 +65,7 @@
         "efficiency_degradation_curve_id": "curve.entropy.efficiency.strict",
         "hazard_multiplier_curve_id": "curve.entropy.hazard.strict",
         "maintenance_interval_modifier_id": "curve.entropy.maintenance.strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7791a33e5d9b1cc5184f4e0005ff4a1157c509b09e48746a0b71fd955b8f3a50",
         "extensions": {
           "entropy_unit_scale": 800,
           "efficiency_loss_per_unit": 4,
@@ -57,6 +77,16 @@
           "warnings": [
             "warning.entropy.strict_profile"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

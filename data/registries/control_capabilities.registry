@@ -1,10 +1,58 @@
 # CONTROL_CAPABILITIES v1.0.0
 # Canonical registry for control capabilities (Category B).
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CAPABILITY.CONTROL.ANTICHEAT.CLIENT_PROBE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CAPABILITY.CONTROL.ANTICHEAT.SERVER_VALIDATION
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CAPABILITY.CONTROL.CONNECTIVITY.GATE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CAPABILITY.CONTROL.DRM.LICENSE_CHECK
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CAPABILITY.CONTROL.EXECUTION.GATE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CAPABILITY.CONTROL.MODERATION.HOOK
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CAPABILITY.CONTROL.PLATFORM.ENTITLEMENT
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CAPABILITY.CONTROL.TELEMETRY.OPT_IN

@@ -35,6 +35,16 @@
         "escalation_thresholds": {
           "strict": true,
           "full": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -68,6 +78,16 @@
         "escalation_thresholds": {
           "strict": true,
           "full": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       }
     ]

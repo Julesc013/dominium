@@ -13,11 +13,21 @@
           "norm": "l2"
         },
         "tolerance_policy_id": "tol.strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9c6fa291977978e619b41a8d2e6999478600e329652ed1f5d3873a903476ba11",
         "extensions": {
           "metric_policy_id": "metric.euclidean_exact",
           "geodesic_approx_policy_id": "geodesic.none",
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -33,11 +43,21 @@
           "fundamental_period_mm": 1000000
         },
         "tolerance_policy_id": "tol.strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4689b2d243c74cdea272824c94e486aaf3d0a27309cdc6ec466759d0b92f8a7c",
         "extensions": {
           "metric_policy_id": "metric.torus_wrap_exact",
           "geodesic_approx_policy_id": "geodesic.none",
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -49,12 +69,22 @@
           "algorithm_id": "geo.metric.spherical_stub.arc_cos_clamped"
         },
         "tolerance_policy_id": "tol.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d8fff87a6e14b46c6d704ba466255f914477f9838f559faddda4f3b91dda23a4",
         "extensions": {
           "bounded_error_mm": 1000,
           "metric_policy_id": "metric.spherical_geodesic_stub",
           "geodesic_approx_policy_id": "geodesic.spherical_linear_approx",
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -66,12 +96,22 @@
           "curvature_permille": -1000
         },
         "tolerance_policy_id": "tol.relaxed",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2e134ce19200e5baf97759861a9c39645e811bacce049dfe7009733dbbde49ab",
         "extensions": {
           "bounded_error_mm": 10000,
           "metric_policy_id": "metric.hyperbolic_stub",
           "geodesic_approx_policy_id": "geodesic.iterative_stub",
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

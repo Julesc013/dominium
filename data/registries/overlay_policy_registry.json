@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "overlay_policy_id": "overlay.default",
         "description": "Default GEO-9 merge policy: property-level overrides, explicit removals, no identity mutation.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b878fb8dd2b171217fa42358050f4c6ff50d3beeaedfcc1478783547a8e9a0da",
         "extensions": {
           "allow_unsigned_mods": true,
           "allow_identity_override": false,
@@ -19,13 +19,23 @@
           "require_remove_reason": true,
           "require_official_signature": true,
           "source": "COMPAT-SEM-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "overlay_policy_id": "overlay.rank_strict",
         "description": "Stricter GEO-9 merge policy for ranked/release lineages.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7610dd25bed546e197f4c723b05aff2324ff651dec1032865f828261d63e6be1",
         "extensions": {
           "allow_unsigned_mods": false,
           "allow_identity_override": false,
@@ -36,13 +46,23 @@
           "require_official_signature": true,
           "save_layer_only_for_authoritative_events": true,
           "source": "COMPAT-SEM-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "overlay_policy_id": "overlay.lab_freeform",
         "description": "Lab-focused GEO-9 merge policy with explicit unsigned-mod tolerance but still no silent identity mutation.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "76bec6ea2b623a4cbad10dee6d95a851ffd0477421df7fbfee2b1ec02b784a17",
         "extensions": {
           "allow_unsigned_mods": true,
           "allow_identity_override": false,
@@ -52,6 +72,16 @@
           "require_remove_reason": true,
           "require_official_signature": false,
           "source": "COMPAT-SEM-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

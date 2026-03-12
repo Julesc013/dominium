@@ -9,37 +9,67 @@
         "schema_version": "1.0.0",
         "stability_class_id": "stable",
         "description": "Semantics frozen under an explicit semantic contract version.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "999e798d935c62116e8ab29f110fa136db3e58eb0936a1555f7c447a046b4e5e",
         "extensions": {
           "contract_id_required": true,
           "future_series_required": false,
           "replacement_target_required": false,
           "experimental_gate_required": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "stability_class_id": "provisional",
         "description": "MVP or transitional implementation with an explicit replacement path.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "82820b0ca5229cfeaf56b001468cb35ce8bb7b5e36dca48738de8fde9308b765",
         "extensions": {
           "contract_id_required": false,
           "future_series_required": true,
           "replacement_target_required": true,
           "experimental_gate_required": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "stability_class_id": "experimental",
         "description": "Explicitly gated implementation that must exception-log activation or use.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "486b7639a9d409aa959a8c30f123587e979e5a0fdabd0b6c3104c852164f026e",
         "extensions": {
           "contract_id_required": false,
           "future_series_required": false,
           "replacement_target_required": false,
           "experimental_gate_required": true,
           "exception_event_required": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

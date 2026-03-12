@@ -12,10 +12,20 @@
         "sampling_strategy_id": "sample.hash_based",
         "test_procedure_refs": [],
         "fail_action": "accept_with_warning",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b5bd38587383f1e4179ba278de6646824680a764d29dd6a7b7129d5613a8bdea",
         "extensions": {
           "source": "PROC3-2",
           "enabled": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -28,12 +38,22 @@
           "test.contamination_basic"
         ],
         "fail_action": "accept_with_warning",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "94acb0e70e8203c138b9e55c13b651f0469540b0607c18ae248f8980af6dffd0",
         "extensions": {
           "source": "PROC3-2",
           "sampling_rate_scale": "permille",
           "drift_escalation_fail_rate_permille": 500,
           "cert_invalidation_on_fail": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -47,12 +67,22 @@
           "test.software_unit_stub"
         ],
         "fail_action": "reject_batch",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "49084d0faa5e00ccd15d134c35cac3003471a363d73c57c014d9751234ffd868",
         "extensions": {
           "source": "PROC3-2",
           "sampling_rate_scale": "permille",
           "drift_escalation_fail_rate_permille": 250,
           "cert_invalidation_on_fail": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

@@ -9,36 +9,76 @@
         "schema_version": "1.0.0",
         "delay_policy_id": "delay.none",
         "description": "Minimum-latency signal delivery; outputs computed at tick t become visible no earlier than tick t+1.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f242c50181a3506c10559247ede35e47eed9a643c0b4c5cd515ec88a98a3827e",
         "extensions": {
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "delay_policy_id": "delay.fixed_ticks",
         "description": "Signal value is deferred by a declared fixed integer tick count.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ddedc9dd769c3c19cd64e8ea519fd1593dafd08f1c01e5b7032eb4303c182039",
         "extensions": {
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "delay_policy_id": "delay.temporal_domain",
         "description": "Signal delay resolves through TEMP domain mapping and declared timing offset policy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "94180cfaec1deb757dc4ab65b81a3fc21dcff1d4224815466102aef34edbbac4",
         "extensions": {
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "delay_policy_id": "delay.sig_delivery",
         "description": "Message-carrier delay hook bound to SIG receipt and delivery semantics with next-tick-or-later visibility.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b2d2c463d76c200d0be9a1d8d269a57db93e1a5e560652a2ac7e53de6a9da611",
         "extensions": {
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

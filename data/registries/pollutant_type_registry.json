@@ -12,12 +12,22 @@
         "medium": "air",
         "default_decay_model_id": "model.poll_decay_half_life_stub",
         "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0104af00106514f76ab3ab6b6a434d59d15f535de5bc5e445fa0d89c566685d3",
         "extensions": {
           "source": "POLL0",
           "concentration_field_id": "field.pollution.smoke_particulate_concentration",
           "diffusion_coeff_permille": 180,
           "wind_bias_permille": 120
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -27,13 +37,23 @@
         "medium": "air",
         "default_decay_model_id": "model.poll_decay_none",
         "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d046674788f08f8082849323d2a144b5807201b34094b6b6a18837a9e314939e",
         "extensions": {
           "stub": true,
           "source": "POLL0",
           "concentration_field_id": "field.pollution.co2_stub_concentration",
           "diffusion_coeff_permille": 220,
           "wind_bias_permille": 90
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -43,13 +63,23 @@
         "medium": "air",
         "default_decay_model_id": "model.poll_decay_half_life_stub",
         "default_dispersion_policy_id": "poll.policy.rank_strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "733de9c7cf2ed1e35646791602d2aa872f683a2d2502fe27699d52d433b4d12d",
         "extensions": {
           "stub": true,
           "source": "POLL0",
           "concentration_field_id": "field.pollution.toxic_gas_stub_concentration",
           "diffusion_coeff_permille": 140,
           "wind_bias_permille": 140
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -59,13 +89,23 @@
         "medium": "multi",
         "default_decay_model_id": "model.poll_deposition_stub",
         "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5cb3f5a1c5365ebce5a6b62c92f4c24a0d6cb86a44dcb45a65652d000d451635",
         "extensions": {
           "stub": true,
           "source": "POLL0",
           "concentration_field_id": "field.pollution.oil_spill_stub_concentration",
           "diffusion_coeff_permille": 60,
           "wind_bias_permille": 30
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

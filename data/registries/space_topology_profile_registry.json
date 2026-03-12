@@ -22,7 +22,7 @@
         "boundary_rule_id": "boundary.infinite",
         "neighbor_policy_id": "neighbor.linear.r1",
         "portal_identifications_ref": null,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "471c76864380c64d7dcd2888c0508430406c2b35e02153a160ecb8b8f47a708a",
         "extensions": {
           "period_cell_counts": [
             100,
@@ -30,6 +30,16 @@
           ],
           "radius_cap": 8,
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -49,7 +59,7 @@
         "boundary_rule_id": "boundary.infinite",
         "neighbor_policy_id": "neighbor.moore.r1",
         "portal_identifications_ref": null,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3fd9cf013b0d7ecec631732280baeab7bd89f9c4aaf9a3a6a16702015188513c",
         "extensions": {
           "period_cell_counts": [
             100,
@@ -58,6 +68,16 @@
           ],
           "radius_cap": 8,
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -77,7 +97,7 @@
         "boundary_rule_id": "boundary.infinite",
         "neighbor_policy_id": "neighbor.von_neumann.r1",
         "portal_identifications_ref": null,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5f17a2b4967b22e6f19fbb0103439f85a0a142d1884e9bf5da81dd709fe60aa5",
         "extensions": {
           "period_cell_counts": [
             100,
@@ -85,6 +105,16 @@
           ],
           "radius_cap": 8,
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -110,7 +140,7 @@
         "boundary_rule_id": "boundary.periodic_wrap",
         "neighbor_policy_id": "neighbor.moore.r1",
         "portal_identifications_ref": null,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "884d503e7f7aac1e831ba6583830ab4b622cfbd00e54b1a341cbf6790f8ee002",
         "extensions": {
           "period_cell_counts": [
             100,
@@ -119,6 +149,16 @@
           ],
           "radius_cap": 8,
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -145,10 +185,20 @@
         "boundary_rule_id": "boundary.periodic_wrap",
         "neighbor_policy_id": "neighbor.von_neumann.r1",
         "portal_identifications_ref": null,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d02df758854b865736a30f816358a7923ec011f80af5c1c2a9a87e561ebde97c",
         "extensions": {
           "radius_cap": 8,
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -176,12 +226,22 @@
         "boundary_rule_id": "boundary.identified_atlas_seams",
         "neighbor_policy_id": "neighbor.atlas.edge_adjacency",
         "portal_identifications_ref": null,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6af7b53306c6359439af47ff7769655113e0c117824bf45169903f921428ca85",
         "extensions": {
           "atlas_kind": "sphere_surface_stub",
           "atlas_resolution": 4,
           "radius_cap": 6,
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -204,10 +264,20 @@
         "boundary_rule_id": "boundary.portal_identified_faces",
         "neighbor_policy_id": "neighbor.portal.face_adjacency",
         "portal_identifications_ref": "portal.cube.face_pairs.stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c1ea3fb692899b01f82c98fc0879d15994cec3138921320e0e2fe7eaca9a07aa",
         "extensions": {
           "radius_cap": 6,
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -234,10 +304,20 @@
         "boundary_rule_id": "boundary.infinite",
         "neighbor_policy_id": "neighbor.axis_aligned.r1",
         "portal_identifications_ref": null,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bfb3d1589358c126e7cf5ec2d5dd2439d7a4a18e6e24df1a148c437432eb0f9b",
         "extensions": {
           "radius_cap": 4,
           "source": "GEO0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       }
     ],

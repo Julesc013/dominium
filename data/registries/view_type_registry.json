@@ -10,13 +10,23 @@
         "view_type_id": "view.map_ortho",
         "description": "Deterministic ortho map view over a bounded GEO partition window.",
         "projection_profile_id": "geo.projection.ortho_2d",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "69922d8c31fe3b7145c7cbfd5340f2582943e4c69c65775fd8f91da9ac7ef857",
         "extensions": {
           "default_resolution": {
             "width": 17,
             "height": 17
           },
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -24,13 +34,23 @@
         "view_type_id": "view.minimap",
         "description": "Deterministic reduced-resolution ROI map view.",
         "projection_profile_id": "geo.projection.ortho_2d",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0dd493a2af8fded7fb3220a283b4ae1a60570edc52c87835c19393d4cd4eb31c",
         "extensions": {
           "default_resolution": {
             "width": 9,
             "height": 9
           },
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -38,13 +58,23 @@
         "view_type_id": "view.atlas_unwrap",
         "description": "Deterministic sphere-surface atlas unwrap view.",
         "projection_profile_id": "geo.projection.atlas_unwrap_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ba70b571e5de555ae0c096be73030af3cd98d570f13d2ef05127bd9cc12fd836",
         "extensions": {
           "default_resolution": {
             "width": 16,
             "height": 16
           },
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -52,13 +82,23 @@
         "view_type_id": "view.slice_nd_stub",
         "description": "Deterministic higher-dimensional slice view stub.",
         "projection_profile_id": "geo.projection.slice_nd_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6a8298037636f4f497703c1b0dd1fbead18437103c3b3618e686fd19f2cd9a6c",
         "extensions": {
           "default_resolution": {
             "width": 11,
             "height": 11
           },
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -66,7 +106,7 @@
         "view_type_id": "view.cctv_stub",
         "description": "Deterministic remote CCTV snapshot lens transported as a SIG observation artifact.",
         "projection_profile_id": "geo.projection.ortho_2d",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2182a61ef064e052bbeb24846d8a8b27bf6a1f811f326a5a9f30ee8ce8a8d097",
         "extensions": {
           "transport_kind": "sig_snapshot",
           "default_resolution": {
@@ -74,6 +114,16 @@
             "height": 7
           },
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       }
     ],

@@ -16,7 +16,17 @@
           "control.action.unbind_camera"
         ],
         "default_bindings": [],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
+        }
       },
       {
         "controller_type": "ai_policy",
@@ -26,7 +36,17 @@
           "control.action.release_agent"
         ],
         "default_bindings": [],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
+        }
       },
       {
         "controller_type": "player_input",
@@ -40,7 +60,17 @@
         "default_bindings": [
           "camera.main"
         ],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
+        }
       },
       {
         "controller_type": "script",
@@ -52,7 +82,17 @@
           "control.action.unbind_camera"
         ],
         "default_bindings": [],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
+        }
       },
       {
         "controller_type": "spectator",
@@ -64,7 +104,17 @@
         "default_bindings": [
           "camera.main"
         ],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

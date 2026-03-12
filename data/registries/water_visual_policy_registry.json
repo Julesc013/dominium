@@ -12,13 +12,23 @@
         "lake_fill_threshold": 180,
         "reflection_strength": 520,
         "tide_visual_strength": 80,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6ea91b5b937c7f88ba633c98297eb7f4a33f1274ac55c5f11ff1d346f84ed375",
         "extensions": {
           "description": "Canonical EARTH-8 water visual policy with bounded ribbon rivers, sink/lake fill tagging, sky reflection stub, and subtle tide edge offset.",
           "default_neighbor_radius": 2,
           "max_region_tiles": 81,
           "river_flow_fan_in_threshold": 3,
           "source": "EARTH8-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace MVP Earth and Sol proxies with contract-pinned generator, material, and illumination domain models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4aeea9cd71b2868dc619a2763ef8ea5fd4b065c8ec3cd6facbe5de685f1763f6",
+          "extensions": {}
         }
       }
     ],

@@ -11,9 +11,19 @@
         "base_conductance": 220,
         "forced_cooling_multiplier": 1000,
         "spec_id": null,
-        "deterministic_fingerprint": "9166f43a1cbd26f2a6af976a1baa361f1656a50d5fdcb7cff2b9d21fcb6a77ac",
+        "deterministic_fingerprint": "a827a5f3a3dc0f999ceb78c6e96d2e78e888b6ca1426663b0b43fa1fa0c659d0",
         "extensions": {
           "cooling_mode": "passive"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -22,9 +32,19 @@
         "base_conductance": 220,
         "forced_cooling_multiplier": 1850,
         "spec_id": null,
-        "deterministic_fingerprint": "f57aebac73be6cd76167a8e340b760bc76f1f9fc8f0d76f7d3f4a23faaf73611",
+        "deterministic_fingerprint": "a52ea402d63cbc1d5a4306aad0bc657af710a035c7ffa18c028ade6a474e265c",
         "extensions": {
           "cooling_mode": "forced"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

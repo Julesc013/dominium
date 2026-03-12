@@ -12,10 +12,20 @@
         "heat_release_rate": 220,
         "fuel_consumption_rate": 20,
         "spread_threshold": 420,
-        "deterministic_fingerprint": "27c5612ce2f2c5eb08f8e175d0c2aca43d447a477f2f1a82b4d36dc2ca60a51f",
+        "deterministic_fingerprint": "def96b9c04f70a9eedadbc4d6cb40434d00fa158889358d9805e150b686cce3a",
         "extensions": {
           "initial_fuel": 1200,
           "pollutant_emission_rate": 55
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -25,10 +35,20 @@
         "heat_release_rate": 340,
         "fuel_consumption_rate": 28,
         "spread_threshold": 380,
-        "deterministic_fingerprint": "84d9e63526ef15f8cbaf37e56ff067c6ec47441fdd34df18f69dbe8e44b3111a",
+        "deterministic_fingerprint": "0837733381e4a1a8eb68228b50a08b18f7138aa64bd8d86922a775330bfb253a",
         "extensions": {
           "initial_fuel": 1500,
           "pollutant_emission_rate": 90
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -38,10 +58,20 @@
         "heat_release_rate": 260,
         "fuel_consumption_rate": 24,
         "spread_threshold": 400,
-        "deterministic_fingerprint": "3df5a69e8f9c12b4e6c8de64d35b57ae7dd2cd6e888e7f0de0b6205f492fcb4c",
+        "deterministic_fingerprint": "a0cf09a3e585d89b660b8aa317dc91c20a608bdb4e1c06b8600b01ce74ca9248",
         "extensions": {
           "initial_fuel": 1000,
           "pollutant_emission_rate": 80
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

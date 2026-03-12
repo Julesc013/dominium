@@ -40,9 +40,19 @@
           "safety.fail_safe_stop",
           "safety.shutdown.isolate"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "8bbe8f99afa4be2442acf60e53e7f4c76be26f8dcecacd813da2080335bbe42f",
         "extensions": {
           "source": "SYS6-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -80,9 +90,19 @@
           "safety.relief.open",
           "safety.shutdown.isolate"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "644d63dc10b71227cd20a9c975e563a51dbad70574ee9a50b7f25ef9b5f8dacd",
         "extensions": {
           "source": "SYS6-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -119,9 +139,19 @@
           "safety.relief.open",
           "safety.fail_safe_stop"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e277fa05cdf079dfa4bb31dccb7b964f02566b151fea6161bcef05e7897594b8",
         "extensions": {
           "source": "SYS6-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -159,9 +189,19 @@
           "safety.breaker.trip",
           "safety.fail_safe_stop"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f1b94be7e670d7f940e8dd422d7f55a35d9453608797bdfecdbde226f8b7eb0f",
         "extensions": {
           "source": "SYS6-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -210,10 +250,20 @@
           "safety.scram",
           "safety.shutdown.isolate"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "96dd463caf78a84ee966eee2849ece2e6eed60306669d90055e16085debed2fd",
         "extensions": {
           "source": "SYS6-2",
           "stochastic_policy": "profile_gated"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       }
     ],

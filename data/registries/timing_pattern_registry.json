@@ -10,10 +10,20 @@
         "pattern_id": "pattern.fixed_delay",
         "pattern_kind": "delay",
         "description": "Canonical fixed-tick logic delay pattern.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9f324f5673cdb57038a1d757c720daef9e38a6dfef923b5f284f89e1fc9e98fa",
         "extensions": {
           "delay_policy_id": "delay.fixed_ticks",
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -21,11 +31,21 @@
         "pattern_id": "pattern.astable_oscillator_stub",
         "pattern_kind": "oscillator",
         "description": "Stub pattern for feedback-plus-delay oscillator assemblies; behavior remains pack-defined.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "36f9af437089d2108cd30ba1034e66a08a63b9986fe97bebafb10aa65fdab0e1",
         "extensions": {
           "requires_feedback": true,
           "requires_state": true,
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -33,10 +53,20 @@
         "pattern_id": "pattern.monostable_stub",
         "pattern_kind": "timing_pulse",
         "description": "Stub one-shot timing pattern expressed through explicit state and delay policy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c6fb895b17bdb0316d98a44d17645b0b4c481190939c353a909cdf4492bcd0d4",
         "extensions": {
           "requires_state": true,
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -44,11 +74,21 @@
         "pattern_id": "pattern.watchdog_basic",
         "pattern_kind": "watchdog",
         "description": "Basic watchdog timeout pattern for deterministic quiet-window monitoring.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "eab0e21ab9f91cc2f243c3fd71af4a53ae1716a26e7d72ed564ba0ac85730646",
         "extensions": {
           "requires_state": true,
           "supports_timeout_signal": true,
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -56,10 +96,20 @@
         "pattern_id": "pattern.synchronizer_basic",
         "pattern_kind": "synchronizer",
         "description": "Multi-stage deterministic synchronizer pattern for cross-domain stabilization.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "26577f3e61735735d457561dffc40dadf6b517cb527f13677adf1b5f5104ebf0",
         "extensions": {
           "minimum_stage_count": 2,
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

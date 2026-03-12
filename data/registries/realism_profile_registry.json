@@ -12,7 +12,7 @@
         "system_priors_ref": "priors.system_default_stub",
         "planet_priors_ref": "priors.planet_default_stub",
         "surface_priors_ref": "priors.surface_default_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "49e19ad8dc75afe615e2489e05f6d627a7dd59cdc96ed4b7465ae913973cfae7",
         "extensions": {
           "description": "Default realistic procedural Milky Way prior set with coarse astrophysical tendencies.",
           "sol_anchor_cell_key": {
@@ -31,6 +31,16 @@
             "topology_profile_id": "geo.topology.r3_infinite"
           },
           "source": "SOL0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "ASTRO",
+          "replacement_target": "Replace MVP astronomy proxies with contract-pinned astrophysics, ephemeris, and lifecycle domain packs.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a3797d7a60082a6c931586e6d1372d5b1e84a6c9a77d80cb4d051b053774eb41",
+          "extensions": {}
         }
       },
       {
@@ -40,10 +50,20 @@
         "system_priors_ref": "priors.system.flat.stub",
         "planet_priors_ref": "priors.planet.flat.stub",
         "surface_priors_ref": "priors.surface.flat_world.stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "01d9010b8ff4812db21b114ba50f8b5c182b4a8c2ce972b3bf673b54dd735fcb",
         "extensions": {
           "description": "Flat-world-oriented stub priors for non-astronomical experiments.",
           "source": "GEO8-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "ASTRO",
+          "replacement_target": "Replace MVP astronomy proxies with contract-pinned astrophysics, ephemeris, and lifecycle domain packs.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a3797d7a60082a6c931586e6d1372d5b1e84a6c9a77d80cb4d051b053774eb41",
+          "extensions": {}
         }
       },
       {
@@ -53,10 +73,20 @@
         "system_priors_ref": "priors.system.torus.stub",
         "planet_priors_ref": "priors.planet.torus.stub",
         "surface_priors_ref": "priors.surface.torus.stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "76b06ea4ee6d91d62151fdae70a11a529eef6302a6b3db2e7aade45f08853125",
         "extensions": {
           "description": "Periodic torus-world stub priors for wrapped geometry test universes.",
           "source": "GEO8-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "ASTRO",
+          "replacement_target": "Replace MVP astronomy proxies with contract-pinned astrophysics, ephemeris, and lifecycle domain packs.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a3797d7a60082a6c931586e6d1372d5b1e84a6c9a77d80cb4d051b053774eb41",
+          "extensions": {}
         }
       },
       {
@@ -66,10 +96,20 @@
         "system_priors_ref": "priors.system.fantasy.stub",
         "planet_priors_ref": "priors.planet.fantasy.stub",
         "surface_priors_ref": "priors.surface.fantasy.stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "087428f7c0c8c9e4967f5cbbbd41e37d1cea01d1b02d4d5a0c5eb8355adfe1f2",
         "extensions": {
           "description": "Non-realistic fantasy priors reserved for later pack-driven content.",
           "source": "GEO8-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "ASTRO",
+          "replacement_target": "Replace MVP astronomy proxies with contract-pinned astrophysics, ephemeris, and lifecycle domain packs.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a3797d7a60082a6c931586e6d1372d5b1e84a6c9a77d80cb4d051b053774eb41",
+          "extensions": {}
         }
       }
     ],

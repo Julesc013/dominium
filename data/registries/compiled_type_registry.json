@@ -9,29 +9,69 @@
         "schema_version": "1.0.0",
         "compiled_type_id": "compiled.automaton",
         "description": "Deterministic reduced finite-state representation.",
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "0f266d55e0243faee401d9b1780fb067c0771cebee1d2c67b221bb06b2db4186",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "compiled_type_id": "compiled.lookup_table",
         "description": "Deterministic table approximation with declared bounds.",
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "ac3d6ea61ddc3af8e2a8724a3a420769a85df6d16dc62475d64ca99c5f10e2e7",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "compiled_type_id": "compiled.reduced_graph",
         "description": "Pruned and constant-folded model graph preserving equivalence.",
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "97ce9fc7f633c105bf4d104e00cb33dcdddae9222f915f32349f6f983a971310",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "compiled_type_id": "compiled.ir",
         "description": "Bounded deterministic instruction-list representation.",
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "f12d462aca0e08bc50cc20f03570e6fd135fa751a761227e15899f0a5f3458cf",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {

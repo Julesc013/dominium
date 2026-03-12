@@ -49,7 +49,18 @@
         ],
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4f8cba360973f51eb0ad62d257ac55d6e6df18dde7575a0077bf4f0fa4338a03",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -98,7 +109,18 @@
         ],
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4f8cba360973f51eb0ad62d257ac55d6e6df18dde7575a0077bf4f0fa4338a03",
+          "extensions": {},
+          "deprecated": false
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -149,7 +171,18 @@
         ],
         "version_introduced": "1.0.0",
         "deprecated": false,
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4f8cba360973f51eb0ad62d257ac55d6e6df18dde7575a0077bf4f0fa4338a03",
+          "extensions": {},
+          "deprecated": false
+        }
       }
     ],
     "extensions": {}

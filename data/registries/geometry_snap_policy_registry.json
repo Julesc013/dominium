@@ -9,19 +9,49 @@
         "schema_version": "1.0.0",
         "snap_policy_id": "snap.none",
         "schema_ref": "dominium.schema.mobility.snap_policy.stub@1.0.0",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "snap_policy_id": "snap.endpoint",
         "schema_ref": "dominium.schema.mobility.snap_policy.stub@1.0.0",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "snap_policy_id": "snap.grid",
         "schema_ref": "dominium.schema.mobility.snap_policy.stub@1.0.0",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -29,6 +59,16 @@
         "schema_ref": "dominium.schema.mobility.snap_policy.stub@1.0.0",
         "extensions": {
           "uses_spec_tolerance": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       }
     ],

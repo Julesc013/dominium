@@ -18,10 +18,20 @@
           "pollutant.toxic_gas_stub"
         ],
         "requires_calibration": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "8467e75c679dce14218265531a34c6de5dbc4dbc3edbe22b8af52c2c2ef4bddb",
         "extensions": {
           "source": "POLL2-2",
           "task_type_id": "task.measure_pollution"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -36,10 +46,20 @@
           "pollutant.oil_spill_stub"
         ],
         "requires_calibration": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "fb8e1161bedf6454481e1d4034e06af0849fc2a450aa450dc9cdd08692c3142a",
         "extensions": {
           "source": "POLL2-2",
           "task_type_id": "task.measure_pollution"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

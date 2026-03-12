@@ -11,7 +11,7 @@
         "collider_kind": "capsule",
         "mass_value": 80000,
         "movement_params_ref": "move.body.default_ground",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "eab2068641ccdc54f8a39e6cbb5f3c50a42115049e222ac4736eb4b0bb0c8737",
         "extensions": {
           "source": "EMB0-2",
           "capsule": {
@@ -28,6 +28,16 @@
           "foot_offset_mm": 1100,
           "system_template_id": "template.body.pill",
           "body_shape_type": "capsule"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

@@ -12,9 +12,19 @@
         "density": 1000,
         "viscosity_proxy": 1,
         "vapor_pressure_proxy": 2,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "fc2796b1f7c193e32c9a92c483f1567a547dfa36ca11f099372789970716ba02",
         "extensions": {
           "domain_class": "liquid"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -24,10 +34,20 @@
         "density": 1,
         "viscosity_proxy": 1,
         "vapor_pressure_proxy": 0,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c3d185ede3037b55f5ed703aac1ec03ca243f39aaf6209d8af1ede13cd7f4930",
         "extensions": {
           "domain_class": "gas",
           "stub": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -37,10 +57,20 @@
         "density": 850,
         "viscosity_proxy": 5,
         "vapor_pressure_proxy": 1,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b0d55d7440526419534e4cec27158a8df77b51c7fe513a753e64e0b9036b8b85",
         "extensions": {
           "domain_class": "liquid",
           "stub": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -50,10 +80,20 @@
         "density": 1,
         "viscosity_proxy": 1,
         "vapor_pressure_proxy": 5,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "62de83992a0c4d55ea6f8c76e5940be51e9019d4b5200bf2c2d801c4a393fc89",
         "extensions": {
           "domain_class": "gas",
           "stub": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

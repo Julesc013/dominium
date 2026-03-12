@@ -14,8 +14,18 @@
           "quantity.power.apparent_stub"
         ],
         "description": "Power phasor placeholder bundle (P,Q,S).",
-        "deterministic_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "extensions": {}
+        "deterministic_fingerprint": "92c2ca886758acd4c92685c7d375e92f72cee7fba4b1615ca2d3f2e9e7c13379",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -25,8 +35,18 @@
           "quantity.pressure_head"
         ],
         "description": "Fluid canonical bundle (mass_flow, pressure_head).",
-        "deterministic_fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-        "extensions": {}
+        "deterministic_fingerprint": "f7c143cb541b84003eeb711561e076ccf921451f12401a9511b73595383867e9",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -36,8 +56,18 @@
           "quantity.data.latency_stub"
         ],
         "description": "Data placeholder bundle (bytes, latency_stub).",
-        "deterministic_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-        "extensions": {}
+        "deterministic_fingerprint": "684db84ffac0e59cd153a7e10d12c84ea38679544fc1cf0a2b8fb8cc2fa5c12b",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -47,8 +77,18 @@
           "quantity.thermal.heat_loss_stub"
         ],
         "description": "Thermal placeholder bundle (heat_flow, heat_loss_stub).",
-        "deterministic_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-        "extensions": {}
+        "deterministic_fingerprint": "11639a48fb01e8579308343873382451029c1047298802d7cbb143b66038cdff",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -58,9 +98,19 @@
           "quantity.logic.bus_capture"
         ],
         "description": "Substrate-agnostic logic signal placeholder bundle for signal-only interfaces.",
-        "deterministic_fingerprint": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "deterministic_fingerprint": "e12139bdce3c4535f04aca658de0e4659d4faf78b06af4842e6ab56f8bd33d3f",
         "extensions": {
           "source": "LOGIC2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       }
     ],

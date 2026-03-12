@@ -10,9 +10,19 @@
         "policy_id": "ambient.default",
         "ambient_coupling_coefficient": 280,
         "insulation_factor": 1000,
-        "deterministic_fingerprint": "68929bf9153f2cfdd01cb65667f513a76679f17de8acef9de16af9c6c6cf5770",
+        "deterministic_fingerprint": "dd65cc228951b00ea38bc5ed3b197b8a485a0e50763d00dbf8224c1260f7073b",
         "extensions": {
           "forced_cooling_default_multiplier": 1000
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -20,9 +30,19 @@
         "policy_id": "ambient.insulated",
         "ambient_coupling_coefficient": 280,
         "insulation_factor": 420,
-        "deterministic_fingerprint": "3642278ce6f48a3055f4c453ef8a20ea99995db43f7f24fd42d87345a7f5038a",
+        "deterministic_fingerprint": "a241e9cfa47854b6e51000defc0c2255d84d294e57ee82c3f7b8d47fa11048eb",
         "extensions": {
           "forced_cooling_default_multiplier": 1000
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -30,9 +50,19 @@
         "policy_id": "ambient.exposed",
         "ambient_coupling_coefficient": 400,
         "insulation_factor": 1000,
-        "deterministic_fingerprint": "6393d25c9202c71dc4add80185ded036fd8a734527e1fbc9d54795efcdfd82a4",
+        "deterministic_fingerprint": "679704187f37631181592aadf390e57c5fef78f2d6f98ce142d968dd62a2727e",
         "extensions": {
           "forced_cooling_default_multiplier": 1200
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

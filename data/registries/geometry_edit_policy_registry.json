@@ -9,20 +9,30 @@
         "schema_version": "1.0.0",
         "geometry_edit_policy_id": "geo.edit.default",
         "description": "Deterministic baseline geometry edit policy for ordinary excavation and fill.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "1495c18be8c360bd18c6592f25a3abecbb8be298a379568e71f43ce7bf3dc95f",
         "extensions": {
           "max_target_cells": 64,
           "max_volume_per_cell": 1000,
           "allow_micro_chunks": true,
           "micro_chunk_budget": 64,
           "source": "GEO7-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "geometry_edit_policy_id": "geo.edit.rank_strict",
         "description": "Strict ranked policy with tighter bounded geometry edit budgets and refusal bias.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9cbd914efe6c249255d91e0586089cd86e15e610903cf8f1decbe01da946ac48",
         "extensions": {
           "max_target_cells": 16,
           "max_volume_per_cell": 500,
@@ -30,13 +40,23 @@
           "micro_chunk_budget": 16,
           "partial_chunk_policy": "refuse",
           "source": "GEO7-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "geometry_edit_policy_id": "geo.edit.lab_aggressive",
         "description": "Lab policy with broader but still deterministic bounded edit ranges.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "194557247eae06fd94f2b4bd6b4e3c7a95926c7c2a0571310382c5f785d24125",
         "extensions": {
           "max_target_cells": 256,
           "max_volume_per_cell": 4000,
@@ -44,6 +64,16 @@
           "micro_chunk_budget": 256,
           "partial_chunk_policy": "aggregate_macro",
           "source": "GEO7-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       }
     ],

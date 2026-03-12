@@ -9,20 +9,40 @@
         "schema_version": "1.0.0",
         "policy_id": "err.checksum_stub",
         "description": "Deterministic checksum stub over canonical frame content.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "1622700dfb9852a2ecadc83868bc8056d480064da1f5daf137a8fde2b3e78ea9",
         "extensions": {
           "checksum_kind": "canonical_sha256_prefix",
           "source": "LOGIC9-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "policy_id": "err.none",
         "description": "Protocol carries no explicit error-detection field.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5dac2711a4b442d21dd4e3848a6ae5281ee83e409609ca89381c444fff9bfc64",
         "extensions": {
           "checksum_kind": "none",
           "source": "LOGIC9-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

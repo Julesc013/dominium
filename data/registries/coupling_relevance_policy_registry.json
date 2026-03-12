@@ -18,9 +18,19 @@
         "tolerance_policy_ref": "tol.default",
         "hold_last_value": true,
         "safe_default_ref": null,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6cea1b646d1b2b9cacb3ca545e1756f7b48b3c7729d141d2635f8abf90cd52ab",
         "extensions": {
           "description": "Default deterministic relevance policy with hold-last skip behavior."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -35,9 +45,19 @@
         "tolerance_policy_ref": "tol.strict",
         "hold_last_value": false,
         "safe_default_ref": "safety.fail_safe_shutdown",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f7e74f9c173f1b96700eaf643ffaf6e85bd0659341994c1e01c2d100aca7870c",
         "extensions": {
           "description": "Critical coupling policy; escalates to fail-safe and forced-expand pathways."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -50,9 +70,19 @@
         "tolerance_policy_ref": "tol.relaxed",
         "hold_last_value": true,
         "safe_default_ref": "safe.default.noop",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2d7c1935be2fea9672368183eef15f548499f3a2624a8f7329a3828ab72fdf1a",
         "extensions": {
           "description": "Optional coupling policy intended for best-effort diagnostic/cosmetic coupling."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

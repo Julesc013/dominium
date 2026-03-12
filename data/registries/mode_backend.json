@@ -62,7 +62,17 @@
             }
           }
         ],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
       },
       {
         "platform": "win9x",
@@ -102,6 +112,16 @@
         ],
         "extensions": {
           "support_status": "declared_not_built"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
@@ -142,6 +162,16 @@
         ],
         "extensions": {
           "support_status": "declared_not_built"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
@@ -182,6 +212,16 @@
         ],
         "extensions": {
           "support_status": "declared_not_built"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       },
       {
@@ -222,6 +262,16 @@
         ],
         "extensions": {
           "support_status": "declared_not_built"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LIB",
+          "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
         }
       }
     ],

@@ -12,6 +12,16 @@
         "extensions": {
           "description": "Adds deterministic drift acceleration from sampled wind vector and policy scale.",
           "max_drift_mm_per_tick2": 512
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace MVP Earth and Sol proxies with contract-pinned generator, material, and illumination domain models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4aeea9cd71b2868dc619a2763ef8ea5fd4b065c8ec3cd6facbe5de685f1763f6",
+          "extensions": {}
         }
       }
     ],

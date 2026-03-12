@@ -70,9 +70,19 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "35d40d6eeecfab0bfd338e43b3d15534099d1c1ae10fb7eae7206f7ecca57a39",
         "extensions": {
           "official.source": "CAP-NEG-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -100,9 +110,19 @@
         "required_capabilities": [],
         "optional_capabilities": [],
         "degrade_ladders": [],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "82125f4dd5e7da2008e9d2c1361a3d64985001cbf1d4563eb95c149764d4013c",
         "extensions": {
           "official.source": "CAP-NEG-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -130,9 +150,19 @@
         "required_capabilities": [],
         "optional_capabilities": [],
         "degrade_ladders": [],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d75d8f2257a814ab559f6e102cbf180b077e2bcf1b0436d78ddbc3374a7638a6",
         "extensions": {
           "official.source": "CAP-NEG-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -173,9 +203,19 @@
             "extensions": {}
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "da7211f0702f52a64b6381c2a916aee4341a14218a62bd643abd86142bea248a",
         "extensions": {
           "official.source": "CAP-NEG-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -228,9 +268,19 @@
             "extensions": {}
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "33344b3a1ce14d831680585808d10bf7423a8c1699e207800c7cff7ba1e56400",
         "extensions": {
           "official.source": "CAP-NEG-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -256,9 +306,19 @@
         "required_capabilities": [],
         "optional_capabilities": [],
         "degrade_ladders": [],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "51a4ad71214dc41dbe7bda3a23600da3c52a8f9e170294b8ef586daf3626a65b",
         "extensions": {
           "official.source": "CAP-NEG-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -297,9 +357,19 @@
             "extensions": {}
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6317ac296caf4df38d3c02fda21695942dd8cdb91bd7801705ad716ab5e02149",
         "extensions": {
           "official.source": "CAP-NEG-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       }
     ],

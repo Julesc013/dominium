@@ -9,90 +9,190 @@
         "schema_version": "1.0.0",
         "owner_id": "elec",
         "budget_units_per_tick": 240,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5ed993220522803e5d0c8584abc274758c46dfa2465c233ee81373d022e5c380",
         "extensions": {
           "owner_kind": "domain"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "therm",
         "budget_units_per_tick": 320,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "139b471abeab5cb779e8431e41a383b51e1abefc0182043a8bce6db90a7ce167",
         "extensions": {
           "owner_kind": "domain"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "fluid",
         "budget_units_per_tick": 280,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a201cfc2903be99b0c28d23d32e778f9b61bb373d253315a34d6e4aee267037e",
         "extensions": {
           "owner_kind": "domain"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "chem",
         "budget_units_per_tick": 220,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d1c3f3920b7c896d515036f706c45e682c1d743993f0f778b8898a13a527c965",
         "extensions": {
           "owner_kind": "domain"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "poll",
         "budget_units_per_tick": 260,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f1a444754df12103b41a7fcbf3c56a94b8819b1e6bbdeadb6c47fd4b0aec3c2f",
         "extensions": {
           "owner_kind": "domain"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "mob",
         "budget_units_per_tick": 340,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "37669e5f422a14fb8ace96ff29936faee58d1e225ef8e8c6e39bd1370188d86f",
         "extensions": {
           "owner_kind": "domain"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "sig",
         "budget_units_per_tick": 160,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e1f3c003f7d53f6942bd840cdd40a3890103e7735d107a5bfdf33be934e90571",
         "extensions": {
           "owner_kind": "domain"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "sys",
         "budget_units_per_tick": 300,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ed9c0af078020194009425df48f51d5483ff81d94ada085d18e6fb7c5013a8a9",
         "extensions": {
           "owner_kind": "domain"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "system_class.engine",
         "budget_units_per_tick": 180,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5951d4e2acc681e680d07807a09e206b68ebcb9d149c9642cc4664bbee5ef9aa",
         "extensions": {
           "owner_kind": "system_class"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "owner_id": "system_class.plant",
         "budget_units_per_tick": 420,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3dcf730836bffeea892ce43dbf14d26d8d6ee23d33d80f3997eda5ede9e6038a",
         "extensions": {
           "owner_kind": "system_class"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       }
     ],

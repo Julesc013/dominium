@@ -16,10 +16,20 @@
         "allow_named_rng": false,
         "allow_candidate_compiled_model_before_validation": false,
         "require_state_vector_for_candidate_capsule": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c2ccd51fa75a5fdf27a6122864788a3a33aa53cc89d4de3e5d8abd4276a752d5",
         "extensions": {
           "source": "PROC7-2",
           "budget_class": "important"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
         }
       },
       {
@@ -33,10 +43,20 @@
         "allow_named_rng": false,
         "allow_candidate_compiled_model_before_validation": false,
         "require_state_vector_for_candidate_capsule": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ec76b619b2ede2121593d1bf4a21d751841365b6c2996861fce0c04fd8b75ce0",
         "extensions": {
           "source": "PROC7-2",
           "institutional_mode": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
         }
       },
       {
@@ -50,10 +70,20 @@
         "allow_named_rng": false,
         "allow_candidate_compiled_model_before_validation": false,
         "require_state_vector_for_candidate_capsule": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f8371de93f206d8cf7822e35347a47d7062a33047aa11dc5b614f479d44a1305",
         "extensions": {
           "source": "PROC7-2",
           "ranked_mode": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "PROC",
+          "replacement_target": "Replace MVP process defaults with release-pinned process and capsule contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d87e8de3bcb365366f5c5485ce3511eab761cf553a5bc4c3bb53e0436323489",
+          "extensions": {}
         }
       }
     ],

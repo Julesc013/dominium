@@ -23,7 +23,17 @@
         "refuse_thresholds": {
           "max_forced_micro_regions": 0
         },
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -43,7 +53,17 @@
         "refuse_thresholds": {
           "max_forced_micro_regions": 256
         },
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -63,7 +83,17 @@
         "refuse_thresholds": {
           "max_forced_micro_regions": 64
         },
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

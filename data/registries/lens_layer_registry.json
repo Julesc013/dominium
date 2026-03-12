@@ -9,138 +9,258 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.sky_dome",
         "description": "Deterministic EARTH-4 sky-dome layer sourced from derived sky-view artifacts only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f7c86ae10f98256a1b450a2c64b16dc52715367deaa5f3f12ca196dac6a22562",
         "extensions": {
           "source_kind": "sky_view",
           "artifact_id": "sky_view_artifact",
           "source": "EARTH4-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.starfield",
         "description": "Deterministic EARTH-4 starfield and coarse Milky Way band layer sourced from derived sky-view artifacts only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "15e3c5ef4a868bcdd989065429afb7d30606e047457d79fbde8b4d22c4f494b4",
         "extensions": {
           "source_kind": "sky_view",
           "artifact_id": "sky_view_artifact",
           "source": "EARTH4-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.illumination",
         "description": "Deterministic EARTH-5 illumination layer sourced from derived illumination-view artifacts only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "33992b40423b84628e07b89ca33d835eadc5c9ab7d302b413189f2e7b84518e6",
         "extensions": {
           "source_kind": "illumination_view",
           "artifact_id": "illumination_view_artifact",
           "source": "EARTH5-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.shadow_factor",
         "description": "Deterministic EARTH-5 horizon-shadow factor layer sourced from bounded derived illumination-view artifacts only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0d4882f49089e0a262e5ce183bef8e766119555fde9d4fd978b70a0731784c4d",
         "extensions": {
           "source_kind": "illumination_view",
           "artifact_id": "illumination_view_artifact",
           "source": "EARTH5-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.orbits",
         "description": "Deterministic SOL-2 orbit ring and body marker layer sourced from derived orbit-view artifacts only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "101af4b71196cc9ff3de3336fd63583878ff85c661578f9a0650f878e42e5b66",
         "extensions": {
           "source_kind": "orbit_view",
           "artifact_id": "orbit_view_artifact",
           "source": "SOL2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.galaxy_objects",
         "description": "Deterministic GAL-1 galaxy object marker layer sourced from derived compact-object marker payloads only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f124662f9caf74d4526afb8c66b6befe6e0ff40fefdcd8ef7dca0ca16791eb74",
         "extensions": {
           "source_kind": "galaxy_object_view",
           "artifact_id": "galaxy_object_stub",
           "source": "GAL1-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.terrain_stub",
         "description": "Deterministic terrain or atlas-terrain surface derived from lawful perceived map or tile sources.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "53add6842e1426f1d15e4c47a9ee629514f46457086b2986a400fd8bafc81461",
         "extensions": {
           "source_kind": "terrain",
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.temperature",
         "description": "Deterministic temperature layer rendered from lawful perceived field samples.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ed5ea00fcc9bc6f01e3b99f92423882bb148be004e2e0ba021929842c8ed82a0",
         "extensions": {
           "source_kind": "field",
           "field_id": "field.temperature",
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.tide_height_proxy",
         "description": "Deterministic tide-height proxy layer rendered from lawful EARTH-3 field samples.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5001a3184a065d0109a3c9242f9871ed2c0cb45377a7a47ee3d3ed9000fe8d19",
         "extensions": {
           "source_kind": "field",
           "field_id": "field.tide_height_proxy",
           "source": "EARTH3-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.water_ocean",
         "description": "Deterministic EARTH-8 ocean-mask layer sourced from derived water-view artifacts only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7ef8ecaecc7f04257a84e1452307686867a80df702d9551bdbcfa70054a93d44",
         "extensions": {
           "source_kind": "water_view",
           "artifact_id": "water_view_artifact",
           "source": "EARTH8-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.water_river",
         "description": "Deterministic EARTH-8 river-mask layer sourced from derived hydrology-backed water-view artifacts only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "70a5eeccaa8e90b6920df22502f47daa2051acdccdf64320e93824bedbb6c1e2",
         "extensions": {
           "source_kind": "water_view",
           "artifact_id": "water_view_artifact",
           "source": "EARTH8-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.water_lake",
         "description": "Deterministic EARTH-8 lake-mask layer sourced from derived sink and basin heuristics only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "eba28b406a8c4502bcca92319a2003cb38ca83bf99271a13fc0d7430d6b991f7",
         "extensions": {
           "source_kind": "water_view",
           "artifact_id": "water_view_artifact",
           "source": "EARTH8-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.tide_offset",
         "description": "Deterministic EARTH-8 tide-offset debug layer sourced from derived water-view artifacts only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "70c0ffbd8b7b0657880045a4326472fd47b696bdc31481e0be83d2dca836948c",
         "extensions": {
           "source_kind": "water_view",
           "artifact_id": "water_view_artifact",
@@ -148,13 +268,23 @@
             "entitlement.debug_view"
           ],
           "source": "EARTH8-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.wind_vector",
         "description": "Deterministic EARTH-7 wind-vector layer rendered from lawful perceived wind field samples only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a2168d79dc9523f25dbaa1993b5b9554f4dd8b9cbb4255b8a3e774bee5bb7963",
         "extensions": {
           "source_kind": "field",
           "field_id": "field.wind_vector",
@@ -162,61 +292,121 @@
             "ch.diegetic.weather_vane"
           ],
           "source": "EARTH7-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.refinement_status",
         "description": "Deterministic MW-4 refinement-status layer sourced from derived refinement-status views only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b68a7bf44c7f5c428027e4b9a86daad17fcafd507091304bc258da590118c0dd",
         "extensions": {
           "source_kind": "refinement_status_view",
           "artifact_id": "refinement_status_view",
           "source": "MW4-7"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.pollution",
         "description": "Deterministic pollution overlay rendered from lawful perceived pollution field samples.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7120af0d1453fbd42034b3816e5cbae141afc38a75cce76933e4f93c929738be",
         "extensions": {
           "source_kind": "field",
           "field_family": "field.pollution",
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.infrastructure_stub",
         "description": "Deterministic infrastructure overlay derived from lawful process or site artifacts when entitled.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3efd51c99fba473ed8a69b9a72ce5d543aefabddc279d199e781542187f410b2",
         "extensions": {
           "source_kind": "infrastructure",
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.entity_markers_stub",
         "description": "Deterministic entity marker overlay derived from lawful known-entity observations only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "41ebe660a180f6095b48424c11a3fe62cfb57ff084698ea598471819ee301e11",
         "extensions": {
           "source_kind": "entities",
           "source": "GEO5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "layer_id": "layer.geometry_occupancy",
         "description": "Deterministic excavation, fill, and tunnel occupancy overlay derived from lawful GEO-7 geometry cell perception only.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "39180e6334c6a79629fafd3a2b6d1523fe8a5e66db6a178613db08cb8ae71ecd",
         "extensions": {
           "source_kind": "geometry_occupancy",
           "required_channels": [
             "ch.diegetic.ground_scanner"
           ],
           "source": "GEO7-7"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

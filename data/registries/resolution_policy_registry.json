@@ -7,34 +7,74 @@
     "resolution_policies": [
       {
         "resolution_policy_id": "resolve.strict_refuse_ambiguous",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b50dad2f0ba5f55b1af39c923fab73115bca5f68d1b58a936f8d45072506e97d",
         "extensions": {
           "official.description": "Refuse when a required provides_id has more than one provider.",
           "official.source": "LIB-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "resolution_policy_id": "resolve.explicit_required",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9fe7c212af002c469f7ed49e876459900d03b90b15f2d71632d0c66dac693196",
         "extensions": {
           "official.description": "Require an explicit instance-level chosen_pack_id for every required provides_id.",
           "official.source": "LIB-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "resolution_policy_id": "resolve.deterministic_highest_priority",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "28fe46bbc5bd7d46ebdaf6c35d8b3ab121a6fa0a475f5235547892a52c08319c",
         "extensions": {
           "official.description": "Pick the highest provider priority and tie-break by pack_id.",
           "official.source": "LIB-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "resolution_policy_id": "resolve.deterministic_lowest_pack_id",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c369d84bebd94a13ad8ef3c50c2bd383090e5598739f773ead48d19c767adab6",
         "extensions": {
           "official.description": "Pick the lexicographically lowest pack_id as the stable fallback.",
           "official.source": "LIB-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

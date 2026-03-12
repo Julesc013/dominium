@@ -14,7 +14,17 @@
         "deterministic_required": true,
         "migration_tool": "tools/compatx/compatx.py::migrate",
         "notes": "Pack manifest compatibility alias migration.",
-        "version_field": "schema_version"
+        "version_field": "schema_version",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "migration_id": "migration.protocol.client_server.1_0_0_to_1_1_0",
@@ -24,7 +34,17 @@
         "deterministic_required": true,
         "migration_tool": "tools/compatx/compatx.py::migrate",
         "notes": "Protocol compatibility transition metadata.",
-        "version_field": "schema_version"
+        "version_field": "schema_version",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "migration_id": "migration.replay_format.1_0_0_to_1_1_0",
@@ -34,7 +54,17 @@
         "deterministic_required": true,
         "migration_tool": "tools/compatx/compatx.py::migrate",
         "notes": "Replay payload metadata transition.",
-        "version_field": "schema_version"
+        "version_field": "schema_version",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "migration_id": "migration.save_format.1_0_0_to_1_1_0",
@@ -44,7 +74,17 @@
         "deterministic_required": true,
         "migration_tool": "tools/compatx/compatx.py::migrate",
         "notes": "Save payload metadata transition.",
-        "version_field": "schema_version"
+        "version_field": "schema_version",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "migration_id": "migration.schema.metrics_spec.1_0_0_to_1_1_0",
@@ -54,7 +94,17 @@
         "deterministic_required": true,
         "migration_tool": "tools/compatx/compatx.py::migrate",
         "notes": "Metrics spec schema migration placeholder.",
-        "version_field": "schema_version"
+        "version_field": "schema_version",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "migration_id": "migration.schema.mission_spec.1_0_0_to_1_1_0",
@@ -64,7 +114,17 @@
         "deterministic_required": true,
         "migration_tool": "tools/compatx/compatx.py::migrate",
         "notes": "Mission spec schema migration placeholder.",
-        "version_field": "schema_version"
+        "version_field": "schema_version",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "migration_id": "migration.schema.scenario_spec.1_0_0_to_1_1_0",
@@ -74,10 +134,19 @@
         "deterministic_required": true,
         "migration_tool": "tools/compatx/compatx.py::migrate",
         "notes": "Scenario spec schema migration placeholder.",
-        "version_field": "schema_version"
+        "version_field": "schema_version",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}
   }
 }
-

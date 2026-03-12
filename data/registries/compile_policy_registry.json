@@ -10,9 +10,19 @@
         "compile_policy_id": "compile.default",
         "preferred_verification_procedure_id": "verify.exact_structural",
         "allow_bounded_error": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a0a354d6541dbbe77f0dfffeaa2e8e2e97f1fb7c8c90c9e645aca854fa9a841a",
         "extensions": {
           "description": "Default balanced policy for general compilation."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -20,9 +30,19 @@
         "compile_policy_id": "compile.rank_strict",
         "preferred_verification_procedure_id": "verify.exact_structural",
         "allow_bounded_error": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "cc54742670a8ecb1d8598c592fa80acdfdb0453fba4118d470e4899c16e7d968",
         "extensions": {
           "description": "Ranked mode policy requiring exact equivalence."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -30,9 +50,19 @@
         "compile_policy_id": "compile.lab_aggressive",
         "preferred_verification_procedure_id": "verify.bounded_sampling",
         "allow_bounded_error": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "da89e7b8f490cf6442e80c0e8741a6fa841ffc201961c8bc86708d81c8717695",
         "extensions": {
           "description": "Laboratory policy allowing broader compile attempts."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       }
     ],

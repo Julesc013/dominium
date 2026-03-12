@@ -9,9 +9,19 @@
         "schema_version": "1.0.0",
         "policy_id": "comp_loss.default_bundle",
         "per_quantity_rules": {},
-        "deterministic_fingerprint": "3333333333333333333333333333333333333333333333333333333333333333",
+        "deterministic_fingerprint": "259c38dc8bf17c474082a7a2405929ae59c92942f0d4f4b2659e9ce99f728afd",
         "extensions": {
           "description": "Default bundle loss policy (use channel loss_fraction only)."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
@@ -25,9 +35,19 @@
             "extensions": {}
           }
         },
-        "deterministic_fingerprint": "4444444444444444444444444444444444444444444444444444444444444444",
+        "deterministic_fingerprint": "b9e68400e7c8f847bac0cab3ef5406e8a6cab7690e9d82ca37ac9b6e01e90d99",
         "extensions": {
           "description": "Placeholder transform policy for loss-to-heat conversion."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       }
     ],

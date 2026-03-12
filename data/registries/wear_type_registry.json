@@ -14,7 +14,20 @@
         "effect_modifier_id": "effect.track_wear_modifier",
         "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
         "extensions": {
-          "target_kinds": ["edge", "geometry"]
+          "target_kinds": [
+            "edge",
+            "geometry"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -26,7 +39,19 @@
         "effect_modifier_id": "effect.wheel_wear_modifier",
         "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
         "extensions": {
-          "target_kinds": ["vehicle"]
+          "target_kinds": [
+            "vehicle"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -38,7 +63,19 @@
         "effect_modifier_id": "effect.brake_wear_modifier",
         "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
         "extensions": {
-          "target_kinds": ["vehicle"]
+          "target_kinds": [
+            "vehicle"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -50,7 +87,19 @@
         "effect_modifier_id": "effect.engine_wear_modifier",
         "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
         "extensions": {
-          "target_kinds": ["vehicle"]
+          "target_kinds": [
+            "vehicle"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -62,7 +111,20 @@
         "effect_modifier_id": "effect.signal_wear_modifier",
         "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
         "extensions": {
-          "target_kinds": ["node", "signal"]
+          "target_kinds": [
+            "node",
+            "signal"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -74,7 +136,20 @@
         "effect_modifier_id": "effect.switch_wear_modifier",
         "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
         "extensions": {
-          "target_kinds": ["node", "switch"]
+          "target_kinds": [
+            "node",
+            "switch"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

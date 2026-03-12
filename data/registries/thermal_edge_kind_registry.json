@@ -14,8 +14,18 @@
           "conductive",
           "link"
         ],
-        "deterministic_fingerprint": "f872d1ad36966a3e2f81a950a9ab4a042e6c885005034f95c85757ce627995d5",
-        "extensions": {}
+        "deterministic_fingerprint": "2cdaa0039dd3dc2c62bb85e1fc0706d7bdd08949f7309d8d206ed76e83165a0b",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -26,8 +36,18 @@
           "insulated",
           "link"
         ],
-        "deterministic_fingerprint": "31be3780f68f8e2ef3bd4f58dbad2c2036a6e8ec9ef4e8fbfe4f5867d0a98bd8",
-        "extensions": {}
+        "deterministic_fingerprint": "ec5fa00650b1150367fa5c374029faf5933088a495a166348bcfd950e514e895",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -38,8 +58,18 @@
           "radiator",
           "link"
         ],
-        "deterministic_fingerprint": "37da5e5171ddc0d15cc6d083b89f3907eb03553f873ba862a9b04f2fca9b2da8",
-        "extensions": {}
+        "deterministic_fingerprint": "5003b9dcaf83bd84fb18cf4fa6105a33e88e100a5836cf36f05056b4f441880d",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -50,8 +80,18 @@
           "legacy",
           "conductive"
         ],
-        "deterministic_fingerprint": "1eb1944900ad6d76b4b9e708858fef623341f092388f0bcf3d600c5258b63a0a",
-        "extensions": {}
+        "deterministic_fingerprint": "a23d82366d60c77ca752f85ba15d7c95b084351ec07e9ab6e6f7f5682899fe5b",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

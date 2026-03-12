@@ -10,9 +10,19 @@
         "refusal_code": "refusal.io.invalid_args",
         "exit_code": 10,
         "description": "Invalid command arguments map to usage-range exits.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "667bfca4c39b04fe027b6412354f3275fec0e66ace53d38e0d2b358e4031b9d4",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -20,9 +30,19 @@
         "refusal_code": "refusal.debug.command_unknown",
         "exit_code": 10,
         "description": "Unknown registered-command tokens map to usage-range exits.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "396ce777d9d027fb8caf419df0de3354f2f4507791ae0821640679724bdc701e",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -30,9 +50,19 @@
         "refusal_code": "refusal.connection.no_negotiation",
         "exit_code": 40,
         "description": "Missing mandatory attach/connection negotiation maps to the transport range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "cfc87c1c8aef2a85fc8d33e389e55f5f5a0f7805fbe86ce6c36d9c8d7c067829",
         "extensions": {
           "official.source": "APPSHELL-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -40,9 +70,19 @@
         "refusal_code": "refusal.connection.negotiation_mismatch",
         "exit_code": 40,
         "description": "Negotiation record mismatches on attach/connection map to the transport range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "27d9039657ecf99ecaab71d55a059e7c5b8d4616f20d7144f50f71c65b2d2882",
         "extensions": {
           "official.source": "APPSHELL-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -50,9 +90,19 @@
         "refusal_code": "refusal.io.profile_not_found",
         "exit_code": 20,
         "description": "Missing profile bundles are treated as pack/profile surface failures.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "468ce74ab3836f0c6cf0aa014c649994cac3a3fc8a098a6eee180c102c6b5e7c",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -60,9 +110,19 @@
         "refusal_code": "refusal.compat.feature_disabled",
         "exit_code": 50,
         "description": "Negotiated feature-disable refusals map to the refusal range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c9354aadef9a00a8e7b520c36cfa753c98dbbe7996f35c282de926b8071d5fda",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -70,9 +130,19 @@
         "refusal_code": "refusal.server.command_unknown",
         "exit_code": 50,
         "description": "Unknown live server console commands remain explicit refusal-range failures.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "26328afe1c6865d8ab33c15d5e7b53f17a857e3004d55ce856960d81b76decc3",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -80,9 +150,19 @@
         "refusal_prefix": "refusal.compat.",
         "exit_code": 30,
         "description": "Compatibility and negotiation failures map to the contract/compatibility range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "8e37747d6c1e4b94414bcb2960333129fef67dad4039d6c3e4c03d771bc2787f",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -90,9 +170,19 @@
         "refusal_prefix": "refusal.pack.",
         "exit_code": 20,
         "description": "Pack validation and verification failures map to the pack/profile range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "cfa47c7da68f1ce11e467849d3af252a5f26436352b07d0ca044d3d7d792f38c",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -100,9 +190,19 @@
         "refusal_prefix": "refusal.contract.",
         "exit_code": 30,
         "description": "Contract mismatches map to the contract/compatibility range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9f1e5bd4e2cf56491711ba9fbf3b4996b422d2dafa6732c14fcf2358e7de8cab",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -110,9 +210,19 @@
         "refusal_prefix": "refusal.connection.",
         "exit_code": 40,
         "description": "Connection and attach handshake failures map to the transport/IPC range unless explicitly overridden.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0cd46a05d6b54ffcbdda53720ec920ca2a220eccce66e68bbb2fed7251b2d6bf",
         "extensions": {
           "official.source": "APPSHELL-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -120,9 +230,19 @@
         "refusal_prefix": "refusal.supervisor.",
         "exit_code": 50,
         "description": "Supervisor lifecycle and orchestration refusals map to the refusal range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bf3a51c6b79b248a8598764827e628b8f9358d8117f44aad9c2122b7ba230091",
         "extensions": {
           "official.source": "APPSHELL-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -130,9 +250,19 @@
         "refusal_prefix": "refusal.diag.",
         "exit_code": 50,
         "description": "Deterministic repro-bundle capture and replay refusals map to the refusal range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e41667137ec899905995a7c4afafd488ed617880439f9056d7f02ebcd0b9aa8f",
         "extensions": {
           "official.source": "DIAG-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -140,9 +270,19 @@
         "refusal_prefix": "refusal.io.",
         "exit_code": 40,
         "description": "IO/host-shell failures map to the transport and IO-shell range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5d8160812858a9fa92908bf07f26607c17e3e49ba022d7396b2fe7b07a8d1066",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -150,9 +290,19 @@
         "refusal_prefix": "refusal.law.",
         "exit_code": 50,
         "description": "Law refusals map to the refusal range.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d722c8096ba7b45bee8dd76898a2895a54f88e706b818481b72a590388655924",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       },
       {
@@ -160,9 +310,19 @@
         "refusal_prefix": "refusal.debug.",
         "exit_code": 50,
         "description": "Debug/gating refusals map to the refusal range except where explicitly overridden.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4484a979b2fff9b2d1f0a29e67066723efd90f4fb897c88990a3feab40211c16",
         "extensions": {
           "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3ae7154f21530ed2bb72f4b7401ff1f33dd44c223b41423c1c016da26f743066",
+          "extensions": {}
         }
       }
     ],

@@ -11,13 +11,23 @@
         "description": "Carrier-agnostic binary logic state with deterministic low/high semantics.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.signal_value.boolean@1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a7c50722bc219feff307fc1e1566bc5c8efa4e73433bfbdb243d74a53972101a",
         "extensions": {
           "domain_tags": [
             "logic",
             "generic"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -26,13 +36,23 @@
         "description": "Carrier-agnostic scalar logic value for normalized or unit-bearing control channels.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.signal_value.scalar@1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b4ce184065938e75ef44b7b2406ed61d8bece5630958ffd45c1f4173f41fdeb1",
         "extensions": {
           "domain_tags": [
             "logic",
             "generic"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -41,13 +61,23 @@
         "description": "Carrier-agnostic edge/pulse logic value for deterministic event-like control transitions.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.signal_value.pulse@1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c6ec46b7f119db177271970311d694aaae55d3ab3c52319ab532da61310bd848",
         "extensions": {
           "domain_tags": [
             "logic",
             "generic"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -56,13 +86,23 @@
         "description": "Carrier-agnostic message/reference logic value bound to SIG receipts and trust policy.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.signal_value.message@1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "20c9b1e8b78d7edf1c69d005f4ea4d36b46530ea50e41476a5502d4be0a938bc",
         "extensions": {
           "domain_tags": [
             "logic",
             "sig"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -71,13 +111,23 @@
         "description": "Carrier-agnostic typed bundle/bus logic value for grouped multi-signal control paths.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.bus_definition@1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "17d601de00c406246e38c93160d3e283f5d54bf66958d72819471a65c734f0bf",
         "extensions": {
           "domain_tags": [
             "logic",
             "generic"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -86,13 +136,23 @@
         "description": "Legacy mobility rail block signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
         "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "12828399674f5f2bed3ce10630c9fae44c303dd64b77d12089745aa602e1b41b",
         "extensions": {
           "domain_tags": [
             "rail",
             "block"
           ],
           "source": "LOGIC0-3-retro-compat"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -101,13 +161,23 @@
         "description": "Legacy mobility road-light signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
         "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0de76f7a96d35c04fad6531ac943d75e9a8dcb5796ecb6e95c7e225d17a4cade",
         "extensions": {
           "domain_tags": [
             "road",
             "stub"
           ],
           "source": "LOGIC0-3-retro-compat"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -116,13 +186,23 @@
         "description": "Legacy mobility waypoint-clearance signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
         "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "76e5b7e8bc599ae66029236c73051a651a6d8bc30e8c9d6bc2ff957d63368f4f",
         "extensions": {
           "domain_tags": [
             "air",
             "stub"
           ],
           "source": "LOGIC0-3-retro-compat"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

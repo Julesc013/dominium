@@ -36,6 +36,16 @@
           "legacy_aliases": [
             "exp.observer.default"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -68,6 +78,16 @@
           "legacy_aliases": [
             "exp.survival.softcore"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -97,6 +117,16 @@
         "extensions": {
           "authority_context_id": "ctx.exp.hardcore.law.survival.hardcore",
           "session_spec_template_id": "session.defaults.base"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -127,6 +157,16 @@
         "extensions": {
           "authority_context_id": "ctx.exp.creative.law.creative.full",
           "session_spec_template_id": "session.defaults.base"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -157,6 +197,16 @@
         "extensions": {
           "authority_context_id": "ctx.exp.lab.law.lab.default",
           "session_spec_template_id": "session.defaults.base"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -187,6 +237,16 @@
         "extensions": {
           "authority_context_id": "ctx.exp.mission.law.mission.player",
           "session_spec_template_id": "session.defaults.base"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
@@ -208,6 +268,16 @@
         "extensions": {
           "authority_context_id": "ctx.exp.survival.softcore.survival.softcore",
           "session_spec_template_id": "session.defaults.base"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       }
     ],

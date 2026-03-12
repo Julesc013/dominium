@@ -11,10 +11,20 @@
         "tier": "P0",
         "cell_update_rule_id": "rule.pollution.noop",
         "wind_modifier_enabled": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b638ba43191f8be91c84415fa621e811f07560246448a754fcd272a542036930",
         "extensions": {
           "null_boot_safe": true,
           "disable_dispersion": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -23,11 +33,21 @@
         "tier": "P1",
         "cell_update_rule_id": "rule.pollution.coarse_diffuse",
         "wind_modifier_enabled": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3daf41a28098872d0d5f88c518dc69491e237b24702586642eff60b360362722",
         "extensions": {
           "dispersion_kind": "coarse_proxy",
           "max_cell_updates_per_tick": 256,
           "degrade_policy_id": "degrade.pollution.bucketed"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -36,12 +56,22 @@
         "tier": "P1",
         "cell_update_rule_id": "rule.pollution.rank_strict",
         "wind_modifier_enabled": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "47941b2546f1a3ecaa06f298ba70c0b6774725f0401e914e44b88329adf8079b",
         "extensions": {
           "dispersion_kind": "coarse_proxy",
           "strict_logging": true,
           "max_cell_updates_per_tick": 128,
           "degrade_policy_id": "degrade.pollution.bucketed"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       }
     ],

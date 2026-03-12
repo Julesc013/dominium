@@ -16,7 +16,17 @@
         "regenerable": true,
         "regeneration_tool": "tools/auditx/auditx.py",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -33,7 +43,17 @@
         "regenerable": true,
         "regeneration_tool": "tools/auditx/auditx.py",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -53,7 +73,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/auditx/auditx.py scan --format json",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -73,7 +103,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/auditx/auditx.py scan --format json",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "RUN_META",
@@ -90,7 +130,17 @@
         "regenerable": true,
         "regeneration_tool": "tools/auditx/auditx.py",
         "used_for_gating": false,
-        "write_root": "cache"
+        "write_root": "cache",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -109,7 +159,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/auditx/auditx.py scan --format md",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -128,7 +188,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/auditx/auditx.py scan --format md",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -145,7 +215,17 @@
         "regenerable": true,
         "regeneration_tool": "testx runner",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -164,7 +244,17 @@
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/run_xstack_group_tests.py --repo-root . --group-id testx.group.core.invariants",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "RUN_META",
@@ -181,7 +271,17 @@
         "regenerable": true,
         "regeneration_tool": "testx runner",
         "used_for_gating": false,
-        "write_root": "cache"
+        "write_root": "cache",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -198,7 +298,17 @@
         "regenerable": true,
         "regeneration_tool": "tools/ci/tool_identity_fingerprint.py",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "RUN_META",
@@ -215,7 +325,17 @@
         "regenerable": true,
         "regeneration_tool": "scripts/ci/check_repox_rules.py",
         "used_for_gating": false,
-        "write_root": "cache"
+        "write_root": "cache",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "RUN_META",
@@ -234,7 +354,17 @@
         "regenerable": true,
         "regeneration_tool": "python scripts/ci/check_repox_rules.py --repo-root . --profile STRICT",
         "used_for_gating": false,
-        "write_root": "cache"
+        "write_root": "cache",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -254,7 +384,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/core/repo_health.py --repo-root .",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -273,7 +413,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/xstack/core/repo_health.py --repo-root .",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -290,7 +440,17 @@
         "regenerable": true,
         "regeneration_tool": "dist_all",
         "used_for_gating": true,
-        "write_root": "workspace"
+        "write_root": "workspace",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -307,7 +467,17 @@
         "regenerable": true,
         "regeneration_tool": "tool_ui_bind --write",
         "used_for_gating": true,
-        "write_root": "workspace"
+        "write_root": "workspace",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -327,7 +497,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/performx/performx.py run --repo-root .",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -347,7 +527,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/performx/performx.py run --repo-root .",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "RUN_META",
@@ -366,7 +556,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/performx/performx.py run --repo-root .",
         "used_for_gating": false,
-        "write_root": "cache"
+        "write_root": "cache",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -386,7 +586,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/performx/performx.py baseline --repo-root . --update --justification <path>",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -406,7 +616,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/compatx/compatx.py verify --repo-root .",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -425,7 +645,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/compatx/compatx.py verify --repo-root .",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -445,7 +675,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/securex/securex.py verify --repo-root .",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "CANONICAL",
@@ -465,7 +705,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/securex/securex.py verify --repo-root .",
         "used_for_gating": true,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "RUN_META",
@@ -484,7 +734,17 @@
         "regenerable": true,
         "regeneration_tool": "python tools/securex/securex.py verify --repo-root .",
         "used_for_gating": false,
-        "write_root": "cache"
+        "write_root": "cache",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "RUN_META",
@@ -501,7 +761,17 @@
         "regenerable": true,
         "regeneration_tool": "tool_profile_capture",
         "used_for_gating": false,
-        "write_root": "cache"
+        "write_root": "cache",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -520,7 +790,17 @@
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/gate.py strict --repo-root . --profile-report",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -539,7 +819,17 @@
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/gate.py full --repo-root . --profile-report",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -558,7 +848,17 @@
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/gate.py snapshot --repo-root . --ledger-export",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "DERIVED_VIEW",
@@ -577,7 +877,17 @@
         "regenerable": true,
         "regeneration_tool": "python scripts/dev/gate.py snapshot --repo-root .",
         "used_for_gating": false,
-        "write_root": "docs_audit"
+        "write_root": "docs_audit",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "artifact_class": "RUN_META",
@@ -594,7 +904,17 @@
         "regenerable": true,
         "regeneration_tool": "tools/xstack/core/time_estimator.py",
         "used_for_gating": false,
-        "write_root": "cache"
+        "write_root": "cache",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {},

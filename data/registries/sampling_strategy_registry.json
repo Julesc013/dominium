@@ -9,29 +9,59 @@
         "schema_version": "1.0.0",
         "sampling_strategy_id": "sample.hash_based",
         "description": "Deterministic hash threshold sampling using run and batch identifiers.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "635574267de78b350a2434c3f6ab4f2fd549485bf3e612856fccfbd0a082ba2d",
         "extensions": {
           "source": "PROC3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "sampling_strategy_id": "sample.every_n",
         "description": "Deterministic interval sampling in stable batch order.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "eb55c9167970c6f3f5832371abe7124c7f483ef80fcf2b053d44d249e4bcbcca",
         "extensions": {
           "source": "PROC3-2",
           "default_every_n": 5
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "sampling_strategy_id": "sample.risk_weighted",
         "description": "Deterministic risk-weighted sampling based on defect severity metadata.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b0bdbb11ea13cf0014c250e54dedbff8ba2565b5fc770a31fb60cb023048be0a",
         "extensions": {
           "source": "PROC3-2",
           "risk_uplift_scale_permille": 500
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

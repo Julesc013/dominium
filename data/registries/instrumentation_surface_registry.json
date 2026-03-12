@@ -66,9 +66,19 @@
             "deterministic_fingerprint": ""
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "39e7fd87318c7c6362843f65da33dac0fb9deacd3ed5af320b0b70a0895915c8",
         "extensions": {
           "source": "META-INSTR0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -120,9 +130,19 @@
             "deterministic_fingerprint": ""
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a5651ab74d72e27c70e08298ce7a7a548c1e19f5b2f4eef90b7ff444fd636564",
         "extensions": {
           "source": "META-INSTR0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -192,9 +212,19 @@
             "deterministic_fingerprint": ""
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "39292602556615b2dfb7e2ab643d57d722691c2ecd1fe80552278b1f7e90a128",
         "extensions": {
           "source": "META-INSTR0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -255,9 +285,19 @@
             "deterministic_fingerprint": ""
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "91c924bab586d61e61b99dab3f10b8c6133add3600404d331e40ad1e0e8de3d2",
         "extensions": {
           "source": "META-INSTR0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -354,9 +394,19 @@
             "deterministic_fingerprint": ""
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2ad23e8eeaae8c3a4ae0f33b0fd47c800ac62d736eca2ba5231cfa6e7b6c0461",
         "extensions": {
           "source": "META-INSTR0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -444,9 +494,19 @@
             "deterministic_fingerprint": ""
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "69b22c4af6eadcb350b4adc73ab177e6f278e63745ad707f39c3cbebf6c4e47e",
         "extensions": {
           "source": "META-INSTR0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -617,9 +677,19 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "95656ce67f5add80f597754ef7993c2d6eb2b224ed5500ad8905e75f37602417",
         "extensions": {
           "source": "LOGIC1-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -698,10 +768,20 @@
             "deterministic_fingerprint": ""
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0b291a603b9a55022380fc0d0c65027ad56ea9e5565d94893edc31988be8ceb5",
         "extensions": {
           "source": "LOGIC2-5",
           "fallback_for_logic_elements": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
@@ -805,10 +885,20 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ea903e8e5b9bdcb227571bdfe3c14735546cbee0a0ef960a4edd034eca8dd41a",
         "extensions": {
           "source": "LOGIC3-7",
           "fallback_for_logic_networks": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       }
     ],

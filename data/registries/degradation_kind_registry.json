@@ -9,27 +9,57 @@
         "schema_version": "1.0.0",
         "degradation_kind_id": "degr.corrosion",
         "description": "Chemical/material corrosion progression.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0013d7da7c3ae5021bd55ea95be9c778b745eecaf1c18655ade866f1e4cb5748",
         "extensions": {
           "source": "CHEM3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "degradation_kind_id": "degr.fouling",
         "description": "Fouling/deposit accumulation affecting transfer efficiency.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "00cf898133892f362a0ea0f30b94fe30ff4439346edd526888754d972ef3bca9",
         "extensions": {
           "source": "CHEM3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "degradation_kind_id": "degr.scaling",
         "description": "Scaling buildup restricting flow channels.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c8f23d5ea19591d9cbd936ebbc7b48166a5db21a0e0d48f9e61fe94f2f10bd5e",
         "extensions": {
           "source": "CHEM3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

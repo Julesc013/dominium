@@ -7,26 +7,56 @@
     "artifact_degrade_modes": [
       {
         "artifact_degrade_mode_id": "artifact.degrade.best_effort",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d0952491a8f62db53937eeafb83f1a7994e1fb40bc6912e93cd88a0ae87d64dd",
         "extensions": {
           "official.description": "Load with deterministic feature disablement when unsupported parts are missing.",
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
         "artifact_degrade_mode_id": "artifact.degrade.read_only_only",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3fd369df6c8ef8e43b77dc97d496b0085a106009b1d016e345507f2e8cabbaad",
         "extensions": {
           "official.description": "Allow inspect/read-only flows only; mutable runtime remains refused.",
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       },
       {
         "artifact_degrade_mode_id": "artifact.degrade.strict_refuse",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "71bc5538ced5773ae9eecd4d7ae32290e4978caf29fada173fe2ab260f8cd42a",
         "extensions": {
           "official.description": "Refuse load when contracts, capabilities, or topology/physics constraints mismatch.",
           "official.source": "LIB-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
         }
       }
     ],

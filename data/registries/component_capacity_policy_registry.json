@@ -9,9 +9,19 @@
         "schema_version": "1.0.0",
         "policy_id": "comp_capacity.default_bundle",
         "per_quantity_rules": {},
-        "deterministic_fingerprint": "1111111111111111111111111111111111111111111111111111111111111111",
+        "deterministic_fingerprint": "85f36b652a4fb37b2c672d536c5240409b96daa9eafc4d7e6b371f633bcce625",
         "extensions": {
           "description": "Default bundle capacity policy (no component overrides)."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       },
       {
@@ -23,9 +33,19 @@
             "extensions": {}
           }
         },
-        "deterministic_fingerprint": "2222222222222222222222222222222222222222222222222222222222222222",
+        "deterministic_fingerprint": "2985fcd4267f9ac41de71e86778376c082ea05aba8580a352965c335b04dc96e",
         "extensions": {
           "description": "Power phasor component capacity placeholder policy."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
         }
       }
     ],

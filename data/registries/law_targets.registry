@@ -1,51 +1,345 @@
 # LAW_TARGETS v1.4.0
 # Canonical registry for law targets (Category B).
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.ARCHIVAL_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.CAPABILITY_DENY
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.CAPABILITY_GRANT
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.CAPABILITY_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.CAPABILITY_PROFILE_APPLY
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.CAPABILITY_SCOPE_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.CAPABILITY_SET_BIND
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.CAPABILITY_SET_REVOKE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.EPISTEMIC_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.EXECUTION_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.GOVERNANCE_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.INTEGRITY_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.LAW_MODIFY
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.OMNIPOTENT_ACTION
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.SIMULATION_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.SPATIAL_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 AUTH.TEMPORAL_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 CIV.PRODUCTION
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 ECON.MARKET_CLEAR
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 ECON.TRANSFER
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 EXEC.AUTH_TASK
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 EXEC.BACKEND_SELECT
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 EXEC.BUDGET_PROFILE_SELECT
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 EXEC.DERIVED_TASK
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 EXEC.GPU_DERIVED_ENABLE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 EXEC.MULTITHREAD_ENABLE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 EXEC.SIMD_ENABLE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 LIFE.BIRTH
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 LIFE.DEATH
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 NET.CLIENT_ADMISSION
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 NET.MODIFIED_CLIENTS
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 NET.UNAUTHENTICATED_PLAYERS
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.ADMIN_ACTION
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.ADMIN_ACTIONS
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.BACKEND_OVERRIDE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.CONSOLE_COMMAND
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.DEBUG_UI
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.EDIT_TERRAIN
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.FREECAM_ENABLE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.INSPECT_STATE
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.JURISDICTION_EDIT
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.LAW_MODIFY
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.PROFILER_VIEW
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.SPAWN_ENTITY
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.TELEPORT
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 TOOL.TIME_VIEW
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 UI.DEBUG_OVERLAYS
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 UI.PROJECTION
+# schema_version: 1.0.0
+# stability_class_id: provisional
+# rationale: MVP stub or first implementation
+# future_series: CONTROL/LAW
+# replacement_target: Replace MVP control and law scaffolds with release-pinned governance and authority contracts.
+# deterministic_fingerprint: 71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b
 WAR.ENGAGEMENT

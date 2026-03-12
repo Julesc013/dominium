@@ -41,7 +41,7 @@
           "ice_height_min": 900,
           "ice_height_max": 2600
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e252a56eb9b0b829dba35424782d33c2afb761db34b5feed987cc8205602af3c",
         "extensions": {
           "description": "Default deterministic MW-3 surface priors for sphere-planet atlas tiles.",
           "chart_ids": [
@@ -59,6 +59,16 @@
             "ice": "material.stone_basic"
           },
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace MVP Earth and Sol proxies with contract-pinned generator, material, and illumination domain models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4aeea9cd71b2868dc619a2763ef8ea5fd4b065c8ec3cd6facbe5de685f1763f6",
+          "extensions": {}
         }
       },
       {
@@ -97,7 +107,7 @@
           "ice_height_min": 900,
           "ice_height_max": 2600
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "194f5b61300fe583d5a68a1e621199bb5f18ce5a7384c841c56bce6b147731bf",
         "extensions": {
           "alias_of": "priors.surface_default_stub",
           "description": "Compatibility alias for the default terrestrial MW-3 surface priors.",
@@ -116,6 +126,16 @@
             "ice": "material.stone_basic"
           },
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace MVP Earth and Sol proxies with contract-pinned generator, material, and illumination domain models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4aeea9cd71b2868dc619a2763ef8ea5fd4b065c8ec3cd6facbe5de685f1763f6",
+          "extensions": {}
         }
       },
       {
@@ -154,7 +174,7 @@
           "ice_height_min": 700,
           "ice_height_max": 1800
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c6698da9ffa3905d62b27c2a6d957a067c18c318c17ebcf0a6ca35c8e8128b75",
         "extensions": {
           "description": "Flat-world MW-3 surface priors using grid tiles.",
           "chart_ids": [
@@ -169,6 +189,16 @@
             "ice": "material.stone_basic"
           },
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace MVP Earth and Sol proxies with contract-pinned generator, material, and illumination domain models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4aeea9cd71b2868dc619a2763ef8ea5fd4b065c8ec3cd6facbe5de685f1763f6",
+          "extensions": {}
         }
       },
       {
@@ -207,7 +237,7 @@
           "ice_height_min": 700,
           "ice_height_max": 1800
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9b74674e3904e95975d06abdbce36a6a57ba3d8895937a0ed6cc94c38aaa0c2f",
         "extensions": {
           "description": "Torus-surface MW-3 priors using grid tiles.",
           "chart_ids": [
@@ -222,6 +252,16 @@
             "ice": "material.stone_basic"
           },
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace MVP Earth and Sol proxies with contract-pinned generator, material, and illumination domain models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4aeea9cd71b2868dc619a2763ef8ea5fd4b065c8ec3cd6facbe5de685f1763f6",
+          "extensions": {}
         }
       },
       {
@@ -259,7 +299,7 @@
           "ice_height_min": 700,
           "ice_height_max": 1900
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f7031445aecb81ade20cacff203780c012a4d50c1c49bc25ef0b22df2aaedfc8",
         "extensions": {
           "description": "Fantasy placeholder MW-3 surface priors using generic grid tiles.",
           "chart_ids": [
@@ -274,6 +314,16 @@
             "ice": "material.stone_basic"
           },
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace MVP Earth and Sol proxies with contract-pinned generator, material, and illumination domain models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4aeea9cd71b2868dc619a2763ef8ea5fd4b065c8ec3cd6facbe5de685f1763f6",
+          "extensions": {}
         }
       }
     ],

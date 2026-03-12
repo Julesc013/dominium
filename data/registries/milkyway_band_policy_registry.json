@@ -11,12 +11,22 @@
         "sample_count": 24,
         "band_half_width_mdeg": 16000,
         "brightness_peak_permille": 720,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "8ce16668d8673d6a35eb21d6ddd0baee5e02f42027d40dc0297275c4f3458530",
         "extensions": {
           "description": "Canonical EARTH-4 coarse Milky Way band policy derived from procedural galaxy priors.",
           "plane_tilt_mdeg": 63000,
           "night_visibility_threshold_permille": 180,
           "source": "EARTH4-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

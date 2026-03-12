@@ -14,7 +14,17 @@
           "degraded",
           "failed"
         ],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -27,7 +37,17 @@
           "closing",
           "locked"
         ],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -39,7 +59,17 @@
           "blocked",
           "failed"
         ],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -50,7 +80,17 @@
           "active",
           "fault"
         ],
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

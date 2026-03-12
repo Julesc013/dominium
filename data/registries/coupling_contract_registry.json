@@ -13,13 +13,23 @@
         "to_domain_id": "THERM",
         "mechanism": "energy_transform",
         "mechanism_id": "transform.electrical_to_thermal",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e7ee3e23ede2b5f67e28db91cd86f1bbd8f393ddc715bccab7cfbb54d5786c88",
         "extensions": {
           "description": "Electrical losses are routed through canonical PHYS-3 transform into thermal ledger channels."
         },
         "coupling_relevance_policy_id": "policy.safety_force_expand",
         "coupling_priority_class": "critical",
-        "coupling_cost_units": 8
+        "coupling_cost_units": 8,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -29,13 +39,23 @@
         "to_domain_id": "THERM",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.phys_irradiance_heating_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5fe8f782251c15e545900a504291d074f1c81d827d1c635148d0188ae28b9d04",
         "extensions": {
           "description": "FIELD irradiance contributes deterministic heat input via constitutive model output."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -45,14 +65,24 @@
         "to_domain_id": "MECH",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.mech.fatigue.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4894a16c24d284c872d4e8d2774ca383c244310eff656cfe57f5c2c4c30f5b86",
         "extensions": {
           "description": "Temperature-influenced structural response remains model-mediated.",
           "note": "Current baseline uses fatigue model as strength/degradation proxy."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -62,13 +92,23 @@
         "to_domain_id": "SIG",
         "mechanism": "signal_policy",
         "mechanism_id": "belief.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "96bf14c8277d289bca635f3c54f2774125be18e0e7541d17799bfbc467257842",
         "extensions": {
           "description": "Signal receipt acceptance is policy-mediated through trust/belief thresholds."
         },
         "coupling_relevance_policy_id": "policy.optional_best_effort",
         "coupling_priority_class": "optional",
-        "coupling_cost_units": 2
+        "coupling_cost_units": 2,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -78,14 +118,24 @@
         "to_domain_id": "MOB",
         "mechanism": "field_policy",
         "mechanism_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4bdba815144ac15b8d0a73200d4705cebdc1807ddcf6a2579efa53bd09e38d2d",
         "extensions": {
           "description": "FIELD friction sampling influences MOB traction outcomes through declared field policy pathways.",
           "effect_id": "effect.mobility.traction_modifier"
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -95,14 +145,24 @@
         "to_domain_id": "MOB",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.phys_gravity_force",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "326522001694c9702e084d4b57b9936eaab4c8fc3e74f2b73df3e813ee9b07f9",
         "extensions": {
           "description": "PHYS gravity model emits deterministic force application consumed by MOB ROI integration.",
           "process_id": "process.apply_force"
         },
         "coupling_relevance_policy_id": "policy.safety_force_expand",
         "coupling_priority_class": "critical",
-        "coupling_cost_units": 8
+        "coupling_cost_units": 8,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -112,13 +172,23 @@
         "to_domain_id": "THERM",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.fluid_heat_exchanger_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "301d321daa1a26b282ca96761f9dd3b0affadbcbd14c499072b207a65c4a45a9",
         "extensions": {
           "description": "FLUID heat exchange influences THERM via constitutive model binding."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -128,7 +198,7 @@
         "to_domain_id": "INT",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.fluid_leak_flood_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f894f98e239f07b9d5f70f2f5e4f65c909ceda7c903d0ebd398d717af4960afa",
         "extensions": {
           "description": "FLUID leak/flood transfer into INT volumes is model-mediated.",
           "process_ids": [
@@ -138,7 +208,17 @@
         },
         "coupling_relevance_policy_id": "policy.safety_force_expand",
         "coupling_priority_class": "critical",
-        "coupling_cost_units": 8
+        "coupling_cost_units": 8,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -148,13 +228,23 @@
         "to_domain_id": "MECH",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.fluid_pressure_load_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "275cf435aea6fa231a798c06a632f0d5ad01050119578daa3a9f71885e5740f4",
         "extensions": {
           "description": "FLUID pressure load contributes to MECH hazards via constitutive model."
         },
         "coupling_relevance_policy_id": "policy.safety_force_expand",
         "coupling_priority_class": "critical",
-        "coupling_cost_units": 8
+        "coupling_cost_units": 8,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -164,13 +254,23 @@
         "to_domain_id": "FLUID",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.chem_scaling_rate.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "cfdc36adb3fd38ceb21e75de3372e43558d92dafb006ca0e7cace4f76bd0bd05",
         "extensions": {
           "description": "CHEM scaling/fouling degradation modifies FLUID edge capacity/loss through emitted effects."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -180,13 +280,23 @@
         "to_domain_id": "THERM",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.chem_fouling_rate.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b047088a9e8ba4d817f9ebb20af3088ddd2ea6dc7d9aac9d3cf6ed67e844a5f5",
         "extensions": {
           "description": "CHEM fouling degradation reduces THERM effective conductance through effect outputs."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -196,13 +306,23 @@
         "to_domain_id": "MECH",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.chem_corrosion_rate.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e086fe2dfac8701d47b319f57fdfc4756f70b1e40f828ba4c085006330cc3483",
         "extensions": {
           "description": "CHEM corrosion degradation reduces MECH effective strength through effect outputs."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -212,13 +332,23 @@
         "to_domain_id": "ELEC",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.chem_corrosion_rate.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "de58eac052052d57f1314e9774d88da6eb1ba0b0bc9421f9f6f697553b4ccab5",
         "extensions": {
           "description": "CHEM corrosion/moisture degradation increases ELEC insulation-breakdown hazard through effect outputs."
         },
         "coupling_relevance_policy_id": "policy.safety_force_expand",
         "coupling_priority_class": "critical",
-        "coupling_cost_units": 8
+        "coupling_cost_units": 8,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -228,13 +358,23 @@
         "to_domain_id": "POLL",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.poll_emit_from_reaction_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "584a92af7545a93e8f5d615f8562f9d37bb27fb69611ef9d6cc29831019bcd40",
         "extensions": {
           "description": "CHEM reaction/process emissions are normalized into canonical pollution source events."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -244,13 +384,23 @@
         "to_domain_id": "POLL",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.poll_emit_from_fire_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "fd846c548ce0b5664c749fd57c17bc27f0e2e2f1490b2471f01c45f944290bfd",
         "extensions": {
           "description": "THERM combustion/fire emissions are normalized into canonical pollution source events."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -260,13 +410,23 @@
         "to_domain_id": "POLL",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.poll_contaminant_carry_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6c64b7182892852cb868632d974c4f60e39495b7a440cc4eb56b74c608f39c65",
         "extensions": {
           "description": "FLUID leak/flow contaminants are carried into POLL transport accounting (POLL-0 stub)."
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -276,14 +436,24 @@
         "to_domain_id": "FIELD",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.poll_visibility_from_concentration_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "23e8f431c551ed853024f9044a4fa231bf3eab4d6c302deede01a9645aa53b2a",
         "extensions": {
           "description": "Visibility reduction must be model-derived from pollutant concentration pathways, never direct ad hoc field writes.",
           "optional": true
         },
         "coupling_relevance_policy_id": "policy.optional_best_effort",
         "coupling_priority_class": "optional",
-        "coupling_cost_units": 2
+        "coupling_cost_units": 2,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -293,14 +463,24 @@
         "to_domain_id": "SIG",
         "mechanism": "signal_policy",
         "mechanism_id": "policy.sig.pollution_reporting_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "70f8e9853b00dc205ddcd12607f42dd93567fda32dad0b373f8ac4acb84b9b80",
         "extensions": {
           "description": "Institutional pollution reporting handoff to SIG domain.",
           "status": "reserved_for_later"
         },
         "coupling_relevance_policy_id": "policy.optional_best_effort",
         "coupling_priority_class": "optional",
-        "coupling_cost_units": 2
+        "coupling_cost_units": 2,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -310,14 +490,24 @@
         "to_domain_id": "CHEM",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.proc_capsule_output_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a1e99a885db9f65adc4698e39a29f6cb49eda007c955f1d142ad08b3fad5cb10",
         "extensions": {
           "description": "Process capsule outputs are projected to CHEM-compatible inputs through declared constitutive bindings.",
           "source": "PROC0-3"
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -327,14 +517,24 @@
         "to_domain_id": "SIG",
         "mechanism": "signal_policy",
         "mechanism_id": "belief.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "98e6abdc761f2967a142c1292a092d3c81b52f771f8db36ac20462564d17a736",
         "extensions": {
           "description": "Process QC and drift reports are transmitted through SIG trust/receipt policy pathways.",
           "source": "PROC0-3"
         },
         "coupling_relevance_policy_id": "policy.optional_best_effort",
         "coupling_priority_class": "optional",
-        "coupling_cost_units": 2
+        "coupling_cost_units": 2,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -344,14 +544,24 @@
         "to_domain_id": "SYS",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.proc_drift_score_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2db6823717824ec4502f9c76de16e68f81c5e63bcf13940143db8cf78018cd75",
         "extensions": {
           "description": "Process drift/failure-risk outputs can trigger system fidelity escalation and forced revalidation.",
           "source": "PROC0-3"
         },
         "coupling_relevance_policy_id": "policy.safety_force_expand",
         "coupling_priority_class": "critical",
-        "coupling_cost_units": 8
+        "coupling_cost_units": 8,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -361,7 +571,7 @@
         "to_domain_id": "PROC",
         "mechanism": "signal_policy",
         "mechanism_id": "policy.logic.command_via_process",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "cfd3623cb9392ac351d1b0507ec56e274facb4a1acaf064f9e7da834664ee744",
         "extensions": {
           "description": "LOGIC emits actuator intent only through canonical process routing; direct actuator truth mutation is forbidden.",
           "actuator_domain_ids": [
@@ -376,7 +586,17 @@
         },
         "coupling_relevance_policy_id": "policy.safety_force_expand",
         "coupling_priority_class": "critical",
-        "coupling_cost_units": 8
+        "coupling_cost_units": 8,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -386,14 +606,24 @@
         "to_domain_id": "LOGIC",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.logic.transducer_bridge",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "01a96172f6083cb062f99fc815331cb6ca67c311014576c1e19cbb79c2edc892",
         "extensions": {
           "description": "Physical carrier observations enter LOGIC only through transducer systems with declared error bounds and interface signatures.",
           "source": "LOGIC0-4"
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -403,14 +633,24 @@
         "to_domain_id": "LOGIC",
         "mechanism": "signal_policy",
         "mechanism_id": "policy.sig.logic_receipt_gate",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "de5f2a3f4a6f72e780848c04025489e55bb2e64b918f1ea1518224f85116139c",
         "extensions": {
           "description": "Receipt-based message carriers enter LOGIC through SIG trust, addressing, and encryption policy gates only.",
           "source": "LOGIC0-4"
         },
         "coupling_relevance_policy_id": "policy.default_hold_last",
         "coupling_priority_class": "important",
-        "coupling_cost_units": 5
+        "coupling_cost_units": 5,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f89e1a34eb8f7af9c8e5067d016c4c77d3047b06f16180091f2a46112fdfaf78",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {

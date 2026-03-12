@@ -31,6 +31,16 @@
         "strictness": "C1",
         "extensions": {
           "meta_allowed": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
         }
       },
       {
@@ -59,6 +69,16 @@
         "strictness": "C1",
         "extensions": {
           "planning_only": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
         }
       },
       {
@@ -89,7 +109,17 @@
         ],
         "downgrade_rules": {},
         "strictness": "C0",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -116,7 +146,17 @@
         ],
         "downgrade_rules": {},
         "strictness": "C0",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -147,6 +187,16 @@
         "strictness": "C0",
         "extensions": {
           "replay_only": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
         }
       },
       {
@@ -176,7 +226,17 @@
         ],
         "downgrade_rules": {},
         "strictness": "C1",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CONTROL/LAW",
+          "replacement_target": "Replace MVP control and law scaffolds with release-pinned governance and authority contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "71e84bc943b6b5149fc0a524a148bc11ee9b85d60e8f3d49212e4004678f900b",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

@@ -89,7 +89,7 @@
           "outer_max_mdeg": 50000,
           "gas_max_mdeg": 30000
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5b1d974cb7a5b64b8dc8c80bdd6733699e9ee4c8b200bf6247b984128f619bf1",
         "extensions": {
           "description": "Default deterministic MW-2 coarse planet-body priors for rocky, temperate, icy, and gas-dwarf outcomes.",
           "class_selection_thresholds": {
@@ -98,6 +98,16 @@
             "gas_dwarf_outer_threshold_milli_au": 1800
           },
           "source": "MW2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

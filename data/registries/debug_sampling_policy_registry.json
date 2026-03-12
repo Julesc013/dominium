@@ -12,12 +12,22 @@
         "max_ticks": 32,
         "max_samples": 128,
         "throttle_strategy": "deterministic_subsample",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "42630040eac34a8fc1cc4db162925ecdb33260d35ada81004722b0db7a986a16",
         "extensions": {
           "allow_force_expand": false,
           "remote_monitoring": "sig_authorized_only",
           "request_record_class": "derived",
           "source": "LOGIC7-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -27,12 +37,22 @@
         "max_ticks": 16,
         "max_samples": 32,
         "throttle_strategy": "refuse",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9441713db9cf6490ceb7ecc40cb29267305b4deaf044f8d74d90ef666ca0c2bc",
         "extensions": {
           "allow_force_expand": false,
           "remote_monitoring": "forbidden",
           "request_record_class": "canonical",
           "source": "LOGIC7-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -42,12 +62,22 @@
         "max_ticks": 64,
         "max_samples": 512,
         "throttle_strategy": "reduce_points",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "1be74e689e9298b5b761d50f5b1e34ff0263290ec9e2f73c11de0ab64a32004c",
         "extensions": {
           "allow_force_expand": true,
           "remote_monitoring": "sig_authorized_only",
           "request_record_class": "derived",
           "source": "LOGIC7-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

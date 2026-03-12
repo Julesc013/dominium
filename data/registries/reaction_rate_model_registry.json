@@ -9,44 +9,84 @@
         "schema_version": "1.0.0",
         "rate_model_id": "model.chem_rate_linear_stub",
         "description": "Linear deterministic baseline rate model alias.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "53746600c0c57d75ad713bbcf4a7bc3d6b8f69c638788c7033a98ea1bfcb5514",
         "extensions": {
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "rate_model_id": "model.chem_rate_temp_dependent_stub",
         "description": "Temperature-biased deterministic baseline rate model alias.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f00c563796cdebeb789c9fdee498d647b138d251532b67fb6a3b3ee4192bba90",
         "extensions": {
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "rate_model_id": "model.chem_rate_pressure_temp_stub",
         "description": "Deterministic processing rate model with temperature and pressure proxies.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3216845004c35a3a56e070a56f5402f5fe85fb0cd05227a066de07b78720a79c",
         "extensions": {
           "inputs": [
             "temperature",
             "pressure_head"
           ],
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "rate_model_id": "model.chem_rate_catalyst_stub",
         "description": "Deterministic processing rate model with catalyst-modified throughput.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "993242edc35e3c8cf2050808e9db1ba25a9d6f4c5efb550127c20abf514c7802",
         "extensions": {
           "inputs": [
             "temperature",
             "catalyst_present"
           ],
           "source": "CHEM2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

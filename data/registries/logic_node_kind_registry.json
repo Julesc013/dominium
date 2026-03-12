@@ -9,50 +9,100 @@
         "schema_version": "1.0.0",
         "node_kind_id": "port_in",
         "description": "Input port node for a logic element instance.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e2d6db6fd7cef712dbbc493c42377697b80c693ad89aaa11408d2dd07ad56652",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.port_in"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "node_kind_id": "port_out",
         "description": "Output port node for a logic element instance.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "cc714ada3ba0b85e289c1f4311f57cd8e46d8efa62dbb11e1acf6c6e2b8f646b",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.port_out"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "node_kind_id": "junction",
         "description": "Single-signal merge or fanout junction.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ad14bc547cdefdf62dfea6ff134ea24c1c049e045d65769a9b520b6b7b926457",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.junction"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "node_kind_id": "bus_junction",
         "description": "Bus-capable merge or fanout junction.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a2acca42f6dda8c36023860818213677d18813acd232f1de5a6c2bbbc6033f59",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.bus_junction"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "node_kind_id": "protocol_endpoint",
         "description": "Protocol-aware endpoint for framed or arbitrated logic links.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "198145bb306ade53e1c3e7870eb87a5716fb6d7683ac7bd8602dace84f978b7b",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.protocol_endpoint"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       }
     ],

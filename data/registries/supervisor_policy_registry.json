@@ -10,9 +10,19 @@
         "policy_id": "supervisor.policy.default",
         "max_restarts": 0,
         "auto_attach_ipc": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "298aa565c6bb70324f3d7567d677778433097e2f022e00132646f26a06f47765",
         "extensions": {
           "official.source": "APPSHELL-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -20,9 +30,19 @@
         "policy_id": "supervisor.policy.lab",
         "max_restarts": 2,
         "auto_attach_ipc": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7cad5113e05d2c84ec153aba494898b69a44fc59af569dce80dcdc9a60162edf",
         "extensions": {
           "official.source": "APPSHELL-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

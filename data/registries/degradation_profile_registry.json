@@ -15,10 +15,20 @@
           "leak_threshold_permille": 700,
           "critical_permille": 900
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9ca01811af4d60a393146d7a25469e200689aaf010dfee8a4c1637d919f85bcc",
         "extensions": {
           "target_domain": "FLUID",
           "source": "CHEM3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -31,10 +41,20 @@
           "efficiency_drop_permille": 500,
           "critical_permille": 850
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2231a2d83f5991ec8c989c0599c53b8609926f33e5e962da97b9a02928de5b31",
         "extensions": {
           "target_domain": "THERM",
           "source": "CHEM3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -47,10 +67,20 @@
           "flow_restriction_permille": 550,
           "critical_permille": 900
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d05712ca630eba6e81ae7bf9d9f08f513e1bf0286262df1453b680e48fe6bfe8",
         "extensions": {
           "target_domain": "FLUID",
           "source": "CHEM3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

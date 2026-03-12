@@ -9,45 +9,95 @@
         "schema_version": "1.0.0",
         "defect_flag_id": "contamination",
         "description": "Detected contamination in produced output batch.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "267bb830e190b26f6f7e1e706bcbd19dd9983ead8160d4bfe0fb80f3fccaf2ea",
         "extensions": {
           "source": "PROC2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "defect_flag_id": "out_of_spec",
         "description": "Produced output did not satisfy required spec thresholds.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f7ca456fcb8f494f0c2db519b5ccf79a99f40677cfc97cfbe69ba66f9fd63172",
         "extensions": {
           "source": "PROC2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "defect_flag_id": "incomplete",
         "description": "Process run finished without completing all required quality-critical transforms.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "1812208bd90186ac1ac5bf2258b48b9a951077d0905ad9ce13e3ecb519b967ed",
         "extensions": {
           "source": "PROC2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "defect_flag_id": "overprocessed",
         "description": "Output exposed to excessive process conditions.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6b723d61757c72aad4ae02ab33dfaae712e53b91eabbfbf49a7abae83a68b12e",
         "extensions": {
           "source": "PROC2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "defect_flag_id": "software_bug",
         "description": "Process build/output flagged by deterministic software quality defect model.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "70884065ceead0918a7aa82cb3b3412a4a3b92fd7ff4361f0c4ea506b7d7beab",
         "extensions": {
           "source": "PROC2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

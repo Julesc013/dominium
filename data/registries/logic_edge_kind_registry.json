@@ -9,40 +9,80 @@
         "schema_version": "1.0.0",
         "edge_kind_id": "link",
         "description": "Single typed-signal link between logic nodes.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "22530e2f062433b97adcd11ad7266d0c3b259354f348b9216b32b8a793f5368c",
         "extensions": {
           "source": "LOGIC3-3",
           "edge_type_id": "edge.logic.link"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "edge_kind_id": "bus_link",
         "description": "Bus-carrying link bound to a declared bus definition.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c5e913d04d263a82749ea7c4a12d20b230be9e88cf5bb2c896601dde204f5879",
         "extensions": {
           "source": "LOGIC3-3",
           "edge_type_id": "edge.logic.bus_link"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "edge_kind_id": "protocol_link",
         "description": "Framed or arbitration-aware link bound to a declared protocol hook.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c077cdafa0a28f99ddf896b860995b592d1bc157a3a452b83abe8f0416cb4bda",
         "extensions": {
           "source": "LOGIC3-3",
           "edge_type_id": "edge.logic.protocol_link"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "edge_kind_id": "sig_link",
         "description": "Receipt-based message carrier link routed through SIG semantics.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "40fc00e10de0fbc9f2c91054d18ecf54c170e097dac35ab7599140adb0a5e8f6",
         "extensions": {
           "source": "LOGIC3-3",
           "edge_type_id": "edge.logic.sig_link"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       }
     ],

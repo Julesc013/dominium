@@ -27,6 +27,17 @@
             "transition.policy.null"
           ],
           "default_transition_policy_id": "transition.policy.null"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "baab6e0a866023587cbeed878dbf290a9ed626203cf04d225a25a129b28a2180",
+          "extensions": {},
+          "deprecated": false
         }
       }
     ],

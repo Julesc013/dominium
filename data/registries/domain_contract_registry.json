@@ -16,7 +16,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.contract_violation"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.mass_conservation",
+        "deterministic_fingerprint": "298f107a06251c00a8541afa1a414c77306badec4927d57cd507f391a431afb9",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -32,7 +42,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.contract_violation"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.energy_conservation",
+        "deterministic_fingerprint": "7aa9f0c68df801fb9a4ab37a875613dbb935664780ec23bd97c0aa2453027907",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -47,7 +67,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.contract_violation"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.charge_conservation",
+        "deterministic_fingerprint": "3f7f5482c0dcdb27c39f00cd704add23b1bff03b7625d3282db406d237e75a26",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -62,7 +92,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.contract_violation"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.ledger_balance",
+        "deterministic_fingerprint": "97ff9c46e74f54b905fd580c196ecb46d416c48b8346da97dccdd846eeee37f9",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -79,7 +119,17 @@
         "LENS_FORBIDDEN",
         "ENTITLEMENT_MISSING",
         "refusal.contract_violation"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.epistemic_non_omniscience",
+        "deterministic_fingerprint": "8e326ba3c5b672322e9f102b60beb3ca0409a9496008885ab8ee8d304d936d6b",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -96,7 +146,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.ep.lod_information_gain"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.epistemic_invariance_lod",
+        "deterministic_fingerprint": "f7691063bafb7c43a136a7aac2176697d1a6d3e5b2a52e244eff075cd5d16198",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -113,7 +173,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.ep.lod_information_gain"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.no_precision_leak",
+        "deterministic_fingerprint": "b51ca84a09f7f9284c846f269055d87ff58c236bb4f475f646b929464a70c2ad",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -130,7 +200,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.ep.lod_information_gain"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.no_hidden_state_leak",
+        "deterministic_fingerprint": "6530e993fa5db3724b6c78ce2d109fc071862686798c5c0b484d2394a2fe2e62",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -146,7 +226,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.contract_violation"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.deterministic_transition",
+        "deterministic_fingerprint": "fa553ae469ad801cc5d9daff0bdc1dff614fe50278c69ccc650a0ded9b7a9888",
+        "extensions": {}
+      }
     },
     {
       "conservation_tags": [
@@ -161,7 +251,17 @@
       ],
       "violation_refusal_codes": [
         "refusal.contract_violation"
-      ]
+      ],
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "rationale": "Core invariant; protected by semantic contract.",
+        "future_series": "",
+        "replacement_target": "",
+        "contract_id": "dom.contract.port_contract_preservation",
+        "deterministic_fingerprint": "2233d4c833bbf6fcfb10f5e99f6df6ac5f884a9892d61c19117a1490255bcfdb",
+        "extensions": {}
+      }
     }
   ]
 }

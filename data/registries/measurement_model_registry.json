@@ -11,9 +11,19 @@
         "description": "Deterministic quantized measurement model for diegetic field instruments.",
         "quantization_step": 10,
         "absolute_error_bound": 5,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e50a0a3c0bfead00e370e8ab2fd4a612b543b6216b8b5c720aeca970770f0881",
         "extensions": {
           "source": "META-INSTR0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -22,9 +32,19 @@
         "description": "Calibrated deterministic instrument model with narrower absolute error bound.",
         "quantization_step": 5,
         "absolute_error_bound": 2,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "45601f9050da3ed0a8d835870cbdcf303d7d7b849181625937bde9d1f692e1b0",
         "extensions": {
           "source": "META-INSTR0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -33,9 +53,19 @@
         "description": "High-precision laboratory model with strict deterministic quantization/error limits.",
         "quantization_step": 1,
         "absolute_error_bound": 1,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ff6fc682934e7985655716f5c938cf9b04796b274a37ea26ab93f6f24e0ba400",
         "extensions": {
           "source": "META-INSTR0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

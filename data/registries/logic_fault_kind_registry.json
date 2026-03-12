@@ -11,6 +11,16 @@
         "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
         "extensions": {
           "description": "Edge transmits no signal during SENSE."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -19,6 +29,16 @@
         "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
         "extensions": {
           "description": "Path forces a fault value or refuses per policy."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -27,6 +47,16 @@
         "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
         "extensions": {
           "description": "Target snapshot is overridden to boolean zero."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -35,6 +65,16 @@
         "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
         "extensions": {
           "description": "Target snapshot is overridden to boolean one."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -43,6 +83,16 @@
         "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
         "extensions": {
           "description": "Comparator threshold or sampled scalar is shifted deterministically."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -52,6 +102,16 @@
         "extensions": {
           "description": "ROI-only deterministic pulse bounce perturbation.",
           "roi_only": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       }
     ],

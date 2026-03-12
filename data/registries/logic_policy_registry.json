@@ -12,7 +12,7 @@
         "loop_resolution_mode": "refuse",
         "timing_mode": "roi_micro_optional",
         "compute_profile_id": "compute.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "918f35c10d5823050bb5fb475b88809fac5ed84917bd85b8f42410cc4c9a425c",
         "extensions": {
           "description": "Default LOGIC policy: deterministic L1 evaluation with optional L2 ROI detail only when explicitly scheduled.",
           "oscillation_window_ticks": 8,
@@ -20,6 +20,16 @@
           "unstable_oscillation_action": "force_roi",
           "timing_violation_action": "force_roi",
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -29,7 +39,7 @@
         "loop_resolution_mode": "refuse",
         "timing_mode": "sync_tick",
         "compute_profile_id": "compute.rank_strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "06821011cd3f6954462cd2c2374031f7605ffdfa40d012bfa38ed09db0ab48d3",
         "extensions": {
           "description": "Strict LOGIC policy for competitive or auditable play; no loop relaxation and no optional micro timing.",
           "oscillation_window_ticks": 6,
@@ -37,6 +47,16 @@
           "unstable_oscillation_action": "refuse",
           "timing_violation_action": "refuse",
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       },
       {
@@ -46,7 +66,7 @@
         "loop_resolution_mode": "allow_with_caps",
         "timing_mode": "roi_micro_optional",
         "compute_profile_id": "compute.lab_high",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "1b36cb8fe980f056fb2162472ee845b09078ba24b386b7a0b1e03680c927b088",
         "extensions": {
           "description": "Lab policy for explicit experimental controllers; loop exceptions remain budgeted and profile-governed.",
           "oscillation_window_ticks": 12,
@@ -55,6 +75,16 @@
           "timing_violation_action": "force_roi",
           "requires_exception_ledger": true,
           "source": "LOGIC5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace MVP logic defaults with release-pinned compile, runtime, and proof contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "439a3427142661dcfaa4b025b4640a77894a556fa7f3a6b3774a05f7497ce043",
+          "extensions": {}
         }
       }
     ],

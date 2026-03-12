@@ -9,7 +9,17 @@
         "constraints_id": "constraints.lab.navigation.default",
         "description": "Default deterministic lab navigation worldgen constraints profile.",
         "pack_id": "constraints.worldgen.default_lab",
-        "status": "active"
+        "status": "active",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "CAP-NEG/PACK-COMPAT",
+          "replacement_target": "Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4516e0ba6d9b259a15dbd151f7a1c3065423a6d9ec0f1701003c927d91e6be33",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

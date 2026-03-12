@@ -11,8 +11,18 @@
         "description": "No synchronization correction; observe local mapping only.",
         "adjustment_strategy": "observe",
         "max_adjust_per_tick": 0,
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "50e6ae057024376da9aa91bc2967f4ace5bb20a6fae4fa65ba505fead330577a",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -20,8 +30,18 @@
         "description": "Apply bounded correction on time-stamp receipt.",
         "adjustment_strategy": "adjust",
         "max_adjust_per_tick": 5,
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "a84714951199edb3dc341aa7717cc6b152aa0307168471d6ed67cf0d99c5cbd4",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -29,8 +49,18 @@
         "description": "Reject synchronization when skew exceeds policy bound.",
         "adjustment_strategy": "reject",
         "max_adjust_per_tick": 0,
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "1d0289370aae0f4ef07cb8657fa04a9ba51c9becb2b05c26e7304c58d4eb32f0",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {

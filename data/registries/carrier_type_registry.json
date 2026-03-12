@@ -9,77 +9,137 @@
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.electrical",
         "description": "Electrical carrier with ELEC-owned transport costs and constraint semantics kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bfe20e6644d61cb420af87278da29561937376d9be77585e7926b15a2cb9b04d",
         "extensions": {
           "domain_tags": [
             "ELEC"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.pneumatic",
         "description": "Pneumatic carrier with FLUID-owned compressibility and pressure-delay constraints kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7fa6a14a507857aedeee11d48c28ff963645b78343825b718141239c4d08a6db",
         "extensions": {
           "domain_tags": [
             "FLUID",
             "gas"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.hydraulic",
         "description": "Hydraulic carrier with FLUID-owned incompressibility and flow/pressure constraints kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "09d8bfde424146400fac0d10de110ba89da1019061e11a3cd5e53e3ca064a1ae",
         "extensions": {
           "domain_tags": [
             "FLUID",
             "liquid"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.mechanical",
         "description": "Mechanical carrier with MECH and MOB-owned linkage, inertia, and backlash costs kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9625138d79e645a9ecfb6eb9e3e29c64bacd67b832a3c01b5574f8cbf89f25da",
         "extensions": {
           "domain_tags": [
             "MECH",
             "MOB"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.optical",
         "description": "Optical carrier with line-of-sight and attenuation constraints kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "48ad019ec9b45dc933fd2015506fdafe033ef7cb21bc9d08d7a2edd3ea5d682a",
         "extensions": {
           "domain_tags": [
             "SIG",
             "FIELD"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.sig",
         "description": "Receipt-based message carrier mediated by SIG trust, encryption, and delivery policy rather than physics-local semantics.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "162516b7c3bf47692dbce924aa0c4dc5b7348b329256b0fb0bf17a2ab1c6395d",
         "extensions": {
           "domain_tags": [
             "SIG",
             "receipt"
           ],
           "source": "LOGIC0-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

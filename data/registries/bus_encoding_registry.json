@@ -9,36 +9,76 @@
         "schema_version": "1.0.0",
         "encoding_id": "encoding.bits",
         "description": "Ordered bit-vector bus encoding for discrete bundled signal lanes.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3a9a0b1a721635fdc877e2c59d3091abfd59631f08d103d5631b7fbbe702221e",
         "extensions": {
           "source": "LOGIC1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "encoding_id": "encoding.uint",
         "description": "Fixed-width packed unsigned integer bus encoding for deterministic numeric bundles.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e1a2122bb3ecbe2a4470e0566aff1acb8cf7ae411cb63ee11375804057f330f3",
         "extensions": {
           "source": "LOGIC1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "encoding_id": "encoding.struct",
         "description": "Ordered named-field bus encoding for typed bus structures.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "715f1617dfc50c9e32076a99331384f3362d9c2601f7d026d0d4904daebf9ee5",
         "extensions": {
           "source": "LOGIC1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "encoding_id": "encoding.frame",
         "description": "Fielded frame encoding for future protocol-oriented buses.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "83b6a2b0270a5d266122069bb5131f56578972b80666d4086f9c2428b707fcf6",
         "extensions": {
           "source": "LOGIC1-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

@@ -9,25 +9,65 @@
         "schema_version": "1.0.0",
         "event_type_id": "event.construct_project_created",
         "description": "Construction project record created.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "event_type_id": "event.construct_step_started",
         "description": "Construction step entered executing status.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "event_type_id": "event.construct_step_completed",
         "description": "Construction step entered completed status.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "event_type_id": "event.install_part",
         "description": "Installed part output applied to structure instance.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -35,37 +75,97 @@
         "description": "Deconstruction stub event type.",
         "extensions": {
           "stub": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       },
       {
         "schema_version": "1.0.0",
         "event_type_id": "event.material_consumed",
         "description": "Input material/batch consumed by construction step.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "event_type_id": "event.batch_created",
         "description": "Output batch created by construction step.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "event_type_id": "event.failure.triggered",
         "description": "Asset failure event emitted by deterministic decay threshold crossing.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "event_type_id": "event.inspection_performed",
         "description": "Maintenance inspection completed for tracked asset health state.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
         "event_type_id": "event.maintenance_performed",
         "description": "Maintenance execution completed for tracked asset health state.",
-        "extensions": {}
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -73,6 +173,16 @@
         "description": "Maintenance scheduling provenance stub.",
         "extensions": {
           "stub": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DIAG",
+          "replacement_target": "Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ab4d72f607ffca9b49e8c6fab1076933630dbf0e6589e2e2bc69a9d8f33203c2",
+          "extensions": {}
         }
       }
     ],

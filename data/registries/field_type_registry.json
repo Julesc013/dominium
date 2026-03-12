@@ -21,8 +21,18 @@
         },
         "default_value": 20,
         "update_policy_id": "field.static_default",
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "43666bb31bb4fb9edb6922091053317b9b91ebafc08d3c760decbdca6b26ff59",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -40,9 +50,19 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ddfb291b23ccc53f0b0b7a4e238ad749d70548cb9689c7ffb22476dfb7f92746",
         "extensions": {
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -61,9 +81,19 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "72dff5e7b719290edc03c0f31df9fdece07652213cc135e56cdea2bba1e77584",
         "extensions": {
           "source": "EARTH3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -82,10 +112,20 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b81a65828c1be4082c173d1cde1bafcd0c19ea5a967afdaca98e33e5329955e4",
         "extensions": {
           "stub": true,
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -104,8 +144,18 @@
         },
         "default_value": 0,
         "update_policy_id": "field.static_default",
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "ba1b7dd26fe2de93dc6c7f972a0f6eeb7227a016fc3cc98ff17b4cecd62b8d05",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -123,8 +173,18 @@
         },
         "default_value": 1000,
         "update_policy_id": "field.static_default",
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "30bec1738145c55376bb6057c2312864a0ab2423e7977763d682df65e2a7c50a",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -376,10 +436,20 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "17336d0b00835b0ce09b9550262d195ad850fc2639888ad127841b6b36a9e6d4",
         "extensions": {
           "deprecated": true,
           "alias_of": "field.radiation_intensity"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -398,9 +468,19 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "321fcbb2b438a254b44f9ce12d396b7f4b05b3cffa023dcfc47717aef4293c3a",
         "extensions": {
           "physics_domain": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -419,8 +499,18 @@
         },
         "default_value": 1000,
         "update_policy_id": "field.static_default",
-        "deterministic_fingerprint": "",
-        "extensions": {}
+        "deterministic_fingerprint": "2e930b50086475f0e314f771d2f68ea29a1c29f5a2c56a29e8343390ce4bf72d",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -442,10 +532,20 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7e9f4ae651eec0110ce83a19134b05fcd4e7c44053fa7cf7348888e927bd2046",
         "extensions": {
           "deprecated": true,
           "alias_of": "field.wind_vector"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -468,9 +568,19 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "90beefe483623d2e7477912f4a6a35aae57769adf35dc72afb5f8b2846ab489c",
         "extensions": {
           "source": "EARTH7-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -493,11 +603,21 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c2bc59e4a06603a9255924924beb8b6985394bcd72c17f7e8180c2ff5d26a50c",
         "extensions": {
           "physics_domain": true,
           "deprecated": true,
           "alias_of": "field.gravity_vector"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -520,9 +640,19 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "38128a4d44abcfcd697922970e83375e8d32b4f89a51f53da87249ed813f6f6f",
         "extensions": {
           "physics_domain": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -545,10 +675,20 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "233bac0f6426098b25972855cd8c23310567e5f93be79cf0c2c8b3f34ccccd1e",
         "extensions": {
           "physics_domain": true,
           "stub": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -567,9 +707,19 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b28e0c7fb575888d63a41e810aceb83ce76250b062e4e61b966c5851fa3b4c17",
         "extensions": {
           "physics_domain": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -588,11 +738,21 @@
         },
         "default_value": 0,
         "update_policy_id": "field.pollution_profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5fd9e3d0f024404bf77dc96783a981fbe0ca99c08bfd64603c0b21c216767c9a",
         "extensions": {
           "pollutant_id": "pollutant.smoke_particulate",
           "pollution_field_policy_id": "poll.policy.coarse_diffuse",
           "source": "POLL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -611,11 +771,21 @@
         },
         "default_value": 0,
         "update_policy_id": "field.pollution_profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c9d8ceda55cfdd832c7332a2b38ae0171a4d7ba1db31ff6c8c9852a8029dd526",
         "extensions": {
           "pollutant_id": "pollutant.co2_stub",
           "pollution_field_policy_id": "poll.policy.coarse_diffuse",
           "source": "POLL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -634,11 +804,21 @@
         },
         "default_value": 0,
         "update_policy_id": "field.pollution_profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "39ec54548be3c278ab82641cd264b0606e9de08069d944dea3c019c6e46df225",
         "extensions": {
           "pollutant_id": "pollutant.toxic_gas_stub",
           "pollution_field_policy_id": "poll.policy.rank_strict",
           "source": "POLL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       },
       {
@@ -657,11 +837,21 @@
         },
         "default_value": 0,
         "update_policy_id": "field.pollution_profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "cb27f480b1a1ff8334d964c1a7a7fde6ac1ce5dec7f6af76813274651ac60aa7",
         "extensions": {
           "pollutant_id": "pollutant.oil_spill_stub",
           "pollution_field_policy_id": "poll.policy.coarse_diffuse",
           "source": "POLL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "GEO/MW",
+          "replacement_target": "Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "401848b44b294a5821ae6fe9ccd8be99f2b7742ccd215544f4873cd1d10725e8",
+          "extensions": {}
         }
       }
     ],

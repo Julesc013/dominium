@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "pipeline_id": "pipeline.build_test_package_sign_deploy",
         "description": "Deterministic software build/test/package/sign/deploy pipeline template.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e1377b51c23965758109d8cdfa3b33713f5324c7abb44658a8b0b66d69e52c2a",
         "extensions": {
           "source": "PROC8-2",
           "process_definition_ref": "proc.pipeline.build_test_package_sign_deploy@1.0.0",
@@ -262,6 +262,16 @@
               "source": "PROC8-3"
             }
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

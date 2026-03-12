@@ -11,9 +11,19 @@
         "relief_preferred": true,
         "burst_requires_threshold": true,
         "max_failure_events_per_tick": 64,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2fb8ac69f12e5a1d31fcdb505dc0fe0486477162fc571615d074eefc5f00ce2d",
         "extensions": {
           "description": "Prefer relief where possible, burst only above burst threshold."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -22,9 +32,19 @@
         "relief_preferred": false,
         "burst_requires_threshold": true,
         "max_failure_events_per_tick": 64,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e124dc8fa83d0f22b96fbacaa97f0bbbf16deeff84d9a89d538896ef40e05516",
         "extensions": {
           "description": "Strict containment: burst events fire at configured burst threshold."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       },
       {
@@ -33,10 +53,20 @@
         "relief_preferred": true,
         "burst_requires_threshold": true,
         "max_failure_events_per_tick": 48,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "8218188d6e46c8dbfd1e28dda893236ac9a005b4c21519335962bd7f42a38bd2",
         "extensions": {
           "strict": true,
           "description": "Ranked-safe cap with deterministic bounded failure cascade."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
         }
       }
     ],

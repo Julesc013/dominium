@@ -14,9 +14,19 @@
           "F0"
         ],
         "cost_model_id": "cost.fluid.network_default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b2c7355abdf1ffd4d39bd908a26f648582b8e439ff50b18d0f7761aeaf0e3b9b",
         "extensions": {
           "optional_at_boot": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -28,10 +38,20 @@
           "F0"
         ],
         "cost_model_id": "cost.fluid.network_rank_strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "702b324a1977e94a9c6975333c19e2f225f1b5ac42a424549105f7043d1b0b50",
         "extensions": {
           "strict": true,
           "optional_at_boot": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       },
       {
@@ -42,10 +62,20 @@
           "F0"
         ],
         "cost_model_id": "cost.fluid.none",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "77982ab1d3bd8d9cc6b2467fdf6feeef71bcf9eae2573eaf83214725e17af811",
         "extensions": {
           "null_boot_safe": true,
           "disable_domain_runtime": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "SYS",
+          "replacement_target": "Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dbc12442d3e13f36e07bf0684cacf391e661622bb231411d1d63ef26e1d0365e",
+          "extensions": {}
         }
       }
     ],
