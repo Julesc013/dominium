@@ -944,6 +944,24 @@ MAT_SCALE_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
+MVP_SMOKE_DOCTRINE_PATH = "docs/mvp/MVP_SMOKE_SUITE.md"
+MVP_SMOKE_HASHES_PATH = "build/mvp/mvp_smoke_hashes.json"
+MVP_SMOKE_REPORT_PATH = "build/mvp/mvp_smoke_report.json"
+MVP_SMOKE_BASELINE_PATH = "data/regression/mvp_smoke_baseline.json"
+MVP_SMOKE_FINAL_PATH = "docs/audit/MVP_SMOKE_FINAL.md"
+MVP_SMOKE_BASELINE_REQUIRED_FIELDS = (
+    "baseline_id",
+    "scenario_id",
+    "scenario_seed",
+    "pack_lock_hash",
+    "runtime_pack_lock_hash",
+    "negotiation_record_hashes",
+    "proof_anchor_hashes",
+    "logic_compiled_model_hash",
+    "selected_view_fingerprints",
+    "update_policy",
+)
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -6250,6 +6268,262 @@ def _append_regression_lock_findings(
                 snippet=full_subject[:140],
                 message="latest control-plane full baseline commit message must include '{}'".format(full_required_tag),
                 rule_id="INV-CONTROL-PLANE-FULL-REGRESSION-LOCK-PRESENT",
+            )
+        )
+
+
+def _append_mvp_smoke_gate_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rule_id = "INV-MVP-SMOKE-MUST-PASS-BEFORE-RELEASE"
+    required_files = (
+        (MVP_SMOKE_DOCTRINE_PATH, "MVP smoke doctrine is required for release gating"),
+        ("tools/mvp/tool_generate_mvp_smoke.py", "MVP smoke scenario generator is required for release gating"),
+        ("tools/mvp/tool_run_mvp_smoke.py", "MVP smoke harness is required for release gating"),
+        (MVP_SMOKE_HASHES_PATH, "MVP smoke expected-hash artifact is required for release gating"),
+        (MVP_SMOKE_REPORT_PATH, "MVP smoke harness report is required before release"),
+        (MVP_SMOKE_BASELINE_PATH, "MVP smoke regression baseline is required before release"),
+        (MVP_SMOKE_FINAL_PATH, "MVP smoke final audit report is required before release"),
+        ("tools/xstack/testx/tests/test_smoke_scenario_deterministic.py", "MVP smoke deterministic scenario TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_smoke_harness_passes.py", "MVP smoke harness TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_replay_bundle_validates.py", "MVP smoke replay bundle TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_smoke_hashes_match_baseline.py", "MVP smoke baseline TestX coverage is required"),
+    )
+    for rel_path, message in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, MVP_SMOKE_DOCTRINE_PATH).lower()
+    for token, message in (
+        ("mvp-smoke-regression-update", "MVP smoke doctrine must declare the regression update tag"),
+        ("default smoke seed is `456`", "MVP smoke doctrine must pin the canonical smoke seed"),
+        ("curated verification `pack_lock_hash`", "MVP smoke doctrine must distinguish the curated verification pack lock"),
+        ("smoke runtime `pack_lock_hash`", "MVP smoke doctrine must distinguish the smoke runtime pack lock"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_SMOKE_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    report_payload, report_error = _load_json_object(repo_root, MVP_SMOKE_REPORT_PATH)
+    if report_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_SMOKE_REPORT_PATH,
+                line_number=1,
+                snippet="",
+                message="MVP smoke report must exist and be valid JSON before release",
+                rule_id=rule_id,
+            )
+        )
+    else:
+        if str(report_payload.get("result", "")).strip() != "complete":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_SMOKE_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(report_payload.get("result", "")),
+                    message="MVP smoke report must record a complete pass before release",
+                    rule_id=rule_id,
+                )
+            )
+        refusal_count = report_payload.get("refusal_count", -1)
+        try:
+            refusal_count_value = int(refusal_count)
+        except (TypeError, ValueError):
+            refusal_count_value = -1
+        if refusal_count_value != 0:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_SMOKE_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(refusal_count),
+                    message="MVP smoke report must record zero refusals in the default lane",
+                    rule_id=rule_id,
+                )
+            )
+        assertions = dict(report_payload.get("assertions") or {})
+        for key in (
+            "setup_verify_complete",
+            "compat_status_complete",
+            "build_lock_complete",
+            "launcher_lifecycle_complete",
+            "launcher_pack_lock_pinned",
+            "launcher_client_attach_explicit",
+            "launcher_server_attach_full",
+            "earth_complete",
+            "logic_complete",
+            "tui_unavailable_explicit",
+            "rendered_disabled_explicit",
+            "server_probe_complete",
+            "diag_replay_valid",
+            "expected_hashes_match",
+            "no_refusals",
+        ):
+            if bool(assertions.get(key, False)):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_SMOKE_REPORT_PATH,
+                    line_number=1,
+                    snippet=key,
+                    message="MVP smoke report assertion '{}' must pass before release".format(key),
+                    rule_id=rule_id,
+                )
+            )
+
+    baseline_payload, baseline_error = _load_json_object(repo_root, MVP_SMOKE_BASELINE_PATH)
+    if baseline_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_SMOKE_BASELINE_PATH,
+                line_number=1,
+                snippet="",
+                message="MVP smoke regression baseline must exist and be valid JSON",
+                rule_id=rule_id,
+            )
+        )
+    else:
+        for field in MVP_SMOKE_BASELINE_REQUIRED_FIELDS:
+            value = baseline_payload.get(field)
+            if value is None or (isinstance(value, str) and not str(value).strip()):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_SMOKE_BASELINE_PATH,
+                        line_number=1,
+                        snippet=str(field),
+                        message="MVP smoke regression baseline missing required field '{}'".format(field),
+                        rule_id=rule_id,
+                    )
+                )
+        negotiation_hashes = baseline_payload.get("negotiation_record_hashes")
+        if not isinstance(negotiation_hashes, dict):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_SMOKE_BASELINE_PATH,
+                    line_number=1,
+                    snippet="negotiation_record_hashes",
+                    message="MVP smoke regression baseline must declare negotiation_record_hashes",
+                    rule_id=rule_id,
+                )
+            )
+        else:
+            for key in ("compat_status", "launcher_client_attach", "launcher_server_attach", "server_probe"):
+                if str(negotiation_hashes.get(key, "")).strip():
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_SMOKE_BASELINE_PATH,
+                        line_number=1,
+                        snippet=key,
+                        message="MVP smoke regression baseline must pin negotiation hash '{}'".format(key),
+                        rule_id=rule_id,
+                    )
+                )
+        proof_anchor_hashes = baseline_payload.get("proof_anchor_hashes")
+        if not isinstance(proof_anchor_hashes, dict) or not proof_anchor_hashes:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_SMOKE_BASELINE_PATH,
+                    line_number=1,
+                    snippet="proof_anchor_hashes",
+                    message="MVP smoke regression baseline must pin proof_anchor_hashes by tick",
+                    rule_id=rule_id,
+                )
+            )
+        view_fingerprints = baseline_payload.get("selected_view_fingerprints")
+        if not isinstance(view_fingerprints, dict):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_SMOKE_BASELINE_PATH,
+                    line_number=1,
+                    snippet="selected_view_fingerprints",
+                    message="MVP smoke regression baseline must declare selected_view_fingerprints",
+                    rule_id=rule_id,
+                )
+            )
+        else:
+            for key in ("climate_season_a", "climate_season_b", "tide_window", "water_view", "day_sky_view", "night_sky_view"):
+                if str(view_fingerprints.get(key, "")).strip():
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_SMOKE_BASELINE_PATH,
+                        line_number=1,
+                        snippet=key,
+                        message="MVP smoke regression baseline must pin selected view fingerprint '{}'".format(key),
+                        rule_id=rule_id,
+                    )
+                )
+        update_policy = baseline_payload.get("update_policy")
+        required_tag = str(dict(update_policy or {}).get("required_commit_tag", "")).strip()
+        if required_tag != "MVP-SMOKE-REGRESSION-UPDATE":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_SMOKE_BASELINE_PATH,
+                    line_number=1,
+                    snippet=str(required_tag),
+                    message="MVP smoke regression baseline updates must require MVP-SMOKE-REGRESSION-UPDATE",
+                    rule_id=rule_id,
+                )
+            )
+
+    final_text = _file_text(repo_root, MVP_SMOKE_FINAL_PATH).lower()
+    for token, message in (
+        ("# mvp smoke final", "MVP smoke final audit report must declare the canonical title"),
+        ("## run summary", "MVP smoke final audit report must include a run summary"),
+        ("## hashes", "MVP smoke final audit report must include the hash summary"),
+        ("## degradations", "MVP smoke final audit report must include explicit degradations"),
+        ("## gates", "MVP smoke final audit report must include gate results"),
+        ("- result: `complete`", "MVP smoke final audit report must record a complete smoke result"),
+        ("- repox strict:", "MVP smoke final audit report must include RepoX gate status"),
+        ("- auditx strict:", "MVP smoke final audit report must include AuditX gate status"),
+        ("- testx:", "MVP smoke final audit report must include TestX gate status"),
+        ("- smoke harness:", "MVP smoke final audit report must include smoke harness gate status"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_SMOKE_FINAL_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
             )
         )
 
@@ -29723,6 +29997,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_regression_lock_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_mvp_smoke_gate_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
