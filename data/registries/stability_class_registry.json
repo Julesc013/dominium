@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.registry.meta.stability_class_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.meta.stability_class_registry",
+    "registry_version": "1.0.0",
+    "stability_classes": [
+      {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "description": "Semantics frozen under an explicit semantic contract version.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "contract_id_required": true,
+          "future_series_required": false,
+          "replacement_target_required": false,
+          "experimental_gate_required": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "description": "MVP or transitional implementation with an explicit replacement path.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "contract_id_required": false,
+          "future_series_required": true,
+          "replacement_target_required": true,
+          "experimental_gate_required": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "stability_class_id": "experimental",
+        "description": "Explicitly gated implementation that must exception-log activation or use.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "contract_id_required": false,
+          "future_series_required": false,
+          "replacement_target_required": false,
+          "experimental_gate_required": true,
+          "exception_event_required": true
+        }
+      }
+    ],
+    "extensions": {
+      "source": "META-STABILITY-0"
+    }
+  }
+}

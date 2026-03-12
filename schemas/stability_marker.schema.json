@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stability Marker Schema",
+  "version": "1.0.0",
+  "description": "Deterministic stability metadata for registry entries and related manifests.",
+  "type": "object",
+  "required": [
+    "stability_class_id",
+    "rationale",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "stability_class_id": {
+      "type": "string",
+      "enum": [
+        "stable",
+        "provisional",
+        "experimental"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "future_series": {
+      "type": "string"
+    },
+    "replacement_target": {
+      "type": "string"
+    },
+    "contract_id": {
+      "type": "string"
+    },
+    "deprecated": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "examples": [
+    {
+      "stability_class_id": "provisional",
+      "rationale": "MVP stub pending domain-grade replacement.",
+      "future_series": "DOM",
+      "replacement_target": "Replace the stub with domain-grade modeled semantics.",
+      "deprecated": false,
+      "deterministic_fingerprint": "1111111111111111111111111111111111111111111111111111111111111111",
+      "extensions": {}
+    }
+  ]
+}

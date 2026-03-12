@@ -1,0 +1,32 @@
+SCHEMA: meta/stability_marker.schema
+schema_id: dominium.schema.meta.stability_marker
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical metadata used to classify item stability across registries, generators, pack compatibility manifests, and related deterministic artifacts.
+
+NON-SEMANTICS:
+- Stability markers do not change runtime behavior by themselves.
+- Stability markers classify change discipline; they do not authorize hidden feature gating.
+
+REQUIRED SHAPE:
+record stability_marker
+  required:
+    - stability_class_id: tag
+    - rationale: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - future_series: text
+    - replacement_target: text
+    - contract_id: id
+    - deprecated: bool
+
+INVARIANTS:
+- `stability_class_id` MUST be one of `stable|provisional|experimental`
+- `stable` rows MUST declare `contract_id`
+- `provisional` rows MUST declare `future_series` and `replacement_target`
+- `experimental` rows MUST declare explicit gating and exception logging metadata through `extensions`
+- deterministic_fingerprint is computed with the fingerprint field blanked
+- unknown extension fields are allowed but MUST serialize deterministically

@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.registry.meta.stability_requirements_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.meta.stability_requirements_registry",
+    "registry_version": "1.0.0",
+    "requirements": [
+      {
+        "schema_version": "1.0.0",
+        "stability_class_id": "stable",
+        "required_fields": [
+          "contract_id"
+        ],
+        "validation_rule_ids": [
+          "stable_requires_contract_id"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "profile_gate_required": false,
+          "exception_event_required": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "required_fields": [
+          "future_series",
+          "replacement_target"
+        ],
+        "validation_rule_ids": [
+          "provisional_requires_future_series",
+          "provisional_requires_replacement_target"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "profile_gate_required": false,
+          "exception_event_required": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "stability_class_id": "experimental",
+        "required_fields": [],
+        "validation_rule_ids": [
+          "experimental_requires_profile_or_entitlement_gate",
+          "experimental_requires_exception_event"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "profile_gate_required": true,
+          "exception_event_required": true
+        }
+      }
+    ],
+    "extensions": {
+      "source": "META-STABILITY-0"
+    }
+  }
+}

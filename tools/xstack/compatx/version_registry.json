@@ -3584,6 +3584,13 @@
         "1.0.0"
       ]
     },
+    "stability_marker": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "state_machine": {
       "current_version": "1.0.0",
       "migrations": {},
