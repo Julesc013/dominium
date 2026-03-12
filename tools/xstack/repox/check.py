@@ -1078,6 +1078,14 @@ SOL2_VIEW_ENGINE_PATH = "src/astro/views/orbit_view_engine.py"
 SOL2_REPLAY_TOOL_PATH = "tools/astro/tool_replay_orbit_view.py"
 SOL2_RUNTIME_COMMON_PATH = "tools/astro/sol2_runtime_common.py"
 SOL2_AUDIT_COMMON_PATH = "tools/astro/sol2_audit_common.py"
+GAL0_RETRO_AUDIT_PATH = "docs/audit/GAL0_RETRO_AUDIT.md"
+GAL0_DOCTRINE_PATH = "docs/worldgen/GALAXY_METADATA_PROXIES.md"
+GAL0_REGION_REGISTRY_PATH = "data/registries/galactic_region_registry.json"
+GAL0_ENGINE_PATH = "src/worldgen/galaxy/galaxy_proxy_field_engine.py"
+GAL0_PROBE_PATH = "tools/worldgen/gal0_probe.py"
+GAL0_AUDIT_COMMON_PATH = "tools/worldgen/gal0_audit_common.py"
+GAL0_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_galaxy_proxies.py"
+GAL0_BASELINE_PATH = "docs/audit/GALAXY_PROXY_BASELINE.md"
 
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
@@ -8016,6 +8024,103 @@ def _append_sol2_findings(
                 snippet=str(violation.get("snippet", ""))[:160],
                 message=str(violation.get("message", "")).strip() or "N-body solver usage detected in SOL2 runtime",
                 rule_id=nbody_rule_id,
+            )
+        )
+
+
+def _append_gal0_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    stability_rule_id = "INV-GAL-PROXIES-PROVISIONAL-TAGGED"
+    catalog_rule_id = "INV-NO-CATALOG-DEPENDENCY"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (GAL0_RETRO_AUDIT_PATH, "GAL0 retro audit is required", stability_rule_id),
+        (GAL0_DOCTRINE_PATH, "GAL0 doctrine is required", stability_rule_id),
+        (GAL0_REGION_REGISTRY_PATH, "galactic region registry is required", stability_rule_id),
+        (GAL0_ENGINE_PATH, "galaxy proxy field engine is required", stability_rule_id),
+        (GAL0_PROBE_PATH, "GAL0 probe tooling is required", stability_rule_id),
+        (GAL0_AUDIT_COMMON_PATH, "GAL0 audit common tooling is required", catalog_rule_id),
+        (GAL0_REPLAY_TOOL_PATH, "GAL0 replay tool is required", stability_rule_id),
+        ("tools/auditx/analyzers/e463_untagged_stub_smell.py", "UntaggedStubSmell analyzer is required", stability_rule_id),
+        ("tools/auditx/analyzers/e464_catalog_dependency_smell.py", "CatalogDependencySmell analyzer is required", catalog_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, GAL0_DOCTRINE_PATH).lower()
+    for token, message in (
+        ("field.stellar_density_proxy", "GAL0 doctrine must define field.stellar_density_proxy"),
+        ("field.metallicity_proxy", "GAL0 doctrine must define field.metallicity_proxy"),
+        ("field.radiation_background_proxy", "GAL0 doctrine must define field.radiation_background_proxy"),
+        ("field.galactic_region_id", "GAL0 doctrine must define field.galactic_region_id"),
+        ("provisional", "GAL0 doctrine must declare the proxy layer provisional"),
+        ("dynamic galaxy domain packs", "GAL0 doctrine must point to dynamic galaxy domain packs as replacement"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=GAL0_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=stability_rule_id,
+            )
+        )
+
+    try:
+        from tools.worldgen.gal0_audit_common import scan_gal0_catalog_dependencies, scan_gal0_untagged_stubs
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=GAL0_AUDIT_COMMON_PATH,
+                line_number=1,
+                snippet="scan_gal0_untagged_stubs",
+                message="unable to import GAL0 audit helpers ({})".format(str(exc)),
+                rule_id=stability_rule_id,
+            )
+        )
+        return
+
+    for row in scan_gal0_untagged_stubs(repo_root):
+        violation = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("token", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "GAL0 provisional tagging violation detected",
+                rule_id=stability_rule_id,
+            )
+        )
+
+    for row in scan_gal0_catalog_dependencies(repo_root):
+        violation = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("token", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "GAL0 catalog dependency detected",
+                rule_id=catalog_rule_id,
             )
         )
 
@@ -31534,6 +31639,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_sol2_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_gal0_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
