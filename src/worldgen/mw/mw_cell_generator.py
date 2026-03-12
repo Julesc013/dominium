@@ -132,6 +132,10 @@ def _position_pc(cell_key: Mapping[str, object], cell_size_pc: int) -> Tuple[int
     return (x_idx * scale, y_idx * scale, z_idx * scale)
 
 
+def mw_cell_position_pc(cell_key: Mapping[str, object], cell_size_pc: int) -> Tuple[int, int, int]:
+    return _position_pc(cell_key, cell_size_pc)
+
+
 def _angle_sector_8(x_pc: int, y_pc: int) -> int:
     if x_pc == 0 and y_pc == 0:
         return 0
@@ -200,6 +204,25 @@ def _density_permille(priors_row: Mapping[str, object], *, radius_pc: int, z_pc:
     return max(0, halo_floor_permille + disk_permille + arm_bonus_permille + bulge_permille)
 
 
+def mw_density_permille(
+    priors_row: Mapping[str, object],
+    *,
+    radius_pc: int,
+    z_pc: int,
+    x_pc: int,
+    y_pc: int,
+    cell_size_pc: int,
+) -> int:
+    return _density_permille(
+        priors_row,
+        radius_pc=radius_pc,
+        z_pc=z_pc,
+        x_pc=x_pc,
+        y_pc=y_pc,
+        cell_size_pc=cell_size_pc,
+    )
+
+
 def _expected_system_count_milli(priors_row: Mapping[str, object], *, density_permille: int) -> int:
     row = _as_map(priors_row)
     density_params = _as_map(row.get("density_params"))
@@ -234,6 +257,10 @@ def _metallicity_permille(priors_row: Mapping[str, object], radius_pc: int) -> i
     return max(floor_permille, min(ceiling_permille, value))
 
 
+def mw_metallicity_permille(priors_row: Mapping[str, object], radius_pc: int) -> int:
+    return _metallicity_permille(priors_row, radius_pc)
+
+
 def _habitability_bias_permille(priors_row: Mapping[str, object], *, radius_pc: int, z_pc: int, metallicity_permille: int) -> int:
     star_priors = _as_map(_as_map(_as_map(priors_row).get("extensions")).get("star_formation_priors"))
     center_pc = max(0, _as_int(star_priors.get("habitable_band_center_pc"), 8000))
@@ -244,6 +271,21 @@ def _habitability_bias_permille(priors_row: Mapping[str, object], *, radius_pc: 
     vertical_bias = max(0, 1000 - min(1000, (abs(int(z_pc)) * 1000) // vertical_half_thickness_pc))
     metallicity_bias = max(0, 1000 - min(1000, abs(int(metallicity_permille) - 1000)))
     return max(0, (radial_bias * vertical_bias * metallicity_bias) // 1000000)
+
+
+def mw_habitability_bias_permille(
+    priors_row: Mapping[str, object],
+    *,
+    radius_pc: int,
+    z_pc: int,
+    metallicity_permille: int,
+) -> int:
+    return _habitability_bias_permille(
+        priors_row,
+        radius_pc=radius_pc,
+        z_pc=z_pc,
+        metallicity_permille=metallicity_permille,
+    )
 
 
 def _pc_to_mm(value_pc: int) -> int:
@@ -563,9 +605,9 @@ def generate_mw_cell_payload(
 
     cell_size_pc = max(1, _as_int(priors_row.get("cell_size_pc"), 10))
     max_systems_per_cell = max(0, _as_int(priors_row.get("max_systems_per_cell"), 24))
-    x_pc, y_pc, z_pc = _position_pc(cell_key, cell_size_pc)
+    x_pc, y_pc, z_pc = mw_cell_position_pc(cell_key, cell_size_pc)
     radius_pc = isqrt((abs(int(x_pc)) ** 2) + (abs(int(y_pc)) ** 2))
-    density_permille = _density_permille(
+    density_permille = mw_density_permille(
         priors_row,
         radius_pc=radius_pc,
         z_pc=z_pc,
@@ -586,8 +628,8 @@ def generate_mw_cell_payload(
         system_count = 1
         count_resolution = "anchor_minimum"
         sol_anchor_forced_minimum = True
-    metallicity_permille = _metallicity_permille(priors_row, radius_pc)
-    habitability_bias_permille = _habitability_bias_permille(
+    metallicity_permille = mw_metallicity_permille(priors_row, radius_pc)
+    habitability_bias_permille = mw_habitability_bias_permille(
         priors_row,
         radius_pc=radius_pc,
         z_pc=z_pc,
