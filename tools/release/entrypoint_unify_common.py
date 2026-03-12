@@ -10,7 +10,7 @@ from src.appshell.compat_adapter import build_version_payload
 from src.appshell.product_bootstrap import build_product_bootstrap_context, resolve_mode_request
 from src.appshell.product_bootstrap import flag_migration_rows
 from src.appshell.ui_mode_selector import select_ui_mode
-from src.platform.platform_caps_probe import probe_platform_caps
+from src.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -303,7 +303,7 @@ def bootstrap_context_for_product(repo_root: str, product_id: str, raw_args: Ite
         repo_root,
         product_id=product_token,
         mode_resolution=mode_resolution,
-        probe_override=probe_platform_caps(
+        probe_override=probe_platform_descriptor(
             repo_root,
             product_id=product_token,
             stdin_tty=False,

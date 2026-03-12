@@ -7,7 +7,7 @@ import os
 from typing import Iterable, Mapping, Sequence
 
 from src.compat.capability_negotiation import fallback_map_rows_by_capability_id
-from src.platform.platform_caps_probe import probe_platform_caps
+from src.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -154,7 +154,7 @@ def _fallback_modes_for_capability(repo_root: str, capability_id: str) -> tuple[
             if token == _token(fallback_capability_id):
                 modes.append(mode_id)
                 break
-    return _sorted_tokens(modes), _token(extensions.get("user_message_key"))
+    return _ordered_tokens(modes), _token(extensions.get("user_message_key"))
 
 
 def _refusal(
@@ -349,7 +349,7 @@ def select_ui_mode(
     probe = (
         dict(probe_override)
         if isinstance(probe_override, Mapping)
-        else probe_platform_caps(repo_root_abs, product_id=product_token)
+        else probe_platform_descriptor(repo_root_abs, product_id=product_token)
     )
     context_kind = _token(probe.get("context_kind")) or "headless"
 

@@ -6,7 +6,7 @@ import os
 from typing import Mapping
 
 from src.appshell.ui_mode_selector import load_ui_mode_policy_registry, select_ui_mode
-from src.platform.platform_caps_probe import probe_platform_caps
+from src.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -39,7 +39,7 @@ def build_test_probe(
     rendered: bool,
     tui: bool,
 ) -> dict:
-    return probe_platform_caps(
+    return probe_platform_descriptor(
         repo_root,
         product_id=product_id,
         platform_id=platform_id,
@@ -228,7 +228,7 @@ def render_ui_mode_resolution_doc(report: Mapping[str, object]) -> str:
         "## Decision Tree",
         "",
         "1. Parse explicit `--mode` or supported legacy `--ui` migration.",
-        "2. Probe presentation-only host capabilities through `src/platform/platform_caps_probe.py`.",
+        "2. Probe presentation-only host capabilities through `src/platform/platform_probe.py`.",
         "3. If an explicit mode was requested, honor it when available; otherwise degrade through the CAP-NEG fallback map.",
         "4. Without an explicit mode, use the product policy order for the detected context:",
         "   - `tty`: prefer interactive console surfaces.",
@@ -332,7 +332,7 @@ def render_ui_mode_resolution_baseline(report: Mapping[str, object]) -> str:
             "## Readiness",
             "",
             "- The governed selector is centralized in `src/appshell/ui_mode_selector.py`.",
-            "- The presentation-only probe is isolated in `src/platform/platform_caps_probe.py`.",
+            "- The presentation-only probe is isolated in `src/platform/platform_probe.py`.",
             "- The selector is ready for UI-RECONCILE-0 and PLATFORM-FORMALIZE-0 without changing simulation truth.",
         )
     )

@@ -1060,7 +1060,14 @@ UI_MODE_RESOLUTION_COMMON_PATH = "tools/release/ui_mode_resolution_common.py"
 UI_MODE_RESOLUTION_DOC_PATH = "docs/appshell/UI_MODE_RESOLUTION.md"
 UI_MODE_RESOLUTION_BASELINE_PATH = "docs/audit/UI_MODE_RESOLUTION_BASELINE.md"
 UI_MODE_POLICY_REGISTRY_PATH = "data/registries/ui_mode_policy_registry.json"
+PLATFORM_CAPABILITY_REGISTRY_PATH = "data/registries/platform_capability_registry.json"
+PLATFORM_PROBE_PATH = "src/platform/platform_probe.py"
 PLATFORM_CAPS_PROBE_PATH = "src/platform/platform_caps_probe.py"
+PLATFORM_FORMALIZE_TOOL_PATH = "tools/release/tool_run_platform_formalize.py"
+PLATFORM_FORMALIZE_COMMON_PATH = "tools/release/platform_formalize_common.py"
+PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
+PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
+PLATFORM_FORMALIZE_REPORT_PATH = "data/audit/platform_formalize_report.json"
 UI_MODE_SELECTOR_PATH = "src/appshell/ui_mode_selector.py"
 UI_RECONCILE_TOOL_PATH = "tools/release/tool_run_ui_reconcile.py"
 UI_RECONCILE_COMMON_PATH = "tools/release/ui_reconcile_common.py"
@@ -8108,7 +8115,7 @@ def _append_ui_mode_resolution_findings(
         (UI_MODE_RESOLUTION_DOC_PATH, "UI mode resolution doctrine is required", "INV-UI-MODE-SELECTOR-SINGLE"),
         (UI_MODE_RESOLUTION_BASELINE_PATH, "UI mode resolution baseline is required", "INV-UI-MODE-LOGGED"),
         (UI_MODE_POLICY_REGISTRY_PATH, "UI mode policy registry is required", "INV-FALLBACK-DETERMINISTIC"),
-        (PLATFORM_CAPS_PROBE_PATH, "platform capability probe is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        (PLATFORM_PROBE_PATH, "platform capability probe is required", "INV-UI-MODE-SELECTOR-SINGLE"),
         (UI_MODE_SELECTOR_PATH, "AppShell UI mode selector is required", "INV-UI-MODE-SELECTOR-SINGLE"),
         ("tools/auditx/analyzers/e475_adhoc_mode_selection_smell.py", "AdHocModeSelectionSmell analyzer is required", "INV-UI-MODE-SELECTOR-SINGLE"),
         ("tools/auditx/analyzers/e476_silent_mode_fallback_smell.py", "SilentModeFallbackSmell analyzer is required", "INV-UI-MODE-LOGGED"),
@@ -8176,6 +8183,112 @@ def _append_ui_mode_resolution_findings(
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "UI mode resolution violation detected",
                 rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-UI-MODE-SELECTOR-SINGLE",
+            )
+        )
+
+
+def _append_platform_formalize_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rules = (
+        "INV-PLATFORM-CAPS-DECLARED",
+        "INV-UI-MODE-SELECTION-USES-PROBE",
+    )
+    required_files = (
+        (PLATFORM_CAPABILITY_REGISTRY_PATH, "platform capability registry is required", "INV-PLATFORM-CAPS-DECLARED"),
+        (PLATFORM_PROBE_PATH, "canonical platform probe is required", "INV-UI-MODE-SELECTION-USES-PROBE"),
+        (PLATFORM_CAPS_PROBE_PATH, "legacy compatibility probe wrapper is required", "INV-UI-MODE-SELECTION-USES-PROBE"),
+        (PLATFORM_FORMALIZE_TOOL_PATH, "platform formalize runner is required", "INV-PLATFORM-CAPS-DECLARED"),
+        (PLATFORM_FORMALIZE_COMMON_PATH, "platform formalize helper is required", "INV-PLATFORM-CAPS-DECLARED"),
+        (PLATFORM_RENDERER_MATRIX_PATH, "platform renderer matrix is required", "INV-PLATFORM-CAPS-DECLARED"),
+        (PLATFORM_FORMALIZE_FINAL_PATH, "platform formalize final report is required", "INV-PLATFORM-CAPS-DECLARED"),
+        (PLATFORM_FORMALIZE_REPORT_PATH, "platform formalize machine-readable report is required", "INV-PLATFORM-CAPS-DECLARED"),
+        ("tools/auditx/analyzers/e479_adhoc_platform_detection_smell.py", "AdHocPlatformDetectionSmell analyzer is required", "INV-UI-MODE-SELECTION-USES-PROBE"),
+        ("tools/xstack/testx/tests/platform_formalize_testlib.py", "platform formalize TestX helper is required", "INV-PLATFORM-CAPS-DECLARED"),
+        ("tools/xstack/testx/tests/test_platform_registry_valid.py", "platform registry TestX coverage is required", "INV-PLATFORM-CAPS-DECLARED"),
+        ("tools/xstack/testx/tests/test_platform_probe_outputs_known_platform_id.py", "platform probe TestX coverage is required", "INV-UI-MODE-SELECTION-USES-PROBE"),
+        ("tools/xstack/testx/tests/test_endpoint_descriptor_includes_platform_caps.py", "endpoint descriptor platform TestX coverage is required", "INV-PLATFORM-CAPS-DECLARED"),
+        ("tools/xstack/testx/tests/test_cross_platform_caps_degrade_consistent.py", "cross-platform degrade TestX coverage is required", "INV-UI-MODE-SELECTION-USES-PROBE"),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    matrix_text = _file_text(repo_root, PLATFORM_RENDERER_MATRIX_PATH).lower()
+    for token, message in (
+        ("# platform renderer matrix", "platform renderer matrix must declare the canonical title"),
+        ("declared vs repo-supported matrix", "platform renderer matrix must compare declared and repo-supported capabilities"),
+    ):
+        if token in matrix_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=PLATFORM_RENDERER_MATRIX_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-PLATFORM-CAPS-DECLARED",
+            )
+        )
+
+    final_text = _file_text(repo_root, PLATFORM_FORMALIZE_FINAL_PATH).lower()
+    for token, message in (
+        ("# platform formalize final", "platform formalize final report must declare the canonical title"),
+        ("## supported platforms", "platform formalize final report must enumerate supported platforms"),
+        ("## deferred platforms", "platform formalize final report must record deferred targets"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=PLATFORM_FORMALIZE_FINAL_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-PLATFORM-CAPS-DECLARED",
+            )
+        )
+
+    try:
+        from tools.release.platform_formalize_common import platform_formalize_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=PLATFORM_FORMALIZE_COMMON_PATH,
+                line_number=1,
+                snippet="platform_formalize_violations",
+                message="unable to import platform formalize helper ({})".format(str(exc)),
+                rule_id="INV-PLATFORM-CAPS-DECLARED",
+            )
+        )
+        return
+
+    for violation in platform_formalize_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "platform formalization violation detected",
+                rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-PLATFORM-CAPS-DECLARED",
             )
         )
 
@@ -32629,6 +32742,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_ui_mode_resolution_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_platform_formalize_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

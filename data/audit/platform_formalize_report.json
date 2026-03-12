@@ -1,0 +1,693 @@
+{
+  "deterministic_fingerprint": "ea0e7a7023a8efffceac1c527f2ec769da2a41db7cc5e09900a3daa9e5cd4e78",
+  "host_probe_rows": [
+    {
+      "available_mode_ids": [
+        "rendered",
+        "tui",
+        "cli"
+      ],
+      "context_kind": "tty",
+      "ipc_transport_ids": [
+        "named_pipe"
+      ],
+      "platform_id": "platform.winnt",
+      "probe_fingerprint": "f5c40b5465522e4abdca267c72e53cf53bcf7a6248a812b30f5de6aaead06a33",
+      "product_id": "client",
+      "renderer_backend_ids": [
+        "null",
+        "software",
+        "opengl"
+      ],
+      "supported_mode_ids": [
+        "rendered",
+        "tui",
+        "cli"
+      ]
+    },
+    {
+      "available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "context_kind": "tty",
+      "ipc_transport_ids": [
+        "named_pipe"
+      ],
+      "platform_id": "platform.winnt",
+      "probe_fingerprint": "9e244271f722dfa0852f7e032fd194ac1cafdf9da441aebd7fe8c2e88d2b88bc",
+      "product_id": "launcher",
+      "renderer_backend_ids": [
+        "null",
+        "software",
+        "opengl"
+      ],
+      "supported_mode_ids": [
+        "tui",
+        "cli"
+      ]
+    },
+    {
+      "available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "context_kind": "tty",
+      "ipc_transport_ids": [
+        "named_pipe"
+      ],
+      "platform_id": "platform.winnt",
+      "probe_fingerprint": "f83794314908da056ab565b0443d61f6c1a66306512bfa5699312c045d3cfb94",
+      "product_id": "setup",
+      "renderer_backend_ids": [
+        "null",
+        "software",
+        "opengl"
+      ],
+      "supported_mode_ids": [
+        "tui",
+        "cli"
+      ]
+    },
+    {
+      "available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "context_kind": "tty",
+      "ipc_transport_ids": [
+        "named_pipe"
+      ],
+      "platform_id": "platform.winnt",
+      "probe_fingerprint": "11a11b4fdfce186c5a3eaf6e9bebcf1d723894c1f8057ec4e0bfdf04562f7736",
+      "product_id": "server",
+      "renderer_backend_ids": [
+        "null",
+        "software",
+        "opengl"
+      ],
+      "supported_mode_ids": [
+        "tui",
+        "cli"
+      ]
+    }
+  ],
+  "matrix_rows": [
+    {
+      "client_available_mode_ids": [
+        "cli"
+      ],
+      "client_renderer_backend_ids": [
+        "null",
+        "software"
+      ],
+      "client_supported_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "declared_ipc": {
+        "local_socket": false,
+        "named_pipe": false
+      },
+      "declared_renderers": {
+        "directx": false,
+        "metal": false,
+        "null": true,
+        "opengl": false,
+        "software": true,
+        "vulkan": false
+      },
+      "declared_ui": {
+        "cli": true,
+        "os_native": true,
+        "rendered": false,
+        "tui": true
+      },
+      "display_name": "Windows 9x",
+      "ipc_transport_ids": [],
+      "launcher_available_mode_ids": [
+        "cli"
+      ],
+      "launcher_supported_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "platform_id": "platform.win9x",
+      "platform_probe_fingerprint": "bcaa40fc95d237832355b53a55abdc2c75cb65c7bfd74b8cbd4351b0b4570f50",
+      "platform_registry_row_hash": "8aad7dd10a5d76e27d66b3dd6237ae7f347611f7a4d2c6c784d68193b041f7eb",
+      "server_tty_available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "support_tier": "subset"
+    },
+    {
+      "client_available_mode_ids": [
+        "rendered",
+        "cli"
+      ],
+      "client_renderer_backend_ids": [
+        "null",
+        "software",
+        "opengl"
+      ],
+      "client_supported_mode_ids": [
+        "rendered",
+        "tui",
+        "cli"
+      ],
+      "declared_ipc": {
+        "local_socket": false,
+        "named_pipe": true
+      },
+      "declared_renderers": {
+        "directx": false,
+        "metal": false,
+        "null": true,
+        "opengl": true,
+        "software": true,
+        "vulkan": false
+      },
+      "declared_ui": {
+        "cli": true,
+        "os_native": true,
+        "rendered": true,
+        "tui": true
+      },
+      "display_name": "Windows NT",
+      "ipc_transport_ids": [
+        "named_pipe"
+      ],
+      "launcher_available_mode_ids": [
+        "cli"
+      ],
+      "launcher_supported_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "platform_id": "platform.winnt",
+      "platform_probe_fingerprint": "4bc44ca4792aaf62c5980f0426892ff12eb03772f6d119926ac716adcd749c1a",
+      "platform_registry_row_hash": "83796b5dfd49e241e57aa518bc72b64d44ae0cbdc7878bbfe0fd579b0c226a9e",
+      "server_tty_available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "support_tier": "full"
+    },
+    {
+      "client_available_mode_ids": [
+        "cli"
+      ],
+      "client_renderer_backend_ids": [
+        "null",
+        "software"
+      ],
+      "client_supported_mode_ids": [
+        "cli"
+      ],
+      "declared_ipc": {
+        "local_socket": false,
+        "named_pipe": false
+      },
+      "declared_renderers": {
+        "directx": false,
+        "metal": false,
+        "null": true,
+        "opengl": false,
+        "software": true,
+        "vulkan": false
+      },
+      "declared_ui": {
+        "cli": true,
+        "os_native": true,
+        "rendered": false,
+        "tui": false
+      },
+      "display_name": "macOS Classic",
+      "ipc_transport_ids": [],
+      "launcher_available_mode_ids": [
+        "cli"
+      ],
+      "launcher_supported_mode_ids": [
+        "cli"
+      ],
+      "platform_id": "platform.macos_classic",
+      "platform_probe_fingerprint": "207fe1877910b85f337f9a06ab1f89a753627f85060bb14b9f808bcbf3dbedc2",
+      "platform_registry_row_hash": "dbc275f4be0b3403c77321d54db00e6b4c670833b495d77a71775adcff73d280",
+      "server_tty_available_mode_ids": [
+        "cli"
+      ],
+      "support_tier": "subset"
+    },
+    {
+      "client_available_mode_ids": [
+        "rendered",
+        "cli"
+      ],
+      "client_renderer_backend_ids": [
+        "null",
+        "software",
+        "opengl"
+      ],
+      "client_supported_mode_ids": [
+        "rendered",
+        "tui",
+        "cli"
+      ],
+      "declared_ipc": {
+        "local_socket": true,
+        "named_pipe": false
+      },
+      "declared_renderers": {
+        "directx": false,
+        "metal": false,
+        "null": true,
+        "opengl": true,
+        "software": true,
+        "vulkan": false
+      },
+      "declared_ui": {
+        "cli": true,
+        "os_native": true,
+        "rendered": true,
+        "tui": true
+      },
+      "display_name": "macOS Cocoa",
+      "ipc_transport_ids": [],
+      "launcher_available_mode_ids": [
+        "cli"
+      ],
+      "launcher_supported_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "platform_id": "platform.macos_cocoa",
+      "platform_probe_fingerprint": "57aa346da8316c801db34a942655c8729bb107ba7afa2e291cc868838d3e0474",
+      "platform_registry_row_hash": "dd4f7dac9339e15eefcde4f37bd7a25153c36ed8e5cc8340790058d9e7282cb6",
+      "server_tty_available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "support_tier": "full"
+    },
+    {
+      "client_available_mode_ids": [
+        "rendered",
+        "cli"
+      ],
+      "client_renderer_backend_ids": [
+        "null",
+        "software",
+        "opengl"
+      ],
+      "client_supported_mode_ids": [
+        "rendered",
+        "tui",
+        "cli"
+      ],
+      "declared_ipc": {
+        "local_socket": true,
+        "named_pipe": false
+      },
+      "declared_renderers": {
+        "directx": false,
+        "metal": false,
+        "null": true,
+        "opengl": true,
+        "software": true,
+        "vulkan": false
+      },
+      "declared_ui": {
+        "cli": true,
+        "os_native": true,
+        "rendered": true,
+        "tui": true
+      },
+      "display_name": "Linux / GTK",
+      "ipc_transport_ids": [],
+      "launcher_available_mode_ids": [
+        "cli"
+      ],
+      "launcher_supported_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "platform_id": "platform.linux_gtk",
+      "platform_probe_fingerprint": "deb6503fed8e918f2c1b736f85bd79c1e99b4002066f4bce15973d616c492a54",
+      "platform_registry_row_hash": "2dba12ff879ab92e34f1ef1c572c0363af13d77a690e3b4ab6bac4df408de207",
+      "server_tty_available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "support_tier": "full"
+    },
+    {
+      "client_available_mode_ids": [
+        "cli"
+      ],
+      "client_renderer_backend_ids": [
+        "null"
+      ],
+      "client_supported_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "declared_ipc": {
+        "local_socket": true,
+        "named_pipe": false
+      },
+      "declared_renderers": {
+        "directx": false,
+        "metal": false,
+        "null": true,
+        "opengl": false,
+        "software": false,
+        "vulkan": false
+      },
+      "declared_ui": {
+        "cli": true,
+        "os_native": false,
+        "rendered": false,
+        "tui": true
+      },
+      "display_name": "POSIX Minimal",
+      "ipc_transport_ids": [],
+      "launcher_available_mode_ids": [
+        "cli"
+      ],
+      "launcher_supported_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "platform_id": "platform.posix_min",
+      "platform_probe_fingerprint": "6db941056f23d108fc680d016740626bea26fcd367b0c1a123e14ed544486af0",
+      "platform_registry_row_hash": "003228664c728786d17f0aa4b1c633485fb7c9945d2162b4cb170b30ea3d6300",
+      "server_tty_available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "support_tier": "subset"
+    },
+    {
+      "client_available_mode_ids": [
+        "rendered",
+        "cli"
+      ],
+      "client_renderer_backend_ids": [
+        "null",
+        "software",
+        "opengl"
+      ],
+      "client_supported_mode_ids": [
+        "rendered",
+        "tui",
+        "cli"
+      ],
+      "declared_ipc": {
+        "local_socket": false,
+        "named_pipe": false
+      },
+      "declared_renderers": {
+        "directx": false,
+        "metal": false,
+        "null": true,
+        "opengl": true,
+        "software": true,
+        "vulkan": false
+      },
+      "declared_ui": {
+        "cli": true,
+        "os_native": false,
+        "rendered": true,
+        "tui": true
+      },
+      "display_name": "SDL Stub",
+      "ipc_transport_ids": [],
+      "launcher_available_mode_ids": [
+        "cli"
+      ],
+      "launcher_supported_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "platform_id": "platform.sdl_stub",
+      "platform_probe_fingerprint": "baebe077af6c6c1bb66133095db7eaef886088035d94be22cdbf987fc16a2a70",
+      "platform_registry_row_hash": "b26e65fd50efa6f1d46ff288f5de5fcfd29250958c675d7ef991ccf46a727e43",
+      "server_tty_available_mode_ids": [
+        "tui",
+        "cli"
+      ],
+      "support_tier": "future_stub"
+    }
+  ],
+  "registry_rows": [
+    {
+      "cap.fs.symlink": false,
+      "cap.ipc.local_socket": false,
+      "cap.ipc.named_pipe": false,
+      "cap.renderer.directx": false,
+      "cap.renderer.metal": false,
+      "cap.renderer.null": true,
+      "cap.renderer.opengl": false,
+      "cap.renderer.software": true,
+      "cap.renderer.vulkan": false,
+      "cap.ui.cli": true,
+      "cap.ui.os_native": true,
+      "cap.ui.rendered": false,
+      "cap.ui.tui": true,
+      "deterministic_fingerprint": "10b15c2dbf63af56e1281a96c884ce72f023c88ff3496e8494cbbcb317d86e05",
+      "display_name": "Windows 9x",
+      "extensions": {
+        "era_family": "legacy_subset",
+        "notes": "Windows 9x remains a CLI/TUI-first target with optional native-shell preparation only.",
+        "official.source": "PLATFORM-FORMALIZE-0"
+      },
+      "os_family_id": "windows",
+      "platform_id": "platform.win9x",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+        "extensions": {},
+        "future_series": "APPSHELL",
+        "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+        "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "support_tier": "subset"
+    },
+    {
+      "cap.fs.symlink": true,
+      "cap.ipc.local_socket": false,
+      "cap.ipc.named_pipe": true,
+      "cap.renderer.directx": false,
+      "cap.renderer.metal": false,
+      "cap.renderer.null": true,
+      "cap.renderer.opengl": true,
+      "cap.renderer.software": true,
+      "cap.renderer.vulkan": false,
+      "cap.ui.cli": true,
+      "cap.ui.os_native": true,
+      "cap.ui.rendered": true,
+      "cap.ui.tui": true,
+      "deterministic_fingerprint": "787bb52d1a37c01795376fef67438c92ec154a33074bf97e34ac068a8d631036",
+      "display_name": "Windows NT",
+      "extensions": {
+        "era_family": "current_full",
+        "notes": "Windows NT is the primary Win32 family with optional native shell support and software/OpenGL rendering.",
+        "official.source": "PLATFORM-FORMALIZE-0"
+      },
+      "os_family_id": "windows",
+      "platform_id": "platform.winnt",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+        "extensions": {},
+        "future_series": "APPSHELL",
+        "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+        "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "support_tier": "full"
+    },
+    {
+      "cap.fs.symlink": false,
+      "cap.ipc.local_socket": false,
+      "cap.ipc.named_pipe": false,
+      "cap.renderer.directx": false,
+      "cap.renderer.metal": false,
+      "cap.renderer.null": true,
+      "cap.renderer.opengl": false,
+      "cap.renderer.software": true,
+      "cap.renderer.vulkan": false,
+      "cap.ui.cli": true,
+      "cap.ui.os_native": true,
+      "cap.ui.rendered": false,
+      "cap.ui.tui": false,
+      "deterministic_fingerprint": "e38fd16661c812ec76b0eba79da23723fe842628b06d9dc64316e4df30144710",
+      "display_name": "macOS Classic",
+      "extensions": {
+        "era_family": "legacy_subset",
+        "notes": "Classic Mac support is intentionally conservative and relies on CLI-equivalent portability plus future adapter work.",
+        "official.source": "PLATFORM-FORMALIZE-0"
+      },
+      "os_family_id": "macos",
+      "platform_id": "platform.macos_classic",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+        "extensions": {},
+        "future_series": "APPSHELL",
+        "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+        "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "support_tier": "subset"
+    },
+    {
+      "cap.fs.symlink": true,
+      "cap.ipc.local_socket": true,
+      "cap.ipc.named_pipe": false,
+      "cap.renderer.directx": false,
+      "cap.renderer.metal": false,
+      "cap.renderer.null": true,
+      "cap.renderer.opengl": true,
+      "cap.renderer.software": true,
+      "cap.renderer.vulkan": false,
+      "cap.ui.cli": true,
+      "cap.ui.os_native": true,
+      "cap.ui.rendered": true,
+      "cap.ui.tui": true,
+      "deterministic_fingerprint": "f28d8d0be7a1d7e240e0d5adb5bf0f9aa80474eb679858dbdb1acfb3afca1305",
+      "display_name": "macOS Cocoa",
+      "extensions": {
+        "era_family": "current_full",
+        "notes": "Cocoa hosts the full AppShell ladder today; Metal remains deferred until a real backend lands.",
+        "official.source": "PLATFORM-FORMALIZE-0"
+      },
+      "os_family_id": "macos",
+      "platform_id": "platform.macos_cocoa",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+        "extensions": {},
+        "future_series": "APPSHELL",
+        "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+        "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "support_tier": "full"
+    },
+    {
+      "cap.fs.symlink": true,
+      "cap.ipc.local_socket": true,
+      "cap.ipc.named_pipe": false,
+      "cap.renderer.directx": false,
+      "cap.renderer.metal": false,
+      "cap.renderer.null": true,
+      "cap.renderer.opengl": true,
+      "cap.renderer.software": true,
+      "cap.renderer.vulkan": false,
+      "cap.ui.cli": true,
+      "cap.ui.os_native": true,
+      "cap.ui.rendered": true,
+      "cap.ui.tui": true,
+      "deterministic_fingerprint": "a4fc00bdd93e93b0996c68af93623c7190dab742f729adda8b0687d395d21552",
+      "display_name": "Linux / GTK",
+      "extensions": {
+        "era_family": "current_full",
+        "notes": "Linux/GTK is the POSIX-first full surface with local sockets, symlinks, and rendered-client support.",
+        "official.source": "PLATFORM-FORMALIZE-0"
+      },
+      "os_family_id": "linux",
+      "platform_id": "platform.linux_gtk",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+        "extensions": {},
+        "future_series": "APPSHELL",
+        "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+        "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "support_tier": "full"
+    },
+    {
+      "cap.fs.symlink": true,
+      "cap.ipc.local_socket": true,
+      "cap.ipc.named_pipe": false,
+      "cap.renderer.directx": false,
+      "cap.renderer.metal": false,
+      "cap.renderer.null": true,
+      "cap.renderer.opengl": false,
+      "cap.renderer.software": false,
+      "cap.renderer.vulkan": false,
+      "cap.ui.cli": true,
+      "cap.ui.os_native": false,
+      "cap.ui.rendered": false,
+      "cap.ui.tui": true,
+      "deterministic_fingerprint": "8df22cd00f7fc8b80272a9e765ba90b68ab2e9b22b5409b4e8cc2cc23e522c8a",
+      "display_name": "POSIX Minimal",
+      "extensions": {
+        "era_family": "portable_subset",
+        "notes": "POSIX minimal is the portability floor: CLI/TUI, local sockets, and no window-system guarantees.",
+        "official.source": "PLATFORM-FORMALIZE-0"
+      },
+      "os_family_id": "posix",
+      "platform_id": "platform.posix_min",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+        "extensions": {},
+        "future_series": "APPSHELL",
+        "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+        "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "support_tier": "subset"
+    },
+    {
+      "cap.fs.symlink": false,
+      "cap.ipc.local_socket": false,
+      "cap.ipc.named_pipe": false,
+      "cap.renderer.directx": false,
+      "cap.renderer.metal": false,
+      "cap.renderer.null": true,
+      "cap.renderer.opengl": true,
+      "cap.renderer.software": true,
+      "cap.renderer.vulkan": false,
+      "cap.ui.cli": true,
+      "cap.ui.os_native": false,
+      "cap.ui.rendered": true,
+      "cap.ui.tui": true,
+      "deterministic_fingerprint": "04eaf71747c93bf10079fdb51174a0439f3bf3554aa3b9ad665d2b6e08997e4b",
+      "display_name": "SDL Stub",
+      "extensions": {
+        "era_family": "future_stub",
+        "notes": "SDL remains a future portable windowing surface and is intentionally capability-declared without claiming an active adapter.",
+        "official.source": "PLATFORM-FORMALIZE-0"
+      },
+      "os_family_id": "sdl",
+      "platform_id": "platform.sdl_stub",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+        "extensions": {},
+        "future_series": "APPSHELL",
+        "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+        "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "support_tier": "future_stub"
+    }
+  ],
+  "report_id": "platform.formalize.v1",
+  "result": "complete",
+  "violations": []
+}

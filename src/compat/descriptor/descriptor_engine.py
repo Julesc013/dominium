@@ -13,6 +13,7 @@ from src.compat.capability_negotiation import (
     product_default_degrade_ladders,
     semantic_contract_rows_by_category,
 )
+from src.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -186,7 +187,14 @@ def product_descriptor_bin_names(repo_root: str) -> List[str]:
     return sorted(set(out))
 
 
-def build_product_descriptor(repo_root: str, *, product_id: str, product_version: str = "") -> dict:
+def build_product_descriptor(
+    repo_root: str,
+    *,
+    product_id: str,
+    product_version: str = "",
+    platform_id: str = "",
+    platform_descriptor_override: Mapping[str, object] | None = None,
+) -> dict:
     product_rows, error = _product_rows_by_id(repo_root)
     if error:
         raise ValueError("product registry missing: {}".format(error))
@@ -219,6 +227,15 @@ def build_product_descriptor(repo_root: str, *, product_id: str, product_version
             "official.product_registry_row_hash": canonical_sha256(product_row),
         }
     )
+    platform_descriptor = (
+        dict(platform_descriptor_override)
+        if isinstance(platform_descriptor_override, Mapping)
+        else probe_platform_descriptor(repo_root, product_id=str(product_id).strip(), platform_id=str(platform_id).strip())
+    )
+    descriptor_extensions["official.platform_id"] = str(platform_descriptor.get("platform_id", "")).strip()
+    descriptor_extensions["official.platform_descriptor_hash"] = str(platform_descriptor.get("deterministic_fingerprint", "")).strip()
+    descriptor_extensions["official.platform_capability_ids"] = list(platform_descriptor.get("supported_capability_ids") or [])
+    descriptor_extensions["official.platform_descriptor"] = dict(platform_descriptor)
 
     contract_ranges = list(_as_list(defaults_row.get("semantic_contract_versions_supported")))
     if not contract_ranges:
@@ -229,9 +246,18 @@ def build_product_descriptor(repo_root: str, *, product_id: str, product_version
         product_version=resolved_version,
         protocol_versions_supported=_as_list(defaults_row.get("protocol_versions_supported")),
         semantic_contract_versions_supported=contract_ranges,
-        feature_capabilities=_as_list(defaults_row.get("feature_capabilities")),
-        required_capabilities=_as_list(defaults_row.get("required_capabilities")),
-        optional_capabilities=_as_list(defaults_row.get("optional_capabilities")),
+        feature_capabilities=project_feature_capabilities_for_platform(
+            _as_list(defaults_row.get("feature_capabilities")),
+            platform_descriptor=platform_descriptor,
+        ),
+        required_capabilities=project_feature_capabilities_for_platform(
+            _as_list(defaults_row.get("required_capabilities")),
+            platform_descriptor=platform_descriptor,
+        ),
+        optional_capabilities=project_feature_capabilities_for_platform(
+            _as_list(defaults_row.get("optional_capabilities")),
+            platform_descriptor=platform_descriptor,
+        ),
         degrade_ladders=product_default_degrade_ladders(repo_root, str(product_id).strip()) or _as_list(defaults_row.get("degrade_ladders")),
         extensions=descriptor_extensions,
     )
@@ -250,8 +276,22 @@ def write_descriptor_file(path: str, descriptor: Mapping[str, object]) -> str:
     return output_path
 
 
-def emit_product_descriptor(repo_root: str, *, product_id: str, descriptor_file: str = "", product_version: str = "") -> dict:
-    descriptor = build_product_descriptor(repo_root, product_id=str(product_id).strip(), product_version=str(product_version).strip())
+def emit_product_descriptor(
+    repo_root: str,
+    *,
+    product_id: str,
+    descriptor_file: str = "",
+    product_version: str = "",
+    platform_id: str = "",
+    platform_descriptor_override: Mapping[str, object] | None = None,
+) -> dict:
+    descriptor = build_product_descriptor(
+        repo_root,
+        product_id=str(product_id).strip(),
+        product_version=str(product_version).strip(),
+        platform_id=str(platform_id).strip(),
+        platform_descriptor_override=platform_descriptor_override,
+    )
     output_path = ""
     if str(descriptor_file or "").strip():
         output_path = write_descriptor_file(str(descriptor_file), descriptor)

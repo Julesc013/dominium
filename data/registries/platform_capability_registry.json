@@ -1,0 +1,259 @@
+{
+  "schema_id": "dominium.registry.platform_capability_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.platform_capability_registry",
+    "registry_version": "1.0.0",
+    "entries": [
+      {
+        "platform_id": "platform.win9x",
+        "display_name": "Windows 9x",
+        "os_family_id": "windows",
+        "support_tier": "subset",
+        "cap.ui.os_native": true,
+        "cap.ui.rendered": false,
+        "cap.ui.tui": true,
+        "cap.ui.cli": true,
+        "cap.ipc.local_socket": false,
+        "cap.ipc.named_pipe": false,
+        "cap.fs.symlink": false,
+        "cap.renderer.null": true,
+        "cap.renderer.software": true,
+        "cap.renderer.opengl": false,
+        "cap.renderer.directx": false,
+        "cap.renderer.vulkan": false,
+        "cap.renderer.metal": false,
+        "extensions": {
+          "official.source": "PLATFORM-FORMALIZE-0",
+          "era_family": "legacy_subset",
+          "notes": "Windows 9x remains a CLI/TUI-first target with optional native-shell preparation only."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "10b15c2dbf63af56e1281a96c884ce72f023c88ff3496e8494cbbcb317d86e05"
+      },
+      {
+        "platform_id": "platform.winnt",
+        "display_name": "Windows NT",
+        "os_family_id": "windows",
+        "support_tier": "full",
+        "cap.ui.os_native": true,
+        "cap.ui.rendered": true,
+        "cap.ui.tui": true,
+        "cap.ui.cli": true,
+        "cap.ipc.local_socket": false,
+        "cap.ipc.named_pipe": true,
+        "cap.fs.symlink": true,
+        "cap.renderer.null": true,
+        "cap.renderer.software": true,
+        "cap.renderer.opengl": true,
+        "cap.renderer.directx": false,
+        "cap.renderer.vulkan": false,
+        "cap.renderer.metal": false,
+        "extensions": {
+          "official.source": "PLATFORM-FORMALIZE-0",
+          "era_family": "current_full",
+          "notes": "Windows NT is the primary Win32 family with optional native shell support and software/OpenGL rendering."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "787bb52d1a37c01795376fef67438c92ec154a33074bf97e34ac068a8d631036"
+      },
+      {
+        "platform_id": "platform.macos_classic",
+        "display_name": "macOS Classic",
+        "os_family_id": "macos",
+        "support_tier": "subset",
+        "cap.ui.os_native": true,
+        "cap.ui.rendered": false,
+        "cap.ui.tui": false,
+        "cap.ui.cli": true,
+        "cap.ipc.local_socket": false,
+        "cap.ipc.named_pipe": false,
+        "cap.fs.symlink": false,
+        "cap.renderer.null": true,
+        "cap.renderer.software": true,
+        "cap.renderer.opengl": false,
+        "cap.renderer.directx": false,
+        "cap.renderer.vulkan": false,
+        "cap.renderer.metal": false,
+        "extensions": {
+          "official.source": "PLATFORM-FORMALIZE-0",
+          "era_family": "legacy_subset",
+          "notes": "Classic Mac support is intentionally conservative and relies on CLI-equivalent portability plus future adapter work."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "e38fd16661c812ec76b0eba79da23723fe842628b06d9dc64316e4df30144710"
+      },
+      {
+        "platform_id": "platform.macos_cocoa",
+        "display_name": "macOS Cocoa",
+        "os_family_id": "macos",
+        "support_tier": "full",
+        "cap.ui.os_native": true,
+        "cap.ui.rendered": true,
+        "cap.ui.tui": true,
+        "cap.ui.cli": true,
+        "cap.ipc.local_socket": true,
+        "cap.ipc.named_pipe": false,
+        "cap.fs.symlink": true,
+        "cap.renderer.null": true,
+        "cap.renderer.software": true,
+        "cap.renderer.opengl": true,
+        "cap.renderer.directx": false,
+        "cap.renderer.vulkan": false,
+        "cap.renderer.metal": false,
+        "extensions": {
+          "official.source": "PLATFORM-FORMALIZE-0",
+          "era_family": "current_full",
+          "notes": "Cocoa hosts the full AppShell ladder today; Metal remains deferred until a real backend lands."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "f28d8d0be7a1d7e240e0d5adb5bf0f9aa80474eb679858dbdb1acfb3afca1305"
+      },
+      {
+        "platform_id": "platform.linux_gtk",
+        "display_name": "Linux / GTK",
+        "os_family_id": "linux",
+        "support_tier": "full",
+        "cap.ui.os_native": true,
+        "cap.ui.rendered": true,
+        "cap.ui.tui": true,
+        "cap.ui.cli": true,
+        "cap.ipc.local_socket": true,
+        "cap.ipc.named_pipe": false,
+        "cap.fs.symlink": true,
+        "cap.renderer.null": true,
+        "cap.renderer.software": true,
+        "cap.renderer.opengl": true,
+        "cap.renderer.directx": false,
+        "cap.renderer.vulkan": false,
+        "cap.renderer.metal": false,
+        "extensions": {
+          "official.source": "PLATFORM-FORMALIZE-0",
+          "era_family": "current_full",
+          "notes": "Linux/GTK is the POSIX-first full surface with local sockets, symlinks, and rendered-client support."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "a4fc00bdd93e93b0996c68af93623c7190dab742f729adda8b0687d395d21552"
+      },
+      {
+        "platform_id": "platform.posix_min",
+        "display_name": "POSIX Minimal",
+        "os_family_id": "posix",
+        "support_tier": "subset",
+        "cap.ui.os_native": false,
+        "cap.ui.rendered": false,
+        "cap.ui.tui": true,
+        "cap.ui.cli": true,
+        "cap.ipc.local_socket": true,
+        "cap.ipc.named_pipe": false,
+        "cap.fs.symlink": true,
+        "cap.renderer.null": true,
+        "cap.renderer.software": false,
+        "cap.renderer.opengl": false,
+        "cap.renderer.directx": false,
+        "cap.renderer.vulkan": false,
+        "cap.renderer.metal": false,
+        "extensions": {
+          "official.source": "PLATFORM-FORMALIZE-0",
+          "era_family": "portable_subset",
+          "notes": "POSIX minimal is the portability floor: CLI/TUI, local sockets, and no window-system guarantees."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "8df22cd00f7fc8b80272a9e765ba90b68ab2e9b22b5409b4e8cc2cc23e522c8a"
+      },
+      {
+        "platform_id": "platform.sdl_stub",
+        "display_name": "SDL Stub",
+        "os_family_id": "sdl",
+        "support_tier": "future_stub",
+        "cap.ui.os_native": false,
+        "cap.ui.rendered": true,
+        "cap.ui.tui": true,
+        "cap.ui.cli": true,
+        "cap.ipc.local_socket": false,
+        "cap.ipc.named_pipe": false,
+        "cap.fs.symlink": false,
+        "cap.renderer.null": true,
+        "cap.renderer.software": true,
+        "cap.renderer.opengl": true,
+        "cap.renderer.directx": false,
+        "cap.renderer.vulkan": false,
+        "cap.renderer.metal": false,
+        "extensions": {
+          "official.source": "PLATFORM-FORMALIZE-0",
+          "era_family": "future_stub",
+          "notes": "SDL remains a future portable windowing surface and is intentionally capability-declared without claiming an active adapter."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Platform id is frozen for MVP, but the detailed capability matrix remains provisional while adapters and transport coverage are still being formalized.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5ee5d961a20a778aed9774b45580b61d0fb7272020487b8c1d47cc56916ce190",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "04eaf71747c93bf10079fdb51174a0439f3bf3554aa3b9ad665d2b6e08997e4b"
+      }
+    ],
+    "extensions": {
+      "official.source": "PLATFORM-FORMALIZE-0"
+    },
+    "deterministic_fingerprint": "811a35895a822c7cef32d1ec539df4783335c621a05820a8a78a61bdf563027f"
+  }
+}

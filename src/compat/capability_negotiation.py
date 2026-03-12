@@ -6,6 +6,7 @@ import json
 import os
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
+from src.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -418,6 +419,8 @@ def build_default_endpoint_descriptor(
     optional_capabilities: Sequence[object] | None = None,
     allow_read_only: bool = False,
     extensions: Mapping[str, object] | None = None,
+    platform_id: str = "",
+    platform_descriptor_override: Mapping[str, object] | None = None,
 ) -> dict:
     rows_by_id, error = product_rows_by_id(repo_root)
     if error:
@@ -430,14 +433,35 @@ def build_default_endpoint_descriptor(
     merged_extensions.update(_as_map(extensions))
     if allow_read_only:
         merged_extensions["official.compat.read_only_allowed"] = True
+    platform_descriptor = (
+        dict(platform_descriptor_override)
+        if isinstance(platform_descriptor_override, Mapping)
+        else probe_platform_descriptor(repo_root, product_id=str(product_id).strip(), platform_id=str(platform_id).strip())
+    )
+    merged_extensions["official.platform_id"] = str(platform_descriptor.get("platform_id", "")).strip()
+    merged_extensions["official.platform_descriptor_hash"] = str(platform_descriptor.get("deterministic_fingerprint", "")).strip()
+    merged_extensions["official.platform_capability_ids"] = list(platform_descriptor.get("supported_capability_ids") or [])
+    merged_extensions["official.platform_descriptor"] = dict(platform_descriptor)
+    merged_feature_capabilities = list(row.get("default_feature_capabilities") or []) + list(feature_capabilities or [])
+    merged_required_capabilities = list(row.get("default_required_capabilities") or []) + list(required_capabilities or [])
+    merged_optional_capabilities = list(row.get("default_optional_capabilities") or []) + list(optional_capabilities or [])
     return build_endpoint_descriptor(
         product_id=str(product_id),
         product_version=str(product_version),
         protocol_versions_supported=list(row.get("default_protocol_versions_supported") or []),
         semantic_contract_versions_supported=contract_ranges,
-        feature_capabilities=list(row.get("default_feature_capabilities") or []) + list(feature_capabilities or []),
-        required_capabilities=list(row.get("default_required_capabilities") or []) + list(required_capabilities or []),
-        optional_capabilities=list(row.get("default_optional_capabilities") or []) + list(optional_capabilities or []),
+        feature_capabilities=project_feature_capabilities_for_platform(
+            merged_feature_capabilities,
+            platform_descriptor=platform_descriptor,
+        ),
+        required_capabilities=project_feature_capabilities_for_platform(
+            merged_required_capabilities,
+            platform_descriptor=platform_descriptor,
+        ),
+        optional_capabilities=project_feature_capabilities_for_platform(
+            merged_optional_capabilities,
+            platform_descriptor=platform_descriptor,
+        ),
         degrade_ladders=product_default_degrade_ladders(repo_root, str(product_id)),
         extensions=merged_extensions,
     )

@@ -6,7 +6,7 @@ Replacement Target: release-pinned standalone shell and product UI bootstrap con
 
 # UI Mode Resolution Baseline
 
-Fingerprint: `93a160a2e27eb48147a285480bd1e9596333919a389cebcf87f2695e48eb9af5`
+Fingerprint: `e8272bf85ae80a1a0d4f4a8e708cba9503b48c2b08e93bf78c7399eded76aa25`
 
 ## Decision Tree Lock
 
@@ -33,5 +33,5 @@ Fingerprint: `93a160a2e27eb48147a285480bd1e9596333919a389cebcf87f2695e48eb9af5`
 ## Readiness
 
 - The governed selector is centralized in `src/appshell/ui_mode_selector.py`.
-- The presentation-only probe is isolated in `src/platform/platform_caps_probe.py`.
+- The presentation-only probe is isolated in `src/platform/platform_probe.py`.
 - The selector is ready for UI-RECONCILE-0 and PLATFORM-FORMALIZE-0 without changing simulation truth.

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import List
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from ._canonical import canonical_sha256
 
 from .platform_window import detect_platform_id
 

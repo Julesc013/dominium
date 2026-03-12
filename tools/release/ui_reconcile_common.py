@@ -16,7 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.platform.platform_caps_probe import probe_platform_caps  # noqa: E402
+from src.platform.platform_probe import probe_platform_descriptor  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
@@ -256,7 +256,7 @@ def _legacy_surface_paths(repo_root: str) -> list[str]:
 
 
 def _platform_row(repo_root: str, platform_id: str) -> dict:
-    client_gui_probe = probe_platform_caps(
+    client_gui_probe = probe_platform_descriptor(
         repo_root,
         product_id="client",
         platform_id=platform_id,
@@ -268,7 +268,7 @@ def _platform_row(repo_root: str, platform_id: str) -> dict:
         rendered_available=None,
         ncurses_available=True,
     )
-    launcher_gui_probe = probe_platform_caps(
+    launcher_gui_probe = probe_platform_descriptor(
         repo_root,
         product_id="launcher",
         platform_id=platform_id,
@@ -280,7 +280,7 @@ def _platform_row(repo_root: str, platform_id: str) -> dict:
         rendered_available=False,
         ncurses_available=True,
     )
-    setup_gui_probe = probe_platform_caps(
+    setup_gui_probe = probe_platform_descriptor(
         repo_root,
         product_id="setup",
         platform_id=platform_id,
@@ -292,7 +292,7 @@ def _platform_row(repo_root: str, platform_id: str) -> dict:
         rendered_available=False,
         ncurses_available=True,
     )
-    server_tty_probe = probe_platform_caps(
+    server_tty_probe = probe_platform_descriptor(
         repo_root,
         product_id="server",
         platform_id=platform_id,

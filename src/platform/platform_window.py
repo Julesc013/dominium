@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import sys
 
-from tools.xstack.compatx.canonical_json import canonical_sha256
+from ._canonical import canonical_sha256
 
 
 SUPPORTED_PLATFORM_IDS = ("windows", "macos", "linux")
