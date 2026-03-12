@@ -457,6 +457,7 @@ from analyzers import e448_non_canonical_serialization_smell
 from analyzers import e449_missing_stability_marker_smell
 from analyzers import e450_stable_changed_without_contract_bump_smell
 from analyzers import e451_provisional_without_replacement_smell
+from analyzers import e452_mixed_tick_width_smell
 
 
 ANALYZERS = (
@@ -917,6 +918,7 @@ ANALYZERS = (
     e449_missing_stability_marker_smell,
     e450_stable_changed_without_contract_bump_smell,
     e451_provisional_without_replacement_smell,
+    e452_mixed_tick_width_smell,
 )
 
 

@@ -1019,6 +1019,19 @@ META_STABILITY_VALIDATOR_PATH = "src/meta/stability/stability_validator.py"
 META_STABILITY_SCOPE_PATH = "src/meta/stability/stability_scope.py"
 META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_CLASSIFICATION_BASELINE.md"
 
+TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
+TIME_ANCHOR_DOCTRINE_PATH = "docs/time/TIME_ANCHOR_MODEL.md"
+TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "schema/time/tick_t.schema"
+TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "schema/time/epoch_anchor_record.schema"
+TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "schemas/tick_t.schema.json"
+TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH = "schemas/epoch_anchor_record.schema.json"
+TIME_ANCHOR_POLICY_REGISTRY_PATH = "data/registries/time_anchor_policy_registry.json"
+TIME_ANCHOR_TICK_MODULE_PATH = "src/time/tick_t.py"
+TIME_ANCHOR_ENGINE_PATH = "src/time/epoch_anchor_engine.py"
+TIME_ANCHOR_VERIFY_TOOL_PATH = "tools/time/tool_verify_longrun_ticks.py"
+TIME_ANCHOR_COMPACTION_TOOL_PATH = "tools/time/tool_compaction_anchor_check.py"
+TIME_ANCHOR_BASELINE_PATH = "docs/audit/TIME_ANCHOR_BASELINE.md"
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -7322,6 +7335,96 @@ def _append_meta_stability_findings(
                     rule_id=rule_id,
                 )
             )
+
+
+def _append_time_anchor_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rule_id = "INV-TICK-TYPE-64BIT-ENFORCED"
+    required_files = (
+        (TIME_ANCHOR_RETRO_AUDIT_PATH, "TIME-ANCHOR retro audit is required"),
+        (TIME_ANCHOR_DOCTRINE_PATH, "TIME-ANCHOR doctrine is required"),
+        (TIME_ANCHOR_TICK_SCHEMA_DOC_PATH, "tick_t schema law is required"),
+        (TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH, "epoch anchor schema law is required"),
+        (TIME_ANCHOR_TICK_SCHEMA_JSON_PATH, "tick_t JSON schema is required"),
+        (TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH, "epoch anchor JSON schema is required"),
+        (TIME_ANCHOR_POLICY_REGISTRY_PATH, "time anchor policy registry is required"),
+        (TIME_ANCHOR_TICK_MODULE_PATH, "tick_t module is required"),
+        (TIME_ANCHOR_ENGINE_PATH, "epoch anchor engine is required"),
+        (TIME_ANCHOR_VERIFY_TOOL_PATH, "long-run tick verification tool is required"),
+        (TIME_ANCHOR_COMPACTION_TOOL_PATH, "compaction anchor verification tool is required"),
+        ("tools/auditx/analyzers/e452_mixed_tick_width_smell.py", "MixedTickWidthSmell analyzer is required"),
+        ("tools/xstack/testx/tests/test_epoch_anchor_emitted_on_interval.py", "interval anchor TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_anchor_contains_required_hashes.py", "anchor hash TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_compaction_respects_anchor_boundaries.py", "compaction anchor TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_tick_type_64bit_enforced.py", "tick-width enforcement TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_cross_platform_anchor_hash_match.py", "cross-platform anchor TestX coverage is required"),
+        (TIME_ANCHOR_BASELINE_PATH, "TIME-ANCHOR baseline report is required"),
+    )
+    for rel_path, message in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, TIME_ANCHOR_DOCTRINE_PATH).lower()
+    for token, message in (
+        ("uint64", "TIME-ANCHOR doctrine must pin tick_t as uint64"),
+        ("anchor_interval_ticks", "TIME-ANCHOR doctrine must define anchor_interval_ticks"),
+        ("compaction uses anchors as hard boundaries", "TIME-ANCHOR doctrine must anchor compaction boundaries"),
+        ("refusal.time.tick_overflow_imminent", "TIME-ANCHOR doctrine must declare the overflow refusal code"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=TIME_ANCHOR_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.time.time_anchor_common import scan_tick_width_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=TIME_ANCHOR_VERIFY_TOOL_PATH,
+                line_number=1,
+                snippet="scan_tick_width_violations",
+                message="unable to import TIME-ANCHOR tick-width scan ({})".format(str(exc)),
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    for violation in scan_tick_width_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("path", "")).replace("\\", "/"),
+                line_number=int(row.get("line", 0) or 0),
+                snippet=str(row.get("message", ""))[:160],
+                message=str(row.get("message", "")).strip() or "mixed-width tick violation detected",
+                rule_id=rule_id,
+            )
+        )
 
 
 def _append_cross_system_matrix_findings(
@@ -30813,6 +30916,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_meta_stability_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_time_anchor_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

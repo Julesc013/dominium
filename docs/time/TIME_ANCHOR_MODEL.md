@@ -4,7 +4,7 @@ Purpose: define the deterministic long-run tick and epoch-anchor model that prot
 
 ## Canonical Tick
 
-- `tick_t` is canonical unsigned 64-bit integer time.
+- `tick_t` is canonical `uint64` time.
 - `tick_t` starts at `0`.
 - `tick_t` is monotonic.
 - `tick_t` is never derived from wall-clock time.
@@ -38,6 +38,7 @@ The anchor cadence is governed by `data/registries/time_anchor_policy_registry.j
 The canonical MVP policy requires:
 
 - `anchor.interval_ticks = 10000`
+- canonical registry key: `anchor_interval_ticks = 10000`
 - `anchor.emit_on_save = true`
 - `anchor.emit_on_migration = true`
 
@@ -58,6 +59,7 @@ Required rules:
 
 - compaction may only cut between epoch anchors
 - compaction windows must be bounded by anchor IDs
+- compaction uses anchors as hard boundaries
 - compaction outputs must record the lower and upper epoch-anchor IDs for the compacted region
 - replay validation across a compacted region must succeed using those anchors
 
