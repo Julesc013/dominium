@@ -1,0 +1,115 @@
+{
+  "schema_id": "dominium.registry.earth.surface_flag_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.earth.surface_flag_registry",
+    "registry_version": "1.0.0",
+    "surface_flags": [
+      {
+        "schema_version": "1.0.0",
+        "surface_flag_id": "flag.buildable",
+        "bit_mask": 1,
+        "description": "Surface may accept basic construction in the EARTH-10 stub model.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 surface flag registry entries; bit assignments remain loadable but will be replaced by DOM-owned affordance semantics.",
+          "future_series": "DOM",
+          "replacement_target": "Replace EARTH-10 surface flag rows with DOM-owned affordance semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5c8466e7cdfc2d6349eced185d76738325d171d19da40d96df106df47731de27",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "surface_flag_id": "flag.fluid",
+        "bit_mask": 2,
+        "description": "Surface behaves as a fluid-contact stub in the EARTH-10 model.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 surface flag registry entries; bit assignments remain loadable but will be replaced by DOM-owned affordance semantics.",
+          "future_series": "DOM",
+          "replacement_target": "Replace EARTH-10 surface flag rows with DOM-owned affordance semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5c8466e7cdfc2d6349eced185d76738325d171d19da40d96df106df47731de27",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "surface_flag_id": "flag.slippery",
+        "bit_mask": 4,
+        "description": "Surface is traction-reduced in the EARTH-10 stub model.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 surface flag registry entries; bit assignments remain loadable but will be replaced by DOM-owned affordance semantics.",
+          "future_series": "DOM",
+          "replacement_target": "Replace EARTH-10 surface flag rows with DOM-owned affordance semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5c8466e7cdfc2d6349eced185d76738325d171d19da40d96df106df47731de27",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "surface_flag_id": "flag.hazardous",
+        "bit_mask": 8,
+        "description": "Reserved hazardous surface flag for later hazard-domain integration.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reserved_default_unset": true,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 surface flag registry entries; bit assignments remain loadable but will be replaced by DOM-owned affordance semantics.",
+          "future_series": "DOM",
+          "replacement_target": "Replace EARTH-10 surface flag rows with DOM-owned affordance semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5c8466e7cdfc2d6349eced185d76738325d171d19da40d96df106df47731de27",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "surface_flag_id": "flag.protected",
+        "bit_mask": 16,
+        "description": "Reserved protected-surface flag for later server/domain rules.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reserved_default_unset": true,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 surface flag registry entries; bit assignments remain loadable but will be replaced by DOM-owned affordance semantics.",
+          "future_series": "DOM",
+          "replacement_target": "Replace EARTH-10 surface flag rows with DOM-owned affordance semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5c8466e7cdfc2d6349eced185d76738325d171d19da40d96df106df47731de27",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH10-2"
+    }
+  }
+}

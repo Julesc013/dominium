@@ -128,6 +128,107 @@
       },
       {
         "schema_version": "1.0.0",
+        "field_type_id": "field.material_proxy",
+        "field_id": "field.material_proxy",
+        "description": "Deterministic EARTH-10 dominant surface material proxy scalar code.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "encoding_kind": "enum_code",
+          "registry_rel_path": "data/registries/material_proxy_registry.json",
+          "reserved_zero_unknown": true,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 material proxy field semantics; integer codes remain loadable but will be replaced by MAT-authored surface material semantics.",
+          "future_series": "MAT",
+          "replacement_target": "Replace EARTH-10 material proxy codes with MAT-authored surface material semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "891b61a32e5cf02f44b0f08432d058ac0e3f808552ffa19ff980888cb9baa1cf",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.surface_flags",
+        "field_id": "field.surface_flags",
+        "description": "Deterministic EARTH-10 surface affordance flag bitmask.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "encoding_kind": "bitmask",
+          "registry_rel_path": "data/registries/surface_flag_registry.json",
+          "reserved_zero_none": true,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 surface flag field semantics; bitmask values remain loadable but will be replaced by DOM-owned affordance semantics.",
+          "future_series": "DOM",
+          "replacement_target": "Replace EARTH-10 surface flag bitmasks with DOM-owned affordance and protection semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9ac09269368b9664d345cfb0b7f4aed6bdb9b8e022290205e122580c30f31c76",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.albedo_proxy",
+        "field_id": "field.albedo_proxy",
+        "description": "Deterministic EARTH-10 surface albedo proxy scalar permille.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "encoding_kind": "normalized_permille",
+          "semantic_range": "0..1000",
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 albedo proxy field semantics; integer permille values remain loadable but will be replaced by SOL/MAT reflectance semantics.",
+          "future_series": "SOL",
+          "replacement_target": "Replace EARTH-10 albedo proxy permille values with release-pinned SOL/MAT reflectance semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a384f05c576986b96f0ee1d5c5b36eaf4cfee242a4209b5392ef3d49d865c010",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "field_type_id": "field.radiation",
         "field_id": "field.radiation",
         "description": "Legacy radiation field alias. Prefer field.radiation_intensity.",

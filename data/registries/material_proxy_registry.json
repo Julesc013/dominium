@@ -1,0 +1,146 @@
+{
+  "schema_id": "dominium.registry.earth.material_proxy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.earth.material_proxy_registry",
+    "registry_version": "1.0.0",
+    "material_proxies": [
+      {
+        "schema_version": "1.0.0",
+        "material_proxy_id": "mat.rock",
+        "field_scalar_code": 1,
+        "description": "Rock-dominant Earth surface proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "albedo_proxy_permille": 420,
+          "friction_proxy_permille": 980,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 material proxy registry entries; proxy ids remain loadable but will be replaced by MAT-authored surface material semantics.",
+          "future_series": "MAT",
+          "replacement_target": "Replace EARTH-10 proxy rows with MAT-authored surface material semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "858fe18b51581e71e160d8ce76a1426897f12588758fc20b09449a923afe6cf5",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_proxy_id": "mat.soil",
+        "field_scalar_code": 2,
+        "description": "Soil-dominant Earth surface proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "albedo_proxy_permille": 330,
+          "friction_proxy_permille": 860,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 material proxy registry entries; proxy ids remain loadable but will be replaced by MAT-authored surface material semantics.",
+          "future_series": "MAT",
+          "replacement_target": "Replace EARTH-10 proxy rows with MAT-authored surface material semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "858fe18b51581e71e160d8ce76a1426897f12588758fc20b09449a923afe6cf5",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_proxy_id": "mat.sand",
+        "field_scalar_code": 3,
+        "description": "Sand-dominant Earth surface proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "albedo_proxy_permille": 520,
+          "friction_proxy_permille": 760,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 material proxy registry entries; proxy ids remain loadable but will be replaced by MAT-authored surface material semantics.",
+          "future_series": "MAT",
+          "replacement_target": "Replace EARTH-10 proxy rows with MAT-authored surface material semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "858fe18b51581e71e160d8ce76a1426897f12588758fc20b09449a923afe6cf5",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_proxy_id": "mat.water",
+        "field_scalar_code": 4,
+        "description": "Water-dominant Earth surface proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "albedo_proxy_permille": 140,
+          "friction_proxy_permille": 380,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 material proxy registry entries; proxy ids remain loadable but will be replaced by MAT-authored surface material semantics.",
+          "future_series": "MAT",
+          "replacement_target": "Replace EARTH-10 proxy rows with MAT-authored surface material semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "858fe18b51581e71e160d8ce76a1426897f12588758fc20b09449a923afe6cf5",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_proxy_id": "mat.ice",
+        "field_scalar_code": 5,
+        "description": "Ice-dominant Earth surface proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "albedo_proxy_permille": 820,
+          "friction_proxy_permille": 280,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 material proxy registry entries; proxy ids remain loadable but will be replaced by MAT-authored surface material semantics.",
+          "future_series": "MAT",
+          "replacement_target": "Replace EARTH-10 proxy rows with MAT-authored surface material semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "858fe18b51581e71e160d8ce76a1426897f12588758fc20b09449a923afe6cf5",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_proxy_id": "mat.synthetic_generic",
+        "field_scalar_code": 6,
+        "description": "Synthetic catch-all Earth surface proxy reserved for authored structures and later DOM/MAT materialization.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "albedo_proxy_permille": 500,
+          "friction_proxy_permille": 900,
+          "reserved_only": true,
+          "source": "EARTH10-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for EARTH-10 material proxy registry entries; proxy ids remain loadable but will be replaced by MAT-authored surface material semantics.",
+          "future_series": "MAT",
+          "replacement_target": "Replace EARTH-10 proxy rows with MAT-authored surface material semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "858fe18b51581e71e160d8ce76a1426897f12588758fc20b09449a923afe6cf5",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH10-2"
+    }
+  }
+}
