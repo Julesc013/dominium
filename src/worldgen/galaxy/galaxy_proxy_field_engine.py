@@ -27,7 +27,7 @@ GALAXY_PROXY_SPATIAL_SCOPE_ID = "spatial.galaxy.default"
 
 def _repo_root() -> str:
     here = os.path.dirname(os.path.abspath(__file__))
-    return os.path.normpath(os.path.join(here, "..", "..", "..", ".."))
+    return os.path.normpath(os.path.join(here, "..", "..", ".."))
 
 
 @lru_cache(maxsize=None)
