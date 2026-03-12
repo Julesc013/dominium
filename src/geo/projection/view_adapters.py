@@ -60,6 +60,15 @@ def _glyph_for_cell(row: Mapping[str, object], preferred_layer_order: List[str])
             if marker_kind == "body":
                 return "O"
             return "o"
+        if layer_id == "layer.galaxy_objects":
+            marker_kind = str(_as_map(value).get("marker_kind", "")).strip()
+            if marker_kind == "black_hole":
+                return "B"
+            if marker_kind == "nebula":
+                return "N"
+            if marker_kind == "supernova_remnant":
+                return "R"
+            return "*"
         if layer_id == "layer.water_ocean":
             return "~"
         if layer_id == "layer.water_river":

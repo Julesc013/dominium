@@ -87,6 +87,38 @@ def build_celestial_object_panel(
     )
 
 
+def build_galaxy_object_panel(*, inspection_snapshot: Mapping[str, object] | None) -> dict:
+    target_payload, row = _target_row(inspection_snapshot)
+    object_id = str(target_payload.get("target_id", "")).strip() or str(row.get("object_id", "")).strip()
+    extensions = _as_map(row.get("extensions"))
+    hazard_strength = _as_map(row.get("hazard_strength_proxy"))
+    mass_proxy = _as_map(row.get("mass_proxy"))
+    radius_proxy = _as_map(row.get("radius_proxy"))
+    hazard_effects = _as_map(extensions.get("hazard_effects"))
+    rows = [
+        {"key": "object_id", "value": object_id},
+        {"key": "kind", "value": str(row.get("kind", "")).strip()},
+        {"key": "frame_id", "value": str(_as_map(row.get("position_ref")).get("frame_id", "")).strip()},
+        {"key": "mass_proxy", "value": mass_proxy or None},
+        {"key": "radius_proxy", "value": radius_proxy or None},
+        {"key": "hazard_strength_proxy", "value": hazard_strength or None},
+        {"key": "galactic_region_id", "value": str(extensions.get("galactic_region_id", "")).strip()},
+        {"key": "radiation_bump_permille", "value": hazard_effects.get("radiation_bump_permille")},
+        {"key": "gravity_well_bump_permille", "value": hazard_effects.get("gravity_well_bump_permille")},
+        {"key": "eclipse_ready", "value": "n/a"},
+    ]
+    visible = bool(object_id and str(row.get("kind", "")).strip().startswith("kind.") and "stub" in str(row.get("kind", "")).strip())
+    return _panel(
+        panel_id="panel.inspect.galaxy_object",
+        panel_kind="galaxy_object",
+        panel_title="Galaxy Object",
+        visible=visible,
+        rows=rows,
+        summary="galaxy object {}".format(object_id or "<none>") if visible else "galaxy object unavailable",
+        extensions={"source": "GAL1-5"},
+    )
+
+
 def build_surface_tile_panel(*, inspection_snapshot: Mapping[str, object] | None) -> dict:
     target_payload, row = _target_row(inspection_snapshot)
     tile_id = str(target_payload.get("target_id", "")).strip() or str(row.get("tile_object_id", "")).strip()
@@ -447,6 +479,7 @@ def build_inspection_panel_set(
         )
     panels = [
         build_celestial_object_panel(inspection_snapshot=inspection_snapshot),
+        build_galaxy_object_panel(inspection_snapshot=inspection_snapshot),
         build_surface_tile_panel(inspection_snapshot=inspection_snapshot),
         build_geometry_cell_panel(inspection_snapshot=inspection_snapshot),
         build_field_panel(field_values=field_values),
@@ -488,6 +521,7 @@ def build_inspection_panel_set(
 __all__ = [
     "build_celestial_object_panel",
     "build_field_panel",
+    "build_galaxy_object_panel",
     "build_geometry_cell_panel",
     "build_illumination_geometry_panel",
     "build_inspection_panel_set",

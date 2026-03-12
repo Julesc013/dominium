@@ -23696,6 +23696,7 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("body_assemblies", "body_id"),
         ("order_assemblies", "order_id"),
         ("institution_assemblies", "institution_id"),
+        ("worldgen_galaxy_object_stub_artifacts", "object_id"),
         ("system_rows", "system_id"),
         ("logistics_node_inventories", "node_id"),
         ("logistics_manifests", "manifest_id"),

@@ -143,6 +143,65 @@ def build_galaxy_object_hazard_hooks(rows: object) -> List[dict]:
     )
 
 
+def build_galaxy_object_layer_source_payloads(rows: object) -> dict:
+    grouped: Dict[str, dict] = {}
+    for row in normalize_galaxy_object_stub_rows(rows):
+        extensions = _as_map(row.get("extensions"))
+        geo_cell_key = _coerce_cell_key(extensions.get("geo_cell_key")) or {}
+        if not geo_cell_key:
+            continue
+        cell_hash = canonical_sha256(geo_cell_key)
+        grouped.setdefault(
+            cell_hash,
+            {
+                "geo_cell_key": dict(geo_cell_key),
+                "object_ids": [],
+                "kind_ids": [],
+                "radiation_bump_permille": 0,
+                "gravity_well_bump_permille": 0,
+            },
+        )
+        effects = _as_map(extensions.get("hazard_effects"))
+        grouped[cell_hash]["object_ids"].append(str(row.get("object_id", "")).strip())
+        grouped[cell_hash]["kind_ids"].append(str(row.get("kind", "")).strip())
+        grouped[cell_hash]["radiation_bump_permille"] = max(
+            int(grouped[cell_hash]["radiation_bump_permille"]),
+            int(max(0, _as_int(effects.get("radiation_bump_permille", 0), 0))),
+        )
+        grouped[cell_hash]["gravity_well_bump_permille"] = max(
+            int(grouped[cell_hash]["gravity_well_bump_permille"]),
+            int(max(0, _as_int(effects.get("gravity_well_bump_permille", 0), 0))),
+        )
+    marker_rows = []
+    for cell_hash in sorted(grouped.keys()):
+        row = dict(grouped[cell_hash])
+        kind_ids = sorted(set(str(item).strip() for item in list(row.get("kind_ids") or []) if str(item).strip()))
+        marker_kind = "mixed"
+        if kind_ids == ["kind.black_hole_stub"]:
+            marker_kind = "black_hole"
+        elif kind_ids == ["kind.nebula_stub"]:
+            marker_kind = "nebula"
+        elif kind_ids == ["kind.supernova_remnant_stub"]:
+            marker_kind = "supernova_remnant"
+        marker_rows.append(
+            {
+                "geo_cell_key": dict(_as_map(row.get("geo_cell_key"))),
+                "object_ids": sorted(set(str(item).strip() for item in list(row.get("object_ids") or []) if str(item).strip())),
+                "kind_ids": kind_ids,
+                "marker_kind": marker_kind,
+                "radiation_bump_permille": int(max(0, _as_int(row.get("radiation_bump_permille", 0), 0))),
+                "gravity_well_bump_permille": int(max(0, _as_int(row.get("gravity_well_bump_permille", 0), 0))),
+            }
+        )
+    return {
+        "layer.galaxy_objects": {
+            "source_kind": "galaxy_object_view",
+            "rows": marker_rows,
+            "artifact_hash": galaxy_object_stub_hash_chain(rows),
+        }
+    }
+
+
 def _spawn_identity(
     *,
     universe_identity_hash: str,
@@ -384,6 +443,7 @@ __all__ = [
     "MAX_GALAXY_OBJECT_STUBS_PER_CELL",
     "RNG_WORLDGEN_GALAXY_OBJECTS",
     "build_galaxy_object_hazard_hooks",
+    "build_galaxy_object_layer_source_payloads",
     "build_galaxy_object_stub_row",
     "galaxy_object_stub_hash_chain",
     "generate_galaxy_object_stub_payload",

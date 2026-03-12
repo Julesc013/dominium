@@ -30,6 +30,7 @@ DEFAULT_MAP_VIEW_TYPE_ID = "view.map_ortho"
 DEFAULT_MINIMAP_VIEW_TYPE_ID = "view.minimap"
 DEFAULT_MAP_LAYERS = [
     "layer.orbits",
+    "layer.galaxy_objects",
     "layer.terrain_stub",
     "layer.water_ocean",
     "layer.water_river",
@@ -46,6 +47,7 @@ DEFAULT_MAP_LAYERS = [
 ]
 DEFAULT_MINIMAP_LAYERS = [
     "layer.orbits",
+    "layer.galaxy_objects",
     "layer.terrain_stub",
     "layer.water_ocean",
     "layer.water_river",

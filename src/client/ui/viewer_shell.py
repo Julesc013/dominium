@@ -22,6 +22,7 @@ from src.embodiment import (
 from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set, debug_view_limit_for_compute_profile
 from src.geo import build_position_ref
+from src.worldgen.galaxy import build_galaxy_object_layer_source_payloads
 from src.worldgen.earth.lighting import build_lighting_view_surface
 from src.worldgen.earth.sky import build_sky_view_surface
 from src.worldgen.earth.water import build_water_layer_source_payloads, build_water_view_surface
@@ -127,6 +128,19 @@ def _worldgen_planet_orbit_artifact_rows(extensions: Mapping[str, object] | None
         for row in list(
             payload.get("worldgen_planet_orbit_artifacts")
             or payload.get("generated_planet_orbit_artifact_rows")
+            or []
+        )
+        if isinstance(row, Mapping)
+    ]
+
+
+def _worldgen_galaxy_object_stub_rows(extensions: Mapping[str, object] | None) -> list[dict]:
+    payload = _as_map(extensions)
+    return [
+        dict(row)
+        for row in list(
+            payload.get("worldgen_galaxy_object_stub_artifacts")
+            or payload.get("generated_galaxy_object_stub_artifact_rows")
             or []
         )
         if isinstance(row, Mapping)
@@ -1304,10 +1318,14 @@ def build_viewer_shell_state(
         extra=_merge_layer_source_payloads(
             base=_as_map(_as_map(orbit_view_surface).get("layer_source_payloads")),
             extra=_merge_layer_source_payloads(
-                base=build_water_layer_source_payloads(water_view_surface),
+                base=build_galaxy_object_layer_source_payloads(_worldgen_galaxy_object_stub_rows(extensions)),
                 extra=build_refinement_layer_source_payloads(refinement_status_view),
             ),
         ),
+    )
+    effective_layer_source_payloads = _merge_layer_source_payloads(
+        base=effective_layer_source_payloads,
+        extra=build_water_layer_source_payloads(water_view_surface),
     )
     orbit_map_context = _orbit_map_context(
         orbit_view_surface=orbit_view_surface,

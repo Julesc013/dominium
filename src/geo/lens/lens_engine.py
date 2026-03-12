@@ -350,6 +350,40 @@ def _orbit_layer_value(
     )
 
 
+def _galaxy_object_layer_value(
+    *,
+    cell_key: Mapping[str, object],
+    source: Mapping[str, object],
+    perceived_model: Mapping[str, object],
+    omniscient_allowed: bool,
+) -> dict:
+    rows = [dict(item) for item in list(_as_map(source).get("rows") or []) if isinstance(item, Mapping)]
+    if not rows:
+        return _layer_state(visible=False, value=None, hidden_reason="galaxy_object_unavailable")
+    if not omniscient_allowed and not _orbit_instrument_available(perceived_model):
+        return _layer_state(visible=False, value=None, hidden_reason="telescope_or_orrery_required")
+    target_hash = canonical_sha256(_as_map(cell_key))
+    matched = {}
+    for row in sorted(rows, key=lambda item: canonical_sha256(item)):
+        row_key = _as_map(row.get("geo_cell_key"))
+        if row_key and canonical_sha256(row_key) != target_hash:
+            continue
+        matched = dict(row)
+        break
+    if not matched:
+        return _layer_state(visible=False, value=None, hidden_reason="galaxy_object_absent")
+    return _layer_state(
+        visible=True,
+        value={
+            "marker_kind": str(matched.get("marker_kind", "")).strip() or "mixed",
+            "object_ids": _sorted_strings(matched.get("object_ids")),
+            "kind_ids": _sorted_strings(matched.get("kind_ids")),
+            "radiation_bump_permille": int(_as_int(matched.get("radiation_bump_permille", 0), 0)),
+            "gravity_well_bump_permille": int(_as_int(matched.get("gravity_well_bump_permille", 0), 0)),
+        },
+    )
+
+
 def _geometry_layer_value(
     *,
     cell_key: Mapping[str, object],
@@ -510,6 +544,13 @@ def build_projected_view_artifact(
                 )
             elif layer_token == "layer.orbits" or source_kind == "orbit_view":
                 layers[layer_token] = _orbit_layer_value(
+                    cell_key=cell_key,
+                    source=source,
+                    perceived_model=perceived,
+                    omniscient_allowed=omniscient,
+                )
+            elif layer_token == "layer.galaxy_objects" or source_kind == "galaxy_object_view":
+                layers[layer_token] = _galaxy_object_layer_value(
                     cell_key=cell_key,
                     source=source,
                     perceived_model=perceived,

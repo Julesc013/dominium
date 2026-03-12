@@ -62,6 +62,17 @@
       },
       {
         "schema_version": "1.0.0",
+        "layer_id": "layer.galaxy_objects",
+        "description": "Deterministic GAL-1 galaxy object marker layer sourced from derived compact-object marker payloads only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "galaxy_object_view",
+          "artifact_id": "galaxy_object_stub",
+          "source": "GAL1-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "layer_id": "layer.terrain_stub",
         "description": "Deterministic terrain or atlas-terrain surface derived from lawful perceived map or tile sources.",
         "deterministic_fingerprint": "",
