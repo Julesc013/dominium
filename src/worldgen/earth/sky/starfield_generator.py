@@ -177,6 +177,7 @@ def _build_milkyway_band_rows(
     stream_seed: str,
     policy_row: Mapping[str, object],
     galaxy_priors_row: Mapping[str, object],
+    galaxy_proxy_row: Mapping[str, object] | None,
     observer_latitude_mdeg: int,
     tick_bucket: int,
     sky_visibility_permille: int,
@@ -193,6 +194,16 @@ def _build_milkyway_band_rows(
     visibility = _clamp(_as_int(sky_visibility_permille, 0), 0, 1000)
     if visibility <= 0:
         return []
+    proxy_row = _as_map(galaxy_proxy_row)
+    proxy_density = _clamp(_as_int(proxy_row.get("stellar_density_proxy_value", 0), 0), 0, 1000)
+    proxy_radiation = _clamp(_as_int(proxy_row.get("radiation_background_proxy_value", 0), 0), 0, 1000)
+    proxy_alignment_permille = 1000
+    if proxy_row:
+        proxy_alignment_permille = _clamp(
+            800 + ((proxy_density * 140) // 1000) + ((proxy_radiation * 60) // 1000),
+            800,
+            1100,
+        )
     center_azimuth = (
         _hash_int(stream_seed, "milkyway.center")
         + (tick_bucket * 13_000)
@@ -213,6 +224,7 @@ def _build_milkyway_band_rows(
         else:
             intensity = (peak * (band_half_width - angular_gap)) // max(1, band_half_width)
         intensity = _clamp((intensity * (760 + contrast)) // 1000, 0, 1000)
+        intensity = _clamp((intensity * proxy_alignment_permille) // 1000, 0, 1000)
         intensity = (intensity * visibility) // 1000
         if intensity <= 0:
             continue
@@ -223,6 +235,9 @@ def _build_milkyway_band_rows(
                 "altitude_center_mdeg": int(center_altitude),
                 "band_half_width_mdeg": int(band_half_width),
                 "intensity_permille": int(intensity),
+                "extensions": {
+                    "proxy_alignment_permille": int(proxy_alignment_permille),
+                },
             }
         )
     return rows
@@ -237,6 +252,7 @@ def build_starfield_snapshot(
     starfield_policy_row: Mapping[str, object] | None,
     milkyway_band_policy_row: Mapping[str, object] | None,
     galaxy_priors_row: Mapping[str, object] | None,
+    galaxy_proxy_row: Mapping[str, object] | None = None,
     sky_visibility_permille: int,
 ) -> dict:
     universe = _as_map(universe_identity)
@@ -268,6 +284,7 @@ def build_starfield_snapshot(
         stream_seed=stream_seed,
         policy_row=band_row,
         galaxy_priors_row=galaxy_row,
+        galaxy_proxy_row=galaxy_proxy_row,
         observer_latitude_mdeg=observer_latitude_mdeg,
         tick_bucket=tick_bucket,
         sky_visibility_permille=sky_visibility_permille,
@@ -285,6 +302,7 @@ def build_starfield_snapshot(
         "extensions": {
             "engine_version": EARTH_STARFIELD_GENERATOR_VERSION,
             "observer_cell_key_hash": _observer_key_hash(observer_cell_key),
+            "galaxy_proxy_alignment_enabled": bool(_as_map(galaxy_proxy_row)),
         },
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
