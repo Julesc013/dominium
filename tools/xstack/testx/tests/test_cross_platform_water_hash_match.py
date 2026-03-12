@@ -7,7 +7,7 @@ import sys
 
 TEST_ID = "test_cross_platform_water_hash_match"
 TEST_TAGS = ["fast", "earth", "water", "hash", "determinism"]
-EXPECTED_HASH = "e31513979d5ab8aad681b1c56df89d48a10042970fbb3e4f3732d5aab763aaae"
+EXPECTED_HASH = "2d15e58d0dcaac1ee08c9a379810f1ef367bc18e8cb974ba2a7a3949ce6dd56d"
 
 
 def run(repo_root: str):

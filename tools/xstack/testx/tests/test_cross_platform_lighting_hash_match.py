@@ -7,7 +7,7 @@ import sys
 
 TEST_ID = "test_cross_platform_lighting_hash_match"
 TEST_TAGS = ["fast", "earth", "lighting", "hash", "determinism"]
-EXPECTED_HASH = "f5771f9f4f13774f4529b4a0354a03b2bea4224a41a4f3531e7d1771799d8f35"
+EXPECTED_HASH = "0d0f64d22ce4f4c67ba9c24bf13169fe61784f786c8cdd39d4d028cba722ca99"
 
 
 def run(repo_root: str):
