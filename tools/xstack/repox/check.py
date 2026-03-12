@@ -7406,6 +7406,118 @@ def _append_meta_stability_findings(
             )
 
 
+def _append_scope_freeze_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/release/MVP_SCOPE_LOCK.md", "scope-freeze scope document is required", "INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE"),
+        (
+            "docs/release/FROZEN_INVARIANTS_v0_0_0.md",
+            "scope-freeze frozen invariant declaration is required",
+            "INV-NO-SEMANTIC-CONTRACT-CHANGES-POST-FREEZE",
+        ),
+        (
+            "docs/release/PROVISIONAL_FEATURE_LIST.md",
+            "scope-freeze provisional feature tracker is required",
+            "INV-PROVISIONAL-MUST-HAVE-REPLACEMENT-PLAN",
+        ),
+        (
+            "tools/release/scope_freeze_common.py",
+            "scope-freeze helper module is required",
+            "INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
+        ),
+        (
+            "tools/auditx/analyzers/e468_feature_creep_smell.py",
+            "FeatureCreepSmell analyzer is required",
+            "INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
+        ),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    scope_doc_text = _file_text(repo_root, "docs/release/MVP_SCOPE_LOCK.md").lower()
+    for token, message in (
+        ("## engine core included", "MVP scope lock must enumerate the included engine core"),
+        ("## explicitly excluded from v0.0.0", "MVP scope lock must enumerate the explicit exclusions"),
+        ("## provisional stub systems", "MVP scope lock must enumerate provisional stub systems"),
+    ):
+        if token in scope_doc_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/release/MVP_SCOPE_LOCK.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
+            )
+        )
+
+    invariants_text = _file_text(repo_root, "docs/release/FROZEN_INVARIANTS_v0_0_0.md").lower()
+    for token, message, rule_id in (
+        ("semantic contract registry v1", "frozen invariants doc must freeze the semantic contract registry surface", "INV-NO-SEMANTIC-CONTRACT-CHANGES-POST-FREEZE"),
+        ("determinism guarantees", "frozen invariants doc must pin determinism guarantees", "INV-NO-SEMANTIC-CONTRACT-CHANGES-POST-FREEZE"),
+        ("content addressing guarantees", "frozen invariants doc must pin content-addressing guarantees", "INV-NO-SEMANTIC-CONTRACT-CHANGES-POST-FREEZE"),
+        ("ui mode selection order", "frozen invariants doc must pin the UI mode selection order", "INV-NO-SEMANTIC-CONTRACT-CHANGES-POST-FREEZE"),
+        ("epoch anchor model", "frozen invariants doc must pin the epoch anchor model", "INV-NO-SEMANTIC-CONTRACT-CHANGES-POST-FREEZE"),
+    ):
+        if token in invariants_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/release/FROZEN_INVARIANTS_v0_0_0.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.release.scope_freeze_common import scope_freeze_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/scope_freeze_common.py",
+                line_number=1,
+                snippet="scope_freeze_violations",
+                message="unable to import scope-freeze helper ({})".format(str(exc)),
+                rule_id="INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
+            )
+        )
+        return
+
+    for violation in scope_freeze_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "scope-freeze violation detected",
+                rule_id=str(row.get("rule_id", "")).strip() or "INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
+            )
+        )
+
+
 def _append_time_anchor_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -31728,6 +31840,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_meta_stability_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_scope_freeze_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
