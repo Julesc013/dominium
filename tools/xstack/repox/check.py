@@ -1055,6 +1055,11 @@ ENTRYPOINT_UNIFY_COMMON_PATH = "tools/release/entrypoint_unify_common.py"
 ENTRYPOINT_UNIFY_MAP_PATH = "docs/audit/ENTRYPOINT_UNIFY_MAP.md"
 FLAG_MIGRATION_DOC_PATH = "docs/appshell/FLAG_MIGRATION.md"
 ENTRYPOINT_UNIFY_FINAL_PATH = "docs/audit/ENTRYPOINT_UNIFY_FINAL.md"
+TOOL_SURFACE_TOOL_PATH = "tools/release/tool_run_tool_surface.py"
+TOOL_SURFACE_ADAPTER_PATH = "src/tools/tool_surface_adapter.py"
+TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
+TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
+TOOL_SURFACE_REFERENCE_PATH = "docs/appshell/TOOL_REFERENCE.md"
 VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
@@ -8168,6 +8173,72 @@ def _append_validation_unify_findings(
                 snippet=str(item.get("code", ""))[:160],
                 message=str(item.get("message", "")).strip() or "validation unification drift detected",
                 rule_id=str(item.get("rule_id", "")).strip() or adhoc_rule_id,
+            )
+        )
+
+
+def _append_tool_surface_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    expose_rule_id = "INV-TOOLS-EXPOSED-VIA-REGISTRY"
+    adhoc_rule_id = "INV-NO-ADHOC-TOOL-ENTRYPOINTS"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (TOOL_SURFACE_TOOL_PATH, "tool surface runner is required", expose_rule_id),
+        (TOOL_SURFACE_ADAPTER_PATH, "tool surface adapter is required", expose_rule_id),
+        (TOOL_SURFACE_MAP_PATH, "tool surface map is required", expose_rule_id),
+        (TOOL_SURFACE_REFERENCE_PATH, "tool reference doc is required", expose_rule_id),
+        (TOOL_SURFACE_FINAL_PATH, "tool surface final report is required", expose_rule_id),
+        ("tools/auditx/analyzers/e474_orphan_tool_smell.py", "OrphanToolSmell analyzer is required", adhoc_rule_id),
+        ("tools/xstack/testx/tests/tool_surface_testlib.py", "tool surface TestX helper is required", expose_rule_id),
+        ("tools/xstack/testx/tests/test_dom_tool_help_deterministic.py", "dom help TestX coverage is required", expose_rule_id),
+        ("tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py", "tool adapter virtual path TestX coverage is required", expose_rule_id),
+        ("tools/xstack/testx/tests/test_tool_adapter_offline.py", "tool adapter offline TestX coverage is required", adhoc_rule_id),
+        ("tools/xstack/testx/tests/test_cross_platform_tool_surface_hash_match.py", "tool surface hash TestX coverage is required", expose_rule_id),
+        ("dist/bin/dom", "portable dom wrapper is required", expose_rule_id),
+        ("dist/bin/dom.cmd", "portable dom.cmd wrapper is required", expose_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from src.tools import tool_surface_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=TOOL_SURFACE_ADAPTER_PATH,
+                line_number=1,
+                snippet="tool_surface_violations",
+                message="unable to import tool surface checks ({})".format(str(exc)),
+                rule_id=expose_rule_id,
+            )
+        )
+        return
+
+    for row in tool_surface_violations(repo_root):
+        item = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity if _token(item.get("rule_id")) == expose_rule_id else "warn",
+                file_path=str(item.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(item.get("code", ""))[:160],
+                message=str(item.get("message", "")).strip() or "tool surface drift detected",
+                rule_id=str(item.get("rule_id", "")).strip() or expose_rule_id,
             )
         )
 
@@ -32347,6 +32418,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_validation_unify_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_tool_surface_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

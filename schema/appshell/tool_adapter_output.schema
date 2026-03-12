@@ -1,0 +1,36 @@
+SCHEMA: appshell/tool_adapter_output.schema
+schema_id: dominium.schema.appshell.output.tool_adapter_result
+schema_version: 1.0.0
+stability: provisional
+
+PURPOSE:
+- Define the stable wrapper payload returned by TOOL-SURFACE-0 subprocess adapters.
+
+NON-SEMANTICS:
+- Wrapped tool execution does not change tool semantics; this schema only normalizes adapter metadata.
+
+REQUIRED SHAPE:
+record tool_adapter_result
+  required:
+    - result: enum(complete|tool_error|refused)
+    - stable_id: id
+    - command_path: string
+    - adapter_kind: enum(python_subprocess)
+    - tool_relpath: string
+    - tool_module: string
+    - invocation_args: list<string>
+    - virtual_path_policy: string
+    - pack_context_mode: string
+    - offline_only: bool
+    - tool_exit_code: i32
+    - stdout_kind: enum(json|text|empty)
+    - tool_output: map|null
+    - tool_output_text: string
+    - stderr_text: string
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `tool_relpath` MUST remain repo-relative
+- `invocation_args` MUST avoid host-specific absolute paths when adapter injection occurs
+- `deterministic_fingerprint` MUST blank its own field before hashing

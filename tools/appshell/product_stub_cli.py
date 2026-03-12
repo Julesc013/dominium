@@ -15,12 +15,26 @@ if REPO_ROOT_HINT not in sys.path:
 from src.appshell import appshell_main
 
 
-def main(argv: list[str] | None = None) -> int:
+def _split_stub_args(argv: list[str]) -> tuple[str, list[str]]:
+    values = list(argv or [])
+    if len(values) >= 2 and str(values[0]).strip() == "--product-id":
+        product_id = str(values[1]).strip()
+        remainder = list(values[2:])
+        if remainder and str(remainder[0]).strip() == "--":
+            remainder = list(remainder[1:])
+        return product_id, remainder
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--product-id", required=True)
-    parsed, remainder = parser.parse_known_args(list(argv or sys.argv[1:]))
+    parsed, remainder = parser.parse_known_args(values)
+    if remainder and str(remainder[0]).strip() == "--":
+        remainder = list(remainder[1:])
+    return str(parsed.product_id).strip(), list(remainder)
+
+
+def main(argv: list[str] | None = None) -> int:
+    product_id, remainder = _split_stub_args(list(argv or sys.argv[1:]))
     return appshell_main(
-        product_id=str(parsed.product_id).strip(),
+        product_id=product_id,
         argv=list(remainder),
         repo_root_hint=REPO_ROOT_HINT,
         legacy_main=None,

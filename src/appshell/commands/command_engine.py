@@ -34,6 +34,12 @@ from src.appshell.supervisor import (
     launch_supervisor_service,
     load_supervisor_runtime_state,
 )
+from src.tools import (
+    execute_tool_surface_subprocess,
+    format_tool_surface_area_help,
+    format_tool_surface_root_help,
+    tool_surface_row_from_command,
+)
 from src.validation import build_validation_report, write_validation_outputs
 
 
@@ -855,6 +861,15 @@ def _run_namespace_placeholder(repo_root: str, row: Mapping[str, object], attemp
     )
 
 
+def _run_tool_surface_root_help(repo_root: str) -> dict:
+    return _text_dispatch(format_tool_surface_root_help(repo_root))
+
+
+def _run_tool_surface_area_help(repo_root: str, row: Mapping[str, object]) -> dict:
+    spec = tool_surface_row_from_command(row)
+    return _text_dispatch(format_tool_surface_area_help(repo_root, str(spec.get("area_id", "")).strip()))
+
+
 def build_command_rows(repo_root: str, product_id: str) -> list[dict]:
     return build_root_command_descriptors(repo_root, product_id)
 
@@ -933,6 +948,23 @@ def dispatch_registered_command(
         return _run_launcher_stop_command(repo_root)
     if handler_id == "launcher_attach":
         return _run_launcher_attach_command(repo_root, remaining)
+    if handler_id == "tool_surface_root_help":
+        return _run_tool_surface_root_help(repo_root)
+    if handler_id == "tool_surface_area_help":
+        return _run_tool_surface_area_help(repo_root, row)
+    if handler_id == "tool_surface_adapter":
+        spec = tool_surface_row_from_command(row)
+        if str(spec.get("adapter_kind", "")).strip() == "appshell_alias":
+            alias_product_id = str(spec.get("alias_product_id", "")).strip() or str(product_id).strip()
+            alias_tokens = [str(token).strip() for token in list(spec.get("alias_command_tokens") or []) if str(token).strip()]
+            return dispatch_registered_command(
+                repo_root,
+                product_id=alias_product_id,
+                mode_id=mode_id,
+                command_tokens=alias_tokens + list(remaining),
+            )
+        payload, exit_code = execute_tool_surface_subprocess(repo_root, row, remaining)
+        return _json_dispatch(payload, exit_code)
     if handler_id == "namespace_placeholder":
         return _run_namespace_placeholder(repo_root, row, tokens)
     return _refusal_dispatch(

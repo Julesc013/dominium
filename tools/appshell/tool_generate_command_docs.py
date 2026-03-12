@@ -15,6 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 from src.appshell.command_registry import load_command_registry
 from src.appshell.commands.command_engine import REFUSAL_TO_EXIT_REGISTRY_REL
+from src.tools import TOOL_REFERENCE_PATH, build_tool_surface_report
 
 
 def _read_json(path: str) -> tuple[dict, str]:
@@ -130,21 +131,62 @@ def generate_cli_reference(repo_root: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def generate_tool_reference(repo_root: str) -> str:
+    report = build_tool_surface_report(repo_root)
+    lines = [
+        "Status: DERIVED",
+        "Last Reviewed: 2026-03-13",
+        "Supersedes: none",
+        "Superseded By: none",
+        "Stability: provisional",
+        "Future Series: DOC-ARCHIVE",
+        "Replacement Target: release tool reference regenerated from TOOL-SURFACE-0 tooling",
+        "",
+        "# Tool Reference",
+        "",
+        "Use the stable umbrella form:",
+        "",
+        "```text",
+        "dom <area> <command> ...",
+        "```",
+        "",
+    ]
+    for area_row in list(report.get("areas") or []):
+        area_id = str(dict(area_row).get("area_id", "")).strip()
+        lines.extend(["## `{}`".format(area_id), "", str(dict(area_row).get("description", "")).strip(), ""])
+        matched = [dict(row) for row in list(report.get("rows") or []) if str(dict(row).get("area_id", "")).strip() == area_id]
+        for row in matched:
+            lines.append("- `{}`: {}".format(str(row.get("command_path", "")).strip(), str(row.get("description", "")).strip()))
+        if not matched:
+            lines.append("- `dom {}`: namespace reserved; no wrapped commands are currently registered".format(area_id))
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Generate deterministic AppShell CLI reference.")
     parser.add_argument("--repo-root", default=REPO_ROOT_HINT)
     parser.add_argument("--output-path", default=os.path.join("docs", "appshell", "CLI_REFERENCE.md"))
+    parser.add_argument("--tool-output-path", default=TOOL_REFERENCE_PATH)
     args = parser.parse_args(argv)
 
     repo_root = os.path.normpath(os.path.abspath(str(args.repo_root)))
     output_path = str(args.output_path)
     if not os.path.isabs(output_path):
         output_path = os.path.join(repo_root, output_path)
+    tool_output_path = str(args.tool_output_path)
+    if not os.path.isabs(tool_output_path):
+        tool_output_path = os.path.join(repo_root, tool_output_path)
     text = generate_cli_reference(repo_root)
+    tool_text = generate_tool_reference(repo_root)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8", newline="\n") as handle:
         handle.write(text)
+    os.makedirs(os.path.dirname(tool_output_path), exist_ok=True)
+    with open(tool_output_path, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(tool_text)
     print(output_path.replace("\\", "/"))
+    print(tool_output_path.replace("\\", "/"))
     return 0
 
 

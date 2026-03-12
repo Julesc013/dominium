@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+import sys
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPT = os.path.join(THIS_DIR, "tool_attach_console_stub")
+if not os.path.isfile(SCRIPT):
+    print("dom wrapper missing target: {}".format(SCRIPT))
+    raise SystemExit(2)
+raise SystemExit(subprocess.call([sys.executable, SCRIPT, "dom"] + sys.argv[1:]))
