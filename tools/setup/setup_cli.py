@@ -20,6 +20,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from src.appshell import appshell_main
+from src.appshell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
 from src.compat import (
     build_product_build_metadata,
     build_product_descriptor,
@@ -723,15 +724,13 @@ def _verify_pack_root(
     schema_root: str,
     universe_contract_bundle_path: str,
 ) -> dict:
-    from src.packs.compat import verify_pack_set
-
-    return verify_pack_set(
-        repo_root=root,
+    return appshell_verify_pack_root(
+        repo_root=REPO_ROOT_HINT,
+        root=root,
         bundle_id=str(bundle_id or "").strip(),
         mod_policy_id=str(mod_policy_id or "").strip() or "mod_policy.lab",
         overlay_conflict_policy_id=str(overlay_conflict_policy_id or "").strip(),
-        schema_repo_root=str(schema_root or root).strip() or root,
-        universe_contract_bundle_path=str(universe_contract_bundle_path or "").strip(),
+        contract_bundle_path=str(universe_contract_bundle_path or "").strip(),
     )
 
 
@@ -2211,12 +2210,16 @@ def _legacy_main(argv: list[str] | None = None) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    def appshell_product_bootstrap(context: dict) -> int:
+        delegate_argv = ["--repo-root", str(context.get("repo_root", ".")).replace("/", "\\")]
+        delegate_argv.extend(list(context.get("delegate_argv") or []))
+        return _legacy_main(delegate_argv)
+
     return appshell_main(
         product_id="setup",
         argv=list(sys.argv[1:] if argv is None else argv),
         repo_root_hint=REPO_ROOT_HINT,
-        legacy_main=_legacy_main,
-        legacy_accepts_repo_root=False,
+        product_bootstrap=appshell_product_bootstrap,
     )
 
 

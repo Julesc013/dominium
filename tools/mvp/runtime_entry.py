@@ -118,13 +118,19 @@ def _legacy_main(entrypoint: str, argv: Sequence[str] | None = None) -> int:
     return 0
 
 
+def appshell_product_bootstrap(context: dict) -> int:
+    product_id = str(context.get("product_id", "")).strip() or "client"
+    delegate_argv = ["--repo-root", str(context.get("repo_root", ".")).replace("/", "\\")]
+    delegate_argv.extend(list(context.get("delegate_argv") or []))
+    return _legacy_main(product_id, delegate_argv)
+
+
 def client_main(argv: Sequence[str] | None = None) -> int:
     return appshell_main(
         product_id="client",
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
-        legacy_main=lambda delegate_argv: _legacy_main("client", delegate_argv),
-        legacy_accepts_repo_root=False,
+        product_bootstrap=appshell_product_bootstrap,
     )
 
 
@@ -133,15 +139,16 @@ def server_main(argv: Sequence[str] | None = None) -> int:
         product_id="server",
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
-        legacy_main=lambda delegate_argv: _legacy_main("server", delegate_argv),
-        legacy_accepts_repo_root=False,
+        product_bootstrap=appshell_product_bootstrap,
     )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     raw_args = list(argv or sys.argv[1:])
     if raw_args and str(raw_args[0]).strip() in {"client", "server"}:
-        return _legacy_main(str(raw_args[0]).strip(), raw_args[1:])
+        if str(raw_args[0]).strip() == "server":
+            return server_main(raw_args[1:])
+        return client_main(raw_args[1:])
     script_name = os.path.basename(sys.argv[0]).lower()
     if "server" in script_name:
         return server_main(raw_args)

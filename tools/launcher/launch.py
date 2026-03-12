@@ -16,6 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from src.appshell import appshell_main  # noqa: E402
+from src.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
 from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
 
 
@@ -281,7 +282,6 @@ def cmd_run(
     write_state: bool,
     bundle_id: str,
 ) -> Dict[str, object]:
-    from src.packs.compat import verify_pack_set
     from tools.xstack.packagingx import validate_dist_layout
     from tools.xstack.sessionx.runner import boot_session_spec
     from tools.xstack.sessionx.script_runner import run_intent_script
@@ -307,12 +307,13 @@ def cmd_run(
         or "mod_policy.lab"
     )
     selected_conflict_policy_id = str((comp.get("lockfile_payload") or {}).get("overlay_conflict_policy_id", "")).strip()
-    compat = verify_pack_set(
-        repo_root=dist_abs,
+    compat = verify_pack_root(
+        repo_root=repo_root,
+        root=dist_abs,
         bundle_id=resolved_bundle,
         mod_policy_id=selected_mod_policy_id,
         overlay_conflict_policy_id=selected_conflict_policy_id,
-        schema_repo_root=dist_abs if os.path.isdir(os.path.join(dist_abs, "schemas")) else repo_root,
+        contract_bundle_path="",
     )
     if str(compat.get("result", "")) != "complete":
         return _refusal(
@@ -425,16 +426,14 @@ def cmd_compat_status(
     overlay_conflict_policy_id: str,
     contract_bundle_path: str,
 ) -> Dict[str, object]:
-    from src.packs.compat import verify_pack_set
-
     dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, dist_root))) if not os.path.isabs(dist_root) else os.path.normpath(dist_root)
-    compat = verify_pack_set(
-        repo_root=dist_abs,
+    compat = verify_pack_root(
+        repo_root=repo_root,
+        root=dist_abs,
         bundle_id=str(bundle_id).strip(),
         mod_policy_id=str(mod_policy_id).strip() or "mod_policy.lab",
         overlay_conflict_policy_id=str(overlay_conflict_policy_id).strip(),
-        schema_repo_root=dist_abs if os.path.isdir(os.path.join(dist_abs, "schemas")) else repo_root,
-        universe_contract_bundle_path=str(contract_bundle_path).strip(),
+        contract_bundle_path=str(contract_bundle_path).strip(),
     )
     if str(compat.get("result", "")) != "complete":
         return _refusal(
@@ -603,13 +602,18 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     return 0 if result.get("result") == "complete" else 2
 
 
+def appshell_product_bootstrap(context: dict) -> int:
+    delegate_argv = ["--repo-root", str(context.get("repo_root", ".")).replace("/", "\\")]
+    delegate_argv.extend(list(context.get("delegate_argv") or []))
+    return _legacy_main(delegate_argv)
+
+
 def main(argv: list[str] | None = None) -> int:
     return appshell_main(
         product_id="launcher",
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
-        legacy_main=_legacy_main,
-        legacy_accepts_repo_root=False,
+        product_bootstrap=appshell_product_bootstrap,
     )
 
 

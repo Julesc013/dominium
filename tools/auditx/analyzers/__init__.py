@@ -471,6 +471,8 @@ from analyzers import e461_orbit_trace_stored_in_truth_smell
 from analyzers import e462_nbody_leak_smell
 from analyzers import e469_unclassified_module_smell
 from analyzers import e470_contradictory_doc_without_header_smell
+from analyzers import e471_direct_simulation_start_smell
+from analyzers import e472_direct_pack_load_smell
 
 
 ANALYZERS = (
@@ -945,6 +947,8 @@ ANALYZERS = (
     e462_nbody_leak_smell,
     e469_unclassified_module_smell,
     e470_contradictory_doc_without_header_smell,
+    e471_direct_simulation_start_smell,
+    e472_direct_pack_load_smell,
 )
 
 

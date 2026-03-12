@@ -18,7 +18,8 @@ from .logging import (
     log_emit,
     set_current_log_engine,
 )
-from .mode_dispatcher import build_mode_stub, legacy_mode_args, normalize_mode, supported_modes_for_product
+from .mode_dispatcher import build_mode_stub, normalize_mode, supported_modes_for_product
+from .product_bootstrap import build_product_bootstrap_context, resolve_mode_request
 from .tui import run_tui_mode
 
 
@@ -53,12 +54,22 @@ def appshell_main(
     product_id: str,
     argv: Sequence[str] | None = None,
     repo_root_hint: str = ".",
+    product_bootstrap: Callable[[dict], int] | None = None,
     legacy_main: Callable[[Sequence[str]], int] | None = None,
     legacy_accepts_repo_root: bool = False,
 ) -> int:
     shell_args = parse_appshell_args(product_id=str(product_id).strip(), argv=argv)
     repo_root = resolve_repo_root(shell_args.repo_root, repo_root_hint=repo_root_hint)
-    mode_id = normalize_mode(product_id=str(product_id).strip(), requested_mode=shell_args.mode)
+    mode_resolution = resolve_mode_request(
+        product_id=str(product_id).strip(),
+        explicit_mode=shell_args.mode,
+        raw_args=shell_args.raw_args,
+    )
+    mode_id = normalize_mode(
+        product_id=str(product_id).strip(),
+        requested_mode=str(mode_resolution.get("requested_mode_id", "")).strip(),
+    )
+    mode_requested = bool(mode_resolution.get("mode_requested", False))
     command_rows = build_root_command_descriptors(repo_root, str(product_id).strip())
     version_payload = build_version_payload(repo_root, product_id=str(product_id).strip())
     logger = create_log_engine(
@@ -74,6 +85,7 @@ def appshell_main(
         message_key="appshell.bootstrap.start",
         params={
             "mode_id": str(mode_id).strip(),
+            "mode_source": str(mode_resolution.get("mode_source", "default")).strip() or "default",
             "repo_root": str(repo_root).replace("\\", "/"),
         },
     )
@@ -104,16 +116,6 @@ def appshell_main(
             _print_json(version_payload)
             return EXIT_SUCCESS
 
-        if bool(shell_args.ipc_enabled):
-            ipc_server = AppShellIPCEndpointServer(
-                repo_root=repo_root,
-                product_id=str(product_id).strip(),
-                session_id=str(shell_args.session_id).strip(),
-                mode_id=str(mode_id).strip() or "cli",
-                manifest_path=str(shell_args.ipc_manifest_path).strip(),
-            )
-            ipc_server.start()
-
         if str(shell_args.command or "").strip():
             dispatch = dispatch_registered_command(
                 repo_root,
@@ -123,18 +125,40 @@ def appshell_main(
             )
             payload = dict(dispatch or {}).get("payload") or {}
             if (
-                legacy_main is not None
+                (legacy_main is not None or product_bootstrap is not None)
                 and str(dict(payload or {}).get("refusal_code", "")).strip() == "refusal.debug.command_unknown"
             ):
-                delegate_args = list(shell_args.raw_args)
-                if legacy_accepts_repo_root:
-                    delegate_args = ["--repo-root", repo_root] + delegate_args
+                bootstrap_context = build_product_bootstrap_context(
+                    product_id=str(product_id).strip(),
+                    repo_root=repo_root,
+                    shell_args=shell_args,
+                    resolved_mode_id=str(mode_id).strip(),
+                    mode_resolution=mode_resolution,
+                    version_payload=version_payload,
+                )
+                if bool(shell_args.ipc_enabled) and ipc_server is None:
+                    ipc_server = AppShellIPCEndpointServer(
+                        repo_root=repo_root,
+                        product_id=str(product_id).strip(),
+                        session_id=str(shell_args.session_id).strip(),
+                        mode_id=str(mode_id).strip() or "cli",
+                        manifest_path=str(shell_args.ipc_manifest_path).strip(),
+                    )
+                    ipc_server.start()
                 log_emit(
                     category="appshell",
                     severity="info",
                     message_key="appshell.mode.enter",
-                    params={"mode_id": str(mode_id).strip(), "entry_surface": "legacy_main_fallback"},
+                    params={
+                        "mode_id": str(mode_id).strip(),
+                        "entry_surface": "product_bootstrap_fallback" if product_bootstrap is not None else "legacy_main_fallback",
+                    },
                 )
+                if product_bootstrap is not None:
+                    return int(product_bootstrap(bootstrap_context))
+                delegate_args = list(bootstrap_context.get("delegate_argv") or [])
+                if legacy_accepts_repo_root:
+                    delegate_args = ["--repo-root", repo_root] + delegate_args
                 return int(legacy_main(delegate_args))
             dispatch_kind = str(dict(dispatch or {}).get("dispatch_kind", "")).strip()
             if dispatch_kind == "text":
@@ -145,7 +169,7 @@ def appshell_main(
             return int(EXIT_INTERNAL if exit_code is None else exit_code)
 
         supported_modes = supported_modes_for_product(str(product_id).strip())
-        if bool(shell_args.mode_requested) and str(mode_id).strip() not in supported_modes:
+        if bool(mode_requested) and str(mode_id).strip() not in supported_modes:
             payload = _refusal(
                 "refusal.debug.mode_unsupported",
                 "requested shell mode is not supported by this product",
@@ -163,7 +187,7 @@ def appshell_main(
             _print_json(payload)
             return EXIT_REFUSAL
 
-        if bool(shell_args.mode_requested) and str(mode_id).strip() == "tui":
+        if bool(mode_requested) and str(mode_id).strip() == "tui":
             panel_rows = build_tui_panel_descriptors(str(product_id).strip())
             log_emit(
                 category="appshell",
@@ -187,7 +211,7 @@ def appshell_main(
             exit_code = dict(dispatch or {}).get("exit_code", EXIT_INTERNAL)
             return int(EXIT_INTERNAL if exit_code is None else exit_code)
 
-        if bool(shell_args.mode_requested) and str(mode_id).strip() == "rendered" and str(product_id).strip() != "client":
+        if bool(mode_requested) and str(mode_id).strip() == "rendered" and str(product_id).strip() != "client":
             payload = _refusal(
                 "refusal.debug.rendered_client_only",
                 "rendered mode is client-only",
@@ -203,7 +227,48 @@ def appshell_main(
             _print_json(payload)
             return EXIT_REFUSAL
 
-        if legacy_main is None:
+        bootstrap_context = build_product_bootstrap_context(
+            product_id=str(product_id).strip(),
+            repo_root=repo_root,
+            shell_args=shell_args,
+            resolved_mode_id=str(mode_id).strip(),
+            mode_resolution=mode_resolution,
+            version_payload=version_payload,
+        )
+        for row in list((dict(bootstrap_context.get("mode") or {})).get("deprecated_flags") or []):
+            warning = dict(row or {})
+            log_emit(
+                category="appshell",
+                severity="warn",
+                message_key="appshell.flag.deprecated",
+                params={
+                    "legacy_flag": str(warning.get("legacy_flag", "")).strip(),
+                    "replacement_flag": str(warning.get("replacement_flag", "")).strip(),
+                    "replacement_value": str(warning.get("replacement_value", "")).strip(),
+                },
+            )
+        log_emit(
+            category="appshell",
+            severity="info",
+            message_key="appshell.bootstrap.context",
+            params={
+                "compatibility_mode_id": str((dict(bootstrap_context.get("negotiation") or {})).get("compatibility_mode_id", "")).strip(),
+                "entrypoint_label": str(bootstrap_context.get("entrypoint_label", "")).strip(),
+                "mode_id": str((dict(bootstrap_context.get("mode") or {})).get("effective_mode_id", "")).strip(),
+                "step_count": int(len(list(bootstrap_context.get("bootstrap_steps") or []))),
+            },
+        )
+        if bool(shell_args.ipc_enabled):
+            ipc_server = AppShellIPCEndpointServer(
+                repo_root=repo_root,
+                product_id=str(product_id).strip(),
+                session_id=str(shell_args.session_id).strip(),
+                mode_id=str(mode_id).strip() or "cli",
+                manifest_path=str(shell_args.ipc_manifest_path).strip(),
+            )
+            ipc_server.start()
+
+        if legacy_main is None and product_bootstrap is None:
             log_emit(
                 category="appshell",
                 severity="info",
@@ -213,18 +278,20 @@ def appshell_main(
             _print_json(build_mode_stub(str(product_id).strip(), str(mode_id).strip(), command_rows, []))
             return EXIT_SUCCESS
 
-        delegate_args = list(shell_args.remainder)
-        mode_tokens = legacy_mode_args(str(product_id).strip(), str(mode_id).strip()) if bool(shell_args.mode_requested) else []
-        if mode_tokens:
-            delegate_args = list(mode_tokens) + delegate_args
-        if legacy_accepts_repo_root:
-            delegate_args = ["--repo-root", repo_root] + delegate_args
         log_emit(
             category="appshell",
             severity="info",
             message_key="appshell.mode.enter",
-            params={"mode_id": str(mode_id).strip(), "entry_surface": "legacy_main"},
+            params={
+                "mode_id": str(mode_id).strip(),
+                "entry_surface": "product_bootstrap" if product_bootstrap is not None else "legacy_main",
+            },
         )
+        if product_bootstrap is not None:
+            return int(product_bootstrap(bootstrap_context))
+        delegate_args = list(bootstrap_context.get("delegate_argv") or [])
+        if legacy_accepts_repo_root:
+            delegate_args = ["--repo-root", repo_root] + delegate_args
         return int(legacy_main(delegate_args))
     finally:
         if ipc_server is not None:

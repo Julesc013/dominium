@@ -1050,6 +1050,11 @@ PLATFORM_RENDERER_SURFACE_PATH = "docs/audit/PLATFORM_RENDERER_SURFACE.md"
 VALIDATION_STACK_MAP_PATH = "docs/audit/VALIDATION_STACK_MAP.md"
 STABILITY_COVERAGE_REPORT_PATH = "docs/audit/STABILITY_COVERAGE_REPORT.md"
 REPO_REVIEW_2_FINAL_PATH = "docs/audit/REPO_REVIEW_2_FINAL.md"
+ENTRYPOINT_UNIFY_TOOL_PATH = "tools/release/tool_run_entrypoint_unify.py"
+ENTRYPOINT_UNIFY_COMMON_PATH = "tools/release/entrypoint_unify_common.py"
+ENTRYPOINT_UNIFY_MAP_PATH = "docs/audit/ENTRYPOINT_UNIFY_MAP.md"
+FLAG_MIGRATION_DOC_PATH = "docs/appshell/FLAG_MIGRATION.md"
+ENTRYPOINT_UNIFY_FINAL_PATH = "docs/audit/ENTRYPOINT_UNIFY_FINAL.md"
 DOC_INVENTORY_TOOL_PATH = "tools/review/tool_doc_inventory.py"
 DOC_INVENTORY_COMMON_PATH = "tools/review/doc_inventory_common.py"
 DOC_INVENTORY_JSON_PATH = "data/audit/doc_inventory.json"
@@ -7952,6 +7957,110 @@ def _append_doc_inventory_findings(
                 snippet=str(row.get("alignment_status", ""))[:160],
                 message="superseded or contradictory documentation must link to a replacement document",
                 rule_id=superseded_rule_id,
+            )
+        )
+
+
+def _append_entrypoint_unify_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rules = (
+        "INV-NO-ADHOC-MAIN",
+        "INV-ALL-PRODUCTS-USE-APPSHELL",
+        "INV-NO-DIRECT-UI-INIT-IN-MAIN",
+    )
+    required_files = (
+        (ENTRYPOINT_UNIFY_TOOL_PATH, "ENTRYPOINT-UNIFY tool is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
+        (ENTRYPOINT_UNIFY_COMMON_PATH, "ENTRYPOINT-UNIFY helper module is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
+        (ENTRYPOINT_UNIFY_MAP_PATH, "entrypoint unify map is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
+        (FLAG_MIGRATION_DOC_PATH, "flag migration doc is required", "INV-NO-ADHOC-MAIN"),
+        (ENTRYPOINT_UNIFY_FINAL_PATH, "entrypoint unify final report is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
+        ("tools/auditx/analyzers/e471_direct_simulation_start_smell.py", "DirectSimulationStartSmell analyzer is required", "INV-NO-DIRECT-UI-INIT-IN-MAIN"),
+        ("tools/auditx/analyzers/e472_direct_pack_load_smell.py", "DirectPackLoadSmell analyzer is required", "INV-NO-ADHOC-MAIN"),
+        ("tools/xstack/testx/tests/entrypoint_unify_testlib.py", "ENTRYPOINT-UNIFY TestX helper is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
+        ("tools/xstack/testx/tests/test_all_products_call_appshell_main.py", "AppShell entrypoint TestX coverage is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
+        ("tools/xstack/testx/tests/test_mode_selection_deterministic.py", "mode selection determinism TestX coverage is required", "INV-NO-DIRECT-UI-INIT-IN-MAIN"),
+        ("tools/xstack/testx/tests/test_pack_validation_occurs_before_session_start.py", "pack gate ordering TestX coverage is required", "INV-NO-ADHOC-MAIN"),
+        ("tools/xstack/testx/tests/test_legacy_flags_map_correctly.py", "legacy flag migration TestX coverage is required", "INV-NO-ADHOC-MAIN"),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    map_text = _file_text(repo_root, ENTRYPOINT_UNIFY_MAP_PATH).lower()
+    for token, message, rule_id in (
+        ("# entrypoint unify map", "entrypoint unify map must declare the governed entrypoint surface", "INV-ALL-PRODUCTS-USE-APPSHELL"),
+        ("## compliance summary", "entrypoint unify map must summarize compliance status", "INV-ALL-PRODUCTS-USE-APPSHELL"),
+    ):
+        if token in map_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=ENTRYPOINT_UNIFY_MAP_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    flag_text = _file_text(repo_root, FLAG_MIGRATION_DOC_PATH).lower()
+    for token, message in (
+        ("# flag migration", "flag migration doc must declare the legacy-to-canonical flag mapping"),
+        ("legacy boot flags remain supported", "flag migration doc must preserve the migration guarantee"),
+    ):
+        if token in flag_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=FLAG_MIGRATION_DOC_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-NO-ADHOC-MAIN",
+            )
+        )
+
+    try:
+        from tools.release.entrypoint_unify_common import entrypoint_unify_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=ENTRYPOINT_UNIFY_COMMON_PATH,
+                line_number=1,
+                snippet="entrypoint_unify_violations",
+                message="unable to import ENTRYPOINT-UNIFY helper ({})".format(str(exc)),
+                rule_id="INV-ALL-PRODUCTS-USE-APPSHELL",
+            )
+        )
+        return
+
+    for violation in entrypoint_unify_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "entrypoint unification violation detected",
+                rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-ALL-PRODUCTS-USE-APPSHELL",
             )
         )
 
@@ -32121,6 +32230,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_doc_inventory_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_entrypoint_unify_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

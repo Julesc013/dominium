@@ -122,13 +122,18 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     return 0
 
 
+def appshell_product_bootstrap(context: dict) -> int:
+    delegate_argv = ["--repo-root", str(context.get("repo_root", ".")).replace("/", "\\")]
+    delegate_argv.extend(list(context.get("delegate_argv") or []))
+    return _legacy_main(delegate_argv)
+
+
 def main(argv: list[str] | None = None) -> int:
     return appshell_main(
         product_id="server",
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
-        legacy_main=_legacy_main,
-        legacy_accepts_repo_root=False,
+        product_bootstrap=appshell_product_bootstrap,
     )
 
 
