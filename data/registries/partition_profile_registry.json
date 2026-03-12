@@ -13,7 +13,7 @@
           "cell_size_mm": 10000,
           "cell_key_format": "grid"
         },
-        "deterministic_fingerprint": "814e81259524395bc6c262156b71986e1650e2666ea7b7723693cbf93091a193",
+        "deterministic_fingerprint": "c8ed361284ee77d27bef3f515d659a3104a4fe5650aaf0fdcf0cfa8a0eea73d8",
         "extensions": {
           "max_neighbors": 4096,
           "supports_dimension_param": true,
@@ -38,7 +38,7 @@
           "root_extent_mm": 1000000,
           "max_depth": 8
         },
-        "deterministic_fingerprint": "25dfc04e679d9b6cfa3478d8a71847f1c771550d8bb0ca2efbd17df893d4a33e",
+        "deterministic_fingerprint": "ac64343d5020fc682b3295db7ee001ebcb77c53bee60a259ad1d19ee4cbe8141",
         "extensions": {
           "max_neighbors": 256,
           "source": "GEO0-3"
@@ -62,7 +62,7 @@
           "tile_family": "icosahedral_stub",
           "subdivision_level": 2
         },
-        "deterministic_fingerprint": "893403774d4f1cd9ad273333e54a0269f259279ec5ed0ee0b531f4bc21bfaa90",
+        "deterministic_fingerprint": "2631aee14e0b10097da44187c7dfbf68c7afd42835992793ae70da48104a7b4e",
         "extensions": {
           "max_neighbors": 128,
           "source": "GEO0-3"
@@ -86,7 +86,7 @@
           "atlas_id": "atlas.default",
           "tile_resolution": 256
         },
-        "deterministic_fingerprint": "866bd0be1a63d845b2a56238f6853cebc6e1d47b2df0b2a84a65914fdfed4242",
+        "deterministic_fingerprint": "b87223ad18cd66a25ef88cac4c8fee583d9f1a697f17966c5f7d2b08fc9e72f0",
         "extensions": {
           "max_neighbors": 128,
           "source": "GEO0-3"

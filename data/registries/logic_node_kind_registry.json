@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "node_kind_id": "port_in",
         "description": "Input port node for a logic element instance.",
-        "deterministic_fingerprint": "e2d6db6fd7cef712dbbc493c42377697b80c693ad89aaa11408d2dd07ad56652",
+        "deterministic_fingerprint": "ecb92d3d35abd9c49007744fd503a9ed1b16ca7642a7ba563d0501f1ca3512f3",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.port_in"
@@ -29,7 +29,7 @@
         "schema_version": "1.0.0",
         "node_kind_id": "port_out",
         "description": "Output port node for a logic element instance.",
-        "deterministic_fingerprint": "cc714ada3ba0b85e289c1f4311f57cd8e46d8efa62dbb11e1acf6c6e2b8f646b",
+        "deterministic_fingerprint": "3e05f7535dff1823dcb568ee96eaed05b96330fc645fca3ef314f827479c69e8",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.port_out"
@@ -49,7 +49,7 @@
         "schema_version": "1.0.0",
         "node_kind_id": "junction",
         "description": "Single-signal merge or fanout junction.",
-        "deterministic_fingerprint": "ad14bc547cdefdf62dfea6ff134ea24c1c049e045d65769a9b520b6b7b926457",
+        "deterministic_fingerprint": "d849616407dce0b6c47f11557814a47150c07c55f327664d7a98b6dca31ac294",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.junction"
@@ -69,7 +69,7 @@
         "schema_version": "1.0.0",
         "node_kind_id": "bus_junction",
         "description": "Bus-capable merge or fanout junction.",
-        "deterministic_fingerprint": "a2acca42f6dda8c36023860818213677d18813acd232f1de5a6c2bbbc6033f59",
+        "deterministic_fingerprint": "5120c3b68bb362f9ee99b03c2d921e39d33f85759e401d9660968f7707ebd314",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.bus_junction"
@@ -89,7 +89,7 @@
         "schema_version": "1.0.0",
         "node_kind_id": "protocol_endpoint",
         "description": "Protocol-aware endpoint for framed or arbitrated logic links.",
-        "deterministic_fingerprint": "198145bb306ade53e1c3e7870eb87a5716fb6d7683ac7bd8602dace84f978b7b",
+        "deterministic_fingerprint": "355fa6d605308a36e8a0cea6bbd2ce419369f45ea7abe894677e27695df4dfb0",
         "extensions": {
           "source": "LOGIC3-3",
           "node_type_id": "node.logic.protocol_endpoint"

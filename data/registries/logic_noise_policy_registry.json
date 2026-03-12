@@ -15,7 +15,7 @@
         "extensions": {
           "profile_gated_named_rng": false
         },
-        "deterministic_fingerprint": "89a9cc3b45fb3e886947b0b64c569ef54ac1d2592283801d734f321efd121946",
+        "deterministic_fingerprint": "c48a3bc80ac477ee64b0b561336f509bb6283af9e09c2456fc38a73dad81e643",
         "stability": {
           "schema_version": "1.0.0",
           "stability_class_id": "provisional",
@@ -37,7 +37,7 @@
         "extensions": {
           "quantize_step": 1
         },
-        "deterministic_fingerprint": "3b077ea8f55f3fea59347e549189aa38a858cd4632d09cbd1f42eeb420a05ee4",
+        "deterministic_fingerprint": "7c366e396bd9d88a845aea08409627128c28a5b1edbee3a6f3940fbb1571f3f8",
         "stability": {
           "schema_version": "1.0.0",
           "stability_class_id": "provisional",
@@ -59,7 +59,7 @@
         "extensions": {
           "profile_gated_named_rng": true
         },
-        "deterministic_fingerprint": "6623062e223f8651d4468946d0e1687668036943535314b35ab03bdea46b84c6",
+        "deterministic_fingerprint": "a891c06ef9af20e5f00cd4027009194e5f929c97b6776b40b3b40d5fab2c8f83",
         "stability": {
           "schema_version": "1.0.0",
           "stability_class_id": "provisional",

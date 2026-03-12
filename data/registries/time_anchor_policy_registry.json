@@ -19,7 +19,7 @@
           "refusal_threshold_tick": 18446744073708551615,
           "refusal_code": "refusal.time.tick_overflow_imminent"
         },
-        "deterministic_fingerprint": "2671ac57aff155efa0b8d86e6db67d08d06dcdb71d72f3c9e1a5d3b40dad4f52",
+        "deterministic_fingerprint": "03b4219c1fd6a016dcd699862a323f82bfca0abd0d4d0f497a99b1a1358cbf80",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",

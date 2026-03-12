@@ -10,7 +10,7 @@
         "policy_id": "orbitpath.mvp_default",
         "samples_per_orbit": 128,
         "max_paths_per_view": 16,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "90151e13704d64e9555a7b111449bcb635216a46674d3048bb098c411dbd82eb",
         "extensions": {
           "source": "SOL2-2",
           "max_marker_rows": 512

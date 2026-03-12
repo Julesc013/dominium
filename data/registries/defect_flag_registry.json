@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "defect_flag_id": "contamination",
         "description": "Detected contamination in produced output batch.",
-        "deterministic_fingerprint": "267bb830e190b26f6f7e1e706bcbd19dd9983ead8160d4bfe0fb80f3fccaf2ea",
+        "deterministic_fingerprint": "e732a0c1cf840e1a086e4d5df868421dc3c5d076299b16492381ed1b35708957",
         "extensions": {
           "source": "PROC2-2"
         },
@@ -28,7 +28,7 @@
         "schema_version": "1.0.0",
         "defect_flag_id": "out_of_spec",
         "description": "Produced output did not satisfy required spec thresholds.",
-        "deterministic_fingerprint": "f7ca456fcb8f494f0c2db519b5ccf79a99f40677cfc97cfbe69ba66f9fd63172",
+        "deterministic_fingerprint": "9bfd3edc63cfe384b06439be6b2aa3687420fe0375e517c308e0e2543631c715",
         "extensions": {
           "source": "PROC2-2"
         },
@@ -47,7 +47,7 @@
         "schema_version": "1.0.0",
         "defect_flag_id": "incomplete",
         "description": "Process run finished without completing all required quality-critical transforms.",
-        "deterministic_fingerprint": "1812208bd90186ac1ac5bf2258b48b9a951077d0905ad9ce13e3ecb519b967ed",
+        "deterministic_fingerprint": "aea0a23371e5b9a176dac2f5912eed8fc1bd42665ef503220f8884c1c6800582",
         "extensions": {
           "source": "PROC2-2"
         },
@@ -66,7 +66,7 @@
         "schema_version": "1.0.0",
         "defect_flag_id": "overprocessed",
         "description": "Output exposed to excessive process conditions.",
-        "deterministic_fingerprint": "6b723d61757c72aad4ae02ab33dfaae712e53b91eabbfbf49a7abae83a68b12e",
+        "deterministic_fingerprint": "110334b1c89f00b002b7f6dbc8e73710acd34710194271fda1ad1239af2cb373",
         "extensions": {
           "source": "PROC2-2"
         },
@@ -85,7 +85,7 @@
         "schema_version": "1.0.0",
         "defect_flag_id": "software_bug",
         "description": "Process build/output flagged by deterministic software quality defect model.",
-        "deterministic_fingerprint": "70884065ceead0918a7aa82cb3b3412a4a3b92fd7ff4361f0c4ea506b7d7beab",
+        "deterministic_fingerprint": "7859b0a433d3e582cba0f89bd37f6f7e40571c47685941c947041b835815df02",
         "extensions": {
           "source": "PROC2-2"
         },

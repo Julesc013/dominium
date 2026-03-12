@@ -12,7 +12,7 @@
         "system_priors_ref": "priors.system_default_stub",
         "planet_priors_ref": "priors.planet_default_stub",
         "surface_priors_ref": "priors.surface_default_stub",
-        "deterministic_fingerprint": "49e19ad8dc75afe615e2489e05f6d627a7dd59cdc96ed4b7465ae913973cfae7",
+        "deterministic_fingerprint": "1cbcd52165a1ad91302440c419b38ba02a342ec9eb64f1edc56ad3d9acb2cc75",
         "extensions": {
           "description": "Default realistic procedural Milky Way prior set with coarse astrophysical tendencies.",
           "sol_anchor_cell_key": {
@@ -50,7 +50,7 @@
         "system_priors_ref": "priors.system.flat.stub",
         "planet_priors_ref": "priors.planet.flat.stub",
         "surface_priors_ref": "priors.surface.flat_world.stub",
-        "deterministic_fingerprint": "01d9010b8ff4812db21b114ba50f8b5c182b4a8c2ce972b3bf673b54dd735fcb",
+        "deterministic_fingerprint": "47c3acaaba1b1993b69211178192736048b1347a63bee9efc585899c03bb3d22",
         "extensions": {
           "description": "Flat-world-oriented stub priors for non-astronomical experiments.",
           "source": "GEO8-2"
@@ -73,7 +73,7 @@
         "system_priors_ref": "priors.system.torus.stub",
         "planet_priors_ref": "priors.planet.torus.stub",
         "surface_priors_ref": "priors.surface.torus.stub",
-        "deterministic_fingerprint": "76b06ea4ee6d91d62151fdae70a11a529eef6302a6b3db2e7aade45f08853125",
+        "deterministic_fingerprint": "fa9eeefd8c535c6ca812ba6351de5e02d5ddfa804a749daec31731ad1710b8ad",
         "extensions": {
           "description": "Periodic torus-world stub priors for wrapped geometry test universes.",
           "source": "GEO8-2"
@@ -96,7 +96,7 @@
         "system_priors_ref": "priors.system.fantasy.stub",
         "planet_priors_ref": "priors.planet.fantasy.stub",
         "surface_priors_ref": "priors.surface.fantasy.stub",
-        "deterministic_fingerprint": "087428f7c0c8c9e4967f5cbbbd41e37d1cea01d1b02d4d5a0c5eb8355adfe1f2",
+        "deterministic_fingerprint": "2a39e0991e2d0b2340c497af120713e9d88e3d42cbb3612729d86ac89ec08881",
         "extensions": {
           "description": "Non-realistic fantasy priors reserved for later pack-driven content.",
           "source": "GEO8-2"

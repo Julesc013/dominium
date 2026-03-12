@@ -10,7 +10,7 @@
         "jump_params_id": "jump.mvp_default",
         "impulse_value": 120,
         "cooldown_ticks": 0,
-        "deterministic_fingerprint": "d7bdd45d9fb70abb42936052050c9a83eab7d8fc05b11990c315a2f8ff5090a6",
+        "deterministic_fingerprint": "07d126ab31706702c22b22ace5bcef4130e80161fca78294bc6d7cba92075ded",
         "extensions": {
           "source": "EMB2-2",
           "description": "Canonical EMB-2 deterministic jump impulse for MVP traversal.",

@@ -89,7 +89,7 @@
           "outer_max_mdeg": 50000,
           "gas_max_mdeg": 30000
         },
-        "deterministic_fingerprint": "5b1d974cb7a5b64b8dc8c80bdd6733699e9ee4c8b200bf6247b984128f619bf1",
+        "deterministic_fingerprint": "4a0489ac313ededce9f3db85c2ca319ffc93f2e60999c71c36afc2e4bf88b873",
         "extensions": {
           "description": "Default deterministic MW-2 coarse planet-body priors for rocky, temperate, icy, and gas-dwarf outcomes.",
           "class_selection_thresholds": {

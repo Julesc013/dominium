@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "receiver_kind_id": "receiver.planet",
         "description": "Deterministic planetary illumination receiver kind for SOL-1 geometry.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "8486d574a053c5c89b349d31945d0064f0ae14b4fea51fc69fe7ff5f46044608",
         "extensions": {
           "source": "SOL1-2"
         },
@@ -28,7 +28,7 @@
         "schema_version": "1.0.0",
         "receiver_kind_id": "receiver.moon",
         "description": "Deterministic lunar illumination receiver kind for SOL-1 geometry.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b02b201fa3f992a6ca3cb47d5a1914218c963627e63a073281ee6603e949e950",
         "extensions": {
           "source": "SOL1-2"
         },

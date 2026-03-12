@@ -10,7 +10,7 @@
         "params_id": "params.hydrology.default_stub",
         "accumulation_threshold": 7,
         "lake_elevation_delta_threshold": 220,
-        "deterministic_fingerprint": "e2f36e2aeb636fcff0097e583b2584b04081e21f6e5abc13f5857a0065b38453",
+        "deterministic_fingerprint": "13c63a0f02eb7f57098f2cc3236f4345f1167cbd886f965939f187e44e3c234d",
         "extensions": {
           "analysis_radius": 2,
           "local_recompute_radius": 2,

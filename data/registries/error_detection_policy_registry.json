@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "policy_id": "err.checksum_stub",
         "description": "Deterministic checksum stub over canonical frame content.",
-        "deterministic_fingerprint": "1622700dfb9852a2ecadc83868bc8056d480064da1f5daf137a8fde2b3e78ea9",
+        "deterministic_fingerprint": "79acf6074f15bed7315c3b0f1561607335163304f93f1d15c90b50115e285b28",
         "extensions": {
           "checksum_kind": "canonical_sha256_prefix",
           "source": "LOGIC9-2"
@@ -29,7 +29,7 @@
         "schema_version": "1.0.0",
         "policy_id": "err.none",
         "description": "Protocol carries no explicit error-detection field.",
-        "deterministic_fingerprint": "5dac2711a4b442d21dd4e3848a6ae5281ee83e409609ca89381c444fff9bfc64",
+        "deterministic_fingerprint": "0ed5c93e48b1c3eac69508433a1ce4676c552d5c965837cfe556f14c0efd4694",
         "extensions": {
           "checksum_kind": "none",
           "source": "LOGIC9-2"

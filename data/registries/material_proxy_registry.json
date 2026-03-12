@@ -10,7 +10,7 @@
         "material_proxy_id": "mat.rock",
         "field_scalar_code": 1,
         "description": "Rock-dominant Earth surface proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b1818e98dd9fb31a80a63b2844391450156f93a0b53460b59404fc6628675eb8",
         "extensions": {
           "albedo_proxy_permille": 420,
           "friction_proxy_permille": 980,
@@ -32,7 +32,7 @@
         "material_proxy_id": "mat.soil",
         "field_scalar_code": 2,
         "description": "Soil-dominant Earth surface proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ba20aef4b455e3c2f1c668e97c6f0afff7b37c364f0362b648f5959dbeca8528",
         "extensions": {
           "albedo_proxy_permille": 330,
           "friction_proxy_permille": 860,
@@ -54,7 +54,7 @@
         "material_proxy_id": "mat.sand",
         "field_scalar_code": 3,
         "description": "Sand-dominant Earth surface proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c9bf3adaef5bfc30b001ab846270de49025de9fb72eb78c6bd3d1428a9fa7dd8",
         "extensions": {
           "albedo_proxy_permille": 520,
           "friction_proxy_permille": 760,
@@ -76,7 +76,7 @@
         "material_proxy_id": "mat.water",
         "field_scalar_code": 4,
         "description": "Water-dominant Earth surface proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "51752ef25cc1761c6c3551486bf03f649d23d7a10a749358cdfd59b74b219372",
         "extensions": {
           "albedo_proxy_permille": 140,
           "friction_proxy_permille": 380,
@@ -98,7 +98,7 @@
         "material_proxy_id": "mat.ice",
         "field_scalar_code": 5,
         "description": "Ice-dominant Earth surface proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7dbc70a324b1eb8e16e9d74d85fc28e1f51c7882bab8c6817d1cf6cd87df30c8",
         "extensions": {
           "albedo_proxy_permille": 820,
           "friction_proxy_permille": 280,
@@ -120,7 +120,7 @@
         "material_proxy_id": "mat.synthetic_generic",
         "field_scalar_code": 6,
         "description": "Synthetic catch-all Earth surface proxy reserved for authored structures and later DOM/MAT materialization.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ad7bab23388f756c4e12d947ff76d2d2d6ede078dce312d7892b1eb739bdb289",
         "extensions": {
           "albedo_proxy_permille": 500,
           "friction_proxy_permille": 900,

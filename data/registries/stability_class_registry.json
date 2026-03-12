@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "stability_class_id": "stable",
         "description": "Semantics frozen under an explicit semantic contract version.",
-        "deterministic_fingerprint": "999e798d935c62116e8ab29f110fa136db3e58eb0936a1555f7c447a046b4e5e",
+        "deterministic_fingerprint": "427daf6f8ca9baf6bcbda82688e87a7df39f76fa594beeec8b541645c0585951",
         "extensions": {
           "contract_id_required": true,
           "future_series_required": false,
@@ -31,7 +31,7 @@
         "schema_version": "1.0.0",
         "stability_class_id": "provisional",
         "description": "MVP or transitional implementation with an explicit replacement path.",
-        "deterministic_fingerprint": "82820b0ca5229cfeaf56b001468cb35ce8bb7b5e36dca48738de8fde9308b765",
+        "deterministic_fingerprint": "25006e2e261fffc2c879a900100c47941f4ce6704d11ff501c678f92fa0bd6ba",
         "extensions": {
           "contract_id_required": false,
           "future_series_required": true,
@@ -53,7 +53,7 @@
         "schema_version": "1.0.0",
         "stability_class_id": "experimental",
         "description": "Explicitly gated implementation that must exception-log activation or use.",
-        "deterministic_fingerprint": "486b7639a9d409aa959a8c30f123587e979e5a0fdabd0b6c3104c852164f026e",
+        "deterministic_fingerprint": "c17a536c7e430730f206409f48944e425dffd4be3ed945ef0528a46570673bd9",
         "extensions": {
           "contract_id_required": false,
           "future_series_required": false,

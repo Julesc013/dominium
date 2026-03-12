@@ -654,13 +654,23 @@ def run_server_window_with_pack_lock(
     if with_client:
         handshake = server_probe.connect_loopback_client(boot)
         if _token(handshake.get("result")) != "complete":
+            safe_handshake = {
+                "result": _token(handshake.get("result")),
+                "listener": _as_map(handshake.get("listener")),
+                "hello": {
+                    "result": _token(_as_map(handshake.get("hello")).get("result")),
+                    "connection_id": _token(_as_map(handshake.get("hello")).get("connection_id")),
+                    "client_peer_id": _token(_as_map(handshake.get("hello")).get("client_peer_id")),
+                },
+                "accepted": _as_map(handshake.get("accepted")),
+            }
             return {
                 "result": "refused",
                 "boot": boot,
-                "handshake": handshake,
+                "handshake": safe_handshake,
                 "session_spec_path": _relative_path(repo_root_abs, _token(fixture.get("session_spec_abs"))),
                 "save_dir": _relative_path(repo_root_abs, _token(fixture.get("save_dir"))),
-                "deterministic_fingerprint": canonical_sha256({"boot": boot, "handshake": handshake}),
+                "deterministic_fingerprint": canonical_sha256({"boot": boot, "handshake": safe_handshake}),
             }
         client_transport = handshake.get("client_transport")
 

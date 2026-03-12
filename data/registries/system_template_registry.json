@@ -30,7 +30,7 @@
           }
         ],
         "nested_template_refs": [],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3b7f373241bf00dbfbeff44f96334cce91bf66e22901b14deeee463ae1e8895e",
         "extensions": {
           "source": "LOGIC6-6",
           "assembly_graph_spec": {
@@ -72,7 +72,7 @@
         "safety_pattern_instance_templates": [],
         "spec_bindings": [],
         "nested_template_refs": [],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "54b97bd4051c858f64c4d4140b9b0fb9574785090a85704d3925a2bd91262810",
         "extensions": {
           "source": "EMB0-2",
           "assembly_graph_spec": {

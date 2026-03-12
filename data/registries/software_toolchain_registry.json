@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "toolchain_id": "toolchain.stub_c89",
         "toolchain_version": "c89.1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5c6dab9c274d5494b52fa15b314e52d545a39c5abf3af5291bcce1f4145a127b",
         "extensions": {
           "source": "PROC8-2",
           "language_family": "c",
@@ -30,7 +30,7 @@
         "schema_version": "1.0.0",
         "toolchain_id": "toolchain.stub_cpp98",
         "toolchain_version": "cpp98.1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e41c93bc1b968423c944b476a24cfa57a0a3c896ce7b5db30c6abf23f737a162",
         "extensions": {
           "source": "PROC8-2",
           "language_family": "cpp",
@@ -51,7 +51,7 @@
         "schema_version": "1.0.0",
         "toolchain_id": "toolchain.stub_script",
         "toolchain_version": "script.1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2982f5a1431371cf0ea4ba4ca3722cdb96d87dc7599685f5ea68ef1682c999f4",
         "extensions": {
           "source": "PROC8-2",
           "language_family": "script",

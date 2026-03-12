@@ -16,7 +16,7 @@
             "y"
           ]
         },
-        "deterministic_fingerprint": "709e509145bf0449d8f93dff3c6543e0920149af6134e605fd057c516d4a9c70",
+        "deterministic_fingerprint": "2421eb49579b2065e2390ebab03d8ebe35190dc4a912499df5a925743dc00642",
         "extensions": {
           "source": "GEO0-3"
         },
@@ -40,7 +40,7 @@
           "near_plane_mm": 1,
           "target_dimensions": 2
         },
-        "deterministic_fingerprint": "664949f74bbddee359d32b4c531fa2379bf440bfafb6e5fd4608cae9a1a5a4bd",
+        "deterministic_fingerprint": "2f7202d39f5aca1459e881ed1d8c99aaa7778b415d26119a6aaf1de016a82c7f",
         "extensions": {
           "source": "GEO0-3"
         },
@@ -63,7 +63,7 @@
           "atlas_id": "atlas.default",
           "target_dimensions": 2
         },
-        "deterministic_fingerprint": "590b3befa20a441ed5a1c4b4453b2f79c2b75fbbb12344d6eb0302251dd9630f",
+        "deterministic_fingerprint": "da8de8e5c93f1cfb77777d897c491930bc1d033f016b3c1c77b6815e27b80841",
         "extensions": {
           "source": "GEO0-3"
         },
@@ -89,7 +89,7 @@
           ],
           "target_dimensions": 3
         },
-        "deterministic_fingerprint": "3eb83c33c4ebd7f41812809184b4761cfe6177324ee2fb26a007299ec335b11f",
+        "deterministic_fingerprint": "21c0914e087a77bebb4f9c04855467b3aad255614afb967123e9daf97b9a2b13",
         "extensions": {
           "source": "GEO0-3"
         },

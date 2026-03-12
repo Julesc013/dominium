@@ -13,7 +13,7 @@
         "overlay_conflict_policy_id": "overlay.conflict.last_wins",
         "max_clients": 4,
         "proof_anchor_interval_ticks": 4,
-        "deterministic_fingerprint": "d8324b289ceeec435977e69bdfb3257b9cc03f2fd4436e0495f465d3d6add810",
+        "deterministic_fingerprint": "ff5f252fdea53f2e37fec6989a2daf92ad2a76260c9b35427b02fea8e480fe52",
         "extensions": {
           "official.endpoint": "loopback://server.mvp.default",
           "official.requested_replication_policy_id": "policy.net.server_authoritative",

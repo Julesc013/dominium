@@ -12,7 +12,7 @@
         "max_ticks": 32,
         "max_samples": 128,
         "throttle_strategy": "deterministic_subsample",
-        "deterministic_fingerprint": "42630040eac34a8fc1cc4db162925ecdb33260d35ada81004722b0db7a986a16",
+        "deterministic_fingerprint": "e40a639c143344aaede5039123a264ef0683883947aa85066236f6ff26616990",
         "extensions": {
           "allow_force_expand": false,
           "remote_monitoring": "sig_authorized_only",
@@ -37,7 +37,7 @@
         "max_ticks": 16,
         "max_samples": 32,
         "throttle_strategy": "refuse",
-        "deterministic_fingerprint": "9441713db9cf6490ceb7ecc40cb29267305b4deaf044f8d74d90ef666ca0c2bc",
+        "deterministic_fingerprint": "92cfc623e431c7352ae37244d77af208b6dac779a65219dfbde950d3e5ce6ce1",
         "extensions": {
           "allow_force_expand": false,
           "remote_monitoring": "forbidden",
@@ -62,7 +62,7 @@
         "max_ticks": 64,
         "max_samples": 512,
         "throttle_strategy": "reduce_points",
-        "deterministic_fingerprint": "1be74e689e9298b5b761d50f5b1e34ff0263290ec9e2f73c11de0ab64a32004c",
+        "deterministic_fingerprint": "6f0d55d8ff38f24b8d04800a224183899b935e14b00e1429cb959bf7aba11148",
         "extensions": {
           "allow_force_expand": true,
           "remote_monitoring": "sig_authorized_only",

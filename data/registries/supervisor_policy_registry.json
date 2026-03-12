@@ -10,7 +10,7 @@
         "policy_id": "supervisor.policy.default",
         "max_restarts": 0,
         "auto_attach_ipc": true,
-        "deterministic_fingerprint": "298aa565c6bb70324f3d7567d677778433097e2f022e00132646f26a06f47765",
+        "deterministic_fingerprint": "102ceb83b00c26be3492f6147eb77b61f369035c0cb01ace2795cdf91d744979",
         "extensions": {
           "official.source": "APPSHELL-6"
         },
@@ -30,7 +30,7 @@
         "policy_id": "supervisor.policy.lab",
         "max_restarts": 2,
         "auto_attach_ipc": true,
-        "deterministic_fingerprint": "7cad5113e05d2c84ec153aba494898b69a44fc59af569dce80dcdc9a60162edf",
+        "deterministic_fingerprint": "4aa949eb0c85a3a0908abd983fdab903a0e65c6bf86be6f8622a33bf5479e459",
         "extensions": {
           "official.source": "APPSHELL-6"
         },

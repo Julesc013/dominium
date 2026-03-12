@@ -10,7 +10,7 @@
         "compile_policy_id": "compile.default",
         "preferred_verification_procedure_id": "verify.exact_structural",
         "allow_bounded_error": true,
-        "deterministic_fingerprint": "a0a354d6541dbbe77f0dfffeaa2e8e2e97f1fb7c8c90c9e645aca854fa9a841a",
+        "deterministic_fingerprint": "c34aaf4d4fe4b7d0881cd2cdfa346ab9be7cd2aba5443c5e9ded21cafb367fcb",
         "extensions": {
           "description": "Default balanced policy for general compilation."
         },
@@ -30,7 +30,7 @@
         "compile_policy_id": "compile.rank_strict",
         "preferred_verification_procedure_id": "verify.exact_structural",
         "allow_bounded_error": false,
-        "deterministic_fingerprint": "cc54742670a8ecb1d8598c592fa80acdfdb0453fba4118d470e4899c16e7d968",
+        "deterministic_fingerprint": "36d3eb1fb4ca9e06e958d15dffdcd4121f7b98939f244ba9289eb5f4b06a1c98",
         "extensions": {
           "description": "Ranked mode policy requiring exact equivalence."
         },
@@ -50,7 +50,7 @@
         "compile_policy_id": "compile.lab_aggressive",
         "preferred_verification_procedure_id": "verify.bounded_sampling",
         "allow_bounded_error": true,
-        "deterministic_fingerprint": "da89e7b8f490cf6442e80c0e8741a6fa841ffc201961c8bc86708d81c8717695",
+        "deterministic_fingerprint": "80f826bc5e981044424858d9ef5b403cbcb78a0e6b5038aad4904cfb3f938e9a",
         "extensions": {
           "description": "Laboratory policy allowing broader compile attempts."
         },

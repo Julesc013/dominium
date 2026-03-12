@@ -15,7 +15,7 @@
           "denominator": 200,
           "min_increment": 1
         },
-        "deterministic_fingerprint": "9a0c36b47494f6037dda5bf4775006a5b0265cfd37e66dce1a18f1d8ef44eee2",
+        "deterministic_fingerprint": "1f5329d5b1044f09142fed2b8edfc35ed200a02479f93c9a7c5033d92f8fe877",
         "extensions": {
           "category": "friction"
         },
@@ -40,7 +40,7 @@
           "denominator": 150,
           "min_increment": 1
         },
-        "deterministic_fingerprint": "eb97a9e1b01e83341e1b5596c7e768989b0d45d143973eee8c17d3e095a1d929",
+        "deterministic_fingerprint": "8dcb215cd23161d8cc2e8bb5d80752b14e73f324b9605b253fb160abab12461a",
         "extensions": {
           "category": "combustion"
         },
@@ -65,7 +65,7 @@
           "denominator": 250,
           "min_increment": 1
         },
-        "deterministic_fingerprint": "607f15cc77c07bcfe3d6e7e2996c4e1ee44116c333c4e82ad084675a225824a3",
+        "deterministic_fingerprint": "6c3c5ac1b0253439bc2f72ee1495b9d48917b22f16cffcb032ed57a6e4776b73",
         "extensions": {
           "category": "deformation"
         },
@@ -90,7 +90,7 @@
           "denominator": 300,
           "min_increment": 1
         },
-        "deterministic_fingerprint": "eb4edae209a8c3d63fd8cc48b4557d2514103adbdfe5f5281fcc3d309191ba1a",
+        "deterministic_fingerprint": "12623c58230759ef4bc2341f7dc2591888a1216047cfdf7a0e886fd20b31e13a",
         "extensions": {
           "category": "phase_change"
         },

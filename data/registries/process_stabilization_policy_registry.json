@@ -12,7 +12,7 @@
         "minimum_run_count": 16,
         "max_yield_variance_ppm": 25000,
         "max_defect_rate_ppm": 15000,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "81bdf5b58e89e916a37eed1955fb7e7d94104afd8bdbfe3143642e2b0402a071",
         "extensions": {
           "source": "PROC0-4"
         },
@@ -34,7 +34,7 @@
         "minimum_run_count": 64,
         "max_yield_variance_ppm": 10000,
         "max_defect_rate_ppm": 5000,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a42973891dd616d7081de43baea82ca6ea2990dc81a70597de5b523e32833378",
         "extensions": {
           "source": "PROC0-4"
         },
@@ -56,7 +56,7 @@
         "minimum_run_count": 6,
         "max_yield_variance_ppm": 40000,
         "max_defect_rate_ppm": 25000,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f8bc99e69772fd4bbf6ab2d00484a9384ebe80e961758ba57808e9445e85b691",
         "extensions": {
           "source": "PROC0-4",
           "non_ranked_only": true

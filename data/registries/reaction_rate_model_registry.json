@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "rate_model_id": "model.chem_rate_linear_stub",
         "description": "Linear deterministic baseline rate model alias.",
-        "deterministic_fingerprint": "53746600c0c57d75ad713bbcf4a7bc3d6b8f69c638788c7033a98ea1bfcb5514",
+        "deterministic_fingerprint": "cc6329737fb19ae7151d64699c23929617d138b8e1f883562ead5deb228dced3",
         "extensions": {
           "source": "CHEM2-3"
         },
@@ -28,7 +28,7 @@
         "schema_version": "1.0.0",
         "rate_model_id": "model.chem_rate_temp_dependent_stub",
         "description": "Temperature-biased deterministic baseline rate model alias.",
-        "deterministic_fingerprint": "f00c563796cdebeb789c9fdee498d647b138d251532b67fb6a3b3ee4192bba90",
+        "deterministic_fingerprint": "36fb9456af2a4c3a6503940fc3a226ef7aa086f989fddded3b8b222f6ae9a33d",
         "extensions": {
           "source": "CHEM2-3"
         },
@@ -47,7 +47,7 @@
         "schema_version": "1.0.0",
         "rate_model_id": "model.chem_rate_pressure_temp_stub",
         "description": "Deterministic processing rate model with temperature and pressure proxies.",
-        "deterministic_fingerprint": "3216845004c35a3a56e070a56f5402f5fe85fb0cd05227a066de07b78720a79c",
+        "deterministic_fingerprint": "edfacf0a0d33e8d5d71d1a478fb3e1b05d4a8363dc13800c16eb080ae64abdd1",
         "extensions": {
           "inputs": [
             "temperature",
@@ -70,7 +70,7 @@
         "schema_version": "1.0.0",
         "rate_model_id": "model.chem_rate_catalyst_stub",
         "description": "Deterministic processing rate model with catalyst-modified throughput.",
-        "deterministic_fingerprint": "993242edc35e3c8cf2050808e9db1ba25a9d6f4c5efb550127c20abf514c7802",
+        "deterministic_fingerprint": "974b9fdc6505863523e8dc5b00460c031a2a221e71c455a8bdf6704341ec6cfb",
         "extensions": {
           "inputs": [
             "temperature",

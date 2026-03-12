@@ -10,7 +10,7 @@
         "surface_flag_id": "flag.buildable",
         "bit_mask": 1,
         "description": "Surface may accept basic construction in the EARTH-10 stub model.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "fcd2efb7944db4b894d8c79a327c13266f0792134acbc7d9957896fc50ac92d7",
         "extensions": {
           "source": "EARTH10-2"
         },
@@ -30,7 +30,7 @@
         "surface_flag_id": "flag.fluid",
         "bit_mask": 2,
         "description": "Surface behaves as a fluid-contact stub in the EARTH-10 model.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ab299974be3d726a0a04be1d60c05ce4de084f8e733a9ac02b0a1fc8271c84fa",
         "extensions": {
           "source": "EARTH10-2"
         },
@@ -50,7 +50,7 @@
         "surface_flag_id": "flag.slippery",
         "bit_mask": 4,
         "description": "Surface is traction-reduced in the EARTH-10 stub model.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "df14a14189ee4b7ae735285cde28793ebe5520e951ced4a4db8c4cc21b1afa4b",
         "extensions": {
           "source": "EARTH10-2"
         },
@@ -70,7 +70,7 @@
         "surface_flag_id": "flag.hazardous",
         "bit_mask": 8,
         "description": "Reserved hazardous surface flag for later hazard-domain integration.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c650e7f4dcee30dc87e2ad84d2ee9312e3fcc119094f0f3eabb3cac54dfbc0cc",
         "extensions": {
           "reserved_default_unset": true,
           "source": "EARTH10-2"
@@ -91,7 +91,7 @@
         "surface_flag_id": "flag.protected",
         "bit_mask": 16,
         "description": "Reserved protected-surface flag for later server/domain rules.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "34898c37e0e4d66fa177fd37b5539a968e3071bb8406cdbc3e46ad4340fc0b6d",
         "extensions": {
           "reserved_default_unset": true,
           "source": "EARTH10-2"

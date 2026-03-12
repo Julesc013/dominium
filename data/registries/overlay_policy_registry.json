@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "overlay_policy_id": "overlay.default",
         "description": "Default GEO-9 merge policy: property-level overrides, explicit removals, no identity mutation.",
-        "deterministic_fingerprint": "b878fb8dd2b171217fa42358050f4c6ff50d3beeaedfcc1478783547a8e9a0da",
+        "deterministic_fingerprint": "7e740c3f6c162c53c4eecbcb74cf62c06fc744626a6c5ba6a9378df4b9d2efa1",
         "extensions": {
           "allow_unsigned_mods": true,
           "allow_identity_override": false,
@@ -35,7 +35,7 @@
         "schema_version": "1.0.0",
         "overlay_policy_id": "overlay.rank_strict",
         "description": "Stricter GEO-9 merge policy for ranked/release lineages.",
-        "deterministic_fingerprint": "7610dd25bed546e197f4c723b05aff2324ff651dec1032865f828261d63e6be1",
+        "deterministic_fingerprint": "015f4328000838d3b1054b396db8851d8520cf91f5bf4e7dcf22065a5b457888",
         "extensions": {
           "allow_unsigned_mods": false,
           "allow_identity_override": false,
@@ -62,7 +62,7 @@
         "schema_version": "1.0.0",
         "overlay_policy_id": "overlay.lab_freeform",
         "description": "Lab-focused GEO-9 merge policy with explicit unsigned-mod tolerance but still no silent identity mutation.",
-        "deterministic_fingerprint": "76bec6ea2b623a4cbad10dee6d95a851ffd0477421df7fbfee2b1ec02b784a17",
+        "deterministic_fingerprint": "d4b6e2086b6cbedf48ad7498c03be8ddd3573bbdb9190a4034750251e5c6831c",
         "extensions": {
           "allow_unsigned_mods": true,
           "allow_identity_override": false,

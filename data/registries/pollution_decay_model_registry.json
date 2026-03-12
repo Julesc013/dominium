@@ -16,7 +16,7 @@
         "kind": "none",
         "half_life_ticks": 1,
         "deposition_permille": 0,
-        "deterministic_fingerprint": "27e1ff2924afe19bc790efa12530f3665060906a1c3c8620838244715644c7c0",
+        "deterministic_fingerprint": "76c2ff73bde3c8374962db0df122d2005f4097afb1e0284e4a2b8af11987b57f",
         "extensions": {
           "source": "POLL1-3"
         },
@@ -37,7 +37,7 @@
         "kind": "half_life",
         "half_life_ticks": 16,
         "deposition_permille": 0,
-        "deterministic_fingerprint": "27094aafa377018e54de6ec7c64b2f5b8a4fc2ce993845595b58df2fdfd367b0",
+        "deterministic_fingerprint": "8ee76f574a8685f8c45680cca2ba9b3ca3aebea1eb97c0c8f126fcf4df8ba5bb",
         "extensions": {
           "source": "POLL1-3"
         },
@@ -58,7 +58,7 @@
         "kind": "deposition",
         "half_life_ticks": 1,
         "deposition_permille": 120,
-        "deterministic_fingerprint": "1661808ff9e27dbe706e0f4ecb3f10d2ed8b1215abf733dbbc5b484aa4eb3b9e",
+        "deterministic_fingerprint": "e4563612baf2ec79ac2a6d7fbe4b0773e4d2c04acd6925e4a8ba924f794188c3",
         "extensions": {
           "source": "POLL1-3"
         },

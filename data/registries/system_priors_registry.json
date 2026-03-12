@@ -42,7 +42,7 @@
           "base_max_mdeg": 3500,
           "outer_zone_bonus_mdeg": 2500
         },
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a14223a69e81b9e474871f9597cbee26efff0171b279f360974ad4fbd534ee72",
         "extensions": {
           "description": "Default deterministic MW-2 system priors for one primary star, bounded planet counts, and stable coarse orbit ladders.",
           "star_mass_band_ranges_milli_solar": {

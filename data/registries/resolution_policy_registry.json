@@ -7,7 +7,7 @@
     "resolution_policies": [
       {
         "resolution_policy_id": "resolve.strict_refuse_ambiguous",
-        "deterministic_fingerprint": "b50dad2f0ba5f55b1af39c923fab73115bca5f68d1b58a936f8d45072506e97d",
+        "deterministic_fingerprint": "a6577feb799e5e96c71e31669c006b31b95b3e9651d07c0402a861c4bd54b665",
         "extensions": {
           "official.description": "Refuse when a required provides_id has more than one provider.",
           "official.source": "LIB-5"
@@ -25,7 +25,7 @@
       },
       {
         "resolution_policy_id": "resolve.explicit_required",
-        "deterministic_fingerprint": "9fe7c212af002c469f7ed49e876459900d03b90b15f2d71632d0c66dac693196",
+        "deterministic_fingerprint": "356ea1079570734b629334f6fefe523be4219b335bb5ddb38443e378f7ca0838",
         "extensions": {
           "official.description": "Require an explicit instance-level chosen_pack_id for every required provides_id.",
           "official.source": "LIB-5"
@@ -43,7 +43,7 @@
       },
       {
         "resolution_policy_id": "resolve.deterministic_highest_priority",
-        "deterministic_fingerprint": "28fe46bbc5bd7d46ebdaf6c35d8b3ab121a6fa0a475f5235547892a52c08319c",
+        "deterministic_fingerprint": "f124ac75a3b17997736f4839803f1624b8f94686d00364f16af38beb9003b515",
         "extensions": {
           "official.description": "Pick the highest provider priority and tie-break by pack_id.",
           "official.source": "LIB-5"
@@ -61,7 +61,7 @@
       },
       {
         "resolution_policy_id": "resolve.deterministic_lowest_pack_id",
-        "deterministic_fingerprint": "c369d84bebd94a13ad8ef3c50c2bd383090e5598739f773ead48d19c767adab6",
+        "deterministic_fingerprint": "e3d9b736aa3e9fd8c1f6c1c447efed07ca491f4992aac97555c4fe4d36fc44ca",
         "extensions": {
           "official.description": "Pick the lexicographically lowest pack_id as the stable fallback.",
           "official.source": "LIB-5"

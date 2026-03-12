@@ -10,7 +10,7 @@
         "view_type_id": "view.map_ortho",
         "description": "Deterministic ortho map view over a bounded GEO partition window.",
         "projection_profile_id": "geo.projection.ortho_2d",
-        "deterministic_fingerprint": "69922d8c31fe3b7145c7cbfd5340f2582943e4c69c65775fd8f91da9ac7ef857",
+        "deterministic_fingerprint": "be35e5b2279148f131ab45a5689994303e09925bf7ba6c88a23c05749b586f21",
         "extensions": {
           "default_resolution": {
             "width": 17,
@@ -34,7 +34,7 @@
         "view_type_id": "view.minimap",
         "description": "Deterministic reduced-resolution ROI map view.",
         "projection_profile_id": "geo.projection.ortho_2d",
-        "deterministic_fingerprint": "0dd493a2af8fded7fb3220a283b4ae1a60570edc52c87835c19393d4cd4eb31c",
+        "deterministic_fingerprint": "b04c1a9b7e3a3d5e027716c3e1d581e012319325a6462ab9312ba168a4ce2eab",
         "extensions": {
           "default_resolution": {
             "width": 9,
@@ -58,7 +58,7 @@
         "view_type_id": "view.atlas_unwrap",
         "description": "Deterministic sphere-surface atlas unwrap view.",
         "projection_profile_id": "geo.projection.atlas_unwrap_stub",
-        "deterministic_fingerprint": "ba70b571e5de555ae0c096be73030af3cd98d570f13d2ef05127bd9cc12fd836",
+        "deterministic_fingerprint": "716bf33dd73cec4abf4cb7839d2b71428a70a11ba14b752fe037d87312c76658",
         "extensions": {
           "default_resolution": {
             "width": 16,
@@ -82,7 +82,7 @@
         "view_type_id": "view.slice_nd_stub",
         "description": "Deterministic higher-dimensional slice view stub.",
         "projection_profile_id": "geo.projection.slice_nd_stub",
-        "deterministic_fingerprint": "6a8298037636f4f497703c1b0dd1fbead18437103c3b3618e686fd19f2cd9a6c",
+        "deterministic_fingerprint": "878f521bffa80eec69a0bb8c2c2defe7995a8374707b6a7125606284fd3315a7",
         "extensions": {
           "default_resolution": {
             "width": 11,
@@ -106,7 +106,7 @@
         "view_type_id": "view.cctv_stub",
         "description": "Deterministic remote CCTV snapshot lens transported as a SIG observation artifact.",
         "projection_profile_id": "geo.projection.ortho_2d",
-        "deterministic_fingerprint": "2182a61ef064e052bbeb24846d8a8b27bf6a1f811f326a5a9f30ee8ce8a8d097",
+        "deterministic_fingerprint": "6f376a3caa5705321bb913d075ec18847fc43faf33d0c1d35bba4de2a920ecbd",
         "extensions": {
           "transport_kind": "sig_snapshot",
           "default_resolution": {

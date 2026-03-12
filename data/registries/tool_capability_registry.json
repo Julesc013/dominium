@@ -11,7 +11,7 @@
         "capability_kind": "logic_trace",
         "required_entitlement_id": "ent.tool.logic_trace",
         "access_policy_id": "access.role_required",
-        "deterministic_fingerprint": "bc7ec33795d8c6426384dcd92d9d3d103d6f88f90f7e6d6f9a7cfc118faaa5eb",
+        "deterministic_fingerprint": "9a5aa95c210deaeeb074b788a377d4cbe781a3da41dbc50e78dfcaf57ddb22c6",
         "extensions": {
           "source": "EMB1-2",
           "display_name": "Logic Analyzer",
@@ -41,7 +41,7 @@
         "capability_kind": "logic_probe",
         "required_entitlement_id": "ent.tool.logic_probe",
         "access_policy_id": "access.role_required",
-        "deterministic_fingerprint": "7502b2eefbbfb9308eeb92f78b13c7351560b31bdbf563fa00519946f8689887",
+        "deterministic_fingerprint": "46c9ef266b6fa97301119adb28e7c122212cf84850797cd10bd3a7868dc0f38b",
         "extensions": {
           "source": "EMB1-2",
           "display_name": "Logic Probe",
@@ -70,7 +70,7 @@
         "capability_kind": "scan",
         "required_entitlement_id": "ent.tool.scan",
         "access_policy_id": "access.physical_contact_required",
-        "deterministic_fingerprint": "750f9ad07be0d5c633e6f9a59ea0f7045e64a7343d3162c576142b2da5fecb96",
+        "deterministic_fingerprint": "6cc079f1f7f25e01606ed139d85d40265ebd9f0483fdec64cd749af79241f759",
         "extensions": {
           "source": "EMB1-2",
           "display_name": "Scanner",
@@ -99,7 +99,7 @@
         "capability_kind": "teleport",
         "required_entitlement_id": "ent.tool.teleport",
         "access_policy_id": "access.role_required",
-        "deterministic_fingerprint": "e2e218688938225c4a61ded174e906440bed289b121740b100febc175c6825dc",
+        "deterministic_fingerprint": "ad97dc6d95bce524f61bfb31127426d96d7fa3f3deea890fa7e62c1d075db126",
         "extensions": {
           "source": "EMB1-2",
           "display_name": "Teleport",
@@ -127,7 +127,7 @@
         "capability_kind": "terrain_edit",
         "required_entitlement_id": "ent.tool.terrain_edit",
         "access_policy_id": "access.role_required",
-        "deterministic_fingerprint": "001bc58a4d9c88c013a337bea5c4f53a204580640709c75d7c60a65f5ff5a360",
+        "deterministic_fingerprint": "33e76b39a6d7a0925fbf0c7a3166e37ce97259f68f22dbbae4b423331ddaf2df",
         "extensions": {
           "source": "EMB1-2",
           "display_name": "Terrain Edit",

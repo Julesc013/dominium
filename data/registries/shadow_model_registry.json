@@ -10,7 +10,7 @@
         "shadow_model_id": "shadow.horizon_stub_default",
         "kind": "horizon_stub",
         "parameters_ref": "params.shadow.horizon.earth_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "86d00f38ab2c14382767b396192f83fe567c3ae0e4aa496b6c688df3e37082e2",
         "extensions": {
           "description": "Canonical EARTH-5 bounded horizon shadow model using local macro elevation proxy samples only.",
           "sample_count": 8,
@@ -37,7 +37,7 @@
         "shadow_model_id": "shadow.none",
         "kind": "none",
         "parameters_ref": "params.shadow.none",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f9212405297e99f105d2930b99225d1487ea16c1591c7ee0aa8b904ff71d1d84",
         "extensions": {
           "description": "Null shadow model for derived-lighting fallback and no-op render paths.",
           "sample_count": 0,

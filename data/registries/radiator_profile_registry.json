@@ -11,7 +11,7 @@
         "base_conductance": 220,
         "forced_cooling_multiplier": 1000,
         "spec_id": null,
-        "deterministic_fingerprint": "a827a5f3a3dc0f999ceb78c6e96d2e78e888b6ca1426663b0b43fa1fa0c659d0",
+        "deterministic_fingerprint": "435ad77efdd5b758d7295c274cdbe0a4caed8e223c0275f35345ba39d80d9f49",
         "extensions": {
           "cooling_mode": "passive"
         },
@@ -32,7 +32,7 @@
         "base_conductance": 220,
         "forced_cooling_multiplier": 1850,
         "spec_id": null,
-        "deterministic_fingerprint": "a52ea402d63cbc1d5a4306aad0bc657af710a035c7ffa18c028ade6a474e265c",
+        "deterministic_fingerprint": "8ac8eaaa28322d55afd7a41ad42b9305a824a6977fa4c3917983a7bde8d3788a",
         "extensions": {
           "cooling_mode": "forced"
         },

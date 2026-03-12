@@ -11,7 +11,7 @@
         "fp_alpha": 700,
         "tp_alpha": 350,
         "max_offset": 1600,
-        "deterministic_fingerprint": "02df9de3a5778a7a0eb764d4d21ec93ee291615411cf6680f45f2239672f4f68",
+        "deterministic_fingerprint": "068c47ff5512082e9440204a75fe833bc6caaa1b2836c5150027c2a7683257e5",
         "extensions": {
           "source": "EMB2-2",
           "description": "Canonical EMB-2 bounded fixed-point render smoothing for embodied cameras."

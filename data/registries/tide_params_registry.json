@@ -11,7 +11,7 @@
         "amplitude": 240,
         "update_interval_ticks": 6,
         "inland_damping_factor": 180,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "926836dc603ebea62685bbe8fe5e559b6104df9c271e9e66114fac8cd0c84a02",
         "extensions": {
           "description": "Canonical EARTH-3 macro Moon-driven tide parameters for deterministic Earth tile refresh.",
           "lunar_period_ticks": 273,

@@ -18,7 +18,7 @@
           "pollutant.toxic_gas_stub"
         ],
         "requires_calibration": false,
-        "deterministic_fingerprint": "8467e75c679dce14218265531a34c6de5dbc4dbc3edbe22b8af52c2c2ef4bddb",
+        "deterministic_fingerprint": "10f4eb6e9227f77b4ae7f93251a879fd35f7e8153673a6061b9f75195515be1e",
         "extensions": {
           "source": "POLL2-2",
           "task_type_id": "task.measure_pollution"
@@ -46,7 +46,7 @@
           "pollutant.oil_spill_stub"
         ],
         "requires_calibration": false,
-        "deterministic_fingerprint": "fb8e1161bedf6454481e1d4034e06af0849fc2a450aa450dc9cdd08692c3142a",
+        "deterministic_fingerprint": "6678c9a5deaf281f52bf9a5425b949ce189fbbc6205373c519829c0248027964",
         "extensions": {
           "source": "POLL2-2",
           "task_type_id": "task.measure_pollution"

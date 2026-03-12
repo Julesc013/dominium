@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "policy_id": "overlay.conflict.last_wins",
         "mode": "last_wins",
-        "deterministic_fingerprint": "8125aecc1e6667513c5650725f3903a8c76293c0dc0a1863b0253e14685e10c2",
+        "deterministic_fingerprint": "e5b1659fa1f7a09646c507a96208889448f2f7321942efca0966f2f82740002d",
         "extensions": {
           "description": "Apply deterministic stable ordering and emit conflict artifacts for audit.",
           "source": "COMPAT-SEM-3"
@@ -29,7 +29,7 @@
         "schema_version": "1.0.0",
         "policy_id": "overlay.conflict.prompt_stub",
         "mode": "prompt_stub",
-        "deterministic_fingerprint": "ce16480feab09c050fc8f92b244cc55e7d91bf15b67f89a1ef2304260fea72b8",
+        "deterministic_fingerprint": "9dc1edccc65fc038efd29045374abd5a540fc155cf8823c77c858bee1fdd5c5b",
         "extensions": {
           "description": "Refuse conflicting merge groups and require an explicit resolver layer; no interactive UI yet.",
           "remediation_hint": "remedy.overlay.add_explicit_resolver_layer",
@@ -50,7 +50,7 @@
         "schema_version": "1.0.0",
         "policy_id": "overlay.conflict.refuse",
         "mode": "refuse",
-        "deterministic_fingerprint": "678f3c2399d0c43c95dcde40e5a19539cb65e7d87d73af45b9f4982769a9f853",
+        "deterministic_fingerprint": "de7d1072046faae8d6594439cce68226731da872f083e7ac4ef76e17e74a565e",
         "extensions": {
           "description": "Refuse same-precedence overlay conflicts instead of silently applying precedence.",
           "remediation_hint": "remedy.overlay.resolve_conflict_or_change_policy",

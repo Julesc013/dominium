@@ -11,7 +11,7 @@
         "relief_preferred": true,
         "burst_requires_threshold": true,
         "max_failure_events_per_tick": 64,
-        "deterministic_fingerprint": "2fb8ac69f12e5a1d31fcdb505dc0fe0486477162fc571615d074eefc5f00ce2d",
+        "deterministic_fingerprint": "fdf6e4bb8e60316e88285d0d11fcca589ae40c5abc2877133d77f7255be1bf1e",
         "extensions": {
           "description": "Prefer relief where possible, burst only above burst threshold."
         },
@@ -32,7 +32,7 @@
         "relief_preferred": false,
         "burst_requires_threshold": true,
         "max_failure_events_per_tick": 64,
-        "deterministic_fingerprint": "e124dc8fa83d0f22b96fbacaa97f0bbbf16deeff84d9a89d538896ef40e05516",
+        "deterministic_fingerprint": "e2327cef2d2491b0edf2916872716c8b3278b03a6cc3147ae1d42e256458a032",
         "extensions": {
           "description": "Strict containment: burst events fire at configured burst threshold."
         },
@@ -53,7 +53,7 @@
         "relief_preferred": true,
         "burst_requires_threshold": true,
         "max_failure_events_per_tick": 48,
-        "deterministic_fingerprint": "8218188d6e46c8dbfd1e28dda893236ac9a005b4c21519335962bd7f42a38bd2",
+        "deterministic_fingerprint": "ec8b197be724747a465fb1d446dcb38ff45949ae619a96caaad8f01585fa1a61",
         "extensions": {
           "strict": true,
           "description": "Ranked-safe cap with deterministic bounded failure cascade."

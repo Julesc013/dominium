@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "policy_id": "occlusion.none_stub",
         "description": "SOL-1 deterministic occlusion stub returning full visibility.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "36e9bc6d4e68743d0a3538d7b62e04d470f42d3a2da1bb53f6a27d04b8002de6",
         "extensions": {
           "visible_fraction_permille": 1000,
           "source": "SOL1-2"
@@ -29,7 +29,7 @@
         "schema_version": "1.0.0",
         "policy_id": "occlusion.future_shadow",
         "description": "Reserved eclipse-capable occlusion policy identifier for future SOL shadow queries.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a57c39a975e4ebb7df8e5909acd54566eb12bc9ecc4fd5e67be3f7cd48eb2d0f",
         "extensions": {
           "reserved_only": true,
           "source": "SOL1-2"

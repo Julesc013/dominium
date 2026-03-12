@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "compiled_type_id": "compiled.automaton",
         "description": "Deterministic reduced finite-state representation.",
-        "deterministic_fingerprint": "0f266d55e0243faee401d9b1780fb067c0771cebee1d2c67b221bb06b2db4186",
+        "deterministic_fingerprint": "881eb0f61c899ae9da8d0fbb3c2d039e74a153ac4f63270656f0825fa859d98a",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -26,7 +26,7 @@
         "schema_version": "1.0.0",
         "compiled_type_id": "compiled.lookup_table",
         "description": "Deterministic table approximation with declared bounds.",
-        "deterministic_fingerprint": "ac3d6ea61ddc3af8e2a8724a3a420769a85df6d16dc62475d64ca99c5f10e2e7",
+        "deterministic_fingerprint": "3819aff3e5ab7454d3826a82267c45ba3922db8b94cc1cf9088572beb1c34767",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -43,7 +43,7 @@
         "schema_version": "1.0.0",
         "compiled_type_id": "compiled.reduced_graph",
         "description": "Pruned and constant-folded model graph preserving equivalence.",
-        "deterministic_fingerprint": "97ce9fc7f633c105bf4d104e00cb33dcdddae9222f915f32349f6f983a971310",
+        "deterministic_fingerprint": "063cc7fe3f658838c903a29edff4dcecac7a719ed58fb1d17dc4cd941ab592d8",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -60,7 +60,7 @@
         "schema_version": "1.0.0",
         "compiled_type_id": "compiled.ir",
         "description": "Bounded deterministic instruction-list representation.",
-        "deterministic_fingerprint": "f12d462aca0e08bc50cc20f03570e6fd135fa751a761227e15899f0a5f3458cf",
+        "deterministic_fingerprint": "5a195abaf5197b2d3076565d6409688c05958ecda847fe1697ac7d17821e027e",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",

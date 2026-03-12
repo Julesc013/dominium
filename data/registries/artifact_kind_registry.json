@@ -8,7 +8,7 @@
       {
         "artifact_kind_id": "artifact.blueprint",
         "store_category": "blueprints",
-        "deterministic_fingerprint": "2ed96344d833c982a20f8d7a32b27ac816ef47dbb87f9254c73b89fff8599998",
+        "deterministic_fingerprint": "93c0a08bc972cf3cbaef66e365f8d3e3392fe8f56aa6a004fb6127869976b0ac",
         "extensions": {
           "official.source": "LIB-4"
         },
@@ -26,7 +26,7 @@
       {
         "artifact_kind_id": "artifact.logic_program",
         "store_category": "logic_programs",
-        "deterministic_fingerprint": "4f52eca86e918c93c8dd89ef9452aa0fb25747617d356f23c56b5db6fb0e8a9c",
+        "deterministic_fingerprint": "cc11ebf06d5436515b2bdd5607ff4c6b283bda29cceebb592674ec4c169a2028",
         "extensions": {
           "official.source": "LIB-4"
         },
@@ -44,7 +44,7 @@
       {
         "artifact_kind_id": "artifact.process_definition",
         "store_category": "process_definitions",
-        "deterministic_fingerprint": "70c1a384a5ffe1baf835430f85b2f4e292728d5f2415786e1c863e14ef3bb1d2",
+        "deterministic_fingerprint": "e13b4d6c3df0f36bab4b559377a68a29e96f6b5528fda3f52d4ac82362650b01",
         "extensions": {
           "official.source": "LIB-4"
         },
@@ -62,7 +62,7 @@
       {
         "artifact_kind_id": "artifact.profile_bundle",
         "store_category": "profiles",
-        "deterministic_fingerprint": "de1a8838d9cba76f43c5da14282d98c4c5ac205ab29530da660cfd81e2a5af5d",
+        "deterministic_fingerprint": "fdff91824a887c52531ac8b2eef7727d8e0c79bd9121d7a0ed9d0fad58bfdb9f",
         "extensions": {
           "official.source": "LIB-4"
         },
@@ -80,7 +80,7 @@
       {
         "artifact_kind_id": "artifact.resource_pack_stub",
         "store_category": "resource_pack_stubs",
-        "deterministic_fingerprint": "278be024c81aa0ff17e27a6f8ca697846f7477ccbb13dd49ce588cf46ded3b39",
+        "deterministic_fingerprint": "86bb362c0d7a7eacb4b80fd0a8255761a6d15f909cd6a410743297c71b6653f9",
         "extensions": {
           "official.source": "LIB-4"
         },
@@ -98,7 +98,7 @@
       {
         "artifact_kind_id": "artifact.system_template",
         "store_category": "system_templates",
-        "deterministic_fingerprint": "5e63870c7d5ab39750f0312acf9d903816cd101ad00402e41976b5c97a366e21",
+        "deterministic_fingerprint": "9cfe038bf94664fd1f27bd1813d59e6383bccb9e11202d617c6edf90c25c4ed4",
         "extensions": {
           "official.source": "LIB-4"
         },
@@ -116,7 +116,7 @@
       {
         "artifact_kind_id": "artifact.view_preset",
         "store_category": "view_presets",
-        "deterministic_fingerprint": "bf0d36b0fef2f319bd942a3d5d7981ba8252e4408520f6cf3292af5c74c2cb13",
+        "deterministic_fingerprint": "c879dfaf36637816522bc1e00c320b26c35a533f650ab8393c94c48b09d51256",
         "extensions": {
           "official.source": "LIB-4"
         },

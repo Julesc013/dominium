@@ -31,7 +31,7 @@
         "warning_threshold_permille": 450,
         "forced_expand_threshold_permille": 700,
         "revocation_threshold_permille": 700,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "528d3a4db4f4b478770b0bfe182dabe97714711db98574def992966a3a8053ab",
         "extensions": {
           "source": "PROC6-2",
           "actions": [
@@ -78,7 +78,7 @@
         "warning_threshold_permille": 360,
         "forced_expand_threshold_permille": 600,
         "revocation_threshold_permille": 600,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bec05011d0889662080b03ea8fb29b0d17d92f5d281e0d8c060b182f69ac1875",
         "extensions": {
           "source": "PROC6-2",
           "actions": [
@@ -125,7 +125,7 @@
         "warning_threshold_permille": 420,
         "forced_expand_threshold_permille": 660,
         "revocation_threshold_permille": 660,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "cf4f24d73fd55fc64067e1f166af29cf96904d27c3d0e0fadfdd3797d40d35b8",
         "extensions": {
           "source": "PROC6-2",
           "non_ranked_only": true,

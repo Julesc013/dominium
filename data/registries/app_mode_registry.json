@@ -10,7 +10,7 @@
         "mode_id": "cli",
         "title": "Command Line",
         "supports_console": true,
-        "deterministic_fingerprint": "620e91b4ca4dfd1eb36a556349c5a28cc3c3b9d5f5703e9711fa885d4a173ed1",
+        "deterministic_fingerprint": "b735234bb1020df4f9d14d2d1d1e96d67673968308fac97358266e20a1faa107",
         "extensions": {
           "official.source": "APPSHELL-0"
         },
@@ -30,7 +30,7 @@
         "mode_id": "tui",
         "title": "Text UI",
         "supports_console": true,
-        "deterministic_fingerprint": "9a61f63af5468b57950e0c2d6b8343857736b7ed14897c2f16065e4028260848",
+        "deterministic_fingerprint": "e9982ac8360a1c3fbd7bcabdbc6f874abca953921a11fcc7b46cca153d7c3fad",
         "extensions": {
           "official.source": "APPSHELL-0"
         },
@@ -50,7 +50,7 @@
         "mode_id": "rendered",
         "title": "Rendered UI",
         "supports_console": true,
-        "deterministic_fingerprint": "099f0cb539e6caf16eb0a72f561f9c8eeee1bfe9890d2334a19852d4da2a1e91",
+        "deterministic_fingerprint": "3074cbcde0ca1ea6a90e0046cdb44ff2283b2192b6664a30f3793c11d742a8e6",
         "extensions": {
           "official.client_only": true,
           "official.source": "APPSHELL-0"
@@ -71,7 +71,7 @@
         "mode_id": "headless",
         "title": "Headless",
         "supports_console": true,
-        "deterministic_fingerprint": "4e3a4b264f0206d8ad9a4cf03f1f9e2ee1c9c71597bdef22c111611e2796288e",
+        "deterministic_fingerprint": "3c89f447275babcff4f1963fdd60661373d46eccba4380af9fd86d8027adb3b0",
         "extensions": {
           "official.source": "APPSHELL-0"
         },

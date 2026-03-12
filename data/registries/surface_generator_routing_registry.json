@@ -18,7 +18,7 @@
           ]
         },
         "generator_id": "gen.surface.default_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0d20768e29d2855bd70f3dc7933a7ce8854beefc2c07fce700876ca5c59d18c5",
         "extensions": {
           "priority": 300,
           "source": "MW3-2"
@@ -44,7 +44,7 @@
           ]
         },
         "generator_id": "gen.surface.earth_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d9795f686536a70ee4c83fe7de555a85e8220f5135b9d979a985b0f396a59100",
         "extensions": {
           "priority": 200,
           "source": "EARTH0-2"

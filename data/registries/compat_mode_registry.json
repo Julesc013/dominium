@@ -8,7 +8,7 @@
       {
         "compat_mode_id": "compat.degraded",
         "description": "Connection accepted with an explicit degraded feature subset.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3759ec3159e7d01e5c0598f638e2d29a4ea22b0fed447f6aa76bed14e103dde8",
         "extensions": {
           "official.source": "CAP-NEG-0",
           "mutation_allowed": true
@@ -27,7 +27,7 @@
       {
         "compat_mode_id": "compat.full",
         "description": "Connection accepted with full negotiated capability compatibility.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "80dd1bf037a111bdea3706a340cb221ba69b8af5e2e6ed0f01d3e72f0a1b9b2a",
         "extensions": {
           "official.source": "CAP-NEG-0",
           "mutation_allowed": true
@@ -46,7 +46,7 @@
       {
         "compat_mode_id": "compat.read_only",
         "description": "Connection accepted in read-only compatibility mode with mutation forbidden by law.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2c2112e0488fe3d3aee765f6f68cab72f9f6e06ba21023067bd1f20d92f7bc26",
         "extensions": {
           "official.source": "CAP-NEG-0",
           "law_profile_id_override": "law.observer.default",
@@ -66,7 +66,7 @@
       {
         "compat_mode_id": "compat.refuse",
         "description": "Connection or action refused because no lawful deterministic compatibility mode exists.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "82afe65c3891d5b07c2dd5d1cefc3e5d32be2e855a50a2c0991ea78474aea842",
         "extensions": {
           "official.source": "CAP-NEG-0",
           "mutation_allowed": false

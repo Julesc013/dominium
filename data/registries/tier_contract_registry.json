@@ -25,7 +25,7 @@
           "max_micro_scope": "inspection_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "6cb4a278dc7679f8fe9992b8804f4b663a261106c4a95e33e1a0c957854a99d0",
+        "deterministic_fingerprint": "87d2599007cf6b1aaee0c3614f97327bd6eb1576c5248bf580cb6fd8244709cb",
         "extensions": {
           "source": "META-CONTRACT0-3"
         },
@@ -60,7 +60,7 @@
           "max_micro_scope": "thermal_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "3006342fcfb2bb44bc5a3f0a4e5539f5a9e72fa8773afd17a2d95b42d4f37d85",
+        "deterministic_fingerprint": "d7ae834f46caf2d04c87dc90aeda6f8ee0e27ff49411d38e0cbf970426eb71e1",
         "extensions": {
           "source": "META-CONTRACT0-3"
         },
@@ -95,7 +95,7 @@
           "max_micro_scope": "movement_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "7b771d1c62152fd3abedc088324f78160b78677eacb91039b2551253eec70dd6",
+        "deterministic_fingerprint": "0a75b7466da06626ff869fdb99150258802bbc5853e8cfbc01ab840e134d0ed6",
         "extensions": {
           "source": "META-CONTRACT0-3"
         },
@@ -129,7 +129,7 @@
           "requires_roi_binding": false
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "119be8ad61a266cb2ab2c7627c716357f7f27e351b5283f8d2823626c7a3494e",
+        "deterministic_fingerprint": "9f1fd2106d40b923222ba07d82ab87981b6646f35bbabee1770bfc90cd04c79f",
         "extensions": {
           "source": "META-CONTRACT0-3"
         },
@@ -164,7 +164,7 @@
           "max_micro_scope": "physics_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "13e690d26d20a0f52210df28a5104138eb7b1fff6a47cbac5307df982df73711",
+        "deterministic_fingerprint": "36abf32e055e66c3629e7102701a512187974707f7f667b80ec205e57035f991",
         "extensions": {
           "source": "META-CONTRACT0-3"
         },
@@ -197,7 +197,7 @@
           "reserved_tier": "F2"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "74ff787ac9437028b8de345d8a1a3c3fbd9bb3e10608c969b7a6823781338651",
+        "deterministic_fingerprint": "dac782cd998a74974ae246057841904a8067999ba9e8f9d19eb6e42806121ae9",
         "extensions": {
           "source": "FLUID0-4",
           "tier_aliases": [
@@ -237,7 +237,7 @@
           "max_micro_scope": "reaction_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "4b4abb3100d4d067513cfa9e299cfbf0b2d690078e6cf347e1316364014bc4e7",
+        "deterministic_fingerprint": "820e2519767069db24309e8a83bdbb83ed6696dc4b647e7deaa3e9631a04796b",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -272,7 +272,7 @@
           "max_micro_scope": "field_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "81d7b2528db70128dfa26f5f526027762ac761200d2c41dbe14c427134f89a85",
+        "deterministic_fingerprint": "f33a391b23797086c10dc157c51c9b74d49e0359c38bd2b2d95159666593e40f",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -307,7 +307,7 @@
           "max_micro_scope": "structural_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "228b70a965ab7df7d72d05733eb390bbf4dc85e3f2467ff4b7ec562458f89304",
+        "deterministic_fingerprint": "2ba14ffa2573c8f85a1cd665db594bedc65e2389ffb7cc87583c45314c0b71fc",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -342,7 +342,7 @@
           "max_micro_scope": "compartment_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "38a4fdc74a536ee6557aa5530ec63809687a802b65c19ef9ed03423e7d78e5a6",
+        "deterministic_fingerprint": "a86fedaf0f1262a662749946f0a1285c004a69f431a70852d1aafe6582743266",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -371,7 +371,7 @@
         ],
         "cost_model_id": "cost.signal.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "81f270ca4a0eb64a78f4e09ba559db117bfa47dc19dca8588e59c65b2e54236f",
+        "deterministic_fingerprint": "f78327595dd55b42cafd826843c1e2a0cf292c10d6159ca4675b266bc14ffa59",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -400,7 +400,7 @@
         ],
         "cost_model_id": "cost.signal.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "111ec2c428e71667eb06581b9a9c36ee4cdb0059771cd5943f123c0d1c1d1c44",
+        "deterministic_fingerprint": "94f59e3d8407740d2b00b618a0e1d4833acacd93dde454d93a760f31b6580765",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -435,7 +435,7 @@
           "max_micro_scope": "logic_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "3cdedb83d63732e1c7495c4948bac08b57e32af7193884f4632824b7150578e6",
+        "deterministic_fingerprint": "19271d9eb699c1106d0b81b7ffd88c57fcd941a49c9a0e27627554d0e3a863f7",
         "extensions": {
           "source": "LOGIC0-4",
           "tier_aliases": {
@@ -476,7 +476,7 @@
           "max_micro_scope": "substrate_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "9df5ac65dafaf43bf7ebf60e6622e3c38aff2195ba1987398bf8ffd395994375",
+        "deterministic_fingerprint": "e3f98be07f384ef4ed1ae8b7fc0755cc3dc80404c12e1197b3ec88c55db6b078",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -505,7 +505,7 @@
         ],
         "cost_model_id": "cost.signal.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "2e7f8cc1d885db504576ce0b4eb87bcd52bb0aae239060de541d2778a30eddd0",
+        "deterministic_fingerprint": "d90a34d09b69981beb99c0002c2f00ee008cc6f8986bd772000f44031014203c",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -534,7 +534,7 @@
         ],
         "cost_model_id": "cost.physics.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "b9457c6f95bcf379ef111fdaa65fa8b2a7e9ee1324dc4648f3fb3f1903829a85",
+        "deterministic_fingerprint": "aa82db84207884449f820ba9ce0f4e968df7929059921241af6a790cdf5deb1b",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -561,7 +561,7 @@
         ],
         "cost_model_id": "cost.signal.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "3b92ce2131dbfdc65867eb1baa49ed71d6261ffc0119d18b69b184d425ea9dae",
+        "deterministic_fingerprint": "24e9af42987b7617b6d8edd45a00771acd960ced5bac86474e61361e1f3b0d74",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -588,7 +588,7 @@
         ],
         "cost_model_id": "cost.signal.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "f9039035665e6e131b90450a01c871df531c27273c72186f9962ffe36e5e3d10",
+        "deterministic_fingerprint": "22228b6086cd5f27c71832aee29a008efd28cac5135602a071683d95a7613201",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -617,7 +617,7 @@
         ],
         "cost_model_id": "cost.signal.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "a08426909acad815ae49c55270d4a0d093aba5b2b7cea83cd59d16e6bfe360a1",
+        "deterministic_fingerprint": "4d556d37090ff78ba5f49ac8047b0022d0c8fe0ddd379b0ca270ae91c9be753c",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -644,7 +644,7 @@
         ],
         "cost_model_id": "cost.signal.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "5b24bdb28a13ff97a3adb2ae46a4b8113bf722fc5eec9f3019b3cb820e53723e",
+        "deterministic_fingerprint": "a0b03a6bd8c49ccb7191de9e823809e199123834c4b35af41484ad82cce7587a",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -673,7 +673,7 @@
         ],
         "cost_model_id": "cost.signal.default",
         "shard_safe": true,
-        "deterministic_fingerprint": "d8ea0d521d116ab10472111930f99c254d72b6486185c01782c9b3c26de80a6a",
+        "deterministic_fingerprint": "ad7406c71013fb91f82967976c2473c7dab3af64c05418f35f0bdc04c64076e4",
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         },
@@ -706,7 +706,7 @@
           "reserved_tier": "P2"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "d4c731fe2ff773c06913d6e42267dbcd7763f0c0bc1ca90da19d60340bc5dd88",
+        "deterministic_fingerprint": "407d1e2cd553c225bafb8c6c352f94b8eb44dc9746f099ae14e768d8a89cbf31",
         "extensions": {
           "source": "POLL0-3",
           "tier_aliases": [
@@ -746,7 +746,7 @@
           "max_micro_scope": "system_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "34e7ec2d7d195a1d64d049d58c101f98d81bb9eabb2e308d2d2667463cec087e",
+        "deterministic_fingerprint": "afca338e04d17619bdeb8fe2b48814f6d16268fa349635503d6cf5cd9163f20f",
         "extensions": {
           "source": "SYS3-2",
           "notes": "SYS tier transitions are process-governed via process.system_roi_tick."
@@ -782,7 +782,7 @@
           "max_micro_scope": "process_roi"
         },
         "shard_safe": true,
-        "deterministic_fingerprint": "30b810738aca12b4aff68a80c017462f16ab3c73fc0c4f7756b16289402e25d1",
+        "deterministic_fingerprint": "6872a55d33b4494432b119aa7e29a8911438fa804b52e591dcc45c2dac9013c4",
         "extensions": {
           "source": "PROC0-3",
           "lifecycle_tier_support": {

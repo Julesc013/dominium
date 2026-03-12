@@ -30,7 +30,7 @@
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "help",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d8cc1721a2f7c626a944659d0b335fac07d6a0b4da65af4577814af1f08a906c",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -70,7 +70,7 @@
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "version",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "fed1bae2bf251d465580b107edf9f01250f2338bb6a75e8992054cb4e90f2675",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -112,7 +112,7 @@
         ],
         "exit_code_mapping_id": "exit.contract",
         "handler_id": "descriptor",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4eda6e74aab02219c155153a4ad4a3634d1b046ac756faab099cdd2c073314f6",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -156,7 +156,7 @@
         ],
         "exit_code_mapping_id": "exit.contract",
         "handler_id": "compat_status",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c336ce8aea5a1365fe1c62a1ddb6f60734532ccaf7c34c5b3d5b02df73f53b50",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -202,7 +202,7 @@
         ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_verify",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b8d8ff57803861581238e58ef8f5ca54db5cd74fcddc6a60ce22c3b07dcb71b0",
         "extensions": {
           "official.alias_of": "packs verify",
           "official.source": "APPSHELL-1"
@@ -243,7 +243,7 @@
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "diag",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "85bce06d6a2e7f56ed7b791c26a919054fe1982282d604f847d1e9b4acf944ee",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -285,7 +285,7 @@
         ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "diag_snapshot",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "42beddf3ffb9e02149e7e3f4ce5b07a74554fc6066585fa411dd0cf55b9429d8",
         "extensions": {
           "official.source": "APPSHELL-2"
         },
@@ -327,7 +327,7 @@
         ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "diag_capture",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "276d70db74eb5bb8e21b6fb36434ea588ef0c07238abf0c4d7e02e757dbb65dc",
         "extensions": {
           "official.source": "DIAG-0"
         },
@@ -367,7 +367,7 @@
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "console_enter",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "fa4b2cfd05b1abef1e2064dd9302b5362e7045415a066de705cb0437c56b8144",
         "extensions": {
           "official.alias_of": "console enter",
           "official.source": "APPSHELL-1"
@@ -408,7 +408,7 @@
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "console_enter",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "514b3b1a4e52e6c91d9360b1a9932c6294ff3a4c9d777c98e21ba610a540806f",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -450,7 +450,7 @@
         ],
         "exit_code_mapping_id": "exit.transport",
         "handler_id": "console_sessions",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7dbd31a3be23d5109894d5ad1485586643bd1eb5ab55c15c8ccb61c48e00dbb0",
         "extensions": {
           "official.source": "APPSHELL-4"
         },
@@ -495,7 +495,7 @@
         ],
         "exit_code_mapping_id": "exit.transport",
         "handler_id": "console_attach",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6f21654699ea9a8c1800a1e9e8714783df11e1903792658dba672a8379a40cf5",
         "extensions": {
           "official.source": "APPSHELL-4"
         },
@@ -537,7 +537,7 @@
         ],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "console_detach",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b46562945dcec13c0fe1c600439852811107c9aaade888680e321710c9f31559",
         "extensions": {
           "official.source": "APPSHELL-4"
         },
@@ -579,7 +579,7 @@
         ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_list",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2a959a0ce48d881810cf3476efc55e37e2d7223fc917c4d405433d560fc205a7",
         "extensions": {
           "official.alias_of": "packs list",
           "official.source": "APPSHELL-1"
@@ -622,7 +622,7 @@
         ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_list",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bbdaac67ed19c665d1cb6f494747012c320880ca3c358ce94b478b140984f5e4",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -668,7 +668,7 @@
         ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_verify",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b03cb0fe114622e6c09104e96fc2ce2b805765088381a8cddf6abaf2db47331a",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -714,7 +714,7 @@
         ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_build_lock",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "41625ea5a051971d8446d8398c8559341f0667500792d7c994d9ff000b241e98",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -754,7 +754,7 @@
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "profiles_list",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a62fa350da3f9ee34bacc13877d789e720d074d61dca000d7ff1a66b2290ab80",
         "extensions": {
           "official.alias_of": "profiles list",
           "official.source": "APPSHELL-1"
@@ -795,7 +795,7 @@
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "profiles_list",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d2934c240146290378441b2ff9e4ab3e7acc21c68fe8f9fa753ea1cb1414b269",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -838,7 +838,7 @@
         ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "profiles_show",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bcecf6a22c97a841f7a3ddcb0958bbcee2aad571fc635ffc182947a5d898ea9e",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -875,7 +875,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "launcher_start",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "830063961687705e6f4cf4c941c9729a8ecae4b066c47ba3fac57cf3246728fd",
         "extensions": {
           "official.source": "APPSHELL-6"
         },
@@ -910,7 +910,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "launcher_stop",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "22ee923cf678c66c16b7732b83c067d4aea17a7f32ecd8bdb9f33a1990be540e",
         "extensions": {
           "official.source": "APPSHELL-6"
         },
@@ -944,7 +944,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "launcher_status",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "dcf7f484eb9fa7bce4067cbd88c6997b92979aad74c220cbd3f54c8ac044a4b7",
         "extensions": {
           "official.source": "APPSHELL-6"
         },
@@ -979,7 +979,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "launcher_attach",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bbd7109d5ad7aa7305eebe569268509e958e7c63800ed2bad68e5f82797f5d63",
         "extensions": {
           "official.source": "APPSHELL-6"
         },
@@ -1018,7 +1018,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b8420288596fc2e44a3927b833a5803a118010800b3e4596fb9c8059f35df419",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1054,7 +1054,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ccbb94244e7bf9746c53bfdc5b54eb441ec6e361822979fce129cbed196aa602",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1089,7 +1089,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3f06de65b7578b060a7f5e8425b53e7e6ea7faa0e278370b3ea1f0b291b92cc7",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1125,7 +1125,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4a823b279f808e85b61087de602db57be12c90426d17319d0db9d00355f8cb9f",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1161,7 +1161,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ba5a2732ea5d0d4ad61e4c946086d128e75d69a7ff081542f5df76b42068a2ff",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1196,7 +1196,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "1301fb20d989053e15516db327c2524760591d05a90b2f144b893fd86c858745",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1231,7 +1231,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5b3dfd21705e8751f99809ebdc0bf49b97f301edbf796d6ed84e655d56f00cd1",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1268,7 +1268,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "94930d909674053f38d8f25e3764c59ccaf55bb2cf0ea037ecdb4d503423542a",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1305,7 +1305,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "93763191f26b00ed8571c553a37407d0c302b0dcc4932601fd7303f864028f62",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"
@@ -1340,7 +1340,7 @@
         ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "57c6d1f6da656e9f5eccbb162cf7921f3197bd4e408889bc7601ec68ff694dbc",
         "extensions": {
           "official.placeholder": true,
           "official.source": "APPSHELL-1"

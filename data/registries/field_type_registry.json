@@ -21,7 +21,7 @@
         },
         "default_value": 20,
         "update_policy_id": "field.static_default",
-        "deterministic_fingerprint": "43666bb31bb4fb9edb6922091053317b9b91ebafc08d3c760decbdca6b26ff59",
+        "deterministic_fingerprint": "51981bdc512e510cdd976b0db84cbb940c065e81cd65a2ed7f717fac1dafe2fe",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -50,7 +50,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "ddfb291b23ccc53f0b0b7a4e238ad749d70548cb9689c7ffb22476dfb7f92746",
+        "deterministic_fingerprint": "6a606d8a8fb013d3c858bf21bdaae2243199ee6b2f20aab3e4661b29ae0079cc",
         "extensions": {
           "source": "MW3-2"
         },
@@ -81,7 +81,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "72dff5e7b719290edc03c0f31df9fdece07652213cc135e56cdea2bba1e77584",
+        "deterministic_fingerprint": "6bcfe7e7ed3402ca686b414083cbc9a2f07ccd96228586232040826f5c22631b",
         "extensions": {
           "source": "EARTH3-2"
         },
@@ -112,7 +112,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "b81a65828c1be4082c173d1cde1bafcd0c19ea5a967afdaca98e33e5329955e4",
+        "deterministic_fingerprint": "b275074e3b39c2bd004bfba5169446e1b8da799ce48af5d66f437fb526d4c84d",
         "extensions": {
           "stub": true,
           "source": "MW3-2"
@@ -144,7 +144,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.static_default",
-        "deterministic_fingerprint": "ba1b7dd26fe2de93dc6c7f972a0f6eeb7227a016fc3cc98ff17b4cecd62b8d05",
+        "deterministic_fingerprint": "54725d2bc8e4107c4c0ede6242787a88f3921cf8d835e9a8d178355b536e09fc",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -173,7 +173,7 @@
         },
         "default_value": 1000,
         "update_policy_id": "field.static_default",
-        "deterministic_fingerprint": "30bec1738145c55376bb6057c2312864a0ab2423e7977763d682df65e2a7c50a",
+        "deterministic_fingerprint": "fe194e613c7bde6dbd5f68cea9129ca034de47e19866fc0050d8236dc3ebac48",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -202,7 +202,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0e71c0e772d3a9d2ccad42f182c361640cc8b4f6ffb2db3d7ab08e1857348db1",
         "extensions": {
           "encoding_kind": "enum_code",
           "registry_rel_path": "data/registries/material_proxy_registry.json",
@@ -236,7 +236,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "56566c2c05c4361298636a04c697efa04448a97b49eedfe0dfd622dc72bfc490",
         "extensions": {
           "encoding_kind": "bitmask",
           "registry_rel_path": "data/registries/surface_flag_registry.json",
@@ -270,7 +270,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "96345dbf296fb9433f73b7700c118b7d5207b8631210604ced509b84ea34ed76",
         "extensions": {
           "encoding_kind": "normalized_permille",
           "semantic_range": "0..1000",
@@ -303,7 +303,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0355db985d8108b954c2fe84728c53103cc97de35fbb3fc1f8a591e348f213a6",
         "extensions": {
           "encoding_kind": "normalized_permille",
           "semantic_range": "0..1000",
@@ -336,7 +336,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d17d0169651ce1f4f7c83b88b8c8888e47d135b55fb415883181ac5f4843f43b",
         "extensions": {
           "encoding_kind": "normalized_permille",
           "semantic_range": "0..1000",
@@ -369,7 +369,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "45109098718b61cf8c84435234620a6c931667d29e00a49a5a3b188de0b574c4",
         "extensions": {
           "encoding_kind": "normalized_permille",
           "semantic_range": "0..1000",
@@ -402,7 +402,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "14c6a67c9d0deec07fdeb97f8033e2194398f430993c9c616c024b2b5e7e94c9",
         "extensions": {
           "encoding_kind": "enum_code",
           "registry_rel_path": "data/registries/galactic_region_registry.json",
@@ -436,7 +436,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "17336d0b00835b0ce09b9550262d195ad850fc2639888ad127841b6b36a9e6d4",
+        "deterministic_fingerprint": "d9b9db14246b5ed810486255837a57670f48e9af6b13812b7c7413281454243f",
         "extensions": {
           "deprecated": true,
           "alias_of": "field.radiation_intensity"
@@ -468,7 +468,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "321fcbb2b438a254b44f9ce12d396b7f4b05b3cffa023dcfc47717aef4293c3a",
+        "deterministic_fingerprint": "19322aa18944e9872121e5b8a08352167b2d7d6fd160a0d758244e9d6cd7c6d9",
         "extensions": {
           "physics_domain": true
         },
@@ -499,7 +499,7 @@
         },
         "default_value": 1000,
         "update_policy_id": "field.static_default",
-        "deterministic_fingerprint": "2e930b50086475f0e314f771d2f68ea29a1c29f5a2c56a29e8343390ce4bf72d",
+        "deterministic_fingerprint": "bea2582d676a017ea3521e0b66fd4484523a3407b1b021206db0be88a0946640",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -532,7 +532,7 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "7e9f4ae651eec0110ce83a19134b05fcd4e7c44053fa7cf7348888e927bd2046",
+        "deterministic_fingerprint": "783c57aa93d2543cfe30fe66c72ea0550ac7e63dd05beee6b5a618d89ee3e83e",
         "extensions": {
           "deprecated": true,
           "alias_of": "field.wind_vector"
@@ -568,7 +568,7 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "90beefe483623d2e7477912f4a6a35aae57769adf35dc72afb5f8b2846ab489c",
+        "deterministic_fingerprint": "745e3fbcdc80b6b1c594eb0aac02910003e09da4fc9aeb3a780d291df335cb32",
         "extensions": {
           "source": "EARTH7-2"
         },
@@ -603,7 +603,7 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "c2bc59e4a06603a9255924924beb8b6985394bcd72c17f7e8180c2ff5d26a50c",
+        "deterministic_fingerprint": "30b36f492fd14f6f2234eeacac05dc74c2fe502879c4a214101092e9d3cd1436",
         "extensions": {
           "physics_domain": true,
           "deprecated": true,
@@ -640,7 +640,7 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "38128a4d44abcfcd697922970e83375e8d32b4f89a51f53da87249ed813f6f6f",
+        "deterministic_fingerprint": "151d7b67f9f9446a9305bb141ccc9bce50bc4e28f87b08ba98a49ac16bade6ba",
         "extensions": {
           "physics_domain": true
         },
@@ -675,7 +675,7 @@
           "z": 0
         },
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "233bac0f6426098b25972855cd8c23310567e5f93be79cf0c2c8b3f34ccccd1e",
+        "deterministic_fingerprint": "5dde5cba70304616e91da2a98c85135024b6d8dcd71b441df4e7030d5dcd004c",
         "extensions": {
           "physics_domain": true,
           "stub": true
@@ -707,7 +707,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.profile_defined",
-        "deterministic_fingerprint": "b28e0c7fb575888d63a41e810aceb83ce76250b062e4e61b966c5851fa3b4c17",
+        "deterministic_fingerprint": "9697cee175a363e1cacb258d2640846360838bef9df2b4184fcffcc02fc89398",
         "extensions": {
           "physics_domain": true
         },
@@ -738,7 +738,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.pollution_profile_defined",
-        "deterministic_fingerprint": "5fd9e3d0f024404bf77dc96783a981fbe0ca99c08bfd64603c0b21c216767c9a",
+        "deterministic_fingerprint": "eac605d8df0554fa6072bbc903265bf2134cb849f5a823de294b90234c577760",
         "extensions": {
           "pollutant_id": "pollutant.smoke_particulate",
           "pollution_field_policy_id": "poll.policy.coarse_diffuse",
@@ -771,7 +771,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.pollution_profile_defined",
-        "deterministic_fingerprint": "c9d8ceda55cfdd832c7332a2b38ae0171a4d7ba1db31ff6c8c9852a8029dd526",
+        "deterministic_fingerprint": "f33dfc6cf219f48300a7118d60e9cee9c19883dbd163a906659b821ca2225f7c",
         "extensions": {
           "pollutant_id": "pollutant.co2_stub",
           "pollution_field_policy_id": "poll.policy.coarse_diffuse",
@@ -804,7 +804,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.pollution_profile_defined",
-        "deterministic_fingerprint": "39ec54548be3c278ab82641cd264b0606e9de08069d944dea3c019c6e46df225",
+        "deterministic_fingerprint": "c2636e5ecb063c8534b422ec66ad4af446a3bcb21996a217fd12d3d4455d6382",
         "extensions": {
           "pollutant_id": "pollutant.toxic_gas_stub",
           "pollution_field_policy_id": "poll.policy.rank_strict",
@@ -837,7 +837,7 @@
         },
         "default_value": 0,
         "update_policy_id": "field.pollution_profile_defined",
-        "deterministic_fingerprint": "cb27f480b1a1ff8334d964c1a7a7fde6ac1ce5dec7f6af76813274651ac60aa7",
+        "deterministic_fingerprint": "e2cc9c39d5c906fc2a1ddcaa2177815bd46b96937e9aa0924914d5db4cddc4b7",
         "extensions": {
           "pollutant_id": "pollutant.oil_spill_stub",
           "pollution_field_policy_id": "poll.policy.coarse_diffuse",

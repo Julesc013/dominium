@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "degradation_kind_id": "degr.corrosion",
         "description": "Chemical/material corrosion progression.",
-        "deterministic_fingerprint": "0013d7da7c3ae5021bd55ea95be9c778b745eecaf1c18655ade866f1e4cb5748",
+        "deterministic_fingerprint": "6ee5cb170d6d4ddd0898c851b3f1eee2c77d176ff6fc56e43ff8672b71c3ba0c",
         "extensions": {
           "source": "CHEM3-2"
         },
@@ -28,7 +28,7 @@
         "schema_version": "1.0.0",
         "degradation_kind_id": "degr.fouling",
         "description": "Fouling/deposit accumulation affecting transfer efficiency.",
-        "deterministic_fingerprint": "00cf898133892f362a0ea0f30b94fe30ff4439346edd526888754d972ef3bca9",
+        "deterministic_fingerprint": "9d13f1a253524cbe656cc8dddb1817932b0a93e951b2a8da70dfe9996226de84",
         "extensions": {
           "source": "CHEM3-2"
         },
@@ -47,7 +47,7 @@
         "schema_version": "1.0.0",
         "degradation_kind_id": "degr.scaling",
         "description": "Scaling buildup restricting flow channels.",
-        "deterministic_fingerprint": "c8f23d5ea19591d9cbd936ebbc7b48166a5db21a0e0d48f9e61fe94f2f10bd5e",
+        "deterministic_fingerprint": "9050ed392c06b7dee63d3d5bec2cef5345826428e5e2a04654a7de969893225c",
         "extensions": {
           "source": "CHEM3-2"
         },

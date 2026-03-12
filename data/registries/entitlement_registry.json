@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "entitlement_id": "ent.move.jump",
         "description": "Allows EMB-2 deterministic jump affordances subject to law and grounded-state checks.",
-        "deterministic_fingerprint": "1f7223b2805173ab6118874810065f5662c52a36b5c5c1858a9f15f7da60503a",
+        "deterministic_fingerprint": "62a5c328025a83ca593c166bef89993c54c4060ec90b0220895c093c16c26a78",
         "extensions": {
           "source": "EMB2-2"
         },
@@ -28,7 +28,7 @@
         "schema_version": "1.0.0",
         "entitlement_id": "ent.tool.logic_probe",
         "description": "Allows use of EMB-1 logic probe affordances subject to law and access policy.",
-        "deterministic_fingerprint": "755810a16a37cf27fe70a601c4e9aea4bd56793ece40fabbf56a83774247344f",
+        "deterministic_fingerprint": "aabd8aa00a8172e550ce02c68f882438a41b49cb5f640b6cff6e837f29776d29",
         "extensions": {
           "source": "EMB1-2"
         },
@@ -47,7 +47,7 @@
         "schema_version": "1.0.0",
         "entitlement_id": "ent.tool.logic_trace",
         "description": "Allows bounded EMB-1 logic analyzer sessions subject to law and compute policy.",
-        "deterministic_fingerprint": "bdb85c84d6d062ebd8cd9210304f08c80b836a41be7eaa6c434f3cda8ba6ae3f",
+        "deterministic_fingerprint": "393df79174ee16dfca3868acf71c1945638a3a53321ef14dbf1da7f933f37f6b",
         "extensions": {
           "source": "EMB1-2"
         },
@@ -66,7 +66,7 @@
         "schema_version": "1.0.0",
         "entitlement_id": "ent.tool.scan",
         "description": "Allows EMB-1 scanner summaries under the active observation policy.",
-        "deterministic_fingerprint": "6d1e8c2ce4bff0a8c99bfd0f6c023b181879ad9186a205d853544f58252a755a",
+        "deterministic_fingerprint": "f7858e354f555e7feb858b3e8406ebc6cc4a8eff95ce808724eca66d5d3368ad",
         "extensions": {
           "source": "EMB1-2"
         },
@@ -85,7 +85,7 @@
         "schema_version": "1.0.0",
         "entitlement_id": "ent.tool.teleport",
         "description": "Allows EMB-1 teleport tool affordances in addition to process-level teleport gating.",
-        "deterministic_fingerprint": "d49b5107b58da5859c2eae8a11ace81c79a6fc9795ab77d2f365b2552c54d035",
+        "deterministic_fingerprint": "ae7543e070bd7e0656a53ff445403284d8b42edbee36f553a71b026432d36e7a",
         "extensions": {
           "source": "EMB1-2"
         },
@@ -104,7 +104,7 @@
         "schema_version": "1.0.0",
         "entitlement_id": "ent.tool.terrain_edit",
         "description": "Allows EMB-1 terrain edit affordances in addition to process-level geometry-edit gating.",
-        "deterministic_fingerprint": "626eab3db1501d545744383006724624791b8b4a6ea6093a1a4feba0b41797e0",
+        "deterministic_fingerprint": "ea46a0a2f2c40d57365e8c822b7c9f6cfc8f91a59d699690c114165bf508a12e",
         "extensions": {
           "source": "EMB1-2"
         },

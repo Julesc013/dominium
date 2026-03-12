@@ -10,7 +10,7 @@
         "illum_model_id": "illum.basic_diffuse_default",
         "kind": "basic_diffuse",
         "parameters_ref": "params.illum.basic_diffuse.earth_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2264bb77ca554c426fb93a32fa1a33763202e1f27d1a441c152261737362e5cc",
         "extensions": {
           "description": "Canonical EARTH-5 illumination model using derived ambient, sky-light, sun key light, and moon fill light with no truth mutation.",
           "ambient_day_permille": 520,

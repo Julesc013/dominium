@@ -41,7 +41,7 @@
           "ice_height_min": 900,
           "ice_height_max": 2600
         },
-        "deterministic_fingerprint": "e252a56eb9b0b829dba35424782d33c2afb761db34b5feed987cc8205602af3c",
+        "deterministic_fingerprint": "c83a5b45c01dcdfd51242eaa01b48b38beca12635df1205cbb043cf6f0bc751b",
         "extensions": {
           "description": "Default deterministic MW-3 surface priors for sphere-planet atlas tiles.",
           "chart_ids": [
@@ -107,7 +107,7 @@
           "ice_height_min": 900,
           "ice_height_max": 2600
         },
-        "deterministic_fingerprint": "194f5b61300fe583d5a68a1e621199bb5f18ce5a7384c841c56bce6b147731bf",
+        "deterministic_fingerprint": "7d99c51e037d97a581be4f4cb02c9fced84eb9de4516e6f74c129187f89eef9b",
         "extensions": {
           "alias_of": "priors.surface_default_stub",
           "description": "Compatibility alias for the default terrestrial MW-3 surface priors.",
@@ -174,7 +174,7 @@
           "ice_height_min": 700,
           "ice_height_max": 1800
         },
-        "deterministic_fingerprint": "c6698da9ffa3905d62b27c2a6d957a067c18c318c17ebcf0a6ca35c8e8128b75",
+        "deterministic_fingerprint": "7d62933f3a9a86366b0ede8d2591a8c4cfbfc1db80ec41ba2d5c4dec1279e8fe",
         "extensions": {
           "description": "Flat-world MW-3 surface priors using grid tiles.",
           "chart_ids": [
@@ -237,7 +237,7 @@
           "ice_height_min": 700,
           "ice_height_max": 1800
         },
-        "deterministic_fingerprint": "9b74674e3904e95975d06abdbce36a6a57ba3d8895937a0ed6cc94c38aaa0c2f",
+        "deterministic_fingerprint": "44765a97e508e3c0161a5bc58facce2c426c5d4c380c62c957a4bdde48d3c263",
         "extensions": {
           "description": "Torus-surface MW-3 priors using grid tiles.",
           "chart_ids": [
@@ -299,7 +299,7 @@
           "ice_height_min": 700,
           "ice_height_max": 1900
         },
-        "deterministic_fingerprint": "f7031445aecb81ade20cacff203780c012a4d50c1c49bc25ef0b22df2aaedfc8",
+        "deterministic_fingerprint": "7e557aff518459f378d8b1b738a5d9796d8aef0b4fb982851e2477e430f28c1c",
         "extensions": {
           "description": "Fantasy placeholder MW-3 surface priors using generic grid tiles.",
           "chart_ids": [

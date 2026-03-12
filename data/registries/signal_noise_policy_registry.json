@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "noise_policy_id": "noise.none",
         "description": "No signal noise applied; value remains exact within declared representation.",
-        "deterministic_fingerprint": "2a0c063bebce64736bc33e4bbc22362afbdbc9577b6c59692b8a7a4693c20bbd",
+        "deterministic_fingerprint": "be00303c821b7ab3f87763ee9d0fa714de3c6655eeba11795c731e250a35d406",
         "extensions": {
           "source": "LOGIC1-3"
         },
@@ -28,7 +28,7 @@
         "schema_version": "1.0.0",
         "noise_policy_id": "noise.deterministic_quantization",
         "description": "Quantization-only noise hook using deterministic rounding and fixed policy scale.",
-        "deterministic_fingerprint": "6faed3e79b811e84b6b1b00e57a1519b952ed194a53ac016ca4901f629dff11a",
+        "deterministic_fingerprint": "53ea3770d6431694e4a51018ad9fc2befb1e562a08178ff293be8388e33fc742",
         "extensions": {
           "source": "LOGIC1-3",
           "runtime_status": "available"
@@ -48,7 +48,7 @@
         "schema_version": "1.0.0",
         "noise_policy_id": "noise.named_rng_optional",
         "description": "Future named-RNG noise hook allowed only under explicit profile and policy control.",
-        "deterministic_fingerprint": "5d3b09bdcba542b3ba4c87863f22ff3f9a343419e159c8fb3e2fdccd5fa4465a",
+        "deterministic_fingerprint": "b2d1d03b924119b500006d8aa7c3e3874562f871ebf49d68d7796ffd1a58f47a",
         "extensions": {
           "source": "LOGIC1-3",
           "runtime_status": "declared_only",

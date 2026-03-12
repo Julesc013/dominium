@@ -12,7 +12,7 @@
         "density": 1000,
         "viscosity_proxy": 1,
         "vapor_pressure_proxy": 2,
-        "deterministic_fingerprint": "fc2796b1f7c193e32c9a92c483f1567a547dfa36ca11f099372789970716ba02",
+        "deterministic_fingerprint": "1c9ea1439f064d6aa488eab19466ac4c55677bfeea2cb3ca119f13eef9e4c6de",
         "extensions": {
           "domain_class": "liquid"
         },
@@ -34,7 +34,7 @@
         "density": 1,
         "viscosity_proxy": 1,
         "vapor_pressure_proxy": 0,
-        "deterministic_fingerprint": "c3d185ede3037b55f5ed703aac1ec03ca243f39aaf6209d8af1ede13cd7f4930",
+        "deterministic_fingerprint": "03288859a1b3acc94a4b95a5d2c77793ba6b345e774127d5bcc43760d632b0dd",
         "extensions": {
           "domain_class": "gas",
           "stub": true
@@ -57,7 +57,7 @@
         "density": 850,
         "viscosity_proxy": 5,
         "vapor_pressure_proxy": 1,
-        "deterministic_fingerprint": "b0d55d7440526419534e4cec27158a8df77b51c7fe513a753e64e0b9036b8b85",
+        "deterministic_fingerprint": "d617573243344345fbf3266bfcffb1b5889ba7ffbe6f26d53181726d3628eb37",
         "extensions": {
           "domain_class": "liquid",
           "stub": true
@@ -80,7 +80,7 @@
         "density": 1,
         "viscosity_proxy": 1,
         "vapor_pressure_proxy": 5,
-        "deterministic_fingerprint": "62de83992a0c4d55ea6f8c76e5940be51e9019d4b5200bf2c2d801c4a393fc89",
+        "deterministic_fingerprint": "234cf63af7ba07bea2ee953c07a683c9364c916e4a9c1613f498a5021a1b7fb5",
         "extensions": {
           "domain_class": "gas",
           "stub": true

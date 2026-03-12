@@ -10,7 +10,7 @@
         "policy_id": "ambient.default",
         "ambient_coupling_coefficient": 280,
         "insulation_factor": 1000,
-        "deterministic_fingerprint": "dd65cc228951b00ea38bc5ed3b197b8a485a0e50763d00dbf8224c1260f7073b",
+        "deterministic_fingerprint": "6fa70604f82fd94392727bb95c6c0a67148c42e89c180050ad4a34e102452b4f",
         "extensions": {
           "forced_cooling_default_multiplier": 1000
         },
@@ -30,7 +30,7 @@
         "policy_id": "ambient.insulated",
         "ambient_coupling_coefficient": 280,
         "insulation_factor": 420,
-        "deterministic_fingerprint": "a241e9cfa47854b6e51000defc0c2255d84d294e57ee82c3f7b8d47fa11048eb",
+        "deterministic_fingerprint": "8a0d9a664ae174572c552094c658370e605ef4561f9d57bd29d1ac6cf8224f79",
         "extensions": {
           "forced_cooling_default_multiplier": 1000
         },
@@ -50,7 +50,7 @@
         "policy_id": "ambient.exposed",
         "ambient_coupling_coefficient": 400,
         "insulation_factor": 1000,
-        "deterministic_fingerprint": "679704187f37631181592aadf390e57c5fef78f2d6f98ce142d968dd62a2727e",
+        "deterministic_fingerprint": "78edd2bab57f42cea4f852d3accfd152e09effa91dc833fb21e9051e73f9a9ca",
         "extensions": {
           "forced_cooling_default_multiplier": 1200
         },

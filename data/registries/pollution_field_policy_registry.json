@@ -11,7 +11,7 @@
         "tier": "P0",
         "cell_update_rule_id": "rule.pollution.noop",
         "wind_modifier_enabled": false,
-        "deterministic_fingerprint": "b638ba43191f8be91c84415fa621e811f07560246448a754fcd272a542036930",
+        "deterministic_fingerprint": "35ea8d7c491c1fc84f508f447aa2b32d2a9b291a079c0cade76557eb82a13486",
         "extensions": {
           "null_boot_safe": true,
           "disable_dispersion": true
@@ -33,7 +33,7 @@
         "tier": "P1",
         "cell_update_rule_id": "rule.pollution.coarse_diffuse",
         "wind_modifier_enabled": true,
-        "deterministic_fingerprint": "3daf41a28098872d0d5f88c518dc69491e237b24702586642eff60b360362722",
+        "deterministic_fingerprint": "94d14b77953b7989ddc3aa5f4eabf13739f5957688be8734865b81aad6519d43",
         "extensions": {
           "dispersion_kind": "coarse_proxy",
           "max_cell_updates_per_tick": 256,
@@ -56,7 +56,7 @@
         "tier": "P1",
         "cell_update_rule_id": "rule.pollution.rank_strict",
         "wind_modifier_enabled": true,
-        "deterministic_fingerprint": "47941b2546f1a3ecaa06f298ba70c0b6774725f0401e914e44b88329adf8079b",
+        "deterministic_fingerprint": "fe531d6bdfeaee4da538fc1fe6e56b06c28f1257d12e369e5f10e01dc526b766",
         "extensions": {
           "dispersion_kind": "coarse_proxy",
           "strict_logging": true,

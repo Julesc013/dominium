@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "emitter_kind_id": "emitter.star",
         "description": "Deterministic stellar illumination emitter kind for SOL-1 geometry.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9aeb69c59433ef161e9e0c29d07b8440dd9d7d90085e98a81b1411542c2e6645",
         "extensions": {
           "source": "SOL1-2"
         },

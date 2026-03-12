@@ -11,7 +11,7 @@
         "efficiency_degradation_curve_id": "curve.entropy.efficiency.default",
         "hazard_multiplier_curve_id": "curve.entropy.hazard.default",
         "maintenance_interval_modifier_id": "curve.entropy.maintenance.default",
-        "deterministic_fingerprint": "8645ea419d5b1665d1175ebc8804295f910ae07ea4b3819ede63b671454c7757",
+        "deterministic_fingerprint": "11924aa0b2d9dbdeafafa1ea0735759062fdda9971b3a332070e9b9a57cba115",
         "extensions": {
           "entropy_unit_scale": 1000,
           "efficiency_loss_per_unit": 2,
@@ -38,7 +38,7 @@
         "efficiency_degradation_curve_id": "curve.entropy.efficiency.none",
         "hazard_multiplier_curve_id": "curve.entropy.hazard.none",
         "maintenance_interval_modifier_id": "curve.entropy.maintenance.none",
-        "deterministic_fingerprint": "acd6af2b9b41c95aa5388b7d62bf842ed436a81077ad9115e13dfc2022220c6b",
+        "deterministic_fingerprint": "8a107c8d6103267c84f63ed840a0a27254739dce6c83c1216dc38088042a204a",
         "extensions": {
           "entropy_unit_scale": 1000,
           "efficiency_loss_per_unit": 0,
@@ -65,7 +65,7 @@
         "efficiency_degradation_curve_id": "curve.entropy.efficiency.strict",
         "hazard_multiplier_curve_id": "curve.entropy.hazard.strict",
         "maintenance_interval_modifier_id": "curve.entropy.maintenance.strict",
-        "deterministic_fingerprint": "7791a33e5d9b1cc5184f4e0005ff4a1157c509b09e48746a0b71fd955b8f3a50",
+        "deterministic_fingerprint": "e4d5fa27f98af16d61b9f60ae33f053fa7b2fef6efc12371ce3e10e3a061c7c0",
         "extensions": {
           "entropy_unit_scale": 800,
           "efficiency_loss_per_unit": 4,

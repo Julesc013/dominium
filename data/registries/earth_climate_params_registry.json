@@ -15,7 +15,7 @@
         "seasonal_amplitude": 36,
         "lapse_rate_per_km": 6,
         "update_interval_ticks": 12,
-        "deterministic_fingerprint": "09c50fd3706421903a00f561385a8b1439a683842a048140ebc8b72ef31f52c9",
+        "deterministic_fingerprint": "83f7ff49737d0fcc08a4d3abbf41f750e2455db7c6e1d686834ac9ec038fa362",
         "extensions": {
           "description": "Canonical EARTH-2 macro seasonal climate parameters for deterministic Earth temperature/daylight refresh.",
           "epoch_offset_ticks": 0,

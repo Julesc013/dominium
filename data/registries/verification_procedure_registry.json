@@ -11,7 +11,7 @@
         "proof_kind_supported": [
           "exact"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "03a1e09e60fa566f0544eb465468ca935239e31759ecdf0b0f1b4ab66d3c6c9a",
         "extensions": {
           "description": "Structural identity checks over deterministic serialized form."
         },
@@ -32,7 +32,7 @@
         "proof_kind_supported": [
           "bounded_error"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "041ad51ccd6c59904973beef19e81e606d42bb12c4bef9a55aaca3629f75e09b",
         "extensions": {
           "description": "Deterministic bounded sample set verification."
         },
@@ -54,7 +54,7 @@
           "exact",
           "bounded_error"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "2338462ecd6d3e3f9dfd66fea425843bca0dfa459c4057d6eb35d46b54977ce7",
         "extensions": {
           "description": "Reserved symbolic verifier hook for future use."
         },

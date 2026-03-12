@@ -10,7 +10,7 @@
         "region_id": "region.bulge",
         "field_scalar_code": 1,
         "description": "Coarse GAL-0 bulge region proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a50c458d7c143971b4c75638aef2af92f5ffac35eab9a22f08c7eb4d4449165b",
         "extensions": {
           "source": "GAL0-2"
         },
@@ -30,7 +30,7 @@
         "region_id": "region.inner_disk",
         "field_scalar_code": 2,
         "description": "Coarse GAL-0 inner-disk region proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a2dd38143a85bff95a54f3899504985ac7d77198163a18652699603bbceb72b0",
         "extensions": {
           "source": "GAL0-2"
         },
@@ -50,7 +50,7 @@
         "region_id": "region.outer_disk",
         "field_scalar_code": 3,
         "description": "Coarse GAL-0 outer-disk region proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "064bca15dc6c97ca748205701bb7589b08e78363c11c5781639ba82db403e68f",
         "extensions": {
           "source": "GAL0-2"
         },
@@ -70,7 +70,7 @@
         "region_id": "region.halo",
         "field_scalar_code": 4,
         "description": "Coarse GAL-0 halo region proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b19292dd58c9b14dcb09b9279fd5eec0947c4535e427e5b80d4be841ace1eb89",
         "extensions": {
           "source": "GAL0-2"
         },

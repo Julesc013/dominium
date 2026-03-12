@@ -12,7 +12,7 @@
         "loop_resolution_mode": "refuse",
         "timing_mode": "roi_micro_optional",
         "compute_profile_id": "compute.default",
-        "deterministic_fingerprint": "918f35c10d5823050bb5fb475b88809fac5ed84917bd85b8f42410cc4c9a425c",
+        "deterministic_fingerprint": "1d7776c7c40bd515d2d846077922cc2b606be983d26bb2a69ca5313199db3fc0",
         "extensions": {
           "description": "Default LOGIC policy: deterministic L1 evaluation with optional L2 ROI detail only when explicitly scheduled.",
           "oscillation_window_ticks": 8,
@@ -39,7 +39,7 @@
         "loop_resolution_mode": "refuse",
         "timing_mode": "sync_tick",
         "compute_profile_id": "compute.rank_strict",
-        "deterministic_fingerprint": "06821011cd3f6954462cd2c2374031f7605ffdfa40d012bfa38ed09db0ab48d3",
+        "deterministic_fingerprint": "a71d36d01f7e3d5b5b90cd834ffd2bec1a1abb9c7e9f9dc3c6120fb729ab9114",
         "extensions": {
           "description": "Strict LOGIC policy for competitive or auditable play; no loop relaxation and no optional micro timing.",
           "oscillation_window_ticks": 6,
@@ -66,7 +66,7 @@
         "loop_resolution_mode": "allow_with_caps",
         "timing_mode": "roi_micro_optional",
         "compute_profile_id": "compute.lab_high",
-        "deterministic_fingerprint": "1b36cb8fe980f056fb2162472ee845b09078ba24b386b7a0b1e03680c927b088",
+        "deterministic_fingerprint": "3410e881d2725f6f5e146f28c63d0cb586919348b165bfd0d8ff53405f24501b",
         "extensions": {
           "description": "Lab policy for explicit experimental controllers; loop exceptions remain budgeted and profile-governed.",
           "oscillation_window_ticks": 12,

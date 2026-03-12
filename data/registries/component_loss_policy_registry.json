@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "policy_id": "comp_loss.default_bundle",
         "per_quantity_rules": {},
-        "deterministic_fingerprint": "259c38dc8bf17c474082a7a2405929ae59c92942f0d4f4b2659e9ce99f728afd",
+        "deterministic_fingerprint": "93180888f36f9fc04545e56ffeaebfacb44bb1e8955c5320395d101f65dc6951",
         "extensions": {
           "description": "Default bundle loss policy (use channel loss_fraction only)."
         },
@@ -35,7 +35,7 @@
             "extensions": {}
           }
         },
-        "deterministic_fingerprint": "b9e68400e7c8f847bac0cab3ef5406e8a6cab7690e9d82ca37ac9b6e01e90d99",
+        "deterministic_fingerprint": "18f9c2d441323fd8b9d21f37bfda018201166d333fb8be4a60be61a67352a8d7",
         "extensions": {
           "description": "Placeholder transform policy for loss-to-heat conversion."
         },

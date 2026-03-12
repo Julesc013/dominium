@@ -17,7 +17,7 @@
           "base_delta_per_tick": 1000,
           "dilation_coefficient": 0
         },
-        "deterministic_fingerprint": "03128a2a7c4ee76edf0585a2f959cf8b5090ae04552d433e1f286e56182a238b",
+        "deterministic_fingerprint": "b610e270ea17c0015acfbd92388c64922ea3e5b965dc448116933d6abdd7d014",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -42,7 +42,7 @@
           "tick_to_seconds_ratio": 1,
           "calendar_offset": 0
         },
-        "deterministic_fingerprint": "bff083fce5c9069f8850e87ea609ea89d3951e9a02341b4229a06c8c01b50205",
+        "deterministic_fingerprint": "7309d4929ccf41e6a8fe63397cf6f3a846926e08b4105a7efa52955d7d3d34f3",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -67,7 +67,7 @@
           "session_warp_factor": 1000,
           "offset_ticks": 0
         },
-        "deterministic_fingerprint": "17993bf6d4d96d4543621c8df954b3bcdb410cc87a8b8b82d79bd267d01044a3",
+        "deterministic_fingerprint": "71bb6f0af76205d4a7f800247fef47d3696d743eb06cee66d9bad2c1e25be669",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",

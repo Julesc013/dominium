@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "geometry_edit_policy_id": "geo.edit.default",
         "description": "Deterministic baseline geometry edit policy for ordinary excavation and fill.",
-        "deterministic_fingerprint": "1495c18be8c360bd18c6592f25a3abecbb8be298a379568e71f43ce7bf3dc95f",
+        "deterministic_fingerprint": "49416e319873589a88d147563353b4ab4c5f5d327b58c9ae38918242a308beee",
         "extensions": {
           "max_target_cells": 64,
           "max_volume_per_cell": 1000,
@@ -32,7 +32,7 @@
         "schema_version": "1.0.0",
         "geometry_edit_policy_id": "geo.edit.rank_strict",
         "description": "Strict ranked policy with tighter bounded geometry edit budgets and refusal bias.",
-        "deterministic_fingerprint": "9cbd914efe6c249255d91e0586089cd86e15e610903cf8f1decbe01da946ac48",
+        "deterministic_fingerprint": "ddd6b0b401167f5376b1093785c8e3455e1c4da856308793289c6dfae31ef257",
         "extensions": {
           "max_target_cells": 16,
           "max_volume_per_cell": 500,
@@ -56,7 +56,7 @@
         "schema_version": "1.0.0",
         "geometry_edit_policy_id": "geo.edit.lab_aggressive",
         "description": "Lab policy with broader but still deterministic bounded edit ranges.",
-        "deterministic_fingerprint": "194557247eae06fd94f2b4bd6b4e3c7a95926c7c2a0571310382c5f785d24125",
+        "deterministic_fingerprint": "49c1161f79b5fe76a96ed6d0d02b61759a84025a2e271eec3af9a046c63a2cf2",
         "extensions": {
           "max_target_cells": 256,
           "max_volume_per_cell": 4000,

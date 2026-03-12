@@ -14,7 +14,7 @@
           "quantity.power.apparent_stub"
         ],
         "description": "Power phasor placeholder bundle (P,Q,S).",
-        "deterministic_fingerprint": "92c2ca886758acd4c92685c7d375e92f72cee7fba4b1615ca2d3f2e9e7c13379",
+        "deterministic_fingerprint": "6548cfe7f6b791339146e5f0f158b007cdec9f5c3d258e9ed07695c8d06e8e0f",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -35,7 +35,7 @@
           "quantity.pressure_head"
         ],
         "description": "Fluid canonical bundle (mass_flow, pressure_head).",
-        "deterministic_fingerprint": "f7c143cb541b84003eeb711561e076ccf921451f12401a9511b73595383867e9",
+        "deterministic_fingerprint": "7ebf4d3ed691edaacd624e9873e64b26bdbb3e9e60b1da7f35fc118489a8c57f",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -56,7 +56,7 @@
           "quantity.data.latency_stub"
         ],
         "description": "Data placeholder bundle (bytes, latency_stub).",
-        "deterministic_fingerprint": "684db84ffac0e59cd153a7e10d12c84ea38679544fc1cf0a2b8fb8cc2fa5c12b",
+        "deterministic_fingerprint": "b6a79eff9d1b534844caf0ac28f2a58be5ec5b60bd5e5d52d70852db30e7ed45",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -77,7 +77,7 @@
           "quantity.thermal.heat_loss_stub"
         ],
         "description": "Thermal placeholder bundle (heat_flow, heat_loss_stub).",
-        "deterministic_fingerprint": "11639a48fb01e8579308343873382451029c1047298802d7cbb143b66038cdff",
+        "deterministic_fingerprint": "ea759d372aa8b75ee4abdc70a9f17d08657d7a5ff20afbe40c7d884af11a6c40",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -98,7 +98,7 @@
           "quantity.logic.bus_capture"
         ],
         "description": "Substrate-agnostic logic signal placeholder bundle for signal-only interfaces.",
-        "deterministic_fingerprint": "e12139bdce3c4535f04aca658de0e4659d4faf78b06af4842e6ab56f8bd33d3f",
+        "deterministic_fingerprint": "f30899c1d0585d39f32a35e20eccaa738800a848eb5d2a476ff18a76313bb6df",
         "extensions": {
           "source": "LOGIC2-3"
         },

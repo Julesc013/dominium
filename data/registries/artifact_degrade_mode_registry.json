@@ -7,7 +7,7 @@
     "artifact_degrade_modes": [
       {
         "artifact_degrade_mode_id": "artifact.degrade.best_effort",
-        "deterministic_fingerprint": "d0952491a8f62db53937eeafb83f1a7994e1fb40bc6912e93cd88a0ae87d64dd",
+        "deterministic_fingerprint": "4a2c292a7fb849d9d6f273d5e57ff78dacbfc46e0a8de3e9e9e534f90851f315",
         "extensions": {
           "official.description": "Load with deterministic feature disablement when unsupported parts are missing.",
           "official.source": "LIB-4"
@@ -25,7 +25,7 @@
       },
       {
         "artifact_degrade_mode_id": "artifact.degrade.read_only_only",
-        "deterministic_fingerprint": "3fd369df6c8ef8e43b77dc97d496b0085a106009b1d016e345507f2e8cabbaad",
+        "deterministic_fingerprint": "8cd6cb0174aee150fd07a7b52c4e76fee7a112fe67a57e01159e64061b208467",
         "extensions": {
           "official.description": "Allow inspect/read-only flows only; mutable runtime remains refused.",
           "official.source": "LIB-4"
@@ -43,7 +43,7 @@
       },
       {
         "artifact_degrade_mode_id": "artifact.degrade.strict_refuse",
-        "deterministic_fingerprint": "71bc5538ced5773ae9eecd4d7ae32290e4978caf29fada173fe2ab260f8cd42a",
+        "deterministic_fingerprint": "6391dd001a562c0dc399680ab6dfc95a281210667788af5e171a21597bc74a7d",
         "extensions": {
           "official.description": "Refuse load when contracts, capabilities, or topology/physics constraints mismatch.",
           "official.source": "LIB-4"

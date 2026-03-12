@@ -12,7 +12,7 @@
           "quantity.mass"
         ],
         "tolerance_policy_id": "tol.strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "b3341e0f3c9fe34beb46ccca2c11b327578182918b70a44f32f46aeed6f4c0f6",
         "extensions": {
           "scope": "boundary"
         },
@@ -34,7 +34,7 @@
           "quantity.energy"
         ],
         "tolerance_policy_id": "tol.strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a33439d88f634fcb16e418883075a0dd70c2d1906abee1e52c10100831c0da93",
         "extensions": {
           "scope": "boundary"
         },
@@ -56,7 +56,7 @@
           "quantity.momentum"
         ],
         "tolerance_policy_id": "tol.strict",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "928fc6a22e8f34bfaa22f75fcb76bdfbdd2895673f5f1988ad57e54e0310398d",
         "extensions": {
           "scope": "boundary",
           "optional": true
@@ -79,7 +79,7 @@
           "quantity.pollutant_mass"
         ],
         "tolerance_policy_id": "tol.default",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ba5e9d330c77c570a9e273b840529fa6eae3cff7dcd5e104aa963d814c604168",
         "extensions": {
           "scope": "boundary"
         },

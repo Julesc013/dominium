@@ -17,7 +17,7 @@
         "noise_magnitude": 0,
         "update_interval_ticks": 8,
         "noise_policy_id": "noise.none",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "31d84542135a4616d383b0470a223ae66ee1d5c215b9d3a99d808cbaac0fa13b",
         "extensions": {
           "description": "Canonical EARTH-7 macro wind parameters for deterministic Earth tile refresh.",
           "year_length_ticks": 3650,

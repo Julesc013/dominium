@@ -14,7 +14,7 @@
         ],
         "required_privilege_level": "observer",
         "physical_access_required": true,
-        "deterministic_fingerprint": "b376678e03332e142f24d38c032636b7383688934f4c4dcb6f06dc62637f41a8",
+        "deterministic_fingerprint": "61126bd8905cfdcd9e6c7e21c5fe6d5b901cab9aed14461025c9adb4b566723b",
         "extensions": {
           "source": "META-INSTR0"
         },
@@ -38,7 +38,7 @@
         ],
         "required_privilege_level": "operator",
         "physical_access_required": false,
-        "deterministic_fingerprint": "bfcc9b357764e8b2f5cac40abdbf95e270bd6e1c8211dc5cea0d51acef932f4c",
+        "deterministic_fingerprint": "f2f0934e7e5554f9b19c3889e4ca7a87e1df544e3bfe1400615c6743bcca5318",
         "extensions": {
           "source": "META-INSTR0"
         },
@@ -63,7 +63,7 @@
         ],
         "required_privilege_level": "admin",
         "physical_access_required": false,
-        "deterministic_fingerprint": "bc5eb1d7b2fcfa1de4957049b4cb1534b9b951cf66e37d732a63b302742d00a9",
+        "deterministic_fingerprint": "101f97f139db9479c7f507a3832caab3a038c55d1189695ba78ad9a88b7fb43e",
         "extensions": {
           "source": "META-INSTR0"
         },

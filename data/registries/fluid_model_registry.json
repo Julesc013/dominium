@@ -14,7 +14,7 @@
     "models": [
       {
         "model_id": "model.fluid_pump_curve_stub",
-        "deterministic_fingerprint": "a6c4f5f4fb96d7a30a986fa0e087939080527b4f04f4f299d6f84cf4d777d9e1",
+        "deterministic_fingerprint": "0d9b93467568144c1abf5d71f0a3109cf62d67cf3dee5e6fdb836b7405cb7ca6",
         "extensions": {
           "source_registry_key": "model_id"
         },
@@ -31,7 +31,7 @@
       },
       {
         "model_id": "model.fluid_valve_curve_stub",
-        "deterministic_fingerprint": "4743b72fb67a2303a992dd6db1d2c49fc69d72d84d71985e2ad86a1e4ca5fc0e",
+        "deterministic_fingerprint": "c1b10bf20a14c052e6c77e2b7be25e59d94644e812c42c52771776803f3e6f31",
         "extensions": {
           "source_registry_key": "model_id"
         },
@@ -48,7 +48,7 @@
       },
       {
         "model_id": "model.fluid_pipe_loss_stub",
-        "deterministic_fingerprint": "cdb558ba024d247bc6364016e88f79bd9826a0c07b19467866e2d1ee083240d3",
+        "deterministic_fingerprint": "35b21f04940d177cbcaa3cfad58a9f02d105a70a71a41e0aac581573be452b48",
         "extensions": {
           "source_registry_key": "model_id"
         },
@@ -65,7 +65,7 @@
       },
       {
         "model_id": "model.fluid_cavitation_stub",
-        "deterministic_fingerprint": "05f110b7668b63ab552f96c727d8b003f8bd10445f4881f386b171fe7e2cc162",
+        "deterministic_fingerprint": "1869890a3f152053c86d08aa3cdb7b61bcd8dede5f11491885b2d6e206eae452",
         "extensions": {
           "source_registry_key": "model_id"
         },
@@ -82,7 +82,7 @@
       },
       {
         "model_id": "model.fluid_leak_rate_stub",
-        "deterministic_fingerprint": "3cf43a25eadabb69b7ef5d50e79fb457dd611450add916bbda2184e0cf51baa7",
+        "deterministic_fingerprint": "74145b1d5c2dde8f6a1939bde276bea649570d0383ca017ae87354854c04def1",
         "extensions": {
           "source_registry_key": "model_id"
         },

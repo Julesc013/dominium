@@ -12,7 +12,7 @@
         "lake_fill_threshold": 180,
         "reflection_strength": 520,
         "tide_visual_strength": 80,
-        "deterministic_fingerprint": "6ea91b5b937c7f88ba633c98297eb7f4a33f1274ac55c5f11ff1d346f84ed375",
+        "deterministic_fingerprint": "545677b6ac2259d552ea8c5bfd54316a2ebef4c558a3ff4cc028eacd7fcfd8fc",
         "extensions": {
           "description": "Canonical EARTH-8 water visual policy with bounded ribbon rivers, sink/lake fill tagging, sky reflection stub, and subtle tide edge offset.",
           "default_neighbor_radius": 2,

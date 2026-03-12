@@ -11,7 +11,7 @@
         "collider_kind": "capsule",
         "mass_value": 80000,
         "movement_params_ref": "move.body.default_ground",
-        "deterministic_fingerprint": "eab2068641ccdc54f8a39e6cbb5f3c50a42115049e222ac4736eb4b0bb0c8737",
+        "deterministic_fingerprint": "ea1a4ca681cbae3fba0a8f3fecadf3f5c29a292a38c7995c5c80737d19fdafc1",
         "extensions": {
           "source": "EMB0-2",
           "capsule": {

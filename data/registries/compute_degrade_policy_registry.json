@@ -18,7 +18,7 @@
         "tick_bucket_stride": 2,
         "allow_representation_degrade": true,
         "fail_safe_on_critical_overrun": false,
-        "deterministic_fingerprint": "33f88ecfee6e46b5fbb15f67b256502ba744a2c11dbf471180c3aa7aca910d2f",
+        "deterministic_fingerprint": "eca7064e018f24eab551ab085de37e5b3eb4d4ac2782a4cee6a7a6a6fdab94cd",
         "extensions": {
           "source": "META-COMPUTE0-2"
         },
@@ -45,7 +45,7 @@
         "tick_bucket_stride": 2,
         "allow_representation_degrade": false,
         "fail_safe_on_critical_overrun": true,
-        "deterministic_fingerprint": "696a0a4613c5fc306632f84adfdffb22173e10c43c8d3c92ba446bccdebada98",
+        "deterministic_fingerprint": "6b2f1ae9ee3cdbe80e5d4359a6eb0cbd9bbb3063c98710721661eb1171c1af87",
         "extensions": {
           "source": "META-COMPUTE0-2"
         },

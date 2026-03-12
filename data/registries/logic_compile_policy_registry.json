@@ -10,7 +10,7 @@
         "compile_policy_id": "compile.logic.default",
         "preferred_verification_procedure_id": "verify.exact_structural",
         "allow_bounded_error": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4d3598f01fdf73bd1088c0c14b0cd14e6a7213b96fcc2b430b39b8ca5de00ef0",
         "extensions": {
           "description": "Default exact LOGIC compilation policy with conservative lookup-table and automaton bounds.",
           "max_lookup_input_width": 8,
@@ -33,7 +33,7 @@
         "compile_policy_id": "compile.logic.lab",
         "preferred_verification_procedure_id": "verify.exact_structural",
         "allow_bounded_error": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "fe6c8563805e4a28fcca42b922b3c48fc704f9d3c315ebe17a0e24355bf9633b",
         "extensions": {
           "description": "Laboratory LOGIC compilation policy allowing larger exact exploration and optional bounded scalar proofs.",
           "max_lookup_input_width": 12,
@@ -56,7 +56,7 @@
         "compile_policy_id": "compile.logic.rank_strict",
         "preferred_verification_procedure_id": "verify.exact_structural",
         "allow_bounded_error": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "3556e3ff47178ff175923d25c41faaafbf345f1bf596a26e84c041fb35b487c2",
         "extensions": {
           "description": "Rank-strict LOGIC compilation policy requiring exact proof and tight validity domains.",
           "max_lookup_input_width": 6,

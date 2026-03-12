@@ -18,7 +18,7 @@
         "tolerance_policy_ref": "tol.default",
         "hold_last_value": true,
         "safe_default_ref": null,
-        "deterministic_fingerprint": "6cea1b646d1b2b9cacb3ca545e1756f7b48b3c7729d141d2635f8abf90cd52ab",
+        "deterministic_fingerprint": "f7f42d24d911f800b080643bdb667c9ee2001a8eee371eae56b98b56478548d8",
         "extensions": {
           "description": "Default deterministic relevance policy with hold-last skip behavior."
         },
@@ -45,7 +45,7 @@
         "tolerance_policy_ref": "tol.strict",
         "hold_last_value": false,
         "safe_default_ref": "safety.fail_safe_shutdown",
-        "deterministic_fingerprint": "f7e74f9c173f1b96700eaf643ffaf6e85bd0659341994c1e01c2d100aca7870c",
+        "deterministic_fingerprint": "fc528fb68b4bd5e6488e5646b5ff469e813c07594525685bd8b23e8fb75d2d30",
         "extensions": {
           "description": "Critical coupling policy; escalates to fail-safe and forced-expand pathways."
         },
@@ -70,7 +70,7 @@
         "tolerance_policy_ref": "tol.relaxed",
         "hold_last_value": true,
         "safe_default_ref": "safe.default.noop",
-        "deterministic_fingerprint": "2d7c1935be2fea9672368183eef15f548499f3a2624a8f7329a3828ab72fdf1a",
+        "deterministic_fingerprint": "48072253cf6ca2c5007bda39bcee402033f376e06e2c801909960b764daf8e97",
         "extensions": {
           "description": "Optional coupling policy intended for best-effort diagnostic/cosmetic coupling."
         },

@@ -10,7 +10,7 @@
         "generator_id": "gen.surface.default_stub",
         "handler_id": "mw.surface.default_stub",
         "description": "Canonical MW-3 deterministic macro surface generator.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "130101093a79c8f4677c8b797632d1d10e77edd857602887f3a48d541356ef8d",
         "extensions": {
           "placeholder": false,
           "source": "MW3-2"
@@ -31,7 +31,7 @@
         "generator_id": "gen.surface.earth_stub",
         "handler_id": "earth.surface.stub",
         "description": "Canonical EARTH-0 deterministic macro Earth surface generator.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5da98c542162709ba453a50c25e21fe506ded70a3fd3ecaf1a4483a135172a05",
         "extensions": {
           "placeholder": false,
           "earth_surface_params_id": "params.earth.surface_default_stub",

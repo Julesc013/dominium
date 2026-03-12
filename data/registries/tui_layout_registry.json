@@ -28,7 +28,7 @@
             "extensions": {}
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d55b3733053b589eea148d179d494b38afa15afb702fec3005eeceb2db9bff44",
         "extensions": {
           "official.source": "APPSHELL-3"
         },
@@ -66,7 +66,7 @@
             "extensions": {}
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6ae31271c6f4af126adba574cfa783894a0896fe6c9810e7c01b86db679c6c9e",
         "extensions": {
           "official.source": "APPSHELL-3"
         },
@@ -116,7 +116,7 @@
             "extensions": {}
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0b99646aa392983b9e0337f203353918ca20527cf510727c95821c123e397a6e",
         "extensions": {
           "official.source": "APPSHELL-3"
         },

@@ -100,7 +100,7 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "898261922eaab9e8e4f8911a1207948468979fabac70161fbd6da9c536dc91ab",
         "extensions": {
           "official.source": "CAP-NEG-3"
         },
@@ -164,7 +164,7 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a0b530ef14e6381cd7e5c79b50fbf8be398c4282eefdcb09b5347d8d9970901d",
         "extensions": {
           "official.source": "CAP-NEG-3"
         },
@@ -184,7 +184,7 @@
         "ladder_id": "ladder.setup.mvp",
         "product_id": "setup",
         "rules": [],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c19db292dea67641648cb99c37367bfd14410f9d1963956607975670960ee681",
         "extensions": {
           "official.source": "CAP-NEG-3"
         },
@@ -218,7 +218,7 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d2b8c4d9355d41c5140bb17f428aa3b8df859c69e6c764f16378ba01d2431b08",
         "extensions": {
           "official.source": "CAP-NEG-3"
         },
@@ -255,7 +255,7 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "d6f47fc47342f9647c6f3f7562545bea3d92f197ffe55d22744fa9ed349dd61e",
         "extensions": {
           "official.source": "CAP-NEG-3"
         },
@@ -292,7 +292,7 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "54c76bfceb2375e8e5c2e6ee8f5ec99f381aece150bbfac98aaabb5b5bbe3bb2",
         "extensions": {
           "official.source": "CAP-NEG-3"
         },
@@ -326,7 +326,7 @@
             }
           }
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9cb3d84785aae75aacd357e2d7f6143115e11fadd262d89663d3e6a1ab09223b",
         "extensions": {
           "official.source": "CAP-NEG-3"
         },

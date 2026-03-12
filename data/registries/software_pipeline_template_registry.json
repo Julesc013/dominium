@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "pipeline_id": "pipeline.build_test_package_sign_deploy",
         "description": "Deterministic software build/test/package/sign/deploy pipeline template.",
-        "deterministic_fingerprint": "e1377b51c23965758109d8cdfa3b33713f5324c7abb44658a8b0b66d69e52c2a",
+        "deterministic_fingerprint": "deb78af06d134450f2c81554737879d8d11ce98aec920838ff9aea8a239a1746",
         "extensions": {
           "source": "PROC8-2",
           "process_definition_ref": "proc.pipeline.build_test_package_sign_deploy@1.0.0",

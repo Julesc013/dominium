@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "sampling_strategy_id": "sample.hash_based",
         "description": "Deterministic hash threshold sampling using run and batch identifiers.",
-        "deterministic_fingerprint": "635574267de78b350a2434c3f6ab4f2fd549485bf3e612856fccfbd0a082ba2d",
+        "deterministic_fingerprint": "dbb40a8ceac331be1f884b7898d75d34fe73c8f0bc2d6d62d9a975a825171edd",
         "extensions": {
           "source": "PROC3-2"
         },
@@ -28,7 +28,7 @@
         "schema_version": "1.0.0",
         "sampling_strategy_id": "sample.every_n",
         "description": "Deterministic interval sampling in stable batch order.",
-        "deterministic_fingerprint": "eb55c9167970c6f3f5832371abe7124c7f483ef80fcf2b053d44d249e4bcbcca",
+        "deterministic_fingerprint": "c48420a392e7f59d94fbf03f4aa8e96ae1c87da740ce08a0729f0bc4a9285f5a",
         "extensions": {
           "source": "PROC3-2",
           "default_every_n": 5
@@ -48,7 +48,7 @@
         "schema_version": "1.0.0",
         "sampling_strategy_id": "sample.risk_weighted",
         "description": "Deterministic risk-weighted sampling based on defect severity metadata.",
-        "deterministic_fingerprint": "b0bdbb11ea13cf0014c250e54dedbff8ba2565b5fc770a31fb60cb023048be0a",
+        "deterministic_fingerprint": "4ff53277dc9bb24343ca9f68d19940190296d8067cd3c68d9270bc10d8d8685d",
         "extensions": {
           "source": "PROC3-2",
           "risk_uplift_scale_permille": 500

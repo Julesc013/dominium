@@ -5,7 +5,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "716123691c4d8dd0c336a6da8e7c55c9ab6870e5e96549283cd2a1fb4c8191ab",
+        "deterministic_fingerprint": "841018548a9198a061b20058f0a313eb4a49275d822c925071ba5f175000efa7",
         "extension_key": "mod.unknown.action_surfaces",
         "extensions": {
           "legacy_alias_for": "action_surfaces",
@@ -33,7 +33,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "44316bf129fe25b43e8b8ad7fd183ebd41707d6b6aeee2864dd398046fe37aa4",
+        "deterministic_fingerprint": "72d1aae2a2477b4c427a39f297169b1647e8b71841ecb9f3e069f837341127ce",
         "extension_key": "mod.unknown.active_tool_effect_model_id",
         "extensions": {
           "legacy_alias_for": "active_tool_effect_model_id",
@@ -62,7 +62,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "6e9bc4cebf30f3abf8f107012a622e87809150cb7b1cd5c385ac8b6beca96b9a",
+        "deterministic_fingerprint": "a971332ecb503705493fccc6fc5a3b328b5f0d9c9f997dea4ed23be5a012ec00",
         "extension_key": "mod.unknown.active_tool_effect_parameters",
         "extensions": {
           "legacy_alias_for": "active_tool_effect_parameters",
@@ -91,7 +91,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ebce47c95ae24c226580753b5f18c484e49134fff50fcdba132948c8c4c1453b",
+        "deterministic_fingerprint": "004838875c02eb09f7258548f1a3a8192f158b435f44558973fbee1ec0cb4bd8",
         "extension_key": "mod.unknown.active_tool_id",
         "extensions": {
           "legacy_alias_for": "active_tool_id",
@@ -120,7 +120,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b751b824ff5d6180b59d55634bd6843c7978e2c611e10d0f8e82ce8a06121521",
+        "deterministic_fingerprint": "ec1ac03f7b96ae5e95a84725c2e62dfb86d3fb2c7d51f6c203d0040f901fa128",
         "extension_key": "mod.unknown.active_tool_tags",
         "extensions": {
           "legacy_alias_for": "active_tool_tags",
@@ -150,7 +150,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "c918e59f89a8106a60152203ca90eaa56acdc8c6f3ccff5591ab4a42a7458a0e",
+        "deterministic_fingerprint": "b1e982c624e4ccb20e6c66c98d7e1411defbf35ea238877846ace6aa256e97a3",
         "extension_key": "mod.unknown.active_tool_type_id",
         "extensions": {
           "legacy_alias_for": "active_tool_type_id",
@@ -179,7 +179,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "67c813e230f532672fc9b12b9b632e135968352b0e37ce5f03a806c58f12f8dd",
+        "deterministic_fingerprint": "f0c2e546b1981feea6122cf2e234b0d834c9169f4d93d7e66ad58c68604d4bf3",
         "extension_key": "mod.unknown.age_bucket",
         "extensions": {
           "legacy_alias_for": "age_bucket",
@@ -209,7 +209,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "233a95a1596aba99985d74a5f47a4666fbc7e9256e577ff452343e491b073587",
+        "deterministic_fingerprint": "bf98eefba1f4b471d307572d48a6b7a5c269aadab1b3da958c50d7a5a995d4ae",
         "extension_key": "mod.unknown.allow_branching",
         "extensions": {
           "legacy_alias_for": "allow_branching",
@@ -240,7 +240,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "43445f684cc0a209136940f4d4c3c66ef6e2f96a71c7d917dd48d26d9fef7d72",
+        "deterministic_fingerprint": "20cda88982e4986c098af3a50057623ad34ff48cffe9b9ef1f497cd7a0cae977",
         "extension_key": "mod.unknown.allow_cross_shard_collision",
         "extensions": {
           "legacy_alias_for": "allow_cross_shard_collision",
@@ -268,7 +268,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "17a5c5908a78b68853d68b52e69881daab195663365203089875ecd3c3dc6ce4",
+        "deterministic_fingerprint": "36cd80b0fb6f4ed7a1f182f9c1a9769e782237858642c3c2c76c16e41b0199e9",
         "extension_key": "mod.unknown.allow_cross_shard_follow",
         "extensions": {
           "legacy_alias_for": "allow_cross_shard_follow",
@@ -296,7 +296,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "75d316a3aa6f2b3fe93231d01163461a804499b86f692b4b755225cd6e68954a",
+        "deterministic_fingerprint": "e37804b007018649ea52dba30ca8096663ac48717a49a07b2757d4d0cdd27d6f",
         "extension_key": "mod.unknown.allow_cross_shard_possession",
         "extensions": {
           "legacy_alias_for": "allow_cross_shard_possession",
@@ -324,7 +324,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "840d6995f94c463da892412607aaff024225d31487e8f1a2cb22191b358e8a74",
+        "deterministic_fingerprint": "e9f998f7f68348a50f233eebdd0949e8ee003e7e47e374f182fef45528cbb257",
         "extension_key": "mod.unknown.allow_force_expand",
         "extensions": {
           "legacy_alias_for": "allow_force_expand",
@@ -352,7 +352,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "8a83959bc19dd85b1f2df185fdc17f5ed79b0f008c36b1570049039c595fc025",
+        "deterministic_fingerprint": "b726655141152b0abbc23f4e63dc16fc0134999f9155ba626b0feb9cfd9e3c72",
         "extension_key": "mod.unknown.allow_named_rng_noise",
         "extensions": {
           "legacy_alias_for": "allow_named_rng_noise",
@@ -380,7 +380,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "197a70f579e29f18cf11761c6afb2021716de0af7b19c31e76700bd202b8062e",
+        "deterministic_fingerprint": "2b581c445680ace1958af390b72f1d1e1378f7792ebf0aa7cb9ab89a294a81b2",
         "extension_key": "mod.unknown.allow_retrigger",
         "extensions": {
           "legacy_alias_for": "allow_retrigger",
@@ -408,7 +408,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "82e2f5b5a3e38332618c7005a9f30112794ff539355ea7025717934b6577f860",
+        "deterministic_fingerprint": "e0c297f923141efe5f5a941f65f37c2b1719537495535b306c67fac7a80df02e",
         "extension_key": "mod.unknown.allow_roi_bounce",
         "extensions": {
           "legacy_alias_for": "allow_roi_bounce",
@@ -436,7 +436,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a33227b37b015459fd1e64bf6c05f1359539855247a4a2e809083a8e517703d2",
+        "deterministic_fingerprint": "31a858ae6b4114ec34232fd43232dc9dd506782f9081a6e1f1b3a50952e821b8",
         "extension_key": "mod.unknown.allow_srz_transfer",
         "extensions": {
           "legacy_alias_for": "allow_srz_transfer",
@@ -464,7 +464,7 @@
         "allowed_owners": [
           "tool_capabilities"
         ],
-        "deterministic_fingerprint": "1e93e15dd137f0355478f87d20181db164a69ad231bec4733dfd68677fefe09d",
+        "deterministic_fingerprint": "8b6d20e5b225ea15afa0c8afc80a6eee15cf93aeec5b912c17d3edc2dba6be4c",
         "extension_key": "mod.unknown.allowed_process_ids",
         "extensions": {
           "legacy_alias_for": "allowed_process_ids",
@@ -492,7 +492,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "4c349afa5824de2fbbfbe274654f413b892e6ef1294382734a3b7fba72f0baea",
+        "deterministic_fingerprint": "b20adb4aaf660208ef9c95d76b84009542e6d9934370d7cdea6b7b3e30bc0cde",
         "extension_key": "mod.unknown.allowed_signal_type_ids",
         "extensions": {
           "legacy_alias_for": "allowed_signal_type_ids",
@@ -520,7 +520,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "396446e92128551b0ada75ca1878cba3d1da9cd710a0e76804f4ba4d504f441a",
+        "deterministic_fingerprint": "cf52962cd43686caaebc857e47a93c44937f6ee43fe0fc846419df14eb46c436",
         "extension_key": "mod.unknown.allowed_time_model_ids",
         "extensions": {
           "legacy_alias_for": "allowed_time_model_ids",
@@ -550,7 +550,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "5fa6863209adbe2e82b9fb31846a0766e045c497709ff1ab638e682a372857e9",
+        "deterministic_fingerprint": "9d72a4c84aed97701f50b507db4c1639d8449e89c2e92a6793235e03544dbac8",
         "extension_key": "mod.unknown.allowed_transition_policy_ids",
         "extensions": {
           "legacy_alias_for": "allowed_transition_policy_ids",
@@ -579,7 +579,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "7e459f9807d825b63349ea5609e14083ade19cf0579c410c480f4365d81c0b1b",
+        "deterministic_fingerprint": "1a42d4b08a2ee899b68b092757c7bfb3c83dacaf2863b5473fca8ebadc6f4060",
         "extension_key": "mod.unknown.allowed_view_modes",
         "extensions": {
           "legacy_alias_for": "allowed_view_modes",
@@ -607,7 +607,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "605cdfae669ac3ea1884ac9bb74249a4e8f05d7783c1506d03780cddc8f56fda",
+        "deterministic_fingerprint": "fe198a7b5ebbf4a85815e11eeccc2d91d4fb9df7a69b12e9084bc6b0cd4f6721",
         "extension_key": "mod.unknown.analysis_radius",
         "extensions": {
           "legacy_alias_for": "analysis_radius",
@@ -635,7 +635,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "5e0068990918a49b2aa61718fb648c87ac41a869a1bd4168cd04d92d4f1def48",
+        "deterministic_fingerprint": "7671d70ac639a130426c1b44c4954bbdf666ec3f9d7c79dbeee1461408195f89",
         "extension_key": "mod.unknown.arbitration_policy_id",
         "extensions": {
           "legacy_alias_for": "arbitration_policy_id",
@@ -663,7 +663,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "c97044b0481dc38519c4a93c31d1e16805b6aa81f4b25ec6c8a43f1d7821e6d5",
+        "deterministic_fingerprint": "cf5b44e9f5b1f17b94712e4e0bf0472b315d70eee9af8cbd9f2d17533140753a",
         "extension_key": "mod.unknown.asset_id",
         "extensions": {
           "legacy_alias_for": "asset_id",
@@ -691,7 +691,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "1cbda9b5c8bbcee2e0da43adffeb4ba0862c6489f4b307e758c2a83b56adfa16",
+        "deterministic_fingerprint": "d9456dc4f0daf6df45f3131cda1172a0510083cbadd22df97cf6aae6c65c9b06",
         "extension_key": "mod.unknown.axial_tilt_deg",
         "extensions": {
           "legacy_alias_for": "axial_tilt_deg",
@@ -719,7 +719,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "16882753c276b3685319934fd0b4d6c8e6bf59ed559688150be8e7a41f3eb922",
+        "deterministic_fingerprint": "66fadb16fc5188d240848b74d26b4eb0d2f43cfca0600eede1e7786835e5c613",
         "extension_key": "mod.unknown.axial_tilt_mdeg",
         "extensions": {
           "legacy_alias_for": "axial_tilt_mdeg",
@@ -748,7 +748,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e85d39da0786f7243809c10b3ca0d7eb35200a0bace2bfb343256de42fbb421b",
+        "deterministic_fingerprint": "e49465830fbf45177c691f3a4924b07690037dfb1675c433bbc9d3a8c3e51391",
         "extension_key": "mod.unknown.base_chart_id",
         "extensions": {
           "legacy_alias_for": "base_chart_id",
@@ -780,7 +780,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "872bb9a99831ae7e3e0671e38b5545c8f87a10b27d4e3ac81e8a37470591f1b7",
+        "deterministic_fingerprint": "da69f31a9c60541911afec5d48f2760d5ef43d63db0354eaae887d99d97fc8fe",
         "extension_key": "mod.unknown.base_failure_chance_permille",
         "extensions": {
           "legacy_alias_for": "base_failure_chance_permille",
@@ -808,7 +808,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "4dac1d2eb5111b267e94dfe80cd60702452fd94e45ac344668ae242e204b85e4",
+        "deterministic_fingerprint": "fe02059ed19632247bbf10b07c9d5463b30e059b9804c0ca9fda33fa1391b160",
         "extension_key": "mod.unknown.batches_consumed",
         "extensions": {
           "legacy_alias_for": "batches_consumed",
@@ -836,7 +836,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "818b65b75a1f33355e788aa3e27a61b13d9fa1ea914d0008b76e4a16fadb2420",
+        "deterministic_fingerprint": "93da1cdd87484dbe3f9754684253e3f4c6fd1b6af049c17afe3d494ccce72ea8",
         "extension_key": "mod.unknown.biome_overlay_tags",
         "extensions": {
           "legacy_alias_for": "biome_overlay_tags",
@@ -864,7 +864,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "34d9753c92517d75b31cb7e48c2a44511c64b6745885ff473e7c23af8cdab5c8",
+        "deterministic_fingerprint": "0c6d01a18d7bb7c6fec58038c393c019bb256f775c9249d14ab236a788fa109b",
         "extension_key": "mod.unknown.blueprint_id",
         "extensions": {
           "legacy_alias_for": "blueprint_id",
@@ -892,7 +892,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ca672e6aa377f48d8083c060195f5294b0480b419d10affa5c87ea1723b804a5",
+        "deterministic_fingerprint": "606285e01f9451e393a1b04b9868efb78e7f698d7de9940293b48b3a0974dea2",
         "extension_key": "mod.unknown.bound_subject_id",
         "extensions": {
           "legacy_alias_for": "bound_subject_id",
@@ -920,7 +920,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e1906087fb728732382dec764a00733ccc524ad7771dba3acc0c503054408d97",
+        "deterministic_fingerprint": "282c0295bf06dad6fbb9bdc2c27114e1f1e446ab1481973515b236da3d7545ce",
         "extension_key": "mod.unknown.boundary_flux_event_rows",
         "extensions": {
           "legacy_alias_for": "boundary_flux_event_rows",
@@ -948,7 +948,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "50fe7261a554a3a7ff1e68030d7ab9235772e3baf219d861b67c1b1563d03066",
+        "deterministic_fingerprint": "699aa0a32b38e48cd5d41836c3a5b47581c733eb5a059b5ca9e3b2abdcf66d5f",
         "extension_key": "mod.unknown.budget_envelope_id",
         "extensions": {
           "legacy_alias_for": "budget_envelope_id",
@@ -976,7 +976,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9736f8c421850e9875eddbb7c739861e66de11e3151b73e6684d03c6502728a9",
+        "deterministic_fingerprint": "3c1c30669ed78b4bcadb5c582591ee350bb06c9b930d3fe1be592e5c2bea0442",
         "extension_key": "mod.unknown.bundle_quantity_ids",
         "extensions": {
           "legacy_alias_for": "bundle_quantity_ids",
@@ -1004,7 +1004,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "af018d8958a6bdf93943f93b67caac72e223063a4d391b878dd759124ee5776f",
+        "deterministic_fingerprint": "ff0ac17bcaa2f7d0c69d94af89f6c3212a61a8484fdfb3fe1c9b59056754f03d",
         "extension_key": "mod.unknown.bus_id",
         "extensions": {
           "legacy_alias_for": "bus_id",
@@ -1033,7 +1033,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "607c261f1df9e17e024963ad72078b16145794e120ea5cf18f6ecb75ed13e85d",
+        "deterministic_fingerprint": "f250e8fa854c556b5d7e9de7df420a9118f0bacdb166b10bdede5be20f62a113",
         "extension_key": "mod.unknown.camera_viewpoint",
         "extensions": {
           "legacy_alias_for": "camera_viewpoint",
@@ -1061,7 +1061,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "67e884a3ec08be3f5f9b7eba1f60e23f8086a535afc17c91b159caa605206efe",
+        "deterministic_fingerprint": "b22041df7c30277c033514782de00655efb29595ee1a9f8c293918647d5c40fc",
         "extension_key": "mod.unknown.capacity_used_by_edge",
         "extensions": {
           "legacy_alias_for": "capacity_used_by_edge",
@@ -1089,7 +1089,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "296e3ef236c01550604485779a2dba766e8227162e3e10b735a7c822159d76ce",
+        "deterministic_fingerprint": "d259642f06924f52e9b686d2279276967d4950d1c9b0effcbc041f1eff9378d0",
         "extension_key": "mod.unknown.cell_key",
         "extensions": {
           "legacy_alias_for": "cell_key",
@@ -1118,7 +1118,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b72de31aa1bd2227310f0496a69fe8daeeff139d60a9f9361d6e5a0de73f95e0",
+        "deterministic_fingerprint": "704837c70e15d1963efee0a12425e8ce8f63f68f9de32d5d776ba59895821cf3",
         "extension_key": "mod.unknown.chart_id",
         "extensions": {
           "legacy_alias_for": "chart_id",
@@ -1146,7 +1146,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "791784689838e659a55772200460854aa04497704f31cc591ba4a5b6383a75b7",
+        "deterministic_fingerprint": "adc3402aaa44be7271a78e630d7dfeb13739a70d667a07e6093b7bd3b5f097c4",
         "extension_key": "mod.unknown.climate_band_id",
         "extensions": {
           "legacy_alias_for": "climate_band_id",
@@ -1174,7 +1174,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d3c8ea15951e51626d2da3cffebd569f85550603c42a0b5bd998f27dc7f1aff7",
+        "deterministic_fingerprint": "cab2afb676676495bb855e4096f08361a5cf24a8a8eef9e254b3549b645a61f5",
         "extension_key": "mod.unknown.coastal_proximity_permille",
         "extensions": {
           "legacy_alias_for": "coastal_proximity_permille",
@@ -1203,7 +1203,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b517a11782fb5b6db70a09e97cdbe1c6ab440bce6056838e564f1ba28fd21392",
+        "deterministic_fingerprint": "99739efcb12045e7e434f451aaf6ad0a8c11234813554115445db6033a6ab926",
         "extension_key": "mod.unknown.commitment_id",
         "extensions": {
           "legacy_alias_for": "commitment_id",
@@ -1232,7 +1232,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a9f32347be64ac2713e07cb327019c4c9407160f313effb011c840d33b354c02",
+        "deterministic_fingerprint": "40d944f80e7ca3e00805a2a2cee4267ac1ee0953bd42c8d464dafa611bdd7dc0",
         "extension_key": "mod.unknown.compiled_model_id",
         "extensions": {
           "legacy_alias_for": "compiled_model_id",
@@ -1260,7 +1260,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "c5a532b0e5f2d5098b1e05fd87a1d540a4fcf1505c11c550b526be6e11f0248c",
+        "deterministic_fingerprint": "d92499b5e684b415c6230c199a257fb4bdcd7d9493d2e4a790b51817286afe34",
         "extension_key": "mod.unknown.component_quantity_id",
         "extensions": {
           "legacy_alias_for": "component_quantity_id",
@@ -1288,7 +1288,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "69b05a360f5f0831a62231da32d00f50b92ef8e79a4b5c4052d27a2d85379972",
+        "deterministic_fingerprint": "2669603f1cbd5ee443321ae4b557a7e2925a6979c4bee55fc85015a23c0373db",
         "extension_key": "mod.unknown.component_weights",
         "extensions": {
           "legacy_alias_for": "component_weights",
@@ -1316,7 +1316,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "88c5875bcc3cb1485b60533de11473890a461f53bf3afd6bfe4c7a55af5f661e",
+        "deterministic_fingerprint": "f942281b4c6f1319baafee9ec0362fcf2548e82ceab6635ef3df679c39eb9be3",
         "extension_key": "mod.unknown.compute_profile_id",
         "extensions": {
           "legacy_alias_for": "compute_profile_id",
@@ -1344,7 +1344,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "df56d540182136b90e0f4edfb7971cb0d28bee215e5a0d784dc091995e2b4ed1",
+        "deterministic_fingerprint": "f61b37d651bf7d8c9befc2102e9ab0f3b9d7c5a40ca4ef93c874de15ab2ddd98",
         "extension_key": "mod.unknown.conservation_contract_set_id",
         "extensions": {
           "legacy_alias_for": "conservation_contract_set_id",
@@ -1372,7 +1372,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "849706c9274e107efa55c3dc601e4d6f7f4a4b61bc246f42a8304caaaaab96be",
+        "deterministic_fingerprint": "c02fa30d22546cd85eb45301e3347e887d109cd2c8dc30fcfe27f5569f7414e5",
         "extension_key": "mod.unknown.construction_policy_id",
         "extensions": {
           "legacy_alias_for": "construction_policy_id",
@@ -1400,7 +1400,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "16eb0921e9fbfea81513c20b09f20760bfb40d524114e7e18ebcc82f3530e83e",
+        "deterministic_fingerprint": "51d69535c1bba85673016edc19eaefa534902ef82ee32f0bd75335e96489b6a1",
         "extension_key": "mod.unknown.consumed_batch_ids",
         "extensions": {
           "legacy_alias_for": "consumed_batch_ids",
@@ -1428,7 +1428,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "cf2fe9a5beed8a83fad53f994b38d99901f8b5180b50553920062982d4d2d33c",
+        "deterministic_fingerprint": "fb2ea5309775f5a27516d02fdd83b737fef379b371af24fd01b17cf75169f562",
         "extension_key": "mod.unknown.contested_by_faction_ids",
         "extensions": {
           "legacy_alias_for": "contested_by_faction_ids",
@@ -1457,7 +1457,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "943f250725fac77057523ca583f59a88c383ebedd064f00ab47af2387344dfea",
+        "deterministic_fingerprint": "278767044eee826ce9ca3d183bf783c0db64feee4f83467b07efa3f06326c7fe",
         "extension_key": "mod.unknown.continent_score_permille",
         "extensions": {
           "legacy_alias_for": "continent_score_permille",
@@ -1485,7 +1485,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "1801de157709f7eb82620f4ced8ecaf82454aeb62629435f0676dc8c7be798f7",
+        "deterministic_fingerprint": "087b6499f7ba08ec3516be69cc8f4455db2524e3d1e9b2ee0ec81c83724db770",
         "extension_key": "mod.unknown.corrupted_view",
         "extensions": {
           "legacy_alias_for": "corrupted_view",
@@ -1513,7 +1513,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "6cf75338471eb5313707da80bd6399d67cc79cbbc6a7fb550243a04fa73b5a1a",
+        "deterministic_fingerprint": "99fc79a56bddf63cbc9ab34903c8ba09992d04c006a4d44a9066a3581f3d4912",
         "extension_key": "mod.unknown.cosmetic_policy_id",
         "extensions": {
           "legacy_alias_for": "cosmetic_policy_id",
@@ -1541,7 +1541,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d949c9028708918ee3a31c42879342304f907f59c805f0ff2d9a27ca8c76d7cf",
+        "deterministic_fingerprint": "77a27a1ac84731eed480a0f0c0a523ec4d66e3cf44c85c1dff0410cfd4c08896",
         "extension_key": "mod.unknown.cycle_policy",
         "extensions": {
           "legacy_alias_for": "cycle_policy",
@@ -1569,7 +1569,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "010df7532a325c9bf3101bf0d0c476b40e6f9b9c450342c057af0b8479ea4daa",
+        "deterministic_fingerprint": "ba75b5ba0cb884257cd1b8a50d3a2a6a3c75c3960b8c4a1a02544113e4d0264b",
         "extension_key": "mod.unknown.day_length_ticks",
         "extensions": {
           "legacy_alias_for": "day_length_ticks",
@@ -1597,7 +1597,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a7c2d34aaed159bf814a17ae86a0d14f3667971faedbc95bb55240b50f4cbfc1",
+        "deterministic_fingerprint": "d5556ab0b8c2712911bb4dac47de4ecd5ed6bb51160cd61a7363c8594d157ca0",
         "extension_key": "mod.unknown.debug_force_expand",
         "extensions": {
           "legacy_alias_for": "debug_force_expand",
@@ -1625,7 +1625,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "abee8a65deefebe0e3ef7647f74cac29999e322d2241329f88c1b290b86c9b13",
+        "deterministic_fingerprint": "593f4f5948f9d8217932111121ac164241c8dedb4a3fa121da9eb1b93e352ffc",
         "extension_key": "mod.unknown.debug_instrument_id",
         "extensions": {
           "legacy_alias_for": "debug_instrument_id",
@@ -1653,7 +1653,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "deeefb491d9876a18565a6a7a6f0ff0d9b72fc1fe736137ded2caa38225972a7",
+        "deterministic_fingerprint": "e53397ad054d7aeb3c2130f6dc12e80d183914f90e3ea35e5677588c30d6ff1d",
         "extension_key": "mod.unknown.default_causality_strictness_id",
         "extensions": {
           "legacy_alias_for": "default_causality_strictness_id",
@@ -1681,7 +1681,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b738f1807b83c725ff2e68938a1a830700e8a577447b3db6c9be15ce0f4331e8",
+        "deterministic_fingerprint": "0db82beeb4c073a7ffdd505f3a9fdaf781d50094973fdd8d43fcf27449248de6",
         "extension_key": "mod.unknown.default_shard_map_id",
         "extensions": {
           "legacy_alias_for": "default_shard_map_id",
@@ -1710,7 +1710,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e7176227ac54d678576fe9c00a3e99d1c1e34565d75b3fc30c8162c865ba9a20",
+        "deterministic_fingerprint": "6fc74d97897c1e2c6141bdf31f9e5f33a4288827528ff22290a4e7b63c6e359b",
         "extension_key": "mod.unknown.default_transition_policy_id",
         "extensions": {
           "legacy_alias_for": "default_transition_policy_id",
@@ -1741,7 +1741,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "cab900f098345a73b00a0b78eb22b7ccbe768ffca41155f862cd7f431872469b",
+        "deterministic_fingerprint": "5d2643eef24aebb2572042fd86c72cda449acff92580da28ecd46017ab8eeb4c",
         "extension_key": "mod.unknown.default_ui_hints",
         "extensions": {
           "legacy_alias_for": "default_ui_hints",
@@ -1769,7 +1769,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "493f76c045856cd71d22480de0dd071df911b8ce97928e69f775ba7621e75c95",
+        "deterministic_fingerprint": "3ff1e1c1e5320d3a16f913d649d1f74449469a1e3f44a9ed205e866f36f02714",
         "extension_key": "mod.unknown.delay_ticks",
         "extensions": {
           "legacy_alias_for": "delay_ticks",
@@ -1797,7 +1797,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "67a1409a46b4cf809ab825d51f2545a9e3dd34db28c4097c7405d193c66e107e",
+        "deterministic_fingerprint": "30301abc7a0bc7c9d1b204ccbc5fad5f5c420c4864da52c2ebaafeac0e2a946c",
         "extension_key": "mod.unknown.demography_last_births",
         "extensions": {
           "legacy_alias_for": "demography_last_births",
@@ -1825,7 +1825,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "463a0baa4905e1e636ed1b93ec78770931fdb4fc599111e5aeb7e602c98e57e5",
+        "deterministic_fingerprint": "a30367032eb13db03ad981c4a933ad2d409c69f3edea4fd9b7719dc81fc27b8d",
         "extension_key": "mod.unknown.demography_totals",
         "extensions": {
           "legacy_alias_for": "demography_totals",
@@ -1853,7 +1853,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "0a17bb002bcda154302a2170f4a17f5427503306ccdb54d72e899ceac243eaf8",
+        "deterministic_fingerprint": "dbfc5458a7ae9fea237831d1fb5781cb97fc426b890f6e38037ca960e904d44f",
         "extension_key": "mod.unknown.description",
         "extensions": {
           "legacy_alias_for": "description",
@@ -1881,7 +1881,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e25fe6388ae7a9f4196da5da01883d0459681828ea5380adeb16ecac31a56878",
+        "deterministic_fingerprint": "970ac7126a3ce9d22f73cbd9da38ca29d0a6665dc0352d9f66a7b4532bd86cc9",
         "extension_key": "mod.unknown.disabled_reason_code",
         "extensions": {
           "legacy_alias_for": "disabled_reason_code",
@@ -1910,7 +1910,7 @@
         "allowed_owners": [
           "tool_capabilities"
         ],
-        "deterministic_fingerprint": "a7363ea44fc759f46b91aea4b654ac5a60fd5a05a0eca35db52155c83c573f59",
+        "deterministic_fingerprint": "8f2fef964c43d2e2c0a6759d2765c7a44c82af6213c6ae3a3f79cb1aaac5e438",
         "extension_key": "mod.unknown.display_name",
         "extensions": {
           "legacy_alias_for": "display_name",
@@ -1938,7 +1938,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "22bce8e9545c2261b70f6e7ace91cfec4e81ea94feb56e924c90083890b7cbb0",
+        "deterministic_fingerprint": "51d756719da76f1b684da9f564401c6065f2eab03e5fca08e11982ae9fd197a8",
         "extension_key": "mod.unknown.distance_bands_mm",
         "extensions": {
           "legacy_alias_for": "distance_bands_mm",
@@ -1966,7 +1966,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "6051971bc672267f11447277e037eb42182e3daee63f29d615e0a035d9f0ad48",
+        "deterministic_fingerprint": "903c908c1d64b7ca36ad809cc7970d2eb6d4dcc423b6a3f31d31a8f4ee6db5c6",
         "extension_key": "mod.unknown.effect_auto_key",
         "extensions": {
           "legacy_alias_for": "effect_auto_key",
@@ -1994,7 +1994,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "33e4743427fc6c4891dc6c4c5671c7a2ae0e8a2cbb40d2be0b8712d835d64079",
+        "deterministic_fingerprint": "ba38b3ea343f8b838fcc685c9bc9175431cd124a519afd5f6b4f6eb10266f124",
         "extension_key": "mod.unknown.effect_influence",
         "extensions": {
           "legacy_alias_for": "effect_influence",
@@ -2022,7 +2022,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "226ae1042ab0f6edd7a1f26cba89a0916009165de40ba38c94aa5f600d9a30e2",
+        "deterministic_fingerprint": "bb063e8b4a9d80d466a2cefe68624ee0dcd128ed06e09e8a29d5fab5bb6723b1",
         "extension_key": "mod.unknown.element_definition_id",
         "extensions": {
           "legacy_alias_for": "element_definition_id",
@@ -2051,7 +2051,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "acbae33b7e1638788cfea3a4087af37509db243e49f89fc636210165cda0a1a5",
+        "deterministic_fingerprint": "e2235cc32e3f6109f7cab974ada9a19cd2a41df8a3c01b48cb275d3c82ebd0c4",
         "extension_key": "mod.unknown.enabled",
         "extensions": {
           "legacy_alias_for": "enabled",
@@ -2081,7 +2081,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b2440f5cc5d4ac00375368800a6147bb44f1583a831cdfd2bee435814eb9ee13",
+        "deterministic_fingerprint": "56ae19800d354fb92d9a73c6da454e2b25cae7036228e9cf8e888e74aa43d149",
         "extension_key": "mod.unknown.end_commitment_id",
         "extensions": {
           "legacy_alias_for": "end_commitment_id",
@@ -2109,7 +2109,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "1f8336dba5d82af9655f31a421c47252d65506051c12421aa98b294652627ef2",
+        "deterministic_fingerprint": "f5f3d9a100f52f89e40c1f97a5e8ba363bb1b2673903e20681682f83f79b917f",
         "extension_key": "mod.unknown.energy_ledger_rows",
         "extensions": {
           "legacy_alias_for": "energy_ledger_rows",
@@ -2137,7 +2137,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f4406ae191af923ea4a3aa28b7f0036fb9670814f8ddffd707467bfe10466ecf",
+        "deterministic_fingerprint": "40fcd5de60bbeb6cf87040f06a9c1a841df92ffa37c34a3fb37cf6f4443af6ab",
         "extension_key": "mod.unknown.enforced_actions",
         "extensions": {
           "legacy_alias_for": "enforced_actions",
@@ -2165,7 +2165,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ef95ea012c0589a333b6843470852498b42062ff126e17d65f2560354abb88e5",
+        "deterministic_fingerprint": "06b877e6846d824bc7f70dece0b8acb485bdba6448892656ff3558f635756d85",
         "extension_key": "mod.unknown.entropy_by_equipment",
         "extensions": {
           "legacy_alias_for": "entropy_by_equipment",
@@ -2193,7 +2193,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9a46ae099d8b1780b1c36c2145ef248b1df6c66bdc2df7fe4b1bc855a1264e9e",
+        "deterministic_fingerprint": "8d8c5f06ef9c759ad2bba123a5dfb87b742236e3ee043328d71958cc2f2e1ea7",
         "extension_key": "mod.unknown.entropy_event_rows",
         "extensions": {
           "legacy_alias_for": "entropy_event_rows",
@@ -2221,7 +2221,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "4baf21ab4a292d5c01a077d97ed2e1d48a1ba4bd6e21de8ccdb13fe31e08b1cf",
+        "deterministic_fingerprint": "7ecfc300201028e02821eb54f8730897f1dbd224af4bc710bc6a403fa1e57082",
         "extension_key": "mod.unknown.entropy_reset_event_rows",
         "extensions": {
           "legacy_alias_for": "entropy_reset_event_rows",
@@ -2249,7 +2249,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a06b75daa965af449d22386ba1c485038e9d40201eaba3493a035e51c78f30de",
+        "deterministic_fingerprint": "25d700620ee7e401e28e9d66bb6961483f29e260de17daf05b7007d9f515295b",
         "extension_key": "mod.unknown.entropy_state_rows",
         "extensions": {
           "legacy_alias_for": "entropy_state_rows",
@@ -2277,7 +2277,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e2cc682b13620075f39b52b8b053e70dd4a7ac4d26efaf51a06725ef64e2ac8d",
+        "deterministic_fingerprint": "ad953580e402c61351d0fbd4225b7a46f5871e1838f7029709b757b90eb699a7",
         "extension_key": "mod.unknown.epistemic_policy_id",
         "extensions": {
           "legacy_alias_for": "epistemic_policy_id",
@@ -2305,7 +2305,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "49f6d16a12fec7a1c95a6676f8da334e9bb8d6f4c79db45c35d07a2fb5697751",
+        "deterministic_fingerprint": "ba128de3cb71810e2a024169a30042ae759391f8a58115b61b3b59e95f1ac93e",
         "extension_key": "mod.unknown.epoch_offset_ticks",
         "extensions": {
           "legacy_alias_for": "epoch_offset_ticks",
@@ -2335,7 +2335,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "098482b6346f65859b2e2a014f45edc0cf5b606bef9e1d08d85d66b17a3dc2d4",
+        "deterministic_fingerprint": "31ebefda0ad1576ec186a5aa36b91ade4fa721c7ce0c307777bae7df4832eec8",
         "extension_key": "mod.unknown.error_bound",
         "extensions": {
           "legacy_alias_for": "error_bound",
@@ -2363,7 +2363,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "df2886b76ebbac5b491d0de1a93008c98e0cbd65b2545641a903fbb43388ca04",
+        "deterministic_fingerprint": "c1df1f66275d2af057f07a6becd8211ed9a7c6325203e24e27c47e674b073f4e",
         "extension_key": "mod.unknown.error_estimate",
         "extensions": {
           "legacy_alias_for": "error_estimate",
@@ -2391,7 +2391,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "78f70c1469c598c35ba97bcf12ae954ff3e8cb2f6720ddea2becf2f57c9cb923",
+        "deterministic_fingerprint": "654990b1a20744d0ac75f7f377e9d26fc1d585db53a397b9b48d5af143a132b8",
         "extension_key": "mod.unknown.escalation_rules",
         "extensions": {
           "legacy_alias_for": "escalation_rules",
@@ -2419,7 +2419,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d807cbad97e9f040e7d71bf440f3f9cb125c97b074fac92ded1b4937039f0646",
+        "deterministic_fingerprint": "f10747beab511a50647f62236eb73b8b7ef148efb6f9d556a48014802315ad72",
         "extension_key": "mod.unknown.event_kind_id",
         "extensions": {
           "legacy_alias_for": "event_kind_id",
@@ -2447,7 +2447,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "68dfa391a5720a411648b2d079bc28d04832857ef0c2220cb076130f940b21b0",
+        "deterministic_fingerprint": "e9437a33b095cacb69230ee5eb7069a6ba54bbcdb01f5809ad133bc1b611b2ad",
         "extension_key": "mod.unknown.event_rows",
         "extensions": {
           "legacy_alias_for": "event_rows",
@@ -2476,7 +2476,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d59b5870adc53309e85453ed60066261e885d72412f5ff435c35251351660dfd",
+        "deterministic_fingerprint": "4801f0561e5aea79e34291dd8bd1c5de3f63f735835da5be45fb7c6c7a66770c",
         "extension_key": "mod.unknown.expanded_micro_count",
         "extensions": {
           "legacy_alias_for": "expanded_micro_count",
@@ -2504,7 +2504,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "89dbe87208cb9d2b75100abea27e07b81c64d5a95d480454c44b1ae4d2dc0c3d",
+        "deterministic_fingerprint": "dc9a8229f8250bb213700ed5eb056717d78734bf81e7c36f9bac528fb8572998",
         "extension_key": "mod.unknown.failure_risk_summary",
         "extensions": {
           "legacy_alias_for": "failure_risk_summary",
@@ -2535,7 +2535,7 @@
           "dominium.schema.compat.degrade_ladder",
           "dominium.schema.compat.fallback_map"
         ],
-        "deterministic_fingerprint": "72e945493205e43026d6e3a17bfb98d51bc8a4312bf1c5025587c3c6dfc5eaeb",
+        "deterministic_fingerprint": "cbd1fdb8ba269564644461f7b0217e4fc49eab1601ce993260635a37667d6de3",
         "extension_key": "mod.unknown.fallback_capability_ids",
         "extensions": {
           "legacy_alias_for": "fallback_capability_ids",
@@ -2564,7 +2564,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ba89f1368c1e766185b6321e09818ac2dee5baa1db6ff3047ad669a86078e37f",
+        "deterministic_fingerprint": "77f10c4d559d381abb7b32b0111f574785ece55c962ae2c2b8ff1cf424bdd85b",
         "extension_key": "mod.unknown.far_lod_visual_class",
         "extensions": {
           "legacy_alias_for": "far_lod_visual_class",
@@ -2592,7 +2592,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ef522ecfeb166d0f141a26792c04a96000f6fb13758dc512981e161dbc96e977",
+        "deterministic_fingerprint": "19bfe219d2a5d904de54873eff1d5487ef2a145e3ad52cc806be167ba6303d7c",
         "extension_key": "mod.unknown.ferrel_max_mdeg",
         "extensions": {
           "legacy_alias_for": "ferrel_max_mdeg",
@@ -2620,7 +2620,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "502edf5a4603fbe77161fee21ffe10dafd72489f041e5288697d91f413243b88",
+        "deterministic_fingerprint": "d78a61d0378133e61c98e203a924f3c1d2f62736d54a0be59d22c6e136854538",
         "extension_key": "mod.unknown.ferrel_meridional_permille",
         "extensions": {
           "legacy_alias_for": "ferrel_meridional_permille",
@@ -2648,7 +2648,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "08a11b8be48af4e64cafa653e70132f57d79ee2fce219ec082fd2af75ac92fef",
+        "deterministic_fingerprint": "3f5125da2c5454d563944d5b11db52dff3cd689b6ddaed784a7031a8fa3b9381",
         "extension_key": "mod.unknown.ferrel_zonal_permille",
         "extensions": {
           "legacy_alias_for": "ferrel_zonal_permille",
@@ -2676,7 +2676,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "6f1205c78b0151a420f9604bd08105c79b2b17947786a11f4c9bf1cc10a33d7b",
+        "deterministic_fingerprint": "30a1b5d75b516894d04b491a1edc4427fcfbd46676db1240c66fe9dc9a5d78ec",
         "extension_key": "mod.unknown.field_modifier_stubs",
         "extensions": {
           "legacy_alias_for": "field_modifier_stubs",
@@ -2704,7 +2704,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "dd98242182b464dc4c509ef377055cc2d76a9fc6cc22e91cf3574cd13cb475f8",
+        "deterministic_fingerprint": "527e99d406a5376d9483edaf4849dcf454fe28da0fe412c77d40f9026a198498",
         "extension_key": "mod.unknown.final_state_snapshot",
         "extensions": {
           "legacy_alias_for": "final_state_snapshot",
@@ -2732,7 +2732,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "728209acc40f294604e44d620f5519dea33c208355e9fc0d4c7c47048b207761",
+        "deterministic_fingerprint": "1298108e31ebc1430cfa3fef82f1ccad21bee468754468a32842caebf50811d4",
         "extension_key": "mod.unknown.fixed_ticks",
         "extensions": {
           "legacy_alias_for": "fixed_ticks",
@@ -2760,7 +2760,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "5cdb39c666ffb34700b6a834269681384cf2365953b0f1fe8b695952d299410d",
+        "deterministic_fingerprint": "411ef73b4bba0c65bc477b7c67fb5516df9d260b86ba4bab2621031cd82e4e11",
         "extension_key": "mod.unknown.fov_deg",
         "extensions": {
           "legacy_alias_for": "fov_deg",
@@ -2788,7 +2788,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "90cf6242c2ef58e103b5e31987b25fdcf72760e56ec3570869bcbd76ca638fb9",
+        "deterministic_fingerprint": "c6b45d46c413ea1361167ce07dccf361c5843f6cf321b584142798ed9497c5bd",
         "extension_key": "mod.unknown.from_edge_id",
         "extensions": {
           "legacy_alias_for": "from_edge_id",
@@ -2816,7 +2816,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "55e5e0568c2aeabb67b5e4ad44de777ce2eaa719cd9a4d67f1598e3ead8e8569",
+        "deterministic_fingerprint": "9e1ffbda422bfd77f35071ea886fed54ce51388d8c89cbfd9815fe4c08d7b601",
         "extension_key": "mod.unknown.geo_cell_key",
         "extensions": {
           "legacy_alias_for": "geo_cell_key",
@@ -2844,7 +2844,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "921127ea04c53f1261c9cb71b6a2d8f78e427774b0a47f10cf2261e76cd21019",
+        "deterministic_fingerprint": "ab9d2d431400db106ae98552046476a473d3c7c21ce1ad72fd909ce6f50ae571",
         "extension_key": "mod.unknown.graph_id",
         "extensions": {
           "legacy_alias_for": "graph_id",
@@ -2872,7 +2872,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "7ca5b0f9c984cbda24ea0b6c7bef33c55e2e338b3d3af1378c44017fb6f3423c",
+        "deterministic_fingerprint": "6e3a50c1651ee567f38ee3e2cf1756b875f9cef3c4564040788dba79ee774ace",
         "extension_key": "mod.unknown.habitable_filter_bias_permille",
         "extensions": {
           "legacy_alias_for": "habitable_filter_bias_permille",
@@ -2903,7 +2903,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a70df608775ca85e7627b3c64c663329cddcfd8ac7b46b21a81ec2d0fe9a1117",
+        "deterministic_fingerprint": "94d037ca0ff96c06fcafba118b34385db37a2f573c07194b0cb5af0a7115e211",
         "extension_key": "mod.unknown.habitable_likely",
         "extensions": {
           "legacy_alias_for": "habitable_likely",
@@ -2931,7 +2931,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "44cedc5e4640a1fb8742ced78ac57a1b6f502b7ac1102ee850888982f32299f7",
+        "deterministic_fingerprint": "5af1c0f71d93dc18dfa011c717834e9ae85bb69976a7add723f8460c4342f498",
         "extension_key": "mod.unknown.hadley_max_mdeg",
         "extensions": {
           "legacy_alias_for": "hadley_max_mdeg",
@@ -2959,7 +2959,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b4be81dc29acad85f5088be40fad53d49d6942488c913e6dbbaab44f8e16e48c",
+        "deterministic_fingerprint": "6231ddc37bc69252d6b2c790badbd7d09bc606f31dc85561e9684151c1216221",
         "extension_key": "mod.unknown.hadley_meridional_permille",
         "extensions": {
           "legacy_alias_for": "hadley_meridional_permille",
@@ -2987,7 +2987,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "02d2a9ec1a66dd43e98deb35f4dc37687ec3c6b282b433c0f566e91801ff77b9",
+        "deterministic_fingerprint": "89a28a03d1f8b00471e26c38c9c913c766050af4b0a8c16469c168b03eca90a8",
         "extension_key": "mod.unknown.hadley_zonal_permille",
         "extensions": {
           "legacy_alias_for": "hadley_zonal_permille",
@@ -3015,7 +3015,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "7b0f822a2558835d73a0d2e22ddb0098981f68d08cd1d672e34a0d04a28b8f52",
+        "deterministic_fingerprint": "2db26de6d034ebe5f32176cd0e0b8b8f650f89d8374def7815559017027d426a",
         "extension_key": "mod.unknown.hydrology_effective_height_proxy",
         "extensions": {
           "legacy_alias_for": "hydrology_effective_height_proxy",
@@ -3047,7 +3047,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "425341c06a1950bc83bd1e8aee4c86d724446aca071b8d40038ef372cafae825",
+        "deterministic_fingerprint": "664d50673cc81998ec581181f47fdbbacf225154b512ad36882dffe75af81558",
         "extension_key": "mod.unknown.hydrology_params_id",
         "extensions": {
           "legacy_alias_for": "hydrology_params_id",
@@ -3075,7 +3075,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "fba2ca68626edc20745bffa4fe7d8feab82ba3061b5a91fa1e4f534b9a8d39ee",
+        "deterministic_fingerprint": "7ce09f649be076dbc7b47bc13b91a74fcd64dc3c8763144234010479327bdae3",
         "extension_key": "mod.unknown.hydrology_structure_kind",
         "extensions": {
           "legacy_alias_for": "hydrology_structure_kind",
@@ -3103,7 +3103,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "32f8b5c1ff87081d0aa14a3cebe647e5628014c71386d913a9152d4e125099f2",
+        "deterministic_fingerprint": "42f420c1fa6ca5a3d2b500accd397cb720f40bb628b60c15647bf99b8e58a081",
         "extension_key": "mod.unknown.hydrology_window_fingerprint",
         "extensions": {
           "legacy_alias_for": "hydrology_window_fingerprint",
@@ -3131,7 +3131,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9d62322f457c0dba2ef900a8299afd777905c8e3d3cf03880eac999c8ccd1521",
+        "deterministic_fingerprint": "19dc932c1225291e4d5fe7d3fb423f5df106d5cbf1afebda3469c19b67016f6b",
         "extension_key": "mod.unknown.illumination_view_artifact",
         "extensions": {
           "legacy_alias_for": "illumination_view_artifact",
@@ -3161,7 +3161,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "0169477baed2e490411965cda6f61a71621ca29c0cc848faf82f533b7f1c2bb8",
+        "deterministic_fingerprint": "67023de16b6ea77dfffd85f56ffef69b1231ed3a5fb6b183fc2d42722a21fa99",
         "extension_key": "mod.unknown.imf_bucket",
         "extensions": {
           "legacy_alias_for": "imf_bucket",
@@ -3191,7 +3191,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "692d31983533ecd63fd60c3fc686d6eb61c29a049a8edc9535830bfb06287bfe",
+        "deterministic_fingerprint": "5954bc0863a7bc0fabaff6752a73a99ce24f4700cb9e0cf68ecfa0c9e937e638",
         "extension_key": "mod.unknown.instant",
         "extensions": {
           "legacy_alias_for": "instant",
@@ -3219,7 +3219,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "c351159dca2235c869b61a6a7d5ffe0b3a26e668d86d003b65cff32766e2f1e3",
+        "deterministic_fingerprint": "07bcc7f8a8e8ee0d7f92c106f263dbf22e6b38a72f605b790816a276a0c55aac",
         "extension_key": "mod.unknown.interface_system_id",
         "extensions": {
           "legacy_alias_for": "interface_system_id",
@@ -3247,7 +3247,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "df1abc2eab82f6bced080c8bff8f9fd35e08d8333ef5630e060e6c4a8adc88da",
+        "deterministic_fingerprint": "85410e8d6f0cd1930a651ee6d08941583ad143cbba99a83fb2bd82e5452d5a5a",
         "extension_key": "mod.unknown.interior_volume_id",
         "extensions": {
           "legacy_alias_for": "interior_volume_id",
@@ -3275,7 +3275,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "cbd58f1c9e2bf4524e55b38ca0a93c1f15eb90b767dacae37a4619e5c0625456",
+        "deterministic_fingerprint": "fdfab1333ea04d425ea55acde198595ba114507b802db26109d1d6b6839ac1d9",
         "extension_key": "mod.unknown.invariant_tolerances",
         "extensions": {
           "legacy_alias_for": "invariant_tolerances",
@@ -3303,7 +3303,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ecba0054422ecb3e2eb34e7ad99219b2eb96d22fed0f68e7be78526eb522d38c",
+        "deterministic_fingerprint": "42f104b836adb05a97c4e29b140191a75d109d67fb4d89b2bdc3207f728aaadb",
         "extension_key": "mod.unknown.l1_timing_refused",
         "extensions": {
           "legacy_alias_for": "l1_timing_refused",
@@ -3331,7 +3331,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9d836b6bfbd053497c95be779e4e832475a1752db382900e0862989e5b7b78bd",
+        "deterministic_fingerprint": "aaaa684612a49de6cfad598e630ddec79fa1c09216bc54ca24b3a5038df2afdd",
         "extension_key": "mod.unknown.lake_flag",
         "extensions": {
           "legacy_alias_for": "lake_flag",
@@ -3360,7 +3360,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "89b6a1f829f1a77d7311479d7816ebd417a6af6a7e1a70d64f65da4026b99f0c",
+        "deterministic_fingerprint": "8816805dbc2492574023006bb526e56d50964e81beaeeb79fe1ca0d0f59dbcd2",
         "extension_key": "mod.unknown.last_tick",
         "extensions": {
           "legacy_alias_for": "last_tick",
@@ -3388,7 +3388,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ec199fb678abb7ededbb41434d869e63340b8c318842f53fed3ab094425c5d2a",
+        "deterministic_fingerprint": "6c798095b51483aa73312f5ccef642082893abbb5baf9540eb5775e05d20800d",
         "extension_key": "mod.unknown.latitude_floor_permille",
         "extensions": {
           "legacy_alias_for": "latitude_floor_permille",
@@ -3416,7 +3416,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "740846810c1f88c26699a151504877024c068a1075bf3b8d5184c2ade033af43",
+        "deterministic_fingerprint": "29defcfc005f752038915efb9668841ee642592ba8899a23a151b2f21f85bf5f",
         "extension_key": "mod.unknown.latitude_mdeg",
         "extensions": {
           "legacy_alias_for": "latitude_mdeg",
@@ -3447,7 +3447,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "00e1921ccfc3a5c1e263725eff0bc8c227d101aaf929ad7c25c004a676dbaaa7",
+        "deterministic_fingerprint": "fa95057b6b74e7f62bf97ebf76a93e53e270fe61973a953c8fe94a8e9609484b",
         "extension_key": "mod.unknown.latitude_peak_permille",
         "extensions": {
           "legacy_alias_for": "latitude_peak_permille",
@@ -3475,7 +3475,7 @@
         "allowed_owners": [
           "dominium.schema.compat.degrade_ladder"
         ],
-        "deterministic_fingerprint": "f658686dbe16e04ebb68957bf9a3023f6b409906a40bf85c2184c29374927250",
+        "deterministic_fingerprint": "acc5e9b43e7dfe5fbf9de1b91ed19cfd5bd2a4c6ca8eab2018aff06cd15ffa5f",
         "extension_key": "mod.unknown.law_profile_id_override",
         "extensions": {
           "legacy_alias_for": "law_profile_id_override",
@@ -3504,7 +3504,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9ebc1b0a9470c8640268ac2851bf2ae2e64bd134fe981e9b9207ab795a4a34b5",
+        "deterministic_fingerprint": "ee766392d2b905a534245002bdfe0655f6ff0a416afb5e99d160c8166f2d0af8",
         "extension_key": "mod.unknown.legacy_alias_for",
         "extensions": {
           "legacy_alias_for": "legacy_alias_for",
@@ -3532,7 +3532,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a9ab46bdb2d8c93a81c92eed1d3ad123db4e5a3bf85edcebbe6f02ffe83755b9",
+        "deterministic_fingerprint": "425069ce2258ac2a22c43a32de2b0bf0f54a9d3206e7749b9ab565792d33ba5a",
         "extension_key": "mod.unknown.legacy_cell_alias",
         "extensions": {
           "legacy_alias_for": "legacy_cell_alias",
@@ -3563,7 +3563,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e904f40945efece98ec9c3d6ebf8a1a3ccc53a7de69af8d7911d8243c1a7a56b",
+        "deterministic_fingerprint": "50e546905426e911d2c346d80c1bd2285ceb2798ed8fd637cf13a33f3b5d28b1",
         "extension_key": "mod.unknown.legacy_server_policy_id",
         "extensions": {
           "legacy_alias_for": "legacy_server_policy_id",
@@ -3591,7 +3591,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d2c593d6402563c9139ab030848adff070ffa96b43a4ab3c6161b34a15813dd0",
+        "deterministic_fingerprint": "b13905f933d51854d2a178affdda0d1e17ab098c3e9b8c5ed5e26786d4120ce6",
         "extension_key": "mod.unknown.local_index",
         "extensions": {
           "legacy_alias_for": "local_index",
@@ -3622,7 +3622,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "fb24877f4485802a76c8841737d78622f5087cbbaa005812346dc079c00c2c6f",
+        "deterministic_fingerprint": "e141fd40331ec8c808e44d4bae26623f1ff58e9f6b1b5e77244798c71f05849d",
         "extension_key": "mod.unknown.local_subkey",
         "extensions": {
           "legacy_alias_for": "local_subkey",
@@ -3652,7 +3652,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "8d83ed2ed78ae3ccfc5796d2f7fc27654001c9bf36a740aa5146e2fea0834238",
+        "deterministic_fingerprint": "1876af0716e665226e901f514a8d7a4410d0ef1ea201db2390f81c6b9f248702",
         "extension_key": "mod.unknown.longitude_mdeg",
         "extensions": {
           "legacy_alias_for": "longitude_mdeg",
@@ -3683,7 +3683,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "7f536b9115acac019784fe1d349e504cd60547131af7e3857a72af1aaf1214e1",
+        "deterministic_fingerprint": "13e84dfeeef0c9c22846d3e95cd9f6359c249ae23c96d78b9179dc64919ed7ff",
         "extension_key": "mod.unknown.lunar_period_ticks",
         "extensions": {
           "legacy_alias_for": "lunar_period_ticks",
@@ -3711,7 +3711,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2e8195190f0f4e8bf2c41ce4bca2d327ff534f55957c7bc0a715e60a28574a23",
+        "deterministic_fingerprint": "a92a23359ad5af75ab7d82cf94ae59ac0cf8c526399018c44d3ce8fd7cfcbfd5",
         "extension_key": "mod.unknown.machine_id",
         "extensions": {
           "legacy_alias_for": "machine_id",
@@ -3739,7 +3739,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "8e2bcfafdf560b14dd8cbb6cbe38a6ad36917aac56cae86c007f0ca7a8f4e642",
+        "deterministic_fingerprint": "888c7e204e3bb6e5a4d9d50fb02d4fc3435b0b62a9d8b005d4c4da23bbc4246a",
         "extension_key": "mod.unknown.manifest_id",
         "extensions": {
           "legacy_alias_for": "manifest_id",
@@ -3767,7 +3767,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "725a67bd239c06be3a4fa21a6adc06153429fe59a64cbd2a3172a27ffbf46604",
+        "deterministic_fingerprint": "becf62fc6086c3053d6bbc51ef15c39e05a7114135284ce82da003dcdc3d7d38",
         "extension_key": "mod.unknown.mapping_policy_id",
         "extensions": {
           "legacy_alias_for": "mapping_policy_id",
@@ -3795,7 +3795,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "129c5f1f7cec58dfdcaa8c3ca4238c666660ca13f3660d6623266511448a3797",
+        "deterministic_fingerprint": "515ac4b4fbfa975b5f78514f8d7ef525da973b33cce8d116e47a15c9f230bcb5",
         "extension_key": "mod.unknown.material_mass_totals",
         "extensions": {
           "legacy_alias_for": "material_mass_totals",
@@ -3823,7 +3823,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "19fd979b316dabb2cfd0c2845725f1a2ed5ee630f424a24acc3cefe0329167ca",
+        "deterministic_fingerprint": "64d862083e7e8adeb16a1bc3a0df568965e4bc1a01f2edc3964fc81781f9fcdf",
         "extension_key": "mod.unknown.max_control_fidelity",
         "extensions": {
           "legacy_alias_for": "max_control_fidelity",
@@ -3851,7 +3851,7 @@
         "allowed_owners": [
           "tool_capabilities"
         ],
-        "deterministic_fingerprint": "9c4e96b36322d2332b495399477672931bc0e94b99775910b596b7c52753d053",
+        "deterministic_fingerprint": "942b6e581a4f95d90a7b4e5e5969b24d9cc46ebfb55b71425437dcb14e3e3ee3",
         "extension_key": "mod.unknown.max_trace_duration_ticks",
         "extensions": {
           "legacy_alias_for": "max_trace_duration_ticks",
@@ -3879,7 +3879,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "c24b885b5c44949db204100bc074a547ac5fb6a6109e0c477f9bfde775685cce",
+        "deterministic_fingerprint": "4153ffba65490367ad391e6bfbad81ee0d8a81e4fb07ea2a64c5f7b216a6afcd",
         "extension_key": "mod.unknown.max_window_tiles",
         "extensions": {
           "legacy_alias_for": "max_window_tiles",
@@ -3907,7 +3907,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f1bec9d1473651c76479dd214b27868ce81cf9582962701b5672417f6b95d30a",
+        "deterministic_fingerprint": "06d2c8cf30bce8db0423862f57a132a2dd29f3963aba4cc8755a288bf6d40ebd",
         "extension_key": "mod.unknown.metallicity_permille",
         "extensions": {
           "legacy_alias_for": "metallicity_permille",
@@ -3936,7 +3936,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "0311f053cce738e4a8c1eb31a41fb6d136619496d6ab8bc58fd5ae01026f45de",
+        "deterministic_fingerprint": "aa08076e3e06ecba8c6bdf5fd7742800cca0306dc5655133a72080d077447029",
         "extension_key": "mod.unknown.metric_profile_id",
         "extensions": {
           "legacy_alias_for": "metric_profile_id",
@@ -3964,7 +3964,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "de5ae65ce5b660846292536b112252f2fcfb5d136df126e365ff704e415890ee",
+        "deterministic_fingerprint": "c00edff7e6888cd66d69bc9c751eede1dc442f8779dd47febde36958d314442d",
         "extension_key": "mod.unknown.migration",
         "extensions": {
           "legacy_alias_for": "migration",
@@ -3992,7 +3992,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f31a045673913011a6c0fb908ef33472ac1a1fee485b65b52d0b62e20d2b3ba0",
+        "deterministic_fingerprint": "069eefcefde50da91e8b49ddb4956f0bdad50b5e3fe41a1aed434a1eee214bce",
         "extension_key": "mod.unknown.missing_entitlements",
         "extensions": {
           "legacy_alias_for": "missing_entitlements",
@@ -4021,7 +4021,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "24a4bcb36eb36487f6a5f964624813f6b5631264b4a83b4f7676e7f5705f43a4",
+        "deterministic_fingerprint": "460aec7d92d958383e955a5a877af40980f7158946e4c3b423f01653a71b7ef7",
         "extension_key": "mod.unknown.missing_lens_channels",
         "extensions": {
           "legacy_alias_for": "missing_lens_channels",
@@ -4049,7 +4049,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "84958405b40b765fb79d81c27508685ab3bc45db22afe16ee2bdffce5ef52dc7",
+        "deterministic_fingerprint": "f4304d5bf2c690f050395b6611b3dadc9509a8bf867b831fe52b022305c1f0fd",
         "extension_key": "mod.unknown.network_id",
         "extensions": {
           "legacy_alias_for": "network_id",
@@ -4077,7 +4077,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "73184958790b2a6b62955fc126002a6dbe62241bd7194655727d1bf30aa88180",
+        "deterministic_fingerprint": "31c0233af4920327b5bd1554c8320842666cc141a8236c713874df6c684f8654",
         "extension_key": "mod.unknown.next_maintenance_commitment_ids",
         "extensions": {
           "legacy_alias_for": "next_maintenance_commitment_ids",
@@ -4105,7 +4105,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "321b78cc97d42af056d065b89dffd9917958966f746ebd78ddedc6022b8c149c",
+        "deterministic_fingerprint": "f1b6206d9f8adb442c96be78f1e91e47b30d5ef498e9e100a93b6f01db16e863",
         "extension_key": "mod.unknown.null_boot_safe",
         "extensions": {
           "legacy_alias_for": "null_boot_safe",
@@ -4133,7 +4133,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "03e4486f9012816290cec00ec0fb577321c7c2ead638511acd302c5c1e1b3f97",
+        "deterministic_fingerprint": "3baf1dbb149d5bf8d799273292722ce40f025effd8ae6c45c1b37fdc8f6b5681",
         "extension_key": "mod.unknown.object_id_hash",
         "extensions": {
           "legacy_alias_for": "object_id_hash",
@@ -4161,7 +4161,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "6ab0192d36df8e8ce4ce57cf7d60dc4b9808fc889fb94389957d2be04bab2b31",
+        "deterministic_fingerprint": "5c0181e6df18a9b750469fb7f003b46af9ed42f90a17afcd82b7a5667475b943",
         "extension_key": "mod.unknown.occupant_ids",
         "extensions": {
           "legacy_alias_for": "occupant_ids",
@@ -4189,7 +4189,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "bbc844d4460fd587997f70d0779aa5d17f7de2b955e905b73148604cf3eee52e",
+        "deterministic_fingerprint": "d252742e005a9cc210ae04f13e30b2da0dc2ff11960b7a41b4461b3923b5db9c",
         "extension_key": "mod.unknown.operation_id",
         "extensions": {
           "legacy_alias_for": "operation_id",
@@ -4217,7 +4217,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "6f155a7bd9931c6e4c4d2fa0e7eb5f66c97d32aa7be0820aa7324d348453098e",
+        "deterministic_fingerprint": "4a8714ba08b5b54cc70b17420ffa55e31f2f294fc2a7357894323ded2b8d26cf",
         "extension_key": "mod.unknown.origin_geo_cell_key",
         "extensions": {
           "legacy_alias_for": "origin_geo_cell_key",
@@ -4245,7 +4245,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2c3525a5e7cde01b63b392bfcb2350f6e0f99357fd63c85a3028d5d9c5e5556d",
+        "deterministic_fingerprint": "07fa6283577abeeeaec4be95aa70797eaf8b11f6802160c48da0c314437103ef",
         "extension_key": "mod.unknown.oscillation_window_ticks",
         "extensions": {
           "legacy_alias_for": "oscillation_window_ticks",
@@ -4273,7 +4273,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "70611ea8e484cbfcfc627a313501639c1a7eec563b512c9e15a849f6134370a8",
+        "deterministic_fingerprint": "b2e7dadd9464973587cfaef7138140ba40b479a4831d06fa252e2d1b35371b81",
         "extension_key": "mod.unknown.output_batch_ids",
         "extensions": {
           "legacy_alias_for": "output_batch_ids",
@@ -4301,7 +4301,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "6768693b108ca039649d2820ad353c0daa7b53115124cb76f654d563703912e2",
+        "deterministic_fingerprint": "df12cb59e5fbce25d613dfe2b531e264c74fd162854e904e5b6fb821c4769010",
         "extension_key": "mod.unknown.parent_system_object_id",
         "extensions": {
           "legacy_alias_for": "parent_system_object_id",
@@ -4330,7 +4330,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "91a0b93ff327ef214cc33660da9b80afee6059f3db1df12f3ae9eb1e8a734cbc",
+        "deterministic_fingerprint": "5c01a691c47504310b208857632efa178a8caf6ada0472b90d7f1aca5d95691c",
         "extension_key": "mod.unknown.partition_profile_id",
         "extensions": {
           "legacy_alias_for": "partition_profile_id",
@@ -4358,7 +4358,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b27d8a1722db365ecf45e30a5c36f8237122af38362bd00f99e738e2e5c8a683",
+        "deterministic_fingerprint": "ad8977a5b7476b89536424910a09fc7377aebd0c223413d3ef5f619e903ba1dc",
         "extension_key": "mod.unknown.path_edge_ids",
         "extensions": {
           "legacy_alias_for": "path_edge_ids",
@@ -4386,7 +4386,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e0acd18af9f0df6b6890124b81dbec4799cf3dbea30cc49a50841624b17bd12f",
+        "deterministic_fingerprint": "6d9b524424525a19bb42f3d02f94c650bec4aa6e5b2b3f267ae4a8c0c20a7ab7",
         "extension_key": "mod.unknown.perception_interest_policy_id",
         "extensions": {
           "legacy_alias_for": "perception_interest_policy_id",
@@ -4415,7 +4415,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "5a2f2100253b6aeef55dde7c05ec468fca132097629988ca21210fb22acd019e",
+        "deterministic_fingerprint": "7caf149359982507d4a79558c682488f870cfc4a1d1b5e9d57919d8aa147edc3",
         "extension_key": "mod.unknown.physics_profile_id",
         "extensions": {
           "legacy_alias_for": "physics_profile_id",
@@ -4443,7 +4443,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "afebcdeba3b53c6d806e478b77a31c49839948e9fdf0ae2d747209a74e6ecf29",
+        "deterministic_fingerprint": "e08d16e97d4972ffd2240b7f83b1ff258b5ec125094e81dd4fd62fe2c535a786",
         "extension_key": "mod.unknown.planet_tags",
         "extensions": {
           "legacy_alias_for": "planet_tags",
@@ -4471,7 +4471,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e7336e6b37fc5c9afd08c79a45a38082360db1c4fe4cf05d8dcc83adebd517e6",
+        "deterministic_fingerprint": "87489b6f3f75b3fabeb8cbdbbc859eac7dcf5a8afdfc66b09bc6b73686f609d8",
         "extension_key": "mod.unknown.polar_meridional_permille",
         "extensions": {
           "legacy_alias_for": "polar_meridional_permille",
@@ -4499,7 +4499,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9858374b5d7751447f29a235119836c5a690d930355422978b5996c39fd2f48b",
+        "deterministic_fingerprint": "77e8038e4eb809e7cc7e88dec66606ec260549cbd9c1a47d33f6f316e4c8f3d3",
         "extension_key": "mod.unknown.polar_zonal_permille",
         "extensions": {
           "legacy_alias_for": "polar_zonal_permille",
@@ -4527,7 +4527,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "136a50ce7255f1d5cd809eae965a7f814e08ea785932cca45f295f43cac0ec92",
+        "deterministic_fingerprint": "6787d00d108482897941884dc86ac42db01ea0cb53cd3fc99a9c6cd56e227718",
         "extension_key": "mod.unknown.port_id",
         "extensions": {
           "legacy_alias_for": "port_id",
@@ -4555,7 +4555,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "0b1241c0e37b7b14861ab9457d37cfb48821139cae308ed99cbc1b12a9e670ee",
+        "deterministic_fingerprint": "859e992ad877baeecbbf7a5836819633e5b4c986dd472095c871074008a290df",
         "extension_key": "mod.unknown.pose_granted_process_ids",
         "extensions": {
           "legacy_alias_for": "pose_granted_process_ids",
@@ -4583,7 +4583,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "534b84acffb4dc7e52b35316749853585eb9aebf845540f7c485fa5a9665c22a",
+        "deterministic_fingerprint": "59110d1b902efa37bd91b1ab98abd807c86a7f120717e42d64cef33fa1db2af1",
         "extension_key": "mod.unknown.project_id",
         "extensions": {
           "legacy_alias_for": "project_id",
@@ -4612,7 +4612,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e7fb9dcf611d97383900f7041a57c710e103999dcd4c4abe07462a98ed8d8781",
+        "deterministic_fingerprint": "2a30babe8e86ef0a4a96ae7243c864ce441ee082e56a626a0dfaddbb5f72654c",
         "extension_key": "mod.unknown.projection_profile_id",
         "extensions": {
           "legacy_alias_for": "projection_profile_id",
@@ -4640,7 +4640,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ff0ba67fe2d4b25e9537de119ec70caa2a899a0da01a8eca2b6003f214445fef",
+        "deterministic_fingerprint": "0abd8e3b5d943c35811df5b4aaff9fbfac7196a2678e3a2855ddfc31deb94882",
         "extension_key": "mod.unknown.protocol_frame_id",
         "extensions": {
           "legacy_alias_for": "protocol_frame_id",
@@ -4668,7 +4668,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2f7b61ae843439d1534c64010c783392426bc903fd1d3a61c75ab0587d817c29",
+        "deterministic_fingerprint": "27e801861603d86bd34bfdcc6cf2689bf85b6119b59cbd194bd36bef17742224",
         "extension_key": "mod.unknown.protocol_id",
         "extensions": {
           "legacy_alias_for": "protocol_id",
@@ -4696,7 +4696,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "30d80fc64fbe532be5465a84107254377c9ff7f8c4f59e1b4af49126ed818c80",
+        "deterministic_fingerprint": "f1205f72352d62ab45ba9276d546af5bf672181fea818e1ca81449b127b78ba6",
         "extension_key": "mod.unknown.protocol_payload_ref",
         "extensions": {
           "legacy_alias_for": "protocol_payload_ref",
@@ -4724,7 +4724,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d69b89cf090539e08eba4378e81d3d51f66038e88c34b76684488708734e92e7",
+        "deterministic_fingerprint": "8e3080329a63360fb04c4e7235a12d4bccc2b9a9e8a4ca85bf81266cbafbf06d",
         "extension_key": "mod.unknown.quantity_bundle_id",
         "extensions": {
           "legacy_alias_for": "quantity_bundle_id",
@@ -4752,7 +4752,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "7a7bac6aa265e1b02943b98879da9686a545c1376fcbb6e8f75c4b766f8a40bf",
+        "deterministic_fingerprint": "8f1b46aa4c56615edbbec069399f8ab078e3d78fb33b67c4a33b81f496b1fded",
         "extension_key": "mod.unknown.quantity_id",
         "extensions": {
           "legacy_alias_for": "quantity_id",
@@ -4780,7 +4780,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "31b7d30aac3a9c50903b5aba5537d7ed20c5e53a870d9bd74b627db146002885",
+        "deterministic_fingerprint": "8bfda5516d897099851ff1aab7fdd91e692ebc94ba1923455f959baec74b5012",
         "extension_key": "mod.unknown.reaction_event_rows",
         "extensions": {
           "legacy_alias_for": "reaction_event_rows",
@@ -4808,7 +4808,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "64254734b63fd155d50c9e0257870ea57cb21544422ea74e30d45217e1a61dff",
+        "deterministic_fingerprint": "57bc7b9451109b3db1aa090112f6a39fa210533adf5f8106fb9ceab7517e408d",
         "extension_key": "mod.unknown.ready_time_must_equal_tick",
         "extensions": {
           "legacy_alias_for": "ready_time_must_equal_tick",
@@ -4836,7 +4836,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "373a40877cc0e0be17021abf00a50e73aaafe6332aaef61b2a110a2804fc7623",
+        "deterministic_fingerprint": "ac095feaae524fe195e56bd20d1ac566a8efa65cbe03f5864679903c03619458",
         "extension_key": "mod.unknown.reenactment_descriptor",
         "extensions": {
           "legacy_alias_for": "reenactment_descriptor",
@@ -4864,7 +4864,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "47ad2bc9e7ebdeaef12707d41469a0f6866a297c189709111ae4defd896c15ad",
+        "deterministic_fingerprint": "824c1a1775e47bb13033b9891a4587f3c227c9d004f998162cf00eb6e3ff5321",
         "extension_key": "mod.unknown.refinement_level",
         "extensions": {
           "legacy_alias_for": "refinement_level",
@@ -4892,7 +4892,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "566e710fdb33ac36176360e466b3366aefc7e3e057c8f5008368bb1cb4a6aa97",
+        "deterministic_fingerprint": "0945f2c02c7c50a7ff3f44e5ed8c6142173ef646cae43c9b1b68d236cdd1e26a",
         "extension_key": "mod.unknown.rejected",
         "extensions": {
           "legacy_alias_for": "rejected",
@@ -4920,7 +4920,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b9f27aef088dbe094b46b8442d48a6a085b215adbe23113769b8a22fe431854a",
+        "deterministic_fingerprint": "bb647b84860a9cc20517fad114d613f4e6a65a6f5d7f84b47795101977862e3e",
         "extension_key": "mod.unknown.remote_monitoring",
         "extensions": {
           "legacy_alias_for": "remote_monitoring",
@@ -4948,7 +4948,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "4b713bb9b98dfcaf04cb51812cda048d8ffa689d0eef141fcc8cae1c4c202202",
+        "deterministic_fingerprint": "7f9f8e6ba2becbb6fe66e54bba8b1f3560fe4030561c328d18e1b1989594b75f",
         "extension_key": "mod.unknown.replay_hash_after",
         "extensions": {
           "legacy_alias_for": "replay_hash_after",
@@ -4976,7 +4976,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f67e1854e8af50255ce3f6fa0248a890da2b7716a7fa994d72298d21b682b500",
+        "deterministic_fingerprint": "79a0242c8fac7d3d874395d88a245e1d5231625eb3470c82df9175ba57f27ba2",
         "extension_key": "mod.unknown.replay_hash_before",
         "extensions": {
           "legacy_alias_for": "replay_hash_before",
@@ -5004,7 +5004,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "5a89f0ff58f5215f66db6b4f2d1bf9765b1744c65fc6bef01bd4b8f8f676c84b",
+        "deterministic_fingerprint": "c20e61a7af0b6831a3d73f798fb2a5120f012859871d2d383c03647389cb4818",
         "extension_key": "mod.unknown.replay_only",
         "extensions": {
           "legacy_alias_for": "replay_only",
@@ -5032,7 +5032,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2451b6c2892e1d2ffd89ac79572d6c37633ebb556a0093da4075809966c4530a",
+        "deterministic_fingerprint": "4eda795834627b664f0068b444babaa0d1b3a9d2b950097746bd5e8aba44aea0",
         "extension_key": "mod.unknown.require_attestation",
         "extensions": {
           "legacy_alias_for": "require_attestation",
@@ -5061,7 +5061,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "61b2ea9b06f28f4fbf482d2fb581b5b7bd2f0bc49262c7fb6004566f130be0a4",
+        "deterministic_fingerprint": "2971295a0076503539a50c4163c4750bdc2594d119738607fe991b45b57618d3",
         "extension_key": "mod.unknown.required_manifest_ids",
         "extensions": {
           "legacy_alias_for": "required_manifest_ids",
@@ -5089,7 +5089,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "c3687c7c92d5a454d9de163dd3c9a33cbbacadc46b9fe8518a58710945f73214",
+        "deterministic_fingerprint": "8cb1c0e7d7be53232fffb6c6d65f8b4e0afb20add0b2958c617d03e882afb68e",
         "extension_key": "mod.unknown.required_substrates",
         "extensions": {
           "legacy_alias_for": "required_substrates",
@@ -5117,7 +5117,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f69243ba7855ef0393d97e4ee0769b5bd3db7486c109ba798a9e2a3d18f8ce59",
+        "deterministic_fingerprint": "cb0ab18bc06a3eb2227e62cedfe682480136200ebd172da9e5043e345268db2c",
         "extension_key": "mod.unknown.requires_l2_timing",
         "extensions": {
           "legacy_alias_for": "requires_l2_timing",
@@ -5146,7 +5146,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "bb014beb1220e1a024de84b68258de4128c02bddddc8fb64540c8a8889a371fd",
+        "deterministic_fingerprint": "5a7f8607ffbefd5821582cf85693b419f6e41ce99a0c3910b18d950b46064df0",
         "extension_key": "mod.unknown.risk_quantization_step",
         "extensions": {
           "legacy_alias_for": "risk_quantization_step",
@@ -5174,7 +5174,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d31eb981c414dd8ae12b92cf7c8abfd15c29892a6fe4612def632ba08a3eafd2",
+        "deterministic_fingerprint": "e1ba810f8e33a8a1676ba307f14b32d2d12e65811e0422f9aa7d26532ae58c67",
         "extension_key": "mod.unknown.rotation_epoch_offset_ticks",
         "extensions": {
           "legacy_alias_for": "rotation_epoch_offset_ticks",
@@ -5202,7 +5202,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b8483348a9c0b235646f1e8c0f26a9b4bcb10d22b525a5367d113e41764be6e8",
+        "deterministic_fingerprint": "d7c935f814983611062a3913e1fee9cbcbb8fb4c40141267d084b8a20d59fdc5",
         "extension_key": "mod.unknown.route_cache_key",
         "extensions": {
           "legacy_alias_for": "route_cache_key",
@@ -5230,7 +5230,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f59c4d58bee87da0d1a1204f2d7ee4f1f2f2596eec4131066f8a71bbbd03b11e",
+        "deterministic_fingerprint": "a83a6ef6bf4149aff38d95b32eb0495d525c5940d9251592d9620b407607afa2",
         "extension_key": "mod.unknown.route_cache_max_entries",
         "extensions": {
           "legacy_alias_for": "route_cache_max_entries",
@@ -5258,7 +5258,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9da305d0020f946634ca4dfc73155dabb61cd376d9ba2defc8a73ee5a83cfa0f",
+        "deterministic_fingerprint": "e45e37359177cf056334a446db42d72c382b7d957c39e010cf3e1c04fec7453c",
         "extension_key": "mod.unknown.route_constraints",
         "extensions": {
           "legacy_alias_for": "route_constraints",
@@ -5286,7 +5286,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b4844f62105814e5f64396c448f5e1701a2e1a33e8de7d106b0d76ea5abb7e85",
+        "deterministic_fingerprint": "3aabe6844fab2b0749fbe7945a63911c0c463fb9f41e52d48d3a3e9e9f8909ae",
         "extension_key": "mod.unknown.route_cost_units",
         "extensions": {
           "legacy_alias_for": "route_cost_units",
@@ -5314,7 +5314,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "1f56264302b78ebfe7112b71313e3351410874c444d5139dae3801ef8bc8a250",
+        "deterministic_fingerprint": "bc4a708b80f01f2da465c6874882b35907890f7eeb1262131ed76daa48432749",
         "extension_key": "mod.unknown.route_edge_ids",
         "extensions": {
           "legacy_alias_for": "route_edge_ids",
@@ -5342,7 +5342,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "4219fe32edc3f3a822be20ce4b2b6c5fa7e895b20cbd64e001e4d4ca72e66c0c",
+        "deterministic_fingerprint": "e27d8e175eca567bd9c0b81291a1ee6c61f379d0925f216cb36ea7be6ab448fb",
         "extension_key": "mod.unknown.route_result",
         "extensions": {
           "legacy_alias_for": "route_result",
@@ -5370,7 +5370,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2af14e642716518255080f9e4cb93035d4c5ef64c39142bb9272a624555b223c",
+        "deterministic_fingerprint": "ce049c3121439d104b4b228f0be29dd4c2ecba52e725811b7c757366d32b5a5d",
         "extension_key": "mod.unknown.route_tags",
         "extensions": {
           "legacy_alias_for": "route_tags",
@@ -5398,7 +5398,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "0392893a04a22b49ca26166e202367870bb958ca01ac751979f5639c2717ab43",
+        "deterministic_fingerprint": "ccb59e40ccc4851dc96c21a18d86878434480fdbab7c0e888ee714142eae3bfd",
         "extension_key": "mod.unknown.routing_policy_id",
         "extensions": {
           "legacy_alias_for": "routing_policy_id",
@@ -5426,7 +5426,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "6b620485b54e663b6385aa960a6cb1d78d2d186a38ff4ef61a60bc9a5279ddc3",
+        "deterministic_fingerprint": "a04c45043b697744bcc52d2be52fb9683eaccbd4947c0bc68b15734fdd91978a",
         "extension_key": "mod.unknown.schedule_component",
         "extensions": {
           "legacy_alias_for": "schedule_component",
@@ -5454,7 +5454,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "aae86fa5b3cfeb4ec71eecf14cd28a59171aadca1b24cdcd227873c30f0caf44",
+        "deterministic_fingerprint": "4cafaa3936a080f0fbb36e72f3f7c979048a93a37809420a571ee7c6aa1aba05",
         "extension_key": "mod.unknown.section_policy_id",
         "extensions": {
           "legacy_alias_for": "section_policy_id",
@@ -5482,7 +5482,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ab08faefca1205edb9d11dd373d1a0b7284624b7cddd57224b8c729f8acb3807",
+        "deterministic_fingerprint": "058b72fa7cefdea73d7880d645dcf494cc7d37a659dc7beae98ba8cbcf1d84ae",
         "extension_key": "mod.unknown.security_header",
         "extensions": {
           "legacy_alias_for": "security_header",
@@ -5510,7 +5510,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "5379555d6f67efab74d93ff4c6da2cbfb2e5f9558bc10e9a98a8551186219905",
+        "deterministic_fingerprint": "59637eaf87c605d7a849fbfd317bb6556a443b3096da999a8b01ef757b3e0c03",
         "extension_key": "mod.unknown.security_policy_id",
         "extensions": {
           "legacy_alias_for": "security_policy_id",
@@ -5538,7 +5538,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f10158b995d5e26c00ce41500b200e969dea8d671df82615acc8da4335dbcb09",
+        "deterministic_fingerprint": "ee945a6cfa25fb5c6da2b423b808f0ebec286657472ea823f73b99ab0135ead6",
         "extension_key": "mod.unknown.seed_subkey",
         "extensions": {
           "legacy_alias_for": "seed_subkey",
@@ -5567,7 +5567,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "81ca1c87b178f66f58ef4106fbe60a6af0d2b9894b34d6fb2ba3bdfcf4230dab",
+        "deterministic_fingerprint": "910f92df7a13e0c375361ac02bb6b4b5f12f14dd5d51eb6b2d5201ed72fa1303",
         "extension_key": "mod.unknown.selected_generator_id",
         "extensions": {
           "legacy_alias_for": "selected_generator_id",
@@ -5595,7 +5595,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2bc265fc38401de9e0a1c524c6048d08ad58b94cde8214d003c169d333855a8b",
+        "deterministic_fingerprint": "b99d8160bc3ed2992f706145e7f1561525e5541df1c4d0c746de7f8d7bfe1d05",
         "extension_key": "mod.unknown.sig_delivery_ticks",
         "extensions": {
           "legacy_alias_for": "sig_delivery_ticks",
@@ -5623,7 +5623,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "fcfbfc451de801f2dbf354beade6f6e23db1c586cf3b576d99aa9aa26bf100e6",
+        "deterministic_fingerprint": "1a2af787c6e74c2526b08abfb410aea980bc8b696fbeba5137977f9b3ee69322",
         "extension_key": "mod.unknown.site_ref",
         "extensions": {
           "legacy_alias_for": "site_ref",
@@ -5651,7 +5651,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "7df7cc7035a47b92f9fdbdd6e07a89a5adf331822a584b452df5ed86e28cfd98",
+        "deterministic_fingerprint": "4742010534fc91876208582d79fbe168ef4cf8bdae404229da70ef6f922c26ef",
         "extension_key": "mod.unknown.sky_view_artifact",
         "extensions": {
           "legacy_alias_for": "sky_view_artifact",
@@ -5680,7 +5680,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ab856e4ef67c111e66166a7215ae25d27f208e1c825c64292d3bd23414aa790e",
+        "deterministic_fingerprint": "7743e69fbc306e22be6e11ad122d1b58f6c9174b5b64d07f05839fa5dc9b6775",
         "extension_key": "mod.unknown.sol_anchor_cell_key",
         "extensions": {
           "legacy_alias_for": "sol_anchor_cell_key",
@@ -5708,7 +5708,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d69a4573e4f14b49063d4082d9ed3dad1601c7f004498c69428e1d1f1942bf80",
+        "deterministic_fingerprint": "ac36e4ed45309fee5278f042541a1d4f38c4c62cfbbc486861a31e7c29e1c063",
         "extension_key": "mod.unknown.source",
         "extensions": {
           "legacy_alias_for": "source",
@@ -5736,7 +5736,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "1274af7c186516a3b402548ee2d879308bdcd0fdbefcba1d0fb0cb2464fb93b7",
+        "deterministic_fingerprint": "9ef60dc4949cb3711b6a27b2edc9925d076087ab8d4b377d5b5c144cf669fe98",
         "extension_key": "mod.unknown.source_process_id",
         "extensions": {
           "legacy_alias_for": "source_process_id",
@@ -5764,7 +5764,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "c23f5d1ef75104d27c4fd40e4358df4a0096fbf6b5254a941b2a7aa02d958eaf",
+        "deterministic_fingerprint": "afc879c30357835db6ef8fae75224149012cd194fbec1c09bc89efbb3fe7ff32",
         "extension_key": "mod.unknown.spec_target_id",
         "extensions": {
           "legacy_alias_for": "spec_target_id",
@@ -5792,7 +5792,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "8bca4d2a1f1bc4e8ade9c46b790a60313af3ab73749dfddc375f35d2ede5fd00",
+        "deterministic_fingerprint": "9c335b3e7debcaa39dead51a6bdaea38be3f469201d2d7c3ddbaf126c6918537",
         "extension_key": "mod.unknown.spec_target_kind",
         "extensions": {
           "legacy_alias_for": "spec_target_kind",
@@ -5820,7 +5820,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "8e024af562333004a2adaac85c1f099d1e473cc27d737d3d5d2981f21c335043",
+        "deterministic_fingerprint": "9e01aedfc147ac902f59a411225c9f29d8e31f3130207a38e2c3f94a87f08def",
         "extension_key": "mod.unknown.stage_count",
         "extensions": {
           "legacy_alias_for": "stage_count",
@@ -5848,7 +5848,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "fcff7c2a738b702f778fc790afafe35584fd9fa0e2896c8a156edd9ec01aa890",
+        "deterministic_fingerprint": "ed40b644e5b4a3d8562371ef78d6e7173a0fef5b3fe3bf3570dfa33bb491ac1e",
         "extension_key": "mod.unknown.start_commitment_id",
         "extensions": {
           "legacy_alias_for": "start_commitment_id",
@@ -5876,7 +5876,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e468762938a81fd9c7b76c34df4c86e56703efd388730b304b3a9ffe7bc06a2b",
+        "deterministic_fingerprint": "f6dfdd9bcca450ac2f5d3368cecfc61e7d2a68218581faf8deb9983e07432367",
         "extension_key": "mod.unknown.status",
         "extensions": {
           "legacy_alias_for": "status",
@@ -5905,7 +5905,7 @@
           "dominium.schema.compat.degrade_ladder",
           "dominium.schema.compat.fallback_map"
         ],
-        "deterministic_fingerprint": "dd03dc4b2ab7bdb0ef2baa0756d40d6a0b3538b88fccf6c66213330a621c98b0",
+        "deterministic_fingerprint": "9b6774790024fe02901c6411f1e108146fd55c13da7100dd8251fe697bf102ea",
         "extension_key": "mod.unknown.substitute_capability_id",
         "extensions": {
           "legacy_alias_for": "substitute_capability_id",
@@ -5935,7 +5935,7 @@
           "dominium.schema.compat.degrade_ladder",
           "dominium.schema.compat.fallback_map"
         ],
-        "deterministic_fingerprint": "3f84b8540b0573f3b486eafc335bf3b47e2292d756115fed061a4c67788c9d2c",
+        "deterministic_fingerprint": "e9431667fbe9ce7ef83e00d7644c31b0050fcdd80c6f8e9ea22de6f7ec6a4196",
         "extension_key": "mod.unknown.substitute_capability_ids",
         "extensions": {
           "legacy_alias_for": "substitute_capability_ids",
@@ -5964,7 +5964,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "1fdabf52127ce40306cdfc8e4db8dba349696a2b14a656391573d7ab5e58e118",
+        "deterministic_fingerprint": "1394b2638949f21669cb099b1177d31f60b7a5773ca5e802943984dc48486d30",
         "extension_key": "mod.unknown.surface_class_id",
         "extensions": {
           "legacy_alias_for": "surface_class_id",
@@ -5997,7 +5997,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f3540aa1a359c170bd8afe7b701f8927e111ebd22f4f7e172dd84a118310c4a7",
+        "deterministic_fingerprint": "1d529c817058a86c50dcd0cb5cdd39f6d4cca7a823889ee36761e9d963a4df3d",
         "extension_key": "mod.unknown.surface_id",
         "extensions": {
           "legacy_alias_for": "surface_id",
@@ -6025,7 +6025,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2982cf390d2b9d19727d9f4ca0df4c07da8ed10bce631c44115507199a69524f",
+        "deterministic_fingerprint": "b2eadf3891f3472a3be6c48e42045b98d9a591d7ba7e6a404a6ca8677df913eb",
         "extension_key": "mod.unknown.surface_type_id",
         "extensions": {
           "legacy_alias_for": "surface_type_id",
@@ -6054,7 +6054,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a507818a0bc0022fc66dabde5e2227a798f2b474a34bfdfa5b87cc057fad0947",
+        "deterministic_fingerprint": "ae09fe857f31c06bd065eef4bab22af4850cee59423d32c19d13c72a86bdc141",
         "extension_key": "mod.unknown.system_id",
         "extensions": {
           "legacy_alias_for": "system_id",
@@ -6082,7 +6082,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "77f71c7f8582f833434489c9fc7be69fceaa860ec334eb5035d0b295aca17ed0",
+        "deterministic_fingerprint": "d6c01149638dd7c812b9c5e08f46490b4733b02d07288d84fe5a4826cdf93a7d",
         "extension_key": "mod.unknown.tags",
         "extensions": {
           "legacy_alias_for": "tags",
@@ -6110,7 +6110,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d6675905da066469ae8a5382f20d4d064a71d883b27bfbce7697a9d700abb56c",
+        "deterministic_fingerprint": "e9221564dd19ae1db2b39954c7f68bafdbd1bc1b679eda1a4ce3cc834d0fb0d7",
         "extension_key": "mod.unknown.target_frame_id",
         "extensions": {
           "legacy_alias_for": "target_frame_id",
@@ -6138,7 +6138,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "c9f01f04450423e59919c329fe51d1e70b767b1e9d2341fbe4fe14b1d5f29ddc",
+        "deterministic_fingerprint": "4be0d8ad72b49614d3ea0853934dc5b5014b38db6befd340d7f57d1320e17e17",
         "extension_key": "mod.unknown.target_semantic_id",
         "extensions": {
           "legacy_alias_for": "target_semantic_id",
@@ -6167,7 +6167,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e223154616b3ada0aaeb5c8b32129e080f965d1bf00268f0bc784d23cf61c358",
+        "deterministic_fingerprint": "a308027fce14f48b57999448e0fab23ca2d79123182acc431a89d6fb71803d80",
         "extension_key": "mod.unknown.target_slots",
         "extensions": {
           "legacy_alias_for": "target_slots",
@@ -6195,7 +6195,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "e9ce5a7932c7fddd4b5d1d388db14adf5cd7cfffe588338f577f51adb4851445",
+        "deterministic_fingerprint": "5920ca90c4cc348587ee34414e87a7d0acd8563c63b0353f4030a9c75393e30e",
         "extension_key": "mod.unknown.targets",
         "extensions": {
           "legacy_alias_for": "targets",
@@ -6223,7 +6223,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b69544034c8efc2c00cd09098561c8f1669087afd70fce909fba8988994d43ed",
+        "deterministic_fingerprint": "ab26c17dce9e52b58313fe6b3cc9ffa91b11792e250e7bc314eb3da1e8fcf549",
         "extension_key": "mod.unknown.task_id",
         "extensions": {
           "legacy_alias_for": "task_id",
@@ -6251,7 +6251,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "184d2f936dbccf1d88e23e9aa6dc57e227cd9f87aa7592243624544d0ad5bcea",
+        "deterministic_fingerprint": "7e6d836faecff8ec462f930540ecacd43c9816a1d8390fdbb61a2e0c11c45b7d",
         "extension_key": "mod.unknown.task_priority",
         "extensions": {
           "legacy_alias_for": "task_priority",
@@ -6279,7 +6279,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f644ff89fdbef7efd77b0f770a114e4deaa6bd74279375a6afec2e1b1f0f5837",
+        "deterministic_fingerprint": "91d83243a512d03575dd7119effcf1dfa691d095056be9e60ace8730d9d4721a",
         "extension_key": "mod.unknown.temporal_delay_ticks",
         "extensions": {
           "legacy_alias_for": "temporal_delay_ticks",
@@ -6307,7 +6307,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a242979c764cc62d80dfb09dee24c620cddbff8de7ffe67e9e6dbb040860c464",
+        "deterministic_fingerprint": "4af34091e6fb62a8b466c501dc5255179f68b86670572bbadae5cef9e7d63285",
         "extension_key": "mod.unknown.temporal_domain_id",
         "extensions": {
           "legacy_alias_for": "temporal_domain_id",
@@ -6335,7 +6335,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "3e21dbf3578e3deccda7f2b707245084973a15527dbcc029177f096356ee4bb6",
+        "deterministic_fingerprint": "df4466bee99f40c5f98dc89e617d174a02061af9dc3f6d3707f62dbd8655afd8",
         "extension_key": "mod.unknown.threshold_crossed",
         "extensions": {
           "legacy_alias_for": "threshold_crossed",
@@ -6363,7 +6363,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "0f89567b696a7bcf265a67f6987a24745b4c23833746181fa4c735c2a6d805cd",
+        "deterministic_fingerprint": "22e1e957f9d38c3b203ff2c540bf4b42b69350e86ebace308b4f208894d1f7a9",
         "extension_key": "mod.unknown.tier_taxonomy_id",
         "extensions": {
           "legacy_alias_for": "tier_taxonomy_id",
@@ -6391,7 +6391,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2754a6e901ea44e1ef05d6fd07b5b982c8a66640ac24088cb78e43933c628a55",
+        "deterministic_fingerprint": "0e27d61077df53dcb553d4ea4214eb566ba717065154e6e4aba76839d8ae76cc",
         "extension_key": "mod.unknown.time_control_policy_id",
         "extensions": {
           "legacy_alias_for": "time_control_policy_id",
@@ -6419,7 +6419,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "5b48ef9e0dbba8d674fc0ab816922b6b33e8454f1e2f274f90ca4a5ebefec6cd",
+        "deterministic_fingerprint": "612a1284ea340723ada5fbc33ae48eb2f54064d2ceb21042e20d5e514c8543c4",
         "extension_key": "mod.unknown.time_mapping_cost_units",
         "extensions": {
           "legacy_alias_for": "time_mapping_cost_units",
@@ -6447,7 +6447,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "79398628cd1239b6e6b395b0a6f0ff80d77b7abecc4c6aa60aeda3949bc19ff5",
+        "deterministic_fingerprint": "4a48f364631626cc21d3b7be469c758aa2f546d8181329ff561a366c6c4eae10",
         "extension_key": "mod.unknown.time_mapping_id",
         "extensions": {
           "legacy_alias_for": "time_mapping_id",
@@ -6475,7 +6475,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "488209e6b8fcdda1ea0d76857481cdb824a18118b086c3448c0b5fcd1fcf8e0b",
+        "deterministic_fingerprint": "e110b5fa80a0ecb8f0bcc879665133ec3fdf10d7e85e64d525cd3216040e6ea0",
         "extension_key": "mod.unknown.timeline",
         "extensions": {
           "legacy_alias_for": "timeline",
@@ -6503,7 +6503,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "22056a00322cec60408c63ffddaef2900f44bb26495e346fc329b7611bdc4e1a",
+        "deterministic_fingerprint": "f4b75fe59bdd1a252f2fbf854dd47ba4a36dc09d74f006bd53424a72726c4549",
         "extension_key": "mod.unknown.timing_constraint",
         "extensions": {
           "legacy_alias_for": "timing_constraint",
@@ -6531,7 +6531,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "776acfe09613d56972f832061ed123e5f8f88032b75df8e42cd7ac6f1bb3efbc",
+        "deterministic_fingerprint": "a60c0868e314fd32f52528d9dee93f173a8f31f4b86e9187455030862be8583d",
         "extension_key": "mod.unknown.timing_gate_reason",
         "extensions": {
           "legacy_alias_for": "timing_gate_reason",
@@ -6559,7 +6559,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a8a510da9fc25c31c24d1f32a2f6cf4dc96cb545b5ed6894017c7e216a01a8f2",
+        "deterministic_fingerprint": "99e7f2bab72241e5a00d5d9bf3d23739489bc662aca69491f88d9bf8d34c6124",
         "extension_key": "mod.unknown.timing_hash_window",
         "extensions": {
           "legacy_alias_for": "timing_hash_window",
@@ -6587,7 +6587,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b4c953d7799de500b023e9fda1a4155504dbf08539aac296ca160be3a005eeb1",
+        "deterministic_fingerprint": "2c3a624658191d528c3540960d60b88a8a4aebf02462de47ac539f9d9114a693",
         "extension_key": "mod.unknown.timing_violation_action",
         "extensions": {
           "legacy_alias_for": "timing_violation_action",
@@ -6616,7 +6616,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b0fa63acf70c29e49e79cc2b07fde758f7b69bf4946b464c985a6b675c1a8092",
+        "deterministic_fingerprint": "4a80f5083ad5b6420d1c651efb569f027514cba8d523359ecbda9afeaca43b23",
         "extension_key": "mod.unknown.tool_compatible",
         "extensions": {
           "legacy_alias_for": "tool_compatible",
@@ -6644,7 +6644,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a40c6bab18c5e6ff388efb27fe8e3f8b58dca13981f207533fa05b632db345cb",
+        "deterministic_fingerprint": "139a0697270df6298e88e177c64bc3a7cf2843f83528e2a37006d16d63063728",
         "extension_key": "mod.unknown.tool_id",
         "extensions": {
           "legacy_alias_for": "tool_id",
@@ -6672,7 +6672,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "bcf2dac34c2c4e6fa3b356ec42c9f6c416801a719528824b43401646dc9f101d",
+        "deterministic_fingerprint": "429a4c36b6b12e302e3e9a7a2569ca20fc8991bc7fdc26a8c158519526a6484b",
         "extension_key": "mod.unknown.tool_process_allowed_ids",
         "extensions": {
           "legacy_alias_for": "tool_process_allowed_ids",
@@ -6700,7 +6700,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "010ca5040372a7f5de4b471968f1b4aa4e5d4bb891e21851cbe7f9fb58ae4156",
+        "deterministic_fingerprint": "bea1b3afda54a76763f900e9dfb590d3d503e1d5e403bc257c9250e9fd52b4c6",
         "extension_key": "mod.unknown.tool_process_disallowed_ids",
         "extensions": {
           "legacy_alias_for": "tool_process_disallowed_ids",
@@ -6728,7 +6728,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a5880fc0d9e5997f5954a0e08e8d0bd89fa94efe123eea8e563e3635fc816597",
+        "deterministic_fingerprint": "3eaecbcd4086bada97200ede0ae6eee4c48e03cf8b8f7aee311ef1037eb60310",
         "extension_key": "mod.unknown.topology_profile_id",
         "extensions": {
           "legacy_alias_for": "topology_profile_id",
@@ -6757,7 +6757,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "1f84c1f663b22c03bc6ff3f17ca265487ddade236245d1384dc7fc08539fc194",
+        "deterministic_fingerprint": "053d63a8f5a43e702ae095b3dacfd2c16e4e9b664cac50c4850ba9384dc41943",
         "extension_key": "mod.unknown.transition_policy_id",
         "extensions": {
           "legacy_alias_for": "transition_policy_id",
@@ -6785,7 +6785,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "4d4fc9fe858c9e7f15eac88167d6e7e56438bcb3f220568e6e7a793a0a48c7ac",
+        "deterministic_fingerprint": "20bfc0c2a4bdd726c3cea3173f58ad6f3ceec68ce72f9a396e3a901bed91d502",
         "extension_key": "mod.unknown.triggering_conditions",
         "extensions": {
           "legacy_alias_for": "triggering_conditions",
@@ -6813,7 +6813,7 @@
         "allowed_owners": [
           "tool_capabilities"
         ],
-        "deterministic_fingerprint": "cb39acc52171d0dec36024067fb3ccbc9de0b52f2f48fc1e5eff262cf2e45e51",
+        "deterministic_fingerprint": "4d7d26f40c894a61b57adbe3f81753ac6a31e16253d93546f14f92fc030441f1",
         "extension_key": "mod.unknown.ui_command_id",
         "extensions": {
           "legacy_alias_for": "ui_command_id",
@@ -6841,7 +6841,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "782f7273f6c2d0bc239facc09f9d0289d0b78f3e2fa37f204add62b3ebddcf59",
+        "deterministic_fingerprint": "793516e72cab37e08870898cdf1a1ba16de31dd9e581e34eb149e66494a3e180",
         "extension_key": "mod.unknown.unstable_oscillation_action",
         "extensions": {
           "legacy_alias_for": "unstable_oscillation_action",
@@ -6869,7 +6869,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "926ce9433b7662c761a7ec22db61c238095c04431b43fb625fdb0cb197e5f5ef",
+        "deterministic_fingerprint": "6092dab3d483dfb345395bbaeda7a03f535a66791060100c70471d1cae3e47bd",
         "extension_key": "mod.unknown.update_history",
         "extensions": {
           "legacy_alias_for": "update_history",
@@ -6898,7 +6898,7 @@
           "dominium.schema.compat.degrade_ladder",
           "dominium.schema.compat.fallback_map"
         ],
-        "deterministic_fingerprint": "c6208dfdd857577ce64815e7854165b50c03d90cfd2fe1488de07a0af87a4242",
+        "deterministic_fingerprint": "204111b782dd60958e8766bc7a2265b9b261e033cead4c8efc19b6f1fb8136fa",
         "extension_key": "mod.unknown.user_message_key",
         "extensions": {
           "legacy_alias_for": "user_message_key",
@@ -6927,7 +6927,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a0f865720b6f8e78dc74f4860ec406b726018bc7a95df088205d197d2c85a199",
+        "deterministic_fingerprint": "6bf2364a7795d730748a97ba27a07bc93a1ad59e37174c543b0c5acf8e423ab4",
         "extension_key": "mod.unknown.validation",
         "extensions": {
           "legacy_alias_for": "validation",
@@ -6955,7 +6955,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "f6844ce6276719d4ff0198c26b3bfb80ded9bb160d9ff5e57a96237380d718cd",
+        "deterministic_fingerprint": "69cf6bbf0478194ef0a186ac4e8f12c8b24c037f06bb357931646fa614341542",
         "extension_key": "mod.unknown.water_view_artifact",
         "extensions": {
           "legacy_alias_for": "water_view_artifact",
@@ -6985,7 +6985,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "7c0a2cb79fed104389dc4142d89eb6203b15ce3890d3a0466b83c2c67d5b1132",
+        "deterministic_fingerprint": "9c41868de341f3ee469ce82576b4af07f32a8f8de1ee8b66a3e10dfed20e9aa2",
         "extension_key": "mod.unknown.year_length_ticks",
         "extensions": {
           "legacy_alias_for": "year_length_ticks",
@@ -7014,7 +7014,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ac635d9ec8c4df1c5541ddb3cf03687301ea3acee789206c11e66fd737830ad5",
+        "deterministic_fingerprint": "6b03fd7ef0e698ce96c710ae039058247924fa42d43510c3a3819a147126e891",
         "extension_key": "official.build_id",
         "extensions": {
           "official.description": "Deterministic build identifier surfaced by AppShell version output from endpoint descriptors.",
@@ -7038,7 +7038,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2887eb6d35de46eccd1f7d3dd15d0bb98c5a984061eb8212302c6f489c90b396",
+        "deterministic_fingerprint": "1054a529d55169c173ccb072276bfe4d49fea8f032af2b99553473dd5f2e0bce",
         "extension_key": "official.client_endpoint_descriptor_hash",
         "extensions": {
           "official.description": "Hash of the negotiated client endpoint descriptor.",
@@ -7062,7 +7062,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "b526342e4f31e15932dbfb3ed83ea15e922fd362e4fc8758b8b657717004e888",
+        "deterministic_fingerprint": "86cb697ce3d2c9190b6c24791125555d4aa61d11375432930cb19e7279b1a0ea",
         "extension_key": "official.compat.contract_mismatches",
         "extensions": {
           "official.description": "Sorted contract categories that prevented a full compatibility match.",
@@ -7086,7 +7086,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9983463da2daaa87421ee47998401139e8192430b6b0589e47c095b37eee76c2",
+        "deterministic_fingerprint": "8b38519245bd7768f37f20f97d766b9bec6579d150b97b291b166006006d107b",
         "extension_key": "official.compat.read_only_allowed",
         "extensions": {
           "official.description": "Endpoint descriptor or record explicitly allows read-only compatibility fallback.",
@@ -7110,7 +7110,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "25f3eb3f6c5e427f3c645035d2c95a751bda4e1487c889322fe89a601a778fb1",
+        "deterministic_fingerprint": "dd4483bc87a364e4e40b5d03a34175ae34a168847f362c37277ed14d1eeff416",
         "extension_key": "official.compat.read_only_law_profile_id",
         "extensions": {
           "official.description": "Law profile bound when negotiation degrades to read-only compatibility.",
@@ -7134,7 +7134,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "caf75bcec190785a81271a7397abc529d68a14f70af93054fb19fdcf6e729282",
+        "deterministic_fingerprint": "cf00f47ef1eddedab2f78ad22984d73f734f04ad9b953bda225140adee5475f7",
         "extension_key": "official.compat.refusal",
         "extensions": {
           "official.description": "Deterministic refusal payload captured on negotiation refusal or degrade decision.",
@@ -7158,7 +7158,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ca9ef9b4aaa3cecbd2628438e1ab461762159932ea78a6b9910901a64beea070",
+        "deterministic_fingerprint": "b5cae86b5939fb473b8fbed8779fd2acd3ff957f15690c9806d3e272b041c35a",
         "extension_key": "official.compat.required_capability_violations",
         "extensions": {
           "official.description": "Sorted required capability mismatches detected during negotiation.",
@@ -7182,7 +7182,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9819ccea427648de5918ea9b1342dd81224f8635d8828dfc0b3aa13c6a274edc",
+        "deterministic_fingerprint": "a6b5b7e4aec143f5304906cd5cf1199f18962c727a3f41d2ab031df83e63032c",
         "extension_key": "official.compatibility_mode_id",
         "extensions": {
           "official.description": "Compatibility mode selected by deterministic endpoint negotiation.",
@@ -7206,7 +7206,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ccc771956039e7290634652c8870fbeeee23f404aa7730e5bd49e8abf47b6cb4",
+        "deterministic_fingerprint": "35482478524aa9c00f315faccede9f024efa4f44794c1c75d500c4015f9e9622",
         "extension_key": "official.compilation_options_hash",
         "extensions": {
           "official.description": "Compilation options hash surfaced by AppShell version output from endpoint descriptors.",
@@ -7230,7 +7230,7 @@
         "allowed_owners": [
           "product_registry"
         ],
-        "deterministic_fingerprint": "d458b3e385de2f160a403c89275a1ccc0617bcc3eda29bbee6121defab114607",
+        "deterministic_fingerprint": "d4b79dad2eea689a8e063bc5a13fe950cd39e0edeea661027326759d55e214c5",
         "extension_key": "official.default_semver",
         "extensions": {
           "official.description": "Default SemVer used when emitting a product endpoint descriptor without an explicit version override.",
@@ -7254,7 +7254,7 @@
         "allowed_owners": [
           "product_registry"
         ],
-        "deterministic_fingerprint": "38549788bc832256006493dff123d200486ec8ac349d0292bd8a99fcca6a9a54",
+        "deterministic_fingerprint": "dc318db76999dccde338eade90b7ebae8912c764997d2fd847d44fb8eeaae664",
         "extension_key": "official.dist_bin_names",
         "extensions": {
           "official.description": "Deterministically ordered dist/bin wrapper names associated with a product endpoint descriptor.",
@@ -7278,7 +7278,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "3aec3ed2af1af0673eaef01f087e2ded9893e6560240c5e7e80964f85cd4e9aa",
+        "deterministic_fingerprint": "4f7cc091a0cce3d110f6a979ab2ada456ba778450581b444ffae0870c5aa7bea",
         "extension_key": "official.enabled_capabilities",
         "extensions": {
           "official.description": "Deterministically ordered enabled capability set chosen by endpoint negotiation.",
@@ -7302,7 +7302,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "2bef313300cc21659938ed433124d48e5e6806d6cdc54b96454cfc20e8d72f63",
+        "deterministic_fingerprint": "fc14114143ecfa5e089f8cca014b9aa0559f742833387f73d55ca39c5404d82e",
         "extension_key": "official.endpoint_descriptor_hashes",
         "extensions": {
           "official.description": "Sorted endpoint descriptor hashes included in a proof-anchor surface.",
@@ -7326,7 +7326,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "4fe224743f6caad7b3457744058c790f1ade6fb116292396afcc897f24c326e6",
+        "deterministic_fingerprint": "5d9cd0a29b1a2d1ed0232c3ba344f6b89c188482e93dd3243a2d690df4d6d862",
         "extension_key": "official.git_commit_hash",
         "extensions": {
           "official.description": "Source commit hash surfaced by AppShell version output from endpoint descriptors.",
@@ -7350,7 +7350,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "54b52e41fa6b729ecbeb69e1b2561c7b869e7f8124890d7c73cfaa95afec99c2",
+        "deterministic_fingerprint": "a7e03db8d6678b48853b1fc0e70cb30bcd45e86fbf6b306192af740114c1b97f",
         "extension_key": "official.handshake_messages",
         "extensions": {
           "official.description": "Deterministically ordered handshake transcript messages attached to a negotiated connection response.",
@@ -7374,7 +7374,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "9b4a69d53f3a08110c02de2fe11394920e18d2cc9a54c2a4c4845d63c1e6080c",
+        "deterministic_fingerprint": "d9e962ca671580300371a1f19b6aa015fe5b944012c63b86bb543cf69ad1dc4e",
         "extension_key": "official.negotiation_record_hash",
         "extensions": {
           "official.description": "Hash of the deterministic negotiation record for the active handshake or refusal.",
@@ -7398,7 +7398,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "3cc325c0fd406ff1cfdd296a7512fd43488a428daa3f297262789ccadd8bdf21",
+        "deterministic_fingerprint": "775f4bf2ba7e11ae3a752f05c20b42d6caa121e5d19d563c0ca141d75647b3a1",
         "extension_key": "official.negotiation_record_hashes",
         "extensions": {
           "official.description": "Sorted negotiation record hashes included in a proof-anchor surface.",
@@ -7422,7 +7422,7 @@
         "allowed_owners": [
           "pack_capabilities"
         ],
-        "deterministic_fingerprint": "6fe3acec9b0d2f5f421cfb6efa4f88442b7f55572c0a05771ea269889e45bf4c",
+        "deterministic_fingerprint": "8bb4b4bbfe27b828a09bce6b4797e999b8aa15fa9b6131251396eacd8c3ca76f",
         "extension_key": "official.requests_nondeterministic_allowance",
         "extensions": {
           "official.description": "Explicit request for replayable nondeterministic allowances under mod policy governance.",
@@ -7446,7 +7446,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "09292b243003e2b033d0fd8863f43dc4be2d76aa8462089b67930ba54a3cdc69",
+        "deterministic_fingerprint": "1ace6ece864e8f328c59cd10b22c941db8f55dfee755cbe1994681ae83142783",
         "extension_key": "official.semantic_contract_registry_hash",
         "extensions": {
           "official.description": "Semantic contract registry hash surfaced by AppShell version output from endpoint descriptors.",
@@ -7470,7 +7470,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "ac47be86259cf7100e3b0026cb1805000afa41d63ea625ddb58a045221aba902",
+        "deterministic_fingerprint": "90c0377a2f273661428f038e14f69ac72c1ab07ad157a117fff6ece94e51a1ad",
         "extension_key": "official.server_endpoint_descriptor_hash",
         "extensions": {
           "official.description": "Hash of the negotiated server endpoint descriptor.",
@@ -7494,7 +7494,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "54abda6287dfc3ac630ac5caf44aedd5a5b5f8c5d2577c4ce83570545828402f",
+        "deterministic_fingerprint": "c720207e1d96acd642e467206dcc0a6629cabd2df5bfac74833551f23563b262",
         "extension_key": "official.session_begin",
         "extensions": {
           "official.description": "Session-begin payload attached to a negotiated connection response for deterministic client bootstrap.",
@@ -7518,7 +7518,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "5e7cef1667d2583306c5d82469d7e5c8bea2c6328a8116387f69233566e8e22c",
+        "deterministic_fingerprint": "a7002e12a0d6343dde314c65895da714415fa8ae9fe3005f31e8da8c7e13e104",
         "extension_key": "official.attach_record",
         "extensions": {
           "official.description": "Deterministic IPC attach record cached by AppShell TUI remote console sessions for negotiated reattach-safe status, log, and command refreshes.",
@@ -7542,7 +7542,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "8d458b4c619019a08d3633bc0864f8a019c04b39a0397326f72a5d1d34f1b3d6",
+        "deterministic_fingerprint": "4863ce2ecf87ef003c9383eff216281a9fe02aefa971b421bcdbd44e6e507d9f",
         "extension_key": "official.remote_endpoint_id",
         "extensions": {
           "official.description": "Deterministic IPC endpoint identifier bound to an AppShell TUI remote console session tab.",
@@ -7566,7 +7566,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "8644d11ef2a48388221dfe9bf64049ea629a2229129205a880ea092da09ea029",
+        "deterministic_fingerprint": "2cb05b6a58517f5cd5482b8775173281702e6c2eaf6646d8b025482523a7889b",
         "extension_key": "official.remote_last_event_id",
         "extensions": {
           "official.description": "Last observed structured log event identifier for deterministic incremental IPC log polling in AppShell TUI sessions.",
@@ -7590,7 +7590,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "346958a60f9d65ee657badd0b77bb92012118c73aaf181b55146c92720210de0",
+        "deterministic_fingerprint": "aecdab62edd78b0b0011a632f2034a98b9147bccf6b54574a2ebb7dae2b653d4",
         "extension_key": "official.remote_log_events",
         "extensions": {
           "official.description": "Bounded remote structured log event rows cached for AppShell TUI IPC console sessions.",
@@ -7614,7 +7614,7 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "d5e37c62b30b1bdb6168c4bcdcac846e8a30795ecfe0f05ddd56c790922992f9",
+        "deterministic_fingerprint": "6cc01afbb66502e8eb9cb6b7b6b28d8125d72864e1c77dffa02be2466cccd217",
         "extension_key": "official.remote_status",
         "extensions": {
           "official.description": "Deterministic remote endpoint status snapshot cached by AppShell TUI IPC console sessions.",
@@ -7639,7 +7639,7 @@
           "product_capability_defaults",
           "product_registry"
         ],
-        "deterministic_fingerprint": "6e071a301cbb6faa922d6753f111707d137e560c4dda09c5c3bcab57d2935d93",
+        "deterministic_fingerprint": "5e35a2eecb0d230f2799bd6115127bfa70ee110dece3936063782f9f5cb9fc1d",
         "extension_key": "official.source",
         "extensions": {
           "official.description": "Deterministic source tag used by offline descriptor emission metadata and capability default provenance.",
@@ -7663,7 +7663,7 @@
         "allowed_owners": [
           "dominium.schema.ipc.ipc_endpoint_descriptor"
         ],
-        "deterministic_fingerprint": "75bd4ecc98917bd0cee3940ed0665b2c9e1c05fbc712282cf1a93eff21cfbfe2",
+        "deterministic_fingerprint": "a93a879b7c1ff1cb998e00d9a6f5ba9530a1c2156b8ad0371a6547db68583b4d",
         "extension_key": "official.transport_id",
         "extensions": {
           "official.description": "Deterministic local IPC transport identifier used by AppShell attach discovery to select the local transport family.",

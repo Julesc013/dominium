@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "policy_id": "comp_capacity.default_bundle",
         "per_quantity_rules": {},
-        "deterministic_fingerprint": "85f36b652a4fb37b2c672d536c5240409b96daa9eafc4d7e6b371f633bcce625",
+        "deterministic_fingerprint": "85803ec40dc216849e9ed05c1f0848738a3e647c85c6895979a9dbf64b497783",
         "extensions": {
           "description": "Default bundle capacity policy (no component overrides)."
         },
@@ -33,7 +33,7 @@
             "extensions": {}
           }
         },
-        "deterministic_fingerprint": "2985fcd4267f9ac41de71e86778376c082ea05aba8580a352965c335b04dc96e",
+        "deterministic_fingerprint": "f0916e22e319eb17f19ad09f2197192565f732d1c9eb8959081e7d649ea7a2c8",
         "extensions": {
           "description": "Power phasor component capacity placeholder policy."
         },

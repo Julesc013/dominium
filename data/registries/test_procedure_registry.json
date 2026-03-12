@@ -18,7 +18,7 @@
           }
         },
         "tolerance_policy_id": "tol.default",
-        "deterministic_fingerprint": "54a835213865a2dfb2831b10f05abdd872fa5465d05ba50e9c99a5baad764a40",
+        "deterministic_fingerprint": "57de423dffca965aa257908db838f4d3588a5bc5c54b34382654d7ed7e630393",
         "extensions": {
           "source": "PROC3-2"
         },
@@ -45,7 +45,7 @@
           }
         },
         "tolerance_policy_id": "tol.default",
-        "deterministic_fingerprint": "26b4b0e256de5973729e0d60094927974aa85a5822259cd2e95fa15faa3946f2",
+        "deterministic_fingerprint": "524fb1d08633a74e3203be854461f6e0cee94fa2989c2d55480365e037e26208",
         "extensions": {
           "source": "PROC3-2"
         },
@@ -72,7 +72,7 @@
           }
         },
         "tolerance_policy_id": "tol.strict",
-        "deterministic_fingerprint": "d9e2d5913f2f4e05ec9b25b6a7d0e1f0d0e2f04448d0813b719acb5322d71251",
+        "deterministic_fingerprint": "9e25eca7493af7976206f8df104bdd915149f743331b3d55298032005b8ccc24",
         "extensions": {
           "source": "PROC3-2"
         },

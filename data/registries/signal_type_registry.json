@@ -11,7 +11,7 @@
         "description": "Carrier-agnostic binary logic state with deterministic low/high semantics.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.signal_value.boolean@1.0.0",
-        "deterministic_fingerprint": "a7c50722bc219feff307fc1e1566bc5c8efa4e73433bfbdb243d74a53972101a",
+        "deterministic_fingerprint": "705362e2da433b1d84c37f6c0adbc319c79ef286055d3712db05d5df820dcf64",
         "extensions": {
           "domain_tags": [
             "logic",
@@ -36,7 +36,7 @@
         "description": "Carrier-agnostic scalar logic value for normalized or unit-bearing control channels.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.signal_value.scalar@1.0.0",
-        "deterministic_fingerprint": "b4ce184065938e75ef44b7b2406ed61d8bece5630958ffd45c1f4173f41fdeb1",
+        "deterministic_fingerprint": "d286a189ad74e508b75d552d418fef43f331095dd24c488e259508cad880a6be",
         "extensions": {
           "domain_tags": [
             "logic",
@@ -61,7 +61,7 @@
         "description": "Carrier-agnostic edge/pulse logic value for deterministic event-like control transitions.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.signal_value.pulse@1.0.0",
-        "deterministic_fingerprint": "c6ec46b7f119db177271970311d694aaae55d3ab3c52319ab532da61310bd848",
+        "deterministic_fingerprint": "28c3b09eb096c5fbb62160fc734b835c87b3bf142c644cac096ffb7d9b16e351",
         "extensions": {
           "domain_tags": [
             "logic",
@@ -86,7 +86,7 @@
         "description": "Carrier-agnostic message/reference logic value bound to SIG receipts and trust policy.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.signal_value.message@1.0.0",
-        "deterministic_fingerprint": "20c9b1e8b78d7edf1c69d005f4ea4d36b46530ea50e41476a5502d4be0a938bc",
+        "deterministic_fingerprint": "97ad42720787bd422e499bf96cf7d3f145b153addfb241e80ccb63de47cd7c7b",
         "extensions": {
           "domain_tags": [
             "logic",
@@ -111,7 +111,7 @@
         "description": "Carrier-agnostic typed bundle/bus logic value for grouped multi-signal control paths.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
         "value_schema_id": "dominium.schema.logic.bus_definition@1.0.0",
-        "deterministic_fingerprint": "17d601de00c406246e38c93160d3e283f5d54bf66958d72819471a65c734f0bf",
+        "deterministic_fingerprint": "d8b116f2413d3bdfdb563f207086c5dfad043f352f96be57bb72c61ff5eb328f",
         "extensions": {
           "domain_tags": [
             "logic",
@@ -136,7 +136,7 @@
         "description": "Legacy mobility rail block signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
         "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
-        "deterministic_fingerprint": "12828399674f5f2bed3ce10630c9fae44c303dd64b77d12089745aa602e1b41b",
+        "deterministic_fingerprint": "89ab37f50b9b8f17aa2ec4d0a106fc77b943e7c9e52547891e36cb8714bdcd80",
         "extensions": {
           "domain_tags": [
             "rail",
@@ -161,7 +161,7 @@
         "description": "Legacy mobility road-light signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
         "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
-        "deterministic_fingerprint": "0de76f7a96d35c04fad6531ac943d75e9a8dcb5796ecb6e95c7e225d17a4cade",
+        "deterministic_fingerprint": "17f45ad4e261b672a6a028c55b2c6ad9b3ce1bed9a24a95caebaca6aa9493f0f",
         "extensions": {
           "domain_tags": [
             "road",
@@ -186,7 +186,7 @@
         "description": "Legacy mobility waypoint-clearance signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
         "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
-        "deterministic_fingerprint": "76e5b7e8bc599ae66029236c73051a651a6d8bc30e8c9d6bc2ff957d63368f4f",
+        "deterministic_fingerprint": "6c0cf1e73bd2f598a3879843393598103a42571746b2db3295cb627757838a37",
         "extensions": {
           "domain_tags": [
             "air",

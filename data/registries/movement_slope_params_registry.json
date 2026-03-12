@@ -11,7 +11,7 @@
         "uphill_slow_factor": 420,
         "downhill_speed_cap_factor": 1180,
         "slide_angle_threshold_stub": 34000,
-        "deterministic_fingerprint": "0f37b570cf28e26ebd49b5181b7ff3966f6ee5ef2d21ab5512ffa873a999d133",
+        "deterministic_fingerprint": "8bf37e219254ca64ef80a7781d9a5905b45e72341de0f6732fa19e5b149ead71",
         "extensions": {
           "description": "Canonical EARTH-6 deterministic slope response for embodied terrain traversal.",
           "max_effective_slope_angle_mdeg": 45000,

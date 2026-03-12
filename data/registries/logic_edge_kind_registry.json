@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "edge_kind_id": "link",
         "description": "Single typed-signal link between logic nodes.",
-        "deterministic_fingerprint": "22530e2f062433b97adcd11ad7266d0c3b259354f348b9216b32b8a793f5368c",
+        "deterministic_fingerprint": "0fa78528fc9d1dce99b9bf08b72f15d4b5452d136eb753910d0f1bdcdd01dddc",
         "extensions": {
           "source": "LOGIC3-3",
           "edge_type_id": "edge.logic.link"
@@ -29,7 +29,7 @@
         "schema_version": "1.0.0",
         "edge_kind_id": "bus_link",
         "description": "Bus-carrying link bound to a declared bus definition.",
-        "deterministic_fingerprint": "c5e913d04d263a82749ea7c4a12d20b230be9e88cf5bb2c896601dde204f5879",
+        "deterministic_fingerprint": "34a7ac6ce51308ca1bbab5fe351ddc49ae73e902fae0ef21d81d41c99268d556",
         "extensions": {
           "source": "LOGIC3-3",
           "edge_type_id": "edge.logic.bus_link"
@@ -49,7 +49,7 @@
         "schema_version": "1.0.0",
         "edge_kind_id": "protocol_link",
         "description": "Framed or arbitration-aware link bound to a declared protocol hook.",
-        "deterministic_fingerprint": "c077cdafa0a28f99ddf896b860995b592d1bc157a3a452b83abe8f0416cb4bda",
+        "deterministic_fingerprint": "2d5909c930625084e7211af930db6a51bbbe304b7e90f6ded9a88c2bdbac7ebd",
         "extensions": {
           "source": "LOGIC3-3",
           "edge_type_id": "edge.logic.protocol_link"
@@ -69,7 +69,7 @@
         "schema_version": "1.0.0",
         "edge_kind_id": "sig_link",
         "description": "Receipt-based message carrier link routed through SIG semantics.",
-        "deterministic_fingerprint": "40fc00e10de0fbc9f2c91054d18ecf54c170e097dac35ab7599140adb0a5e8f6",
+        "deterministic_fingerprint": "dd111e0945e02e3e1c5b2131f129c0de7b0365242c752af1af15686691d56a99",
         "extensions": {
           "source": "LOGIC3-3",
           "edge_type_id": "edge.logic.sig_link"

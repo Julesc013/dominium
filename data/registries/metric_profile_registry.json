@@ -13,7 +13,7 @@
           "norm": "l2"
         },
         "tolerance_policy_id": "tol.strict",
-        "deterministic_fingerprint": "9c6fa291977978e619b41a8d2e6999478600e329652ed1f5d3873a903476ba11",
+        "deterministic_fingerprint": "d52bee58c7e1864f3d3972b94e1b48f3e2d225c76602ab2c5518fe6e14b0216a",
         "extensions": {
           "metric_policy_id": "metric.euclidean_exact",
           "geodesic_approx_policy_id": "geodesic.none",
@@ -43,7 +43,7 @@
           "fundamental_period_mm": 1000000
         },
         "tolerance_policy_id": "tol.strict",
-        "deterministic_fingerprint": "4689b2d243c74cdea272824c94e486aaf3d0a27309cdc6ec466759d0b92f8a7c",
+        "deterministic_fingerprint": "dd051c0cb3a866c0126b4458a1dcc13566649ed4c6f65ee07b97d83f0675a4d5",
         "extensions": {
           "metric_policy_id": "metric.torus_wrap_exact",
           "geodesic_approx_policy_id": "geodesic.none",
@@ -69,7 +69,7 @@
           "algorithm_id": "geo.metric.spherical_stub.arc_cos_clamped"
         },
         "tolerance_policy_id": "tol.default",
-        "deterministic_fingerprint": "d8fff87a6e14b46c6d704ba466255f914477f9838f559faddda4f3b91dda23a4",
+        "deterministic_fingerprint": "ffd2baf408fc71f0671c30305e6900a89cc5b621421d35ea956c103a1f1d9a7d",
         "extensions": {
           "bounded_error_mm": 1000,
           "metric_policy_id": "metric.spherical_geodesic_stub",
@@ -96,7 +96,7 @@
           "curvature_permille": -1000
         },
         "tolerance_policy_id": "tol.relaxed",
-        "deterministic_fingerprint": "2e134ce19200e5baf97759861a9c39645e811bacce049dfe7009733dbbde49ab",
+        "deterministic_fingerprint": "885891d47e749ed2a2fae6cbf5cecf9b55860a93fe86ef2d305c79d2f011bd69",
         "extensions": {
           "bounded_error_mm": 10000,
           "metric_policy_id": "metric.hyperbolic_stub",

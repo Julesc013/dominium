@@ -19,7 +19,7 @@
           "drifted"
         ],
         "allow_capsule_without_certification": true,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "146eef15260e1db576790522187a95e2f8b932dbd06ae68d8d0011c39df8f74e",
         "extensions": {
           "source": "PROC0-4",
           "notes": "Capsule allowed after stabilization under declared error bounds."
@@ -49,7 +49,7 @@
           "drifted"
         ],
         "allow_capsule_without_certification": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e91e52256a3784d8c090eebb3f85e2ec62c5b71ca9f709bf78db1e9a17f920d8",
         "extensions": {
           "source": "PROC0-4",
           "requires_cert_for_capsule": true
@@ -76,7 +76,7 @@
           "drifted"
         ],
         "allow_capsule_without_certification": false,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "70475724b9c65dd8fa0c159b72a062aacc6bd01bb198323e8a6bddd2e3c70174",
         "extensions": {
           "source": "PROC0-4",
           "capsule_allowed": false

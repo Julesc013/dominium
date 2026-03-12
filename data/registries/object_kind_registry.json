@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.galaxy_cell",
         "description": "Deterministic coarse spatial partition object representing a galaxy-scale generation cell.",
-        "deterministic_fingerprint": "d973c9fbcb5d76426e5f0b3be4398d2d554c190f177cb8b4b1859b6b7bf38e5a",
+        "deterministic_fingerprint": "989ee6576787f6fbbe174114e95b3511223915683f3417506e8d44c9b5c36e28",
         "extensions": {
           "category": "spatial_partition",
           "source": "GEO1-3"
@@ -29,7 +29,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.star_system",
         "description": "Deterministic star-system scale procedural or authored object anchored to a GEO cell lineage.",
-        "deterministic_fingerprint": "f50a77d44fe6fb6c1f2ee0c6dbf94e74fe6f1db9996cd3ed0e441567e20e4ed9",
+        "deterministic_fingerprint": "aeaab1f5873fa46d29547d12987d9b384b004ac0ac914e91dfbd643e3b4214a6",
         "extensions": {
           "category": "celestial_system",
           "source": "GEO1-3"
@@ -49,7 +49,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.star",
         "description": "Deterministic stellar object anchored to a GEO cell lineage and local subkey ordering.",
-        "deterministic_fingerprint": "1dd4f469ed8a8547608af5213a94a20d542c54d14ae289ea748a5a4bca75b8a1",
+        "deterministic_fingerprint": "14c68eb7e9bc22bd186e3f3f69c613fd530cd1a63ed88421e823aac8cd7b96ae",
         "extensions": {
           "category": "celestial_body",
           "source": "GEO1-3"
@@ -69,7 +69,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.planet",
         "description": "Deterministic planetary object anchored to a GEO cell lineage and local subkey ordering.",
-        "deterministic_fingerprint": "e8c90c1df3313cad37d13a9eb5fc06727d77b3abdeafb873fc427dfb8d301052",
+        "deterministic_fingerprint": "fa2bfa5d1434505528ca628d226cc87f7c1b9ce8af7256ad60c7daa75b6dae2b",
         "extensions": {
           "category": "celestial_body",
           "source": "GEO1-3"
@@ -89,7 +89,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.moon",
         "description": "Deterministic satellite body anchored to a GEO cell lineage and local subkey ordering.",
-        "deterministic_fingerprint": "b1d2399ef67ad8eda142db4e6ccedb691995138a9dbd8d3385241c3a7230143d",
+        "deterministic_fingerprint": "432ccdfddf4495fb26fde178371768c62c911e33f13a143d1deb09a5fac03f5f",
         "extensions": {
           "category": "celestial_body",
           "source": "GEO1-3"
@@ -109,7 +109,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.black_hole_stub",
         "description": "Deterministic GAL-1 compact-object stub anchored to a galaxy cell lineage for the central supermassive black hole proxy.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "07949e9051036f10c58f1d702259914b42b9c36f2b80ea320f30e89c929f0905",
         "extensions": {
           "category": "celestial_hazard_stub",
           "source": "GAL1-2"
@@ -129,7 +129,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.nebula_stub",
         "description": "Deterministic GAL-1 nebula stub anchored to a galaxy cell lineage for sparse procedural environmental points of interest.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "39f05d5d1fe7a177a66e5e02bdb3b25b73b4e30c206b2c0f7d3c8a71664ac3c0",
         "extensions": {
           "category": "celestial_hazard_stub",
           "source": "GAL1-2"
@@ -149,7 +149,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.supernova_remnant_stub",
         "description": "Deterministic GAL-1 remnant stub anchored to a galaxy cell lineage for sparse procedural hazard and lore hooks.",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6fc70d32d22767c87e5c6ae343e0a940dc6196da12a188739b71226461398c08",
         "extensions": {
           "category": "celestial_hazard_stub",
           "source": "GAL1-2"
@@ -169,7 +169,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.surface_tile",
         "description": "Deterministic surface or atlas tile object derived from a GEO partition cell.",
-        "deterministic_fingerprint": "e5f102b417373ff94c81943c620d52b42dabccde429351f4a1928712090ceef1",
+        "deterministic_fingerprint": "1cdeb2d801f69209a5d36a10f2666901784981f19c01c0e01b8474c7bcf56fa8",
         "extensions": {
           "category": "surface_partition",
           "source": "GEO1-3"
@@ -189,7 +189,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.interior_cell",
         "description": "Deterministic interior-space partition object derived from a GEO partition cell.",
-        "deterministic_fingerprint": "0e4ab4903a89d871403e428dc83da54b0444c99bcccb5e2a3c7debf39961faa0",
+        "deterministic_fingerprint": "311e7d70107bbcd16e81e24c51f3f536e9cf1b799a99de7e78d019e3aec755aa",
         "extensions": {
           "category": "interior_partition",
           "source": "GEO1-3"
@@ -209,7 +209,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.structure",
         "description": "Deterministic built or authored structure object anchored to a GEO cell lineage.",
-        "deterministic_fingerprint": "ef28f3e640d95a6bd2d515bd29076502d50888edd8dafb002e03e354c0c08a83",
+        "deterministic_fingerprint": "ecdefe1200becfffe46a0008343f7a9bb6f15370797fd2bf05c306fe2d7c2f97",
         "extensions": {
           "category": "artifact",
           "source": "GEO1-3"
@@ -229,7 +229,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.vehicle",
         "description": "Deterministic vehicle or mobile assembly object anchored to a GEO cell lineage when spatially indexed.",
-        "deterministic_fingerprint": "20c112987f5aafae6774814649e90dbba8d91f9329958333c6778cc55d218df7",
+        "deterministic_fingerprint": "345fbcd3654b5222e7a2eec404ed3648c10e7f0513128f101568c8b63e299630",
         "extensions": {
           "category": "artifact_mobile",
           "source": "GEO1-3"
@@ -249,7 +249,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.signal_node",
         "description": "Deterministic logic or signaling node anchored to a GEO cell lineage when spatialized.",
-        "deterministic_fingerprint": "d363e31d29a768c0f3b8ed0d3a12667dc4f65ecbe16c750fe35c31a2cec12abc",
+        "deterministic_fingerprint": "cacfadfa8583209fe8b7b15bfe4afbaa832f6c39d7ed4db44e34de7aeb65af35",
         "extensions": {
           "category": "network_node",
           "source": "GEO1-3"
@@ -269,7 +269,7 @@
         "schema_version": "1.0.0",
         "object_kind_id": "kind.logic_network",
         "description": "Deterministic logic network aggregate anchored to a GEO cell lineage and stable local subkey.",
-        "deterministic_fingerprint": "93c2abcdd1626b6a9451bf5de06bf35bef1b04616a26c84a86444c284cd459a6",
+        "deterministic_fingerprint": "9d244a06d56766968fa4c3419bc6691fe6454a23624e025872b62d64ff178037",
         "extensions": {
           "category": "network_aggregate",
           "source": "GEO1-3"

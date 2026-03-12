@@ -20,7 +20,7 @@
           "trust.unsigned"
         ],
         "conflict_policy_id": "overlay.conflict.last_wins",
-        "deterministic_fingerprint": "849fb3cb0d804846b8b8d6e615c6142cba21ed4cea4049de40fcdb2f043eb9d4",
+        "deterministic_fingerprint": "e78c82106b565f1da67bae7228816d79775b0e0a572d6651eca67f69d77579ab",
         "extensions": {
           "official.description": "Unsigned content is permitted, but policy evaluation remains deterministic and proof-visible.",
           "official.source": "MOD-POLICY-0"
@@ -55,7 +55,7 @@
           "trust.unsigned"
         ],
         "conflict_policy_id": "overlay.conflict.last_wins",
-        "deterministic_fingerprint": "de1ce3613396d974469db2159254146591dff4b467b71e27e1d1dde1eb91cabb",
+        "deterministic_fingerprint": "36fd7c4f5536e59ff0b2ae0da0c2899028ff076e21bf5b262925779bff62815a",
         "extensions": {
           "official.description": "Local FAST/lab default with explicit local-dev allowance.",
           "official.source": "MOD-POLICY-0"
@@ -87,7 +87,7 @@
           "trust.thirdparty_signed"
         ],
         "conflict_policy_id": "overlay.conflict.refuse",
-        "deterministic_fingerprint": "8903ccdfc18d3a84fb8f826aad35e64c36a731879037b15bf7a7ce18c247ee00",
+        "deterministic_fingerprint": "db05b304f23ea9a98b741eda3eff2c13319d6cc4daea9d3af64c40c9bac1e9a9",
         "extensions": {
           "official.description": "Signed-only strict policy for ranked or release-style servers.",
           "official.source": "MOD-POLICY-0"

@@ -13,7 +13,7 @@
         "to_domain_id": "THERM",
         "mechanism": "energy_transform",
         "mechanism_id": "transform.electrical_to_thermal",
-        "deterministic_fingerprint": "e7ee3e23ede2b5f67e28db91cd86f1bbd8f393ddc715bccab7cfbb54d5786c88",
+        "deterministic_fingerprint": "8e48a056452421afe20fec52b2cd6a716ad6581d5c759c9d27c81e6a42edcd35",
         "extensions": {
           "description": "Electrical losses are routed through canonical PHYS-3 transform into thermal ledger channels."
         },
@@ -39,7 +39,7 @@
         "to_domain_id": "THERM",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.phys_irradiance_heating_stub",
-        "deterministic_fingerprint": "5fe8f782251c15e545900a504291d074f1c81d827d1c635148d0188ae28b9d04",
+        "deterministic_fingerprint": "78dedcd1ab25ac468476e8ca5b31a66a99b04c20ff145e1a38932089c78f6434",
         "extensions": {
           "description": "FIELD irradiance contributes deterministic heat input via constitutive model output."
         },
@@ -65,7 +65,7 @@
         "to_domain_id": "MECH",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.mech.fatigue.default",
-        "deterministic_fingerprint": "4894a16c24d284c872d4e8d2774ca383c244310eff656cfe57f5c2c4c30f5b86",
+        "deterministic_fingerprint": "a6e27acf275f990b9868fbdcab9a7c707310bfba79885b59522fb2f6fa837ed7",
         "extensions": {
           "description": "Temperature-influenced structural response remains model-mediated.",
           "note": "Current baseline uses fatigue model as strength/degradation proxy."
@@ -92,7 +92,7 @@
         "to_domain_id": "SIG",
         "mechanism": "signal_policy",
         "mechanism_id": "belief.default",
-        "deterministic_fingerprint": "96bf14c8277d289bca635f3c54f2774125be18e0e7541d17799bfbc467257842",
+        "deterministic_fingerprint": "5bcacda78899e99dabc41e67db611511b70592e8e3d9f8cb205b7abb04506978",
         "extensions": {
           "description": "Signal receipt acceptance is policy-mediated through trust/belief thresholds."
         },
@@ -118,7 +118,7 @@
         "to_domain_id": "MOB",
         "mechanism": "field_policy",
         "mechanism_id": "field.profile_defined",
-        "deterministic_fingerprint": "4bdba815144ac15b8d0a73200d4705cebdc1807ddcf6a2579efa53bd09e38d2d",
+        "deterministic_fingerprint": "6333a1e263ab614c95705f5f2bdcbf00a002a94f342ba772b11374f2350a490f",
         "extensions": {
           "description": "FIELD friction sampling influences MOB traction outcomes through declared field policy pathways.",
           "effect_id": "effect.mobility.traction_modifier"
@@ -145,7 +145,7 @@
         "to_domain_id": "MOB",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.phys_gravity_force",
-        "deterministic_fingerprint": "326522001694c9702e084d4b57b9936eaab4c8fc3e74f2b73df3e813ee9b07f9",
+        "deterministic_fingerprint": "803f1e0290d7d9cc8139de5dc8806eef8004609e0c70f1eaba3bd3c26bb6598d",
         "extensions": {
           "description": "PHYS gravity model emits deterministic force application consumed by MOB ROI integration.",
           "process_id": "process.apply_force"
@@ -172,7 +172,7 @@
         "to_domain_id": "THERM",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.fluid_heat_exchanger_stub",
-        "deterministic_fingerprint": "301d321daa1a26b282ca96761f9dd3b0affadbcbd14c499072b207a65c4a45a9",
+        "deterministic_fingerprint": "9f6ff323c4b8fa3aeb9ab750b32437887ecbfb0c142d28704abe093f10a585d9",
         "extensions": {
           "description": "FLUID heat exchange influences THERM via constitutive model binding."
         },
@@ -198,7 +198,7 @@
         "to_domain_id": "INT",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.fluid_leak_flood_stub",
-        "deterministic_fingerprint": "f894f98e239f07b9d5f70f2f5e4f65c909ceda7c903d0ebd398d717af4960afa",
+        "deterministic_fingerprint": "00da6b84c7c25586104f9e6d47cdb33b03f753795cf757e8be02521f166897d9",
         "extensions": {
           "description": "FLUID leak/flood transfer into INT volumes is model-mediated.",
           "process_ids": [
@@ -228,7 +228,7 @@
         "to_domain_id": "MECH",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.fluid_pressure_load_stub",
-        "deterministic_fingerprint": "275cf435aea6fa231a798c06a632f0d5ad01050119578daa3a9f71885e5740f4",
+        "deterministic_fingerprint": "98bb7ad3459050b28541653ac8be66f01c510a01c5cb22e2be0cc7f71249779a",
         "extensions": {
           "description": "FLUID pressure load contributes to MECH hazards via constitutive model."
         },
@@ -254,7 +254,7 @@
         "to_domain_id": "FLUID",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.chem_scaling_rate.default",
-        "deterministic_fingerprint": "cfdc36adb3fd38ceb21e75de3372e43558d92dafb006ca0e7cace4f76bd0bd05",
+        "deterministic_fingerprint": "cf5299312b4637a687e1d42ef42f4904191ee43494c957e7884fc42aeb6c1eec",
         "extensions": {
           "description": "CHEM scaling/fouling degradation modifies FLUID edge capacity/loss through emitted effects."
         },
@@ -280,7 +280,7 @@
         "to_domain_id": "THERM",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.chem_fouling_rate.default",
-        "deterministic_fingerprint": "b047088a9e8ba4d817f9ebb20af3088ddd2ea6dc7d9aac9d3cf6ed67e844a5f5",
+        "deterministic_fingerprint": "36535c550d5b58b390b08216adb458d7120315019fe0bec1293555c6466c5f58",
         "extensions": {
           "description": "CHEM fouling degradation reduces THERM effective conductance through effect outputs."
         },
@@ -306,7 +306,7 @@
         "to_domain_id": "MECH",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.chem_corrosion_rate.default",
-        "deterministic_fingerprint": "e086fe2dfac8701d47b319f57fdfc4756f70b1e40f828ba4c085006330cc3483",
+        "deterministic_fingerprint": "42f1329e4651f2c88ed99481052c59538e49cbc936ab6b202159490c5d0d2dd1",
         "extensions": {
           "description": "CHEM corrosion degradation reduces MECH effective strength through effect outputs."
         },
@@ -332,7 +332,7 @@
         "to_domain_id": "ELEC",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.chem_corrosion_rate.default",
-        "deterministic_fingerprint": "de58eac052052d57f1314e9774d88da6eb1ba0b0bc9421f9f6f697553b4ccab5",
+        "deterministic_fingerprint": "f47897d6ae256c355a84b10eeb8130767d22a96116c5f6115207f7093ae80a60",
         "extensions": {
           "description": "CHEM corrosion/moisture degradation increases ELEC insulation-breakdown hazard through effect outputs."
         },
@@ -358,7 +358,7 @@
         "to_domain_id": "POLL",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.poll_emit_from_reaction_stub",
-        "deterministic_fingerprint": "584a92af7545a93e8f5d615f8562f9d37bb27fb69611ef9d6cc29831019bcd40",
+        "deterministic_fingerprint": "2e3d73594ed6d0ec57585786edcd186e8b42f5570e8de38f00029b0f0f50e86d",
         "extensions": {
           "description": "CHEM reaction/process emissions are normalized into canonical pollution source events."
         },
@@ -384,7 +384,7 @@
         "to_domain_id": "POLL",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.poll_emit_from_fire_stub",
-        "deterministic_fingerprint": "fd846c548ce0b5664c749fd57c17bc27f0e2e2f1490b2471f01c45f944290bfd",
+        "deterministic_fingerprint": "d884311f1d552b5c0e07674a37926f1c690b40e352e6c312cac66dc24bb25345",
         "extensions": {
           "description": "THERM combustion/fire emissions are normalized into canonical pollution source events."
         },
@@ -410,7 +410,7 @@
         "to_domain_id": "POLL",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.poll_contaminant_carry_stub",
-        "deterministic_fingerprint": "6c64b7182892852cb868632d974c4f60e39495b7a440cc4eb56b74c608f39c65",
+        "deterministic_fingerprint": "c2892575f1552943052a3c01732ecf992c487254fceafef05cc0aa1335d730d8",
         "extensions": {
           "description": "FLUID leak/flow contaminants are carried into POLL transport accounting (POLL-0 stub)."
         },
@@ -436,7 +436,7 @@
         "to_domain_id": "FIELD",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.poll_visibility_from_concentration_stub",
-        "deterministic_fingerprint": "23e8f431c551ed853024f9044a4fa231bf3eab4d6c302deede01a9645aa53b2a",
+        "deterministic_fingerprint": "ecde7f6dbf985a08cd8519f9f77d3e321c1924bdcb2956691b1c355760da15d9",
         "extensions": {
           "description": "Visibility reduction must be model-derived from pollutant concentration pathways, never direct ad hoc field writes.",
           "optional": true
@@ -463,7 +463,7 @@
         "to_domain_id": "SIG",
         "mechanism": "signal_policy",
         "mechanism_id": "policy.sig.pollution_reporting_stub",
-        "deterministic_fingerprint": "70f8e9853b00dc205ddcd12607f42dd93567fda32dad0b373f8ac4acb84b9b80",
+        "deterministic_fingerprint": "68ebdc24ad73df6c42bfa68296390660125fc1993111386fd188b788a148f877",
         "extensions": {
           "description": "Institutional pollution reporting handoff to SIG domain.",
           "status": "reserved_for_later"
@@ -490,7 +490,7 @@
         "to_domain_id": "CHEM",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.proc_capsule_output_stub",
-        "deterministic_fingerprint": "a1e99a885db9f65adc4698e39a29f6cb49eda007c955f1d142ad08b3fad5cb10",
+        "deterministic_fingerprint": "137e26d3aeceac86f90bf06aa0db15b0188066e78635655e28df78bf29a30e75",
         "extensions": {
           "description": "Process capsule outputs are projected to CHEM-compatible inputs through declared constitutive bindings.",
           "source": "PROC0-3"
@@ -517,7 +517,7 @@
         "to_domain_id": "SIG",
         "mechanism": "signal_policy",
         "mechanism_id": "belief.default",
-        "deterministic_fingerprint": "98e6abdc761f2967a142c1292a092d3c81b52f771f8db36ac20462564d17a736",
+        "deterministic_fingerprint": "c0ec628bd295a002258a386f646a75eece09dddaf7c382a657858e985ec2230c",
         "extensions": {
           "description": "Process QC and drift reports are transmitted through SIG trust/receipt policy pathways.",
           "source": "PROC0-3"
@@ -544,7 +544,7 @@
         "to_domain_id": "SYS",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.proc_drift_score_stub",
-        "deterministic_fingerprint": "2db6823717824ec4502f9c76de16e68f81c5e63bcf13940143db8cf78018cd75",
+        "deterministic_fingerprint": "5f0f7ade6868dd7180b41ebc508c79a2a69b7bc6e67dbbf783bde564b52765b1",
         "extensions": {
           "description": "Process drift/failure-risk outputs can trigger system fidelity escalation and forced revalidation.",
           "source": "PROC0-3"
@@ -571,7 +571,7 @@
         "to_domain_id": "PROC",
         "mechanism": "signal_policy",
         "mechanism_id": "policy.logic.command_via_process",
-        "deterministic_fingerprint": "cfd3623cb9392ac351d1b0507ec56e274facb4a1acaf064f9e7da834664ee744",
+        "deterministic_fingerprint": "ab76af4ab896ad23902323e843f2b3f26d1ca548acec09ac3214d9dde5d6c16b",
         "extensions": {
           "description": "LOGIC emits actuator intent only through canonical process routing; direct actuator truth mutation is forbidden.",
           "actuator_domain_ids": [
@@ -606,7 +606,7 @@
         "to_domain_id": "LOGIC",
         "mechanism": "constitutive_model",
         "mechanism_id": "model.logic.transducer_bridge",
-        "deterministic_fingerprint": "01a96172f6083cb062f99fc815331cb6ca67c311014576c1e19cbb79c2edc892",
+        "deterministic_fingerprint": "e8704463971068020ed35b36af7a51202942f9510d035206c6af831f0ce3294c",
         "extensions": {
           "description": "Physical carrier observations enter LOGIC only through transducer systems with declared error bounds and interface signatures.",
           "source": "LOGIC0-4"
@@ -633,7 +633,7 @@
         "to_domain_id": "LOGIC",
         "mechanism": "signal_policy",
         "mechanism_id": "policy.sig.logic_receipt_gate",
-        "deterministic_fingerprint": "de5f2a3f4a6f72e780848c04025489e55bb2e64b918f1ea1518224f85116139c",
+        "deterministic_fingerprint": "b3a3241080f1cf560a77ed4cb11a2b7e3a9f5f7b999429c7ac7cd911c2304125",
         "extensions": {
           "description": "Receipt-based message carriers enter LOGIC through SIG trust, addressing, and encryption policy gates only.",
           "source": "LOGIC0-4"

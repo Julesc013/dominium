@@ -8,7 +8,7 @@
       {
         "provides_id": "provides.earth.dem.v1",
         "provides_type": "dataset",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ad4e40767fd3e0caf71a0beaf85f7b1826d068a76953138ec21d4b1ebc989774",
         "extensions": {
           "official.description": "Reference dataset surface for Earth DEM providers.",
           "official.source": "LIB-5"
@@ -27,7 +27,7 @@
       {
         "provides_id": "provides.ephemeris.system.v1",
         "provides_type": "dataset",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "72771a26f2ee90cfacd0d2770212aa3e5d11d86ae71fc82bdce488a54f6d9b96",
         "extensions": {
           "official.description": "Reference surface for alternate deterministic system ephemeris providers.",
           "official.source": "SOL2-6"
@@ -46,7 +46,7 @@
       {
         "provides_id": "provides.profile.bundle.v1",
         "provides_type": "template_set",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "bbb7f04b3ff2d3c8a3cdf4abd14b8c4f8e451074f244dba216b4b64cf9ce949d",
         "extensions": {
           "official.description": "Reference surface for alternate profile bundle providers.",
           "official.source": "LIB-5"

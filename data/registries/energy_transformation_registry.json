@@ -17,7 +17,7 @@
         },
         "boundary_allowed": false,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "c36ff08d0513e3b35d09c95379fe1c95431114e5988579d381f3fc44fc34b007",
+        "deterministic_fingerprint": "9dfe3a526683a8c0cabc05a488e34f13d4fdc5b003d40424b6a19fd2fd7f77ec",
         "extensions": {
           "reason": "friction"
         },
@@ -44,7 +44,7 @@
         },
         "boundary_allowed": false,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "a70358ef54073a482207308b519949f354ec485eeac3f98f9e4436035eb421ea",
+        "deterministic_fingerprint": "df659a8a572e74e0d5e074b4a445bb3f07c1a528c1e103ba3c692d2461af4329",
         "extensions": {
           "reason": "loss"
         },
@@ -71,7 +71,7 @@
         },
         "boundary_allowed": false,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "d99eb4a49b42fda9cc26b2f64256bc509ee0d3a34343fd13672a93f0a2ad2430",
+        "deterministic_fingerprint": "d36122a8d2d02aee3fc8c016ad95114ed045462f71ea5e6a3c8fac743f4e8b0c",
         "extensions": {
           "reason": "combustion_stub"
         },
@@ -97,7 +97,7 @@
         },
         "boundary_allowed": false,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "8adceb896b37b782d0318950a2899688257dcd3a3727062a209f8d1cd39aad31",
+        "deterministic_fingerprint": "90258f0b95e06baf580d22570c62cbc75f3b69027d50cfd78b80cfae42045138",
         "extensions": {
           "reason": "generator_hook"
         },
@@ -123,7 +123,7 @@
         },
         "boundary_allowed": false,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "495e4b99cc5635ab036700b2989445a2ba0709da93c1d50ca381e7f0b2826153",
+        "deterministic_fingerprint": "789c4446e21bb378ed01a4dbce0a046c521609c1e0c9c8d5a2f206d461779189",
         "extensions": {
           "reason": "gravity_stub"
         },
@@ -149,7 +149,7 @@
         },
         "boundary_allowed": false,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "38dfe4e9f9c49d263046935df59db56bbb833d7c5c4d22f4ba0b7b4c7e9a974e",
+        "deterministic_fingerprint": "7ad30a6c96001f65757a3d2749d092ffcee71d4ce713371f7cb915255e143a1e",
         "extensions": {
           "reason": "phase_change_stub"
         },
@@ -176,7 +176,7 @@
         },
         "boundary_allowed": false,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "b1a856a43978f011a3bcc037835472beaa56710309ecd0a6e4d8255faf9eecf9",
+        "deterministic_fingerprint": "c41eda7cf8aa0dab560eb219bdae2c99d5ca2245d86890ef365d3bf9353143a0",
         "extensions": {
           "reason": "plastic_deformation_stub"
         },
@@ -201,7 +201,7 @@
         },
         "boundary_allowed": true,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "4645db45135439e8df8bf9e37e58bb0dc3ae7006bd44059947c9d430ae743d33",
+        "deterministic_fingerprint": "9c7a0925435b31e67c628fb1c045cd54b64c7a3c07610e7bfc0f532aded44aef",
         "extensions": {
           "reason": "boundary_flux"
         },
@@ -225,7 +225,7 @@
         },
         "boundary_allowed": true,
         "requires_profile_flag": null,
-        "deterministic_fingerprint": "7aed0a840ea84210b0d34c91a4fd155a652da90d66449c0cfbfbdf0c2e392893",
+        "deterministic_fingerprint": "d111d516324ec987539074d5c68b23058ebb88dcd65dab386d149329b680d3f4",
         "extensions": {
           "reason": "external_impulse"
         },

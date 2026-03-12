@@ -12,7 +12,7 @@
         "medium": "air",
         "default_decay_model_id": "model.poll_decay_half_life_stub",
         "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
-        "deterministic_fingerprint": "0104af00106514f76ab3ab6b6a434d59d15f535de5bc5e445fa0d89c566685d3",
+        "deterministic_fingerprint": "a027be94a5c178fc78f7c005fe57e443ce476888460d1ba3faa0fd683f311df6",
         "extensions": {
           "source": "POLL0",
           "concentration_field_id": "field.pollution.smoke_particulate_concentration",
@@ -37,7 +37,7 @@
         "medium": "air",
         "default_decay_model_id": "model.poll_decay_none",
         "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
-        "deterministic_fingerprint": "d046674788f08f8082849323d2a144b5807201b34094b6b6a18837a9e314939e",
+        "deterministic_fingerprint": "c0be0d97e2b7627d96a8787b2496e517a91ec2427fbb0c02afdd454ca37ed471",
         "extensions": {
           "stub": true,
           "source": "POLL0",
@@ -63,7 +63,7 @@
         "medium": "air",
         "default_decay_model_id": "model.poll_decay_half_life_stub",
         "default_dispersion_policy_id": "poll.policy.rank_strict",
-        "deterministic_fingerprint": "733de9c7cf2ed1e35646791602d2aa872f683a2d2502fe27699d52d433b4d12d",
+        "deterministic_fingerprint": "f159af6fcf15bbc5ae35ef6b57bba33b00665ddd96e315000255d8b7881acc56",
         "extensions": {
           "stub": true,
           "source": "POLL0",
@@ -89,7 +89,7 @@
         "medium": "multi",
         "default_decay_model_id": "model.poll_deposition_stub",
         "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
-        "deterministic_fingerprint": "5cb3f5a1c5365ebce5a6b62c92f4c24a0d6cb86a44dcb45a65652d000d451635",
+        "deterministic_fingerprint": "0216ff0d44671f4746b397bf44d114984ea9593bdc4e75d035cec8c205c26a0b",
         "extensions": {
           "stub": true,
           "source": "POLL0",

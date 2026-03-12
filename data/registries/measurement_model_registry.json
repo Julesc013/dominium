@@ -11,7 +11,7 @@
         "description": "Deterministic quantized measurement model for diegetic field instruments.",
         "quantization_step": 10,
         "absolute_error_bound": 5,
-        "deterministic_fingerprint": "e50a0a3c0bfead00e370e8ab2fd4a612b543b6216b8b5c720aeca970770f0881",
+        "deterministic_fingerprint": "6ec663611fcd387591cc7ec7069f237dad21265ee65f05b867b14c8ffd0e5a61",
         "extensions": {
           "source": "META-INSTR0"
         },
@@ -32,7 +32,7 @@
         "description": "Calibrated deterministic instrument model with narrower absolute error bound.",
         "quantization_step": 5,
         "absolute_error_bound": 2,
-        "deterministic_fingerprint": "45601f9050da3ed0a8d835870cbdcf303d7d7b849181625937bde9d1f692e1b0",
+        "deterministic_fingerprint": "92237a6bc24c35d7846584fe03050f81b2b08306554505161bae4f2526de55d2",
         "extensions": {
           "source": "META-INSTR0"
         },
@@ -53,7 +53,7 @@
         "description": "High-precision laboratory model with strict deterministic quantization/error limits.",
         "quantization_step": 1,
         "absolute_error_bound": 1,
-        "deterministic_fingerprint": "ff6fc682934e7985655716f5c938cf9b04796b274a37ea26ab93f6f24e0ba400",
+        "deterministic_fingerprint": "12dd22dc19a61f4b680b9d35dcd155d23af4431ee4238fd02ca639d039bc1d8f",
         "extensions": {
           "source": "META-INSTR0"
         },

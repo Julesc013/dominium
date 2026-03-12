@@ -10,7 +10,7 @@
         "generator_version_id": "gen.v0_stub",
         "description": "Baseline deterministic MW generator for on-demand Milky Way cell seeds, star-system artifacts, and bounded L2 star/orbit priors.",
         "compat_version": "1.0.0",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "00a72de8852f5a10c8049a36872e77716deddb59270497ddd41c996745436467",
         "extensions": {
           "worldgen_algorithm_family": "geo.worldgen.milky_way_cell_seed_v0",
           "supports_refinement_levels": [

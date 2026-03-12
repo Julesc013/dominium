@@ -15,7 +15,7 @@
           "leak_threshold_permille": 700,
           "critical_permille": 900
         },
-        "deterministic_fingerprint": "9ca01811af4d60a393146d7a25469e200689aaf010dfee8a4c1637d919f85bcc",
+        "deterministic_fingerprint": "b56e31cb6ca0681b19b9bd4b6611225673604c71e3c28b77c8975e0fe18d834c",
         "extensions": {
           "target_domain": "FLUID",
           "source": "CHEM3-2"
@@ -41,7 +41,7 @@
           "efficiency_drop_permille": 500,
           "critical_permille": 850
         },
-        "deterministic_fingerprint": "2231a2d83f5991ec8c989c0599c53b8609926f33e5e962da97b9a02928de5b31",
+        "deterministic_fingerprint": "189801f9663cc43dece54f1e480abee1db5be908a65dcc25668a776beae73552",
         "extensions": {
           "target_domain": "THERM",
           "source": "CHEM3-2"
@@ -67,7 +67,7 @@
           "flow_restriction_permille": 550,
           "critical_permille": 900
         },
-        "deterministic_fingerprint": "d05712ca630eba6e81ae7bf9d9f08f513e1bf0286262df1453b680e48fe6bfe8",
+        "deterministic_fingerprint": "8c9ab8527f779f41d4feff9df0232974640e97abce2ffbd8763525aab22fb619",
         "extensions": {
           "target_domain": "FLUID",
           "source": "CHEM3-2"

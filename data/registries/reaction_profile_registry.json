@@ -21,7 +21,7 @@
           "material.pollutant_coarse_stub": 1
         },
         "rate_model_id": "model.therm_combust_stub",
-        "deterministic_fingerprint": "f281b935733ef3e5b9c9306a9cb80fea6eeadb163eae6652a3f90f8c1ccb982a",
+        "deterministic_fingerprint": "cc3d91d888664624961d2e13c23241ce5d96486f00fa1b899ef3b2091262e4e0",
         "extensions": {
           "combustion_profile_id": "material.wood_basic",
           "efficiency_model_id": "model.chem_combust_efficiency_stub",
@@ -55,7 +55,7 @@
           "material.pollutant_coarse_stub": 2
         },
         "rate_model_id": "model.therm_combust_stub",
-        "deterministic_fingerprint": "6e4281deeb82cdf4ebf603689c8ad3e4f345b592eda4e01045ca35fdaa80fb7c",
+        "deterministic_fingerprint": "516615c8260e5862b7529a7ec057c37867a03ac7b608e9d9fd36535241ed6c2b",
         "extensions": {
           "combustion_profile_id": "material.fuel_oil_stub",
           "efficiency_model_id": "model.chem_combust_efficiency_stub",
@@ -89,7 +89,7 @@
           "material.pollutant_coarse_stub": 2
         },
         "rate_model_id": "model.therm_combust_stub",
-        "deterministic_fingerprint": "822de743323ab284fc5b4c004b4a30a9e6bf566a727d0c4a66cfa02b840427eb",
+        "deterministic_fingerprint": "d9108773c6ebad4825393e177107abee94e6726ded3d3a1b1c3131538bc72172",
         "extensions": {
           "combustion_profile_id": "material.fuel_oil_stub",
           "efficiency_model_id": "model.chem_combust_efficiency_stub",
@@ -124,7 +124,7 @@
           "material.pollutant_coarse_stub": 1
         },
         "rate_model_id": "model.chem_rate_pressure_temp_stub",
-        "deterministic_fingerprint": "36d5193fee76e068523dbef5ddbc480288e76c2d87df74a999db1d1e926acc55",
+        "deterministic_fingerprint": "6f8db850743c4689b4f9ae08f27657df7e9f0d3fc9cb01ad1a824c603f0a9514",
         "extensions": {
           "process_type": "smelting",
           "yield_model_id": "yield.basic_windowed",
@@ -156,7 +156,7 @@
           "material.pollutant_coarse_stub": 1
         },
         "rate_model_id": "model.chem_rate_pressure_temp_stub",
-        "deterministic_fingerprint": "b2ef6e39c7bc1850584ca9249dc8721772192542c7bc13977c6e5ad73287d5a3",
+        "deterministic_fingerprint": "eceb9a919b0632df3d8179bb5df125ca7eb775e7ffbdc0c425120872a1448182",
         "extensions": {
           "process_type": "refining",
           "yield_model_id": "yield.entropy_penalty",
@@ -185,7 +185,7 @@
         "energy_transformation_id": "transform.chemical_to_thermal",
         "emission_species": {},
         "rate_model_id": "model.chem_rate_catalyst_stub",
-        "deterministic_fingerprint": "9c4e8ba33d3394fc58cef9d6f8598ab26d57d606436d7dda2c439d5ffb1d2c0c",
+        "deterministic_fingerprint": "11a5cc2f0bd3c349bcb4282a59621756430516609f00edf53214f629fa0c87cc",
         "extensions": {
           "process_type": "polymerization",
           "yield_model_id": "yield.catalyst_boost",
@@ -215,7 +215,7 @@
         "energy_transformation_id": "transform.chemical_to_thermal",
         "emission_species": {},
         "rate_model_id": "model.chem_rate_pressure_temp_stub",
-        "deterministic_fingerprint": "971de45310c6d89df79a9eb96612a4ccbf2fafb78b80785474a375cf5e7d0e78",
+        "deterministic_fingerprint": "0d648e5a638dc8388cf55c5b44bd8c55e7a5f5c51e52b7054b668e40e4cdd348",
         "extensions": {
           "process_type": "distillation",
           "yield_model_id": "yield.basic_windowed",
@@ -247,7 +247,7 @@
           "material.pollutant_coarse_stub": 1
         },
         "rate_model_id": "model.chem_rate_catalyst_stub",
-        "deterministic_fingerprint": "ba4926073f274e6781e02b4e594a2ea8c5e44daf861485249ee865ebe53db093",
+        "deterministic_fingerprint": "195cc987f730bde076a2d3e12538e21d7ef09165ad1faed7c85f45149fa0d5d8",
         "extensions": {
           "process_type": "cracking",
           "yield_model_id": "yield.catalyst_boost",

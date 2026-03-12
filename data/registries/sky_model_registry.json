@@ -10,7 +10,7 @@
         "sky_model_id": "sky.gradient_stub_default",
         "kind": "gradient_stub",
         "parameters_ref": "params.sky.gradient.earth_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e3e5e10ccdfad044a46d1be1abeaa0c6f8714a76e5ae283c12373bf7a84eb799",
         "extensions": {
           "description": "Canonical EARTH-4 gradient-based sky model with deterministic twilight blending and no texture dependency.",
           "turbidity_permille": 460,

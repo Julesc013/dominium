@@ -43,7 +43,7 @@
         },
         "cell_size_pc": 10,
         "max_systems_per_cell": 24,
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4de1c493e795ac93d7f1e70f2b94e070059cd2a16d0fcbb7bb152811d177fa7f",
         "extensions": {
           "description": "Realism-like Milky Way priors for deterministic on-demand MW-0 cell generation.",
           "star_formation_priors": {

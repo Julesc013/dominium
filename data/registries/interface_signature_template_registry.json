@@ -77,7 +77,7 @@
         "required_spec_type_ids": [
           "spec.vehicle_interface"
         ],
-        "deterministic_fingerprint": "9d58c274c197391a9c5cc2fb96d21268c4e03931a7e9167dbb7aff421c8af194",
+        "deterministic_fingerprint": "5ba0475bac945a9d61781ab9ae232bc3926c307fdaa53e5cafb64c6083ec3f6a",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -140,7 +140,7 @@
         "required_spec_type_ids": [
           "spec.vehicle_interface"
         ],
-        "deterministic_fingerprint": "e444c74871128a098234c1b4b64d04f8b319acb033bac5b5d8f766c4019e6518",
+        "deterministic_fingerprint": "96674ec5b45a89e4a38a3d20eb5925070641a7866bdac2795f02114a8d18862d",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -204,7 +204,7 @@
           "spec.track",
           "spec.vehicle_interface"
         ],
-        "deterministic_fingerprint": "30f4c35e09fc43ec1a9d32e0d00663ab94c0e367e036073597c267b78a7e5ae1",
+        "deterministic_fingerprint": "8ca146d9b27e2540705b80fd12d11b62b144991a865d448960c48f663ef03930",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -279,7 +279,7 @@
           "spec.bridge",
           "spec.track"
         ],
-        "deterministic_fingerprint": "19984d213e70bdf4d5c2f8596009f2bf6ab6281e164a3952ad2031e417a8d9b4",
+        "deterministic_fingerprint": "145c12af3eac1dab37ef494c0cf44b77849de2ea8a88a4337b516b824bc0bfa2",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -342,7 +342,7 @@
         "required_spec_type_ids": [
           "spec.vehicle_interface"
         ],
-        "deterministic_fingerprint": "56d92cafee8d7ca22998543d5a54e4417291204bffcbcbfca06e34cf2e4b4377",
+        "deterministic_fingerprint": "caf9844ababc7646b750487696bbaba9507531990c3f529c900ff8116a9b6dbe",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -394,7 +394,7 @@
         "required_spec_type_ids": [
           "spec.logic_interface"
         ],
-        "deterministic_fingerprint": "78012f02a00554a67946d8e9586e7ed397e9541bb0b491aabab843196eb8a53a",
+        "deterministic_fingerprint": "a0b782f6613d6e9d17271fe19e7fc94c3891e44f26b617de96894d05d60a430c",
         "extensions": {
           "source": "LOGIC6-6",
           "supports_compiled_logic_capsules": true
@@ -424,7 +424,7 @@
           }
         ],
         "required_spec_type_ids": [],
-        "deterministic_fingerprint": "55ce7bc06f7ab83e17d38b49e3ebf6416781d82e8c080f2d194f0c5687c98df5",
+        "deterministic_fingerprint": "4f48982f16e2ef5954d4e591608b9da0fa3750f636a3bcaead48a40ee2d576d2",
         "extensions": {
           "source": "EMB0-2",
           "body_control_channels": [

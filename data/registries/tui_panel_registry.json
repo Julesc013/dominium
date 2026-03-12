@@ -12,7 +12,7 @@
         "required_capabilities": [
           "cap.ui.tui"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "903d52899cf75f5d85d78b13831be13ffd642d4c9b3b3a3adeac187457fe9ef7",
         "extensions": {
           "focus_key": "Ctrl+C",
           "official.source": "APPSHELL-3",
@@ -37,7 +37,7 @@
           "cap.ui.tui",
           "cap.worldgen.refinement_l3"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e87ae8193feb3b8a2875a517e1574f9c7a15de32c0f33d751a63b3432c881f1f",
         "extensions": {
           "focus_key": "Ctrl+I",
           "official.source": "APPSHELL-3",
@@ -61,7 +61,7 @@
         "required_capabilities": [
           "cap.ui.tui"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "5802530fca9d4310b54830a0fdc732730c98ca35654fc0817747712bcc33966d",
         "extensions": {
           "focus_key": "Ctrl+L",
           "official.source": "APPSHELL-3",
@@ -86,7 +86,7 @@
           "cap.ui.tui",
           "cap.geo.projection"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "70ff889f3a7cd894f7003e8ef075c6c8af2b1ad88a924e12dc6a2d86eb7b308c",
         "extensions": {
           "focus_key": "Ctrl+M",
           "official.source": "APPSHELL-3",
@@ -110,7 +110,7 @@
         "required_capabilities": [
           "cap.ui.tui"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "daf2c72e1b007784579a598998555835a15f38687bb2d46863c18a280a08f52b",
         "extensions": {
           "focus_key": "Ctrl+S",
           "official.source": "APPSHELL-3",

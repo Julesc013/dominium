@@ -12,7 +12,7 @@
         "model_id": "model.proc_defect.default",
         "stochastic_allowed": false,
         "rng_stream_name": null,
-        "deterministic_fingerprint": "4763600c79e74b1f13ddf1e0b3ce2213acbc78d9e51ac5ce5e2d3ae7c3725b8d",
+        "deterministic_fingerprint": "5718e2d6d612a7e5bb36d443468205cb37e9c5bf67c25afcbcd1420cda205cee",
         "extensions": {
           "source": "PROC2-2"
         },
@@ -34,7 +34,7 @@
         "model_id": "model.proc_defect.default",
         "stochastic_allowed": true,
         "rng_stream_name": "rng.process.quality.defect",
-        "deterministic_fingerprint": "b4031fc01eca98525149a0378c9dc700a307bc42095141a876d0e2161d018415",
+        "deterministic_fingerprint": "bd5cc0244e673fd4d07f12ffe1c6488fe2ec24fed6714bcdd5d54c365281b147",
         "extensions": {
           "source": "PROC2-2",
           "policy_gated": true

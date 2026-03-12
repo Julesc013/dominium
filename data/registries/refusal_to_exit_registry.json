@@ -10,7 +10,7 @@
         "refusal_code": "refusal.io.invalid_args",
         "exit_code": 10,
         "description": "Invalid command arguments map to usage-range exits.",
-        "deterministic_fingerprint": "667bfca4c39b04fe027b6412354f3275fec0e66ace53d38e0d2b358e4031b9d4",
+        "deterministic_fingerprint": "c1f3bdbe5761a061e7b9b030bef4354fadc77a35e10aee06820cdbcbc0c8936f",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -30,7 +30,7 @@
         "refusal_code": "refusal.debug.command_unknown",
         "exit_code": 10,
         "description": "Unknown registered-command tokens map to usage-range exits.",
-        "deterministic_fingerprint": "396ce777d9d027fb8caf419df0de3354f2f4507791ae0821640679724bdc701e",
+        "deterministic_fingerprint": "682ed503bdfcbeff865bc145332e1ac9977a5af88cd883fbaa08c6026dafa0f5",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -50,7 +50,7 @@
         "refusal_code": "refusal.connection.no_negotiation",
         "exit_code": 40,
         "description": "Missing mandatory attach/connection negotiation maps to the transport range.",
-        "deterministic_fingerprint": "cfc87c1c8aef2a85fc8d33e389e55f5f5a0f7805fbe86ce6c36d9c8d7c067829",
+        "deterministic_fingerprint": "5d97cf7efcfce54bdb4b48a8e4f47a8a2dd37d0bc844aa3d8453b75b07e86b5f",
         "extensions": {
           "official.source": "APPSHELL-4"
         },
@@ -70,7 +70,7 @@
         "refusal_code": "refusal.connection.negotiation_mismatch",
         "exit_code": 40,
         "description": "Negotiation record mismatches on attach/connection map to the transport range.",
-        "deterministic_fingerprint": "27d9039657ecf99ecaab71d55a059e7c5b8d4616f20d7144f50f71c65b2d2882",
+        "deterministic_fingerprint": "8478367b7d1a6918ebba71637066cbd39a204ea6e4398a8afa1be2573a9b383e",
         "extensions": {
           "official.source": "APPSHELL-4"
         },
@@ -90,7 +90,7 @@
         "refusal_code": "refusal.io.profile_not_found",
         "exit_code": 20,
         "description": "Missing profile bundles are treated as pack/profile surface failures.",
-        "deterministic_fingerprint": "468ce74ab3836f0c6cf0aa014c649994cac3a3fc8a098a6eee180c102c6b5e7c",
+        "deterministic_fingerprint": "510f8b0b2f1eacd770452d1b3026a8c65bd3f34b2ed04ec3125c32cc28c58824",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -110,7 +110,7 @@
         "refusal_code": "refusal.compat.feature_disabled",
         "exit_code": 50,
         "description": "Negotiated feature-disable refusals map to the refusal range.",
-        "deterministic_fingerprint": "c9354aadef9a00a8e7b520c36cfa753c98dbbe7996f35c282de926b8071d5fda",
+        "deterministic_fingerprint": "7bb453ba8fef0cc94cff31e4e4e7d1d2e10bd0e9145bb3a9ca47758dfad54613",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -130,7 +130,7 @@
         "refusal_code": "refusal.server.command_unknown",
         "exit_code": 50,
         "description": "Unknown live server console commands remain explicit refusal-range failures.",
-        "deterministic_fingerprint": "26328afe1c6865d8ab33c15d5e7b53f17a857e3004d55ce856960d81b76decc3",
+        "deterministic_fingerprint": "172341653ff941df4677f8443f8325a136bcbb4b3d46a37563866a64c318fc18",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -150,7 +150,7 @@
         "refusal_prefix": "refusal.compat.",
         "exit_code": 30,
         "description": "Compatibility and negotiation failures map to the contract/compatibility range.",
-        "deterministic_fingerprint": "8e37747d6c1e4b94414bcb2960333129fef67dad4039d6c3e4c03d771bc2787f",
+        "deterministic_fingerprint": "b9aaf2e80a801d7b67af13be1b09d11d6be99333ec97dba3e3d256bf36bd1fc4",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -170,7 +170,7 @@
         "refusal_prefix": "refusal.pack.",
         "exit_code": 20,
         "description": "Pack validation and verification failures map to the pack/profile range.",
-        "deterministic_fingerprint": "cfa47c7da68f1ce11e467849d3af252a5f26436352b07d0ca044d3d7d792f38c",
+        "deterministic_fingerprint": "964d8311c06d983f925c70b84e9445f960fdea19e09ae98016b027d251001eb5",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -190,7 +190,7 @@
         "refusal_prefix": "refusal.contract.",
         "exit_code": 30,
         "description": "Contract mismatches map to the contract/compatibility range.",
-        "deterministic_fingerprint": "9f1e5bd4e2cf56491711ba9fbf3b4996b422d2dafa6732c14fcf2358e7de8cab",
+        "deterministic_fingerprint": "48c3953643013f42905d3be01965a24cece3cd5483e3b23abe3919c37138555e",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -210,7 +210,7 @@
         "refusal_prefix": "refusal.connection.",
         "exit_code": 40,
         "description": "Connection and attach handshake failures map to the transport/IPC range unless explicitly overridden.",
-        "deterministic_fingerprint": "0cd46a05d6b54ffcbdda53720ec920ca2a220eccce66e68bbb2fed7251b2d6bf",
+        "deterministic_fingerprint": "42c602e7edfd795afc2ad7d4d565d0b823a1e95a533ee62f96897305cc219f0f",
         "extensions": {
           "official.source": "APPSHELL-4"
         },
@@ -230,7 +230,7 @@
         "refusal_prefix": "refusal.supervisor.",
         "exit_code": 50,
         "description": "Supervisor lifecycle and orchestration refusals map to the refusal range.",
-        "deterministic_fingerprint": "bf3a51c6b79b248a8598764827e628b8f9358d8117f44aad9c2122b7ba230091",
+        "deterministic_fingerprint": "fe709d4e556862e6dbdf5572398b4b9ddff15cb247467264520ddb6f68c40bca",
         "extensions": {
           "official.source": "APPSHELL-6"
         },
@@ -250,7 +250,7 @@
         "refusal_prefix": "refusal.diag.",
         "exit_code": 50,
         "description": "Deterministic repro-bundle capture and replay refusals map to the refusal range.",
-        "deterministic_fingerprint": "e41667137ec899905995a7c4afafd488ed617880439f9056d7f02ebcd0b9aa8f",
+        "deterministic_fingerprint": "4552491e17d0715b5206ae2f5140853bec156e9c6d68d0dd139a2ea2ccd26336",
         "extensions": {
           "official.source": "DIAG-0"
         },
@@ -270,7 +270,7 @@
         "refusal_prefix": "refusal.io.",
         "exit_code": 40,
         "description": "IO/host-shell failures map to the transport and IO-shell range.",
-        "deterministic_fingerprint": "5d8160812858a9fa92908bf07f26607c17e3e49ba022d7396b2fe7b07a8d1066",
+        "deterministic_fingerprint": "14ffa90c55a5203bbccdb6ed5854d1c550de1e87e642d9f47251ec5366926020",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -290,7 +290,7 @@
         "refusal_prefix": "refusal.law.",
         "exit_code": 50,
         "description": "Law refusals map to the refusal range.",
-        "deterministic_fingerprint": "d722c8096ba7b45bee8dd76898a2895a54f88e706b818481b72a590388655924",
+        "deterministic_fingerprint": "05ef49291939328c2e0ce7252fc3e5d49e9433ccffe7859137339e5e9097eae1",
         "extensions": {
           "official.source": "APPSHELL-1"
         },
@@ -310,7 +310,7 @@
         "refusal_prefix": "refusal.debug.",
         "exit_code": 50,
         "description": "Debug/gating refusals map to the refusal range except where explicitly overridden.",
-        "deterministic_fingerprint": "4484a979b2fff9b2d1f0a29e67066723efd90f4fb897c88990a3feab40211c16",
+        "deterministic_fingerprint": "b1e23cca7973c3c35c389a93cdb88fbfd34259e468565f18f3e1ac29398fb7d6",
         "extensions": {
           "official.source": "APPSHELL-1"
         },

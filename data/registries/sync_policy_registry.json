@@ -11,7 +11,7 @@
         "description": "No synchronization correction; observe local mapping only.",
         "adjustment_strategy": "observe",
         "max_adjust_per_tick": 0,
-        "deterministic_fingerprint": "50e6ae057024376da9aa91bc2967f4ace5bb20a6fae4fa65ba505fead330577a",
+        "deterministic_fingerprint": "b31912b0aee52a019ca6ae440036b4b572d02db9fcc94d16e0822dfd7e30fd41",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -30,7 +30,7 @@
         "description": "Apply bounded correction on time-stamp receipt.",
         "adjustment_strategy": "adjust",
         "max_adjust_per_tick": 5,
-        "deterministic_fingerprint": "a84714951199edb3dc341aa7717cc6b152aa0307168471d6ed67cf0d99c5cbd4",
+        "deterministic_fingerprint": "a736384a4a485b07e3a3aea297af2aee44b2be4b1e2b39000a44a828ddbe52ec",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -49,7 +49,7 @@
         "description": "Reject synchronization when skew exceeds policy bound.",
         "adjustment_strategy": "reject",
         "max_adjust_per_tick": 0,
-        "deterministic_fingerprint": "1d0289370aae0f4ef07cb8657fa04a9ba51c9becb2b05c26e7304c58d4eb32f0",
+        "deterministic_fingerprint": "339541b85651295cef4603874e94df737585921839925803dfeaecc33bd2980d",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",

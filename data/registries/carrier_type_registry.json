@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.electrical",
         "description": "Electrical carrier with ELEC-owned transport costs and constraint semantics kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "bfe20e6644d61cb420af87278da29561937376d9be77585e7926b15a2cb9b04d",
+        "deterministic_fingerprint": "985c53f775b77816f02b8674b983078c7cf8723f832680b56543dc7fc76713c0",
         "extensions": {
           "domain_tags": [
             "ELEC"
@@ -31,7 +31,7 @@
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.pneumatic",
         "description": "Pneumatic carrier with FLUID-owned compressibility and pressure-delay constraints kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "7fa6a14a507857aedeee11d48c28ff963645b78343825b718141239c4d08a6db",
+        "deterministic_fingerprint": "494ad991e075eb8592cb6a8a5ae114f61f40a3469d94828f644b0326dfce50b5",
         "extensions": {
           "domain_tags": [
             "FLUID",
@@ -54,7 +54,7 @@
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.hydraulic",
         "description": "Hydraulic carrier with FLUID-owned incompressibility and flow/pressure constraints kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "09d8bfde424146400fac0d10de110ba89da1019061e11a3cd5e53e3ca064a1ae",
+        "deterministic_fingerprint": "3dd20c63fdab8dd21383941d5f91df86821e77f4ed6c867df459ee081528d723",
         "extensions": {
           "domain_tags": [
             "FLUID",
@@ -77,7 +77,7 @@
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.mechanical",
         "description": "Mechanical carrier with MECH and MOB-owned linkage, inertia, and backlash costs kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "9625138d79e645a9ecfb6eb9e3e29c64bacd67b832a3c01b5574f8cbf89f25da",
+        "deterministic_fingerprint": "ee3646eddf3f961d362d4824bcbd9fcafd1a5248b554d0c7536026df305feea9",
         "extensions": {
           "domain_tags": [
             "MECH",
@@ -100,7 +100,7 @@
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.optical",
         "description": "Optical carrier with line-of-sight and attenuation constraints kept outside LOGIC meaning.",
-        "deterministic_fingerprint": "48ad019ec9b45dc933fd2015506fdafe033ef7cb21bc9d08d7a2edd3ea5d682a",
+        "deterministic_fingerprint": "a0f9b2e4866b9cf7d772678fb1bcdb2f256b539d86ae8b7bae7949594688d30f",
         "extensions": {
           "domain_tags": [
             "SIG",
@@ -123,7 +123,7 @@
         "schema_version": "1.0.0",
         "carrier_type_id": "carrier.sig",
         "description": "Receipt-based message carrier mediated by SIG trust, encryption, and delivery policy rather than physics-local semantics.",
-        "deterministic_fingerprint": "162516b7c3bf47692dbce924aa0c4dc5b7348b329256b0fb0bf17a2ab1c6395d",
+        "deterministic_fingerprint": "a74d5b7ffc9f5ae2aa345fdebb06a1c52004308c1e310a8798ee7a984d847a1c",
         "extensions": {
           "domain_tags": [
             "SIG",

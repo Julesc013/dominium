@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "provider_id": "ephemeris.kepler_proxy",
         "kind": "kepler_proxy",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6cf4f262c229d63182b5c1dc3ece7b57f927848d1263b9193b62f2f1fd60fcf7",
         "extensions": {
           "source": "SOL2-2",
           "mvp_default": true,

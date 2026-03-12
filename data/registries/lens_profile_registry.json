@@ -15,7 +15,7 @@
         "required_entitlements": [
           "entitlement.control.camera"
         ],
-        "deterministic_fingerprint": "5127748c6f511a69f396e70ff0b89f1649466073ea7fa7483ed59b6458cf9068",
+        "deterministic_fingerprint": "4612f7477c1d108c51aef27560ab8cffb4737ad538873ee49a16b0c4149fb692",
         "extensions": {
           "source": "EMB0-2",
           "camera_mode": "first_person",
@@ -46,7 +46,7 @@
         "required_entitlements": [
           "entitlement.control.camera"
         ],
-        "deterministic_fingerprint": "7f59794efeb1144e28ff44086ee9dd6ffa81b65d8f09dec052aeb8be7c8ea2e7",
+        "deterministic_fingerprint": "e1cd2c940077e9fa0ecf7e04ba098c2f253dc39dfe8958035ff46e2f995c53fc",
         "extensions": {
           "source": "EMB0-2",
           "camera_mode": "third_person",
@@ -79,7 +79,7 @@
           "entitlement.control.camera",
           "lens.nondiegetic.access"
         ],
-        "deterministic_fingerprint": "32f7b7f1fcdcac45ae53c6a14cdd95646db5aac330f297343168299ca9e7c283",
+        "deterministic_fingerprint": "32d8ff2ac8977e6d126f9d894be366ac0fc2d2dee92c1015ed821cc153166856",
         "extensions": {
           "source": "EMB0-2",
           "camera_mode": "freecam",
@@ -109,7 +109,7 @@
           "entitlement.observer.truth",
           "lens.nondiegetic.access"
         ],
-        "deterministic_fingerprint": "bb861432f6e4d23f31992e7c3015e0c1f5916ae57a0ed6bed9861b6a40b237d0",
+        "deterministic_fingerprint": "18310d7120911444117a1e0f7af7060a4f4ed3d9930385825904266352a34a79",
         "extensions": {
           "source": "EMB0-2",
           "camera_mode": "inspect",

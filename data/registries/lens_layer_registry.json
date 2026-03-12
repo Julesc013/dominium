@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.sky_dome",
         "description": "Deterministic EARTH-4 sky-dome layer sourced from derived sky-view artifacts only.",
-        "deterministic_fingerprint": "f7c86ae10f98256a1b450a2c64b16dc52715367deaa5f3f12ca196dac6a22562",
+        "deterministic_fingerprint": "942185c3e0a0a49ff5db334f772582696f211e087e7fe40e67ee5011fff19c87",
         "extensions": {
           "source_kind": "sky_view",
           "artifact_id": "sky_view_artifact",
@@ -30,7 +30,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.starfield",
         "description": "Deterministic EARTH-4 starfield and coarse Milky Way band layer sourced from derived sky-view artifacts only.",
-        "deterministic_fingerprint": "15e3c5ef4a868bcdd989065429afb7d30606e047457d79fbde8b4d22c4f494b4",
+        "deterministic_fingerprint": "b2050359c33c12d7f48629a5d54a9879baed293650076042c7ac4b514b538f57",
         "extensions": {
           "source_kind": "sky_view",
           "artifact_id": "sky_view_artifact",
@@ -51,7 +51,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.illumination",
         "description": "Deterministic EARTH-5 illumination layer sourced from derived illumination-view artifacts only.",
-        "deterministic_fingerprint": "33992b40423b84628e07b89ca33d835eadc5c9ab7d302b413189f2e7b84518e6",
+        "deterministic_fingerprint": "07d10c458f832e89b56602b66936e70e27591144a1850a84d1225b9df68560d0",
         "extensions": {
           "source_kind": "illumination_view",
           "artifact_id": "illumination_view_artifact",
@@ -72,7 +72,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.shadow_factor",
         "description": "Deterministic EARTH-5 horizon-shadow factor layer sourced from bounded derived illumination-view artifacts only.",
-        "deterministic_fingerprint": "0d4882f49089e0a262e5ce183bef8e766119555fde9d4fd978b70a0731784c4d",
+        "deterministic_fingerprint": "b719f447a12f4476a5067a53998f1b2a60f36f10d03eb1a9a9cecd4366dee636",
         "extensions": {
           "source_kind": "illumination_view",
           "artifact_id": "illumination_view_artifact",
@@ -93,7 +93,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.orbits",
         "description": "Deterministic SOL-2 orbit ring and body marker layer sourced from derived orbit-view artifacts only.",
-        "deterministic_fingerprint": "101af4b71196cc9ff3de3336fd63583878ff85c661578f9a0650f878e42e5b66",
+        "deterministic_fingerprint": "f6921292ed001d81f3f827c8dbc263193c2a3dccee2dd27360e718f0b10774a9",
         "extensions": {
           "source_kind": "orbit_view",
           "artifact_id": "orbit_view_artifact",
@@ -114,7 +114,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.galaxy_objects",
         "description": "Deterministic GAL-1 galaxy object marker layer sourced from derived compact-object marker payloads only.",
-        "deterministic_fingerprint": "f124662f9caf74d4526afb8c66b6befe6e0ff40fefdcd8ef7dca0ca16791eb74",
+        "deterministic_fingerprint": "11658fdfb99f27ab5c4171f1542e2732cdb37a344f94a1e9bc3aa6f49ad9e607",
         "extensions": {
           "source_kind": "galaxy_object_view",
           "artifact_id": "galaxy_object_stub",
@@ -135,7 +135,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.terrain_stub",
         "description": "Deterministic terrain or atlas-terrain surface derived from lawful perceived map or tile sources.",
-        "deterministic_fingerprint": "53add6842e1426f1d15e4c47a9ee629514f46457086b2986a400fd8bafc81461",
+        "deterministic_fingerprint": "d5144a8c4f25862e04635c951a3b54e4146ddba3aeb6c3bdc85e6ed7952baf85",
         "extensions": {
           "source_kind": "terrain",
           "source": "GEO5-2"
@@ -155,7 +155,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.temperature",
         "description": "Deterministic temperature layer rendered from lawful perceived field samples.",
-        "deterministic_fingerprint": "ed5ea00fcc9bc6f01e3b99f92423882bb148be004e2e0ba021929842c8ed82a0",
+        "deterministic_fingerprint": "82a8c78fe5f0c2b2db9adb795d0f1e9718cd05c521e83fae5bc33f9264c047cf",
         "extensions": {
           "source_kind": "field",
           "field_id": "field.temperature",
@@ -176,7 +176,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.tide_height_proxy",
         "description": "Deterministic tide-height proxy layer rendered from lawful EARTH-3 field samples.",
-        "deterministic_fingerprint": "5001a3184a065d0109a3c9242f9871ed2c0cb45377a7a47ee3d3ed9000fe8d19",
+        "deterministic_fingerprint": "9ca2e4d360860370a92234ab9fc84d18730e2fd1ed82ac21a234db88a2d116d4",
         "extensions": {
           "source_kind": "field",
           "field_id": "field.tide_height_proxy",
@@ -197,7 +197,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.water_ocean",
         "description": "Deterministic EARTH-8 ocean-mask layer sourced from derived water-view artifacts only.",
-        "deterministic_fingerprint": "7ef8ecaecc7f04257a84e1452307686867a80df702d9551bdbcfa70054a93d44",
+        "deterministic_fingerprint": "5aaa8ca04595226c5241c4599e4d5fa4c1dcc75ca2cfb3dcea71655c1748f299",
         "extensions": {
           "source_kind": "water_view",
           "artifact_id": "water_view_artifact",
@@ -218,7 +218,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.water_river",
         "description": "Deterministic EARTH-8 river-mask layer sourced from derived hydrology-backed water-view artifacts only.",
-        "deterministic_fingerprint": "70a5eeccaa8e90b6920df22502f47daa2051acdccdf64320e93824bedbb6c1e2",
+        "deterministic_fingerprint": "a94eb3e9f4e64f7f2efff771a69a6c43c914b09b6f21fb6194e9489d208ba04e",
         "extensions": {
           "source_kind": "water_view",
           "artifact_id": "water_view_artifact",
@@ -239,7 +239,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.water_lake",
         "description": "Deterministic EARTH-8 lake-mask layer sourced from derived sink and basin heuristics only.",
-        "deterministic_fingerprint": "eba28b406a8c4502bcca92319a2003cb38ca83bf99271a13fc0d7430d6b991f7",
+        "deterministic_fingerprint": "48050aa94ae2c1e6c4282c84e793f8c79cc0e93bcaa0eadf8e306db0211b7f6e",
         "extensions": {
           "source_kind": "water_view",
           "artifact_id": "water_view_artifact",
@@ -260,7 +260,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.tide_offset",
         "description": "Deterministic EARTH-8 tide-offset debug layer sourced from derived water-view artifacts only.",
-        "deterministic_fingerprint": "70c0ffbd8b7b0657880045a4326472fd47b696bdc31481e0be83d2dca836948c",
+        "deterministic_fingerprint": "13675715b9b232ce03d6d57ed31c14c342558a7a7fdb9d2a75f52ce862cceada",
         "extensions": {
           "source_kind": "water_view",
           "artifact_id": "water_view_artifact",
@@ -284,7 +284,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.wind_vector",
         "description": "Deterministic EARTH-7 wind-vector layer rendered from lawful perceived wind field samples only.",
-        "deterministic_fingerprint": "a2168d79dc9523f25dbaa1993b5b9554f4dd8b9cbb4255b8a3e774bee5bb7963",
+        "deterministic_fingerprint": "94f54166681a3fb9cf248b91a816b12e404e4b11ccf8a0b7f0f2d0620110aa8c",
         "extensions": {
           "source_kind": "field",
           "field_id": "field.wind_vector",
@@ -308,7 +308,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.refinement_status",
         "description": "Deterministic MW-4 refinement-status layer sourced from derived refinement-status views only.",
-        "deterministic_fingerprint": "b68a7bf44c7f5c428027e4b9a86daad17fcafd507091304bc258da590118c0dd",
+        "deterministic_fingerprint": "4f016d09e22488aa7a81cdd0094d47a48d493331623c9d39118b5591a120e673",
         "extensions": {
           "source_kind": "refinement_status_view",
           "artifact_id": "refinement_status_view",
@@ -329,7 +329,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.pollution",
         "description": "Deterministic pollution overlay rendered from lawful perceived pollution field samples.",
-        "deterministic_fingerprint": "7120af0d1453fbd42034b3816e5cbae141afc38a75cce76933e4f93c929738be",
+        "deterministic_fingerprint": "ebfea791a6dfbe43a9179c5ec030dca0daf932a0334dcbadd61ebbdbc92183de",
         "extensions": {
           "source_kind": "field",
           "field_family": "field.pollution",
@@ -350,7 +350,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.infrastructure_stub",
         "description": "Deterministic infrastructure overlay derived from lawful process or site artifacts when entitled.",
-        "deterministic_fingerprint": "3efd51c99fba473ed8a69b9a72ce5d543aefabddc279d199e781542187f410b2",
+        "deterministic_fingerprint": "54ed6f9a8a883523e6756298ecd113cb08e572e0cbb81104fa3f3b3603033eb5",
         "extensions": {
           "source_kind": "infrastructure",
           "source": "GEO5-2"
@@ -370,7 +370,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.entity_markers_stub",
         "description": "Deterministic entity marker overlay derived from lawful known-entity observations only.",
-        "deterministic_fingerprint": "41ebe660a180f6095b48424c11a3fe62cfb57ff084698ea598471819ee301e11",
+        "deterministic_fingerprint": "0d9440b7b554d7e5d7db650a5ee0ffc1eeca39192e5f38d4708282c03fae78e6",
         "extensions": {
           "source_kind": "entities",
           "source": "GEO5-2"
@@ -390,7 +390,7 @@
         "schema_version": "1.0.0",
         "layer_id": "layer.geometry_occupancy",
         "description": "Deterministic excavation, fill, and tunnel occupancy overlay derived from lawful GEO-7 geometry cell perception only.",
-        "deterministic_fingerprint": "39180e6334c6a79629fafd3a2b6d1523fe8a5e66db6a178613db08cb8ae71ecd",
+        "deterministic_fingerprint": "43540f6f960c521d5645f37f4733d30ff1cada41b10db33b8db84424917fe53f",
         "extensions": {
           "source_kind": "geometry_occupancy",
           "required_channels": [

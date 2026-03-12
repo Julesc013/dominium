@@ -15,7 +15,7 @@
         "addressing_mode": "unicast",
         "error_detection_policy_id": "err.none",
         "security_policy_id": "sec.none",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "c903f73077f6d4f663aa2f9327c5bbbe7a873d8313b1af18cabac717f15a0ae6",
         "extensions": {
           "runtime_status": "operational",
           "source": "LOGIC9-2"
@@ -41,7 +41,7 @@
         "addressing_mode": "unicast",
         "error_detection_policy_id": "err.checksum_stub",
         "security_policy_id": "sec.auth_required_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "ba1a0dd0ab10ef2013045956ffc7e1096d4884a7a861b315dc14c7b314dd0b1d",
         "extensions": {
           "default_carrier_type_id": "carrier.electrical",
           "runtime_status": "operational",
@@ -68,7 +68,7 @@
         "addressing_mode": "multicast",
         "error_detection_policy_id": "err.checksum_stub",
         "security_policy_id": "sec.encrypted_required_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "4fe09b8ffcb34949d1151863446479b0f5ed06d1bf2437f1846bb4af218f47b6",
         "extensions": {
           "default_carrier_type_id": "carrier.sig",
           "runtime_status": "operational",

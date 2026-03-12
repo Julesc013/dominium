@@ -12,7 +12,7 @@
         "sampling_strategy_id": "sample.hash_based",
         "test_procedure_refs": [],
         "fail_action": "accept_with_warning",
-        "deterministic_fingerprint": "b5bd38587383f1e4179ba278de6646824680a764d29dd6a7b7129d5613a8bdea",
+        "deterministic_fingerprint": "94b9b1accb8ad9665e2d996cc299bdc76ea870271930caf687a068217c28bd59",
         "extensions": {
           "source": "PROC3-2",
           "enabled": false
@@ -38,7 +38,7 @@
           "test.contamination_basic"
         ],
         "fail_action": "accept_with_warning",
-        "deterministic_fingerprint": "94acb0e70e8203c138b9e55c13b651f0469540b0607c18ae248f8980af6dffd0",
+        "deterministic_fingerprint": "6c24d5596cbe2880df352fd55dd0b47886c3be4a5123c161a0c946717e9ad696",
         "extensions": {
           "source": "PROC3-2",
           "sampling_rate_scale": "permille",
@@ -67,7 +67,7 @@
           "test.software_unit_stub"
         ],
         "fail_action": "reject_batch",
-        "deterministic_fingerprint": "49084d0faa5e00ccd15d134c35cac3003471a363d73c57c014d9751234ffd868",
+        "deterministic_fingerprint": "6d7d8604a2bf2ae7963d275f4a2281fd79f065260771e3a2451170093285fb16",
         "extensions": {
           "source": "PROC3-2",
           "sampling_rate_scale": "permille",

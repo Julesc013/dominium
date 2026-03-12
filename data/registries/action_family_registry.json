@@ -5,7 +5,7 @@
       {
         "action_family_id": "action_family.communicate",
         "description": "Communication, broadcast, relay, and signaling actions.",
-        "deterministic_fingerprint": "081b3bfae89f81b869479d7312eeab14c468863240686f6895f3514f5840d072",
+        "deterministic_fingerprint": "65ae35cdcb91fc96f319904e79880ca4995741bab70f6a972a7911b33b2423da",
         "extensions": {},
         "schema_version": "1.0.0",
         "stability": {
@@ -22,7 +22,7 @@
       {
         "action_family_id": "action_family.decide_authorize",
         "description": "Planning, allocation, authorization, policy, and override actions.",
-        "deterministic_fingerprint": "be6cc218a791d8c3e059c9d7bc6b5edc655df6db19c9b4e2941335596f50a001",
+        "deterministic_fingerprint": "e307d18fee67f2c073d6dda3d256a7b29d4928ec46c8ed7f7829d153d305475b",
         "extensions": {},
         "schema_version": "1.0.0",
         "stability": {
@@ -39,7 +39,7 @@
       {
         "action_family_id": "action_family.maintain",
         "description": "Repair, service, reinforcement, replacement, and wear-management actions.",
-        "deterministic_fingerprint": "8f3f088dd0ee43fb735dae62a700fdfdce3f2e638ef58161e31cf5a86f6cc9c0",
+        "deterministic_fingerprint": "77c94f99871a08b187a306702ca9b0b1fa54b509f5035e8db9e6ae8d1ff00aca",
         "extensions": {},
         "schema_version": "1.0.0",
         "stability": {
@@ -56,7 +56,7 @@
       {
         "action_family_id": "action_family.move",
         "description": "Translation, routing, docking, coupling, and positional movement actions.",
-        "deterministic_fingerprint": "5768f7ca7e96f6fb183c44ddf273d017515b5a3d5ee0c67356bf70d46e2e085f",
+        "deterministic_fingerprint": "f9a46260425b014e33e3f6c1bcf503882c10de23ed1e7ef728311375974581b9",
         "extensions": {},
         "schema_version": "1.0.0",
         "stability": {
@@ -73,7 +73,7 @@
       {
         "action_family_id": "action_family.sense_measure",
         "description": "Observation, inspection, measurement, calibration, and compliance-check actions.",
-        "deterministic_fingerprint": "3c1a6f72421cf2e8c32e1d8d3fede73d1a35c15fa2be812378c48aafb4ad3764",
+        "deterministic_fingerprint": "4a1db04b9234e201df5f47acda37bb58df8a34cce9f926b9088f30827774ec8d",
         "extensions": {},
         "schema_version": "1.0.0",
         "stability": {
@@ -90,7 +90,7 @@
       {
         "action_family_id": "action_family.store_contain",
         "description": "Containment, sealing, buffering, reserve-capacity, and storage actions.",
-        "deterministic_fingerprint": "1215921549f5cdc3a8a53249c70aa39ed6a3fabf9256eb368cbafaefe7ceddb3",
+        "deterministic_fingerprint": "b03bc4bdcdcc74858d9c41bf27896461904c2018ec42a89469a75f3d9e5c15bc",
         "extensions": {},
         "schema_version": "1.0.0",
         "stability": {
@@ -107,7 +107,7 @@
       {
         "action_family_id": "action_family.transform",
         "description": "Material, structural, and composition transformation actions.",
-        "deterministic_fingerprint": "2cfdbb3498ce95c453a61930899e1612550c2f5ea7944f1ae0c40f8be3221ccc",
+        "deterministic_fingerprint": "f9482ec3acb8054f6e1ac6c45027d05391de639da08f3d8b567690ce3d567770",
         "extensions": {},
         "schema_version": "1.0.0",
         "stability": {

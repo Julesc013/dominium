@@ -13,7 +13,7 @@
         "evaluation_cap_per_tick": 256,
         "degrade_policy_id": "degrade.default_order",
         "power_coupling_enabled": false,
-        "deterministic_fingerprint": "ba13fc39923940a1a68532011e81ecc473954e300d7f4d09c801d042311c9b62",
+        "deterministic_fingerprint": "e61d090924191286d77d256cc4fc11daa89eac6409eaed6e28c0a76e33daaebb",
         "extensions": {
           "source": "META-COMPUTE0-2"
         },
@@ -36,7 +36,7 @@
         "evaluation_cap_per_tick": 192,
         "degrade_policy_id": "degrade.strict_shutdown",
         "power_coupling_enabled": true,
-        "deterministic_fingerprint": "f30495235a15dfab7eddc437d44a2e6415cf40130019c4467e09e64c153fbca0",
+        "deterministic_fingerprint": "6fb9142c62ecbe85e28d3c76424345ee71c3400d9affb6950cd7bc267eb9af09",
         "extensions": {
           "source": "META-COMPUTE0-2"
         },
@@ -59,7 +59,7 @@
         "evaluation_cap_per_tick": 1024,
         "degrade_policy_id": "degrade.default_order",
         "power_coupling_enabled": false,
-        "deterministic_fingerprint": "246aa9f3d5bf0f8e562eaebb84f59ec61794c0efa6a7cd4d7bce2f9b46af6577",
+        "deterministic_fingerprint": "3b0d3f3e06f2fd48c4e12e6a006b1d1f8ed23cf3ade59aa0a44b93348feb56e1",
         "extensions": {
           "source": "META-COMPUTE0-2"
         },

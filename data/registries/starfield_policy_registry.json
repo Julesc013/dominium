@@ -14,7 +14,7 @@
           "max_permille": 900
         },
         "tick_bucket_size": 6,
-        "deterministic_fingerprint": "ed8dce147748e12646fbb9d7021c607828f45afe8e6a407bea7058dd3172fd2b",
+        "deterministic_fingerprint": "3faf6dcb04005c9c6e037791aa1bbc5bbf3c19d927b058fc3e477ea421d5e0a7",
         "extensions": {
           "description": "Low-density EARTH-4 starfield policy for constrained render budgets.",
           "observer_cell_quantum_mm": 250000,
@@ -71,7 +71,7 @@
           "max_permille": 980
         },
         "tick_bucket_size": 6,
-        "deterministic_fingerprint": "6f9d0a9a4ed5a521bdbe4fc690fade18387ee258d8573f527e1de3b4ec4b061b",
+        "deterministic_fingerprint": "4e52cac2f51f36752f5d2843214339baebdff198d575a45c854e563778a95dbe",
         "extensions": {
           "description": "Canonical EARTH-4 MVP starfield policy with bounded procedural stars and no catalog dependency.",
           "observer_cell_quantum_mm": 250000,

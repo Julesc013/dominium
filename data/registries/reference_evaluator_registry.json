@@ -13,7 +13,7 @@
         "output_signature_ref": "signature.ref.energy_ledger.output.v1",
         "equivalence_kind": "tolerance_bounded",
         "tolerance_policy_id": "tol.default",
-        "deterministic_fingerprint": "2c10e1482e68e789c552ab43bc069cb6574d5b653a0dd7d0e7967387f70e95bd",
+        "deterministic_fingerprint": "8272a5842755fc45aef1537275831346e1be2aabbec65d6161bd026fcc9df8fb",
         "extensions": {
           "status": "active",
           "source": "META-REF0"
@@ -37,7 +37,7 @@
         "output_signature_ref": "signature.ref.coupling_scheduler.output.v1",
         "equivalence_kind": "exact",
         "tolerance_policy_id": null,
-        "deterministic_fingerprint": "c78213a602db239af957b5c92c7631db69b35b562f14b42f941dc3b10f58ded8",
+        "deterministic_fingerprint": "d93b33111c596b791b847205700e5bc9bdc04587d00ceaef0e2c0ab02f805fed",
         "extensions": {
           "status": "active",
           "source": "META-REF0",
@@ -62,7 +62,7 @@
         "output_signature_ref": "signature.ref.system_invariant_check.output.v1",
         "equivalence_kind": "exact",
         "tolerance_policy_id": null,
-        "deterministic_fingerprint": "7ffbee5f2f5058193e59ebfec16ff59090482a7993821576c0c03476e0397496",
+        "deterministic_fingerprint": "0a5267aba0ada86be54e6238fc6d772c36ebe506f0bb81ae77e9fbd04d1eb941",
         "extensions": {
           "status": "active",
           "source": "META-REF0"
@@ -86,7 +86,7 @@
         "output_signature_ref": "signature.ref.compiled_model_verify.output.v1",
         "equivalence_kind": "exact",
         "tolerance_policy_id": null,
-        "deterministic_fingerprint": "5edfd450ba7590ccb214957495e648bfd3b833475bfcc5e25665be78932eada7",
+        "deterministic_fingerprint": "ce4e97c200284ed9abe060ff040e4a33a64415e0c38ee5770629d4bc87f9e3ae",
         "extensions": {
           "status": "active",
           "source": "META-REF0"
@@ -110,7 +110,7 @@
         "output_signature_ref": "signature.ref.proc_quality_baseline.output.v1",
         "equivalence_kind": "tolerance_bounded",
         "tolerance_policy_id": "tol.default",
-        "deterministic_fingerprint": "b8a1cdec178035a25c04499b543a5cec504c3f20dccea463b5d8f203742db0c5",
+        "deterministic_fingerprint": "a27504d8aa698206640be2f4f9cc8cb9197c956e1e4754cf3965e390c0750a45",
         "extensions": {
           "status": "stub",
           "next_series": "PROC-2"
@@ -134,7 +134,7 @@
         "output_signature_ref": "signature.ref.logic_eval_engine.output.v1",
         "equivalence_kind": "exact",
         "tolerance_policy_id": null,
-        "deterministic_fingerprint": "08c64e3ccdddd222693eb7584c48ea76c8fd56fbc099fc071c027bcf1545aca4",
+        "deterministic_fingerprint": "729a6723a987324779366b0e056288da62564c8e33ba9de1de22eb79c00c6cdb",
         "extensions": {
           "status": "stub",
           "next_series": "LOGIC-4"
@@ -158,7 +158,7 @@
         "output_signature_ref": "signature.ref.logic_eval_small.output.v1",
         "equivalence_kind": "exact",
         "tolerance_policy_id": null,
-        "deterministic_fingerprint": "3b968ce5b6bfeec59646cfe44404580ac153cc7010e5a80cd4dd5b7beb22cf98",
+        "deterministic_fingerprint": "c878bde68cc705e3cca2e3cd3ef4795a7972ee0603ac308a5a253249cb3b5c1c",
         "extensions": {
           "status": "active",
           "source": "LOGIC10-5",
@@ -183,7 +183,7 @@
         "output_signature_ref": "signature.ref.metric_distance_small.output.v1",
         "equivalence_kind": "exact",
         "tolerance_policy_id": null,
-        "deterministic_fingerprint": "4781ef6e97892151f0c183844ea22e5ba451182445f1473426ab297f201bc52d",
+        "deterministic_fingerprint": "79bd187ca98a33f973dca8ecb7661fe5d6a4d4edc6f743af0927d45c969e6eab",
         "extensions": {
           "status": "active",
           "source": "GEO10-5",
@@ -208,7 +208,7 @@
         "output_signature_ref": "signature.ref.neighborhood_small.output.v1",
         "equivalence_kind": "exact",
         "tolerance_policy_id": null,
-        "deterministic_fingerprint": "cbb7826725736c56b2766318149547cc731aa0fde832ecfe02edd33de8b2cdf3",
+        "deterministic_fingerprint": "15937aac860d9917ba28520a11e7fb39c780f1e5348df858c4a27d02f39b202e",
         "extensions": {
           "status": "active",
           "source": "GEO10-5",
@@ -233,7 +233,7 @@
         "output_signature_ref": "signature.ref.overlay_merge_small.output.v1",
         "equivalence_kind": "exact",
         "tolerance_policy_id": null,
-        "deterministic_fingerprint": "c918e41273f654e94ec1d64227e1366d3b3a9c0cc0ef5fe9befd730a03585943",
+        "deterministic_fingerprint": "73971d6313614c11b975d39ebab3a3c8d2fd55ab376299fd70b7ff182873b04b",
         "extensions": {
           "status": "active",
           "source": "GEO10-5",

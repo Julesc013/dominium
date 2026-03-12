@@ -10,7 +10,7 @@
         "temporal_domain_id": "time.canonical_tick",
         "description": "Authoritative canonical integer tick domain.",
         "scope_kind": "global",
-        "deterministic_fingerprint": "f6cef28116bdf9e77e7c78d05a18b393782be193b6a29fab877e03ef43c8d81b",
+        "deterministic_fingerprint": "081502a52f69022f39607988668cf23964c8c2786f51685e035c5d678664acf4",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -28,7 +28,7 @@
         "temporal_domain_id": "time.proper",
         "description": "Derived proper-time domain per assembly/spatial model binding.",
         "scope_kind": "per_assembly",
-        "deterministic_fingerprint": "3d32387ee7e6abde3b2fe3708cd4fbae94713529a268f5d174243be90d050940",
+        "deterministic_fingerprint": "96987d921388ecc3d96e535b0b65b30491e7455064d29ef8cfe68fd44f515e5c",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -46,7 +46,7 @@
         "temporal_domain_id": "time.civil",
         "description": "Institutional/civil calendar interpretation domain.",
         "scope_kind": "per_session",
-        "deterministic_fingerprint": "30bc152c486d4383888a09fc6fb4644f1018cf8da24eac26627d3c35696a58d9",
+        "deterministic_fingerprint": "df627c4466ed25e9c456c630db51285483e5d10167f1f8f73a33604c3d25637c",
         "extensions": {
           "calendar_kind": "gregorian_stub"
         },
@@ -66,7 +66,7 @@
         "temporal_domain_id": "time.warp",
         "description": "Session warp interpretation domain derived from canonical batching policy.",
         "scope_kind": "per_session",
-        "deterministic_fingerprint": "ad4c0c61ad6901601bcf998793b5320f5cd750e2e656cb7a069b444781124277",
+        "deterministic_fingerprint": "7bb5b04e740cab9050fa1ef2df97ee0c2a646b3f158288882cf87da4a176f901",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
@@ -84,7 +84,7 @@
         "temporal_domain_id": "time.replay",
         "description": "Reenactment/replay interpretation domain derived from canonical logs.",
         "scope_kind": "per_session",
-        "deterministic_fingerprint": "7da539a314fbc9c45f7401479b26d1329bfe25de7fc8563b7e6b27c439834900",
+        "deterministic_fingerprint": "f5b2d30bc8132587673704190aca5b61b9a426acf3bfe83b9e09315dac347600",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",

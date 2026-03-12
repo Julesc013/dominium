@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "policy_id": "interp.nearest",
         "kind": "nearest",
-        "deterministic_fingerprint": "4a76db0d066c5eccbeb561f1da83dd10d4072d9a1e7439c20431172d700fca56",
+        "deterministic_fingerprint": "8689657c557f5940af5f8466d4306a80509a94b97844dd679fe57f6051e2e26f",
         "extensions": {
           "algorithm_id": "field.interp.nearest_geo_cell",
           "bounded_error_cells": 0,
@@ -30,7 +30,7 @@
         "schema_version": "1.0.0",
         "policy_id": "interp.bilinear_stub",
         "kind": "bilinear_stub",
-        "deterministic_fingerprint": "82c58febbda413ccff925878883e840ed57750488c35d2b05ab5db590c49d87d",
+        "deterministic_fingerprint": "b6b8a463e59eb482d9a052869e818e7670f529d65a03e7242965adc1cd2e3e3e",
         "extensions": {
           "algorithm_id": "field.interp.bilinear.stub",
           "bounded_error_cells": 1,
@@ -51,7 +51,7 @@
         "schema_version": "1.0.0",
         "policy_id": "interp.atlas_nearest",
         "kind": "atlas_stub",
-        "deterministic_fingerprint": "0a836e76054d4b66d2abcf04f0e47be04f964554c3752b7d1224e91a7cb35138",
+        "deterministic_fingerprint": "b6bfb54ea6b2f8ded3d5f6661fd7e62783fda5916c44be51e76514c08ac4da56",
         "extensions": {
           "algorithm_id": "field.interp.atlas.nearest_tile",
           "bounded_error_tiles": 0,

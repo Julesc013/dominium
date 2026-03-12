@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "provider_id": "collision.macro_heightfield_default",
         "kind": "macro_heightfield",
-        "deterministic_fingerprint": "01b48d2d06edcd5803048e70d39f58448d8503669637ccb6614b115d86e9bbcb",
+        "deterministic_fingerprint": "4f92bac578e34e759d550e198162b7361daf0d13699d2440bdeeec7beccb8682",
         "extensions": {
           "description": "Canonical EARTH-6 macro terrain collision provider using surface tile height proxies and GEO neighbor ordering.",
           "height_sample_mode": "nearest",

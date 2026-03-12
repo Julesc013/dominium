@@ -13,7 +13,7 @@
         "requires_encryption": false,
         "allowed_credential_types": [],
         "extensions": {},
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6e448ed8c9c074a7cec3b27e19416429aa3c7fe5860d5cba85d90efc03429031",
         "stability": {
           "schema_version": "1.0.0",
           "stability_class_id": "provisional",
@@ -36,7 +36,7 @@
           "credential.system_certificate"
         ],
         "extensions": {},
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "60e7a1a9f553c069506eff55eb669dad7d1f434578de885613f3b6d7c45638cc",
         "stability": {
           "schema_version": "1.0.0",
           "stability_class_id": "provisional",
@@ -59,7 +59,7 @@
           "credential.system_certificate"
         ],
         "extensions": {},
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f9eb9466c2de2c65114a529e0744b7397c4261e00ac8e2327e44b1cf640e2eab",
         "stability": {
           "schema_version": "1.0.0",
           "stability_class_id": "provisional",

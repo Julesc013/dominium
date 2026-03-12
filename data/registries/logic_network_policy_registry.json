@@ -20,7 +20,7 @@
           "carrier.pneumatic",
           "carrier.sig"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "384f3a8a8a11e3a7657d6c016fdee5d96f519de7758276d767ea4a6d4fb847b4",
         "extensions": {
           "logic_policy_id": "logic.default",
           "source": "LOGIC3-3"
@@ -51,7 +51,7 @@
           "carrier.pneumatic",
           "carrier.sig"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "8e04aaed00623bc1d4f550918d1112ee74709933cbc7273c985cd671112ac676",
         "extensions": {
           "logic_policy_id": "logic.default",
           "source": "LOGIC3-3"
@@ -82,7 +82,7 @@
           "carrier.pneumatic",
           "carrier.sig"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "0b4370f5645ef476ef6e768c2cc594b103ba9a0f62124caac64dfc5b9d5f231c",
         "extensions": {
           "logic_policy_id": "logic.lab_experimental",
           "requires_compiled_equivalence_proof": true,

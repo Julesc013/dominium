@@ -20,7 +20,7 @@
           "temperate_min_kelvin": 265,
           "tropical_min_kelvin": 295
         },
-        "deterministic_fingerprint": "01a3448b8932aee7f7dd00bfcc34d2673b8cf95c85ddb881df5ec51e19d3326d",
+        "deterministic_fingerprint": "eb78197a31bb67bfaadae1c686f0bf8b2f411ac490231bc28def1ea279789ac4",
         "extensions": {
           "description": "Canonical EARTH-0 macro parameters for deterministic continent, mountain, and biome generation.",
           "plate_region_count": 12,

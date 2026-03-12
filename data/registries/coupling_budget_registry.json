@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "owner_id": "elec",
         "budget_units_per_tick": 240,
-        "deterministic_fingerprint": "5ed993220522803e5d0c8584abc274758c46dfa2465c233ee81373d022e5c380",
+        "deterministic_fingerprint": "a2b8417b6837366e4c21a595dd03c71d41f13cbc02d2a8c4eb0bd8de23f026da",
         "extensions": {
           "owner_kind": "domain"
         },
@@ -28,7 +28,7 @@
         "schema_version": "1.0.0",
         "owner_id": "therm",
         "budget_units_per_tick": 320,
-        "deterministic_fingerprint": "139b471abeab5cb779e8431e41a383b51e1abefc0182043a8bce6db90a7ce167",
+        "deterministic_fingerprint": "9372af2d33857bf4c5abd8589b47ad9367a376761b07247d01e08de29fe4bc81",
         "extensions": {
           "owner_kind": "domain"
         },
@@ -47,7 +47,7 @@
         "schema_version": "1.0.0",
         "owner_id": "fluid",
         "budget_units_per_tick": 280,
-        "deterministic_fingerprint": "a201cfc2903be99b0c28d23d32e778f9b61bb373d253315a34d6e4aee267037e",
+        "deterministic_fingerprint": "601dca2485c7a564f88b5f8dd490b08f80cf9681ebb69d3d750aa9c1cd28312f",
         "extensions": {
           "owner_kind": "domain"
         },
@@ -66,7 +66,7 @@
         "schema_version": "1.0.0",
         "owner_id": "chem",
         "budget_units_per_tick": 220,
-        "deterministic_fingerprint": "d1c3f3920b7c896d515036f706c45e682c1d743993f0f778b8898a13a527c965",
+        "deterministic_fingerprint": "bb216dde7a9eaf7540b9daca4b4d0e46c61c5a8a76b6c4047041d7c10a251bf0",
         "extensions": {
           "owner_kind": "domain"
         },
@@ -85,7 +85,7 @@
         "schema_version": "1.0.0",
         "owner_id": "poll",
         "budget_units_per_tick": 260,
-        "deterministic_fingerprint": "f1a444754df12103b41a7fcbf3c56a94b8819b1e6bbdeadb6c47fd4b0aec3c2f",
+        "deterministic_fingerprint": "5cdd92a7bae05620003ed041010348bfa182449de4c69177962158d33fede77e",
         "extensions": {
           "owner_kind": "domain"
         },
@@ -104,7 +104,7 @@
         "schema_version": "1.0.0",
         "owner_id": "mob",
         "budget_units_per_tick": 340,
-        "deterministic_fingerprint": "37669e5f422a14fb8ace96ff29936faee58d1e225ef8e8c6e39bd1370188d86f",
+        "deterministic_fingerprint": "ec4ba8b2f5866f4e263526b7484d209293309310fe1ff8b3913b875f9ea794fc",
         "extensions": {
           "owner_kind": "domain"
         },
@@ -123,7 +123,7 @@
         "schema_version": "1.0.0",
         "owner_id": "sig",
         "budget_units_per_tick": 160,
-        "deterministic_fingerprint": "e1f3c003f7d53f6942bd840cdd40a3890103e7735d107a5bfdf33be934e90571",
+        "deterministic_fingerprint": "0a7797b1ef04a7760bb7b4e86dc02c23f3ead474a4bd2c2de1d2fd99160b5a11",
         "extensions": {
           "owner_kind": "domain"
         },
@@ -142,7 +142,7 @@
         "schema_version": "1.0.0",
         "owner_id": "sys",
         "budget_units_per_tick": 300,
-        "deterministic_fingerprint": "ed9c0af078020194009425df48f51d5483ff81d94ada085d18e6fb7c5013a8a9",
+        "deterministic_fingerprint": "727fd0d53b50cfac1a135c00f12db9bed6e970c0f0ec0db0d100fdbf83f7c1fd",
         "extensions": {
           "owner_kind": "domain"
         },
@@ -161,7 +161,7 @@
         "schema_version": "1.0.0",
         "owner_id": "system_class.engine",
         "budget_units_per_tick": 180,
-        "deterministic_fingerprint": "5951d4e2acc681e680d07807a09e206b68ebcb9d149c9642cc4664bbee5ef9aa",
+        "deterministic_fingerprint": "466fcfb266578d5618c2a184efc695188cfeb923fa27b81fad8580f3589d83ea",
         "extensions": {
           "owner_kind": "system_class"
         },
@@ -180,7 +180,7 @@
         "schema_version": "1.0.0",
         "owner_id": "system_class.plant",
         "budget_units_per_tick": 420,
-        "deterministic_fingerprint": "3dcf730836bffeea892ce43dbf14d26d8d6ee23d33d80f3997eda5ede9e6038a",
+        "deterministic_fingerprint": "c4b1086da61e1e7f7c98e16ace99a5cf315316c5f63400ba1e38f201273080c4",
         "extensions": {
           "owner_kind": "system_class"
         },

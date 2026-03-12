@@ -270,7 +270,7 @@
     "parameter_bundle_entries": [
       {
         "parameter_bundle_id": "survival.params.default",
-        "deterministic_fingerprint": "230de8f5a890eaf22bc0effaa2abd1031b0aaa214b3a84a5decad0aae84bbd87",
+        "deterministic_fingerprint": "8c4452a8e08eb311989d9cfb22f15eb0bea44df575c1bf8ce822e19674d85323",
         "extensions": {
           "source_registry_key": "parameter_bundle_id"
         },
@@ -287,7 +287,7 @@
       },
       {
         "parameter_bundle_id": "survival.params.harsh",
-        "deterministic_fingerprint": "94bb1381ae3e1aae028fb66e2955e71668598d7ecc802f155f2281a003968e9b",
+        "deterministic_fingerprint": "e88b365e94584de50ba23d2f71b828f40ba6491583e8ca5c008423ca20059fdd",
         "extensions": {
           "source_registry_key": "parameter_bundle_id"
         },

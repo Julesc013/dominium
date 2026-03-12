@@ -16,7 +16,7 @@
         "allow_named_rng": false,
         "allow_candidate_compiled_model_before_validation": false,
         "require_state_vector_for_candidate_capsule": true,
-        "deterministic_fingerprint": "c2ccd51fa75a5fdf27a6122864788a3a33aa53cc89d4de3e5d8abd4276a752d5",
+        "deterministic_fingerprint": "df6b18b54f68fbad27626d83ab6baedfcd904ede6ac86c7ab4e095f3f1a3f6ff",
         "extensions": {
           "source": "PROC7-2",
           "budget_class": "important"
@@ -43,7 +43,7 @@
         "allow_named_rng": false,
         "allow_candidate_compiled_model_before_validation": false,
         "require_state_vector_for_candidate_capsule": true,
-        "deterministic_fingerprint": "ec76b619b2ede2121593d1bf4a21d751841365b6c2996861fce0c04fd8b75ce0",
+        "deterministic_fingerprint": "c96e30576084f983bcf31b9cb9e09d0dd672944cbd72704f16e22610b19cb3ab",
         "extensions": {
           "source": "PROC7-2",
           "institutional_mode": true
@@ -70,7 +70,7 @@
         "allow_named_rng": false,
         "allow_candidate_compiled_model_before_validation": false,
         "require_state_vector_for_candidate_capsule": true,
-        "deterministic_fingerprint": "f8371de93f206d8cf7822e35347a47d7062a33047aa11dc5b614f479d44a1305",
+        "deterministic_fingerprint": "394ce0c2c83a1b824e3ccc0ee9a9c825e35828a96898d6727156cc9ed504f9d7",
         "extensions": {
           "source": "PROC7-2",
           "ranked_mode": true

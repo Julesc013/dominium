@@ -11,7 +11,7 @@
         "sample_count": 24,
         "band_half_width_mdeg": 16000,
         "brightness_peak_permille": 720,
-        "deterministic_fingerprint": "8ce16668d8673d6a35eb21d6ddd0baee5e02f42027d40dc0297275c4f3458530",
+        "deterministic_fingerprint": "fd1b6c9810059360f278fe07e9a110cf7c9c593fdd0ce1fbe488c50b31ca23af",
         "extensions": {
           "description": "Canonical EARTH-4 coarse Milky Way band policy derived from procedural galaxy priors.",
           "plane_tilt_mdeg": 63000,

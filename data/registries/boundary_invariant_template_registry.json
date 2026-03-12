@@ -16,7 +16,7 @@
         "required_safety_pattern_ids": [
           "safety.fail_safe_stop"
         ],
-        "deterministic_fingerprint": "3d02ea0c8a1b1695f81b70e32079d528a96d0778c50d0c0b9dd0d036d1768bb2",
+        "deterministic_fingerprint": "dbe0655fa33b90c29439fef683260fa7db6573ad379975d8c850d744f41f8595",
         "extensions": {
           "requires_ledger_transform": true
         },
@@ -42,7 +42,7 @@
         "required_safety_pattern_ids": [
           "safety.fail_safe_stop"
         ],
-        "deterministic_fingerprint": "e1ec129b56f08b0dba70ad2841ba75caf653602af05cd301253041b203a8bbf5",
+        "deterministic_fingerprint": "6a9e026a4902c1854b04cf4b98b0aba883830266e53b168996adfbe8ffcf59e1",
         "extensions": {
           "requires_ledger_transform": true,
           "requires_pollution_accounting": true
@@ -68,7 +68,7 @@
         "required_safety_pattern_ids": [
           "safety.fail_safe_stop"
         ],
-        "deterministic_fingerprint": "a7748c3f021d7ba200941e3fe9c57b44083afc8357015e34cb5a4de9a0075ca4",
+        "deterministic_fingerprint": "df6d729709eb95024f1809561003820e8a926b5605a9e164e30e1188a24751e6",
         "extensions": {
           "optional": true
         },
@@ -94,7 +94,7 @@
           "safety.fail_safe_stop",
           "safety.relief_pressure"
         ],
-        "deterministic_fingerprint": "fabf8104660c850969721a9f8bb93d802fca3cdc1c581a89da8c8359f84a841b",
+        "deterministic_fingerprint": "973de453002c6fa9ced3ce7072fb658a79830c8c327583263f32314cf251ec1b",
         "extensions": {
           "safety_only": true
         },

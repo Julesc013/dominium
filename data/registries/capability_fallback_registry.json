@@ -9,7 +9,7 @@
         "schema_version": "1.0.0",
         "capability_id": "cap.ui.rendered",
         "fallback_action": "downgrade_mode",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "e8edee3531355e56fffbbbe4a634943f17f69a8e00354d1a97f5babfaeab0647",
         "extensions": {
           "fallback_capability_ids": [
             "cap.ui.tui",
@@ -32,7 +32,7 @@
         "schema_version": "1.0.0",
         "capability_id": "cap.ui.tui",
         "fallback_action": "downgrade_mode",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f21b1e477d4a992d2f30aa0e47bd10c54f56333a935b0c0208ff381332cf6737",
         "extensions": {
           "fallback_capability_ids": [
             "cap.ui.cli"
@@ -54,7 +54,7 @@
         "schema_version": "1.0.0",
         "capability_id": "cap.logic.debug_analyzer",
         "fallback_action": "disable_feature",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "7d4638a428469bebb50be68cbb5e485279fea0a0f77f8121f2acd09026703aec",
         "extensions": {
           "user_message_key": "explain.feature_disabled.logic_debug_analyzer"
         },
@@ -73,7 +73,7 @@
         "schema_version": "1.0.0",
         "capability_id": "cap.geo.atlas_unwrap",
         "fallback_action": "substitute_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "65347e83db8c624fdee9c3d8a1c38fac5af2beb02d486ff003157dcff452f03d",
         "extensions": {
           "fallback_capability_ids": [
             "cap.geo.ortho_map_lens"
@@ -95,7 +95,7 @@
         "schema_version": "1.0.0",
         "capability_id": "cap.logic.compiled_automaton",
         "fallback_action": "substitute_stub",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "538ad2911effde4a0c54df1f62ce81f089cc841a66b7b980758128080bcbc7e5",
         "extensions": {
           "fallback_capability_ids": [
             "cap.logic.l1_eval"
@@ -117,7 +117,7 @@
         "schema_version": "1.0.0",
         "capability_id": "cap.logic.protocol_layer",
         "fallback_action": "disable_feature",
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "179c6175341659426db533eda3f879fbea0a3f52a21f8d96d3708b3405e8792b",
         "extensions": {
           "disabled_capability_ids": [
             "cap.logic.protocol_sniffer",
