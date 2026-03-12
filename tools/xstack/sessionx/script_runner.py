@@ -11,6 +11,7 @@ from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from src.compat.data_format_loader import stamp_artifact_metadata
 from src.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
+from src.time import ANCHOR_REASON_SAVE, emit_epoch_anchor
 from src.universe import enforce_session_contract_bundle
 
 from .common import identity_hash_for_payload, norm, now_utc_iso, read_json_object, refusal, write_canonical_json
@@ -59,6 +60,8 @@ def _write_checkpoint_artifacts(
     repo_root: str,
     save_id: str,
     pack_lock_hash: str,
+    contract_bundle_hash: str,
+    overlay_manifest_hash: str,
     physics_profile_id: str,
     registry_hashes: dict,
     checkpoint_snapshots: List[dict],
@@ -116,8 +119,42 @@ def _write_checkpoint_artifacts(
                 "checkpoint_hash": checkpoint_hash,
                 "tick_hash": tick_hash,
                 "composite_hash": composite_hash,
+                "contract_bundle_hash": _normalize_hash64(
+                    contract_bundle_hash,
+                    {"save_id": str(save_id), "checkpoint_id": checkpoint_id, "field": "contract_bundle_hash"},
+                ),
+                "overlay_manifest_hash": _normalize_hash64(
+                    overlay_manifest_hash,
+                    {"save_id": str(save_id), "checkpoint_id": checkpoint_id, "field": "overlay_manifest_hash"},
+                ),
             },
         }
+        epoch_anchor_result = emit_epoch_anchor(
+            repo_root=repo_root,
+            anchor_root_path=os.path.join(repo_root, "saves", str(save_id), "anchors"),
+            tick=int(simulation_tick),
+            truth_hash=truth_hash_anchor,
+            contract_bundle_hash=checkpoint_payload["extensions"]["contract_bundle_hash"],
+            pack_lock_hash=checkpoint_payload["pack_lock_hash"],
+            overlay_manifest_hash=checkpoint_payload["extensions"]["overlay_manifest_hash"],
+            reason=ANCHOR_REASON_SAVE,
+            extensions={
+                "source_artifact_kind": "time_checkpoint",
+                "checkpoint_id": checkpoint_id,
+                "scheduler_tick": int(scheduler_tick),
+                "checkpoint_hash": checkpoint_hash,
+                "tick_hash": tick_hash,
+                "composite_hash": composite_hash,
+                "ledger_hash": ledger_hash,
+            },
+        )
+        if str(epoch_anchor_result.get("result", "")) == "complete":
+            checkpoint_payload["extensions"]["epoch_anchor_id"] = str(
+                (dict(epoch_anchor_result.get("anchor") or {})).get("anchor_id", "")
+            ).strip()
+            checkpoint_payload["extensions"]["epoch_anchor_path"] = str(epoch_anchor_result.get("anchor_path", "")).strip()
+        elif str(epoch_anchor_result.get("result", "")) == "refused":
+            return [], [], dict(epoch_anchor_result)
         valid = validate_instance(
             repo_root=repo_root,
             schema_name="time_checkpoint",
@@ -1286,6 +1323,8 @@ def run_intent_script(
         repo_root=repo_root,
         save_id=save_id,
         pack_lock_hash=str(lock_payload.get("pack_lock_hash", "")),
+        contract_bundle_hash=str(contract_enforcement.get("contract_bundle_hash", "")).strip(),
+        overlay_manifest_hash=str(updated_state.get("overlay_manifest_hash", "")).strip(),
         physics_profile_id=identity_physics_profile_id,
         registry_hashes=dict(registries),
         checkpoint_snapshots=checkpoint_snapshots,

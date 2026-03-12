@@ -7,6 +7,13 @@ import os
 import shutil
 from typing import Dict, List, Tuple
 
+from src.time import (
+    ANCHOR_REASON_MIGRATION,
+    emit_epoch_anchor,
+    load_epoch_anchor_rows,
+    resolve_compaction_bounds,
+    select_boundary_anchor,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 
@@ -106,6 +113,14 @@ def _time_policy_for_save(repo_root: str, save_id: str) -> Tuple[dict, dict, Dic
             "$.time_control_policy_id",
         )
     return spec_payload, selected_policy, {"server_profile_id": server_profile_id}
+
+
+def _save_anchor_root(repo_root: str, save_id: str) -> str:
+    return os.path.join(repo_root, "saves", str(save_id), "anchors")
+
+
+def _save_anchor_rows(repo_root: str, save_id: str) -> List[dict]:
+    return load_epoch_anchor_rows(_save_anchor_root(repo_root, save_id))
 
 
 def branch_from_checkpoint(
@@ -230,6 +245,53 @@ def branch_from_checkpoint(
             "checkpoint_path": norm(os.path.relpath(checkpoint_path, repo_root)),
         },
     }
+    checkpoint_extensions = dict(checkpoint_payload.get("extensions") or {})
+    parent_anchor_result = emit_epoch_anchor(
+        repo_root=repo_root,
+        anchor_root_path=_save_anchor_root(repo_root, resolved_parent_save_id),
+        tick=int(divergence_tick),
+        truth_hash=str(checkpoint_payload.get("truth_hash_anchor", "")).strip(),
+        contract_bundle_hash=str(checkpoint_extensions.get("contract_bundle_hash", "")).strip(),
+        pack_lock_hash=str(checkpoint_payload.get("pack_lock_hash", "")).strip(),
+        overlay_manifest_hash=str(checkpoint_extensions.get("overlay_manifest_hash", "")).strip(),
+        reason=ANCHOR_REASON_MIGRATION,
+        extensions={
+            "branch_id": branch_id,
+            "branch_role": "parent",
+            "parent_checkpoint_id": str(parent_checkpoint_id),
+            "new_save_id": child_save_id,
+        },
+    )
+    if str(parent_anchor_result.get("result", "")) == "refused":
+        return dict(parent_anchor_result)
+    child_anchor_result = emit_epoch_anchor(
+        repo_root=repo_root,
+        anchor_root_path=_save_anchor_root(repo_root, child_save_id),
+        tick=int(divergence_tick),
+        truth_hash=str(checkpoint_payload.get("truth_hash_anchor", "")).strip(),
+        contract_bundle_hash=str(checkpoint_extensions.get("contract_bundle_hash", "")).strip(),
+        pack_lock_hash=str(checkpoint_payload.get("pack_lock_hash", "")).strip(),
+        overlay_manifest_hash=str(checkpoint_extensions.get("overlay_manifest_hash", "")).strip(),
+        reason=ANCHOR_REASON_MIGRATION,
+        extensions={
+            "branch_id": branch_id,
+            "branch_role": "child",
+            "parent_checkpoint_id": str(parent_checkpoint_id),
+            "parent_save_id": resolved_parent_save_id,
+        },
+    )
+    if str(child_anchor_result.get("result", "")) == "refused":
+        return dict(child_anchor_result)
+    if str(parent_anchor_result.get("result", "")) == "complete":
+        branch_payload["extensions"]["parent_epoch_anchor_id"] = str(
+            (dict(parent_anchor_result.get("anchor") or {})).get("anchor_id", "")
+        ).strip()
+        branch_payload["extensions"]["parent_epoch_anchor_path"] = str(parent_anchor_result.get("anchor_path", "")).strip()
+    if str(child_anchor_result.get("result", "")) == "complete":
+        branch_payload["extensions"]["new_epoch_anchor_id"] = str(
+            (dict(child_anchor_result.get("anchor") or {})).get("anchor_id", "")
+        ).strip()
+        branch_payload["extensions"]["new_epoch_anchor_path"] = str(child_anchor_result.get("anchor_path", "")).strip()
     valid = validate_instance(
         repo_root=repo_root,
         schema_name="time_branch",
@@ -261,6 +323,8 @@ def branch_from_checkpoint(
         "parent_branch_artifact_path": parent_branch_rel,
         "new_branch_artifact_path": child_branch_rel,
         "new_session_spec_path": norm(os.path.join("saves", child_save_id, "session_spec.json")),
+        "parent_epoch_anchor_path": str(branch_payload["extensions"].get("parent_epoch_anchor_path", "")).strip(),
+        "new_epoch_anchor_path": str(branch_payload["extensions"].get("new_epoch_anchor_path", "")).strip(),
     }
 
 
@@ -325,6 +389,7 @@ def compact_save(
     checkpoints_dir = os.path.join(save_dir, "checkpoints")
     intent_logs_dir = os.path.join(save_dir, "intent_logs")
     run_meta_dir = os.path.join(save_dir, "run_meta")
+    anchors_dir = _save_anchor_root(repo_root, save_id)
 
     checkpoint_rows: List[dict] = []
     if os.path.isdir(checkpoints_dir):
@@ -363,6 +428,15 @@ def compact_save(
             )
     intent_log_rows = sorted(intent_log_rows, key=lambda item: (int(item.get("start_tick", 0)), int(item.get("end_tick", 0)), str(item.get("log_id", ""))))
 
+    anchor_rows = _save_anchor_rows(repo_root, str(save_id))
+    anchor_paths: List[str] = []
+    if os.path.isdir(anchors_dir):
+        anchor_paths = sorted(
+            os.path.join(anchors_dir, name)
+            for name in os.listdir(anchors_dir)
+            if str(name).endswith(".json")
+        )
+
     run_meta_paths: List[str] = []
     if os.path.isdir(run_meta_dir):
         run_meta_paths = sorted(
@@ -375,6 +449,7 @@ def compact_save(
         set(
             [row.get("path", "") for row in checkpoint_rows]
             + [row.get("path", "") for row in intent_log_rows]
+            + list(anchor_paths)
             + list(run_meta_paths)
         )
     )
@@ -400,59 +475,109 @@ def compact_save(
                 if os.path.isfile(snapshot_abs):
                     os.remove(snapshot_abs)
 
+    kept_checkpoint_rows = [
+        dict(row)
+        for row in checkpoint_rows
+        if str(row.get("path", "")) in keep_checkpoint_paths
+    ]
+    lower_epoch_anchor = {}
+    upper_epoch_anchor = {}
+    if checkpoint_rows and not anchor_rows and (
+        len(keep_checkpoint_paths) != len(checkpoint_rows)
+        or bool(rules.get("merge_intent_logs", False))
+    ):
+        return refusal(
+            "refusal.time.compaction_anchor_missing",
+            "compaction requires epoch anchors for retained checkpoint boundaries",
+            "Emit TIME-ANCHOR-0 save anchors before running compaction.",
+            {"save_id": str(save_id)},
+            "$.anchors",
+        )
+    if kept_checkpoint_rows and anchor_rows:
+        lower_epoch_anchor, upper_epoch_anchor, boundary_error = resolve_compaction_bounds(
+            anchor_rows,
+            start_tick=int(kept_checkpoint_rows[0].get("tick", 0) or 0),
+            end_tick=int(kept_checkpoint_rows[-1].get("tick", 0) or 0),
+        )
+        if boundary_error and (
+            len(keep_checkpoint_paths) != len(checkpoint_rows)
+            or bool(rules.get("merge_intent_logs", False))
+        ):
+            return dict(boundary_error)
+
     merged_intent_log_path = ""
     keep_intent_log_paths: set[str] = set()
     if bool(rules.get("merge_intent_logs", False)) and intent_log_rows:
-        merged_start = min(int(row.get("start_tick", 0)) for row in intent_log_rows)
-        merged_end = max(int(row.get("end_tick", 0)) for row in intent_log_rows)
-        merged_tokens: List[str] = []
-        for row in intent_log_rows:
-            merged_tokens.extend(str(token) for token in list((row.get("payload") or {}).get("envelopes_or_intents") or []))
-        merged_tokens = sorted(set(token for token in merged_tokens if token))
-        merged_log_id = "intent_log.{}.{}_{}.merged".format(str(save_id), int(merged_start), int(merged_end))
-        merged_payload = {
-            "schema_version": "1.0.0",
-            "log_id": merged_log_id,
-            "save_id": str(save_id),
-            "tick_range": {"start_tick": int(merged_start), "end_tick": int(merged_end)},
-            "envelopes_or_intents": merged_tokens,
-            "log_hash": "",
-            "extensions": {
-                "compaction_policy_id": str(compaction_policy_id),
-                "merged_source_count": len(intent_log_rows),
-            },
-        }
-        merged_payload["log_hash"] = canonical_sha256(
-            {
-                "schema_version": merged_payload["schema_version"],
-                "log_id": merged_payload["log_id"],
-                "save_id": merged_payload["save_id"],
-                "tick_range": dict(merged_payload["tick_range"]),
-                "envelopes_or_intents": list(merged_payload["envelopes_or_intents"]),
-                "extensions": dict(merged_payload["extensions"]),
+        merged_source_rows = [
+            dict(row)
+            for row in intent_log_rows
+            if lower_epoch_anchor
+            and upper_epoch_anchor
+            and int(row.get("start_tick", 0) or 0) >= int(lower_epoch_anchor.get("tick", 0) or 0)
+            and int(row.get("end_tick", 0) or 0) <= int(upper_epoch_anchor.get("tick", 0) or 0)
+        ]
+        if not merged_source_rows:
+            keep_intent_log_paths = set(str(row.get("path", "")) for row in intent_log_rows if str(row.get("path", "")))
+        else:
+            merged_start = int(lower_epoch_anchor.get("tick", 0) or 0)
+            merged_end = int(upper_epoch_anchor.get("tick", 0) or 0)
+            merged_tokens: List[str] = []
+            for row in merged_source_rows:
+                merged_tokens.extend(str(token) for token in list((row.get("payload") or {}).get("envelopes_or_intents") or []))
+            merged_tokens = sorted(set(token for token in merged_tokens if token))
+            merged_log_id = "intent_log.{}.{}_{}.merged".format(str(save_id), int(merged_start), int(merged_end))
+            merged_payload = {
+                "schema_version": "1.0.0",
+                "log_id": merged_log_id,
+                "save_id": str(save_id),
+                "tick_range": {"start_tick": int(merged_start), "end_tick": int(merged_end)},
+                "envelopes_or_intents": merged_tokens,
+                "log_hash": "",
+                "extensions": {
+                    "compaction_policy_id": str(compaction_policy_id),
+                    "merged_source_count": len(merged_source_rows),
+                    "lower_epoch_anchor_id": str(lower_epoch_anchor.get("anchor_id", "")).strip(),
+                    "upper_epoch_anchor_id": str(upper_epoch_anchor.get("anchor_id", "")).strip(),
+                    "lower_epoch_anchor_tick": int(lower_epoch_anchor.get("tick", 0) or 0),
+                    "upper_epoch_anchor_tick": int(upper_epoch_anchor.get("tick", 0) or 0),
+                },
             }
-        )
-        valid = validate_instance(
-            repo_root=repo_root,
-            schema_name="intent_log",
-            payload=merged_payload,
-            strict_top_level=True,
-        )
-        if not bool(valid.get("valid", False)):
-            return refusal(
-                "refusal.time.compaction_failed",
-                "merged intent log failed schema validation",
-                "Repair compaction merge logic and retry.",
-                {"save_id": str(save_id), "compaction_policy_id": str(compaction_policy_id)},
-                "$.intent_log",
+            merged_payload["log_hash"] = canonical_sha256(
+                {
+                    "schema_version": merged_payload["schema_version"],
+                    "log_id": merged_payload["log_id"],
+                    "save_id": merged_payload["save_id"],
+                    "tick_range": dict(merged_payload["tick_range"]),
+                    "envelopes_or_intents": list(merged_payload["envelopes_or_intents"]),
+                    "extensions": dict(merged_payload["extensions"]),
+                }
             )
-        merged_intent_log_path = os.path.join(intent_logs_dir, "{}.json".format(merged_log_id))
-        write_canonical_json(merged_intent_log_path, merged_payload)
-        keep_intent_log_paths.add(merged_intent_log_path)
-        for row in intent_log_rows:
-            path = str(row.get("path", ""))
-            if path and os.path.isfile(path):
-                os.remove(path)
+            valid = validate_instance(
+                repo_root=repo_root,
+                schema_name="intent_log",
+                payload=merged_payload,
+                strict_top_level=True,
+            )
+            if not bool(valid.get("valid", False)):
+                return refusal(
+                    "refusal.time.compaction_failed",
+                    "merged intent log failed schema validation",
+                    "Repair compaction merge logic and retry.",
+                    {"save_id": str(save_id), "compaction_policy_id": str(compaction_policy_id)},
+                    "$.intent_log",
+                )
+            merged_intent_log_path = os.path.join(intent_logs_dir, "{}.json".format(merged_log_id))
+            write_canonical_json(merged_intent_log_path, merged_payload)
+            keep_intent_log_paths.add(merged_intent_log_path)
+            for row in intent_log_rows:
+                path = str(row.get("path", ""))
+                row_in_merge = any(path == str(candidate.get("path", "")) for candidate in merged_source_rows)
+                if row_in_merge:
+                    if path and os.path.isfile(path):
+                        os.remove(path)
+                    continue
+                if path:
+                    keep_intent_log_paths.add(path)
     else:
         keep_intent_log_paths = set(str(row.get("path", "")) for row in intent_log_rows if str(row.get("path", "")))
 
@@ -482,6 +607,7 @@ def compact_save(
         for path in (
             list(keep_checkpoint_paths)
             + list(keep_intent_log_paths)
+            + list(anchor_paths)
             + list(kept_run_meta_paths)
         )
         if path and os.path.isfile(path)
@@ -508,4 +634,6 @@ def compact_save(
         "retained_hash_mismatches": retained_hash_mismatches,
         "retained_artifact_paths": [norm(os.path.relpath(path, repo_root)) for path in retained_paths_after],
         "merged_intent_log_path": norm(os.path.relpath(merged_intent_log_path, repo_root)) if merged_intent_log_path else "",
+        "lower_epoch_anchor_id": str(lower_epoch_anchor.get("anchor_id", "")).strip(),
+        "upper_epoch_anchor_id": str(upper_epoch_anchor.get("anchor_id", "")).strip(),
     }

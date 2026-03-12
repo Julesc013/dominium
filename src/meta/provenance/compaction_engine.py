@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Tuple
 
+from src.time import TickT, normalize_tick_t, resolve_compaction_bounds
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -90,7 +91,7 @@ def _sorted_rows(rows: Iterable[Mapping[str, object]]) -> List[dict]:
     )
 
 
-def _window_contains_tick(*, tick: int | None, start_tick: int, end_tick: int) -> bool:
+def _window_contains_tick(*, tick: TickT | None, start_tick: TickT, end_tick: TickT) -> bool:
     if tick is None:
         return False
     return int(start_tick) <= int(tick) <= int(end_tick)
@@ -141,14 +142,14 @@ def build_compaction_marker(
     *,
     marker_id: str,
     shard_id: str,
-    start_tick: int,
-    end_tick: int,
+    start_tick: TickT,
+    end_tick: TickT,
     pre_compaction_hash: str,
     post_compaction_hash: str,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
-    start_value = int(max(0, _as_int(start_tick, 0)))
-    end_value = int(max(start_value, _as_int(end_tick, start_value)))
+    start_value = int(normalize_tick_t(start_tick, 0))
+    end_value = int(max(start_value, int(normalize_tick_t(end_tick, start_value))))
     payload = {
         "schema_version": "1.0.0",
         "marker_id": str(marker_id or "").strip(),
@@ -234,10 +235,10 @@ def _replay_projection_without_derived(state_payload: Mapping[str, object]) -> d
 def _replay_projection_up_to_tick_without_derived(
     state_payload: Mapping[str, object],
     *,
-    end_tick: int,
+    end_tick: TickT,
 ) -> dict:
     payload = dict(state_payload or {})
-    tick_limit = int(max(0, _as_int(end_tick, 0)))
+    tick_limit = int(normalize_tick_t(end_tick, 0))
     out = {}
     for key in _CANONICAL_EVENT_KEYS:
         rows = payload.get(key)
@@ -292,8 +293,9 @@ def _refresh_compaction_hashes(state_payload: dict) -> None:
 def _validate_compaction_window(
     *,
     state_payload: Mapping[str, object],
-    start_tick: int,
-    end_tick: int,
+    start_tick: TickT,
+    end_tick: TickT,
+    epoch_anchor_rows: object = None,
 ) -> Tuple[bool, str]:
     for row in list(state_payload.get("time_branches") or state_payload.get("branch_rows") or []):
         if not isinstance(row, Mapping):
@@ -329,10 +331,18 @@ def _validate_compaction_window(
                 False,
                 "unsealed proof window intersects compaction window [{}-{}]".format(start, end),
             )
+    if epoch_anchor_rows:
+        _lower, _upper, boundary_error = resolve_compaction_bounds(
+            list(epoch_anchor_rows or []),
+            start_tick=int(normalize_tick_t(start_tick, 0)),
+            end_tick=int(normalize_tick_t(end_tick, 0)),
+        )
+        if boundary_error:
+            return False, str(boundary_error.get("message", "")).strip() or "epoch anchor boundary missing"
     return True, ""
 
 
-def _compact_rows_in_window(rows: object, *, start_tick: int, end_tick: int) -> Tuple[List[dict], List[dict]]:
+def _compact_rows_in_window(rows: object, *, start_tick: TickT, end_tick: TickT) -> Tuple[List[dict], List[dict]]:
     if not isinstance(rows, list):
         return [], []
     keep: List[dict] = []
@@ -350,8 +360,8 @@ def _compact_info_artifacts(
     rows: object,
     *,
     classification_index: Mapping[str, Mapping[str, object]],
-    start_tick: int,
-    end_tick: int,
+    start_tick: TickT,
+    end_tick: TickT,
 ) -> Tuple[List[dict], List[dict]]:
     if not isinstance(rows, list):
         return [], []
@@ -379,13 +389,14 @@ def compact_provenance_window(
     state_payload: Mapping[str, object],
     classification_rows: object,
     shard_id: str,
-    start_tick: int,
-    end_tick: int,
+    start_tick: TickT,
+    end_tick: TickT,
+    epoch_anchor_rows: object = None,
     emit_summary: bool = True,
 ) -> dict:
     state = dict(state_payload or {})
-    window_start = int(max(0, _as_int(start_tick, 0)))
-    window_end = int(max(window_start, _as_int(end_tick, window_start)))
+    window_start = int(normalize_tick_t(start_tick, 0))
+    window_end = int(max(window_start, int(normalize_tick_t(end_tick, window_start))))
     shard_token = str(shard_id or "").strip() or "shard.unknown"
     class_index = _classification_index(classification_rows)
 
@@ -393,6 +404,7 @@ def compact_provenance_window(
         state_payload=state,
         start_tick=window_start,
         end_tick=window_end,
+        epoch_anchor_rows=epoch_anchor_rows,
     )
     if not valid_window:
         return {
@@ -404,6 +416,14 @@ def compact_provenance_window(
 
     pre_replay_hash = canonical_sha256(_replay_projection_without_derived(state))
     pre_anchor_hash = canonical_sha256(_anchor_projection(state))
+    lower_epoch_anchor = {}
+    upper_epoch_anchor = {}
+    if epoch_anchor_rows:
+        lower_epoch_anchor, upper_epoch_anchor, _boundary_error = resolve_compaction_bounds(
+            list(epoch_anchor_rows or []),
+            start_tick=window_start,
+            end_tick=window_end,
+        )
 
     removed_count = 0
     removed_by_key: Dict[str, int] = {}
@@ -497,6 +517,8 @@ def compact_provenance_window(
             "derived_removed_by_key": dict(removed_by_key),
             "replay_hash_before": pre_replay_hash,
             "replay_hash_after": post_replay_hash,
+            "lower_epoch_anchor_id": str(lower_epoch_anchor.get("anchor_id", "")).strip(),
+            "upper_epoch_anchor_id": str(upper_epoch_anchor.get("anchor_id", "")).strip(),
         },
     )
     marker_rows = [
