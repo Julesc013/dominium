@@ -1,0 +1,51 @@
+{
+  "schema_id": "dominium.registry.astro.receiver_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.astro.receiver_kind_registry",
+    "registry_version": "1.0.0",
+    "receiver_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "receiver_kind_id": "receiver.planet",
+        "description": "Deterministic planetary illumination receiver kind for SOL-1 geometry.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SOL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "SOL-1 emitter and receiver kind semantics remain provisional until multi-star and eclipse semantics are contract-pinned.",
+          "future_series": "SOL",
+          "replacement_target": "Replace SOL-1 kind stubs with contract-pinned astrophysical body-role semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f907b28b0a599e314779623500a1e4bc78c7a2493ad68736ea5fb27cc15532a8",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "receiver_kind_id": "receiver.moon",
+        "description": "Deterministic lunar illumination receiver kind for SOL-1 geometry.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SOL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "SOL-1 emitter and receiver kind semantics remain provisional until multi-star and eclipse semantics are contract-pinned.",
+          "future_series": "SOL",
+          "replacement_target": "Replace SOL-1 kind stubs with contract-pinned astrophysical body-role semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f907b28b0a599e314779623500a1e4bc78c7a2493ad68736ea5fb27cc15532a8",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "source": "SOL1-2"
+    }
+  }
+}

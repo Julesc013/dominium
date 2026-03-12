@@ -1,0 +1,33 @@
+SCHEMA: astro/illumination_view_artifact.schema
+schema_id: dominium.schema.astro.illumination_view_artifact
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define the compactable derived illumination geometry artifact emitted by SOL-1.
+
+NON-SEMANTICS:
+- This artifact is derived-only and never mutates truth.
+- Phase remains view-derived and must not be stored in canonical truth state.
+
+REQUIRED SHAPE:
+record illumination_view_artifact
+  required:
+    - schema_version: semver
+    - view_id: id
+    - tick: u64
+    - viewer_ref: map
+    - emitter_object_id: id
+    - receiver_object_id: id
+    - phase_angle: mdeg
+    - illumination_fraction: permille
+    - occlusion_fraction: permille
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- phase_angle is in `[0, 180000]`
+- illumination_fraction is in `[0, 1000]`
+- occlusion_fraction is in `[0, 1000]`
+- artifact ordering is canonical by `(tick, emitter_object_id, receiver_object_id, viewer_ref fingerprint)`
+- deterministic_fingerprint is computed with the fingerprint field blanked

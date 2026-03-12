@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Illumination View Artifact Schema",
+  "version": "1.0.0",
+  "description": "Compactable derived SOL-1 illumination geometry artifact.",
+  "x-doc-ref": [
+    "docs/sol/ILLUMINATION_GEOMETRY_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "view_id",
+    "tick",
+    "viewer_ref",
+    "emitter_object_id",
+    "receiver_object_id",
+    "phase_angle",
+    "illumination_fraction",
+    "occlusion_fraction",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "view_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 18446744073709551615
+    },
+    "viewer_ref": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "emitter_object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "receiver_object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase_angle": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 180000
+    },
+    "illumination_fraction": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "occlusion_fraction": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "view_id": "illumination.moon.tick.8",
+      "tick": 8,
+      "viewer_ref": {
+        "object_id": "camera.earth4.probe",
+        "frame_id": "frame.surface_local",
+        "local_position": [
+          0,
+          0,
+          1600
+        ]
+      },
+      "emitter_object_id": "object.star.sol",
+      "receiver_object_id": "object.moon.luna",
+      "phase_angle": 118000,
+      "illumination_fraction": 265,
+      "occlusion_fraction": 1000,
+      "deterministic_fingerprint": "28d3cdbec0cab0f3e39480f7ea96050b91cc3fd2c8eff6ad7981e52d769f3bf4",
+      "extensions": {
+        "source": "SOL1-2",
+        "compactable": true
+      }
+    }
+  ]
+}

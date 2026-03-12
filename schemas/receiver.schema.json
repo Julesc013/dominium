@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Receiver Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SOL-1 illumination receiver descriptor.",
+  "x-doc-ref": [
+    "docs/sol/ILLUMINATION_GEOMETRY_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "receiver_id",
+    "kind",
+    "object_id",
+    "radius",
+    "albedo_proxy",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "receiver_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "receiver.planet",
+        "receiver.moon"
+      ]
+    },
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "radius": {
+      "type": "object",
+      "required": [
+        "unit",
+        "value"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "albedo_proxy": {
+      "type": "object",
+      "required": [
+        "unit",
+        "value"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "receiver_id": "receiver.luna.primary",
+      "kind": "receiver.moon",
+      "object_id": "object.moon.luna",
+      "radius": {
+        "unit": "km",
+        "value": 1737
+      },
+      "albedo_proxy": {
+        "unit": "permille",
+        "value": 120
+      },
+      "deterministic_fingerprint": "4f277e3d1d83a5af0feee57ddfd157a6ca96ade8fffdcf9ed4b84e0904fcd390",
+      "extensions": {
+        "source": "SOL1-2"
+      }
+    }
+  ]
+}

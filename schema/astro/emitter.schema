@@ -1,0 +1,27 @@
+SCHEMA: astro/emitter.schema
+schema_id: dominium.schema.astro.emitter
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define a deterministic illumination emitter descriptor for SOL-1 geometry evaluation.
+
+NON-SEMANTICS:
+- Emitters do not mutate truth.
+- Emitters are descriptor rows used by derived illumination views.
+
+REQUIRED SHAPE:
+record emitter
+  required:
+    - schema_version: semver
+    - emitter_id: id
+    - kind: enum(emitter.star)
+    - object_id: id
+    - luminosity_proxy: quantity
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- emitter ids are canonical and deterministic
+- luminosity_proxy is a stub proxy, not a measured dataset
+- deterministic_fingerprint is computed with the fingerprint field blanked
