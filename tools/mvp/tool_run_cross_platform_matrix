@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+from tools.mvp.tool_run_cross_platform_matrix import main
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
