@@ -55,3 +55,8 @@
 
 - Verified `duplicate_semantics_scan` remains `pass`.
 - Capability negotiation, overlay merge, GEO ID generation, and illumination entry points were already singular, so no engine refactor was required in this pass.
+- Canonical engine paths retained:
+  - `src/compat/capability_negotiation.py`
+  - `src/geo/overlay/overlay_merge_engine.py`
+  - `src/geo/index/object_id_engine.py`
+  - `src/worldgen/earth/lighting/illumination_engine.py`
