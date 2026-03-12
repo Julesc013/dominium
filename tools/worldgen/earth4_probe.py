@@ -98,6 +98,8 @@ def build_sky_fixture(
         authority_context=authority_context,
         lens_profile_id="lens.fp",
         ui_mode=str(ui_mode),
+        star_artifact_rows=context.get("star_artifact_rows"),
+        planet_basic_artifact_rows=context.get("planet_basic_artifact_rows"),
     )
     return {
         "context": context,

@@ -234,19 +234,12 @@ def moon_direction_proxy(
         altitude_mdeg=altitude_mdeg,
         phase_scale=EARTH_TIDE_PHASE_SCALE,
     )
-    illumination_permille = _clamp(
-        (1000 - phase_cosine_proxy_permille(phase=lunar_phase_value, phase_scale=EARTH_TIDE_PHASE_SCALE)) // 2,
-        0,
-        1000,
-    )
     payload = {
         "tick": int(tick),
-        "lunar_phase": int(lunar_phase_value),
         "rotation_phase": int(rotation_phase),
         "declination_mdeg": int(lunar_declination_mdeg),
         "carrier_permille": int(carrier_permille),
         "moon_elevation_mdeg": int(altitude_mdeg),
-        "illumination_permille": int(illumination_permille),
         "moon_direction": dict(direction_payload.get("direction") or {}),
         "moon_azimuth_mdeg": int(direction_payload.get("azimuth_mdeg", 0)),
         "local_phase": int(direction_payload.get("local_phase", 0)),

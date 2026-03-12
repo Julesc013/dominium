@@ -122,7 +122,12 @@ def _moon_fill_intensity_permille(*, sky_artifact: Mapping[str, object], illum_m
     sky_ext = _as_map(_as_map(sky_artifact).get("extensions"))
     colors = _as_map(_as_map(sky_artifact).get("sky_colors_ref"))
     model_ext = _as_map(_as_map(illum_model_row).get("extensions"))
-    moon_illumination = _clamp(_as_int(sky_ext.get("moon_illumination_permille", 0), 0), 0, 1000)
+    moon_geometry = _as_map(sky_ext.get("moon_illumination_view_artifact"))
+    moon_illumination = _clamp(
+        _as_int(moon_geometry.get("illumination_fraction", sky_ext.get("moon_illumination_permille", 0)), 0),
+        0,
+        1000,
+    )
     sun_intensity = _clamp(_as_int(colors.get("sun_intensity_permille", 0), 0), 0, 1000)
     moon_fill_max = _clamp(_as_int(model_ext.get("moon_fill_max_permille", 220), 220), 0, 1000)
     return _clamp((moon_fill_max * moon_illumination * max(0, 1000 - sun_intensity)) // 1_000_000, 0, 1000)
@@ -192,6 +197,7 @@ def build_illumination_view_artifact(
             "derived_only": True,
             "compactable": True,
             "artifact_class": "DERIVED_VIEW",
+            "moon_illumination_view_artifact": dict(_as_map(sky_ext.get("moon_illumination_view_artifact"))),
             "ambient_color": ambient_color,
             "sky_light_color": sky_light_color,
             "key_light_color": dict(_as_map(sky_colors.get("sun_color")) or {"r": 255, "g": 240, "b": 220}),

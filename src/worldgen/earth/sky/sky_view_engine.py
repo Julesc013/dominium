@@ -8,6 +8,8 @@ import os
 from functools import lru_cache
 from typing import Dict, Mapping
 
+from src.astro import build_view_artifact_from_directions
+from src.worldgen.mw import normalize_planet_basic_artifact_rows, normalize_star_artifact_rows
 from src.worldgen.mw.mw_cell_generator import galaxy_priors_registry_hash, galaxy_priors_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -31,6 +33,9 @@ SKY_MODEL_REGISTRY_REL = os.path.join("data", "registries", "sky_model_registry.
 EARTH_SKY_VIEW_ENGINE_VERSION = "EARTH4-6"
 _SKY_VIEW_CACHE: Dict[str, dict] = {}
 _SKY_VIEW_CACHE_MAX = 128
+_DEFAULT_MOON_ALBEDO_PROXY_PERMILLE = 120
+_DEFAULT_MOON_RADIUS_KM = 1737
+_DEFAULT_STAR_LUMINOSITY_PROXY = 1000
 
 
 def _repo_root() -> str:
@@ -65,6 +70,17 @@ def _sorted_strings(values: object) -> list[str]:
 
 def _clamp(value: int, minimum: int, maximum: int) -> int:
     return max(int(minimum), min(int(maximum), int(value)))
+
+
+def _rows_by_object_id(rows: object) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in list(rows or []):
+        if not isinstance(row, Mapping):
+            continue
+        token = str(dict(row).get("object_id", "")).strip()
+        if token:
+            out[token] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
 def _rows_by_id(payload: Mapping[str, object] | None, *, row_key: str, id_key: str) -> Dict[str, dict]:
@@ -239,6 +255,79 @@ def _debug_overlay_payload(
     return payload
 
 
+def _moon_receiver_stub(
+    *,
+    planet_object_id: str,
+    planet_basic_artifact_rows: object,
+) -> dict:
+    rows_by_id = _rows_by_object_id(normalize_planet_basic_artifact_rows(planet_basic_artifact_rows))
+    planet_row = dict(rows_by_id.get(str(planet_object_id or "").strip()) or {})
+    extensions = _as_map(planet_row.get("extensions"))
+    moon_rows = sorted(
+        [dict(row) for row in list(extensions.get("moon_stub_descriptors") or []) if isinstance(row, Mapping)],
+        key=lambda row: (
+            int(_as_int(row.get("moon_index", 0), 0)),
+            str(row.get("object_id", "")),
+        ),
+    )
+    if moon_rows:
+        moon_row = dict(moon_rows[0])
+        return {
+            "object_id": str(moon_row.get("object_id", "")).strip(),
+            "radius_km": int(
+                max(
+                    1,
+                    _as_int(
+                        _as_map(moon_row.get("radius")).get("value", moon_row.get("radius_km", _DEFAULT_MOON_RADIUS_KM)),
+                        _DEFAULT_MOON_RADIUS_KM,
+                    ),
+                )
+            ),
+            "albedo_proxy_permille": int(
+                _clamp(
+                    _as_int(
+                        _as_map(moon_row.get("body_albedo_proxy")).get(
+                            "value",
+                            moon_row.get("albedo_proxy_permille", _DEFAULT_MOON_ALBEDO_PROXY_PERMILLE),
+                        ),
+                        _DEFAULT_MOON_ALBEDO_PROXY_PERMILLE,
+                    ),
+                    0,
+                    1000,
+                )
+            ),
+            "kind": "receiver.moon",
+        }
+    planet_token = str(planet_object_id or "").strip() or "planet"
+    return {
+        "object_id": "object.moon.stub.{}".format(planet_token[:16]),
+        "radius_km": _DEFAULT_MOON_RADIUS_KM,
+        "albedo_proxy_permille": _DEFAULT_MOON_ALBEDO_PROXY_PERMILLE,
+        "kind": "receiver.moon",
+    }
+
+
+def _star_emitter_stub(
+    *,
+    star_object_id: str,
+    star_artifact_rows: object,
+) -> dict:
+    rows_by_id = _rows_by_object_id(normalize_star_artifact_rows(star_artifact_rows))
+    star_row = dict(rows_by_id.get(str(star_object_id or "").strip()) or {})
+    return {
+        "object_id": str(star_row.get("object_id", "")).strip() or str(star_object_id or "").strip() or "object.star.stub",
+        "luminosity_proxy_value": int(
+            max(
+                0,
+                _as_int(
+                    _as_map(star_row.get("luminosity_proxy")).get("value", _DEFAULT_STAR_LUMINOSITY_PROXY),
+                    _DEFAULT_STAR_LUMINOSITY_PROXY,
+                ),
+            )
+        ),
+    }
+
+
 def build_sky_view_surface(
     *,
     universe_identity: Mapping[str, object] | None,
@@ -251,6 +340,8 @@ def build_sky_view_surface(
     starfield_policy_id: str = DEFAULT_STARFIELD_POLICY_ID,
     milkyway_band_policy_id: str = DEFAULT_MILKYWAY_BAND_POLICY_ID,
     ui_mode: str = "gui",
+    star_artifact_rows: object = None,
+    planet_basic_artifact_rows: object = None,
 ) -> dict:
     universe = _as_map(universe_identity)
     perceived = _as_map(perceived_model)
@@ -296,6 +387,8 @@ def build_sky_view_surface(
             "starfield_policy_id": str(starfield_policy_id or "").strip(),
             "milkyway_band_policy_id": str(milkyway_band_policy_id or "").strip(),
             "observer_surface_artifact_hash": canonical_sha256(surface_artifact) if surface_artifact else "",
+            "star_artifact_rows_hash": canonical_sha256(normalize_star_artifact_rows(star_artifact_rows)),
+            "planet_basic_artifact_rows_hash": canonical_sha256(normalize_planet_basic_artifact_rows(planet_basic_artifact_rows)),
         }
     )
     cached = _cache_lookup(cache_key)
@@ -319,10 +412,31 @@ def build_sky_view_surface(
         climate_params_row=climate_params_row,
         tide_params_row=tide_params_row,
     )
+    star_emitter = _star_emitter_stub(
+        star_object_id=str(surface_ext.get("parent_star_object_id", "")).strip(),
+        star_artifact_rows=star_artifact_rows,
+    )
+    moon_receiver = _moon_receiver_stub(
+        planet_object_id=str(surface_artifact.get("planet_object_id", "")).strip(),
+        planet_basic_artifact_rows=planet_basic_artifact_rows,
+    )
+    moon_illumination_view_artifact = build_view_artifact_from_directions(
+        tick=int(tick),
+        viewer_ref=observer,
+        emitter_object_id=str(star_emitter.get("object_id", "")).strip(),
+        receiver_object_id=str(moon_receiver.get("object_id", "")).strip(),
+        emitter_direction=_as_map(sun_payload.get("sun_direction")),
+        receiver_direction=_as_map(moon_payload.get("moon_direction")),
+        luminosity_proxy_value=int(star_emitter.get("luminosity_proxy_value", _DEFAULT_STAR_LUMINOSITY_PROXY)),
+        receiver_radius_km=int(moon_receiver.get("radius_km", _DEFAULT_MOON_RADIUS_KM)),
+        receiver_albedo_proxy_permille=int(moon_receiver.get("albedo_proxy_permille", _DEFAULT_MOON_ALBEDO_PROXY_PERMILLE)),
+        receiver_kind=str(moon_receiver.get("kind", "receiver.moon")).strip() or "receiver.moon",
+    )
+    moon_illumination_permille = int(_as_int(moon_illumination_view_artifact.get("illumination_fraction", 0), 0))
     sky_gradient = evaluate_sky_gradient(
         sun_elevation_mdeg=_as_int(sun_payload.get("sun_elevation_mdeg", 0), 0),
         sky_model_row=sky_model_row,
-        moon_illumination_permille=_as_int(moon_payload.get("illumination_permille", 0), 0),
+        moon_illumination_permille=moon_illumination_permille,
     )
     galaxy_rows = galaxy_priors_rows()
     galaxy_priors_row = dict(
@@ -414,7 +528,8 @@ def build_sky_view_surface(
             "moon_screen": dict(moon_screen),
             "sun_elevation_mdeg": int(_as_int(sun_payload.get("sun_elevation_mdeg", 0), 0)),
             "moon_elevation_mdeg": int(_as_int(moon_payload.get("moon_elevation_mdeg", 0), 0)),
-            "moon_illumination_permille": int(_as_int(moon_payload.get("illumination_permille", 0), 0)),
+            "moon_illumination_permille": int(moon_illumination_permille),
+            "moon_illumination_view_artifact": dict(moon_illumination_view_artifact),
             "epistemic_policy_id": epistemic_policy_id,
             "visibility_policy": {
                 "sky_dome_visible": True,
@@ -436,7 +551,8 @@ def build_sky_view_surface(
         "twilight_factor_permille": int(_as_int(sky_gradient.get("twilight_factor_permille", 0), 0)),
         "star_count": int(len(star_rows)),
         "milkyway_sample_count": int(len(band_rows)),
-        "moon_illumination_permille": int(_as_int(moon_payload.get("illumination_permille", 0), 0)),
+        "moon_illumination_permille": int(moon_illumination_permille),
+        "moon_phase_angle_mdeg": int(_as_int(moon_illumination_view_artifact.get("phase_angle", 0), 0)),
     }
     payload = {
         "result": "complete",

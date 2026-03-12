@@ -107,6 +107,14 @@ def _tool_requests(extensions: Mapping[str, object] | None) -> dict:
     return _as_map(_as_map(extensions).get("tool_requests"))
 
 
+def _worldgen_star_artifact_rows(extensions: Mapping[str, object] | None) -> list[dict]:
+    return [dict(row) for row in list(_as_map(extensions).get("worldgen_star_artifacts") or []) if isinstance(row, Mapping)]
+
+
+def _worldgen_planet_basic_artifact_rows(extensions: Mapping[str, object] | None) -> list[dict]:
+    return [dict(row) for row in list(_as_map(extensions).get("worldgen_planet_basic_artifacts") or []) if isinstance(row, Mapping)]
+
+
 def _universe_identity_from_bootstrap(bootstrap: Mapping[str, object] | None) -> dict:
     session_spec = _as_map(_as_map(bootstrap).get("session_spec"))
     profile_bundle = _as_map(_as_map(bootstrap).get("profile_bundle"))
@@ -1149,6 +1157,8 @@ def build_viewer_shell_state(
         or str(_as_map(lens_resolution.get("lens_profile")).get("lens_id", "")).strip()
         or DEFAULT_VIEWER_LENS_PROFILE_ID,
         ui_mode=str(ui_mode),
+        star_artifact_rows=_worldgen_star_artifact_rows(extensions),
+        planet_basic_artifact_rows=_worldgen_planet_basic_artifact_rows(extensions),
     )
     illumination_view_surface = build_lighting_view_surface(
         sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
