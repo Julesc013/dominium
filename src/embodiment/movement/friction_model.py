@@ -27,6 +27,7 @@ def resolve_horizontal_damping_state(
     base_damping_permille: int,
     slope_response: Mapping[str, object] | None = None,
     friction_field_value: object = None,
+    source_kind: str = "",
 ) -> dict:
     slope = _as_map(slope_response)
     base = _clamp(_as_int(base_damping_permille, 120), 0, 950)
@@ -48,7 +49,7 @@ def resolve_horizontal_damping_state(
         "friction_permille": int(friction_permille),
         "slope_adjust_permille": int(slope_adjust_permille),
         "direction_class": direction_class,
-        "source_kind": "field.friction" if friction_field_value is not None else "default",
+        "source_kind": str(source_kind).strip() or ("field.friction" if friction_field_value is not None else "default"),
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))

@@ -784,6 +784,7 @@ from src.worldgen.earth import (
     climate_window_hash,
     compute_hydrology_window,
     earth_climate_params_rows,
+    evaluate_earth_tile_material_proxy,
     hydrology_params_rows,
     material_proxy_window_hash,
     tide_params_rows,
@@ -4436,6 +4437,65 @@ def _ensure_earth_material_proxy_runtime_state(state: dict) -> dict:
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
     state["earth_material_proxy_runtime_state"] = dict(payload)
     return dict(payload)
+
+
+def _earth_material_proxy_friction_enabled(policy_context: dict | None) -> bool:
+    if isinstance(policy_context, Mapping) and "earth_material_proxy_friction_enabled" in policy_context:
+        return bool(policy_context.get("earth_material_proxy_friction_enabled"))
+    profile_row = _physics_profile_row(policy_context)
+    ext = dict(profile_row.get("extensions") or {}) if isinstance(profile_row.get("extensions"), Mapping) else {}
+    return bool(ext.get("earth_material_proxy_friction_enabled", False))
+
+
+def _surface_tile_artifact_row_for_geo_cell_key(
+    state: dict,
+    geo_cell_key: Mapping[str, object] | None,
+) -> dict:
+    target_hash = _runtime_geo_cell_key_hash(geo_cell_key)
+    if not target_hash:
+        return {}
+    for raw in _ensure_worldgen_surface_tile_artifact_rows(state):
+        row = dict(raw) if isinstance(raw, Mapping) else {}
+        if row and _runtime_geo_cell_key_hash(row.get("tile_cell_key")) == target_hash:
+            return row
+    return {}
+
+
+def _material_proxy_friction_for_body_surface(
+    *,
+    state: dict,
+    body_row: Mapping[str, object] | None,
+    current_tick: int,
+    policy_context: dict | None = None,
+) -> dict:
+    if not _earth_material_proxy_friction_enabled(policy_context):
+        return {}
+    body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
+    body_ext = dict(body.get("extensions") or {}) if isinstance(body.get("extensions"), Mapping) else {}
+    terrain_state = dict(body_ext.get("terrain_collision_state") or {}) if isinstance(body_ext.get("terrain_collision_state"), Mapping) else {}
+    tile_cell_key = _coerce_cell_key(body_ext.get("surface_tile_cell_key")) or _coerce_cell_key(terrain_state.get("tile_cell_key"))
+    if not tile_cell_key:
+        query = _body_surface_query(
+            state=state,
+            body_row=body,
+            position_override=body.get("transform_mm"),
+            policy_context=policy_context,
+        )
+        tile_cell_key = _coerce_cell_key(_as_map(query).get("tile_cell_key"))
+    artifact_row = _surface_tile_artifact_row_for_geo_cell_key(state, tile_cell_key)
+    if not artifact_row:
+        return {}
+    geometry_row = dict(
+        (
+            geometry_cell_state_rows_by_key(_ensure_geometry_cell_state_rows(state))
+        ).get(_runtime_geo_cell_key_hash(tile_cell_key))
+        or {}
+    )
+    return evaluate_earth_tile_material_proxy(
+        artifact_row=artifact_row,
+        current_tick=int(current_tick),
+        geometry_row=geometry_row,
+    )
 
 
 def _normalize_earth_wind_tile_overlay_rows(rows: object) -> List[dict]:
@@ -26964,6 +27024,22 @@ def execute_intent(
         friction_value = friction_sample.get("value")
         if isinstance(friction_value, Mapping):
             friction_value = friction_value.get("traction_permille")
+        material_proxy_friction = _material_proxy_friction_for_body_surface(
+            state=state,
+            body_row=body,
+            current_tick=int(current_tick),
+            policy_context=policy_context,
+        )
+        resolved_friction_value = friction_value
+        friction_source_kind = ""
+        if material_proxy_friction:
+            resolved_friction_value = int(
+                _as_int(
+                    material_proxy_friction.get("friction_proxy_permille", friction_value),
+                    friction_value or 0,
+                )
+            )
+            friction_source_kind = "earth.material_proxy.friction_proxy"
         momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
         existing_momentum_row = dict(momentum_rows_by_assembly.get(body_id) or {})
         mass_value = _mass_value_for_assembly(
@@ -27012,7 +27088,8 @@ def execute_intent(
         friction_state = resolve_horizontal_damping_state(
             base_damping_permille=int(_as_int(movement_params.get("horizontal_damping_permille", 120), 120)),
             slope_response=_as_map(_as_map(body.get("extensions")).get("terrain_slope_response")),
-            friction_field_value=friction_value,
+            friction_field_value=resolved_friction_value,
+            source_kind=friction_source_kind,
         )
         horizontal_damping = int(max(0, min(950, _as_int(friction_state.get("effective_damping_permille", 120), 120))))
         updated_velocity["x"] = int(updated_velocity["x"] * (1000 - horizontal_damping) // 1000)
@@ -27129,6 +27206,16 @@ def execute_intent(
             "terrain_collision": dict(_as_map(_as_map(body.get("extensions")).get("terrain_collision_state"))),
             "locomotion_state": dict(_as_map(_as_map(body.get("extensions")).get("locomotion_state"))),
             "friction_state": dict(friction_state),
+            "material_proxy_friction": {
+                "enabled": bool(_earth_material_proxy_friction_enabled(policy_context)),
+                "material_proxy_id": str(material_proxy_friction.get("material_proxy_id", "")).strip() or None,
+                "friction_proxy_permille": (
+                    None
+                    if not material_proxy_friction
+                    else int(_as_int(material_proxy_friction.get("friction_proxy_permille", 0), 0))
+                ),
+                "tile_object_id": str(material_proxy_friction.get("tile_object_id", "")).strip() or None,
+            },
             "impact_event_id": str(impact_event_row.get("event_id", "")).strip() or None,
             "impact_explain_artifact": dict(ground_contact.get("impact_explain_artifact") or {}),
             "lens_profile_id": lens_profile_id or None,
