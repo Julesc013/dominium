@@ -1085,20 +1085,6 @@ def build_viewer_shell_state(
         "deterministic_fingerprint": "",
     }
     toolbelt_surface["deterministic_fingerprint"] = canonical_sha256(dict(toolbelt_surface, deterministic_fingerprint=""))
-    inspection_surfaces = build_inspection_panel_set(
-        perceived_model=perceived_model,
-        target_semantic_id=str(_as_map(selection).get("object_id", "")).strip()
-        or str(_as_map(selection).get("target_id", "")).strip(),
-        authority_context=runtime_authority,
-        inspection_snapshot=inspection_snapshot,
-        property_origin_request=property_origin_request,
-        property_origin_result=property_origin_result,
-        field_values=field_values,
-        body_state=body_state,
-        scan_result=scan_result,
-        logic_probe_surface=logic_probe_surface,
-        logic_trace_surface=logic_trace_surface,
-    )
     observer_surface_artifact = _resolve_sky_observer_surface_artifact(
         selection=selection,
         inspection_snapshot=inspection_snapshot,
@@ -1168,6 +1154,22 @@ def build_viewer_shell_state(
         ),
         observer_surface_artifact=observer_surface_artifact,
         ui_mode=str(ui_mode),
+    )
+    inspection_surfaces = build_inspection_panel_set(
+        perceived_model=perceived_model,
+        target_semantic_id=str(_as_map(selection).get("object_id", "")).strip()
+        or str(_as_map(selection).get("target_id", "")).strip(),
+        authority_context=runtime_authority,
+        inspection_snapshot=inspection_snapshot,
+        property_origin_request=property_origin_request,
+        property_origin_result=property_origin_result,
+        field_values=field_values,
+        body_state=body_state,
+        scan_result=scan_result,
+        logic_probe_surface=logic_probe_surface,
+        logic_trace_surface=logic_trace_surface,
+        sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
+        illumination_view_artifact=_as_map(_as_map(illumination_view_surface).get("illumination_view_artifact")),
     )
     water_view_surface = build_water_view_surface(
         current_tick=int(current_tick),

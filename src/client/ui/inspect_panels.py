@@ -275,6 +275,37 @@ def build_system_capsule_panel(*, inspection_snapshot: Mapping[str, object] | No
     )
 
 
+def build_illumination_geometry_panel(
+    *,
+    sky_view_artifact: Mapping[str, object] | None = None,
+    illumination_view_artifact: Mapping[str, object] | None = None,
+) -> dict:
+    sky_ext = _as_map(_as_map(sky_view_artifact).get("extensions"))
+    illumination_ext = _as_map(_as_map(illumination_view_artifact).get("extensions"))
+    geometry = _as_map(sky_ext.get("moon_illumination_view_artifact")) or _as_map(illumination_ext.get("moon_illumination_view_artifact"))
+    occlusion_policy_id = str(_as_map(geometry.get("extensions")).get("occlusion_policy_id", "")).strip()
+    rows = [
+        {"key": "emitter_object_id", "value": str(geometry.get("emitter_object_id", "")).strip()},
+        {"key": "receiver_object_id", "value": str(geometry.get("receiver_object_id", "")).strip()},
+        {"key": "phase_angle_mdeg", "value": geometry.get("phase_angle")},
+        {"key": "illumination_fraction_permille", "value": geometry.get("illumination_fraction")},
+        {"key": "occlusion_fraction_permille", "value": geometry.get("occlusion_fraction")},
+        {
+            "key": "eclipse_ready",
+            "value": "yes (occlusion stub)" if occlusion_policy_id == "occlusion.none_stub" else "yes",
+        },
+    ]
+    visible = bool(geometry)
+    return _panel(
+        panel_id="panel.inspect.illumination_geometry",
+        panel_kind="illumination_geometry",
+        panel_title="Illumination Geometry",
+        visible=visible,
+        rows=rows,
+        summary="moon phase derived from emitter/receiver/viewer geometry" if visible else "illumination geometry unavailable",
+    )
+
+
 def build_overlay_provenance_panel(
     *,
     property_origin_request: Mapping[str, object] | None = None,
@@ -333,6 +364,8 @@ def build_inspection_panel_set(
     scan_result: Mapping[str, object] | None = None,
     logic_probe_surface: Mapping[str, object] | None = None,
     logic_trace_surface: Mapping[str, object] | None = None,
+    sky_view_artifact: Mapping[str, object] | None = None,
+    illumination_view_artifact: Mapping[str, object] | None = None,
 ) -> dict:
     """Panels consume process.inspect_generate_snapshot and tool.geo.explain_property_origin outputs only."""
 
@@ -354,6 +387,10 @@ def build_inspection_panel_set(
         build_scan_result_panel(scan_result=scan_result),
         build_terrain_collision_panel(body_state=body_state, inspection_snapshot=inspection_snapshot),
         build_logic_tool_panel(logic_probe_surface=logic_probe_surface, logic_trace_surface=logic_trace_surface),
+        build_illumination_geometry_panel(
+            sky_view_artifact=sky_view_artifact,
+            illumination_view_artifact=illumination_view_artifact,
+        ),
         build_logic_network_panel(inspection_snapshot=inspection_snapshot),
         build_system_capsule_panel(inspection_snapshot=inspection_snapshot),
         build_overlay_provenance_panel(
@@ -385,6 +422,7 @@ __all__ = [
     "build_celestial_object_panel",
     "build_field_panel",
     "build_geometry_cell_panel",
+    "build_illumination_geometry_panel",
     "build_inspection_panel_set",
     "build_logic_tool_panel",
     "build_logic_network_panel",
