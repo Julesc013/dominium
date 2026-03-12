@@ -6,129 +6,147 @@
     "registry_version": "1.0.0",
     "layouts": [
       {
-        "schema_version": "1.0.0",
+        "deterministic_fingerprint": "b2003be09b61b91384fd152d9cc821a91796f1183ba71c26c209b20c56a4fb10",
+        "extensions": {
+          "official.source": "UI-RECONCILE-0"
+        },
         "layout_id": "layout.default",
         "panels": [
           {
-            "panel_id": "panel.console",
-            "slot_id": "main.left",
+            "extensions": {},
             "order": 10,
-            "extensions": {}
+            "panel_id": "panel.menu",
+            "slot_id": "top.full"
           },
           {
-            "panel_id": "panel.logs",
-            "slot_id": "right.top",
+            "extensions": {},
             "order": 20,
-            "extensions": {}
+            "panel_id": "panel.console",
+            "slot_id": "main.left"
           },
           {
-            "panel_id": "panel.status",
-            "slot_id": "right.bottom",
+            "extensions": {},
             "order": 30,
-            "extensions": {}
+            "panel_id": "panel.logs",
+            "slot_id": "right.top"
+          },
+          {
+            "extensions": {},
+            "order": 40,
+            "panel_id": "panel.status",
+            "slot_id": "right.bottom"
           }
         ],
-        "deterministic_fingerprint": "d55b3733053b589eea148d179d494b38afa15afb702fec3005eeceb2db9bff44",
-        "extensions": {
-          "official.source": "APPSHELL-3"
-        },
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "Conservative provisional classification for layout.default; semantics remain loadable but are not yet frozen for release governance.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
-          "deterministic_fingerprint": "293534497e450f5dd28b99370c924929cfe505589ab119b8719daefbd4066405",
-          "extensions": {}
+          "deterministic_fingerprint": "3cbbf1310614f4b338bbfb985347ea545835dabaf78c096858d89bd79b7dbda0",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "Default TUI layout remains provisional until shared menu composition and platform adapters are frozen.",
+          "replacement_target": "Replace provisional TUI layout composition with release-pinned shared UI adapter contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
         }
       },
       {
-        "schema_version": "1.0.0",
+        "deterministic_fingerprint": "e5c298744ab93f5d192e02e435009332c767c3202094c94ade64f273680c399d",
+        "extensions": {
+          "official.source": "UI-RECONCILE-0"
+        },
         "layout_id": "layout.server",
         "panels": [
           {
-            "panel_id": "panel.status",
-            "slot_id": "top.full",
+            "extensions": {},
             "order": 10,
-            "extensions": {}
+            "panel_id": "panel.menu",
+            "slot_id": "top.full"
           },
           {
-            "panel_id": "panel.logs",
-            "slot_id": "middle.full",
+            "extensions": {},
             "order": 20,
-            "extensions": {}
+            "panel_id": "panel.status",
+            "slot_id": "middle.full"
           },
           {
-            "panel_id": "panel.console",
-            "slot_id": "bottom.full",
+            "extensions": {},
             "order": 30,
-            "extensions": {}
+            "panel_id": "panel.logs",
+            "slot_id": "lower.full"
+          },
+          {
+            "extensions": {},
+            "order": 40,
+            "panel_id": "panel.console",
+            "slot_id": "bottom.full"
           }
         ],
-        "deterministic_fingerprint": "6ae31271c6f4af126adba574cfa783894a0896fe6c9810e7c01b86db679c6c9e",
-        "extensions": {
-          "official.source": "APPSHELL-3"
-        },
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "Conservative provisional classification for layout.server; semantics remain loadable but are not yet frozen for release governance.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
-          "deterministic_fingerprint": "125be19461c02428c03624fb4460496fbd1156ec6055ec47f0c0d343f0a060c0",
-          "extensions": {}
+          "deterministic_fingerprint": "1cd78b523fa8c0a36b8add4db98549c534826ad0e208bec5fe4063d326387347",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "Server TUI layout remains provisional until shared menu composition and attachable admin panels are frozen.",
+          "replacement_target": "Replace provisional server TUI composition with release-pinned shared UI adapter contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
         }
       },
       {
-        "schema_version": "1.0.0",
+        "deterministic_fingerprint": "eabf209dd841b3f469d2efbfa8925b33c6e57e2408494dfac48a77d9f921e9f7",
+        "extensions": {
+          "official.source": "UI-RECONCILE-0"
+        },
         "layout_id": "layout.viewer",
         "panels": [
           {
-            "panel_id": "panel.map",
-            "slot_id": "main.left",
+            "extensions": {},
             "order": 10,
-            "extensions": {}
+            "panel_id": "panel.menu",
+            "slot_id": "top.full"
           },
           {
-            "panel_id": "panel.inspect",
-            "slot_id": "main.right",
+            "extensions": {},
             "order": 20,
-            "extensions": {}
+            "panel_id": "panel.map",
+            "slot_id": "main.left"
           },
           {
-            "panel_id": "panel.logs",
-            "slot_id": "bottom.left",
+            "extensions": {},
             "order": 30,
-            "extensions": {}
+            "panel_id": "panel.inspect",
+            "slot_id": "main.right"
           },
           {
-            "panel_id": "panel.console",
-            "slot_id": "bottom.center",
+            "extensions": {},
             "order": 40,
-            "extensions": {}
+            "panel_id": "panel.logs",
+            "slot_id": "bottom.left"
           },
           {
-            "panel_id": "panel.status",
-            "slot_id": "bottom.right",
+            "extensions": {},
             "order": 50,
-            "extensions": {}
+            "panel_id": "panel.console",
+            "slot_id": "bottom.center"
+          },
+          {
+            "extensions": {},
+            "order": 60,
+            "panel_id": "panel.status",
+            "slot_id": "bottom.right"
           }
         ],
-        "deterministic_fingerprint": "0b99646aa392983b9e0337f203353918ca20527cf510727c95821c123e397a6e",
-        "extensions": {
-          "official.source": "APPSHELL-3"
-        },
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "Conservative provisional classification for layout.viewer; semantics remain loadable but are not yet frozen for release governance.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
-          "deterministic_fingerprint": "b2d947d51d8c808b3945703444fcb7cf90dd06f50faa24ed0621efe320e8367d",
-          "extensions": {}
+          "deterministic_fingerprint": "1975888362d7785cde1d9459dd6b4845d606e0dc5169342ad0ecd8982551f68b",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "Viewer TUI layout remains provisional until rendered and TUI menu harmonization is frozen.",
+          "replacement_target": "Replace provisional viewer TUI composition with release-pinned shared UI adapter contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
         }
       }
     ],

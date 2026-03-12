@@ -52,6 +52,15 @@ def _sorted_tokens(values: Iterable[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in list(values or []) if str(item).strip()))
 
 
+def _ordered_tokens(values: Iterable[object]) -> List[str]:
+    ordered: List[str] = []
+    for item in list(values or []):
+        token = str(item).strip()
+        if token and token not in ordered:
+            ordered.append(token)
+    return ordered
+
+
 def _as_int(value: object, default_value: int = 0) -> int:
     try:
         return int(value)
@@ -585,7 +594,7 @@ def _normalize_action_kind(action_kind: str) -> str:
 
 def _fallback_candidates(row: Mapping[str, object] | None) -> List[str]:
     extensions = dict((dict(row or {})).get("extensions") or {})
-    return _sorted_tokens(
+    return _ordered_tokens(
         list(extensions.get("fallback_capability_ids") or [])
         + list(extensions.get("substitute_capability_ids") or [])
         + [extensions.get("substitute_capability_id", "")]

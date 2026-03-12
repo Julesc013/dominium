@@ -1062,6 +1062,12 @@ UI_MODE_RESOLUTION_BASELINE_PATH = "docs/audit/UI_MODE_RESOLUTION_BASELINE.md"
 UI_MODE_POLICY_REGISTRY_PATH = "data/registries/ui_mode_policy_registry.json"
 PLATFORM_CAPS_PROBE_PATH = "src/platform/platform_caps_probe.py"
 UI_MODE_SELECTOR_PATH = "src/appshell/ui_mode_selector.py"
+UI_RECONCILE_TOOL_PATH = "tools/release/tool_run_ui_reconcile.py"
+UI_RECONCILE_COMMON_PATH = "tools/release/ui_reconcile_common.py"
+UI_ADAPTER_CONTRACT_PATH = "docs/ui/UI_ADAPTER_CONTRACT.md"
+UI_SURFACE_MAP_AUDIT_PATH = "docs/audit/UI_SURFACE_MAP.md"
+UI_RECONCILE_FINAL_PATH = "docs/audit/UI_RECONCILE_FINAL.md"
+UI_SURFACE_REPORT_JSON_PATH = "data/audit/ui_surface_report.json"
 TOOL_SURFACE_TOOL_PATH = "tools/release/tool_run_tool_surface.py"
 TOOL_SURFACE_ADAPTER_PATH = "src/tools/tool_surface_adapter.py"
 TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
@@ -8170,6 +8176,115 @@ def _append_ui_mode_resolution_findings(
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "UI mode resolution violation detected",
                 rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-UI-MODE-SELECTOR-SINGLE",
+            )
+        )
+
+
+def _append_ui_reconcile_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rules = (
+        "INV-UI-ADAPTERS-COMMAND-ONLY",
+        "INV-NO-TRUTH-READ-IN-UI",
+        "INV-UI-SHARES-UI_MODEL",
+    )
+    required_files = (
+        (UI_RECONCILE_TOOL_PATH, "UI reconcile report tool is required", "INV-UI-SHARES-UI_MODEL"),
+        (UI_RECONCILE_COMMON_PATH, "UI reconcile helper module is required", "INV-UI-SHARES-UI_MODEL"),
+        (UI_ADAPTER_CONTRACT_PATH, "UI adapter contract doc is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
+        (UI_SURFACE_MAP_AUDIT_PATH, "UI surface map is required", "INV-UI-SHARES-UI_MODEL"),
+        (UI_RECONCILE_FINAL_PATH, "UI reconcile final report is required", "INV-UI-SHARES-UI_MODEL"),
+        (UI_SURFACE_REPORT_JSON_PATH, "UI surface machine-readable report is required", "INV-UI-SHARES-UI_MODEL"),
+        ("src/ui/ui_model.py", "shared UI model is required", "INV-UI-SHARES-UI_MODEL"),
+        ("src/client/ui/main_menu_surface.py", "rendered client menu surface is required", "INV-UI-SHARES-UI_MODEL"),
+        ("tools/auditx/analyzers/e477_business_logic_in_ui_adapter_smell.py", "BusinessLogicInUIAdapterSmell analyzer is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
+        ("tools/auditx/analyzers/e478_truth_leak_in_ui_smell.py", "TruthLeakInUISmell analyzer is required", "INV-NO-TRUTH-READ-IN-UI"),
+        ("tools/xstack/testx/tests/ui_reconcile_testlib.py", "UI reconcile TestX helper is required", "INV-UI-SHARES-UI_MODEL"),
+        ("tools/xstack/testx/tests/test_ui_model_drives_main_menu_flow_via_commands.py", "UI model TestX coverage is required", "INV-UI-SHARES-UI_MODEL"),
+        ("tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py", "native adapter TestX coverage is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
+        ("tools/xstack/testx/tests/test_rendered_menu_uses_ui_model.py", "rendered menu TestX coverage is required", "INV-UI-SHARES-UI_MODEL"),
+        ("tools/xstack/testx/tests/test_ui_fallback_order_respected.py", "UI fallback TestX coverage is required", "INV-UI-SHARES-UI_MODEL"),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    contract_text = _file_text(repo_root, UI_ADAPTER_CONTRACT_PATH).lower()
+    for token, message, rule_id in (
+        ("# ui adapter contract", "UI adapter contract doc must declare the governed adapter contract", "INV-UI-ADAPTERS-COMMAND-ONLY"),
+        ("## forbidden responsibilities", "UI adapter contract doc must forbid business logic in the UI layer", "INV-UI-ADAPTERS-COMMAND-ONLY"),
+        ("## shared model rule", "UI adapter contract doc must lock the shared UI model requirement", "INV-UI-SHARES-UI_MODEL"),
+    ):
+        if token in contract_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=UI_ADAPTER_CONTRACT_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    final_text = _file_text(repo_root, UI_RECONCILE_FINAL_PATH).lower()
+    for token, message in (
+        ("# ui reconcile final", "UI reconcile final report must declare the canonical title"),
+        ("## enabled by platform", "UI reconcile final report must include platform enablement"),
+        ("## deferred", "UI reconcile final report must include deferred native/preview surfaces"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=UI_RECONCILE_FINAL_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-UI-SHARES-UI_MODEL",
+            )
+        )
+
+    try:
+        from tools.release.ui_reconcile_common import ui_reconcile_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=UI_RECONCILE_COMMON_PATH,
+                line_number=1,
+                snippet="ui_reconcile_violations",
+                message="unable to import UI reconcile helper ({})".format(str(exc)),
+                rule_id="INV-UI-SHARES-UI_MODEL",
+            )
+        )
+        return
+
+    for violation in ui_reconcile_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "UI reconcile violation detected",
+                rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-UI-SHARES-UI_MODEL",
             )
         )
 
@@ -32514,6 +32629,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_ui_mode_resolution_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_ui_reconcile_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

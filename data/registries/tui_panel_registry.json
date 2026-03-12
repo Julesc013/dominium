@@ -6,126 +6,150 @@
     "registry_version": "1.0.0",
     "panels": [
       {
-        "schema_version": "1.0.0",
-        "panel_id": "panel.console",
-        "title": "Console",
+        "deterministic_fingerprint": "503fb4f8b6196425997ee50bcfcdc38aa05e7bd4ab70a453a059683f2dfbc2a1",
+        "extensions": {
+          "focus_key": "F2",
+          "official.source": "UI-RECONCILE-0",
+          "panel_kind": "menu"
+        },
+        "panel_id": "panel.menu",
         "required_capabilities": [
           "cap.ui.tui"
         ],
-        "deterministic_fingerprint": "903d52899cf75f5d85d78b13831be13ffd642d4c9b3b3a3adeac187457fe9ef7",
+        "schema_version": "1.0.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "c45eaf728c7077172d69d84182047ea9bdab8b0f59b1e04177f45e412ba048fc",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "TUI menu surface remains provisional until AppShell UI convergence and native adapter binding are frozen.",
+          "replacement_target": "Replace provisional TUI menu composition with release-pinned shared UI adapter contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "title": "Menu"
+      },
+      {
+        "deterministic_fingerprint": "e88695e0e96c2d56f7fd9d462d4bc0c4000748e3f44c3d0affeb4275ab29a91b",
         "extensions": {
           "focus_key": "Ctrl+C",
           "official.source": "APPSHELL-3",
           "panel_kind": "console"
         },
+        "panel_id": "panel.console",
+        "required_capabilities": [
+          "cap.ui.tui"
+        ],
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "Conservative provisional classification for panel.console; semantics remain loadable but are not yet frozen for release governance.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
           "deterministic_fingerprint": "4ee52a3a451458aa9f6d163f6bf8d9ca23ee4bb51e9ba5010eed995a0cef1b5d",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "Conservative provisional classification for panel.console; semantics remain loadable but are not yet frozen for release governance.",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "title": "Console"
       },
       {
-        "schema_version": "1.0.0",
-        "panel_id": "panel.inspect",
-        "title": "Inspect",
-        "required_capabilities": [
-          "cap.ui.tui",
-          "cap.worldgen.refinement_l3"
-        ],
-        "deterministic_fingerprint": "e87ae8193feb3b8a2875a517e1574f9c7a15de32c0f33d751a63b3432c881f1f",
+        "deterministic_fingerprint": "e7dd9531c7dd6a611c0609b5d87e8146321356d835d610f5b3e2063eff89a072",
         "extensions": {
           "focus_key": "Ctrl+I",
           "official.source": "APPSHELL-3",
           "panel_kind": "inspect"
         },
+        "panel_id": "panel.inspect",
+        "required_capabilities": [
+          "cap.ui.tui",
+          "cap.worldgen.refinement_l3"
+        ],
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "Conservative provisional classification for panel.inspect; semantics remain loadable but are not yet frozen for release governance.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
           "deterministic_fingerprint": "def510bdd612319c162f224b638f92f0500fd8c583ea7b3e874cae3e3e65086b",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "Conservative provisional classification for panel.inspect; semantics remain loadable but are not yet frozen for release governance.",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "title": "Inspect"
       },
       {
-        "schema_version": "1.0.0",
-        "panel_id": "panel.logs",
-        "title": "Logs",
-        "required_capabilities": [
-          "cap.ui.tui"
-        ],
-        "deterministic_fingerprint": "5802530fca9d4310b54830a0fdc732730c98ca35654fc0817747712bcc33966d",
+        "deterministic_fingerprint": "bbfe4ec9c88818b9a164c4f4a1dd8d536a8f09de9f02f5a3e605ce8ee596ab0c",
         "extensions": {
           "focus_key": "Ctrl+L",
           "official.source": "APPSHELL-3",
           "panel_kind": "logs"
         },
+        "panel_id": "panel.logs",
+        "required_capabilities": [
+          "cap.ui.tui"
+        ],
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "Conservative provisional classification for panel.logs; semantics remain loadable but are not yet frozen for release governance.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
           "deterministic_fingerprint": "8f037a4a70f6a4f2666b6295fc741c26a346111e4c5184dc7de514edb4c2166e",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "Conservative provisional classification for panel.logs; semantics remain loadable but are not yet frozen for release governance.",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "title": "Logs"
       },
       {
-        "schema_version": "1.0.0",
-        "panel_id": "panel.map",
-        "title": "Map",
-        "required_capabilities": [
-          "cap.ui.tui",
-          "cap.geo.projection"
-        ],
-        "deterministic_fingerprint": "70ff889f3a7cd894f7003e8ef075c6c8af2b1ad88a924e12dc6a2d86eb7b308c",
+        "deterministic_fingerprint": "9288a54177597e3e24e9b25ba2b6aa0ff16da55f0461a856fcdbe88d7e06b848",
         "extensions": {
           "focus_key": "Ctrl+M",
           "official.source": "APPSHELL-3",
           "panel_kind": "map"
         },
+        "panel_id": "panel.map",
+        "required_capabilities": [
+          "cap.ui.tui",
+          "cap.geo.projection"
+        ],
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "Conservative provisional classification for panel.map; semantics remain loadable but are not yet frozen for release governance.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
           "deterministic_fingerprint": "b14a87a402c980296387fd3e6105e6ae21a7350e5ed12f757668bdc530503092",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "Conservative provisional classification for panel.map; semantics remain loadable but are not yet frozen for release governance.",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "title": "Map"
       },
       {
-        "schema_version": "1.0.0",
-        "panel_id": "panel.status",
-        "title": "Status",
-        "required_capabilities": [
-          "cap.ui.tui"
-        ],
-        "deterministic_fingerprint": "daf2c72e1b007784579a598998555835a15f38687bb2d46863c18a280a08f52b",
+        "deterministic_fingerprint": "586cf198d58a7d82b855483298e7273c5b8fd4b02769d01d9f58be3763a259a6",
         "extensions": {
           "focus_key": "Ctrl+S",
           "official.source": "APPSHELL-3",
           "panel_kind": "status"
         },
+        "panel_id": "panel.status",
+        "required_capabilities": [
+          "cap.ui.tui"
+        ],
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "Conservative provisional classification for panel.status; semantics remain loadable but are not yet frozen for release governance.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
           "deterministic_fingerprint": "2e8973f7b720258f5469f917ccdcaaddf22f07574a6cae32f35101f6e027aaa0",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "Conservative provisional classification for panel.status; semantics remain loadable but are not yet frozen for release governance.",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "title": "Status"
       }
     ],
     "extensions": {

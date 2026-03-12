@@ -8,7 +8,7 @@ import sys
 TEST_ID = "test_cross_platform_ui_hash_match"
 TEST_TAGS = ["fast", "ux", "viewer", "determinism", "cross_platform"]
 
-EXPECTED_UI_HASH = "b8d0bc61be5a8f3cebbcf27395941fba48419c030e091c5cf9962d1eef25227f"
+EXPECTED_UI_HASH = "f48f976288e7390556f1f542d0bada0882ffd8104074b5746e7efa6112b57b3b"
 
 
 def run(repo_root: str):

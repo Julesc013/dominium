@@ -19,6 +19,7 @@ from src.appshell.supervisor import SUPERVISOR_AGGREGATED_LOG_REL, load_supervis
 from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set
 from src.meta_extensions_engine import normalize_extensions_tree
+from src.ui import MENU_STATE_MAIN, build_ui_model
 
 
 TUI_PANEL_REGISTRY_REL = os.path.join("data", "registries", "tui_panel_registry.json")
@@ -36,10 +37,16 @@ DEFAULT_LAYOUT_BY_PRODUCT = {
 }
 DEFAULT_ACTIVE_PANEL_BY_PRODUCT = {
     "client": "panel.map",
+    "engine": "panel.menu",
+    "game": "panel.menu",
+    "launcher": "panel.menu",
     "server": "panel.status",
+    "setup": "panel.menu",
+    "tool.attach_console_stub": "panel.menu",
 }
 DEFAULT_KEYBINDINGS = (
     ("F1", "help"),
+    ("F2", "focus menu"),
     ("Tab", "cycle panels"),
     ("Ctrl+L", "focus logs"),
     ("Ctrl+C", "focus console"),
@@ -440,6 +447,39 @@ def _inspect_lines(product_id: str) -> list[str]:
     return lines or ["inspect view unavailable"]
 
 
+def _menu_lines(repo_root: str, product_id: str) -> list[str]:
+    ui_model = build_ui_model(repo_root=repo_root, product_id=str(product_id).strip(), current_state_id=MENU_STATE_MAIN)
+    current_state = _as_map(ui_model.get("current_state"))
+    inventory = _as_map(ui_model.get("inventory"))
+    lines = [
+        "state: {}".format(str(current_state.get("title", "")).strip() or MENU_STATE_MAIN),
+        "summary: {}".format(str(current_state.get("summary", "")).strip() or "menu unavailable"),
+        "instances={} saves={} bundles={} commands={}".format(
+            int(inventory.get("instance_count", 0) or 0),
+            int(inventory.get("save_count", 0) or 0),
+            int(inventory.get("bundle_count", 0) or 0),
+            int(inventory.get("command_descriptor_count", 0) or 0),
+        ),
+    ]
+    entries = [dict(row) for row in _as_list(current_state.get("entries")) if isinstance(row, Mapping)]
+    if entries:
+        lines.append("entries:")
+        for row in entries[:4]:
+            row_map = _as_map(row)
+            label = str(row_map.get("label", "")).strip() or str(row_map.get("item_id", "")).strip()
+            lines.append("  - {}".format(label))
+    actions = [dict(row) for row in _as_list(current_state.get("actions")) if isinstance(row, Mapping)]
+    if actions:
+        lines.append("actions:")
+        for row in actions[:6]:
+            row_map = _as_map(row)
+            label = str(row_map.get("label", "")).strip() or str(row_map.get("action_id", "")).strip()
+            command_tokens = [str(token).strip() for token in _as_list(row_map.get("command_tokens")) if str(token).strip()]
+            suffix = " -> {}".format(" ".join(command_tokens)) if command_tokens else ""
+            lines.append("  - {}{}".format(label, suffix))
+    return lines
+
+
 def _panel_lines(
     panel_id: str,
     *,
@@ -452,6 +492,8 @@ def _panel_lines(
     log_category_filter: str,
     remote_log_lines: Sequence[str] | None = None,
 ) -> list[str]:
+    if panel_id == "panel.menu":
+        return _menu_lines(repo_root, product_id)
     if panel_id == "panel.console":
         return _console_lines(console_sessions, active_session_id)
     if panel_id == "panel.logs":
@@ -548,6 +590,7 @@ def build_tui_surface(
         "status_summary": {
             "pack_verification_status": "not_run",
             "session_status": "detached",
+            "menu_available": True,
             "map_available": bool(str(product_id).strip() == "client"),
             "inspect_available": bool(str(product_id).strip() == "client"),
         },
@@ -840,6 +883,8 @@ def _run_curses_loop(surface_payload: Mapping[str, object]) -> None:
                 return
             if key == curses.KEY_F1:
                 payload = _focus_panel(payload, "panel.console")
+            elif key == curses.KEY_F2:
+                payload = _focus_panel(payload, "panel.menu")
             elif key == 9:
                 payload = _cycle_panel(payload)
             elif key in focus_keys and focus_keys[key] is not None:

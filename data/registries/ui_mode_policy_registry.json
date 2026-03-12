@@ -6,144 +6,142 @@
     "registry_version": "1.0.0",
     "policies": [
       {
-        "schema_version": "1.0.0",
-        "product_id": "client",
+        "deterministic_fingerprint": "164240785000cdeb27e3c17e7c6f48a474f0ce3f0cb5d09cbd433fb31722c4c9",
+        "extensions": {
+          "official.source": "APPSHELL-PLATFORM-1"
+        },
         "gui_mode_order": [
           "rendered",
           "os_native",
           "tui",
           "cli"
         ],
+        "headless_mode_order": [
+          "cli"
+        ],
+        "legacy_mode_ids": [],
+        "product_id": "client",
+        "rendered_allowed": true,
+        "schema_version": "1.0.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "e70a19963dee744276b5807fd8112edc37c9a9d0f9b20450fdb10b1b712aed64",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
+          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
         "tty_mode_order": [
           "tui",
           "cli",
           "rendered"
-        ],
-        "headless_mode_order": [
-          "cli"
-        ],
-        "legacy_mode_ids": [],
-        "rendered_allowed": true,
-        "deterministic_fingerprint": "",
+        ]
+      },
+      {
+        "deterministic_fingerprint": "679af5c8108735b6a92eb6135685eca531fe1f4e9dababb8ed1f370a9e084dae",
         "extensions": {
           "official.source": "APPSHELL-PLATFORM-1"
         },
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
-          "contract_id": "",
-          "deterministic_fingerprint": "",
-          "extensions": {}
-        }
-      },
-      {
-        "schema_version": "1.0.0",
+        "gui_mode_order": [
+          "cli",
+          "tui"
+        ],
+        "headless_mode_order": [
+          "cli",
+          "headless"
+        ],
+        "legacy_mode_ids": [
+          "headless"
+        ],
         "product_id": "engine",
-        "gui_mode_order": [
-          "cli",
-          "tui"
-        ],
+        "rendered_allowed": false,
+        "schema_version": "1.0.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "e70a19963dee744276b5807fd8112edc37c9a9d0f9b20450fdb10b1b712aed64",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
+          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
         "tty_mode_order": [
           "cli",
           "tui"
-        ],
-        "headless_mode_order": [
-          "cli",
-          "headless"
-        ],
-        "legacy_mode_ids": [
-          "headless"
-        ],
-        "rendered_allowed": false,
-        "deterministic_fingerprint": "",
+        ]
+      },
+      {
+        "deterministic_fingerprint": "8fb789b5e8d1d92bb000d84770bee767a84c0368d6f28e38352cccada34c0a63",
         "extensions": {
           "official.source": "APPSHELL-PLATFORM-1"
         },
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
-          "contract_id": "",
-          "deterministic_fingerprint": "",
-          "extensions": {}
-        }
-      },
-      {
-        "schema_version": "1.0.0",
+        "gui_mode_order": [
+          "tui",
+          "cli"
+        ],
+        "headless_mode_order": [
+          "cli"
+        ],
+        "legacy_mode_ids": [],
         "product_id": "game",
-        "gui_mode_order": [
-          "tui",
-          "cli"
-        ],
+        "rendered_allowed": false,
+        "schema_version": "1.0.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "e70a19963dee744276b5807fd8112edc37c9a9d0f9b20450fdb10b1b712aed64",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
+          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
         "tty_mode_order": [
           "tui",
           "cli"
-        ],
-        "headless_mode_order": [
-          "cli"
-        ],
-        "legacy_mode_ids": [],
-        "rendered_allowed": false,
-        "deterministic_fingerprint": "",
+        ]
+      },
+      {
+        "deterministic_fingerprint": "ee3eb9ccf9ac6cb32e0046fb5892b9cea6e348b1806bf498e6dd4e110922bcb0",
         "extensions": {
           "official.source": "APPSHELL-PLATFORM-1"
         },
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
-          "contract_id": "",
-          "deterministic_fingerprint": "",
-          "extensions": {}
-        }
-      },
-      {
-        "schema_version": "1.0.0",
-        "product_id": "launcher",
         "gui_mode_order": [
           "os_native",
           "tui",
           "cli"
         ],
-        "tty_mode_order": [
-          "tui",
-          "cli"
-        ],
         "headless_mode_order": [
           "cli"
         ],
         "legacy_mode_ids": [],
+        "product_id": "launcher",
         "rendered_allowed": false,
-        "deterministic_fingerprint": "",
+        "schema_version": "1.0.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "e70a19963dee744276b5807fd8112edc37c9a9d0f9b20450fdb10b1b712aed64",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
+          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "tty_mode_order": [
+          "tui",
+          "cli"
+        ]
+      },
+      {
+        "deterministic_fingerprint": "fe35c5e8e062141c0286f6d183d5de65ea24b82285ac5d155d5508aba3f7949a",
         "extensions": {
           "official.source": "APPSHELL-PLATFORM-1"
         },
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
-          "contract_id": "",
-          "deterministic_fingerprint": "",
-          "extensions": {}
-        }
-      },
-      {
-        "schema_version": "1.0.0",
-        "product_id": "server",
         "gui_mode_order": [
-          "tui",
-          "cli"
-        ],
-        "tty_mode_order": [
           "tui",
           "cli"
         ],
@@ -154,87 +152,89 @@
         "legacy_mode_ids": [
           "headless"
         ],
+        "product_id": "server",
         "rendered_allowed": false,
-        "deterministic_fingerprint": "",
+        "schema_version": "1.0.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "e70a19963dee744276b5807fd8112edc37c9a9d0f9b20450fdb10b1b712aed64",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
+          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "tty_mode_order": [
+          "tui",
+          "cli"
+        ]
+      },
+      {
+        "deterministic_fingerprint": "8b6adad37de28d1e5c3bebdba69a89ce73d4f1b33e18ae977de78e6b18fa433a",
         "extensions": {
           "official.source": "APPSHELL-PLATFORM-1"
         },
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
-          "contract_id": "",
-          "deterministic_fingerprint": "",
-          "extensions": {}
-        }
-      },
-      {
-        "schema_version": "1.0.0",
-        "product_id": "setup",
         "gui_mode_order": [
           "os_native",
           "tui",
           "cli"
         ],
-        "tty_mode_order": [
-          "tui",
-          "cli"
-        ],
         "headless_mode_order": [
           "cli"
         ],
         "legacy_mode_ids": [],
+        "product_id": "setup",
         "rendered_allowed": false,
-        "deterministic_fingerprint": "",
+        "schema_version": "1.0.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "e70a19963dee744276b5807fd8112edc37c9a9d0f9b20450fdb10b1b712aed64",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
+          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "tty_mode_order": [
+          "tui",
+          "cli"
+        ]
+      },
+      {
+        "deterministic_fingerprint": "f2ad97bf9a8f9521c3f9b43eb431a638563f8e8797d42805e7c9ac2ac3b981d8",
         "extensions": {
           "official.source": "APPSHELL-PLATFORM-1"
         },
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
-          "contract_id": "",
-          "deterministic_fingerprint": "",
-          "extensions": {}
-        }
-      },
-      {
-        "schema_version": "1.0.0",
-        "product_id": "tool.attach_console_stub",
         "gui_mode_order": [
           "tui",
           "cli"
         ],
-        "tty_mode_order": [
-          "tui",
-          "cli"
-        ],
         "headless_mode_order": [
           "cli"
         ],
         "legacy_mode_ids": [],
+        "product_id": "tool.attach_console_stub",
         "rendered_allowed": false,
-        "deterministic_fingerprint": "",
-        "extensions": {
-          "official.source": "APPSHELL-PLATFORM-1"
-        },
+        "schema_version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
-          "future_series": "APPSHELL",
-          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
           "contract_id": "",
-          "deterministic_fingerprint": "",
-          "extensions": {}
-        }
+          "deterministic_fingerprint": "e70a19963dee744276b5807fd8112edc37c9a9d0f9b20450fdb10b1b712aed64",
+          "extensions": {},
+          "future_series": "APPSHELL",
+          "rationale": "MVP AppShell UI mode policy remains provisional while native adapters stay optional.",
+          "replacement_target": "Replace provisional UI mode policy rows with release-pinned standalone product shell contracts.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "tty_mode_order": [
+          "tui",
+          "cli"
+        ]
       }
     ],
-    "deterministic_fingerprint": "",
+    "deterministic_fingerprint": "2e96b0823ffcae54d979bfda840609754b382041198388178097d82f381ac8ac",
     "extensions": {
       "official.source": "APPSHELL-PLATFORM-1"
     }

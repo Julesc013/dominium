@@ -8,6 +8,7 @@ from .teleport_controller import (
     query_nearest_system_plan,
 )
 from .inspect_panels import build_inspection_panel_set
+from .main_menu_surface import build_client_main_menu_surface
 from .map_views import build_map_view_set
 
 STATE_BOOT = "Boot"
@@ -28,6 +29,7 @@ __all__ = [
     "STATE_SEED_SELECT",
     "STATE_SESSION_RUNNING",
     "build_inspection_panel_set",
+    "build_client_main_menu_surface",
     "build_map_view_set",
     "build_teleport_plan",
     "build_viewer_shell_state",

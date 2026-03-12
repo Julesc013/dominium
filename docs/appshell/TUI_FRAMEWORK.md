@@ -26,6 +26,7 @@ The framework provides:
 
 Shared panel ids:
 
+- `panel.menu`
 - `panel.console`
 - `panel.logs`
 - `panel.status`
@@ -64,6 +65,7 @@ panel focus is deterministic:
 Stable APPSHELL-3 keybindings:
 
 - `F1` help
+- `F2` menu focus
 - `Tab` cycle panels
 - `Ctrl+L` logs focus
 - `Ctrl+C` console focus
@@ -95,6 +97,12 @@ but the APPSHELL-3 TUI must already model sessions as attachable logical tabs.
 - runs AppShell commands through the registered command engine
 - does not bypass command refusal handling
 - records deterministic command history per logical session
+
+### Menu panel
+
+- renders the shared `src/ui/ui_model.py` state machine
+- shows validated instance/save/profile selections and command actions
+- emits only AppShell command invocations or selection events
 
 ### Logs panel
 
