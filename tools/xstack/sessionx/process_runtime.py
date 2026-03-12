@@ -770,10 +770,12 @@ from src.worldgen.mw.mw_surface_refiner_l3 import normalize_surface_tile_artifac
 from src.worldgen.earth import (
     DEFAULT_EARTH_CLIMATE_PARAMS_ID,
     DEFAULT_HYDROLOGY_PARAMS_ID,
+    EARTH_MATERIAL_PROXY_DEFAULT_MAX_TILES_PER_UPDATE,
     DEFAULT_TIDE_PARAMS_ID,
     DEFAULT_WIND_PARAMS_ID,
     apply_hydrology_to_surface_tile_artifact,
     build_earth_climate_update_plan,
+    build_earth_material_proxy_update_plan,
     build_earth_tide_update_plan,
     build_earth_wind_update_plan,
     build_fluid_channel_guidance,
@@ -783,6 +785,7 @@ from src.worldgen.earth import (
     compute_hydrology_window,
     earth_climate_params_rows,
     hydrology_params_rows,
+    material_proxy_window_hash,
     tide_params_rows,
     tide_window_hash,
     wind_params_rows,
@@ -1035,6 +1038,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.field_tick": "session.boot",
     "process.field_update": "session.boot",
     "process.earth_climate_tick": "session.boot",
+    "process.earth_material_proxy_tick": "session.boot",
     "process.earth_tide_tick": "session.boot",
     "process.earth_wind_tick": "session.boot",
     "process.safety_tick": "session.boot",
@@ -1265,6 +1269,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.field_tick": "observer",
     "process.field_update": "observer",
     "process.earth_climate_tick": "observer",
+    "process.earth_material_proxy_tick": "observer",
     "process.earth_tide_tick": "observer",
     "process.earth_wind_tick": "observer",
     "process.safety_tick": "observer",
@@ -1437,6 +1442,7 @@ CONTROL_PROCESS_IDS = {
     "process.model_evaluate_tick",
     "process.field_update",
     "process.earth_climate_tick",
+    "process.earth_material_proxy_tick",
     "process.earth_tide_tick",
     "process.earth_wind_tick",
     "process.apply_force",
@@ -1552,6 +1558,7 @@ FIELD_PROCESS_IDS = {
     "process.field_tick",
     "process.field_update",
     "process.earth_climate_tick",
+    "process.earth_material_proxy_tick",
     "process.earth_tide_tick",
     "process.earth_wind_tick",
     "process.pollution_dispersion_tick",
@@ -4362,6 +4369,75 @@ def _ensure_earth_climate_runtime_state(state: dict) -> dict:
     return dict(payload)
 
 
+def _normalize_earth_material_proxy_tile_overlay_rows(rows: object) -> List[dict]:
+    normalized: Dict[str, dict] = {}
+    for raw in list(rows or []):
+        if not isinstance(raw, Mapping):
+            continue
+        row = dict(raw)
+        tile_object_id = str(row.get("tile_object_id", "")).strip()
+        if not tile_object_id:
+            continue
+        payload = {
+            "tile_object_id": tile_object_id,
+            "planet_object_id": str(row.get("planet_object_id", "")).strip(),
+            "tile_cell_key": _coerce_cell_key(row.get("tile_cell_key")) or {},
+            "current_tick": int(max(0, _as_int(row.get("current_tick", 0), 0))),
+            "material_proxy_id": str(row.get("material_proxy_id", "")).strip(),
+            "material_proxy_value": int(max(0, _as_int(row.get("material_proxy_value", 0), 0))),
+            "surface_flags_mask": int(max(0, _as_int(row.get("surface_flags_mask", 0), 0))),
+            "surface_flag_ids": _sorted_tokens(list(row.get("surface_flag_ids") or [])),
+            "albedo_proxy_value": int(max(0, _as_int(row.get("albedo_proxy_value", 0), 0))),
+            "friction_proxy_permille": int(max(0, _as_int(row.get("friction_proxy_permille", 0), 0))),
+            "derivation_reason": str(row.get("derivation_reason", "")).strip(),
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized[tile_object_id] = payload
+    return [dict(normalized[key]) for key in sorted(normalized.keys())]
+
+
+def _ensure_earth_material_proxy_tile_overlay_rows(state: dict) -> List[dict]:
+    rows = _normalize_earth_material_proxy_tile_overlay_rows(state.get("earth_material_proxy_tile_overlays"))
+    state["earth_material_proxy_tile_overlays"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_earth_material_proxy_runtime_state(state: dict) -> dict:
+    row = dict(state.get("earth_material_proxy_runtime_state") or {})
+    payload = {
+        "version": str(row.get("version", "")).strip() or "EARTH10-3",
+        "last_processed_tick": (
+            None
+            if row.get("last_processed_tick") is None
+            else int(max(-1, _as_int(row.get("last_processed_tick", -1), -1)))
+        ),
+        "last_tick_window_start": (
+            None
+            if row.get("last_tick_window_start") is None
+            else int(max(0, _as_int(row.get("last_tick_window_start", 0), 0)))
+        ),
+        "last_tick_window_end": (
+            None
+            if row.get("last_tick_window_end") is None
+            else int(max(0, _as_int(row.get("last_tick_window_end", 0), 0)))
+        ),
+        "last_tick_window_span": int(max(0, _as_int(row.get("last_tick_window_span", 0), 0))),
+        "last_due_bucket_ids": [int(max(0, _as_int(item, 0))) for item in list(row.get("last_due_bucket_ids") or [])],
+        "last_updated_tile_ids": _sorted_tokens(list(row.get("last_updated_tile_ids") or [])),
+        "last_skipped_tile_ids": _sorted_tokens(list(row.get("last_skipped_tile_ids") or [])),
+        "last_window_hash": str(row.get("last_window_hash", "")).strip(),
+        "last_degraded": bool(row.get("last_degraded", False)),
+        "last_degrade_reason": (
+            None if row.get("last_degrade_reason") is None else str(row.get("last_degrade_reason", "")).strip() or None
+        ),
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    state["earth_material_proxy_runtime_state"] = dict(payload)
+    return dict(payload)
+
+
 def _normalize_earth_wind_tile_overlay_rows(rows: object) -> List[dict]:
     normalized: Dict[str, dict] = {}
     for raw in list(rows or []):
@@ -5238,6 +5314,174 @@ def _recompute_earth_climate_fields(
             or None
         ),
         "climate_window_hash": climate_window_hash(plan.get("evaluations") or []),
+        "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+        "evaluations": [dict(row) for row in list(plan.get("evaluations") or []) if isinstance(row, Mapping)],
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _recompute_earth_material_proxy_fields(
+    *,
+    state: dict,
+    field_layers: object,
+    field_cells: object,
+    geometry_cell_states: object,
+    current_tick: int,
+    process_id: str,
+    policy_context: dict | None = None,
+    max_tiles_per_update: int | None = None,
+) -> dict:
+    artifact_rows = list(_ensure_worldgen_surface_tile_artifact_rows(state))
+    runtime_state = _ensure_earth_material_proxy_runtime_state(state)
+    previous_tick = runtime_state.get("last_processed_tick")
+    if previous_tick is None:
+        tick_window_start = int(max(0, _as_int(current_tick, 0)))
+    else:
+        previous_tick_value = int(_as_int(previous_tick, -1))
+        tick_window_start = int(max(0, previous_tick_value + 1 if int(current_tick) > previous_tick_value else int(current_tick)))
+    tick_window_end = int(max(0, _as_int(current_tick, 0)))
+    tick_window_span = int(max(1, tick_window_end - tick_window_start + 1))
+    budget = int(
+        max(
+            0,
+            _as_int(
+                (
+                    max_tiles_per_update
+                    if max_tiles_per_update is not None
+                    else _as_map(policy_context).get(
+                        "earth_material_proxy_max_tiles_per_update",
+                        EARTH_MATERIAL_PROXY_DEFAULT_MAX_TILES_PER_UPDATE,
+                    )
+                ),
+                EARTH_MATERIAL_PROXY_DEFAULT_MAX_TILES_PER_UPDATE,
+            ),
+        )
+    )
+    plan = build_earth_material_proxy_update_plan(
+        artifact_rows=artifact_rows,
+        current_tick=int(current_tick),
+        geometry_rows_by_key=geometry_cell_state_rows_by_key(geometry_cell_states),
+        max_tiles_per_update=budget,
+    )
+    field_type_registry = _field_registry_payload(
+        policy_context=policy_context,
+        key="field_type_registry",
+        registry_rel_path="data/registries/field_type_registry.json",
+        entry_key="field_types",
+    )
+    field_binding_registry = _field_binding_registry_payload(policy_context)
+    field_update_policy_registry = _field_registry_payload(
+        policy_context=policy_context,
+        key="field_update_policy_registry",
+        registry_rel_path="data/registries/field_update_policy_registry.json",
+        entry_key="policies",
+    )
+    normalized_layers = normalize_field_layer_rows(field_layers)
+    normalized_cells = normalize_field_cell_rows(
+        field_cells,
+        field_layer_rows=normalized_layers,
+        field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
+    )
+    field_update_result = _apply_field_updates(
+        current_tick=int(current_tick),
+        field_layers=normalized_layers,
+        field_cells=normalized_cells,
+        field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
+        field_update_policy_registry=field_update_policy_registry,
+        requested_updates=list(plan.get("field_updates") or []),
+        source_process_id=process_id,
+    )
+    updated_layers = normalize_field_layer_rows(field_update_result.get("field_layer_rows"))
+    updated_cells = normalize_field_cell_rows(
+        field_update_result.get("field_cell_rows"),
+        field_layer_rows=updated_layers,
+        field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
+    )
+    _persist_field_state(
+        state,
+        field_layers=updated_layers,
+        field_cells=updated_cells,
+        field_modifier_rows=[dict(row) for row in list(state.get("field_modifier_rows") or []) if isinstance(row, Mapping)],
+    )
+    state["field_sample_rows"] = normalize_field_sample_rows(
+        list(state.get("field_sample_rows") or [])
+        + [dict(row) for row in list(field_update_result.get("field_sample_rows") or []) if isinstance(row, Mapping)]
+    )
+    _append_field_update_event(
+        state,
+        source_process_id=process_id,
+        tick=int(current_tick),
+        update_kind="earth_material_proxy_tick",
+        updated_field_ids=list(field_update_result.get("updated_field_ids") or []),
+        applied_update_count=int(len(list(field_update_result.get("applied_updates") or []))),
+        skipped_update_count=int(len(list(field_update_result.get("skipped_updates") or []))),
+        field_sample_count=int(len(list(field_update_result.get("field_sample_rows") or []))),
+        boundary_field_exchange_count=0,
+        extensions={
+            "source_process_id": process_id,
+            "tick_window_start": int(tick_window_start),
+            "tick_window_end": int(tick_window_end),
+            "tick_window_span": int(tick_window_span),
+            "due_bucket_ids": [0],
+            "selected_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
+            "skipped_tile_ids": _sorted_tokens(list(plan.get("skipped_tile_ids") or [])),
+            "degraded": bool(plan.get("degraded", False)),
+            "degrade_reason": (
+                None if plan.get("degrade_reason") is None else str(plan.get("degrade_reason", "")).strip() or None
+            ),
+        },
+    )
+    _refresh_field_hash_chains(state)
+
+    existing_overlay_rows = _ensure_earth_material_proxy_tile_overlay_rows(state)
+    overlay_by_id = dict((str(row.get("tile_object_id", "")).strip(), dict(row)) for row in existing_overlay_rows)
+    for row in _normalize_earth_material_proxy_tile_overlay_rows(plan.get("evaluations")):
+        overlay_by_id[str(row.get("tile_object_id", "")).strip()] = dict(row)
+    state["earth_material_proxy_tile_overlays"] = [dict(overlay_by_id[key]) for key in sorted(overlay_by_id.keys())]
+
+    runtime_payload = {
+        "version": "EARTH10-3",
+        "last_processed_tick": int(max(0, _as_int(current_tick, 0))),
+        "last_tick_window_start": int(tick_window_start),
+        "last_tick_window_end": int(tick_window_end),
+        "last_tick_window_span": int(tick_window_span),
+        "last_due_bucket_ids": [0],
+        "last_updated_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
+        "last_skipped_tile_ids": _sorted_tokens(list(plan.get("skipped_tile_ids") or [])),
+        "last_window_hash": material_proxy_window_hash(plan.get("evaluations") or []),
+        "last_degraded": bool(plan.get("degraded", False)),
+        "last_degrade_reason": (
+            None if plan.get("degrade_reason") is None else str(plan.get("degrade_reason", "")).strip() or None
+        ),
+        "deterministic_fingerprint": "",
+    }
+    runtime_payload["deterministic_fingerprint"] = canonical_sha256(dict(runtime_payload, deterministic_fingerprint=""))
+    state["earth_material_proxy_runtime_state"] = dict(runtime_payload)
+
+    payload = {
+        "result": "complete",
+        "tick_window_start": int(tick_window_start),
+        "tick_window_end": int(tick_window_end),
+        "tick_window_span": int(tick_window_span),
+        "due_bucket_ids": [0],
+        "selected_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
+        "skipped_tile_ids": _sorted_tokens(list(plan.get("skipped_tile_ids") or [])),
+        "updated_field_ids": list(field_update_result.get("updated_field_ids") or []),
+        "applied_update_count": int(len(list(field_update_result.get("applied_updates") or []))),
+        "skipped_update_count": int(len(list(field_update_result.get("skipped_updates") or []))),
+        "cost_units_used": int(_as_int(field_update_result.get("cost_units_used", 0), 0)),
+        "degraded": bool(plan.get("degraded", False) or field_update_result.get("degraded", False)),
+        "degrade_reason": (
+            str(plan.get("degrade_reason", "")).strip()
+            or str(field_update_result.get("degrade_reason", "")).strip()
+            or None
+        ),
+        "material_proxy_window_hash": material_proxy_window_hash(plan.get("evaluations") or []),
         "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
         "evaluations": [dict(row) for row in list(plan.get("evaluations") or []) if isinstance(row, Mapping)],
         "deterministic_fingerprint": "",
@@ -61749,6 +61993,71 @@ def execute_intent(
             "climate_window_hash": str(climate_result.get("climate_window_hash", "")).strip(),
             "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
             "deterministic_fingerprint": str(climate_result.get("deterministic_fingerprint", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.earth_material_proxy_tick":
+        _record_geo_field_registry_hashes(state, policy_context)
+        incoming_layers = inputs.get("field_layers")
+        incoming_cells = inputs.get("field_cells")
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        field_binding_registry = _field_binding_registry_payload(policy_context)
+        if isinstance(incoming_layers, list):
+            field_layers = normalize_field_layer_rows(incoming_layers)
+        else:
+            field_layers = normalize_field_layer_rows(field_layers)
+        if isinstance(incoming_cells, list):
+            field_cells = normalize_field_cell_rows(
+                incoming_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
+            )
+        else:
+            field_cells = normalize_field_cell_rows(
+                field_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
+            )
+        material_result = _recompute_earth_material_proxy_fields(
+            state=state,
+            field_layers=field_layers,
+            field_cells=field_cells,
+            geometry_cell_states=geometry_cell_states,
+            current_tick=int(current_tick),
+            process_id=process_id,
+            policy_context=policy_context,
+            max_tiles_per_update=(
+                None
+                if inputs.get("max_tiles_per_update") is None
+                else int(max(0, _as_int(inputs.get("max_tiles_per_update", 0), 0)))
+            ),
+        )
+        result_metadata = {
+            "tick_window_start": int(_as_int(material_result.get("tick_window_start", 0), 0)),
+            "tick_window_end": int(_as_int(material_result.get("tick_window_end", 0), 0)),
+            "tick_window_span": int(_as_int(material_result.get("tick_window_span", 0), 0)),
+            "due_bucket_ids": [int(item) for item in list(material_result.get("due_bucket_ids") or [])],
+            "selected_tile_ids": _sorted_tokens(list(material_result.get("selected_tile_ids") or [])),
+            "skipped_tile_ids": _sorted_tokens(list(material_result.get("skipped_tile_ids") or [])),
+            "updated_field_ids": list(material_result.get("updated_field_ids") or []),
+            "applied_update_count": int(_as_int(material_result.get("applied_update_count", 0), 0)),
+            "skipped_update_count": int(_as_int(material_result.get("skipped_update_count", 0), 0)),
+            "cost_units_used": int(_as_int(material_result.get("cost_units_used", 0), 0)),
+            "degraded": bool(material_result.get("degraded", False)),
+            "degrade_reason": (
+                None
+                if material_result.get("degrade_reason") is None
+                else str(material_result.get("degrade_reason", "")).strip() or None
+            ),
+            "material_proxy_window_hash": str(material_result.get("material_proxy_window_hash", "")).strip(),
+            "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+            "deterministic_fingerprint": str(material_result.get("deterministic_fingerprint", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.earth_tide_tick":

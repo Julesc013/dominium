@@ -50,6 +50,7 @@ def _earth_bindings() -> dict:
         evaluate_earth_tile_tide,
         tide_params_rows,
     )
+    from src.worldgen.earth.material import evaluate_earth_tile_material_proxy
     surface_module = importlib.import_module("src.worldgen.earth." + "earth" + "_surface" + "_generator")
     generate_earth_surface_tile_plan = getattr(surface_module, "generate_earth_surface_tile_plan")
 
@@ -67,6 +68,7 @@ def _earth_bindings() -> dict:
         "compute_hydrology_window": compute_hydrology_window,
         "earth_climate_params_rows": earth_climate_params_rows,
         "evaluate_earth_tile_climate": evaluate_earth_tile_climate,
+        "evaluate_earth_tile_material_proxy": evaluate_earth_tile_material_proxy,
         "evaluate_earth_tile_tide": evaluate_earth_tile_tide,
         "generate_earth_surface_tile_plan": generate_earth_surface_tile_plan,
         "hydrology_params_rows": hydrology_params_rows,
@@ -934,6 +936,7 @@ def generate_mw_surface_l3_payload(
     }
     climate_evaluation = {}
     tide_evaluation = {}
+    material_proxy_evaluation = {}
     if handler_id == "earth.surface.stub" and earth_climate_params_row:
         climate_evaluation = earth_bindings["evaluate_earth_tile_climate"](
             artifact_row=tile_artifact_row,
@@ -959,6 +962,12 @@ def generate_mw_surface_l3_payload(
             artifact_row=tile_artifact_row,
             tide_params_row=tide_params_row,
             current_tick=max(0, _as_int(current_tick, 0)),
+        )
+    if handler_id == "earth.surface.stub":
+        material_proxy_evaluation = earth_bindings["evaluate_earth_tile_material_proxy"](
+            artifact_row=tile_artifact_row,
+            current_tick=max(0, _as_int(current_tick, 0)),
+            geometry_row={},
         )
     tile_artifact_row["deterministic_fingerprint"] = canonical_sha256(dict(tile_artifact_row, deterministic_fingerprint=""))
 
@@ -1021,6 +1030,62 @@ def generate_mw_surface_l3_payload(
                 },
             )
         )
+    if handler_id == "earth.surface.stub":
+        field_layers.extend(
+            [
+                build_field_layer(
+                    field_id="field.material_proxy.surface.{}".format(planet_object_token),
+                    field_type_id="field.material_proxy",
+                    spatial_scope_id="spatial.surface.{}".format(planet_object_token),
+                    resolution_level="macro",
+                    update_policy_id="field.profile_defined",
+                    extensions={
+                        "topology_profile_id": str(surface_cell_key.get("topology_profile_id", "")).strip(),
+                        "partition_profile_id": str(surface_cell_key.get("partition_profile_id", "")).strip(),
+                        "chart_id": str(surface_cell_key.get("chart_id", "")).strip(),
+                        "storage_kind": "tile",
+                        "interpolation_policy_id": "interp.atlas_nearest",
+                        "planet_object_id": planet_object_token,
+                        "field_domain": "surface_macro",
+                        "source": "EARTH10-3",
+                    },
+                ),
+                build_field_layer(
+                    field_id="field.surface_flags.surface.{}".format(planet_object_token),
+                    field_type_id="field.surface_flags",
+                    spatial_scope_id="spatial.surface.{}".format(planet_object_token),
+                    resolution_level="macro",
+                    update_policy_id="field.profile_defined",
+                    extensions={
+                        "topology_profile_id": str(surface_cell_key.get("topology_profile_id", "")).strip(),
+                        "partition_profile_id": str(surface_cell_key.get("partition_profile_id", "")).strip(),
+                        "chart_id": str(surface_cell_key.get("chart_id", "")).strip(),
+                        "storage_kind": "tile",
+                        "interpolation_policy_id": "interp.atlas_nearest",
+                        "planet_object_id": planet_object_token,
+                        "field_domain": "surface_macro",
+                        "source": "EARTH10-3",
+                    },
+                ),
+                build_field_layer(
+                    field_id="field.albedo_proxy.surface.{}".format(planet_object_token),
+                    field_type_id="field.albedo_proxy",
+                    spatial_scope_id="spatial.surface.{}".format(planet_object_token),
+                    resolution_level="macro",
+                    update_policy_id="field.profile_defined",
+                    extensions={
+                        "topology_profile_id": str(surface_cell_key.get("topology_profile_id", "")).strip(),
+                        "partition_profile_id": str(surface_cell_key.get("partition_profile_id", "")).strip(),
+                        "chart_id": str(surface_cell_key.get("chart_id", "")).strip(),
+                        "storage_kind": "tile",
+                        "interpolation_policy_id": "interp.atlas_nearest",
+                        "planet_object_id": planet_object_token,
+                        "field_domain": "surface_macro",
+                        "source": "EARTH10-3",
+                    },
+                ),
+            ]
+        )
     field_initializations = [
         build_field_cell(
             field_id="field.temperature.surface.{}".format(planet_object_token),
@@ -1064,6 +1129,54 @@ def generate_mw_surface_l3_payload(
                     "source": "EARTH3-4",
                 },
             )
+        )
+    if handler_id == "earth.surface.stub":
+        field_initializations.extend(
+            [
+                build_field_cell(
+                    field_id="field.material_proxy.surface.{}".format(planet_object_token),
+                    value=int(_as_int(material_proxy_evaluation.get("material_proxy_value", 0), 0)),
+                    last_updated_tick=max(0, _as_int(current_tick, 0)),
+                    geo_cell_key=surface_cell_key,
+                    extensions={
+                        "field_type_id": "field.material_proxy",
+                        "planet_object_id": planet_object_token,
+                        "material_proxy_id": str(material_proxy_evaluation.get("material_proxy_id", "")).strip(),
+                        "initialization_kind": "earth10_surface_material_proxy",
+                        "source": "EARTH10-3",
+                    },
+                ),
+                build_field_cell(
+                    field_id="field.surface_flags.surface.{}".format(planet_object_token),
+                    value=int(_as_int(material_proxy_evaluation.get("surface_flags_mask", 0), 0)),
+                    last_updated_tick=max(0, _as_int(current_tick, 0)),
+                    geo_cell_key=surface_cell_key,
+                    extensions={
+                        "field_type_id": "field.surface_flags",
+                        "planet_object_id": planet_object_token,
+                        "surface_flag_ids": [
+                            str(tag).strip()
+                            for tag in list(material_proxy_evaluation.get("surface_flag_ids") or [])
+                            if str(tag).strip()
+                        ],
+                        "initialization_kind": "earth10_surface_flags",
+                        "source": "EARTH10-3",
+                    },
+                ),
+                build_field_cell(
+                    field_id="field.albedo_proxy.surface.{}".format(planet_object_token),
+                    value=int(_as_int(material_proxy_evaluation.get("albedo_proxy_value", 0), 0)),
+                    last_updated_tick=max(0, _as_int(current_tick, 0)),
+                    geo_cell_key=surface_cell_key,
+                    extensions={
+                        "field_type_id": "field.albedo_proxy",
+                        "planet_object_id": planet_object_token,
+                        "material_proxy_id": str(material_proxy_evaluation.get("material_proxy_id", "")).strip(),
+                        "initialization_kind": "earth10_surface_albedo_proxy",
+                        "source": "EARTH10-3",
+                    },
+                ),
+            ]
         )
     if atmosphere_class_id and atmosphere_class_id != "atmo.none":
         field_layers.append(
@@ -1159,6 +1272,14 @@ def generate_mw_surface_l3_payload(
             "hydrology_structure_kind": str(
                 _as_map(tile_artifact_row.get("extensions")).get("hydrology_structure_kind", "")
             ).strip(),
+            "material_proxy_id": str(material_proxy_evaluation.get("material_proxy_id", "")).strip(),
+            "surface_flags_mask": int(_as_int(material_proxy_evaluation.get("surface_flags_mask", 0), 0)),
+            "surface_flag_ids": [
+                str(tag).strip()
+                for tag in list(material_proxy_evaluation.get("surface_flag_ids") or [])
+                if str(tag).strip()
+            ],
+            "albedo_proxy_value": int(_as_int(material_proxy_evaluation.get("albedo_proxy_value", 0), 0)),
             "biome_overlay_tags": [
                 str(tag).strip()
                 for tag in list(_as_map(tile_artifact_row.get("extensions")).get("biome_overlay_tags") or [])

@@ -5719,6 +5719,88 @@
     {
       "affected_assemblies": [],
       "affected_fields": [
+        "field.material_proxy",
+        "field.surface_flags",
+        "field.albedo_proxy"
+      ],
+      "deprecated": false,
+      "description": "Canonical EARTH-10 material proxy tick; recomputes deterministic Earth surface material, surface-flag, and albedo proxy fields in geo-cell order and persists replay-friendly proxy overlays.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "canonical-tick-only",
+        "budgeted-degrade",
+        "process-only-mutation"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.earth_material_proxy_tick)",
+        "source": "EARTH10-3",
+        "tier": "P1"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Earth Material Proxy Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "worldgen_surface_tile_artifacts",
+          "ref_id": "dominium.state.worldgen_surface_tile_artifacts",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "geometry_cell_states",
+          "ref_id": "dominium.state.geometry_cell_state_rows",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "field_cells",
+          "ref_id": "dominium.schema.field.field_cell@1.0.0",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "field_update_events",
+          "ref_id": "dominium.state.field_update_event_rows",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "earth_material_proxy_tile_overlays",
+          "ref_id": "dominium.state.earth_material_proxy_tile_overlays",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "earth_material_proxy_runtime_state",
+          "ref_id": "dominium.state.earth_material_proxy_runtime_state",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.earth_material_proxy_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.earth_material_proxy_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "2545ed50c4d43f166019908aaa5f855e667113b65c73bc378f22ff084b7932e5",
+        "extensions": {},
+        "deprecated": false
+      }
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [
         "field.tide_height_proxy"
       ],
       "deprecated": false,
