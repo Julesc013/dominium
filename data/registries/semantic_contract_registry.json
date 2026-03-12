@@ -345,6 +345,37 @@
           "deterministic_fingerprint": "26b603103075e521f92617543e90768db67ccad3ea6d4dc05913ef166e807991",
           "extensions": {}
         }
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.time.anchor.v1",
+        "description": "Canonical tick width, epoch anchor cadence, overflow refusal, and anchor-bounded compaction meaning.",
+        "deterministic_fingerprint": "73a4eab7ce52e2eda199fbfcd317276fc5725adae99017e3e4db68f79f6b1568",
+        "guaranteed_invariants": [
+          "canonical truth time remains explicit uint64 tick space",
+          "epoch anchors remain aligned to absolute tick boundaries",
+          "compaction and replay semantics remain anchored and deterministic"
+        ],
+        "version": "1.0.0",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.time.anchor.v1",
+          "deterministic_fingerprint": "945ced62a692c10cea4ae07f6eaff12fae21829ffaf7378488328a4949641560",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

@@ -19,16 +19,16 @@
           "refusal_threshold_tick": 18446744073708551615,
           "refusal_code": "refusal.time.tick_overflow_imminent"
         },
-        "deterministic_fingerprint": "03b4219c1fd6a016dcd699862a323f82bfca0abd0d4d0f497a99b1a1358cbf80",
+        "deterministic_fingerprint": "2671ac57aff155efa0b8d86e6db67d08d06dcdb71d72f3c9e1a5d3b40dad4f52",
         "extensions": {},
         "stability": {
           "schema_version": "1.0.0",
-          "stability_class_id": "provisional",
-          "rationale": "TIME-ANCHOR-0 introduces explicit long-run anchor policy without freezing cadence semantics for post-MVP release governance.",
-          "future_series": "TIME",
-          "replacement_target": "Replace MVP anchor defaults with release-pinned long-run time governance.",
-          "contract_id": "",
-          "deterministic_fingerprint": "f2015116333a21361e87b6c2f622f5fa2a4abbbe796390eed079bdc0a7483299",
+          "stability_class_id": "stable",
+          "rationale": "Tick width, anchor cadence, and overflow refusal semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.time.anchor.v1",
+          "deterministic_fingerprint": "070e3ace611a3d8e8c0a359d8072e5ce5dc274090ea6f72e2444493f0cc300ad",
           "extensions": {}
         }
       }
