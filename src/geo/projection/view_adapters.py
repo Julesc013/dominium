@@ -53,6 +53,13 @@ def _glyph_for_cell(row: Mapping[str, object], preferred_layer_order: List[str])
             return "E"
         if layer_id == "layer.infrastructure_stub":
             return "#"
+        if layer_id == "layer.orbits":
+            marker_kind = str(_as_map(value).get("marker_kind", "")).strip()
+            if marker_kind == "focus":
+                return "@"
+            if marker_kind == "body":
+                return "O"
+            return "o"
         if layer_id == "layer.water_ocean":
             return "~"
         if layer_id == "layer.water_river":

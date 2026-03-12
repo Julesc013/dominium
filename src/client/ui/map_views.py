@@ -29,6 +29,7 @@ DEFAULT_COMPUTE_PROFILE_ID = "compute.default"
 DEFAULT_MAP_VIEW_TYPE_ID = "view.map_ortho"
 DEFAULT_MINIMAP_VIEW_TYPE_ID = "view.minimap"
 DEFAULT_MAP_LAYERS = [
+    "layer.orbits",
     "layer.terrain_stub",
     "layer.water_ocean",
     "layer.water_river",
@@ -44,6 +45,7 @@ DEFAULT_MAP_LAYERS = [
     "layer.entity_markers_stub",
 ]
 DEFAULT_MINIMAP_LAYERS = [
+    "layer.orbits",
     "layer.terrain_stub",
     "layer.water_ocean",
     "layer.water_river",

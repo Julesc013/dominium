@@ -147,6 +147,17 @@ def _ground_scanner_available(perceived_model: Mapping[str, object]) -> bool:
     )
 
 
+def _orbit_instrument_available(perceived_model: Mapping[str, object]) -> bool:
+    channels = set(_channels(perceived_model))
+    instruments = _as_map(_as_map(perceived_model).get("diegetic_instruments"))
+    return (
+        "ch.diegetic.telescope" in channels
+        or "ch.diegetic.orrery" in channels
+        or bool(_as_map(instruments.get("instrument.telescope")))
+        or bool(_as_map(instruments.get("instrument.orrery")))
+    )
+
+
 def _omniscient_allowed(
     *,
     lens_request: Mapping[str, object],
@@ -302,6 +313,39 @@ def _water_layer_value(
             "river_width_permille": matched.get("river_width_permille"),
             "lake_fill_permille": matched.get("lake_fill_permille"),
             "tide_offset_value": int(_as_int(matched.get("tide_offset_value", 0), 0)),
+        },
+    )
+
+
+def _orbit_layer_value(
+    *,
+    cell_key: Mapping[str, object],
+    source: Mapping[str, object],
+    perceived_model: Mapping[str, object],
+    omniscient_allowed: bool,
+) -> dict:
+    rows = [dict(item) for item in list(_as_map(source).get("rows") or []) if isinstance(item, Mapping)]
+    if not rows:
+        return _layer_state(visible=False, value=None, hidden_reason="orbit_unavailable")
+    if not omniscient_allowed and not _orbit_instrument_available(perceived_model):
+        return _layer_state(visible=False, value=None, hidden_reason="telescope_or_orrery_required")
+    target_hash = canonical_sha256(_as_map(cell_key))
+    matched = {}
+    for row in sorted(rows, key=lambda item: canonical_sha256(item)):
+        row_key = _as_map(row.get("geo_cell_key"))
+        if row_key and canonical_sha256(row_key) != target_hash:
+            continue
+        matched = dict(row)
+        break
+    if not matched:
+        return _layer_state(visible=False, value=None, hidden_reason="orbit_absent")
+    return _layer_state(
+        visible=True,
+        value={
+            "marker_kind": str(matched.get("marker_kind", "")).strip() or "path",
+            "object_ids": _sorted_strings(matched.get("object_ids")),
+            "focus_object_id": str(matched.get("focus_object_id", "")).strip(),
+            "chart_mode": str(matched.get("chart_mode", "")).strip(),
         },
     )
 
@@ -463,6 +507,13 @@ def build_projected_view_artifact(
                     layer_id=layer_token,
                     diegetic=diegetic,
                     quantization_step=quantization_step,
+                )
+            elif layer_token == "layer.orbits" or source_kind == "orbit_view":
+                layers[layer_token] = _orbit_layer_value(
+                    cell_key=cell_key,
+                    source=source,
+                    perceived_model=perceived,
+                    omniscient_allowed=omniscient,
                 )
             elif layer_token == "layer.terrain_stub" or source_kind == "terrain":
                 layers[layer_token] = _terrain_layer_value(cell_key=cell_key, source=source, perceived_model=perceived, omniscient_allowed=omniscient)
