@@ -306,6 +306,71 @@ def build_illumination_geometry_panel(
     )
 
 
+def build_orbit_visualization_panel(
+    *,
+    orbit_view_artifact: Mapping[str, object] | None = None,
+) -> dict:
+    artifact = _as_map(orbit_view_artifact)
+    artifact_ext = _as_map(artifact.get("extensions"))
+    focus_object_id = str(artifact_ext.get("focus_object_id", "")).strip()
+    body_rows = [
+        dict(row)
+        for row in _as_list(artifact.get("bodies"))
+        if isinstance(row, Mapping)
+    ]
+    focus_row = next(
+        (
+            dict(row)
+            for row in body_rows
+            if str(_as_map(row).get("object_id", "")).strip() == focus_object_id
+        ),
+        dict(body_rows[0]) if body_rows else {},
+    )
+    current_position_ref = _as_map(focus_row.get("current_position_ref"))
+    sampled_paths = [
+        dict(row)
+        for row in _as_list(artifact.get("sampled_paths"))
+        if isinstance(row, Mapping)
+    ]
+    focus_path = next(
+        (
+            dict(row)
+            for row in sampled_paths
+            if str(_as_map(row).get("object_id", "")).strip() == str(focus_row.get("object_id", "")).strip()
+        ),
+        {},
+    )
+    rows = [
+        {"key": "focus_object_id", "value": focus_object_id or str(focus_row.get("object_id", "")).strip()},
+        {"key": "center_object_id", "value": str(artifact_ext.get("center_object_id", "")).strip()},
+        {"key": "chart_mode", "value": str(artifact_ext.get("chart_mode", "")).strip()},
+        {"key": "provider_id", "value": str(artifact_ext.get("provider_id", "")).strip()},
+        {"key": "orbit_path_policy_id", "value": str(artifact_ext.get("orbit_path_policy_id", "")).strip()},
+        {"key": "semi_major_axis_proxy_units", "value": focus_row.get("semi_major_axis_proxy_units")},
+        {"key": "eccentricity_permille", "value": focus_row.get("eccentricity_permille")},
+        {"key": "inclination_mdeg", "value": focus_row.get("inclination_mdeg")},
+        {"key": "period_estimate_ticks", "value": focus_row.get("period_estimate_ticks")},
+        {"key": "current_position", "value": list(current_position_ref.get("local_position") or [])},
+        {"key": "path_sample_count", "value": len(_as_list(focus_path.get("sampled_points")))},
+        {"key": "body_count", "value": len(body_rows)},
+    ]
+    visible = bool(artifact and body_rows)
+    return _panel(
+        panel_id="panel.inspect.orbit_visualization",
+        panel_kind="orbit_visualization",
+        panel_title="Orbit Visualization",
+        visible=visible,
+        rows=rows,
+        summary="orbit chart {}".format(str(artifact_ext.get("chart_mode", "")).strip() or "unavailable")
+        if visible
+        else "orbit visualization unavailable",
+        extensions={
+            "eclipse_ready": True,
+            "occlusion_stub": True,
+        },
+    )
+
+
 def build_overlay_provenance_panel(
     *,
     property_origin_request: Mapping[str, object] | None = None,
@@ -366,6 +431,7 @@ def build_inspection_panel_set(
     logic_trace_surface: Mapping[str, object] | None = None,
     sky_view_artifact: Mapping[str, object] | None = None,
     illumination_view_artifact: Mapping[str, object] | None = None,
+    orbit_view_artifact: Mapping[str, object] | None = None,
 ) -> dict:
     """Panels consume process.inspect_generate_snapshot and tool.geo.explain_property_origin outputs only."""
 
@@ -391,6 +457,7 @@ def build_inspection_panel_set(
             sky_view_artifact=sky_view_artifact,
             illumination_view_artifact=illumination_view_artifact,
         ),
+        build_orbit_visualization_panel(orbit_view_artifact=orbit_view_artifact),
         build_logic_network_panel(inspection_snapshot=inspection_snapshot),
         build_system_capsule_panel(inspection_snapshot=inspection_snapshot),
         build_overlay_provenance_panel(
@@ -426,6 +493,7 @@ __all__ = [
     "build_inspection_panel_set",
     "build_logic_tool_panel",
     "build_logic_network_panel",
+    "build_orbit_visualization_panel",
     "build_overlay_provenance_panel",
     "build_scan_result_panel",
     "build_surface_tile_panel",
