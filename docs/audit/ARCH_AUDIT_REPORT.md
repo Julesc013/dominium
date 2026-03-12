@@ -4,8 +4,8 @@
 - result: `complete`
 - release_status: `pass`
 - blocking_finding_count: `0`
-- known_exception_count: `12`
-- deterministic_fingerprint: `ba8cfaae59e98d74ac65d41b96cba86108c4a96eb9a7984a92a0d7bc7ee2525c`
+- known_exception_count: `0`
+- deterministic_fingerprint: `4da2f6f9ebd939449af33f200f1cd3e2c57431460bdd4ef046e794d80b59c563`
 
 ## Checks
 
@@ -28,23 +28,10 @@
 - deterministic_fingerprint: `8279c5a8564aab7e670d1f69cf28c13561eeeb23f0d6ba3e9dba408bcbcd6983`
 
 ### determinism_scan
-- result: `known_exception`
+- result: `pass`
 - blocking_finding_count: `0`
-- known_exception_count: `12`
-- deterministic_fingerprint: `6e1d8704b2627acba0f1daa0c046904341e6b287f871bfed2a3f932d573c7596`
-- known exceptions:
-  - `src/fields/field_engine.py`:649 Suspicious unordered container iteration in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/geo/index/geo_index_engine.py`:208 Unreviewed floating-point usage in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/geo/index/geo_index_engine.py`:228 Unreviewed floating-point usage in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/geo/index/geo_index_engine.py`:244 Unreviewed floating-point usage in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/geo/index/geo_index_engine.py`:245 Unreviewed floating-point usage in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/geo/profile_binding.py`:111 Suspicious unordered container iteration in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/logic/compile/logic_proof_engine.py`:148 Suspicious unordered container iteration in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/logic/eval/common.py`:264 Suspicious unordered container iteration in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/logic/eval/compute_engine.py`:285 Suspicious unordered container iteration in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/logic/eval/sense_engine.py`:276 Suspicious unordered container iteration in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/logic/fault/fault_engine.py`:206 Suspicious unordered container iteration in a truth-side path; review under ARCH-AUDIT-1.
-  - `src/worldgen/refinement/refinement_cache.py`:155 Suspicious unordered container iteration in a truth-side path; review under ARCH-AUDIT-1.
+- known_exception_count: `0`
+- deterministic_fingerprint: `241ebb68d788224264a46a610dc7e621d78aee0b4b99508fb600249f2d6476cf`
 
 ### stability_marker_scan
 - result: `pass`
