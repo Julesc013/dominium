@@ -7434,6 +7434,26 @@ def _append_scope_freeze_findings(
             "FeatureCreepSmell analyzer is required",
             "INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
         ),
+        (
+            "tools/xstack/testx/tests/scope_freeze_testlib.py",
+            "scope-freeze TestX helper is required",
+            "INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
+        ),
+        (
+            "tools/xstack/testx/tests/test_frozen_contract_hashes_unchanged.py",
+            "scope-freeze contract-hash TestX coverage is required",
+            "INV-NO-SEMANTIC-CONTRACT-CHANGES-POST-FREEZE",
+        ),
+        (
+            "tools/xstack/testx/tests/test_no_new_registries_without_stability.py",
+            "scope-freeze registry-stability TestX coverage is required",
+            "INV-PROVISIONAL-MUST-HAVE-REPLACEMENT-PLAN",
+        ),
+        (
+            "tools/xstack/testx/tests/test_provisional_list_consistent_with_registry.py",
+            "scope-freeze provisional-tracker TestX coverage is required",
+            "INV-PROVISIONAL-MUST-HAVE-REPLACEMENT-PLAN",
+        ),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
