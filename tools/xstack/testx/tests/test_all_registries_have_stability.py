@@ -1,9 +1,9 @@
-"""FAST test: all governed registries carry stability markers."""
+"""FAST test: every governed registry entry has a stability marker."""
 
 from __future__ import annotations
 
 
-TEST_ID = "test_all_registries_have_stability_markers"
+TEST_ID = "test_all_registries_have_stability"
 TEST_TAGS = ["fast", "meta", "stability", "registry"]
 
 
@@ -14,4 +14,4 @@ def run(repo_root: str):
     missing = [code for code in error_codes(report) if code == "missing_stability"]
     if missing:
         return {"status": "fail", "message": "registry entries are missing stability markers"}
-    return {"status": "pass", "message": "all governed registries carry stability markers"}
+    return {"status": "pass", "message": "all governed registry entries carry stability markers"}

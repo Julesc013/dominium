@@ -1,9 +1,9 @@
-"""FAST test: provisional registry entries declare a replacement plan."""
+"""FAST test: provisional registry entries carry replacement metadata."""
 
 from __future__ import annotations
 
 
-TEST_ID = "test_provisional_requires_replacement_plan"
+TEST_ID = "test_provisional_have_replacement"
 TEST_TAGS = ["fast", "meta", "stability", "provisional"]
 
 

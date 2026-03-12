@@ -1,9 +1,9 @@
-"""FAST test: stable registry entries always declare contract_id."""
+"""FAST test: stable registry entries carry contract ids."""
 
 from __future__ import annotations
 
 
-TEST_ID = "test_stable_requires_contract_id"
+TEST_ID = "test_stable_have_contract_id"
 TEST_TAGS = ["fast", "meta", "stability", "stable"]
 
 
