@@ -35,6 +35,29 @@ def _deep_copy_map(value: Mapping[str, object] | None) -> dict:
     }
 
 
+def _illumination_window_rows(repo_root: str) -> list[dict]:
+    rows = []
+    for current_tick in (SKY_DAY_TICK, SKY_TWILIGHT_TICK, SKY_NIGHT_TICK, SKY_NIGHT_TICK + 130):
+        fixture = build_lighting_fixture(repo_root, current_tick=current_tick)
+        lighting_surface = _as_map(fixture.get("lighting_view_surface"))
+        lighting_artifact = _as_map(lighting_surface.get("illumination_view_artifact"))
+        sky_artifact = _as_map(_as_map(fixture.get("sky_view_surface")).get("sky_view_artifact"))
+        geometry = _as_map(_as_map(sky_artifact.get("extensions")).get("moon_illumination_view_artifact")) or _as_map(
+            _as_map(lighting_artifact.get("extensions")).get("moon_illumination_view_artifact")
+        )
+        rows.append(
+            {
+                "tick": int(current_tick),
+                "phase_angle": int(geometry.get("phase_angle", 0) or 0),
+                "illumination_fraction": int(geometry.get("illumination_fraction", 0) or 0),
+                "occlusion_fraction": int(geometry.get("occlusion_fraction", 0) or 0),
+                "geometry_fingerprint": str(geometry.get("deterministic_fingerprint", "")).strip(),
+                "lighting_fingerprint": str(lighting_artifact.get("deterministic_fingerprint", "")).strip(),
+            }
+        )
+    return rows
+
+
 def build_lighting_fixture(
     repo_root: str,
     *,
@@ -68,14 +91,24 @@ def verify_illumination_view_replay(repo_root: str) -> dict:
     normalized_second_surface = dict(second_surface)
     normalized_first_surface.pop("cache_hit", None)
     normalized_second_surface.pop("cache_hit", None)
-    stable = normalized_first_surface == normalized_second_surface and first_artifact == second_artifact
+    first_window_rows = _illumination_window_rows(repo_root)
+    second_window_rows = _illumination_window_rows(repo_root)
+    stable = (
+        normalized_first_surface == normalized_second_surface
+        and first_artifact == second_artifact
+        and first_window_rows == second_window_rows
+    )
+    geometry = _as_map(_as_map(first_artifact.get("extensions")).get("moon_illumination_view_artifact"))
     report = {
         "result": "complete" if stable else "violation",
         "stable_across_repeated_runs": bool(stable),
         "artifact_fingerprint": str(first_artifact.get("deterministic_fingerprint", "")).strip(),
+        "geometry_fingerprint": str(geometry.get("deterministic_fingerprint", "")).strip(),
+        "geometry_window_hash": canonical_sha256(first_window_rows),
         "cache_key": str(_as_map(first_artifact.get("extensions")).get("cache_key", "")).strip(),
         "shadow_factor": int(first_artifact.get("shadow_factor", 0) or 0),
         "surface_fingerprint": canonical_sha256(normalized_first_surface),
+        "window_rows": first_window_rows,
         "deterministic_fingerprint": "",
     }
     report["deterministic_fingerprint"] = canonical_sha256(dict(report, deterministic_fingerprint=""))
@@ -97,13 +130,36 @@ def illumination_report(repo_root: str) -> dict:
 def moon_phase_report(repo_root: str) -> dict:
     first = _as_map(_as_map(build_lighting_fixture(repo_root, current_tick=SKY_NIGHT_TICK).get("lighting_view_surface")).get("illumination_view_artifact"))
     second = _as_map(_as_map(build_lighting_fixture(repo_root, current_tick=SKY_NIGHT_TICK + 130).get("lighting_view_surface")).get("illumination_view_artifact"))
+    first_geometry = _as_map(_as_map(first.get("extensions")).get("moon_illumination_view_artifact"))
+    second_geometry = _as_map(_as_map(second.get("extensions")).get("moon_illumination_view_artifact"))
     return {
         "result": "complete",
         "tick_a": int(SKY_NIGHT_TICK),
         "tick_b": int(SKY_NIGHT_TICK + 130),
         "moon_intensity_a": int(first.get("moon_intensity", 0) or 0),
         "moon_intensity_b": int(second.get("moon_intensity", 0) or 0),
+        "phase_angle_a": int(first_geometry.get("phase_angle", 0) or 0),
+        "phase_angle_b": int(second_geometry.get("phase_angle", 0) or 0),
+        "illumination_fraction_a": int(first_geometry.get("illumination_fraction", 0) or 0),
+        "illumination_fraction_b": int(second_geometry.get("illumination_fraction", 0) or 0),
+        "occlusion_fraction_a": int(first_geometry.get("occlusion_fraction", 0) or 0),
+        "occlusion_fraction_b": int(second_geometry.get("occlusion_fraction", 0) or 0),
         "changed": int(first.get("moon_intensity", 0) or 0) != int(second.get("moon_intensity", 0) or 0),
+    }
+
+
+def illumination_geometry_report(repo_root: str) -> dict:
+    artifact = _as_map(
+        _as_map(build_lighting_fixture(repo_root, current_tick=SKY_NIGHT_TICK).get("lighting_view_surface")).get("illumination_view_artifact")
+    )
+    geometry = _as_map(_as_map(artifact.get("extensions")).get("moon_illumination_view_artifact"))
+    return {
+        "result": "complete" if geometry else "violation",
+        "phase_angle": int(geometry.get("phase_angle", 0) or 0),
+        "illumination_fraction": int(geometry.get("illumination_fraction", 0) or 0),
+        "occlusion_fraction": int(geometry.get("occlusion_fraction", 0) or 0),
+        "geometry_fingerprint": str(geometry.get("deterministic_fingerprint", "")).strip(),
+        "receiver_object_id": str(geometry.get("receiver_object_id", "")).strip(),
     }
 
 
@@ -153,9 +209,11 @@ def sampling_bounded_report(repo_root: str) -> dict:
 def lighting_hash(repo_root: str) -> str:
     surface = _as_map(build_lighting_fixture(repo_root, current_tick=SKY_NIGHT_TICK).get("lighting_view_surface"))
     artifact = _as_map(surface.get("illumination_view_artifact"))
+    geometry = _as_map(_as_map(artifact.get("extensions")).get("moon_illumination_view_artifact"))
     return canonical_sha256(
         {
             "artifact_fingerprint": str(artifact.get("deterministic_fingerprint", "")).strip(),
+            "geometry_fingerprint": str(geometry.get("deterministic_fingerprint", "")).strip(),
             "summary": dict(_as_map(surface.get("presentation")).get("summary") or {}),
             "shadow_summary": dict(_as_map(_as_map(artifact.get("extensions")).get("shadow_summary"))),
         }
@@ -166,6 +224,7 @@ __all__ = [
     "build_lighting_fixture",
     "horizon_shadow_report",
     "illumination_report",
+    "illumination_geometry_report",
     "lighting_hash",
     "moon_phase_report",
     "sampling_bounded_report",
