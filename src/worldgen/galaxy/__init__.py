@@ -1,56 +1,43 @@
-"""Galaxy worldgen exports."""
+"""Galaxy worldgen helpers with lazy exports to avoid package import cycles."""
 
-from .galaxy_proxy_field_engine import (
-    GALACTIC_REGION_REGISTRY_REL,
-    GALAXY_PROXY_ENGINE_VERSION,
-    GALAXY_PROXY_SPATIAL_SCOPE_ID,
-    build_galaxy_proxy_field_updates,
-    build_galaxy_proxy_update_plan,
-    classify_galactic_region,
-    evaluate_galaxy_cell_proxy,
-    galactic_region_id_from_value,
-    galactic_region_registry_hash,
-    galactic_region_rows,
-    galactic_region_value_from_id,
-    galaxy_proxy_window_hash,
-    radiation_background_proxy_permille,
-)
-from .galaxy_object_stub_generator import (
-    BLACK_HOLE_LOCAL_SUBKEY,
-    GALAXY_OBJECT_STUB_GENERATOR_VERSION,
-    MAX_GALAXY_OBJECT_STUBS_PER_CELL,
-    RNG_WORLDGEN_GALAXY_OBJECTS,
-    build_galaxy_object_hazard_hooks,
-    build_galaxy_object_layer_source_payloads,
-    build_galaxy_object_stub_row,
-    galaxy_object_stub_hash_chain,
-    generate_galaxy_object_stub_payload,
-    normalize_galaxy_object_stub_rows,
-)
+from __future__ import annotations
+
+import importlib
 
 
-__all__ = [
-    "BLACK_HOLE_LOCAL_SUBKEY",
-    "GALACTIC_REGION_REGISTRY_REL",
-    "GALAXY_OBJECT_STUB_GENERATOR_VERSION",
-    "GALAXY_PROXY_ENGINE_VERSION",
-    "GALAXY_PROXY_SPATIAL_SCOPE_ID",
-    "MAX_GALAXY_OBJECT_STUBS_PER_CELL",
-    "RNG_WORLDGEN_GALAXY_OBJECTS",
-    "build_galaxy_object_hazard_hooks",
-    "build_galaxy_object_layer_source_payloads",
-    "build_galaxy_object_stub_row",
-    "galaxy_object_stub_hash_chain",
-    "build_galaxy_proxy_field_updates",
-    "build_galaxy_proxy_update_plan",
-    "classify_galactic_region",
-    "evaluate_galaxy_cell_proxy",
-    "galactic_region_id_from_value",
-    "galactic_region_registry_hash",
-    "galactic_region_rows",
-    "galactic_region_value_from_id",
-    "generate_galaxy_object_stub_payload",
-    "galaxy_proxy_window_hash",
-    "normalize_galaxy_object_stub_rows",
-    "radiation_background_proxy_permille",
-]
+_EXPORT_MODULES = {
+    "GALACTIC_REGION_REGISTRY_REL": ".galaxy_proxy_field_engine",
+    "GALAXY_PROXY_ENGINE_VERSION": ".galaxy_proxy_field_engine",
+    "GALAXY_PROXY_SPATIAL_SCOPE_ID": ".galaxy_proxy_field_engine",
+    "build_galaxy_proxy_field_updates": ".galaxy_proxy_field_engine",
+    "build_galaxy_proxy_update_plan": ".galaxy_proxy_field_engine",
+    "classify_galactic_region": ".galaxy_proxy_field_engine",
+    "evaluate_galaxy_cell_proxy": ".galaxy_proxy_field_engine",
+    "galactic_region_id_from_value": ".galaxy_proxy_field_engine",
+    "galactic_region_registry_hash": ".galaxy_proxy_field_engine",
+    "galactic_region_rows": ".galaxy_proxy_field_engine",
+    "galactic_region_value_from_id": ".galaxy_proxy_field_engine",
+    "galaxy_proxy_window_hash": ".galaxy_proxy_field_engine",
+    "radiation_background_proxy_permille": ".galaxy_proxy_field_engine",
+    "BLACK_HOLE_LOCAL_SUBKEY": ".galaxy_object_stub_generator",
+    "GALAXY_OBJECT_STUB_GENERATOR_VERSION": ".galaxy_object_stub_generator",
+    "MAX_GALAXY_OBJECT_STUBS_PER_CELL": ".galaxy_object_stub_generator",
+    "RNG_WORLDGEN_GALAXY_OBJECTS": ".galaxy_object_stub_generator",
+    "build_galaxy_object_hazard_hooks": ".galaxy_object_stub_generator",
+    "build_galaxy_object_layer_source_payloads": ".galaxy_object_stub_generator",
+    "build_galaxy_object_stub_row": ".galaxy_object_stub_generator",
+    "galaxy_object_stub_hash_chain": ".galaxy_object_stub_generator",
+    "generate_galaxy_object_stub_payload": ".galaxy_object_stub_generator",
+    "normalize_galaxy_object_stub_rows": ".galaxy_object_stub_generator",
+}
+
+
+def __getattr__(name: str):
+    module_rel = _EXPORT_MODULES.get(name)
+    if not module_rel:
+        raise AttributeError(name)
+    module = importlib.import_module(module_rel, __name__)
+    return getattr(module, name)
+
+
+__all__ = sorted(_EXPORT_MODULES.keys())

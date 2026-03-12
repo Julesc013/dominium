@@ -2,22 +2,19 @@
 
 from __future__ import annotations
 
+from math import isqrt
 from typing import Dict, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
-
-from src.geo.frame.frame_engine import build_position_ref
-from src.geo.index.geo_index_engine import _coerce_cell_key
-from src.geo.index.object_id_engine import geo_object_id
-from src.worldgen.galaxy.galaxy_proxy_field_engine import evaluate_galaxy_cell_proxy
-from src.worldgen.mw import DEFAULT_GALAXY_PRIORS_ID, MW_GALACTIC_FRAME_ID, PARSEC_MM
-
 
 GALAXY_OBJECT_STUB_GENERATOR_VERSION = "GAL1-3"
 MAX_GALAXY_OBJECT_STUBS_PER_CELL = 1
 RNG_WORLDGEN_GALAXY_OBJECTS = "rng.worldgen.galaxy_objects"
 BLACK_HOLE_LOCAL_SUBKEY = "galactic_center:black_hole"
 SPARSE_OBJECT_POLICY_ID = "galaxy_object_stub.sparse_v1"
+DEFAULT_GALAXY_PRIORS_ID = "priors.milkyway_stub_default"
+MW_GALACTIC_FRAME_ID = "frame.milky_way.galactic"
+PARSEC_MM = 30_856_775_814_913_672_000
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -31,8 +28,31 @@ def _as_map(value: object) -> dict:
     return dict(value or {}) if isinstance(value, Mapping) else {}
 
 
+def _coerce_cell_key(value: object) -> dict:
+    from src.geo.index.geo_index_engine import _coerce_cell_key as _geo_coerce_cell_key
+
+    return _geo_coerce_cell_key(value) or {}
+
+
+def _build_position_ref(
+    *,
+    object_id: str,
+    frame_id: str,
+    local_position: Sequence[int],
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    from src.geo.frame.frame_engine import build_position_ref
+
+    return build_position_ref(
+        object_id=object_id,
+        frame_id=frame_id,
+        local_position=local_position,
+        extensions=extensions,
+    )
+
+
 def _is_origin_cell(geo_cell_key: Mapping[str, object]) -> bool:
-    key_row = _coerce_cell_key(geo_cell_key) or {}
+    key_row = _coerce_cell_key(geo_cell_key)
     index_tuple = [int(_as_int(item, 0)) for item in list(key_row.get("index_tuple") or [])]
     while len(index_tuple) < 3:
         index_tuple.append(0)
@@ -45,6 +65,11 @@ def _hash_int(seed: str, salt: str) -> int:
 
 def _quantity(unit: str, value: int) -> dict:
     return {"unit": str(unit or "").strip(), "value": int(max(0, _as_int(value, 0)))}
+
+
+def _quantity_value(payload: Mapping[str, object], default_value: int) -> int:
+    row = _as_map(payload)
+    return max(0, _as_int(row.get("value"), default_value))
 
 
 def _local_position_mm(position_pc: Sequence[int]) -> List[int]:
@@ -202,6 +227,47 @@ def build_galaxy_object_layer_source_payloads(rows: object) -> dict:
     }
 
 
+def _classify_galactic_region(
+    *,
+    priors_row: Mapping[str, object],
+    radius_pc: int,
+    z_pc: int,
+) -> str:
+    row = _as_map(priors_row)
+    disk_radius_pc = max(1, _quantity_value(_as_map(row.get("disk_radius")), 60000))
+    bulge_radius_pc = max(1, _quantity_value(_as_map(row.get("bulge_radius")), 6000))
+    disk_half_thickness_pc = max(1, _quantity_value(_as_map(row.get("disk_thickness")), 1200) // 2)
+    bulge_distance_pc = isqrt((max(0, int(radius_pc)) ** 2) + (abs(int(z_pc)) ** 2))
+    if bulge_distance_pc <= bulge_radius_pc:
+        return "region.bulge"
+    if abs(int(z_pc)) > disk_half_thickness_pc * 2 or int(radius_pc) > disk_radius_pc:
+        return "region.halo"
+    if int(radius_pc) <= max(bulge_radius_pc + 1, disk_radius_pc // 2):
+        return "region.inner_disk"
+    return "region.outer_disk"
+
+
+def _radiation_background_proxy_permille(
+    *,
+    priors_row: Mapping[str, object],
+    radius_pc: int,
+    z_pc: int,
+    stellar_density_proxy_value: int,
+    galactic_region_id: str,
+) -> int:
+    row = _as_map(priors_row)
+    disk_radius_pc = max(1, _quantity_value(_as_map(row.get("disk_radius")), 60000))
+    disk_half_thickness_pc = max(1, _quantity_value(_as_map(row.get("disk_thickness")), 1200) // 2)
+    center_term = max(0, 1000 - min(1000, (max(0, int(radius_pc)) * 1000) // max(1, disk_radius_pc)))
+    vertical_term = max(0, 1000 - min(1000, (abs(int(z_pc)) * 1000) // max(1, disk_half_thickness_pc * 4)))
+    value = ((center_term * 600) + (vertical_term * 150) + (int(stellar_density_proxy_value) * 250)) // 1000
+    if str(galactic_region_id).strip() == "region.bulge":
+        value = max(value, 760)
+    elif str(galactic_region_id).strip() == "region.halo":
+        value = min(value, 240)
+    return int(max(0, min(1000, value)))
+
+
 def _spawn_identity(
     *,
     universe_identity_hash: str,
@@ -209,6 +275,8 @@ def _spawn_identity(
     object_kind_id: str,
     local_subkey: str,
 ) -> tuple[dict, dict]:
+    from src.geo.index.object_id_engine import geo_object_id
+
     payload = geo_object_id(
         universe_identity_hash=str(universe_identity_hash or "").strip(),
         cell_key=geo_cell_key,
@@ -237,8 +305,7 @@ def _sparse_stub_descriptor(
     if _is_origin_cell(geo_cell_key):
         return {}
     proxy_row = _as_map(galaxy_proxy)
-    proxy_ext = _as_map(proxy_row.get("extensions"))
-    radius_pc = int(max(0, _as_int(proxy_ext.get("galactocentric_radius_pc", 0), 0)))
+    radius_pc = int(max(0, _as_int(proxy_row.get("galactocentric_radius_pc", 0), 0)))
     density = int(max(0, _as_int(proxy_row.get("stellar_density_proxy_value", 0), 0)))
     metallicity = int(max(0, _as_int(proxy_row.get("metallicity_proxy_value", 0), 0)))
     radiation = int(max(0, _as_int(proxy_row.get("radiation_background_proxy_value", 0), 0)))
@@ -288,14 +355,40 @@ def generate_galaxy_object_stub_payload(
         payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
         return payload
 
-    proxy_row = evaluate_galaxy_cell_proxy(
-        geo_cell_key=cell_key,
-        galaxy_priors_row=priors_row,
-        galaxy_priors_id=str(galaxy_priors_id or "").strip() or DEFAULT_GALAXY_PRIORS_ID,
-    )
-    proxy_ext = _as_map(proxy_row.get("extensions"))
-    center_pc = [int(_as_int(value, 0)) for value in list(proxy_ext.get("galactocentric_position_pc") or [0, 0, 0])]
+    from src.worldgen.mw import mw_cell_position_pc, mw_density_permille, mw_metallicity_permille
+
     cell_size_pc = int(max(1, _as_int(priors_row.get("cell_size_pc", 10), 10)))
+    x_pc, y_pc, z_pc = mw_cell_position_pc(cell_key, cell_size_pc)
+    center_pc = [int(x_pc), int(y_pc), int(z_pc)]
+    radius_pc = isqrt((abs(int(x_pc)) ** 2) + (abs(int(y_pc)) ** 2))
+    stellar_density_proxy_value = mw_density_permille(
+        priors_row,
+        radius_pc=radius_pc,
+        z_pc=z_pc,
+        x_pc=x_pc,
+        y_pc=y_pc,
+        cell_size_pc=cell_size_pc,
+    )
+    metallicity_proxy_value = mw_metallicity_permille(priors_row, radius_pc)
+    galactic_region_id = _classify_galactic_region(
+        priors_row=priors_row,
+        radius_pc=radius_pc,
+        z_pc=z_pc,
+    )
+    radiation_background_proxy_value = _radiation_background_proxy_permille(
+        priors_row=priors_row,
+        radius_pc=radius_pc,
+        z_pc=z_pc,
+        stellar_density_proxy_value=stellar_density_proxy_value,
+        galactic_region_id=galactic_region_id,
+    )
+    proxy_row = {
+        "galactocentric_radius_pc": int(radius_pc),
+        "galactic_region_id": galactic_region_id,
+        "stellar_density_proxy_value": int(stellar_density_proxy_value),
+        "metallicity_proxy_value": int(metallicity_proxy_value),
+        "radiation_background_proxy_value": int(radiation_background_proxy_value),
+    }
     stream_name = str(RNG_WORLDGEN_GALAXY_OBJECTS)
     stream_seed_hash = canonical_sha256({"stream_name": stream_name, "stream_seed": str(stream_seed or "").strip()})
 
@@ -315,7 +408,7 @@ def generate_galaxy_object_stub_payload(
                 build_galaxy_object_stub_row(
                     object_id=object_id,
                     kind="kind.black_hole_stub",
-                    position_ref=build_position_ref(
+                    position_ref=_build_position_ref(
                         object_id=object_id,
                         frame_id=MW_GALACTIC_FRAME_ID,
                         local_position=[0, 0, 0],
@@ -364,7 +457,7 @@ def generate_galaxy_object_stub_payload(
                 build_galaxy_object_stub_row(
                     object_id=object_id,
                     kind=sparse_kind,
-                    position_ref=build_position_ref(
+                    position_ref=_build_position_ref(
                         object_id=object_id,
                         frame_id=MW_GALACTIC_FRAME_ID,
                         local_position=_local_position_mm(
