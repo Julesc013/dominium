@@ -1055,6 +1055,14 @@ ENTRYPOINT_UNIFY_COMMON_PATH = "tools/release/entrypoint_unify_common.py"
 ENTRYPOINT_UNIFY_MAP_PATH = "docs/audit/ENTRYPOINT_UNIFY_MAP.md"
 FLAG_MIGRATION_DOC_PATH = "docs/appshell/FLAG_MIGRATION.md"
 ENTRYPOINT_UNIFY_FINAL_PATH = "docs/audit/ENTRYPOINT_UNIFY_FINAL.md"
+VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
+VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
+VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
+VALIDATION_RESULT_SCHEMA_DOC_PATH = "schema/validation/validation_result.schema"
+VALIDATION_RESULT_SCHEMA_JSON_PATH = "schemas/validation_result.schema.json"
+VALIDATION_SUITE_REGISTRY_PATH = "data/registries/validation_suite_registry.json"
+VALIDATION_ENGINE_PATH = "src/validation/validation_engine.py"
+VALIDATION_TOOL_PATH = "tools/validation/tool_run_validation.py"
 DOC_INVENTORY_TOOL_PATH = "tools/review/tool_doc_inventory.py"
 DOC_INVENTORY_COMMON_PATH = "tools/review/doc_inventory_common.py"
 DOC_INVENTORY_JSON_PATH = "data/audit/doc_inventory.json"
@@ -8061,6 +8069,105 @@ def _append_entrypoint_unify_findings(
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "entrypoint unification violation detected",
                 rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-ALL-PRODUCTS-USE-APPSHELL",
+            )
+        )
+
+
+def _append_validation_unify_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    availability_rule_id = "INV-VALIDATE-ALL-AVAILABLE"
+    adhoc_rule_id = "INV-NO-ADHOC-VALIDATION-ENTRYPOINTS"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (VALIDATION_PIPELINE_DOC_PATH, "validation pipeline doctrine is required", availability_rule_id),
+        (VALIDATION_INVENTORY_DOC_PATH, "validation inventory is required", availability_rule_id),
+        (VALIDATION_FINAL_DOC_PATH, "validation unify final report is required", availability_rule_id),
+        (VALIDATION_RESULT_SCHEMA_DOC_PATH, "validation result schema doc is required", availability_rule_id),
+        (VALIDATION_RESULT_SCHEMA_JSON_PATH, "validation result JSON schema is required", availability_rule_id),
+        (VALIDATION_SUITE_REGISTRY_PATH, "validation suite registry is required", availability_rule_id),
+        (VALIDATION_ENGINE_PATH, "validation engine is required", availability_rule_id),
+        (VALIDATION_TOOL_PATH, "validation runner tool is required", availability_rule_id),
+        ("tools/auditx/analyzers/e473_duplicate_validation_surface_smell.py", "DuplicateValidationSurfaceSmell analyzer is required", adhoc_rule_id),
+        ("tools/xstack/testx/tests/validation_unify_testlib.py", "validation unify TestX helper is required", availability_rule_id),
+        ("tools/xstack/testx/tests/test_validate_all_runs_fast.py", "validate all FAST TestX coverage is required", availability_rule_id),
+        ("tools/xstack/testx/tests/test_validate_all_runs_strict.py", "validate all STRICT TestX coverage is required", availability_rule_id),
+        ("tools/xstack/testx/tests/test_validation_report_deterministic_order.py", "validation ordering TestX coverage is required", availability_rule_id),
+        ("tools/xstack/testx/tests/test_legacy_validators_called_via_adapter.py", "legacy adapter TestX coverage is required", adhoc_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    pipeline_text = _file_text(repo_root, VALIDATION_PIPELINE_DOC_PATH).lower()
+    for token, message in (
+        ("# validation pipeline", "validation pipeline doc must define the canonical validation surface"),
+        ("validate.schemas", "validation pipeline doc must enumerate suite categories"),
+        ("fast", "validation pipeline doc must define execution profiles"),
+    ):
+        if token in pipeline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=VALIDATION_PIPELINE_DOC_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=availability_rule_id,
+            )
+        )
+
+    command_text = _file_text(repo_root, "data/registries/command_registry.json")
+    if '"command_path": "validate"' not in command_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/command_registry.json",
+                line_number=1,
+                snippet="command_path validate",
+                message="AppShell command registry must expose `validate --all`",
+                rule_id=availability_rule_id,
+            )
+        )
+
+    try:
+        from src.validation import validation_surface_findings
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=VALIDATION_ENGINE_PATH,
+                line_number=1,
+                snippet="validation_surface_findings",
+                message="unable to import validation surface checks ({})".format(str(exc)),
+                rule_id=availability_rule_id,
+            )
+        )
+        return
+
+    for row in validation_surface_findings(repo_root):
+        item = dict(row or {})
+        findings.append(
+            _finding(
+                severity="warn" if _token(item.get("code")) == "duplicate_validation_surface_mapping" else severity,
+                file_path=str(item.get("path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(item.get("code", ""))[:160],
+                message=str(item.get("message", "")).strip() or "validation unification drift detected",
+                rule_id=str(item.get("rule_id", "")).strip() or adhoc_rule_id,
             )
         )
 
@@ -32235,6 +32342,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_entrypoint_unify_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_validation_unify_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

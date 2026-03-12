@@ -84,5 +84,30 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "report_id": "pack_compatibility_report.example",
+      "engine_contract_bundle_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "mod_policy_id": "mod_policy.lab",
+      "pack_list": [
+        {
+          "pack_id": "pack.core.runtime",
+          "pack_version": "1.0.0",
+          "canonical_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      ],
+      "valid": true,
+      "conflicts": [],
+      "refused_packs": [],
+      "refusal_codes": [],
+      "warnings": [],
+      "pack_lock_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "deterministic_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "extensions": {
+        "source": "PACK-COMPAT-1"
+      }
+    }
+  ]
 }

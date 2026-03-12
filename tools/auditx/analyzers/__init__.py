@@ -473,6 +473,7 @@ from analyzers import e469_unclassified_module_smell
 from analyzers import e470_contradictory_doc_without_header_smell
 from analyzers import e471_direct_simulation_start_smell
 from analyzers import e472_direct_pack_load_smell
+from analyzers import e473_duplicate_validation_surface_smell
 
 
 ANALYZERS = (
@@ -949,6 +950,7 @@ ANALYZERS = (
     e470_contradictory_doc_without_header_smell,
     e471_direct_simulation_start_smell,
     e472_direct_pack_load_smell,
+    e473_duplicate_validation_surface_smell,
 )
 
 

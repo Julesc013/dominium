@@ -34,6 +34,7 @@ from src.appshell.supervisor import (
     launch_supervisor_service,
     load_supervisor_runtime_state,
 )
+from src.validation import build_validation_report, write_validation_outputs
 
 
 REFUSAL_TO_EXIT_REGISTRY_REL = os.path.join("data", "registries", "refusal_to_exit_registry.json")
@@ -404,6 +405,38 @@ def _run_profiles_show_command(repo_root: str, args: Sequence[str]) -> dict:
             details={"bundle_id": bundle_id},
         )
     return _json_dispatch({"result": "complete", "profile": payload})
+
+
+def _run_validate_command(repo_root: str, args: Sequence[str]) -> dict:
+    parser = argparse.ArgumentParser(prog="validate", add_help=False)
+    parser.add_argument("--all", dest="run_all", action="store_true")
+    parser.add_argument("--profile", default="FAST", choices=("FAST", "STRICT", "FULL"))
+    parsed, refusal = _parse_command_args(repo_root, parser, "validate", args)
+    if refusal is not None:
+        return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+    if not bool(getattr(parsed, "run_all", False)):
+        return _refusal_dispatch(
+            repo_root,
+            "refusal.io.invalid_args",
+            "validate requires the explicit `--all` selector",
+            "Run `validate --all --profile FAST|STRICT|FULL` through AppShell.",
+            details={"command_path": "validate"},
+        )
+    profile = str(getattr(parsed, "profile", "FAST") or "FAST").strip().upper() or "FAST"
+    report = build_validation_report(repo_root, profile=profile)
+    write_validation_outputs(repo_root, report)
+    log_emit(
+        category="validation",
+        severity="info" if str(report.get("result", "")).strip() == "complete" else "warn",
+        message_key="validation.pipeline.result",
+        params={
+            "profile": profile,
+            "result": str(report.get("result", "")).strip(),
+            "suite_count": int(dict(report.get("metrics") or {}).get("suite_count", 0) or 0),
+            "error_count": int(len(list(report.get("errors") or []))),
+        },
+    )
+    return _json_dispatch(report, EXIT_SUCCESS if str(report.get("result", "")).strip() == "complete" else 1)
 
 
 def _run_diag_command(repo_root: str, product_id: str, mode_id: str) -> dict:
@@ -876,6 +909,8 @@ def dispatch_registered_command(
         return _run_profiles_list_command(repo_root)
     if handler_id == "profiles_show":
         return _run_profiles_show_command(repo_root, remaining)
+    if handler_id == "validate":
+        return _run_validate_command(repo_root, remaining)
     if handler_id == "diag":
         return _run_diag_command(repo_root, product_id, mode_id)
     if handler_id == "diag_snapshot":

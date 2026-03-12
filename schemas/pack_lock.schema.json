@@ -226,5 +226,31 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "format_version": "2.0.0",
+      "pack_lock_id": "pack_lock.example",
+      "ordered_pack_ids": [
+        "pack.core.runtime"
+      ],
+      "ordered_pack_versions": [
+        "1.0.0"
+      ],
+      "pack_hashes": {
+        "pack.core.runtime": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "pack_compat_hashes": {
+        "pack.core.runtime": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      "mod_policy_id": "mod_policy.lab",
+      "pack_lock_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "engine_version_created": "0.0.0+build.example",
+      "deterministic_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "extensions": {
+        "source": "PACK-COMPAT-1"
+      }
+    }
+  ]
 }

@@ -252,76 +252,6 @@
         "1.0.0"
       ]
     },
-    "capability_id": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "compat_refusal": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "contract_range": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "degrade_rule": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "degrade_ladder": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "endpoint_descriptor": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "fallback_map": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "handshake_message": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "negotiation_record": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "protocol_range": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
     "block_reservation": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -504,6 +434,13 @@
         "1.0.0"
       ]
     },
+    "capability_id": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "capability_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -624,6 +561,13 @@
       ]
     },
     "compartment_flow_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compat_refusal": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -813,6 +757,13 @@
       ]
     },
     "construction_step": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "contract_range": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1071,6 +1022,20 @@
         "1.0.0"
       ]
     },
+    "degrade_ladder": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "degrade_rule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "dem_source": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1281,6 +1246,13 @@
         "1.0.0"
       ]
     },
+    "endpoint_descriptor": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "energy_ledger_entry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1338,6 +1310,13 @@
       ]
     },
     "epistemic_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "epoch_anchor_record": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1464,6 +1443,13 @@
       ]
     },
     "failure_mode_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fallback_map": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1800,6 +1786,13 @@
       ]
     },
     "guide_geometry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "handshake_message": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2450,6 +2443,13 @@
         "1.0.0"
       ]
     },
+    "negotiation_record": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "negotiation_request": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2940,6 +2940,13 @@
         "1.0.0"
       ]
     },
+    "profile_bundle": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "profile_exception_event": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2948,20 +2955,6 @@
       ]
     },
     "profile_trace": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "profile_bundle": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "save_file": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -3018,6 +3011,13 @@
       ]
     },
     "protection_settings": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "protocol_range": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -3304,6 +3304,13 @@
         "1.0.0"
       ]
     },
+    "save_file": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "schedule": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -3367,14 +3374,14 @@
         "1.0.0"
       ]
     },
-    "session_template": {
+    "session_stage": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "session_stage": {
+    "session_template": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -3549,6 +3556,13 @@
         "1.0.0"
       ]
     },
+    "stability_marker": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "stabilization_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -3578,13 +3592,6 @@
       ]
     },
     "standards_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "stability_marker": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -3710,6 +3717,13 @@
         "1.0.0"
       ]
     },
+    "tick_t": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "tier_contract": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -3732,20 +3746,6 @@
       ]
     },
     "time_adjust_event": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "epoch_anchor_record": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "tick_t": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -4026,6 +4026,13 @@
       ]
     },
     "universe_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "validation_result": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

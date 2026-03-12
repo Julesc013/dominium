@@ -1,0 +1,40 @@
+SCHEMA: validation/validation_result.schema
+schema_id: dominium.schema.validation.validation_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical structured result payload for unified validation suites and aggregate `validate --all` runs.
+
+NON-SEMANTICS:
+- Validation results report governance state and do not mutate TruthModel.
+- Validation suite ordering is deterministic and registry-driven.
+
+REQUIRED SHAPE:
+record validation_result
+  required:
+    - schema_version: semver
+    - validation_id: id
+    - suite_id: id
+    - category_id: id
+    - profile: enum(FAST|STRICT|FULL)
+    - result: enum(complete|refused|skipped)
+    - message: string
+    - suite_order: u32
+    - adapter_id: id
+    - description: string
+    - checked_paths: list<string>
+    - errors: list<finding>
+    - warnings: list<finding>
+    - metrics: map
+    - fingerprints: map
+    - legacy_adapters: list<adapter_row>
+    - suite_results: list<validation_result>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- suite ordering MUST follow `validation_suite_registry.json`
+- `deterministic_fingerprint` MUST be computed with the fingerprint field blanked
+- aggregate `validate --all` reports MUST use `suite_id = validate.all`
+- legacy adapters are reporting metadata only and do not authorize parallel validation semantics

@@ -1,0 +1,260 @@
+{
+  "schema_id": "dominium.registry.validation_suite_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.validation_suite_registry",
+    "registry_version": "1.0.0",
+    "suites": [
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.schemas",
+        "category_id": "validate.schemas",
+        "suite_order": 10,
+        "adapter_id": "compatx_schema_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate governed JSON schemas and CompatX version policy.",
+        "deterministic_fingerprint": "684338f805922dc99ff7e3240e98c040d1d17fa5fbf2b6d239d9288f13219185",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.registries",
+        "category_id": "validate.registries",
+        "suite_order": 20,
+        "adapter_id": "stability_registry_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate governed registries and META-STABILITY markers.",
+        "deterministic_fingerprint": "76b1d405af5e0eeadcf410c18021a01d6c6a8afacbc187f87d7e8f15b6e89f4f",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.contracts",
+        "category_id": "validate.contracts",
+        "suite_order": 30,
+        "adapter_id": "semantic_contract_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate semantic contract registry and default contract bundle pins.",
+        "deterministic_fingerprint": "5519642fb270cd782c41b3231e17adb9ce00f03bde1616682bee06da3a3c4382",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.packs",
+        "category_id": "validate.packs",
+        "suite_order": 40,
+        "adapter_id": "pack_verification_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate PACK-COMPAT compatibility reports and pack lock generation inputs.",
+        "deterministic_fingerprint": "59ded2b6c31a43e26b8df32f517b0798f4a72d8187ad26521739ac4db954de51",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.negotiation",
+        "category_id": "validate.negotiation",
+        "suite_order": 50,
+        "adapter_id": "negotiation_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate CAP-NEG endpoint interoperability and record verification.",
+        "deterministic_fingerprint": "1edd0e4a1cf2d331b4aa583c51589a75d52ec89521ecba20f0f7f78284989aa1",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.library",
+        "category_id": "validate.library",
+        "suite_order": 60,
+        "adapter_id": "library_manifest_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate LIB install, instance, save, and artifact surfaces.",
+        "deterministic_fingerprint": "178dbc33d7a44cfa2c863d8e986f2346d5bdce45373f0aa87fbb7ed7b8bbcd46",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.time_anchor",
+        "category_id": "validate.time_anchor",
+        "suite_order": 70,
+        "adapter_id": "time_anchor_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate TIME-ANCHOR tick width, anchor emission, and compaction boundary rules.",
+        "deterministic_fingerprint": "a09577a98e854cbc06bb5a361e2c5d55f9531060c24a2512d2ac8cbaefeb9e54",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.arch_audit",
+        "category_id": "validate.arch_audit",
+        "suite_order": 80,
+        "adapter_id": "arch_audit_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate constitutional architectural purity and audit surfaces.",
+        "deterministic_fingerprint": "d151a0a207456d36c604f8a9be9d17a5e24fd98469bc338f07e0d4422fe1ca5d",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.determinism",
+        "category_id": "validate.determinism",
+        "suite_order": 90,
+        "adapter_id": "determinism_scan_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate static determinism hazards in governed truth-side paths.",
+        "deterministic_fingerprint": "4ca8aed60fd30e49869b2c7c21d68ef888d6dd9d282ed1c4d8084e63f6ca4a2a",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "suite_id": "validate.platform_matrix",
+        "category_id": "validate.platform_matrix",
+        "suite_order": 100,
+        "adapter_id": "platform_matrix_suite",
+        "profiles": [
+          "FULL"
+        ],
+        "description": "Optionally validate cached cross-platform agreement reports.",
+        "deterministic_fingerprint": "2e4ea3464986d4a3ecf4237f2835c7da3a341f0a4243502e96db57238323a3d8",
+        "extensions": {
+          "optional": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      }
+    ]
+  }
+}

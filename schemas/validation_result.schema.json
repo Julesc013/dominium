@@ -1,0 +1,381 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Validation Result Schema",
+  "version": "1.0.0",
+  "description": "Structured result payload for unified validation suites and aggregate validate --all reports.",
+  "x-doc-ref": [
+    "docs/validation/VALIDATION_PIPELINE.md"
+  ],
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": [
+        "code",
+        "path",
+        "message",
+        "suite_id",
+        "severity"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suite_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "legacy_adapter": {
+      "type": "object",
+      "required": [
+        "surface_id",
+        "path",
+        "mapped_suite_id",
+        "adapter_mode",
+        "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "surface_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mapped_suite_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adapter_mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "validation_result": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "validation_id",
+        "suite_id",
+        "category_id",
+        "profile",
+        "result",
+        "message",
+        "suite_order",
+        "adapter_id",
+        "description",
+        "checked_paths",
+        "errors",
+        "warnings",
+        "metrics",
+        "fingerprints",
+        "legacy_adapters",
+        "suite_results",
+        "deterministic_fingerprint",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "validation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suite_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "FAST",
+            "STRICT",
+            "FULL"
+          ]
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "refused",
+            "skipped"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suite_order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "adapter_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checked_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/finding"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/finding"
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "fingerprints": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "legacy_adapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/legacy_adapter"
+          }
+        },
+        "suite_results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/validation_result"
+          }
+        },
+        "deterministic_fingerprint": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "type": "object",
+  "required": [
+    "schema_version",
+    "validation_id",
+    "suite_id",
+    "category_id",
+    "profile",
+    "result",
+    "message",
+    "suite_order",
+    "adapter_id",
+    "description",
+    "checked_paths",
+    "errors",
+    "warnings",
+    "metrics",
+    "fingerprints",
+    "legacy_adapters",
+    "suite_results",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "validation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "suite_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile": {
+      "type": "string",
+      "enum": [
+        "FAST",
+        "STRICT",
+        "FULL"
+      ]
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "refused",
+        "skipped"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "suite_order": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "adapter_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "checked_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "fingerprints": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "legacy_adapters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/legacy_adapter"
+      }
+    },
+    "suite_results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/validation_result"
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "validation_id": "validation.pipeline.validation.pipeline.v1.fast",
+      "suite_id": "validate.all",
+      "category_id": "validate.aggregate",
+      "profile": "FAST",
+      "result": "complete",
+      "message": "validation pipeline passed",
+      "suite_order": 0,
+      "adapter_id": "validation_engine",
+      "description": "Unified validation aggregate for validate --all.",
+      "checked_paths": [
+        "data/registries/validation_suite_registry.json"
+      ],
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "suite_count": 1
+      },
+      "fingerprints": {
+        "suite_registry_hash": "59d8fc97ae13add2fd3a969fdd4bcf6f6b8f9b39f88f88f7baae1fd8dc89542f"
+      },
+      "legacy_adapters": [
+        {
+          "surface_id": "legacy.compatx_check",
+          "path": "tools/xstack/compatx/check.py",
+          "mapped_suite_id": "validate.schemas",
+          "adapter_mode": "direct_python",
+          "status": "active_adapter"
+        }
+      ],
+      "suite_results": [
+        {
+          "schema_version": "1.0.0",
+          "validation_id": "validation.validate.schemas.fast",
+          "suite_id": "validate.schemas",
+          "category_id": "validate.schemas",
+          "profile": "FAST",
+          "result": "complete",
+          "message": "schema validation completed",
+          "suite_order": 10,
+          "adapter_id": "compatx_schema_suite",
+          "description": "Validate governed JSON schemas and CompatX version policy.",
+          "checked_paths": [
+            "schemas"
+          ],
+          "errors": [],
+          "warnings": [],
+          "metrics": {
+            "finding_count": 0
+          },
+          "fingerprints": {},
+          "legacy_adapters": [],
+          "suite_results": [],
+          "deterministic_fingerprint": "9a9ae24139cb4db2a7baebf5d73c064ce8870df1842398af7cbc7dcd20672156",
+          "extensions": {}
+        }
+      ],
+      "deterministic_fingerprint": "8bfc775a7ce72af99e94fd809edd7b2d31821f6e58f5fa9cda84c836a55f5703",
+      "extensions": {
+        "report_doc_path": "docs/audit/VALIDATION_REPORT_FAST.md"
+      }
+    }
+  ]
+}

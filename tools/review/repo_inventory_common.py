@@ -337,6 +337,8 @@ def _classify_layer(rel_path: str, text: str) -> str:
     top = parts[1] if len(parts) > 1 else ""
     lowered = rel_norm.lower()
     if root == "src":
+        if top == "validation":
+            return "validation"
         if top == "platform" or any(token in lowered for token in PLATFORM_TOKENS):
             return "platform"
         if top in LEGACY_TOP_LEVEL_DIRS:
@@ -464,6 +466,8 @@ def _classify_responsibility(rel_path: str, layer: str) -> str:
         return "ui.shared"
     if rel_norm.startswith(("src/platform/", "tools/platform/")):
         return "platform.adapters"
+    if rel_norm.startswith(("src/validation/", "tools/validation/")):
+        return "validation.stack"
     if rel_norm.startswith(("tools/audit", "tools/auditx", "tools/compatx", "tools/xstack/", "schema/", "schemas/", "data/registries/")):
         return "validation.stack"
     if rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/pack/", "tools/distribution/", "data/packs/")):

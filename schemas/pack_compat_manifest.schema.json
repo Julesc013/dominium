@@ -170,5 +170,38 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "pack_id": "pack.core.runtime",
+      "pack_version": "1.0.0",
+      "trust_level_id": "trust.thirdparty_signed",
+      "capability_ids": [],
+      "required_contract_ranges": {},
+      "required_protocol_ranges": {},
+      "supported_engine_version_range": {},
+      "required_registry_ids": [],
+      "provides": [
+        "provides.registry_entries"
+      ],
+      "provides_declarations": [
+        {
+          "pack_id": "pack.core.runtime",
+          "provides_id": "provides.registry_entries",
+          "provides_type": "domain",
+          "priority": 0,
+          "deterministic_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "extensions": {}
+        }
+      ],
+      "required_provides_ids": [],
+      "degrade_mode_id": "pack.degrade.strict_refuse",
+      "migration_refs": [],
+      "deterministic_fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "extensions": {
+        "official.source": "PACK-COMPAT-0"
+      }
+    }
+  ]
 }
