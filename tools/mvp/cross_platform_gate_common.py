@@ -423,6 +423,8 @@ def build_portable_linked_parity(
     stress_baseline = _as_map(_as_map(stress_bundle).get("baseline"))
     lib_base = _as_map(lib_baseline)
     shared_artifacts = {
+        "scenario_id": _token(smoke_baseline.get("scenario_id")),
+        "scenario_fingerprint": _token(smoke_baseline.get("scenario_fingerprint")),
         "proof_anchor_hashes": {
             "smoke": dict(_as_map(smoke_baseline.get("proof_anchor_hashes"))),
             "stress": dict(_as_map(stress_baseline.get("server_proof_anchor_hashes"))),
@@ -460,6 +462,8 @@ def build_portable_linked_parity(
     }
     linked_row["deterministic_fingerprint"] = canonical_sha256(dict(linked_row, deterministic_fingerprint=""))
     assertions = {
+        "scenario_fingerprint_match": _token(_as_map(portable_row.get("scenario_artifacts")).get("scenario_fingerprint"))
+        == _token(_as_map(linked_row.get("scenario_artifacts")).get("scenario_fingerprint")),
         "proof_anchors_match": _token(portable_row.get("proof_anchor_fingerprint")) == _token(linked_row.get("proof_anchor_fingerprint")),
         "pack_locks_match": _token(portable_row.get("pack_lock_fingerprint")) == _token(linked_row.get("pack_lock_fingerprint")),
         "negotiation_records_match": _token(portable_row.get("negotiation_record_fingerprint"))
