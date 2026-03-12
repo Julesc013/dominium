@@ -7,6 +7,30 @@
     "fallback_maps": [
       {
         "schema_version": "1.0.0",
+        "capability_id": "cap.ui.os_native",
+        "fallback_action": "downgrade_mode",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "fallback_capability_ids": [
+            "cap.ui.rendered",
+            "cap.ui.tui",
+            "cap.ui.cli"
+          ],
+          "user_message_key": "explain.compat_degraded.ui_os_native"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG fallback semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "46ebe320149c626c276e6eed2f54af17052ac780a5c5184cc7c239ec338ae67f",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "capability_id": "cap.ui.rendered",
         "fallback_action": "downgrade_mode",
         "deterministic_fingerprint": "e8edee3531355e56fffbbbe4a634943f17f69a8e00354d1a97f5babfaeab0647",

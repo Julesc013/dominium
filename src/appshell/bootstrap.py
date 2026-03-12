@@ -18,9 +18,14 @@ from .logging import (
     log_emit,
     set_current_log_engine,
 )
-from .mode_dispatcher import build_mode_stub, normalize_mode, supported_modes_for_product
+from .mode_dispatcher import build_mode_stub
 from .product_bootstrap import build_product_bootstrap_context, resolve_mode_request
 from .tui import run_tui_mode
+from .ui_mode_selector import (
+    clear_current_ui_mode_selection,
+    select_ui_mode,
+    set_current_ui_mode_selection,
+)
 
 
 EXIT_SUCCESS = 0
@@ -65,11 +70,6 @@ def appshell_main(
         explicit_mode=shell_args.mode,
         raw_args=shell_args.raw_args,
     )
-    mode_id = normalize_mode(
-        product_id=str(product_id).strip(),
-        requested_mode=str(mode_resolution.get("requested_mode_id", "")).strip(),
-    )
-    mode_requested = bool(mode_resolution.get("mode_requested", False))
     command_rows = build_root_command_descriptors(repo_root, str(product_id).strip())
     version_payload = build_version_payload(repo_root, product_id=str(product_id).strip())
     logger = create_log_engine(
@@ -79,18 +79,79 @@ def appshell_main(
     )
     set_current_log_engine(logger)
     ipc_server = None
+    mode_selection = select_ui_mode(
+        repo_root,
+        product_id=str(product_id).strip(),
+        mode_resolution=mode_resolution,
+    )
+    set_current_ui_mode_selection(mode_selection)
+    mode_id = str(
+        mode_selection.get("selected_mode_id")
+        or mode_selection.get("effective_mode_id")
+        or mode_resolution.get("requested_mode_id")
+        or ""
+    ).strip()
     log_emit(
         category="appshell",
         severity="info",
         message_key="appshell.bootstrap.start",
         params={
-            "mode_id": str(mode_id).strip(),
+            "requested_mode_id": str(mode_resolution.get("requested_mode_id", "")).strip(),
+            "selected_mode_id": str(mode_id).strip(),
             "mode_source": str(mode_resolution.get("mode_source", "default")).strip() or "default",
             "repo_root": str(repo_root).replace("\\", "/"),
         },
     )
+    log_emit(
+        category="appshell",
+        severity="info",
+        message_key="appshell.mode.selected",
+        params={
+            "product_id": str(product_id).strip(),
+            "requested_mode_id": str(mode_resolution.get("requested_mode_id", "")).strip(),
+            "selected_mode_id": str(mode_id).strip(),
+            "mode_source": str(mode_selection.get("mode_source", "default")).strip() or "default",
+            "context_kind": str(mode_selection.get("context_kind", "")).strip(),
+            "compatibility_mode_id": str(mode_selection.get("compatibility_mode_id", "")).strip() or "compat.full",
+        },
+    )
+    if list(mode_selection.get("degrade_chain") or []):
+        log_emit(
+            category="appshell",
+            severity="warn",
+            message_key="appshell.mode.degraded",
+            params={
+                "product_id": str(product_id).strip(),
+                "requested_mode_id": str(mode_resolution.get("requested_mode_id", "")).strip(),
+                "selected_mode_id": str(mode_id).strip(),
+                "degrade_step_count": int(len(list(mode_selection.get("degrade_chain") or []))),
+                "context_kind": str(mode_selection.get("context_kind", "")).strip(),
+            },
+        )
 
     try:
+        if str(mode_selection.get("result", "")).strip() == "refused":
+            payload = _refusal(
+                str(mode_selection.get("refusal_code", "")).strip() or "refusal.compat.feature_disabled",
+                str(mode_selection.get("message", "")).strip() or "shell mode selection refused the launch request",
+                str(mode_selection.get("remediation_hint", "")).strip() or "Choose a different AppShell mode or launch context.",
+                product_id=str(product_id).strip(),
+                requested_mode_id=str(mode_resolution.get("requested_mode_id", "")).strip(),
+                supported_mode_ids=list(mode_selection.get("supported_mode_ids") or []),
+                degrade_chain=list(mode_selection.get("degrade_chain") or []),
+            )
+            log_emit(
+                category="refusal",
+                severity="error",
+                message_key="appshell.refusal",
+                params={
+                    "refusal_code": str(payload.get("refusal_code", "")).strip(),
+                    "requested_mode_id": str(mode_resolution.get("requested_mode_id", "")).strip(),
+                },
+            )
+            _print_json(payload)
+            return EXIT_REFUSAL
+
         if shell_args.help_requested:
             topic_tokens = shell_args.command_args if str(shell_args.command or "").strip() == "help" else []
             log_emit(
@@ -132,8 +193,8 @@ def appshell_main(
                     product_id=str(product_id).strip(),
                     repo_root=repo_root,
                     shell_args=shell_args,
-                    resolved_mode_id=str(mode_id).strip(),
                     mode_resolution=mode_resolution,
+                    mode_selection=mode_selection,
                     version_payload=version_payload,
                 )
                 if bool(shell_args.ipc_enabled) and ipc_server is None:
@@ -168,26 +229,7 @@ def appshell_main(
             exit_code = dict(dispatch or {}).get("exit_code", EXIT_INTERNAL)
             return int(EXIT_INTERNAL if exit_code is None else exit_code)
 
-        supported_modes = supported_modes_for_product(str(product_id).strip())
-        if bool(mode_requested) and str(mode_id).strip() not in supported_modes:
-            payload = _refusal(
-                "refusal.debug.mode_unsupported",
-                "requested shell mode is not supported by this product",
-                "Choose one of the declared AppShell modes for the product.",
-                product_id=str(product_id).strip(),
-                mode_id=str(mode_id).strip(),
-                supported_mode_ids=list(supported_modes),
-            )
-            log_emit(
-                category="refusal",
-                severity="error",
-                message_key="appshell.refusal",
-                params={"refusal_code": str(payload.get("refusal_code", "")).strip(), "mode_id": str(mode_id).strip()},
-            )
-            _print_json(payload)
-            return EXIT_REFUSAL
-
-        if bool(mode_requested) and str(mode_id).strip() == "tui":
+        if str(mode_id).strip() == "tui":
             panel_rows = build_tui_panel_descriptors(str(product_id).strip())
             log_emit(
                 category="appshell",
@@ -211,28 +253,12 @@ def appshell_main(
             exit_code = dict(dispatch or {}).get("exit_code", EXIT_INTERNAL)
             return int(EXIT_INTERNAL if exit_code is None else exit_code)
 
-        if bool(mode_requested) and str(mode_id).strip() == "rendered" and str(product_id).strip() != "client":
-            payload = _refusal(
-                "refusal.debug.rendered_client_only",
-                "rendered mode is client-only",
-                "Use --mode cli or --mode tui for this product.",
-                product_id=str(product_id).strip(),
-            )
-            log_emit(
-                category="refusal",
-                severity="error",
-                message_key="appshell.refusal",
-                params={"refusal_code": str(payload.get("refusal_code", "")).strip(), "mode_id": "rendered"},
-            )
-            _print_json(payload)
-            return EXIT_REFUSAL
-
         bootstrap_context = build_product_bootstrap_context(
             product_id=str(product_id).strip(),
             repo_root=repo_root,
             shell_args=shell_args,
-            resolved_mode_id=str(mode_id).strip(),
             mode_resolution=mode_resolution,
+            mode_selection=mode_selection,
             version_payload=version_payload,
         )
         for row in list((dict(bootstrap_context.get("mode") or {})).get("deprecated_flags") or []):
@@ -296,6 +322,7 @@ def appshell_main(
     finally:
         if ipc_server is not None:
             ipc_server.stop()
+        clear_current_ui_mode_selection()
         clear_current_log_engine()
 
 

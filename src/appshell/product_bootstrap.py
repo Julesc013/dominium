@@ -163,8 +163,9 @@ def build_delegate_args(
     delegate_args = _remove_shell_flags(shell_args.raw_args)
     if _token(product_id) in {"client", "server"}:
         delegate_args = _strip_flag_with_value(delegate_args, "--ui")
-    if str(mode_source or "").strip() in {"explicit", "legacy_flag"}:
-        delegate_args = list(legacy_mode_args(_token(product_id), _token(resolved_mode_id))) + list(delegate_args)
+        translated_mode_args = list(legacy_mode_args(_token(product_id), _token(resolved_mode_id)))
+        if translated_mode_args:
+            delegate_args = translated_mode_args + list(delegate_args)
     return list(delegate_args)
 
 
@@ -298,11 +299,12 @@ def build_product_bootstrap_context(
     product_id: str,
     repo_root: str,
     shell_args: AppShellArgs,
-    resolved_mode_id: str,
     mode_resolution: Mapping[str, object],
+    mode_selection: Mapping[str, object],
     version_payload: Mapping[str, object],
 ) -> dict:
     product_token = _token(product_id)
+    selected_mode_id = _token(mode_selection.get("selected_mode_id") or mode_selection.get("effective_mode_id"))
     descriptor_payload = emit_product_descriptor(repo_root, product_id=product_token)
     endpoint_descriptor = dict(descriptor_payload.get("descriptor") or {})
     negotiated = negotiate_product_endpoints(
@@ -320,9 +322,18 @@ def build_product_bootstrap_context(
     delegate_argv = build_delegate_args(
         product_token,
         shell_args,
-        resolved_mode_id=_token(resolved_mode_id),
+        resolved_mode_id=selected_mode_id,
         mode_source=_token(mode_resolution.get("mode_source")),
     )
+    compat_status = dict(compat_status)
+    compat_status["mode_selection"] = {
+        "requested_mode_id": _token(mode_selection.get("requested_mode_id")),
+        "selected_mode_id": selected_mode_id,
+        "mode_source": _token(mode_selection.get("mode_source")) or "default",
+        "context_kind": _token(mode_selection.get("context_kind")),
+        "compatibility_mode_id": _token(mode_selection.get("compatibility_mode_id")) or "compat.full",
+        "degrade_chain": [dict(row) for row in list(mode_selection.get("degrade_chain") or []) if isinstance(row, Mapping)],
+    }
     context = {
         "bootstrap_plan_id": "appshell.bootstrap.v1",
         "product_id": product_token,
@@ -332,10 +343,16 @@ def build_product_bootstrap_context(
         "delegate_argv": list(delegate_argv),
         "mode": {
             "requested_mode_id": _token(mode_resolution.get("requested_mode_id")),
-            "effective_mode_id": _token(resolved_mode_id),
-            "mode_source": _token(mode_resolution.get("mode_source")) or "default",
+            "effective_mode_id": selected_mode_id,
+            "selected_mode_id": selected_mode_id,
+            "mode_source": _token(mode_selection.get("mode_source")) or _token(mode_resolution.get("mode_source")) or "default",
             "mode_requested": bool(mode_resolution.get("mode_requested", False)),
-            "supported_mode_ids": list(supported_modes_for_product(product_token)),
+            "context_kind": _token(mode_selection.get("context_kind")),
+            "compatibility_mode_id": _token(mode_selection.get("compatibility_mode_id")) or "compat.full",
+            "supported_mode_ids": list(supported_modes_for_product(product_token, repo_root=repo_root)),
+            "available_mode_ids": list(mode_selection.get("available_mode_ids") or []),
+            "degrade_chain": [dict(row) for row in list(mode_selection.get("degrade_chain") or []) if isinstance(row, Mapping)],
+            "probe": dict(mode_selection.get("probe") or {}),
             "deprecated_flags": [dict(row) for row in list(mode_resolution.get("deprecated_flags") or []) if isinstance(row, Mapping)],
         },
         "descriptor_payload": dict(descriptor_payload),
@@ -346,7 +363,7 @@ def build_product_bootstrap_context(
             "negotiation_record_hash": _token(negotiated.get("negotiation_record_hash")),
             "endpoint_a_hash": _token(negotiated.get("endpoint_a_hash")),
             "endpoint_b_hash": _token(negotiated.get("endpoint_b_hash")),
-            "compat_status": dict(compat_status),
+            "compat_status": compat_status,
             "negotiation_record": dict(negotiation_record),
         },
         "bootstrap_steps": list(_bootstrap_steps(product_token, shell_args.raw_args)),

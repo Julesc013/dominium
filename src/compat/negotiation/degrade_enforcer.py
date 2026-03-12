@@ -9,6 +9,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 REFUSAL_COMPAT_FEATURE_DISABLED = "refusal.compat.feature_disabled"
 DEFAULT_UI_CAPABILITY_PREFERENCE = (
+    "cap.ui.os_native",
     "cap.ui.rendered",
     "cap.ui.tui",
     "cap.ui.cli",
@@ -70,6 +71,8 @@ def _effective_ui_capability_id(
 
 def _mode_label_from_ui_capability(capability_id: str) -> str:
     token = str(capability_id or "").strip()
+    if token == "cap.ui.os_native":
+        return "os_native"
     if token == "cap.ui.rendered":
         return "rendered"
     if token == "cap.ui.tui":

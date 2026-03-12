@@ -1055,6 +1055,13 @@ ENTRYPOINT_UNIFY_COMMON_PATH = "tools/release/entrypoint_unify_common.py"
 ENTRYPOINT_UNIFY_MAP_PATH = "docs/audit/ENTRYPOINT_UNIFY_MAP.md"
 FLAG_MIGRATION_DOC_PATH = "docs/appshell/FLAG_MIGRATION.md"
 ENTRYPOINT_UNIFY_FINAL_PATH = "docs/audit/ENTRYPOINT_UNIFY_FINAL.md"
+UI_MODE_RESOLUTION_TOOL_PATH = "tools/release/tool_run_ui_mode_resolution.py"
+UI_MODE_RESOLUTION_COMMON_PATH = "tools/release/ui_mode_resolution_common.py"
+UI_MODE_RESOLUTION_DOC_PATH = "docs/appshell/UI_MODE_RESOLUTION.md"
+UI_MODE_RESOLUTION_BASELINE_PATH = "docs/audit/UI_MODE_RESOLUTION_BASELINE.md"
+UI_MODE_POLICY_REGISTRY_PATH = "data/registries/ui_mode_policy_registry.json"
+PLATFORM_CAPS_PROBE_PATH = "src/platform/platform_caps_probe.py"
+UI_MODE_SELECTOR_PATH = "src/appshell/ui_mode_selector.py"
 TOOL_SURFACE_TOOL_PATH = "tools/release/tool_run_tool_surface.py"
 TOOL_SURFACE_ADAPTER_PATH = "src/tools/tool_surface_adapter.py"
 TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
@@ -8074,6 +8081,95 @@ def _append_entrypoint_unify_findings(
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "entrypoint unification violation detected",
                 rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-ALL-PRODUCTS-USE-APPSHELL",
+            )
+        )
+
+
+def _append_ui_mode_resolution_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rules = (
+        "INV-UI-MODE-SELECTOR-SINGLE",
+        "INV-UI-MODE-LOGGED",
+        "INV-FALLBACK-DETERMINISTIC",
+    )
+    required_files = (
+        (UI_MODE_RESOLUTION_TOOL_PATH, "UI mode resolution tool is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        (UI_MODE_RESOLUTION_COMMON_PATH, "UI mode resolution helper is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        (UI_MODE_RESOLUTION_DOC_PATH, "UI mode resolution doctrine is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        (UI_MODE_RESOLUTION_BASELINE_PATH, "UI mode resolution baseline is required", "INV-UI-MODE-LOGGED"),
+        (UI_MODE_POLICY_REGISTRY_PATH, "UI mode policy registry is required", "INV-FALLBACK-DETERMINISTIC"),
+        (PLATFORM_CAPS_PROBE_PATH, "platform capability probe is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        (UI_MODE_SELECTOR_PATH, "AppShell UI mode selector is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        ("tools/auditx/analyzers/e475_adhoc_mode_selection_smell.py", "AdHocModeSelectionSmell analyzer is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        ("tools/auditx/analyzers/e476_silent_mode_fallback_smell.py", "SilentModeFallbackSmell analyzer is required", "INV-UI-MODE-LOGGED"),
+        ("tools/xstack/testx/tests/ui_mode_resolution_testlib.py", "UI mode TestX helper is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        ("tools/xstack/testx/tests/test_mode_selection_tty_prefers_tui.py", "TTY mode selection TestX coverage is required", "INV-FALLBACK-DETERMINISTIC"),
+        ("tools/xstack/testx/tests/test_mode_selection_gui_prefers_native_when_available.py", "GUI/native mode selection TestX coverage is required", "INV-FALLBACK-DETERMINISTIC"),
+        ("tools/xstack/testx/tests/test_mode_selection_respects_override.py", "override mode selection TestX coverage is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        ("tools/xstack/testx/tests/test_mode_degrade_logged.py", "mode degrade logging TestX coverage is required", "INV-UI-MODE-LOGGED"),
+        ("tools/xstack/testx/tests/test_cross_platform_mode_selection_consistent.py", "cross-platform mode selection TestX coverage is required", "INV-FALLBACK-DETERMINISTIC"),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, UI_MODE_RESOLUTION_DOC_PATH).lower()
+    for token, message, rule_id in (
+        ("# ui mode resolution", "UI mode resolution doc must declare the canonical selector flow", "INV-UI-MODE-SELECTOR-SINGLE"),
+        ("## decision tree", "UI mode resolution doc must lock the selector decision tree", "INV-FALLBACK-DETERMINISTIC"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=UI_MODE_RESOLUTION_DOC_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.release.ui_mode_resolution_common import ui_mode_resolution_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=UI_MODE_RESOLUTION_COMMON_PATH,
+                line_number=1,
+                snippet="ui_mode_resolution_violations",
+                message="unable to import UI mode resolution helper ({})".format(str(exc)),
+                rule_id="INV-UI-MODE-SELECTOR-SINGLE",
+            )
+        )
+        return
+
+    for violation in ui_mode_resolution_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "UI mode resolution violation detected",
+                rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-UI-MODE-SELECTOR-SINGLE",
             )
         )
 
@@ -32413,6 +32509,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_entrypoint_unify_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_ui_mode_resolution_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

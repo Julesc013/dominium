@@ -7,9 +7,10 @@ from typing import Iterable, Mapping
 
 from src.appshell.args_parser import parse_appshell_args
 from src.appshell.compat_adapter import build_version_payload
-from src.appshell.mode_dispatcher import normalize_mode
 from src.appshell.product_bootstrap import build_product_bootstrap_context, resolve_mode_request
 from src.appshell.product_bootstrap import flag_migration_rows
+from src.appshell.ui_mode_selector import select_ui_mode
+from src.platform.platform_caps_probe import probe_platform_caps
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -298,16 +299,28 @@ def bootstrap_context_for_product(repo_root: str, product_id: str, raw_args: Ite
         explicit_mode=shell_args.mode,
         raw_args=shell_args.raw_args,
     )
-    resolved_mode_id = normalize_mode(
+    mode_selection = select_ui_mode(
+        repo_root,
         product_id=product_token,
-        requested_mode=_token(mode_resolution.get("requested_mode_id")),
+        mode_resolution=mode_resolution,
+        probe_override=probe_platform_caps(
+            repo_root,
+            product_id=product_token,
+            stdin_tty=False,
+            stdout_tty=False,
+            stderr_tty=False,
+            gui_available=True,
+            native_available=False,
+            rendered_available=True,
+            ncurses_available=True,
+        ),
     )
     return build_product_bootstrap_context(
         product_id=product_token,
         repo_root=os.path.normpath(os.path.abspath(repo_root)),
         shell_args=shell_args,
-        resolved_mode_id=resolved_mode_id,
         mode_resolution=mode_resolution,
+        mode_selection=mode_selection,
         version_payload=build_version_payload(repo_root, product_id=product_token),
     )
 
@@ -394,6 +407,8 @@ def render_flag_migration(report: Mapping[str, object]) -> str:
             "## Notes",
             "",
             "- `client` and `server` continue to accept legacy `--ui` values, but AppShell resolves them as `--mode` before product bootstrap.",
+            "- Default mode selection is now centralized in `src/appshell/ui_mode_selector.py` and follows the product policy registry plus deterministic platform probing.",
+            "- `headless` remains an explicit legacy/non-interactive mode for governed server and engine surfaces; it is not part of the default interactive ladder.",
             "- Existing product-domain flags such as setup `--ui-mode` remain product arguments and are not AppShell shell-mode aliases.",
             "- Deprecated legacy flags emit a structured AppShell warning event before product bootstrap.",
         )

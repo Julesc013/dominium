@@ -34,6 +34,7 @@ from src.appshell.supervisor import (
     launch_supervisor_service,
     load_supervisor_runtime_state,
 )
+from src.appshell.ui_mode_selector import get_current_ui_mode_selection
 from src.tools import (
     execute_tool_surface_subprocess,
     format_tool_surface_area_help,
@@ -228,7 +229,7 @@ def _load_descriptor_payload(peer_descriptor_file: str) -> tuple[dict, str]:
     return dict(payload), ""
 
 
-def _run_compat_status_command(repo_root: str, product_id: str, args: Sequence[str]) -> dict:
+def _run_compat_status_command(repo_root: str, product_id: str, mode_id: str, args: Sequence[str]) -> dict:
     parser = argparse.ArgumentParser(prog="compat-status", add_help=False)
     parser.add_argument("--peer-product-id", default="")
     parser.add_argument("--peer-descriptor-file", default="")
@@ -272,6 +273,15 @@ def _run_compat_status_command(repo_root: str, product_id: str, args: Sequence[s
     status_payload["endpoint_descriptor_hashes"] = {
         "endpoint_a_hash": str(negotiated.get("endpoint_a_hash", "")).strip(),
         "endpoint_b_hash": str(negotiated.get("endpoint_b_hash", "")).strip(),
+    }
+    mode_selection = dict(get_current_ui_mode_selection() or {})
+    status_payload["mode_selection"] = {
+        "requested_mode_id": str(mode_selection.get("requested_mode_id", "")).strip(),
+        "selected_mode_id": str(mode_selection.get("selected_mode_id", "")).strip() or str(mode_id).strip(),
+        "mode_source": str(mode_selection.get("mode_source", "")).strip() or "runtime",
+        "context_kind": str(mode_selection.get("context_kind", "")).strip(),
+        "compatibility_mode_id": str(mode_selection.get("compatibility_mode_id", "")).strip() or "compat.full",
+        "degrade_chain": list(mode_selection.get("degrade_chain") or []),
     }
     if str(negotiated.get("result", "")).strip() == "refused":
         log_emit(
@@ -913,7 +923,7 @@ def dispatch_registered_command(
     if handler_id == "descriptor":
         return _run_descriptor_command(repo_root, product_id, remaining)
     if handler_id == "compat_status":
-        return _run_compat_status_command(repo_root, product_id, remaining)
+        return _run_compat_status_command(repo_root, product_id, mode_id, remaining)
     if handler_id == "packs_list":
         return _run_packs_list_command(repo_root, remaining)
     if handler_id == "packs_verify":

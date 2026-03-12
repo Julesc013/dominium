@@ -15,6 +15,7 @@ from .platform_input import (
     queue_input_event,
 )
 from .platform_input_routing import pick_render_model_target, route_platform_events_to_commands
+from .platform_caps_probe import probe_platform_caps
 from .platform_window import close_window, create_window, detect_platform_id, resize_window
 
 __all__ = [
@@ -31,6 +32,7 @@ __all__ = [
     "normalize_input_event",
     "pick_render_model_target",
     "present_frame",
+    "probe_platform_caps",
     "queue_input_event",
     "resize_graphics_surface",
     "resize_window",
