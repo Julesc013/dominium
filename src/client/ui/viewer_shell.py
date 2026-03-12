@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
+from src.astro import build_orbit_view_surface
 from src.client.render import build_render_model
 from src.embodiment import (
     build_cut_trench_task,
@@ -47,6 +48,10 @@ DEFAULT_VIEWER_LENS_PROFILE_ID = "lens.fp"
 
 def _as_map(value: object) -> dict:
     return dict(value or {}) if isinstance(value, Mapping) else {}
+
+
+def _as_list(value: object) -> list:
+    return list(value or []) if isinstance(value, list) else []
 
 
 def _as_bool(value: object, default_value: bool = False) -> bool:
@@ -113,6 +118,56 @@ def _worldgen_star_artifact_rows(extensions: Mapping[str, object] | None) -> lis
 
 def _worldgen_planet_basic_artifact_rows(extensions: Mapping[str, object] | None) -> list[dict]:
     return [dict(row) for row in list(_as_map(extensions).get("worldgen_planet_basic_artifacts") or []) if isinstance(row, Mapping)]
+
+
+def _worldgen_planet_orbit_artifact_rows(extensions: Mapping[str, object] | None) -> list[dict]:
+    payload = _as_map(extensions)
+    return [
+        dict(row)
+        for row in list(
+            payload.get("worldgen_planet_orbit_artifacts")
+            or payload.get("generated_planet_orbit_artifact_rows")
+            or []
+        )
+        if isinstance(row, Mapping)
+    ]
+
+
+def _effective_object_view_rows(extensions: Mapping[str, object] | None) -> list[dict]:
+    payload = _as_map(extensions)
+    return [
+        dict(row)
+        for row in list(payload.get("effective_object_views") or payload.get("overlay_merge_results") or [])
+        if isinstance(row, Mapping)
+    ]
+
+
+def _provider_declaration_rows(extensions: Mapping[str, object] | None) -> list[dict]:
+    payload = _as_map(extensions)
+    return [
+        dict(row)
+        for row in list(
+            payload.get("provider_declarations")
+            or payload.get("provides_declarations")
+            or payload.get("pack_lock_provides_declarations")
+            or []
+        )
+        if isinstance(row, Mapping)
+    ]
+
+
+def _provider_resolution_rows(extensions: Mapping[str, object] | None) -> list[dict]:
+    payload = _as_map(extensions)
+    return [
+        dict(row)
+        for row in list(
+            payload.get("explicit_provider_resolutions")
+            or payload.get("provides_resolutions")
+            or payload.get("pack_lock_provides_resolutions")
+            or []
+        )
+        if isinstance(row, Mapping)
+    ]
 
 
 def _universe_identity_from_bootstrap(bootstrap: Mapping[str, object] | None) -> dict:
@@ -862,6 +917,40 @@ def _surface_map_context(
     )
 
 
+def _orbit_map_context(
+    *,
+    orbit_view_surface: Mapping[str, object] | None,
+    default_map_origin_ref: Mapping[str, object] | None,
+    default_minimap_origin_ref: Mapping[str, object] | None,
+    default_map_layer_ids: object,
+    default_minimap_layer_ids: object,
+) -> dict:
+    surface = _as_map(orbit_view_surface)
+    artifact = _as_map(surface.get("orbit_view_artifact"))
+    origin_position_ref = _as_map(_as_map(artifact.get("extensions")).get("map_origin_position_ref"))
+    if not bool(surface.get("available", False)) or not artifact or not origin_position_ref:
+        return {
+            "active": False,
+            "map_origin_position_ref": dict(_as_map(default_map_origin_ref)),
+            "minimap_origin_position_ref": dict(_as_map(default_minimap_origin_ref)),
+            "map_layer_ids": list(_as_list(default_map_layer_ids)),
+            "minimap_layer_ids": list(_as_list(default_minimap_layer_ids)),
+            "topology_profile_id": "geo.topology.r3_infinite",
+            "partition_profile_id": "geo.partition.grid_zd",
+            "metric_profile_id": "geo.metric.euclidean",
+        }
+    return {
+        "active": True,
+        "map_origin_position_ref": dict(origin_position_ref),
+        "minimap_origin_position_ref": dict(origin_position_ref),
+        "map_layer_ids": ["layer.orbits"],
+        "minimap_layer_ids": ["layer.orbits"],
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "metric_profile_id": "geo.metric.euclidean",
+    }
+
+
 def _collect_region_cell_keys(
     *,
     map_views: Mapping[str, object] | None,
@@ -1092,6 +1181,10 @@ def build_viewer_shell_state(
         extensions=extensions,
     )
     base_layer_source_payloads = _as_map(layer_source_payloads)
+    viewer_ref = _preferred_position_ref(
+        explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
+        selection=selection,
+    )
     map_origin_base = _preferred_position_ref(
         explicit_position_ref=_as_map(map_origin_position_ref) or _as_map(control_surface.get("camera_position_ref")),
         selection=selection,
@@ -1125,18 +1218,10 @@ def build_viewer_shell_state(
         ui_mode=str(ui_mode),
         truth_hash_anchor=_truth_hash_anchor(perceived_model),
     )
-    selection_controls = _build_selection_controls(
-        selection=selection,
-        map_views=preliminary_map_views,
-        authority_context=runtime_authority,
-    )
     sky_view_surface = build_sky_view_surface(
         universe_identity=_universe_identity_from_bootstrap(bootstrap),
         perceived_model=perceived_model,
-        observer_ref=_preferred_position_ref(
-            explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
-            selection=selection,
-        ),
+        observer_ref=viewer_ref,
         observer_surface_artifact=observer_surface_artifact,
         authority_context=runtime_authority,
         lens_profile_id=str(_as_map(lens_resolution.get("lens_profile")).get("lens_profile_id", "")).strip()
@@ -1148,35 +1233,27 @@ def build_viewer_shell_state(
     )
     illumination_view_surface = build_lighting_view_surface(
         sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
-        observer_ref=_preferred_position_ref(
-            explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
-            selection=selection,
-        ),
+        observer_ref=viewer_ref,
         observer_surface_artifact=observer_surface_artifact,
         ui_mode=str(ui_mode),
     )
-    inspection_surfaces = build_inspection_panel_set(
-        perceived_model=perceived_model,
-        target_semantic_id=str(_as_map(selection).get("object_id", "")).strip()
-        or str(_as_map(selection).get("target_id", "")).strip(),
-        authority_context=runtime_authority,
+    orbit_view_surface = build_orbit_view_surface(
+        current_tick=int(current_tick),
+        viewer_ref=viewer_ref,
+        selection=selection,
         inspection_snapshot=inspection_snapshot,
-        property_origin_request=property_origin_request,
-        property_origin_result=property_origin_result,
-        field_values=field_values,
-        body_state=body_state,
-        scan_result=scan_result,
-        logic_probe_surface=logic_probe_surface,
-        logic_trace_surface=logic_trace_surface,
-        sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
-        illumination_view_artifact=_as_map(_as_map(illumination_view_surface).get("illumination_view_artifact")),
+        authority_context=runtime_authority,
+        effective_object_views=_effective_object_view_rows(extensions),
+        star_artifact_rows=_worldgen_star_artifact_rows(extensions),
+        planet_orbit_artifact_rows=_worldgen_planet_orbit_artifact_rows(extensions),
+        planet_basic_artifact_rows=_worldgen_planet_basic_artifact_rows(extensions),
+        provider_declarations=_provider_declaration_rows(extensions),
+        explicit_provider_resolutions=_provider_resolution_rows(extensions),
+        ui_mode=str(ui_mode),
     )
     water_view_surface = build_water_view_surface(
         current_tick=int(current_tick),
-        observer_ref=_preferred_position_ref(
-            explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
-            selection=selection,
-        ),
+        observer_ref=viewer_ref,
         observer_surface_artifact=observer_surface_artifact,
         region_cell_keys=_collect_region_cell_keys(
             map_views=preliminary_map_views,
@@ -1225,26 +1302,75 @@ def build_viewer_shell_state(
     effective_layer_source_payloads = _merge_layer_source_payloads(
         base=base_layer_source_payloads,
         extra=_merge_layer_source_payloads(
-            base=build_water_layer_source_payloads(water_view_surface),
-            extra=build_refinement_layer_source_payloads(refinement_status_view),
+            base=_as_map(_as_map(orbit_view_surface).get("layer_source_payloads")),
+            extra=_merge_layer_source_payloads(
+                base=build_water_layer_source_payloads(water_view_surface),
+                extra=build_refinement_layer_source_payloads(refinement_status_view),
+            ),
         ),
     )
+    orbit_map_context = _orbit_map_context(
+        orbit_view_surface=orbit_view_surface,
+        default_map_origin_ref=map_origin_ref,
+        default_minimap_origin_ref=minimap_origin_ref,
+        default_map_layer_ids=map_layer_ids,
+        default_minimap_layer_ids=minimap_layer_ids,
+    )
+    active_map_overrides = {
+        "topology_profile_id": str(
+            orbit_map_context.get("topology_profile_id")
+            or map_surface_overrides.get("topology_profile_id", minimap_surface_overrides.get("topology_profile_id", "geo.topology.r3_infinite"))
+        ).strip()
+        or "geo.topology.r3_infinite",
+        "partition_profile_id": str(
+            orbit_map_context.get("partition_profile_id")
+            or map_surface_overrides.get("partition_profile_id", minimap_surface_overrides.get("partition_profile_id", "geo.partition.grid_zd"))
+        ).strip()
+        or "geo.partition.grid_zd",
+        "metric_profile_id": str(
+            orbit_map_context.get("metric_profile_id")
+            or map_surface_overrides.get("metric_profile_id", minimap_surface_overrides.get("metric_profile_id", "geo.metric.euclidean"))
+        ).strip()
+        or "geo.metric.euclidean",
+    }
     map_views = build_map_view_set(
         perceived_model=perceived_model,
         authority_context=runtime_authority,
-        map_origin_position_ref=map_origin_ref,
-        minimap_origin_position_ref=minimap_origin_ref,
+        map_origin_position_ref=_as_map(orbit_map_context.get("map_origin_position_ref")) or map_origin_ref,
+        minimap_origin_position_ref=_as_map(orbit_map_context.get("minimap_origin_position_ref")) or minimap_origin_ref,
         layer_source_payloads=effective_layer_source_payloads,
-        map_layer_ids=map_layer_ids,
-        minimap_layer_ids=minimap_layer_ids,
+        map_layer_ids=_as_list(orbit_map_context.get("map_layer_ids")) or map_layer_ids,
+        minimap_layer_ids=_as_list(orbit_map_context.get("minimap_layer_ids")) or minimap_layer_ids,
         lens_id=str(_as_map(lens_resolution.get("lens_profile")).get("lens_id", "")).strip()
         or "lens.diegetic.sensor",
         compute_profile_id=str(compute_profile_id or "compute.default").strip() or "compute.default",
-        topology_profile_id=str(map_surface_overrides.get("topology_profile_id", minimap_surface_overrides.get("topology_profile_id", "geo.topology.r3_infinite"))),
-        partition_profile_id=str(map_surface_overrides.get("partition_profile_id", minimap_surface_overrides.get("partition_profile_id", "geo.partition.grid_zd"))),
-        metric_profile_id=str(map_surface_overrides.get("metric_profile_id", minimap_surface_overrides.get("metric_profile_id", "geo.metric.euclidean"))),
+        topology_profile_id=str(active_map_overrides.get("topology_profile_id", "geo.topology.r3_infinite")),
+        partition_profile_id=str(active_map_overrides.get("partition_profile_id", "geo.partition.grid_zd")),
+        metric_profile_id=str(active_map_overrides.get("metric_profile_id", "geo.metric.euclidean")),
         ui_mode=str(ui_mode),
         truth_hash_anchor=_truth_hash_anchor(perceived_model),
+    )
+    selection_controls = _build_selection_controls(
+        selection=selection,
+        map_views=map_views,
+        authority_context=runtime_authority,
+    )
+    inspection_surfaces = build_inspection_panel_set(
+        perceived_model=perceived_model,
+        target_semantic_id=str(_as_map(selection).get("object_id", "")).strip()
+        or str(_as_map(selection).get("target_id", "")).strip(),
+        authority_context=runtime_authority,
+        inspection_snapshot=inspection_snapshot,
+        property_origin_request=property_origin_request,
+        property_origin_result=property_origin_result,
+        field_values=field_values,
+        body_state=body_state,
+        scan_result=scan_result,
+        logic_probe_surface=logic_probe_surface,
+        logic_trace_surface=logic_trace_surface,
+        sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
+        illumination_view_artifact=_as_map(_as_map(illumination_view_surface).get("illumination_view_artifact")),
+        orbit_view_artifact=_as_map(_as_map(orbit_view_surface).get("orbit_view_artifact")),
     )
     render_contract = _render_contract(
         perceived_model=perceived_model,
@@ -1274,6 +1400,7 @@ def build_viewer_shell_state(
         "map_views": dict(map_views),
         "sky_view_surface": dict(sky_view_surface),
         "illumination_view_surface": dict(illumination_view_surface),
+        "orbit_view_surface": dict(orbit_view_surface),
         "water_view_surface": dict(water_view_surface),
         "refinement_surface": {
             "result": "complete",
@@ -1300,6 +1427,7 @@ def build_viewer_shell_state(
             "consumes_projection_and_lens_artifacts": True,
             "consumes_sky_view_artifacts": True,
             "consumes_illumination_view_artifacts": True,
+            "consumes_orbit_view_artifacts": True,
             "consumes_water_view_artifacts": True,
             "consumes_refinement_status_view": True,
             "consumes_toolbelt_surface": True,
