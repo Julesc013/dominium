@@ -10,32 +10,33 @@ if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 from analyzers.base import make_finding
-from src.meta.stability import SCOPED_REGISTRY_PATHS, validate_scoped_registries
+from src.meta.stability import ALL_REGISTRY_PATHS, validate_all_registries
 
 
 ANALYZER_ID = "E449_MISSING_STABILITY_MARKER_SMELL"
-WATCH_PREFIXES = tuple(SCOPED_REGISTRY_PATHS)
-RULE_IDS = (
-    "INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
-    "INV-STABLE-REQUIRES-CONTRACT-ID",
-)
-
-
-def _rule_id(error_code: str) -> str:
-    if str(error_code) == "stable_requires_contract_id":
-        return "INV-STABLE-REQUIRES-CONTRACT-ID"
-    return "INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY"
+WATCH_PREFIXES = tuple(ALL_REGISTRY_PATHS)
+RULE_ID = "INV-ALL-REGISTRIES-TAGGED"
+_WATCH_CODES = {
+    "missing_stability",
+    "collection_not_detected",
+    "invalid_json",
+    "invalid_text",
+    "schema_invalid",
+    "fingerprint_mismatch",
+}
 
 
 def run(graph, repo_root, changed_files=None):
     del graph, changed_files
     findings = []
-    report = validate_scoped_registries(repo_root)
+    report = validate_all_registries(repo_root)
     for row in list(report.get("reports") or []):
         registry_report = dict(row or {})
         rel_path = str(registry_report.get("file_path", "")).replace("\\", "/")
         for error in list(registry_report.get("errors") or []):
             error_row = dict(error or {})
+            if str(error_row.get("code", "")).strip() not in _WATCH_CODES:
+                continue
             message = str(error_row.get("message", "")).strip() or "stability validation failed"
             findings.append(
                 make_finding(
@@ -47,7 +48,7 @@ def run(graph, repo_root, changed_files=None):
                     evidence=[message],
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="ADD_RULE",
-                    related_invariants=[_rule_id(str(error_row.get("code", "")))],
+                    related_invariants=[RULE_ID],
                     related_paths=[rel_path],
                 )
             )

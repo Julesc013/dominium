@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.stability import validate_pack_compat, validate_scoped_registries  # noqa: E402
+from src.meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
@@ -532,7 +532,7 @@ def scan_determinism(repo_root: str) -> dict:
 
 def scan_stability_markers(repo_root: str) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
-    report = validate_scoped_registries(repo_root_abs)
+    report = validate_all_registries(repo_root_abs)
     findings: list[dict] = []
     scanned_paths: list[str] = []
     for registry_report in list(report.get("reports") or []):
@@ -553,7 +553,7 @@ def scan_stability_markers(repo_root: str) -> dict:
             )
     return _check_result_payload(
         check_id="stability_marker_scan",
-        description="Validate META-STABILITY markers for the governed registry scope.",
+        description="Validate META-STABILITY markers for all governed registries.",
         scanned_paths=scanned_paths,
         blocking_findings=findings,
         inventory={"validator_fingerprint": _token(report.get("deterministic_fingerprint"))},

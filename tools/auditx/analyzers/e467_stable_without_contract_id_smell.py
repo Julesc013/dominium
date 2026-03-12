@@ -1,4 +1,4 @@
-"""E451 provisional stability marker without replacement plan smell analyzer."""
+"""E467 stable registry entry without contract id smell analyzer."""
 
 from __future__ import annotations
 
@@ -13,9 +13,9 @@ from analyzers.base import make_finding
 from src.meta.stability import ALL_REGISTRY_PATHS, validate_all_registries
 
 
-ANALYZER_ID = "E451_PROVISIONAL_WITHOUT_REPLACEMENT_SMELL"
+ANALYZER_ID = "E467_STABLE_WITHOUT_CONTRACT_ID_SMELL"
 WATCH_PREFIXES = tuple(ALL_REGISTRY_PATHS)
-RULE_ID = "INV-PROVISIONAL-REQUIRES-REPLACEMENT-PLAN"
+RULE_ID = "INV-STABLE-REQUIRES-CONTRACT-ID"
 
 
 def run(graph, repo_root, changed_files=None):
@@ -27,15 +27,12 @@ def run(graph, repo_root, changed_files=None):
         rel_path = str(registry_report.get("file_path", "")).replace("\\", "/")
         for error in list(registry_report.get("errors") or []):
             error_row = dict(error or {})
-            if str(error_row.get("code", "")).strip() not in (
-                "provisional_requires_future_series",
-                "provisional_requires_replacement_target",
-            ):
+            if str(error_row.get("code", "")).strip() != "stable_requires_contract_id":
                 continue
             findings.append(
                 make_finding(
                     analyzer_id=ANALYZER_ID,
-                    category="meta.provisional_without_replacement_smell",
+                    category="meta.stable_without_contract_id_smell",
                     severity="RISK",
                     confidence=0.94,
                     file_path=rel_path,

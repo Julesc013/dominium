@@ -1,6 +1,13 @@
-"""Scoped registry families for META-STABILITY-0."""
+"""Registry families and file inventories for META-STABILITY."""
 
 from __future__ import annotations
+
+import os
+
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+REGISTRY_ROOT = os.path.join(REPO_ROOT_HINT, "data", "registries")
 
 
 SCOPED_REGISTRY_GROUPS: dict[str, tuple[str, ...]] = {
@@ -72,6 +79,26 @@ SCOPED_REGISTRY_PATHS: tuple[str, ...] = tuple(
     path for group_paths in SCOPED_REGISTRY_GROUPS.values() for path in group_paths
 )
 
+LEGACY_TEXT_REGISTRY_PATHS: tuple[str, ...] = (
+    "data/registries/control_capabilities.registry",
+    "data/registries/law_targets.registry",
+)
+
+
+def _all_registry_paths() -> tuple[str, ...]:
+    if not os.path.isdir(REGISTRY_ROOT):
+        return ()
+    rows = []
+    for name in sorted(os.listdir(REGISTRY_ROOT)):
+        abs_path = os.path.join(REGISTRY_ROOT, name)
+        if not os.path.isfile(abs_path):
+            continue
+        rows.append("data/registries/{}".format(str(name).replace("\\", "/")))
+    return tuple(rows)
+
+
+ALL_REGISTRY_PATHS: tuple[str, ...] = _all_registry_paths()
+
 
 def grouped_registry_paths() -> dict[str, tuple[str, ...]]:
     return dict((key, tuple(value)) for key, value in SCOPED_REGISTRY_GROUPS.items())
@@ -79,6 +106,10 @@ def grouped_registry_paths() -> dict[str, tuple[str, ...]]:
 
 def scoped_registry_paths() -> tuple[str, ...]:
     return tuple(SCOPED_REGISTRY_PATHS)
+
+
+def all_registry_paths() -> tuple[str, ...]:
+    return tuple(ALL_REGISTRY_PATHS)
 
 
 def family_for_registry(rel_path: str) -> str:
@@ -90,8 +121,11 @@ def family_for_registry(rel_path: str) -> str:
 
 
 __all__ = [
+    "ALL_REGISTRY_PATHS",
+    "LEGACY_TEXT_REGISTRY_PATHS",
     "SCOPED_REGISTRY_GROUPS",
     "SCOPED_REGISTRY_PATHS",
+    "all_registry_paths",
     "family_for_registry",
     "grouped_registry_paths",
     "scoped_registry_paths",

@@ -60,20 +60,68 @@ Reason:
 - the `stability.deterministic_fingerprint` is computed with its own fingerprint field blanked
 - entry-level deterministic fingerprints must therefore change when stability metadata changes
 
-This is intentional. Stability metadata is part of the deterministic contract surface for the scoped registry families.
+This is intentional. Stability metadata is part of the deterministic contract surface for the registry entry.
 
 ## Shape Compatibility
 
-The convention must work with both common registry shapes in the repository:
+The convention must work with all registry shapes in the repository:
 
 - `record.<collection>[]`
 - top-level `records[]`
+- multiple dict collections under one `record`
+- singleton entry dicts under `record`
+- legacy line registries consumed as text
 
-The validator must not assume a single collection key name. It must instead use a scoped registry specification that identifies:
+The validator must not assume a single collection key name. It must instead enumerate every supported entry-bearing shape deterministically.
 
-- the file path
-- the collection key
-- the item ID field
+## Singleton Entry Dicts
+
+When a registry contains a single semantic entry as a dict under `record`, the `stability` marker is added directly to that dict.
+
+Examples:
+
+- `record.default_session_spec_template`
+- `record.run_mode`
+
+## Scalar-List Registries
+
+Some registries must preserve existing scalar-list loader inputs.
+
+For those registries:
+
+- keep the existing scalar list untouched
+- add a companion tagged dict collection beside it
+- make the companion rows the governed entry surface for META-STABILITY validation
+
+Examples:
+
+- `record.model_ids` + `record.models`
+- `record.allowed_file_patterns` + `record.allowed_file_pattern_entries`
+- `record.parameter_bundle_refs` + `record.parameter_bundle_entries`
+
+This keeps old loaders working while still ensuring every semantic item carries governed stability metadata.
+
+## Legacy Text Registries
+
+Two registries remain line-oriented text files for compatibility with existing native loaders:
+
+- `data/registries/control_capabilities.registry`
+- `data/registries/law_targets.registry`
+
+For these files:
+
+- each non-comment line remains the semantic entry
+- a preceding block of `# key: value` comment lines carries the stability marker fields
+- existing loaders remain compatible because they already ignore comment lines
+
+Required comment fields:
+
+- `schema_version`
+- `stability_class_id`
+- `rationale`
+- `future_series` and `replacement_target` for provisional rows
+- `contract_id` for stable rows
+- `deterministic_fingerprint`
 
 ## Empty Collections
 
@@ -107,7 +155,6 @@ Existing entries that do not yet declare `stability` are treated as:
 
 META-STABILITY-0 applies mandatory tagging to the scoped registry families documented in the retro audit.
 
-Outside that scope:
+All registries under `data/registries` are now governed.
 
-- files remain loadable
-- no silent reinterpretation of existing `status`, `stub`, or `deprecated` fields occurs
+Files remain loadable, but no silent reinterpretation of existing `status`, `stub`, or `deprecated` fields occurs. Those fields do not satisfy stability governance on their own.

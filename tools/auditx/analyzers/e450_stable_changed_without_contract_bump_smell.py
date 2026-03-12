@@ -19,7 +19,9 @@ STABLE_WATCH_RELS = (
     "data/registries/capability_fallback_registry.json",
     "data/registries/compat_mode_registry.json",
     "data/registries/degrade_ladder_registry.json",
+    "data/registries/domain_contract_registry.json",
     "data/registries/pack_degrade_mode_registry.json",
+    "data/registries/time_anchor_policy_registry.json",
 )
 WATCH_PREFIXES = STABLE_WATCH_RELS + (SEMANTIC_CONTRACT_REGISTRY_REL,)
 

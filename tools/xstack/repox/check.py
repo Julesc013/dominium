@@ -1008,7 +1008,8 @@ MVP_CROSS_PLATFORM_BASELINE_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-META_STABILITY_RETRO_AUDIT_PATH = "docs/audit/META_STABILITY0_RETRO_AUDIT.md"
+META_STABILITY_RETRO_AUDIT_PATH = "docs/audit/META_STABILITY1_RETRO_AUDIT.md"
+META_STABILITY_FIX_PLAN_PATH = "docs/audit/META_STABILITY1_FIX_PLAN.md"
 META_STABILITY_DOCTRINE_PATH = "docs/meta/STABILITY_CLASSIFICATION.md"
 META_STABILITY_CONVENTION_PATH = "docs/meta/STABILITY_REGISTRY_CONVENTION.md"
 META_STABILITY_SCHEMA_DOC_PATH = "schema/meta/stability_marker.schema"
@@ -1017,7 +1018,7 @@ META_STABILITY_CLASS_REGISTRY_PATH = "data/registries/stability_class_registry.j
 META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "data/registries/stability_requirements_registry.json"
 META_STABILITY_VALIDATOR_PATH = "src/meta/stability/stability_validator.py"
 META_STABILITY_SCOPE_PATH = "src/meta/stability/stability_scope.py"
-META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_CLASSIFICATION_BASELINE.md"
+META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_TAGGING_FINAL.md"
 
 TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
 TIME_ANCHOR_DOCTRINE_PATH = "docs/time/TIME_ANCHOR_MODEL.md"
@@ -7289,7 +7290,8 @@ def _append_meta_stability_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     required_files = (
-        (META_STABILITY_RETRO_AUDIT_PATH, "META-STABILITY-0 retro audit is required"),
+        (META_STABILITY_RETRO_AUDIT_PATH, "META-STABILITY-1 retro audit is required"),
+        (META_STABILITY_FIX_PLAN_PATH, "META-STABILITY-1 fix plan is required"),
         (META_STABILITY_DOCTRINE_PATH, "stability classification doctrine is required"),
         (META_STABILITY_CONVENTION_PATH, "stability registry convention doc is required"),
         (META_STABILITY_SCHEMA_DOC_PATH, "stability marker schema law is required"),
@@ -7301,11 +7303,13 @@ def _append_meta_stability_findings(
         ("tools/auditx/analyzers/e449_missing_stability_marker_smell.py", "MissingStabilityMarkerSmell analyzer is required"),
         ("tools/auditx/analyzers/e450_stable_changed_without_contract_bump_smell.py", "StableChangedWithoutContractBumpSmell analyzer is required"),
         ("tools/auditx/analyzers/e451_provisional_without_replacement_smell.py", "ProvisionalWithoutReplacementSmell analyzer is required"),
-        ("tools/xstack/testx/tests/test_all_registries_have_stability_markers.py", "stability marker TestX coverage is required"),
+        ("tools/auditx/analyzers/e467_stable_without_contract_id_smell.py", "StableWithoutContractIdSmell analyzer is required"),
+        ("tools/xstack/testx/tests/test_all_registries_have_stability.py", "stability marker TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_provisional_have_replacement.py", "provisional replacement TestX coverage is required"),
         ("tools/xstack/testx/tests/test_stable_requires_contract_id.py", "stable contract-id TestX coverage is required"),
-        ("tools/xstack/testx/tests/test_provisional_requires_replacement_plan.py", "provisional replacement TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_no_duplicate_registry_ids.py", "duplicate registry id TestX coverage is required"),
         ("tools/xstack/testx/tests/test_validator_deterministic_output.py", "validator determinism TestX coverage is required"),
-        (META_STABILITY_FINAL_PATH, "stability classification baseline report is required"),
+        (META_STABILITY_FINAL_PATH, "stability tagging final report is required"),
     )
     for rel_path, message in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -7317,7 +7321,7 @@ def _append_meta_stability_findings(
                 line_number=1,
                 snippet=rel_path,
                 message=message,
-                rule_id="INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
+                rule_id="INV-ALL-REGISTRIES-TAGGED",
             )
         )
 
@@ -7339,7 +7343,7 @@ def _append_meta_stability_findings(
                 line_number=1,
                 snippet=token,
                 message=message,
-                rule_id="INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
+                rule_id="INV-ALL-REGISTRIES-TAGGED",
             )
         )
 
@@ -7358,26 +7362,26 @@ def _append_meta_stability_findings(
                 line_number=1,
                 snippet=token,
                 message=message,
-                rule_id="INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
+                rule_id="INV-ALL-REGISTRIES-TAGGED",
             )
         )
 
     try:
-        from src.meta.stability import validate_scoped_registries
+        from src.meta.stability import validate_all_registries
     except Exception as exc:
         findings.append(
             _finding(
                 severity=severity,
                 file_path=META_STABILITY_VALIDATOR_PATH,
                 line_number=1,
-                snippet="validate_scoped_registries",
+                snippet="validate_all_registries",
                 message="unable to import stability validator ({})".format(str(exc)),
-                rule_id="INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
+                rule_id="INV-ALL-REGISTRIES-TAGGED",
             )
         )
         return
 
-    report = validate_scoped_registries(repo_root)
+    report = validate_all_registries(repo_root)
     for registry_report in list(report.get("reports") or []):
         report_row = dict(registry_report or {})
         rel_path = str(report_row.get("file_path", "")).replace("\\", "/")
@@ -7389,7 +7393,7 @@ def _append_meta_stability_findings(
             elif code in ("provisional_requires_future_series", "provisional_requires_replacement_target"):
                 rule_id = "INV-PROVISIONAL-REQUIRES-REPLACEMENT-PLAN"
             else:
-                rule_id = "INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY"
+                rule_id = "INV-ALL-REGISTRIES-TAGGED"
             findings.append(
                 _finding(
                     severity=severity,
