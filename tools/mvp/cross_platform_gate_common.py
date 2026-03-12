@@ -299,6 +299,7 @@ def build_negotiation_matrix(repo_root: str) -> dict:
     scenarios = (
         {
             "scenario_id": "client_build_a_server_build_a",
+            "pair_kind": "same_build",
             "description": "client build A against server build A",
             "expected_compatibility_mode_id": "compat.full",
             "descriptor_a": _minimal_descriptor(
@@ -320,6 +321,7 @@ def build_negotiation_matrix(repo_root: str) -> dict:
         },
         {
             "scenario_id": "client_build_a_server_build_b",
+            "pair_kind": "same_version_rebuild",
             "description": "client build A against server build B with the same release version",
             "expected_compatibility_mode_id": "compat.full",
             "descriptor_a": _minimal_descriptor(
@@ -341,6 +343,7 @@ def build_negotiation_matrix(repo_root: str) -> dict:
         },
         {
             "scenario_id": "client_older_minor_server_newer_minor",
+            "pair_kind": "minor_version_delta",
             "description": "older client minor version against newer server minor version under the shared MVP protocol set",
             "expected_compatibility_mode_id": "compat.full",
             "descriptor_a": _minimal_descriptor(
@@ -378,6 +381,7 @@ def build_negotiation_matrix(repo_root: str) -> dict:
         )
         result_row = {
             "scenario_id": _token(row.get("scenario_id")),
+            "pair_kind": _token(row.get("pair_kind")),
             "description": _token(row.get("description")),
             "expected_compatibility_mode_id": _token(row.get("expected_compatibility_mode_id")),
             "compatibility_mode_id": _token(first.get("compatibility_mode_id")),
@@ -396,6 +400,8 @@ def build_negotiation_matrix(repo_root: str) -> dict:
         results.append(result_row)
 
     assertions = {
+        "scenario_order_deterministic": [row.get("scenario_id") for row in results]
+        == [row.get("scenario_id") for row in scenarios],
         "modes_match_expected": all(
             _token(row.get("compatibility_mode_id")) == _token(row.get("expected_compatibility_mode_id")) for row in results
         ),
