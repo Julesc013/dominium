@@ -114,6 +114,35 @@ def galaxy_object_stub_hash_chain(rows: object) -> str:
     return canonical_sha256(normalize_galaxy_object_stub_rows(rows))
 
 
+def build_galaxy_object_hazard_hooks(rows: object) -> List[dict]:
+    hooks = []
+    for row in normalize_galaxy_object_stub_rows(rows):
+        extensions = _as_map(row.get("extensions"))
+        effects = _as_map(extensions.get("hazard_effects"))
+        hooks.append(
+            {
+                "object_id": str(row.get("object_id", "")).strip(),
+                "kind": str(row.get("kind", "")).strip(),
+                "geo_cell_key": _as_map(extensions.get("geo_cell_key")),
+                "radiation_bump_permille": int(max(0, _as_int(effects.get("radiation_bump_permille", 0), 0))),
+                "gravity_well_bump_permille": int(max(0, _as_int(effects.get("gravity_well_bump_permille", 0), 0))),
+                "hazard_strength_permille": int(
+                    max(0, _as_int(_as_map(row.get("hazard_strength_proxy")).get("value", 0), 0))
+                ),
+                "extensions": {
+                    "source": "GAL1-4",
+                },
+            }
+        )
+    return sorted(
+        hooks,
+        key=lambda item: (
+            str(item.get("kind", "")),
+            str(item.get("object_id", "")),
+        ),
+    )
+
+
 def _spawn_identity(
     *,
     universe_identity_hash: str,
@@ -332,6 +361,7 @@ def generate_galaxy_object_stub_payload(
         "result": "complete",
         "artifact_rows": artifact_rows,
         "generated_object_rows": generated_object_rows,
+        "hazard_hook_rows": build_galaxy_object_hazard_hooks(artifact_rows),
         "max_objects_per_cell": int(MAX_GALAXY_OBJECT_STUBS_PER_CELL),
         "geo_cell_key": dict(cell_key),
         "proxy_snapshot": {
@@ -353,6 +383,7 @@ __all__ = [
     "GALAXY_OBJECT_STUB_GENERATOR_VERSION",
     "MAX_GALAXY_OBJECT_STUBS_PER_CELL",
     "RNG_WORLDGEN_GALAXY_OBJECTS",
+    "build_galaxy_object_hazard_hooks",
     "build_galaxy_object_stub_row",
     "galaxy_object_stub_hash_chain",
     "generate_galaxy_object_stub_payload",
