@@ -1063,6 +1063,22 @@ SOL1_ENGINE_PATH = "src/astro/illumination/illumination_geometry_engine.py"
 SOL1_REPLAY_TOOL_PATH = "tools/astro/tool_replay_illumination_view.py"
 SOL1_AUDIT_COMMON_PATH = "tools/astro/sol1_audit_common.py"
 
+SOL2_RETRO_AUDIT_PATH = "docs/audit/SOL2_RETRO_AUDIT.md"
+SOL2_DOCTRINE_PATH = "docs/sol/ORBIT_VISUALIZATION_MODEL.md"
+SOL2_PROVIDER_SCHEMA_DOC_PATH = "schema/astro/ephemeris_provider.schema"
+SOL2_POLICY_SCHEMA_DOC_PATH = "schema/astro/orbit_path_policy.schema"
+SOL2_VIEW_SCHEMA_DOC_PATH = "schema/astro/orbit_view_artifact.schema"
+SOL2_PROVIDER_SCHEMA_JSON_PATH = "schemas/ephemeris_provider.schema.json"
+SOL2_POLICY_SCHEMA_JSON_PATH = "schemas/orbit_path_policy.schema.json"
+SOL2_VIEW_SCHEMA_JSON_PATH = "schemas/orbit_view_artifact.schema.json"
+SOL2_PROVIDER_REGISTRY_PATH = "data/registries/ephemeris_provider_registry.json"
+SOL2_POLICY_REGISTRY_PATH = "data/registries/orbit_path_policy_registry.json"
+SOL2_ENGINE_PATH = "src/astro/ephemeris/kepler_proxy_engine.py"
+SOL2_VIEW_ENGINE_PATH = "src/astro/views/orbit_view_engine.py"
+SOL2_REPLAY_TOOL_PATH = "tools/astro/tool_replay_orbit_view.py"
+SOL2_RUNTIME_COMMON_PATH = "tools/astro/sol2_runtime_common.py"
+SOL2_AUDIT_COMMON_PATH = "tools/astro/sol2_audit_common.py"
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -7900,6 +7916,106 @@ def _append_sol1_findings(
                 snippet=str(violation.get("snippet", ""))[:160],
                 message=str(violation.get("message", "")).strip() or "non-stub occlusion policy usage detected in SOL1 runtime",
                 rule_id=occlusion_rule_id,
+            )
+        )
+
+
+def _append_sol2_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    derived_rule_id = "INV-ORBIT-VIEWS-DERIVED-ONLY"
+    nbody_rule_id = "INV-NO-NBODY-IN-MVP"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (SOL2_RETRO_AUDIT_PATH, "SOL2 retro audit is required", derived_rule_id),
+        (SOL2_DOCTRINE_PATH, "SOL2 doctrine is required", derived_rule_id),
+        (SOL2_PROVIDER_SCHEMA_DOC_PATH, "ephemeris provider schema law is required", derived_rule_id),
+        (SOL2_POLICY_SCHEMA_DOC_PATH, "orbit path policy schema law is required", derived_rule_id),
+        (SOL2_VIEW_SCHEMA_DOC_PATH, "orbit view artifact schema law is required", derived_rule_id),
+        (SOL2_PROVIDER_SCHEMA_JSON_PATH, "ephemeris provider JSON schema is required", derived_rule_id),
+        (SOL2_POLICY_SCHEMA_JSON_PATH, "orbit path policy JSON schema is required", derived_rule_id),
+        (SOL2_VIEW_SCHEMA_JSON_PATH, "orbit view artifact JSON schema is required", derived_rule_id),
+        (SOL2_PROVIDER_REGISTRY_PATH, "ephemeris provider registry is required", derived_rule_id),
+        (SOL2_POLICY_REGISTRY_PATH, "orbit path policy registry is required", derived_rule_id),
+        (SOL2_ENGINE_PATH, "Kepler proxy ephemeris engine is required", nbody_rule_id),
+        (SOL2_VIEW_ENGINE_PATH, "orbit view engine is required", derived_rule_id),
+        (SOL2_REPLAY_TOOL_PATH, "orbit replay tool is required", derived_rule_id),
+        (SOL2_RUNTIME_COMMON_PATH, "SOL2 runtime common tooling is required", derived_rule_id),
+        (SOL2_AUDIT_COMMON_PATH, "SOL2 audit common tooling is required", derived_rule_id),
+        ("tools/auditx/analyzers/e461_orbit_trace_stored_in_truth_smell.py", "OrbitTraceStoredInTruthSmell analyzer is required", derived_rule_id),
+        ("tools/auditx/analyzers/e462_nbody_leak_smell.py", "NBodyLeakSmell analyzer is required", nbody_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, SOL2_DOCTRINE_PATH).lower()
+    for token, message, rule_id in (
+        ("ephemeris.kepler_proxy", "SOL2 doctrine must define ephemeris.kepler_proxy", derived_rule_id),
+        ("derived view artifacts", "SOL2 doctrine must require orbit paths to remain derived view artifacts", derived_rule_id),
+        ("n-body", "SOL2 doctrine must reserve N-body work for future providers only", nbody_rule_id),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=SOL2_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.astro.sol2_audit_common import scan_nbody_leaks, scan_orbit_trace_storage
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=SOL2_AUDIT_COMMON_PATH,
+                line_number=1,
+                snippet="scan_orbit_trace_storage",
+                message="unable to import SOL2 audit helpers ({})".format(str(exc)),
+                rule_id=derived_rule_id,
+            )
+        )
+        return
+
+    for violation in scan_orbit_trace_storage(repo_root):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("snippet", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "orbit trace storage detected in truth paths",
+                rule_id=derived_rule_id,
+            )
+        )
+
+    for violation in scan_nbody_leaks(repo_root):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("snippet", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "N-body solver usage detected in SOL2 runtime",
+                rule_id=nbody_rule_id,
             )
         )
 
@@ -31413,6 +31529,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_sol1_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_sol2_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
