@@ -2,6 +2,9 @@ Status: CANONICAL
 Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Client Settings
 
@@ -45,4 +48,3 @@ SOON settings must refuse deterministically when unavailable.
 - `client.settings.reset`
 
 CLI is canonical; TUI/GUI route through the same command graph.
-

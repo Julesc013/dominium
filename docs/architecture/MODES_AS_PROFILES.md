@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-12
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Modes As Profiles
 
@@ -40,4 +43,3 @@ Superseded By: none
 - Client render/panel visibility checks entitlements before presentation.
 - Server authoritatively validates negotiated law and rejects escalation attempts.
 - RepoX/TestX/AuditX lock profile-driven operation and regressions.
-

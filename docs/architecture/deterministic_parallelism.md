@@ -4,6 +4,9 @@ Supersedes: `docs/architecture/deterministic_parallelism.md` v1.0.0-draft
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to canon/glossary v1.0.0 and SessionX scheduler implementation in `tools/xstack/sessionx/scheduler.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Deterministic Parallelism v1
 

@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-15
 Compatibility: Bound to Truth/Perceived/Render separation, Observation Kernel contracts, and LawProfile lens gating.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Epistemics Over Network
 

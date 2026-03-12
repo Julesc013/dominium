@@ -1,5 +1,8 @@
 Status: DRAFT
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Deprecation Lifecycle
 
@@ -51,4 +54,3 @@ Deprecation exists to enable deterministic, auditable migration from old contrac
 - Deprecation metadata is governance-only and does not alter simulation semantics.
 - Migration/adaptation paths must preserve deterministic outcomes for equal inputs.
 - No wall-clock based behavior is introduced by deprecation tooling.
-

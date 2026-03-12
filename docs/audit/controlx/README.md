@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-11
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # ControlX Audit Artifacts
 
@@ -19,4 +22,3 @@ This directory stores ControlX run artifacts.
 - Run logs avoid timestamps and machine-only data.
 - Queue summaries are stable under identical prompt inputs and policy state.
 - Mechanical remediation artifacts are linked, not duplicated.
-

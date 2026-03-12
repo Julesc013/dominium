@@ -1,7 +1,11 @@
-Status: CANONICAL
+Status: Superseded
 Last Reviewed: 2026-02-13
 Supersedes: docs/architecture/ARCH_GLOSSARY.md
-Superseded By: none
+Superseded By: docs/canon/glossary_v1.md
+Reason: duplicate glossary surface is no longer binding; canon glossary v1 wins
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: explicit replacement document listed in the supersession header
 
 # Dominium Canonical Glossary
 

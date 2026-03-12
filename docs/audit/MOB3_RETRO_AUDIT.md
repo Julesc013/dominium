@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # MOB3 Retro-Consistency Audit
 
 Status: AUDIT
@@ -80,4 +88,3 @@ Assessment:
   - `INV-SPEC-COMPATIBILITY-REQUIRED`
 - Add AuditX analyzer:
   - `VehicleHardcodeSmell`
-

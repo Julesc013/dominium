@@ -1,6 +1,9 @@
 Status: DERIVED
 Last Reviewed: 2026-03-01
 Scope: CTRL-5 unified fidelity and budget arbitration baseline
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Fidelity Arbitration Baseline
 

@@ -1,6 +1,9 @@
 Status: BASELINE
 Last Reviewed: 2026-03-08
 Scope: LOGIC-6 deterministic compilation, proof, runtime selection, and SYS collapse integration.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # LOGIC Compilation Baseline
 

@@ -4,8 +4,18 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: SYS-0 constitutional definition for deterministic System composition and collapse.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # System Composition Constitution
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Purpose
 Define a formal System layer for deterministic composition, collapse, and expansion of subsystem graphs without changing existing domain semantics.

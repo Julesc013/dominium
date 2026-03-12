@@ -1,4 +1,8 @@
 Change:
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 GEO-8 worldgen contract for deterministic cell-key generation, generator version locking, proof surfaces, and ROI/view request integration.
 
 Touched Paths:

@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-26
 Version: 1.0.0
 Scope: CIV-1/4 structural baseline
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Civilisation Substrate Baseline
 
@@ -106,4 +109,3 @@ Known environment limitation observed during full profile run:
 - Treaty metadata and directional diplomacy.
 - Claim-to-conflict escalation integration (war/trade systems).
 - Cross-shard faction governance and explicit global civ coordinator patterns.
-

@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # PROC5 Retro-Consistency Audit
 
 Status: AUDIT
@@ -42,4 +50,3 @@ SYS macro pattern reuse candidates:
 3. Integrate optional COMPILE-0 compiled model execution path with validity/proof checks.
 4. Emit canonical execution/invalidation records and process run linkage.
 5. Add replay/proof tooling for deterministic hash verification.
-

@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-11
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # AuditX Overhaul Report
 
@@ -51,4 +54,3 @@ Superseded By: none
 - Heuristic analyzers may surface advisory false positives by design.
 - Cache effectiveness depends on quality of analyzer watch-prefix definitions.
 - Additional analyzer tuning may be required for very large pack graphs.
-

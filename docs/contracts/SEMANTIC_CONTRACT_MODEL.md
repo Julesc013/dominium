@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `data/registries/semantic_contract_registry.json`, and `schema/universe/universe_contract_bundle.schema`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Semantic Contract Model
 

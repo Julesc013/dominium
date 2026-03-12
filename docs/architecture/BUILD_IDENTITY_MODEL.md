@@ -5,6 +5,9 @@ Superseded By: none
 STATUS: CANONICAL
 OWNER: architecture
 LAST_VERIFIED: 2026-02-06
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Build Identity Model (BUILD-ID-0)
 

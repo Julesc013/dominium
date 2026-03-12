@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # Thermal Constitution Baseline
 
 Status: Baseline complete (THERM-0)  
@@ -132,4 +140,3 @@ Executed commands:
 - [x] Null boot optional policy path declared (`therm.policy.none`)
 - [ ] Thermal network conduction runtime execution (THERM-1)
 - [ ] Micro ROI diffusion model (THERM-2+)
-

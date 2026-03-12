@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-26
 Version: 1.0.0
 Scope: RS-3/5 time constitution baseline
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Time Constitution Baseline
 

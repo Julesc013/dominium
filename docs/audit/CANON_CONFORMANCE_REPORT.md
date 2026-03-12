@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-15
 Scope: Prompt 20 Phase 2 canon conformance sweep
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Canon Conformance Report
 

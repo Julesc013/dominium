@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/APPSHELL_CONSTITUTION.md`, `docs/appshell/IPC_ATTACH_CONSOLES.md`, `docs/appshell/LOGGING_AND_TRACING.md`, `docs/packs/PACK_VERIFICATION_PIPELINE.md`, and `docs/compat/NEGOTIATION_HANDSHAKES.md`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Supervisor Model
 

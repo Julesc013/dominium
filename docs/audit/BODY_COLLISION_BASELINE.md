@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/embodiment/BODY_PRIMITIVES_AND_COLLISION.md` v1.0.0 and deterministic Process-only mutation invariants.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Body Collision Baseline
 

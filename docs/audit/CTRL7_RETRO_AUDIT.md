@@ -1,6 +1,9 @@
 Status: DERIVED
 Last Reviewed: 2026-03-01
 Scope: CTRL-7 retro-consistency audit for capability-driven control
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # CTRL7 Retro-Consistency Audit
 

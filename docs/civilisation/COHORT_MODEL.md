@@ -1,6 +1,9 @@
 Status: AUTHORITATIVE
 Last Reviewed: 2026-02-17
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Cohort Model
 
@@ -56,4 +59,3 @@ This document defines CIV-2 macro population cohorts and deterministic macro<->m
 - `refusal.civ.invalid_size`
 - `refusal.civ.policy_missing`
 - `refusal.civ.cohort_cross_shard_forbidden`
-

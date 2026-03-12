@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # Dominium Agent Control Contract
 
 Version: 1.0.0
@@ -65,4 +73,3 @@ Validation Level: FAST | STRICT | FULL
 Expected Artifacts:
 Non-Goals:
 ```
-

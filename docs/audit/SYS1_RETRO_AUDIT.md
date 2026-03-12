@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: SYS-1 retro audit for interface signature and invariant enforcement.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # SYS1 Retro Audit
 

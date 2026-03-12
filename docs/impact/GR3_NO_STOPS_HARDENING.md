@@ -1,4 +1,7 @@
 Change: GR3 no-stops hardening unblock for deterministic control, system expand, protection, and planning contracts
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
 - schemas/control_proof_bundle.schema.json

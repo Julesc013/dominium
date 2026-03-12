@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-28
 Version: 1.0.0
 Scope: INT-3 Interior Inspection and Diegetic Instrumentation baseline completion report.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Interior Diegetic Inspection Baseline
 

@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-03-04
 Supersedes: docs/audit/TIER_COUPLING_EXPLAIN_BASELINE.md
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # META-CONTRACT-1 Hardening Report
 

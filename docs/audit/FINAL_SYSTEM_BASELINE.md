@@ -3,6 +3,9 @@ Version: 1.0.0
 Last Reviewed: 2026-02-15
 Scope: Prompt 20 Phase 7 hardened baseline sweep
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, and `AGENTS.md`.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Final System Baseline
 

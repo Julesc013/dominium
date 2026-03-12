@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-03-01
 Scope: CTRL-9 retro-consistency audit for control plane completeness
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # CTRL9 Retro Audit
 

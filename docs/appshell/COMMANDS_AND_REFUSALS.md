@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/APPSHELL_CONSTITUTION.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, and `docs/packs/PACK_VERIFICATION_PIPELINE.md`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Commands And Refusals
 

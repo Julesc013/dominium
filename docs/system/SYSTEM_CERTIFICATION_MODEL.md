@@ -2,8 +2,18 @@ Status: BASELINE
 Last Reviewed: 2026-03-06
 Version: 1.0.0
 Compatibility: SYS-5 deterministic certification/compliance workflow.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # System Certification Model
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## A) Certification Targets
 Certification evaluation can target:

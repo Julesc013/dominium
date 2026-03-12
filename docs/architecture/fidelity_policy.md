@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `schemas/fidelity_policy.schema.json` v1.0.0 and policy registries compiled by `tools/xstack/registry_compile/compiler.py`.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Fidelity Policy v1
 

@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-15
 Compatibility: Bound to Observation Kernel, LawProfile, AuthorityContext, Lens, EpistemicPolicy, and RetentionPolicy.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Epistemics Over Network Baseline
 
@@ -96,4 +99,3 @@ Controls:
 2. Expanded retention policies and decay models.
 3. Inference policies as explicit deterministic registry modules.
 4. Additional anti-cheat epistemic checks in ranked server policy packs.
-

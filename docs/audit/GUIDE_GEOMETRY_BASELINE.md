@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-03-02
 Version: 1.0.0
 Scope: MOB-1 GuideGeometry baseline and readiness handoff.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # GuideGeometry Baseline
 

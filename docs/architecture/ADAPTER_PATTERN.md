@@ -1,5 +1,8 @@
 Status: DRAFT
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Adapter Pattern
 
@@ -35,4 +38,3 @@ Adapters allow deterministic, incremental migration from deprecated interfaces t
   - mark entry `removed`
   - delete adapter
   - verify removed identifier has zero references via governance checks
-

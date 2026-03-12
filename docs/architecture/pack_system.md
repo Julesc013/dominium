@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to canon v1.0.0, glossary v1.0.0, and `schemas/pack_manifest.schema.json` v1.0.0.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Pack System v1 Contract
 

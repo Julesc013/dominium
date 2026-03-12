@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `schemas/budget_policy.schema.json` v1.0.0 and `tools/xstack/sessionx/process_runtime.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Budget Policy v1
 

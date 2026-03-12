@@ -2,6 +2,9 @@ Status: DERIVED
 Source: `docs/audit/auditx/FINDINGS.json`, `docs/audit/auditx/PROMOTION_CANDIDATES.json`
 Generated UTC: 2026-02-15T06:52:05Z
 Compatibility: AuditX Prompt 16 baseline
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # AUDITX Baseline Report
 

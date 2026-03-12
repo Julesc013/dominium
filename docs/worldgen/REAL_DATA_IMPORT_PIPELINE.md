@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, and `AGENTS.md`.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Real Data Import Pipeline
 
@@ -86,4 +89,3 @@ All derived artifacts must include a `provenance` object with:
 - `docs/architecture/macro_capsules.md`
 - `docs/architecture/deterministic_packaging.md`
 - `docs/contracts/refusal_contract.md`
-

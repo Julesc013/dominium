@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-12
 Supersedes: docs/audit/MODE_REFACTOR_REPORT.md
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Mode Refactor V2 Report
 

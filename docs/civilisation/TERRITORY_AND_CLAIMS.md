@@ -1,8 +1,18 @@
 Status: AUTHORITATIVE
 Last Reviewed: 2026-02-16
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Territory and Claims
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Territory Model
 - Territory is represented as `assembly.territory.*`.
@@ -25,4 +35,3 @@ Version: 1.0.0
 ## Epistemic Constraint
 - Territory knowledge visible to clients is still governed by LawProfile + EpistemicPolicy.
 - CIV-1 does not grant omniscient map access.
-

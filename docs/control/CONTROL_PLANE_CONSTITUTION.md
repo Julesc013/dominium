@@ -1,8 +1,18 @@
 Status: CANONICAL
 Last Reviewed: 2026-02-28
 Scope: CTRL-0 constitutional baseline
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Control Plane Constitution
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Purpose
 Define a single deterministic gateway from user/AI/admin requests to authoritative processes without mode flags or hidden bypass paths.

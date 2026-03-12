@@ -1,7 +1,11 @@
-Status: HISTORICAL
+Status: Superseded
 Last Reviewed: 2026-02-13
 Supersedes: none
 Superseded By: docs/GLOSSARY.md
+Reason: document already declares an explicit replacement path
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: explicit replacement document listed in the supersession header
 
 # Glossary (ARCH0 Binding)
 

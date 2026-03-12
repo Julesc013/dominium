@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-03-01
 Scope: CTRL-10 retro-consistency audit for final control-plane envelope
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # CTRL10 Retro Audit
 

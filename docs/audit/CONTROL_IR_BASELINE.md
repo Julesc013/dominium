@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-03-01
 Version: 1.0.0
 Compatibility: Bound to `schema/control/control_ir*.schema`, `src/control/ir/*`, and control-plane decision logs.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Control IR Baseline
 

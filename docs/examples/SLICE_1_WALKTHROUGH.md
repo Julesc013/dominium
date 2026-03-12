@@ -2,8 +2,18 @@ Status: DERIVED
 Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # SLICE-1 Walkthrough (CLI)
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 This walkthrough uses the CLI shell to demonstrate survey, action, failure,
 and replay inspection with zero packs installed. All values are generic.

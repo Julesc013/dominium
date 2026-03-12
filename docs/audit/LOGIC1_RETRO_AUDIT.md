@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-03-08
 Version: 1.0.0
 Scope: LOGIC-1 retro-consistency audit for typed signal and bus abstraction.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # LOGIC-1 Retro Audit
 

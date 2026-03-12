@@ -2,6 +2,9 @@ Status: BASELINE
 Version: 1.0.0
 Last Updated: 2026-03-01
 Scope: FORM-1 FormalizationState substrate
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # FormalizationState Baseline
 
@@ -109,4 +112,3 @@ Scope: FORM-1 FormalizationState substrate
   - command: `python tools/xstack/run.py strict --repo-root . --cache on`
 - Topology map: updated
   - command: `python tools/governance/tool_topology_generate.py --repo-root .`
-

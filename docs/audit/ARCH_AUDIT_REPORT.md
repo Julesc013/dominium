@@ -1,3 +1,8 @@
+Status: DERIVED
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and REPO-REVIEW-3.
+
 # ARCH Audit Report
 
 - report_id: `arch.audit.v1`
@@ -5,7 +10,7 @@
 - release_status: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `6221cc189461d73294a00decf5b06d6c98357d3aa7b21a1b4ae4ea04615276cf`
+- deterministic_fingerprint: `13637e3623cf5cb70ffbc3e097ac6e334295ebab61ce73d77fa9d2bf33e115b5`
 
 ## Checks
 
@@ -25,7 +30,7 @@
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `3739908043035f0fac7c1f6d4d6170bc3302e21e8f02b92f6133a4910fdb97b4`
+- deterministic_fingerprint: `1aff37bffd01ffdd4f5e78c00046375b5708c70c6102d803a11d675afd5c51ce`
 
 ### determinism_scan
 - result: `pass`

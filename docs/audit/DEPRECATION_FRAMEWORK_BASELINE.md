@@ -1,5 +1,8 @@
 Status: DRAFT
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Deprecation Framework Baseline
 
@@ -53,4 +56,3 @@ ARCH-REF-4 establishes deterministic deprecation lifecycle governance, quarantin
 - Governance-only artifacts; no simulation semantic changes.
 - No wall-clock dependency added.
 - No runtime dependency on XStack/governance tooling paths.
-

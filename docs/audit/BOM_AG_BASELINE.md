@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-27
 Version: 1.0.0
 Scope: MAT-3 Bill of Materials + Assembly Graph + deterministic blueprint compilation baseline.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # BOM + Assembly Graph Baseline
 

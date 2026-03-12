@@ -1,4 +1,7 @@
 Change: META-GENRE-0 Player Demand Coverage Matrix + enforcement wiring
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
 - data/meta/player_demand_matrix.json

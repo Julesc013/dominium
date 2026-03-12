@@ -2,6 +2,9 @@ Status: BASELINE
 Last Reviewed: 2026-03-11
 Version: 1.0.0
 Scope: LIB-7 deterministic stress/proof/regression envelope for installs, instances, saves, packs, providers, and export/import.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # LIB Final Baseline
 

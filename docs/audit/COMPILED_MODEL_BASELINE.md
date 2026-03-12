@@ -2,6 +2,9 @@ Status: BASELINE
 Last Reviewed: 2026-03-06
 Version: 1.0.0
 Scope: COMPILE-0 CompiledModel equivalence framework
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Compiled Model Baseline
 

@@ -4,6 +4,9 @@ Supersedes: docs/system/SYSTEM_TIER_AND_ROI_POLICY.md
 Superseded By: none
 Version: 1.0.0
 Compatibility: SYS-4 system template library doctrine.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # System Templates
 

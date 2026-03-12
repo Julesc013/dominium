@@ -1,6 +1,9 @@
 Status: RELEASE-LOCKED
 Last Reviewed: 2026-03-13
 Scope: v0.0.0 frozen invariant declaration.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Frozen Invariants v0.0.0
 

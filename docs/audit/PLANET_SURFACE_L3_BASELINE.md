@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`, `docs/worldgen/MILKY_WAY_CONSTITUTION.md`, `docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md`, `docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md`, `schema/worldgen/surface_tile_artifact.schema`, `schema/worldgen/surface_generator_routing.schema`, and `src/worldgen/mw/mw_surface_refiner_l3.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Planet Surface L3 Baseline
 

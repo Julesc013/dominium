@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-03-01
 Scope: SPEC-1 SpecSheet substrate baseline
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # SpecSheet Baseline
 
@@ -142,4 +145,3 @@ TestX (SPEC-1):
 5. topology map updated
    - command: `python tools/governance/tool_topology_generate.py --repo-root .`
    - result: `result=complete`
-

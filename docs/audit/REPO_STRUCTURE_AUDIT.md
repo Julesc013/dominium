@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Purpose: Repository structure audit and consolidation report
 Authority: NON-CANONICAL
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Repository Structure Audit
 

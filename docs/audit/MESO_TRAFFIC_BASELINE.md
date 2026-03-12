@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # MESO_TRAFFIC_BASELINE
 
 Status: BASELINE
@@ -107,4 +115,3 @@ Scope: MOB-5 meso occupancy, congestion, reservations, and macro-travel integrat
   - command: `python tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`
   - status: `complete` (`node_count=2395`, `edge_count=104949`)
   - deterministic fingerprint: `2fe4cd40728d6c9a8cd1acc60a10f6044cac54dc00c6ba3eab3804107746061a`
-

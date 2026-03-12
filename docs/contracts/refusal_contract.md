@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/architecture/REFUSAL_SEMANTICS.md` (REFUSE0), `tools/xstack/sessionx/`, and canonical schemas v1.0.0.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Refusal Contract
 

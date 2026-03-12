@@ -1050,6 +1050,14 @@ PLATFORM_RENDERER_SURFACE_PATH = "docs/audit/PLATFORM_RENDERER_SURFACE.md"
 VALIDATION_STACK_MAP_PATH = "docs/audit/VALIDATION_STACK_MAP.md"
 STABILITY_COVERAGE_REPORT_PATH = "docs/audit/STABILITY_COVERAGE_REPORT.md"
 REPO_REVIEW_2_FINAL_PATH = "docs/audit/REPO_REVIEW_2_FINAL.md"
+DOC_INVENTORY_TOOL_PATH = "tools/review/tool_doc_inventory.py"
+DOC_INVENTORY_COMMON_PATH = "tools/review/doc_inventory_common.py"
+DOC_INVENTORY_JSON_PATH = "data/audit/doc_inventory.json"
+DOC_INDEX_PATH = "docs/audit/DOC_INDEX.md"
+CANON_MAP_PATH = "docs/audit/CANON_MAP.md"
+DOC_DRIFT_MATRIX_PATH = "docs/audit/DOC_DRIFT_MATRIX.md"
+DOC_GAPS_PATH = "docs/audit/DOC_GAPS.md"
+REPO_REVIEW_3_FINAL_PATH = "docs/audit/REPO_REVIEW_3_FINAL.md"
 
 EARTH10_RETRO_AUDIT_PATH = "docs/audit/EARTH10_RETRO_AUDIT.md"
 EARTH10_DOCTRINE_PATH = "docs/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md"
@@ -7840,6 +7848,110 @@ def _append_repo_inventory_findings(
                 snippet="semantic_engines",
                 message="repository inventory must include semantic-engine duplication surfaces",
                 rule_id=rule_id,
+            )
+        )
+
+
+def _append_doc_inventory_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    stability_rule_id = "INV-DOCS-MUST-DECLARE-STABILITY"
+    superseded_rule_id = "INV-SUPERSEDED-DOCS-MUST-LINK-REPLACEMENT"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (DOC_INVENTORY_TOOL_PATH, "documentation inventory tool is required", stability_rule_id),
+        (DOC_INVENTORY_COMMON_PATH, "documentation inventory helper module is required", stability_rule_id),
+        (DOC_INVENTORY_JSON_PATH, "documentation inventory JSON report is required", stability_rule_id),
+        (DOC_INDEX_PATH, "documentation index report is required", stability_rule_id),
+        (CANON_MAP_PATH, "canon map report is required", superseded_rule_id),
+        (DOC_DRIFT_MATRIX_PATH, "documentation drift matrix is required", superseded_rule_id),
+        (DOC_GAPS_PATH, "documentation gaps report is required", stability_rule_id),
+        (REPO_REVIEW_3_FINAL_PATH, "REPO-REVIEW-3 final report is required", stability_rule_id),
+        ("tools/xstack/testx/tests/test_doc_inventory_deterministic.py", "documentation inventory deterministic TestX coverage is required", stability_rule_id),
+        ("tools/xstack/testx/tests/test_all_docs_have_stability_header.py", "documentation stability-header TestX coverage is required", stability_rule_id),
+        ("tools/xstack/testx/tests/test_superseded_docs_have_replacement_link.py", "documentation supersession-link TestX coverage is required", superseded_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.review.doc_inventory_common import (
+            load_or_run_doc_inventory,
+            missing_stability_header_entries,
+            superseded_without_replacement_entries,
+        )
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=DOC_INVENTORY_COMMON_PATH,
+                line_number=1,
+                snippet="load_or_run_doc_inventory",
+                message="unable to import documentation inventory helper ({})".format(str(exc)),
+                rule_id=stability_rule_id,
+            )
+        )
+        return
+
+    report = load_or_run_doc_inventory(repo_root, prefer_cached=True)
+    if str(report.get("inventory_id", "")).strip() != "doc.inventory.v1":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=DOC_INVENTORY_JSON_PATH,
+                line_number=1,
+                snippet="inventory_id",
+                message="documentation inventory report must declare inventory_id=doc.inventory.v1",
+                rule_id=stability_rule_id,
+            )
+        )
+        return
+    if str(report.get("result", "")).strip() != "complete":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=DOC_INVENTORY_JSON_PATH,
+                line_number=1,
+                snippet="result",
+                message="documentation inventory report must record result=complete",
+                rule_id=stability_rule_id,
+            )
+        )
+
+    for row in missing_stability_header_entries(report):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("stability_class", ""))[:160],
+                message="documentation inventory detected a doc without a stability header",
+                rule_id=stability_rule_id,
+            )
+        )
+
+    for row in superseded_without_replacement_entries(report):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("alignment_status", ""))[:160],
+                message="superseded or contradictory documentation must link to a replacement document",
+                rule_id=superseded_rule_id,
             )
         )
 
@@ -32004,6 +32116,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_repo_inventory_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_doc_inventory_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

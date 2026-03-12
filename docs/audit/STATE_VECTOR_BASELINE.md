@@ -1,5 +1,8 @@
 Status: BASELINE
 Scope: STATEVEC-0 explicit state exposure for SYS/COMPILE/PROC
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # STATE_VECTOR Baseline
 

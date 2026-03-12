@@ -2,8 +2,18 @@ Status: DERIVED
 Last Reviewed: 2026-02-12
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Experiences And Defaults
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 Dominium experiences are profile compositions, not hardcoded game modes.
 
@@ -32,4 +42,3 @@ Dominium experiences are profile compositions, not hardcoded game modes.
 - Choose a scenario from installed/visible sets.
 - Choose a parameter bundle for tuning.
 - Customization stays deterministic when schema-valid and hash-pinned.
-

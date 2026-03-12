@@ -1,6 +1,9 @@
 Status: RELEASE-LOCKED
 Last Reviewed: 2026-03-13
 Scope: provisional registry entries at the v0.0.0 convergence freeze.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Provisional Feature List
 

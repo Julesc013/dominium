@@ -2,8 +2,18 @@ Status: CANONICAL
 Last Reviewed: 2026-02-11
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # PerformX Model
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 PerformX is the deterministic performance envelope system for Dominium governance.
 
@@ -31,4 +41,3 @@ PerformX is the deterministic performance envelope system for Dominium governanc
 - TestX verify lane runs critical performance envelopes.
 - TestX dist lane runs the full performance envelope set.
 - ControlX and automation route through `scripts/dev/gate.py` only.
-

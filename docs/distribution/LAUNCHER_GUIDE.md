@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Launcher Guide (LAUNCH-GUIDE)
 

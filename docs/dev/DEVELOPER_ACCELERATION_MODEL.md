@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-15
 Compatibility: Requires `tools/xstack/run.py`, `tools/dev/dev.py`, and `tools/dev/impact_graph/`.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Developer Acceleration Model
 

@@ -2,6 +2,9 @@ Status: BASELINE
 Last Updated: 2026-03-09
 Version: 1.0.0
 Scope: GEO-10 stress, proof, replay, overlay identity, degradation, and regression lock baseline.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # GEO Final Baseline
 

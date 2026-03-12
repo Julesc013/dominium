@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # THERM0 Retro-Consistency Audit
 
 Status: Baseline audit complete (THERM-0 Phase 0)  
@@ -39,4 +47,3 @@ Audit targets:
 3. Enforce cross-domain loss mapping through THERM loss-to-heat conventions (`quantity.heat_loss` or fallback local temperature effect).
 4. Migrate inline thermal response curves into constitutive model declarations in THERM-1+.
 5. Keep null boot valid by making thermal policies optional (`therm.policy.none`) and refusing/degenerating deterministically when inactive.
-

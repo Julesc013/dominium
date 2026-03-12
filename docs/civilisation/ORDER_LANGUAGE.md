@@ -1,6 +1,9 @@
 Status: AUTHORITATIVE
 Last Reviewed: 2026-02-17
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Governance Order Language
 
@@ -70,4 +73,3 @@ Version: 1.0.0
 - No crafting/inventory semantics.
 - No combat/damage semantics.
 - No deep economic solver integration.
-

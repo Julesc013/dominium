@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-15
 Compatibility: Bound to run-meta contract, anti-cheat event schema, handshake schema, and hash-anchor chain.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Esports Proof Artifacts
 

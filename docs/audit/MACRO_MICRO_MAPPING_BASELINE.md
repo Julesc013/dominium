@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, MAT-0, RS-2, RS-4, RS-5, ED-4.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Macro Micro Mapping Baseline
 
@@ -84,4 +87,3 @@ MAT-7 baseline introduces deterministic macro/micro part materialization with pr
   - add optional higher-fidelity micro state models while preserving MAT-7 collapse contracts
 - Domain packs:
   - add domain-specific defect/wear aggregation models through registry-driven extensions
-

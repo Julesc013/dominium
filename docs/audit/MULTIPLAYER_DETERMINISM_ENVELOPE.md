@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # Multiplayer Determinism Envelope
 
 Status: DERIVED BASELINE  
@@ -72,4 +80,3 @@ No exclusion is allowed for truth-affecting state, policy IDs, hashes, or refusa
 - anti-cheat fingerprint baselines for adversarial cases
 
 Baseline updates require commit message tag: `MULTIPLAYER-REGRESSION-UPDATE`.
-

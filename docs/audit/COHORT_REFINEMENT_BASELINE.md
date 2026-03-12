@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-26
 Version: 1.0.0
 Scope: CIV-2/4 cohort refinement baseline
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Cohort Refinement Baseline
 
@@ -59,4 +62,3 @@ Scope: CIV-2/4 cohort refinement baseline
 - CIV-3: order systems over cohorts and micro agents.
 - CIV-4: deterministic demography/procreation transitions.
 - Macro population solvers and shard-aware migration strategies.
-

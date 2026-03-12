@@ -4,8 +4,18 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `tools/xstack/run.py` and subsystem modules under `tools/xstack/{controlx,repox,auditx,testx,performx,compatx,securex}/`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # XStack Profiles v1
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Purpose
 Define deterministic profile behavior for the stable entrypoint `tools/xstack/run`.

@@ -2,6 +2,9 @@ Status: BASELINE
 Last Reviewed: 2026-03-06
 Version: 1.0.0
 Scope: SYS-6 System Reliability, Failure Budgeting, and Predictive Expand-on-Edge
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # System Reliability Baseline
 

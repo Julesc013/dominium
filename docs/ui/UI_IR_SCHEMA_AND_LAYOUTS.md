@@ -2,8 +2,18 @@ Status: CANONICAL
 Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # UI IR Schema And Layouts
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 This document defines the UI data contract used by CLI, TUI, and GUI renderers.
 
@@ -35,4 +45,3 @@ This document defines the UI data contract used by CLI, TUI, and GUI renderers.
 - Schema version bumps are required for incompatible shape changes.
 - Transform-only migrations are allowed for compatible shape evolution.
 - Deprecated fields remain readable until explicitly retired.
-

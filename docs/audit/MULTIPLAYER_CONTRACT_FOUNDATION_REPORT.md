@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-15
 Compatibility: Bound to canon, glossary, session pipeline registry contract, lockfile contract, and multiplayer net schemas v1.0.0.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Multiplayer Contract Foundation Report
 

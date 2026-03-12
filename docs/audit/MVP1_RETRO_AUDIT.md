@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`, `docs/architecture/INSTALL_MODEL.md`, `docs/architecture/session_lifecycle.md`, `tools/xstack/packagingx/dist_build.py`, and `tools/xstack/sessionx/creator.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # MVP1 Retro Audit
 

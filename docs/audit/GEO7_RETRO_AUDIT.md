@@ -1,6 +1,9 @@
 Status: AUDIT
 Last Updated: 2026-03-09
 Scope: GEO-7 geometry edit contract retro-consistency audit
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # GEO7 Retro Audit
 

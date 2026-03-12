@@ -1,6 +1,9 @@
 Status: AUDIT
 Scope: SIG-1 SignalNetworkGraph routing/capacity/delay retrofit
 Date: 2026-03-03
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # SIG1 Retro Audit
 

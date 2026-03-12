@@ -4,8 +4,18 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to Domain/Contract registry schemas v1.0.0 and solver registry adapter schema v1.0.0.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Solver Domain Bindings
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Purpose
 Define structural requirements for binding solver rows to domain and contract rows.

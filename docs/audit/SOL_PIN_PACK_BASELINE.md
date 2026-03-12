@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`, `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`, `packs/official/pack.sol.pin_minimal/pack.json`, `packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json`, `src/worldgen/mw/sol_anchor.py`, and `src/geo/overlay/overlay_merge_engine.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Sol Pin Pack Baseline
 

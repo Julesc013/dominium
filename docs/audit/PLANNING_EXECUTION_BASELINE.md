@@ -1,6 +1,9 @@
 Status: DERIVED
 Last Reviewed: 2026-03-01
 Scope: CTRL-4 planning vs execution baseline
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Planning vs Execution Baseline
 
@@ -59,4 +62,3 @@ Scope: CTRL-4 planning vs execution baseline
   - specialized IR generators
   - domain-specific commitment kinds
   - simulation-grade validation policies
-

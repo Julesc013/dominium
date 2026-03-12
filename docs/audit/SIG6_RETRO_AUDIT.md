@@ -1,6 +1,9 @@
 Status: AUDIT
 Scope: SIG-6 institutional communication and aggregation
 Date: 2026-03-03
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # SIG6 Retro Audit
 

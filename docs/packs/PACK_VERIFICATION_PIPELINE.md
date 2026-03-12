@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/packs/PACK_COMPATIBILITY_MANIFEST.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Offline Pack Verification Pipeline
 

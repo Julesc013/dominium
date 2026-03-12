@@ -2,6 +2,9 @@ Status: CANONICAL
 Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Universe Scale Strategy
 
@@ -32,4 +35,3 @@ Universe-scale data is represented lazily through index artifacts and determinis
 - No eager full-detail generation at universe creation.
 - Collapse/expand operations preserve declared contracts.
 - Refinement artifacts are reproducible from source data and seed.
-

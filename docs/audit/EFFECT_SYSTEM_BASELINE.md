@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-03-01
 Scope: CTRL-8 deterministic effect system baseline
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Effect System Baseline
 
@@ -141,4 +144,3 @@ Source registry: `data/registries/stacking_policy_registry.json`
 - AuditX analyzers:
   - `E127_TEMP_MODIFIER_SMELL`
   - `E128_EFFECT_BYPASS_SMELL`
-

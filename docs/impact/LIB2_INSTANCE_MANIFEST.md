@@ -1,4 +1,8 @@
 Change:
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 LIB-2 deterministic instance manifests, instance kinds, save associations, and portable/linked import-export flows
 
 Touched Paths:

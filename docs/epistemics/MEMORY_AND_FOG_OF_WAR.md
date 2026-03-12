@@ -2,8 +2,18 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-16
 Compatibility: Bound to Observation Kernel and epistemic policy registries.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Memory And Fog Of War
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Purpose
 Define deterministic epistemic memory as a policy-governed extension of `PerceivedModel` with no TruthModel storage.
@@ -77,4 +87,3 @@ Pipeline contract:
 2. No wall-clock decay.
 3. No TruthModel retention.
 4. No mode flags.
-

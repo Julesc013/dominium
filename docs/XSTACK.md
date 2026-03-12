@@ -2,10 +2,19 @@ Status: DERIVED
 Last Reviewed: 2026-02-13
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # XStack Governance Reference
 
 XStack is the governance execution stack coordinating structural policy, behavioral proof, semantic audit, compatibility, security, and throughput-aware gate planning.
+
+## Patch Notes
+
+- The high-level governance roles remain valid, but concrete implementation entrypoints have shifted since this summary was written.
+- Use `docs/audit/VALIDATION_STACK_MAP.md` for the current validation surface inventory.
+- Use `docs/audit/ENTRYPOINT_MAP.md` and `docs/audit/REPO_REVIEW_2_FINAL.md` for convergence-era product and tooling ownership.
 
 ## Scope
 

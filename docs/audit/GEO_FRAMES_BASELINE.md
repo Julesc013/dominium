@@ -2,6 +2,9 @@ Status: BASELINE
 Last Updated: 2026-03-09
 Version: 1.0.0
 Scope: GEO-2 deterministic reference frames, floating-origin policy, and precision baseline.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # GEO Frames Baseline
 

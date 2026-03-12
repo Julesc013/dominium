@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-26
 Scope: ED-4/4 epistemic invariance under LOD switching.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # LOD Epistemic Invariance Baseline
 
@@ -72,4 +75,3 @@ Violation refusal code:
    - pre-step: `tools/xstack/registry_compile/registry_compile.py --repo-root . --out-dir build/registries --lockfile-out build/lockfile.json`
    - command: `tools/xstack/ui_bind.py --repo-root . --check`
    - result: PASS (`checked_windows=21`)
-

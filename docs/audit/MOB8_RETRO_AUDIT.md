@@ -1,6 +1,9 @@
 Status: AUDIT
 Scope: MOB-8 signaling/interlocking retrofit
 Date: 2026-03-03
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # MOB8 Retro Audit
 

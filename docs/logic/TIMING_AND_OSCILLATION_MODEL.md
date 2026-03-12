@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 ## LOGIC Timing And Oscillation Model
 
 LOGIC timing is canonical cybernetic timing. It is expressed through canonical ticks, TEMP mappings, declared delay policies, explicit state, and deterministic evaluation order. It is not a wall-clock subsystem and it is not an electrical-frequency subsystem.

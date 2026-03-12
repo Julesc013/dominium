@@ -1,4 +1,7 @@
 Change: LOGIC-8 deterministic fault, noise, EMI-stub, and protocol-security hooks for logic networks
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
 - data/registries/explain_contract_registry.json

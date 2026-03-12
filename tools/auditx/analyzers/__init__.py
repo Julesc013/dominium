@@ -470,6 +470,7 @@ from analyzers import e460_phase_shortcut_smell
 from analyzers import e461_orbit_trace_stored_in_truth_smell
 from analyzers import e462_nbody_leak_smell
 from analyzers import e469_unclassified_module_smell
+from analyzers import e470_contradictory_doc_without_header_smell
 
 
 ANALYZERS = (
@@ -943,6 +944,7 @@ ANALYZERS = (
     e461_orbit_trace_stored_in_truth_smell,
     e462_nbody_leak_smell,
     e469_unclassified_module_smell,
+    e470_contradictory_doc_without_header_smell,
 )
 
 

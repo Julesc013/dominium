@@ -1,6 +1,9 @@
 Status: BASELINE
 Last Updated: 2026-03-01
 Scope: CTRL-7 capability registry enforcement, migration, and tests
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Capability Registry Baseline
 
@@ -69,4 +72,3 @@ Scope: CTRL-7 capability registry enforcement, migration, and tests
 - Topology map updated:
   - `python tools/governance/tool_topology_generate.py --repo-root .`
   - fingerprint: `3d94ab48d04f9d29d68114f24fa67fa0e2329e653b87cfa4e8234832941b97c9`
-

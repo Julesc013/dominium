@@ -2,6 +2,9 @@ Status: BASELINE
 Version: 1.0.0
 Date: 2026-03-01
 Scope: CTRL-10 final hardening envelope before MOB series
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Control Plane Final Baseline
 

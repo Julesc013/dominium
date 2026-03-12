@@ -2,6 +2,9 @@ Status: CANONICAL
 Last Reviewed: 2026-03-03
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # SIG7 Retro Consistency Audit
 
@@ -73,4 +76,3 @@ Assessment:
 - A10 Explicit degradation and refusal
 - E2 Deterministic ordering
 - E6 Replay equivalence
-

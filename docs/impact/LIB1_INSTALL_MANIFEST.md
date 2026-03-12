@@ -1,4 +1,8 @@
 Change:
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 LIB-1 deterministic install manifests, build selection, and multi-install registration
 
 Touched Paths:

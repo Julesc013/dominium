@@ -2,8 +2,18 @@ Status: AUTHORITATIVE
 Version: 1.0.0
 Last Reviewed: 2026-03-06
 Scope: STATEVEC-0 explicit state exposure for SYS/COMPILE/process capsules.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Explicit State Vector Rule
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Purpose
 Prevent hidden-state abstraction drift by requiring all output-affecting internal memory to be declared, versioned, serialized deterministically, and provenance-anchored.

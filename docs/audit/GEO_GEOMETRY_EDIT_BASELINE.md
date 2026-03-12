@@ -2,6 +2,9 @@ Status: BASELINE
 Last Updated: 2026-03-09
 Version: 1.0.0
 Scope: GEO-7 deterministic geometry state, process-only edit application, MAT provenance, coupling outputs, ROI micro hooks, proof/replay, and enforcement.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # GEO Geometry Edit Baseline
 

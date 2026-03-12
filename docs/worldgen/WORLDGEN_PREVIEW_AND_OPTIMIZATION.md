@@ -2,6 +2,9 @@ Status: CANONICAL
 Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Worldgen Preview And Optimization
 
@@ -31,4 +34,3 @@ Preview generation provides fast, deterministic feedback without changing simula
 - Preview work runs within declared budget policy.
 - Refusals are explicit on budget or capability mismatch.
 - Profiling output is derived and non-authoritative.
-

@@ -2,6 +2,9 @@ Status: BASELINE
 Last Reviewed: 2026-03-06
 Version: 1.0.0
 Scope: SYS-8 stress/proof/regression envelope for system collapse/expand at scale.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # SYS Final Baseline
 

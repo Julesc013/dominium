@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to canon v1.0.0 and enforced by `client/CMakeLists.txt` and `tools/xstack/repox/check.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Truth/Perceived/Render Boundary v1
 

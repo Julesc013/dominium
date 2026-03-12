@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-16
 Scope: ED-1/4 deterministic epistemic memory baseline.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Epistemic Memory Baseline
 
@@ -69,4 +72,3 @@ All decay is tick-based only.
 1. Long-memory historical models (policy+schema only in this baseline).
 2. Trust/communication/history layers can consume memory items without changing Truth semantics.
 3. Optional memory delta transport remains available for future optimization.
-

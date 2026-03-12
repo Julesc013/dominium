@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, and `AGENTS.md`.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Galaxy Scale Readiness
 
@@ -44,4 +47,3 @@ Readiness checklist for deterministic traversal from Milky Way macro scale to Ea
 - `docs/architecture/interest_regions.md`
 - `docs/architecture/macro_capsules.md`
 - `docs/architecture/deterministic_packaging.md`
-

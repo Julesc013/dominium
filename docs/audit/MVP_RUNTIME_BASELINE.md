@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`, `docs/mvp/MVP_RUNTIME_BUNDLE.md`, and `docs/mvp/MVP_INSTALL_LAYOUT.md`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # MVP Runtime Baseline
 

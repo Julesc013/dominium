@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-11
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # PerformX Baseline Protocol
 
@@ -20,4 +23,3 @@ Baseline updates are explicit and never automatic.
 - Baselines are canonical artifacts and hash-checked.
 - Baseline updates require an explanation artifact.
 - Hardware run metadata is never copied into canonical baseline payloads.
-

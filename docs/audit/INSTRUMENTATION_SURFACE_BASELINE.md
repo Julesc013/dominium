@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # INSTRUMENTATION_SURFACE_BASELINE
 
 ## Scope
@@ -63,4 +71,3 @@ Added and passing in STRICT subset:
 ## Readiness
 - Instrumentation contract, schemas, registries, baseline bindings, engine support, enforcement, and core tests are in place.
 - Ready for LOGIC debugging tool wiring and channel surfacing follow-up (`META-INSTR-1` / LOGIC series integration).
-

@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # MVP Cross-Platform Gate
 
 Purpose: define the deterministic cross-platform agreement gate that seals MVP release readiness after MVP-GATE-0 smoke and MVP-GATE-1 stress.

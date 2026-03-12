@@ -2,6 +2,9 @@ Status: CANONICAL
 Last Reviewed: 2026-03-12
 Scope: ARCH-AUDIT-0
 Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Model Purity Audit Constitution
 

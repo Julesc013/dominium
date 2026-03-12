@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `schemas/experience_profile.schema.json` v1.0.0 and CompatX `tools/xstack/compatx/version_registry.json`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # ExperienceProfile Contract
 

@@ -2,6 +2,9 @@ Status: CANONICAL
 Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Canon Index (CLEAN-2)
 

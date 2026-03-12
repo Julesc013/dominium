@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # CONTROL_NEGOTIATION_BASELINE
 
 Status: BASELINE  
@@ -72,4 +80,3 @@ UI-facing downgrade/refusal explanations are derived from decision-log artifacts
   bind deeper inspection sections to `epistemic` + `budget` axes via negotiation extensions.
 - multiplayer proof bundles:
   include control decision-log hashes and IR verification hashes in ranked proof artifacts.
-

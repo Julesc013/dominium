@@ -1,6 +1,9 @@
 Status: DERIVED
 Last Reviewed: 2026-03-01
 Scope: CTRL-3 Phase 0 retro-consistency audit
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # CTRL3 Retro-Consistency Audit
 
@@ -76,4 +79,3 @@ Scope: CTRL-3 Phase 0 retro-consistency audit
 - A2 Process-only mutation (`constitution_v1.md` §3 A2)
 - A3 Law-gated authority (`constitution_v1.md` §3 A3)
 - A10 Explicit degradation/refusal (`constitution_v1.md` §3 A10)
-

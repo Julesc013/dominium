@@ -2,6 +2,9 @@ Status: ACTIVE
 Version: 1.0.0
 Owner: Core Engineering
 Last Updated: 2026-03-08
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # LOGIC0 Retro Audit
 

@@ -4,6 +4,9 @@ Supersedes: `docs/architecture/srz_contract.md` v1.0.0-draft
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to canon/glossary v1.0.0, `schemas/srz_shard.schema.json` v1.0.0, and `schemas/intent_envelope.schema.json` v1.0.0.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # SRZ Contract v1
 

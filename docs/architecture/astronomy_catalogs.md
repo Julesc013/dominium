@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to canon/glossary v1.0.0, `schemas/astronomy_catalog_entry.schema.json` v1.0.0, and `schemas/reference_frame.schema.json` v1.0.0.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Astronomy Catalogs v1
 

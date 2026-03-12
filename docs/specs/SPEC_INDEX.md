@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 --------------------------------
 
@@ -988,4 +991,3 @@ ownership rules and boundary enforcement.
 
 
 | `docs/guides/ui_editor/SPEC_UI_DOC_TLV.md` | tools | tools | optional |
-

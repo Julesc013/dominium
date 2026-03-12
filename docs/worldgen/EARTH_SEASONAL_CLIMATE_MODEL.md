@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`, `docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md`, and EARTH-2 runtime/proof tooling.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Earth Seasonal Climate Model
 

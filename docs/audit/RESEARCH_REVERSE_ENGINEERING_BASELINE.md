@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # Research & Reverse Engineering Baseline
 
 Status: BASELINE  
@@ -160,4 +168,3 @@ Strict build:
 - [x] Destructive reverse engineering is explicit and policy-gated
 - [x] Proof/replay windows cover experiment and reverse-engineering chains
 - [ ] Repository-wide strict gates globally green (blocked by pre-existing/global findings outside PROC-7 delta)
-

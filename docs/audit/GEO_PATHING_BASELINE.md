@@ -2,6 +2,9 @@ Status: BASELINE
 Last Updated: 2026-03-09
 Version: 1.0.0
 Scope: GEO-6 deterministic pathing, traversal cost composition, shard-stage route planning, and replay proof surfaces.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # GEO Pathing Baseline
 

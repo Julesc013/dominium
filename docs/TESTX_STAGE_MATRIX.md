@@ -1,7 +1,11 @@
-Status: DERIVED
+Status: Superseded
 Last Reviewed: 2026-02-08
 Supersedes: none
 Superseded By: tests/testx/CAPABILITY_MATRIX.yaml
+Reason: matrix ownership moved into the generated TestX capability matrix artifact
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: explicit replacement document listed in the supersession header
 
 # TESTX_STAGE_MATRIX (Historical)
 

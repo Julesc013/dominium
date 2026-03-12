@@ -2,6 +2,9 @@ Status: BASELINE
 Last Reviewed: 2026-03-06
 Version: 1.0.0
 Scope: SYS-5 retro-consistency audit for certification workflow integration.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # SYS5 Retro Audit
 

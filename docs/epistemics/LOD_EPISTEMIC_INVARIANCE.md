@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-16
 Compatibility: Bound to Observation Kernel, LawProfile, EpistemicPolicy, and deterministic collapse/expand transitions.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # LOD Epistemic Invariance
 

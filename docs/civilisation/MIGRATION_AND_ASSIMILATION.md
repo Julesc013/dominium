@@ -1,6 +1,9 @@
 Status: AUTHORITATIVE
 Last Reviewed: 2026-02-26
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Migration And Assimilation
 

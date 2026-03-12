@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Updated: 2026-02-15
 Scope: MP-4/9 server-authoritative replication baseline
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Server-Authoritative Baseline Report
 

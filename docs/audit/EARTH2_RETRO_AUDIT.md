@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Informative retro audit for EARTH-2 against MW-3, EARTH-0, EARTH-1, FIELD-1, and TEMP-0/TEMP-2 surfaces.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # EARTH-2 Retro Audit
 

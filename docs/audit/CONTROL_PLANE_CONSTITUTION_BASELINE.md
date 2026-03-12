@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-28
 Version: 1.0.0
 Scope: CTRL-0 Control Plane Constitution baseline.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Control Plane Constitution Baseline
 

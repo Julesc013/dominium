@@ -4,8 +4,17 @@ Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
 Compatibility: Bound to `docs/canon/constitution_v1.md` and `docs/canon/glossary_v1.md`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Status Now
+
+## Patch Notes
+
+- This snapshot predates the final v0.0.0 scope freeze and should be read alongside `docs/release/MVP_SCOPE_LOCK.md`.
+- The `DEFERRED` list no longer cleanly matches implemented MVP systems; use the release lock and current audit baselines for convergence decisions.
+- Current structural status now also lives in `docs/audit/REPO_REVIEW_2_FINAL.md` and `docs/audit/REPO_REVIEW_3_FINAL.md`.
 
 ## REAL
 

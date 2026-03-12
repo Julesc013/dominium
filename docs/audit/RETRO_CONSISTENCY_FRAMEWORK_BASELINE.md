@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-28
 Version: 1.0.0
 Scope: ARCH-REF-1 Retro-consistency framework baseline.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Retro Consistency Framework Baseline
 

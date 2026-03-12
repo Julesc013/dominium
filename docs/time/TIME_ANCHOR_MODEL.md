@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # Time Anchor Model
 
 Purpose: define the deterministic long-run tick and epoch-anchor model that protects replay, compaction, and proof stability across very long universe lifetimes.

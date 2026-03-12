@@ -2,6 +2,9 @@ Status: AUTHORITATIVE
 Last Reviewed: 2026-03-08
 Version: 1.0.0
 Scope: LOGIC-4 deterministic L1 evaluation for validated logic networks.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Logic Evaluation Engine
 

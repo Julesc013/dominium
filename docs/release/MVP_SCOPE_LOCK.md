@@ -1,6 +1,9 @@
 Status: RELEASE-LOCKED
 Last Reviewed: 2026-03-13
 Scope: v0.0.0 convergence boundary for Dominium.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # MVP Scope Lock
 

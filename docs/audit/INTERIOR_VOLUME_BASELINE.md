@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-28
 Version: 1.0.0
 Scope: INT-1 InteriorVolumeGraph baseline completion report.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Interior Volume Baseline
 
@@ -61,4 +64,3 @@ Scope: INT-1 InteriorVolumeGraph baseline completion report.
 - Portal `sealing_coefficient` is in place for HVAC/fluid coupling.
 - Interior graph can connect to FlowSystem channels without schema refactor.
 - State-machine + constraint hooks are ready for airlocks, pressure doors, and compartment sealing logic.
-

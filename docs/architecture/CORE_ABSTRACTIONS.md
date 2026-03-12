@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-28
 Version: 1.0.0
 Scope: ABS-1 universal deterministic abstraction substrate for graph/flow/constraints/state/hazard/schedule/spatial.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Core Abstractions
 
@@ -92,4 +95,3 @@ Prevent subsystem drift by standardizing reusable deterministic substrates for g
 3. Execute mutations through process pipeline only.
 4. Preserve deterministic ordering and refusal semantics.
 5. Add RepoX/AuditX/TestX guardrails before enabling gameplay-facing behaviors.
-

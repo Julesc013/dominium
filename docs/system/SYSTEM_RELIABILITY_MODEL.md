@@ -2,8 +2,18 @@ Status: AUTHORITATIVE
 Last Reviewed: 2026-03-06
 Version: 1.0.0
 Scope: SYS-6 system reliability and predictive failure budgeting for macro capsules.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # System Reliability Model
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## A) Failure Modes
 Canonical system-level failure mode IDs:

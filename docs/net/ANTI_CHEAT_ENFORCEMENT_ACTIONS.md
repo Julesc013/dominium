@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-15
 Compatibility: Bound to anti-cheat policy registry action tables and refusal contract.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Anti-Cheat Enforcement Actions
 
@@ -51,4 +54,3 @@ Define explicit anti-cheat action semantics. No hidden ban paths are permitted.
 - `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`
 - `docs/contracts/refusal_contract.md`
 - `src/net/anti_cheat/anti_cheat_engine.py`
-

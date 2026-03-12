@@ -3,8 +3,18 @@ Last Reviewed: 2026-02-28
 Version: 1.0.0
 Scope: INT-3 interior inspection and diegetic instrumentation integration.
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/interior/INTERIOR_VOLUME_MODEL.md`, `docs/interior/COMPARTMENT_FLOWS.md`, and `docs/materials/INSPECTION_SYSTEM.md`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Interior Inspection and Diegetics
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Visibility Contract
 - Default diegetic visibility:

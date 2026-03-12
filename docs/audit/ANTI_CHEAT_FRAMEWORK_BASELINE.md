@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # Anti-Cheat Framework Baseline
 
 Status: DERIVED  
@@ -76,4 +84,3 @@ Report tool:
 - Add new modules through `anti_cheat_module_registry`.
 - Add/adjust policy tables in `anti_cheat_policy_registry` (modules, actions, escalation rules).
 - Integrate external attestation providers through the attestation module interface without changing simulation semantics.
-

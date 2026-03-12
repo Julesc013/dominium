@@ -1,6 +1,9 @@
 Status: BASELINE
 Last Reviewed: 2026-03-08
 Scope: LOGIC-5 timing, oscillation, watchdog, and deterministic micro-ROI preparation.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # LOGIC Timing Baseline
 

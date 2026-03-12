@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # META-CONTRACT-0 Retro Consistency Audit
 
 Status: AUDIT
@@ -89,4 +97,3 @@ Migration note:
 6. Add AuditX smells for missing declaration classes.
 7. Add TestX coverage for registry/schema + deterministic explain behavior.
 8. Integrate topology + semantic impact for contract nodes and coupling-change suite selection.
-

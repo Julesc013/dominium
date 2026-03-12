@@ -1,4 +1,7 @@
 Change: GR3 STRICT invariant unblock (action family coverage + field token hygiene)
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
 - data/registries/action_template_registry.json

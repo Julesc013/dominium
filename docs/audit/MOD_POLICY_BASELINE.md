@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, `docs/meta/EXTENSION_DISCIPLINE.md`, `docs/geo/OVERLAY_CONFLICT_POLICIES.md`, `src/modding/mod_policy_engine.py`, `tools/xstack/registry_compile/compiler.py`, and `tools/xstack/sessionx/creator.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # MOD-POLICY-0 Baseline
 

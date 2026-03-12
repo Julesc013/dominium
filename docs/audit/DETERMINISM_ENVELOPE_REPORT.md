@@ -3,6 +3,9 @@ Version: 1.0.0
 Last Reviewed: 2026-02-15
 Scope: Prompt 20 Phase 3 determinism envelope verification
 Compatibility: Bound to `docs/canon/constitution_v1.md` and `docs/canon/glossary_v1.md`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Determinism Envelope Report
 

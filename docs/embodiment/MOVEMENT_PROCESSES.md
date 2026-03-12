@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-16
 Compatibility: Bound to `tools/xstack/sessionx/process_runtime.py`, SRZ routing/coordinator modules, and `docs/contracts/refusal_contract.md`.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Embodied Movement Processes
 

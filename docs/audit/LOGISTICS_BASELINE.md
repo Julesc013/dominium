@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-27
 Version: 1.0.0
 Scope: MAT-4 logistics graph, manifests, and deterministic delivery commitments baseline.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Logistics Baseline
 

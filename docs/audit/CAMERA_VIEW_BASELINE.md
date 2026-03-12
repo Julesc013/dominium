@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-16
 Scope: EB-4 camera binding + view lens baseline (epistemic-safe, multiplayer-safe)
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Camera View Baseline
 

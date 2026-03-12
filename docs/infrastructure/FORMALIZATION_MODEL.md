@@ -2,8 +2,18 @@ Status: ACTIVE
 Version: 1.0.0
 Owner: Core Engineering
 Last Updated: 2026-03-01
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Formalization Model
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## 1. Purpose
 `FormalizationState` is the deterministic infrastructure lifecycle substrate for moving from raw placed assemblies to network-connected infrastructure artifacts.

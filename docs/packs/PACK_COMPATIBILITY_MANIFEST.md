@@ -3,6 +3,9 @@ Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, and `docs/geo/OVERLAY_CONFLICT_POLICIES.md`
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Pack Compatibility Manifest
 

@@ -1,6 +1,9 @@
 Status: AUTHORITATIVE
 Last Reviewed: 2026-02-16
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Factions and Affiliation
 
@@ -29,4 +32,3 @@ This document defines the CIV-1 structural substrate for faction state, subject 
 - Faction, affiliation, territory, and diplomacy state are authoritative server-side in replicated sessions.
 - Lockstep carries civ intents as deterministic process intents.
 - Server-authoritative and hybrid routes must apply authority checks before mutation.
-

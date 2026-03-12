@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # ELECTRICAL FINAL BASELINE
 
 Status: COMPLETE (ELEC-5 scope)  
@@ -133,4 +141,3 @@ ELEC subsystem is hardened for deterministic MMO-scale stress/cascade/proof/repl
 
 - LOGIC-0 control/automation integration
 - THERM-0 thermal-domain coupling expansion
-

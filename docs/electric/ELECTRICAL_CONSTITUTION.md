@@ -1,4 +1,19 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
+
 # Electrical Constitution
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 Status: CANONICAL
 Last Updated: 2026-03-03
@@ -119,4 +134,3 @@ Inspection/admin snapshots may expose wider summaries, but diegetic subjects mus
 - no waveform simulation implementation
 - no new ontology primitives
 - no wall-clock or nondeterministic behavior
-

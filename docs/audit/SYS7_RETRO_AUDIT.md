@@ -2,6 +2,9 @@ Status: BASELINE
 Last Reviewed: 2026-03-06
 Version: 1.0.0
 Scope: SYS-7 retro-consistency audit for system-level forensics and explain coverage.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # SYS7 Retro Audit
 

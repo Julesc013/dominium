@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # PHYS-2 Retro Consistency Audit
 
 Status: AUDIT
@@ -85,4 +93,3 @@ Mitigation:
 
 4. Deterministic sampling:
 - retain `(field_id, spatial_node_id, tick)` sample identity with deterministic fingerprints.
-

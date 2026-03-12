@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-09
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Server Discovery
 
@@ -40,4 +43,3 @@ If capability or provider preconditions fail, command returns deterministic refu
 - `REFUSE_CAPABILITY_MISSING`
 - `REFUSE_PROVIDER_UNAVAILABLE`
 - `REFUSE_UNAVAILABLE`
-

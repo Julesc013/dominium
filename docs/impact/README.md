@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # Demand Impact Mapping
 
 Use this directory to map runtime-domain changes to one or more `demand_id` entries from `data/meta/player_demand_matrix.json`.

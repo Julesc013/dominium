@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-09
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Client Flow
 
@@ -55,4 +58,3 @@ Current bridge-level refusal codes:
 - `REFUSE_CAPABILITY_MISSING`
 - `REFUSE_INVALID_STATE`
 - `REFUSE_UNAVAILABLE`
-

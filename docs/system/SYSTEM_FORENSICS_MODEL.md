@@ -2,8 +2,18 @@ Status: AUTHORITATIVE
 Last Reviewed: 2026-03-06
 Version: 1.0.0
 Scope: SYS-7 system-level forensics and explainability model.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # System Forensics Model
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Purpose
 SYS-7 defines a uniform deterministic "why" model for system events across micro and macro tiers.

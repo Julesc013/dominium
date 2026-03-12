@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`, `docs/worldgen/MILKY_WAY_CONSTITUTION.md`, `docs/worldgen/STAR_SYSTEM_SEED_MODEL.md`, `docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md`, `schema/worldgen/system_priors.schema`, `schema/worldgen/planet_priors.schema`, `schema/worldgen/star_artifact.schema`, `schema/worldgen/planet_orbit_artifact.schema`, `schema/worldgen/planet_basic_artifact.schema`, and `src/worldgen/mw/mw_system_refiner_l2.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # MW System L2 Baseline
 

@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-16
 Compatibility: EB-5 representation decoupling baseline for pill->high-fidelity proxy selection and cosmetic governance.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Representation Baseline
 
@@ -62,4 +65,3 @@ This baseline confirms representation decoupling for EB-5:
 2. Extend `render_proxy_registry` and `cosmetic_registry` through registry contributions.
 3. Add animation/LOD tuning as RenderModel-only extensions (no Truth coupling).
 4. Extend ranked governance with stricter pack publisher constraints via SecureX policy.
-

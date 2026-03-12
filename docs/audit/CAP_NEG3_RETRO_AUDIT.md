@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `src/compat/capability_negotiation.py`, `src/client/local_server/local_server_controller.py`, `src/server/server_console.py`, and `src/embodiment/tools/logic_tool.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # CAP-NEG-3 Retro Audit
 

@@ -1,4 +1,7 @@
 Change: META-COMPUTE-0 deterministic compute budgeting, throttling, and coupling hooks
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
 - src/meta/compute/compute_budget_engine.py

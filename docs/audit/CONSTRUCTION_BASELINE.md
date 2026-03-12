@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-27
 Version: 1.0.0
 Scope: MAT-5 construction, installation, commitments, provenance, and deterministic project execution baseline.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Construction Baseline
 
@@ -133,4 +136,3 @@ TestX MAT-5 subset:
 5. ui_bind --check PASS
    - command: `py -3 tools/xstack/ui_bind.py --repo-root . --check`
    - result: `result=complete`
-

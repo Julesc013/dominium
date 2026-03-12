@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Governance Final Report
 
@@ -33,4 +36,3 @@ From `docs/audit/xstack/PROFILE_*.json`:
 - Cold RepoX remains the dominant throughput bottleneck.
 - STRICT/FULL target throughput is achieved for warm-cache workflows but not for cold-cache runs.
 - Additional RepoX dependency narrowing is still required to reduce cold-path cost.
-

@@ -3,6 +3,9 @@ Last Reviewed: 2026-02-06
 Supersedes: none
 Superseded By: none
 STATUS: DRAFT
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # POST-CANON L3: Capability Stages (Stub)
 

@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # Multiplayer Security Baseline
 
 Status: DERIVED BASELINE  
@@ -65,4 +73,3 @@ Out of scope for this baseline:
 - invasive client scanning
 - client-side prediction integrity proofs
 - matchmaking trust federation
-

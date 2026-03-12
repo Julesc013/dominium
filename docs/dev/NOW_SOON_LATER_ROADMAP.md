@@ -2,8 +2,18 @@ Status: CANONICAL
 Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # NOW / SOON / LATER Roadmap (Settings UX)
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## NOW
 
@@ -30,4 +40,3 @@ when not implemented.
 - Cloud sync UX for launcher settings.
 - Setup background update and advanced patch tuning.
 - Server live policy dashboards.
-

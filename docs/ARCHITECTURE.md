@@ -2,12 +2,21 @@ Status: DERIVED
 Last Reviewed: 2026-02-13
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Dominium Architecture
 
 This document summarizes the active architecture across engine, game, products, and governance execution.
 
 Canonical contracts remain in `docs/architecture/`, starting with `docs/architecture/ARCH0_CONSTITUTION.md`.
+
+## Patch Notes
+
+- Current repository organization is centered on `src/` and `tools/`; the engine/game/client/server boundary remains conceptual rather than a top-level directory layout.
+- Constitutional precedence now starts with `docs/canon/constitution_v1.md` and `docs/canon/glossary_v1.md`, not this summary page.
+- Use `docs/audit/REPO_TREE_INDEX.md` and `docs/audit/ENTRYPOINT_MAP.md` for the current convergence-era structural baseline.
 
 ## System Layers
 

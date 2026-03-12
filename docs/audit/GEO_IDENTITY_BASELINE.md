@@ -2,6 +2,9 @@ Status: BASELINE
 Last Updated: 2026-03-08
 Version: 1.0.0
 Scope: GEO-1 deterministic spatial indexing and stable identity baseline.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # GEO Identity Baseline
 

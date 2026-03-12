@@ -1,6 +1,9 @@
 Status: AUDIT
 Scope: SIG-2 message semantics, addressing, aggregation, and receipt hardening
 Date: 2026-03-03
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # SIG2 Retro Audit
 

@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-16
 Compatibility: Bound to `data/registries/server_profile_registry.json`, `data/registries/securex_policy_registry.json`, `tools/xstack/sessionx/net_handshake.py`, and refusal contract.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Ranked Server Governance Baseline
 

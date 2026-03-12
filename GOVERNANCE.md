@@ -1,30 +1,92 @@
-# Project Governance (FUTURE0)
-
-Status: binding.
-Scope: decision hierarchy, review requirements, and enforcement baseline.
-
-Governance protects invariants and prevents simplification drift. This file
-summarizes the decision process; it does not replace ARCH0 or CHANGE_PROTOCOL.
-
-## Invariants
-- ARCH0 and CANON docs are binding.
-- Invariant changes require architectural review and canon updates.
-- Determinism and law gates are non-negotiable.
-
-## Decision hierarchy
-1) ARCH0 constitution and canonical docs are binding.
-2) Change protocol governs all sim-affecting changes.
-3) CI enforcement IDs encode non-negotiable checks.
-
-## Required review
-- Invariant changes require architectural review and canon updates.
-- Schema changes require versioning and migration/refusal plans.
-- Mod policy violations are refused.
-
-## Forbidden assumptions
-- "Small" changes can bypass review or CI enforcement.
-- Invariants are optional or negotiable.
-
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
+# Project Governance (FUTURE0)
+
+
+
+
+
+Status: binding.
+
+
+Scope: decision hierarchy, review requirements, and enforcement baseline.
+
+
+
+
+
+Governance protects invariants and prevents simplification drift. This file
+
+
+summarizes the decision process; it does not replace ARCH0 or CHANGE_PROTOCOL.
+
+
+
+
+
+## Invariants
+
+
+- ARCH0 and CANON docs are binding.
+
+
+- Invariant changes require architectural review and canon updates.
+
+
+- Determinism and law gates are non-negotiable.
+
+
+
+
+
+## Decision hierarchy
+
+
+1) ARCH0 constitution and canonical docs are binding.
+
+
+2) Change protocol governs all sim-affecting changes.
+
+
+3) CI enforcement IDs encode non-negotiable checks.
+
+
+
+
+
+## Required review
+
+
+- Invariant changes require architectural review and canon updates.
+
+
+- Schema changes require versioning and migration/refusal plans.
+
+
+- Mod policy violations are refused.
+
+
+
+
+
+## Forbidden assumptions
+
+
+- "Small" changes can bypass review or CI enforcement.
+
+
+- Invariants are optional or negotiable.
+
+
+
+
+
 ## Dependencies
 - `docs/architecture/ARCH0_CONSTITUTION.md`
 - `docs/architecture/CHANGE_PROTOCOL.md`

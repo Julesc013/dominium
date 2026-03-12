@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # CTRL-6 View & Epistemic Control Baseline
 
 Status: Baseline generated for CTRL-6 (view + epistemic unification).
@@ -94,4 +102,3 @@ Observed outcomes:
 - TestX CTRL-6 subset: `pass` (10/10 selected tests)
 - Strict profile (`tools/xstack/run.py strict`): `refusal` due pre-existing broader workspace gate failures (CompatX/TestX/Packaging/RepoX), not isolated to CTRL-6 deltas.
 - Topology map: regenerated successfully (`docs/audit/TOPOLOGY_MAP.json`, `docs/audit/TOPOLOGY_MAP.md`).
-

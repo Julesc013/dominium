@@ -1,6 +1,9 @@
 Status: DERIVED
 Last Reviewed: 2026-03-01
 Scope: CTRL-2 Phase 0 retro-consistency audit
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # CTRL2 Retro-Consistency Audit
 

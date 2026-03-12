@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to canon/glossary v1.0.0, `tools/xstack/registry_compile/`, and `tools/xstack/cache_store/`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Registry Compile v1 Contract
 

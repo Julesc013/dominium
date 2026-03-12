@@ -1,6 +1,9 @@
 Status: BASELINE
 Last Reviewed: 2026-03-08
 Scope: LOGIC-4 deterministic L1 evaluation engine baseline.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # LOGIC Evaluation Baseline
 

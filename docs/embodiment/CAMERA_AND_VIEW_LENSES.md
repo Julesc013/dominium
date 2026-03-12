@@ -2,6 +2,9 @@ Status: DERIVED
 Version: 1.0.0
 Last Reviewed: 2026-02-16
 Compatibility: Bound to process-only mutation, Observation Kernel epistemic filtering, and multiplayer policy registries.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Camera And View Lenses
 
@@ -75,4 +78,3 @@ No direct UI or renderer mutation is allowed.
 1. Binding replacement and conflict handling rules are deterministic.
 2. View mode and lens validation depend only on canonical inputs (registries, law, authority, policies, state).
 3. Replay of identical camera intents yields identical hash anchors.
-

@@ -1,4 +1,7 @@
 Change: LOGIC-9 deterministic distributed protocol framing, arbitration, SIG transport, and debug surfaces for logic networks
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
 - data/registries/explain_contract_registry.json

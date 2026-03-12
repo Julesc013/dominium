@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Docs Audit (Prompt 0)  
 
@@ -3035,5 +3038,3 @@ Summary (current audit file counts):
 
 
 - docs\guides\dev\dominium_new_tools.txt ; STATUS=CURRENT ; Intent=see file header ; Relevance=assumed current ; Conflicts=terminology aligned via docs/architectureitecture/TERMINOLOGY.md ; Actions=none
-
-

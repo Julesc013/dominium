@@ -1,6 +1,10 @@
 Status: DERIVED
 Last Reviewed: 2026-03-11
 Derived From:
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 - `docs/packs/PACK_VERIFICATION_PIPELINE.md`
 - `docs/packs/PACK_COMPATIBILITY_MANIFEST.md`
 

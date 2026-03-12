@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # MOBILITY_NETWORK_BASELINE
 
 Status: BASELINE
@@ -132,4 +140,3 @@ Scope: MOB-2 GuideGeometry to MobilityNetworkGraph integration.
 - topology map update:
   - command: `python tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`
   - status: `complete` (`node_count=2341`, `edge_count=99284`)
-

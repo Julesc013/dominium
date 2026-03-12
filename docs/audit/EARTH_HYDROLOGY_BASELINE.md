@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/worldgen/EARTH_HYDROLOGY_MODEL.md`, `src/worldgen/earth/hydrology_engine.py`, `src/worldgen/mw/mw_surface_refiner_l3.py`, `tools/worldgen/earth1_probe.py`, and `tools/worldgen/tool_replay_hydrology_window.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Earth Hydrology Baseline
 

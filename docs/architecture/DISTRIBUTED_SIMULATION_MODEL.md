@@ -2,6 +2,9 @@ Status: CANONICAL
 Last Reviewed: 2026-02-01
 Supersedes: docs/archive/architecture/DISTRIBUTED_SIM_MODEL.md
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Distributed Simulation Model (MMO-SRZ)
 

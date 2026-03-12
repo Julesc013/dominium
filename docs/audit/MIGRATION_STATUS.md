@@ -1,5 +1,8 @@
 Status: DERIVED
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Migration Status
 

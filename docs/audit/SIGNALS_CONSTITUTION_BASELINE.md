@@ -1,5 +1,8 @@
 Status: Baseline implemented for SIG-0 (signals + communication constitution).
 Date: 2026-03-03
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # SIG-0 Signals Constitution Baseline
 
@@ -93,4 +96,3 @@ Executed on 2026-03-03:
 5. Topology map
 - Command: `python tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`
 - Result: `complete` with deterministic fingerprint `95f814405c4b26ba055e90b0fb433d647f6592151f837f3228b6385cfdc83993`.
-

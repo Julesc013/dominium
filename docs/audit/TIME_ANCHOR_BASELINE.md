@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # TIME-ANCHOR-0 Baseline
 
 - tick_t is canonical uint64 with refusal threshold `18446744073708551615`.

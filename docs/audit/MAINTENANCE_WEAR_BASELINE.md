@@ -1,6 +1,9 @@
 Status: BASELINE
 Version: 1.0.0
 Last Updated: 2026-03-03
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # MOB-9 Maintenance And Wear Baseline
 

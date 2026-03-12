@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # PHYS1 Retro-Consistency Audit
 
 Status: CANONICAL  
@@ -75,4 +83,3 @@ The following patterns are transitional and should not be expanded:
 - initializing authoritative motion solely from velocity without persisted momentum state
 - adding new direct velocity mutation paths outside PHYS process/model routes
 - introducing gravity effects outside `Field -> ConstitutiveModel -> process.apply_force`
-

@@ -1,7 +1,11 @@
-Status: DERIVED
+Status: Superseded
 Last Reviewed: 2026-02-08
 Supersedes: none
 Superseded By: docs/architecture/CAPABILITY_ONLY_CANON.md
+Reason: legacy capability staging summary already points to the current canonical document
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: explicit replacement document listed in the supersession header
 
 # CAPABILITY_STAGES (Historical Planning Vocabulary)
 

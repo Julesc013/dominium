@@ -706,6 +706,11 @@ def run_arch_audit(repo_root: str) -> dict:
 def render_arch_audit_report(report: Mapping[str, object]) -> str:
     payload = _as_map(report)
     lines = [
+        "Status: DERIVED",
+        "Stability: provisional",
+        "Future Series: DOC-CONVERGENCE",
+        "Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and REPO-REVIEW-3.",
+        "",
         "# ARCH Audit Report",
         "",
         "- report_id: `{}`".format(_token(payload.get("report_id"))),
@@ -746,6 +751,11 @@ def render_arch_audit_report(report: Mapping[str, object]) -> str:
 def render_arch_audit_baseline(report: Mapping[str, object]) -> str:
     payload = _as_map(report)
     lines = [
+        "Status: DERIVED",
+        "Stability: provisional",
+        "Future Series: DOC-CONVERGENCE",
+        "Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and REPO-REVIEW-3.",
+        "",
         "# ARCH Audit Baseline",
         "",
         "## Checks",

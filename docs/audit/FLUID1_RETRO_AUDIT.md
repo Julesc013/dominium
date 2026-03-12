@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # FLUID1 Retro Consistency Audit
 
 Status: BASELINE
@@ -52,4 +60,3 @@ Migration note:
 
 - No prior FLUID runtime path required deprecation in this phase.
 - Any future direct valve/pressure logic outside model-engine mediated flow paths is non-compliant and should be treated as governance drift.
-

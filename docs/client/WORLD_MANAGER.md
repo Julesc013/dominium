@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-09
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # World Manager
 
@@ -41,4 +44,3 @@ Current bridge implementation:
 - `REFUSE_CAPABILITY_MISSING` for gated commands
 - `REFUSE_INVALID_STATE` for invalid state transitions
 - `REFUSE_UNAVAILABLE` for unimplemented operations
-

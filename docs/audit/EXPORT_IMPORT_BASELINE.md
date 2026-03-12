@@ -1,5 +1,8 @@
 Status: BASELINE
 Last Reviewed: 2026-03-11
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # EXPORT_IMPORT_BASELINE
 

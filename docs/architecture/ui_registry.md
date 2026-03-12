@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `schemas/ui_window.schema.json` v1.0.0, `schemas/ui_registry.schema.json` v1.0.0, and canon v1.0.0.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # UI Registry and Descriptor Contract v1
 

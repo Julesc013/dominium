@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # FIELD Layer Baseline
 
 Status: BASELINE
@@ -49,4 +57,3 @@ Scope: FIELD-1 Global Field substrate completion baseline.
 - Domain solvers can plug in by writing deterministic `flow_quantities` and `hazard_states` inputs to `process.field_tick`.
 - Additional domain fields should register via field type/update policy registries and schema-compatible layer/cell rows.
 - Future solver activation should remain SRZ-compatible and budget-enveloped with deterministic degradation/refusal paths.
-

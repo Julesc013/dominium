@@ -2,6 +2,9 @@ Status: CANONICAL
 Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Client UI And Flow
 
@@ -36,4 +39,3 @@ Client UI flow is command-driven and mode-parity safe.
 - Refusal messages include deterministic refusal codes.
 - Build identity and lock hash are surfaced in About/Details views.
 - Replay and bugreport surfaces are read-only by default.
-

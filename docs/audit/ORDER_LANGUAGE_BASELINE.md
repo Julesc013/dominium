@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-26
 Version: 1.0.0
 Scope: CIV-3/4 order language + institution scaffold baseline
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Order Language Baseline
 
@@ -83,4 +86,3 @@ Scope: CIV-3/4 order language + institution scaffold baseline
 - MAT-series build plan materialization.
 - Cross-shard multi-target order splitting and routing.
 - Pathing-backed micro movement executors.
-

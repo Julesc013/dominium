@@ -1,4 +1,19 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
+
 # Field Generalization Constitution
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 Status: CANONICAL
 Last Updated: 2026-03-04
@@ -85,4 +100,3 @@ See `docs/physics/FIELD_SHARD_RULES.md`.
 - no PDE solvers in PHYS-2
 - no wall-clock-coupled update loops
 - no mandatory default-pack dependency for null boot
-

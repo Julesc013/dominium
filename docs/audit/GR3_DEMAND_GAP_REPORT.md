@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # Player Demand Gaps
 
 Status: GENERATED
@@ -135,4 +143,3 @@ Status: GENERATED
 - SCI-0 (9)
 - SIG-10 (9)
 - SYS-9 (9)
-

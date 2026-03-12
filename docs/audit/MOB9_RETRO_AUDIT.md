@@ -1,6 +1,9 @@
 Status: AUDIT
 Scope: MOB-9 maintenance/wear retrofit
 Date: 2026-03-03
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # MOB9 Retro Audit
 

@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Derived from `docs/compat/DEGRADE_LADDERS.md`, `data/registries/degrade_ladder_registry.json`, `data/registries/capability_fallback_registry.json`, `src/compat/capability_negotiation.py`, and `src/compat/negotiation/degrade_enforcer.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Degrade Ladder Baseline
 

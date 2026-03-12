@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
 # Electrical Protection Baseline
 
 Status: BASELINE  
@@ -142,4 +150,3 @@ LOGIC integration readiness:
 
 - relay/control policies can bind to existing state machine and process hooks.
 - no new mutation path is required; process-only + deterministic proof surfaces are already in place.
-

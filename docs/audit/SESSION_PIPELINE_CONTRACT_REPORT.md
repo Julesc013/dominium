@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `schema/session/session_stage.schema` v1.0.0, `schema/session/session_pipeline.schema` v1.0.0, and registries under `data/registries/`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Session Pipeline Contract Report
 

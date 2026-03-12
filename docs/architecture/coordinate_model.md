@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0-draft
 Compatibility: Bound to canon v1.0.0 and aligned with `docs/architecture/TERRAIN_COORDINATES.md`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Coordinate Model (Draft Contract)
 

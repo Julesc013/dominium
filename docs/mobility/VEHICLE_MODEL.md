@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # Vehicle Model Doctrine
 
 Status: CANONICAL
@@ -104,4 +112,3 @@ No silent coercion of incompatible specs is allowed.
 - No aerodynamic/orbital solver.
 - No congestion/signaling model.
 - No hardcoded vehicle mode flags.
-

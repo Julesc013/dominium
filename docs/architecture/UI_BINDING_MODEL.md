@@ -5,6 +5,9 @@ Superseded By: none
 STATUS: CANONICAL
 OWNER: architecture
 LAST_VERIFIED: 2026-01-29
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # UI Binding Model (APP-UI-BIND-0)
 

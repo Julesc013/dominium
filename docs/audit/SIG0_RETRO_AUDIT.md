@@ -1,6 +1,9 @@
 Status: AUDIT
 Scope: SIG-0 signals and communication constitution retrofit
 Date: 2026-03-03
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # SIG0 Retro Audit
 

@@ -2,8 +2,18 @@ Status: DERIVED
 Last Reviewed: 2026-02-08
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Freecam Modes
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Definitions
 - `truth`: authoritative world state; never rendered in normal play.
@@ -36,4 +46,3 @@ Superseded By: none
 - `CAMERA_REFUSE_ENTITLEMENT`: tooling entitlement missing.
 - `CAMERA_REFUSE_WORLD_INACTIVE`: no active world context.
 - `CAMERA_REFUSE_USAGE`: invalid or incomplete command arguments.
-

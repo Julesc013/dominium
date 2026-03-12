@@ -2,6 +2,9 @@ Status: DERIVED
 Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # Settings and UX Consistency Report
 
@@ -39,4 +42,3 @@ server, tools, and governance checks.
 - Server: authority policy settings.
 - Tools: output/filter/display preferences.
 - Engine/Game: no user settings; explicit runtime parameters only.
-

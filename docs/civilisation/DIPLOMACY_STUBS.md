@@ -1,6 +1,9 @@
 Status: AUTHORITATIVE
 Last Reviewed: 2026-02-16
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # Diplomacy Stubs
 
@@ -25,4 +28,3 @@ Diplomacy in CIV-1 is a deterministic state substrate only. It does not apply co
 - Asymmetric relations.
 - Treaty metadata and expiry.
 - Trade/war integration through separate process families.
-

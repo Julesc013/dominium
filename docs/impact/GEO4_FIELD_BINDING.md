@@ -1,4 +1,8 @@
 Change:
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 GEO-4 binds FIELD storage, sampling, and boundary exchange to GEO cell keys so ambient, pollution, and automation fields remain portable across grid, atlas, and future stub partitions.
 
 Touched Paths:

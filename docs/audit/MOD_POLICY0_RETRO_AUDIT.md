@@ -4,6 +4,9 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/architecture/pack_system.md`, `docs/security/SECUREX_TRUST_MODEL.md`, `tools/xstack/pack_loader/loader.py`, `tools/xstack/sessionx/net_handshake.py`, and `src/geo/overlay/overlay_merge_engine.py`.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # MOD-POLICY-0 Retro Audit
 

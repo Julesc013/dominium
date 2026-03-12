@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # Embodied Movement Baseline (EB-3)
 Status: DERIVED BASELINE  
 Last Updated: 2026-02-16  

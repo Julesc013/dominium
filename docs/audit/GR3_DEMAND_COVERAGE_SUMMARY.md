@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # GR3 Demand Coverage Summary
 
 Source artifact: `data/meta/player_demand_matrix.json` (v`1.0.0`)

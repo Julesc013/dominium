@@ -1,4 +1,7 @@
 Change: GR3 FAST integrity stabilization and enforcement hygiene
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
 - data/meta/real_world_affordance_matrix.json

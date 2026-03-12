@@ -1,8 +1,18 @@
 Status: AUTHORITATIVE
 Version: 1.0.0
 Last Updated: 2026-03-03
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
 
 # Message Semantics (SIG-2)
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 ## Purpose
 Define canonical message-layer semantics for artifacts, addressing, queueing, aggregation, and receipts so communication remains deterministic, replayable, and non-bespoke.

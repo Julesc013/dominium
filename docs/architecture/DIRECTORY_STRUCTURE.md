@@ -1,7 +1,11 @@
-Status: CANONICAL
+Status: Superseded
 Last Reviewed: 2026-02-01
 Supersedes: none
-Superseded By: none
+Superseded By: docs/audit/REPO_TREE_INDEX.md
+Reason: top-level layout no longer matches the real repository inventory
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: replacement canonical document listed in the supersession header
 
 # Directory Structure (FS0)
 

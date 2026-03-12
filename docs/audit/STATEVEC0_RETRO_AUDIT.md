@@ -1,6 +1,9 @@
 Status: AUDIT
 Last Reviewed: 2026-03-06
 Scope: STATEVEC-0 retro-consistency audit for explicit output-affecting state exposure.
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
 
 # STATEVEC0 Retro Audit
 

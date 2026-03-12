@@ -1,4 +1,19 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
+
 # Process Capsule Model
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
 
 Status: AUTHORITATIVE
 Last Updated: 2026-03-06
@@ -68,4 +83,3 @@ On invalid capsule execution request:
 - otherwise return deterministic refusal with reason code and remediation metadata.
 
 No silent fallback and no silent mutation are permitted.
-

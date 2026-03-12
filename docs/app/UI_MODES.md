@@ -1,7 +1,11 @@
-Status: DERIVED
+Status: Superseded
 Last Reviewed: 2026-02-01
 Supersedes: none
-Superseded By: none
+Superseded By: docs/appshell/APPSHELL_CONSTITUTION.md
+Reason: mode-selection order conflicts with the frozen v0.0.0 AppShell contract
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: replacement canonical document listed in the supersession header
 
 # UI Modes
 

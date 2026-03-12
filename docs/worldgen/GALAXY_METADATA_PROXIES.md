@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: unknown
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: legacy reference surface retained without current binding authority
+
 # Galaxy Metadata Proxies
 
 GAL-0 adds a minimal, deterministic metadata layer for galaxy cells. These fields are canonical field values, but they are explicitly provisional proxy semantics rather than astrophysical truth.
