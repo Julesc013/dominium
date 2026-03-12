@@ -11,6 +11,7 @@ from typing import Dict, List, Mapping, Sequence
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key, geo_cell_key_neighbors
+from ..material import evaluate_earth_tile_material_proxy
 
 
 DEFAULT_WATER_VISUAL_POLICY_ID = "water.mvp_default"
@@ -246,6 +247,21 @@ def _artifact_rows_by_legacy_alias(surface_tile_artifact_rows: object) -> Dict[s
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
+def _material_proxy_preview(
+    artifact_row: Mapping[str, object] | None,
+    *,
+    current_tick: int,
+) -> dict:
+    row = _as_map(artifact_row)
+    if not row:
+        return {}
+    return evaluate_earth_tile_material_proxy(
+        artifact_row=row,
+        current_tick=int(current_tick),
+        geometry_row=None,
+    )
+
+
 def water_view_artifact_hash(artifact_row: Mapping[str, object] | None) -> str:
     artifact = _as_map(artifact_row)
     if not artifact:
@@ -349,6 +365,7 @@ def build_water_view_surface(
             [_as_map(row).get("tile_cell_key") for row in artifact_rows_by_hash.values()]
         )
     by_tile_id, by_cell_hash = _tide_overlay_lookup(tide_overlay_rows)
+    observer_material_proxy = _material_proxy_preview(observer_surface_artifact, current_tick=int(current_tick))
     cache_key = canonical_sha256(
         {
             "current_tick": int(max(0, _as_int(current_tick, 0))),
@@ -388,6 +405,7 @@ def build_water_view_surface(
     lake_rows: List[dict] = []
     tide_rows: List[dict] = []
     seen_tide_hashes: set[str] = set()
+    reflection_albedo_samples: List[int] = []
     for cell_key in resolved_region_cell_keys:
         cell_hash = _geo_hash(cell_key)
         artifact_row = dict(artifact_rows_by_hash.get(cell_hash) or {})
@@ -397,6 +415,7 @@ def build_water_view_surface(
         tide_row = dict(by_tile_id.get(tile_object_id) or by_cell_hash.get(cell_hash) or {})
         tide_height_value = int(_as_int(tide_row.get("tide_height_value", 0), 0))
         tide_offset_value = int((tide_height_value * tide_visual_strength) // 1000)
+        material_proxy_preview = _material_proxy_preview(artifact_row, current_tick=int(current_tick))
         shared = {
             "tile_object_id": tile_object_id,
             "planet_object_id": str(artifact_row.get("planet_object_id", "")).strip(),
@@ -407,6 +426,7 @@ def build_water_view_surface(
             "tide_offset_value": int(tide_offset_value),
         }
         if _is_ocean_tile(artifact_row):
+            reflection_albedo_samples.append(int(_as_int(material_proxy_preview.get("albedo_proxy_value", 0), 0)))
             ocean_rows.append(
                 {
                     **shared,
@@ -444,6 +464,7 @@ def build_water_view_surface(
             )
         if _lake_flag(artifact_row):
             drainage = int(max(1, _as_int(artifact_row.get("drainage_accumulation_proxy", 1), 1)))
+            reflection_albedo_samples.append(int(_as_int(material_proxy_preview.get("albedo_proxy_value", 0), 0)))
             lake_rows.append(
                 {
                     **shared,
@@ -505,6 +526,17 @@ def build_water_view_surface(
         "lake_tile_count": int(len(lake_rows)),
         "tide_tile_count": int(len(tide_rows)),
     }
+    reflection_tint_preview = {
+        "observer_material_proxy_id": str(observer_material_proxy.get("material_proxy_id", "")).strip() or None,
+        "observer_albedo_proxy_value": int(_as_int(observer_material_proxy.get("albedo_proxy_value", 0), 0)),
+        "region_mean_albedo_proxy_value": (
+            0
+            if not reflection_albedo_samples
+            else int(sum(reflection_albedo_samples) // max(1, len(reflection_albedo_samples)))
+        ),
+        "sample_count": int(len(reflection_albedo_samples)),
+        "source_kind": "derived.water_reflection_tint_preview",
+    }
     payload = {
         "result": "complete",
         "source_kind": "derived.water_view_artifact",
@@ -521,6 +553,7 @@ def build_water_view_surface(
         "presentation": {
             "preferred_presentation": "summary" if str(ui_mode or "").strip().lower() in {"cli", "tui"} else "buffer",
             "summary": summary,
+            "reflection_tint_preview": reflection_tint_preview,
             "summary_text": "water ocean={} river={} lake={} tide={}".format(
                 summary["ocean_tile_count"],
                 summary["river_tile_count"],

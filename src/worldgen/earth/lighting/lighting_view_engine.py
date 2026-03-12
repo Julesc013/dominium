@@ -7,6 +7,7 @@ from typing import Dict, Mapping
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
+from ..material import evaluate_earth_tile_material_proxy
 from .horizon_shadow_engine import (
     DEFAULT_SHADOW_MODEL_ID,
     evaluate_horizon_shadow,
@@ -65,6 +66,21 @@ def _observer_cell_key(
     return _as_map(observer_ext.get("geo_cell_key"))
 
 
+def _surface_material_proxy_preview(
+    observer_surface_artifact: Mapping[str, object] | None,
+    *,
+    tick_bucket: int,
+) -> dict:
+    artifact = _as_map(observer_surface_artifact)
+    if not artifact:
+        return {}
+    return evaluate_earth_tile_material_proxy(
+        artifact_row=artifact,
+        current_tick=int(tick_bucket),
+        geometry_row=None,
+    )
+
+
 def build_lighting_view_surface(
     *,
     sky_view_artifact: Mapping[str, object] | None,
@@ -104,6 +120,7 @@ def build_lighting_view_surface(
         observer_surface_artifact=surface_artifact,
         shadow_model_row=shadow_row,
     )
+    surface_material_proxy = _surface_material_proxy_preview(surface_artifact, tick_bucket=int(tick_bucket))
     artifact = build_illumination_view_artifact(
         sky_view_artifact=sky_artifact,
         observer_ref=observer,
@@ -141,6 +158,18 @@ def build_lighting_view_surface(
         "shadow_factor": int(_as_int(artifact.get("shadow_factor", 0), 0)),
         "sample_count": int(_as_int(shadow_payload.get("sample_count", 0), 0)),
     }
+    surface_reflectance_preview = {
+        "material_proxy_id": str(surface_material_proxy.get("material_proxy_id", "")).strip() or None,
+        "albedo_proxy_value": int(_as_int(surface_material_proxy.get("albedo_proxy_value", 0), 0)),
+        "ambient_preview_intensity": int(
+            (
+                int(_as_int(artifact.get("ambient_intensity", 0), 0))
+                * max(250, int(_as_int(surface_material_proxy.get("albedo_proxy_value", 500), 500)))
+            )
+            // 1000
+        ),
+        "source_kind": "derived.illumination_surface_reflectance_preview",
+    }
     payload = {
         "result": "complete",
         "source_kind": "derived.illumination_view_artifact",
@@ -151,6 +180,7 @@ def build_lighting_view_surface(
         "presentation": {
             "preferred_presentation": "summary" if str(ui_mode or "").strip().lower() in {"cli", "tui"} else "buffer",
             "summary": summary,
+            "surface_reflectance_preview": surface_reflectance_preview,
             "summary_text": "ambient={} sun={} moon={} shadow={}".format(
                 summary["ambient_intensity"],
                 summary["sun_intensity"],
