@@ -3,7 +3,7 @@
     "cap.add_profiles"
   ],
   "degrade_mode_id": "pack.degrade.best_effort",
-  "deterministic_fingerprint": "76950c1027acf71a32d5b9d1dcb5d60b0f97acff99aed44ba0f0bc824022ec97",
+  "deterministic_fingerprint": "42cd0494d2c5887ace26ba415a3c1e7c4991aa68dd9c5ea1bcef2fe1d759f09b",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -14,8 +14,19 @@
   "provides": [
     "provides.profiles"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "c2d4fe06695d3623528319b9f77d90d881aabb138b01d8ef042935ed54fe38e3",
+      "extensions": {},
+      "pack_id": "pack.experience.lab_galaxy",
+      "priority": 0,
+      "provides_id": "provides.profiles",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {},
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

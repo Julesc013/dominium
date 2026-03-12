@@ -1,7 +1,7 @@
 {
   "capability_ids": [],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "ae0d973992fe2e19cea897cc5bbe7bbd7f350853396df70dfecffd6dd943bd3d",
+  "deterministic_fingerprint": "fbd29a4448148d1ef03cd3f08f86e41fd17f4e846845165e0a5b358028e97b40",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -12,6 +12,16 @@
   "provides": [
     "provides.registry_entries"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "aefb635dfc85ba8f18844b541cbabdf8f41cfb8444b33a40a6267a4cedfe701d",
+      "extensions": {},
+      "pack_id": "astronomy.milky_way",
+      "priority": 0,
+      "provides_id": "provides.registry_entries",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {
     "contract.worldgen.refinement.v1": {
       "exact_version": "contract.worldgen.refinement.v1",
@@ -20,6 +30,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

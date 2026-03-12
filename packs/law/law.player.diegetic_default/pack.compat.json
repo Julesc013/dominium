@@ -3,7 +3,7 @@
     "cap.add_profiles"
   ],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "261a4eff5cc164c1054c8c84549deb2ae3a252d5dfd3c0951f769647e7203f8d",
+  "deterministic_fingerprint": "0ed0faae820b3617b5b7dba3f0ffe54119507e443ff8560df902dcef71acf843",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -14,8 +14,19 @@
   "provides": [
     "provides.profiles"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "3d241a665ced9032cae8cdb248e3d59d3dd58a8dc24be9cb51bacd4f99806f9d",
+      "extensions": {},
+      "pack_id": "law.player.diegetic_default",
+      "priority": 0,
+      "provides_id": "provides.profiles",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {},
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

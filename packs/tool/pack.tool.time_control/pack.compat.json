@@ -1,7 +1,7 @@
 {
   "capability_ids": [],
   "degrade_mode_id": "pack.degrade.best_effort",
-  "deterministic_fingerprint": "9c2389a5d9f157d44423345a13787a35ee99992d864b5026ffb541d4a5d3e148",
+  "deterministic_fingerprint": "80c5834fdf82d45f282150c412da0bec6750be8ad68f610675bfd07ef5688469",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -10,8 +10,10 @@
   "pack_id": "pack.tool.time_control",
   "pack_version": "1.0.0",
   "provides": [],
+  "provides_declarations": [],
   "required_contract_ranges": {},
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

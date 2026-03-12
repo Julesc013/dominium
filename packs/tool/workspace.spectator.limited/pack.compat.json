@@ -1,7 +1,7 @@
 {
   "capability_ids": [],
   "degrade_mode_id": "pack.degrade.best_effort",
-  "deterministic_fingerprint": "fea665158ebf4d07f4c2377cf514e081d2b51740243f735f67a681f61b842f14",
+  "deterministic_fingerprint": "2e68fec40b6f8f342d1346b0204bde301fc6ca303a3f6c7cab0bf3fb5e8bf209",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -10,8 +10,10 @@
   "pack_id": "workspace.spectator.limited",
   "pack_version": "1.0.0",
   "provides": [],
+  "provides_declarations": [],
   "required_contract_ranges": {},
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

@@ -3,7 +3,7 @@
     "cap.add_logic_elements"
   ],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "f6bb762edde37cdfbdb26e9bbd630723f07d3087c4a1c716f7417c1843947ea1",
+  "deterministic_fingerprint": "d6bdef59c5f1d128fa48079317102cf62bbb7e286c0b4f816d22fbf7decccd5d",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -15,6 +15,24 @@
     "provides.logic_elements",
     "provides.registry_entries"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "59788c07e7cbe0f9b6171f3224740140533c4b50ebbdaaca3a86d142e18a18e5",
+      "extensions": {},
+      "pack_id": "pack.core.logic_base",
+      "priority": 0,
+      "provides_id": "provides.logic_elements",
+      "provides_type": "domain"
+    },
+    {
+      "deterministic_fingerprint": "7fc20f1c78f1850e5b361b4d31a3ac13d741ff1115dcb77dea713e3c8561b963",
+      "extensions": {},
+      "pack_id": "pack.core.logic_base",
+      "priority": 0,
+      "provides_id": "provides.registry_entries",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {
     "contract.logic.eval.v1": {
       "exact_version": "contract.logic.eval.v1",
@@ -23,6 +41,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

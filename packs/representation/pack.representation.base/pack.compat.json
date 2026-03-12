@@ -1,7 +1,7 @@
 {
   "capability_ids": [],
   "degrade_mode_id": "pack.degrade.best_effort",
-  "deterministic_fingerprint": "85cff1323c303d7bcdc896252be9c78be0a36c6e4769b246c3d2a41c126ddc96",
+  "deterministic_fingerprint": "8907a2caa09d3dd55226f11ef03e78e8edd02191d075b0398e4c26d58d55d760",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -12,8 +12,19 @@
   "provides": [
     "provides.registry_entries"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "ca5a72eaed0316eab449e8172b3bfe97b79033a2516adbe378a4622905695d47",
+      "extensions": {},
+      "pack_id": "pack.representation.base",
+      "priority": 0,
+      "provides_id": "provides.registry_entries",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {},
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

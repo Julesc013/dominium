@@ -3,7 +3,7 @@
     "cap.overlay_patch"
   ],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "ad63421252d2565a5678c06201f296305392d3fe1d4ad8dcab8870e0622f26d9",
+  "deterministic_fingerprint": "2dc6c54ea181898df541d4890f2a9a72c389d5ab9f2237de80278672da323032",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -14,6 +14,24 @@
   "provides": [
     "provides.overlay_layers",
     "provides.registry_entries"
+  ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "e26e9d8bd5a79218e4f3af1dc30207aaf4b0fa0f531c886621cb4fbea9cd196f",
+      "extensions": {},
+      "pack_id": "pack.sol.pin_minimal",
+      "priority": 0,
+      "provides_id": "provides.overlay_layers",
+      "provides_type": "domain"
+    },
+    {
+      "deterministic_fingerprint": "d07b12621d79183a9ef7aeb2d35f6d14c70b669dd411ed886277ecee6214c3a4",
+      "extensions": {},
+      "pack_id": "pack.sol.pin_minimal",
+      "priority": 0,
+      "provides_id": "provides.registry_entries",
+      "provides_type": "domain"
+    }
   ],
   "required_contract_ranges": {
     "contract.overlay.merge.v1": {
@@ -28,6 +46,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

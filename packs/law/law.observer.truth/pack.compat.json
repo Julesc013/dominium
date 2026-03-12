@@ -3,7 +3,7 @@
     "cap.add_profiles"
   ],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "88713af4e5dd1301348e200e7f56d4f21dfa760fbaabbedbf2fb3ce796538501",
+  "deterministic_fingerprint": "8a5b05034d2f58907d54df19df27a158650da6ac9473c18d79b83bc0e37e66f7",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -14,8 +14,19 @@
   "provides": [
     "provides.profiles"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "e1f394405f3ecfc1ba889136947ec6fc63a16fc0c915b4ad7b853ed4753f940f",
+      "extensions": {},
+      "pack_id": "law.observer.truth",
+      "priority": 0,
+      "provides_id": "provides.profiles",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {},
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

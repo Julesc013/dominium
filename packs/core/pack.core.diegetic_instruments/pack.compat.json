@@ -3,7 +3,7 @@
     "cap.add_processes"
   ],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "2f4dc98b5e7ed6b9af1dd92f257ee47128c1b69fbb72223dd5125279f2003a4f",
+  "deterministic_fingerprint": "c6bfd9643c5ea728ab69cb852c6f914040f7aff03b8ddd921502d51d94dff2a7",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -15,6 +15,24 @@
     "provides.processes",
     "provides.registry_entries"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "d345f64ce29afbcc30fe13364206892fe7deef386e7f1692c8321d73e88ad229",
+      "extensions": {},
+      "pack_id": "pack.core.diegetic_instruments",
+      "priority": 0,
+      "provides_id": "provides.processes",
+      "provides_type": "domain"
+    },
+    {
+      "deterministic_fingerprint": "32c0739e428a61a9573a241d031be7424cf126be922d523dba493609aa36fd17",
+      "extensions": {},
+      "pack_id": "pack.core.diegetic_instruments",
+      "priority": 0,
+      "provides_id": "provides.registry_entries",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {
     "contract.proc.capsule.v1": {
       "exact_version": "contract.proc.capsule.v1",
@@ -23,6 +41,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

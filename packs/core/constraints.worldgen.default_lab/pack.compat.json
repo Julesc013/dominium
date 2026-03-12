@@ -1,7 +1,7 @@
 {
   "capability_ids": [],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "8bf00ac67957bc2cc64dbbc699c58ff3a9a32af95e5218bc2e5bf0e7f3f1a8ec",
+  "deterministic_fingerprint": "84c5de21544f38d13b3ad1bc5adc371cf9636d2e207b78430e9e2d85da3226a6",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -10,6 +10,7 @@
   "pack_id": "constraints.worldgen.default_lab",
   "pack_version": "1.0.0",
   "provides": [],
+  "provides_declarations": [],
   "required_contract_ranges": {
     "contract.worldgen.refinement.v1": {
       "exact_version": "contract.worldgen.refinement.v1",
@@ -18,6 +19,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

@@ -1,7 +1,7 @@
 {
   "capability_ids": [],
   "degrade_mode_id": "pack.degrade.read_only_only",
-  "deterministic_fingerprint": "93edff096e2c4f17eab9bb5beba78103d4bc12a30aa0d6719ad4de9ed6c3afac",
+  "deterministic_fingerprint": "fdad2c1164a3058a8056e741a84fd298f12e2f5fa554e2be8e86c008f85b4b82",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -12,6 +12,16 @@
   "provides": [
     "provides.registry_entries"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "59a8f473c48bf87399c4af88e1865ac2b0f6112569631d5934808a7c5c6737bc",
+      "extensions": {},
+      "pack_id": "org.dominium.earth.tiles",
+      "priority": 0,
+      "provides_id": "provides.registry_entries",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {
     "contract.worldgen.refinement.v1": {
       "exact_version": "contract.worldgen.refinement.v1",
@@ -20,6 +30,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

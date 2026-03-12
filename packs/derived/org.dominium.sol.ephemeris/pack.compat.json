@@ -1,7 +1,7 @@
 {
   "capability_ids": [],
   "degrade_mode_id": "pack.degrade.read_only_only",
-  "deterministic_fingerprint": "f6dd108add812c762b39df8029fe7c2ea40c081f7e8e6d22546c33748575cbfc",
+  "deterministic_fingerprint": "eaa77aa50427df02070772783248f929d40add63eeb78705918a677791d75a8e",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -12,6 +12,16 @@
   "provides": [
     "provides.registry_entries"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "c33c5195224ef221b2614bbd3ba37f312807369406d6d3d741b4e0d05ce44c15",
+      "extensions": {},
+      "pack_id": "org.dominium.sol.ephemeris",
+      "priority": 0,
+      "provides_id": "provides.registry_entries",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {
     "contract.worldgen.refinement.v1": {
       "exact_version": "contract.worldgen.refinement.v1",
@@ -20,6 +30,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

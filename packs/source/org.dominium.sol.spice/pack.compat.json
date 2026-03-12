@@ -1,7 +1,7 @@
 {
   "capability_ids": [],
   "degrade_mode_id": "pack.degrade.read_only_only",
-  "deterministic_fingerprint": "1e1b52ccf2f0ac3a7491aa9ac2080a1adad28c3f36ebbd2291f3aadafe1e6048",
+  "deterministic_fingerprint": "a538d56b9abf29f0cd7a470e3ce115d4459ccee399b6369643feafd191f35153",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -10,6 +10,7 @@
   "pack_id": "org.dominium.sol.spice",
   "pack_version": "1.0.0",
   "provides": [],
+  "provides_declarations": [],
   "required_contract_ranges": {
     "contract.worldgen.refinement.v1": {
       "exact_version": "contract.worldgen.refinement.v1",
@@ -18,6 +19,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

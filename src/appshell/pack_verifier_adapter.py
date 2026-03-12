@@ -31,12 +31,14 @@ def verify_pack_root(
         universe_contract_bundle_path=str(contract_bundle_path).strip(),
     )
     if bool(write_outputs) and str(result.get("result", "")) == "complete":
-        write_pack_compatibility_outputs(
-            repo_root=target_root,
-            result=result,
+        written = write_pack_compatibility_outputs(
             report_path=str(out_report or "").strip(),
-            lock_path=str(out_lock or "").strip(),
+            report_payload=dict(result.get("report") or {}),
+            pack_lock_path=str(out_lock or "").strip(),
+            pack_lock_payload=dict(result.get("pack_lock") or {}) or None,
         )
+        result["written_report_path"] = str(written.get("report_path", "")).strip()
+        result["written_lock_path"] = str(written.get("pack_lock_path", "")).strip()
     return {
         "result": str(result.get("result", "refused")),
         "dist_root": target_root.replace("\\", "/"),

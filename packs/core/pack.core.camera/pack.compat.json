@@ -3,7 +3,7 @@
     "cap.add_processes"
   ],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "e16f1a0b871811093d2c4caca04d065a9f304f8a4661b43a4e371175f01c8017",
+  "deterministic_fingerprint": "fdbabb51c7af5d6e5cfd4ff9d9f0879f79833c9c6595a93ed80865bd692fc5df",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -15,6 +15,24 @@
     "provides.processes",
     "provides.registry_entries"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "65af024f3bcf7fca7165e2bf31c175bc9c8827c8e0ff8f4e9e8094104b22b362",
+      "extensions": {},
+      "pack_id": "pack.core.camera",
+      "priority": 0,
+      "provides_id": "provides.processes",
+      "provides_type": "domain"
+    },
+    {
+      "deterministic_fingerprint": "9e4f15e6e2581a8c1476ff280b2ff2f5fb48355ba0c71b77fe8fdd6ad70f53fa",
+      "extensions": {},
+      "pack_id": "pack.core.camera",
+      "priority": 0,
+      "provides_id": "provides.registry_entries",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {
     "contract.proc.capsule.v1": {
       "exact_version": "contract.proc.capsule.v1",
@@ -23,6 +41,7 @@
     }
   },
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},

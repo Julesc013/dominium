@@ -3,7 +3,7 @@
     "cap.add_profiles"
   ],
   "degrade_mode_id": "pack.degrade.strict_refuse",
-  "deterministic_fingerprint": "32114c230a938e27a13f1a0b4c28965348de4e6e2a65c7aeb6ba5844f2960fa6",
+  "deterministic_fingerprint": "83018df1f12b8c4392a447a18a416aaa6bb7126b2cf2fa498054a0bd2eb33378",
   "extensions": {
     "official.manifest_sidecar": "pack.compat.json",
     "official.source": "PACK-COMPAT-0"
@@ -14,8 +14,19 @@
   "provides": [
     "provides.profiles"
   ],
+  "provides_declarations": [
+    {
+      "deterministic_fingerprint": "e1d618819fd8899ee6fa93f2eacf0f4e8ce698668229411c2f90b0d92387aa3f",
+      "extensions": {},
+      "pack_id": "law.admin.lab",
+      "priority": 0,
+      "provides_id": "provides.profiles",
+      "provides_type": "domain"
+    }
+  ],
   "required_contract_ranges": {},
   "required_protocol_ranges": {},
+  "required_provides_ids": [],
   "required_registry_ids": [],
   "schema_version": "1.0.0",
   "supported_engine_version_range": {},
