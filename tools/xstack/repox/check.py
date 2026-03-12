@@ -987,6 +987,27 @@ MVP_STRESS_BASELINE_REQUIRED_FIELDS = (
     "update_policy",
 )
 
+MVP_CROSS_PLATFORM_DOCTRINE_PATH = "docs/mvp/MVP_CROSS_PLATFORM_GATE.md"
+MVP_CROSS_PLATFORM_HASHES_PATH = "build/mvp/mvp_cross_platform_hashes.json"
+MVP_CROSS_PLATFORM_REPORT_PATH = "build/mvp/mvp_cross_platform_matrix.json"
+MVP_CROSS_PLATFORM_BASELINE_PATH = "data/regression/mvp_cross_platform_baseline.json"
+MVP_CROSS_PLATFORM_FINAL_PATH = "docs/audit/MVP_CROSS_PLATFORM_FINAL.md"
+MVP_CROSS_PLATFORM_BASELINE_REQUIRED_FIELDS = (
+    "baseline_id",
+    "gate_id",
+    "build_config",
+    "platform_order",
+    "per_platform_proof_anchor_fingerprints",
+    "negotiation_record_fingerprints",
+    "pack_lock_fingerprints",
+    "bundle_hash_fingerprints",
+    "repro_bundle_hash_fingerprints",
+    "portable_linked_parity_fingerprint",
+    "negotiation_matrix_fingerprint",
+    "comparison_fingerprint",
+    "update_policy",
+)
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -6792,6 +6813,378 @@ def _append_mvp_stress_gate_findings(
             _finding(
                 severity=severity,
                 file_path=MVP_STRESS_FINAL_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+
+def _append_mvp_cross_platform_gate_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rule_id = "INV-MVP-CROSS-PLATFORM-MUST-PASS"
+    required_files = (
+        (MVP_CROSS_PLATFORM_DOCTRINE_PATH, "MVP cross-platform doctrine is required for release gating"),
+        ("tools/mvp/cross_platform_gate_common.py", "MVP cross-platform gate helpers are required for release gating"),
+        ("tools/mvp/tool_run_cross_platform_matrix.py", "MVP cross-platform matrix orchestrator is required for release gating"),
+        (MVP_CROSS_PLATFORM_HASHES_PATH, "MVP cross-platform hash artifact is required before release"),
+        (MVP_CROSS_PLATFORM_REPORT_PATH, "MVP cross-platform matrix report is required before release"),
+        (MVP_CROSS_PLATFORM_BASELINE_PATH, "MVP cross-platform regression baseline is required before release"),
+        (MVP_CROSS_PLATFORM_FINAL_PATH, "MVP cross-platform final audit report is required before release"),
+        ("tools/xstack/testx/tests/test_cross_platform_hash_agreement.py", "MVP cross-platform agreement TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_portable_linked_parity.py", "MVP portable-vs-linked TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_negotiation_record_stable.py", "MVP negotiation matrix TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_bundle_hash_same_across_os.py", "MVP cross-platform bundle parity TestX coverage is required"),
+    )
+    for rel_path, message in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, MVP_CROSS_PLATFORM_DOCTRINE_PATH).lower()
+    for token, message in (
+        ("mvp-cross-platform-regression-update", "MVP cross-platform doctrine must declare the regression update tag"),
+        ("windows", "MVP cross-platform doctrine must require the windows release lane"),
+        ("macos", "MVP cross-platform doctrine must require the macos release lane"),
+        ("linux", "MVP cross-platform doctrine must require the linux release lane"),
+        ("timestamps, path separators, and absolute paths", "MVP cross-platform doctrine must declare the canonical host-meta exclusion set"),
+        ("portable vs linked parity", "MVP cross-platform doctrine must declare portable-vs-linked parity"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_CROSS_PLATFORM_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    report_payload, report_error = _load_json_object(repo_root, MVP_CROSS_PLATFORM_REPORT_PATH)
+    if report_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                line_number=1,
+                snippet="",
+                message="MVP cross-platform report must exist and be valid JSON before release",
+                rule_id=rule_id,
+            )
+        )
+    else:
+        if str(report_payload.get("gate_id", "")).strip() != "mvp.cross_platform.gate.v1":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(report_payload.get("gate_id", "")),
+                    message="MVP cross-platform report must record gate_id mvp.cross_platform.gate.v1",
+                    rule_id=rule_id,
+                )
+            )
+        if str(report_payload.get("result", "")).strip() != "complete":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(report_payload.get("result", "")),
+                    message="MVP cross-platform report must record a complete pass before release",
+                    rule_id=rule_id,
+                )
+            )
+        platform_order = [str(item) for item in list(report_payload.get("platform_order") or [])]
+        if platform_order != ["windows", "macos", "linux"]:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(platform_order[:3]),
+                    message="MVP cross-platform report must preserve the canonical platform order",
+                    rule_id=rule_id,
+                )
+            )
+        default_degrade = report_payload.get("default_degrade_event_count", -1)
+        try:
+            default_degrade_value = int(default_degrade)
+        except (TypeError, ValueError):
+            default_degrade_value = -1
+        if default_degrade_value != 0:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(default_degrade),
+                    message="MVP cross-platform report must record zero default-lane degrade events",
+                    rule_id=rule_id,
+                )
+            )
+        assertions = dict(report_payload.get("assertions") or {})
+        for key in (
+            "gate0_complete",
+            "gate1_complete",
+            "platform_hashes_match",
+            "portable_linked_parity",
+            "negotiation_matrix_stable",
+            "no_silent_degrade",
+        ):
+            if bool(assertions.get(key, False)):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=key,
+                    message="MVP cross-platform report assertion '{}' must pass before release".format(key),
+                    rule_id=rule_id,
+                )
+            )
+        host_meta_ignored = [str(item) for item in list(report_payload.get("host_meta_ignored") or [])]
+        if host_meta_ignored != ["timestamps", "path_separators", "absolute_paths"]:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(host_meta_ignored),
+                    message="MVP cross-platform report must record the canonical host-meta exclusion set",
+                    rule_id=rule_id,
+                )
+            )
+        comparison = dict(report_payload.get("comparison") or {})
+        if not bool(comparison.get("compare_canonical_hashes_only", False)):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet="compare_canonical_hashes_only",
+                    message="MVP cross-platform report must compare canonical hashes only",
+                    rule_id=rule_id,
+                )
+            )
+        if list(comparison.get("mismatches") or []):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet="mismatches",
+                    message="MVP cross-platform report must not record platform mismatches before release",
+                    rule_id=rule_id,
+                )
+            )
+        comparison_assertions = dict(comparison.get("assertions") or {})
+        for key in (
+            "required_platforms_present",
+            "hashes_match_across_platforms",
+            "portable_linked_parity",
+            "negotiation_records_stable",
+            "no_platform_mismatches",
+            "no_silent_degrade",
+        ):
+            if bool(comparison_assertions.get(key, False)):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=key,
+                    message="MVP cross-platform comparison assertion '{}' must pass before release".format(key),
+                    rule_id=rule_id,
+                )
+            )
+        negotiation_matrix = dict(report_payload.get("negotiation_matrix") or {})
+        if str(negotiation_matrix.get("result", "")).strip() != "complete":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(negotiation_matrix.get("result", "")),
+                    message="MVP cross-platform negotiation matrix must record a complete result",
+                    rule_id=rule_id,
+                )
+            )
+        else:
+            negotiation_assertions = dict(negotiation_matrix.get("assertions") or {})
+            for key in ("scenario_order_deterministic", "modes_match_expected", "records_stable", "records_verified", "no_refusals"):
+                if bool(negotiation_assertions.get(key, False)):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                        line_number=1,
+                        snippet=key,
+                        message="MVP cross-platform negotiation assertion '{}' must pass before release".format(key),
+                        rule_id=rule_id,
+                    )
+                )
+        portable_linked = dict(report_payload.get("portable_linked_parity") or {})
+        if str(portable_linked.get("result", "")).strip() != "complete":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(portable_linked.get("result", "")),
+                    message="MVP cross-platform portable-vs-linked parity must record a complete result",
+                    rule_id=rule_id,
+                )
+            )
+        else:
+            portable_assertions = dict(portable_linked.get("assertions") or {})
+            for key in (
+                "scenario_fingerprint_match",
+                "proof_anchors_match",
+                "pack_locks_match",
+                "negotiation_records_match",
+                "repro_bundles_match",
+            ):
+                if bool(portable_assertions.get(key, False)):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_CROSS_PLATFORM_REPORT_PATH,
+                        line_number=1,
+                        snippet=key,
+                        message="MVP cross-platform portable parity assertion '{}' must pass before release".format(key),
+                        rule_id=rule_id,
+                    )
+                )
+
+    baseline_payload, baseline_error = _load_json_object(repo_root, MVP_CROSS_PLATFORM_BASELINE_PATH)
+    if baseline_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_CROSS_PLATFORM_BASELINE_PATH,
+                line_number=1,
+                snippet="",
+                message="MVP cross-platform regression baseline must exist and be valid JSON",
+                rule_id=rule_id,
+            )
+        )
+    else:
+        for field in MVP_CROSS_PLATFORM_BASELINE_REQUIRED_FIELDS:
+            value = baseline_payload.get(field)
+            if value is None or (isinstance(value, str) and not str(value).strip()):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_CROSS_PLATFORM_BASELINE_PATH,
+                        line_number=1,
+                        snippet=str(field),
+                        message="MVP cross-platform regression baseline missing required field '{}'".format(field),
+                        rule_id=rule_id,
+                    )
+                )
+        baseline_platform_order = [str(item) for item in list(baseline_payload.get("platform_order") or [])]
+        if baseline_platform_order != ["windows", "macos", "linux"]:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_BASELINE_PATH,
+                    line_number=1,
+                    snippet=str(baseline_platform_order),
+                    message="MVP cross-platform regression baseline must preserve the canonical platform order",
+                    rule_id=rule_id,
+                )
+            )
+        for field_name in (
+            "per_platform_proof_anchor_fingerprints",
+            "negotiation_record_fingerprints",
+            "pack_lock_fingerprints",
+            "bundle_hash_fingerprints",
+            "repro_bundle_hash_fingerprints",
+        ):
+            mapping_value = baseline_payload.get(field_name)
+            if not isinstance(mapping_value, dict):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_CROSS_PLATFORM_BASELINE_PATH,
+                        line_number=1,
+                        snippet=field_name,
+                        message="MVP cross-platform regression baseline must declare '{}'".format(field_name),
+                        rule_id=rule_id,
+                    )
+                )
+                continue
+            for platform_id in ("windows", "macos", "linux"):
+                if str(mapping_value.get(platform_id, "")).strip():
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_CROSS_PLATFORM_BASELINE_PATH,
+                        line_number=1,
+                        snippet="{}.{}".format(field_name, platform_id),
+                        message="MVP cross-platform regression baseline must pin '{}' for {}".format(field_name, platform_id),
+                        rule_id=rule_id,
+                    )
+                )
+        update_policy = baseline_payload.get("update_policy")
+        required_tag = str(dict(update_policy or {}).get("required_commit_tag", "")).strip()
+        if required_tag != "MVP-CROSS-PLATFORM-REGRESSION-UPDATE":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_CROSS_PLATFORM_BASELINE_PATH,
+                    line_number=1,
+                    snippet=str(required_tag),
+                    message="MVP cross-platform regression baseline updates must require MVP-CROSS-PLATFORM-REGRESSION-UPDATE",
+                    rule_id=rule_id,
+                )
+            )
+
+    final_text = _file_text(repo_root, MVP_CROSS_PLATFORM_FINAL_PATH).lower()
+    for token, message in (
+        ("# mvp cross-platform final", "MVP cross-platform final audit report must declare the canonical title"),
+        ("## run summary", "MVP cross-platform final audit report must include a run summary"),
+        ("## per-platform comparison", "MVP cross-platform final audit report must include the per-platform comparison"),
+        ("## hashes", "MVP cross-platform final audit report must include the hash summary"),
+        ("## degradations", "MVP cross-platform final audit report must include explicit degradations"),
+        ("## mismatches", "MVP cross-platform final audit report must include mismatch reporting"),
+        ("## gates", "MVP cross-platform final audit report must include gate results"),
+        ("## regression lock", "MVP cross-platform final audit report must include the regression lock"),
+        ("- result: `complete`", "MVP cross-platform final audit report must record a complete cross-platform result"),
+        ("- repox strict:", "MVP cross-platform final audit report must include RepoX gate status"),
+        ("- auditx strict:", "MVP cross-platform final audit report must include AuditX gate status"),
+        ("- testx:", "MVP cross-platform final audit report must include TestX gate status"),
+        ("- cross-platform matrix:", "MVP cross-platform final audit report must include matrix status"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_CROSS_PLATFORM_FINAL_PATH,
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -30279,6 +30672,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_mvp_stress_gate_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_mvp_cross_platform_gate_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

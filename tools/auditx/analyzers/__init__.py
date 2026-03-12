@@ -452,6 +452,8 @@ from analyzers import e442_silent_provider_selection_smell
 from analyzers import e443_pack_id_collision_smell
 from analyzers import e444_nondeterministic_bundle_smell
 from analyzers import e445_smoke_suite_missing_smell
+from analyzers import e447_platform_dependent_behavior_smell
+from analyzers import e448_non_canonical_serialization_smell
 
 
 ANALYZERS = (
@@ -907,6 +909,8 @@ ANALYZERS = (
     e443_pack_id_collision_smell,
     e444_nondeterministic_bundle_smell,
     e445_smoke_suite_missing_smell,
+    e447_platform_dependent_behavior_smell,
+    e448_non_canonical_serialization_smell,
 )
 
 
