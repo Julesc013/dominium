@@ -17,6 +17,7 @@ from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
 from src.worldgen.refinement.refinement_cache import build_refinement_cache_key
 from src.worldgen.mw.mw_cell_generator import (
+    galaxy_priors_rows,
     generate_mw_cell_payload,
     normalize_star_system_artifact_rows,
     normalize_star_system_seed_rows,
@@ -32,6 +33,7 @@ from src.worldgen.mw.mw_surface_refiner_l3 import (
     generate_mw_surface_l3_payload,
     normalize_surface_tile_artifact_rows,
 )
+from src.worldgen.galaxy import generate_galaxy_object_stub_payload, normalize_galaxy_object_stub_rows
 
 
 REFUSAL_GEO_WORLDGEN_INVALID = "refusal.geo.worldgen_invalid"
@@ -627,6 +629,15 @@ def _surface_tile_artifact_rows(rows: object) -> List[dict]:
     return [dict(out[key]) for key in sorted(out.keys())]
 
 
+def _galaxy_object_stub_artifact_rows(rows: object) -> List[dict]:
+    out: Dict[str, dict] = {}
+    for row in normalize_galaxy_object_stub_rows(rows):
+        object_id = str(row.get("object_id", "")).strip()
+        if object_id:
+            out[object_id] = dict(row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
 def _system_l2_summary_rows(rows: object) -> List[dict]:
     out: Dict[str, dict] = {}
     for row in normalize_system_l2_summary_rows(rows):
@@ -824,6 +835,7 @@ def generate_worldgen_result(
 
     universe_identity_hash = _resolved_universe_identity_hash(identity)
     realism_row = realism_rows.get(resolved_realism_profile_id)
+    galaxy_priors_by_id = galaxy_priors_rows()
 
     mw_cell_payload: dict = {}
     system_seed_rows: List[dict] = []
@@ -834,6 +846,7 @@ def generate_worldgen_result(
     planet_basic_artifact_rows: List[dict] = []
     system_l2_summary_rows: List[dict] = []
     l2_object_rows: List[dict] = []
+    galaxy_object_stub_artifact_rows: List[dict] = []
     generated_object_rows: List[dict] = []
     field_layers: List[dict] = []
     field_initializations: List[dict] = []
@@ -940,6 +953,13 @@ def generate_worldgen_result(
         system_seed = str(stream_seed_by_name.get(RNG_WORLDGEN_SYSTEM, "")).strip()
         planet_seed = str(stream_seed_by_name.get(RNG_WORLDGEN_PLANET, "")).strip()
         surface_seed = str(stream_seed_by_name.get(RNG_WORLDGEN_SURFACE, "")).strip()
+        galaxy_object_stream_seed = worldgen_stream_seed(
+            universe_seed=identity.get("global_seed", ""),
+            generator_version_id=resolved_generator_version_id,
+            realism_profile_id=resolved_realism_profile_id,
+            geo_cell_key=cell_key,
+            stream_name="rng.worldgen.galaxy_objects",
+        )
         mw_cell_payload = generate_mw_cell_payload(
             universe_identity_hash=universe_identity_hash,
             geo_cell_key=cell_key,
@@ -952,6 +972,14 @@ def generate_worldgen_result(
                 str(mw_cell_payload.get("message", "Milky Way cell generation refused")),
                 _as_map(mw_cell_payload.get("details")),
             )
+        galaxy_object_payload = generate_galaxy_object_stub_payload(
+            universe_identity_hash=universe_identity_hash,
+            geo_cell_key=cell_key,
+            galaxy_priors_row=_as_map(galaxy_priors_by_id.get(str(mw_cell_payload.get("galaxy_priors_id", "")).strip())),
+            galaxy_priors_id=str(mw_cell_payload.get("galaxy_priors_id", "")).strip(),
+            stream_seed=galaxy_object_stream_seed,
+        )
+        galaxy_object_stub_artifact_rows = _galaxy_object_stub_artifact_rows(galaxy_object_payload.get("artifact_rows"))
         system_seed_rows = _system_seed_rows(mw_cell_payload.get("system_seed_rows"))
         star_system_artifact_rows = (
             _star_system_artifact_rows(mw_cell_payload.get("star_system_artifact_rows"))
@@ -982,6 +1010,24 @@ def generate_worldgen_result(
             system_seed_rows=system_seed_rows,
             l2_object_rows=l2_object_rows,
         )
+        if galaxy_object_stub_artifact_rows:
+            existing_hashes = set(str(row.get("object_id_hash", "")).strip() for row in generated_object_rows)
+            for row in list(galaxy_object_payload.get("generated_object_rows") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                object_id_hash = str(dict(row).get("object_id_hash", "")).strip()
+                if (not object_id_hash) or object_id_hash in existing_hashes:
+                    continue
+                generated_object_rows.append(dict(row))
+                existing_hashes.add(object_id_hash)
+            generated_object_rows = sorted(
+                generated_object_rows,
+                key=lambda row: (
+                    str(row.get("object_kind_id", "")),
+                    str(row.get("local_subkey", "")),
+                    str(row.get("object_id_hash", "")),
+                ),
+            )
         field_layers = _build_field_layers_for_result(cell_key)
         field_initializations = _build_field_initializations(cell_key, planet_seed)
         geometry_initializations = _build_geometry_initializations(cell_key, surface_seed, resolved_realism_profile_id, refinement_level)
@@ -1019,6 +1065,12 @@ def generate_worldgen_result(
         "surface_request_context": surface_request,
         "named_rng_streams": list(named_rng_streams or []),
     }
+    if galaxy_object_stub_artifact_rows:
+        result_extensions["generated_galaxy_object_stub_artifact_rows"] = list(galaxy_object_stub_artifact_rows)
+        result_extensions["galaxy_object_stub_ids"] = [
+            str(row.get("object_id", "")).strip()
+            for row in galaxy_object_stub_artifact_rows
+        ]
     if surface_request:
         result_extensions["ancestor_named_rng_streams"] = list(ancestor_named_rng_streams or [])
 
@@ -1064,6 +1116,8 @@ def generate_worldgen_result(
         "cache_key": cache_key,
         "deterministic_fingerprint": "",
     }
+    if galaxy_object_stub_artifact_rows:
+        payload["generated_galaxy_object_stub_artifact_rows"] = list(galaxy_object_stub_artifact_rows)
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
     return _cache_store(cache_key, payload) if cache_enabled else payload
 

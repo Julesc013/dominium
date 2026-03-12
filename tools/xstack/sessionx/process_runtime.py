@@ -767,6 +767,7 @@ from src.worldgen.mw.mw_system_refiner_l2 import (
     normalize_system_l2_summary_rows,
 )
 from src.worldgen.mw.mw_surface_refiner_l3 import normalize_surface_tile_artifact_rows
+from src.worldgen.galaxy import normalize_galaxy_object_stub_rows
 from src.worldgen.earth import (
     DEFAULT_EARTH_CLIMATE_PARAMS_ID,
     DEFAULT_HYDROLOGY_PARAMS_ID,
@@ -4109,6 +4110,12 @@ def _ensure_worldgen_surface_tile_artifact_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows]
 
 
+def _ensure_worldgen_galaxy_object_stub_artifact_rows(state: dict) -> List[dict]:
+    rows = normalize_galaxy_object_stub_rows(state.get("worldgen_galaxy_object_stub_artifacts"))
+    state["worldgen_galaxy_object_stub_artifacts"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
 def _normalize_refinement_explain_rows(rows: object) -> List[dict]:
     normalized = []
     for raw in list(rows or []):
@@ -4719,6 +4726,27 @@ def _append_surface_tile_artifact_model(state: dict, artifact_row: Mapping[str, 
     state["knowledge_artifacts"] = [dict(item) for item in info_rows]
 
 
+def _append_galaxy_object_stub_artifact_model(state: dict, artifact_row: Mapping[str, object]) -> None:
+    row = next(iter(normalize_galaxy_object_stub_rows([artifact_row])), {})
+    object_id = str(row.get("object_id", "")).strip()
+    if not object_id:
+        return
+    artifact_model = {
+        "artifact_id": "artifact.galaxy_object_stub.{}".format(object_id),
+        "artifact_family_id": "MODEL",
+        "extensions": {
+            "artifact_type_id": "artifact.galaxy_object_stub",
+            "target_object_id": object_id,
+            "galaxy_object_stub": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_model]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
 def _append_worldgen_request(state: dict, request_row: Mapping[str, object]) -> dict:
     normalized = normalize_worldgen_request(request_row)
     merged = list(_ensure_worldgen_request_rows(state))
@@ -4741,6 +4769,7 @@ def _append_worldgen_result(
     planet_basic_artifact_rows: object = None,
     system_l2_summary_rows: object = None,
     surface_tile_artifact_rows: object = None,
+    galaxy_object_stub_artifact_rows: object = None,
 ) -> dict:
     normalized = normalize_worldgen_result(result_row)
     merged = list(_ensure_worldgen_result_rows(state))
@@ -4823,6 +4852,16 @@ def _append_worldgen_result(
             current_by_id[tile_object_id] = dict(row)
             _append_surface_tile_artifact_model(state, row)
         state["worldgen_surface_tile_artifacts"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
+    if isinstance(galaxy_object_stub_artifact_rows, list):
+        current_rows = list(_ensure_worldgen_galaxy_object_stub_artifact_rows(state))
+        current_by_id = dict((str(dict(row).get("object_id", "")).strip(), dict(row)) for row in current_rows)
+        for row in normalize_galaxy_object_stub_rows(galaxy_object_stub_artifact_rows):
+            object_id = str(dict(row).get("object_id", "")).strip()
+            if not object_id:
+                continue
+            current_by_id[object_id] = dict(row)
+            _append_galaxy_object_stub_artifact_model(state, row)
+        state["worldgen_galaxy_object_stub_artifacts"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
     _append_worldgen_result_artifact(state, normalized)
     return dict(next((row for row in merged if str(row.get("result_id", "")).strip() == result_id), normalized))
 
@@ -47523,6 +47562,9 @@ def execute_intent(
         surface_tile_artifact_rows = [
             dict(row) for row in list(generated.get("generated_surface_tile_artifact_rows") or []) if isinstance(row, Mapping)
         ]
+        galaxy_object_stub_artifact_rows = [
+            dict(row) for row in list(generated.get("generated_galaxy_object_stub_artifact_rows") or []) if isinstance(row, Mapping)
+        ]
         field_layer_rows = [dict(row) for row in list(generated.get("field_layers") or []) if isinstance(row, Mapping)]
         field_initializations = [dict(row) for row in list(generated.get("field_initializations") or []) if isinstance(row, Mapping)]
         geometry_initializations = [dict(row) for row in list(generated.get("geometry_initializations") or []) if isinstance(row, Mapping)]
@@ -47603,6 +47645,7 @@ def execute_intent(
             planet_basic_artifact_rows,
             system_l2_summary_rows,
             surface_tile_artifact_rows,
+            galaxy_object_stub_artifact_rows,
         )
         hydrology_refresh = {}
         if surface_tile_artifact_rows and not existing_result:
@@ -47639,6 +47682,7 @@ def execute_intent(
             "planet_orbit_artifact_count": int(len(list(planet_orbit_artifact_rows or []))),
             "planet_basic_artifact_count": int(len(list(planet_basic_artifact_rows or []))),
             "surface_tile_artifact_count": int(len(list(surface_tile_artifact_rows or []))),
+            "galaxy_object_stub_artifact_count": int(len(list(galaxy_object_stub_artifact_rows or []))),
             "field_initialization_count": int(len(list(field_initializations or []))),
             "geometry_initialization_count": int(len(list(geometry_initializations or []))),
             "field_initializations_applied": int(field_initializations_applied),
