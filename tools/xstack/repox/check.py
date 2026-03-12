@@ -1086,6 +1086,16 @@ GAL0_PROBE_PATH = "tools/worldgen/gal0_probe.py"
 GAL0_AUDIT_COMMON_PATH = "tools/worldgen/gal0_audit_common.py"
 GAL0_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_galaxy_proxies.py"
 GAL0_BASELINE_PATH = "docs/audit/GALAXY_PROXY_BASELINE.md"
+GAL1_RETRO_AUDIT_PATH = "docs/audit/GAL1_RETRO_AUDIT.md"
+GAL1_DOCTRINE_PATH = "docs/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
+GAL1_SCHEMA_DOC_PATH = "schema/worldgen/galaxy_object_stub.schema"
+GAL1_SCHEMA_JSON_PATH = "schemas/galaxy_object_stub.schema.json"
+GAL1_OBJECT_KIND_REGISTRY_PATH = "data/registries/object_kind_registry.json"
+GAL1_ENGINE_PATH = "src/worldgen/galaxy/galaxy_object_stub_generator.py"
+GAL1_PROBE_PATH = "tools/worldgen/gal1_probe.py"
+GAL1_AUDIT_COMMON_PATH = "tools/worldgen/gal1_audit_common.py"
+GAL1_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_galaxy_objects.py"
+GAL1_BASELINE_PATH = "docs/audit/GALAXY_OBJECT_STUBS_BASELINE.md"
 
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
@@ -8121,6 +8131,106 @@ def _append_gal0_findings(
                 snippet=str(violation.get("token", ""))[:160],
                 message=str(violation.get("message", "")).strip() or "GAL0 catalog dependency detected",
                 rule_id=catalog_rule_id,
+            )
+        )
+
+
+def _append_gal1_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    bounded_rule_id = "INV-GAL-OBJECTS-BOUNDED"
+    stability_rule_id = "INV-GAL-OBJECTS-PROVISIONAL-TAGGED"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (GAL1_RETRO_AUDIT_PATH, "GAL1 retro audit is required", stability_rule_id),
+        (GAL1_DOCTRINE_PATH, "GAL1 doctrine is required", stability_rule_id),
+        (GAL1_SCHEMA_DOC_PATH, "GAL1 schema law is required", stability_rule_id),
+        (GAL1_SCHEMA_JSON_PATH, "GAL1 JSON schema is required", stability_rule_id),
+        (GAL1_OBJECT_KIND_REGISTRY_PATH, "GAL1 object kind registry entries are required", stability_rule_id),
+        (GAL1_ENGINE_PATH, "GAL1 object stub generator is required", bounded_rule_id),
+        (GAL1_PROBE_PATH, "GAL1 probe tooling is required", bounded_rule_id),
+        (GAL1_AUDIT_COMMON_PATH, "GAL1 audit common tooling is required", stability_rule_id),
+        (GAL1_REPLAY_TOOL_PATH, "GAL1 replay tool is required", bounded_rule_id),
+        (GAL1_BASELINE_PATH, "GAL1 baseline report is required", stability_rule_id),
+        ("tools/auditx/analyzers/e465_unbounded_galaxy_object_gen_smell.py", "UnboundedGalaxyObjectGenSmell analyzer is required", bounded_rule_id),
+        ("tools/auditx/analyzers/e466_galaxy_object_untagged_stub_smell.py", "UntaggedStubSmell analyzer is required", stability_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, GAL1_DOCTRINE_PATH).lower()
+    for token, message, rule_id in (
+        ("kind.black_hole_stub", "GAL1 doctrine must define kind.black_hole_stub", stability_rule_id),
+        ("kind.nebula_stub", "GAL1 doctrine must define kind.nebula_stub", stability_rule_id),
+        ("kind.supernova_remnant_stub", "GAL1 doctrine must define kind.supernova_remnant_stub", stability_rule_id),
+        ("provisional", "GAL1 doctrine must declare the stub layer provisional", stability_rule_id),
+        ("astro-domain", "GAL1 doctrine must point to ASTRO-DOMAIN as the future series", stability_rule_id),
+        ("dynamic lifecycle + gas dynamics", "GAL1 doctrine must define the replacement target", stability_rule_id),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=GAL1_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.worldgen.gal1_audit_common import scan_gal1_unbounded_generation, scan_gal1_untagged_stubs
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=GAL1_AUDIT_COMMON_PATH,
+                line_number=1,
+                snippet="scan_gal1_untagged_stubs",
+                message="unable to import GAL1 audit helpers ({})".format(str(exc)),
+                rule_id=stability_rule_id,
+            )
+        )
+        return
+
+    for row in scan_gal1_unbounded_generation(repo_root):
+        violation = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("token", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "GAL1 object generation exceeded the declared bound",
+                rule_id=bounded_rule_id,
+            )
+        )
+
+    for row in scan_gal1_untagged_stubs(repo_root):
+        violation = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("token", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "GAL1 provisional tagging violation detected",
+                rule_id=stability_rule_id,
             )
         )
 
@@ -31644,6 +31754,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_gal0_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_gal1_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
