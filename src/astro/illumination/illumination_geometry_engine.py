@@ -345,6 +345,32 @@ def _phase_angle_from_cos_permille(cos_permille: int) -> int:
     return 180_000
 
 
+def cos_permille_from_angle_mdeg(angle_mdeg: int) -> int:
+    normalized = int(_as_int(angle_mdeg, 0)) % 360_000
+    if normalized < 0:
+        normalized += 360_000
+    if normalized <= 180_000:
+        lookup_angle = normalized
+        sign = 1
+    else:
+        lookup_angle = 360_000 - normalized
+        sign = 1
+    lower_index = max(0, min(len(_PHASE_ANGLE_BY_COS_PERMILLE) - 1, lookup_angle // 1000))
+    upper_index = min(len(_PHASE_ANGLE_BY_COS_PERMILLE) - 1, lower_index + 1)
+    cos_lo, angle_lo = _PHASE_ANGLE_BY_COS_PERMILLE[lower_index]
+    cos_hi, angle_hi = _PHASE_ANGLE_BY_COS_PERMILLE[upper_index]
+    if angle_hi == angle_lo:
+        return int(sign * cos_lo)
+    offset = lookup_angle - angle_lo
+    span = angle_hi - angle_lo
+    interpolated = int(cos_lo + _round_div_away_from_zero(offset * (cos_hi - cos_lo), span))
+    return int(_clamp(sign * interpolated, -1000, 1000))
+
+
+def sin_permille_from_angle_mdeg(angle_mdeg: int) -> int:
+    return int(cos_permille_from_angle_mdeg(90_000 - int(_as_int(angle_mdeg, 0))))
+
+
 def emitter_kind_rows(payload: Mapping[str, object] | None = None) -> Dict[str, dict]:
     return _rows_by_id(_as_map(payload) or _registry_payload(EMITTER_KIND_REGISTRY_REL), row_key="emitter_kinds", id_key="emitter_kind_id")
 
@@ -596,10 +622,12 @@ __all__ = [
     "build_illumination_view_artifact",
     "build_receiver_descriptor",
     "build_view_artifact_from_directions",
+    "cos_permille_from_angle_mdeg",
     "emitter_kind_registry_hash",
     "emitter_kind_rows",
     "occlusion_policy_registry_hash",
     "occlusion_policy_rows",
     "receiver_kind_registry_hash",
     "receiver_kind_rows",
+    "sin_permille_from_angle_mdeg",
 ]
