@@ -83,7 +83,7 @@ SEMANTIC_SYMBOL_SPECS = (
     (
         "illumination",
         "build_illumination_view_artifact",
-        os.path.join("src", "worldgen", "earth", "lighting", "illumination_engine.py"),
+        os.path.join("src", "astro", "illumination", "illumination_geometry_engine.py"),
         "Illumination artifact synthesis must have one authoritative model implementation.",
     ),
     (

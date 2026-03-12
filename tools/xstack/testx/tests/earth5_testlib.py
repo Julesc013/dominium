@@ -24,6 +24,13 @@ def moon_phase_report(repo_root: str) -> dict:
     return _report(repo_root)
 
 
+def illumination_geometry_report(repo_root: str) -> dict:
+    _ensure_repo_root(repo_root)
+    from tools.worldgen.earth5_probe import illumination_geometry_report as _report
+
+    return _report(repo_root)
+
+
 def horizon_shadow_report(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
     from tools.worldgen.earth5_probe import horizon_shadow_report as _report

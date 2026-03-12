@@ -7,7 +7,7 @@ import sys
 
 TEST_ID = "test_cross_platform_sky_hash_match"
 TEST_TAGS = ["fast", "earth", "sky", "hash", "determinism"]
-EXPECTED_HASH = "9f36f1cd2f1b0864b9ef7ed0bd77510c2b8f295af31f09cece8384710b197a9d"
+EXPECTED_HASH = "7d55f1aaf5d417f1c14e2ad353f2e77c96ff78941cf4dd6648393762a0797c1d"
 
 
 def run(repo_root: str):

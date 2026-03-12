@@ -4,7 +4,7 @@ from .illumination_engine import (
     DEFAULT_ILLUMINATION_MODEL_ID,
     EARTH_ILLUMINATION_ENGINE_VERSION,
     ILLUMINATION_MODEL_REGISTRY_REL,
-    build_illumination_view_artifact,
+    build_earth_lighting_artifact,
     illumination_model_registry_hash,
     illumination_model_rows,
 )
@@ -29,7 +29,7 @@ __all__ = [
     "EARTH_LIGHTING_VIEW_ENGINE_VERSION",
     "ILLUMINATION_MODEL_REGISTRY_REL",
     "SHADOW_MODEL_REGISTRY_REL",
-    "build_illumination_view_artifact",
+    "build_earth_lighting_artifact",
     "build_lighting_view_surface",
     "evaluate_horizon_shadow",
     "illumination_model_registry_hash",

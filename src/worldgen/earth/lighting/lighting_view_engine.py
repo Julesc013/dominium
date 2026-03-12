@@ -16,7 +16,7 @@ from .horizon_shadow_engine import (
 )
 from .illumination_engine import (
     DEFAULT_ILLUMINATION_MODEL_ID,
-    build_illumination_view_artifact,
+    build_earth_lighting_artifact,
     illumination_model_registry_hash,
     illumination_model_rows,
 )
@@ -121,7 +121,7 @@ def build_lighting_view_surface(
         shadow_model_row=shadow_row,
     )
     surface_material_proxy = _surface_material_proxy_preview(surface_artifact, tick_bucket=int(tick_bucket))
-    artifact = build_illumination_view_artifact(
+    artifact = build_earth_lighting_artifact(
         sky_view_artifact=sky_artifact,
         observer_ref=observer,
         illum_model_row=illum_row,

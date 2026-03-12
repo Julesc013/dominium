@@ -133,7 +133,7 @@ def _moon_fill_intensity_permille(*, sky_artifact: Mapping[str, object], illum_m
     return _clamp((moon_fill_max * moon_illumination * max(0, 1000 - sun_intensity)) // 1_000_000, 0, 1000)
 
 
-def build_illumination_view_artifact(
+def build_earth_lighting_artifact(
     *,
     sky_view_artifact: Mapping[str, object] | None,
     observer_ref: Mapping[str, object] | None,
@@ -223,7 +223,7 @@ __all__ = [
     "DEFAULT_ILLUMINATION_MODEL_ID",
     "EARTH_ILLUMINATION_ENGINE_VERSION",
     "ILLUMINATION_MODEL_REGISTRY_REL",
-    "build_illumination_view_artifact",
+    "build_earth_lighting_artifact",
     "illumination_model_registry_hash",
     "illumination_model_rows",
 ]
