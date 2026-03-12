@@ -1008,6 +1008,17 @@ MVP_CROSS_PLATFORM_BASELINE_REQUIRED_FIELDS = (
     "update_policy",
 )
 
+META_STABILITY_RETRO_AUDIT_PATH = "docs/audit/META_STABILITY0_RETRO_AUDIT.md"
+META_STABILITY_DOCTRINE_PATH = "docs/meta/STABILITY_CLASSIFICATION.md"
+META_STABILITY_CONVENTION_PATH = "docs/meta/STABILITY_REGISTRY_CONVENTION.md"
+META_STABILITY_SCHEMA_DOC_PATH = "schema/meta/stability_marker.schema"
+META_STABILITY_SCHEMA_JSON_PATH = "schemas/stability_marker.schema.json"
+META_STABILITY_CLASS_REGISTRY_PATH = "data/registries/stability_class_registry.json"
+META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "data/registries/stability_requirements_registry.json"
+META_STABILITY_VALIDATOR_PATH = "src/meta/stability/stability_validator.py"
+META_STABILITY_SCOPE_PATH = "src/meta/stability/stability_scope.py"
+META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_CLASSIFICATION_BASELINE.md"
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -7191,6 +7202,126 @@ def _append_mvp_cross_platform_gate_findings(
                 rule_id=rule_id,
             )
         )
+
+
+def _append_meta_stability_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    required_files = (
+        (META_STABILITY_RETRO_AUDIT_PATH, "META-STABILITY-0 retro audit is required"),
+        (META_STABILITY_DOCTRINE_PATH, "stability classification doctrine is required"),
+        (META_STABILITY_CONVENTION_PATH, "stability registry convention doc is required"),
+        (META_STABILITY_SCHEMA_DOC_PATH, "stability marker schema law is required"),
+        (META_STABILITY_SCHEMA_JSON_PATH, "stability marker JSON schema is required"),
+        (META_STABILITY_CLASS_REGISTRY_PATH, "stability class registry is required"),
+        (META_STABILITY_REQUIREMENTS_REGISTRY_PATH, "stability requirements registry is required"),
+        (META_STABILITY_VALIDATOR_PATH, "stability validator is required"),
+        (META_STABILITY_SCOPE_PATH, "stability scope definition is required"),
+        ("tools/auditx/analyzers/e449_missing_stability_marker_smell.py", "MissingStabilityMarkerSmell analyzer is required"),
+        ("tools/auditx/analyzers/e450_stable_changed_without_contract_bump_smell.py", "StableChangedWithoutContractBumpSmell analyzer is required"),
+        ("tools/auditx/analyzers/e451_provisional_without_replacement_smell.py", "ProvisionalWithoutReplacementSmell analyzer is required"),
+        ("tools/xstack/testx/tests/test_all_registries_have_stability_markers.py", "stability marker TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_stable_requires_contract_id.py", "stable contract-id TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_provisional_requires_replacement_plan.py", "provisional replacement TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_validator_deterministic_output.py", "validator determinism TestX coverage is required"),
+        (META_STABILITY_FINAL_PATH, "stability classification baseline report is required"),
+    )
+    for rel_path, message in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id="INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, META_STABILITY_DOCTRINE_PATH).lower()
+    for token, message in (
+        ("stable", "stability doctrine must define the stable class"),
+        ("provisional", "stability doctrine must define the provisional class"),
+        ("experimental", "stability doctrine must define the experimental class"),
+        ("contract_id", "stability doctrine must require contract_id for stable items"),
+        ("future_series", "stability doctrine must define future_series"),
+        ("replacement_target", "stability doctrine must define replacement_target"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=META_STABILITY_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
+            )
+        )
+
+    convention_text = _file_text(repo_root, META_STABILITY_CONVENTION_PATH).lower()
+    for token, message in (
+        ("optional sibling field", "stability convention must pin the sibling-field approach"),
+        ("stability", "stability convention must define the stability field"),
+        ("containing entry fingerprint", "stability convention must require stability in entry fingerprinting"),
+    ):
+        if token in convention_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=META_STABILITY_CONVENTION_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
+            )
+        )
+
+    try:
+        from src.meta.stability import validate_scoped_registries
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=META_STABILITY_VALIDATOR_PATH,
+                line_number=1,
+                snippet="validate_scoped_registries",
+                message="unable to import stability validator ({})".format(str(exc)),
+                rule_id="INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY",
+            )
+        )
+        return
+
+    report = validate_scoped_registries(repo_root)
+    for registry_report in list(report.get("reports") or []):
+        report_row = dict(registry_report or {})
+        rel_path = str(report_row.get("file_path", "")).replace("\\", "/")
+        for error in list(report_row.get("errors") or []):
+            error_row = dict(error or {})
+            code = str(error_row.get("code", "")).strip()
+            if code == "stable_requires_contract_id":
+                rule_id = "INV-STABLE-REQUIRES-CONTRACT-ID"
+            elif code in ("provisional_requires_future_series", "provisional_requires_replacement_target"):
+                rule_id = "INV-PROVISIONAL-REQUIRES-REPLACEMENT-PLAN"
+            else:
+                rule_id = "INV-REGISTRY-ENTRIES-MUST-HAVE-STABILITY"
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=str(error_row.get("path", ""))[:160],
+                    message=str(error_row.get("message", "")).strip() or "stability validation failed",
+                    rule_id=rule_id,
+                )
+            )
 
 
 def _append_cross_system_matrix_findings(
@@ -30677,6 +30808,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_mvp_cross_platform_gate_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_meta_stability_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

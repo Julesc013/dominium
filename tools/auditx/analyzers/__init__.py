@@ -454,6 +454,9 @@ from analyzers import e444_nondeterministic_bundle_smell
 from analyzers import e445_smoke_suite_missing_smell
 from analyzers import e447_platform_dependent_behavior_smell
 from analyzers import e448_non_canonical_serialization_smell
+from analyzers import e449_missing_stability_marker_smell
+from analyzers import e450_stable_changed_without_contract_bump_smell
+from analyzers import e451_provisional_without_replacement_smell
 
 
 ANALYZERS = (
@@ -911,6 +914,9 @@ ANALYZERS = (
     e445_smoke_suite_missing_smell,
     e447_platform_dependent_behavior_smell,
     e448_non_canonical_serialization_smell,
+    e449_missing_stability_marker_smell,
+    e450_stable_changed_without_contract_bump_smell,
+    e451_provisional_without_replacement_smell,
 )
 
 
