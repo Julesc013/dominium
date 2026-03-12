@@ -198,6 +198,7 @@ def normalize_planet_basic_artifact_rows(rows: object) -> List[dict]:
         normalized = {
             "object_id": object_id,
             "radius": _as_map(row.get("radius")),
+            "body_albedo_proxy": _as_map(row.get("body_albedo_proxy")),
             "density_class_id": str(row.get("density_class_id", "")).strip(),
             "atmosphere_class_id": str(row.get("atmosphere_class_id", "")).strip(),
             "ocean_fraction": _as_map(row.get("ocean_fraction")),
@@ -357,6 +358,54 @@ def _planet_count(
 
 def _habitable_center_milli_au(luminosity_permille: int) -> int:
     return max(150, isqrt(max(1, int(luminosity_permille)) * 1000))
+
+
+def _body_albedo_proxy_permille(
+    *,
+    planet_class_id: str,
+    atmosphere_class_id: str,
+    ocean_fraction_permille: int,
+) -> int:
+    class_token = str(planet_class_id or "").strip().lower()
+    atmosphere_token = str(atmosphere_class_id or "").strip().lower()
+    ocean_fraction = max(0, min(1000, _as_int(ocean_fraction_permille, 0)))
+    if ocean_fraction >= 300 and atmosphere_token in {"atmo.temperate", "atmo.dense"}:
+        return 300
+    if "ice" in class_token:
+        return 620
+    if "gas" in class_token or atmosphere_token == "atmo.volatile":
+        return 520
+    if atmosphere_token == "atmo.none":
+        return 180
+    if atmosphere_token == "atmo.thin":
+        return 220
+    return 260
+
+
+def _moon_stub_radius_km(*, moon_index: int) -> int:
+    if int(max(0, _as_int(moon_index, 0))) == 0:
+        return 1737
+    return 1200 + (int(max(0, _as_int(moon_index, 0))) * 131)
+
+
+def _moon_stub_descriptor(
+    *,
+    moon_object_id: str,
+    moon_index: int,
+) -> dict:
+    payload = {
+        "object_id": str(moon_object_id or "").strip(),
+        "moon_index": int(max(0, _as_int(moon_index, 0))),
+        "receiver_kind_id": "receiver.moon",
+        "radius": _quantity("km", _moon_stub_radius_km(moon_index=int(moon_index))),
+        "body_albedo_proxy": _quantity("permille", 120),
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "source": MW_SYSTEM_REFINER_L2_VERSION,
+        },
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
 
 
 def _planet_class_id(
@@ -609,6 +658,7 @@ def generate_mw_system_l2_payload(
             axial_tilt_mdeg = _axial_tilt_mdeg(orbit_seed, planet_class_id, semi_major_axis_milli_au, habitable_center_milli_au, planet_priors_row)
             radius_km = _radius_km(orbit_seed, planet_class_id, planet_priors_row)
             current_moon_ids: List[str] = []
+            current_moon_descriptors: List[dict] = []
             for moon_index in range(_moon_stub_count(orbit_seed, planet_class_id, system_priors_row)):
                 moon_object_id, moon_object_row = _spawn_object_identity(
                     universe_identity_hash=universe_identity_hash,
@@ -621,6 +671,12 @@ def generate_mw_system_l2_payload(
                 object_rows.append(moon_object_row)
                 current_moon_ids.append(moon_object_id)
                 moon_object_ids.append(moon_object_id)
+                current_moon_descriptors.append(
+                    _moon_stub_descriptor(
+                        moon_object_id=moon_object_id,
+                        moon_index=moon_index,
+                    )
+                )
             habitable_likely = _planet_habitable_likely(planet_class_id=planet_class_id, atmosphere_class_id=atmosphere_class_id, ocean_fraction_permille=ocean_fraction_permille, semi_major_axis_milli_au=semi_major_axis_milli_au, habitable_center_milli_au=habitable_center_milli_au)
             if habitable_likely:
                 habitable_planet_count += 1
@@ -648,13 +704,31 @@ def generate_mw_system_l2_payload(
             basic_row = {
                 "object_id": planet_object_id,
                 "radius": _quantity("km", radius_km),
+                "body_albedo_proxy": _quantity(
+                    "permille",
+                    _body_albedo_proxy_permille(
+                        planet_class_id=planet_class_id,
+                        atmosphere_class_id=atmosphere_class_id,
+                        ocean_fraction_permille=ocean_fraction_permille,
+                    ),
+                ),
                 "density_class_id": density_class_id,
                 "atmosphere_class_id": atmosphere_class_id,
                 "ocean_fraction": _quantity("permille", ocean_fraction_permille),
                 "rotation_period": _quantity("hours_milli", rotation_period_hours_milli),
                 "axial_tilt": _quantity("mdeg", axial_tilt_mdeg),
                 "deterministic_fingerprint": "",
-                "extensions": {"parent_system_object_id": system_object_id, "parent_star_object_id": star_object_id, "planet_index": planet_index, "planet_class_id": planet_class_id, "moon_stub_count": len(current_moon_ids), "moon_object_ids": list(current_moon_ids), "habitable_likely": bool(habitable_likely), "source": MW_SYSTEM_REFINER_L2_VERSION},
+                "extensions": {
+                    "parent_system_object_id": system_object_id,
+                    "parent_star_object_id": star_object_id,
+                    "planet_index": planet_index,
+                    "planet_class_id": planet_class_id,
+                    "moon_stub_count": len(current_moon_ids),
+                    "moon_object_ids": list(current_moon_ids),
+                    "moon_stub_descriptors": [dict(row) for row in current_moon_descriptors],
+                    "habitable_likely": bool(habitable_likely),
+                    "source": MW_SYSTEM_REFINER_L2_VERSION,
+                },
             }
             basic_row["deterministic_fingerprint"] = canonical_sha256(dict(basic_row, deterministic_fingerprint=""))
             basic_rows.append(basic_row)

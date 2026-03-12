@@ -126,6 +126,9 @@ def _targeted_base_properties(
                 "radius_km": _quantity_value(basic.get("radius"), 0),
                 "density_class_id": str(basic.get("density_class_id", "")).strip(),
             },
+            "surface": {
+                "body_albedo_proxy_permille": _quantity_value(basic.get("body_albedo_proxy"), 0),
+            },
             "spin": {
                 "axial_tilt_mdeg": _quantity_value(basic.get("axial_tilt"), 0),
                 "rotation_period_hours_milli": _quantity_value(basic.get("rotation_period"), 0),
@@ -143,6 +146,9 @@ def _targeted_base_properties(
     if object_kind_id == "kind.moon":
         return {
             "display_name": "Procedural Moon Stub",
+            "surface": {
+                "body_albedo_proxy_permille": 120,
+            },
             "tags": ["moon.stub", "procedural"],
         }
     return {
@@ -388,4 +394,3 @@ def verify_sol_pin_overlay(repo_root: str) -> dict:
         "violations": violations,
     }
     return report
-
