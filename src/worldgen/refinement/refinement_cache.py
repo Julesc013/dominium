@@ -152,7 +152,7 @@ def evict_refinement_cache_entries(
 ) -> dict:
     rows = normalize_refinement_cache_entry_rows(cache_entry_rows)
     limits = dict(DEFAULT_REFINEMENT_CACHE_LIMITS)
-    for key, value in _as_map(max_entries_by_level).items():
+    for key, value in sorted(_as_map(max_entries_by_level).items(), key=lambda item: int(_as_int(item[0], 0))):
         try:
             limits[int(key)] = int(max(0, _as_int(value, 0)))
         except (TypeError, ValueError):

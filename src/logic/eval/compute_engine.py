@@ -282,7 +282,7 @@ def evaluate_logic_compute_phase(
                 delay_fixed_ticks=delay_fixed_ticks,
             )
         output_payloads: Dict[str, dict] = {}
-        for port_id, port_row in dict(element.get("output_ports") or {}).items():
+        for port_id, port_row in sorted(dict(element.get("output_ports") or {}).items(), key=lambda item: token(item[0])):
             node_id = token(as_map(port_row).get("node_id"))
             signal_type_id = signal_type_id_for_port(
                 node_id=node_id,

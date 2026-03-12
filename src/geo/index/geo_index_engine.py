@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import math
 from typing import Dict, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -194,6 +193,10 @@ def _legacy_cell_alias(cell_key: Mapping[str, object], partition_kind: str) -> s
     return _format_grid_cell_key(index_tuple)
 
 
+def _floor_div_index(value: object, divisor: int) -> int:
+    return int(_as_int(value, 0)) // int(max(1, _as_int(divisor, 1)))
+
+
 def _grid_index_tuple(
     *,
     coords: Sequence[int],
@@ -205,7 +208,7 @@ def _grid_index_tuple(
     cell_size_mm = max(1, _as_int(params.get("cell_size_mm", 10000), 10000))
     scale = 1 << int(max(0, int(refinement_level)))
     effective_cell_size = max(1, cell_size_mm // scale)
-    out = [int(math.floor(float(value) / float(effective_cell_size))) for value in coords]
+    out = [_floor_div_index(value, effective_cell_size) for value in coords]
     boundary_rule_id = str(_as_map(topology_row).get("boundary_rule_id", "")).strip().lower()
     if "periodic" in boundary_rule_id:
         periods = _periods_from_topology(topology_row, len(out))
@@ -225,7 +228,7 @@ def _tree_index_tuple(
     root_extent_mm = max(1, _as_int(params.get("root_extent_mm", 1000000), 1000000))
     scale = 1 << int(max(0, int(refinement_level)))
     cell_span = max(1, root_extent_mm // scale)
-    return [int(math.floor(float(value) / float(cell_span))) for value in coords]
+    return [_floor_div_index(value, cell_span) for value in coords]
 
 
 def _atlas_index_tuple(
@@ -241,8 +244,8 @@ def _atlas_index_tuple(
     tile_resolution = max(1, _as_int(params.get("tile_resolution", params.get("cell_size_mm", 256)), 256))
     scale = 1 << int(max(0, int(refinement_level)))
     cell_size = max(1, tile_resolution // scale)
-    u_idx = int(math.floor(float(coords[0]) / float(cell_size)))
-    v_idx = int(math.floor(float(coords[1] if len(coords) > 1 else 0) / float(cell_size)))
+    u_idx = _floor_div_index(coords[0] if coords else 0, cell_size)
+    v_idx = _floor_div_index(coords[1] if len(coords) > 1 else 0, cell_size)
     if str(chart_id).strip():
         return [u_idx, v_idx]
     return [u_idx, v_idx]

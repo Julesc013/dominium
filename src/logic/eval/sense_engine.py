@@ -273,7 +273,7 @@ def build_logic_sense_snapshot(
     for element in element_index:
         element_instance_id = token(element.get("element_instance_id"))
         input_rows: Dict[str, dict] = {}
-        for port_id, port_row in dict(element.get("input_ports") or {}).items():
+        for port_id, port_row in sorted(dict(element.get("input_ports") or {}).items(), key=lambda item: token(item[0])):
             port_payload = as_map(port_row)
             node_id = token(port_payload.get("node_id"))
             signal_type_id = signal_type_id_for_port(

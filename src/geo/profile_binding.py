@@ -108,7 +108,7 @@ def resolve_geo_profile_set(
 
     owner_token = str(owner_id).strip() or str(_as_map(owner_context).get("session_id", "")).strip() or "*"
     exception_events = []
-    for rule_id, snapshot_key in GEO_RULE_TO_PROFILE_KEY.items():
+    for rule_id, snapshot_key in sorted(GEO_RULE_TO_PROFILE_KEY.items(), key=lambda item: str(item[0])):
         baseline_key = str(rule_id).split(".", 2)[-1]
         baseline_value = str(baseline.get(baseline_key, "")).strip()
         effective_value = str(

@@ -646,7 +646,7 @@ def normalize_field_cell_rows(
     layer_by_field_id = dict((str(row.get("field_id", "")).strip(), dict(row)) for row in layer_rows)
     field_type_rows = field_type_rows_by_id(field_type_registry)
     value_kind_by_field_id: Dict[str, str] = {}
-    for field_id, layer_row in layer_by_field_id.items():
+    for field_id, layer_row in sorted(layer_by_field_id.items(), key=lambda item: str(item[0])):
         field_type_id = str(layer_row.get("field_type_id", "")).strip()
         value_kind = _normalize_value_kind((dict(field_type_rows.get(field_type_id) or {})).get("value_kind"))
         value_kind_by_field_id[field_id] = value_kind

@@ -261,7 +261,7 @@ def transform_expression(expression: str) -> str:
     value = str(expression or "").strip()
     if not value:
         return "0"
-    for source, target in _FUNCTION_REPLACEMENTS.items():
+    for source, target in sorted(_FUNCTION_REPLACEMENTS.items(), key=lambda item: (-len(str(item[0])), str(item[0]))):
         value = re.sub(r"\b{}\s*\(".format(re.escape(source)), "{}(".format(target), value)
 
     def replace_identifier(match: re.Match[str]) -> str:

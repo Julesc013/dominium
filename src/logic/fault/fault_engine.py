@@ -128,6 +128,10 @@ def normalize_logic_fault_state_rows(rows: object) -> List[dict]:
     return [dict(out[key]) for key in sorted(out.keys())]
 
 
+def _sorted_fault_rows(rows_by_id: Mapping[str, Mapping[str, object]]) -> List[dict]:
+    return [dict(rows_by_id[fault_id]) for fault_id in sorted(rows_by_id.keys(), key=str)]
+
+
 def process_logic_fault_set(
     *,
     current_tick: int,
@@ -203,7 +207,7 @@ def process_logic_fault_clear(
         target_kind = _token(request.get("target_kind")).lower()
         target_id = _token(request.get("target_id"))
         fault_kind_id = _token(request.get("fault_kind_id"))
-        for row in existing.values():
+        for row in _sorted_fault_rows(existing):
             if (
                 _token(row.get("target_kind")).lower() == target_kind
                 and _token(row.get("target_id")) == target_id
@@ -216,7 +220,7 @@ def process_logic_fault_clear(
         return {
             "result": "refused",
             "reason_code": REFUSAL_LOGIC_FAULT_INVALID,
-            "logic_fault_state_rows": list(existing.values()),
+            "logic_fault_state_rows": _sorted_fault_rows(existing),
         }
     updated = build_logic_fault_state_row(
         fault_id=_token(row.get("fault_id")),
@@ -229,7 +233,7 @@ def process_logic_fault_clear(
         extensions=dict(_as_map(row.get("extensions")), tick_cleared=tick),
     )
     existing[fault_id] = updated
-    normalized = normalize_logic_fault_state_rows(list(existing.values()))
+    normalized = normalize_logic_fault_state_rows(_sorted_fault_rows(existing))
     return {
         "result": "complete",
         "reason_code": "",

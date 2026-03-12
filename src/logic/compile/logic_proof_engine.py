@@ -145,7 +145,7 @@ def verify_logic_equivalence_proof(
         compiled_payload=compiled_payload,
     )
     actual_extensions = _as_map(proof.get("extensions"))
-    for key, value in expected_extensions.items():
+    for key, value in sorted(expected_extensions.items(), key=lambda item: str(item[0])):
         if _canon(actual_extensions.get(key)) != _canon(value):
             return False
     return True
