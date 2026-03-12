@@ -1,0 +1,28 @@
+SCHEMA: astro/orbit_view_artifact.schema
+schema_id: dominium.schema.astro.orbit_view_artifact
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define a deterministic SOL-2 orbit-view artifact for map and inspect surfaces.
+
+NON-SEMANTICS:
+- Orbit view artifacts are derived only.
+- Orbit view artifacts must not mutate truth and may be compacted/evicted.
+
+REQUIRED SHAPE:
+record orbit_view_artifact
+  required:
+    - schema_version: semver
+    - view_id: id
+    - tick: int
+    - viewer_ref: map
+    - bodies: list
+    - sampled_paths: list
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- bodies and sampled_paths are sorted deterministically
+- sampled_paths remain bounded by the selected orbit path policy
+- derived orbit traces must not be persisted as canonical truth state

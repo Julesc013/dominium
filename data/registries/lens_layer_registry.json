@@ -51,6 +51,17 @@
       },
       {
         "schema_version": "1.0.0",
+        "layer_id": "layer.orbits",
+        "description": "Deterministic SOL-2 orbit ring and body marker layer sourced from derived orbit-view artifacts only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "orbit_view",
+          "artifact_id": "orbit_view_artifact",
+          "source": "SOL2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "layer_id": "layer.terrain_stub",
         "description": "Deterministic terrain or atlas-terrain surface derived from lawful perceived map or tile sources.",
         "deterministic_fingerprint": "",

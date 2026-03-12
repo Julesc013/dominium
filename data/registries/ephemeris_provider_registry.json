@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.registry.astro.ephemeris_provider_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.astro.ephemeris_provider_registry",
+    "registry_version": "1.0.0",
+    "ephemeris_providers": [
+      {
+        "schema_version": "1.0.0",
+        "provider_id": "ephemeris.kepler_proxy",
+        "kind": "kepler_proxy",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SOL2-2",
+          "mvp_default": true,
+          "nbody_forbidden": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "SOL-2 orbit visualization uses a bounded Kepler proxy until higher-fidelity ephemeris overlays are contract-pinned.",
+          "future_series": "SOL/GAL",
+          "replacement_target": "Replace the MVP Kepler proxy with pack-selected N-body or real ephemeris providers without refactoring UI or GEO lens consumers.",
+          "contract_id": "",
+          "deterministic_fingerprint": "c038188e91343daf5c95442c816a64986e8c0482319d67d95246cb1d0df1e95f",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "source": "SOL2-2"
+    }
+  }
+}

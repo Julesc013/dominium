@@ -1,0 +1,26 @@
+SCHEMA: astro/orbit_path_policy.schema
+schema_id: dominium.schema.astro.orbit_path_policy
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define a deterministic SOL-2 orbit path sampling policy.
+
+NON-SEMANTICS:
+- Policies bound derived view cost only.
+- Policies do not alter canonical orbital priors.
+
+REQUIRED SHAPE:
+record orbit_path_policy
+  required:
+    - schema_version: semver
+    - policy_id: id
+    - samples_per_orbit: int
+    - max_paths_per_view: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- sampling order is stable
+- samples_per_orbit and max_paths_per_view are bounded positive integers
+- deterministic_fingerprint is computed with the fingerprint field blanked

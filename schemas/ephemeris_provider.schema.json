@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ephemeris Provider Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SOL-2 ephemeris provider descriptor.",
+  "x-doc-ref": [
+    "docs/sol/ORBIT_VISUALIZATION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "provider_id",
+    "kind",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "provider_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "kepler_proxy",
+        "future"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "provider_id": "ephemeris.kepler_proxy",
+      "kind": "kepler_proxy",
+      "deterministic_fingerprint": "0d0e97e7c240750e53f014dc6ca2e8b51ff8fe745989f6f4670d80fc2e451413",
+      "extensions": {
+        "source": "SOL2-2"
+      }
+    }
+  ]
+}

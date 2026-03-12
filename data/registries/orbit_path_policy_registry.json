@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.registry.astro.orbit_path_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.astro.orbit_path_policy_registry",
+    "registry_version": "1.0.0",
+    "orbit_path_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "orbitpath.mvp_default",
+        "samples_per_orbit": 128,
+        "max_paths_per_view": 16,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SOL2-2",
+          "max_marker_rows": 512
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Orbit view sampling density remains an MVP visualization policy and may be tuned before release governance freezes.",
+          "future_series": "SOL/GEO",
+          "replacement_target": "Replace the MVP orbit sampling policy with profile-bound policies for system, telescope, and high-fidelity ephemeris views.",
+          "contract_id": "",
+          "deterministic_fingerprint": "37cd8c5b7358fc58340f45f5ad7bca344b7e1589aacecacf8fb4bfa36135e394",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "source": "SOL2-2"
+    }
+  }
+}

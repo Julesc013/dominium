@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Orbit View Artifact Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SOL-2 derived orbit visualization artifact.",
+  "x-doc-ref": [
+    "docs/sol/ORBIT_VISUALIZATION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "view_id",
+    "tick",
+    "viewer_ref",
+    "bodies",
+    "sampled_paths",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "view_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "viewer_ref": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "bodies": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "required": [
+          "object_id",
+          "kind",
+          "parent_object_id",
+          "current_position_ref",
+          "period_estimate_ticks"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "kind.star",
+              "kind.star_system",
+              "kind.planet",
+              "kind.moon"
+            ]
+          },
+          "parent_object_id": {
+            "type": "string"
+          },
+          "current_position_ref": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "period_estimate_ticks": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "sampled_paths": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "required": [
+          "object_id",
+          "sampled_points"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sampled_points": {
+            "type": "array",
+            "maxItems": 512,
+            "items": {
+              "type": "object",
+              "required": [
+                "sample_index",
+                "position_ref"
+              ],
+              "additionalProperties": true,
+              "properties": {
+                "sample_index": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "position_ref": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

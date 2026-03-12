@@ -25,6 +25,25 @@
         }
       },
       {
+        "provides_id": "provides.ephemeris.system.v1",
+        "provides_type": "dataset",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.description": "Reference surface for alternate deterministic system ephemeris providers.",
+          "official.source": "SOL2-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "SOL-2 ephemeris provider selection remains provisional until higher-fidelity astronomy packs and contracts are frozen.",
+          "future_series": "SOL/LIB",
+          "replacement_target": "Replace the provisional ephemeris provides surface with contract-pinned provider selection once N-body and real ephemeris overlays are formalized.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9671b32094b8469da35a0d2f3be6f67eb7a9e87329205f3d4bdee8ff5ddd3027",
+          "extensions": {}
+        }
+      },
+      {
         "provides_id": "provides.profile.bundle.v1",
         "provides_type": "template_set",
         "deterministic_fingerprint": "",
