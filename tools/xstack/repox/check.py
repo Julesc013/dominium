@@ -1048,6 +1048,21 @@ EARTH10_AUDIT_COMMON_PATH = "tools/worldgen/earth10_audit_common.py"
 EARTH10_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_material_proxy_window.py"
 EARTH10_BASELINE_PATH = "docs/audit/EARTH_MATERIAL_PROXY_BASELINE.md"
 
+SOL1_RETRO_AUDIT_PATH = "docs/audit/SOL1_RETRO_AUDIT.md"
+SOL1_DOCTRINE_PATH = "docs/sol/ILLUMINATION_GEOMETRY_MODEL.md"
+SOL1_EMITTER_SCHEMA_DOC_PATH = "schema/astro/emitter.schema"
+SOL1_RECEIVER_SCHEMA_DOC_PATH = "schema/astro/receiver.schema"
+SOL1_VIEW_SCHEMA_DOC_PATH = "schema/astro/illumination_view_artifact.schema"
+SOL1_EMITTER_SCHEMA_JSON_PATH = "schemas/emitter.schema.json"
+SOL1_RECEIVER_SCHEMA_JSON_PATH = "schemas/receiver.schema.json"
+SOL1_VIEW_SCHEMA_JSON_PATH = "schemas/illumination_view_artifact.schema.json"
+SOL1_EMITTER_REGISTRY_PATH = "data/registries/emitter_kind_registry.json"
+SOL1_RECEIVER_REGISTRY_PATH = "data/registries/receiver_kind_registry.json"
+SOL1_OCCLUSION_POLICY_REGISTRY_PATH = "data/registries/occlusion_policy_registry.json"
+SOL1_ENGINE_PATH = "src/astro/illumination/illumination_geometry_engine.py"
+SOL1_REPLAY_TOOL_PATH = "tools/astro/tool_replay_illumination_view.py"
+SOL1_AUDIT_COMMON_PATH = "tools/astro/sol1_audit_common.py"
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -7767,6 +7782,124 @@ def _append_earth10_proxy_findings(
                 snippet=str(violation.get("token", ""))[:160],
                 message=str(violation.get("message", "")).strip() or "EARTH10 chemistry leak detected",
                 rule_id=chemistry_rule_id,
+            )
+        )
+
+
+def _append_sol1_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    stored_rule_id = "INV-NO-STORED-MOON-PHASE"
+    shortcut_rule_id = "INV-PHASE-DERIVED-FROM-ILLUMINATION"
+    occlusion_rule_id = "INV-OCCLUSION-STUB-ONLY"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (SOL1_RETRO_AUDIT_PATH, "SOL1 retro audit is required", stored_rule_id),
+        (SOL1_DOCTRINE_PATH, "SOL1 doctrine is required", shortcut_rule_id),
+        (SOL1_EMITTER_SCHEMA_DOC_PATH, "emitter schema law is required", shortcut_rule_id),
+        (SOL1_RECEIVER_SCHEMA_DOC_PATH, "receiver schema law is required", shortcut_rule_id),
+        (SOL1_VIEW_SCHEMA_DOC_PATH, "illumination view artifact schema law is required", shortcut_rule_id),
+        (SOL1_EMITTER_SCHEMA_JSON_PATH, "emitter JSON schema is required", shortcut_rule_id),
+        (SOL1_RECEIVER_SCHEMA_JSON_PATH, "receiver JSON schema is required", shortcut_rule_id),
+        (SOL1_VIEW_SCHEMA_JSON_PATH, "illumination view artifact JSON schema is required", shortcut_rule_id),
+        (SOL1_EMITTER_REGISTRY_PATH, "emitter kind registry is required", shortcut_rule_id),
+        (SOL1_RECEIVER_REGISTRY_PATH, "receiver kind registry is required", shortcut_rule_id),
+        (SOL1_OCCLUSION_POLICY_REGISTRY_PATH, "occlusion policy registry is required", occlusion_rule_id),
+        (SOL1_ENGINE_PATH, "illumination geometry engine is required", shortcut_rule_id),
+        (SOL1_REPLAY_TOOL_PATH, "illumination replay tool is required", shortcut_rule_id),
+        (SOL1_AUDIT_COMMON_PATH, "SOL1 audit common tooling is required", shortcut_rule_id),
+        ("tools/auditx/analyzers/e459_moon_phase_stored_smell.py", "MoonPhaseStoredSmell analyzer is required", stored_rule_id),
+        ("tools/auditx/analyzers/e460_phase_shortcut_smell.py", "PhaseShortcutSmell analyzer is required", shortcut_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, SOL1_DOCTRINE_PATH).lower()
+    for token, message, rule_id in (
+        ("emitter.star", "SOL1 doctrine must define emitter.star", shortcut_rule_id),
+        ("receiver.planet", "SOL1 doctrine must define receiver.planet", shortcut_rule_id),
+        ("receiver.moon", "SOL1 doctrine must define receiver.moon", shortcut_rule_id),
+        ("occlusion.none_stub", "SOL1 doctrine must define the occlusion stub policy", occlusion_rule_id),
+        ("no stored phase", "SOL1 doctrine must forbid stored Moon phase", stored_rule_id),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=SOL1_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.astro.sol1_audit_common import (
+            scan_moon_phase_storage,
+            scan_occlusion_policy_violations,
+            scan_phase_shortcuts,
+        )
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=SOL1_AUDIT_COMMON_PATH,
+                line_number=1,
+                snippet="scan_phase_shortcuts",
+                message="unable to import SOL1 audit helpers ({})".format(str(exc)),
+                rule_id=shortcut_rule_id,
+            )
+        )
+        return
+
+    for violation in scan_moon_phase_storage(repo_root):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("snippet", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "stored Moon phase detected in SOL1 runtime",
+                rule_id=stored_rule_id,
+            )
+        )
+
+    for violation in scan_phase_shortcuts(repo_root):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("snippet", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "phase shortcut detected in SOL1 runtime",
+                rule_id=shortcut_rule_id,
+            )
+        )
+
+    for violation in scan_occlusion_policy_violations(repo_root):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("snippet", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "non-stub occlusion policy usage detected in SOL1 runtime",
+                rule_id=occlusion_rule_id,
             )
         )
 
@@ -31275,6 +31408,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_earth10_proxy_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_sol1_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -464,6 +464,8 @@ from analyzers import e455_duplicate_semantic_engine_smell
 from analyzers import e456_wallclock_in_truth_smell
 from analyzers import e457_unnamed_rng_smell
 from analyzers import e458_chemistry_leak_smell
+from analyzers import e459_moon_phase_stored_smell
+from analyzers import e460_phase_shortcut_smell
 
 
 ANALYZERS = (
@@ -931,6 +933,8 @@ ANALYZERS = (
     e456_wallclock_in_truth_smell,
     e457_unnamed_rng_smell,
     e458_chemistry_leak_smell,
+    e459_moon_phase_stored_smell,
+    e460_phase_shortcut_smell,
 )
 
 
