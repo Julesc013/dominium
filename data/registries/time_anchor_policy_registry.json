@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.registry.time_anchor_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.time_anchor_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "time_anchor_policy_id": "time.anchor.mvp_default",
+        "tick_type_id": "tick_t.uint64",
+        "anchor": {
+          "interval_ticks": 10000,
+          "emit_on_save": true,
+          "emit_on_migration": true
+        },
+        "overflow_policy": {
+          "reserved_rollover_ticks": 1000000,
+          "refusal_threshold_tick": 18446744073708551615,
+          "refusal_code": "refusal.time.tick_overflow_imminent"
+        },
+        "deterministic_fingerprint": "5569e3f4333045c5c1bef5a756935e6c14bb120577da530c9294c708a8d074fa",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "TIME-ANCHOR-0 introduces explicit long-run anchor policy without freezing cadence semantics for post-MVP release governance.",
+          "future_series": "TIME",
+          "replacement_target": "Replace MVP anchor defaults with release-pinned long-run time governance.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f2015116333a21361e87b6c2f622f5fa2a4abbbe796390eed079bdc0a7483299",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

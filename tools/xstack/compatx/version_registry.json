@@ -3738,6 +3738,20 @@
         "1.0.0"
       ]
     },
+    "epoch_anchor_record": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tick_t": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "time_branch": {
       "current_version": "1.0.0",
       "migrations": {},

@@ -1,0 +1,30 @@
+SCHEMA: time/epoch_anchor_record.schema
+schema_id: dominium.schema.time.epoch_anchor_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical epoch anchor record emitted on deterministic long-run time boundaries for replay, compaction, and proof verification.
+
+NON-SEMANTICS:
+- Epoch anchors do not mutate truth.
+- Epoch anchors are proof witnesses and replay/compaction boundaries only.
+
+REQUIRED SHAPE:
+record epoch_anchor_record
+  required:
+    - schema_version: semver
+    - anchor_id: id
+    - tick: u64
+    - truth_hash: sha256
+    - contract_bundle_hash: sha256
+    - pack_lock_hash: sha256
+    - overlay_manifest_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- anchors are emitted on absolute canonical tick boundaries
+- `tick` MUST be in `[0, 18446744073709551615]`
+- extensions may carry replay or proof context, but ordering remains canonical by `tick`
+- deterministic_fingerprint is computed with the fingerprint field blanked

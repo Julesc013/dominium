@@ -1,0 +1,24 @@
+SCHEMA: time/tick_t.schema
+schema_id: dominium.schema.time.tick_t
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical unsigned 64-bit tick wrapper used by long-run deterministic time tooling and anchor artifacts.
+
+NON-SEMANTICS:
+- `tick_t` does not change canonical tick ordering semantics.
+- `tick_t` is a serialization contract and validation surface for explicit width discipline.
+
+REQUIRED SHAPE:
+record tick_t
+  required:
+    - schema_version: semver
+    - tick_value: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `tick_value` MUST be in `[0, 18446744073709551615]`
+- `tick_value` MUST never be derived from wall-clock time
+- deterministic_fingerprint is computed with the fingerprint field blanked
