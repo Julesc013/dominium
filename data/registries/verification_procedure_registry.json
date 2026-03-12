@@ -14,6 +14,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Structural identity checks over deterministic serialized form."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for verify.exact_structural; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "10fbf0d5bcd0e60d1a5c05ce3a9beb9958dd3ee2878ce8496edaa533e0e723fa",
+          "extensions": {}
         }
       },
       {
@@ -25,6 +35,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Deterministic bounded sample set verification."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for verify.bounded_sampling; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7fafd1597b9defd215eb85cd5c9b1e13cf4065b506415b36fd9bb8c3b86ab03a",
+          "extensions": {}
         }
       },
       {
@@ -37,6 +57,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Reserved symbolic verifier hook for future use."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for verify.symbolic_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "c2c4a59b5da5836cae140ae55206911cb1a791ae68617e6108721572820a75ad",
+          "extensions": {}
         }
       }
     ],

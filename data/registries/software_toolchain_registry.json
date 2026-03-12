@@ -14,6 +14,16 @@
           "source": "PROC8-2",
           "language_family": "c",
           "deterministic_only": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for toolchain.stub_c89; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b654c51e4c9aa53527778669f525d0e3f5660fc12ae1c2e818dddee5790fe85c",
+          "extensions": {}
         }
       },
       {
@@ -25,6 +35,16 @@
           "source": "PROC8-2",
           "language_family": "cpp",
           "deterministic_only": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for toolchain.stub_cpp98; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "55b5a3b32d724cc57ea9794127a5b7fcc1727a10a4cc85f2b680c09c75383b9e",
+          "extensions": {}
         }
       },
       {
@@ -36,6 +56,16 @@
           "source": "PROC8-2",
           "language_family": "script",
           "deterministic_only": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for toolchain.stub_script; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4d17e7446f80806157267299f52ecf6049e55bc20858f973023ce216268cda75",
+          "extensions": {}
         }
       }
     ],

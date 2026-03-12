@@ -103,6 +103,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "CAP-NEG-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG degrade ladder semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "5de663e74ba0b0304e0d026f4bac1ea67d31a783ed8bf28b5330f9b3771462dd",
+          "extensions": {}
         }
       },
       {
@@ -157,6 +167,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "CAP-NEG-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG degrade ladder semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "5de663e74ba0b0304e0d026f4bac1ea67d31a783ed8bf28b5330f9b3771462dd",
+          "extensions": {}
         }
       },
       {
@@ -167,6 +187,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "CAP-NEG-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG degrade ladder semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "5de663e74ba0b0304e0d026f4bac1ea67d31a783ed8bf28b5330f9b3771462dd",
+          "extensions": {}
         }
       },
       {
@@ -191,6 +221,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "CAP-NEG-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG degrade ladder semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "5de663e74ba0b0304e0d026f4bac1ea67d31a783ed8bf28b5330f9b3771462dd",
+          "extensions": {}
         }
       },
       {
@@ -218,6 +258,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "CAP-NEG-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG degrade ladder semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "5de663e74ba0b0304e0d026f4bac1ea67d31a783ed8bf28b5330f9b3771462dd",
+          "extensions": {}
         }
       },
       {
@@ -245,6 +295,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "CAP-NEG-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG degrade ladder semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "5de663e74ba0b0304e0d026f4bac1ea67d31a783ed8bf28b5330f9b3771462dd",
+          "extensions": {}
         }
       },
       {
@@ -269,6 +329,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "CAP-NEG-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG degrade ladder semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "5de663e74ba0b0304e0d026f4bac1ea67d31a783ed8bf28b5330f9b3771462dd",
+          "extensions": {}
         }
       }
     ],

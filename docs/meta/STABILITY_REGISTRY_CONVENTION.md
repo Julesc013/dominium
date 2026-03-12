@@ -56,6 +56,7 @@ Reason:
 ## Deterministic Fingerprinting
 
 - the `stability` object participates in the containing entry fingerprint
+- the `stability.schema_version` is pinned to `1.0.0`
 - the `stability.deterministic_fingerprint` is computed with its own fingerprint field blanked
 - entry-level deterministic fingerprints must therefore change when stability metadata changes
 

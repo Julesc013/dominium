@@ -19,7 +19,7 @@ STABLE_WATCH_RELS = (
     "data/registries/capability_fallback_registry.json",
     "data/registries/compat_mode_registry.json",
     "data/registries/degrade_ladder_registry.json",
-    "data/registries/protocol_registry.json",
+    "data/registries/pack_degrade_mode_registry.json",
 )
 WATCH_PREFIXES = STABLE_WATCH_RELS + (SEMANTIC_CONTRACT_REGISTRY_REL,)
 
@@ -47,7 +47,7 @@ def run(graph, repo_root, changed_files=None):
                 confidence=0.9,
                 file_path=rel_path,
                 evidence=[
-                    "stable negotiation registry changed without a semantic contract registry update in the same diff",
+                    "stable registry changed without a semantic contract registry update in the same diff",
                 ],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",

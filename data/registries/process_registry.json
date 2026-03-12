@@ -36,7 +36,18 @@
       "process_id": "org.dominium.base.rules.process.template.epistemic.basic",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for org.dominium.base.rules.process.template.epistemic.basic; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "0a500b0a74ecdf10cfe928d51288ac0827fc392b10778b3275459118b9fe7717",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -74,7 +85,18 @@
       "process_id": "org.dominium.base.rules.process.template.transactional.basic",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for org.dominium.base.rules.process.template.transactional.basic; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "c682f8e838e565c54085c803156824b4f7a870eb22991863a0c1c992c2b32c52",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -112,7 +134,18 @@
       "process_id": "org.dominium.base.rules.process.template.transformative.basic",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for org.dominium.base.rules.process.template.transformative.basic; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "eebcd835957ba69fdc392c9b9625962a4793001516f78d468a585393b03acc56",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -137,7 +170,18 @@
       "process_id": "proc.archetype.cast_part",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for proc.archetype.cast_part; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "f8d3309c5c9d19d00b9a0d1da3e02e81c822153bd306256f918fe6da5e3d4c0c",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -162,7 +206,18 @@
       "process_id": "proc.archetype.machine_part",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for proc.archetype.machine_part; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "a40b5dd6526461c30007cc24fde32a2cb69793c37e132259ef29dbcdd96715ad",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -187,7 +242,18 @@
       "process_id": "proc.archetype.assemble_system",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for proc.archetype.assemble_system; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "88cee3b6cffa39fca0e206923e492e81aa8b557fdff6b3d503addade5ec8e923",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -212,7 +278,18 @@
       "process_id": "proc.archetype.test_and_calibrate",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for proc.archetype.test_and_calibrate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "07c2b983c13122bef9e07c573a0218852c5391ed5e42f98dc887978d7e715100",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -237,7 +314,18 @@
       "process_id": "proc.archetype.compile_firmware",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for proc.archetype.compile_firmware; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "1b826a00b81893b14597ad7759e9ee7b21303914839eef52f121e787b1c7913f",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -264,7 +352,18 @@
         "authority.alchemy"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.alchemy.calcine; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "f6df6898eb1ca6e7c4509a94ed1b14fa35fbcc3d0abbc9416db974737e200d5c",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -291,7 +390,18 @@
         "authority.alchemy"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.alchemy.transmute; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "7cf346ca2dfb60173fe2430ee6f2dfa35501c4f6ff68a03688c8eaa06f2370b2",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -318,7 +428,18 @@
         "authority.astrology"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.astrology.interpret; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "edf5d28d6177b1f37df1a800b75fa96bac49d9bcb34bb4407b1b3e98e6d23053",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -392,7 +513,18 @@
         "metalaw.allow.crafting"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.craft.execute; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "efd37aa88c7ecc1d2c8b477994f3919d32042e4c5f94235adca31936a06634eb",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -418,7 +550,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.epistemic.distort; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "9725d21de037adc7fa7dada2706ae08944abd27716ab52b077a75adddc403455",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -445,7 +588,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.epistemic.experiment; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "02bb86454fe718ca0b596a78837ba652a7802e8ecfb6ccb12297b5739a0422d0",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -471,7 +625,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.epistemic.infer; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "fd213076001728e432f2908d2d737948ca83e9f50abdf06c537d0ba1bad4bc9e",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -498,7 +663,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.epistemic.measure; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "b463059493f2397ce06e5c4e41e142508b686bc417d93d427176e81ff5d07413",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -525,7 +701,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.epistemic.observe; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "42e95a0bb8c5b773021a6d7a003b66fc2b99118a783144cb4ad2bba0cc02ba11",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -551,7 +738,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.epistemic.publish; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d74cc243d65d5d50e073863a4e32182707dc99b83cfd63bc728a06f1b541c62a",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -577,7 +775,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.epistemic.suppress; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "8bf1718e1d392f55cd42aa197ebae57cc3284d4114b2dd3d17bcf5774b2c28c8",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -604,7 +813,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.epistemic.survey; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "9582f98bf383e12491346b2c04dad9407222e8c44211a18a2f84c784b4804165",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -647,7 +867,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.examples.false_science.build; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e0e5c2574b0a0e4aa392595538e1dc37081dbd3ac9c77ea1d7289f1fe12450c0",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -687,7 +918,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.examples.false_science.design; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "c63add3ae12a3b844e381e92f54e8182d1c53f90a3183fa9abef90b6785d7fac",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -727,7 +969,18 @@
         "authority.epistemic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.examples.lost_civilization.catalog; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "639aaa57c0c89648edf76027cadd845a39c78009ada77f3eaa53430d182f3218",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -778,7 +1031,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.examples.lost_civilization.excavate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "79c7917da7c5c59c7ff43433ab69f5215f8ec34fff7aa812f00da3bb96fa3ea3",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -805,7 +1069,18 @@
         "authority.hyperspace"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.hyperspace.enter; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "214eeec24664cb4edd21b7badff90fe75b024e35a9e34427117af8565e4b2a65",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -832,7 +1107,18 @@
         "authority.hyperspace"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.hyperspace.exit; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "9b4b44e42cd8982ebde6d2643fec099b0e1b41d5dfc14efa4d8f8110b4794305",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -859,7 +1145,18 @@
         "authority.hyperspace"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.hyperspace.travel; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "890c1d0aac7d931aa92fb2a3f1da243a4e66f3e004070a2e2f27fc2e0d06d516",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -886,7 +1183,18 @@
         "authority.magic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.magic.divination; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "87d1f851ac89c9490aef6309a4fb29d5098cdf670021e7b37b6396cce9af1bba",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -913,7 +1221,18 @@
         "authority.magic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.magic.ritual.cast; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e96e2ac68293d1f7ccfb6bc64b6132c89bc1adfe5d60818b57699f9a0418a751",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -940,7 +1259,18 @@
         "authority.magic"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.magic.spell.weave; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "f088ff2d201b3b71f0edb8368e247ec89ec88f9abf94f95f621d1a6d76960c95",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1012,7 +1342,18 @@
       "rng_streams_used": [
         "noise.stream.world.mining.overlay"
       ],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.mine.cut; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "aa77a73a3d6c7e9152390616aadc5191056da6cee4a6ed9f05af595545d30902",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1091,7 +1432,18 @@
       "rng_streams_used": [
         "noise.stream.world.mining.chunk"
       ],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.mine.extract; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "5235344c6221f69e18ef4d14feb89ca2ab9e6905711a8eb60e2d69d13aa39bde",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1147,7 +1499,18 @@
         "metalaw.allow.mining"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.mine.support_check; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d6eab9e32923ce9f78f186bf9fc97a2bf7187afccfac8d1217ae515fd1438821",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1195,7 +1558,18 @@
         "authority.certify.structure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.certify_structure; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e2af5c2baffc2981119568b457c1a235b70d1df0f1456e5faf4f15b6d5dd306e",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1243,7 +1617,18 @@
         "authority.jurisdiction.local"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.claim_volume; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "27675ebacf25dfd72bcc7aff1ac6923a1bfa57cdc209b1698cc85bb14713b098",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1299,7 +1684,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.clear_and_prepare; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "8ae05953712f3e3d1d61414658b2fd4c1c3951fe237530c9e9bd2fe4b35650e4",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -1349,7 +1745,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.connect_interface; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "89aa117be1849d10503489fb2e6d66b6b77ebccda6cbaa4ed07092bb700e9905",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -1406,7 +1813,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.establish_foundation; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "b23eeee2abc4d310ba85e547da4b76d14008c66a50c123e0e23a07c57193e2b1",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -1457,7 +1875,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.place_part; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "1988cd804466d7ab770e2b66300d49dd304d734a26d555cdb34836954b1d88be",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1505,7 +1934,18 @@
         "authority.jurisdiction.local"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.release_volume; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d51daa5a44e3cb4249609d34e7b1f5ec854c6ef5dc1138944009afc3ffd408c5",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1555,7 +1995,18 @@
         "authority.observe.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.survey_site; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "93369fca2af6e14151822da4f76e93e908c62e38675174bab2ca518c3f715ecb",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1597,7 +2048,18 @@
         "authority.observe.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.construction.verify_integrity; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "dce952a61816fd5857c5f5de6dc7514582e54e188748c852a78e1715dbf1cee6",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1639,7 +2101,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.maintenance.degrade_performance; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "69acff12aa39f85f690dd8a00bdec811f1883538add182ed019a796eb8020b40",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -1681,7 +2154,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.maintenance.fail_component; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "230cde1ed974e0f2a9388d2b2621cab5815d0662fc0234af403183a9e438d94a",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1723,7 +2207,18 @@
         "authority.observe.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.maintenance.inspect_condition; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "2c09e83bb2f5eaaa7c723c5bbee3903c46fbe5709e252796bcf86cf70adc3811",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -1774,7 +2269,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.maintenance.repair; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "7ea80187c396bcfd207670fed99a2f580701b9c0b180527264b0f53de5d6d688",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -1817,7 +2323,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.maintenance.replace_part; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "bc045fa4b0f00d2c02e7adbf797f31b81cc8a6955f3a5a25edcceef41f07668a",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -1859,7 +2376,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.maintenance.wear_accumulate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "c71091764cebaa01aac3904277036c86e2508cc1a99487b94034f383fd04016d",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -1916,7 +2444,18 @@
         "authority.mutation.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.manufacturing.assemble_subsystem; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "b3ac269a609e9d1c85a537832007910a6bc96bd7ed18993d6d3f00f42c25f74a",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -1965,7 +2504,18 @@
         "authority.mutation.materials"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.manufacturing.fabricate_part; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "f0817776cf17cde719c5f8df1e1ade2f73a1327c68987c3efcd539ff31fdd261",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -2007,7 +2557,18 @@
         "authority.observe.infrastructure"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.manufacturing.quality_check; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "9d989f28db555414882a853aad79459ff29c5b84e3822a3013b3588b91635caa",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -2057,7 +2618,18 @@
         "authority.mutation.materials"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.manufacturing.scrap_or_rework; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "942ba809f02c5b51b30a9afc0eee63f3b272b41c5846149751955767f544401d",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2098,7 +2670,18 @@
         "authority.mutation.materials"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.manufacturing.transform_material; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "4750a5c228c68c8ccf79ab51b62a8925afd8e4f156f1ab994fd37aa28dfae94d",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2141,7 +2724,18 @@
         "authority.mutation.subsurface"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.mining.access_deposit; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "7148957b33607000fec3caab6afa3b27e2f9dd39bd0af1ee1943c6161969a196",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2183,7 +2777,18 @@
         "authority.observe.subsurface"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.mining.discover_deposit; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "0fc9b2c27418e9c12d17afe4ffc6eead0a1a523c5c159362dafdab5dc6714b99",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2234,7 +2839,18 @@
         "authority.mutation.subsurface"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.mining.extract_material; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "627f4caf99ca83f98623b6139041fc76d371616de31e22c504df944a67d4b42f",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2276,7 +2892,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.mining.handle_tailings; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "c0b701de80ff97975a82907cc99b38e53380d56a52d63cd8e41c04685f01af49",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2331,7 +2958,18 @@
         "authority.mutation.materials"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.mining.refine_material; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "ebed7127bc7f17279e5056164af38e92fe837f89ce880a4cd1e5fd40399b6987",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2378,7 +3016,18 @@
         "authority.mutation.logistics"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.mining.transport_output; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "ecce54894e300652810a31785552d03580e16c2396310cb5f48d2e1a89542704",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -2427,7 +3076,18 @@
         "authority.mutation.network"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.network.attach; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d783a9646461d7897af6f76643a0dbb02001d672b7de4c9c15d9ddaa73395438",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2481,7 +3141,18 @@
         "authority.mutation.network"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.network.balance_flow; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "9afe613d2933bca6f7ccadb4edd8de1b816d0d2aeafcc19d7765065e4488cd56",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -2529,7 +3200,18 @@
         "authority.mutation.network"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.network.detach; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "be5449569fe0c2af1c3adb7c3e3743115060cc2bddcef1c03805836ce87e0c45",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2569,7 +3251,18 @@
         "authority.mutation.network"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.network.register; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "9621502cfbf367e18d4efb3d64333ab285fe476499746e586053b707d37391d8",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -2618,7 +3311,18 @@
         "authority.mutation.network"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.network.repair; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "669dad04a22e9726ce6c73cb7ffe239acf1d415f185f2003ae92112643deeef5",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2659,7 +3363,18 @@
         "authority.mutation.network"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.network.route_flow; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "0212fa747f4d5480061aefe6cbba2966b1827f7ac3e54a02d31413e7dc9fe3fc",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2701,7 +3416,18 @@
         "authority.observe.network"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.network.verify; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "a48ab316be37c23c25b808bee7bb5879f02b15b73fc0625a1bdb8893a397b63a",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2742,7 +3468,18 @@
         "authority.certify"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.regulation.certify; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "c6072b03c9c61d36366c68042affa5d2d51d54f9e0bc4e1cdc114f9aeb0bb81c",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2790,7 +3527,18 @@
         "authority.jurisdiction.local"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.regulation.inspect; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "351f47b1e7dd0c2c9ea2e60854588efcaad55dbad3300ca7237ec363bc0e68b4",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2838,7 +3586,18 @@
         "authority.permit.issue"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.regulation.issue_or_deny; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "1fc6922f9b5f149ce779b900527c9bc1b64d35872ea7bfb565675f732f192ab8",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2885,7 +3644,18 @@
         "authority.penalize"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.regulation.penalize_violation; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "4467442a2a8bfd1fa6a41ab630d12362454d95bf9284ed83f3ac62c9e527dcbf",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2925,7 +3695,18 @@
         "authority.jurisdiction.local"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.regulation.request_permit; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "6371704ec5cf4d5f8512a8fe7253854e59a7a171c8c51dea9c611755630c6fec",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -2965,7 +3746,18 @@
         "authority.jurisdiction.local"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.regulation.review_compliance; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "685ecae5728eef8f47265fa84136b5f6d5e1886de4726a5d24717c6251083f4e",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3021,7 +3813,18 @@
         "authority.mutation.atmosphere"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terraforming.alter_atmosphere; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e2190708973a8ae20e53bd33c47c9a6c59dd269eb74b96dba9192eb1d0eb116b",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3076,7 +3879,18 @@
         "authority.mutation.climate"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terraforming.climate_feedback; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "bcf23219c146cb770e82105773737edad667112a20017f45c8579a6ace9f611f",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3125,7 +3939,18 @@
         "authority.mutation.atmosphere"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terraforming.inject_gases; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d17aa9dee68a23d2dec132b389b4a3f11bafabd52add52ed5ebb6f34512d0be0",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3174,7 +3999,18 @@
         "authority.mutation.biomass"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terraforming.introduce_biomass; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "3828ccc4f033c794f3df4ac0b663ae9c9ece1549e2731d4386bbcba022ac9380",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3216,7 +4052,18 @@
         "authority.mutation.climate"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terraforming.modify_albedo; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "4741b563ecebf451b136bcbd9736c30e5b6d86e2791de945a3c93447b9ff58f2",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3272,7 +4119,18 @@
         "authority.mutation.hydrology"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terraforming.redistribute_water; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "186c75968e4435323a1603288b7734f315b8674ed6fde5e7a12800317e7a9383",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3321,7 +4179,18 @@
         "authority.mutation.atmosphere"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terraforming.remove_gases; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "ea11e414de1a8d06bf07827c135284ddb22b9b42dcc6e3d43b005672b4b33233",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3365,7 +4234,18 @@
         "authority.mutation.hydrology"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.channel_water; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "9636b1c41cd5e80d8e6239a501de46cb895ccaacc0920233a3391d853d756b2e",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3422,7 +4302,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.clear_land; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "fe093df2ea8be8f5259dc0248289bcbc0edaeab5b17274d512df2782c977a68e",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3464,7 +4355,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.compact_soil; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "a9cca42faa06f68888de5afa4a0780084059dc8bebea9ba04f6c4bb41757cce3",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3512,7 +4414,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.contaminate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "a4f98d03e8036ff001e076bebdb959aae698b692e62422f8f93f0973241fa78e",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3570,7 +4483,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.cut_tree; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "c6d40f4a5cd68198b92569375d634122cfc893737d8504ad7591431f7626f9da",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3626,7 +4550,18 @@
         "authority.mutation.hydrology"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.dam_flow; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "5b5ff49367ab38cadbd28a6dcca78dd3ff0cf5b83e65f17bf3b11665f133fbf1",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3675,7 +4610,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.deposit_fill; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "6f2b343be2744fb54e1fa37fe4d6be4388ae71915284cf3afd7dce9bcf3d9015",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3740,7 +4686,18 @@
         "authority.mutation.subsurface"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.excavate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "5dbfb0e72f46ef368e07af664372474f7129cb659dc22b2e0c4fc7e4f7e55824",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3783,7 +4740,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.grade_surface; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "a97a0e427a30004f2341b847b6572debc7683f55a47b4bc9542f9629c559d8ea",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3834,7 +4802,18 @@
         "authority.mutation.terrain"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.remediate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d30020371cd49edd3c9738df810a4f5371889120808f361b2cd83e8c49b1be2e",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -3883,7 +4862,18 @@
         "authority.mutation.biomass"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.terrain.seed_biomass; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "cbc7dad485f7442b4e8e8740c3467ef86bc0b6ca9289c85ea1fd650f8e4467e3",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -3932,7 +4922,18 @@
         "authority.mutation.logistics"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.trade.load_transport; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "5bd2caa08d62ceb2093cde2ee6324561531b462f007b3c38e77cd6d0dab9e3e7",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -3981,7 +4982,18 @@
         "authority.mutation.logistics"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.trade.move_goods; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "150b75e4ac24e6005c3a98295b4c9081a8e3f7c11250cc54205889efac6b20e9",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4022,7 +5034,18 @@
         "authority.trade.negotiate"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.trade.negotiate_contract; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "17684a8ac897ad7d0f4da7d8d305598309b5fbbb7ceba0d4499585d01c62ad59",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4062,7 +5085,18 @@
         "authority.trade.schedule"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.trade.schedule_delivery; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "af24f7fbdcc9cc98df68592b71482fcf06af49f48ffc20c2399c4b07509e3eb9",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4110,7 +5144,18 @@
         "authority.jurisdiction.local"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.trade.transfer_ownership; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "b3b0e801ba29c3e49e1c5c7009fafdd95a76b3c4a40e46b52bbc0232d97f41f6",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -4159,7 +5204,18 @@
         "authority.jurisdiction.local"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.on_planet.trade.unload_and_register; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "474a5517fcd3965b72308b5cb995a1effd6d4225990359baf38cf3cf3e163d36",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4187,7 +5243,18 @@
       "rng_streams_used": [
         "noise.stream.terrain.overlay.1"
       ],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.terrain.cut.1; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "220ab8a16820f16459991317ed5031c316bcb09eed234ca2bae093e7671650e8",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4215,7 +5282,18 @@
       "rng_streams_used": [
         "noise.stream.terrain.overlay.2"
       ],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.terrain.fill.1; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "1bbbdb0fbdab8154ced98805e22c738312b14945e2539c7355859bfc1e297ec0",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4243,7 +5321,18 @@
       "rng_streams_used": [
         "noise.stream.terrain.overlay.3"
       ],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.terrain.collapse.1; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "cba6dff9eb485c6412997ac92aa68a4fa397fe155dc639aae8f089477c76607f",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4290,7 +5379,18 @@
         "law.allow.schema_migration"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.schema.migrate.pack_manifest.v1_to_v2; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e0a0e2d610d6d978d6ad83cc5f49ef9c5e5f7aeb666134627f6e6e986ae56725",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4337,7 +5437,18 @@
         "law.allow.schema_migration"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.schema.migrate.pack_manifest.v2_1_to_v2_2; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "908596513cd57cd77bce1fab5e35c03515411a9df73be7d38c055d2172e10ee1",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4384,7 +5495,18 @@
         "law.allow.schema_migration"
       ],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.schema.migrate.pack_manifest.v2_2_to_v2_3; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e53bfd0618f4489c57d26368904010e80a6a27ff37d107e29ac1c32e06a1eba9",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4430,7 +5552,18 @@
       "process_id": "process.pollution_emit",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.pollution_emit; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "5c296bd71ed2da2b73a7c7294e091e635c38f466e80cc183bb31cfec607f9781",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4489,7 +5622,18 @@
       "process_id": "process.field_update",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.field_update; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "3e48fc92eb8a91b3f90122e15946668ef91df1223ffe7380c387fab7aad8dc24",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4559,7 +5703,18 @@
       "process_id": "process.earth_climate_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.earth_climate_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "ea6a5a927474d4fea37b5ecefe5717de911a59d30e0b848be896666fdf361db6",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4622,7 +5777,18 @@
       "process_id": "process.earth_tide_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.earth_tide_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "f28183798b0e2d22b53600a8e0a97f02bdd206c547f491f697df1334e2bc19c4",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4685,7 +5851,18 @@
       "process_id": "process.earth_wind_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.earth_wind_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e34f5873faa235bafd6b643de51f0ca6e59188bbcd32ee2a58695ea8e9ac0c51",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4727,7 +5904,18 @@
       "process_id": "process.refinement_request_enqueue",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.refinement_request_enqueue; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "0e77ffb87e2f0e88487832f914e4190f2c6921607b024c40eb6e6657c4a8e7a6",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4782,7 +5970,18 @@
       "process_id": "process.refinement_scheduler_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.refinement_scheduler_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "b507367636e24562061bc50147b5e8933df901bb7401f918fde487807472d56b",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4847,7 +6046,18 @@
       "process_id": "process.pollution_dispersion_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.pollution_dispersion_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "714bb1bdfa32048b41d88745a62b86da58e1980ad06703e25fe661d6b456a4d0",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4906,7 +6116,18 @@
       "process_id": "process.pollution_measure",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.pollution_measure; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "74839790fd5787ab3adf3d4163e56245b075337e26ebac06b736eac54da48290",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [],
@@ -4959,7 +6180,18 @@
       "process_id": "process.pollution_compliance_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.pollution_compliance_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "fc8171cc6df02190f9dc1f8bb801ef7457834cf4a6bde511799e62f7f6951000",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5017,7 +6249,18 @@
       "process_id": "process.system_collapse",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.system_collapse; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "8059e216bcc629bfcb5b38c9dcad65ca4db6042594edc696c1047d68ce0d1b05",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5083,7 +6326,18 @@
       "process_id": "process.system_evaluate_certification",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.system_evaluate_certification; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e61e4915d40a1876f92d6c753117fb2886564f469f8b23791891b4f9662ca7cf",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5135,7 +6389,18 @@
       "process_id": "process.system_expand",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.system_expand; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "10209335f798bf1097f092918905368ad0312b848e327e8ea9e0af9a139b6554",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5188,7 +6453,18 @@
       "process_id": "process.system_generate_explain",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.system_generate_explain; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e7ed51243f4da7e65ccd9d537184f0c86c2bf022b105b1be105036f937ec981d",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5242,7 +6518,18 @@
       "process_id": "process.system_roi_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.system_roi_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "a88d01abf3d2f15980b2943d3d04dec5d625f3d43c363773838850ab4b41b905",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5307,7 +6594,18 @@
       "process_id": "process.system_macro_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.system_macro_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "1f5ca364f8251b6e581670aaedf0d11eb4e43565bb3bb5332b2f91dedae04a3d",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5357,7 +6655,18 @@
       "process_id": "process.system_health_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.system_health_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "7d386e90ee85f2dd470292d4cd13b4daa96945d23ccbc8ec4d660f45dec0c625",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5421,7 +6730,18 @@
       "rng_streams_used": [
         "rng.system.reliability.default"
       ],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.system_reliability_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "75ec240870a52c2f80281776b00c3f9cd9ead7331ff9ffaa36466a05ffbaa135",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5496,7 +6816,18 @@
       "process_id": "process.template_instantiate",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.template_instantiate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "734e6e18485649c0fdccc4112836d9f51177b81c580830e56a74d26e120af56d",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5568,7 +6899,18 @@
       "process_id": "process.compile_request_submit",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.compile_request_submit; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "42400bbcad4eec962fd0d964606c7ef487d5d29335ee9ba084285ef31a5d105e",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5624,7 +6966,18 @@
       "process_id": "process.process_run_start",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.process_run_start; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "3f207472140f555d8250f294e5a9900e6ff0cf7b4aa17f9244e8a5088aaf535a",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5680,7 +7033,18 @@
       "process_id": "process.process_run_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.process_run_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d31e1a4bb6171fc9b0b78419d2c8545a840b1d3e3c8aa2a24bb513a33677b1de",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5730,7 +7094,18 @@
       "process_id": "process.process_run_end",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.process_run_end; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "e89166a0f5e713e465bf07f43088668a73303c2bcd7c833e79548c6f78950bd5",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5776,7 +7151,18 @@
       "process_id": "process.experiment_run_start",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.experiment_run_start; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "370cc6e90f9a55109faa35e1751aabe1ab19d948fd71a234bb19738650dcb80b",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5833,7 +7219,18 @@
       "process_id": "process.experiment_run_complete",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.experiment_run_complete; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d3d5b0bc333e1e2969b815a077997c2bc97d04d1a848841191b5e018296f8f3b",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5878,7 +7275,18 @@
       "process_id": "process.candidate_promote_to_defined",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.candidate_promote_to_defined; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "a21dfe46cc4c55592eee4f94f5b935e64bda6df7cd87ea70c0fb64d5d2eecdca",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -5935,7 +7343,18 @@
       "process_id": "process.reverse_engineering_action",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.reverse_engineering_action; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "459008f6872cb7d3d5a4330ec810c3735eebfa550a4c74d9449feba89ab748c3",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -6011,7 +7430,18 @@
       "process_id": "process.software_pipeline_execute",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.software_pipeline_execute; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "90d9ddd9b12a8854f9116cd7d707599a889b3ae95ef80030815fd5d4b3d54f47",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_fields": [
@@ -6068,6 +7498,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/signal/signal_store.py::process_signal_set"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.signal_set; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "6cf97203e6e3c1345a3e54c10f611ecfef7b2ad2c9fb23ec7a03ee83f04f33bf",
+        "extensions": {}
       }
     },
     {
@@ -6125,6 +7565,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/signal/signal_store.py::process_signal_emit_pulse"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.signal_emit_pulse; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "2fa1fd4b5aae693bcd3c8d3cc5996207c2209183b48e18318bd396418254ce00",
+        "extensions": {}
       }
     },
     {
@@ -6180,6 +7630,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_create"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_network_create; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "fd15a17fac7cc42506f714636b9365533d21b2b398aff9a116984c6fb57668bd",
+        "extensions": {}
       }
     },
     {
@@ -6229,6 +7689,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_add_node"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_network_add_node; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "327deb38fe2bb098d1b4401e63bf8770bac234b40ba1b5d432c9c2aec4a1feff",
+        "extensions": {}
       }
     },
     {
@@ -6278,6 +7748,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_add_edge"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_network_add_edge; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "4224bd9a93215d00b78791e12bd3f1c17d1d0b19b4983d7d392e146301997d86",
+        "extensions": {}
       }
     },
     {
@@ -6327,6 +7807,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_remove_edge"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_network_remove_edge; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "3171c6130725f4cb816d975dedde20d88087d5826b537b1ffc79a72f8b5f6c2a",
+        "extensions": {}
       }
     },
     {
@@ -6383,6 +7873,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_validate"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_network_validate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "39c35299cf999c57a57b5eadad57cbdb4e4775477fe61b7dc72615448de04195",
+        "extensions": {}
       }
     },
     {
@@ -6458,6 +7958,16 @@
         "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.logic_compile_request)",
         "source": "LOGIC6-5",
         "tier": "meso_macro"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_compile_request; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "b396bbea67623f5c9aeee7e5f8bd833540888b1e16a6a6184477b0d1c3fc718a",
+        "extensions": {}
       }
     },
     {
@@ -6509,6 +8019,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_probe"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_probe; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "3a092275605ca1fc9bd7e3b626611019535403e307a099652a382df31646175b",
+        "extensions": {}
       }
     },
     {
@@ -6560,6 +8080,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_start"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_trace_start; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "5959ed0736cb00db9fc163f4615c88df86ed1efe22243945391710e1f8a982b5",
+        "extensions": {}
       }
     },
     {
@@ -6612,6 +8142,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_tick"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_trace_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "ade95d808fe6cff369a05604a2b340ff5001f4914a19766a525322f4cc70d7b3",
+        "extensions": {}
       }
     },
     {
@@ -6659,6 +8199,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_end"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_trace_end; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "f19e8b6d606bb4c1f4e192e91d036d53b67a268e1dcb75b75452cc79035d1daf",
+        "extensions": {}
       }
     },
     {
@@ -6699,6 +8249,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/fault/fault_engine.py::process_logic_fault_set"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_fault_set; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "3d64e0b56b0c10c8a256ece68a9e8c45db0a9e36481d6330cb7d4c785c94b60c",
+        "extensions": {}
       }
     },
     {
@@ -6739,6 +8299,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/fault/fault_engine.py::process_logic_fault_clear"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_fault_clear; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "ec226f000299372e622e47eb634ecc17b93d2f17e4376de2b5bc6405a430593b",
+        "extensions": {}
       }
     },
     {
@@ -6803,6 +8373,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/eval/logic_eval_engine.py::process_logic_network_evaluate"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.logic_network_evaluate; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "056fbd8bed37943ea5a91e290fa3f87693dbad7cd1af5236dc77526bd1d2fbef",
+        "extensions": {}
       }
     },
     {
@@ -6847,6 +8427,16 @@
       "version_introduced": 1,
       "extensions": {
         "implementation_ref": "src/logic/eval/commit_engine.py::process_statevec_update"
+      },
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.statevec_update; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "96d5f46572ac0d5957dbfb5a8ba8f5c43be860651784f78c2e2e9c808d428fb2",
+        "extensions": {}
       }
     },
     {
@@ -6914,7 +8504,18 @@
       "process_id": "process.body_apply_input",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.body_apply_input; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "9e4bd299ad1bf3dd9d5a8287752c5c9f1a0357a41d50d68266072fb6a63bf390",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -6970,7 +8571,18 @@
       "process_id": "process.body_jump",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.body_jump; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "d9db56b6e82037ac54d40449b9500de647d7428e128f917c71b563429751413c",
+        "extensions": {},
+        "deprecated": false
+      }
     },
     {
       "affected_assemblies": [
@@ -7032,7 +8644,18 @@
       "process_id": "process.body_tick",
       "required_law_checks": [],
       "rng_streams_used": [],
-      "version_introduced": 1
+      "version_introduced": 1,
+      "stability": {
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "rationale": "Conservative provisional classification for process.body_tick; semantics remain loadable but are not yet frozen for release governance.",
+        "future_series": "PROC",
+        "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+        "contract_id": "",
+        "deterministic_fingerprint": "103f39f3b7ca892a01811c99b696512c93cf88bd6ac587e7f01b91847dea6f7d",
+        "extensions": {},
+        "deprecated": false
+      }
     }
   ],
   "schema_id": "dominium.schema.process_registry",

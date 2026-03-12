@@ -24,6 +24,16 @@
               "zstd"
             ]
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:winnt:msvc-v180; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "92c2311195b59f39ad274453e8859bb3e99411c3d06d18110610dfbb802113e0",
+          "extensions": {}
         }
       },
       {
@@ -45,6 +55,16 @@
               "zstd"
             ]
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:winnt:msvc-v180; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "92c2311195b59f39ad274453e8859bb3e99411c3d06d18110610dfbb802113e0",
+          "extensions": {}
         }
       },
       {
@@ -65,6 +85,16 @@
               "zstd"
             ]
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:winnt:msvc-v180; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "92c2311195b59f39ad274453e8859bb3e99411c3d06d18110610dfbb802113e0",
+          "extensions": {}
         }
       },
       {
@@ -95,6 +125,16 @@
             ],
             "optional": []
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:win9x:mingw-legacy; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "fcaf80493832f53242491b864a8301a392f2d4a8907645d4ee8e11961805604a",
+          "extensions": {}
         }
       },
       {
@@ -125,6 +165,16 @@
             ],
             "optional": []
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:win16:watcom-16; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "754deb80b1b8c73461e8f1c3c89f3d5a28e17120f8817139e862b424e26e08b6",
+          "extensions": {}
         }
       },
       {
@@ -156,6 +206,16 @@
             ],
             "optional": []
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:dos:watcom; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "633f22a7ff93175275d4bcf7db26fa1c8c3f2c1201e8bfdd769f41f4793951d4",
+          "extensions": {}
         }
       },
       {
@@ -187,6 +247,16 @@
             ],
             "optional": []
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:dos:djgpp; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "86e97a9d24212d1a61f44c4685637fc9c57e2a3961a7c28adfd165c1f8e932c1",
+          "extensions": {}
         }
       },
       {
@@ -205,6 +275,16 @@
             ],
             "optional": []
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:macclassic:metrowerks; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a6e24e9a640ae80fa3ca82166fc2e132ec6a80c36376a856bdabbb4e942e4252",
+          "extensions": {}
         }
       },
       {
@@ -225,6 +305,16 @@
               "zstd"
             ]
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:linux:gnu; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "d3a6145dae09d98a1ac0abe075152f91e5f8d86c73e6a45aed8ef1003876ed87",
+          "extensions": {}
         }
       },
       {
@@ -245,6 +335,16 @@
               "zstd"
             ]
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:macosx:clang; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "51bea63c7a82960eb0b54a01a37d0a1b78884459e25bccadb87c6064649c7fc0",
+          "extensions": {}
         }
       },
       {
@@ -266,6 +366,16 @@
               "zstd"
             ]
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:android:ndk-r26; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "c5ac80b64cf4d7196e2329922190b356ff9c2dc1577b424eab5bc494fa3196c7",
+          "extensions": {}
         }
       },
       {
@@ -286,6 +396,16 @@
               "zstd"
             ]
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:ios:xcode; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "608f42d0513cae88c59b44db5394c1341ba96fb44d84748e0127e28d63b005ce",
+          "extensions": {}
         }
       },
       {
@@ -306,6 +426,16 @@
               "zstd"
             ]
           }
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for abi:web:emscripten; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "173c459123a85593013ec3c64beef33083949bdc9e98a4715be9eec45a2c2a52",
+          "extensions": {}
         }
       }
     ],

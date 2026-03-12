@@ -44,6 +44,16 @@
             "logic.timing_anomaly",
             "inspection_request"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for template.logic_controller; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SYS",
+          "replacement_target": "Replace provisional system semantics with release-pinned SYS registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2f1048966d38ae65cdb1ba46fa906812670cafddbf6b22860776db72353f6b62",
+          "extensions": {}
         }
       },
       {
@@ -72,6 +82,16 @@
           },
           "collider_kind": "capsule",
           "art_free": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for template.body.pill; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SYS",
+          "replacement_target": "Replace provisional system semantics with release-pinned SYS registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3c4a150a6b5b5cdf2eaf6b20248e20de8ea0db252f0c0d6f003430049f47d416",
+          "extensions": {}
         }
       }
     ],

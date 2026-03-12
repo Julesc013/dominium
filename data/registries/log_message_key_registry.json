@@ -4,44 +4,576 @@
   "record": {
     "registry_id": "dominium.registry.appshell.log_message_key_registry",
     "messages": [
-      { "message_key": "appshell.bootstrap.start", "category_id": "appshell", "description": "AppShell bootstrap started." },
-      { "message_key": "appshell.command.dispatch", "category_id": "appshell", "description": "Registry-backed command dispatch began." },
-      { "message_key": "appshell.mode.enter", "category_id": "appshell", "description": "AppShell entered a resolved mode surface." },
-      { "message_key": "appshell.refusal", "category_id": "refusal", "description": "Structured refusal emitted by AppShell." },
-      { "message_key": "appshell.tui.backend_degraded", "category_id": "ui", "description": "TUI backend degraded to the deterministic lite fallback." },
-      { "message_key": "appshell.tui.command.executed", "category_id": "ui", "description": "TUI console session executed a command." },
-      { "message_key": "appshell.tui.surface.ready", "category_id": "ui", "description": "TUI surface was built and is ready for presentation." },
-      { "message_key": "compat.negotiation.client_refused", "category_id": "compat", "description": "Client refused the negotiated degrade mode." },
-      { "message_key": "compat.negotiation.mismatch", "category_id": "compat", "description": "Negotiation acknowledgement mismatch was refused." },
-      { "message_key": "compat.negotiation.read_only", "category_id": "compat", "description": "Read-only compatibility mode was negotiated." },
-      { "message_key": "compat.negotiation.refused", "category_id": "compat", "description": "Compatibility negotiation refused the connection." },
-      { "message_key": "compat.negotiation.result", "category_id": "compat", "description": "Compatibility negotiation completed successfully." },
-      { "message_key": "diag.capture.written", "category_id": "diag", "description": "Deterministic DIAG-0 repro bundle was written." },
-      { "message_key": "diag.snapshot.written", "category_id": "diag", "description": "Deterministic diagnostic snapshot bundle was written." },
-      { "message_key": "ipc.attach.accepted", "category_id": "ipc", "description": "A negotiated IPC attach session was accepted." },
-      { "message_key": "ipc.attach.refused", "category_id": "ipc", "description": "An IPC attach session was refused explicitly." },
-      { "message_key": "ipc.endpoint.started", "category_id": "ipc", "description": "A deterministic local IPC endpoint started." },
-      { "message_key": "ipc.endpoint.stopped", "category_id": "ipc", "description": "A deterministic local IPC endpoint stopped." },
-      { "message_key": "packs.lock.generated", "category_id": "packs", "description": "Pack lock generation completed." },
-      { "message_key": "packs.verify.result", "category_id": "packs", "description": "Offline pack verification completed." },
-      { "message_key": "server.connection.accepted", "category_id": "server", "description": "Loopback client connection accepted." },
-      { "message_key": "server.control.processed", "category_id": "server", "description": "Loopback control request processed." },
-      { "message_key": "server.listener.bound", "category_id": "server", "description": "Loopback listener bound." },
-      { "message_key": "server.proof_anchor.emitted", "category_id": "server", "description": "Proof anchor emitted for the current tick." },
-      { "message_key": "server.tick.advanced", "category_id": "server", "description": "Authoritative server tick advanced." },
-      { "message_key": "supervisor.child.crash_requested", "category_id": "appshell", "description": "A supervised child host received a deterministic crash request." },
-      { "message_key": "supervisor.child.ready", "category_id": "appshell", "description": "A supervised child host reached IPC-ready state." },
-      { "message_key": "supervisor.child.stdin_ignored", "category_id": "appshell", "description": "A supervised child host ignored a non-control stdin command." },
-      { "message_key": "supervisor.child.stop_requested", "category_id": "appshell", "description": "A supervised child host received a deterministic stop request." },
-      { "message_key": "supervisor.command.attach", "category_id": "ipc", "description": "Launcher attached to supervised child IPC endpoints." },
-      { "message_key": "supervisor.command.start", "category_id": "appshell", "description": "Launcher started the supervisor service." },
-      { "message_key": "supervisor.command.stop", "category_id": "appshell", "description": "Launcher requested deterministic supervisor shutdown." },
-      { "message_key": "supervisor.process.spawned", "category_id": "appshell", "description": "Supervisor spawned and attached a child product host." },
-      { "message_key": "supervisor.restart.applied", "category_id": "appshell", "description": "Supervisor restarted a child product under policy." },
-      { "message_key": "supervisor.service.ready", "category_id": "appshell", "description": "Supervisor service booted and published its IPC endpoint." },
-      { "message_key": "supervisor.start.complete", "category_id": "appshell", "description": "Supervisor completed deterministic startup." },
-      { "message_key": "supervisor.stop.complete", "category_id": "appshell", "description": "Supervisor completed deterministic shutdown." },
-      { "message_key": "worldgen.refinement.request.summary", "category_id": "worldgen", "description": "Refinement scheduler summary emitted." }
+      {
+        "message_key": "appshell.bootstrap.start",
+        "category_id": "appshell",
+        "description": "AppShell bootstrap started.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for appshell.bootstrap.start; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ba8dd3c634e9d822e96f4488826f8ca370e518905ce65bde2fe6dd5933bffb4f",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "appshell.command.dispatch",
+        "category_id": "appshell",
+        "description": "Registry-backed command dispatch began.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for appshell.command.dispatch; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "90a8e35839ab94483e1589ef008e2642e2a944da35eec7835f75fd931fa5bdaa",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "appshell.mode.enter",
+        "category_id": "appshell",
+        "description": "AppShell entered a resolved mode surface.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for appshell.mode.enter; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9a073411b7d169068881edecfe547c11dbe87e57930bcba5d57bf57b0f7f0a03",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "appshell.refusal",
+        "category_id": "refusal",
+        "description": "Structured refusal emitted by AppShell.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for appshell.refusal; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b2f9cea2a88846ab31628bb9bda8b0c53aa7fb7ed321176137a3da88696af2c5",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "appshell.tui.backend_degraded",
+        "category_id": "ui",
+        "description": "TUI backend degraded to the deterministic lite fallback.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for appshell.tui.backend_degraded; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "86178b15bfaab17280b3360646819668bc4cc85df6e66e872d1ebacc304b8640",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "appshell.tui.command.executed",
+        "category_id": "ui",
+        "description": "TUI console session executed a command.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for appshell.tui.command.executed; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "157e852dd7769262f72e497a7a4a85e2dead4f86362edf614f3453111e9870db",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "appshell.tui.surface.ready",
+        "category_id": "ui",
+        "description": "TUI surface was built and is ready for presentation.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for appshell.tui.surface.ready; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "d8799a27d3a4d2b6d0db2a4a1612eaf8658721cf52ef3eb319594bc6b5993cca",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "compat.negotiation.client_refused",
+        "category_id": "compat",
+        "description": "Client refused the negotiated degrade mode.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for compat.negotiation.client_refused; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "fb5a3521710b837bb5dce134bcc800f275e58de3480e0e9ecafab465741a6612",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "compat.negotiation.mismatch",
+        "category_id": "compat",
+        "description": "Negotiation acknowledgement mismatch was refused.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for compat.negotiation.mismatch; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6a33ccbe9a9cb5d3b46ddf98dade164f7cb39e335804d09b7a1bb57d59cad4dd",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "compat.negotiation.read_only",
+        "category_id": "compat",
+        "description": "Read-only compatibility mode was negotiated.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for compat.negotiation.read_only; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea07e2d38c4fcf71e53583c55b535ad4b94f34f323afa20457c8626a6e491d10",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "compat.negotiation.refused",
+        "category_id": "compat",
+        "description": "Compatibility negotiation refused the connection.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for compat.negotiation.refused; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "49c49543c7e97affc65bf265c02afab0d5c00363c602efb6c748b8d65a4acb89",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "compat.negotiation.result",
+        "category_id": "compat",
+        "description": "Compatibility negotiation completed successfully.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for compat.negotiation.result; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4003b70aa6c95a7a808b600091db9adc5dec19e7822e63a6597d793564e30e1f",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "diag.capture.written",
+        "category_id": "diag",
+        "description": "Deterministic DIAG-0 repro bundle was written.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for diag.capture.written; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9c2fedbdd3f468b86631fcfb7f4581d4290b11de81bf57ef3bb4d01844844502",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "diag.snapshot.written",
+        "category_id": "diag",
+        "description": "Deterministic diagnostic snapshot bundle was written.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for diag.snapshot.written; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "114f0efee5147c9b00f10399d26e38aaa629fd1b56e84b22d948880b0b3ca969",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "ipc.attach.accepted",
+        "category_id": "ipc",
+        "description": "A negotiated IPC attach session was accepted.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for ipc.attach.accepted; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "c0a6bb55df5e43da0e2af2853913c88ed4288a7f3908dae9a5d538ad0d13cbc0",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "ipc.attach.refused",
+        "category_id": "ipc",
+        "description": "An IPC attach session was refused explicitly.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for ipc.attach.refused; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f517d958f8e54d5b27f4140c181d41276ab32acb87c68f67e070bca55e86d59a",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "ipc.endpoint.started",
+        "category_id": "ipc",
+        "description": "A deterministic local IPC endpoint started.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for ipc.endpoint.started; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a5ae46c5afd5848e6b2be656bebb3038e16b0c3a8c44f00522be6964014d19cf",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "ipc.endpoint.stopped",
+        "category_id": "ipc",
+        "description": "A deterministic local IPC endpoint stopped.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for ipc.endpoint.stopped; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "93f97bd612d2f5d1e383d8a5020620812b0b61599ee7a266fecc611932a6a6ec",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "packs.lock.generated",
+        "category_id": "packs",
+        "description": "Pack lock generation completed.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for packs.lock.generated; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "d60cbcbb4b196aeefefe1742a6c08d94a38360654682aae97651a44368dbcf03",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "packs.verify.result",
+        "category_id": "packs",
+        "description": "Offline pack verification completed.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for packs.verify.result; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e22bc854eae591e8debb47ed065207f0fc709e36f802c4d6b0fc4868dce72877",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "server.connection.accepted",
+        "category_id": "server",
+        "description": "Loopback client connection accepted.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.connection.accepted; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9b1a25f20e509ddb3c3c72236e4e4b8bd35687d5361027ed503c23e4efd6294a",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "server.control.processed",
+        "category_id": "server",
+        "description": "Loopback control request processed.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.control.processed; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "89731640768df8725616fefeedf509c5c83e323fa89c14169487f7fbda31a87e",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "server.listener.bound",
+        "category_id": "server",
+        "description": "Loopback listener bound.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.listener.bound; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f30767775bff8e6e388d95364fc6d4ef2d25c2235b07535881d56b15a75ab44f",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "server.proof_anchor.emitted",
+        "category_id": "server",
+        "description": "Proof anchor emitted for the current tick.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.proof_anchor.emitted; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "cd4a2b5f503c2b0d8a9b6566e6a9615a60dacd544b2090059d93a27ca03ce840",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "server.tick.advanced",
+        "category_id": "server",
+        "description": "Authoritative server tick advanced.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.tick.advanced; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "d5394bc3402ef5509456b52f1483796625f3a3b98084fbe08df8246fb2e828d7",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.child.crash_requested",
+        "category_id": "appshell",
+        "description": "A supervised child host received a deterministic crash request.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.child.crash_requested; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3334a40ebb43a244acf2e2a66cfc5818e443650a3fca3de636d088e38d7cdf60",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.child.ready",
+        "category_id": "appshell",
+        "description": "A supervised child host reached IPC-ready state.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.child.ready; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b2fc8b1c370de454a27446e213719a64721b7a049d6099dd4fea8cb585efe495",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.child.stdin_ignored",
+        "category_id": "appshell",
+        "description": "A supervised child host ignored a non-control stdin command.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.child.stdin_ignored; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b92245698f987dd335856fd4a1ccf8264ae39fd9071115c9fef19f83995d5d63",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.child.stop_requested",
+        "category_id": "appshell",
+        "description": "A supervised child host received a deterministic stop request.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.child.stop_requested; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "59b32d81b5f5a82125b441c79090bf860868aae137d7c0f9b9837d774343f5f3",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.command.attach",
+        "category_id": "ipc",
+        "description": "Launcher attached to supervised child IPC endpoints.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.command.attach; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "87115ddcf672c54ca58b6cda30f52b512517fa66b02eaf63cc873412a02689e7",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.command.start",
+        "category_id": "appshell",
+        "description": "Launcher started the supervisor service.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.command.start; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b48c794a73521a518b04d2f080913b9373e62118cd03296031bc5fdcf3cec482",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.command.stop",
+        "category_id": "appshell",
+        "description": "Launcher requested deterministic supervisor shutdown.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.command.stop; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2a146a68cb66d712e501f801c14951b32ae64e6a2129cfcf91a0986f6be47990",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.process.spawned",
+        "category_id": "appshell",
+        "description": "Supervisor spawned and attached a child product host.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.process.spawned; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7d185a0ee05a0716044b48cfca01f6398f823b8716c6f721fff228d1a829057b",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.restart.applied",
+        "category_id": "appshell",
+        "description": "Supervisor restarted a child product under policy.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.restart.applied; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a4a7f97766bd5079ae8fe5224b1ec0a7c0d9a759580c18b03240ec1db81e3da1",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.service.ready",
+        "category_id": "appshell",
+        "description": "Supervisor service booted and published its IPC endpoint.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.service.ready; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "c482e5f0aed3709e16375aa1f112295dd172c2880dda1b150c77742f65401835",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.start.complete",
+        "category_id": "appshell",
+        "description": "Supervisor completed deterministic startup.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.start.complete; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0f94f744a77ced1b1cf2f095f06c2881cee717d2904e6d325d04391dbada13ef",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "supervisor.stop.complete",
+        "category_id": "appshell",
+        "description": "Supervisor completed deterministic shutdown.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor.stop.complete; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "74c1e827162bf10427dcdcdd2a7f70fc6eccc65a855fd206a1d4da4f88b4fe81",
+          "extensions": {}
+        }
+      },
+      {
+        "message_key": "worldgen.refinement.request.summary",
+        "category_id": "worldgen",
+        "description": "Refinement scheduler summary emitted.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for worldgen.refinement.request.summary; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e4a6642c21c0836d493a32ffba7cee24f9219efcc7c5b6219a90f0cba4e88194",
+          "extensions": {}
+        }
+      }
     ],
     "deterministic_fingerprint": "",
     "extensions": {

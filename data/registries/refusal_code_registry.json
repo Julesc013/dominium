@@ -8,142 +8,422 @@
       {
         "refusal_code": "refusal.compat.no_common_protocol",
         "family": "compat",
-        "description": "No mutually supported protocol version."
+        "description": "No mutually supported protocol version.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.compat.no_common_protocol; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "70f4cff504f7800ed350b1c6cfbfea543c612970aec629716c97bf4eb9f5d5c0",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.compat.contract_mismatch",
         "family": "compat",
-        "description": "Semantic or contract compatibility mismatch."
+        "description": "Semantic or contract compatibility mismatch.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.compat.contract_mismatch; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2db3ba322c5cdaa4d03da2197236dcc16a00eb90f237727508f5e305f220bcf6",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.compat.feature_disabled",
         "family": "compat",
-        "description": "Negotiated compatibility mode disabled the requested feature."
+        "description": "Negotiated compatibility mode disabled the requested feature.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.compat.feature_disabled; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "091462137709d5ce8d15cd05da13d621e3e4fe8839a533b5e04e0340a6cb69d8",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.compat.negotiation_record_missing",
         "family": "compat",
-        "description": "A required negotiation record was missing."
+        "description": "A required negotiation record was missing.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.compat.negotiation_record_missing; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "bc4a5f2d29a7dfc0e94fab3e47323a8ff694dce7e28ba1f23d87d9fa85b0a6b6",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.compat.negotiation_record_mismatch",
         "family": "compat",
-        "description": "A replayed or provided negotiation record did not match deterministic negotiation inputs."
+        "description": "A replayed or provided negotiation record did not match deterministic negotiation inputs.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.compat.negotiation_record_mismatch; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "99123025a410d4f4cf08be01d1cc7f73f6bf099a68c4b42f936fbe43f69ab4e1",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.connection.no_negotiation",
         "family": "connection",
-        "description": "A connection or attach attempt did not complete required negotiation before requesting service."
+        "description": "A connection or attach attempt did not complete required negotiation before requesting service.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.connection.no_negotiation; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6e4a1d5259529509fa8b225881efedf12e2e4dbc11260c2d94e908a9a03c5768",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.connection.negotiation_mismatch",
         "family": "connection",
-        "description": "A connection or attach acknowledgement did not match the negotiated deterministic record."
+        "description": "A connection or attach acknowledgement did not match the negotiated deterministic record.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.connection.negotiation_mismatch; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a2dec6b76a010d1a0f92d55f344b79ac530e5b960910aa943f8ae0d22333a2ad",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.pack.contract_range_mismatch",
         "family": "pack",
-        "description": "Pack contract range is incompatible with the active engine or universe contract bundle."
+        "description": "Pack contract range is incompatible with the active engine or universe contract bundle.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.pack.contract_range_mismatch; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6865561ee10b0846adedc99241e3858d8cf9526e298dd9e9915aa6990cc5eede",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.pack.registry_missing",
         "family": "pack",
-        "description": "Pack required registry surface is missing."
+        "description": "Pack required registry surface is missing.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.pack.registry_missing; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "02771b476ba245b46eb20fa3c9ef5e761aba433ed5dcbd2b65814e4aa7c26af3",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.contract.mismatch",
         "family": "contract",
-        "description": "Pinned contract or contract hash mismatch."
+        "description": "Pinned contract or contract hash mismatch.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.contract.mismatch; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "36e6bb308e0d34f62e6cd2ad3ef7261720927eaa940e8e56245c2015b5500e68",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.law.denied",
         "family": "law",
-        "description": "Law or entitlement denied the requested action."
+        "description": "Law or entitlement denied the requested action.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.law.denied; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "699eb685cbad491d0c27045d0e409443ccd6590e6514ee13a1314b04acc9029d",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.law.attach_denied",
         "family": "law",
-        "description": "An IPC attach or attached console action was denied by law or attach policy."
+        "description": "An IPC attach or attached console action was denied by law or attach policy.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.law.attach_denied; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "84009a47cd57365e3ba5bae6462a91843c6c3901e0d6ea42588f03eea287cb83",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.debug.disabled",
         "family": "debug",
-        "description": "Debug or diagnostic surface is not allowed."
+        "description": "Debug or diagnostic surface is not allowed.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.debug.disabled; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6431929019d214ce2d1ecdf9e4413ddd2c58381d2eef3e64d5dfca887b022e0b",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.diag.bundle_hash_mismatch",
         "family": "diag",
-        "description": "A deterministic repro bundle failed hash verification."
+        "description": "A deterministic repro bundle failed hash verification.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.diag.bundle_hash_mismatch; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "eb49cbb712e10adfb46ec2d59f5f175886d70e88d74ce700263d8a5d824f2926",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.diag.secrets_detected",
         "family": "diag",
-        "description": "A repro bundle capture attempted to include a forbidden secret-like field."
+        "description": "A repro bundle capture attempted to include a forbidden secret-like field.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.diag.secrets_detected; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "653805a908325e91d2fb707c9608def341c6265fb6c0e01ba808fded98569aea",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.debug.command_unavailable",
         "family": "debug",
-        "description": "A declared command namespace is not yet bound in the current AppShell phase."
+        "description": "A declared command namespace is not yet bound in the current AppShell phase.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.debug.command_unavailable; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "85dde870eea7e6bc5f01e01a36a1ce65f765cfac08f91677ecb3b332dfdbf7eb",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.debug.command_unknown",
         "family": "debug",
-        "description": "The requested command is not registered for the active product shell."
+        "description": "The requested command is not registered for the active product shell.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.debug.command_unknown; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b1fff318d57b65bef0eb31f5c7ffdf20bc5ded93d44f2c340fb527e18b42c15d",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.debug.mode_unsupported",
         "family": "debug",
-        "description": "The requested AppShell mode is not supported by the active product."
+        "description": "The requested AppShell mode is not supported by the active product.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.debug.mode_unsupported; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4343355f2db8ba6b7626f6df9594a96a1451981b2bb9cd65108d5d9883bb3253",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.debug.rendered_client_only",
         "family": "debug",
-        "description": "Rendered AppShell mode is client-only."
+        "description": "Rendered AppShell mode is client-only.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.debug.rendered_client_only; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "da0eb441eb867ab5a6b9699184d07be5e1fcae88d8bbec15e279fcf562edeab1",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.io.offline_required",
         "family": "io",
-        "description": "Action requires an unavailable non-offline dependency."
+        "description": "Action requires an unavailable non-offline dependency.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.io.offline_required; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5ac0bc042b4be96e47800b9714d8e11b8e60bc8bce6057a24103b604520884db",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.io.invalid_args",
         "family": "io",
-        "description": "Command arguments did not satisfy the declared command shape."
+        "description": "Command arguments did not satisfy the declared command shape.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.io.invalid_args; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ba33cc8efbaf1dabc5e9136829bb62cf2e84f595f9ac9ac2874b33afd3c41a1d",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.io.profile_not_found",
         "family": "io",
-        "description": "A requested profile bundle was not present in the local bundle surfaces."
+        "description": "A requested profile bundle was not present in the local bundle surfaces.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.io.profile_not_found; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "10be5bb002771675bd0fb5d97abbfbc7c2f76097e25d0b989b375e1b91f1c69b",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.supervisor.already_running",
         "family": "supervisor",
-        "description": "A launcher supervisor run is already active for the local runtime surfaces."
+        "description": "A launcher supervisor run is already active for the local runtime surfaces.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.supervisor.already_running; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b19e321443d0f6c009f8bf9139db718b4ab3d8589e57131e52b658a2449c9c43",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.supervisor.not_running",
         "family": "supervisor",
-        "description": "No launcher supervisor run is currently active."
+        "description": "No launcher supervisor run is currently active.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.supervisor.not_running; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8a668eff3f4da9c5101e2742ccc420947255cccc19787da9457ee7a8e0a0baa6",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.supervisor.endpoint_unreached",
         "family": "supervisor",
-        "description": "The launcher supervisor or child endpoint could not be reached deterministically."
+        "description": "The launcher supervisor or child endpoint could not be reached deterministically.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.supervisor.endpoint_unreached; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "176b664868e2a934b3835fe987ca56de1b17bfdcff2e3dedab98e29a11d0e249",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.supervisor.restart_denied",
         "family": "supervisor",
-        "description": "The configured supervisor restart policy denied another restart."
+        "description": "The configured supervisor restart policy denied another restart.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.supervisor.restart_denied; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "cd8decc79da6d43d840991444ed60cef2822dc55d7992f800d9fdfb17373b390",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.supervisor.process_missing",
         "family": "supervisor",
-        "description": "A requested supervised product is not present in the current run manifest."
+        "description": "A requested supervised product is not present in the current run manifest.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.supervisor.process_missing; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "edcdad76f327b6755a9fff35a9e6c2d475aaf6b3501895956e35b38305b04b8b",
+          "extensions": {}
+        }
       },
       {
         "refusal_code": "refusal.server.command_unknown",
         "family": "debug",
-        "description": "A server console command was not declared in the server command surface."
+        "description": "A server console command was not declared in the server command surface.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal.server.command_unknown; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "aa0644e0c9f423f2061d88108b0317cec9d06e4b9e178d80087d555230344b78",
+          "extensions": {}
+        }
       }
     ],
     "deterministic_fingerprint": "",

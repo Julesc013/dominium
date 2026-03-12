@@ -20,6 +20,16 @@
           "soft_transition_band_mdeg": 1600,
           "max_occlusion_mdeg": 24000,
           "source": "EARTH5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for shadow.horizon_stub_default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SOL/EARTH",
+          "replacement_target": "Replace shadow stubs with calibrated SOL/EARTH shadow models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e44fb52e8c5e4d4dcf2947429b0eab27c2d68e5fb305c1a9b4d046a2278815da",
+          "extensions": {}
         }
       },
       {
@@ -33,6 +43,16 @@
           "sample_count": 0,
           "step_distance_cells": 0,
           "source": "EARTH5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for shadow.none; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SOL/EARTH",
+          "replacement_target": "Replace shadow stubs with calibrated SOL/EARTH shadow models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0610411a326bd90010ca4f587ca471da4152afb0c0d1c54cc4983c2886bcc59d",
+          "extensions": {}
         }
       }
     ],

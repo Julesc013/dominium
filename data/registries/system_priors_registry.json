@@ -85,6 +85,16 @@
             "gas_dwarf": 350
           },
           "source": "MW2-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for priors.system_default_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SYS",
+          "replacement_target": "Replace provisional system semantics with release-pinned SYS registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7f6ae1935298022a7d2198246a58d914b27c30f3b2018b075b1998ea587b2718",
+          "extensions": {}
         }
       }
     ],

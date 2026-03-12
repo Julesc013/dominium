@@ -16,6 +16,16 @@
             "cap.ui.cli"
           ],
           "user_message_key": "explain.compat_degraded.ui_rendered"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG fallback semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "46ebe320149c626c276e6eed2f54af17052ac780a5c5184cc7c239ec338ae67f",
+          "extensions": {}
         }
       },
       {
@@ -28,6 +38,16 @@
             "cap.ui.cli"
           ],
           "user_message_key": "explain.compat_degraded.ui_tui"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG fallback semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "46ebe320149c626c276e6eed2f54af17052ac780a5c5184cc7c239ec338ae67f",
+          "extensions": {}
         }
       },
       {
@@ -37,6 +57,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "user_message_key": "explain.feature_disabled.logic_debug_analyzer"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG fallback semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "46ebe320149c626c276e6eed2f54af17052ac780a5c5184cc7c239ec338ae67f",
+          "extensions": {}
         }
       },
       {
@@ -49,6 +79,16 @@
             "cap.geo.ortho_map_lens"
           ],
           "user_message_key": "explain.compat_degraded.geo_atlas_unwrap"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG fallback semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "46ebe320149c626c276e6eed2f54af17052ac780a5c5184cc7c239ec338ae67f",
+          "extensions": {}
         }
       },
       {
@@ -61,6 +101,16 @@
             "cap.logic.l1_eval"
           ],
           "user_message_key": "explain.compat_degraded.logic_compiled_to_l1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG fallback semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "46ebe320149c626c276e6eed2f54af17052ac780a5c5184cc7c239ec338ae67f",
+          "extensions": {}
         }
       },
       {
@@ -74,6 +124,16 @@
             "cap.logic.advanced_buses"
           ],
           "user_message_key": "explain.feature_disabled.logic_protocol_layer"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG fallback semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "46ebe320149c626c276e6eed2f54af17052ac780a5c5184cc7c239ec338ae67f",
+          "extensions": {}
         }
       }
     ],

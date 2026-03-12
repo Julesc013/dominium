@@ -33,6 +33,16 @@
           "polar_meridional_permille": 140,
           "default_max_tiles_per_update": 32,
           "source": "EARTH7-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for wind.earth_stub_default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "EARTH",
+          "replacement_target": "Replace wind stubs with calibrated EARTH wind parameter sets.",
+          "contract_id": "",
+          "deterministic_fingerprint": "77d2fc449792e5ccf53b339a59be36a6112dec11880a743beff3960c09b456c5",
+          "extensions": {}
         }
       }
     ],

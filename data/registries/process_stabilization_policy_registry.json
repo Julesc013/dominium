@@ -15,6 +15,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "PROC0-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for stab.default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "fc0aab6e7a949db20119e3d96c8b38f968b876973795d9a6d65ffc23faa3b4fa",
+          "extensions": {}
         }
       },
       {
@@ -27,6 +37,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "PROC0-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for stab.strict; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2bdbc77f929b693348ca1b29b13a6019921712f63c7883b76efaa0e8475462fd",
+          "extensions": {}
         }
       },
       {
@@ -40,6 +60,16 @@
         "extensions": {
           "source": "PROC0-4",
           "non_ranked_only": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for stab.fast_dev; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "09d04a196e8ccef0af0e435fcbd080c0dfd23e3b215fc18dab170691d5e6cf43",
+          "extensions": {}
         }
       }
     ],

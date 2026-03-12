@@ -31,6 +31,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "APPSHELL-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for layout.default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "293534497e450f5dd28b99370c924929cfe505589ab119b8719daefbd4066405",
+          "extensions": {}
         }
       },
       {
@@ -59,6 +69,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "APPSHELL-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for layout.server; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "125be19461c02428c03624fb4460496fbd1156ec6055ec47f0c0d343f0a060c0",
+          "extensions": {}
         }
       },
       {
@@ -99,6 +119,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "APPSHELL-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for layout.viewer; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b2d947d51d8c808b3945703444fcb7cf90dd06f50faa24ed0621efe320e8367d",
+          "extensions": {}
         }
       }
     ],

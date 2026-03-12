@@ -20,6 +20,16 @@
           "sun_disk_radius_permille": 18,
           "moon_disk_radius_permille": 14,
           "source": "EARTH4-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for sky.gradient_stub_default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SOL/EARTH",
+          "replacement_target": "Replace sky stubs with calibrated SOL/EARTH sky models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3f4b9073b02ba796c048731b7f8a2a48d7987a09aa87bc0ce9d8e7d2a577dbba",
+          "extensions": {}
         }
       }
     ],

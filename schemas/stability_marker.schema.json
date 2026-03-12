@@ -5,6 +5,7 @@
   "description": "Deterministic stability metadata for registry entries and related manifests.",
   "type": "object",
   "required": [
+    "schema_version",
     "stability_class_id",
     "rationale",
     "deterministic_fingerprint",
@@ -12,6 +13,10 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
     "stability_class_id": {
       "type": "string",
       "enum": [
@@ -46,6 +51,7 @@
   },
   "examples": [
     {
+      "schema_version": "1.0.0",
       "stability_class_id": "provisional",
       "rationale": "MVP stub pending domain-grade replacement.",
       "future_series": "DOM",

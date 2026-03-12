@@ -20,6 +20,16 @@
           "pack_ids": [
             "pack.core.runtime"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for bundle.core.runtime; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9e235aaa92d15146f55516e7d431cd162d5e6a8c34bd6ad09d8a62f72acc6d72",
+          "extensions": {}
         }
       },
       {
@@ -40,6 +50,16 @@
         "size_class": "medium",
         "extensions": {
           "optional": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for bundle.experience.defaults; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7bb39173522473930942b0365cc5b705add64c3dbe0962ff31cb35a3194107b1",
+          "extensions": {}
         }
       },
       {
@@ -59,6 +79,16 @@
           "pack_ids": [
             "pack.scenario.intro"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for bundle.scenarios.intro; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "742fdd497cbdc9f761db828b10e51b1c6e9fd2568c33ab9038c86a80a03c23f0",
+          "extensions": {}
         }
       },
       {
@@ -73,6 +103,16 @@
         "size_class": "small",
         "extensions": {
           "optional": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for bundle.missions.intro; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2e7aff2295fff44c4a4444dcc6486bdeca5bd94285a360f1cb85aefb099c08f4",
+          "extensions": {}
         }
       },
       {
@@ -87,6 +127,16 @@
         "size_class": "large",
         "extensions": {
           "optional": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for bundle.education.basic; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0e14788816cefe316df00eefa36681fed066dc2f2c73d724bfc714d7d1300f5e",
+          "extensions": {}
         }
       },
       {
@@ -102,6 +152,16 @@
           "pack_ids": [
             "pack.core.runtime"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for bundle.default_core; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "92d1aec57de83494c768c005018770d34c17de53c00ecc8452f469b39251177d",
+          "extensions": {}
         }
       }
     ],

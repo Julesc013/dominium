@@ -22,6 +22,16 @@
         "extensions": {
           "priority": 300,
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for gen.surface.default_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "EARTH/MW",
+          "replacement_target": "Replace provisional routing rules with calibrated EARTH and MW surface routing rules.",
+          "contract_id": "",
+          "deterministic_fingerprint": "84d5ea113f747f03a44b0d04b66242592528fab28dd19403b0a18b1edf60ed0a",
+          "extensions": {}
         }
       },
       {
@@ -38,6 +48,16 @@
         "extensions": {
           "priority": 200,
           "source": "EARTH0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for gen.surface.earth_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "EARTH/MW",
+          "replacement_target": "Replace provisional routing rules with calibrated EARTH and MW surface routing rules.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e8eb9dd91b3eb40551ee86793f660609f64f4feb1fa17190924162bd002f40b0",
+          "extensions": {}
         }
       }
     ],

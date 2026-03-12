@@ -24,6 +24,16 @@
           "ice_factor_permille": 220,
           "default_max_tiles_per_update": 32,
           "source": "EARTH3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for tide.earth_stub_default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "EARTH/SOL",
+          "replacement_target": "Replace tide stubs with calibrated EARTH/SOL tide parameter sets.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3716c2f4b168988c59b592cc501886ba5faabbbb3fadd6fb1a4c4e2583535855",
+          "extensions": {}
         }
       }
     ],

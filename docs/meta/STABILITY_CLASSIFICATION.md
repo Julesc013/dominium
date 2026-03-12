@@ -54,6 +54,7 @@ Experimental gating metadata is carried through `stability.extensions`:
 
 Each tagged item must carry a `stability` object with:
 
+- `schema_version`
 - `stability_class_id`
 - `rationale`
 - `future_series`
@@ -72,6 +73,7 @@ Each tagged item must carry a `stability` object with:
 
 Rules:
 
+- `schema_version` for the embedded stability marker is `1.0.0`
 - `deterministic_fingerprint` is computed with the fingerprint field blanked
 - the containing registry-entry fingerprint must include the normalized `stability` object
 - unknown `extensions` fields are allowed but must serialize deterministically

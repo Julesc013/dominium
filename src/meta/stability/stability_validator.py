@@ -105,6 +105,7 @@ def _sorted_errors(rows: list[dict]) -> list[dict]:
 def _marker_seed(row: Mapping[str, object] | None) -> dict:
     payload = _as_map(row)
     seed = {
+        "schema_version": _token(payload.get("schema_version")),
         "stability_class_id": _token(payload.get("stability_class_id")),
         "rationale": _token(payload.get("rationale")),
         "future_series": _token(payload.get("future_series")),
@@ -134,6 +135,7 @@ def build_stability_marker(
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
     payload = {
+        "schema_version": "1.0.0",
         "stability_class_id": _token(stability_class_id),
         "rationale": _token(rationale),
         "future_series": _token(future_series),

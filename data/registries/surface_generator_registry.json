@@ -14,6 +14,16 @@
         "extensions": {
           "placeholder": false,
           "source": "MW3-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for gen.surface.default_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "EARTH/MW",
+          "replacement_target": "Replace procedural surface stubs with calibrated EARTH and MW surface generators.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f2a636366cc989c0d8d4db7e2a4c96b1936c4f519ce82e5cf04b0728617ae964",
+          "extensions": {}
         }
       },
       {
@@ -26,6 +36,16 @@
           "placeholder": false,
           "earth_surface_params_id": "params.earth.surface_default_stub",
           "source": "EARTH0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for gen.surface.earth_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "EARTH/MW",
+          "replacement_target": "Replace procedural surface stubs with calibrated EARTH and MW surface generators.",
+          "contract_id": "",
+          "deterministic_fingerprint": "dfd89e7a9fbecc3c50bcec03701376a4a25a637c5d51d04a1eae4b75360dc7cf",
+          "extensions": {}
         }
       }
     ],

@@ -24,6 +24,16 @@
         "extensions": {
           "logic_policy_id": "logic.default",
           "source": "LOGIC3-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for logic.policy.default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0ac9bb51e1342f93ec46bee841fd253f3637ab2197b8af2649424e44acab8f53",
+          "extensions": {}
         }
       },
       {
@@ -45,6 +55,16 @@
         "extensions": {
           "logic_policy_id": "logic.default",
           "source": "LOGIC3-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for logic.policy.allow_roi_loops; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "63280e1fc88eab9e7becf416111e7e65e8c979d89f9a74ae9bcf8600115abcc0",
+          "extensions": {}
         }
       },
       {
@@ -68,6 +88,16 @@
           "requires_compiled_equivalence_proof": true,
           "requires_exception_ledger": true,
           "source": "LOGIC3-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for logic.policy.lab_allow; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "21a04ffd4e8ec2b96422459d9065127a9026e0a17fd102e1b464a82d4c2e2365",
+          "extensions": {}
         }
       }
     ],

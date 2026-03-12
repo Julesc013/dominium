@@ -20,6 +20,16 @@
             3
           ],
           "source": "MW2-3"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for gen.v0_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "MW/EARTH/SOL",
+          "replacement_target": "Replace MVP generator version placeholders with release lineage metadata for MW/EARTH/SOL generators.",
+          "contract_id": "",
+          "deterministic_fingerprint": "03614997300e54972c877378167c1dca514ac85171470862941ac68326eb971d",
+          "extensions": {}
         }
       }
     ],

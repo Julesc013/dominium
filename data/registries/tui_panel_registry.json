@@ -17,6 +17,16 @@
           "focus_key": "Ctrl+C",
           "official.source": "APPSHELL-3",
           "panel_kind": "console"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for panel.console; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4ee52a3a451458aa9f6d163f6bf8d9ca23ee4bb51e9ba5010eed995a0cef1b5d",
+          "extensions": {}
         }
       },
       {
@@ -32,6 +42,16 @@
           "focus_key": "Ctrl+I",
           "official.source": "APPSHELL-3",
           "panel_kind": "inspect"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for panel.inspect; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "def510bdd612319c162f224b638f92f0500fd8c583ea7b3e874cae3e3e65086b",
+          "extensions": {}
         }
       },
       {
@@ -46,6 +66,16 @@
           "focus_key": "Ctrl+L",
           "official.source": "APPSHELL-3",
           "panel_kind": "logs"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for panel.logs; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8f037a4a70f6a4f2666b6295fc741c26a346111e4c5184dc7de514edb4c2166e",
+          "extensions": {}
         }
       },
       {
@@ -61,6 +91,16 @@
           "focus_key": "Ctrl+M",
           "official.source": "APPSHELL-3",
           "panel_kind": "map"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for panel.map; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b14a87a402c980296387fd3e6105e6ae21a7350e5ed12f757668bdc530503092",
+          "extensions": {}
         }
       },
       {
@@ -75,6 +115,16 @@
           "focus_key": "Ctrl+S",
           "official.source": "APPSHELL-3",
           "panel_kind": "status"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for panel.status; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2e8973f7b720258f5469f917ccdcaaddf22f07574a6cae32f35101f6e027aaa0",
+          "extensions": {}
         }
       }
     ],

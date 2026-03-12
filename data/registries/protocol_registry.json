@@ -19,6 +19,16 @@
         "extensions": {
           "runtime_status": "operational",
           "source": "LOGIC9-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for protocol.none; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC/CAP-NEG",
+          "replacement_target": "Replace protocol stubs with release-pinned logic/protocol registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "27be1309fed351d8613531a1d870f7f12861fa6a9ca06cc684cea2138bf4a310",
+          "extensions": {}
         }
       },
       {
@@ -36,6 +46,16 @@
           "default_carrier_type_id": "carrier.electrical",
           "runtime_status": "operational",
           "source": "LOGIC9-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for protocol.simple_frame_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC/CAP-NEG",
+          "replacement_target": "Replace protocol stubs with release-pinned logic/protocol registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "bb54b7ba6ad682186cb8bf615d70dbce49441bfb568d605224e31fb97d3e46e5",
+          "extensions": {}
         }
       },
       {
@@ -53,6 +73,16 @@
           "default_carrier_type_id": "carrier.sig",
           "runtime_status": "operational",
           "source": "LOGIC9-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for protocol.bus_arbitration_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC/CAP-NEG",
+          "replacement_target": "Replace protocol stubs with release-pinned logic/protocol registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1e71f6711350d10d7abab741c79c63113b6388fd1561fe42337c24935d1ae545",
+          "extensions": {}
         }
       }
     ],

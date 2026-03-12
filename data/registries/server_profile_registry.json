@@ -42,6 +42,16 @@
           "perception_interest_policy_id": "policy.perception.lab.minimal",
           "cosmetic_policy_id": "policy.cosmetics.rank_strict",
           "enforce_lod_invariance_strict": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.profile.rank_strict; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "13e5f8c52a515588711db350794feffb33f7784744789c86e163a45d13561e3d",
+          "extensions": {}
         }
       },
       {
@@ -79,6 +89,16 @@
           "perception_interest_policy_id": "policy.perception.lab.default",
           "cosmetic_policy_id": "policy.cosmetics.casual_default",
           "enforce_lod_invariance_strict": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.profile.casual_public; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ff3d7d0e161c13aa29681cf9de2e41204795cdbfdd168cea090432fe9136bfca",
+          "extensions": {}
         }
       },
       {
@@ -120,6 +140,16 @@
           "perception_interest_policy_id": "policy.perception.lab.default",
           "cosmetic_policy_id": "policy.cosmetics.private_relaxed",
           "enforce_lod_invariance_strict": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.profile.private_relaxed; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB",
+          "replacement_target": "Replace provisional distribution and library semantics with release-pinned LIB registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e75edad08d67e1792492a9bd2e4739b5211563f6495aa833195fab4d7313180a",
+          "extensions": {}
         }
       }
     ],

@@ -12,6 +12,16 @@
         "extensions": {
           "official.description": "Reference dataset surface for Earth DEM providers.",
           "official.source": "LIB-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for provides.earth.dem.v1; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB/PACK-COMPAT",
+          "replacement_target": "Replace provisional provides surfaces with release-pinned LIB and PACK-COMPAT provider definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "da4d9b3e18d75dcb754f520d66b3b5963f443a6f633fa9d14cbf27532e298129",
+          "extensions": {}
         }
       },
       {
@@ -21,6 +31,16 @@
         "extensions": {
           "official.description": "Reference surface for alternate profile bundle providers.",
           "official.source": "LIB-5"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for provides.profile.bundle.v1; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB/PACK-COMPAT",
+          "replacement_target": "Replace provisional provides surfaces with release-pinned LIB and PACK-COMPAT provider definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5e01beae3bb47d26c0f063993badedfc33c8436be77eb51cf218f1f099f5a7ea",
+          "extensions": {}
         }
       }
     ],

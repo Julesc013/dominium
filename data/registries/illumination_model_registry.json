@@ -36,6 +36,16 @@
           },
           "ambient_min_permille": 40,
           "source": "EARTH5-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for illum.basic_diffuse_default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SOL/EARTH",
+          "replacement_target": "Replace illumination stubs with calibrated SOL/EARTH illumination models.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5601ce1a176379b0163f27c29356aa4eb487f90254a340fefecae781ae4721a5",
+          "extensions": {}
         }
       }
     ],

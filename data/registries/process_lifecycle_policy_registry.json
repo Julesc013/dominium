@@ -23,6 +23,16 @@
         "extensions": {
           "source": "PROC0-4",
           "notes": "Capsule allowed after stabilization under declared error bounds."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for proc.lifecycle.default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "fa4706cd8fcdc19b02d419899353faa0c93063cca08717e1c2fa48d691ddf645",
+          "extensions": {}
         }
       },
       {
@@ -43,6 +53,16 @@
         "extensions": {
           "source": "PROC0-4",
           "requires_cert_for_capsule": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for proc.lifecycle.rank_strict; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "100e513932d2a4af7c68ca4e3c99ec1e227d0c1dc3bd7804692fcda7aed0f8b3",
+          "extensions": {}
         }
       },
       {
@@ -60,6 +80,16 @@
         "extensions": {
           "source": "PROC0-4",
           "capsule_allowed": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for proc.lifecycle.lab_experimental; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1b68ab4c0181f3914d56597561ad15f02bfa51e206f36e003951a8ba0a7b4ceb",
+          "extensions": {}
         }
       }
     ],

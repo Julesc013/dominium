@@ -63,6 +63,16 @@
             "vertical_habitable_half_thickness_pc": 600
           },
           "source": "MW0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for priors.milkyway_stub_default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "MW",
+          "replacement_target": "Replace Milky Way stub priors with calibrated MW series galaxy priors.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2940c3002e0c7d2d05775c1a4fbca4e457534dc59a3c793b3895849e88d114bf",
+          "extensions": {}
         }
       }
     ],

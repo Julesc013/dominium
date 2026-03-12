@@ -13,7 +13,7 @@
         "overlay_conflict_policy_id": "overlay.conflict.last_wins",
         "max_clients": 4,
         "proof_anchor_interval_ticks": 4,
-        "deterministic_fingerprint": "ff5f252fdea53f2e37fec6989a2daf92ad2a76260c9b35427b02fea8e480fe52",
+        "deterministic_fingerprint": "d8324b289ceeec435977e69bdfb3257b9cc03f2fd4436e0495f465d3d6add810",
         "extensions": {
           "official.endpoint": "loopback://server.mvp.default",
           "official.requested_replication_policy_id": "policy.net.server_authoritative",
@@ -31,6 +31,16 @@
           "official.epistemic_scope_id": "epistemic.lab.placeholder",
           "official.visibility_level": "placeholder",
           "official.privilege_level": "operator"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server.mvp_default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LIB/SERVER",
+          "replacement_target": "Replace MVP server config placeholder with release-pinned server configuration semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "854b2f5437405b9cf2eea9f963383805bd60c6388531f08672ab8c658b81afde",
+          "extensions": {}
         }
       }
     ],

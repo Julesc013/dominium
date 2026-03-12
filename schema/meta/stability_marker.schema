@@ -13,6 +13,7 @@ NON-SEMANTICS:
 REQUIRED SHAPE:
 record stability_marker
   required:
+    - schema_version: version
     - stability_class_id: tag
     - rationale: text
     - deterministic_fingerprint: sha256

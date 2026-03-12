@@ -13,7 +13,17 @@
         "requires_encryption": false,
         "allowed_credential_types": [],
         "extensions": {},
-        "deterministic_fingerprint": ""
+        "deterministic_fingerprint": "",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for sec.none; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "bce6ced6bd02e4946faf6a86e77bd89ea8d46e5e18d16682f1a154dc69b22aab",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -26,7 +36,17 @@
           "credential.system_certificate"
         ],
         "extensions": {},
-        "deterministic_fingerprint": ""
+        "deterministic_fingerprint": "",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for sec.auth_required_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8d770006490cd92a89df012396b0e0c98b307d8b1267783dfab30cadb375488d",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -39,7 +59,17 @@
           "credential.system_certificate"
         ],
         "extensions": {},
-        "deterministic_fingerprint": ""
+        "deterministic_fingerprint": "",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for sec.encrypted_required_stub; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "LOGIC",
+          "replacement_target": "Replace provisional logic semantics with release-pinned LOGIC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0aeedb80a191c14cf0677ab63d0c17fad1dfd04fec53817b71877d86b6966a37",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {

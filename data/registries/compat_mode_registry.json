@@ -12,6 +12,16 @@
         "extensions": {
           "official.source": "CAP-NEG-0",
           "mutation_allowed": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG negotiated mode semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "e9d775b81534e4760ffafecd197f5f74084f0a8400363d6ad238fa067d318602",
+          "extensions": {}
         }
       },
       {
@@ -21,6 +31,16 @@
         "extensions": {
           "official.source": "CAP-NEG-0",
           "mutation_allowed": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG negotiated mode semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "e9d775b81534e4760ffafecd197f5f74084f0a8400363d6ad238fa067d318602",
+          "extensions": {}
         }
       },
       {
@@ -31,6 +51,16 @@
           "official.source": "CAP-NEG-0",
           "law_profile_id_override": "law.observer.default",
           "mutation_allowed": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG negotiated mode semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "e9d775b81534e4760ffafecd197f5f74084f0a8400363d6ad238fa067d318602",
+          "extensions": {}
         }
       },
       {
@@ -40,6 +70,16 @@
         "extensions": {
           "official.source": "CAP-NEG-0",
           "mutation_allowed": false
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "CAP-NEG negotiated mode semantics are frozen for MVP release governance.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.cap_neg.negotiation.v1",
+          "deterministic_fingerprint": "e9d775b81534e4760ffafecd197f5f74084f0a8400363d6ad238fa067d318602",
+          "extensions": {}
         }
       }
     ],

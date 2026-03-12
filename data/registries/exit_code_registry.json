@@ -9,43 +9,113 @@
         "range_id": "exit.success",
         "start_code": 0,
         "end_code": 0,
-        "description": "Successful shell completion."
+        "description": "Successful shell completion.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for exit.success; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "32e6321549475d4ab9554a6cbf7520090129e2d791c3f8fcacde96216766644f",
+          "extensions": {}
+        }
       },
       {
         "range_id": "exit.usage",
         "start_code": 10,
         "end_code": 19,
-        "description": "Usage and command-shape errors."
+        "description": "Usage and command-shape errors.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for exit.usage; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ecb3bc897fc2d5e3f975dce3db0d3c9d70a1caed408a86dd19c989ad723395e7",
+          "extensions": {}
+        }
       },
       {
         "range_id": "exit.pack_profile",
         "start_code": 20,
         "end_code": 29,
-        "description": "Pack, profile, bundle, and verification errors."
+        "description": "Pack, profile, bundle, and verification errors.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for exit.pack_profile; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0fc7c20df21f0b6734694183fb3e49306befd224da6ee88dca41ef3104d77a86",
+          "extensions": {}
+        }
       },
       {
         "range_id": "exit.contract",
         "start_code": 30,
         "end_code": 39,
-        "description": "Determinism, contract, and compatibility enforcement errors."
+        "description": "Determinism, contract, and compatibility enforcement errors.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for exit.contract; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4ee7a94b6e504dff02d15cc18936cdff77a462ed2c15f3cc370b9e603379adbc",
+          "extensions": {}
+        }
       },
       {
         "range_id": "exit.transport",
         "start_code": 40,
         "end_code": 49,
-        "description": "IPC and network-shell surface errors."
+        "description": "IPC and network-shell surface errors.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for exit.transport; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "42d98afd0462c24530ce4921650b051b344ddc473ade7238fccdaf9005e0a65a",
+          "extensions": {}
+        }
       },
       {
         "range_id": "exit.refusal",
         "start_code": 50,
         "end_code": 59,
-        "description": "Law, refusal, and gated-capability denials."
+        "description": "Law, refusal, and gated-capability denials.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for exit.refusal; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "600c7f9c97e0ed61bb3634e9a36de4277895e90e643d52e41eed7b7e9af893e9",
+          "extensions": {}
+        }
       },
       {
         "range_id": "exit.internal",
         "start_code": 60,
         "end_code": 69,
-        "description": "Internal shell failures."
+        "description": "Internal shell failures.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for exit.internal; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "51ede8146ccc449b83c4a7025eea9ee497929a2bdf0b0ded2c49567f79084013",
+          "extensions": {}
+        }
       }
     ],
     "deterministic_fingerprint": "",

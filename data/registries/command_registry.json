@@ -9,511 +9,1352 @@
         "schema_version": "1.1.0",
         "command_id": "command.help",
         "command_path": "help",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Show deterministic AppShell help generated from the command registry.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.help",
         "output_schema_id": "dominium.schema.appshell.output.help_text",
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "help",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.help; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "42d06cfb17afa778ce2f5dc0ed25cc85f34e6fc34fd5c12526395359b520d1d2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.version",
         "command_path": "version",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Emit deterministic product version metadata and build identity.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.none",
         "output_schema_id": "dominium.schema.appshell.output.version_payload",
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "version",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.version; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7024098ecc9106125207ec6776265a368bc009fcc26d4ec65dc86cee21f00417",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.descriptor",
         "command_path": "descriptor",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Emit the CAP-NEG endpoint descriptor for the active product.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.descriptor",
         "output_schema_id": "dominium.schema.compat.endpoint_descriptor",
-        "refusal_codes": ["refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.contract",
         "handler_id": "descriptor",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.descriptor; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "d69fd871da0b47ced624bfa11825a30f12f9dc6d62849f0b0ba0790583e6d8ae",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.compat_status",
         "command_path": "compat-status",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Run deterministic endpoint compatibility status and show negotiated mode plus disabled features.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.compat_status",
         "output_schema_id": "dominium.schema.compat.negotiation_record",
-        "refusal_codes": ["refusal.compat.contract_mismatch", "refusal.compat.no_common_protocol", "refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.compat.contract_mismatch",
+          "refusal.compat.no_common_protocol",
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.contract",
         "handler_id": "compat_status",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.compat_status; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "18e024ba0f64f69c4f2dcb3da94002d51419fb85f444a40b600a51be1a4c8a7d",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.verify",
         "command_path": "verify",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Alias of `packs verify` for offline pack/profile verification.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.pack_verify",
         "output_schema_id": "dominium.schema.packs.pack_compatibility_report",
-        "refusal_codes": ["refusal.pack.contract_range_mismatch", "refusal.pack.registry_missing", "refusal.pack.schema_invalid", "refusal.pack.trust_denied", "refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.pack.contract_range_mismatch",
+          "refusal.pack.registry_missing",
+          "refusal.pack.schema_invalid",
+          "refusal.pack.trust_denied",
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_verify",
         "deterministic_fingerprint": "",
-        "extensions": { "official.alias_of": "packs verify", "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.alias_of": "packs verify",
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.verify; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "c3333e0de6791c0654272934fd213697a57e3ad14aedb3d5df17b91d6aa27d11",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.diag",
         "command_path": "diag",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Emit deterministic shell diagnostic metadata.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.none",
         "output_schema_id": "dominium.schema.appshell.output.diag_stub",
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "diag",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.diag; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6269bc7c9d0325cc0cdf95367e541523f0f8aa126f3d1d213485a1e28e4a5b3f",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.diag_snapshot",
         "command_path": "diag snapshot",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.diag_snapshot",
         "output_schema_id": "dominium.schema.appshell.output.diag_snapshot",
-        "refusal_codes": ["refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "diag_snapshot",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-2" }
+        "extensions": {
+          "official.source": "APPSHELL-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.diag_snapshot; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0f809c2bc802ede13e2edd11cf216fbfa64dfdd9ad65e2e91acd5d1eb59e7a5e",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.diag_capture",
         "command_path": "diag capture",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.diag_capture",
         "output_schema_id": "dominium.schema.diag.repro_bundle_manifest",
-        "refusal_codes": ["refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "diag_capture",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "DIAG-0" }
+        "extensions": {
+          "official.source": "DIAG-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.diag_capture; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ded58adb2c125ea115443755a2522726bf3c8f83457bae5f805968eca021b1b2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.console",
         "command_path": "console",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Alias of `console enter` for deterministic REPL console access.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.none",
         "output_schema_id": "dominium.schema.appshell.output.console_stub",
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "console_enter",
         "deterministic_fingerprint": "",
-        "extensions": { "official.alias_of": "console enter", "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.alias_of": "console enter",
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.console; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "13aa0026021f69669a04ffdbc960ada3c8362c3bb3f0a2ca69614754753f85e7",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.console_enter",
         "command_path": "console enter",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Open the deterministic REPL console session stub for the current product.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.none",
         "output_schema_id": "dominium.schema.appshell.output.console_stub",
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "console_enter",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.console_enter; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e5f1bdcac4fe75c8bd16a9d82c25f84c4fdbf61d76917da2476d22269f869f55",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.console_sessions",
         "command_path": "console sessions",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "List discovered local IPC console endpoints in deterministic order.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.console_sessions",
         "output_schema_id": "dominium.schema.ipc.ipc_endpoint_descriptor",
-        "refusal_codes": ["refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.transport",
         "handler_id": "console_sessions",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-4" }
+        "extensions": {
+          "official.source": "APPSHELL-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.console_sessions; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "16c290dbef7dfcaeb6b06c77b387c4ae4d8f215eaaaad1acbedda6c75fdffc90",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.console_attach",
         "command_path": "console attach",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Attach to a local IPC console endpoint through CAP-NEG negotiation.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.console_attach",
         "output_schema_id": "dominium.schema.compat.negotiation_record",
-        "refusal_codes": ["refusal.connection.no_negotiation", "refusal.connection.negotiation_mismatch", "refusal.io.invalid_args", "refusal.law.attach_denied"],
+        "refusal_codes": [
+          "refusal.connection.no_negotiation",
+          "refusal.connection.negotiation_mismatch",
+          "refusal.io.invalid_args",
+          "refusal.law.attach_denied"
+        ],
         "exit_code_mapping_id": "exit.transport",
         "handler_id": "console_attach",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-4" }
+        "extensions": {
+          "official.source": "APPSHELL-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.console_attach; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "79b36ff6a03aff2385cc4eb103c35986c4b60884e41c6d9deda9bbc3ce5473b7",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.console_detach",
         "command_path": "console detach",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Detach a logical local IPC console session.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.console_detach",
         "output_schema_id": "dominium.schema.appshell.output.console_stub",
-        "refusal_codes": ["refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "console_detach",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-4" }
+        "extensions": {
+          "official.source": "APPSHELL-4"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.console_detach; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4ecca2fee9a37e3fddbe301c8590fbd35a47f0e57d45c4c565f1b856659de9dd",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.packs",
         "command_path": "packs",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Alias of `packs list` for deterministic pack enumeration.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.pack_list",
         "output_schema_id": "dominium.schema.appshell.output.pack_list",
-        "refusal_codes": ["refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_list",
         "deterministic_fingerprint": "",
-        "extensions": { "official.alias_of": "packs list", "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.alias_of": "packs list",
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.packs; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b7e30de62954e13983ebc47339170e89d4da9aa8577a0bdad463c216a3359d01",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.packs_list",
         "command_path": "packs list",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "List available pack manifests in deterministic order.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.pack_list",
         "output_schema_id": "dominium.schema.appshell.output.pack_list",
-        "refusal_codes": ["refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_list",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.packs_list; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "572667332724d687d10db7a4ea9572efec2aea6842bb1619db683c22ad9c1887",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.packs_verify",
         "command_path": "packs verify",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Run the offline pack compatibility verification pipeline.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.pack_verify",
         "output_schema_id": "dominium.schema.packs.pack_compatibility_report",
-        "refusal_codes": ["refusal.pack.contract_range_mismatch", "refusal.pack.registry_missing", "refusal.pack.schema_invalid", "refusal.pack.trust_denied", "refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.pack.contract_range_mismatch",
+          "refusal.pack.registry_missing",
+          "refusal.pack.schema_invalid",
+          "refusal.pack.trust_denied",
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_verify",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.packs_verify; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "969df5d0f2329b5216e681cb80491ddfa2700e23a21eda1875c4a4b347ea7f3c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.packs_build_lock",
         "command_path": "packs build-lock",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Verify packs offline and emit a deterministic pack lock plus compatibility report.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.pack_build_lock",
         "output_schema_id": "dominium.schema.packs.pack_lock",
-        "refusal_codes": ["refusal.pack.contract_range_mismatch", "refusal.pack.registry_missing", "refusal.pack.schema_invalid", "refusal.pack.trust_denied", "refusal.io.invalid_args"],
+        "refusal_codes": [
+          "refusal.pack.contract_range_mismatch",
+          "refusal.pack.registry_missing",
+          "refusal.pack.schema_invalid",
+          "refusal.pack.trust_denied",
+          "refusal.io.invalid_args"
+        ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "packs_build_lock",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.packs_build_lock; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7d2354eb968d4840ba6eed682e98785cd8fdd7a008be67f9fe8ef245a9894d55",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.profiles",
         "command_path": "profiles",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Alias of `profiles list` for deterministic bundle enumeration.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.none",
         "output_schema_id": "dominium.schema.appshell.output.profile_list",
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "profiles_list",
         "deterministic_fingerprint": "",
-        "extensions": { "official.alias_of": "profiles list", "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.alias_of": "profiles list",
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.profiles; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0aad973b75688412e90f658c2f7af31c15873a56ecfd04f6aa4bd279507c60d5",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.profiles_list",
         "command_path": "profiles list",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "List available profile bundles in deterministic order.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.none",
         "output_schema_id": "dominium.schema.appshell.output.profile_list",
         "refusal_codes": [],
         "exit_code_mapping_id": "exit.success",
         "handler_id": "profiles_list",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.profiles_list; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "18fa67b98d04db05f32455ad09d5f7affb745c18e5b68626a949785e232d743c",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.profiles_show",
         "command_path": "profiles show",
-        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "engine",
+          "game",
+          "launcher",
+          "server",
+          "setup",
+          "tool.attach_console_stub"
+        ],
         "description": "Show a single profile bundle by bundle id.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.profile_show",
         "output_schema_id": "dominium.schema.profile.profile_bundle",
-        "refusal_codes": ["refusal.io.invalid_args", "refusal.io.profile_not_found"],
+        "refusal_codes": [
+          "refusal.io.invalid_args",
+          "refusal.io.profile_not_found"
+        ],
         "exit_code_mapping_id": "exit.pack_profile",
         "handler_id": "profiles_show",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.profiles_show; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5bf7712a842897d9a70c0ea60b621802a8726b3b2345585470d45f403fc5648b",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.launcher_start",
         "command_path": "launcher start",
-        "product_ids": ["launcher"],
+        "product_ids": [
+          "launcher"
+        ],
         "description": "Start a deterministic supervised local singleplayer or headless server run.",
-        "supported_mode_ids": ["cli", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.launcher_start",
         "output_schema_id": "dominium.schema.appshell.run_manifest",
-        "refusal_codes": ["refusal.io.invalid_args", "refusal.pack.contract_range_mismatch", "refusal.supervisor.already_running", "refusal.supervisor.endpoint_unreached"],
+        "refusal_codes": [
+          "refusal.io.invalid_args",
+          "refusal.pack.contract_range_mismatch",
+          "refusal.supervisor.already_running",
+          "refusal.supervisor.endpoint_unreached"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "launcher_start",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-6" }
+        "extensions": {
+          "official.source": "APPSHELL-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.launcher_start; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "f38a0577ae0c16ae22b68e001ce1a9a8b8a5682710480b45e76d0c78c3780ac7",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.launcher_stop",
         "command_path": "launcher stop",
-        "product_ids": ["launcher"],
+        "product_ids": [
+          "launcher"
+        ],
         "description": "Stop the active supervised run in deterministic client then server order.",
-        "supported_mode_ids": ["cli", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.none",
         "output_schema_id": "dominium.schema.appshell.run_manifest",
-        "refusal_codes": ["refusal.supervisor.not_running", "refusal.supervisor.endpoint_unreached"],
+        "refusal_codes": [
+          "refusal.supervisor.not_running",
+          "refusal.supervisor.endpoint_unreached"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "launcher_stop",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-6" }
+        "extensions": {
+          "official.source": "APPSHELL-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.launcher_stop; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b9bad71f045bc619e30b2d2750ae5f0b161b47a750e5acd227773606b6a26031",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.launcher_status",
         "command_path": "launcher status",
-        "product_ids": ["launcher"],
+        "product_ids": [
+          "launcher"
+        ],
         "description": "Show deterministic supervisor state, process health, and aggregated logs.",
-        "supported_mode_ids": ["cli", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.none",
         "output_schema_id": "dominium.schema.appshell.run_manifest",
-        "refusal_codes": ["refusal.supervisor.not_running"],
+        "refusal_codes": [
+          "refusal.supervisor.not_running"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "launcher_status",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-6" }
+        "extensions": {
+          "official.source": "APPSHELL-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.launcher_status; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "c16f71df4126d76a90cc6fdc745d67f7bc08bb944b4bdc060007e0b00100af87",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.launcher_attach",
         "command_path": "launcher attach",
-        "product_ids": ["launcher"],
+        "product_ids": [
+          "launcher"
+        ],
         "description": "Attach launcher TUI/CLI to supervised child IPC consoles in deterministic order.",
-        "supported_mode_ids": ["cli", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.launcher_attach",
         "output_schema_id": "dominium.schema.ipc.ipc_endpoint_descriptor",
-        "refusal_codes": ["refusal.io.invalid_args", "refusal.supervisor.not_running"],
+        "refusal_codes": [
+          "refusal.io.invalid_args",
+          "refusal.supervisor.not_running"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "launcher_attach",
         "deterministic_fingerprint": "",
-        "extensions": { "official.source": "APPSHELL-6" }
+        "extensions": {
+          "official.source": "APPSHELL-6"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.launcher_attach; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "91358c64f8a5bfbb9ede38d3fb0885d68efe1c712b78941afd9d251c646e9e51",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.session_namespace",
         "command_path": "session.*",
-        "product_ids": ["client", "launcher", "server", "setup"],
+        "product_ids": [
+          "client",
+          "launcher",
+          "server",
+          "setup"
+        ],
         "description": "Reserved stable namespace for session lifecycle commands.",
-        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.session_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "50f6468bec0e794f2b4c07dd83f8802a8b5d354af3a6d286b21fde11291c6fe5",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.engine_namespace",
         "command_path": "engine.*",
-        "product_ids": ["engine"],
+        "product_ids": [
+          "engine"
+        ],
         "description": "Reserved stable namespace for engine product commands.",
-        "supported_mode_ids": ["cli", "headless", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.engine_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7a680bb7a6c9551af6b6838e828e468825b6b08b4f74423acb84b3a1765e1d77",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.game_namespace",
         "command_path": "game.*",
-        "product_ids": ["game"],
+        "product_ids": [
+          "game"
+        ],
         "description": "Reserved stable namespace for game product commands.",
-        "supported_mode_ids": ["cli", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.game_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b641cb9d5fddcb78ba3738a834c1f1745e96346f6c953e35faced90b51d9ab2a",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.client_namespace",
         "command_path": "client.*",
-        "product_ids": ["client"],
+        "product_ids": [
+          "client"
+        ],
         "description": "Reserved stable namespace for client-specific runtime commands.",
-        "supported_mode_ids": ["cli", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.client_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2219ef5dbbe8127862ee2f8ece76e2f9637a43774ffea468eb78e0945ae983d4",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.server_namespace",
         "command_path": "server.*",
-        "product_ids": ["server"],
+        "product_ids": [
+          "server"
+        ],
         "description": "Reserved stable namespace for server command surfaces.",
-        "supported_mode_ids": ["cli", "headless", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.server_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "850fe1c21508bcea5d190418f53858353a9d91094d0b1b3a477aadc2840f4875",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.setup_namespace",
         "command_path": "setup.*",
-        "product_ids": ["setup"],
+        "product_ids": [
+          "setup"
+        ],
         "description": "Reserved stable namespace for setup product commands.",
-        "supported_mode_ids": ["cli", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.setup_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "d232ff1f5c0979844cf690202a05a87fbe813ac078ab103f560c9ee8662ad372",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.launcher_namespace",
         "command_path": "launcher.*",
-        "product_ids": ["launcher"],
+        "product_ids": [
+          "launcher"
+        ],
         "description": "Reserved stable namespace for launcher product commands.",
-        "supported_mode_ids": ["cli", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.launcher_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6e6b902c176748f84598e4f480ffd228189f07aa65f70e7ca38f3d27bf6a1ab2",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.logic_namespace",
         "command_path": "logic.*",
-        "product_ids": ["client", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "tool.attach_console_stub"
+        ],
         "description": "Reserved stable namespace for logic compile, probe, and trace commands.",
-        "supported_mode_ids": ["cli", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.logic_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "06450254b6ed5a0344cfcb0c4d8741906ca35224c3a0a798d3bff67b610063e4",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.geo_namespace",
         "command_path": "geo.*",
-        "product_ids": ["client", "tool.attach_console_stub"],
+        "product_ids": [
+          "client",
+          "tool.attach_console_stub"
+        ],
         "description": "Reserved stable namespace for GEO explain and inspection commands.",
-        "supported_mode_ids": ["cli", "rendered", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "rendered",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.geo_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2cca793a1c47fe266d3ac33bd8dbc5041b3ec550f01ce43c5392a9e82136aa8f",
+          "extensions": {}
+        }
       },
       {
         "schema_version": "1.1.0",
         "command_id": "command.tool_namespace",
         "command_path": "tool.*",
-        "product_ids": ["tool.attach_console_stub"],
+        "product_ids": [
+          "tool.attach_console_stub"
+        ],
         "description": "Reserved stable namespace for tool product commands.",
-        "supported_mode_ids": ["cli", "tui"],
+        "supported_mode_ids": [
+          "cli",
+          "tui"
+        ],
         "args_schema_id": "dominium.schema.appshell.args.namespace",
         "output_schema_id": "dominium.schema.appshell.output.refusal",
-        "refusal_codes": ["refusal.debug.command_unavailable"],
+        "refusal_codes": [
+          "refusal.debug.command_unavailable"
+        ],
         "exit_code_mapping_id": "exit.refusal",
         "handler_id": "namespace_placeholder",
         "deterministic_fingerprint": "",
-        "extensions": { "official.placeholder": true, "official.source": "APPSHELL-1" }
+        "extensions": {
+          "official.placeholder": true,
+          "official.source": "APPSHELL-1"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for command.tool_namespace; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8199a9360e71ddd8a7d26276405c5526673127a0e4c0956704a73ca8648554a3",
+          "extensions": {}
+        }
       }
     ],
     "deterministic_fingerprint": "",

@@ -40,6 +40,16 @@
             "cert_revoke",
             "revalidate_required"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for drift.default; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0d81d31c6d28dbbffe6b80f0735b3afa842bf681e832b7c715a2e74ad2e3edbb",
+          "extensions": {}
         }
       },
       {
@@ -77,6 +87,16 @@
             "cert_revoke",
             "revalidate_required"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for drift.strict; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b63d1dd4a5ec81f8bba2eedd4b5632fc66c48233e5680484c7d022a8e126f42d",
+          "extensions": {}
         }
       },
       {
@@ -115,6 +135,16 @@
             "cert_revoke",
             "revalidate_required"
           ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for drift.fast_dev; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "PROC",
+          "replacement_target": "Replace provisional process semantics with release-pinned PROC registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "2c9de9d613cf7082eb13280d712fc7528513e8697819558225803dee38feb8e9",
+          "extensions": {}
         }
       }
     ],

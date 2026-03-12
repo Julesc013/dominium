@@ -15,6 +15,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "scope": "boundary"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for invariant.mass_conserved; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SYS",
+          "replacement_target": "Replace provisional system semantics with release-pinned SYS registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0275bcfd420c6b9235a3188f7c150da436554009aa984af133872ce691289b4b",
+          "extensions": {}
         }
       },
       {
@@ -27,6 +37,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "scope": "boundary"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for invariant.energy_conserved; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SYS",
+          "replacement_target": "Replace provisional system semantics with release-pinned SYS registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7002a82c363aecc758628fb267b5f10985e23a52634bbbf93feb9d2890814fb8",
+          "extensions": {}
         }
       },
       {
@@ -40,6 +60,16 @@
         "extensions": {
           "scope": "boundary",
           "optional": true
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for invariant.momentum_conserved; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SYS",
+          "replacement_target": "Replace provisional system semantics with release-pinned SYS registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7d3d2a4dadeb94c89d50fe919faff4dcc28592fc0e5fbb4e8eb1191738ef3fb2",
+          "extensions": {}
         }
       },
       {
@@ -52,6 +82,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "scope": "boundary"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for invariant.pollutant_accounted; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "SYS",
+          "replacement_target": "Replace provisional system semantics with release-pinned SYS registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9379cfe42ce1c54a323c8305de063d6ad77eb7eecde01d1eb4547292387b4266",
+          "extensions": {}
         }
       }
     ],

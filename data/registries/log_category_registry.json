@@ -4,17 +4,160 @@
   "record": {
     "registry_id": "dominium.registry.appshell.log_category_registry",
     "categories": [
-      { "category_id": "appshell", "description": "AppShell bootstrap and command lifecycle." },
-      { "category_id": "client", "description": "Client orchestration and presentation-level events." },
-      { "category_id": "compat", "description": "Compatibility negotiation and degrade reporting." },
-      { "category_id": "diag", "description": "Diagnostic snapshot and replay assistance events." },
-      { "category_id": "ipc", "description": "Local IPC endpoint lifecycle, attach negotiation, and stream events." },
-      { "category_id": "packs", "description": "Offline pack verification and pack-lock generation." },
-      { "category_id": "refusal", "description": "Structured refusals and remediation outputs." },
-      { "category_id": "server", "description": "Server boot, connection, control, and tick events." },
-      { "category_id": "tool", "description": "Tool session and capability events." },
-      { "category_id": "ui", "description": "Shell/UI mode and presentation events." },
-      { "category_id": "worldgen", "description": "Worldgen and refinement request summaries." }
+      {
+        "category_id": "appshell",
+        "description": "AppShell bootstrap and command lifecycle.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for appshell; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9c5c7ee81049ab6aae45fcebbcc96388e3380ecab7eb19f0d044d0e14395d9c6",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "client",
+        "description": "Client orchestration and presentation-level events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for client; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b7f3610c5af2fc9dee13648f8f25d0ccdf810bb03337a49790d0d59f7a3c010f",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "compat",
+        "description": "Compatibility negotiation and degrade reporting.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for compat; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9a5142d1a23267301d915306ec197ff2d653d4e1e6c25441a21f18ab913e8a02",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "diag",
+        "description": "Diagnostic snapshot and replay assistance events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for diag; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "12618c79119835fd0896b2bde3222cd448484db65f85a627b7eeb420d106391d",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "ipc",
+        "description": "Local IPC endpoint lifecycle, attach negotiation, and stream events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for ipc; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7df1de605ae015d6a95ab6fba1aa1b44c3b298fe36975fd8e8a0b5940f1b005e",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "packs",
+        "description": "Offline pack verification and pack-lock generation.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for packs; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8acd9e3e000eedb8c65e5955f20db90bcc14f7131970f73cd9bf4c571012addc",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "refusal",
+        "description": "Structured refusals and remediation outputs.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for refusal; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "58c86e674ea1fd7e66f4379281305ea4900c694b586523b7938e5f37563ac128",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "server",
+        "description": "Server boot, connection, control, and tick events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for server; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1951dbfbbf0f17ef92461b534d24ef2b59442ba419ea589f1213b9212e23af17",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "tool",
+        "description": "Tool session and capability events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for tool; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "329ee6ec17957743b61eeff8a222568f86b1f40ed64a54e8e3bf779733e93248",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "ui",
+        "description": "Shell/UI mode and presentation events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for ui; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "76bc4b012e60f41a53a08fba0589ba3503c5f6875c709a134149d435f63123b0",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "worldgen",
+        "description": "Worldgen and refinement request summaries.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for worldgen; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1d74c0d61f0bc4fd7338a0837efecbe1725c46f2e1e96b1fa6a34e7c0555a505",
+          "extensions": {}
+        }
+      }
     ],
     "deterministic_fingerprint": "",
     "extensions": {
