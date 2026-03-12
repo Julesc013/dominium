@@ -962,6 +962,31 @@ MVP_SMOKE_BASELINE_REQUIRED_FIELDS = (
     "update_policy",
 )
 
+MVP_STRESS_DOCTRINE_PATH = "docs/mvp/MVP_STRESS_GATE.md"
+MVP_STRESS_HASHES_PATH = "build/mvp/mvp_stress_hashes.json"
+MVP_STRESS_REPORT_PATH = "build/mvp/mvp_stress_report.json"
+MVP_STRESS_PROOF_REPORT_PATH = "build/mvp/mvp_stress_proof_report.json"
+MVP_STRESS_BASELINE_PATH = "data/regression/mvp_stress_baseline.json"
+MVP_STRESS_FINAL_PATH = "docs/audit/MVP_STRESS_FINAL.md"
+MVP_STRESS_BASELINE_REQUIRED_FIELDS = (
+    "baseline_id",
+    "gate_id",
+    "gate_seed",
+    "suite_order",
+    "suite_fingerprints",
+    "metrics_fingerprints",
+    "proof_fingerprints",
+    "cross_thread_hashes",
+    "key_metric_thresholds",
+    "known_refusal_counts",
+    "pack_lock_hashes",
+    "server_contract_bundle_hash",
+    "server_proof_anchor_hashes",
+    "logic_compiled_model_hash",
+    "selected_view_fingerprints",
+    "update_policy",
+)
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -6520,6 +6545,253 @@ def _append_mvp_smoke_gate_findings(
             _finding(
                 severity=severity,
                 file_path=MVP_SMOKE_FINAL_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+
+def _append_mvp_stress_gate_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rule_id = "INV-MVP-STRESS-MUST-PASS-BEFORE-RELEASE"
+    required_files = (
+        (MVP_STRESS_DOCTRINE_PATH, "MVP stress doctrine is required for release gating"),
+        ("tools/mvp/tool_run_all_stress.py", "MVP stress orchestrator is required for release gating"),
+        ("tools/mvp/tool_verify_proofs.py", "MVP stress proof verifier is required for release gating"),
+        (MVP_STRESS_HASHES_PATH, "MVP stress hash artifact is required for release gating"),
+        (MVP_STRESS_REPORT_PATH, "MVP stress report is required before release"),
+        (MVP_STRESS_PROOF_REPORT_PATH, "MVP stress proof report is required before release"),
+        (MVP_STRESS_BASELINE_PATH, "MVP stress regression baseline is required before release"),
+        (MVP_STRESS_FINAL_PATH, "MVP stress final audit report is required before release"),
+        ("tools/xstack/testx/tests/test_stress_orchestrator_order_deterministic.py", "MVP stress orchestrator TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_proof_validation_passes.py", "MVP stress proof TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_cross_thread_hash_match.py", "MVP stress cross-thread TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_stress_hashes_match_baseline.py", "MVP stress regression TestX coverage is required"),
+    )
+    for rel_path, message in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, MVP_STRESS_DOCTRINE_PATH).lower()
+    for token, message in (
+        ("mvp-stress-regression-update", "MVP stress doctrine must declare the regression update tag"),
+        ("canonical gate seed is `70101`", "MVP stress doctrine must pin the canonical stress gate seed"),
+        ("proof anchors stable across runs", "MVP stress doctrine must declare proof-anchor stability checks"),
+        ("negotiation records stable", "MVP stress doctrine must declare negotiation-record stability checks"),
+        ("deterministic degrade behavior only", "MVP stress doctrine must declare deterministic-only degrade behavior"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_STRESS_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    report_payload, report_error = _load_json_object(repo_root, MVP_STRESS_REPORT_PATH)
+    if report_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_STRESS_REPORT_PATH,
+                line_number=1,
+                snippet="",
+                message="MVP stress report must exist and be valid JSON before release",
+                rule_id=rule_id,
+            )
+        )
+    else:
+        if str(report_payload.get("gate_id", "")).strip() != "mvp.stress.gate.v1":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_STRESS_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(report_payload.get("gate_id", "")),
+                    message="MVP stress report must record gate_id mvp.stress.gate.v1",
+                    rule_id=rule_id,
+                )
+            )
+        assertions = dict(report_payload.get("assertions") or {})
+        for key in ("all_suites_passed", "cross_thread_hash_match", "no_unexpected_refusals", "suite_order_deterministic"):
+            if bool(assertions.get(key, False)):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_STRESS_REPORT_PATH,
+                    line_number=1,
+                    snippet=key,
+                    message="MVP stress report assertion '{}' must pass before release".format(key),
+                    rule_id=rule_id,
+                )
+            )
+        suite_order = [str(item) for item in list(report_payload.get("suite_order") or [])]
+        if suite_order != ["GEO-10", "LOGIC-10", "PROC-9", "SYS-8", "POLL-3", "EARTH-9", "CAP-NEG-4", "PACK-COMPAT", "LIB-7", "SERVER"]:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_STRESS_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(suite_order[:4]),
+                    message="MVP stress report must preserve the canonical suite order",
+                    rule_id=rule_id,
+                )
+            )
+
+    proof_payload, proof_error = _load_json_object(repo_root, MVP_STRESS_PROOF_REPORT_PATH)
+    if proof_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_STRESS_PROOF_REPORT_PATH,
+                line_number=1,
+                snippet="",
+                message="MVP stress proof report must exist and be valid JSON",
+                rule_id=rule_id,
+            )
+        )
+    else:
+        if str(proof_payload.get("result", "")).strip() != "complete":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_STRESS_PROOF_REPORT_PATH,
+                    line_number=1,
+                    snippet=str(proof_payload.get("result", "")),
+                    message="MVP stress proof report must record a complete pass before release",
+                    rule_id=rule_id,
+                )
+            )
+        checks = dict(proof_payload.get("checks") or {})
+        for key in (
+            "gate_report_complete",
+            "proof_anchors_stable",
+            "negotiation_records_stable",
+            "contract_bundle_pinned",
+            "pack_locks_stable",
+            "compaction_replay_matches",
+            "cross_thread_hash_match",
+            "no_unexpected_refusals",
+        ):
+            if bool(checks.get(key, False)):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_STRESS_PROOF_REPORT_PATH,
+                    line_number=1,
+                    snippet=key,
+                    message="MVP stress proof check '{}' must pass before release".format(key),
+                    rule_id=rule_id,
+                )
+            )
+
+    baseline_payload, baseline_error = _load_json_object(repo_root, MVP_STRESS_BASELINE_PATH)
+    if baseline_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_STRESS_BASELINE_PATH,
+                line_number=1,
+                snippet="",
+                message="MVP stress regression baseline must exist and be valid JSON",
+                rule_id=rule_id,
+            )
+        )
+    else:
+        for field in MVP_STRESS_BASELINE_REQUIRED_FIELDS:
+            value = baseline_payload.get(field)
+            if value is None or (isinstance(value, str) and not str(value).strip()):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=MVP_STRESS_BASELINE_PATH,
+                        line_number=1,
+                        snippet=str(field),
+                        message="MVP stress regression baseline missing required field '{}'".format(field),
+                        rule_id=rule_id,
+                    )
+                )
+        cross_thread_hashes = baseline_payload.get("cross_thread_hashes")
+        if not isinstance(cross_thread_hashes, dict) or not cross_thread_hashes:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_STRESS_BASELINE_PATH,
+                    line_number=1,
+                    snippet="cross_thread_hashes",
+                    message="MVP stress regression baseline must declare cross_thread_hashes",
+                    rule_id=rule_id,
+                )
+            )
+        pack_lock_hashes = baseline_payload.get("pack_lock_hashes")
+        if not isinstance(pack_lock_hashes, dict) or not str(dict(pack_lock_hashes).get("runtime", "")).strip():
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_STRESS_BASELINE_PATH,
+                    line_number=1,
+                    snippet="pack_lock_hashes.runtime",
+                    message="MVP stress regression baseline must pin the runtime pack lock hash",
+                    rule_id=rule_id,
+                )
+            )
+        update_policy = baseline_payload.get("update_policy")
+        required_tag = str(dict(update_policy or {}).get("required_commit_tag", "")).strip()
+        if required_tag != "MVP-STRESS-REGRESSION-UPDATE":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=MVP_STRESS_BASELINE_PATH,
+                    line_number=1,
+                    snippet=str(required_tag),
+                    message="MVP stress regression baseline updates must require MVP-STRESS-REGRESSION-UPDATE",
+                    rule_id=rule_id,
+                )
+            )
+
+    final_text = _file_text(repo_root, MVP_STRESS_FINAL_PATH).lower()
+    for token, message in (
+        ("# mvp stress final", "MVP stress final audit report must declare the canonical title"),
+        ("## run summary", "MVP stress final audit report must include a run summary"),
+        ("## hashes", "MVP stress final audit report must include the hash summary"),
+        ("## degradations", "MVP stress final audit report must include explicit degradations"),
+        ("## gates", "MVP stress final audit report must include gate results"),
+        ("## proof checks", "MVP stress final audit report must include proof checks"),
+        ("- result: `complete`", "MVP stress final audit report must record a complete stress result"),
+        ("- repox strict:", "MVP stress final audit report must include RepoX gate status"),
+        ("- auditx strict:", "MVP stress final audit report must include AuditX gate status"),
+        ("- testx:", "MVP stress final audit report must include TestX gate status"),
+        ("- stress orchestrator:", "MVP stress final audit report must include stress orchestrator status"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=MVP_STRESS_FINAL_PATH,
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -30002,6 +30274,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_mvp_smoke_gate_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_mvp_stress_gate_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
