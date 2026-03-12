@@ -1039,6 +1039,15 @@ ARCH_AUDIT_REPORT_PATH = "docs/audit/ARCH_AUDIT_REPORT.md"
 ARCH_AUDIT_REPORT_JSON_PATH = "data/audit/arch_audit_report.json"
 ARCH_AUDIT_BASELINE_PATH = "docs/audit/ARCH_AUDIT_BASELINE.md"
 
+EARTH10_RETRO_AUDIT_PATH = "docs/audit/EARTH10_RETRO_AUDIT.md"
+EARTH10_DOCTRINE_PATH = "docs/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md"
+EARTH10_MATERIAL_REGISTRY_PATH = "data/registries/material_proxy_registry.json"
+EARTH10_SURFACE_FLAG_REGISTRY_PATH = "data/registries/surface_flag_registry.json"
+EARTH10_PROBE_PATH = "tools/worldgen/earth10_probe.py"
+EARTH10_AUDIT_COMMON_PATH = "tools/worldgen/earth10_audit_common.py"
+EARTH10_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_material_proxy_window.py"
+EARTH10_BASELINE_PATH = "docs/audit/EARTH_MATERIAL_PROXY_BASELINE.md"
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -7522,6 +7531,242 @@ def _append_arch_audit_findings(
                 snippet=str(finding_row.get("snippet", ""))[:160],
                 message=str(finding_row.get("message", "")).strip() or "ARCH-AUDIT blocking finding detected",
                 rule_id=rule_id,
+            )
+        )
+
+
+def _append_earth10_proxy_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    stability_rule_id = "INV-PROXIES-PROVISIONAL-TAGGED"
+    chemistry_rule_id = "INV-NO-CHEMISTRY-IN-EARTH10"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (EARTH10_RETRO_AUDIT_PATH, "EARTH10 retro audit is required", stability_rule_id),
+        (EARTH10_DOCTRINE_PATH, "EARTH10 doctrine is required", stability_rule_id),
+        (EARTH10_MATERIAL_REGISTRY_PATH, "material proxy registry is required", stability_rule_id),
+        (EARTH10_SURFACE_FLAG_REGISTRY_PATH, "surface flag registry is required", stability_rule_id),
+        (EARTH10_PROBE_PATH, "EARTH10 probe tooling is required", stability_rule_id),
+        (EARTH10_AUDIT_COMMON_PATH, "EARTH10 audit common tooling is required", chemistry_rule_id),
+        (EARTH10_REPLAY_TOOL_PATH, "EARTH10 replay tool is required", stability_rule_id),
+        ("tools/auditx/analyzers/e458_chemistry_leak_smell.py", "ChemistryLeakSmell analyzer is required", chemistry_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, EARTH10_DOCTRINE_PATH).lower()
+    for token, message in (
+        ("field.material_proxy", "EARTH10 doctrine must define field.material_proxy"),
+        ("field.surface_flags", "EARTH10 doctrine must define field.surface_flags"),
+        ("field.albedo_proxy", "EARTH10 doctrine must define field.albedo_proxy"),
+        ("provisional", "EARTH10 doctrine must declare the proxy layer provisional"),
+        ("replacement", "EARTH10 doctrine must point to future replacement work"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=EARTH10_DOCTRINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=stability_rule_id,
+            )
+        )
+
+    def _registry_rows(payload: dict, row_key: str) -> List[dict]:
+        rows = list(payload.get(row_key) or [])
+        if not rows:
+            rows = list((dict(payload.get("record") or {})).get(row_key) or [])
+        return [dict(row) for row in rows if isinstance(row, dict)]
+
+    def _stability_class(row: Mapping[str, object]) -> str:
+        return str(dict(row.get("stability") or {}).get("stability_class_id", "")).strip()
+
+    def _require_provisional_rows(rel_path: str, rows: List[dict], id_key: str, expected_ids: List[str]) -> None:
+        row_by_id = dict(
+            (str(row.get(id_key, "")).strip(), dict(row))
+            for row in rows
+            if str(row.get(id_key, "")).strip()
+        )
+        for expected_id in expected_ids:
+            row = dict(row_by_id.get(expected_id) or {})
+            if not row:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=expected_id,
+                        message="required EARTH10 proxy row is missing",
+                        rule_id=stability_rule_id,
+                    )
+                )
+                continue
+            if _stability_class(row) == "provisional":
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=expected_id,
+                    message="EARTH10 proxy rows must be tagged provisional",
+                    rule_id=stability_rule_id,
+                )
+            )
+
+    material_payload, material_error = _load_json_object(repo_root, EARTH10_MATERIAL_REGISTRY_PATH)
+    if material_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=EARTH10_MATERIAL_REGISTRY_PATH,
+                line_number=1,
+                snippet=EARTH10_MATERIAL_REGISTRY_PATH,
+                message="unable to load material proxy registry ({})".format(material_error),
+                rule_id=stability_rule_id,
+            )
+        )
+    else:
+        _require_provisional_rows(
+            EARTH10_MATERIAL_REGISTRY_PATH,
+            _registry_rows(material_payload, "material_proxies"),
+            "material_proxy_id",
+            [
+                "mat.rock",
+                "mat.soil",
+                "mat.sand",
+                "mat.water",
+                "mat.ice",
+                "mat.synthetic_generic",
+            ],
+        )
+
+    surface_flag_payload, surface_flag_error = _load_json_object(repo_root, EARTH10_SURFACE_FLAG_REGISTRY_PATH)
+    if surface_flag_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=EARTH10_SURFACE_FLAG_REGISTRY_PATH,
+                line_number=1,
+                snippet=EARTH10_SURFACE_FLAG_REGISTRY_PATH,
+                message="unable to load surface flag registry ({})".format(surface_flag_error),
+                rule_id=stability_rule_id,
+            )
+        )
+    else:
+        _require_provisional_rows(
+            EARTH10_SURFACE_FLAG_REGISTRY_PATH,
+            _registry_rows(surface_flag_payload, "surface_flags"),
+            "surface_flag_id",
+            [
+                "flag.buildable",
+                "flag.fluid",
+                "flag.slippery",
+                "flag.hazardous",
+                "flag.protected",
+            ],
+        )
+
+    field_type_payload, field_type_error = _load_json_object(repo_root, "data/registries/field_type_registry.json")
+    if not field_type_error:
+        _require_provisional_rows(
+            "data/registries/field_type_registry.json",
+            _registry_rows(field_type_payload, "field_types"),
+            "field_type_id",
+            [
+                "field.material_proxy",
+                "field.surface_flags",
+                "field.albedo_proxy",
+            ],
+        )
+
+    field_binding_payload, field_binding_error = _load_json_object(repo_root, "data/registries/field_binding_registry.json")
+    if not field_binding_error:
+        binding_rows = [
+            row
+            for row in _registry_rows(field_binding_payload, "field_bindings")
+            if str(row.get("field_id", "")).strip() in {
+                "field.material_proxy",
+                "field.surface_flags",
+                "field.albedo_proxy",
+            }
+        ]
+        if not binding_rows:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/field_binding_registry.json",
+                    line_number=1,
+                    snippet="field.material_proxy",
+                    message="EARTH10 proxy fields must be bound in the field binding registry",
+                    rule_id=stability_rule_id,
+                )
+            )
+        for row in binding_rows:
+            if _stability_class(row) == "provisional":
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/field_binding_registry.json",
+                    line_number=1,
+                    snippet=str(row.get("field_id", ""))[:160],
+                    message="EARTH10 field bindings must be tagged provisional",
+                    rule_id=stability_rule_id,
+                )
+            )
+
+    process_payload, process_error = _load_json_object(repo_root, "data/registries/process_registry.json")
+    if not process_error:
+        process_rows = [dict(row) for row in list(process_payload.get("records") or []) if isinstance(row, dict)]
+        _require_provisional_rows(
+            "data/registries/process_registry.json",
+            process_rows,
+            "process_id",
+            ["process.earth_material_proxy_tick"],
+        )
+
+    try:
+        from tools.worldgen.earth10_audit_common import scan_earth10_chemistry_leaks
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=EARTH10_AUDIT_COMMON_PATH,
+                line_number=1,
+                snippet="scan_earth10_chemistry_leaks",
+                message="unable to import EARTH10 chemistry scan ({})".format(str(exc)),
+                rule_id=chemistry_rule_id,
+            )
+        )
+        return
+
+    for row in scan_earth10_chemistry_leaks(repo_root):
+        violation = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(violation.get("path", "")).replace("\\", "/"),
+                line_number=int(violation.get("line", 0) or 0),
+                snippet=str(violation.get("token", ""))[:160],
+                message=str(violation.get("message", "")).strip() or "EARTH10 chemistry leak detected",
+                rule_id=chemistry_rule_id,
             )
         )
 
@@ -31025,6 +31270,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_arch_audit_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_earth10_proxy_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

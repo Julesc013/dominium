@@ -463,6 +463,7 @@ from analyzers import e454_renderer_truth_leak_smell
 from analyzers import e455_duplicate_semantic_engine_smell
 from analyzers import e456_wallclock_in_truth_smell
 from analyzers import e457_unnamed_rng_smell
+from analyzers import e458_chemistry_leak_smell
 
 
 ANALYZERS = (
@@ -929,6 +930,7 @@ ANALYZERS = (
     e455_duplicate_semantic_engine_smell,
     e456_wallclock_in_truth_smell,
     e457_unnamed_rng_smell,
+    e458_chemistry_leak_smell,
 )
 
 
