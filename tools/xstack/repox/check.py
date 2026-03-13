@@ -9342,6 +9342,70 @@ def _append_dist1_findings(
         )
 
 
+def _append_dist2_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    verify_rule_id = "INV-DIST-VERIFY-MUST-PASS"
+    absolute_rule_id = "INV-NO-ABSOLUTE-PATHS-IN-DIST"
+    xstack_rule_id = "INV-NO-XSTACK-IN-DIST"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/DIST2_RETRO_AUDIT.md", "DIST-2 retro audit is required", verify_rule_id),
+        ("docs/release/DIST_VERIFICATION_RULES.md", "distribution verification rules are required", verify_rule_id),
+        ("docs/audit/DIST_VERIFY_win64.md", "distribution verification report is required", verify_rule_id),
+        ("docs/audit/DIST2_FINAL.md", "DIST-2 final report is required", verify_rule_id),
+        ("data/audit/dist_verify_win64.json", "distribution verification machine report is required", verify_rule_id),
+        ("tools/dist/dist_verify_common.py", "distribution verification helper is required", verify_rule_id),
+        ("tools/dist/tool_verify_distribution.py", "distribution verification tool is required", verify_rule_id),
+        ("tools/auditx/analyzers/e499_absolute_path_leak_smell.py", "AbsolutePathLeakSmell analyzer is required", absolute_rule_id),
+        ("tools/auditx/analyzers/e500_xstack_in_dist_smell.py", "XStackInDistSmell analyzer is required", xstack_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.dist.dist_verify_common import distribution_verify_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/dist/dist_verify_common.py",
+                line_number=1,
+                snippet="distribution_verify_violations",
+                message="unable to import DIST-2 verification checks ({})".format(str(exc)),
+                rule_id=verify_rule_id,
+            )
+        )
+        return
+
+    for violation in distribution_verify_violations(repo_root, platform_tag="win64"):
+        row = dict(violation or {})
+        current_rule_id = str(row.get("rule_id", "")).strip() or verify_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "distribution verification drift detected",
+                rule_id=current_rule_id,
+            )
+        )
+
+
 def _append_ipc_unify_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -33871,6 +33935,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_dist1_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_dist2_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
