@@ -341,10 +341,37 @@ def _console_lines(session_rows: Sequence[Mapping[str, object]], active_session_
         payload = _as_map(dispatch.get("payload"))
         lines.append("last_output:")
         lines.append("  result: {}".format(str(payload.get("result", "")).strip() or "complete"))
+        welcome_message = str(payload.get("welcome_message", "")).strip()
+        prompt = str(payload.get("prompt", "")).strip()
+        if welcome_message:
+            lines.append("  note: {}".format(welcome_message))
+        if prompt:
+            lines.append("  prompt: {}".format(prompt))
+        examples = [str(item).strip() for item in _as_list(payload.get("examples")) if str(item).strip()]
+        if examples:
+            lines.append("  try: {}".format(" | ".join(examples[:3])))
         for key in ("refusal_code", "reason", "compatibility_mode_id", "descriptor_hash"):
             value = payload.get(key)
             if value not in (None, "", []):
                 lines.append("  {}: {}".format(key, value))
+    return lines
+
+
+def _help_lines(product_id: str) -> list[str]:
+    lines = [
+        "F1 Help",
+        "  Tab cycles panels.",
+        "  F2 focuses the main menu.",
+        "  Ctrl+L shows logs, Ctrl+C shows console, Ctrl+S shows status.",
+        "  : opens the command prompt, q exits the TUI shell.",
+    ]
+    if str(product_id).strip() == "client":
+        lines.extend(
+            [
+                "  Ctrl+M focuses the map, Ctrl+I focuses inspect.",
+                "  Start Session launches the selected seed and instance.",
+            ]
+        )
     return lines
 
 
@@ -527,6 +554,7 @@ def build_tui_surface(
     session_rows = _build_console_sessions(repo_root, str(product_id).strip(), console_sessions)
     active_session = str(active_session_id or "").strip() or str(session_rows[0].get("session_id", "")).strip()
     remote_lines = _remote_log_lines(session_rows)
+    help_lines = _help_lines(str(product_id).strip())
 
     rendered_panels = []
     for row in list(layout_row.get("panels") or []):
@@ -581,6 +609,8 @@ def build_tui_surface(
         "console_sessions": list(session_rows),
         "active_session_id": active_session,
         "keybindings": [{"key": key, "action": action} for key, action in DEFAULT_KEYBINDINGS],
+        "show_help": True,
+        "help_lines": help_lines,
         "panels": rendered_panels,
         "panel_order": list(panel_order),
         "compatibility_mode_id": str(backend_state.get("compatibility_mode_id", "")).strip() or "compat.full",
@@ -615,6 +645,10 @@ def render_tui_text(surface_payload: Mapping[str, object]) -> str:
     key_rows = ["{}={}".format(str(row.get("key", "")).strip(), str(row.get("action", "")).strip()) for row in _as_list(payload.get("keybindings"))]
     if key_rows:
         lines.append("keybindings: {}".format(" | ".join(key_rows)))
+    if bool(payload.get("show_help")):
+        lines.append("")
+        for row in _as_list(payload.get("help_lines")):
+            lines.append(str(row))
     lines.append("")
     for panel in sorted([dict(row) for row in _as_list(payload.get("panels")) if isinstance(row, Mapping)], key=lambda row: (int(row.get("order", 0) or 0), str(row.get("panel_id", "")))):
         marker = "*" if str(panel.get("panel_id", "")).strip() == str(payload.get("active_panel_id", "")).strip() else " "
@@ -882,7 +916,7 @@ def _run_curses_loop(surface_payload: Mapping[str, object]) -> None:
             if key in (27, ord("q"), ord("Q")):
                 return
             if key == curses.KEY_F1:
-                payload = _focus_panel(payload, "panel.console")
+                payload["show_help"] = not bool(payload.get("show_help"))
             elif key == curses.KEY_F2:
                 payload = _focus_panel(payload, "panel.menu")
             elif key == 9:
