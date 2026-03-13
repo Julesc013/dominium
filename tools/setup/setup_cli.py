@@ -1589,10 +1589,31 @@ def handle_install_registry(args: argparse.Namespace) -> int:
             cwd=os.getcwd(),
             env=os.environ,
         )
+        discovery_result = str(result.get("result", "")).strip() or "refused"
+        refusal_code = str(result.get("refusal_code", "")).strip()
+        reason = ""
+        for row in list(result.get("errors") or []):
+            row_map = dict(row or {})
+            if str(row_map.get("code", "")).strip() == refusal_code and str(row_map.get("message", "")).strip():
+                reason = str(row_map.get("message", "")).strip()
+                break
         write_output(
             {
-                "result": str(result.get("result", "")).strip() or "refused",
-                "message": "install discovery status",
+                "result": discovery_result,
+                "message": "setup install discovery status",
+                "refusal_code": refusal_code,
+                "reason": reason,
+                "summary": {
+                    "mode": str(result.get("mode", "")).strip(),
+                    "resolution_source": str(result.get("resolution_source", "")).strip(),
+                    "resolved_install_root": str(result.get("resolved_install_root_path", "")).strip(),
+                    "resolved_install_id": str(result.get("resolved_install_id", "")).strip(),
+                },
+                "remediation_hint": (
+                    ""
+                    if discovery_result == "complete"
+                    else "Use `setup install register <path>` for installed mode, or place `install.manifest.json` beside the product binaries for portable mode."
+                ),
                 "details": {
                     "product_id": "setup",
                     "default_registry_path": registry_path,
@@ -1981,6 +2002,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     ap.add_argument("--descriptor", action="store_true")
     ap.add_argument("--descriptor-file", default="")
     ap.add_argument("--format", default="json", choices=["json", "text"])
+    ap.add_argument("--json", action="store_true")
     ap.add_argument("--deterministic", nargs="?", const="1", default="0")
     ap.add_argument("--transaction-id", default=None)
     ap.add_argument("--ui-mode", default="cli")
@@ -2060,6 +2082,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     install_cmd.add_argument("--ui-mode", default=None)
     install_cmd.add_argument("--install-mode", dest="install_mode", default="")
     install_cmd.add_argument("--store-root", dest="store_root", default="")
+    install_cmd.add_argument("--json", action="store_true")
 
     instance_cmd = sub.add_parser("instance")
     instance_sub = instance_cmd.add_subparsers(dest="instance_cmd")
@@ -2251,6 +2274,8 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     diagnose_cmd.add_argument("--pack-id", required=True)
 
     args = ap.parse_args(argv)
+    if bool(getattr(args, "json", False)):
+        args.format = "json"
 
     deterministic = parse_deterministic(args.deterministic)
     if bool(args.descriptor) or str(args.descriptor_file or "").strip():

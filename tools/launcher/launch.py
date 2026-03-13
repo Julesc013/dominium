@@ -310,7 +310,15 @@ def cmd_instances_list(repo_root: str) -> Dict[str, object]:
                 "ui_mode_default": str(details.get("ui_mode_default", "")).strip(),
             }
         )
-    return {"result": "complete", "instances": rows}
+    return {
+        "result": "complete",
+        "message": "launcher instance list",
+        "summary": {
+            "instance_count": int(len(rows)),
+            "default_action": "launcher start --seed 456",
+        },
+        "instances": rows,
+    }
 
 
 def cmd_install_status(repo_root: str, install_root: str, install_id: str, registry_path: str) -> Dict[str, object]:
@@ -327,10 +335,33 @@ def cmd_install_status(repo_root: str, install_root: str, install_id: str, regis
         cwd=os.getcwd(),
         env=os.environ,
     )
+    discovery = str(result.get("result", "")).strip() or "refused"
+    install_discovery = dict(result or {})
+    refusal_code = str(install_discovery.get("refusal_code", "")).strip()
+    reason = ""
+    for row in list(install_discovery.get("errors") or []):
+        row_map = dict(row or {})
+        if str(row_map.get("code", "")).strip() == refusal_code and str(row_map.get("message", "")).strip():
+            reason = str(row_map.get("message", "")).strip()
+            break
     return {
-        "result": str(result.get("result", "")).strip() or "refused",
+        "result": discovery,
+        "message": "launcher install discovery status",
+        "refusal_code": refusal_code,
+        "reason": reason,
+        "summary": {
+            "mode": str(install_discovery.get("mode", "")).strip(),
+            "resolution_source": str(install_discovery.get("resolution_source", "")).strip(),
+            "resolved_install_root": str(install_discovery.get("resolved_install_root_path", "")).strip(),
+            "resolved_install_id": str(install_discovery.get("resolved_install_id", "")).strip(),
+        },
+        "remediation_hint": (
+            ""
+            if discovery == "complete"
+            else "Use `setup install register <path>` for installed mode, or place `install.manifest.json` beside the product binaries for portable mode."
+        ),
         "default_registry_path": default_install_registry_path(repo_root),
-        "install_discovery": result,
+        "install_discovery": install_discovery,
     }
 
 
@@ -525,14 +556,26 @@ def cmd_compat_status(
             },
             "$.pack_compatibility_report",
         )
+    report = dict(compat.get("report") or {})
+    pack_lock = dict(compat.get("pack_lock") or {})
     return {
         "result": "complete",
+        "message": "launcher compatibility status",
+        "summary": {
+            "dist_root": _norm(os.path.relpath(dist_abs, repo_root)),
+            "bundle_id": str(bundle_id).strip(),
+            "valid": bool(report.get("valid", False)),
+            "warning_count": int(len(list(compat.get("warnings") or []))),
+            "error_count": int(len(list(compat.get("errors") or []))),
+            "release_id": str(release_manifest.get("release_id", "")).strip(),
+            "manifest_hash": str(release_manifest.get("manifest_hash", "")).strip(),
+        },
         "dist_root": _norm(os.path.relpath(dist_abs, repo_root)),
         "bundle_id": str(bundle_id).strip(),
         "mod_policy_id": str(mod_policy_id).strip() or "mod_policy.lab",
         "release_manifest": release_manifest,
-        "report": dict(compat.get("report") or {}),
-        "pack_lock": dict(compat.get("pack_lock") or {}),
+        "report": report,
+        "pack_lock": pack_lock,
         "warnings": list(compat.get("warnings") or []),
         "errors": list(compat.get("errors") or []),
     }
@@ -612,6 +655,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     compat_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
     compat_cmd.add_argument("--overlay-conflict-policy-id", default="")
     compat_cmd.add_argument("--contract-bundle-path", default="")
+    compat_cmd.add_argument("--json", action="store_true")
 
     create_cmd = sub.add_parser("create-session", help="Create SessionSpec through launcher surface with declared pipeline_id")
     create_cmd.add_argument("--save-id", required=True)
@@ -632,6 +676,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     install_status.add_argument("--install-root", default="")
     install_status.add_argument("--install-id", default="")
     install_status.add_argument("--registry-path", default="")
+    install_status.add_argument("--json", action="store_true")
 
     args = parser.parse_args(argv)
     repo_root = _repo_root(args.repo_root)
@@ -707,10 +752,20 @@ def appshell_product_bootstrap(context: dict) -> int:
     return _legacy_main(delegate_argv)
 
 
+def _normalize_ux_args(argv: List[str]) -> List[str]:
+    out = [str(item) for item in list(argv or [])]
+    if not out:
+        return out
+    if str(out[0]).strip() == "compat-status" and "--json" in out:
+        return [item for item in out if str(item).strip() != "--json"]
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
+    normalized_argv = _normalize_ux_args(list(sys.argv[1:] if argv is None else argv))
     return appshell_main(
         product_id="launcher",
-        argv=list(sys.argv[1:] if argv is None else argv),
+        argv=normalized_argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
     )
