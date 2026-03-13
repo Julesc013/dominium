@@ -746,10 +746,12 @@ def render_platform_matrix_report(report: Mapping[str, object]) -> str:
         for fallback_row in _as_list(_as_map(platform_row).get("fallback_rows")):
             item = _as_map(fallback_row)
             lines.append(
-                "- `{}` `{}` requested=`{}` selected=`{}` degrade_logged=`{}` passed=`{}`".format(
+                "- `{}` `{}` context=`{}` requested=`{}` expected=`{}` selected=`{}` degrade_logged=`{}` passed=`{}`".format(
                     _token(item.get("platform_tag")),
                     _token(item.get("product_id")),
+                    _token(item.get("context_id")),
                     _token(item.get("requested_mode_id")),
+                    _token(item.get("expected_mode_id")),
                     _token(item.get("selected_mode_id")),
                     bool(item.get("degrade_logged")),
                     bool(item.get("passed")),
@@ -889,6 +891,22 @@ def render_dist4_final(final_report: Mapping[str, object], reports: Sequence[Map
                     int(item.get("failure_count", 0) or 0),
                 )
             )
+    lines.extend(["", "## Observed Fallback Chains", ""])
+    observed_rows = []
+    for report in list(reports or []):
+        for platform_row in _as_list(_as_map(report).get("platform_rows")):
+            observed_rows.extend(_as_list(_as_map(platform_row).get("fallback_rows")))
+    for item in sorted([_as_map(row) for row in observed_rows], key=lambda row: (_token(row.get("platform_tag")), _token(row.get("product_id")))):
+        lines.append(
+            "- `{}` `{}` `{}` -> `{}` context=`{}` logged=`{}`".format(
+                _token(item.get("platform_tag")),
+                _token(item.get("product_id")),
+                _token(item.get("requested_mode_id")),
+                _token(item.get("selected_mode_id")),
+                _token(item.get("context_id")),
+                bool(item.get("degrade_logged")),
+            )
+        )
     lines.extend(["", "## Failures", ""])
     failures = []
     for report in list(reports or []):

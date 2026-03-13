@@ -49,12 +49,12 @@ Replacement Target: DIST-5 UX polish and archive matrix
 
 ## Forced Fallback Checks
 
-- `win64` `client` requested=`rendered` selected=`tui` degrade_logged=`True` passed=`True`
-- `win64` `engine` requested=`tui` selected=`tui` degrade_logged=`False` passed=`True`
-- `win64` `game` requested=`tui` selected=`tui` degrade_logged=`False` passed=`True`
-- `win64` `launcher` requested=`os_native` selected=`tui` degrade_logged=`True` passed=`True`
-- `win64` `server` requested=`tui` selected=`tui` degrade_logged=`False` passed=`True`
-- `win64` `setup` requested=`os_native` selected=`tui` degrade_logged=`True` passed=`True`
+- `win64` `client` context=`tty` requested=`rendered` expected=`tui` selected=`tui` degrade_logged=`True` passed=`True`
+- `win64` `engine` context=`tty` requested=`tui` expected=`tui` selected=`tui` degrade_logged=`False` passed=`True`
+- `win64` `game` context=`tty` requested=`tui` expected=`tui` selected=`tui` degrade_logged=`False` passed=`True`
+- `win64` `launcher` context=`tty` requested=`os_native` expected=`tui` selected=`tui` degrade_logged=`True` passed=`True`
+- `win64` `server` context=`tty` requested=`tui` expected=`tui` selected=`tui` degrade_logged=`False` passed=`True`
+- `win64` `setup` context=`tty` requested=`os_native` expected=`tui` selected=`tui` degrade_logged=`True` passed=`True`
 
 ## Failures
 
