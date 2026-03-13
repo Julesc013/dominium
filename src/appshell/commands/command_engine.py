@@ -184,6 +184,18 @@ def _refusal_dispatch(repo_root: str, refusal_code: str, reason: str, remediatio
     return _json_dispatch(payload, _exit_code_for_refusal(repo_root, refusal_code))
 
 
+def _refusal_fields(payload: Mapping[str, object] | None) -> tuple[str, str, str, dict]:
+    row = dict(payload or {})
+    nested = dict(row.get("refusal") or {})
+    refusal_code = str(row.get("refusal_code", "")).strip() or str(nested.get("reason_code", "")).strip()
+    reason = str(row.get("reason", "")).strip() or str(nested.get("message", "")).strip()
+    remediation_hint = str(row.get("remediation_hint", "")).strip() or str(nested.get("remediation_hint", "")).strip()
+    details = dict(row.get("details") or {})
+    if not details and dict(nested.get("relevant_ids") or {}):
+        details = dict(nested.get("relevant_ids") or {})
+    return refusal_code, reason, remediation_hint, details
+
+
 def _build_verify_parser(prog: str) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog=prog, add_help=False)
     parser.add_argument("--root", default="dist")
@@ -335,6 +347,14 @@ def _run_compat_status_command(repo_root: str, product_id: str, mode_id: str, ar
                 }
     if release_manifest:
         status_payload["release_manifest"] = release_manifest
+    status_payload["message"] = "compatibility status for {}".format(str(product_id).strip())
+    status_payload["summary"] = {
+        "selected_mode": str(status_payload["mode_selection"].get("selected_mode_id", "")).strip(),
+        "compatibility_mode": str(status_payload.get("compatibility_mode_id", "")).strip(),
+        "peer_product": str(status_payload.get("peer_product_id", "")).strip(),
+        "install_root": bool(str(status_payload["install_discovery"].get("resolved_install_root_path", "")).strip()),
+        "release_id": str(release_manifest.get("release_id", "")).strip() if release_manifest else "",
+    }
     if str(negotiated.get("result", "")).strip() == "refused":
         log_emit(
             category="compat",
@@ -837,12 +857,13 @@ def _run_launcher_start_command(repo_root: str, args: Sequence[str]) -> dict:
         topology=str(getattr(parsed, "topology", "singleplayer") or "singleplayer").strip(),
     )
     if str(result.get("result", "")).strip() != "complete":
+        refusal_code, reason, remediation_hint, details = _refusal_fields(result)
         return _refusal_dispatch(
             repo_root,
-            str(result.get("refusal_code", "")).strip() or "refusal.supervisor.endpoint_unreached",
-            str(result.get("reason", "")).strip() or "launcher could not start the supervisor service",
-            str(result.get("remediation_hint", "")).strip() or "Inspect pack verification and supervisor policy inputs, then retry launch.",
-            details=dict(result.get("details") or {}),
+            refusal_code or "refusal.supervisor.endpoint_unreached",
+            reason or "launcher could not start the supervisor service",
+            remediation_hint or "Inspect pack verification and supervisor policy inputs, then retry launch.",
+            details=details,
         )
     attach_summary = attach_supervisor_children(repo_root, attach_all=True)
     payload = {
@@ -897,12 +918,13 @@ def _run_launcher_stop_command(repo_root: str) -> dict:
         )
     payload = invoke_supervisor_service_command(repo_root, "launcher stop")
     if str(payload.get("result", "")).strip() != "complete":
+        refusal_code, reason, remediation_hint, details = _refusal_fields(payload)
         return _refusal_dispatch(
             repo_root,
-            str(payload.get("refusal_code", "")).strip() or "refusal.supervisor.endpoint_unreached",
-            str(payload.get("reason", "")).strip() or "launcher supervisor stop failed",
-            str(payload.get("remediation_hint", "")).strip() or "Inspect supervisor logs or retry the stop command.",
-            details=dict(payload.get("details") or {}),
+            refusal_code or "refusal.supervisor.endpoint_unreached",
+            reason or "launcher supervisor stop failed",
+            remediation_hint or "Inspect supervisor logs or retry the stop command.",
+            details=details,
         )
     log_emit(
         category="appshell",
