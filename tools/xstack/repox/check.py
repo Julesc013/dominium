@@ -9072,6 +9072,73 @@ def _append_release_identity_findings(
         )
 
 
+def _append_release_manifest_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    deterministic_rule_id = "INV-RELEASE-MANIFEST-DETERMINISTIC"
+    verify_rule_id = "INV-VERIFY-OFFLINE"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/RELEASE1_RETRO_AUDIT.md", "RELEASE1 retro audit is required", deterministic_rule_id),
+        ("docs/release/RELEASE_MANIFEST_MODEL.md", "release manifest doctrine is required", deterministic_rule_id),
+        ("src/release/release_manifest_engine.py", "release manifest engine is required", deterministic_rule_id),
+        ("tools/release/release_manifest_common.py", "release manifest audit helper is required", deterministic_rule_id),
+        ("tools/release/tool_generate_release_manifest.py", "release manifest generator is required", deterministic_rule_id),
+        ("tools/release/tool_verify_release_manifest.py", "release manifest verifier is required", verify_rule_id),
+        ("tools/auditx/analyzers/e492_nondeterministic_manifest_ordering_smell.py", "NondeterministicManifestOrderingSmell analyzer is required", deterministic_rule_id),
+        ("tools/auditx/analyzers/e493_missing_descriptor_hash_smell.py", "MissingDescriptorHashSmell analyzer is required", verify_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.release.release_manifest_common import release_manifest_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/release_manifest_common.py",
+                line_number=1,
+                snippet="release_manifest_violations",
+                message="unable to import release manifest checks ({})".format(str(exc)),
+                rule_id=deterministic_rule_id,
+            )
+        )
+        return
+
+    for violation in release_manifest_violations(repo_root):
+        row = dict(violation or {})
+        rule_id = str(row.get("rule_id", "")).strip() or deterministic_rule_id
+        if rule_id not in {deterministic_rule_id, verify_rule_id}:
+            if "descriptor" in str(row.get("code", "")).lower() or "verify" in str(row.get("code", "")).lower():
+                rule_id = verify_rule_id
+            else:
+                rule_id = deterministic_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "release manifest drift detected",
+                rule_id=rule_id,
+            )
+        )
+
+
 def _append_ipc_unify_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -33501,6 +33568,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_release_identity_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_release_manifest_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
