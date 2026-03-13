@@ -54,6 +54,22 @@ BUILD_ID_HOSTNAME_TOKENS = (
     "hostname",
 )
 HASH_PREFIX_LENGTH = 12
+BASELINE_BUILD_ID_INPUTS = (
+    "semantic contract registry hash",
+    "compilation options hash",
+    "source revision identifier if available, otherwise explicit build number",
+    "product_id",
+    "platform ABI tag only when unavoidable",
+)
+BASELINE_GUARANTEES = (
+    "identical canonical inputs produce identical `build_id` values",
+    "endpoint descriptors continue to carry deterministic build identity",
+    "artifact names derive from content hashes and deterministic build IDs only",
+)
+BASELINE_NON_GUARANTEES = (
+    "bitwise-identical binaries across distinct toolchains are desirable but not guaranteed",
+    "packaging/archive layout is not frozen by `RELEASE-0`",
+)
 
 
 def _token(value: object) -> str:
@@ -92,6 +108,35 @@ def _write_json(path: str, payload: Mapping[str, object]) -> None:
     with open(path, "w", encoding="utf-8", newline="\n") as handle:
         json.dump(dict(payload or {}), handle, indent=2, sort_keys=True)
         handle.write("\n")
+
+
+def _baseline_payload(report: Mapping[str, object]) -> dict:
+    products = []
+    for row in list(report.get("products") or []):
+        item = _as_map(row)
+        products.append(
+            {
+                "product_id": _token(item.get("product_id")),
+                "semver": _token(item.get("semver")) or DEFAULT_PRODUCT_SEMVER,
+                "descriptor_build_identity": "extensions.official.build_id and product_version + build_id suffix",
+                "release_tag_example": _token(item.get("release_tag_example")),
+            }
+        )
+    return {
+        "baseline_doc_path": RELEASE_IDENTITY_BASELINE_PATH,
+        "build_id_inputs": list(BASELINE_BUILD_ID_INPUTS),
+        "products": sorted(products, key=lambda row: (_token(row.get("product_id")), _token(row.get("semver")))),
+        "naming_templates": {
+            "binary": _token(_as_map(report.get("naming_templates")).get("binary")),
+            "pack": _token(_as_map(report.get("naming_templates")).get("pack")),
+            "lock": _token(_as_map(report.get("naming_templates")).get("lock")),
+            "bundle": _token(_as_map(report.get("naming_templates")).get("bundle")),
+            "manifest": _token(_as_map(report.get("naming_templates")).get("manifest")),
+        },
+        "guarantees": list(BASELINE_GUARANTEES),
+        "non_guarantees": list(BASELINE_NON_GUARANTEES),
+        "readiness": "Ready for RELEASE-1 artifact manifest generation once release identity enforcement and tests stay green.",
+    }
 
 
 def _product_rows(repo_root: str) -> list[dict]:
@@ -292,8 +337,10 @@ def build_release_identity_report(repo_root: str) -> dict:
         },
         "hash_prefix_length": HASH_PREFIX_LENGTH,
         "violations": violations,
+        "baseline_fingerprint": "",
         "deterministic_fingerprint": "",
     }
+    report["baseline_fingerprint"] = canonical_sha256(_baseline_payload(report))
     report["deterministic_fingerprint"] = canonical_sha256(dict(report, deterministic_fingerprint=""))
     return report
 
@@ -312,30 +359,29 @@ def write_release_identity_outputs(repo_root: str, report: Mapping[str, object])
         "",
         "# Release Identity Baseline",
         "",
-        "Fingerprint: `{}`".format(_token(report.get("deterministic_fingerprint"))),
+        "Fingerprint: `{}`".format(_token(report.get("baseline_fingerprint"))),
         "",
         "## Build ID Inputs",
         "",
-        "- semantic contract registry hash",
-        "- compilation options hash",
-        "- source revision identifier if available, otherwise explicit build number",
-        "- product_id",
-        "- platform ABI tag only when unavoidable",
-        "",
-        "## Product Build IDs",
-        "",
-        "| Product | SemVer | Build ID | Inputs Hash | Example Binary Name |",
-        "| --- | --- | --- | --- | --- |",
     ]
+    for token in BASELINE_BUILD_ID_INPUTS:
+        lines.append("- {}".format(token))
+    lines.extend(
+        [
+            "",
+            "## Governed Product Surfaces",
+            "",
+            "| Product | SemVer Default | Descriptor Build Identity | Release Tag Example |",
+            "| --- | --- | --- | --- |",
+        ]
+    )
     for row in list(report.get("products") or []):
         item = _as_map(row)
         lines.append(
-            "| `{}` | `{}` | `{}` | `{}` | `{}` |".format(
+            "| `{}` | `{}` | `extensions.official.build_id` and `product_version + build_id suffix` | `{}` |".format(
                 _token(item.get("product_id")),
                 _token(item.get("semver")),
-                _token(item.get("build_id")),
-                _token(item.get("inputs_hash")),
-                _token(item.get("binary_name_example")),
+                _token(item.get("release_tag_example")),
             )
         )
     lines.extend(
@@ -351,14 +397,21 @@ def write_release_identity_outputs(repo_root: str, report: Mapping[str, object])
             "",
             "## Guarantees",
             "",
-            "- identical canonical inputs produce identical `build_id` values",
-            "- endpoint descriptors continue to carry deterministic build identity",
-            "- artifact names derive from content hashes and deterministic build IDs only",
+        ]
+    )
+    for token in BASELINE_GUARANTEES:
+        lines.append("- {}".format(token))
+    lines.extend(
+        [
             "",
             "## Non-Guarantees",
             "",
-            "- bitwise-identical binaries across distinct toolchains are desirable but not guaranteed",
-            "- packaging/archive layout is not frozen by `RELEASE-0`",
+        ]
+    )
+    for token in BASELINE_NON_GUARANTEES:
+        lines.append("- {}".format(token))
+    lines.extend(
+        [
             "",
             "## Readiness",
             "",
