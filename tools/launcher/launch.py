@@ -20,6 +20,7 @@ from src.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
 from src.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
 from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
 from src.lib.install import default_install_registry_path, discover_install  # noqa: E402
+from src.release import DEFAULT_RELEASE_MANIFEST_REL, load_release_manifest  # noqa: E402
 
 
 def _norm(path: str) -> str:
@@ -455,6 +456,21 @@ def cmd_compat_status(
     contract_bundle_path: str,
 ) -> Dict[str, object]:
     dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, dist_root))) if not os.path.isabs(dist_root) else os.path.normpath(dist_root)
+    release_manifest = {}
+    release_manifest_path = os.path.join(dist_abs, DEFAULT_RELEASE_MANIFEST_REL)
+    if os.path.isfile(release_manifest_path):
+        try:
+            manifest_payload = load_release_manifest(release_manifest_path)
+        except ValueError:
+            manifest_payload = {}
+        if manifest_payload:
+            release_manifest = {
+                "manifest_path": _norm(os.path.relpath(release_manifest_path, repo_root)),
+                "release_id": str(manifest_payload.get("release_id", "")).strip(),
+                "manifest_hash": str(manifest_payload.get("manifest_hash", "")).strip(),
+                "platform_tag": str(manifest_payload.get("platform_tag", "")).strip(),
+                "artifact_count": int(len(list(manifest_payload.get("artifacts") or []))),
+            }
     compat = verify_pack_root(
         repo_root=repo_root,
         root=dist_abs,
@@ -479,6 +495,7 @@ def cmd_compat_status(
         "dist_root": _norm(os.path.relpath(dist_abs, repo_root)),
         "bundle_id": str(bundle_id).strip(),
         "mod_policy_id": str(mod_policy_id).strip() or "mod_policy.lab",
+        "release_manifest": release_manifest,
         "report": dict(compat.get("report") or {}),
         "pack_lock": dict(compat.get("pack_lock") or {}),
         "warnings": list(compat.get("warnings") or []),

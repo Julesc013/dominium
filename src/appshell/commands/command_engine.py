@@ -43,6 +43,12 @@ from src.appshell.supervisor import (
     load_supervisor_runtime_state,
 )
 from src.appshell.ui_mode_selector import get_current_ui_mode_selection
+from src.release import (
+    DEFAULT_RELEASE_MANIFEST_REL,
+    infer_dist_root_from_manifest_path,
+    load_release_manifest,
+    verify_release_manifest,
+)
 from src.tools import (
     execute_tool_surface_subprocess,
     format_tool_surface_area_help,
@@ -181,6 +187,7 @@ def _refusal_dispatch(repo_root: str, refusal_code: str, reason: str, remediatio
 def _build_verify_parser(prog: str) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog=prog, add_help=False)
     parser.add_argument("--root", default="dist")
+    parser.add_argument("--release-manifest", default="")
     parser.add_argument("--bundle-id", default="")
     parser.add_argument("--mod-policy-id", default="mod_policy.lab")
     parser.add_argument("--overlay-conflict-policy-id", default="")
@@ -309,6 +316,25 @@ def _run_compat_status_command(repo_root: str, product_id: str, mode_id: str, ar
         "warnings": list(install_discovery.get("warnings") or list(vpath_context.get("warnings") or [])),
         "deterministic_fingerprint": str(install_discovery.get("deterministic_fingerprint", "")).strip(),
     }
+    release_manifest = {}
+    resolved_install_root = str(status_payload["install_discovery"].get("resolved_install_root_path", "")).strip()
+    if resolved_install_root:
+        release_manifest_path = os.path.join(resolved_install_root, DEFAULT_RELEASE_MANIFEST_REL)
+        if os.path.isfile(release_manifest_path):
+            try:
+                manifest_payload = load_release_manifest(release_manifest_path)
+            except ValueError:
+                manifest_payload = {}
+            if manifest_payload:
+                release_manifest = {
+                    "manifest_path": str(release_manifest_path).replace("\\", "/"),
+                    "release_id": str(manifest_payload.get("release_id", "")).strip(),
+                    "manifest_hash": str(manifest_payload.get("manifest_hash", "")).strip(),
+                    "platform_tag": str(manifest_payload.get("platform_tag", "")).strip(),
+                    "artifact_count": int(len(list(manifest_payload.get("artifacts") or []))),
+                }
+    if release_manifest:
+        status_payload["release_manifest"] = release_manifest
     if str(negotiated.get("result", "")).strip() == "refused":
         log_emit(
             category="compat",
@@ -360,6 +386,25 @@ def _verify_pack_command(repo_root: str, args: Sequence[str], *, build_lock: boo
     parsed, refusal = _parse_command_args(repo_root, parser, "packs build-lock" if build_lock else "packs verify", args)
     if refusal is not None:
         return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+    release_manifest_path = str(getattr(parsed, "release_manifest", "")).strip()
+    if release_manifest_path:
+        if build_lock:
+            return _refusal_dispatch(
+                repo_root,
+                "refusal.io.invalid_args",
+                "release manifest verification does not support lock generation mode",
+                "Run `verify --release-manifest <path>` without `build-lock` to verify a release manifest offline.",
+                details={"command_path": "packs build-lock"},
+            )
+        dist_root = str(getattr(parsed, "root", "")).strip()
+        if not dist_root:
+            dist_root = infer_dist_root_from_manifest_path(release_manifest_path)
+        result = verify_release_manifest(dist_root, release_manifest_path, repo_root=repo_root)
+        exit_code = EXIT_SUCCESS if str(result.get("result", "")).strip() == "complete" else _exit_code_for_refusal(
+            repo_root,
+            "refusal.release_manifest.content_hash_mismatch",
+        )
+        return _json_dispatch(result, exit_code)
     out_report = str(getattr(parsed, "out_report", "")).strip()
     out_lock = str(getattr(parsed, "out_lock", "")).strip()
     if build_lock:

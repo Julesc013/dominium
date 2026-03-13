@@ -53,6 +53,7 @@ from src.lib.export import (
     export_pack_bundle,
     export_save_bundle,
 )
+from src.release import infer_dist_root_from_manifest_path, verify_release_manifest
 from src.lib.save import resolve_save_manifest_path
 from tools.lib.content_store import initialize_store_root
 
@@ -796,6 +797,43 @@ def _write_verification_outputs(
 
 def handle_verify(args: argparse.Namespace, deterministic: bool) -> int:
     del deterministic
+    release_manifest_path = normalize_path(getattr(args, "release_manifest", ""))
+    if release_manifest_path:
+        root = _compat_root(getattr(args, "root", "") or getattr(args, "install_root", ""))
+        if not root:
+            root = normalize_path(infer_dist_root_from_manifest_path(release_manifest_path))
+        verification = verify_release_manifest(root, release_manifest_path, repo_root=REPO_ROOT_HINT)
+        details = {
+            "root": root,
+            "release_manifest_path": release_manifest_path,
+            "release_id": str(verification.get("release_id", "")),
+            "manifest_hash": str(verification.get("manifest_hash", "")),
+            "verified_artifact_count": int(verification.get("verified_artifact_count", 0)),
+            "warnings": list(verification.get("warnings") or []),
+            "errors": list(verification.get("errors") or []),
+        }
+        if str(verification.get("result", "")).strip() == "complete":
+            output_ok("release manifest verification passed", details, args.format)
+            return EXIT_OK
+        error_codes = sorted(
+            {
+                str(dict(row or {}).get("code", "")).strip()
+                for row in list(verification.get("errors") or [])
+                if str(dict(row or {}).get("code", "")).strip()
+            }
+        )
+        refusal = refusal_payload(
+            5,
+            "REFUSE_RELEASE_MANIFEST_INVALID",
+            "release manifest verification failed",
+            {
+                "manifest_hash": str(verification.get("manifest_hash", "")),
+                "error_codes": ",".join(error_codes),
+            },
+        )
+        output_refusal("release manifest verification failed", refusal, args.format)
+        return EXIT_REFUSED
+
     root = _compat_root(getattr(args, "root", "") or getattr(args, "install_root", ""))
     if not root:
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "verification root is required", {})
@@ -2180,6 +2218,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     verify_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
     verify_cmd.add_argument("--overlay-conflict-policy-id", default="")
     verify_cmd.add_argument("--contract-bundle-path", default="")
+    verify_cmd.add_argument("--release-manifest", default="")
     verify_cmd.add_argument("--out-report", default="")
     verify_cmd.add_argument("--out-lock", default="")
     verify_cmd.add_argument("--write-outputs", action="store_true")
