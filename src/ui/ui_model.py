@@ -45,6 +45,11 @@ _COMMAND_ACTION_SPECS = (
     ("action.launcher_status", "Launcher Status", ("launcher", "status")),
     ("action.launcher_start", "Launcher Start", ("launcher", "start")),
 )
+_FRIENDLY_LABELS = {
+    "default": "Default",
+    "mvp_default": "MVP Default",
+    "profile.bundle.mvp_default": "MVP Default Profile",
+}
 
 
 def _token(value: object) -> str:
@@ -82,6 +87,29 @@ def _rel_path(repo_root: str, abs_path: str) -> str:
         return _norm(os.path.relpath(abs_path, repo_root))
     except ValueError:
         return _norm(abs_path)
+
+
+def _friendly_token(value: str) -> str:
+    token = _token(value)
+    if token in _FRIENDLY_LABELS:
+        return _FRIENDLY_LABELS[token]
+    parts = [item for item in token.replace(".", "_").split("_") if item]
+    if not parts:
+        return token
+    return " ".join(part.capitalize() for part in parts)
+
+
+def _friendly_entry_label(item_id: str, entry_kind: str) -> str:
+    token = _token(item_id)
+    if token in _FRIENDLY_LABELS:
+        return _FRIENDLY_LABELS[token]
+    if _token(entry_kind) == "profile_bundle" and token.startswith("profile.bundle."):
+        return "{} Profile".format(_friendly_token(token.rsplit(".", 1)[-1]))
+    if _token(entry_kind) == "instance_manifest":
+        return "{} Instance".format(_friendly_token(token))
+    if _token(entry_kind) == "save_manifest":
+        return "{} Save".format(_friendly_token(token))
+    return token
 
 
 def _sorted_manifest_paths(repo_root: str, roots: Iterable[str], manifest_name: str) -> list[str]:
@@ -167,12 +195,13 @@ def discover_profile_bundle_menu_entries(repo_root: str) -> tuple[dict, ...]:
         rows.append(
             _menu_entry(
                 item_id=bundle_id,
-                label=bundle_id,
+                label=_friendly_entry_label(bundle_id, "profile_bundle"),
                 entry_kind="profile_bundle",
                 event_id="ui.select.profile_bundle",
                 details={
                     "manifest_ref": _token(row_map.get("path")),
                     "profile_bundle_hash": _token(row_map.get("profile_bundle_hash")),
+                    "display_label": _friendly_entry_label(bundle_id, "profile_bundle"),
                 },
             )
         )
@@ -194,7 +223,7 @@ def discover_instance_menu_entries(repo_root: str) -> tuple[dict, ...]:
         rows.append(
             _menu_entry(
                 item_id=instance_id,
-                label=instance_id,
+                label=_friendly_entry_label(instance_id, "instance_manifest"),
                 entry_kind="instance_manifest",
                 event_id="ui.select.instance",
                 details={
@@ -202,6 +231,7 @@ def discover_instance_menu_entries(repo_root: str) -> tuple[dict, ...]:
                     "instance_kind": _token(manifest.get("instance_kind")),
                     "save_ref_count": len(_as_list(manifest.get("save_refs"))),
                     "ui_mode_default": instance_ui_mode_default(manifest),
+                    "display_label": _friendly_entry_label(instance_id, "instance_manifest"),
                 },
             )
         )
@@ -223,13 +253,14 @@ def discover_save_menu_entries(repo_root: str) -> tuple[dict, ...]:
         rows.append(
             _menu_entry(
                 item_id=save_id,
-                label=save_id,
+                label=_friendly_entry_label(save_id, "save_manifest"),
                 entry_kind="save_manifest",
                 event_id="ui.select.save",
                 details={
                     "manifest_ref": _rel_path(repo_root_abs, manifest_path),
                     "pack_lock_hash": _token(manifest.get("pack_lock_hash")),
                     "contract_bundle_hash": _token(manifest.get("universe_contract_bundle_hash")),
+                    "display_label": _friendly_entry_label(save_id, "save_manifest"),
                 },
             )
         )
@@ -257,6 +288,21 @@ def _command_actions(command_rows_by_path: Mapping[str, object], *, seed: str) -
         tokens = list(command_tokens)
         if action_id == "action.launcher_start" and _token(seed):
             tokens = ["launcher", "start", "--seed", _token(seed)]
+        notes = ""
+        if action_id == "action.help":
+            notes = "Show the stable command list for this product."
+        elif action_id == "action.validate_fast":
+            notes = "Run the FAST validation profile without leaving the current surface."
+        elif action_id == "action.packs_list":
+            notes = "List the packs available to the current install."
+        elif action_id == "action.profiles_list":
+            notes = "List profile bundles you can launch with."
+        elif action_id == "action.compat_status":
+            notes = "Show selected mode, install root, and compatibility state."
+        elif action_id == "action.launcher_status":
+            notes = "Show launcher/supervisor status for the current session."
+        elif action_id == "action.launcher_start":
+            notes = "Start the selected session with the requested seed."
         actions.append(
             _action_row(
                 action_id=action_id,
@@ -264,6 +310,7 @@ def _command_actions(command_rows_by_path: Mapping[str, object], *, seed: str) -
                 action_kind="command",
                 command_tokens=tokens,
                 enabled=True,
+                notes=notes,
             )
         )
     return actions
@@ -393,14 +440,14 @@ def build_ui_model(
         _state_row(
             state_id=MENU_STATE_MAIN,
             title="Main Menu",
-            summary="Command-driven menu over AppShell descriptors and LIB manifests.",
+            summary="Choose a starting profile, inspect status, or launch the next session from a command-driven menu.",
             entries=bundle_entries[:4],
             actions=main_actions,
         ),
         _state_row(
             state_id=MENU_STATE_INSTANCE_SELECT,
             title="Instance Select",
-            summary="Select an install instance from validated LIB manifests.",
+            summary="Choose which verified instance to use for the next session.",
             entries=[
                 dict(row, selected=_token(dict(row).get("item_id")) == selected_instance)
                 for row in instance_entries
@@ -418,7 +465,7 @@ def build_ui_model(
         _state_row(
             state_id=MENU_STATE_SAVE_SELECT,
             title="Save Select",
-            summary="Select a save manifest from validated LIB manifests.",
+            summary="Choose an existing save, or leave this empty to start from the instance default.",
             entries=[
                 dict(row, selected=_token(dict(row).get("item_id")) == selected_save)
                 for row in save_entries
@@ -436,7 +483,7 @@ def build_ui_model(
         _state_row(
             state_id=MENU_STATE_SETTINGS,
             title="Settings",
-            summary="Derived settings from product policy and selected instance metadata.",
+            summary="Review the derived mode order and current selection before launch.",
             entries=settings_entries,
             actions=[
                 _action_row(
@@ -451,7 +498,7 @@ def build_ui_model(
         _state_row(
             state_id=MENU_STATE_START_SESSION,
             title="Start Session",
-            summary="Session launch summary over derived selections and AppShell workflow bindings.",
+            summary="Confirm the selected instance, save, profile, and seed before starting.",
             entries=[
                 _menu_entry(
                     item_id="session.summary",
@@ -496,6 +543,11 @@ def build_ui_model(
             "bundle_count": len(bundle_entries),
             "command_descriptor_count": len(command_rows_by_path),
         },
+        "guidance_lines": [
+            "Start Session uses the selected profile, instance, and seed.",
+            "Help shows the stable command list for this product.",
+            "Compatibility Status shows mode selection, install discovery, and release identity.",
+        ],
         "ui_contract": {
             "consumes_command_registry": True,
             "consumes_lib_manifests": True,
