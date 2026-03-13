@@ -1,0 +1,40 @@
+SCHEMA: release/release_artifact_entry.schema
+schema_id: dominium.schema.release.release_artifact_entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic per-artifact entries inside a RELEASE-1 distribution manifest.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: stable string token.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record release_artifact_entry
+  required:
+    - artifact_kind: tag
+    - artifact_name: tag
+    - content_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - build_id: tag
+    - endpoint_descriptor_hash: sha256
+    - pack_compat_hash: sha256
+    - notes: map
+
+INVARIANTS:
+- artifact_name identifies the shipped relative path within the distribution.
+- content_hash is authoritative for offline verification of the shipped artifact.
+- build_id is present only for build-produced artifacts where applicable.
+- endpoint_descriptor_hash is present for binaries that emit governed endpoint descriptors.
+- pack_compat_hash is present when shipped pack metadata exposes an effective compatibility surface.
+- deterministic_fingerprint is computed from canonical serialized content.

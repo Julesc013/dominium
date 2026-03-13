@@ -1,0 +1,40 @@
+SCHEMA: release/release_manifest.schema
+schema_id: dominium.schema.release.release_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic RELEASE-1 manifest describing one concrete distribution directory.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: stable string token.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record release_manifest
+  required:
+    - release_id: id
+    - platform_tag: tag
+    - manifest_version: tag
+    - semantic_contract_registry_hash: sha256
+    - artifacts: [release_artifact_entry]
+    - manifest_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - stability_report_hash: sha256
+    - notes: map
+
+INVARIANTS:
+- release_id is derived from deterministic release inputs only.
+- artifacts are ordered deterministically.
+- manifest_hash is the canonical hash of the manifest body with hash fields blanked.
+- deterministic_fingerprint is computed from canonical serialized content after manifest_hash is populated.
+- semantic_contract_registry_hash must come from shipped identity surfaces, not host-only metadata.

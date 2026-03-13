@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Release Manifest Schema",
+  "version": "1.0.0",
+  "description": "Deterministic RELEASE-1 manifest for a shipped distribution directory.",
+  "type": "object",
+  "required": [
+    "release_id",
+    "platform_tag",
+    "manifest_version",
+    "semantic_contract_registry_hash",
+    "artifacts",
+    "manifest_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "release_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "platform_tag": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "semantic_contract_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "stability_report_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "./release_artifact_entry.schema.json"
+      }
+    },
+    "manifest_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
