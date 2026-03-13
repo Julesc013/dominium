@@ -9139,6 +9139,75 @@ def _append_release_manifest_findings(
         )
 
 
+def _append_reproducible_build_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    wallclock_rule_id = "INV-NO-WALLCLOCK-IN-BUILD"
+    reproducibility_rule_id = "INV-BUILD-ID-MATCHES-MANIFEST"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/RELEASE2_RETRO_AUDIT.md", "RELEASE2 retro audit is required", reproducibility_rule_id),
+        ("docs/release/REPRODUCIBLE_BUILD_RULES.md", "reproducible build doctrine is required", wallclock_rule_id),
+        ("docs/release/SIGNING_POLICY.md", "signing policy is required", reproducibility_rule_id),
+        ("src/release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
+        ("src/release/release_manifest_engine.py", "release manifest engine is required", reproducibility_rule_id),
+        ("tools/release/reproducible_build_common.py", "reproducible build helper is required", reproducibility_rule_id),
+        ("tools/release/tool_verify_build_reproducibility.py", "reproducibility verifier is required", reproducibility_rule_id),
+        ("tools/release/tool_run_reproducible_build.py", "reproducible build report tool is required", reproducibility_rule_id),
+        ("tools/auditx/analyzers/e494_non_reproducible_build_smell.py", "NonReproducibleBuildSmell analyzer is required", reproducibility_rule_id),
+        ("tools/auditx/analyzers/e495_embedded_timestamp_smell.py", "EmbeddedTimestampSmell analyzer is required", wallclock_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.release.reproducible_build_common import reproducible_build_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/reproducible_build_common.py",
+                line_number=1,
+                snippet="reproducible_build_violations",
+                message="unable to import reproducible build checks ({})".format(str(exc)),
+                rule_id=reproducibility_rule_id,
+            )
+        )
+        return
+
+    for violation in reproducible_build_violations(repo_root):
+        row = dict(violation or {})
+        rule_id = str(row.get("rule_id", "")).strip() or reproducibility_rule_id
+        if rule_id not in {wallclock_rule_id, reproducibility_rule_id}:
+            if "wallclock" in str(row.get("code", "")).lower() or "host" in str(row.get("code", "")).lower():
+                rule_id = wallclock_rule_id
+            else:
+                rule_id = reproducibility_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "reproducible build drift detected",
+                rule_id=rule_id,
+            )
+        )
+
+
 def _append_ipc_unify_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
