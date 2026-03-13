@@ -76,6 +76,10 @@ jobs:
           python tools/xstack/run.py strict --repo-root . --cache on
           python tools/setup/build.py --repo-root . --bundle bundle.base.lab --out build/ci_dist_a --cache on
           python tools/setup/build.py --repo-root . --bundle bundle.base.lab --out build/ci_dist_b --cache on
+      - name: Assemble deterministic portable bundle
+        run: python tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock
+      - name: Verify assembled portable bundle
+        run: python tools/dist/tool_verify_distribution.py --repo-root . --platform-tag win64
       - name: Compare deterministic dist hashes
         run: |
           python -c "import json; a=json.load(open('build/ci_dist_a/manifest.json','r',encoding='utf-8')); b=json.load(open('build/ci_dist_b/manifest.json','r',encoding='utf-8')); assert a.get('canonical_content_hash')==b.get('canonical_content_hash'); assert a.get('pack_lock_hash')==b.get('pack_lock_hash')"
