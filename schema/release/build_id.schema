@@ -1,0 +1,41 @@
+SCHEMA: release/build_id.schema
+schema_id: dominium.schema.release.build_id
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic release build identity payload used for CAP-NEG descriptor emission and release audit surfaces.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: stable string token.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record build_id
+  required:
+    - schema_version: tag
+    - build_id: tag
+    - inputs_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - product_id: id
+    - semantic_contract_registry_hash: sha256
+    - compilation_options_hash: sha256
+    - source_revision_id: tag
+    - explicit_build_number: tag
+    - platform_tag: tag
+    - notes: map
+
+INVARIANTS:
+- build_id must be derived from deterministic inputs only.
+- inputs_hash must be the canonical hash of the ordered build ID input map.
+- wall-clock values, hostnames, usernames, and absolute paths must not participate in inputs_hash.
+- deterministic_fingerprint is computed from canonical serialized content.

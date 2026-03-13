@@ -6,6 +6,24 @@
     "registry_version": "1.0.0",
     "artifact_kinds": [
       {
+        "artifact_kind_id": "artifact.binary",
+        "store_category": "binaries",
+        "deterministic_fingerprint": "59249aee2a05280436614218d6bb547efc999b5fbeb9beecb7e5bd3c8598bca8",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release artifact identity kinds remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1444e83e28ba288371208090218e02501c3a2607db1a6e406308f49374d107ca",
+          "extensions": {}
+        }
+      },
+      {
         "artifact_kind_id": "artifact.blueprint",
         "store_category": "blueprints",
         "deterministic_fingerprint": "93c0a08bc972cf3cbaef66e365f8d3e3392fe8f56aa6a004fb6127869976b0ac",
@@ -20,6 +38,42 @@
           "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
           "contract_id": "",
           "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.bundle",
+        "store_category": "bundles",
+        "deterministic_fingerprint": "cfa0b3c854189ab2696e84964e29cee10f460386161d18019963a4563c64b264",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release artifact identity kinds remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1444e83e28ba288371208090218e02501c3a2607db1a6e406308f49374d107ca",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.lock",
+        "store_category": "locks",
+        "deterministic_fingerprint": "3b5d2b8d561d5489efa2f43ced60a90eccbbe01fe866597565a4b753fec52e09",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release artifact identity kinds remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1444e83e28ba288371208090218e02501c3a2607db1a6e406308f49374d107ca",
           "extensions": {}
         }
       },
@@ -42,6 +96,42 @@
         }
       },
       {
+        "artifact_kind_id": "artifact.manifest",
+        "store_category": "manifests",
+        "deterministic_fingerprint": "149699191ff425aa271156e9c1b7b07239d5e2ff95f2d696c6955bc87f1762de",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release artifact identity kinds remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1444e83e28ba288371208090218e02501c3a2607db1a6e406308f49374d107ca",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.pack",
+        "store_category": "packs",
+        "deterministic_fingerprint": "98cfb8bf3fc6f082da3ef00298dc37bada0309fb4d4a3ad194733fb03e62e2f3",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release artifact identity kinds remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1444e83e28ba288371208090218e02501c3a2607db1a6e406308f49374d107ca",
+          "extensions": {}
+        }
+      },
+      {
         "artifact_kind_id": "artifact.process_definition",
         "store_category": "process_definitions",
         "deterministic_fingerprint": "e13b4d6c3df0f36bab4b559377a68a29e96f6b5528fda3f52d4ac82362650b01",
@@ -56,6 +146,24 @@
           "replacement_target": "Replace MVP library and distribution defaults with release-pinned artifact, provider, and install contracts.",
           "contract_id": "",
           "deterministic_fingerprint": "581c1861e5d79fa8b5c718d140f49dd27fa431e97019521e58237b2bb11979e4",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.profile",
+        "store_category": "profiles",
+        "deterministic_fingerprint": "84f75b19a7d0042688c29c8143cefd892271b4468cef49674b0069ba7d124249",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release artifact identity kinds remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "1444e83e28ba288371208090218e02501c3a2607db1a6e406308f49374d107ca",
           "extensions": {}
         }
       },

@@ -1,0 +1,108 @@
+{
+  "schema_id": "dominium.registry.release.release_channel_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.release.release_channel_registry",
+    "registry_version": "1.0.0",
+    "release_channels": [
+      {
+        "schema_version": "1.0.0",
+        "channel_id": "mock",
+        "description": "Deterministic mock release channel for dry-run and governance rehearsal builds.",
+        "deterministic_fingerprint": "58a138a8033254f6676884a71d858c951464e84b7664972be8b9a4aa4522e541",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_id": "alpha",
+        "description": "Deterministic alpha release channel for early governed pre-release builds.",
+        "deterministic_fingerprint": "1e655f5eaad4c15f337cc4b200ff19b9527320ea2a2d0545605e6482474b7b58",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_id": "beta",
+        "description": "Deterministic beta release channel for broader governed pre-release builds.",
+        "deterministic_fingerprint": "f12cf246f2643fd7c701258f3c6e3b8a3def1930670fecf47960d417eb359a2a",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_id": "rc",
+        "description": "Deterministic release candidate channel for near-final governed builds.",
+        "deterministic_fingerprint": "e3d83dcd6604d4b0eddb7c3ec43fefe70275c3370134a2a1fee3a53f86c40cf8",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_id": "stable",
+        "description": "Deterministic stable release channel for governed public release builds.",
+        "deterministic_fingerprint": "cfdf6e14d60f8ce764f79517c753cb17ee23a7556ea65f827df0c6de59a1af6f",
+        "extensions": {
+          "official.source": "RELEASE0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+          "future_series": "RELEASE",
+          "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "RELEASE0-2"
+    }
+  }
+}

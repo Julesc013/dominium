@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Build ID Schema",
+  "version": "1.0.0",
+  "description": "Deterministic release build identity payload.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "build_id",
+    "inputs_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "build_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputs_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "product_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semantic_contract_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compilation_options_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "source_revision_id": {
+      "type": "string"
+    },
+    "explicit_build_number": {
+      "type": "string"
+    },
+    "platform_tag": {
+      "type": "string"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
