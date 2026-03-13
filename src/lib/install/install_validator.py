@@ -7,6 +7,7 @@ import os
 import subprocess
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
+from src.appshell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing
 from src.meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -541,6 +542,11 @@ def validate_install_manifest(
 
 
 def default_install_registry_path(repo_root: str) -> str:
+    context = get_current_virtual_paths()
+    if context is not None and str(context.get("result", "")).strip() == "complete":
+        candidate = vpath_resolve_existing(VROOT_INSTALL, "data/registries/install_registry.json", context)
+        if candidate:
+            return candidate
     return os.path.join(os.path.abspath(repo_root), DEFAULT_INSTALL_REGISTRY_REL)
 
 

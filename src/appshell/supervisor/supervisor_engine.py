@@ -18,6 +18,18 @@ from src.appshell.ipc import (
     run_ipc_console_command,
 )
 from src.appshell.logging import append_jsonl, log_emit
+from src.appshell.paths import (
+    VROOT_EXPORTS,
+    VROOT_IPC,
+    VROOT_LOCKS,
+    VROOT_LOGS,
+    VROOT_PROFILES,
+    VROOT_STORE,
+    get_current_virtual_paths,
+    vpath_resolve,
+    vpath_resolve_existing,
+    vpath_root,
+)
 from src.appshell.pack_verifier_adapter import verify_pack_root
 from src.compat import emit_product_descriptor
 from src.runtime.process_spawn import build_python_process_spec, poll_process, spawn_process
@@ -26,15 +38,16 @@ from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_
 
 
 SUPERVISOR_POLICY_REGISTRY_REL = os.path.join("data", "registries", "supervisor_policy_registry.json")
-SUPERVISOR_STATE_REL = os.path.join("dist", "runtime", "supervisor", "supervisor_state.json")
-SUPERVISOR_RUN_MANIFEST_REL = os.path.join("dist", "runtime", "supervisor", "run_manifest.json")
-SUPERVISOR_AGGREGATED_LOG_REL = os.path.join("dist", "runtime", "supervisor", "aggregated_logs.jsonl")
-SUPERVISOR_DIAG_ROOT_REL = os.path.join("build", "appshell", "supervisor", "diag")
+SUPERVISOR_STATE_REL = os.path.join("supervisor", "supervisor_state.json")
+SUPERVISOR_RUN_MANIFEST_REL = os.path.join("supervisor", "run_manifest.json")
+SUPERVISOR_AGGREGATED_LOG_REL = os.path.join("supervisor", "aggregated_logs.jsonl")
+SUPERVISOR_DIAG_ROOT_REL = os.path.join("supervisor", "diag")
 SUPERVISOR_SERVICE_SCRIPT_REL = os.path.join("tools", "appshell", "supervisor_service.py")
 SUPERVISED_PRODUCT_HOST_REL = os.path.join("tools", "appshell", "supervised_product_host.py")
 MVP_SESSION_TEMPLATE_REL = os.path.join("data", "session_templates", "session.mvp_default.json")
 MVP_PROFILE_BUNDLE_REL = os.path.join("profiles", "bundles", "bundle.mvp_default.json")
 MVP_PACK_LOCK_REL = os.path.join("locks", "pack_lock.mvp_default.json")
+IPC_ENDPOINT_MANIFEST_REL = "ipc_endpoints.json"
 DEFAULT_SUPERVISOR_POLICY_ID = "supervisor.policy.default"
 DEFAULT_TOPOLOGY = "singleplayer"
 STOP_POLL_ITERATIONS = 4
@@ -102,6 +115,13 @@ def _repo_rel(repo_root: str, abs_path: str) -> str:
     return norm(os.path.relpath(os.path.normpath(os.path.abspath(abs_path)), os.path.normpath(os.path.abspath(repo_root))))
 
 
+def _vpath_context() -> dict | None:
+    context = get_current_virtual_paths()
+    if context is None or str(context.get("result", "")).strip() != "complete":
+        return None
+    return dict(context)
+
+
 def _deterministic_id(*parts: object, prefix: str, size: int = 12) -> str:
     body = "|".join(str(part).strip() for part in parts)
     return "{}.{}".format(str(prefix).strip(), hashlib.sha256(body.encode("utf-8")).hexdigest()[: max(4, int(size or 12))])
@@ -145,16 +165,26 @@ def _extract_log_seq_no(event_row: Mapping[str, object], default_seq: int) -> in
 
 
 def _supervisor_runtime_paths(repo_root: str) -> dict:
+    context = _vpath_context()
+    if context is not None:
+        return {
+            "state_path": vpath_resolve(VROOT_IPC, SUPERVISOR_STATE_REL, context),
+            "manifest_path": vpath_resolve(VROOT_IPC, SUPERVISOR_RUN_MANIFEST_REL, context),
+            "aggregated_log_path": vpath_resolve(VROOT_LOGS, SUPERVISOR_AGGREGATED_LOG_REL, context),
+            "diag_root": vpath_resolve(VROOT_EXPORTS, SUPERVISOR_DIAG_ROOT_REL, context),
+            "ipc_manifest_path": vpath_resolve(VROOT_IPC, IPC_ENDPOINT_MANIFEST_REL, context),
+        }
     return {
-        "state_path": _runtime_abs(repo_root, SUPERVISOR_STATE_REL),
-        "manifest_path": _runtime_abs(repo_root, SUPERVISOR_RUN_MANIFEST_REL),
-        "aggregated_log_path": _runtime_abs(repo_root, SUPERVISOR_AGGREGATED_LOG_REL),
-        "diag_root": _runtime_abs(repo_root, SUPERVISOR_DIAG_ROOT_REL),
+        "state_path": _runtime_abs(repo_root, os.path.join("dist", "runtime", SUPERVISOR_STATE_REL)),
+        "manifest_path": _runtime_abs(repo_root, os.path.join("dist", "runtime", SUPERVISOR_RUN_MANIFEST_REL)),
+        "aggregated_log_path": _runtime_abs(repo_root, os.path.join("dist", "runtime", SUPERVISOR_AGGREGATED_LOG_REL)),
+        "diag_root": _runtime_abs(repo_root, os.path.join("build", "appshell", SUPERVISOR_DIAG_ROOT_REL)),
+        "ipc_manifest_path": _runtime_abs(repo_root, os.path.join("dist", "runtime", IPC_ENDPOINT_MANIFEST_REL)),
     }
 
 
 def load_supervisor_runtime_state(repo_root: str) -> dict:
-    return _read_json(_runtime_abs(repo_root, SUPERVISOR_STATE_REL))
+    return _read_json(_supervisor_runtime_paths(repo_root).get("state_path", ""))
 
 
 def _load_supervisor_policy(repo_root: str, policy_id: str) -> tuple[dict, str]:
@@ -166,12 +196,15 @@ def _load_supervisor_policy(repo_root: str, policy_id: str) -> tuple[dict, str]:
     return {}, "missing policy"
 
 
-def _verification_root_rel(repo_root: str) -> str:
+def _verification_root(repo_root: str) -> str:
+    context = _vpath_context()
+    if context is not None:
+        return vpath_root(VROOT_STORE, context)
     dist_contract_registry = _runtime_abs(repo_root, os.path.join("dist", "data", "registries", "semantic_contract_registry.json"))
     dist_packs_root = _runtime_abs(repo_root, os.path.join("dist", "packs"))
     if os.path.isfile(dist_contract_registry) and os.path.isdir(dist_packs_root):
-        return "dist"
-    return "."
+        return _runtime_abs(repo_root, "dist")
+    return _runtime_abs(repo_root, ".")
 
 
 def _find_session_template(repo_root: str, template_id: str, template_path: str = "") -> tuple[str, dict]:
@@ -197,11 +230,27 @@ def _find_session_template(repo_root: str, template_id: str, template_path: str 
 
 def _resolve_pack_lock_path(repo_root: str, pack_lock_path: str) -> str:
     token = str(pack_lock_path or "").strip() or MVP_PACK_LOCK_REL
+    if not str(pack_lock_path or "").strip():
+        context = _vpath_context()
+        if context is not None:
+            return vpath_resolve_existing(VROOT_LOCKS, os.path.basename(MVP_PACK_LOCK_REL), context) or vpath_resolve(
+                VROOT_LOCKS,
+                os.path.basename(MVP_PACK_LOCK_REL),
+                context,
+            )
     return _runtime_abs(repo_root, token)
 
 
 def _resolve_profile_bundle_path(repo_root: str, profile_bundle_path: str) -> str:
     token = str(profile_bundle_path or "").strip() or MVP_PROFILE_BUNDLE_REL
+    if not str(profile_bundle_path or "").strip():
+        context = _vpath_context()
+        if context is not None:
+            return vpath_resolve_existing(VROOT_PROFILES, os.path.join("bundles", os.path.basename(MVP_PROFILE_BUNDLE_REL)), context) or vpath_resolve(
+                VROOT_PROFILES,
+                os.path.join("bundles", os.path.basename(MVP_PROFILE_BUNDLE_REL)),
+                context,
+            )
     return _runtime_abs(repo_root, token)
 
 
@@ -411,8 +460,8 @@ def build_supervisor_run_spec(
             path="$.supervisor_policy_id",
         )
     runtime_paths = _supervisor_runtime_paths(repo_root_abs)
-    verify_root = _verification_root_rel(repo_root_abs)
-    if verify_root == "dist":
+    verify_root = _verification_root(repo_root_abs)
+    if os.path.normcase(os.path.normpath(verify_root)) != os.path.normcase(repo_root_abs):
         compatibility = verify_pack_root(
             repo_root=repo_root_abs,
             root=verify_root,
@@ -472,7 +521,7 @@ def build_supervisor_run_spec(
         "result": "complete",
         "repo_root": repo_root_abs,
         "seed": run_seed,
-        "session_template_id": str(template_payload.get("template_id", "")).strip() or str(session_template_id).strip() or "session.mvp_default",
+            "session_template_id": str(template_payload.get("template_id", "")).strip() or str(session_template_id).strip() or "session.mvp_default",
         "session_template_path": _repo_rel(repo_root_abs, template_abs),
         "profile_bundle_path": _repo_rel(repo_root_abs, profile_abs),
         "profile_bundle_hash": _file_hash(profile_abs),
@@ -483,11 +532,11 @@ def build_supervisor_run_spec(
         "overlay_conflict_policy_id": selected_conflict_policy_id,
         "supervisor_policy_id": str(supervisor_policy_id).strip(),
         "topology": "server_only" if str(topology).strip() == "server_only" else "singleplayer",
-        "pack_verify_root": verify_root,
+        "pack_verify_root": _repo_rel(repo_root_abs, verify_root),
         "session_id": session_id,
         "manifest_id": _deterministic_id(session_id, "run_manifest", prefix="run_manifest"),
         "tick_started": 1,
-        "ipc_manifest_path": norm(os.path.join("dist", "runtime", "ipc_endpoints.json")),
+        "ipc_manifest_path": _repo_rel(repo_root_abs, runtime_paths["ipc_manifest_path"]),
         "runtime_paths": {
             "state_path": _repo_rel(repo_root_abs, runtime_paths["state_path"]),
             "manifest_path": _repo_rel(repo_root_abs, runtime_paths["manifest_path"]),

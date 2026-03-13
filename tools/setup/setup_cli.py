@@ -21,6 +21,12 @@ if REPO_ROOT_HINT not in sys.path:
 
 from src.appshell import appshell_main
 from src.appshell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
+from src.appshell.paths import (
+    VROOT_INSTANCES,
+    VROOT_PACKS,
+    vpath_candidate_roots,
+    vpath_init,
+)
 from src.compat import (
     build_product_build_metadata,
     build_product_descriptor,
@@ -249,6 +255,22 @@ def resolve_import_engine_module():
     return importlib.import_module("src.lib.import")
 
 
+def _setup_vpath_context(store_root: str = "", install_root: str = "") -> dict:
+    raw_args: List[str] = []
+    if install_root:
+        raw_args.extend(["--install-root", str(install_root)])
+    if store_root:
+        raw_args.extend(["--store-root", str(store_root)])
+    return vpath_init(
+        {
+            "repo_root": REPO_ROOT_HINT,
+            "product_id": "setup",
+            "raw_args": raw_args,
+            "executable_path": os.path.join(REPO_ROOT_HINT, "dist", "bin", "dominium_setup"),
+        }
+    )
+
+
 def resolve_instance_manifest_path(instance_id: str, explicit_path: str = "", store_root: str = "") -> str:
     if explicit_path:
         return normalize_path(explicit_path)
@@ -256,7 +278,11 @@ def resolve_instance_manifest_path(instance_id: str, explicit_path: str = "", st
     if not token:
         return ""
     candidates = []
-    if store_root:
+    context = _setup_vpath_context(store_root=store_root)
+    if str(context.get("result", "")).strip() == "complete":
+        for root in vpath_candidate_roots(VROOT_INSTANCES, context):
+            candidates.append(os.path.join(root, token, "instance.manifest.json"))
+    elif store_root:
         candidates.append(os.path.join(normalize_path(store_root), "instances", token, "instance.manifest.json"))
     candidates.append(os.path.join(REPO_ROOT_HINT, "instances", token, "instance.manifest.json"))
     for candidate in candidates:
@@ -271,12 +297,25 @@ def resolve_pack_root(pack_id: str, explicit_root: str = "") -> str:
     token = str(pack_id or "").strip()
     if not token:
         return ""
-    candidates = [
-        os.path.join(REPO_ROOT_HINT, "packs", token),
-        os.path.join(REPO_ROOT_HINT, "packs", token.split(".", 1)[0], token),
-        os.path.join(REPO_ROOT_HINT, "packs", "source", token),
-        os.path.join(REPO_ROOT_HINT, "packs", "core", token),
-    ]
+    context = _setup_vpath_context()
+    candidates = []
+    if str(context.get("result", "")).strip() == "complete":
+        for root in vpath_candidate_roots(VROOT_PACKS, context):
+            candidates.extend(
+                [
+                    os.path.join(root, token),
+                    os.path.join(root, token.split(".", 1)[0], token),
+                    os.path.join(root, "source", token),
+                    os.path.join(root, "core", token),
+                ]
+            )
+    else:
+        candidates = [
+            os.path.join(REPO_ROOT_HINT, "packs", token),
+            os.path.join(REPO_ROOT_HINT, "packs", token.split(".", 1)[0], token),
+            os.path.join(REPO_ROOT_HINT, "packs", "source", token),
+            os.path.join(REPO_ROOT_HINT, "packs", "core", token),
+        ]
     for candidate in candidates:
         if os.path.isdir(candidate):
             return normalize_path(candidate)

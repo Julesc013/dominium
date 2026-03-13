@@ -8,6 +8,7 @@ import os
 from typing import Mapping
 
 from src.appshell.logging import append_jsonl
+from src.appshell.paths import VROOT_EXPORTS, get_current_virtual_paths, vpath_resolve
 
 
 def _normalize_tree(value: object) -> object:
@@ -92,11 +93,16 @@ def write_diag_snapshot_bundle(
     ipc_attach_rows: list[Mapping[str, object]] | None = None,
 ) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(str(repo_root or ".")))
+    context = get_current_virtual_paths()
     bundle_dir = os.path.normpath(
         os.path.abspath(
             str(out_dir)
             if str(out_dir or "").strip()
-            else os.path.join(repo_root_abs, "build", "appshell", "diag", str(product_id or "product"))
+            else (
+                vpath_resolve(VROOT_EXPORTS, os.path.join("appshell_diag", str(product_id or "product")), context)
+                if context is not None and str(context.get("result", "")).strip() == "complete"
+                else os.path.join(repo_root_abs, "build", "appshell", "diag", str(product_id or "product"))
+            )
         )
     )
     os.makedirs(bundle_dir, exist_ok=True)

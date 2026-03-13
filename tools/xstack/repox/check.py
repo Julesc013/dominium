@@ -1080,6 +1080,13 @@ TOOL_SURFACE_ADAPTER_PATH = "src/tools/tool_surface_adapter.py"
 TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
 TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
 TOOL_SURFACE_REFERENCE_PATH = "docs/appshell/TOOL_REFERENCE.md"
+VIRTUAL_ROOT_REGISTRY_PATH = "data/registries/virtual_root_registry.json"
+VIRTUAL_PATHS_ENGINE_PATH = "src/appshell/paths/virtual_paths.py"
+VIRTUAL_PATHS_DOC_PATH = "docs/appshell/VIRTUAL_PATHS.md"
+VIRTUAL_PATHS_TOOL_PATH = "tools/release/tool_run_virtual_paths.py"
+VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
+VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
+VIRTUAL_PATHS_REPORT_PATH = "data/audit/virtual_paths_report.json"
 VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
@@ -8563,6 +8570,114 @@ def _append_tool_surface_findings(
                 snippet=str(item.get("code", ""))[:160],
                 message=str(item.get("message", "")).strip() or "tool surface drift detected",
                 rule_id=str(item.get("rule_id", "")).strip() or expose_rule_id,
+            )
+        )
+
+
+def _append_virtual_path_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rules = (
+        "INV-NO-HARDCODED-PATHS",
+        "INV-VPATH-USED-FOR-STORE_ACCESS",
+    )
+    severity = _invariant_severity(profile)
+    required_files = (
+        (VIRTUAL_ROOT_REGISTRY_PATH, "virtual root registry is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        (VIRTUAL_PATHS_ENGINE_PATH, "virtual path engine is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        (VIRTUAL_PATHS_DOC_PATH, "virtual path doctrine doc is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        (VIRTUAL_PATHS_TOOL_PATH, "virtual path report tool is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        (VIRTUAL_PATHS_COMMON_PATH, "virtual path helper module is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        (VIRTUAL_PATHS_BASELINE_PATH, "virtual path baseline report is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        (VIRTUAL_PATHS_REPORT_PATH, "virtual path machine-readable report is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        ("tools/auditx/analyzers/e480_hardcoded_relative_path_smell.py", "HardcodedRelativePathSmell analyzer is required", "INV-NO-HARDCODED-PATHS"),
+        ("tools/auditx/analyzers/e481_os_path_separator_smell.py", "OSPathSeparatorSmell analyzer is required", "INV-NO-HARDCODED-PATHS"),
+        ("tools/xstack/testx/tests/repo_layout0_testlib.py", "virtual path TestX helper is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        ("tools/xstack/testx/tests/test_portable_root_detected.py", "portable root detection TestX coverage is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        ("tools/xstack/testx/tests/test_installed_root_detected.py", "installed root detection TestX coverage is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        ("tools/xstack/testx/tests/test_vpath_resolve_normalizes_separators.py", "separator normalization TestX coverage is required", "INV-NO-HARDCODED-PATHS"),
+        ("tools/xstack/testx/tests/test_vpath_list_sorted.py", "vpath list ordering TestX coverage is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        ("tools/xstack/testx/tests/test_cross_platform_vpath_behavior_consistent.py", "cross-platform vpath TestX coverage is required", "INV-NO-HARDCODED-PATHS"),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, VIRTUAL_PATHS_DOC_PATH).lower()
+    for token, message, rule_id in (
+        ("# virtual paths", "virtual path doc must declare the canonical title", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        ("## logical roots", "virtual path doc must declare the governed logical roots", "INV-VPATH-USED-FOR-STORE_ACCESS"),
+        ("## resolution order", "virtual path doc must declare the deterministic resolution order", "INV-NO-HARDCODED-PATHS"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=VIRTUAL_PATHS_DOC_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    baseline_text = _file_text(repo_root, VIRTUAL_PATHS_BASELINE_PATH).lower()
+    for token, message in (
+        ("# virtual paths baseline", "virtual path baseline report must declare the canonical title"),
+        ("## roots table", "virtual path baseline report must include the roots table"),
+        ("## integration coverage", "virtual path baseline report must include integration coverage"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=VIRTUAL_PATHS_BASELINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-VPATH-USED-FOR-STORE_ACCESS",
+            )
+        )
+
+    try:
+        from tools.release.virtual_paths_common import virtual_paths_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=VIRTUAL_PATHS_COMMON_PATH,
+                line_number=1,
+                snippet="virtual_paths_violations",
+                message="unable to import virtual path checks ({})".format(str(exc)),
+                rule_id="INV-VPATH-USED-FOR-STORE_ACCESS",
+            )
+        )
+        return
+
+    for violation in virtual_paths_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "virtual path violation detected",
+                rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-VPATH-USED-FOR-STORE_ACCESS",
             )
         )
 
@@ -32757,6 +32872,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_validation_unify_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_virtual_path_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

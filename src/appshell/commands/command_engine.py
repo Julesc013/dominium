@@ -25,6 +25,14 @@ from src.appshell.ipc import (
 )
 from src.appshell.logging import get_current_log_engine, log_emit
 from src.appshell.pack_verifier_adapter import verify_pack_root
+from src.appshell.paths import (
+    VROOT_LOCKS,
+    VROOT_LOGS,
+    VROOT_PROFILES,
+    get_current_virtual_paths,
+    vpath_candidate_roots,
+    vpath_resolve,
+)
 from src.appshell.supervisor import (
     DEFAULT_SUPERVISOR_POLICY_ID,
     attach_supervisor_children,
@@ -337,10 +345,17 @@ def _verify_pack_command(repo_root: str, args: Sequence[str], *, build_lock: boo
     out_report = str(getattr(parsed, "out_report", "")).strip()
     out_lock = str(getattr(parsed, "out_lock", "")).strip()
     if build_lock:
+        context = get_current_virtual_paths()
         if not out_report:
-            out_report = os.path.join(repo_root, "build", "appshell", "pack_compatibility_report.json")
+            if context is not None and str(context.get("result", "")).strip() == "complete":
+                out_report = vpath_resolve(VROOT_LOGS, "pack_compatibility_report.json", context)
+            else:
+                out_report = os.path.join(repo_root, "build", "appshell", "pack_compatibility_report.json")
         if not out_lock:
-            out_lock = os.path.join(repo_root, "build", "appshell", "pack_lock.json")
+            if context is not None and str(context.get("result", "")).strip() == "complete":
+                out_lock = vpath_resolve(VROOT_LOCKS, "pack_lock.json", context)
+            else:
+                out_lock = os.path.join(repo_root, "build", "appshell", "pack_lock.json")
     result = verify_pack_root(
         repo_root=repo_root,
         root=str(getattr(parsed, "root", "")).strip(),
@@ -374,10 +389,19 @@ def _load_profile_bundle(repo_root: str, bundle_id: str) -> tuple[dict, str]:
     token = str(bundle_id or "").strip()
     if not token:
         return {}, "missing bundle_id"
-    roots = (
-        os.path.join(repo_root, "profiles", "bundles"),
-        os.path.join(repo_root, "dist", "profiles"),
-    )
+    context = get_current_virtual_paths()
+    roots = []
+    if context is not None and str(context.get("result", "")).strip() == "complete":
+        for base_root in vpath_candidate_roots(VROOT_PROFILES, context):
+            roots.append(base_root)
+            roots.append(os.path.join(base_root, "bundles"))
+    else:
+        roots.extend(
+            (
+                os.path.join(repo_root, "profiles", "bundles"),
+                os.path.join(repo_root, "dist", "profiles"),
+            )
+        )
     for root in roots:
         if not os.path.isdir(root):
             continue

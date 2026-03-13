@@ -7,6 +7,12 @@ import shutil
 import tempfile
 from typing import Dict, List, Mapping, Sequence, Tuple
 
+from src.appshell.paths import (
+    VROOT_INSTANCES,
+    VROOT_SAVES,
+    vpath_init,
+    vpath_resolve,
+)
 from src.lib.bundle import BUNDLE_CONTENT_DIR, load_json as load_bundle_json, verify_bundle_directory, write_json
 from src.lib.export import (
     BUNDLE_KIND_INSTANCE_LINKED,
@@ -228,15 +234,31 @@ def _write_install_manifest_if_present(bundle_root: str, target_root: str) -> Tu
 
 
 def _default_instance_target_root(repo_root: str, store_root: str, instance_id: str) -> str:
+    context = vpath_init(
+        {
+            "repo_root": repo_root,
+            "product_id": "tool.attach_console_stub",
+            "raw_args": ["--store-root", str(store_root)] if str(store_root or "").strip() else [],
+        }
+    )
+    if str(context.get("result", "")).strip() == "complete":
+        return vpath_resolve(VROOT_INSTANCES, str(instance_id), context)
     base_root = os.path.abspath(store_root) if str(store_root or "").strip() else os.path.abspath(repo_root)
-    candidate = os.path.join(base_root, "instances", str(instance_id))
-    return candidate
+    return os.path.join(base_root, "instances", str(instance_id))
 
 
 def _default_save_target_root(repo_root: str, store_root: str, save_id: str) -> str:
+    context = vpath_init(
+        {
+            "repo_root": repo_root,
+            "product_id": "tool.attach_console_stub",
+            "raw_args": ["--store-root", str(store_root)] if str(store_root or "").strip() else [],
+        }
+    )
+    if str(context.get("result", "")).strip() == "complete":
+        return vpath_resolve(VROOT_SAVES, str(save_id), context)
     base_root = os.path.abspath(store_root) if str(store_root or "").strip() else os.path.abspath(repo_root)
-    candidate = os.path.join(base_root, "saves", str(save_id))
-    return candidate
+    return os.path.join(base_root, "saves", str(save_id))
 
 
 def _update_instance_id(payload: Mapping[str, object], instance_id: str) -> dict:

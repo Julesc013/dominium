@@ -8,6 +8,8 @@ import os
 import sys
 from typing import Mapping
 
+from src.appshell.paths import VROOT_LOGS, get_current_virtual_paths, vpath_resolve
+
 
 LOG_SCHEMA_VERSION = "1.0.0"
 DEFAULT_RING_CAPACITY = 128
@@ -99,10 +101,13 @@ def append_jsonl(path: str, event: Mapping[str, object]) -> str:
 
 
 def build_default_log_file_path(repo_root: str, product_id: str, session_id: str = "") -> str:
-    root = os.path.normpath(os.path.abspath(str(repo_root or ".")))
     safe_product_id = str(product_id or "product").strip().replace(".", "_") or "product"
     safe_session_id = str(session_id or "").strip().replace(".", "_")
     file_name = "{}{}.jsonl".format(safe_product_id, ".{}".format(safe_session_id) if safe_session_id else "")
+    context = get_current_virtual_paths()
+    if context is not None and str(context.get("result", "")).strip() == "complete":
+        return vpath_resolve(VROOT_LOGS, file_name, context)
+    root = os.path.normpath(os.path.abspath(str(repo_root or ".")))
     return os.path.join(root, "build", "appshell", "logs", file_name)
 
 

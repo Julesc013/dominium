@@ -61,6 +61,14 @@ from src.lib.save import (
     evaluate_save_open,
     resolve_save_manifest_path,
 )
+from src.appshell.paths import (
+    VROOT_LOGS,
+    VROOT_PACKS,
+    VROOT_PROFILES,
+    get_current_virtual_paths,
+    vpath_candidate_roots,
+    vpath_resolve,
+)
 from src.packs.compat import verify_pack_set
 
 
@@ -100,6 +108,15 @@ def normalize_path(path: str) -> str:
     if not path:
         return ""
     return os.path.abspath(path)
+
+
+def _active_vpath_context() -> Optional[dict]:
+    context = get_current_virtual_paths()
+    if context is None:
+        return None
+    if str(context.get("result", "")).strip() != "complete":
+        return None
+    return dict(context)
 
 
 def safe_rel(path: str, base: str) -> str:
@@ -385,7 +402,11 @@ def discover_profiles(profile_roots: List[str]) -> List[Dict[str, object]]:
     seen = set()
     roots = profile_roots or []
     if not roots:
-        roots = [os.path.join(resolve_repo_root(), "data", "profiles")]
+        context = _active_vpath_context()
+        if context is not None:
+            roots = list(vpath_candidate_roots(VROOT_PROFILES, context))
+        if not roots:
+            roots = [os.path.join(resolve_repo_root(), "data", "profiles")]
     for root in roots:
         if not root:
             continue
@@ -440,7 +461,12 @@ def resolve_state_root(args: argparse.Namespace) -> str:
     if getattr(args, "state_root", None):
         return args.state_root
     env = os.environ.get("LAUNCHER_STATE_ROOT")
-    return env or ""
+    if env:
+        return env
+    context = _active_vpath_context()
+    if context is not None:
+        return vpath_resolve(VROOT_LOGS, "launcher", context)
+    return ""
 
 
 def load_state(state_root: str) -> dict:
@@ -648,10 +674,14 @@ def pack_roots(install_root: str, data_root: str, extra_roots: List[str]) -> Lis
     for root in (extra_roots or []):
         if root:
             roots.append(root)
-    if data_root:
-        roots.append(os.path.join(data_root, "packs"))
-    if install_root:
-        roots.append(os.path.join(install_root, "packs"))
+    context = _active_vpath_context()
+    if context is not None:
+        roots.extend(vpath_candidate_roots(VROOT_PACKS, context))
+    else:
+        if data_root:
+            roots.append(os.path.join(data_root, "packs"))
+        if install_root:
+            roots.append(os.path.join(install_root, "packs"))
     return [normalize_path(root) for root in roots if root]
 
 

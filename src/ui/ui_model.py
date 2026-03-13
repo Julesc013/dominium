@@ -10,6 +10,12 @@ from typing import Iterable, Mapping
 
 from src.appshell.command_registry import build_root_command_descriptors
 from src.appshell.config_loader import list_profile_bundles
+from src.appshell.paths import (
+    VROOT_INSTANCES,
+    VROOT_SAVES,
+    get_current_virtual_paths,
+    vpath_candidate_roots,
+)
 from src.appshell.ui_mode_selector import policy_row_for_product
 from src.lib.instance import instance_ui_mode_default, validate_instance_manifest
 from src.lib.save import validate_save_manifest
@@ -81,8 +87,17 @@ def _rel_path(repo_root: str, abs_path: str) -> str:
 def _sorted_manifest_paths(repo_root: str, roots: Iterable[str], manifest_name: str) -> list[str]:
     repo_root_abs = _repo_root(repo_root)
     paths: list[str] = []
-    for rel_root in list(roots or []):
-        abs_root = os.path.join(repo_root_abs, str(rel_root).replace("/", os.sep))
+    active = get_current_virtual_paths()
+    resolved_roots: list[str] = []
+    if active is not None and str(active.get("result", "")).strip() == "complete":
+        if str(manifest_name).strip() == "instance.manifest.json":
+            resolved_roots.extend(vpath_candidate_roots(VROOT_INSTANCES, active))
+        elif str(manifest_name).strip() == "save.manifest.json":
+            resolved_roots.extend(vpath_candidate_roots(VROOT_SAVES, active))
+    if not resolved_roots:
+        for rel_root in list(roots or []):
+            resolved_roots.append(os.path.join(repo_root_abs, str(rel_root).replace("/", os.sep)))
+    for abs_root in list(dict.fromkeys(os.path.normpath(os.path.abspath(item)) for item in resolved_roots)):
         if not os.path.isdir(abs_root):
             continue
         for dirpath, dirnames, filenames in os.walk(abs_root):

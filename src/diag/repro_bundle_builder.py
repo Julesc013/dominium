@@ -9,6 +9,7 @@ import platform
 import shutil
 from typing import Mapping, Sequence
 
+from src.appshell.paths import VROOT_EXPORTS, get_current_virtual_paths, vpath_resolve
 from src.meta_extensions_engine import normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -345,11 +346,16 @@ def write_repro_bundle(
     environment_summary: Mapping[str, object] | None = None,
 ) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(str(repo_root or ".")))
+    context = get_current_virtual_paths()
     bundle_dir = os.path.normpath(
         os.path.abspath(
             str(out_dir)
             if str(out_dir or "").strip()
-            else os.path.join(repo_root_abs, "build", "diag", str(created_by_product_id or "product"))
+            else (
+                vpath_resolve(VROOT_EXPORTS, os.path.join("diag", str(created_by_product_id or "product")), context)
+                if context is not None and str(context.get("result", "")).strip() == "complete"
+                else os.path.join(repo_root_abs, "build", "diag", str(created_by_product_id or "product"))
+            )
         )
     )
     os.makedirs(bundle_dir, exist_ok=True)

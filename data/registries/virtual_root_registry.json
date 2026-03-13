@@ -1,0 +1,231 @@
+{
+  "schema_id": "dominium.registry.virtual_root_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.virtual_root_registry",
+    "registry_version": "1.0.0",
+    "entries": [
+      {
+        "vroot_id": "VROOT_BIN",
+        "portable_default_rel": ".",
+        "installed_default_pattern": "{bin_root}",
+        "description": "Primary executable directory for the current product surface.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "efd89998ef88dcad9cd933e8e0fd5d5b42fe13df4d7f34eb4989874a9038d619"
+      },
+      {
+        "vroot_id": "VROOT_EXPORTS",
+        "portable_default_rel": "exports",
+        "installed_default_pattern": "{store_root}/exports",
+        "description": "Export and diagnostic bundle output root.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "8a9a5b3a039b54d29e32358506112494daf88f33171b3556df1a551b1ce30957"
+      },
+      {
+        "vroot_id": "VROOT_INSTALL",
+        "portable_default_rel": ".",
+        "installed_default_pattern": "{install_root}",
+        "description": "Install root containing install.manifest.json and product binaries or their bin directory.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "13e3b7b8d2a29997e9f34b5dc8ac41f34a91151f1fc9e52f213b2d2da7d7dfc5"
+      },
+      {
+        "vroot_id": "VROOT_INSTANCES",
+        "portable_default_rel": "instances",
+        "installed_default_pattern": "{store_root}/instances",
+        "description": "Linked and portable instance manifests and runtime instance roots.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "2d6241a0eb2faaf5f2b78f41975713c45692d9a3270f9a5d6114dc0d4ed3b6a0"
+      },
+      {
+        "vroot_id": "VROOT_IPC",
+        "portable_default_rel": "runtime",
+        "installed_default_pattern": "{store_root}/runtime",
+        "description": "IPC endpoint discovery and transport metadata directory.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "ec94cfddc2875dcf7dbb7657b5f1d5e4db6bda39f54bfecc5c25ea2570967f69"
+      },
+      {
+        "vroot_id": "VROOT_LOCKS",
+        "portable_default_rel": "locks",
+        "installed_default_pattern": "{store_root}/locks",
+        "description": "Pack locks and other deterministic lock artifacts.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "1c28660abc0e42c250ce924300d5960eca06443edaf7851d6619d9cb70d4e683"
+      },
+      {
+        "vroot_id": "VROOT_LOGS",
+        "portable_default_rel": "logs",
+        "installed_default_pattern": "{store_root}/logs",
+        "description": "Structured log sink root for AppShell and wrapper products.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "c74529f713ff8071f00de08fd0307776e6e6226f5841b0f1318b9409b0ebc5c1"
+      },
+      {
+        "vroot_id": "VROOT_PACKS",
+        "portable_default_rel": "packs",
+        "installed_default_pattern": "{store_root}/packs",
+        "description": "Pack manifest and content root.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "05f484a0a724fd0966f03389d2f38ddd7783853327cbe8bb1b07a6c5bc7974f8"
+      },
+      {
+        "vroot_id": "VROOT_PROFILES",
+        "portable_default_rel": "profiles",
+        "installed_default_pattern": "{store_root}/profiles",
+        "description": "Profile bundle and profile manifest root.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "f5bab656a95a8f70a08e220c21e13f660246f7d994ec82fd4b7d420373a917ea"
+      },
+      {
+        "vroot_id": "VROOT_SAVES",
+        "portable_default_rel": "saves",
+        "installed_default_pattern": "{store_root}/saves",
+        "description": "Save manifests and save payload roots.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "f7707e25a2c906dc46d4fca17cc2b6e0644c147efe9fb18c1ece1488a268fe4e"
+      },
+      {
+        "vroot_id": "VROOT_STORE",
+        "portable_default_rel": ".",
+        "installed_default_pattern": "{store_root}",
+        "description": "Primary store root for runtime packs, profiles, instances, saves, and exports.",
+        "extensions": {
+          "official.source": "REPO-LAYOUT-0"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+          "future_series": "LIB/APPSHELL",
+          "replacement_target": "release-pinned virtual path contract and install discovery registry",
+          "contract_id": "",
+          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "extensions": {}
+        },
+        "deterministic_fingerprint": "e1093d6dcb31caa9d910dc9827707513177fb277fc0cbd51e8ddf310f6f6b9fb"
+      }
+    ],
+    "deterministic_fingerprint": "581006f294212c0bbe91559b164955123a1e7e23ad669000298d4ad4c9e73ed3"
+  }
+}

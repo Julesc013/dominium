@@ -9,6 +9,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .args_parser import AppShellArgs
 from .mode_dispatcher import legacy_mode_args, supported_modes_for_product
+from .paths import get_current_virtual_paths
 
 
 _SHELL_FLAGS_WITH_VALUES = {
@@ -379,6 +380,11 @@ def build_product_bootstrap_context(
         "install_reference": _token(
             _value_after(shell_args.raw_args, "--install-root", "--manifest", "--instance-manifest", "--instance-id")
         ),
+        "virtual_paths": {
+            "result": _token((get_current_virtual_paths() or {}).get("result")),
+            "resolution_source": _token((get_current_virtual_paths() or {}).get("resolution_source")),
+            "roots": dict((get_current_virtual_paths() or {}).get("roots") or {}),
+        },
         "deterministic_fingerprint": "",
     }
     context["deterministic_fingerprint"] = canonical_sha256(dict(context, deterministic_fingerprint=""))

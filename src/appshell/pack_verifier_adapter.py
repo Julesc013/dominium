@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 
+from src.appshell.paths import VROOT_STORE, get_current_virtual_paths, vpath_root
 from src.packs.compat import verify_pack_set, write_pack_compatibility_outputs
 
 
@@ -19,8 +20,14 @@ def verify_pack_root(
     out_lock: str = "",
     write_outputs: bool = False,
 ) -> dict:
-    base_root = str(root or "").strip() or "dist"
-    target_root = os.path.normpath(os.path.abspath(base_root if os.path.isabs(base_root) else os.path.join(repo_root, base_root)))
+    context = get_current_virtual_paths()
+    if str(root or "").strip():
+        base_root = str(root or "").strip()
+        target_root = os.path.normpath(os.path.abspath(base_root if os.path.isabs(base_root) else os.path.join(repo_root, base_root)))
+    elif context is not None and str(context.get("result", "")).strip() == "complete":
+        target_root = vpath_root(VROOT_STORE, context)
+    else:
+        target_root = os.path.normpath(os.path.abspath(os.path.join(repo_root, "dist")))
     schema_root = target_root if os.path.isdir(os.path.join(target_root, "schemas")) else repo_root
     result = verify_pack_set(
         repo_root=target_root,

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from typing import Callable, Sequence
 
 from .args_parser import parse_appshell_args
@@ -19,6 +20,11 @@ from .logging import (
     set_current_log_engine,
 )
 from .mode_dispatcher import build_mode_stub
+from .paths import (
+    clear_current_virtual_paths,
+    set_current_virtual_paths,
+    vpath_init,
+)
 from .product_bootstrap import build_product_bootstrap_context, resolve_mode_request
 from .tui import run_tui_mode
 from .ui_mode_selector import (
@@ -65,6 +71,15 @@ def appshell_main(
 ) -> int:
     shell_args = parse_appshell_args(product_id=str(product_id).strip(), argv=argv)
     repo_root = resolve_repo_root(shell_args.repo_root, repo_root_hint=repo_root_hint)
+    vpath_context = vpath_init(
+        {
+            "repo_root": repo_root,
+            "product_id": str(product_id).strip(),
+            "raw_args": shell_args.raw_args,
+            "executable_path": sys.argv[0] if list(sys.argv) else "",
+        }
+    )
+    set_current_virtual_paths(vpath_context)
     mode_resolution = resolve_mode_request(
         product_id=str(product_id).strip(),
         explicit_mode=shell_args.mode,
@@ -75,10 +90,34 @@ def appshell_main(
     logger = create_log_engine(
         product_id=str(product_id).strip(),
         build_id=str(version_payload.get("build_id", "")).strip(),
-        file_path=build_default_log_file_path(repo_root, str(product_id).strip()),
+        file_path=build_default_log_file_path(
+            repo_root,
+            str(product_id).strip(),
+            session_id=str(shell_args.session_id).strip(),
+        ),
     )
     set_current_log_engine(logger)
     ipc_server = None
+    if str(vpath_context.get("result", "")).strip() != "complete":
+        payload = _refusal(
+            str(vpath_context.get("refusal_code", "")).strip() or "refusal.paths.no_install_root",
+            "virtual path resolution refused the launch request",
+            "Provide --root/--store-root, place install.manifest.json beside the product executable, or register the install.",
+            product_id=str(product_id).strip(),
+            resolution_source=str(vpath_context.get("resolution_source", "")).strip(),
+            warnings=list(vpath_context.get("warnings") or []),
+        )
+        log_emit(
+            category="refusal",
+            severity="error",
+            message_key="appshell.refusal",
+            params={
+                "refusal_code": str(payload.get("refusal_code", "")).strip(),
+                "product_id": str(product_id).strip(),
+            },
+        )
+        _print_json(payload)
+        return EXIT_REFUSAL
     mode_selection = select_ui_mode(
         repo_root,
         product_id=str(product_id).strip(),
@@ -100,6 +139,19 @@ def appshell_main(
             "selected_mode_id": str(mode_id).strip(),
             "mode_source": str(mode_resolution.get("mode_source", "default")).strip() or "default",
             "repo_root": str(repo_root).replace("\\", "/"),
+        },
+    )
+    log_emit(
+        category="paths",
+        severity="info",
+        message_key="appshell.paths.initialized",
+        params={
+            "product_id": str(product_id).strip(),
+            "resolution_source": str(vpath_context.get("resolution_source", "")).strip(),
+            "result": str(vpath_context.get("result", "")).strip(),
+            "install_root": str(dict(vpath_context.get("roots") or {}).get("VROOT_INSTALL", "")).strip(),
+            "store_root": str(dict(vpath_context.get("roots") or {}).get("VROOT_STORE", "")).strip(),
+            "warning_count": int(len(list(vpath_context.get("warnings") or []))),
         },
     )
     log_emit(
@@ -324,6 +376,7 @@ def appshell_main(
             ipc_server.stop()
         clear_current_ui_mode_selection()
         clear_current_log_engine()
+        clear_current_virtual_paths()
 
 
 __all__ = [

@@ -475,6 +475,8 @@ from analyzers import e471_direct_simulation_start_smell
 from analyzers import e472_direct_pack_load_smell
 from analyzers import e473_duplicate_validation_surface_smell
 from analyzers import e474_orphan_tool_smell
+from analyzers import e480_hardcoded_relative_path_smell
+from analyzers import e481_os_path_separator_smell
 
 
 ANALYZERS = (
@@ -953,6 +955,8 @@ ANALYZERS = (
     e472_direct_pack_load_smell,
     e473_duplicate_validation_surface_smell,
     e474_orphan_tool_smell,
+    e480_hardcoded_relative_path_smell,
+    e481_os_path_separator_smell,
 )
 
 

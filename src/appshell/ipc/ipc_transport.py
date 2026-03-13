@@ -8,9 +8,11 @@ import os
 import socket
 from typing import Mapping
 
+from src.appshell.paths import VROOT_IPC, get_current_virtual_paths, vpath_resolve
 
-IPC_ENDPOINT_MANIFEST_REL = os.path.join("dist", "runtime", "ipc_endpoints.json")
-IPC_SOCKET_ROOT_REL = os.path.join("build", "appshell", "ipc")
+
+IPC_ENDPOINT_MANIFEST_REL = "ipc_endpoints.json"
+IPC_SOCKET_ROOT_REL = "ipc"
 IPC_CHANNEL_IDS = ("console", "log", "negotiation", "status")
 CONSOLE_IO_KINDS = ("cmd_request", "cmd_response", "stderr", "stdout")
 
@@ -73,8 +75,10 @@ def build_ipc_local_address(repo_root: str, product_id: str, session_id: str = "
     repo_root_abs = os.path.normpath(os.path.abspath(str(repo_root or ".")))
     session_token = resolve_ipc_session_id(product_id, session_id)
     hash_token = _stable_hash(str(product_id).strip(), session_token)[:16]
+    context = get_current_virtual_paths()
+    ipc_root = vpath_resolve(VROOT_IPC, IPC_SOCKET_ROOT_REL, context) if context is not None and str(context.get("result", "")).strip() == "complete" else os.path.join(repo_root_abs, "build", "appshell", "ipc")
     if os.name != "nt" and hasattr(socket, "AF_UNIX"):
-        bind_target = os.path.join(repo_root_abs, IPC_SOCKET_ROOT_REL, "{}.sock".format(hash_token))
+        bind_target = os.path.join(ipc_root, "{}.sock".format(hash_token))
         return {
             "transport_id": "ipc.unix_socket",
             "family": "unix",
@@ -160,7 +164,10 @@ def ipc_manifest_path(repo_root: str, manifest_path: str = "") -> str:
         if os.path.isabs(token):
             return os.path.normpath(token)
         return os.path.normpath(os.path.join(repo_root_abs, token.replace("/", os.sep)))
-    return os.path.normpath(os.path.join(repo_root_abs, IPC_ENDPOINT_MANIFEST_REL))
+    context = get_current_virtual_paths()
+    if context is not None and str(context.get("result", "")).strip() == "complete":
+        return vpath_resolve(VROOT_IPC, IPC_ENDPOINT_MANIFEST_REL, context)
+    return os.path.normpath(os.path.join(repo_root_abs, "dist", "runtime", IPC_ENDPOINT_MANIFEST_REL))
 
 
 def discover_ipc_manifest(repo_root: str, manifest_path: str = "") -> dict:

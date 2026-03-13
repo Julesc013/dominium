@@ -1,0 +1,708 @@
+{
+  "deterministic_fingerprint": "0ed9594f29fb2b1d094a7c37dc89c24f94b7806de22648344fb7b8708b30afd4",
+  "hardcoded_path_hits": [
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
+      "line": "\"executable_path\": os.path.join(REPO_ROOT_HINT, \"dist\", \"bin\", \"dominium_setup\"),",
+      "line_number": 269
+    },
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
+      "line": "candidates.append(os.path.join(normalize_path(store_root), \"instances\", token, \"instance.manifest.json\"))",
+      "line_number": 286
+    },
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
+      "line": "candidates.append(os.path.join(REPO_ROOT_HINT, \"instances\", token, \"instance.manifest.json\"))",
+      "line_number": 287
+    },
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
+      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", token),",
+      "line_number": 314
+    },
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
+      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", token.split(\".\", 1)[0], token),",
+      "line_number": 315
+    },
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
+      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", \"source\", token),",
+      "line_number": 316
+    },
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
+      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", \"core\", token),",
+      "line_number": 317
+    },
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
+      "line": "packs_target = os.path.join(data_root, \"packs\")",
+      "line_number": 1196
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/commands/command_engine.py",
+      "line": "out_report = os.path.join(repo_root, \"build\", \"appshell\", \"pack_compatibility_report.json\")",
+      "line_number": 353
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/commands/command_engine.py",
+      "line": "out_lock = os.path.join(repo_root, \"build\", \"appshell\", \"pack_lock.json\")",
+      "line_number": 358
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/commands/command_engine.py",
+      "line": "os.path.join(repo_root, \"profiles\", \"bundles\"),",
+      "line_number": 401
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/commands/command_engine.py",
+      "line": "os.path.join(repo_root, \"dist\", \"profiles\"),",
+      "line_number": 402
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/config_loader.py",
+      "line": "os.path.join(repo_root, \"profiles\", \"bundles\"),",
+      "line_number": 47
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/config_loader.py",
+      "line": "os.path.join(repo_root, \"dist\", \"profiles\"),",
+      "line_number": 48
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/config_loader.py",
+      "line": "bases = [os.path.join(repo_root, \"packs\")]",
+      "line_number": 82
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/diag/diag_snapshot.py",
+      "line": "else os.path.join(repo_root_abs, \"build\", \"appshell\", \"diag\", str(product_id or \"product\"))",
+      "line_number": 104
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/ipc/ipc_transport.py",
+      "line": "ipc_root = vpath_resolve(VROOT_IPC, IPC_SOCKET_ROOT_REL, context) if context is not None and str(context.get(\"result\", \"\")).strip() == \"complete\" else os.path.join(repo_root_abs, \"build\", \"appshell\", \"ipc\")",
+      "line_number": 79
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/ipc/ipc_transport.py",
+      "line": "return os.path.normpath(os.path.join(repo_root_abs, \"dist\", \"runtime\", IPC_ENDPOINT_MANIFEST_REL))",
+      "line_number": 170
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/pack_verifier_adapter.py",
+      "line": "target_root = os.path.normpath(os.path.abspath(os.path.join(repo_root, \"dist\")))",
+      "line_number": 30
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "line": "\"state_path\": _runtime_abs(repo_root, os.path.join(\"dist\", \"runtime\", SUPERVISOR_STATE_REL)),",
+      "line_number": 178
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "line": "\"manifest_path\": _runtime_abs(repo_root, os.path.join(\"dist\", \"runtime\", SUPERVISOR_RUN_MANIFEST_REL)),",
+      "line_number": 179
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "line": "\"aggregated_log_path\": _runtime_abs(repo_root, os.path.join(\"dist\", \"runtime\", SUPERVISOR_AGGREGATED_LOG_REL)),",
+      "line_number": 180
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "line": "\"diag_root\": _runtime_abs(repo_root, os.path.join(\"build\", \"appshell\", SUPERVISOR_DIAG_ROOT_REL)),",
+      "line_number": 181
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "line": "\"ipc_manifest_path\": _runtime_abs(repo_root, os.path.join(\"dist\", \"runtime\", IPC_ENDPOINT_MANIFEST_REL)),",
+      "line_number": 182
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "line": "dist_contract_registry = _runtime_abs(repo_root, os.path.join(\"dist\", \"data\", \"registries\", \"semantic_contract_registry.json\"))",
+      "line_number": 203
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "line": "dist_packs_root = _runtime_abs(repo_root, os.path.join(\"dist\", \"packs\"))",
+      "line_number": 204
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "line": "_runtime_abs(repo_root, os.path.join(\"dist\", \"session_templates\")),",
+      "line_number": 216
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/diag/repro_bundle_builder.py",
+      "line": "else os.path.join(repo_root_abs, \"build\", \"diag\", str(created_by_product_id or \"product\"))",
+      "line_number": 357
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/lib/save/save_validator.py",
+      "line": "candidates.append(os.path.join(store_root, \"saves\", token))",
+      "line_number": 370
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/lib/save/save_validator.py",
+      "line": "candidates.append(os.path.join(install_root, \"saves\", token))",
+      "line_number": 372
+    },
+    {
+      "classification": "shim",
+      "file_path": "src/lib/save/save_validator.py",
+      "line": "candidates.append(os.path.join(repo_root, \"saves\", token))",
+      "line_number": 378
+    },
+    {
+      "classification": "shim",
+      "file_path": "tools/launcher/launch.py",
+      "line": "save_dir = os.path.join(repo_root, \"saves\", save_id)",
+      "line_number": 222
+    },
+    {
+      "classification": "shim",
+      "file_path": "tools/launcher/launcher_cli.py",
+      "line": "roots = [os.path.join(resolve_repo_root(), \"data\", \"profiles\")]",
+      "line_number": 409
+    },
+    {
+      "classification": "shim",
+      "file_path": "tools/launcher/launcher_cli.py",
+      "line": "roots.append(os.path.join(data_root, \"packs\"))",
+      "line_number": 682
+    },
+    {
+      "classification": "shim",
+      "file_path": "tools/launcher/launcher_cli.py",
+      "line": "roots.append(os.path.join(install_root, \"packs\"))",
+      "line_number": 684
+    },
+    {
+      "classification": "shim",
+      "file_path": "tools/launcher/launcher_cli.py",
+      "line": "dest_root = os.path.join(args.data_root, \"packs\", pack_id)",
+      "line_number": 2237
+    },
+    {
+      "classification": "shim",
+      "file_path": "tools/launcher/launcher_cli.py",
+      "line": "dest_root = os.path.join(args.data_root, \"packs\", args.pack_id)",
+      "line_number": 2270
+    },
+    {
+      "classification": "shim",
+      "file_path": "tools/launcher/launcher_cli.py",
+      "line": "\"logs_path\": os.path.join(data_root, \"logs\").replace(\"\\\\\", \"/\"),",
+      "line_number": 2432
+    }
+  ],
+  "integration_rows": [
+    {
+      "file_path": "src/appshell/bootstrap.py",
+      "markers": [
+        "vpath_init(",
+        "set_current_virtual_paths(",
+        "clear_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "bootstrap"
+    },
+    {
+      "file_path": "src/appshell/commands/command_engine.py",
+      "markers": [
+        "VROOT_LOCKS",
+        "VROOT_LOGS",
+        "vpath_resolve(",
+        "vpath_candidate_roots("
+      ],
+      "matched_marker_count": 4,
+      "required_marker_count": 4,
+      "status": "integrated",
+      "surface": "command_engine"
+    },
+    {
+      "file_path": "src/appshell/config_loader.py",
+      "markers": [
+        "vpath_candidate_roots(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 2,
+      "required_marker_count": 2,
+      "status": "integrated",
+      "surface": "config_loader"
+    },
+    {
+      "file_path": "src/appshell/diag/diag_snapshot.py",
+      "markers": [
+        "VROOT_EXPORTS",
+        "vpath_resolve(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "diag_snapshot"
+    },
+    {
+      "file_path": "src/appshell/ipc/ipc_transport.py",
+      "markers": [
+        "VROOT_IPC",
+        "vpath_resolve(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "ipc_transport"
+    },
+    {
+      "file_path": "src/appshell/logging/log_engine.py",
+      "markers": [
+        "VROOT_LOGS",
+        "vpath_resolve(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "log_sink"
+    },
+    {
+      "file_path": "src/appshell/pack_verifier_adapter.py",
+      "markers": [
+        "VROOT_STORE",
+        "vpath_root(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "pack_verifier"
+    },
+    {
+      "file_path": "src/appshell/supervisor/supervisor_engine.py",
+      "markers": [
+        "VROOT_IPC",
+        "VROOT_LOGS",
+        "VROOT_EXPORTS",
+        "vpath_resolve(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 5,
+      "required_marker_count": 5,
+      "status": "integrated",
+      "surface": "supervisor"
+    },
+    {
+      "file_path": "src/diag/repro_bundle_builder.py",
+      "markers": [
+        "VROOT_EXPORTS",
+        "vpath_resolve(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "diag_bundle_writer"
+    },
+    {
+      "file_path": "src/lib/export/export_engine.py",
+      "markers": [
+        "VROOT_STORE",
+        "vpath_candidate_roots(",
+        "vpath_init("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "export_engine"
+    },
+    {
+      "file_path": "src/lib/import/import_engine.py",
+      "markers": [
+        "VROOT_INSTANCES",
+        "VROOT_SAVES",
+        "vpath_init(",
+        "vpath_resolve("
+      ],
+      "matched_marker_count": 4,
+      "required_marker_count": 4,
+      "status": "integrated",
+      "surface": "import_engine"
+    },
+    {
+      "file_path": "src/lib/install/install_validator.py",
+      "markers": [
+        "VROOT_INSTALL",
+        "vpath_resolve_existing(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "install_validator"
+    },
+    {
+      "file_path": "src/lib/save/save_validator.py",
+      "markers": [
+        "VROOT_SAVES",
+        "vpath_candidate_roots(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "save_validator"
+    },
+    {
+      "file_path": "src/ui/ui_model.py",
+      "markers": [
+        "VROOT_INSTANCES",
+        "VROOT_SAVES",
+        "vpath_candidate_roots(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 4,
+      "required_marker_count": 4,
+      "status": "integrated",
+      "surface": "ui_model"
+    },
+    {
+      "file_path": "tools/launcher/launch.py",
+      "markers": [
+        "VROOT_SAVES",
+        "vpath_resolve_existing(",
+        "get_current_virtual_paths("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "launcher_runtime"
+    },
+    {
+      "file_path": "tools/launcher/launcher_cli.py",
+      "markers": [
+        "VROOT_LOGS",
+        "VROOT_PACKS",
+        "VROOT_PROFILES",
+        "vpath_candidate_roots(",
+        "vpath_resolve("
+      ],
+      "matched_marker_count": 5,
+      "required_marker_count": 5,
+      "status": "integrated",
+      "surface": "launcher_cli"
+    },
+    {
+      "file_path": "tools/setup/setup_cli.py",
+      "markers": [
+        "VROOT_INSTANCES",
+        "VROOT_PACKS",
+        "vpath_candidate_roots(",
+        "vpath_init("
+      ],
+      "matched_marker_count": 4,
+      "required_marker_count": 4,
+      "status": "integrated",
+      "surface": "setup_cli"
+    }
+  ],
+  "metrics": {
+    "allowed_packaging_hit_count": 8,
+    "integration_remaining_count": 0,
+    "integration_target_count": 17,
+    "os_separator_hit_count": 0,
+    "registry_root_count": 11,
+    "remaining_hardcoded_hit_count": 0,
+    "shim_hit_count": 30
+  },
+  "os_separator_hits": [],
+  "registry_rows": [
+    {
+      "description": "Primary executable directory for the current product surface.",
+      "deterministic_fingerprint": "efd89998ef88dcad9cd933e8e0fd5d5b42fe13df4d7f34eb4989874a9038d619",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{bin_root}",
+      "portable_default_rel": ".",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_BIN"
+    },
+    {
+      "description": "Export and diagnostic bundle output root.",
+      "deterministic_fingerprint": "8a9a5b3a039b54d29e32358506112494daf88f33171b3556df1a551b1ce30957",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}/exports",
+      "portable_default_rel": "exports",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_EXPORTS"
+    },
+    {
+      "description": "Install root containing install.manifest.json and product binaries or their bin directory.",
+      "deterministic_fingerprint": "13e3b7b8d2a29997e9f34b5dc8ac41f34a91151f1fc9e52f213b2d2da7d7dfc5",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{install_root}",
+      "portable_default_rel": ".",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_INSTALL"
+    },
+    {
+      "description": "Linked and portable instance manifests and runtime instance roots.",
+      "deterministic_fingerprint": "2d6241a0eb2faaf5f2b78f41975713c45692d9a3270f9a5d6114dc0d4ed3b6a0",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}/instances",
+      "portable_default_rel": "instances",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_INSTANCES"
+    },
+    {
+      "description": "IPC endpoint discovery and transport metadata directory.",
+      "deterministic_fingerprint": "ec94cfddc2875dcf7dbb7657b5f1d5e4db6bda39f54bfecc5c25ea2570967f69",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}/runtime",
+      "portable_default_rel": "runtime",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_IPC"
+    },
+    {
+      "description": "Pack locks and other deterministic lock artifacts.",
+      "deterministic_fingerprint": "1c28660abc0e42c250ce924300d5960eca06443edaf7851d6619d9cb70d4e683",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}/locks",
+      "portable_default_rel": "locks",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_LOCKS"
+    },
+    {
+      "description": "Structured log sink root for AppShell and wrapper products.",
+      "deterministic_fingerprint": "c74529f713ff8071f00de08fd0307776e6e6226f5841b0f1318b9409b0ebc5c1",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}/logs",
+      "portable_default_rel": "logs",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_LOGS"
+    },
+    {
+      "description": "Pack manifest and content root.",
+      "deterministic_fingerprint": "05f484a0a724fd0966f03389d2f38ddd7783853327cbe8bb1b07a6c5bc7974f8",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}/packs",
+      "portable_default_rel": "packs",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_PACKS"
+    },
+    {
+      "description": "Profile bundle and profile manifest root.",
+      "deterministic_fingerprint": "f5bab656a95a8f70a08e220c21e13f660246f7d994ec82fd4b7d420373a917ea",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}/profiles",
+      "portable_default_rel": "profiles",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_PROFILES"
+    },
+    {
+      "description": "Save manifests and save payload roots.",
+      "deterministic_fingerprint": "f7707e25a2c906dc46d4fca17cc2b6e0644c147efe9fb18c1ece1488a268fe4e",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}/saves",
+      "portable_default_rel": "saves",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_SAVES"
+    },
+    {
+      "description": "Primary store root for runtime packs, profiles, instances, saves, and exports.",
+      "deterministic_fingerprint": "e1093d6dcb31caa9d910dc9827707513177fb277fc0cbd51e8ddf310f6f6b9fb",
+      "extensions": {
+        "official.source": "REPO-LAYOUT-0"
+      },
+      "installed_default_pattern": "{store_root}",
+      "portable_default_rel": ".",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+        "extensions": {},
+        "future_series": "LIB/APPSHELL",
+        "rationale": "Virtual root mappings remain provisional while install discovery and release layouts continue converging.",
+        "replacement_target": "release-pinned virtual path contract and install discovery registry",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      },
+      "vroot_id": "VROOT_STORE"
+    }
+  ],
+  "repo_wrapper_projection": {
+    "refusal_code": "",
+    "resolution_source": "repo_wrapper_shim",
+    "result": "complete",
+    "roots": {
+      "VROOT_BIN": "<repo>/dist/bin",
+      "VROOT_EXPORTS": "<repo>/exports",
+      "VROOT_INSTALL": "<repo>/dist",
+      "VROOT_INSTANCES": "<repo>/instances",
+      "VROOT_IPC": "<repo>/dist/runtime",
+      "VROOT_LOCKS": "<repo>/locks",
+      "VROOT_LOGS": "<repo>/build/appshell/logs",
+      "VROOT_PACKS": "<repo>/packs",
+      "VROOT_PROFILES": "<repo>/profiles",
+      "VROOT_SAVES": "<repo>/saves",
+      "VROOT_STORE": "<repo>/dist"
+    },
+    "warnings": [
+      "repo_wrapper_shim.active"
+    ]
+  },
+  "report_id": "repo.layout.virtual_paths.v1",
+  "resolution_order": [
+    "1. explicit CLI overrides: --root, --store-root, or per-vroot overrides",
+    "2. portable mode: install.manifest.json adjacent to the product binary",
+    "3. installed registry mode: install_registry.json entry resolved by install_id",
+    "4. refusal: refusal.paths.no_install_root when no governed root can be discovered"
+  ],
+  "result": "complete",
+  "violations": []
+}

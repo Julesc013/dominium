@@ -17,6 +17,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 from src.appshell import appshell_main  # noqa: E402
 from src.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
+from src.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
 from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
 
 
@@ -213,7 +214,12 @@ def _validate_session_vs_dist(
         )
 
     save_id = str(payload.get("save_id", "")).strip()
-    save_dir = os.path.join(repo_root, "saves", save_id)
+    context = get_current_virtual_paths()
+    save_dir = ""
+    if context is not None and str(context.get("result", "")).strip() == "complete":
+        save_dir = vpath_resolve_existing(VROOT_SAVES, save_id, context)
+    if not save_dir:
+        save_dir = os.path.join(repo_root, "saves", save_id)
     run_meta = _load_latest_run_meta(save_dir)
     if isinstance(run_meta, dict) and run_meta:
         run_lock = str(run_meta.get("pack_lock_hash", "")).strip()

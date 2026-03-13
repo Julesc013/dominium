@@ -14,6 +14,7 @@ from .ipc_transport import (
     build_ipc_frame,
     connect_ipc_client,
     discover_ipc_manifest,
+    ipc_manifest_path,
     recv_frame,
     send_frame,
 )
@@ -68,13 +69,7 @@ def discover_ipc_endpoints(repo_root: str, manifest_path: str = "") -> dict:
     manifest = discover_ipc_manifest(repo_root, manifest_path)
     return {
         "result": "complete",
-        "manifest_path": os.path.normpath(
-            os.path.abspath(
-                str(manifest_path)
-                if str(manifest_path or "").strip()
-                else os.path.join(str(repo_root or "."), "dist", "runtime", "ipc_endpoints.json")
-            )
-        ).replace("\\", "/"),
+        "manifest_path": ipc_manifest_path(repo_root, manifest_path).replace("\\", "/"),
         "endpoints": list(dict(manifest.get("record") or {}).get("endpoints") or []),
     }
 

@@ -7,6 +7,7 @@ import os
 import tempfile
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
+from src.appshell.paths import VROOT_STORE, vpath_candidate_roots, vpath_init
 from src.lib.bundle import (
     ZERO_SHA256,
     collect_directory_entries,
@@ -417,6 +418,15 @@ def export_instance_bundle(
 
 def _save_bundle_store_roots(repo_root: str, save_root: str, explicit_store_root: str = "") -> List[str]:
     candidates: List[str] = []
+    context = vpath_init(
+        {
+            "repo_root": repo_root,
+            "product_id": "tool.attach_console_stub",
+            "raw_args": ["--store-root", str(explicit_store_root)] if str(explicit_store_root or "").strip() else [],
+        }
+    )
+    if str(context.get("result", "")).strip() == "complete":
+        candidates.extend(vpath_candidate_roots(VROOT_STORE, context))
     for token in (explicit_store_root, repo_root):
         if str(token or "").strip():
             candidates.append(os.path.abspath(str(token)))

@@ -6,6 +6,7 @@ import json
 import os
 from typing import Dict, List, Mapping, Tuple
 
+from src.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_candidate_roots
 from src.meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -369,6 +370,10 @@ def resolve_save_root(
         candidates.append(os.path.join(store_root, "saves", token))
     if install_root:
         candidates.append(os.path.join(install_root, "saves", token))
+    context = get_current_virtual_paths()
+    if context is not None and str(context.get("result", "")).strip() == "complete":
+        for root in vpath_candidate_roots(VROOT_SAVES, context):
+            candidates.append(os.path.join(root, token))
     if repo_root:
         candidates.append(os.path.join(repo_root, "saves", token))
     seen = set()
