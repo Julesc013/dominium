@@ -36,6 +36,12 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "$ref": "./signature_block.schema.json"
+      }
+    },
     "artifacts": {
       "type": "array",
       "items": {

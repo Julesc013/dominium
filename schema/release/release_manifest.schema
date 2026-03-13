@@ -4,7 +4,7 @@ schema_version: 1.0.0
 stability: core
 
 PURPOSE:
-- Define the deterministic RELEASE-1 manifest describing one concrete distribution directory.
+- Define the deterministic RELEASE-1/RELEASE-2 manifest describing one concrete distribution directory.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -30,11 +30,12 @@ record release_manifest
     - extensions: map
   optional:
     - stability_report_hash: sha256
+    - signatures: [signature_block]
     - notes: map
 
 INVARIANTS:
 - release_id is derived from deterministic release inputs only.
 - artifacts are ordered deterministically.
-- manifest_hash is the canonical hash of the manifest body with hash fields blanked.
-- deterministic_fingerprint is computed from canonical serialized content after manifest_hash is populated.
+- manifest_hash is the canonical hash of the manifest body with hash fields and optional signatures blanked.
+- deterministic_fingerprint is computed from canonical serialized content after manifest_hash is populated, excluding optional signatures.
 - semantic_contract_registry_hash must come from shipped identity surfaces, not host-only metadata.
