@@ -9406,6 +9406,70 @@ def _append_dist2_findings(
         )
 
 
+def _append_dist3_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rule_id = "INV-CLEAN-ROOM-MUST-PASS-BEFORE-ARCHIVE"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/release/CLEAN_ROOM_TEST_MODEL.md", "clean-room doctrine is required", rule_id),
+        ("docs/audit/CLEAN_ROOM_win64.md", "clean-room platform report is required", rule_id),
+        ("docs/audit/DIST3_FINAL.md", "DIST-3 final report is required", rule_id),
+        ("data/audit/clean_room_win64.json", "clean-room machine report is required", rule_id),
+        ("tools/dist/clean_room_common.py", "clean-room helper is required", rule_id),
+        ("tools/dist/tool_run_clean_room.py", "clean-room harness tool is required", rule_id),
+        ("tools/auditx/analyzers/e501_portable_root_not_detected_smell.py", "PortableRootNotDetectedSmell analyzer is required", rule_id),
+        ("tools/auditx/analyzers/e502_external_store_access_smell.py", "ExternalStoreAccessSmell analyzer is required", rule_id),
+        ("tools/xstack/testx/tests/dist3_testlib.py", "clean-room TestX helper is required", rule_id),
+        ("tools/xstack/testx/tests/test_clean_room_harness_deterministic_script.py", "clean-room deterministic script TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_clean_room_report_generated.py", "clean-room report generation TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_clean_room_refuses_external_store.py", "clean-room external store refusal TestX coverage is required", rule_id),
+    )
+    for rel_path, message, current_rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=current_rule_id,
+            )
+        )
+
+    try:
+        from tools.dist.clean_room_common import clean_room_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/dist/clean_room_common.py",
+                line_number=1,
+                snippet="clean_room_violations",
+                message="unable to import DIST-3 clean-room checks ({})".format(str(exc)),
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    for violation in clean_room_violations(repo_root, platform_tag="win64"):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "clean-room portability drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or rule_id,
+            )
+        )
+
+
 def _append_ipc_unify_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -33940,6 +34004,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_dist2_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_dist3_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
