@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: RELEASE
-Replacement Target: signed release manifest constitution after RELEASE-2
+Replacement Target: signed release manifest constitution after RELEASE-3
 
 # Release Manifest Model
 
@@ -30,8 +30,8 @@ The release manifest enables:
 ### 1. Content Addressing
 
 - Every artifact entry is content-addressed.
-- `manifest_hash` is the canonical hash of the manifest body with `manifest_hash` and `deterministic_fingerprint` blanked.
-- `deterministic_fingerprint` is the canonical hash of the manifest with `deterministic_fingerprint` blanked after `manifest_hash` is populated.
+- `manifest_hash` is the canonical hash of the manifest body with `manifest_hash`, `deterministic_fingerprint`, and optional `signatures` blanked.
+- `deterministic_fingerprint` is the canonical hash of the manifest with `deterministic_fingerprint` and optional `signatures` blanked after `manifest_hash` is populated.
 
 ### 2. Artifact Coverage
 
@@ -68,7 +68,9 @@ Verification checks:
 - every listed artifact exists
 - content hashes match
 - endpoint descriptors emitted by binaries match recorded descriptor hashes
+- endpoint descriptor build metadata recomputes the recorded `build_id` when sufficient descriptor metadata is present
 - pack compatibility hashes match shipped pack metadata when available
+- optional detached or inline signatures verify deterministically when present
 
 ### 4. Optional Sections
 
@@ -77,6 +79,7 @@ Optional metadata may include:
 - stability tagging report hash
 - regression baseline hashes
 - provisional-stub summaries
+- optional signature blocks for detached/offline verification workflows
 
 Optional metadata must not be required for offline verification unless the referenced artifacts are actually shipped.
 

@@ -22,6 +22,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Verify a RELEASE-1 manifest offline against a distribution directory.")
     parser.add_argument("--dist-root", default="")
     parser.add_argument("--manifest-path", required=True)
+    parser.add_argument("--signature-path", default="")
     parser.add_argument("--repo-root", default="")
     args = parser.parse_args(argv)
 
@@ -33,7 +34,12 @@ def main(argv: list[str] | None = None) -> int:
         dist_root = infer_dist_root_from_manifest_path(manifest_path)
     repo_root = os.path.normpath(os.path.abspath(str(args.repo_root))) if str(args.repo_root).strip() else ""
 
-    report = verify_release_manifest(dist_root, manifest_path, repo_root=repo_root)
+    report = verify_release_manifest(
+        dist_root,
+        manifest_path,
+        repo_root=repo_root,
+        signature_path=str(args.signature_path).strip(),
+    )
     sys.stdout.write(json.dumps(report, indent=2, sort_keys=True))
     sys.stdout.write("\n")
     return 0 if str(report.get("result", "")).strip() == "complete" else 2
