@@ -69,11 +69,31 @@ EXCLUDED_RUNTIME_PREFIXES = (
     "tools/convergence",
     "tools/dist",
     "tools/release",
+    "tools/xstack/auditx",
+    "tools/xstack/controlx",
+    "tools/xstack/core",
+    "tools/xstack/extensions",
+    "tools/xstack/performx",
+    "tools/xstack/securex",
     "tools/xstack/out",
     "tools/xstack/repox",
     "tools/xstack/testx",
 )
 EXCLUDED_RUNTIME_BASENAMES = {"__pycache__"}
+EXCLUDED_RUNTIME_FILES = {
+    "tools/xstack/bundle_list.py",
+    "tools/xstack/bundle_validate.py",
+    "tools/xstack/run.py",
+    "tools/xstack/session_boot.py",
+    "tools/xstack/session_control.py",
+    "tools/xstack/session_create.py",
+    "tools/xstack/session_script_run.py",
+    "tools/xstack/session_server.py",
+    "tools/xstack/session_surface.py",
+    "tools/xstack/srz_status.py",
+    "tools/xstack/testx_all.py",
+    "tools/xstack/ui_bind.py",
+}
 EXCLUDED_DIST_MARKERS = (".git", ".pytest_cache", "__pycache__", "tests", "fixtures", "testdata", "tmp")
 EXCLUDED_FILE_SUFFIXES = (".py", ".pyi", ".pdb", ".log", ".tmp")
 ALLOWED_TOP_LEVEL = {
@@ -161,6 +181,8 @@ def _iter_json_files(root: str) -> list[str]:
 
 def _source_is_excluded(rel_path: str) -> bool:
     token = _norm(rel_path)
+    if token in EXCLUDED_RUNTIME_FILES:
+        return True
     if any(token == prefix or token.startswith(prefix + "/") for prefix in EXCLUDED_RUNTIME_PREFIXES):
         return True
     parts = [part for part in token.split("/") if part]
@@ -187,6 +209,8 @@ def _compile_runtime_tree(repo_root: str, bundle_root: str) -> dict:
             json.dumps(list(EXCLUDED_RUNTIME_PREFIXES)),
             "--excluded-basenames-json",
             json.dumps(sorted(EXCLUDED_RUNTIME_BASENAMES)),
+            "--excluded-files-json",
+            json.dumps(sorted(EXCLUDED_RUNTIME_FILES)),
         ],
         cwd=source_root,
         check=False,
@@ -366,6 +390,16 @@ def _wrapper_script_text(product_spec: Mapping[str, object]) -> str:
             "        return ['verify'] + values[2:]",
             "    return values",
             "",
+            "ROOT_COMMAND_IDS = {'help', 'version', 'descriptor', 'compat-status', 'profiles', 'packs', 'verify', 'diag', 'console'}",
+            "",
+            "def _has_root_command(argv: list[str]) -> bool:",
+            "    for token in list(argv or []):",
+            "        value = str(token).strip()",
+            "        if not value or value.startswith('-'):",
+            "            continue",
+            "        return value in ROOT_COMMAND_IDS",
+            "    return False",
+            "",
             "def _inject_setup_root(argv: list[str]) -> list[str]:",
             "    values = list(argv or [])",
             "    if not values:",
@@ -383,6 +417,8 @@ def _wrapper_script_text(product_spec: Mapping[str, object]) -> str:
             "        values = _inject_setup_root(values)",
             "    prefix = []",
             "    if {}:".format(runtime_defaults),
+            "        if _has_root_command(values):",
+            "            return values",
             "        if not _has_flag(values, '--profile_bundle', '--profile-bundle'):",
             "            prefix.extend(['--profile_bundle', os.path.join(BUNDLE_ROOT, 'store', 'profiles', 'bundles', 'bundle.mvp_default.json')])",
             "        if not _has_flag(values, '--pack_lock', '--pack-lock'):",
