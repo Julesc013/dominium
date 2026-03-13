@@ -9001,6 +9001,77 @@ def _append_repo_layout1_shim_findings(
         )
 
 
+def _append_release_identity_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    wallclock_rule_id = "INV-NO-WALLCLOCK-IN-BUILD_ID"
+    descriptor_rule_id = "INV-ENDPOINT-DESCRIPTOR-INCLUDES-BUILD_ID"
+    artifact_rule_id = "INV-ARTIFACT-IDENTITY-CONTENT-ADDRESSED"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/RELEASE0_RETRO_AUDIT.md", "RELEASE0 retro audit is required", wallclock_rule_id),
+        ("docs/release/RELEASE_IDENTITY_CONSTITUTION.md", "release identity constitution is required", wallclock_rule_id),
+        ("docs/release/ARTIFACT_NAMING_RULES.md", "artifact naming rules are required", artifact_rule_id),
+        ("src/release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
+        ("data/registries/release_channel_registry.json", "release channel registry is required", artifact_rule_id),
+        ("tools/release/release_identity_common.py", "release identity audit helper is required", artifact_rule_id),
+        ("tools/release/tool_run_release_identity.py", "release identity report tool is required", artifact_rule_id),
+        ("tools/auditx/analyzers/e490_wallclock_build_id_smell.py", "WallclockBuildIdSmell analyzer is required", wallclock_rule_id),
+        ("tools/auditx/analyzers/e491_hostname_in_build_id_smell.py", "HostnameInBuildIdSmell analyzer is required", wallclock_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.release.release_identity_common import release_identity_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/release_identity_common.py",
+                line_number=1,
+                snippet="release_identity_violations",
+                message="unable to import release identity checks ({})".format(str(exc)),
+                rule_id=wallclock_rule_id,
+            )
+        )
+        return
+
+    for violation in release_identity_violations(repo_root):
+        row = dict(violation or {})
+        rule_id = str(row.get("rule_id", "")).strip() or wallclock_rule_id
+        if rule_id not in {wallclock_rule_id, descriptor_rule_id, artifact_rule_id}:
+            if "descriptor" in str(row.get("code", "")).lower():
+                rule_id = descriptor_rule_id
+            elif "artifact" in str(row.get("code", "")).lower() or "channel" in str(row.get("code", "")).lower():
+                rule_id = artifact_rule_id
+            else:
+                rule_id = wallclock_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "release identity drift detected",
+                rule_id=rule_id,
+            )
+        )
+
+
 def _append_ipc_unify_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -33425,6 +33496,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_repo_layout1_shim_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_release_identity_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
