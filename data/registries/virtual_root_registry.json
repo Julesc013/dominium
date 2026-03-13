@@ -20,10 +20,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "efd89998ef88dcad9cd933e8e0fd5d5b42fe13df4d7f34eb4989874a9038d619"
+        "deterministic_fingerprint": "4713d73ca876252b217533ac11d7439dd0a194d52c096c051e14dd9c44fa7686"
       },
       {
         "vroot_id": "VROOT_EXPORTS",
@@ -40,10 +40,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "8a9a5b3a039b54d29e32358506112494daf88f33171b3556df1a551b1ce30957"
+        "deterministic_fingerprint": "9772451650637a2ea70da45e5bbcb60bb212ef2e567127039b98be1b4d4796d1"
       },
       {
         "vroot_id": "VROOT_INSTALL",
@@ -60,10 +60,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "13e3b7b8d2a29997e9f34b5dc8ac41f34a91151f1fc9e52f213b2d2da7d7dfc5"
+        "deterministic_fingerprint": "c39508ae849fb4769dbbd8811de9f56ccc36e27c934e9a902de4df912c48bc34"
       },
       {
         "vroot_id": "VROOT_INSTANCES",
@@ -80,10 +80,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "2d6241a0eb2faaf5f2b78f41975713c45692d9a3270f9a5d6114dc0d4ed3b6a0"
+        "deterministic_fingerprint": "c114a8b8692605acadd400538b9ceab4b08a4d64806515ee49ca9972d85fb806"
       },
       {
         "vroot_id": "VROOT_IPC",
@@ -100,10 +100,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "ec94cfddc2875dcf7dbb7657b5f1d5e4db6bda39f54bfecc5c25ea2570967f69"
+        "deterministic_fingerprint": "068ab0d8b59808d13bc151b76e55ee5c33603b3bc3393c9b8c098736a8a7863c"
       },
       {
         "vroot_id": "VROOT_LOCKS",
@@ -120,10 +120,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "1c28660abc0e42c250ce924300d5960eca06443edaf7851d6619d9cb70d4e683"
+        "deterministic_fingerprint": "76fb3da55d6124d5c1cf8c52b9da68fa762117c485f17287eee511b7b5363f67"
       },
       {
         "vroot_id": "VROOT_LOGS",
@@ -140,10 +140,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "c74529f713ff8071f00de08fd0307776e6e6226f5841b0f1318b9409b0ebc5c1"
+        "deterministic_fingerprint": "cff1ffa1dcb394a2f0498b54ce25acbd63a411ec3522893196c1b3ce2b3b9988"
       },
       {
         "vroot_id": "VROOT_PACKS",
@@ -160,10 +160,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "05f484a0a724fd0966f03389d2f38ddd7783853327cbe8bb1b07a6c5bc7974f8"
+        "deterministic_fingerprint": "f4449941df2395a8383508a170b3e41659c4d28f25f95631ffe2c66a557a4230"
       },
       {
         "vroot_id": "VROOT_PROFILES",
@@ -180,10 +180,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "f5bab656a95a8f70a08e220c21e13f660246f7d994ec82fd4b7d420373a917ea"
+        "deterministic_fingerprint": "adce6d1b302a84b6b1931099605003f149962092ec4ee561b0dfea39aa53047c"
       },
       {
         "vroot_id": "VROOT_SAVES",
@@ -200,10 +200,10 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "f7707e25a2c906dc46d4fca17cc2b6e0644c147efe9fb18c1ece1488a268fe4e"
+        "deterministic_fingerprint": "f2811f3e97ba0c12eacefec7c27c896fa9b6250265fa2e3b4449a67fab1afdd0"
       },
       {
         "vroot_id": "VROOT_STORE",
@@ -220,12 +220,12 @@
           "future_series": "LIB/APPSHELL",
           "replacement_target": "release-pinned virtual path contract and install discovery registry",
           "contract_id": "",
-          "deterministic_fingerprint": "17d2d3e6ecfbf7ea6f796d144390a6196088d57710f9ca0c221fcabf1f45f0f8",
+          "deterministic_fingerprint": "74af1e72d562f4ee0d0cf648aa7607f57253ca37eecd5727d3881572ab0cd313",
           "extensions": {}
         },
-        "deterministic_fingerprint": "e1093d6dcb31caa9d910dc9827707513177fb277fc0cbd51e8ddf310f6f6b9fb"
+        "deterministic_fingerprint": "11ffeb6712357a5f8a11ece740072743760aa2f9128a529971d4f8dd8828386a"
       }
     ],
-    "deterministic_fingerprint": "581006f294212c0bbe91559b164955123a1e7e23ad669000298d4ad4c9e73ed3"
+    "deterministic_fingerprint": "ea5f02f7a244f4d461e45547460d1209a6b40fcf7bddfbe1015cfe8d953b455b"
   }
 }

@@ -1093,6 +1093,12 @@ INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
 INSTALL_DISCOVERY_REPORT_PATH = "data/audit/install_discovery_report.json"
+PRODUCT_BOOT_MATRIX_DOC_PATH = "docs/mvp/PRODUCT_BOOT_MATRIX.md"
+PRODUCT_BOOT_MATRIX_TOOL_PATH = "tools/mvp/tool_run_product_boot_matrix.py"
+PRODUCT_BOOT_MATRIX_COMMON_PATH = "tools/mvp/prod_gate0_common.py"
+PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
+PRODUCT_BOOT_MATRIX_JSON_PATH = "data/audit/product_boot_matrix.json"
+PROD_GATE_FINAL_PATH = "docs/audit/PROD_GATE_FINAL.md"
 SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
 SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
@@ -8779,6 +8785,110 @@ def _append_install_discovery_findings(
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "install discovery violation detected",
                 rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-INSTALL-DISCOVERY-REQUIRED",
+            )
+        )
+
+
+def _append_prod_gate0_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rule_id = "INV-PROD-GATE-0-MUST-PASS-BEFORE-RELEASE"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (PRODUCT_BOOT_MATRIX_DOC_PATH, "product boot matrix doctrine is required", rule_id),
+        (PRODUCT_BOOT_MATRIX_TOOL_PATH, "product boot matrix runner is required", rule_id),
+        (PRODUCT_BOOT_MATRIX_COMMON_PATH, "product boot matrix helper module is required", rule_id),
+        (PRODUCT_BOOT_MATRIX_REPORT_PATH, "product boot matrix report is required", rule_id),
+        (PRODUCT_BOOT_MATRIX_JSON_PATH, "product boot matrix machine-readable report is required", rule_id),
+        (PROD_GATE_FINAL_PATH, "PROD gate final report is required", rule_id),
+        ("tools/auditx/analyzers/e485_product_standalone_failure_smell.py", "ProductStandaloneFailureSmell analyzer is required", rule_id),
+        ("tools/xstack/testx/tests/prod_gate0_testlib.py", "product boot matrix TestX helper is required", rule_id),
+        ("tools/xstack/testx/tests/test_boot_matrix_tool_deterministic.py", "product boot matrix determinism TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_each_product_emits_descriptor.py", "descriptor coverage TestX is required", rule_id),
+        ("tools/xstack/testx/tests/test_mode_selection_matches_matrix.py", "mode selection matrix TestX is required", rule_id),
+        ("tools/xstack/testx/tests/test_ipc_attach_smoke_when_supported.py", "IPC attach smoke TestX is required", rule_id),
+    )
+    for rel_path, message, current_rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=current_rule_id,
+            )
+        )
+
+    matrix_text = _file_text(repo_root, PRODUCT_BOOT_MATRIX_DOC_PATH).lower()
+    for token, message in (
+        ("# product boot matrix", "product boot matrix doc must declare the canonical title"),
+        ("portable invocation", "product boot matrix doc must include portable invocation guidance"),
+        ("installed invocation", "product boot matrix doc must include installed invocation guidance"),
+        ("expected refusal codes", "product boot matrix doc must include refusal expectations"),
+    ):
+        if token in matrix_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=PRODUCT_BOOT_MATRIX_DOC_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    final_text = _file_text(repo_root, PROD_GATE_FINAL_PATH).lower()
+    for token, message in (
+        ("# prod gate final", "PROD gate final report must declare the canonical title"),
+        ("## pass/fail by product", "PROD gate final report must summarize product pass/fail state"),
+        ("## mode selections observed", "PROD gate final report must summarize observed mode selections"),
+        ("## degradations observed", "PROD gate final report must summarize degradations"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=PROD_GATE_FINAL_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.mvp.prod_gate0_common import product_boot_matrix_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=PRODUCT_BOOT_MATRIX_COMMON_PATH,
+                line_number=1,
+                snippet="product_boot_matrix_violations",
+                message="unable to import product boot matrix checks ({})".format(str(exc)),
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    for violation in product_boot_matrix_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "product boot matrix drift detected",
+                rule_id=rule_id,
             )
         )
 
@@ -33091,6 +33201,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_install_discovery_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_prod_gate0_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
