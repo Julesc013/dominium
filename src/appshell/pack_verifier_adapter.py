@@ -28,6 +28,12 @@ def verify_pack_root(
         target_root = vpath_root(VROOT_STORE, context)
     else:
         target_root = os.path.normpath(os.path.abspath(os.path.join(repo_root, "dist")))
+    packs_root_rel = "packs"
+    bundles_root_rel = "bundles"
+    if os.path.isdir(os.path.join(target_root, "store", "packs")):
+        packs_root_rel = "store/packs"
+    if os.path.isdir(os.path.join(target_root, "store", "bundles")):
+        bundles_root_rel = "store/bundles"
     schema_root = target_root if os.path.isdir(os.path.join(target_root, "schemas")) else repo_root
     result = verify_pack_set(
         repo_root=target_root,
@@ -35,6 +41,8 @@ def verify_pack_root(
         mod_policy_id=str(mod_policy_id).strip() or "mod_policy.lab",
         overlay_conflict_policy_id=str(overlay_conflict_policy_id).strip(),
         schema_repo_root=schema_root,
+        packs_root_rel=packs_root_rel,
+        bundles_root_rel=bundles_root_rel,
         universe_contract_bundle_path=str(contract_bundle_path).strip(),
     )
     if bool(write_outputs) and str(result.get("result", "")) == "complete":
@@ -49,6 +57,8 @@ def verify_pack_root(
     return {
         "result": str(result.get("result", "refused")),
         "dist_root": target_root.replace("\\", "/"),
+        "packs_root_rel": packs_root_rel,
+        "bundles_root_rel": bundles_root_rel,
         "report": dict(result.get("report") or {}),
         "pack_lock": dict(result.get("pack_lock") or {}),
         "warnings": list(result.get("warnings") or []),

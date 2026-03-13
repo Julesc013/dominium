@@ -17,10 +17,11 @@ if REPO_ROOT_HINT not in sys.path:
 
 from src.appshell import appshell_main  # noqa: E402
 from src.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
-from src.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
+from src.appshell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
 from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
 from src.lib.install import default_install_registry_path, discover_install  # noqa: E402
 from src.release import DEFAULT_RELEASE_MANIFEST_REL, load_release_manifest  # noqa: E402
+from src.ui.ui_model import discover_instance_menu_entries  # noqa: E402
 
 
 def _norm(path: str) -> str:
@@ -103,6 +104,21 @@ def _find_dist_roots(root: str) -> List[str]:
             if os.path.isfile(os.path.join(candidate, "manifest.json")):
                 out.append(candidate)
     return sorted(set(out))
+
+
+def _default_dist_root(repo_root: str, raw_dist_root: str) -> str:
+    token = str(raw_dist_root or "").strip()
+    if token and token != "dist":
+        return token
+    repo_root_abs = _repo_root(repo_root)
+    context = get_current_virtual_paths()
+    if context is not None and str(context.get("result", "")).strip() == "complete":
+        install_root = str((dict(context.get("roots") or {})).get(VROOT_INSTALL, "")).strip()
+        if install_root and os.path.isfile(os.path.join(install_root, DEFAULT_RELEASE_MANIFEST_REL)):
+            return install_root
+    if os.path.isfile(os.path.join(repo_root_abs, DEFAULT_RELEASE_MANIFEST_REL)):
+        return repo_root_abs
+    return "dist"
 
 
 def _list_saves(repo_root: str, saves_root: str) -> List[dict]:
@@ -280,6 +296,23 @@ def cmd_list_saves(repo_root: str, saves_root: str) -> Dict[str, object]:
     }
 
 
+def cmd_instances_list(repo_root: str) -> Dict[str, object]:
+    rows = []
+    for row in discover_instance_menu_entries(repo_root):
+        item = dict(row or {})
+        details = dict(item.get("details") or {})
+        rows.append(
+            {
+                "instance_id": str(item.get("item_id", "")).strip(),
+                "manifest_ref": str(details.get("manifest_ref", "")).strip(),
+                "instance_kind": str(details.get("instance_kind", "")).strip(),
+                "save_ref_count": int(details.get("save_ref_count", 0) or 0),
+                "ui_mode_default": str(details.get("ui_mode_default", "")).strip(),
+            }
+        )
+    return {"result": "complete", "instances": rows}
+
+
 def cmd_install_status(repo_root: str, install_root: str, install_id: str, registry_path: str) -> Dict[str, object]:
     raw_args: List[str] = []
     if str(install_root or "").strip():
@@ -316,7 +349,8 @@ def cmd_run(
     from tools.xstack.sessionx.script_runner import run_intent_script
     from tools.xstack.sessionx.server_gate import server_validate_transition
 
-    dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, dist_root))) if not os.path.isabs(dist_root) else os.path.normpath(dist_root)
+    resolved_dist_root = _default_dist_root(repo_root, dist_root)
+    dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, resolved_dist_root))) if not os.path.isabs(resolved_dist_root) else os.path.normpath(resolved_dist_root)
     dist_check = validate_dist_layout(repo_root=repo_root, dist_root=dist_abs)
     if dist_check.get("result") != "complete":
         return dist_check
@@ -455,7 +489,8 @@ def cmd_compat_status(
     overlay_conflict_policy_id: str,
     contract_bundle_path: str,
 ) -> Dict[str, object]:
-    dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, dist_root))) if not os.path.isabs(dist_root) else os.path.normpath(dist_root)
+    resolved_dist_root = _default_dist_root(repo_root, dist_root)
+    dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, resolved_dist_root))) if not os.path.isabs(resolved_dist_root) else os.path.normpath(resolved_dist_root)
     release_manifest = {}
     release_manifest_path = os.path.join(dist_abs, DEFAULT_RELEASE_MANIFEST_REL)
     if os.path.isfile(release_manifest_path):
@@ -546,8 +581,6 @@ def cmd_create_session(
 
 
 def _legacy_main(argv: list[str] | None = None) -> int:
-    defaults = _launcher_defaults()
-
     parser = argparse.ArgumentParser(description="Launch deterministic lab sessions from dist bundles.")
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--descriptor", action="store_true")
@@ -559,6 +592,10 @@ def _legacy_main(argv: list[str] | None = None) -> int:
 
     list_saves = sub.add_parser("list-saves", help="List available session saves")
     list_saves.add_argument("--saves-root", default="saves")
+
+    instances_cmd = sub.add_parser("instances", help="Inspect deterministic launcher instance state")
+    instances_sub = instances_cmd.add_subparsers(dest="instances_cmd")
+    instances_sub.add_parser("list", help="List available instance manifests")
 
     run_cmd = sub.add_parser("run", help="Validate dist + session and launch headless client")
     run_cmd.add_argument("--dist", default="dist")
@@ -578,15 +615,15 @@ def _legacy_main(argv: list[str] | None = None) -> int:
 
     create_cmd = sub.add_parser("create-session", help="Create SessionSpec through launcher surface with declared pipeline_id")
     create_cmd.add_argument("--save-id", required=True)
-    create_cmd.add_argument("--bundle", default=defaults["DEFAULT_BUNDLE_ID"])
-    create_cmd.add_argument("--pipeline-id", default=defaults["DEFAULT_PIPELINE_ID"])
-    create_cmd.add_argument("--scenario-id", default=defaults["DEFAULT_SCENARIO_ID"])
-    create_cmd.add_argument("--experience-id", default=defaults["DEFAULT_EXPERIENCE_ID"])
-    create_cmd.add_argument("--law-profile-id", default=defaults["DEFAULT_LAW_PROFILE_ID"])
-    create_cmd.add_argument("--parameter-bundle-id", default=defaults["DEFAULT_PARAMETER_BUNDLE_ID"])
-    create_cmd.add_argument("--budget-policy-id", default=defaults["DEFAULT_BUDGET_POLICY_ID"])
-    create_cmd.add_argument("--fidelity-policy-id", default=defaults["DEFAULT_FIDELITY_POLICY_ID"])
-    create_cmd.add_argument("--privilege-level", default=defaults["DEFAULT_PRIVILEGE_LEVEL"], choices=("observer", "operator", "system"))
+    create_cmd.add_argument("--bundle", default="")
+    create_cmd.add_argument("--pipeline-id", default="")
+    create_cmd.add_argument("--scenario-id", default="")
+    create_cmd.add_argument("--experience-id", default="")
+    create_cmd.add_argument("--law-profile-id", default="")
+    create_cmd.add_argument("--parameter-bundle-id", default="")
+    create_cmd.add_argument("--budget-policy-id", default="")
+    create_cmd.add_argument("--fidelity-policy-id", default="")
+    create_cmd.add_argument("--privilege-level", default="", choices=("", "observer", "operator", "system"))
     create_cmd.add_argument("--compile-outputs", default="on", choices=("on", "off"))
 
     install_cmd = sub.add_parser("install", help="Inspect deterministic install discovery state")
@@ -611,6 +648,8 @@ def _legacy_main(argv: list[str] | None = None) -> int:
         result = cmd_list_builds(repo_root=repo_root, root=str(args.root))
     elif args.cmd == "list-saves":
         result = cmd_list_saves(repo_root=repo_root, saves_root=str(args.saves_root))
+    elif args.cmd == "instances" and str(getattr(args, "instances_cmd", "")).strip() == "list":
+        result = cmd_instances_list(repo_root=repo_root)
     elif args.cmd == "run":
         result = cmd_run(
             repo_root=repo_root,
@@ -632,18 +671,19 @@ def _legacy_main(argv: list[str] | None = None) -> int:
             contract_bundle_path=str(args.contract_bundle_path),
         )
     elif args.cmd == "create-session":
+        defaults = _launcher_defaults()
         result = cmd_create_session(
             repo_root=repo_root,
             save_id=str(args.save_id),
-            bundle_id=str(args.bundle),
-            pipeline_id=str(args.pipeline_id),
-            scenario_id=str(args.scenario_id),
-            experience_id=str(args.experience_id),
-            law_profile_id=str(args.law_profile_id),
-            parameter_bundle_id=str(args.parameter_bundle_id),
-            budget_policy_id=str(args.budget_policy_id),
-            fidelity_policy_id=str(args.fidelity_policy_id),
-            privilege_level=str(args.privilege_level),
+            bundle_id=str(args.bundle or defaults["DEFAULT_BUNDLE_ID"]),
+            pipeline_id=str(args.pipeline_id or defaults["DEFAULT_PIPELINE_ID"]),
+            scenario_id=str(args.scenario_id or defaults["DEFAULT_SCENARIO_ID"]),
+            experience_id=str(args.experience_id or defaults["DEFAULT_EXPERIENCE_ID"]),
+            law_profile_id=str(args.law_profile_id or defaults["DEFAULT_LAW_PROFILE_ID"]),
+            parameter_bundle_id=str(args.parameter_bundle_id or defaults["DEFAULT_PARAMETER_BUNDLE_ID"]),
+            budget_policy_id=str(args.budget_policy_id or defaults["DEFAULT_BUDGET_POLICY_ID"]),
+            fidelity_policy_id=str(args.fidelity_policy_id or defaults["DEFAULT_FIDELITY_POLICY_ID"]),
+            privilege_level=str(args.privilege_level or defaults["DEFAULT_PRIVILEGE_LEVEL"]),
             compile_outputs=str(args.compile_outputs).strip().lower() != "off",
         )
     elif args.cmd == "install" and str(getattr(args, "install_cmd", "")).strip() == "status":
