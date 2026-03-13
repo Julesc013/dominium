@@ -36,6 +36,7 @@ from src.compat import (
 from src.lib.install import (
     build_product_build_descriptor,
     default_install_registry_path,
+    discover_install,
     deterministic_fingerprint as install_deterministic_fingerprint,
     load_install_registry,
     merge_contract_ranges,
@@ -1534,6 +1535,35 @@ def handle_install_registry(args: argparse.Namespace) -> int:
     registry_path = normalize_path(getattr(args, "registry_path", "") or default_install_registry_path(REPO_ROOT_HINT))
     cmd = str(getattr(args, "registry_cmd", "") or "").strip().lower()
     target = str(getattr(args, "registry_target", "") or "").strip()
+    install_id = str(getattr(args, "install_id", "") or "").strip() or target
+
+    if cmd == "status":
+        raw_args: List[str] = []
+        if getattr(args, "install_root", ""):
+            raw_args.extend(["--install-root", str(getattr(args, "install_root", "")).strip()])
+        if install_id:
+            raw_args.extend(["--install-id", install_id])
+        if getattr(args, "registry_path", ""):
+            raw_args.extend(["--install-registry-path", str(getattr(args, "registry_path", "")).strip()])
+        result = discover_install(
+            raw_args=raw_args,
+            executable_path=os.path.abspath(sys.argv[0]),
+            cwd=os.getcwd(),
+            env=os.environ,
+        )
+        write_output(
+            {
+                "result": str(result.get("result", "")).strip() or "refused",
+                "message": "install discovery status",
+                "details": {
+                    "product_id": "setup",
+                    "default_registry_path": registry_path,
+                    "install_discovery": result,
+                },
+            },
+            args.format,
+        )
+        return EXIT_OK if str(result.get("result", "")).strip() == "complete" else EXIT_REFUSED
 
     if cmd == "list":
         registry = load_install_registry(registry_path)
@@ -1549,7 +1579,7 @@ def handle_install_registry(args: argparse.Namespace) -> int:
         )
         return EXIT_OK
 
-    if cmd == "add":
+    if cmd in {"add", "register"}:
         if not target:
             refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "install path is required", {})
             output_refusal("missing install path", refusal, args.format)
@@ -1579,18 +1609,18 @@ def handle_install_registry(args: argparse.Namespace) -> int:
         )
         return EXIT_OK
 
-    if cmd == "remove":
-        if not target:
+    if cmd in {"remove", "unregister"}:
+        if not install_id:
             refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "install_id is required", {})
             output_refusal("missing install_id", refusal, args.format)
             return EXIT_REFUSED
-        result = registry_remove_install(registry_path=registry_path, install_id=target)
+        result = registry_remove_install(registry_path=registry_path, install_id=install_id)
         output_ok(
             "install registry remove ok",
             {
                 "details": {
                     "registry_path": registry_path,
-                    "install_id": target,
+                    "install_id": install_id,
                     "removed": bool(result.get("removed", False)),
                 }
             },
@@ -1978,9 +2008,10 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     manifest_validate.add_argument("--json", action="store_true")
 
     install_cmd = sub.add_parser("install")
-    install_cmd.add_argument("registry_cmd", nargs="?", choices=["list", "add", "remove", "verify"])
+    install_cmd.add_argument("registry_cmd", nargs="?", choices=["list", "add", "remove", "verify", "register", "unregister", "status"])
     install_cmd.add_argument("registry_target", nargs="?")
     install_cmd.add_argument("--registry-path", dest="registry_path", default="")
+    install_cmd.add_argument("--install-id", dest="install_id", default="")
     install_cmd.add_argument("--manifest", required=False)
     install_cmd.add_argument("--op", default="install")
     install_cmd.add_argument("--scope", default="portable")
@@ -2250,8 +2281,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     def appshell_product_bootstrap(context: dict) -> int:
-        delegate_argv = ["--repo-root", str(context.get("repo_root", ".")).replace("/", "\\")]
-        delegate_argv.extend(list(context.get("delegate_argv") or []))
+        delegate_argv = list(context.get("delegate_argv") or [])
         return _legacy_main(delegate_argv)
 
     return appshell_main(

@@ -1,0 +1,124 @@
+{
+  "deterministic_fingerprint": "4afc477d3fbc0075b54b944e98a34c12956327d2876630476e14baa544e4d489",
+  "discovery_order": [
+    "1. explicit CLI: --install-root or --install-id",
+    "2. portable adjacency: <exe_dir>/install.manifest.json",
+    "3. environment override: DOMINIUM_INSTALL_ROOT or DOMINIUM_INSTALL_ID",
+    "4. installed registry: install_registry.json from user config or platform default location",
+    "5. refusal: refusal.install.not_found"
+  ],
+  "integration_rows": [
+    {
+      "file_path": "src/lib/install/install_discovery_engine.py",
+      "markers": [
+        "discover_install(",
+        "REFUSAL_INSTALL_NOT_FOUND",
+        "portable_manifest"
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "install_discovery_engine"
+    },
+    {
+      "file_path": "src/appshell/paths/virtual_paths.py",
+      "markers": [
+        "discover_install(",
+        "\"install_discovery\": {",
+        "REFUSAL_INSTALL_NOT_FOUND"
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "virtual_paths"
+    },
+    {
+      "file_path": "src/appshell/bootstrap.py",
+      "markers": [
+        "compat.install_selected",
+        "refusal.install.not_found",
+        "_allow_install_refusal_cli"
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "appshell_bootstrap"
+    },
+    {
+      "file_path": "src/appshell/commands/command_engine.py",
+      "markers": [
+        "status_payload[\"install_discovery\"]"
+      ],
+      "matched_marker_count": 1,
+      "required_marker_count": 1,
+      "status": "integrated",
+      "surface": "compat_status"
+    },
+    {
+      "file_path": "tools/setup/setup_cli.py",
+      "markers": [
+        "cmd == \"status\"",
+        "discover_install(",
+        "\"register\", \"unregister\", \"status\""
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "setup_install_commands"
+    },
+    {
+      "file_path": "tools/launcher/launch.py",
+      "markers": [
+        "cmd_install_status(",
+        "install_sub = install_cmd.add_subparsers",
+        "discover_install("
+      ],
+      "matched_marker_count": 3,
+      "required_marker_count": 3,
+      "status": "integrated",
+      "surface": "launcher_install_commands"
+    }
+  ],
+  "manifest_absolute_path_violations": [],
+  "metrics": {
+    "integration_remaining_count": 0,
+    "integration_target_count": 6,
+    "manifest_violation_count": 0
+  },
+  "refusal_codes": [
+    "refusal.install.not_found"
+  ],
+  "report_id": "install.discovery.v1",
+  "result": "complete",
+  "sample_rows": {
+    "explicit": {
+      "mode": "explicit",
+      "refusal_code": "",
+      "resolution_source": "cli_install_root",
+      "resolved_install_id": "install.explicit",
+      "result": "complete"
+    },
+    "installed": {
+      "mode": "installed",
+      "refusal_code": "",
+      "resolution_source": "installed_registry_single",
+      "resolved_install_id": "install.registered",
+      "result": "complete"
+    },
+    "portable": {
+      "mode": "portable",
+      "refusal_code": "",
+      "resolution_source": "portable_manifest",
+      "resolved_install_id": "install.portable",
+      "result": "complete"
+    },
+    "refused": {
+      "mode": "",
+      "refusal_code": "refusal.install.not_found",
+      "resolution_source": "",
+      "resolved_install_id": "",
+      "result": "refused"
+    }
+  },
+  "violations": []
+}

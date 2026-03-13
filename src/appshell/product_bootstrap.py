@@ -335,6 +335,7 @@ def build_product_bootstrap_context(
         "compatibility_mode_id": _token(mode_selection.get("compatibility_mode_id")) or "compat.full",
         "degrade_chain": [dict(row) for row in list(mode_selection.get("degrade_chain") or []) if isinstance(row, Mapping)],
     }
+    active_vpaths = get_current_virtual_paths() or {}
     context = {
         "bootstrap_plan_id": "appshell.bootstrap.v1",
         "product_id": product_token,
@@ -381,9 +382,19 @@ def build_product_bootstrap_context(
             _value_after(shell_args.raw_args, "--install-root", "--manifest", "--instance-manifest", "--instance-id")
         ),
         "virtual_paths": {
-            "result": _token((get_current_virtual_paths() or {}).get("result")),
-            "resolution_source": _token((get_current_virtual_paths() or {}).get("resolution_source")),
-            "roots": dict((get_current_virtual_paths() or {}).get("roots") or {}),
+            "result": _token(active_vpaths.get("result")),
+            "resolution_source": _token(active_vpaths.get("resolution_source")),
+            "roots": dict(active_vpaths.get("roots") or {}),
+        },
+        "install_discovery": {
+            "result": _token((dict(active_vpaths.get("install_discovery") or {})).get("result")),
+            "refusal_code": _token((dict(active_vpaths.get("install_discovery") or {})).get("refusal_code")),
+            "mode": _token((dict(active_vpaths.get("install_discovery") or {})).get("mode")),
+            "resolution_source": _token((dict(active_vpaths.get("install_discovery") or {})).get("resolution_source")),
+            "resolved_install_id": _token((dict(active_vpaths.get("install_discovery") or {})).get("resolved_install_id")),
+            "resolved_install_root_path": _token((dict(active_vpaths.get("install_discovery") or {})).get("resolved_install_root_path")),
+            "install_manifest_path": _token((dict(active_vpaths.get("install_discovery") or {})).get("install_manifest_path")),
+            "install_registry_path": _token((dict(active_vpaths.get("install_discovery") or {})).get("install_registry_path")),
         },
         "deterministic_fingerprint": "",
     }

@@ -6,7 +6,7 @@ Replacement Target: release-pinned install discovery and virtual root contract
 
 # Virtual Paths Baseline
 
-Fingerprint: `0ed9594f29fb2b1d094a7c37dc89c24f94b7806de22648344fb7b8708b30afd4`
+Fingerprint: `035898f504e80489de4423dbaea083b9c12e414c549a9d359ed7914a77405193`
 
 ## Roots Table
 
@@ -27,9 +27,11 @@ Fingerprint: `0ed9594f29fb2b1d094a7c37dc89c24f94b7806de22648344fb7b8708b30afd4`
 ## Resolution Order
 
 - 1. explicit CLI overrides: --root, --store-root, or per-vroot overrides
-- 2. portable mode: install.manifest.json adjacent to the product binary
-- 3. installed registry mode: install_registry.json entry resolved by install_id
-- 4. refusal: refusal.paths.no_install_root when no governed root can be discovered
+- 2. install discovery explicit CLI: --install-root or --install-id
+- 3. install discovery portable mode: install.manifest.json adjacent to the product binary
+- 4. install discovery environment override: DOMINIUM_INSTALL_ROOT or DOMINIUM_INSTALL_ID
+- 5. install discovery installed registry mode: install_registry.json entry resolved by executable match or install_id
+- 6. refusal: refusal.install.not_found when no governed install root can be discovered
 
 ## Repo Wrapper Projection
 
@@ -81,18 +83,18 @@ Fingerprint: `0ed9594f29fb2b1d094a7c37dc89c24f94b7806de22648344fb7b8708b30afd4`
 
 | Classification | File | Line |
 | --- | --- | --- |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `269` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `286` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `270` |
 | `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `287` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `314` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `288` |
 | `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `315` |
 | `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `316` |
 | `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `317` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `1196` |
-| `shim` | `src/appshell/commands/command_engine.py` | `353` |
-| `shim` | `src/appshell/commands/command_engine.py` | `358` |
-| `shim` | `src/appshell/commands/command_engine.py` | `401` |
-| `shim` | `src/appshell/commands/command_engine.py` | `402` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `318` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `1197` |
+| `shim` | `src/appshell/commands/command_engine.py` | `371` |
+| `shim` | `src/appshell/commands/command_engine.py` | `376` |
+| `shim` | `src/appshell/commands/command_engine.py` | `419` |
+| `shim` | `src/appshell/commands/command_engine.py` | `420` |
 | `shim` | `src/appshell/config_loader.py` | `47` |
 | `shim` | `src/appshell/config_loader.py` | `48` |
 | `shim` | `src/appshell/config_loader.py` | `82` |
@@ -108,6 +110,6 @@ Fingerprint: `0ed9594f29fb2b1d094a7c37dc89c24f94b7806de22648344fb7b8708b30afd4`
 
 ## Integration Coverage Report
 
-- Path resolution is centralized in `src/appshell/paths/virtual_paths.py`.
-- AppShell now refuses launches that do not resolve a governed install root.
+- Path resolution is centralized in `src/appshell/paths/virtual_paths.py` after install discovery is resolved by `src/lib/install/install_discovery_engine.py`.
+- AppShell now refuses launches that do not resolve a governed install root with `refusal.install.not_found`.
 - Remaining path literals are limited to explicit shims and packaging-layout builders, not authoritative runtime root discovery.

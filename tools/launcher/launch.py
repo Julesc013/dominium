@@ -19,6 +19,7 @@ from src.appshell import appshell_main  # noqa: E402
 from src.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
 from src.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
 from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
+from src.lib.install import default_install_registry_path, discover_install  # noqa: E402
 
 
 def _norm(path: str) -> str:
@@ -275,6 +276,27 @@ def cmd_list_saves(repo_root: str, saves_root: str) -> Dict[str, object]:
     return {
         "result": "complete",
         "saves": _list_saves(repo_root, saves_root),
+    }
+
+
+def cmd_install_status(repo_root: str, install_root: str, install_id: str, registry_path: str) -> Dict[str, object]:
+    raw_args: List[str] = []
+    if str(install_root or "").strip():
+        raw_args.extend(["--install-root", str(install_root).strip()])
+    if str(install_id or "").strip():
+        raw_args.extend(["--install-id", str(install_id).strip()])
+    if str(registry_path or "").strip():
+        raw_args.extend(["--install-registry-path", str(registry_path).strip()])
+    result = discover_install(
+        raw_args=raw_args,
+        executable_path=os.path.abspath(sys.argv[0]),
+        cwd=os.getcwd(),
+        env=os.environ,
+    )
+    return {
+        "result": str(result.get("result", "")).strip() or "refused",
+        "default_registry_path": default_install_registry_path(repo_root),
+        "install_discovery": result,
     }
 
 
@@ -550,6 +572,13 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     create_cmd.add_argument("--privilege-level", default=defaults["DEFAULT_PRIVILEGE_LEVEL"], choices=("observer", "operator", "system"))
     create_cmd.add_argument("--compile-outputs", default="on", choices=("on", "off"))
 
+    install_cmd = sub.add_parser("install", help="Inspect deterministic install discovery state")
+    install_sub = install_cmd.add_subparsers(dest="install_cmd")
+    install_status = install_sub.add_parser("status", help="Show the resolved install root or refusal details")
+    install_status.add_argument("--install-root", default="")
+    install_status.add_argument("--install-id", default="")
+    install_status.add_argument("--registry-path", default="")
+
     args = parser.parse_args(argv)
     repo_root = _repo_root(args.repo_root)
     if bool(args.descriptor) or str(args.descriptor_file or "").strip():
@@ -600,6 +629,13 @@ def _legacy_main(argv: list[str] | None = None) -> int:
             privilege_level=str(args.privilege_level),
             compile_outputs=str(args.compile_outputs).strip().lower() != "off",
         )
+    elif args.cmd == "install" and str(getattr(args, "install_cmd", "")).strip() == "status":
+        result = cmd_install_status(
+            repo_root=repo_root,
+            install_root=str(getattr(args, "install_root", "")).strip(),
+            install_id=str(getattr(args, "install_id", "")).strip(),
+            registry_path=str(getattr(args, "registry_path", "")).strip(),
+        )
     else:
         parser.print_help()
         return 2
@@ -617,7 +653,7 @@ def appshell_product_bootstrap(context: dict) -> int:
 def main(argv: list[str] | None = None) -> int:
     return appshell_main(
         product_id="launcher",
-        argv=argv,
+        argv=list(sys.argv[1:] if argv is None else argv),
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
     )

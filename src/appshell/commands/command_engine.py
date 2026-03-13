@@ -283,6 +283,7 @@ def _run_compat_status_command(repo_root: str, product_id: str, mode_id: str, ar
         "endpoint_b_hash": str(negotiated.get("endpoint_b_hash", "")).strip(),
     }
     mode_selection = dict(get_current_ui_mode_selection() or {})
+    vpath_context = dict(get_current_virtual_paths() or {})
     status_payload["mode_selection"] = {
         "requested_mode_id": str(mode_selection.get("requested_mode_id", "")).strip(),
         "selected_mode_id": str(mode_selection.get("selected_mode_id", "")).strip() or str(mode_id).strip(),
@@ -290,6 +291,23 @@ def _run_compat_status_command(repo_root: str, product_id: str, mode_id: str, ar
         "context_kind": str(mode_selection.get("context_kind", "")).strip(),
         "compatibility_mode_id": str(mode_selection.get("compatibility_mode_id", "")).strip() or "compat.full",
         "degrade_chain": list(mode_selection.get("degrade_chain") or []),
+    }
+    install_discovery = dict(vpath_context.get("install_discovery") or {})
+    status_payload["install_discovery"] = {
+        "result": str(install_discovery.get("result", "")).strip() or str(vpath_context.get("result", "")).strip(),
+        "refusal_code": str(install_discovery.get("refusal_code", "")).strip() or str(vpath_context.get("refusal_code", "")).strip(),
+        "mode": str(install_discovery.get("mode", "")).strip(),
+        "resolution_source": str(install_discovery.get("resolution_source", "")).strip() or str(vpath_context.get("resolution_source", "")).strip(),
+        "resolved_install_id": str(install_discovery.get("resolved_install_id", "")).strip() or str(vpath_context.get("install_id", "")).strip(),
+        "resolved_install_root_path": str(install_discovery.get("resolved_install_root_path", "")).strip()
+        or str(dict(vpath_context.get("roots") or {}).get("VROOT_INSTALL", "")).strip(),
+        "install_manifest_path": str(install_discovery.get("install_manifest_path", "")).strip()
+        or str(vpath_context.get("install_manifest_path", "")).strip(),
+        "install_registry_path": str(install_discovery.get("install_registry_path", "")).strip()
+        or str(vpath_context.get("install_registry_path", "")).strip(),
+        "registry_candidate_paths": list(install_discovery.get("registry_candidate_paths") or []),
+        "warnings": list(install_discovery.get("warnings") or list(vpath_context.get("warnings") or [])),
+        "deterministic_fingerprint": str(install_discovery.get("deterministic_fingerprint", "")).strip(),
     }
     if str(negotiated.get("result", "")).strip() == "refused":
         log_emit(

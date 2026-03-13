@@ -1087,6 +1087,12 @@ VIRTUAL_PATHS_TOOL_PATH = "tools/release/tool_run_virtual_paths.py"
 VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
 VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
 VIRTUAL_PATHS_REPORT_PATH = "data/audit/virtual_paths_report.json"
+INSTALL_DISCOVERY_ENGINE_PATH = "src/lib/install/install_discovery_engine.py"
+INSTALL_DISCOVERY_SCHEMA_PATH = "schema/lib/install_registry.schema"
+INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
+INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
+INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
+INSTALL_DISCOVERY_REPORT_PATH = "data/audit/install_discovery_report.json"
 VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
@@ -8678,6 +8684,93 @@ def _append_virtual_path_findings(
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "virtual path violation detected",
                 rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-VPATH-USED-FOR-STORE_ACCESS",
+            )
+        )
+
+
+def _append_install_discovery_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rules = (
+        "INV-INSTALL-DISCOVERY-REQUIRED",
+        "INV-NO-ABSOLUTE-PATHS-IN-MANIFESTS",
+    )
+    severity = _invariant_severity(profile)
+    required_files = (
+        (INSTALL_DISCOVERY_ENGINE_PATH, "install discovery engine is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        (INSTALL_DISCOVERY_SCHEMA_PATH, "install registry schema is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        (INSTALL_DISCOVERY_TOOL_PATH, "install discovery report tool is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        (INSTALL_DISCOVERY_COMMON_PATH, "install discovery helper module is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        (INSTALL_DISCOVERY_BASELINE_PATH, "install discovery baseline report is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        (INSTALL_DISCOVERY_REPORT_PATH, "install discovery machine-readable report is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("tools/auditx/analyzers/e482_install_root_hardcoded_smell.py", "InstallRootHardcodedSmell analyzer is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("tools/xstack/testx/tests/install_discovery_testlib.py", "install discovery TestX helper is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("tools/xstack/testx/tests/test_explicit_install_root_used.py", "explicit install root TestX coverage is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("tools/xstack/testx/tests/test_portable_manifest_detected.py", "portable manifest discovery TestX coverage is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("tools/xstack/testx/tests/test_registry_install_detected.py", "registry install discovery TestX coverage is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("tools/xstack/testx/tests/test_registry_sorted_deterministically.py", "registry ordering TestX coverage is required", "INV-NO-ABSOLUTE-PATHS-IN-MANIFESTS"),
+        ("tools/xstack/testx/tests/test_cross_platform_install_selection_stable.py", "cross-platform install selection TestX coverage is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    baseline_text = _file_text(repo_root, INSTALL_DISCOVERY_BASELINE_PATH).lower()
+    for token, message, rule_id in (
+        ("# install discovery baseline", "install discovery baseline report must declare the canonical title", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("## discovery order", "install discovery baseline must declare the deterministic discovery order", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("## refusal codes", "install discovery baseline must list the refusal codes", "INV-INSTALL-DISCOVERY-REQUIRED"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=INSTALL_DISCOVERY_BASELINE_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.release.install_discovery_common import install_discovery_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=INSTALL_DISCOVERY_COMMON_PATH,
+                line_number=1,
+                snippet="install_discovery_violations",
+                message="unable to import install discovery checks ({})".format(str(exc)),
+                rule_id="INV-INSTALL-DISCOVERY-REQUIRED",
+            )
+        )
+        return
+
+    for violation in install_discovery_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "install discovery violation detected",
+                rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-INSTALL-DISCOVERY-REQUIRED",
             )
         )
 
@@ -32877,6 +32970,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_virtual_path_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_install_discovery_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

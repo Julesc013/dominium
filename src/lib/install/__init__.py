@@ -1,5 +1,15 @@
 """Install manifest validation and registry helpers."""
 
+from .install_discovery_engine import (
+    ENV_INSTALL_ID,
+    ENV_INSTALL_ROOT,
+    INSTALL_MANIFEST_NAME,
+    INSTALL_REGISTRY_NAME,
+    REFUSAL_INSTALL_NOT_FOUND,
+    discover_install,
+    install_registry_candidate_paths,
+    load_runtime_install_registry,
+)
 from .install_validator import (
     DEFAULT_INSTALL_REGISTRY_REL,
     REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH,
@@ -29,7 +39,12 @@ from .install_validator import (
 )
 
 __all__ = [
+    "ENV_INSTALL_ID",
+    "ENV_INSTALL_ROOT",
     "DEFAULT_INSTALL_REGISTRY_REL",
+    "INSTALL_MANIFEST_NAME",
+    "INSTALL_REGISTRY_NAME",
+    "REFUSAL_INSTALL_NOT_FOUND",
     "REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH",
     "REFUSAL_INSTALL_HASH_MISMATCH",
     "REFUSAL_INSTALL_MISSING_BINARY",
@@ -40,7 +55,10 @@ __all__ = [
     "compare_required_product_builds",
     "default_install_registry_path",
     "deterministic_fingerprint",
+    "discover_install",
+    "install_registry_candidate_paths",
     "load_install_registry",
+    "load_runtime_install_registry",
     "merge_contract_ranges",
     "merge_protocol_ranges",
     "normalize_contract_range",

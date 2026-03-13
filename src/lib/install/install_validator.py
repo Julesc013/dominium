@@ -5,11 +5,14 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from src.appshell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing
 from src.meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
+
+from .install_discovery_engine import install_registry_candidate_paths
 
 
 DEFAULT_INSTALL_REGISTRY_REL = os.path.join("data", "registries", "install_registry.json")
@@ -547,7 +550,17 @@ def default_install_registry_path(repo_root: str) -> str:
         candidate = vpath_resolve_existing(VROOT_INSTALL, "data/registries/install_registry.json", context)
         if candidate:
             return candidate
-    return os.path.join(os.path.abspath(repo_root), DEFAULT_INSTALL_REGISTRY_REL)
+    repo_candidate = os.path.join(os.path.abspath(repo_root), DEFAULT_INSTALL_REGISTRY_REL)
+    if os.path.isfile(repo_candidate):
+        return repo_candidate
+    candidates = install_registry_candidate_paths(
+        executable_path=sys.argv[0] if list(sys.argv) else "",
+        cwd=os.getcwd(),
+        env=os.environ,
+    )
+    if candidates:
+        return str(candidates[0])
+    return repo_candidate
 
 
 def _empty_install_registry() -> dict:
@@ -578,6 +591,9 @@ def load_install_registry(path: str) -> dict:
                 "install_id": str(entry.get("install_id", "")).strip(),
                 "path": _norm(entry.get("path", "")),
                 "version": str(entry.get("version", "")).strip(),
+                "contract_registry_hash": str(
+                    entry.get("contract_registry_hash", "") or entry.get("semantic_contract_registry_hash", "")
+                ).strip(),
                 "semantic_contract_registry_hash": str(entry.get("semantic_contract_registry_hash", "")).strip(),
             }
         )
@@ -601,6 +617,9 @@ def save_install_registry(path: str, payload: Mapping[str, object]) -> str:
                     "install_id": str(entry.get("install_id", "")).strip(),
                     "path": _norm(entry.get("path", "")),
                     "version": str(entry.get("version", "")).strip(),
+                    "contract_registry_hash": str(
+                        entry.get("contract_registry_hash", "") or entry.get("semantic_contract_registry_hash", "")
+                    ).strip(),
                     "semantic_contract_registry_hash": str(entry.get("semantic_contract_registry_hash", "")).strip(),
                 }
             )
@@ -621,6 +640,7 @@ def build_install_registry_entry(
         "install_id": str(install_manifest.get("install_id", "")).strip(),
         "path": path_token,
         "version": str(install_manifest.get("install_version", "")).strip(),
+        "contract_registry_hash": str(install_manifest.get("semantic_contract_registry_hash", "")).strip(),
         "semantic_contract_registry_hash": str(install_manifest.get("semantic_contract_registry_hash", "")).strip(),
     }
 

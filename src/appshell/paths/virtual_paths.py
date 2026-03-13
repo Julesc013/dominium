@@ -10,8 +10,8 @@ from typing import IO, Iterable, Mapping
 
 
 VIRTUAL_ROOT_REGISTRY_REL = os.path.join("data", "registries", "virtual_root_registry.json")
-INSTALL_REGISTRY_REL = os.path.join("data", "registries", "install_registry.json")
 INSTALL_MANIFEST_NAME = "install.manifest.json"
+REFUSAL_INSTALL_NOT_FOUND = "refusal.install.not_found"
 
 VROOT_INSTALL = "VROOT_INSTALL"
 VROOT_BIN = "VROOT_BIN"
@@ -162,8 +162,15 @@ def _load_install_manifest(install_root: str) -> tuple[dict, str, str]:
     return payload, _norm(manifest_path), ""
 
 
-def load_virtual_root_registry(repo_root: str) -> tuple[dict, str]:
-    path = os.path.join(_norm(repo_root), VIRTUAL_ROOT_REGISTRY_REL)
+def _virtual_root_registry_path(repo_root: str, install_root: str = "") -> str:
+    install_candidate = os.path.join(_norm(install_root), VIRTUAL_ROOT_REGISTRY_REL) if _token(install_root) else ""
+    if install_candidate and os.path.isfile(install_candidate):
+        return _norm(install_candidate)
+    return _norm(os.path.join(_norm(repo_root), VIRTUAL_ROOT_REGISTRY_REL))
+
+
+def load_virtual_root_registry(repo_root: str, install_root: str = "") -> tuple[dict, str]:
+    path = _virtual_root_registry_path(repo_root, install_root)
     payload, error = _read_json(path)
     if error:
         return {}, error
@@ -190,8 +197,8 @@ def load_virtual_root_registry(repo_root: str) -> tuple[dict, str]:
     }, ""
 
 
-def _registry_rows_by_vroot(repo_root: str) -> tuple[dict[str, dict], str]:
-    payload, error = load_virtual_root_registry(repo_root)
+def _registry_rows_by_vroot(repo_root: str, install_root: str = "") -> tuple[dict[str, dict], str]:
+    payload, error = load_virtual_root_registry(repo_root, install_root)
     if error:
         return {}, error
     out: dict[str, dict] = {}
@@ -201,60 +208,6 @@ def _registry_rows_by_vroot(repo_root: str) -> tuple[dict[str, dict], str]:
         if vroot_id:
             out[vroot_id] = row_map
     return out, ""
-
-
-def _installed_registry_path(repo_root: str, explicit_path: str) -> str:
-    token = _token(explicit_path)
-    if token:
-        return _resolve_path(repo_root, token)
-    return _norm(os.path.join(_norm(repo_root), INSTALL_REGISTRY_REL))
-
-
-def _load_install_registry(path: str) -> list[dict]:
-    payload, error = _read_json(path)
-    if error:
-        return []
-    installs = []
-    record = dict(payload.get("record") or {})
-    registry_root = os.path.dirname(_norm(path))
-    for row in list(record.get("installs") or []):
-        if not isinstance(row, Mapping):
-            continue
-        item = dict(row)
-        install_id = _token(item.get("install_id"))
-        rel_path = _token(item.get("path"))
-        install_root = _resolve_path(registry_root, rel_path) if rel_path else ""
-        if install_id and install_root:
-            installs.append(
-                {
-                    "install_id": install_id,
-                    "install_root": install_root,
-                    "path": rel_path.replace("\\", "/"),
-                }
-            )
-    return sorted(installs, key=lambda row: (row["install_id"], row["install_root"]))
-
-
-def _registry_install_choice(repo_root: str, raw_args: Iterable[object]) -> tuple[str, str, str]:
-    registry_path = _installed_registry_path(repo_root, _value_after(raw_args, "--install-registry-path"))
-    rows = _load_install_registry(registry_path)
-    explicit_install_id = _value_after(raw_args, "--install-id")
-    if explicit_install_id:
-        for row in rows:
-            if _token(row.get("install_id")) == _token(explicit_install_id):
-                return _token(row.get("install_root")), _token(row.get("install_id")), registry_path
-        return "", _token(explicit_install_id), registry_path
-    if len(rows) == 1:
-        row = dict(rows[0])
-        return _token(row.get("install_root")), _token(row.get("install_id")), registry_path
-    return "", "", registry_path
-
-
-def _portable_install_root(executable_dir: str) -> tuple[str, str]:
-    manifest_path = os.path.join(_norm(executable_dir), INSTALL_MANIFEST_NAME)
-    if os.path.isfile(manifest_path):
-        return _norm(executable_dir), _norm(manifest_path)
-    return "", ""
 
 
 def _format_installed_pattern(pattern: str, *, install_root: str, bin_root: str, store_root: str) -> str:
@@ -405,6 +358,8 @@ def _canonical_context(payload: Mapping[str, object]) -> dict:
 
 
 def vpath_init(context: Mapping[str, object]) -> dict:
+    from src.lib.install.install_discovery_engine import discover_install
+
     payload = dict(context or {})
     repo_root = _norm(payload.get("repo_root") or ".")
     raw_args = list(payload.get("raw_args") or [])
@@ -418,32 +373,32 @@ def vpath_init(context: Mapping[str, object]) -> dict:
     install_registry_path = ""
     warnings: list[str] = []
     resolution_source = ""
+    install_discovery = discover_install(
+        raw_args=raw_args,
+        executable_path=executable_path,
+        cwd=os.getcwd(),
+        env=os.environ,
+        explicit_registry_path=os.path.join(repo_root, "data", "registries", "install_registry.json"),
+    )
+    manifest_payload: dict = dict(install_discovery.get("install_manifest") or {})
+    install_root = _token(install_discovery.get("resolved_install_root_path"))
+    install_manifest_path = _token(install_discovery.get("install_manifest_path"))
+    install_id = _token(install_discovery.get("resolved_install_id"))
+    install_registry_path = _token(install_discovery.get("install_registry_path"))
+    resolution_source = _token(install_discovery.get("resolution_source"))
+    warnings.extend([_token(item) for item in list(install_discovery.get("warnings") or []) if _token(item)])
 
-    portable_root, portable_manifest_path = _portable_install_root(executable_dir)
-    if portable_root:
-        install_root = portable_root
-        install_manifest_path = portable_manifest_path
-        resolution_source = "portable_manifest"
-
-    if not install_root:
-        registry_root, registry_install_id, registry_path = _registry_install_choice(repo_root, raw_args)
-        install_registry_path = _token(registry_path)
-        if registry_root:
-            install_root = _norm(registry_root)
-            install_id = _token(registry_install_id)
-            resolution_source = "installed_registry"
-
-    if not install_root and (os.path.isdir(os.path.join(repo_root, "dist")) or os.path.isdir(os.path.join(repo_root, "packs"))):
+    if (
+        str(install_discovery.get("result", "")).strip() != "complete"
+        and (os.path.isdir(os.path.join(repo_root, "dist")) or os.path.isdir(os.path.join(repo_root, "packs")))
+    ):
         install_root = _repo_wrapper_roots(repo_root)[VROOT_INSTALL]
         resolution_source = "repo_wrapper_shim"
         warnings.append("repo_wrapper_shim.active")
-
-    manifest_payload: dict = {}
-    if install_root:
         manifest_payload, resolved_manifest_path, manifest_error = _load_install_manifest(install_root)
-        if not install_manifest_path and resolved_manifest_path:
+        if resolved_manifest_path:
             install_manifest_path = resolved_manifest_path
-        if manifest_error and resolution_source != "repo_wrapper_shim":
+        if manifest_error:
             warnings.append("install_manifest.{}".format(manifest_error))
         if manifest_payload and not install_id:
             install_id = _token(manifest_payload.get("install_id"))
@@ -451,7 +406,7 @@ def vpath_init(context: Mapping[str, object]) -> dict:
     bin_root = ""
     store_root = ""
     search_roots: dict[str, list[str]] = {}
-    registry_rows, registry_error = _registry_rows_by_vroot(repo_root)
+    registry_rows, registry_error = _registry_rows_by_vroot(repo_root, install_root)
     if registry_error:
         warnings.append("virtual_root_registry.unavailable")
 
@@ -473,7 +428,7 @@ def vpath_init(context: Mapping[str, object]) -> dict:
         roots = {}
 
     roots, search_roots, explicit_overrides = _apply_overrides(
-        base_root=repo_root,
+        base_root=_norm(os.getcwd()),
         raw_args=raw_args,
         roots=roots,
         search_roots=search_roots,
@@ -498,9 +453,11 @@ def vpath_init(context: Mapping[str, object]) -> dict:
     refusal_code = ""
     if not roots.get(VROOT_INSTALL):
         result = "refused"
-        refusal_code = "refusal.paths.no_install_root"
+        refusal_code = _token(install_discovery.get("refusal_code")) or REFUSAL_INSTALL_NOT_FOUND
 
-    registry_fingerprint = _token(dict(dict(load_virtual_root_registry(repo_root)[0]).get("record") or {}).get("deterministic_fingerprint"))
+    registry_fingerprint = _token(
+        dict(dict(load_virtual_root_registry(repo_root, install_root)[0]).get("record") or {}).get("deterministic_fingerprint")
+    )
     context_payload = {
         "schema_version": "1.0.0",
         "product_id": product_id,
@@ -525,6 +482,21 @@ def vpath_init(context: Mapping[str, object]) -> dict:
             for key in sorted(search_roots.keys())
         ),
         "virtual_root_registry_hash": registry_fingerprint,
+        "install_discovery": {
+            "result": _token(install_discovery.get("result")),
+            "refusal_code": _token(install_discovery.get("refusal_code")),
+            "mode": _token(install_discovery.get("mode")),
+            "resolution_source": _token(install_discovery.get("resolution_source")),
+            "resolved_install_id": _token(install_discovery.get("resolved_install_id")),
+            "resolved_install_root_path": _token(install_discovery.get("resolved_install_root_path")).replace("\\", "/"),
+            "install_manifest_path": _token(install_discovery.get("install_manifest_path")).replace("\\", "/"),
+            "install_registry_path": _token(install_discovery.get("install_registry_path")).replace("\\", "/"),
+            "registry_candidate_paths": [
+                str(item).replace("\\", "/") for item in list(install_discovery.get("registry_candidate_paths") or [])
+            ],
+            "warnings": sorted({_token(item) for item in list(install_discovery.get("warnings") or []) if _token(item)}),
+            "deterministic_fingerprint": _token(install_discovery.get("deterministic_fingerprint")),
+        },
         "extensions": {
             "official.store_root": _token(store_root).replace("\\", "/"),
             "official.bin_root": _token(bin_root).replace("\\", "/"),

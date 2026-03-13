@@ -1,77 +1,77 @@
 {
-  "deterministic_fingerprint": "0ed9594f29fb2b1d094a7c37dc89c24f94b7806de22648344fb7b8708b30afd4",
+  "deterministic_fingerprint": "035898f504e80489de4423dbaea083b9c12e414c549a9d359ed7914a77405193",
   "hardcoded_path_hits": [
     {
       "classification": "allowed_packaging_layout",
       "file_path": "tools/setup/setup_cli.py",
       "line": "\"executable_path\": os.path.join(REPO_ROOT_HINT, \"dist\", \"bin\", \"dominium_setup\"),",
-      "line_number": 269
+      "line_number": 270
     },
     {
       "classification": "allowed_packaging_layout",
       "file_path": "tools/setup/setup_cli.py",
       "line": "candidates.append(os.path.join(normalize_path(store_root), \"instances\", token, \"instance.manifest.json\"))",
-      "line_number": 286
-    },
-    {
-      "classification": "allowed_packaging_layout",
-      "file_path": "tools/setup/setup_cli.py",
-      "line": "candidates.append(os.path.join(REPO_ROOT_HINT, \"instances\", token, \"instance.manifest.json\"))",
       "line_number": 287
     },
     {
       "classification": "allowed_packaging_layout",
       "file_path": "tools/setup/setup_cli.py",
-      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", token),",
-      "line_number": 314
+      "line": "candidates.append(os.path.join(REPO_ROOT_HINT, \"instances\", token, \"instance.manifest.json\"))",
+      "line_number": 288
     },
     {
       "classification": "allowed_packaging_layout",
       "file_path": "tools/setup/setup_cli.py",
-      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", token.split(\".\", 1)[0], token),",
+      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", token),",
       "line_number": 315
     },
     {
       "classification": "allowed_packaging_layout",
       "file_path": "tools/setup/setup_cli.py",
-      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", \"source\", token),",
+      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", token.split(\".\", 1)[0], token),",
       "line_number": 316
     },
     {
       "classification": "allowed_packaging_layout",
       "file_path": "tools/setup/setup_cli.py",
-      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", \"core\", token),",
+      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", \"source\", token),",
       "line_number": 317
     },
     {
       "classification": "allowed_packaging_layout",
       "file_path": "tools/setup/setup_cli.py",
+      "line": "os.path.join(REPO_ROOT_HINT, \"packs\", \"core\", token),",
+      "line_number": 318
+    },
+    {
+      "classification": "allowed_packaging_layout",
+      "file_path": "tools/setup/setup_cli.py",
       "line": "packs_target = os.path.join(data_root, \"packs\")",
-      "line_number": 1196
+      "line_number": 1197
     },
     {
       "classification": "shim",
       "file_path": "src/appshell/commands/command_engine.py",
       "line": "out_report = os.path.join(repo_root, \"build\", \"appshell\", \"pack_compatibility_report.json\")",
-      "line_number": 353
+      "line_number": 371
     },
     {
       "classification": "shim",
       "file_path": "src/appshell/commands/command_engine.py",
       "line": "out_lock = os.path.join(repo_root, \"build\", \"appshell\", \"pack_lock.json\")",
-      "line_number": 358
+      "line_number": 376
     },
     {
       "classification": "shim",
       "file_path": "src/appshell/commands/command_engine.py",
       "line": "os.path.join(repo_root, \"profiles\", \"bundles\"),",
-      "line_number": 401
+      "line_number": 419
     },
     {
       "classification": "shim",
       "file_path": "src/appshell/commands/command_engine.py",
       "line": "os.path.join(repo_root, \"dist\", \"profiles\"),",
-      "line_number": 402
+      "line_number": 420
     },
     {
       "classification": "shim",
@@ -191,7 +191,7 @@
       "classification": "shim",
       "file_path": "tools/launcher/launch.py",
       "line": "save_dir = os.path.join(repo_root, \"saves\", save_id)",
-      "line_number": 222
+      "line_number": 223
     },
     {
       "classification": "shim",
@@ -693,15 +693,18 @@
       "VROOT_STORE": "<repo>/dist"
     },
     "warnings": [
+      "install_manifest.missing",
       "repo_wrapper_shim.active"
     ]
   },
   "report_id": "repo.layout.virtual_paths.v1",
   "resolution_order": [
     "1. explicit CLI overrides: --root, --store-root, or per-vroot overrides",
-    "2. portable mode: install.manifest.json adjacent to the product binary",
-    "3. installed registry mode: install_registry.json entry resolved by install_id",
-    "4. refusal: refusal.paths.no_install_root when no governed root can be discovered"
+    "2. install discovery explicit CLI: --install-root or --install-id",
+    "3. install discovery portable mode: install.manifest.json adjacent to the product binary",
+    "4. install discovery environment override: DOMINIUM_INSTALL_ROOT or DOMINIUM_INSTALL_ID",
+    "5. install discovery installed registry mode: install_registry.json entry resolved by executable match or install_id",
+    "6. refusal: refusal.install.not_found when no governed install root can be discovered"
   ],
   "result": "complete",
   "violations": []

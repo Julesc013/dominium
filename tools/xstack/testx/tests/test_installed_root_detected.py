@@ -19,8 +19,8 @@ def run(repo_root: str):
         store_root = os.path.join(temp_root, "installs", "store")
     if str(context.get("result", "")).strip() != "complete":
         return {"status": "fail", "message": "installed vpath context did not resolve cleanly"}
-    if str(context.get("resolution_source", "")).strip() != "installed_registry":
-        return {"status": "fail", "message": "installed vpath context did not use the install registry"}
+    if str(context.get("resolution_source", "")).strip() not in {"cli_install_id", "installed_registry_match", "installed_registry_single"}:
+        return {"status": "fail", "message": "installed vpath context did not use registry-backed install discovery"}
     roots = dict(context.get("roots") or {})
     if os.path.normcase(os.path.normpath(str(roots.get("VROOT_INSTALL", "")))) != os.path.normcase(os.path.normpath(install_root)):
         return {"status": "fail", "message": "installed install root drifted"}

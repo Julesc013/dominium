@@ -133,9 +133,11 @@ INTEGRATION_TARGETS = (
 )
 RESOLUTION_ORDER = (
     "1. explicit CLI overrides: --root, --store-root, or per-vroot overrides",
-    "2. portable mode: install.manifest.json adjacent to the product binary",
-    "3. installed registry mode: install_registry.json entry resolved by install_id",
-    "4. refusal: refusal.paths.no_install_root when no governed root can be discovered",
+    "2. install discovery explicit CLI: --install-root or --install-id",
+    "3. install discovery portable mode: install.manifest.json adjacent to the product binary",
+    "4. install discovery environment override: DOMINIUM_INSTALL_ROOT or DOMINIUM_INSTALL_ID",
+    "5. install discovery installed registry mode: install_registry.json entry resolved by executable match or install_id",
+    "6. refusal: refusal.install.not_found when no governed install root can be discovered",
 )
 
 
@@ -395,9 +397,9 @@ def render_virtual_paths_doc(report: Mapping[str, object]) -> str:
             "",
             "## Refusal And Logging",
             "",
-            "- AppShell refuses launch with `refusal.paths.no_install_root` when no governed install root can be resolved.",
+            "- AppShell refuses launch with `refusal.install.not_found` when no governed install root can be resolved.",
             "- Successful initialization emits `appshell.paths.initialized` before pack validation, negotiation, or UI startup.",
-            "- Repo-wrapper runs remain available through the explicit `repo_wrapper_shim` resolution source and are logged as a warning-bearing shim.",
+            "- Repo-wrapper runs remain available through the explicit `repo_wrapper_shim` resolution source and are logged as a warning-bearing development shim outside the authoritative install discovery order.",
         )
     )
     return "\n".join(lines) + "\n"
@@ -499,8 +501,8 @@ def render_virtual_paths_baseline(report: Mapping[str, object]) -> str:
             "",
             "## Integration Coverage Report",
             "",
-            "- Path resolution is centralized in `src/appshell/paths/virtual_paths.py`.",
-            "- AppShell now refuses launches that do not resolve a governed install root.",
+            "- Path resolution is centralized in `src/appshell/paths/virtual_paths.py` after install discovery is resolved by `src/lib/install/install_discovery_engine.py`.",
+            "- AppShell now refuses launches that do not resolve a governed install root with `refusal.install.not_found`.",
             "- Remaining path literals are limited to explicit shims and packaging-layout builders, not authoritative runtime root discovery.",
         )
     )

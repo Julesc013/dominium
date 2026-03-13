@@ -60,6 +60,21 @@ def _refusal(code: str, message: str, remediation_hint: str, **extra) -> dict:
     return payload
 
 
+def _allow_install_refusal_cli(shell_args, product_id: str) -> bool:
+    command = str(getattr(shell_args, "command", "") or "").strip()
+    command_args = [str(token).strip() for token in list(getattr(shell_args, "command_args", []) or []) if str(token).strip()]
+    requested_mode_id = str(getattr(shell_args, "mode", "") or "").strip().lower()
+    if requested_mode_id in {"cli", "headless"}:
+        return True
+    if bool(getattr(shell_args, "help_requested", False)) or bool(getattr(shell_args, "version", False)) or bool(getattr(shell_args, "descriptor", False)):
+        return True
+    if command == "compat-status":
+        return True
+    if str(product_id).strip() in {"launcher", "setup"} and command == "install" and command_args[:1] == ["status"]:
+        return True
+    return False
+
+
 def appshell_main(
     *,
     product_id: str,
@@ -98,31 +113,61 @@ def appshell_main(
     )
     set_current_log_engine(logger)
     ipc_server = None
+    install_refusal_cli_allowed = False
     if str(vpath_context.get("result", "")).strip() != "complete":
-        payload = _refusal(
-            str(vpath_context.get("refusal_code", "")).strip() or "refusal.paths.no_install_root",
-            "virtual path resolution refused the launch request",
-            "Provide --root/--store-root, place install.manifest.json beside the product executable, or register the install.",
+        install_refusal_cli_allowed = _allow_install_refusal_cli(shell_args, str(product_id).strip())
+        if install_refusal_cli_allowed:
+            log_emit(
+                category="compat",
+                severity="warn",
+                message_key="compat.install.refused",
+                params={
+                    "product_id": str(product_id).strip(),
+                    "refusal_code": str(vpath_context.get("refusal_code", "")).strip(),
+                    "resolution_source": str(vpath_context.get("resolution_source", "")).strip(),
+                },
+            )
+        else:
+            payload = _refusal(
+                str(vpath_context.get("refusal_code", "")).strip() or "refusal.install.not_found",
+                "install discovery refused the launch request",
+                "Provide --install-root/--install-id, place install.manifest.json beside the product executable, set DOMINIUM_INSTALL_ROOT/DOMINIUM_INSTALL_ID, or register the install.",
+                product_id=str(product_id).strip(),
+                resolution_source=str(vpath_context.get("resolution_source", "")).strip(),
+                warnings=list(vpath_context.get("warnings") or []),
+                registry_candidate_paths=list((dict(vpath_context.get("install_discovery") or {})).get("registry_candidate_paths") or []),
+            )
+            log_emit(
+                category="refusal",
+                severity="error",
+                message_key="appshell.refusal",
+                params={
+                    "refusal_code": str(payload.get("refusal_code", "")).strip(),
+                    "product_id": str(product_id).strip(),
+                },
+            )
+            _print_json(payload)
+            return EXIT_REFUSAL
+    if install_refusal_cli_allowed:
+        mode_selection = {
+            "result": "complete",
+            "requested_mode_id": str(mode_resolution.get("requested_mode_id", "")).strip(),
+            "selected_mode_id": "cli",
+            "effective_mode_id": "cli",
+            "mode_source": "install_discovery_refusal",
+            "context_kind": "install_refusal",
+            "compatibility_mode_id": "compat.full",
+            "supported_mode_ids": ["cli"],
+            "available_mode_ids": ["cli"],
+            "degrade_chain": [],
+            "probe": {},
+        }
+    else:
+        mode_selection = select_ui_mode(
+            repo_root,
             product_id=str(product_id).strip(),
-            resolution_source=str(vpath_context.get("resolution_source", "")).strip(),
-            warnings=list(vpath_context.get("warnings") or []),
+            mode_resolution=mode_resolution,
         )
-        log_emit(
-            category="refusal",
-            severity="error",
-            message_key="appshell.refusal",
-            params={
-                "refusal_code": str(payload.get("refusal_code", "")).strip(),
-                "product_id": str(product_id).strip(),
-            },
-        )
-        _print_json(payload)
-        return EXIT_REFUSAL
-    mode_selection = select_ui_mode(
-        repo_root,
-        product_id=str(product_id).strip(),
-        mode_resolution=mode_resolution,
-    )
     set_current_ui_mode_selection(mode_selection)
     mode_id = str(
         mode_selection.get("selected_mode_id")
@@ -154,6 +199,21 @@ def appshell_main(
             "warning_count": int(len(list(vpath_context.get("warnings") or []))),
         },
     )
+    if str(vpath_context.get("result", "")).strip() == "complete":
+        install_summary = dict(vpath_context.get("install_discovery") or {})
+        log_emit(
+            category="compat",
+            severity="info",
+            message_key="compat.install_selected",
+            params={
+                "product_id": str(product_id).strip(),
+                "mode": str(install_summary.get("mode", "")).strip()
+                or ("repo_wrapper_shim" if str(vpath_context.get("resolution_source", "")).strip() == "repo_wrapper_shim" else ""),
+                "install_id": str(install_summary.get("resolved_install_id", "")).strip() or str(vpath_context.get("install_id", "")).strip(),
+                "resolution_source": str(vpath_context.get("resolution_source", "")).strip()
+                or str(install_summary.get("resolution_source", "")).strip(),
+            },
+        )
     log_emit(
         category="appshell",
         severity="info",

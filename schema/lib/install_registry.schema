@@ -1,0 +1,51 @@
+SCHEMA: lib/install_registry.schema
+schema_id: dominium.schema.lib.install_registry
+schema_version: 1.0.0
+stability: provisional
+
+PURPOSE:
+- Define the deterministic install registry used by install discovery for installed Dominium products.
+
+STABILITY GUARANTEES:
+- Records are ordered by install_id and then path.
+- Records are open maps; unknown fields MUST be preserved.
+- Existing entries using semantic_contract_registry_hash remain loadable through compatibility normalization.
+
+NON-SEMANTICS:
+- Registry location does not change install identity.
+- Registry membership does not alter simulation law or truth semantics.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- semver: semantic version string.
+- path_ref: relative or logical path string.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record install_registry
+  required:
+    - installs: ordered_list<install_registry_entry>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - registry_id: id
+    - registry_version: semver
+
+TYPE DEFINITIONS:
+record install_registry_entry
+  required:
+    - install_id: id
+    - path: path_ref
+    - version: semver
+  optional:
+    - contract_registry_hash: sha256
+    - semantic_contract_registry_hash: sha256
+    - extensions: map
+
+INVARIANTS:
+- installs must be sorted by install_id and then path.
+- registry entry paths must be relative or logical; absolute host paths are forbidden in governed manifests.
+- contract_registry_hash is the preferred field name for new writers.
+- semantic_contract_registry_hash remains accepted for backward-compatible load paths.
+- deterministic_fingerprint is computed from canonical serialized content.
