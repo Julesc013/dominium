@@ -16,11 +16,15 @@ record supervisor_policy
     - schema_version: tag
     - policy_id: id
     - max_restarts: int
+    - restart_backoff_iterations: int
+    - readiness_poll_iterations: int
     - auto_attach_ipc: bool
     - deterministic_fingerprint: sha256
     - extensions: map
 
 INVARIANTS:
 - restart count limits must be deterministic
+- restart backoff iteration counts must be deterministic
+- readiness polling budgets must be explicit and bounded
 - auto-attach policy must be explicit
 - supervisor policy evaluation must not depend on wall-clock timing

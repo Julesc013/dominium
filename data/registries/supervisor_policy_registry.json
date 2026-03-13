@@ -9,8 +9,10 @@
         "schema_version": "1.0.0",
         "policy_id": "supervisor.policy.default",
         "max_restarts": 0,
+        "restart_backoff_iterations": 0,
+        "readiness_poll_iterations": 6,
         "auto_attach_ipc": true,
-        "deterministic_fingerprint": "102ceb83b00c26be3492f6147eb77b61f369035c0cb01ace2795cdf91d744979",
+        "deterministic_fingerprint": "20e1855ba5a11e22cd9408ab92a55222c7a2a96f3d60c09c34bb70406565e5c3",
         "extensions": {
           "official.source": "APPSHELL-6"
         },
@@ -29,8 +31,10 @@
         "schema_version": "1.0.0",
         "policy_id": "supervisor.policy.lab",
         "max_restarts": 2,
+        "restart_backoff_iterations": 1,
+        "readiness_poll_iterations": 8,
         "auto_attach_ipc": true,
-        "deterministic_fingerprint": "4aa949eb0c85a3a0908abd983fdab903a0e65c6bf86be6f8622a33bf5479e459",
+        "deterministic_fingerprint": "25dc81316385eadbb6dfe99c93b4e2f6f0bb7f93349ce27d8be536d630bbdeb0",
         "extensions": {
           "official.source": "APPSHELL-6"
         },
@@ -46,7 +50,7 @@
         }
       }
     ],
-    "deterministic_fingerprint": "",
+    "deterministic_fingerprint": "1342c760509fa269891534d794fefd0b4a3a95db61ed0ab4b89de76483c4d4af",
     "extensions": {
       "official.source": "APPSHELL-6"
     }

@@ -1,5 +1,6 @@
 """Shared deterministic AppShell supervisor surfaces."""
 
+from .args_canonicalizer import canonicalize_arg_map, canonicalize_args, canonicalize_flag_pairs
 from .supervisor_engine import (
     DEFAULT_SUPERVISOR_POLICY_ID,
     SUPERVISOR_AGGREGATED_LOG_REL,
@@ -24,6 +25,9 @@ __all__ = [
     "SUPERVISOR_STATE_REL",
     "SupervisorEngine",
     "build_supervisor_run_spec",
+    "canonicalize_arg_map",
+    "canonicalize_args",
+    "canonicalize_flag_pairs",
     "attach_supervisor_children",
     "clear_current_supervisor_engine",
     "discover_active_supervisor_endpoint",

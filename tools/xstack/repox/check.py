@@ -9107,6 +9107,104 @@ def _append_ipc_unify_findings(
         )
 
 
+def _append_supervisor_hardening_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rules = (
+        (
+            "INV-SUPERVISOR-NO-WALLCLOCK",
+            (
+                ("docs/audit/SUPERVISOR_SURFACE_MAP.md", "supervisor surface map is required"),
+                ("docs/appshell/LOG_MERGE_RULES.md", "supervisor log merge rules doc is required"),
+                ("docs/audit/SUPERVISOR_HARDENING_FINAL.md", "supervisor hardening final report is required"),
+                ("data/audit/supervisor_hardening_report.json", "supervisor hardening machine-readable report is required"),
+                ("tools/appshell/supervisor_hardening_common.py", "supervisor hardening helper module is required"),
+                ("tools/appshell/tool_run_supervisor_hardening.py", "supervisor hardening tool runner is required"),
+                ("src/appshell/supervisor/args_canonicalizer.py", "supervisor args canonicalizer is required"),
+                ("tools/xstack/testx/tests/test_args_canonicalization_stable.py", "supervisor args canonicalization TestX coverage is required"),
+                ("tools/xstack/testx/tests/test_readiness_bounded_no_wallclock.py", "supervisor bounded readiness TestX coverage is required"),
+                ("tools/xstack/testx/tests/test_log_merge_order_stable.py", "supervisor log merge TestX coverage is required"),
+                ("tools/xstack/testx/tests/test_crash_policy_respected.py", "supervisor crash policy TestX coverage is required"),
+                ("tools/xstack/testx/tests/test_attach_requires_negotiation.py", "supervisor attach-negotiation TestX coverage is required"),
+            ),
+        ),
+        ("INV-SUPERVISOR-LOG-MERGE-STABLE", ()),
+        ("INV-SUPERVISOR-ATTACH-NEGOTIATED", ()),
+    )
+    for rule_id, required_files in rules:
+        for rel_path, message in required_files:
+            if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=rel_path,
+                    message=message,
+                    rule_id=rule_id,
+                )
+            )
+
+    final_text = _file_text(repo_root, "docs/audit/SUPERVISOR_HARDENING_FINAL.md").lower()
+    for token, message, rule_id in (
+        ("# supervisor hardening final", "supervisor hardening final report must declare the canonical title", "INV-SUPERVISOR-NO-WALLCLOCK"),
+        ("## removed wall-clock usage", "supervisor hardening final report must list removed wall-clock usage", "INV-SUPERVISOR-NO-WALLCLOCK"),
+        ("## canonical arg rules", "supervisor hardening final report must describe canonical arg rules", "INV-SUPERVISOR-NO-WALLCLOCK"),
+        ("## crash handling", "supervisor hardening final report must summarize crash handling", "INV-SUPERVISOR-ATTACH-NEGOTIATED"),
+        ("## runtime verification", "supervisor hardening final report must summarize runtime verification", "INV-SUPERVISOR-LOG-MERGE-STABLE"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/SUPERVISOR_HARDENING_FINAL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.appshell.supervisor_hardening_common import supervisor_hardening_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/appshell/supervisor_hardening_common.py",
+                line_number=1,
+                snippet="supervisor_hardening_violations",
+                message="unable to import supervisor hardening checks ({})".format(str(exc)),
+                rule_id="INV-SUPERVISOR-NO-WALLCLOCK",
+            )
+        )
+        return
+
+    for violation in supervisor_hardening_violations(repo_root):
+        row = dict(violation or {})
+        message = str(row.get("message", "")).strip() or "supervisor hardening drift detected"
+        rule_id = "INV-SUPERVISOR-NO-WALLCLOCK"
+        if "log merge" in message.lower():
+            rule_id = "INV-SUPERVISOR-LOG-MERGE-STABLE"
+        elif "attach" in message.lower():
+            rule_id = "INV-SUPERVISOR-ATTACH-NEGOTIATED"
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+
 def _append_earth10_proxy_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -33312,6 +33410,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_prod_gate0_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_supervisor_hardening_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

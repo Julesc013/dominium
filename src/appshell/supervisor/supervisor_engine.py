@@ -33,6 +33,7 @@ from src.appshell.paths import (
 from src.appshell.pack_verifier_adapter import verify_pack_root
 from src.compat import emit_product_descriptor
 from src.runtime.process_spawn import build_python_process_spec, poll_process, spawn_process
+from src.appshell.supervisor.args_canonicalizer import canonicalize_args
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_canonical_json
 
@@ -51,11 +52,14 @@ IPC_ENDPOINT_MANIFEST_REL = "ipc_endpoints.json"
 DEFAULT_SUPERVISOR_POLICY_ID = "supervisor.policy.default"
 DEFAULT_TOPOLOGY = "singleplayer"
 STOP_POLL_ITERATIONS = 4
+DEFAULT_READY_POLL_ITERATIONS = 6
+DEFAULT_RESTART_BACKOFF_ITERATIONS = 1
 REFUSAL_SUPERVISOR_ALREADY_RUNNING = "refusal.supervisor.already_running"
 REFUSAL_SUPERVISOR_NOT_RUNNING = "refusal.supervisor.not_running"
 REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED = "refusal.supervisor.endpoint_unreached"
 REFUSAL_SUPERVISOR_RESTART_DENIED = "refusal.supervisor.restart_denied"
 REFUSAL_SUPERVISOR_PROCESS_MISSING = "refusal.supervisor.process_missing"
+REFUSAL_SUPERVISOR_CHILD_NOT_READY = "refusal.supervisor.child_not_ready"
 
 
 _CURRENT_SUPERVISOR_ENGINE = None
@@ -127,12 +131,6 @@ def _deterministic_id(*parts: object, prefix: str, size: int = 12) -> str:
     return "{}.{}".format(str(prefix).strip(), hashlib.sha256(body.encode("utf-8")).hexdigest()[: max(4, int(size or 12))])
 
 
-def _append_arg(args: list[str], flag: str, value: object) -> None:
-    token = str(value or "").strip()
-    if token:
-        args.extend([str(flag).strip(), token])
-
-
 def _write_jsonl(path: str, rows: Sequence[Mapping[str, object]]) -> str:
     output_path = os.path.normpath(os.path.abspath(str(path)))
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -162,6 +160,137 @@ def _extract_log_seq_no(event_row: Mapping[str, object], default_seq: int) -> in
     if token.startswith("log.") and token.rsplit(".", 1)[-1].isdigit():
         return int(token.rsplit(".", 1)[-1])
     return int(default_seq)
+
+
+def _build_endpoint_id(product_id: str, session_id: str) -> str:
+    return "ipc.{}.{}".format(str(product_id).strip(), str(session_id).strip())
+
+
+def _ready_poll_iterations(run_spec: Mapping[str, object]) -> int:
+    policy = _as_map(run_spec.get("supervisor_policy"))
+    return max(1, int(policy.get("readiness_poll_iterations", DEFAULT_READY_POLL_ITERATIONS) or DEFAULT_READY_POLL_ITERATIONS))
+
+
+def _restart_backoff_iterations(run_spec: Mapping[str, object]) -> int:
+    policy = _as_map(run_spec.get("supervisor_policy"))
+    return max(0, int(policy.get("restart_backoff_iterations", DEFAULT_RESTART_BACKOFF_ITERATIONS) or 0))
+
+
+def _log_merge_sort_key(row: Mapping[str, object]) -> tuple[str, str, int, str, str]:
+    row_map = dict(row or {})
+    return (
+        str(row_map.get("source_product_id", "")).strip(),
+        str(row_map.get("channel_id", "")).strip(),
+        int(row_map.get("seq_no", 0) or 0),
+        str(row_map.get("endpoint_id", "")).strip(),
+        str(row_map.get("event_id", "")).strip(),
+    )
+
+
+def _wait_for_endpoint_ready_process(
+    repo_root: str,
+    process: subprocess.Popen,
+    *,
+    local_product_id: str,
+    product_id: str,
+    session_id: str,
+    endpoint_id: str,
+    iterations: int,
+) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(str(repo_root or ".")))
+    token_product = str(product_id).strip()
+    token_session = str(session_id).strip()
+    token_endpoint = str(endpoint_id).strip()
+    token_local_product = str(local_product_id).strip()
+    last_result: dict[str, object] = {}
+    for attempt in range(max(1, int(iterations or 1))):
+        polled = poll_process(process)
+        if str(polled.get("result", "")).strip() == "exited":
+            return _refuse(
+                REFUSAL_SUPERVISOR_CHILD_NOT_READY,
+                "child product exited before negotiated readiness completed",
+                "Inspect child logs or retry the supervised run.",
+                details={
+                    "product_id": token_product,
+                    "endpoint_id": token_endpoint,
+                    "exit_code": int(polled.get("exit_code", 0) or 0),
+                },
+            )
+        endpoint_row = _discover_endpoint_row(repo_root_abs, token_endpoint)
+        if not endpoint_row:
+            last_result = {
+                "result": "pending",
+                "reason": "endpoint_not_discovered",
+                "attempt": int(attempt + 1),
+            }
+            continue
+        try:
+            attach = attach_ipc_endpoint(repo_root_abs, local_product_id=token_local_product, endpoint_id=token_endpoint)
+        except OSError as exc:
+            last_result = {
+                "result": "refused",
+                "refusal_code": REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
+                "reason": str(exc),
+                "attempt": int(attempt + 1),
+            }
+            continue
+        if str(attach.get("result", "")).strip() != "complete":
+            last_result = dict(attach)
+            last_result["attempt"] = int(attempt + 1)
+            continue
+        try:
+            status_result = query_ipc_status(repo_root_abs, attach)
+        except OSError as exc:
+            last_result = {
+                "result": "refused",
+                "refusal_code": REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
+                "reason": str(exc),
+                "attempt": int(attempt + 1),
+            }
+            continue
+        if str(status_result.get("result", "")).strip() != "complete":
+            last_result = dict(status_result)
+            last_result["attempt"] = int(attempt + 1)
+            continue
+        status_payload = dict(status_result.get("status") or {})
+        if str(status_payload.get("product_id", "")).strip() != token_product or str(status_payload.get("session_id", "")).strip() != token_session:
+            last_result = {
+                "result": "refused",
+                "refusal_code": REFUSAL_SUPERVISOR_CHILD_NOT_READY,
+                "reason": "status payload identity mismatch",
+                "attempt": int(attempt + 1),
+            }
+            continue
+        ready_payload = {
+            "result": "complete",
+            "endpoint_id": token_endpoint,
+            "address": str(endpoint_row.get("address", "")).strip(),
+            "product_id": token_product,
+            "session_id": token_session,
+            "deterministic_fingerprint": "",
+        }
+        ready_payload["deterministic_fingerprint"] = canonical_sha256(dict(ready_payload, deterministic_fingerprint=""))
+        return {
+            "result": "complete",
+            "attach_record": dict(attach),
+            "status_payload": status_payload,
+            "endpoint_id": token_endpoint,
+            "compatibility_mode_id": str(attach.get("compatibility_mode_id", "")).strip(),
+            "read_only_mode": bool(attach.get("read_only_mode", False)),
+            "ready_payload": ready_payload,
+            "readiness_iteration_count": int(attempt + 1),
+        }
+    return _refuse(
+        REFUSAL_SUPERVISOR_CHILD_NOT_READY,
+        "child product did not complete negotiated readiness within bounded iterations",
+        "Inspect child logs or retry the supervised run.",
+        details={
+            "product_id": token_product,
+            "endpoint_id": token_endpoint,
+            "attempts": int(max(1, int(iterations or 1))),
+            "last_refusal_code": str(last_result.get("refusal_code", "")).strip(),
+        },
+    )
 
 
 def _supervisor_runtime_paths(repo_root: str) -> dict:
@@ -279,7 +408,15 @@ def _remote_command_result(repo_root: str, command_text: str) -> dict:
             "no active launcher supervisor endpoint was discovered",
             "Run `launcher start` before requesting supervisor status, stop, or attach actions.",
         )
-    attach = attach_ipc_endpoint(repo_root, local_product_id="launcher", endpoint_id=str(endpoint.get("endpoint_id", "")).strip())
+    try:
+        attach = attach_ipc_endpoint(repo_root, local_product_id="launcher", endpoint_id=str(endpoint.get("endpoint_id", "")).strip())
+    except OSError as exc:
+        return _refuse(
+            REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
+            "launcher supervisor IPC negotiation failed",
+            "Retry after the supervisor endpoint is ready, or inspect `console sessions` for active endpoints.",
+            details={"endpoint_id": str(endpoint.get("endpoint_id", "")).strip(), "reason": str(exc)},
+        )
     if str(attach.get("result", "")).strip() != "complete":
         return _refuse(
             REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
@@ -327,7 +464,14 @@ def attach_supervisor_children(repo_root: str, *, endpoint_id: str = "", attach_
         }
     attach_rows = []
     for item in target_ids:
-        attach = attach_ipc_endpoint(repo_root, local_product_id="launcher", endpoint_id=str(item).strip())
+        try:
+            attach = attach_ipc_endpoint(repo_root, local_product_id="launcher", endpoint_id=str(item).strip())
+        except OSError as exc:
+            attach = {
+                "result": "refused",
+                "refusal_code": REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
+                "reason": str(exc),
+            }
         attach_rows.append(
             {
                 "endpoint_id": str(item).strip(),
@@ -347,28 +491,36 @@ def _build_process_rows(repo_root: str, run_spec: Mapping[str, object]) -> list[
     out = []
     for index, product_id in enumerate(product_ids, start=1):
         pid_stub = "proc.{}.{:04d}".format(str(product_id).strip(), int(index))
-        args = []
-        _append_arg(args, "--product-id", str(product_id).strip())
-        _append_arg(args, "--repo-root", ".")
-        _append_arg(args, "--session-id", "{}.{}".format(str(run_spec.get("session_id", "")).strip(), str(product_id).strip()))
-        _append_arg(args, "--seed", str(run_spec.get("seed", "")).strip())
-        _append_arg(args, "--session-template-id", str(run_spec.get("session_template_id", "")).strip())
-        _append_arg(args, "--profile-bundle-path", str(run_spec.get("profile_bundle_path", "")).strip())
-        _append_arg(args, "--pack-lock-path", str(run_spec.get("pack_lock_path", "")).strip())
-        _append_arg(args, "--pack-lock-hash", str(run_spec.get("pack_lock_hash", "")).strip())
-        _append_arg(args, "--contract-bundle-hash", str(run_spec.get("contract_bundle_hash", "")).strip())
-        _append_arg(args, "--mod-policy-id", str(run_spec.get("mod_policy_id", "")).strip())
-        _append_arg(args, "--overlay-conflict-policy-id", str(run_spec.get("overlay_conflict_policy_id", "")).strip())
-        _append_arg(args, "--ipc-manifest-path", str(run_spec.get("ipc_manifest_path", "")).strip())
-        _append_arg(args, "--run-manifest-path", str((dict(run_spec.get("runtime_paths") or {})).get("manifest_path", "")).strip())
-        _append_arg(args, "--pid-stub", pid_stub)
+        session_id = "{}.{}".format(str(run_spec.get("session_id", "")).strip(), str(product_id).strip())
+        arg_payload = canonicalize_args(
+            positional=[],
+            flag_pairs=(
+                ("--contract-bundle-hash", str(run_spec.get("contract_bundle_hash", "")).strip()),
+                ("--ipc-manifest-path", str(run_spec.get("ipc_manifest_path", "")).strip()),
+                ("--mod-policy-id", str(run_spec.get("mod_policy_id", "")).strip()),
+                ("--overlay-conflict-policy-id", str(run_spec.get("overlay_conflict_policy_id", "")).strip()),
+                ("--pack-lock-hash", str(run_spec.get("pack_lock_hash", "")).strip()),
+                ("--pack-lock-path", str(run_spec.get("pack_lock_path", "")).strip()),
+                ("--pid-stub", pid_stub),
+                ("--product-id", str(product_id).strip()),
+                ("--profile-bundle-path", str(run_spec.get("profile_bundle_path", "")).strip()),
+                ("--repo-root", "."),
+                ("--run-manifest-path", str((dict(run_spec.get("runtime_paths") or {})).get("manifest_path", "")).strip()),
+                ("--seed", str(run_spec.get("seed", "")).strip()),
+                ("--session-id", session_id),
+                ("--session-template-id", str(run_spec.get("session_template_id", "")).strip()),
+            ),
+        )
+        args = list(arg_payload.get("args") or [])
         out.append(
             {
                 "product_id": str(product_id).strip(),
                 "binary_rel": norm(SUPERVISED_PRODUCT_HOST_REL),
                 "binary_hash": binary_hash,
                 "args": list(args),
-                "args_hash": canonical_sha256(list(args)),
+                "args_hash": str(arg_payload.get("args_hash", "")).strip() or canonical_sha256(list(args)),
+                "argv_text_hash": str(arg_payload.get("argv_text_hash", "")).strip(),
+                "argv_text": str(arg_payload.get("argv_text", "")).strip(),
                 "pid_stub": pid_stub,
             }
         )
@@ -390,6 +542,7 @@ def _build_run_manifest(run_spec: Mapping[str, object]) -> dict:
                 "product_id": str(row.get("product_id", "")).strip(),
                 "binary_hash": str(row.get("binary_hash", "")).strip(),
                 "args_hash": str(row.get("args_hash", "")).strip(),
+                "argv_text_hash": str(row.get("argv_text_hash", "")).strip(),
                 "pid_stub": str(row.get("pid_stub", "")).strip(),
             }
             for row in list(run_spec.get("processes") or [])
@@ -721,6 +874,7 @@ class SupervisorEngine:
             merged.append(
                 {
                     "source_product_id": str(row_map.get("product_id", "")).strip(),
+                    "channel_id": "log",
                     "endpoint_id": endpoint_id,
                     "seq_no": _extract_log_seq_no(event_map, index),
                     "event_id": str(event_map.get("event_id", "")).strip(),
@@ -739,69 +893,83 @@ class SupervisorEngine:
                 target_row["attach_error"] = ""
         return merged
 
-    def _attach_process(self, product_id: str, ready_payload: Mapping[str, object]) -> dict:
-        endpoint_id = str(dict(ready_payload or {}).get("endpoint_id", "")).strip()
-        last_result = {}
-        attach = {}
-        for _attempt in range(4):
-            try:
-                attach = attach_ipc_endpoint(self.repo_root, local_product_id="launcher", endpoint_id=endpoint_id)
-            except OSError as exc:
-                last_result = {"result": "refused", "refusal_code": REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED, "reason": str(exc)}
-                continue
-            if str(attach.get("result", "")).strip() == "complete":
-                break
-            last_result = dict(attach)
-        if str(attach.get("result", "")).strip() != "complete":
-            return dict(last_result or attach)
-        try:
-            status = query_ipc_status(self.repo_root, attach)
-        except OSError:
-            status = {}
-        return {
-            "attach_record": dict(attach),
-            "status_payload": dict(status.get("status") or {}),
-            "endpoint_id": endpoint_id,
-            "compatibility_mode_id": str(attach.get("compatibility_mode_id", "")).strip(),
-            "read_only_mode": bool(attach.get("read_only_mode", False)),
-        }
+    def _wait_for_endpoint_ready(
+        self,
+        *,
+        process: subprocess.Popen,
+        product_id: str,
+        session_id: str,
+        endpoint_id: str,
+        iterations: int,
+    ) -> dict:
+        result = _wait_for_endpoint_ready_process(
+            self.repo_root,
+            process,
+            local_product_id="launcher",
+            product_id=product_id,
+            session_id=session_id,
+            endpoint_id=endpoint_id,
+            iterations=iterations,
+        )
+        if str(result.get("result", "")).strip() != "complete":
+            log_emit(
+                category="appshell",
+                severity="error",
+                message_key=REFUSAL_SUPERVISOR_CHILD_NOT_READY,
+                params={
+                    "product_id": str(product_id).strip(),
+                    "endpoint_id": str(endpoint_id).strip(),
+                    "attempts": int(max(1, int(iterations or 1))),
+                },
+            )
+        return result
 
     def start(self) -> dict:
         self._write_manifest()
+        readiness_iterations = _ready_poll_iterations(self.run_spec)
         for row in list(self.run_spec.get("processes") or []):
             row_map = dict(row)
             product_id = str(row_map.get("product_id", "")).strip()
             spawned = spawn_process(_build_child_process_spec(self.repo_root, row_map))
             if str(spawned.get("result", "")).strip() != "complete":
+                if self._process_handles:
+                    self.stop()
                 return dict(spawned)
             process = spawned.get("process")
             self._process_handles[product_id] = process
             ready_payload, ready_error = _parse_stdout_json_line(process)
             if ready_error or str(ready_payload.get("result", "")).strip() != "complete":
+                self.stop()
                 return _refuse(
-                    REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
-                    "child product did not emit a deterministic ready payload",
+                    REFUSAL_SUPERVISOR_CHILD_NOT_READY,
+                    "child product did not emit a deterministic ready handshake",
                     "Inspect child process logs or restart the supervised session.",
                     details={"product_id": product_id, "pid_stub": str(row_map.get("pid_stub", "")).strip()},
                 )
-            attach_result = self._attach_process(product_id, ready_payload)
-            if not str(attach_result.get("endpoint_id", "")).strip():
-                return _refuse(
-                    REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
-                    "supervisor could not attach to child IPC endpoint",
-                    "Inspect `console sessions` or child process startup logs.",
-                    details={"product_id": product_id},
-                )
+            session_id = str(ready_payload.get("session_id", "")).strip() or "{}.{}".format(str(self.run_spec.get("session_id", "")).strip(), product_id)
+            endpoint_id = str(ready_payload.get("endpoint_id", "")).strip() or _build_endpoint_id(product_id, session_id)
+            attach_result = self._wait_for_endpoint_ready(
+                process=process,
+                product_id=product_id,
+                session_id=session_id,
+                endpoint_id=endpoint_id,
+                iterations=readiness_iterations,
+            )
+            if str(attach_result.get("result", "")).strip() != "complete":
+                self.stop()
+                return dict(attach_result)
             self._runtime_rows[product_id] = {
                 "product_id": product_id,
                 "pid_stub": str(row_map.get("pid_stub", "")).strip(),
                 "binary_rel": str(row_map.get("binary_rel", "")).strip(),
                 "binary_hash": str(row_map.get("binary_hash", "")).strip(),
                 "args_hash": str(row_map.get("args_hash", "")).strip(),
+                "argv_text_hash": str(row_map.get("argv_text_hash", "")).strip(),
                 "endpoint_id": str(attach_result.get("endpoint_id", "")).strip(),
                 "status": "running",
                 "exit_code": None,
                 "restart_count": 0,
+                "restart_backoff_remaining": 0,
                 "attach_status": "attached",
                 "compatibility_mode_id": str(attach_result.get("compatibility_mode_id", "")).strip(),
                 "read_only_mode": bool(attach_result.get("read_only_mode", False)),
@@ -809,7 +977,8 @@ class SupervisorEngine:
                 "status_payload": dict(attach_result.get("status_payload") or {}),
                 "last_event_id": "",
                 "diag_bundle_dir": "",
-                "ready_payload": dict(ready_payload),
+                "ready_payload": dict(ready_payload or attach_result.get("ready_payload") or {}),
+                "readiness_iteration_count": int(attach_result.get("readiness_iteration_count", readiness_iterations) or readiness_iterations),
             }
             log_emit(
                 category="appshell",
@@ -841,9 +1010,30 @@ class SupervisorEngine:
                 if not str(row.get("diag_bundle_dir", "")).strip():
                     row["diag_bundle_dir"] = self._process_diag_bundle(product_id, row)
                 max_restarts = int(_as_map(self.run_spec.get("supervisor_policy")).get("max_restarts", 0) or 0)
+                restart_backoff_iterations = _restart_backoff_iterations(self.run_spec)
                 stop_requested = bool(row.get("stop_requested", False))
                 if not stop_requested and not self._shutdown_requested and int(row.get("restart_count", 0) or 0) < max_restarts:
+                    if not bool(row.get("restart_pending", False)):
+                        row["restart_pending"] = True
+                        row["restart_backoff_remaining"] = int(restart_backoff_iterations)
+                        log_emit(
+                            category="appshell",
+                            severity="warn",
+                            message_key="explain.supervisor_restart",
+                            params={
+                                "product_id": product_id,
+                                "restart_count": int(row.get("restart_count", 0) or 0),
+                                "backoff_iterations": int(restart_backoff_iterations),
+                            },
+                        )
+                    if int(row.get("restart_backoff_remaining", 0) or 0) > 0:
+                        row["restart_backoff_remaining"] = int(row.get("restart_backoff_remaining", 0) or 0) - 1
+                        row["status"] = "restart_pending"
+                        continue
                     row["restart_result"] = dict(self.restart(product_id))
+                else:
+                    row["restart_pending"] = False
+                    row["restart_backoff_remaining"] = 0
                 continue
             aggregated_rows.extend(self._refresh_logs_for_process(row))
             if str(row.get("endpoint_id", "")).strip():
@@ -856,12 +1046,7 @@ class SupervisorEngine:
                 }
                 for row in aggregated_rows
             ],
-            key=lambda row: (
-                str(row.get("source_product_id", "")),
-                int(row.get("seq_no", 0) or 0),
-                str(row.get("endpoint_id", "")),
-                str(row.get("event_id", "")),
-            ),
+            key=_log_merge_sort_key,
         )[-128:]
         return {"result": "complete", "state": self._write_state()}
 
@@ -896,6 +1081,8 @@ class SupervisorEngine:
             if isinstance(row, dict):
                 row["status"] = "exited"
                 row["attach_status"] = "detached"
+                row["restart_pending"] = False
+                row["restart_backoff_remaining"] = 0
                 row["exit_code"] = int(status.get("exit_code", 0) or 0) if str(status.get("result", "")).strip() == "exited" else 0
             self._process_handles.pop(product_id, None)
         state = self._write_state()
@@ -904,8 +1091,8 @@ class SupervisorEngine:
         log_emit(
             category="appshell",
             severity="info",
-            message_key="supervisor.stop.complete",
-            params={"run_id": str(self.run_spec.get("session_id", "")).strip()},
+            message_key="explain.supervisor_stop",
+            params={"run_id": str(self.run_spec.get("session_id", "")).strip(), "shutdown_supervisor": bool(shutdown_supervisor)},
         )
         return {
             "result": "complete",
@@ -945,17 +1132,27 @@ class SupervisorEngine:
             return dict(spawned)
         process = spawned.get("process")
         ready_payload, ready_error = _parse_stdout_json_line(process)
-        if ready_error:
+        if ready_error or str(ready_payload.get("result", "")).strip() != "complete":
             return _refuse(
-                REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
-                "restarted product did not emit a deterministic ready payload",
+                REFUSAL_SUPERVISOR_CHILD_NOT_READY,
+                "restarted product did not emit a deterministic ready handshake",
                 "Inspect product logs and retry the supervised run.",
                 details={"product_id": token},
             )
-        attach_result = self._attach_process(token, ready_payload)
+        attach_result = self._wait_for_endpoint_ready(
+            process=process,
+            product_id=token,
+            session_id=str(ready_payload.get("session_id", "")).strip() or "{}.{}".format(str(self.run_spec.get("session_id", "")).strip(), token),
+            endpoint_id=str(ready_payload.get("endpoint_id", "")).strip() or _build_endpoint_id(token, "{}.{}".format(str(self.run_spec.get("session_id", "")).strip(), token)),
+            iterations=_ready_poll_iterations(self.run_spec),
+        )
+        if str(attach_result.get("result", "")).strip() != "complete":
+            return dict(attach_result)
         self._process_handles[token] = process
         row["restart_count"] = int(row.get("restart_count", 0) or 0) + 1
         row["stop_requested"] = False
+        row["restart_pending"] = False
+        row["restart_backoff_remaining"] = 0
         row["status"] = "running"
         row["exit_code"] = None
         row["endpoint_id"] = str(attach_result.get("endpoint_id", "")).strip()
@@ -966,12 +1163,18 @@ class SupervisorEngine:
         row["status_payload"] = dict(attach_result.get("status_payload") or {})
         row["last_event_id"] = ""
         row["diag_bundle_dir"] = ""
+        row["ready_payload"] = dict(ready_payload or attach_result.get("ready_payload") or {})
+        row["readiness_iteration_count"] = int(attach_result.get("readiness_iteration_count", 0) or 0)
         row["attach_error"] = "" if str(attach_result.get("endpoint_id", "")).strip() else str(attach_result.get("reason", "")).strip()
         log_emit(
             category="appshell",
             severity="warn",
             message_key="supervisor.restart.applied",
-            params={"product_id": token, "restart_count": int(row.get("restart_count", 0) or 0)},
+            params={
+                "product_id": token,
+                "restart_count": int(row.get("restart_count", 0) or 0),
+                "backoff_iterations": int(_restart_backoff_iterations(self.run_spec)),
+            },
         )
         self._write_state()
         return {"result": "complete", "product_id": token, "restart_count": int(row.get("restart_count", 0) or 0)}
@@ -1024,24 +1227,32 @@ def launch_supervisor_service(
     )
     if str(run_spec.get("result", "")).strip() != "complete":
         return dict(run_spec)
-    args = []
-    _append_arg(args, "--repo-root", ".")
-    _append_arg(args, "--seed", str(run_spec.get("seed", "")).strip())
-    _append_arg(args, "--session-template-id", str(run_spec.get("session_template_id", "")).strip())
-    _append_arg(args, "--session-template-path", str(run_spec.get("session_template_path", "")).strip())
-    _append_arg(args, "--profile-bundle-path", str(run_spec.get("profile_bundle_path", "")).strip())
-    _append_arg(args, "--pack-lock-path", str(run_spec.get("pack_lock_path", "")).strip())
-    _append_arg(args, "--mod-policy-id", str(run_spec.get("mod_policy_id", "")).strip())
-    _append_arg(args, "--overlay-conflict-policy-id", str(run_spec.get("overlay_conflict_policy_id", "")).strip())
-    _append_arg(args, "--contract-bundle-hash", str(run_spec.get("contract_bundle_hash", "")).strip())
-    _append_arg(args, "--supervisor-policy-id", str(run_spec.get("supervisor_policy_id", "")).strip())
-    _append_arg(args, "--topology", str(run_spec.get("topology", "")).strip())
+    arg_payload = canonicalize_args(
+        positional=[],
+        flag_pairs=(
+            ("--contract-bundle-hash", str(run_spec.get("contract_bundle_hash", "")).strip()),
+            ("--mod-policy-id", str(run_spec.get("mod_policy_id", "")).strip()),
+            ("--overlay-conflict-policy-id", str(run_spec.get("overlay_conflict_policy_id", "")).strip()),
+            ("--pack-lock-path", str(run_spec.get("pack_lock_path", "")).strip()),
+            ("--profile-bundle-path", str(run_spec.get("profile_bundle_path", "")).strip()),
+            ("--repo-root", "."),
+            ("--seed", str(run_spec.get("seed", "")).strip()),
+            ("--session-template-id", str(run_spec.get("session_template_id", "")).strip()),
+            ("--session-template-path", str(run_spec.get("session_template_path", "")).strip()),
+            ("--supervisor-policy-id", str(run_spec.get("supervisor_policy_id", "")).strip()),
+            ("--topology", str(run_spec.get("topology", "")).strip()),
+        ),
+    )
     process_spec = build_python_process_spec(
         repo_root=repo_root,
         spawn_id="spawn.supervisor.service",
         script_path=SUPERVISOR_SERVICE_SCRIPT_REL,
-        args=args,
-        extensions={"service_session_id": str(run_spec.get("session_id", "")).strip()},
+        args=list(arg_payload.get("args") or []),
+        extensions={
+            "service_session_id": str(run_spec.get("session_id", "")).strip(),
+            "args_hash": str(arg_payload.get("args_hash", "")).strip(),
+            "argv_text_hash": str(arg_payload.get("argv_text_hash", "")).strip(),
+        },
     )
     spawned = spawn_process(process_spec)
     if str(spawned.get("result", "")).strip() != "complete":
@@ -1050,16 +1261,32 @@ def launch_supervisor_service(
     if ready_error or str(ready_payload.get("result", "")).strip() != "complete":
         return _refuse(
             REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
-            "supervisor service did not report readiness",
+            "supervisor service did not emit a deterministic ready handshake",
             "Inspect launcher logs and retry the supervised start command.",
             details={"ready_error": ready_error},
         )
+    ready = _wait_for_endpoint_ready_process(
+        repo_root,
+        spawned.get("process"),
+        local_product_id="launcher",
+        product_id="launcher",
+        session_id=str(ready_payload.get("session_id", "")).strip() or str(run_spec.get("session_id", "")).strip(),
+        endpoint_id=str(ready_payload.get("endpoint_id", "")).strip() or _build_endpoint_id("launcher", str(run_spec.get("session_id", "")).strip()),
+        iterations=_ready_poll_iterations(run_spec),
+    )
+    if str(ready.get("result", "")).strip() != "complete":
+        return _refuse(
+            REFUSAL_SUPERVISOR_ENDPOINT_UNREACHED,
+            "supervisor service did not report readiness",
+            "Inspect launcher logs and retry the supervised start command.",
+            details={"ready_refusal_code": str(ready.get("refusal_code", "")).strip()},
+        )
     return {
         "result": "complete",
-        "service_endpoint_id": str(ready_payload.get("endpoint_id", "")).strip(),
-        "service_address": str(ready_payload.get("address", "")).strip(),
-        "run_manifest_path": str(ready_payload.get("run_manifest_path", "")).strip(),
-        "supervisor_state_path": str(ready_payload.get("state_path", "")).strip(),
+        "service_endpoint_id": str(ready.get("endpoint_id", "")).strip(),
+        "service_address": str(_as_map(ready.get("ready_payload")).get("address", "")).strip(),
+        "run_manifest_path": str(_as_map(run_spec.get("runtime_paths")).get("manifest_path", "")).strip(),
+        "supervisor_state_path": str(_as_map(run_spec.get("runtime_paths")).get("state_path", "")).strip(),
         "run_spec": run_spec,
     }
 

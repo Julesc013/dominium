@@ -40,6 +40,28 @@ def replay_probe(repo_root: str, *, suffix: str = "replay") -> dict:
     return verify_supervisor_replay(repo_root, suffix=str(suffix).strip() or "replay")
 
 
+def build_hardening_report(repo_root: str) -> dict:
+    ensure_repo_on_path(repo_root)
+    from tools.appshell.supervisor_hardening_common import build_supervisor_hardening_report
+
+    return build_supervisor_hardening_report(repo_root)
+
+
+def canonicalize_sample_args(repo_root: str) -> dict:
+    ensure_repo_on_path(repo_root)
+    from src.appshell.supervisor import canonicalize_args
+
+    return canonicalize_args(
+        positional=["tools/appshell/supervisor_service.py"],
+        flag_pairs=(
+            ("--topology", "singleplayer"),
+            ("--seed", "seed.sample"),
+            ("--repo-root", "."),
+            ("--contract-bundle-hash", "0" * 64),
+        ),
+    )
+
+
 def run_local_engine(repo_root: str, *, seed: str = "seed.appshell6.engine", policy_id: str = "supervisor.policy.default", topology: str = "singleplayer"):
     ensure_repo_on_path(repo_root)
     from src.appshell.supervisor import SupervisorEngine

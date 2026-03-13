@@ -100,10 +100,17 @@ def run_supervisor_probe(
     if str(started.get("result", "")).strip() != "complete":
         return dict(started)
     try:
+        state_path = os.path.normpath(
+            os.path.join(repo_root_abs, str(started.get("supervisor_state_path", SUPERVISOR_RUN_MANIFEST_REL)).replace("/", os.sep))
+        )
+        manifest_path = os.path.normpath(
+            os.path.join(repo_root_abs, str(started.get("run_manifest_path", SUPERVISOR_RUN_MANIFEST_REL)).replace("/", os.sep))
+        )
+        aggregated_log_path = os.path.normpath(os.path.join(os.path.dirname(state_path), os.path.basename(SUPERVISOR_AGGREGATED_LOG_REL)))
         status = invoke_supervisor_service_command(repo_root_abs, "launcher status")
         state = load_supervisor_runtime_state(repo_root_abs)
-        manifest = _read_json(os.path.join(repo_root_abs, SUPERVISOR_RUN_MANIFEST_REL.replace("/", os.sep)))
-        aggregated_logs = _read_jsonl(os.path.join(repo_root_abs, SUPERVISOR_AGGREGATED_LOG_REL.replace("/", os.sep)))
+        manifest = _read_json(manifest_path)
+        aggregated_logs = _read_jsonl(aggregated_log_path)
         attachments = attach_supervisor_children(repo_root_abs, attach_all=True)
         stop = invoke_supervisor_service_command(repo_root_abs, "launcher stop")
         process_rows = sorted(
@@ -142,6 +149,8 @@ def run_supervisor_probe(
             "aggregated_log_rows": [
                 {
                     "source_product_id": str(_as_map(row).get("source_product_id", "")).strip(),
+                    "channel_id": str(_as_map(row).get("channel_id", "")).strip(),
+                    "seq_no": int(_as_map(row).get("seq_no", 0) or 0),
                     "event_id": str(_as_map(row).get("event_id", "")).strip(),
                     "message_key": str(_as_map(row).get("message_key", "")).strip(),
                     "severity": str(_as_map(row).get("severity", "")).strip(),

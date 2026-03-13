@@ -28,6 +28,7 @@ def run(repo_root: str):
         process.stdin.write("crash\n")
         process.stdin.flush()
         lab_engine.refresh()
+        lab_engine.refresh()
         lab_state = dict(lab_engine.status().get("state") or {})
         lab_row = _process_row(lab_state, "server")
         if int(lab_row.get("restart_count", 0) or 0) < 1 or str(lab_row.get("status", "")).strip() != "running":

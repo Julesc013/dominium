@@ -56,11 +56,15 @@ Argument ordering must be stable and canonical. No host-derived random paths or 
 
 `supervisor.policy.default`
 - `max_restarts = 0`
+- `restart_backoff_iterations = 0`
+- `readiness_poll_iterations = 6`
 - `auto_attach_ipc = true`
 - no silent restart
 
 `supervisor.policy.lab`
 - bounded restart allowance for local experimentation
+- `restart_backoff_iterations = 1`
+- `readiness_poll_iterations = 8`
 - still uses deterministic restart ordering and preserved args
 
 ## Startup
@@ -68,9 +72,9 @@ Argument ordering must be stable and canonical. No host-derived random paths or 
 `supervisor_start(run_spec)` performs:
 
 1. PACK-COMPAT verification
-2. deterministic child arg construction
+2. deterministic child arg canonicalization
 3. server spawn
-4. bounded polling iterations for IPC-ready state
+4. bounded polling iterations for IPC-ready negotiated state
 5. client spawn if topology requires it
 6. automatic IPC attach for logs and console surfaces
 7. run manifest emission
@@ -89,15 +93,17 @@ The supervisor never uses wall-clock timeouts. It uses bounded polling iteration
 The unified supervisor log view merges child streams by:
 
 1. `source_product_id`
-2. `seq_no`
-3. `endpoint_id`
-4. `event_id`
+2. `channel_id`
+3. `seq_no`
+4. `endpoint_id`
+5. `event_id`
 
 This merge order is stable and must not depend on arrival timing.
 
 ## Enforcement Notes
 
 - Restart policy evaluation is deterministic and profile-driven.
+- Restart backoff is measured in deterministic refresh iterations only.
 - Log aggregation must remain deterministic and bounded.
 - Supervisor attach and restart behavior must continue to use negotiated IPC and
   deterministic refusal paths.
