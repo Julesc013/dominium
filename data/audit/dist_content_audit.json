@@ -1,0 +1,32 @@
+{
+  "actual_packs": [
+    "store/packs/base/pack.base.procedural",
+    "store/packs/official/pack.earth.procedural",
+    "store/packs/official/pack.sol.pin_minimal"
+  ],
+  "bundle_root": "D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium",
+  "deterministic_fingerprint": "6ce24fe657398685686329ec9f2ee381de3e9422935656092f296e3f53c2dcb9",
+  "dev_artifacts": [],
+  "expected_packs": [
+    "store/packs/base/pack.base.procedural",
+    "store/packs/official/pack.earth.procedural",
+    "store/packs/official/pack.sol.pin_minimal"
+  ],
+  "large_files": [
+    {
+      "path": "tools/xstack/sessionx/process_runtime.pyc",
+      "size_bytes": 4395380
+    }
+  ],
+  "lock_paths": [
+    "store/locks/pack_lock.mvp_default.json"
+  ],
+  "missing_pack_paths": [],
+  "profile_paths": [
+    "store/profiles/bundles/bundle.mvp_default.json"
+  ],
+  "report_id": "dist.content.audit.v1",
+  "result": "complete",
+  "unexpected_pack_paths": [],
+  "unexpected_top_level": []
+}
