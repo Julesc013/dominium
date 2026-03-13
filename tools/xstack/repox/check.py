@@ -1093,6 +1093,14 @@ INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
 INSTALL_DISCOVERY_REPORT_PATH = "data/audit/install_discovery_report.json"
+SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
+SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
+SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
+SHIM_COMMON_PATH = "tools/release/shim_coverage_common.py"
+PATH_SHIMS_PATH = "src/compat/shims/path_shims.py"
+FLAG_SHIMS_PATH = "src/compat/shims/flag_shims.py"
+TOOL_SHIMS_PATH = "src/compat/shims/tool_shims.py"
+VALIDATION_SHIMS_PATH = "src/compat/shims/validation_shims.py"
 VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
@@ -8771,6 +8779,114 @@ def _append_install_discovery_findings(
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "install discovery violation detected",
                 rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-INSTALL-DISCOVERY-REQUIRED",
+            )
+        )
+
+
+def _append_repo_layout1_shim_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rules = (
+        "INV-SHIMS-MUST-LOG-DEPRECATION",
+        "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION",
+    )
+    severity = _invariant_severity(profile)
+    required_files = (
+        (SHIM_POLICY_DOC_PATH, "shim policy doc is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        (SHIM_COVERAGE_REPORT_PATH, "shim coverage report is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        (SHIM_TOOL_PATH, "shim coverage tool is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        (SHIM_COMMON_PATH, "shim coverage helper module is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        (PATH_SHIMS_PATH, "path shim module is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        (FLAG_SHIMS_PATH, "flag shim module is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        (TOOL_SHIMS_PATH, "tool shim module is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        (VALIDATION_SHIMS_PATH, "validation shim module is required", "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION"),
+        ("tools/auditx/analyzers/e483_silent_shim_smell.py", "SilentShimSmell analyzer is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        ("tools/auditx/analyzers/e484_shim_bypass_smell.py", "ShimBypassSmell analyzer is required", "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION"),
+        ("tools/xstack/testx/tests/repo_layout1_testlib.py", "shim TestX helper is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        ("tools/xstack/testx/tests/test_legacy_path_redirects_vpath.py", "legacy path redirect TestX coverage is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        ("tools/xstack/testx/tests/test_legacy_flags_map_correctly.py", "legacy flag shim TestX coverage is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        ("tools/xstack/testx/tests/test_legacy_validator_calls_unified_pipeline.py", "legacy validator shim TestX coverage is required", "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION"),
+        ("tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py", "shim warning determinism TestX coverage is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    policy_text = _file_text(repo_root, SHIM_POLICY_DOC_PATH).lower()
+    for token, message, rule_id in (
+        ("# shim policy", "shim policy doc must declare the canonical title", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        ("shims must never", "shim policy doc must declare forbidden bypass behavior", "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION"),
+        ("sunset target", "shim policy doc must declare a sunset target requirement", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+    ):
+        if token in policy_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=SHIM_POLICY_DOC_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    report_text = _file_text(repo_root, SHIM_COVERAGE_REPORT_PATH).lower()
+    for token, message in (
+        ("# shim coverage report", "shim coverage report must declare the canonical title"),
+        ("## shim surfaces", "shim coverage report must list shim surfaces"),
+        ("## known remaining legacy assumptions", "shim coverage report must list remaining legacy assumptions"),
+    ):
+        if token in report_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=SHIM_COVERAGE_REPORT_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id="INV-SHIMS-MUST-LOG-DEPRECATION",
+            )
+        )
+
+    try:
+        from tools.release.shim_coverage_common import shim_coverage_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=SHIM_COMMON_PATH,
+                line_number=1,
+                snippet="shim_coverage_violations",
+                message="unable to import shim coverage checks ({})".format(str(exc)),
+                rule_id="INV-SHIMS-MUST-LOG-DEPRECATION",
+            )
+        )
+        return
+
+    for violation in shim_coverage_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "shim coverage violation detected",
+                rule_id=str(row.get("rule_id", "")).strip() if str(row.get("rule_id", "")).strip() in rules else "INV-SHIMS-MUST-LOG-DEPRECATION",
             )
         )
 
@@ -32975,6 +33091,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_install_discovery_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_repo_layout1_shim_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

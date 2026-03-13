@@ -11,6 +11,7 @@ from .command_registry import build_root_command_descriptors, build_tui_panel_de
 from .commands import dispatch_registered_command
 from .compat_adapter import build_version_payload, emit_descriptor_payload
 from .config_loader import resolve_repo_root
+from src.compat.shims import apply_flag_shims
 from .ipc import AppShellIPCEndpointServer
 from .logging import (
     build_default_log_file_path,
@@ -84,8 +85,18 @@ def appshell_main(
     legacy_main: Callable[[Sequence[str]], int] | None = None,
     legacy_accepts_repo_root: bool = False,
 ) -> int:
-    shell_args = parse_appshell_args(product_id=str(product_id).strip(), argv=argv)
-    repo_root = resolve_repo_root(shell_args.repo_root, repo_root_hint=repo_root_hint)
+    initial_shell_args = parse_appshell_args(product_id=str(product_id).strip(), argv=argv)
+    repo_root = resolve_repo_root(initial_shell_args.repo_root, repo_root_hint=repo_root_hint)
+    flag_shim_state = apply_flag_shims(
+        product_id=str(product_id).strip(),
+        raw_args=initial_shell_args.raw_args,
+        repo_root=repo_root,
+        executable_path=sys.argv[0] if list(sys.argv) else "",
+    )
+    shell_args = parse_appshell_args(
+        product_id=str(product_id).strip(),
+        argv=list(flag_shim_state.get("raw_args") or []),
+    )
     vpath_context = vpath_init(
         {
             "repo_root": repo_root,
@@ -100,6 +111,13 @@ def appshell_main(
         explicit_mode=shell_args.mode,
         raw_args=shell_args.raw_args,
     )
+    if list(flag_shim_state.get("warnings") or []):
+        mode_resolution = dict(mode_resolution)
+        mode_resolution["deprecated_flags"] = list(mode_resolution.get("deprecated_flags") or []) + [
+            dict(row)
+            for row in list(flag_shim_state.get("warnings") or [])
+            if isinstance(row, dict)
+        ]
     command_rows = build_root_command_descriptors(repo_root, str(product_id).strip())
     version_payload = build_version_payload(repo_root, product_id=str(product_id).strip())
     logger = create_log_engine(

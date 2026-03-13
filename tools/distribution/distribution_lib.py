@@ -2,6 +2,7 @@ import json
 import os
 import re
 
+from src.compat.shims import redirect_legacy_path
 from src.meta_extensions_engine import normalize_extensions_tree
 
 
@@ -97,8 +98,16 @@ def normalize_pack_manifest(payload, root_label, manifest_relpath):
 def discover_pack_manifests(roots, repo_root):
     packs = []
     for root in roots:
-        root_abs = os.path.abspath(os.path.join(repo_root, root))
-        root_label = os.path.relpath(root_abs, repo_root)
+        original_root = str(root)
+        redirected = redirect_legacy_path(
+            str(root),
+            repo_root=repo_root,
+            product_id="tool.attach_console_stub",
+            executable_path=os.path.join(repo_root, "dist", "bin", "dom"),
+            emit_warning=True,
+        )
+        root_abs = str(redirected.get("rewritten_path", "")).strip() or os.path.abspath(os.path.join(repo_root, root))
+        root_label = original_root.replace("\\", "/") if not os.path.isabs(original_root) else os.path.relpath(root_abs, repo_root)
         if not os.path.isdir(root_abs):
             continue
         for dirpath, _dirnames, filenames in os.walk(root_abs):

@@ -2,10 +2,16 @@
 from __future__ import print_function
 
 import argparse
+import json
 import os
-import subprocess
 import sys
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, os.pardir, os.pardir))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+
+from src.compat.shims import run_legacy_validate_all  # noqa: E402
 
 def repo_root_from_script():
     return os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
@@ -34,18 +40,16 @@ def main():
     args = parser.parse_args()
 
     repo_root = args.repo_root or repo_root_from_script()
-    exe_path = args.exe or find_validate_all(repo_root)
-    if not exe_path:
-        print("validate_all executable not found.")
-        print("Build it and rerun, or pass --exe=<path>.")
-        return 2
-
-    cmd = [exe_path, "--repo-root=" + repo_root, "--strict=" + ("1" if args.strict else "0")]
-    if args.json_out:
-        cmd.append("--json-out=" + args.json_out)
-    if args.text_out:
-        cmd.append("--text-out=" + args.text_out)
-    return subprocess.call(cmd)
+    report = run_legacy_validate_all(
+        repo_root=repo_root,
+        strict=bool(args.strict),
+        profile="STRICT" if bool(args.strict) else "FAST",
+        json_out=str(args.json_out or "").strip(),
+        text_out=str(args.text_out or "").strip(),
+        ignored_exe_path=str(args.exe or find_validate_all(repo_root) or "").strip(),
+    )
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return 0 if str(report.get("result", "")).strip() == "complete" else 1
 
 
 if __name__ == "__main__":

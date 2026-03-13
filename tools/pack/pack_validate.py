@@ -4,9 +4,15 @@ import os
 import re
 import sys
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, os.pardir, os.pardir))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "distribution")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "fab")))
 
+from src.compat.shims import emit_legacy_tool_warning, redirect_legacy_path
 from distribution_lib import (  # noqa: E402
     discover_pack_manifests,
     extract_record,
@@ -38,9 +44,23 @@ def normalize_list(value):
 
 def detect_pack_root(pack_root, pack_id, repo_root):
     if pack_root:
-        return os.path.abspath(pack_root)
+        redirected = redirect_legacy_path(
+            str(pack_root),
+            repo_root=repo_root,
+            product_id="tool.attach_console_stub",
+            executable_path=__file__,
+            emit_warning=True,
+        )
+        return os.path.abspath(str(redirected.get("rewritten_path", "")).strip() or str(pack_root))
     if pack_id:
-        return os.path.abspath(os.path.join(repo_root, "data", "packs", pack_id))
+        redirected = redirect_legacy_path(
+            os.path.join("data", "packs", str(pack_id)),
+            repo_root=repo_root,
+            product_id="tool.attach_console_stub",
+            executable_path=__file__,
+            emit_warning=True,
+        )
+        return os.path.abspath(str(redirected.get("rewritten_path", "")).strip() or os.path.join(repo_root, "data", "packs", pack_id))
     return None
 
 
@@ -225,6 +245,7 @@ def validate_fab(pack_root, repo_root, issues):
 
 
 def main():
+    emit_legacy_tool_warning(__file__, argv=sys.argv[1:])
     parser = argparse.ArgumentParser(description="Validate pack manifests and data packs.")
     parser.add_argument("--pack-root", default=None)
     parser.add_argument("--pack-id", default=None)

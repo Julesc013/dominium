@@ -3,7 +3,15 @@ import argparse
 import json
 import os
 import re
+import sys
 from typing import Dict, List, Tuple
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, os.pardir, os.pardir))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+
+from src.compat.shims import emit_legacy_tool_warning, redirect_legacy_path
 
 
 REQ_KEY = "requires" + "_" + "stage"
@@ -205,6 +213,14 @@ def discover_pack_manifests(repo_root: str) -> List[str]:
     ]
     out = []
     for root in roots:
+        redirected = redirect_legacy_path(
+            os.path.relpath(root, repo_root).replace("\\", "/"),
+            repo_root=repo_root,
+            product_id="tool.attach_console_stub",
+            executable_path=__file__,
+            emit_warning=True,
+        )
+        root = str(redirected.get("rewritten_path", "")).strip() or root
         if not os.path.isdir(root):
             continue
         for walk_root, _, files in os.walk(root):
@@ -233,6 +249,7 @@ def to_rel(repo_root: str, abs_path: str) -> str:
 
 
 def main() -> int:
+    emit_legacy_tool_warning(__file__, argv=sys.argv[1:])
     parser = argparse.ArgumentParser(description="Deterministic manifest migration to capability-only gating.")
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--report", default="build/capability_gating_migration_report.json")

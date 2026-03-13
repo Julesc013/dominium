@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Iterable, Mapping, Sequence
 
 from src.compat import build_compat_status_payload, emit_product_descriptor, negotiate_product_endpoints
+from src.compat.shims import legacy_flag_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .args_parser import AppShellArgs
@@ -279,20 +280,7 @@ def _bootstrap_refs(product_id: str, raw_args: Sequence[str], repo_root: str) ->
 
 
 def flag_migration_rows() -> list[dict]:
-    return [
-        {
-            "product_id": "client",
-            "legacy_flag": "--ui gui|cli",
-            "replacement_flag": "--mode rendered|cli",
-            "status": "supported_with_warning",
-        },
-        {
-            "product_id": "server",
-            "legacy_flag": "--ui headless|cli",
-            "replacement_flag": "--mode headless|cli",
-            "status": "supported_with_warning",
-        },
-    ]
+    return legacy_flag_rows()
 
 
 def build_product_bootstrap_context(

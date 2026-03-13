@@ -7,9 +7,11 @@ from typing import Iterable, Mapping
 
 from src.appshell.args_parser import parse_appshell_args
 from src.appshell.compat_adapter import build_version_payload
+from src.appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init
 from src.appshell.product_bootstrap import build_product_bootstrap_context, resolve_mode_request
 from src.appshell.product_bootstrap import flag_migration_rows
 from src.appshell.ui_mode_selector import select_ui_mode
+from src.compat.shims import apply_flag_shims
 from src.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -290,15 +292,31 @@ def entrypoint_unify_violations(repo_root: str) -> list[dict]:
     return list(build_entrypoint_unify_report(repo_root).get("violations") or [])
 
 
-def bootstrap_context_for_product(repo_root: str, product_id: str, raw_args: Iterable[str] | None = None) -> dict:
+def bootstrap_context_for_product(
+    repo_root: str,
+    product_id: str,
+    raw_args: Iterable[str] | None = None,
+    *,
+    executable_path: str = "",
+) -> dict:
     product_token = _token(product_id)
     argv = list(raw_args or SAMPLE_ARGS.get(product_token, []))
-    shell_args = parse_appshell_args(product_token, argv=argv)
+    initial_shell_args = parse_appshell_args(product_token, argv=argv)
+    shimmed = apply_flag_shims(
+        product_id=product_token,
+        raw_args=initial_shell_args.raw_args,
+        repo_root=repo_root,
+        executable_path=executable_path or os.path.join(repo_root, "dist", "bin", product_token.replace(".", "_")),
+    )
+    shell_args = parse_appshell_args(product_token, argv=list(shimmed.get("raw_args") or []))
     mode_resolution = resolve_mode_request(
         product_id=product_token,
         explicit_mode=shell_args.mode,
         raw_args=shell_args.raw_args,
     )
+    if list(shimmed.get("warnings") or []):
+        mode_resolution = dict(mode_resolution)
+        mode_resolution["deprecated_flags"] = list(mode_resolution.get("deprecated_flags") or []) + list(shimmed.get("warnings") or [])
     mode_selection = select_ui_mode(
         repo_root,
         product_id=product_token,
@@ -315,14 +333,26 @@ def bootstrap_context_for_product(repo_root: str, product_id: str, raw_args: Ite
             ncurses_available=True,
         ),
     )
-    return build_product_bootstrap_context(
-        product_id=product_token,
-        repo_root=os.path.normpath(os.path.abspath(repo_root)),
-        shell_args=shell_args,
-        mode_resolution=mode_resolution,
-        mode_selection=mode_selection,
-        version_payload=build_version_payload(repo_root, product_id=product_token),
+    vpath_context = vpath_init(
+        {
+            "repo_root": os.path.normpath(os.path.abspath(repo_root)),
+            "product_id": product_token,
+            "raw_args": shell_args.raw_args,
+            "executable_path": executable_path or os.path.join(repo_root, "dist", "bin", product_token.replace(".", "_")),
+        }
     )
+    set_current_virtual_paths(vpath_context)
+    try:
+        return build_product_bootstrap_context(
+            product_id=product_token,
+            repo_root=os.path.normpath(os.path.abspath(repo_root)),
+            shell_args=shell_args,
+            mode_resolution=mode_resolution,
+            mode_selection=mode_selection,
+            version_payload=build_version_payload(repo_root, product_id=product_token),
+        )
+    finally:
+        clear_current_virtual_paths()
 
 
 def bootstrap_steps_for_product(repo_root: str, product_id: str, raw_args: Iterable[str] | None = None) -> list[str]:
