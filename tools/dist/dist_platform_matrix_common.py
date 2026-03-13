@@ -506,6 +506,20 @@ def _platform_input_rows(
                 }
             )
             continue
+        existing_dist_root = _bundle_root_from_input(
+            os.path.join(repo_root, "dist"),
+            platform_tag=platform_tag,
+            channel_id=channel_id,
+        )
+        if os.path.isfile(os.path.join(existing_dist_root, "install.manifest.json")):
+            rows.append(
+                {
+                    "platform_tag": platform_tag,
+                    "bundle_root_abs": existing_dist_root,
+                    "source_kind": "existing_dist",
+                }
+            )
+            continue
         report = build_dist_tree(
             repo_root,
             platform_tag=platform_tag,
@@ -601,26 +615,43 @@ def build_platform_matrix_report(
             )
             fallback_rows.append(fallback_row)
             if not bool(fallback_row.get("passed")):
+                if bool(fallback_row.get("degrade_expected")) and not bool(fallback_row.get("degrade_logged")):
+                    failure_code = "mode_fallback_not_logged"
+                    failure_message = "{} {} fallback {} selected {} but did not log appshell.mode.degraded".format(
+                        product_id,
+                        platform_tag,
+                        requested_mode_id,
+                        _token(fallback_row.get("selected_mode_id")),
+                    )
+                else:
+                    failure_code = "fallback_chain_mismatch"
+                    failure_message = "{} {} fallback {} resolved to {} instead of {}".format(
+                        product_id,
+                        platform_tag,
+                        requested_mode_id,
+                        _token(fallback_row.get("selected_mode_id")),
+                        _token(fallback_row.get("expected_mode_id")),
+                    )
                 failures.append(
                     {
-                        "code": "fallback_chain_mismatch",
+                        "code": failure_code,
                         "file_path": DIST_PLATFORM_MATRIX_JSON_PATH,
-                        "message": "{} {} fallback {} resolved to {} instead of {}".format(
-                            product_id,
-                            platform_tag,
-                            requested_mode_id,
-                            _token(fallback_row.get("selected_mode_id")),
-                            _token(fallback_row.get("expected_mode_id")),
-                        ),
+                        "message": failure_message,
                         "rule_id": RULE_ID,
                     }
                 )
             if not bool(product_row.get("passed")):
+                if not bool(product_row.get("capability_match_passed")):
+                    failure_code = "platform_capabilities_mismatch"
+                    failure_message = "{} {} descriptor capability claims diverged from the canonical platform probe".format(product_id, platform_tag)
+                else:
+                    failure_code = "product_runtime_failure"
+                    failure_message = "{} {} descriptor or compat-status command failed".format(product_id, platform_tag)
                 failures.append(
                     {
-                        "code": "platform_capability_mismatch",
+                        "code": failure_code,
                         "file_path": DIST_PLATFORM_MATRIX_JSON_PATH,
-                        "message": "{} {} runtime descriptor or compat-status drifted".format(product_id, platform_tag),
+                        "message": failure_message,
                         "rule_id": RULE_ID,
                     }
                 )
