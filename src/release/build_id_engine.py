@@ -65,9 +65,14 @@ def semantic_contract_registry_hash(repo_root: str) -> str:
 
 
 def source_revision_id(repo_root: str) -> str:
+    root = os.path.normpath(os.path.abspath(str(repo_root or "").strip()))
+    if not root:
+        return ""
+    if not os.path.exists(os.path.join(root, ".git")):
+        return ""
     try:
         result = subprocess.run(
-            ["git", "-C", repo_root, "rev-parse", "HEAD"],
+            ["git", "-C", root, "rev-parse", "HEAD"],
             check=False,
             capture_output=True,
             text=True,
