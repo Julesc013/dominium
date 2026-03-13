@@ -97,8 +97,17 @@ def _semantic_contract_ranges(repo_root: str) -> List[dict]:
     return out
 
 
-def build_product_build_metadata(repo_root: str, product_id: str) -> dict:
-    return release_build_product_build_metadata(repo_root, str(product_id).strip())
+def build_product_build_metadata(
+    repo_root: str,
+    product_id: str,
+    *,
+    platform_tag: str = "",
+) -> dict:
+    return release_build_product_build_metadata(
+        repo_root,
+        str(product_id).strip(),
+        platform_tag=str(platform_tag).strip(),
+    )
 
 
 def _default_semver(product_row: Mapping[str, object]) -> str:
@@ -139,7 +148,16 @@ def build_product_descriptor(
     if not defaults_row:
         raise ValueError("missing capability defaults for product_id '{}'".format(str(product_id).strip()))
 
-    build_meta = build_product_build_metadata(repo_root, str(product_id).strip())
+    platform_descriptor = (
+        dict(platform_descriptor_override)
+        if isinstance(platform_descriptor_override, Mapping)
+        else probe_platform_descriptor(repo_root, product_id=str(product_id).strip(), platform_id=str(platform_id).strip())
+    )
+    build_meta = build_product_build_metadata(
+        repo_root,
+        str(product_id).strip(),
+        platform_tag=str(platform_descriptor.get("platform_id", "")).strip(),
+    )
     resolved_version = str(product_version or "").strip()
     if not resolved_version:
         resolved_version = "{}+{}".format(_default_semver(product_row), str(build_meta.get("build_id", "")).strip())
@@ -151,17 +169,18 @@ def build_product_descriptor(
     descriptor_extensions.update(
         {
             "official.build_id": str(build_meta.get("build_id", "")).strip(),
+            "official.inputs_hash": str(build_meta.get("inputs_hash", "")).strip(),
             "official.git_commit_hash": str(build_meta.get("git_commit_hash", "")).strip(),
             "official.semantic_contract_registry_hash": str(build_meta.get("semantic_contract_registry_hash", "")).strip(),
             "official.compilation_options_hash": str(build_meta.get("compilation_options_hash", "")).strip(),
+            "official.source_revision_id": str(build_meta.get("source_revision_id", "")).strip(),
+            "official.explicit_build_number": str(build_meta.get("explicit_build_number", "")).strip(),
+            "official.platform_tag": str(build_meta.get("platform_tag", "")).strip(),
+            "official.build_configuration": str(build_meta.get("build_configuration", "")).strip(),
+            "official.build_input_selection": str(_as_map(build_meta.get("extensions")).get("official.build_input_selection", "")).strip(),
             "official.product_capability_defaults_hash": canonical_sha256(defaults_row),
             "official.product_registry_row_hash": canonical_sha256(product_row),
         }
-    )
-    platform_descriptor = (
-        dict(platform_descriptor_override)
-        if isinstance(platform_descriptor_override, Mapping)
-        else probe_platform_descriptor(repo_root, product_id=str(product_id).strip(), platform_id=str(platform_id).strip())
     )
     descriptor_extensions["official.platform_id"] = str(platform_descriptor.get("platform_id", "")).strip()
     descriptor_extensions["official.platform_descriptor_hash"] = str(platform_descriptor.get("deterministic_fingerprint", "")).strip()

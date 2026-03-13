@@ -25,6 +25,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--channel", default=DEFAULT_RELEASE_CHANNEL)
     parser.add_argument("--manifest-path", default="")
     parser.add_argument("--repo-root", default="")
+    parser.add_argument("--check-build-id-consistency", action="store_true")
     args = parser.parse_args(argv)
 
     dist_root = os.path.normpath(os.path.abspath(str(args.dist_root)))
@@ -34,6 +35,7 @@ def main(argv: list[str] | None = None) -> int:
         platform_tag=str(args.platform_tag).strip(),
         channel_id=str(args.channel).strip() or DEFAULT_RELEASE_CHANNEL,
         repo_root=repo_root,
+        verify_build_ids=bool(args.check_build_id_consistency),
     )
     written_path = write_release_manifest(dist_root, manifest, manifest_path=str(args.manifest_path).strip())
     payload = {

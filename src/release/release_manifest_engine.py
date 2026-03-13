@@ -8,6 +8,7 @@ import subprocess
 import sys
 from typing import Mapping, Sequence
 
+from src.release.build_id_engine import build_build_id_input_payload, build_id_identity_from_input_payload
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -39,6 +40,7 @@ OPTIONAL_REGRESSION_RELS = (
     os.path.join("data", "regression", "mvp_stress_baseline.json"),
     os.path.join("data", "regression", "mvp_cross_platform_baseline.json"),
 )
+DEFAULT_SIGNATURE_SCHEME_ID = "signature.mock_detached_hash.v1"
 
 
 def _token(value: object) -> str:
@@ -131,10 +133,87 @@ def _artifact_entry(
     return payload
 
 
+def _signature_entry(
+    *,
+    signature_id: str,
+    signer_id: str,
+    signed_hash: str,
+    signature_bytes: str,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "signature_id": _token(signature_id),
+        "signer_id": _token(signer_id),
+        "signed_hash": _token(signed_hash).lower(),
+        "signature_bytes": _token(signature_bytes),
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def build_mock_signature_block(
+    *,
+    signer_id: str,
+    signed_hash: str,
+    signature_id: str = "",
+) -> dict:
+    signature_token = _token(signature_id) or "signature.{}.{}".format(_token(signer_id).replace(" ", "_") or "mock", _token(signed_hash).lower()[:16] or "unsigned")
+    payload = {
+        "scheme_id": DEFAULT_SIGNATURE_SCHEME_ID,
+        "signature_id": signature_token,
+        "signer_id": _token(signer_id),
+        "signed_hash": _token(signed_hash).lower(),
+    }
+    return _signature_entry(
+        signature_id=signature_token,
+        signer_id=_token(signer_id),
+        signed_hash=_token(signed_hash).lower(),
+        signature_bytes=canonical_sha256(payload),
+        extensions={"scheme_id": DEFAULT_SIGNATURE_SCHEME_ID},
+    )
+
+
+def _normalized_signature_rows(signature_rows: Sequence[Mapping[str, object]] | None) -> list[dict]:
+    out: list[dict] = []
+    for row in list(signature_rows or []):
+        item = _as_map(row)
+        if not _token(item.get("signer_id")) or not _token(item.get("signed_hash")):
+            continue
+        out.append(
+            _signature_entry(
+                signature_id=_token(item.get("signature_id"))
+                or "signature.{}.{}".format(_token(item.get("signer_id")).replace(" ", "_") or "mock", _token(item.get("signed_hash")).lower()[:16] or "unsigned"),
+                signer_id=_token(item.get("signer_id")),
+                signed_hash=_token(item.get("signed_hash")).lower(),
+                signature_bytes=_token(item.get("signature_bytes")),
+                extensions=_as_map(item.get("extensions")),
+            )
+        )
+    return sorted(
+        out,
+        key=lambda row: (
+            _token(row.get("signed_hash")),
+            _token(row.get("signer_id")),
+            _token(row.get("signature_id")),
+            _token(row.get("signature_bytes")),
+        ),
+    )
+
+
 def _manifest_hash_payload(payload: Mapping[str, object]) -> dict:
     out = dict(payload or {})
     out["manifest_hash"] = ""
     out["deterministic_fingerprint"] = ""
+    out.pop("signatures", None)
+    return out
+
+
+def _manifest_fingerprint_payload(payload: Mapping[str, object]) -> dict:
+    out = dict(payload or {})
+    out["deterministic_fingerprint"] = ""
+    out.pop("signatures", None)
     return out
 
 
@@ -258,6 +337,12 @@ def _binary_entry(binary_path: str, dist_root: str) -> tuple[dict, dict]:
             "product_version": product_version,
             "release_semver": _semver_without_build(product_version),
             "semantic_contract_registry_hash": _token(extensions.get("official.semantic_contract_registry_hash")).lower(),
+            "inputs_hash": _token(extensions.get("official.inputs_hash")).lower(),
+            "compilation_options_hash": _token(extensions.get("official.compilation_options_hash")).lower(),
+            "source_revision_id": _token(extensions.get("official.source_revision_id")),
+            "explicit_build_number": _token(extensions.get("official.explicit_build_number")),
+            "platform_tag": _token(extensions.get("official.platform_tag")),
+            "build_configuration": _token(extensions.get("official.build_configuration")) or "release",
         },
     )
     return entry, descriptor
@@ -449,6 +534,168 @@ def _optional_hash(path: str) -> str:
     return _sha256_file(abs_path)
 
 
+def _descriptor_build_id_cross_check(descriptor: Mapping[str, object]) -> dict:
+    descriptor_map = _as_map(descriptor)
+    extensions = _as_map(descriptor_map.get("extensions"))
+    product_id = _token(descriptor_map.get("product_id"))
+    semantic_hash = _token(extensions.get("official.semantic_contract_registry_hash")).lower()
+    compilation_hash = _token(extensions.get("official.compilation_options_hash")).lower()
+    source_revision = _token(extensions.get("official.source_revision_id"))
+    explicit_build_number = _token(extensions.get("official.explicit_build_number"))
+    platform_tag = _token(extensions.get("official.platform_tag"))
+    actual_build_id = _token(extensions.get("official.build_id"))
+    actual_inputs_hash = _token(extensions.get("official.inputs_hash")).lower()
+    if not product_id or not semantic_hash or not compilation_hash or (not source_revision and not explicit_build_number):
+        return {
+            "result": "insufficient_inputs",
+            "product_id": product_id,
+            "build_id": actual_build_id,
+            "inputs_hash": actual_inputs_hash,
+        }
+    expected = build_id_identity_from_input_payload(
+        build_build_id_input_payload(
+            product_id=product_id,
+            semantic_contract_registry_hash=semantic_hash,
+            compilation_options_hash=compilation_hash,
+            source_revision_id_value=source_revision,
+            explicit_build_number=explicit_build_number,
+            platform_tag=platform_tag,
+        )
+    )
+    return {
+        "result": "complete",
+        "product_id": product_id,
+        "build_id": actual_build_id,
+        "inputs_hash": actual_inputs_hash,
+        "expected_build_id": _token(expected.get("build_id")),
+        "expected_inputs_hash": _token(expected.get("inputs_hash")).lower(),
+        "build_id_match": actual_build_id == _token(expected.get("build_id")),
+        "inputs_hash_match": not actual_inputs_hash or actual_inputs_hash == _token(expected.get("inputs_hash")).lower(),
+    }
+
+
+def cross_check_release_manifest_build_ids(manifest_payload: Mapping[str, object], dist_root: str) -> dict:
+    root = os.path.normpath(os.path.abspath(dist_root))
+    mismatches: list[dict[str, str]] = []
+    checked_binaries = 0
+    for row in [_as_map(item) for item in _as_list(_as_map(manifest_payload).get("artifacts"))]:
+        if _token(row.get("artifact_kind")) != ARTIFACT_KIND_BINARY:
+            continue
+        if _token(_as_map(row.get("extensions")).get("binary_role")) == "auxiliary_wrapper":
+            continue
+        artifact_name = _token(row.get("artifact_name"))
+        abs_path = os.path.join(root, artifact_name.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            mismatches.append(
+                {
+                    "code": "missing_binary",
+                    "artifact_name": artifact_name,
+                    "message": "binary is missing for build-id cross-check",
+                }
+            )
+            continue
+        descriptor, descriptor_error = _run_descriptor(abs_path)
+        if not descriptor:
+            mismatches.append(
+                {
+                    "code": "descriptor_unavailable",
+                    "artifact_name": artifact_name,
+                    "message": descriptor_error or "descriptor unavailable",
+                }
+            )
+            continue
+        checked_binaries += 1
+        status = _descriptor_build_id_cross_check(descriptor)
+        if _token(status.get("result")) == "insufficient_inputs":
+            mismatches.append(
+                {
+                    "code": "insufficient_build_inputs",
+                    "artifact_name": artifact_name,
+                    "message": "descriptor does not expose enough build metadata to recompute build_id",
+                }
+            )
+            continue
+        if not bool(status.get("build_id_match")):
+            mismatches.append(
+                {
+                    "code": "build_id_mismatch",
+                    "artifact_name": artifact_name,
+                    "message": "descriptor build_id does not match recomputed build_id",
+                }
+            )
+        if not bool(status.get("inputs_hash_match")):
+            mismatches.append(
+                {
+                    "code": "inputs_hash_mismatch",
+                    "artifact_name": artifact_name,
+                    "message": "descriptor inputs_hash does not match recomputed inputs_hash",
+                }
+            )
+    return {
+        "result": "complete" if not mismatches else "refused",
+        "checked_binaries": checked_binaries,
+        "mismatches": mismatches,
+    }
+
+
+def load_signature_blocks(signature_path: str) -> list[dict]:
+    payload, error = _read_json(signature_path)
+    if error:
+        raise ValueError(error)
+    rows = payload.get("signatures")
+    if not isinstance(rows, list):
+        raise ValueError("signature file must contain a 'signatures' array")
+    return _normalized_signature_rows([_as_map(row) for row in rows])
+
+
+def verify_signature_blocks(signed_hash: str, signatures: Sequence[Mapping[str, object]] | None) -> dict:
+    rows = _normalized_signature_rows(signatures)
+    if not rows:
+        return {"status": "signature_missing", "verified_count": 0, "errors": []}
+    errors: list[dict[str, str]] = []
+    verified_count = 0
+    for row in rows:
+        scheme_id = _token(_as_map(row.get("extensions")).get("scheme_id")) or DEFAULT_SIGNATURE_SCHEME_ID
+        if _token(row.get("signed_hash")).lower() != _token(signed_hash).lower():
+            errors.append(
+                {
+                    "code": "signature_signed_hash_mismatch",
+                    "signature_id": _token(row.get("signature_id")),
+                    "message": "signature signed_hash does not match the manifest hash",
+                }
+            )
+            continue
+        if scheme_id != DEFAULT_SIGNATURE_SCHEME_ID:
+            errors.append(
+                {
+                    "code": "signature_unknown_scheme",
+                    "signature_id": _token(row.get("signature_id")),
+                    "message": "unsupported signature scheme '{}'".format(scheme_id),
+                }
+            )
+            continue
+        expected = build_mock_signature_block(
+            signer_id=_token(row.get("signer_id")),
+            signed_hash=_token(row.get("signed_hash")),
+            signature_id=_token(row.get("signature_id")),
+        )
+        if _token(expected.get("signature_bytes")) != _token(row.get("signature_bytes")):
+            errors.append(
+                {
+                    "code": "signature_bytes_mismatch",
+                    "signature_id": _token(row.get("signature_id")),
+                    "message": "signature bytes do not match the deterministic mock signature hook",
+                }
+            )
+            continue
+        verified_count += 1
+    return {
+        "status": "verified" if not errors else "signature_invalid",
+        "verified_count": verified_count,
+        "errors": errors,
+    }
+
+
 def infer_dist_root_from_manifest_path(manifest_path: str) -> str:
     target = os.path.normpath(os.path.abspath(manifest_path))
     if os.path.basename(target) != "release_manifest.json":
@@ -465,6 +712,8 @@ def build_release_manifest(
     platform_tag: str,
     channel_id: str = DEFAULT_RELEASE_CHANNEL,
     repo_root: str = "",
+    signatures: Sequence[Mapping[str, object]] | None = None,
+    verify_build_ids: bool = False,
 ) -> dict:
     root = os.path.normpath(os.path.abspath(dist_root))
     if not os.path.isdir(root):
@@ -557,8 +806,20 @@ def build_release_manifest(
             "regression_hashes": dict((key, regression_hashes[key]) for key in sorted(regression_hashes.keys())),
         },
     }
+    normalized_signatures = _normalized_signature_rows(signatures)
+    if normalized_signatures:
+        payload["signatures"] = normalized_signatures
     payload["manifest_hash"] = canonical_sha256(_manifest_hash_payload(payload))
-    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    payload["deterministic_fingerprint"] = canonical_sha256(_manifest_fingerprint_payload(payload))
+    if verify_build_ids:
+        build_id_report = cross_check_release_manifest_build_ids(payload, root)
+        if _token(build_id_report.get("result")) != "complete":
+            mismatch_codes = ", ".join(
+                _token(_as_map(row).get("code"))
+                for row in list(build_id_report.get("mismatches") or [])
+                if _token(_as_map(row).get("code"))
+            ) or "unknown_mismatch"
+            raise RuntimeError("release manifest build-id cross-check failed ({})".format(mismatch_codes))
     return payload
 
 
@@ -585,6 +846,7 @@ def verify_release_manifest(
     manifest_path: str,
     *,
     repo_root: str = "",
+    signature_path: str = "",
 ) -> dict:
     root = os.path.normpath(os.path.abspath(dist_root))
     payload = load_release_manifest(manifest_path)
@@ -600,7 +862,7 @@ def verify_release_manifest(
                 "message": "manifest_hash does not match canonical serialized manifest content",
             }
         )
-    expected_fingerprint = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    expected_fingerprint = canonical_sha256(_manifest_fingerprint_payload(payload))
     if _token(payload.get("deterministic_fingerprint")).lower() != expected_fingerprint:
         errors.append(
             {
@@ -626,6 +888,7 @@ def verify_release_manifest(
 
     binary_semantic_hashes: set[str] = set()
     verified_artifact_count = 0
+    build_id_cross_checked = 0
     for row in artifact_rows:
         artifact_kind = _token(row.get("artifact_kind"))
         artifact_name = _token(row.get("artifact_name"))
@@ -715,6 +978,33 @@ def verify_release_manifest(
                                 "message": "binary build_id mismatch",
                             }
                         )
+                    build_id_check = _descriptor_build_id_cross_check(descriptor)
+                    if _token(build_id_check.get("result")) == "complete":
+                        build_id_cross_checked += 1
+                        if not bool(build_id_check.get("build_id_match")):
+                            errors.append(
+                                {
+                                    "code": "refusal.release_manifest.build_id_recompute_mismatch",
+                                    "path": artifact_name,
+                                    "message": "recomputed build_id does not match descriptor build_id",
+                                }
+                            )
+                        if not bool(build_id_check.get("inputs_hash_match")):
+                            errors.append(
+                                {
+                                    "code": "refusal.release_manifest.inputs_hash_recompute_mismatch",
+                                    "path": artifact_name,
+                                    "message": "recomputed inputs_hash does not match descriptor inputs_hash",
+                                }
+                            )
+                    elif expected_build_id:
+                        warnings.append(
+                            {
+                                "code": "warn.release_manifest.build_id_inputs_unavailable",
+                                "path": artifact_name,
+                                "message": "descriptor does not expose enough build inputs to recompute build_id",
+                            }
+                        )
                     semantic_hash = _token(_as_map(_as_map(descriptor).get("extensions")).get("official.semantic_contract_registry_hash")).lower()
                     if semantic_hash:
                         binary_semantic_hashes.add(semantic_hash)
@@ -759,6 +1049,56 @@ def verify_release_manifest(
             }
         )
 
+    signature_rows = _normalized_signature_rows(_as_list(payload.get("signatures")))
+    detached_signature_path = _token(signature_path)
+    signature_file_error = False
+    if detached_signature_path:
+        detached_abs = os.path.normpath(os.path.abspath(detached_signature_path))
+        if not os.path.isfile(detached_abs):
+            signature_file_error = True
+            errors.append(
+                {
+                    "code": "refusal.release_manifest.signature_file_missing",
+                    "path": detached_signature_path,
+                    "message": "signature file is missing",
+                }
+            )
+        else:
+            try:
+                signature_rows = load_signature_blocks(detached_abs)
+            except ValueError as exc:
+                signature_file_error = True
+                errors.append(
+                    {
+                        "code": "refusal.release_manifest.signature_file_invalid",
+                        "path": detached_signature_path,
+                        "message": str(exc),
+                    }
+                )
+    signature_report = (
+        {"status": "signature_invalid", "verified_count": 0, "errors": []}
+        if signature_file_error
+        else verify_signature_blocks(expected_manifest_hash, signature_rows)
+    )
+    if _token(signature_report.get("status")) == "signature_invalid":
+        for row in list(signature_report.get("errors") or []):
+            item = _as_map(row)
+            errors.append(
+                {
+                    "code": "refusal.release_manifest.signature_invalid",
+                    "path": _token(item.get("signature_id")) or "signatures",
+                    "message": _token(item.get("message")) or "signature verification failed",
+                }
+            )
+    elif _token(signature_report.get("status")) == "signature_missing":
+        warnings.append(
+            {
+                "code": "warn.release_manifest.signature_missing",
+                "path": "signatures",
+                "message": "no detached or inline signatures were provided",
+            }
+        )
+
     return {
         "result": "complete" if not errors else "refused",
         "dist_root": _norm_rel(root),
@@ -766,6 +1106,9 @@ def verify_release_manifest(
         "release_id": _token(payload.get("release_id")),
         "manifest_hash": _token(payload.get("manifest_hash")).lower(),
         "verified_artifact_count": verified_artifact_count,
+        "build_id_cross_checked": build_id_cross_checked,
+        "signature_status": _token(signature_report.get("status")) or "signature_missing",
+        "verified_signature_count": int(signature_report.get("verified_count") or 0),
         "errors": errors,
         "warnings": warnings,
     }
@@ -781,10 +1124,15 @@ __all__ = [
     "DEFAULT_RELEASE_CHANNEL",
     "DEFAULT_RELEASE_MANIFEST_REL",
     "DEFAULT_RELEASE_MANIFEST_VERSION",
+    "DEFAULT_SIGNATURE_SCHEME_ID",
     "PRODUCT_BINARY_FILENAMES",
     "build_release_manifest",
+    "build_mock_signature_block",
+    "cross_check_release_manifest_build_ids",
     "infer_dist_root_from_manifest_path",
     "load_release_manifest",
+    "load_signature_blocks",
+    "verify_signature_blocks",
     "verify_release_manifest",
     "write_release_manifest",
 ]
