@@ -449,6 +449,16 @@ def _optional_hash(path: str) -> str:
     return _sha256_file(abs_path)
 
 
+def infer_dist_root_from_manifest_path(manifest_path: str) -> str:
+    target = os.path.normpath(os.path.abspath(manifest_path))
+    if os.path.basename(target) != "release_manifest.json":
+        return os.path.dirname(target)
+    parent = os.path.dirname(target)
+    if os.path.basename(parent) == "manifests":
+        return os.path.dirname(parent)
+    return parent
+
+
 def build_release_manifest(
     dist_root: str,
     *,
@@ -773,6 +783,7 @@ __all__ = [
     "DEFAULT_RELEASE_MANIFEST_VERSION",
     "PRODUCT_BINARY_FILENAMES",
     "build_release_manifest",
+    "infer_dist_root_from_manifest_path",
     "load_release_manifest",
     "verify_release_manifest",
     "write_release_manifest",
