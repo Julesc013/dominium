@@ -9577,6 +9577,93 @@ def _append_dist4_findings(
         )
 
 
+def _append_dist5_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    remediation_rule_id = "INV-REFUSALS-MUST-HAVE-REMEDIATION"
+    help_rule_id = "INV-HELP-TEXT-REGISTERED"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/release/UX_POLISH_CRITERIA.md", "DIST-5 UX polish doctrine is required", help_rule_id),
+        ("docs/appshell/CLI_REFERENCE.md", "generated CLI reference is required", help_rule_id),
+        ("docs/audit/DIST5_UX_SMOKE.md", "DIST-5 UX smoke report is required", help_rule_id),
+        ("docs/audit/DIST5_UX_POLISH_FINAL.md", "DIST-5 final report is required", help_rule_id),
+        ("data/audit/dist5_ux_smoke.json", "DIST-5 machine report is required", help_rule_id),
+        ("tools/dist/ux_smoke_common.py", "DIST-5 UX smoke helper is required", help_rule_id),
+        ("tools/dist/tool_run_ux_smoke.py", "DIST-5 UX smoke runner is required", help_rule_id),
+        ("tools/auditx/analyzers/e505_missing_remediation_hint_smell.py", "MissingRemediationHintSmell analyzer is required", remediation_rule_id),
+        ("tools/auditx/analyzers/e506_unstructured_user_facing_error_smell.py", "UnstructuredUserFacingErrorSmell analyzer is required", remediation_rule_id),
+        ("tools/xstack/testx/tests/dist5_testlib.py", "DIST-5 TestX helper is required", help_rule_id),
+        ("tools/xstack/testx/tests/test_refusal_contains_remediation.py", "DIST-5 refusal remediation TestX coverage is required", remediation_rule_id),
+        ("tools/xstack/testx/tests/test_help_outputs_deterministic.py", "DIST-5 help determinism TestX coverage is required", help_rule_id),
+        ("tools/xstack/testx/tests/test_status_outputs_valid_json_when_requested.py", "DIST-5 status JSON TestX coverage is required", remediation_rule_id),
+        ("tools/xstack/testx/tests/test_tui_help_present.py", "DIST-5 TUI help TestX coverage is required", help_rule_id),
+    )
+    for rel_path, message, current_rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=current_rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/release/UX_POLISH_CRITERIA.md").lower()
+    for token, message in (
+        ("# ux polish criteria", "DIST-5 doctrine must declare the canonical title"),
+        ("## failure messaging", "DIST-5 doctrine must define refusal messaging"),
+        ("## help text rules", "DIST-5 doctrine must define help text rules"),
+        ("## main menu rules", "DIST-5 doctrine must define menu equivalence"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/release/UX_POLISH_CRITERIA.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=help_rule_id,
+            )
+        )
+
+    try:
+        from tools.dist.ux_smoke_common import ux_smoke_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/dist/ux_smoke_common.py",
+                line_number=1,
+                snippet="ux_smoke_violations",
+                message="unable to import DIST-5 UX smoke checks ({})".format(str(exc)),
+                rule_id=help_rule_id,
+            )
+        )
+        return
+
+    for violation in ux_smoke_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "DIST-5 UX drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or help_rule_id,
+            )
+        )
+
+
 def _append_ipc_unify_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -34121,6 +34208,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_dist4_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_dist5_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
