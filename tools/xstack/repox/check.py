@@ -1099,6 +1099,10 @@ PRODUCT_BOOT_MATRIX_COMMON_PATH = "tools/mvp/prod_gate0_common.py"
 PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
 PRODUCT_BOOT_MATRIX_JSON_PATH = "data/audit/product_boot_matrix.json"
 PROD_GATE_FINAL_PATH = "docs/audit/PROD_GATE_FINAL.md"
+CONVERGENCE_GATE_COMMON_PATH = "tools/convergence/convergence_gate_common.py"
+CONVERGENCE_GATE_TOOL_PATH = "tools/convergence/tool_run_convergence_gate.py"
+CONVERGENCE_GATE_FINAL_DOC_PATH = "docs/audit/CONVERGENCE_FINAL.md"
+CONVERGENCE_GATE_FINAL_JSON_PATH = "data/audit/convergence_final.json"
 SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
 SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
@@ -9199,7 +9203,7 @@ def _append_reproducible_build_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path=str(row.get("file_path", "")).replace("\", "/"),
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
                 line_number=1,
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "reproducible build drift detected",
@@ -9274,6 +9278,69 @@ def _append_distribution_model_findings(
                 rule_id=rule_id,
             )
         )
+
+
+def _append_dist1_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    deterministic_rule_id = "INV-DIST-TREE-DETERMINISTIC"
+    exclusion_rule_id = "INV-DIST-EXCLUSION-LIST-ENFORCED"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/release/DIST_BUNDLE_ASSEMBLY.md", "distribution bundle assembly doctrine is required", deterministic_rule_id),
+        ("docs/audit/DIST_CONTENT_AUDIT.md", "distribution content audit report is required", exclusion_rule_id),
+        ("docs/audit/DIST_TREE_ASSEMBLY_FINAL.md", "distribution tree assembly final report is required", deterministic_rule_id),
+        ("tools/dist/dist_tree_common.py", "distribution assembly helper is required", deterministic_rule_id),
+        ("tools/dist/tool_assemble_dist_tree.py", "distribution assembly tool is required", deterministic_rule_id),
+        ("tools/dist/tool_dist_minimize.py", "distribution minimization tool is required", exclusion_rule_id),
+        ("tools/auditx/analyzers/e498_non_deterministic_file_order_smell.py", "NonDeterministicFileOrderSmell analyzer is required", deterministic_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.dist.dist_tree_common import dist_tree_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/dist/dist_tree_common.py",
+                line_number=1,
+                snippet="dist_tree_violations",
+                message="unable to import DIST-1 tree checks ({})".format(str(exc)),
+                rule_id=deterministic_rule_id,
+            )
+        )
+        return
+
+    for violation in dist_tree_violations(repo_root):
+        row = dict(violation or {})
+        code = str(row.get("code", "")).strip()
+        rule_id = exclusion_rule_id if ("dev_artifact" in code or "unexpected_top_level" in code) else deterministic_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=code[:160],
+                message=str(row.get("message", "")).strip() or "distribution tree drift detected",
+                rule_id=rule_id,
+            )
+        )
+
 
 def _append_ipc_unify_findings(
     findings: List[Dict[str, object]],
@@ -9478,6 +9545,86 @@ def _append_supervisor_hardening_findings(
             )
         )
 
+
+def _append_convergence_gate_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rule_id = "INV-CONVERGENCE-GATE-MUST-PASS-BEFORE-RELEASE"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (CONVERGENCE_GATE_COMMON_PATH, "convergence gate helper module is required"),
+        (CONVERGENCE_GATE_TOOL_PATH, "convergence gate tool runner is required"),
+        (CONVERGENCE_GATE_FINAL_DOC_PATH, "convergence final markdown report is required"),
+        (CONVERGENCE_GATE_FINAL_JSON_PATH, "convergence final machine-readable report is required"),
+        ("tools/auditx/analyzers/e489_convergence_gate_missing_smell.py", "ConvergenceGateMissingSmell analyzer is required"),
+        ("tools/xstack/testx/tests/convergence_gate_testlib.py", "convergence gate TestX helper is required"),
+        ("tools/xstack/testx/tests/test_convergence_gate_order_deterministic.py", "convergence gate order TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_convergence_gate_produces_reports.py", "convergence gate report TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_failure_stops_immediately.py", "convergence gate failure-stop TestX coverage is required"),
+    )
+    for rel_path, message in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    final_text = _file_text(repo_root, CONVERGENCE_GATE_FINAL_DOC_PATH).lower()
+    for token, message in (
+        ("# convergence final", "convergence final report must declare the canonical title"),
+        ("## summary", "convergence final report must include the summary section"),
+        ("## step results", "convergence final report must include per-step results"),
+        ("## remediation", "convergence final report must include deterministic remediation guidance"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONVERGENCE_GATE_FINAL_DOC_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.convergence.convergence_gate_common import convergence_gate_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=CONVERGENCE_GATE_COMMON_PATH,
+                line_number=1,
+                snippet="convergence_gate_violations",
+                message="unable to import convergence gate checks ({})".format(str(exc)),
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    for violation in convergence_gate_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "convergence gate drift detected",
+                rule_id=rule_id,
+            )
+        )
 
 def _append_earth10_proxy_findings(
     findings: List[Dict[str, object]],
@@ -33698,6 +33845,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         repo_root=repo_root,
         profile=token,
     )
+    _append_convergence_gate_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
     _append_repo_layout1_shim_findings(
         findings=findings,
         repo_root=repo_root,
@@ -33714,6 +33866,16 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_distribution_model_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_dist1_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_reproducible_build_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

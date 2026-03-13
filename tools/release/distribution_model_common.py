@@ -55,7 +55,7 @@ EXCLUDED_DEV_NAMES = frozenset(
         ".ruff_cache",
     }
 )
-EXCLUDED_DEV_SUFFIXES = (".pyc", ".pyo")
+EXCLUDED_DEV_SUFFIXES: tuple[str, ...] = ()
 
 
 def _token(value: object) -> str:
