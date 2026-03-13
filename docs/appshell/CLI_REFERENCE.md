@@ -1,34 +1,34 @@
 Status: DERIVED
-Last Reviewed: 2026-03-11
+Last Reviewed: 2026-03-14
 Supersedes: none
 Superseded By: none
+Stability: provisional
+Future Series: DIST
+Replacement Target: release CLI reference regenerated from AppShell registry and DIST-5 tooling
 
 # CLI Reference
 
-This reference is generated from `data/registries/command_registry.json` and
-`data/registries/refusal_to_exit_registry.json`.
+This reference is generated from `data/registries/command_registry.json`,
+`data/registries/refusal_to_exit_registry.json`, and the stable tool umbrella surface.
+
+## Getting Started
+
+```text
+help
+compat-status
+packs verify --root .
+launcher start --seed 456
+diag capture
+bin/setup instance export --instance-id default --out exports/default.instance.bundle
+```
 
 ## Shared Commands
 
+### Additional
+
 | Command | Description | Refusals |
 | --- | --- | --- |
-| `compat-status` | Run deterministic endpoint compatibility status and show negotiated mode plus disabled features. | `refusal.compat.contract_mismatch`, `refusal.compat.no_common_protocol`, `refusal.io.invalid_args` |
-| `console` | Alias of `console enter` for deterministic REPL console access. | - |
-| `descriptor` | Emit the CAP-NEG endpoint descriptor for the active product. | `refusal.io.invalid_args` |
-| `diag` | Emit deterministic shell diagnostic metadata. | - |
 | `dom` | List the stable Dominium tool namespaces and wrapped commands. | `refusal.io.invalid_args` |
-| `help` | Show deterministic AppShell help generated from the command registry. | - |
-| `packs` | Alias of `packs list` for deterministic pack enumeration. | `refusal.io.invalid_args` |
-| `profiles` | Alias of `profiles list` for deterministic bundle enumeration. | - |
-| `validate` | Run the unified validation pipeline through `validate --all`. | `refusal.io.invalid_args` |
-| `verify` | Alias of `packs verify` for offline pack/profile verification. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
-| `version` | Emit deterministic product version metadata and build identity. | - |
-| `console attach` | Attach to a local IPC console endpoint through CAP-NEG negotiation. | `refusal.connection.negotiation_mismatch`, `refusal.connection.no_negotiation`, `refusal.io.invalid_args`, `refusal.law.attach_denied` |
-| `console detach` | Detach a logical local IPC console session. | `refusal.io.invalid_args` |
-| `console enter` | Open the deterministic REPL console session stub for the current product. | - |
-| `console sessions` | List discovered local IPC console endpoints in deterministic order. | `refusal.io.invalid_args` |
-| `diag capture` | Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs. | `refusal.io.invalid_args` |
-| `diag snapshot` | Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors. | `refusal.io.invalid_args` |
 | `dom client` | Client-facing AppShell inspection commands. | `refusal.io.invalid_args` |
 | `dom compat` | Capability negotiation descriptors, replay, and interop tooling. | `refusal.io.invalid_args` |
 | `dom diag` | Repro bundle capture, snapshot, and replay tooling. | `refusal.io.invalid_args` |
@@ -47,11 +47,6 @@ This reference is generated from `data/registries/command_registry.json` and
 | `launcher start` | Start a deterministic supervised local singleplayer or headless server run. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.supervisor.already_running`, `refusal.supervisor.endpoint_unreached` |
 | `launcher status` | Show deterministic supervisor state, process health, and aggregated logs. | `refusal.supervisor.not_running` |
 | `launcher stop` | Stop the active supervised run in deterministic client then server order. | `refusal.supervisor.endpoint_unreached`, `refusal.supervisor.not_running` |
-| `packs build-lock` | Verify packs offline and emit a deterministic pack lock plus compatibility report. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
-| `packs list` | List available pack manifests in deterministic order. | `refusal.io.invalid_args` |
-| `packs verify` | Run the offline pack compatibility verification pipeline. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
-| `profiles list` | List available profile bundles in deterministic order. | - |
-| `profiles show` | Show a single profile bundle by bundle id. | `refusal.io.invalid_args`, `refusal.io.profile_not_found` |
 | `dom client compat-status` | Run deterministic endpoint compatibility status and show negotiated mode plus disabled features. | `refusal.compat.contract_mismatch`, `refusal.compat.no_common_protocol`, `refusal.io.invalid_args` |
 | `dom client console` | Alias of `console enter` for deterministic REPL console access. | `refusal.io.invalid_args` |
 | `dom client descriptor` | Emit the CAP-NEG endpoint descriptor for the active product. | `refusal.io.invalid_args` |
@@ -165,6 +160,57 @@ This reference is generated from `data/registries/command_registry.json` and
 | `dom worldgen replay-wind-window` | Verify EARTH-7 wind replay determinism | `refusal.io.invalid_args` |
 | `dom worldgen run-refinement-stress` | Run the MW-4 rapid-teleport and ROI-thrash stress fixture | `refusal.io.invalid_args` |
 | `dom worldgen verify-earth-surface` | Verify EARTH-0 far-LOD surface consistency without renderer dependencies | `refusal.io.invalid_args` |
+
+### Console
+
+| Command | Description | Refusals |
+| --- | --- | --- |
+| `console` | Alias of `console enter` for deterministic REPL console access. | - |
+| `console attach` | Attach to a local IPC console endpoint through CAP-NEG negotiation. | `refusal.connection.negotiation_mismatch`, `refusal.connection.no_negotiation`, `refusal.io.invalid_args`, `refusal.law.attach_denied` |
+| `console detach` | Detach a logical local IPC console session. | `refusal.io.invalid_args` |
+| `console enter` | Open the deterministic REPL console session stub for the current product. | - |
+| `console sessions` | List discovered local IPC console endpoints in deterministic order. | `refusal.io.invalid_args` |
+
+### Diagnostics
+
+| Command | Description | Refusals |
+| --- | --- | --- |
+| `diag` | Emit deterministic shell diagnostic metadata. | - |
+| `diag capture` | Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs. | `refusal.io.invalid_args` |
+| `diag snapshot` | Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors. | `refusal.io.invalid_args` |
+
+### General
+
+| Command | Description | Refusals |
+| --- | --- | --- |
+| `compat-status` | Run deterministic endpoint compatibility status and show negotiated mode plus disabled features. | `refusal.compat.contract_mismatch`, `refusal.compat.no_common_protocol`, `refusal.io.invalid_args` |
+| `descriptor` | Emit the CAP-NEG endpoint descriptor for the active product. | `refusal.io.invalid_args` |
+| `help` | Show deterministic AppShell help generated from the command registry. | - |
+| `version` | Emit deterministic product version metadata and build identity. | - |
+
+### Packs
+
+| Command | Description | Refusals |
+| --- | --- | --- |
+| `packs` | Alias of `packs list` for deterministic pack enumeration. | `refusal.io.invalid_args` |
+| `verify` | Alias of `packs verify` for offline pack/profile verification. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
+| `packs build-lock` | Verify packs offline and emit a deterministic pack lock plus compatibility report. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
+| `packs list` | List available pack manifests in deterministic order. | `refusal.io.invalid_args` |
+| `packs verify` | Run the offline pack compatibility verification pipeline. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
+
+### Profiles
+
+| Command | Description | Refusals |
+| --- | --- | --- |
+| `profiles` | Alias of `profiles list` for deterministic bundle enumeration. | - |
+| `profiles list` | List available profile bundles in deterministic order. | - |
+| `profiles show` | Show a single profile bundle by bundle id. | `refusal.io.invalid_args`, `refusal.io.profile_not_found` |
+
+### Validation
+
+| Command | Description | Refusals |
+| --- | --- | --- |
+| `validate` | Run the unified validation pipeline through `validate --all`. | `refusal.io.invalid_args` |
 
 ## Namespaces
 
@@ -518,3 +564,9 @@ This reference is generated from `data/registries/command_registry.json` and
 - `geo.*`: Reserved stable namespace for GEO explain and inspection commands.
 - `logic.*`: Reserved stable namespace for logic compile, probe, and trace commands.
 - `tool.*`: Reserved stable namespace for tool product commands.
+
+## UX Notes
+
+- Use `help <topic>` for a narrower command view without exposing internal ids in the default flow.
+- Refusals should always include a stable refusal code and a remediation hint.
+- Use `--json` when you need machine-readable status output from launcher and setup legacy surfaces.

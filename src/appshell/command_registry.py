@@ -126,6 +126,29 @@ def _command_sort_key(row: Mapping[str, object]) -> Tuple[object, ...]:
     )
 
 
+def _help_example_rows(product_id: str, available_paths: Iterable[str]) -> list[tuple[str, str]]:
+    paths = set(_sorted_tokens(available_paths))
+    rows: list[tuple[str, str]] = []
+    ordered_examples = (
+        ("compat-status", "Check compatibility and selected mode"),
+        ("packs verify --root .", "Verify packs offline"),
+        ("profiles list", "List available profile bundles"),
+        ("diag capture", "Capture a deterministic repro bundle"),
+        ("console enter", "Open the command console"),
+        ("launcher start --seed 456", "Start a session with a fixed seed"),
+    )
+    for command_text, label in ordered_examples:
+        command_path = " ".join(str(command_text).split()[:2]).strip()
+        exact_path = " ".join(str(command_text).split()).strip()
+        if exact_path in paths or command_path in paths:
+            rows.append((label, command_text))
+    if not rows:
+        rows.append(("Open help", "help"))
+    if str(product_id).strip() == "client":
+        rows.append(("Show client status", "compat-status --mode cli"))
+    return rows
+
+
 def find_command_descriptor(
     repo_root: str,
     product_id: str,
@@ -176,9 +199,11 @@ def format_help_text(product_id: str, command_rows: Iterable[Mapping[str, object
         [row for row in rows if str(row.get("command_path", "")).strip().endswith(".*")],
         key=_command_sort_key,
     )
+    available_paths = [str(row.get("command_path", "")).strip() for row in exact_rows]
     lines = [
         "Dominium AppShell",
         "product_id: {}".format(str(product_id).strip()),
+        "tip: use `help <topic>` for a narrower command view.",
     ]
     if topic:
         lines.append("topic: {}".format(topic))
@@ -197,6 +222,9 @@ def format_help_text(product_id: str, command_rows: Iterable[Mapping[str, object
             lines.append("  {:<24} {}".format(command_path, description))
     if not exact_rows and not namespace_rows:
         lines.append("  no registered commands matched the requested topic")
+    lines.append("examples:")
+    for label, command_text in _help_example_rows(str(product_id).strip(), available_paths):
+        lines.append("  {:<24} {}".format(label + ":", command_text))
     return "\n".join(lines)
 
 

@@ -63,6 +63,22 @@ def _rows_for_products(command_rows: list[dict]) -> dict[str, list[dict]]:
     return dict((key, sorted(value, key=_command_sort_key)) for key, value in sorted(out.items()))
 
 
+def _group_title(command_path: str) -> str:
+    token = str(command_path or "").strip().split(" ", 1)[0]
+    return {
+        "compat-status": "General",
+        "console": "Console",
+        "descriptor": "General",
+        "diag": "Diagnostics",
+        "help": "General",
+        "packs": "Packs",
+        "profiles": "Profiles",
+        "validate": "Validation",
+        "verify": "Packs",
+        "version": "General",
+    }.get(token, "Additional")
+
+
 def generate_cli_reference(repo_root: str) -> str:
     registry_payload, error = load_command_registry(repo_root)
     if error:
@@ -72,31 +88,55 @@ def generate_cli_reference(repo_root: str) -> str:
     product_rows = _rows_for_products(command_rows)
     root_rows = [row for row in command_rows if not str(row.get("command_path", "")).strip().endswith(".*")]
     namespace_rows = [row for row in command_rows if str(row.get("command_path", "")).strip().endswith(".*")]
+    grouped_rows: dict[str, list[dict]] = {}
+    for row in sorted(root_rows, key=_command_sort_key):
+        grouped_rows.setdefault(_group_title(str(row.get("command_path", "")).strip()), []).append(row)
 
     lines = [
         "Status: DERIVED",
-        "Last Reviewed: 2026-03-11",
+        "Last Reviewed: 2026-03-14",
         "Supersedes: none",
         "Superseded By: none",
+        "Stability: provisional",
+        "Future Series: DIST",
+        "Replacement Target: release CLI reference regenerated from AppShell registry and DIST-5 tooling",
         "",
         "# CLI Reference",
         "",
-        "This reference is generated from `data/registries/command_registry.json` and",
-        "`data/registries/refusal_to_exit_registry.json`.",
+        "This reference is generated from `data/registries/command_registry.json`,",
+        "`data/registries/refusal_to_exit_registry.json`, and the stable tool umbrella surface.",
+        "",
+        "## Getting Started",
+        "",
+        "```text",
+        "help",
+        "compat-status",
+        "packs verify --root .",
+        "launcher start --seed 456",
+        "diag capture",
+        "bin/setup instance export --instance-id default --out exports/default.instance.bundle",
+        "```",
         "",
         "## Shared Commands",
-        "",
-        "| Command | Description | Refusals |",
-        "| --- | --- | --- |",
     ]
-    for row in sorted(root_rows, key=_command_sort_key):
-        lines.append(
-            "| `{}` | {} | {} |".format(
-                str(row.get("command_path", "")).strip(),
-                str(row.get("description", "")).strip(),
-                ", ".join("`{}`".format(code) for code in list(row.get("refusal_codes") or [])) or "-",
-            )
+    for group_name in sorted(grouped_rows):
+        lines.extend(
+            [
+                "",
+                "### {}".format(group_name),
+                "",
+                "| Command | Description | Refusals |",
+                "| --- | --- | --- |",
+            ]
         )
+        for row in grouped_rows[group_name]:
+            lines.append(
+                "| `{}` | {} | {} |".format(
+                    str(row.get("command_path", "")).strip(),
+                    str(row.get("description", "")).strip(),
+                    ", ".join("`{}`".format(code) for code in list(row.get("refusal_codes") or [])) or "-",
+                )
+            )
 
     lines.extend(
         [
@@ -127,6 +167,17 @@ def generate_cli_reference(repo_root: str) -> str:
         lines.extend(["", "### `{}`".format(product_id), ""])
         for row in rows:
             lines.append("- `{}`: {}".format(str(row.get("command_path", "")).strip(), str(row.get("description", "")).strip()))
+
+    lines.extend(
+        [
+            "",
+            "## UX Notes",
+            "",
+            "- Use `help <topic>` for a narrower command view without exposing internal ids in the default flow.",
+            "- Refusals should always include a stable refusal code and a remediation hint.",
+            "- Use `--json` when you need machine-readable status output from launcher and setup legacy surfaces.",
+        ]
+    )
 
     return "\n".join(lines) + "\n"
 

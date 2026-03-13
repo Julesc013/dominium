@@ -22,6 +22,19 @@ from tools.mvp.runtime_bundle import (
 )
 
 
+_LEGACY_UI_TO_MODE = {
+    "cli": "cli",
+    "gui": "rendered",
+    "headless": "cli",
+}
+_MODE_TO_LEGACY_UI = {
+    "cli": "cli",
+    "tui": "cli",
+    "rendered": "gui",
+    "os_native": "gui",
+}
+
+
 def build_parser(entrypoint: str) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Bootstrap Dominium MVP runtime entrypoint for {}.".format(str(entrypoint).strip())
@@ -50,6 +63,79 @@ def _default_ui(entrypoint: str, ui: str) -> str:
     if str(entrypoint) == "server":
         return "headless"
     return "gui"
+
+
+def _has_mode_flag(argv: Sequence[str] | None) -> bool:
+    for token in list(argv or []):
+        value = str(token).strip()
+        if value == "--mode" or value.startswith("--mode="):
+            return True
+    return False
+
+
+def _normalize_appshel_args(argv: Sequence[str] | None) -> list[str]:
+    raw_args = [str(token) for token in list(argv or [])]
+    explicit_mode = _has_mode_flag(raw_args)
+    normalized: list[str] = []
+    index = 0
+    while index < len(raw_args):
+        token = str(raw_args[index]).strip()
+        if token == "--ui":
+            legacy_value = str(raw_args[index + 1]).strip() if index + 1 < len(raw_args) else ""
+            if not explicit_mode:
+                mapped = _LEGACY_UI_TO_MODE.get(legacy_value, "")
+                if mapped:
+                    normalized.extend(["--mode", mapped])
+            index += 2 if index + 1 < len(raw_args) else 1
+            continue
+        if token.startswith("--ui="):
+            if not explicit_mode:
+                mapped = _LEGACY_UI_TO_MODE.get(token.split("=", 1)[1].strip(), "")
+                if mapped:
+                    normalized.extend(["--mode", mapped])
+            index += 1
+            continue
+        normalized.append(str(raw_args[index]))
+        index += 1
+    return normalized
+
+
+def _legacy_ui_for_mode(mode_id: str) -> str:
+    return _MODE_TO_LEGACY_UI.get(str(mode_id).strip(), "")
+
+
+def _delegate_args_for_legacy(context: dict) -> list[str]:
+    delegate_argv = [str(token) for token in list(context.get("delegate_argv") or [])]
+    converted: list[str] = []
+    index = 0
+    saw_ui = False
+    while index < len(delegate_argv):
+        token = str(delegate_argv[index]).strip()
+        if token == "--mode":
+            mode_value = str(delegate_argv[index + 1]).strip() if index + 1 < len(delegate_argv) else ""
+            legacy_ui = _legacy_ui_for_mode(mode_value)
+            if legacy_ui:
+                converted.extend(["--ui", legacy_ui])
+                saw_ui = True
+            index += 2 if index + 1 < len(delegate_argv) else 1
+            continue
+        if token.startswith("--mode="):
+            legacy_ui = _legacy_ui_for_mode(token.split("=", 1)[1].strip())
+            if legacy_ui:
+                converted.extend(["--ui", legacy_ui])
+                saw_ui = True
+            index += 1
+            continue
+        if token == "--ui" or token.startswith("--ui="):
+            saw_ui = True
+        converted.append(str(delegate_argv[index]))
+        index += 1
+    if not saw_ui:
+        selected_mode_id = str(context.get("selected_mode_id", "")).strip() or str(context.get("mode_id", "")).strip()
+        legacy_ui = _legacy_ui_for_mode(selected_mode_id)
+        if legacy_ui:
+            converted = ["--ui", legacy_ui] + converted
+    return converted
 
 
 def _legacy_main(entrypoint: str, argv: Sequence[str] | None = None) -> int:
@@ -121,7 +207,7 @@ def _legacy_main(entrypoint: str, argv: Sequence[str] | None = None) -> int:
 def appshell_product_bootstrap(context: dict) -> int:
     product_id = str(context.get("product_id", "")).strip() or "client"
     delegate_argv = ["--repo-root", str(context.get("repo_root", ".")).replace("/", "\\")]
-    delegate_argv.extend(list(context.get("delegate_argv") or []))
+    delegate_argv.extend(_delegate_args_for_legacy(context))
     return _legacy_main(product_id, delegate_argv)
 
 
@@ -144,7 +230,7 @@ def server_main(argv: Sequence[str] | None = None) -> int:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    raw_args = list(argv or sys.argv[1:])
+    raw_args = _normalize_appshel_args(list(argv or sys.argv[1:]))
     if raw_args and str(raw_args[0]).strip() in {"client", "server"}:
         if str(raw_args[0]).strip() == "server":
             return server_main(raw_args[1:])
