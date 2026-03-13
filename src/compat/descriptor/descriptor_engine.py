@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import os
-import subprocess
 from typing import Dict, Iterable, List, Mapping, Tuple
 
 from src.compat.capability_negotiation import (
@@ -14,13 +13,15 @@ from src.compat.capability_negotiation import (
     semantic_contract_rows_by_category,
 )
 from src.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
+from src.release.build_id_engine import (
+    DEFAULT_PRODUCT_SEMVER,
+    build_product_build_metadata as release_build_product_build_metadata,
+)
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
 PRODUCT_CAPABILITY_DEFAULTS_REL = os.path.join("data", "registries", "product_capability_defaults.json")
 SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
-DEFAULT_PRODUCT_SEMVER = "0.0.0"
-DEFAULT_BUILD_NUMBER = "0"
 
 
 def _read_json(path: str) -> Tuple[dict, str]:
@@ -96,78 +97,8 @@ def _semantic_contract_ranges(repo_root: str) -> List[dict]:
     return out
 
 
-def _semantic_contract_registry_hash(repo_root: str) -> str:
-    payload, error = _read_json(os.path.join(repo_root, SEMANTIC_CONTRACT_REGISTRY_REL))
-    if error:
-        return ""
-    return canonical_sha256(payload)
-
-
-def _git_commit_hash(repo_root: str) -> str:
-    try:
-        result = subprocess.run(
-            ["git", "-C", repo_root, "rev-parse", "HEAD"],
-            check=False,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-        )
-    except OSError:
-        return ""
-    if int(result.returncode or 0) != 0:
-        return ""
-    return str(result.stdout or "").strip()
-
-
-def _compilation_options_payload(product_id: str, defaults_row: Mapping[str, object]) -> dict:
-    return {
-        "descriptor_schema_version": "1.0.0",
-        "product_id": str(product_id or "").strip(),
-        "runtime_family": "python.portable",
-        "protocol_ids": _sorted_tokens(
-            _as_map(row).get("protocol_id", "")
-            for row in _as_list(_as_map(defaults_row).get("protocol_versions_supported"))
-            if isinstance(row, Mapping)
-        ),
-        "feature_capabilities": _sorted_tokens(_as_map(defaults_row).get("feature_capabilities")),
-        "source": str(_as_map(defaults_row).get("extensions", {}).get("official.source", "CAP-NEG-1")).strip() or "CAP-NEG-1",
-    }
-
-
 def build_product_build_metadata(repo_root: str, product_id: str) -> dict:
-    defaults_rows, _error = product_capability_default_rows_by_id(repo_root)
-    defaults_row = dict(defaults_rows.get(str(product_id).strip()) or {})
-    contract_hash = _semantic_contract_registry_hash(repo_root)
-    git_hash = _git_commit_hash(repo_root)
-    fallback_build_number = str(os.environ.get("DOMINIUM_FIXED_BUILD_NUMBER", DEFAULT_BUILD_NUMBER)).strip() or DEFAULT_BUILD_NUMBER
-    compilation_options = _compilation_options_payload(str(product_id), defaults_row)
-    compilation_options_hash = canonical_sha256(compilation_options)
-    build_seed = {
-        "product_id": str(product_id).strip(),
-        "git_commit_hash": str(git_hash).strip(),
-        "fallback_build_number": fallback_build_number,
-        "semantic_contract_registry_hash": contract_hash,
-        "compilation_options_hash": compilation_options_hash,
-    }
-    build_id = "build.{}".format(canonical_sha256(build_seed)[:16])
-    return {
-        "product_id": str(product_id).strip(),
-        "build_id": build_id,
-        "git_commit_hash": str(git_hash).strip(),
-        "semantic_contract_registry_hash": contract_hash,
-        "compilation_options_hash": compilation_options_hash,
-        "fallback_build_number": fallback_build_number,
-        "deterministic_fingerprint": canonical_sha256(
-            {
-                "product_id": str(product_id).strip(),
-                "build_id": build_id,
-                "git_commit_hash": str(git_hash).strip(),
-                "semantic_contract_registry_hash": contract_hash,
-                "compilation_options_hash": compilation_options_hash,
-                "fallback_build_number": fallback_build_number,
-            }
-        ),
-    }
+    return release_build_product_build_metadata(repo_root, str(product_id).strip())
 
 
 def _default_semver(product_row: Mapping[str, object]) -> str:
