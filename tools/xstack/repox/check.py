@@ -1099,6 +1099,13 @@ PRODUCT_BOOT_MATRIX_COMMON_PATH = "tools/mvp/prod_gate0_common.py"
 PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
 PRODUCT_BOOT_MATRIX_JSON_PATH = "data/audit/product_boot_matrix.json"
 PROD_GATE_FINAL_PATH = "docs/audit/PROD_GATE_FINAL.md"
+DIST_PLATFORM_MATRIX_MODEL_PATH = "docs/release/DIST_PLATFORM_MATRIX_MODEL.md"
+DIST_PLATFORM_MATRIX_TOOL_PATH = "tools/dist/tool_run_platform_matrix.py"
+DIST_PLATFORM_MATRIX_COMMON_PATH = "tools/dist/dist_platform_matrix_common.py"
+DIST_PLATFORM_MATRIX_REPORT_PATH = "docs/audit/DIST_PLATFORM_MATRIX_REPORT.md"
+DIST_PLATFORM_MATRIX_JSON_PATH = "data/audit/dist_platform_matrix.json"
+SUPPORTED_PLATFORMS_V0_PATH = "docs/release/SUPPORTED_PLATFORMS_v0_0_0_mock.md"
+DIST4_FINAL_PATH = "docs/audit/DIST4_FINAL.md"
 CONVERGENCE_GATE_COMMON_PATH = "tools/convergence/convergence_gate_common.py"
 CONVERGENCE_GATE_TOOL_PATH = "tools/convergence/tool_run_convergence_gate.py"
 CONVERGENCE_GATE_FINAL_DOC_PATH = "docs/audit/CONVERGENCE_FINAL.md"
@@ -9465,6 +9472,106 @@ def _append_dist3_findings(
                 line_number=1,
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "clean-room portability drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or rule_id,
+            )
+        )
+
+
+def _append_dist4_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rule_id = "INV-DIST-PLATFORM-MATRIX-MUST-EXIST"
+    severity = _invariant_severity(profile)
+    required_files = (
+        (DIST_PLATFORM_MATRIX_MODEL_PATH, "DIST-4 platform matrix doctrine is required", rule_id),
+        (DIST_PLATFORM_MATRIX_TOOL_PATH, "DIST-4 platform matrix runner is required", rule_id),
+        (DIST_PLATFORM_MATRIX_COMMON_PATH, "DIST-4 platform matrix helper is required", rule_id),
+        (DIST_PLATFORM_MATRIX_REPORT_PATH, "DIST-4 platform matrix report is required", rule_id),
+        (DIST_PLATFORM_MATRIX_JSON_PATH, "DIST-4 platform matrix machine report is required", rule_id),
+        (SUPPORTED_PLATFORMS_V0_PATH, "supported platform matrix doc is required", rule_id),
+        (DIST4_FINAL_PATH, "DIST-4 final report is required", rule_id),
+        ("tools/auditx/analyzers/e503_platform_capabilities_mismatch_smell.py", "PlatformCapabilitiesMismatchSmell analyzer is required", rule_id),
+        ("tools/auditx/analyzers/e504_mode_fallback_not_logged_smell.py", "ModeFallbackNotLoggedSmell analyzer is required", rule_id),
+    )
+    for rel_path, message, current_rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=current_rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, DIST_PLATFORM_MATRIX_MODEL_PATH).lower()
+    for token, message in (
+        ("# distribution platform matrix model", "DIST-4 doctrine must declare the canonical title"),
+        ("## contexts", "DIST-4 doctrine must declare presentation contexts"),
+        ("## products", "DIST-4 doctrine must declare governed products"),
+        ("## expected mode rules", "DIST-4 doctrine must declare expected mode rules"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=DIST_PLATFORM_MATRIX_MODEL_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    final_text = _file_text(repo_root, DIST4_FINAL_PATH).lower()
+    for token, message in (
+        ("# dist4 final", "DIST-4 final report must declare the canonical title"),
+        ("## matrix summary", "DIST-4 final report must summarize the matrix"),
+        ("## readiness", "DIST-4 final report must declare readiness"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=DIST4_FINAL_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.dist.dist_platform_matrix_common import platform_matrix_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=DIST_PLATFORM_MATRIX_COMMON_PATH,
+                line_number=1,
+                snippet="platform_matrix_violations",
+                message="unable to import DIST-4 platform matrix checks ({})".format(str(exc)),
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    for violation in platform_matrix_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "DIST-4 platform matrix drift detected",
                 rule_id=str(row.get("rule_id", "")).strip() or rule_id,
             )
         )
@@ -34009,6 +34116,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_dist3_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_dist4_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
