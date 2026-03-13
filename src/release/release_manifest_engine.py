@@ -383,15 +383,16 @@ def _binary_paths(dist_root: str) -> tuple[list[str], list[str]]:
 
 
 def _pack_dirs(dist_root: str) -> list[str]:
-    packs_root = os.path.join(dist_root, "packs")
-    if not os.path.isdir(packs_root):
-        return []
     rows = []
-    for current_root, dirs, files in os.walk(packs_root):
-        del dirs
-        file_set = set(files)
-        if "pack.alias.json" in file_set or "pack.json" in file_set:
-            rows.append(os.path.normpath(os.path.abspath(current_root)))
+    for root_rel in ("packs", os.path.join("store", "packs")):
+        packs_root = os.path.join(dist_root, root_rel)
+        if not os.path.isdir(packs_root):
+            continue
+        for current_root, dirs, files in os.walk(packs_root):
+            del dirs
+            file_set = set(files)
+            if "pack.alias.json" in file_set or "pack.json" in file_set:
+                rows.append(os.path.normpath(os.path.abspath(current_root)))
     return sorted(set(rows))
 
 
@@ -417,25 +418,26 @@ def _simple_file_entries(dist_root: str, root_rel: str, artifact_kind: str) -> l
 
 
 def _bundle_entries(dist_root: str) -> list[dict]:
-    base = os.path.join(dist_root, "bundles")
-    if not os.path.isdir(base):
-        return []
     rows = []
-    for current_root, _dirs, files in os.walk(base):
-        rel_root = os.path.relpath(current_root, dist_root)
-        rel_root = "" if rel_root == "." else rel_root
-        for name in sorted(files):
-            if name != "bundle.json":
-                continue
-            rel_path = os.path.join(rel_root, name) if rel_root else name
-            abs_path = os.path.join(current_root, name)
-            rows.append(
-                _artifact_entry(
-                    artifact_kind=ARTIFACT_KIND_BUNDLE,
-                    artifact_name=_norm_rel(rel_path),
-                    content_hash=_sha256_file(abs_path),
+    for root_rel in ("bundles", os.path.join("store", "bundles")):
+        base = os.path.join(dist_root, root_rel)
+        if not os.path.isdir(base):
+            continue
+        for current_root, _dirs, files in os.walk(base):
+            rel_root = os.path.relpath(current_root, dist_root)
+            rel_root = "" if rel_root == "." else rel_root
+            for name in sorted(files):
+                if name != "bundle.json":
+                    continue
+                rel_path = os.path.join(rel_root, name) if rel_root else name
+                abs_path = os.path.join(current_root, name)
+                rows.append(
+                    _artifact_entry(
+                        artifact_kind=ARTIFACT_KIND_BUNDLE,
+                        artifact_name=_norm_rel(rel_path),
+                        content_hash=_sha256_file(abs_path),
+                    )
                 )
-            )
     return rows
 
 
@@ -747,7 +749,9 @@ def build_release_manifest(
     artifacts.extend(binary_entries)
     artifacts.extend(pack_entries)
     artifacts.extend(_simple_file_entries(root, "profiles", ARTIFACT_KIND_PROFILE))
+    artifacts.extend(_simple_file_entries(root, os.path.join("store", "profiles"), ARTIFACT_KIND_PROFILE))
     artifacts.extend(_simple_file_entries(root, "locks", ARTIFACT_KIND_LOCK))
+    artifacts.extend(_simple_file_entries(root, os.path.join("store", "locks"), ARTIFACT_KIND_LOCK))
     root_lock = os.path.join(root, "lockfile.json")
     if os.path.isfile(root_lock):
         artifacts.append(

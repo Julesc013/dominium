@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import sys
+import copy
 from typing import Mapping
 
 
@@ -42,10 +43,6 @@ from tools.xstack.sessionx.script_runner import (  # noqa: E402
     _write_intent_log_artifacts,
 )
 from tools.xstack.sessionx.time_lineage import branch_from_checkpoint, compact_save  # noqa: E402
-from tools.xstack.testx.tests.provenance_compaction_testlib import (  # noqa: E402
-    build_compaction_fixture_state,
-    read_provenance_classification_rows,
-)
 
 
 DEFAULT_VERIFY_REPORT_REL = os.path.join("build", "time", "time_anchor_verify_report.json")
@@ -107,6 +104,163 @@ def _write_canonical_json(path: str, payload: Mapping[str, object]) -> str:
 
 def _report_fingerprint(payload: Mapping[str, object] | None) -> str:
     return canonical_sha256(dict(dict(payload or {}), deterministic_fingerprint=""))
+
+
+def read_provenance_classification_rows(repo_root: str) -> list[dict]:
+    rel_path = "data/registries/provenance_classification_registry.json"
+    abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+    payload = _read_json(abs_path)
+    rows = list((dict(payload.get("record") or {})).get("provenance_classifications") or [])
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def build_compaction_fixture_state(shard_suffix: str = "alpha") -> dict[str, object]:
+    token = str(shard_suffix or "").strip() or "alpha"
+    info_rows = [
+        {
+            "artifact_id": "artifact.info.explain.{}.in_window".format(token),
+            "artifact_type_id": "artifact.explain",
+            "tick": 6,
+            "extensions": {},
+        },
+        {
+            "artifact_id": "artifact.info.explain.{}.outside_window".format(token),
+            "artifact_type_id": "artifact.explain",
+            "tick": 12,
+            "extensions": {},
+        },
+        {
+            "artifact_id": "artifact.info.energy.{}.canonical".format(token),
+            "artifact_type_id": "artifact.energy_ledger_entry",
+            "tick": 6,
+            "extensions": {},
+        },
+    ]
+    return {
+        "energy_ledger_entries": [
+            {
+                "entry_id": "entry.energy.{}.001".format(token),
+                "tick": 6,
+                "source_id": "assembly.{}".format(token),
+                "transformation_id": "transform.electrical_to_thermal",
+                "input_values": {
+                    "quantity.energy_electrical": 400,
+                },
+                "output_values": {
+                    "quantity.energy_thermal": 400,
+                },
+                "energy_total_delta": 0,
+                "extensions": {},
+            },
+            {
+                "entry_id": "entry.energy.{}.002".format(token),
+                "tick": 10,
+                "source_id": "assembly.{}".format(token),
+                "transformation_id": "transform.kinetic_to_thermal",
+                "input_values": {
+                    "quantity.energy_kinetic": 120,
+                },
+                "output_values": {
+                    "quantity.energy_thermal": 120,
+                },
+                "energy_total_delta": 0,
+                "extensions": {},
+            },
+        ],
+        "boundary_flux_events": [
+            {
+                "flux_id": "flux.{}.001".format(token),
+                "tick": 7,
+                "quantity_id": "quantity.energy_thermal",
+                "value": 80,
+                "direction": "in",
+                "reason_code": "test.boundary",
+                "extensions": {},
+            }
+        ],
+        "time_adjust_events": [
+            {
+                "adjust_id": "time.adjust.{}.001".format(token),
+                "tick": 6,
+                "target_id": "clock.{}".format(token),
+                "previous_domain_time": 1000,
+                "new_domain_time": 1004,
+                "adjustment_delta": 4,
+                "originating_receipt_id": "receipt.{}".format(token),
+                "extensions": {},
+            }
+        ],
+        "fault_events": [
+            {
+                "event_id": "fault.{}.001".format(token),
+                "tick": 7,
+                "target_id": "assembly.{}".format(token),
+                "reason_code": "fault.synthetic",
+                "extensions": {},
+            }
+        ],
+        "exception_events": [],
+        "leak_events": [],
+        "burst_events": [],
+        "relief_events": [],
+        "branch_events": [],
+        "compaction_markers": [],
+        "info_artifact_rows": copy.deepcopy(info_rows),
+        "knowledge_artifacts": copy.deepcopy(info_rows),
+        "explain_artifact_rows": [
+            {
+                "explain_id": "explain.{}.001".format(token),
+                "tick": 6,
+                "cause_chain": ["event.synthetic"],
+                "extensions": {},
+            },
+            {
+                "explain_id": "explain.{}.002".format(token),
+                "tick": 11,
+                "cause_chain": ["event.synthetic"],
+                "extensions": {},
+            },
+        ],
+        "inspection_snapshot_rows": [
+            {
+                "snapshot_id": "snapshot.{}.001".format(token),
+                "tick": 7,
+                "target_id": "assembly.{}".format(token),
+                "extensions": {},
+            },
+            {
+                "snapshot_id": "snapshot.{}.002".format(token),
+                "tick": 12,
+                "target_id": "assembly.{}".format(token),
+                "extensions": {},
+            },
+        ],
+        "model_evaluation_results": [
+            {
+                "model_id": "model.synthetic.{}".format(token),
+                "tick": 6,
+                "deterministic_fingerprint": "model.eval.{}".format(token),
+                "extensions": {},
+            }
+        ],
+        "derived_summary_rows": [
+            {
+                "summary_id": "summary.{}".format(token),
+                "tick": 6,
+                "extensions": {},
+            }
+        ],
+        "derived_statistics_rows": [
+            {
+                "stats_id": "stats.{}".format(token),
+                "tick": 7,
+                "extensions": {},
+            }
+        ],
+        "provenance_compaction_summaries": [],
+        "time_branches": [],
+        "control_proof_bundles": [],
+    }
 
 
 def scan_tick_width_violations(repo_root: str) -> list[dict]:

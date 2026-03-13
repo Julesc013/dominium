@@ -17,7 +17,50 @@ if REPO_ROOT_HINT not in sys.path:
 
 from src.geo import explain_property_origin  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
-from tools.xstack.testx.tests.geo9_testlib import overlay_fixture_merge_result  # noqa: E402
+
+
+def _default_merge_result() -> dict:
+    property_history = [
+        {
+            "layer_id": "base.worldgen",
+            "layer_kind": "base",
+            "source_ref": "base.worldgen",
+            "pack_hash": "",
+            "pack_id": "",
+            "operation": "base",
+            "value": "Procedural Earth",
+            "previous_value": None,
+        },
+        {
+            "layer_id": "save.patch",
+            "layer_kind": "save",
+            "source_ref": "save.patch",
+            "pack_hash": "",
+            "pack_id": "",
+            "operation": "set",
+            "value": "New Earth",
+            "previous_value": "Procedural Earth",
+        },
+    ]
+    merge_result = {
+        "overlay_manifest_hash": canonical_sha256({"fixture": "overlay_manifest"}),
+        "property_patch_hash_chain": canonical_sha256({"fixture": "property_patch_chain"}),
+        "overlay_merge_result_hash_chain": canonical_sha256({"fixture": "overlay_merge_result_chain"}),
+        "overlay_conflict_artifact_hash_chain": canonical_sha256({"fixture": "overlay_conflict_chain"}),
+        "overlay_conflict_policy_id": "overlay.conflict.last_wins",
+        "overlay_conflict_mode": "last_wins",
+        "property_origin_index": {
+            "object.earth": {
+                "display_name": property_history,
+            }
+        },
+        "overlay_conflict_index": {
+            "object.earth": {
+                "display_name": [],
+            }
+        },
+    }
+    return merge_result
 
 
 def explain_property_origin_report(
@@ -26,9 +69,7 @@ def explain_property_origin_report(
     property_path: str,
     merge_result: Mapping[str, object] | None = None,
 ) -> dict:
-    resolved_merge = dict(
-        merge_result or dict(overlay_fixture_merge_result(include_mods=True, include_save=True).get("merge_result") or {})
-    )
+    resolved_merge = dict(merge_result or _default_merge_result())
     report = explain_property_origin(
         merge_result=resolved_merge,
         object_id=object_id,
