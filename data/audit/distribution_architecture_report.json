@@ -1,0 +1,183 @@
+{
+  "absolute_path_hits": [],
+  "bundle_roots": [],
+  "channel_id": "mock",
+  "deterministic_fingerprint": "b186689711d5ef9e9955074ae3ce1a5370149af7357aad81d5ea894e99dea7ac",
+  "dist_root": "D:/Projects/Dominium/dominium/dist",
+  "distribution_model_path": "docs/release/DISTRIBUTION_MODEL.md",
+  "freeze_doc_path": "docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md",
+  "generated_manifest_hash": "94dd331ba1d29be66f3885085ec8eb88738f7687cfb7cfe22266254e0ebc4f42",
+  "generated_manifest_verification": {
+    "build_id_cross_checked": 9,
+    "dist_root": "D:/Projects/Dominium/dominium/dist",
+    "errors": [],
+    "manifest_hash": "94dd331ba1d29be66f3885085ec8eb88738f7687cfb7cfe22266254e0ebc4f42",
+    "manifest_path": "C:/Users/Jules/AppData/Local/Temp/dominium_dist_model_joqr14q1/release_manifest.json",
+    "release_id": "release.v0.0.0-mock-2600353570a1373a",
+    "result": "complete",
+    "signature_status": "signature_missing",
+    "verified_artifact_count": 61,
+    "verified_signature_count": 0,
+    "warnings": [
+      {
+        "code": "warn.release_manifest.signature_missing",
+        "message": "no detached or inline signatures were provided",
+        "path": "signatures"
+      }
+    ]
+  },
+  "release_tag": "v0.0.0-mock",
+  "report_id": "distribution.architecture.v1",
+  "result": "complete",
+  "staging_dev_artifacts": [
+    "bin/__pycache__",
+    "bin/__pycache__/domcpython-311.pyc",
+    "logs/.gitkeep",
+    "saves/.gitkeep"
+  ],
+  "staging_gap_paths": [
+    "LICENSE",
+    "README",
+    "install.manifest.json",
+    "instances/default/instance.manifest.json",
+    "store/locks",
+    "store/packs",
+    "store/profiles"
+  ],
+  "staging_manifest_hash": "52938233fd626a553bd7bb1b09f8357f2f851f07e15a49ef8ecae82598eb5d5b",
+  "staging_manifest_matches_generated": false,
+  "staging_manifest_verification": {
+    "build_id_cross_checked": 9,
+    "dist_root": "D:/Projects/Dominium/dominium/dist",
+    "errors": [
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/client"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/client"
+      },
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/dominium_client"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/dominium_client"
+      },
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/dominium_server"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/dominium_server"
+      },
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/engine"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/engine"
+      },
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/game"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/game"
+      },
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/launcher"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/launcher"
+      },
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/server"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/server"
+      },
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/setup"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/setup"
+      },
+      {
+        "code": "refusal.release_manifest.descriptor_hash_mismatch",
+        "message": "endpoint descriptor hash mismatch",
+        "path": "bin/tool_attach_console_stub"
+      },
+      {
+        "code": "refusal.release_manifest.build_id_mismatch",
+        "message": "binary build_id mismatch",
+        "path": "bin/tool_attach_console_stub"
+      }
+    ],
+    "manifest_hash": "52938233fd626a553bd7bb1b09f8357f2f851f07e15a49ef8ecae82598eb5d5b",
+    "manifest_path": "D:/Projects/Dominium/dominium/dist/manifests/release_manifest.json",
+    "release_id": "release.v0.0.0-mock-739248bdbc0a15e9",
+    "result": "refused",
+    "signature_status": "signature_missing",
+    "verified_artifact_count": 61,
+    "verified_signature_count": 0,
+    "warnings": [
+      {
+        "code": "warn.release_manifest.signature_missing",
+        "message": "no detached or inline signatures were provided",
+        "path": "signatures"
+      }
+    ]
+  },
+  "staging_release_manifest_present": true,
+  "violations": [],
+  "warnings": [
+    {
+      "code": "distribution_staging_bundle_incomplete",
+      "file_path": "dist",
+      "message": "staging dist is not yet laid out as the canonical portable bundle"
+    },
+    {
+      "code": "distribution_staging_dev_artifacts_present",
+      "file_path": "dist",
+      "message": "staging dist still contains pre-packaging development artifacts"
+    },
+    {
+      "code": "distribution_staging_manifest_drift",
+      "file_path": "dist/manifests/release_manifest.json",
+      "message": "staged release manifest differs from the current deterministic dist surface"
+    },
+    {
+      "code": "distribution_staging_manifest_verify_failed",
+      "file_path": "dist/manifests/release_manifest.json",
+      "message": "staged release manifest does not currently verify against the staged dist surface"
+    }
+  ]
+}

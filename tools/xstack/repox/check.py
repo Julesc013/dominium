@@ -9208,6 +9208,73 @@ def _append_reproducible_build_findings(
         )
 
 
+def _append_distribution_model_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    no_dev_rule_id = "INV-DIST-NO-DEV-ARTIFACTS"
+    manifest_rule_id = "INV-DIST-INCLUDES-RELEASE-MANIFEST"
+    verify_rule_id = "INV-DIST-PASSES-VERIFY"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/release/DISTRIBUTION_MODEL.md", "distribution model doctrine is required", manifest_rule_id),
+        ("docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md", "distribution architecture freeze report is required", manifest_rule_id),
+        ("tools/release/distribution_model_common.py", "distribution model helper is required", manifest_rule_id),
+        ("tools/release/tool_run_distribution_model.py", "distribution model report tool is required", manifest_rule_id),
+        ("tools/auditx/analyzers/e496_dev_artifact_in_dist_smell.py", "DevArtifactInDistSmell analyzer is required", no_dev_rule_id),
+        ("tools/auditx/analyzers/e497_absolute_path_in_manifest_smell.py", "AbsolutePathInManifestSmell analyzer is required", manifest_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.release.distribution_model_common import distribution_model_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/distribution_model_common.py",
+                line_number=1,
+                snippet="distribution_model_violations",
+                message="unable to import distribution model checks ({})".format(str(exc)),
+                rule_id=manifest_rule_id,
+            )
+        )
+        return
+
+    for violation in distribution_model_violations(repo_root):
+        row = dict(violation or {})
+        rule_id = str(row.get("rule_id", "")).strip() or manifest_rule_id
+        if rule_id not in {no_dev_rule_id, manifest_rule_id, verify_rule_id}:
+            if "verify" in str(row.get("code", "")).lower():
+                rule_id = verify_rule_id
+            elif "dev_artifact" in str(row.get("code", "")).lower():
+                rule_id = no_dev_rule_id
+            else:
+                rule_id = manifest_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "distribution architecture drift detected",
+                rule_id=rule_id,
+            )
+        )
+
 def _append_ipc_unify_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -33642,6 +33709,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_release_manifest_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_distribution_model_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
