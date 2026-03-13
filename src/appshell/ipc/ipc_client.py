@@ -7,7 +7,11 @@ import os
 from typing import Mapping
 
 from src.appshell.compat_adapter import emit_descriptor_payload
-from src.compat import build_handshake_message
+from src.compat import (
+    REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
+    build_compat_refusal,
+    build_handshake_message,
+)
 
 from .ipc_transport import (
     build_console_io_message,
@@ -109,6 +113,7 @@ def _perform_handshake(
     negotiation_payload = dict(dict(negotiation_result).get("payload_ref") or {})
     negotiation_message = dict(negotiation_payload.get("payload_ref") or {})
     negotiation_record = dict(negotiation_message.get("negotiation_record") or {})
+    negotiation_record_hash = str(negotiation_message.get("negotiation_record_hash", "")).strip()
     compatibility_mode_id = str(negotiation_message.get("compatibility_mode_id", "")).strip()
     refusal_payload = dict(negotiation_message.get("refusal") or {})
     negotiation_result = str(negotiation_message.get("result", "")).strip()
@@ -128,12 +133,29 @@ def _perform_handshake(
                 payload_ref={
                     "accepted": bool(accepted),
                     "compatibility_mode_id": compatibility_mode_id,
-                    "negotiation_record_hash": str(negotiation_message.get("negotiation_record_hash", "")).strip(),
+                    "negotiation_record_hash": negotiation_record_hash,
                 },
             ),
         ),
     )
     session_begin = recv_frame(reader) if accepted else {}
+    session_begin_message = dict(dict(session_begin).get("payload_ref") or {})
+    session_begin_payload = dict(session_begin_message.get("payload_ref") or {})
+    session_begin_hash = str(session_begin_payload.get("negotiation_record_hash", "")).strip()
+    if accepted and (
+        not negotiation_record_hash
+        or str(session_begin_message.get("message_kind", "")).strip() != "session_begin"
+        or session_begin_hash != negotiation_record_hash
+    ):
+        accepted = False
+        session_begin = {}
+        refusal_payload = build_compat_refusal(
+            refusal_code=REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
+            remediation_hint="Retry the attach so both sides negotiate against the same endpoint descriptors and session begin record.",
+            extensions={
+                "official.endpoint_id": str(dict(endpoint_row).get("endpoint_id", "")).strip(),
+            },
+        )
     attach_report = {
         "result": "complete" if accepted and str(negotiation_message.get("result", "")).strip() == "complete" else "refused",
         "endpoint_id": str(dict(endpoint_row).get("endpoint_id", "")).strip(),
@@ -141,7 +163,7 @@ def _perform_handshake(
         "peer_product_id": str(dict(endpoint_row).get("product_id", "")).strip(),
         "compatibility_mode_id": compatibility_mode_id,
         "negotiation_record": negotiation_record,
-        "negotiation_record_hash": str(negotiation_message.get("negotiation_record_hash", "")).strip(),
+        "negotiation_record_hash": negotiation_record_hash,
         "endpoint_descriptor_hashes": {
             "endpoint_a_hash": str(negotiation_message.get("endpoint_a_hash", "")).strip(),
             "endpoint_b_hash": str(negotiation_message.get("endpoint_b_hash", "")).strip(),

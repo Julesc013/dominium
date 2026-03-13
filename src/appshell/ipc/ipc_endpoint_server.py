@@ -361,6 +361,7 @@ class AppShellIPCEndpointServer:
                             "endpoint_id": self.endpoint_id,
                             "compatibility_mode_id": str(negotiation.get("compatibility_mode_id", "")).strip(),
                             "attach_purpose": attach_purpose or "console_attach",
+                            "negotiation_record_hash": str(negotiation.get("negotiation_record_hash", "")).strip(),
                         },
                     )
                 if str(negotiation.get("compatibility_mode_id", "")).strip() == COMPAT_MODE_READ_ONLY:

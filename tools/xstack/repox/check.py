@@ -9001,6 +9001,112 @@ def _append_repo_layout1_shim_findings(
         )
 
 
+def _append_ipc_unify_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rule_id = "INV-IPC-REQUIRES-NEGOTIATION"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/IPC_SURFACE_MAP.md", "IPC surface inventory is required", rule_id),
+        ("docs/audit/IPC_DUPLICATION_FIXES.md", "IPC duplication fixes report is required", rule_id),
+        ("docs/appshell/IPC_DISCOVERY.md", "IPC discovery doctrine is required", rule_id),
+        ("docs/audit/IPC_UNIFY_FINAL.md", "IPC unify final report is required", rule_id),
+        ("data/audit/ipc_unify_report.json", "IPC unify machine-readable report is required", rule_id),
+        ("tools/appshell/ipc_unify_common.py", "IPC unify helper module is required", rule_id),
+        ("tools/appshell/tool_run_ipc_unify.py", "IPC unify tool runner is required", rule_id),
+        ("tools/xstack/testx/tests/ipc_unify_testlib.py", "IPC unify TestX helper is required", rule_id),
+        ("tools/xstack/testx/tests/test_single_ipc_transport_used.py", "single IPC transport TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_unnegotiated_attach_refused.py", "unnegotiated attach refusal TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_seq_no_monotonic.py", "IPC monotonic sequence TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_console_channel_roundtrip.py", "console channel roundtrip TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_cross_platform_ipc_consistency.py", "cross-platform IPC consistency TestX coverage is required", rule_id),
+    )
+    for rel_path, message, current_rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=current_rule_id,
+            )
+        )
+
+    discovery_text = _file_text(repo_root, "docs/appshell/IPC_DISCOVERY.md").lower()
+    for token, message in (
+        ("# ipc discovery", "IPC discovery doc must declare the canonical title"),
+        ("vroot_ipc", "IPC discovery doc must declare VROOT_IPC usage"),
+        ("ipc_endpoints.json", "IPC discovery doc must declare the endpoint manifest"),
+        ("endpoints/<endpoint_id>.json", "IPC discovery doc must declare per-endpoint descriptor files"),
+        ("cap-neg", "IPC discovery doc must declare negotiated attach discipline"),
+    ):
+        if token in discovery_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/appshell/IPC_DISCOVERY.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    final_text = _file_text(repo_root, "docs/audit/IPC_UNIFY_FINAL.md").lower()
+    for token, message in (
+        ("# ipc unify final", "IPC unify final report must declare the canonical title"),
+        ("## canonical stack", "IPC unify final report must summarize the canonical stack"),
+        ("## attach discipline summary", "IPC unify final report must summarize attach discipline"),
+        ("## runtime verification", "IPC unify final report must summarize runtime verification"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/IPC_UNIFY_FINAL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.appshell.ipc_unify_common import ipc_unify_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/appshell/ipc_unify_common.py",
+                line_number=1,
+                snippet="ipc_unify_violations",
+                message="unable to import IPC unify checks ({})".format(str(exc)),
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    for violation in ipc_unify_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "IPC unify drift detected",
+                rule_id=rule_id,
+            )
+        )
+
+
 def _append_earth10_proxy_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -33206,6 +33312,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_prod_gate0_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_ipc_unify_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

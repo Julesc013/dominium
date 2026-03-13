@@ -1,0 +1,200 @@
+{
+  "canonical_bindings": [
+    {
+      "canonical_target": "src/appshell/ipc/ipc_client.py",
+      "consumer_path": "src/appshell/commands/command_engine.py",
+      "notes": "All console attach requests route through attach_ipc_endpoint/query_ipc_status/query_ipc_log_events/run_ipc_console_command.",
+      "surface": "Console attach command"
+    },
+    {
+      "canonical_target": "src/appshell/ipc/ipc_client.py",
+      "consumer_path": "src/appshell/tui/tui_engine.py",
+      "notes": "TUI session tabs attach and refresh through the shared IPC client helpers.",
+      "surface": "TUI multiplex"
+    },
+    {
+      "canonical_target": "src/appshell/ipc/ipc_client.py",
+      "consumer_path": "src/appshell/supervisor/supervisor_engine.py",
+      "notes": "Supervisor attach and log merge flows reuse the same IPC client and negotiation path.",
+      "surface": "Supervisor attach"
+    },
+    {
+      "canonical_target": "src/appshell/ipc/ipc_transport.py",
+      "consumer_path": "src/appshell/ipc/ipc_endpoint_server.py",
+      "notes": "Endpoint server opens the canonical listener and emits deterministic frames only after handshake success.",
+      "surface": "Endpoint listener"
+    }
+  ],
+  "deterministic_fingerprint": "9bbb8835f3bad7f8a45f4b8dc2b983e0176fd20ece6837ddf49607154118289f",
+  "direct_socket_users": [
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "b0aa2144a9333ec1fc6923b6b5b1f096fae12b6d3ec47ee0b8cd6beb79564a53",
+      "hits": [
+        "socket.socket("
+      ],
+      "path": "src/appshell/ipc/ipc_transport.py",
+      "reason": "canonical_transport"
+    }
+  ],
+  "inventory_id": "appshell.ipc_unify.v1",
+  "low_level_ipc_users": [
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "9fe039ae96bf16fcfd0ec1be9b735d447fbb404c1c811f888f9922f7e4eafcc0",
+      "hits": [
+        "connect_ipc_client(",
+        "send_frame(",
+        "recv_frame("
+      ],
+      "path": "src/appshell/ipc/ipc_client.py",
+      "reason": "canonical_client"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "c28970c8e743f0f26fc3a90e45b7be12e6e4fad87400bffbd15f6177251760df",
+      "hits": [
+        "connect_ipc_client(",
+        "open_ipc_listener(",
+        "send_frame(",
+        "recv_frame("
+      ],
+      "path": "src/appshell/ipc/ipc_endpoint_server.py",
+      "reason": "canonical_endpoint_server"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "43190c7f956de128a7ff95083b3eaf5d0d5e82981f29df6a54c4b5ca4b871af5",
+      "hits": [
+        "connect_ipc_client(",
+        "open_ipc_listener(",
+        "send_frame(",
+        "recv_frame("
+      ],
+      "path": "src/appshell/ipc/ipc_transport.py",
+      "reason": "canonical_transport"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "a825c89651aac4b43c1535273b10093e8268b69ef0b9a07f392a8dab3f6d9bb5",
+      "hits": [
+        "connect_ipc_client(",
+        "send_frame(",
+        "recv_frame("
+      ],
+      "path": "tools/appshell/appshell4_probe.py",
+      "reason": "test_only_probe"
+    }
+  ],
+  "replay_probe": {
+    "deterministic_fingerprint": "",
+    "first_cross_platform_ipc_hash": "cc7a2e076ee5b107e607af4efd53fe1e7145510ceb106c595112d1e823f6b422",
+    "mismatches": [],
+    "result": "complete",
+    "second_cross_platform_ipc_hash": "cc7a2e076ee5b107e607af4efd53fe1e7145510ceb106c595112d1e823f6b422"
+  },
+  "result": "complete",
+  "runtime_probe": {
+    "compatibility_mode_id": "compat.full",
+    "cross_platform_ipc_hash": "cc7a2e076ee5b107e607af4efd53fe1e7145510ceb106c595112d1e823f6b422",
+    "deterministic_fingerprint": "59a3203549e6f9ca53d6795d8f1ce2e5d78cf671b7ae6b397e028469bc646ea1",
+    "missing_negotiation_refusal_code": "refusal.connection.no_negotiation",
+    "negotiation_record_hash": "d7ff28f88830e885090d8c3dd10f731eee4c5e04735569e2e54e49e500ed0892",
+    "result": "complete",
+    "seq_monotonic_by_channel": {
+      "console": true,
+      "log": true,
+      "status": true
+    }
+  },
+  "surface_rows": [
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "1348bea023d95448ec9c6183d6dd6e659f1064a7e6f879bc8cb6a2d8b1ff8919",
+      "missing_markers": [],
+      "notes": "AppShell console attach command routes through the canonical IPC client.",
+      "path": "src/appshell/commands/command_engine.py",
+      "present": true,
+      "surface": "command_entrypoint"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "0570c20e340152398fe8bdc0d142f44740462afaf98041cefe4f2e6572c84f76",
+      "missing_markers": [],
+      "notes": "Canonical attach/discovery/status/log/console client surface.",
+      "path": "src/appshell/ipc/ipc_client.py",
+      "present": true,
+      "surface": "attach_client"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "e1a36fd6b6197260738b1f49e0277610afef95289b0f2a64d881925f3934a5a8",
+      "missing_markers": [],
+      "notes": "Canonical negotiated attach server and channel dispatcher.",
+      "path": "src/appshell/ipc/ipc_endpoint_server.py",
+      "present": true,
+      "surface": "endpoint_server"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "27410ea6e9e9168629f506428ce82604f289acd5857e8af2957e2a3a43339b0b",
+      "missing_markers": [],
+      "notes": "Single transport abstraction, framing, manifest, and descriptor-file discovery.",
+      "path": "src/appshell/ipc/ipc_transport.py",
+      "present": true,
+      "surface": "transport"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "302eca75878289b19a45e1128f749756a07cd3263202989c60d53090666a46de",
+      "missing_markers": [],
+      "notes": "Supervisor uses the canonical attach/status/log/console IPC client.",
+      "path": "src/appshell/supervisor/supervisor_engine.py",
+      "present": true,
+      "surface": "supervisor_consumer"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "58a178ef381da0d6225d6633764317b193e09d2064992df388879109b6fca060",
+      "missing_markers": [],
+      "notes": "TUI multiplexing uses the canonical attach/status/log/console IPC client.",
+      "path": "src/appshell/tui/tui_engine.py",
+      "present": true,
+      "surface": "tui_consumer"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "ab59cb691cdc0b4f86854e72668af73103249214d8808d3f36cd7ea67f013190",
+      "missing_markers": [],
+      "notes": "Single CAP-NEG handshake message builder for IPC attach and session begin.",
+      "path": "src/compat/handshake/handshake_engine.py",
+      "present": true,
+      "surface": "handshake"
+    },
+    {
+      "classification": "canonical",
+      "deterministic_fingerprint": "81ccb6e1ee878aafa88b04cc1232a0c49a34b732d906ab9fadfa116cbc644cfe",
+      "missing_markers": [],
+      "notes": "Test-only deterministic raw-frame probe for attach, sequencing, and replay verification.",
+      "path": "tools/appshell/appshell4_probe.py",
+      "present": true,
+      "surface": "probe"
+    }
+  ],
+  "violations": [],
+  "vroot_probe": {
+    "descriptor_exists": true,
+    "descriptor_hash": "6e51b94af243a1361b26484b2696ddef3e321ce3770c25d2a4432a49f8e5de9e",
+    "descriptor_path": "D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime/endpoints/ipc.server.session.ipc_unify.vroot.json",
+    "descriptor_payload_result": "complete",
+    "descriptor_rel_path": "endpoints/ipc.server.session.ipc_unify.vroot.json",
+    "deterministic_fingerprint": "00c901c49c53d3401e04e56301280722e133255d80276047cdfd53867271c763",
+    "endpoint_id": "ipc.server.session.ipc_unify.vroot",
+    "manifest_exists": true,
+    "manifest_path": "D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime/ipc_endpoints.json",
+    "resolution_source": "explicit_override",
+    "result": "complete",
+    "transport_id": "ipc.localhost_tcp",
+    "vroot_ipc_root": "D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime"
+  }
+}

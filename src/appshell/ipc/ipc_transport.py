@@ -12,6 +12,7 @@ from src.appshell.paths import VROOT_IPC, get_current_virtual_paths, vpath_resol
 
 
 IPC_ENDPOINT_MANIFEST_REL = "ipc_endpoints.json"
+IPC_ENDPOINT_DESCRIPTOR_DIR_REL = "endpoints"
 IPC_SOCKET_ROOT_REL = "ipc"
 IPC_CHANNEL_IDS = ("console", "log", "negotiation", "status")
 CONSOLE_IO_KINDS = ("cmd_request", "cmd_response", "stderr", "stdout")
@@ -170,6 +171,41 @@ def ipc_manifest_path(repo_root: str, manifest_path: str = "") -> str:
     return os.path.normpath(os.path.join(repo_root_abs, "dist", "runtime", IPC_ENDPOINT_MANIFEST_REL))
 
 
+def _safe_endpoint_filename(endpoint_id: str) -> str:
+    token = str(endpoint_id or "").strip()
+    return "{}.json".format("".join(ch if ch.isalnum() or ch in (".", "-", "_") else "_" for ch in token) or "endpoint")
+
+
+def _descriptor_rel_path_for_endpoint(endpoint_id: str) -> str:
+    return "{}/{}".format(IPC_ENDPOINT_DESCRIPTOR_DIR_REL, _safe_endpoint_filename(endpoint_id))
+
+
+def ipc_endpoint_descriptor_path(repo_root: str, endpoint_id: str, manifest_path: str = "") -> str:
+    manifest_abs = ipc_manifest_path(repo_root, manifest_path)
+    return os.path.normpath(os.path.join(os.path.dirname(manifest_abs), _descriptor_rel_path_for_endpoint(endpoint_id)))
+
+
+def write_ipc_endpoint_descriptor(repo_root: str, endpoint_row: Mapping[str, object], manifest_path: str = "") -> dict:
+    endpoint_payload = dict(_normalize_tree(dict(endpoint_row or {})))
+    descriptor_path = ipc_endpoint_descriptor_path(repo_root, str(endpoint_payload.get("endpoint_id", "")).strip(), manifest_path)
+    payload = {
+        "schema_id": "dominium.artifact.appshell.ipc_endpoint_descriptor",
+        "schema_version": "1.0.0",
+        "record": endpoint_payload,
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "official.descriptor_rel_path": _descriptor_rel_path_for_endpoint(str(endpoint_payload.get("endpoint_id", "")).strip()),
+        },
+    }
+    payload["deterministic_fingerprint"] = _fingerprint(payload)
+    _write_json(descriptor_path, payload)
+    return payload
+
+
+def discover_ipc_endpoint_descriptor(repo_root: str, endpoint_id: str, manifest_path: str = "") -> dict:
+    return _read_json(ipc_endpoint_descriptor_path(repo_root, endpoint_id, manifest_path))
+
+
 def discover_ipc_manifest(repo_root: str, manifest_path: str = "") -> dict:
     path = ipc_manifest_path(repo_root, manifest_path)
     payload = _read_json(path)
@@ -227,13 +263,22 @@ def _write_manifest(repo_root: str, manifest_path: str, endpoints: list[dict]) -
 def upsert_ipc_manifest_entry(repo_root: str, endpoint_row: Mapping[str, object], manifest_path: str = "") -> dict:
     manifest = discover_ipc_manifest(repo_root, manifest_path)
     endpoints = [dict(row) for row in list(dict(manifest.get("record") or {}).get("endpoints") or [])]
-    endpoint_id = str(dict(endpoint_row or {}).get("endpoint_id", "")).strip()
+    normalized_row = dict(_normalize_tree(dict(endpoint_row or {})))
+    endpoint_id = str(normalized_row.get("endpoint_id", "")).strip()
+    descriptor_payload = write_ipc_endpoint_descriptor(repo_root, normalized_row, manifest_path)
+    extensions = dict(normalized_row.get("extensions") or {})
+    extensions["official.descriptor_hash"] = str(descriptor_payload.get("deterministic_fingerprint", "")).strip()
+    extensions["official.descriptor_rel_path"] = _descriptor_rel_path_for_endpoint(endpoint_id)
+    normalized_row["extensions"] = dict(_normalize_tree(extensions))
     endpoints = [row for row in endpoints if str(row.get("endpoint_id", "")).strip() != endpoint_id]
-    endpoints.append(dict(_normalize_tree(dict(endpoint_row or {}))))
+    endpoints.append(normalized_row)
     return _write_manifest(repo_root, manifest_path, endpoints)
 
 
 def remove_ipc_manifest_entry(repo_root: str, endpoint_id: str, manifest_path: str = "") -> dict:
+    descriptor_path = ipc_endpoint_descriptor_path(repo_root, endpoint_id, manifest_path)
+    if os.path.isfile(descriptor_path):
+        os.remove(descriptor_path)
     manifest = discover_ipc_manifest(repo_root, manifest_path)
     endpoints = [
         dict(row)
@@ -297,18 +342,22 @@ def recv_frame(handle) -> dict:
 __all__ = [
     "CONSOLE_IO_KINDS",
     "IPC_CHANNEL_IDS",
+    "IPC_ENDPOINT_DESCRIPTOR_DIR_REL",
     "IPC_ENDPOINT_MANIFEST_REL",
     "build_console_io_message",
     "build_ipc_endpoint_descriptor",
     "build_ipc_frame",
     "build_ipc_local_address",
     "connect_ipc_client",
+    "discover_ipc_endpoint_descriptor",
     "discover_ipc_manifest",
     "ipc_manifest_path",
+    "ipc_endpoint_descriptor_path",
     "open_ipc_listener",
     "recv_frame",
     "remove_ipc_manifest_entry",
     "resolve_ipc_session_id",
     "send_frame",
     "upsert_ipc_manifest_entry",
+    "write_ipc_endpoint_descriptor",
 ]

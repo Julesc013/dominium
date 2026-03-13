@@ -15,7 +15,8 @@ APPSHELL-4 endpoints are optional per process and are enabled through
 
 Each endpoint:
 
-- publishes a deterministic entry in `dist/runtime/ipc_endpoints.json`
+- publishes a deterministic entry in `VROOT_IPC/ipc_endpoints.json`
+- writes a deterministic descriptor file in `VROOT_IPC/endpoints/<endpoint_id>.json`
 - exposes negotiation, console, log, and status channels
 - removes its manifest entry on shutdown
 

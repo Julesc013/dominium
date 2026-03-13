@@ -47,15 +47,19 @@ No remote TCP transport is part of APPSHELL-4.
 
 ## Discovery
 
-Discovery uses a deterministic manifest:
+Discovery uses a deterministic VROOT-backed manifest:
 
-- `dist/runtime/ipc_endpoints.json`
+- `VROOT_IPC/ipc_endpoints.json`
+- `VROOT_IPC/endpoints/<endpoint_id>.json`
 
 Manifest ordering is stable:
 
 1. sort by `endpoint_id`
 2. tie-break by `product_id`
 3. tie-break by `session_id`
+
+Per-endpoint descriptor files are keyed by deterministic `endpoint_id` and
+must agree with the manifest row `official.descriptor_rel_path`.
 
 Discovery is local-only and offline.
 
