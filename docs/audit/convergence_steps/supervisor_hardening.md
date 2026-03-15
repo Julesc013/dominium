@@ -10,15 +10,15 @@ Replacement Target: regenerated convergence step summary for supervisor_hardenin
 - step_id: `supervisor_hardening`
 - result: `complete`
 - rule_id: `INV-SUPERVISOR-NO-WALLCLOCK`
-- source_fingerprint: `1ddd49f1baf4a003d5f8ce5f2152f4527a6820fa6363a067f927d13ba1f6dbce`
+- source_fingerprint: `e750bc8133432cd8f1a47c44e448ad2b4d3fcde1cd70696dce48f83fbada001d`
 - observed_refusal_count: `0`
 - observed_degrade_count: `0`
 
 ## Key Hashes
 
 - replay_hash: ``
-- runtime_hash: `affd7da833a4f9cce8c96a5e61c33b1142668660772d77b436f0ca538fe6a9d4`
-- supervisor_report_fingerprint: `1ddd49f1baf4a003d5f8ce5f2152f4527a6820fa6363a067f927d13ba1f6dbce`
+- runtime_hash: `9585fdf22651f0fe2e16381c08b03671a852d7b47bc7819122cbc6696ff7f280`
+- supervisor_report_fingerprint: `e750bc8133432cd8f1a47c44e448ad2b4d3fcde1cd70696dce48f83fbada001d`
 
 ## Notes
 

@@ -10,13 +10,13 @@ Replacement Target: regenerated convergence step summary for product_boot_matrix
 - step_id: `product_boot_matrix`
 - result: `complete`
 - rule_id: `INV-PROD-GATE-0-MUST-PASS-BEFORE-RELEASE`
-- source_fingerprint: `46287351a02e104f93329b48215832426e46d77c43892c10303126ad543e9201`
+- source_fingerprint: `b3e5e548cad7bfa7c6abe688f2cf6cc5c1571ff19812dfd5c5f1599f41f17d9f`
 - observed_refusal_count: `0`
 - observed_degrade_count: `10`
 
 ## Key Hashes
 
-- product_boot_matrix_fingerprint: `46287351a02e104f93329b48215832426e46d77c43892c10303126ad543e9201`
+- product_boot_matrix_fingerprint: `b3e5e548cad7bfa7c6abe688f2cf6cc5c1571ff19812dfd5c5f1599f41f17d9f`
 
 ## Notes
 

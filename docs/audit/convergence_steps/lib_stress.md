@@ -10,15 +10,15 @@ Replacement Target: regenerated convergence step summary for lib_stress
 - step_id: `lib_stress`
 - result: `complete`
 - rule_id: `INV-CONVERGENCE-GATE-MUST-PASS-BEFORE-RELEASE`
-- source_fingerprint: `a5dc843fd94ff231f8e1ed6a324f276b5dfc064b9c6bf54dadb332a8291aa570`
+- source_fingerprint: `4f0a0d8617a9e689f4bc37a9160adc1c15f8885f85a7f40afbfe7d883ab5d9cf`
 - observed_refusal_count: `6`
 - observed_degrade_count: `0`
 
 ## Key Hashes
 
-- baseline_fingerprint: `d8570a43396899349e55016ebd50c8ce63915bf48c7aa6ee06c4da3e1aef73a4`
-- bundle_hashes: `14203ec813af61b20bed522a18ad8d4377236ce5841261d875803c870cf51ff5`
-- lib_stress_fingerprint: `a5dc843fd94ff231f8e1ed6a324f276b5dfc064b9c6bf54dadb332a8291aa570`
+- baseline_fingerprint: `07a1dc392b0139d09175f27ec5eb0bdc903020519b77cadbe1b8d9dae89c54ae`
+- bundle_hashes: `8631db495ca297fdb48bb0af00d7c9d04d753e0c1b3a616a4384aa252562f4ec`
+- lib_stress_fingerprint: `4f0a0d8617a9e689f4bc37a9160adc1c15f8885f85a7f40afbfe7d883ab5d9cf`
 
 ## Notes
 

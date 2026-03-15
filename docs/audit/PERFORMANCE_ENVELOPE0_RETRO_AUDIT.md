@@ -12,16 +12,16 @@ Replacement Target: release-pinned platform performance baselines with retained 
 
 ## Startup Baseline
 
-- setup startup proxy (`bin/setup help`): `3429` ms
-- client startup proxy (`bin/client compat-status`): `1952` ms
-- server startup proxy (`bin/server compat-status`): `1433` ms
-- clean-room end-to-end: `16016` ms
+- setup startup proxy (`bin/setup help`): `3862` ms
+- client startup proxy (`bin/client compat-status`): `1517` ms
+- server startup proxy (`bin/server compat-status`): `882` ms
+- clean-room end-to-end: `6112` ms
 - clean-room result: `refused`
 
 ## Resource Baseline
 
-- client peak working set: `63.83` MB
-- server peak working set: `50.65` MB
+- client peak working set: `63.95` MB
+- server peak working set: `50.96` MB
 - idle client CPU proxy: `0%`
 - idle server CPU proxy: `0%`
 - idle proxy note: `loopback_supervisor_children_exit_after_startup_probe`
@@ -38,7 +38,7 @@ Replacement Target: release-pinned platform performance baselines with retained 
 
 - default install.profile.full component count: `18`
 - component graph size: `18` components / `30` edges
-- store hash lookup latency proxy: `4` ms
+- store hash lookup latency proxy: `3` ms
 
 ## Tick And Idle Notes
 

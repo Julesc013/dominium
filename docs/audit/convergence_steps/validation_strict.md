@@ -10,21 +10,21 @@ Replacement Target: regenerated convergence step summary for validation_strict
 - step_id: `validation_strict`
 - result: `complete`
 - rule_id: `INV-VALIDATE-ALL-AVAILABLE`
-- source_fingerprint: `8c9f52eb11d28ed454208169918947b9ef221fff4ff595e671c0445a0caa0576`
+- source_fingerprint: `14dcadbe0a51f768d943bc320978b04332fdfc8e0f5279fa4d54b8fb1e132fa4`
 - observed_refusal_count: `0`
 - observed_degrade_count: `0`
 
 ## Key Hashes
 
-- suite_results_hash: `2faf9921fbfc6f04bfd3d868e41cff8ec536747ce0457376e217748557fd2925`
-- validation_report_fingerprint: `8c9f52eb11d28ed454208169918947b9ef221fff4ff595e671c0445a0caa0576`
+- suite_results_hash: `8bedcdd9cf3edb93d3c5b5317a279dd3c93ff3794c0a78be2fa5c38ff19fc362`
+- validation_report_fingerprint: `14dcadbe0a51f768d943bc320978b04332fdfc8e0f5279fa4d54b8fb1e132fa4`
 
 ## Notes
 
 - profile=STRICT
 - suite_count=10
 - error_count=0
-- warning_count=69
+- warning_count=64
 
 ## Source Paths
 
