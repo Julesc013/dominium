@@ -8,10 +8,10 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 18
-- RISK: 624
-- VIOLATION: 25
-- WARN: 1110
+- INFO: 2
+- RISK: 542
+- VIOLATION: 20
+- WARN: 1029
 
 ## Counts By Category
 
@@ -74,30 +74,26 @@ Superseded By: none
 - compat.silent_semantic_change_smell: 8
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 37
+- derived_freshness: 19
 - epistemics.hidden_state_leak_smell: 6
 - install.path_dependent_install_smell: 1
 - interaction.interaction_bypass_smell: 2
-- legacy_contamination: 1
 - logic.adhoc_wiring_smell: 5
 - logic.carrier_bias_smell: 9
 - logic.protocol_security_bypass_smell: 1
 - logic.random_failure_smell: 1
 - logic.truth_leak_via_debug_smell: 1
 - logic.unbounded_trace_smell: 1
-- materials.hardcoded_blueprint_smell: 4
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
-- mode_flag_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
 - packs.pack_loaded_without_verification_smell: 2
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- release.missing_archive_record_smell: 1
+- reachability: 1
 - reliability.silent_reaction_smell: 3
-- schema_usage: 160
 - security.hidden_privilege_escalation_smell: 2
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1

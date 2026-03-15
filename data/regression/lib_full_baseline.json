@@ -1,8 +1,8 @@
 {
   "baseline_id": "lib.full.baseline.v1",
   "bundle_hashes": {
-    "instance_linked": "90960e433719cd93cf0de870f9e63945d9ffcb32d6e9ebe477de2079eb88172a",
-    "instance_portable": "bc3978b916bd027a986712b8659bb54fd53a50b5aca3a0b627152a7da40464fb",
+    "instance_linked": "d64debfaa3b40b19dd5f5bd86cb4c5b320c4e7619e2357f60dcc8e5c88fbfce6",
+    "instance_portable": "4a696b9d4d82de4cd67f576e6c842e2318c2d3d8d81f51016265de7e38d8263e",
     "pack": "5756dc708fa4c237a05c8f5f4ccfe9b7cce1b5c6083a22300301d172dfec3d97",
     "save": "1e1b8112c92f9923b318c310db6242d485208f0b76ad547affe938e749c21278"
   },
@@ -12,11 +12,11 @@
     "save_open_contract_mismatch": "0b4dad5d0b9899f455d72f8d74e4a0b200eab1a894797c2006197c8cffcefb1d"
   },
   "description": "Deterministic LIB-7 regression lock for installs, instances, saves, providers, export/import, and read-only fallback.",
-  "deterministic_fingerprint": "d8570a43396899349e55016ebd50c8ce63915bf48c7aa6ee06c4da3e1aef73a4",
+  "deterministic_fingerprint": "7cb03c8d5393a2a293668e480f47177d6d338c424334f4bda43c4e61780c6ff9",
   "fixed_seed_scenario": {
-    "scenario_fingerprint": "cf2e7d86798382fe875650c1e199f409f78dc2562ba825db291e6b7b639b75bb",
+    "scenario_fingerprint": "745fe7fb6b93e9fbbfe3c599bbddada0cd1249fa73ceb5803bef6444c253a8a3",
     "scenario_id": "scenario.lib7.635f8375baecd938",
-    "stress_report_fingerprint": "a5dc843fd94ff231f8e1ed6a324f276b5dfc064b9c6bf54dadb332a8291aa570"
+    "stress_report_fingerprint": "c7f26cdf3c2a07e99a3d8194de087be03eb5185943c78d8882f02b2e6b59a9be"
   },
   "provider_resolution_outcomes": {
     "anarchy": {

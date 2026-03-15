@@ -6,7 +6,7 @@ Replacement Target: release-pinned target matrix and downloadable artifact avail
 
 # ARCH-MATRIX Final
 
-Fingerprint: `48bff142af66050d569f775d5c4bf2759afc91c1f40702e093b6b34aa0c2739f`
+Fingerprint: `2e3abb7d328514a447278e0557a4ad3d7fe7ff9bc54cbdaf1bdfccca74b10abc`
 
 ## Full Target Matrix Table
 
@@ -39,8 +39,6 @@ Fingerprint: `48bff142af66050d569f775d5c4bf2759afc91c1f40702e093b6b34aa0c2739f`
 ### Release Index Rows
 
 - `dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
-  - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
-- `build/tmp/archive_policy_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
 - `build/tmp/governance_model_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)

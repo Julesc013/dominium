@@ -8,6 +8,7 @@ import py_compile
 import shutil
 import subprocess
 import sys
+import time
 from typing import Mapping, Sequence
 
 from src.lib.install import (
@@ -285,7 +286,7 @@ def _copy_runtime_data(repo_root: str, bundle_root: str) -> dict:
         dest_path = os.path.join(bundle_root, rel_path.replace("/", os.sep))
         if os.path.isdir(src_path):
             if os.path.isdir(dest_path):
-                shutil.rmtree(dest_path)
+                _safe_rmtree(dest_path)
             shutil.copytree(
                 src_path,
                 dest_path,
@@ -870,6 +871,29 @@ def _build_top_level_summary(bundle_root: str) -> dict:
     }
 
 
+def _remove_readonly(func, path, exc_info):
+    del exc_info
+    try:
+        os.chmod(path, 0o666)
+    except OSError:
+        pass
+    func(path)
+
+
+def _safe_rmtree(path: str) -> None:
+    target = _norm(path)
+    for attempt in range(0, 4):
+        try:
+            shutil.rmtree(target, onerror=_remove_readonly)
+            return
+        except FileNotFoundError:
+            return
+        except OSError:
+            if attempt >= 3:
+                raise
+            time.sleep(0.1 * float(attempt + 1))
+
+
 def build_dist_tree(
     repo_root: str,
     *,
@@ -881,7 +905,7 @@ def build_dist_tree(
     repo_root_abs = _repo_root(repo_root)
     bundle_root = _bundle_root(output_root, platform_tag, channel_id)
     if os.path.isdir(bundle_root):
-        shutil.rmtree(bundle_root)
+        _safe_rmtree(bundle_root)
     os.makedirs(os.path.join(bundle_root, "manifests"), exist_ok=True)
     os.makedirs(os.path.join(bundle_root, "saves"), exist_ok=True)
     build_number = _read_build_number(repo_root_abs)

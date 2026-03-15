@@ -8,23 +8,23 @@ Replacement Target: channel-specific performance budgets and regression history 
 
 - result: `complete`
 - report_fingerprint: `f2d73a03bbb6324d0ba3f4105238ac263f7f41ea36b1f254ebce1fbc7045085b`
-- observed_metric_fingerprint: `bd861a32488fb8a461943a190977e12f29b25b6b6690f3695ebd99ea0e9211cf`
+- observed_metric_fingerprint: `92ff1d8098bc173451fbbed0b82ea1c51b7426635f163fc8ed5b81d7ed3b878f`
 
 ## Startup
 
-- setup_help_ms: `3487`
-- client_compat_status_ms: `3623`
-- server_compat_status_ms: `2942`
-- launcher_compat_status_ms: `2490`
-- clean_room_elapsed_ms: `19606`
+- setup_help_ms: `3429`
+- client_compat_status_ms: `1952`
+- server_compat_status_ms: `1433`
+- launcher_compat_status_ms: `1231`
+- clean_room_elapsed_ms: `16016`
 - clean_room_result: `refused`
 
 ## Memory
 
-- client_peak_working_set_mb: `64.02`
-- server_peak_working_set_mb: `50.84`
-- setup_peak_working_set_mb: `51.34`
-- launcher_peak_working_set_mb: `50.83`
+- client_peak_working_set_mb: `63.83`
+- server_peak_working_set_mb: `50.65`
+- setup_peak_working_set_mb: `51.05`
+- launcher_peak_working_set_mb: `50.84`
 - idle_proxy_note: `loopback_supervisor_children_exit_after_startup_probe`
 
 ## Storage
@@ -40,6 +40,6 @@ Replacement Target: channel-specific performance budgets and regression history 
 
 - component_graph_component_count: `18`
 - install_profile_full_component_count: `18`
-- clean_room_fingerprint: `c0063a54225779164e84d7d5a780a2f3dbe8b372f873c4c89340a635494eb2a0`
+- clean_room_fingerprint: `592b865316f757275e6b8b84d92807f35c0ff87244ecd8191f07ad9f904c3e3a`
 - replay_fingerprint: ``
 - release_manifest_hash_unchanged: `true`

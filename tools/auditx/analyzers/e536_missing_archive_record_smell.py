@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
                     str(item.get("message", "")).strip() or "archive publication policy is missing a required archive record or offline verification hook",
                 ],
                 suggested_classification="TODO-BLOCKED",
-                recommended_action="GENERATE_ARCHIVE_RECORD_AND_ARCHIVE_POLICY_BASELINE_FOR_PUBLISHED_RELEASES",
+                recommended_action="ADD_RULE",
                 related_invariants=[RULE_ARCHIVE_RECORD],
                 related_paths=[
                     rel_path or "tools/release/tool_archive_release.py",
