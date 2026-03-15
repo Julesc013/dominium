@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Component Descriptor Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "component_id",
+    "component_kind",
+    "content_hash",
+    "version",
+    "platform_filters",
+    "capability_filters",
+    "contract_requirements",
+    "trust_requirements",
+    "provides_ids",
+    "yanked",
+    "yank_policy",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "component_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "component_kind": {
+      "type": "string",
+      "enum": [
+        "binary",
+        "pack",
+        "profile",
+        "lock",
+        "docs",
+        "sdk",
+        "manifest"
+      ]
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "platform_filters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "capability_filters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "contract_requirements": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "trust_requirements": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "provides_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "yanked": {
+      "type": "boolean"
+    },
+    "yank_reason": {
+      "type": "string"
+    },
+    "yank_policy": {
+      "type": "string",
+      "enum": [
+        "warn",
+        "refuse"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "capability_filters": {},
+      "component_id": "component_id.example",
+      "component_kind": "binary",
+      "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "contract_requirements": {},
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "platform_filters": {},
+      "provides_ids": [],
+      "trust_requirements": {},
+      "version": "1.0.0",
+      "yank_policy": "warn",
+      "yanked": false
+    }
+  ]
+}

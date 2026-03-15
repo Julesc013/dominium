@@ -20,7 +20,19 @@ from src.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
 from src.appshell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
 from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
 from src.lib.install import default_install_registry_path, discover_install  # noqa: E402
-from src.release import DEFAULT_RELEASE_MANIFEST_REL, load_release_manifest  # noqa: E402
+from src.release import (  # noqa: E402
+    DEFAULT_RELEASE_MANIFEST_REL,
+    DEFAULT_INSTALL_PROFILE_ID,
+    DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
+    build_default_component_install_plan,
+    load_install_profile_registry,
+    load_release_index,
+    load_release_manifest,
+    platform_targets_for_tag,
+    resolve_update_plan,
+    select_install_profile,
+    validate_instance_against_install_plan,
+)
 from src.ui.ui_model import discover_instance_menu_entries  # noqa: E402
 
 
@@ -301,13 +313,21 @@ def cmd_instances_list(repo_root: str) -> Dict[str, object]:
     for row in discover_instance_menu_entries(repo_root):
         item = dict(row or {})
         details = dict(item.get("details") or {})
+        install_profile_id = ""
+        manifest_ref = str(details.get("manifest_ref", "")).strip()
+        if manifest_ref:
+            manifest_path = os.path.join(repo_root, manifest_ref.replace("/", os.sep))
+            payload, err = _read_json(manifest_path)
+            if not err:
+                install_profile_id = str(dict(payload.get("extensions") or {}).get("install_profile_id", "")).strip()
         rows.append(
             {
                 "instance_id": str(item.get("item_id", "")).strip(),
-                "manifest_ref": str(details.get("manifest_ref", "")).strip(),
+                "manifest_ref": manifest_ref,
                 "instance_kind": str(details.get("instance_kind", "")).strip(),
                 "save_ref_count": int(details.get("save_ref_count", 0) or 0),
                 "ui_mode_default": str(details.get("ui_mode_default", "")).strip(),
+                "install_profile_id": install_profile_id,
             }
         )
     return {
@@ -339,11 +359,49 @@ def cmd_install_status(repo_root: str, install_root: str, install_id: str, regis
     install_discovery = dict(result or {})
     refusal_code = str(install_discovery.get("refusal_code", "")).strip()
     reason = ""
+    install_policy_id = DEFAULT_RELEASE_RESOLUTION_POLICY_ID
+    yanked_component_ids: List[str] = []
     for row in list(install_discovery.get("errors") or []):
         row_map = dict(row or {})
         if str(row_map.get("code", "")).strip() == refusal_code and str(row_map.get("message", "")).strip():
             reason = str(row_map.get("message", "")).strip()
             break
+    resolved_install_root = str(install_discovery.get("resolved_install_root_path", "")).strip()
+    if discovery == "complete" and resolved_install_root:
+        install_manifest_path = os.path.join(resolved_install_root, "install.manifest.json")
+        release_index_path = os.path.join(resolved_install_root, "manifests", "release_index.json")
+        install_manifest, manifest_err = _read_json(install_manifest_path)
+        if not manifest_err and install_manifest and os.path.isfile(release_index_path):
+            install_profile_id = (
+                str(dict(install_manifest.get("extensions") or {}).get("official.install_profile_id", "")).strip()
+                or DEFAULT_INSTALL_PROFILE_ID
+            )
+            install_profile_registry = load_install_profile_registry(resolved_install_root) or load_install_profile_registry(repo_root)
+            install_profile = select_install_profile(install_profile_registry, install_profile_id=install_profile_id)
+            install_policy_id = (
+                str(dict(install_manifest.get("extensions") or {}).get("official.install_resolution_policy_id", "")).strip()
+                or DEFAULT_RELEASE_RESOLUTION_POLICY_ID
+            )
+            release_index = load_release_index(release_index_path)
+            platform_row = list(release_index.get("platform_matrix") or [{}])[0]
+            targets = platform_targets_for_tag(
+                str(dict(platform_row or {}).get("extensions", {}).get("platform_tag", "")).strip(),
+                repo_root=resolved_install_root,
+            )
+            resolution = resolve_update_plan(
+                install_manifest,
+                release_index,
+                install_profile_id=install_profile_id,
+                install_profile=install_profile,
+                resolution_policy_id=install_policy_id,
+                target_platform=str(targets.get("platform_id", "")).strip(),
+                target_arch=str(targets.get("arch_id", "")).strip(),
+                target_abi=str(targets.get("abi_id", "")).strip(),
+                component_graph=dict(dict(release_index.get("extensions") or {}).get("component_graph") or {}),
+                install_root=resolved_install_root,
+                release_index_path=release_index_path,
+            )
+            yanked_component_ids = list(dict(dict(resolution.get("update_plan") or {}).get("extensions") or {}).get("selected_yanked_component_ids") or [])
     return {
         "result": discovery,
         "message": "launcher install discovery status",
@@ -354,6 +412,8 @@ def cmd_install_status(repo_root: str, install_root: str, install_id: str, regis
             "resolution_source": str(install_discovery.get("resolution_source", "")).strip(),
             "resolved_install_root": str(install_discovery.get("resolved_install_root_path", "")).strip(),
             "resolved_install_id": str(install_discovery.get("resolved_install_id", "")).strip(),
+            "install_policy_id": install_policy_id,
+            "yanked_component_count": int(len(yanked_component_ids)),
         },
         "remediation_hint": (
             ""
@@ -361,6 +421,8 @@ def cmd_install_status(repo_root: str, install_root: str, install_id: str, regis
             else "Use `setup install register <path>` for installed mode, or place `install.manifest.json` beside the product binaries for portable mode."
         ),
         "default_registry_path": default_install_registry_path(repo_root),
+        "install_policy_id": install_policy_id,
+        "selected_yanked_component_ids": yanked_component_ids,
         "install_discovery": install_discovery,
     }
 
@@ -523,6 +585,10 @@ def cmd_compat_status(
     resolved_dist_root = _default_dist_root(repo_root, dist_root)
     dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, resolved_dist_root))) if not os.path.isabs(resolved_dist_root) else os.path.normpath(resolved_dist_root)
     release_manifest = {}
+    release_policy = {}
+    component_graph = {}
+    instance_component_validation = {}
+    selected_yanked_component_ids: List[str] = []
     release_manifest_path = os.path.join(dist_abs, DEFAULT_RELEASE_MANIFEST_REL)
     if os.path.isfile(release_manifest_path):
         try:
@@ -537,6 +603,83 @@ def cmd_compat_status(
                 "platform_tag": str(manifest_payload.get("platform_tag", "")).strip(),
                 "artifact_count": int(len(list(manifest_payload.get("artifacts") or []))),
             }
+            install_manifest_path = os.path.join(dist_abs, "install.manifest.json")
+            release_index_path = os.path.join(dist_abs, "manifests", "release_index.json")
+            install_manifest, install_err = _read_json(install_manifest_path)
+            install_policy_id = DEFAULT_RELEASE_RESOLUTION_POLICY_ID
+            install_profile_id = DEFAULT_INSTALL_PROFILE_ID
+            install_profile = {}
+            if not install_err and install_manifest:
+                install_profile_id = (
+                    str(dict(install_manifest.get("extensions") or {}).get("official.install_profile_id", "")).strip()
+                    or DEFAULT_INSTALL_PROFILE_ID
+                )
+                install_profile_registry = load_install_profile_registry(dist_abs) or load_install_profile_registry(repo_root)
+                install_profile = select_install_profile(install_profile_registry, install_profile_id=install_profile_id)
+                install_policy_id = (
+                    str(dict(install_manifest.get("extensions") or {}).get("official.install_resolution_policy_id", "")).strip()
+                    or DEFAULT_RELEASE_RESOLUTION_POLICY_ID
+                )
+            targets = platform_targets_for_tag(
+                str(manifest_payload.get("platform_tag", "")).strip(),
+                repo_root=dist_abs,
+            )
+            instance_install_profile_id = DEFAULT_INSTALL_PROFILE_ID
+            instance_manifest_path = os.path.join(dist_abs, "instances", "default", "instance.manifest.json")
+            instance_manifest, err = _read_json(instance_manifest_path)
+            if not err and instance_manifest:
+                instance_install_profile_id = str(dict(instance_manifest.get("extensions") or {}).get("install_profile_id", "")).strip() or DEFAULT_INSTALL_PROFILE_ID
+            plan_result = build_default_component_install_plan(
+                dist_abs,
+                install_profile_id=instance_install_profile_id,
+                target_platform=str(targets.get("platform_id", "")).strip(),
+                target_arch=str(targets.get("arch_id", "")).strip(),
+                target_abi=str(targets.get("abi_id", "")).strip(),
+            )
+            install_plan = dict(plan_result.get("install_plan") or {})
+            component_graph = {
+                "result": str(plan_result.get("result", "")).strip(),
+                "graph_id": str(plan_result.get("graph_id", "")).strip(),
+                "install_profile_id": str(install_plan.get("install_profile_id", "")).strip() or instance_install_profile_id,
+                "target_id": str(targets.get("target_id", "")).strip(),
+                "target_platform": str(install_plan.get("target_platform", "")).strip(),
+                "target_arch": str(install_plan.get("target_arch", "")).strip(),
+                "target_abi": str(dict(install_plan.get("extensions") or {}).get("target_abi", "")).strip(),
+                "target_tier": int(targets.get("tier", 0) or 0),
+                "selected_component_count": int(len(list(install_plan.get("selected_components") or []))),
+                "install_plan_fingerprint": str(install_plan.get("deterministic_fingerprint", "")).strip(),
+            }
+            if not install_err and install_manifest and os.path.isfile(release_index_path):
+                release_index = load_release_index(release_index_path)
+                release_resolution = resolve_update_plan(
+                    install_manifest,
+                    release_index,
+                    install_profile_id=install_profile_id or instance_install_profile_id,
+                    install_profile=install_profile,
+                    resolution_policy_id=install_policy_id,
+                    target_platform=str(targets.get("platform_id", "")).strip(),
+                    target_arch=str(targets.get("arch_id", "")).strip(),
+                    target_abi=str(targets.get("abi_id", "")).strip(),
+                    component_graph=dict(dict(release_index.get("extensions") or {}).get("component_graph") or {}),
+                    install_root=dist_abs,
+                    release_index_path=release_index_path,
+                )
+                release_policy = {
+                    "resolution_policy_id": install_policy_id,
+                    "selected_yanked_component_ids": list(dict(dict(release_resolution.get("update_plan") or {}).get("extensions") or {}).get("selected_yanked_component_ids") or []),
+                    "policy_explanations": list(dict(dict(release_resolution.get("update_plan") or {}).get("extensions") or {}).get("policy_explanations") or []),
+                }
+                selected_yanked_component_ids = list(release_policy.get("selected_yanked_component_ids") or [])
+            if not err and instance_manifest:
+                validation = validate_instance_against_install_plan(install_plan, instance_manifest)
+                instance_component_validation = {
+                    "result": str(validation.get("result", "")).strip(),
+                    "refusal_code": str(validation.get("refusal_code", "")).strip(),
+                    "missing_component_ids": list(validation.get("missing_component_ids") or []),
+                    "install_plan_fingerprint": str(validation.get("install_plan_fingerprint", "")).strip(),
+                    "install_profile_id": instance_install_profile_id,
+                    "instance_manifest_path": _norm(os.path.relpath(instance_manifest_path, repo_root)),
+                }
     compat = verify_pack_root(
         repo_root=repo_root,
         root=dist_abs,
@@ -569,11 +712,15 @@ def cmd_compat_status(
             "error_count": int(len(list(compat.get("errors") or []))),
             "release_id": str(release_manifest.get("release_id", "")).strip(),
             "manifest_hash": str(release_manifest.get("manifest_hash", "")).strip(),
+            "yanked_component_count": int(len(selected_yanked_component_ids)),
         },
         "dist_root": _norm(os.path.relpath(dist_abs, repo_root)),
         "bundle_id": str(bundle_id).strip(),
         "mod_policy_id": str(mod_policy_id).strip() or "mod_policy.lab",
         "release_manifest": release_manifest,
+        "release_policy": release_policy,
+        "component_graph": component_graph,
+        "instance_component_validation": instance_component_validation,
         "report": report,
         "pack_lock": pack_lock,
         "warnings": list(compat.get("warnings") or []),

@@ -305,11 +305,18 @@ def open_ipc_listener(address_payload: Mapping[str, object]) -> socket.socket:
     return listener
 
 
-def connect_ipc_client(address_payload: Mapping[str, object], *, max_attempts: int = 4) -> socket.socket:
+def connect_ipc_client(
+    address_payload: Mapping[str, object],
+    *,
+    max_attempts: int = 4,
+    timeout_sec: float | None = None,
+) -> socket.socket:
     family = str(dict(address_payload or {}).get("family", "")).strip()
     last_error = None
     for _attempt in range(max(1, int(max_attempts or 1))):
         sock = socket.socket(socket.AF_UNIX if family == "unix" else socket.AF_INET, socket.SOCK_STREAM)
+        if timeout_sec is not None:
+            sock.settimeout(float(timeout_sec))
         try:
             if family == "unix":
                 sock.connect(str(dict(address_payload or {}).get("bind_target", "")).strip())

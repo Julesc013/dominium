@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
                     str(item.get("message", "")).strip() or "validation unification drift detected",
                 ],
                 suggested_classification="TODO-BLOCKED",
-                recommended_action="CONSOLIDATE",
+                recommended_action="REWRITE",
                 related_invariants=[RULE_ID],
                 related_paths=[rel_path or "data/registries/validation_suite_registry.json"],
             )

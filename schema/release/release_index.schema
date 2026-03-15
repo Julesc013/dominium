@@ -1,0 +1,35 @@
+SCHEMA: release/release_index.schema
+schema_id: dominium.schema.release.release_index
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic offline-first release index used for update discovery and component-graph resolution.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown extension fields MUST be preserved.
+- No semantic reuse without a MAJOR version bump.
+
+REQUIRED SHAPE:
+record release_index
+  required:
+    - channel: id
+    - release_series: tag
+    - semantic_contract_registry_hash: sha256
+    - governance_profile_hash: sha256
+    - supported_protocol_ranges: map
+    - platform_matrix: [map]
+    - component_graph_hash: sha256
+    - components: [component_descriptor]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - signatures: [signature_block]
+    - universal_identity_block: universal_identity_block
+
+INVARIANTS:
+- platform_matrix is canonically ordered by os, arch, abi, artifact_url_or_path.
+- components are canonically ordered by component_id, version, build_id, artifact_id, content_hash.
+- release index resolution must not require network access.
+- governance_profile_hash must match the bundled governance profile used to define official/fork/archive policy.

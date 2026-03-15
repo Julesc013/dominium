@@ -43,5 +43,15 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "channel_id": "console",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "payload_ref": {},
+      "schema_version": "1.0.0",
+      "seq_no": 1
+    }
+  ]
 }

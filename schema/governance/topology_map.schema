@@ -9,6 +9,7 @@ PURPOSE:
 REQUIRED SHAPE:
 record topology_map
   required:
+    - schema_version: semver
     - topology_id: id
     - generated_tick: u64
     - repository_hash: text

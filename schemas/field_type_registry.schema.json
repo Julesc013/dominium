@@ -25,13 +25,26 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["pack_id", "version", "canonical_hash", "signature_status"],
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
         "additionalProperties": false,
         "properties": {
-          "pack_id": {"type": "string"},
-          "version": {"type": "string"},
-          "canonical_hash": {"type": "string"},
-          "signature_status": {"type": "string"}
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
         }
       }
     },
@@ -48,11 +61,27 @@
         ],
         "additionalProperties": false,
         "properties": {
-          "schema_version": {"type": "string", "const": "1.0.0"},
-          "field_type_id": {"type": "string"},
-          "description": {"type": "string"},
-          "value_kind": {"type": "string", "enum": ["scalar", "vector"]},
-          "extensions": {"type": "object", "additionalProperties": true}
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "field_type_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "value_kind": {
+            "type": "string",
+            "enum": [
+              "scalar",
+              "vector"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
         }
       }
     },
@@ -60,5 +89,13 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     }
-  }
+  },
+  "examples": [
+    {
+      "field_types": [],
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "registry_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
 }

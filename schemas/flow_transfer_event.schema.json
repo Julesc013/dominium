@@ -80,6 +80,28 @@
   },
   "examples": [
     {
+      "channel_id": "channel_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "event_id": "event_id.example",
+      "extensions": {},
+      "ledger_delta_refs": [],
+      "lost_amount": 0,
+      "schema_version": "1.1.0",
+      "tick": 0,
+      "transferred_amount": 0
+    },
+    {
+      "channel_id": "channel_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "event_id": "event_id.example",
+      "extensions": {},
+      "ledger_delta_refs": [],
+      "lost_amount": 0,
+      "schema_version": "1.0.0",
+      "tick": 0,
+      "transferred_amount": 0
+    },
+    {
       "schema_version": "1.0.0",
       "event_id": "flow.event.a1",
       "tick": 42,

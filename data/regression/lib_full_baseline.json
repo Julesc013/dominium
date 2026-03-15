@@ -1,22 +1,22 @@
 {
   "baseline_id": "lib.full.baseline.v1",
   "bundle_hashes": {
-    "instance_linked": "4faca3d5a82cda3663caa96a5069f87f89f4e94c99abb15f24ebe3653a990e3c",
-    "instance_portable": "af4bbbc2908cc40419260a633add35459e61449c790febfd923f51b4123b0e4d",
+    "instance_linked": "90960e433719cd93cf0de870f9e63945d9ffcb32d6e9ebe477de2079eb88172a",
+    "instance_portable": "bc3978b916bd027a986712b8659bb54fd53a50b5aca3a0b627152a7da40464fb",
     "pack": "5756dc708fa4c237a05c8f5f4ccfe9b7cce1b5c6083a22300301d172dfec3d97",
-    "save": "55c9d255890cf34506e1271b3e675261c5212858327fb28acb1ce1fc9d8d5e37"
+    "save": "1e1b8112c92f9923b318c310db6242d485208f0b76ad547affe938e749c21278"
   },
   "decision_log_fingerprints": {
     "pack_verify_official": "384401cc1c8026f294903eacae50c231ed2d13bc78d1b8bd628c96dccf03b915",
     "provider_resolution_strict": "3f47fe7a09117b3baeeba828d9a90bca7013794f2c4f7a1354115a46f5a663af",
-    "save_open_contract_mismatch": "ea8e5e50f3af4657de7c3e8fbd10e626bbee620977b5b22ab339308e320c8b06"
+    "save_open_contract_mismatch": "0b4dad5d0b9899f455d72f8d74e4a0b200eab1a894797c2006197c8cffcefb1d"
   },
   "description": "Deterministic LIB-7 regression lock for installs, instances, saves, providers, export/import, and read-only fallback.",
-  "deterministic_fingerprint": "db9d98069ff24ebd7e9827f8e2cf2229bf970225f97660d7f33235cfad261b1e",
+  "deterministic_fingerprint": "d8570a43396899349e55016ebd50c8ce63915bf48c7aa6ee06c4da3e1aef73a4",
   "fixed_seed_scenario": {
-    "scenario_fingerprint": "d48cfb4240bac0e47d46b31e44ebbdfc67b9c3808a095b43f3f32ae290abd79d",
+    "scenario_fingerprint": "cf2e7d86798382fe875650c1e199f409f78dc2562ba825db291e6b7b639b75bb",
     "scenario_id": "scenario.lib7.635f8375baecd938",
-    "stress_report_fingerprint": "ae90db9a983a64f833d28719afe10bcd018fbc362e3c64cc99beec1b136128e1"
+    "stress_report_fingerprint": "a5dc843fd94ff231f8e1ed6a324f276b5dfc064b9c6bf54dadb332a8291aa570"
   },
   "provider_resolution_outcomes": {
     "anarchy": {
@@ -79,7 +79,7 @@
       "result": "complete",
       "save_format_version": "1.0.0",
       "save_id": "save.alpha.readonly",
-      "save_manifest_fingerprint": "89aca06408081818606e3a5b93229ddc80938ce10798e08a964545391a97ef51"
+      "save_manifest_fingerprint": "64adb8083d61816fc111b0a30e29e71baaf678daf54cffaaea25434f8468c6e0"
     },
     "different_install_read_only": {
       "degrade_reasons": [
@@ -94,7 +94,7 @@
       "result": "complete",
       "save_format_version": "1.0.0",
       "save_id": "save.alpha.mutable",
-      "save_manifest_fingerprint": "2eb5de12c2cef325f4191eae148a2d0194c990913f01570431397319fe0f6fc6"
+      "save_manifest_fingerprint": "b6c755d312aad1bc2ee86aeba2b8b632346a78b2a859777cb6d5ef58dc1d20ad"
     },
     "launcher_read_only_save": {
       "degrade_logged": true,
@@ -129,7 +129,7 @@
       "result": "refused",
       "save_format_version": "1.0.0",
       "save_id": "save.alpha.mutable",
-      "save_manifest_fingerprint": "2eb5de12c2cef325f4191eae148a2d0194c990913f01570431397319fe0f6fc6"
+      "save_manifest_fingerprint": "b6c755d312aad1bc2ee86aeba2b8b632346a78b2a859777cb6d5ef58dc1d20ad"
     },
     "overlay_strict": {
       "pack_lock_hash": "",

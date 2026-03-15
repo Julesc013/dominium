@@ -40,6 +40,7 @@ record install_manifest
     - extensions: map
   optional:
     - product_build_descriptors: map
+    - universal_identity_block: universal_identity_block
     - notes: map
 
 TYPE DEFINITIONS:
@@ -59,4 +60,3 @@ INVARIANTS:
 - portable installs must resolve store_root_ref inside the install root.
 - product_build_descriptors, when present, must agree with product_builds.
 - deterministic_fingerprint is computed from canonical serialized content.
-

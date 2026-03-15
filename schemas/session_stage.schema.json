@@ -82,6 +82,10 @@
     "extensions": {
       "type": "object",
       "additionalProperties": true
+    },
+    "stability": {
+      "type": "object",
+      "additionalProperties": true
     }
   },
   "allOf": [

@@ -1831,6 +1831,58 @@
       },
       {
         "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
+        "command_id": "command.dom_compat_apply_migration",
+        "command_path": "dom compat apply-migration",
+        "description": "Apply deterministic migration lifecycle actions for a single artifact",
+        "deterministic_fingerprint": "fd9bebe98b0b96360eb5dc4909ba9f0a0f828799cbd1993ce2831eb4a72ad8d0",
+        "exit_code_mapping_id": "exit.refusal",
+        "extensions": {
+          "official.source": "TOOL-SURFACE-0",
+          "official.tool_surface": {
+            "adapter_kind": "python_subprocess",
+            "alias_command_tokens": [],
+            "alias_product_id": "",
+            "area_id": "compat",
+            "deterministic_fingerprint": "fb6a1b571036fd0868de20747afc22652d51f1375412b3de79b47a23d082611c",
+            "inject_repo_root_arg": true,
+            "offline_only": true,
+            "pack_context_mode": "repo_root_context_only",
+            "required_capabilities": [],
+            "stable_id": "dom.compat.apply-migration.v1",
+            "surface_role": "leaf",
+            "tool_module": "tools.compat.tool_apply_migration",
+            "tool_relpath": "tools/compat/tool_apply_migration.py",
+            "virtual_path_policy": "repo_relative_cwd"
+          }
+        },
+        "handler_id": "tool_surface_adapter",
+        "output_schema_id": "dominium.schema.appshell.output.tool_adapter_result",
+        "product_ids": [
+          "tool.attach_console_stub"
+        ],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
+        "schema_version": "1.1.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "dfb4e87c70b9d7c7189ea052dfde97ee9c056cc923c7ad6ec089d6aade37eb4e",
+          "extensions": {},
+          "future_series": "APPSHELL-TOOLS",
+          "rationale": "Unified tool umbrella command rows remain provisional while the tool surface converges for release governance.",
+          "replacement_target": "Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ]
+      },
+      {
+        "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
         "command_id": "command.dom_compat_emit_descriptor",
         "command_path": "dom compat emit-descriptor",
         "description": "Emit deterministic CAP-NEG-1 endpoint descriptors for product surfaces",
@@ -1987,6 +2039,58 @@
       },
       {
         "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
+        "command_id": "command.dom_compat_plan_migration",
+        "command_path": "dom compat plan-migration",
+        "description": "Plan deterministic migration lifecycle actions for a single artifact",
+        "deterministic_fingerprint": "7fc01e749fa69be540a18b681a7bd1af9b9f31654e9e77e291819c549b01cb6d",
+        "exit_code_mapping_id": "exit.refusal",
+        "extensions": {
+          "official.source": "TOOL-SURFACE-0",
+          "official.tool_surface": {
+            "adapter_kind": "python_subprocess",
+            "alias_command_tokens": [],
+            "alias_product_id": "",
+            "area_id": "compat",
+            "deterministic_fingerprint": "1323dbba9a7d3b13fcc04ff2639392a7a3fb4192f1c0683bcbf438bc479f0d4c",
+            "inject_repo_root_arg": true,
+            "offline_only": true,
+            "pack_context_mode": "repo_root_context_only",
+            "required_capabilities": [],
+            "stable_id": "dom.compat.plan-migration.v1",
+            "surface_role": "leaf",
+            "tool_module": "tools.compat.tool_plan_migration",
+            "tool_relpath": "tools/compat/tool_plan_migration.py",
+            "virtual_path_policy": "repo_relative_cwd"
+          }
+        },
+        "handler_id": "tool_surface_adapter",
+        "output_schema_id": "dominium.schema.appshell.output.tool_adapter_result",
+        "product_ids": [
+          "tool.attach_console_stub"
+        ],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
+        "schema_version": "1.1.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "dfb4e87c70b9d7c7189ea052dfde97ee9c056cc923c7ad6ec089d6aade37eb4e",
+          "extensions": {},
+          "future_series": "APPSHELL-TOOLS",
+          "rationale": "Unified tool umbrella command rows remain provisional while the tool surface converges for release governance.",
+          "replacement_target": "Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ]
+      },
+      {
+        "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
         "command_id": "command.dom_compat_replay_migration",
         "command_path": "dom compat replay-migration",
         "description": "Replay deterministic PACK-COMPAT-2 artifact migrations",
@@ -2112,6 +2216,58 @@
             "surface_role": "leaf",
             "tool_module": "tools.compat.tool_run_interop_stress",
             "tool_relpath": "tools/compat/tool_run_interop_stress.py",
+            "virtual_path_policy": "repo_relative_cwd"
+          }
+        },
+        "handler_id": "tool_surface_adapter",
+        "output_schema_id": "dominium.schema.appshell.output.tool_adapter_result",
+        "product_ids": [
+          "tool.attach_console_stub"
+        ],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
+        "schema_version": "1.1.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "dfb4e87c70b9d7c7189ea052dfde97ee9c056cc923c7ad6ec089d6aade37eb4e",
+          "extensions": {},
+          "future_series": "APPSHELL-TOOLS",
+          "rationale": "Unified tool umbrella command rows remain provisional while the tool surface converges for release governance.",
+          "replacement_target": "Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ]
+      },
+      {
+        "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
+        "command_id": "command.dom_compat_run_migration_lifecycle",
+        "command_path": "dom compat run-migration-lifecycle",
+        "description": "Generate deterministic MIGRATION-LIFECYCLE-0 report artifacts",
+        "deterministic_fingerprint": "f1a352fe8fa300b7499110e38502bfac1a892a41ac51723978666b12dc565fcd",
+        "exit_code_mapping_id": "exit.refusal",
+        "extensions": {
+          "official.source": "TOOL-SURFACE-0",
+          "official.tool_surface": {
+            "adapter_kind": "python_subprocess",
+            "alias_command_tokens": [],
+            "alias_product_id": "",
+            "area_id": "compat",
+            "deterministic_fingerprint": "e27e0506aea5d0ba01d5d66fb83cd26dd533faefcf4f8df3df4fd823f19f492c",
+            "inject_repo_root_arg": true,
+            "offline_only": true,
+            "pack_context_mode": "repo_root_context_only",
+            "required_capabilities": [],
+            "stable_id": "dom.compat.run-migration-lifecycle.v1",
+            "surface_role": "leaf",
+            "tool_module": "tools.compat.tool_run_migration_lifecycle",
+            "tool_relpath": "tools/compat/tool_run_migration_lifecycle.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3994,6 +4150,110 @@
             "surface_role": "leaf",
             "tool_module": "tools.lib.tool_run_lib_stress",
             "tool_relpath": "tools/lib/tool_run_lib_stress.py",
+            "virtual_path_policy": "repo_relative_cwd"
+          }
+        },
+        "handler_id": "tool_surface_adapter",
+        "output_schema_id": "dominium.schema.appshell.output.tool_adapter_result",
+        "product_ids": [
+          "tool.attach_console_stub"
+        ],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
+        "schema_version": "1.1.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "dfb4e87c70b9d7c7189ea052dfde97ee9c056cc923c7ad6ec089d6aade37eb4e",
+          "extensions": {},
+          "future_series": "APPSHELL-TOOLS",
+          "rationale": "Unified tool umbrella command rows remain provisional while the tool surface converges for release governance.",
+          "replacement_target": "Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ]
+      },
+      {
+        "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
+        "command_id": "command.dom_lib_run_store_gc",
+        "command_path": "dom lib run-store-gc",
+        "description": "Run deterministic STORE-GC-0 baseline generation",
+        "deterministic_fingerprint": "8eb54d7aa00baf849921c402868ca90f92d94cabf48b1c5028ab99f1c69710b3",
+        "exit_code_mapping_id": "exit.refusal",
+        "extensions": {
+          "official.source": "TOOL-SURFACE-0",
+          "official.tool_surface": {
+            "adapter_kind": "python_subprocess",
+            "alias_command_tokens": [],
+            "alias_product_id": "",
+            "area_id": "lib",
+            "deterministic_fingerprint": "51d55d95fdb4f7b3738391c70483194f901bd0480d499cc9785760955416070f",
+            "inject_repo_root_arg": true,
+            "offline_only": true,
+            "pack_context_mode": "repo_root_context_only",
+            "required_capabilities": [],
+            "stable_id": "dom.lib.run-store-gc.v1",
+            "surface_role": "leaf",
+            "tool_module": "tools.lib.tool_run_store_gc",
+            "tool_relpath": "tools/lib/tool_run_store_gc.py",
+            "virtual_path_policy": "repo_relative_cwd"
+          }
+        },
+        "handler_id": "tool_surface_adapter",
+        "output_schema_id": "dominium.schema.appshell.output.tool_adapter_result",
+        "product_ids": [
+          "tool.attach_console_stub"
+        ],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
+        "schema_version": "1.1.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "dfb4e87c70b9d7c7189ea052dfde97ee9c056cc923c7ad6ec089d6aade37eb4e",
+          "extensions": {},
+          "future_series": "APPSHELL-TOOLS",
+          "rationale": "Unified tool umbrella command rows remain provisional while the tool surface converges for release governance.",
+          "replacement_target": "Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ]
+      },
+      {
+        "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
+        "command_id": "command.dom_lib_store_verify",
+        "command_path": "dom lib store-verify",
+        "description": "Run deterministic store verification and write STORE-GC-0 verify outputs",
+        "deterministic_fingerprint": "8a52c20d2e68dcbae84c60147f2fa6f85ddfb0ac32e6dd8a1ebb5155247031cf",
+        "exit_code_mapping_id": "exit.refusal",
+        "extensions": {
+          "official.source": "TOOL-SURFACE-0",
+          "official.tool_surface": {
+            "adapter_kind": "python_subprocess",
+            "alias_command_tokens": [],
+            "alias_product_id": "",
+            "area_id": "lib",
+            "deterministic_fingerprint": "c1b3186a89036c75a30833c146b5955411af09ef8bbf303a9a6ace9fc0f415eb",
+            "inject_repo_root_arg": true,
+            "offline_only": true,
+            "pack_context_mode": "repo_root_context_only",
+            "required_capabilities": [],
+            "stable_id": "dom.lib.store-verify.v1",
+            "surface_role": "leaf",
+            "tool_module": "tools.lib.tool_store_verify",
+            "tool_relpath": "tools/lib/tool_store_verify.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },

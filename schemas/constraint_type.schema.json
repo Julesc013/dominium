@@ -46,5 +46,15 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "applicable_entity_kinds": [],
+      "constraint_type_id": "constraint_type_id.example",
+      "description": "example",
+      "enforcement_tier": "macro",
+      "extensions": {},
+      "schema_version": "1.0.0"
+    }
+  ]
 }

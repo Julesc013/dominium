@@ -14,24 +14,66 @@
   ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "type": "string", "const": "1.0.0" },
-    "bundle_version": { "type": "string", "const": "1.0.0" },
-    "file_count": { "type": "integer", "minimum": 0 },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bundle_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "file_count": {
+      "type": "integer",
+      "minimum": 0
+    },
     "files": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["rel_path", "content_hash", "size_bytes"],
+        "required": [
+          "rel_path",
+          "content_hash",
+          "size_bytes"
+        ],
         "additionalProperties": false,
         "properties": {
-          "rel_path": { "type": "string", "minLength": 1 },
-          "content_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-          "size_bytes": { "type": "integer", "minimum": 0 }
+          "rel_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
         }
       }
     },
-    "bundle_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "extensions": { "type": "object", "additionalProperties": true }
-  }
+    "bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "bundle_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "bundle_version": "1.0.0",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "file_count": 0,
+      "files": [],
+      "schema_version": "1.0.0"
+    }
+  ]
 }

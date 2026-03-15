@@ -19,6 +19,8 @@ jobs:
         run: python scripts/verify_ui_shell_purity.py --repo-root .
       - name: ABI boundary check
         run: python scripts/verify_abi_boundaries.py --repo-root .
+      - name: Performance envelope baseline
+        run: python tools/perf/tool_run_performance_envelope.py --repo-root . --platform-tag win64
 
   projection-sanity:
     strategy:

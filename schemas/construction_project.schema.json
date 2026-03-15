@@ -86,5 +86,20 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "blueprint_id": "blueprint_id.example",
+      "bom_id": "bom_id.example",
+      "compiled_ag_id": "compiled_ag_id.example",
+      "created_tick": 0,
+      "extensions": {},
+      "logistics_node_id": "logistics_node_id.example",
+      "milestone_commitment_ids": [],
+      "project_id": "project_id.example",
+      "schema_version": "1.0.0",
+      "site_ref": "example",
+      "status": "planned"
+    }
+  ]
 }

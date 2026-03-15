@@ -1,32 +1,1830 @@
 {
   "build_number": "0",
-  "bundle_hash": "da25308d7acecd5fd847d68ccb47e84c0a9c551a1c99cc6f8ab9f95765bfa716",
+  "bundle_hash": "c660ca7a0e4bb5380339b8e28a437085e6bc58dac202da20db83bff6aca83d32",
   "bundle_root": "dist/v0.0.0-mock/win64/dominium",
   "bundle_root_abs": "D:\\Projects\\Dominium\\dominium\\dist\\v0.0.0-mock\\win64\\dominium",
   "channel_id": "mock",
-  "deterministic_fingerprint": "96d32c2055738a26bf2b83ea22f14cdb05c0de116a2e5fb932193974a5892ae8",
+  "component_plan": {
+    "errors": [],
+    "graph_id": "graph.release.v0_0_0_mock",
+    "install_plan": {
+      "deterministic_fingerprint": "efff3733556646fefc01e994cdd949d4b0c0ef2f07c2edbbcaf8c59a117ee091",
+      "extensions": {
+        "component_fetch_list": [
+          "binary.client",
+          "binary.engine",
+          "binary.game",
+          "binary.launcher",
+          "binary.server",
+          "binary.setup",
+          "docs.release_notes",
+          "lock.pack_lock.mvp_default",
+          "manifest.appshell.runtime",
+          "manifest.compat.negotiation",
+          "manifest.instance.default",
+          "manifest.lib.runtime",
+          "manifest.pack_compat.runtime",
+          "manifest.release_manifest",
+          "pack.base.procedural",
+          "pack.earth.procedural",
+          "pack.sol.pin_minimal",
+          "profile.bundle.mvp_default"
+        ],
+        "disabled_optional_components": [],
+        "graph_id": "graph.release.v0_0_0_mock",
+        "installed_component_ids": [],
+        "profile_optional_selectors": [],
+        "profile_required_selectors": [
+          "binary.client",
+          "binary.game",
+          "binary.launcher",
+          "binary.server",
+          "binary.setup",
+          "docs.release_notes",
+          "manifest.instance.default",
+          "manifest.release_manifest"
+        ],
+        "provides_resolution_policy_id": "resolve.deterministic_highest_priority",
+        "release_id": "release.v0.0.0-mock",
+        "requested_component_ids": [],
+        "requested_selectors": [],
+        "required_provides_ids": [],
+        "selected_component_descriptors": [
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "binary.client",
+            "component_kind": "binary",
+            "content_hash": "f2ca367361897dd3debe0ee3665b2c2c6d12d3a73085b8d2feb70b99feba4fb8",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "a41e236e4acf87bee51555b60224cfabc03345f0681c580af64ccd276b7994d6",
+            "extensions": {
+              "binding_mode": "release_index_required",
+              "product_id": "client"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "binary.engine",
+            "component_kind": "binary",
+            "content_hash": "6ef98fa77e4543d7d4e0e0d2d2c347187025d4a735459e9d9360526f526ab0a1",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "49547ee5604f32a5505f76def996281f754f7c7f8f87a47fbfa6517e126e9a32",
+            "extensions": {
+              "binding_mode": "release_index_required",
+              "product_id": "engine"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "binary.game",
+            "component_kind": "binary",
+            "content_hash": "19e3b52c174db2a1700675199675c0b09cdba032c0fa3f1bf0e8bb76e1610f4a",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "4670c6bc62d7ed1d4ba1f068aded0400f47b97e7f8110ee39d511fc8df6add4a",
+            "extensions": {
+              "binding_mode": "release_index_required",
+              "product_id": "game"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "binary.launcher",
+            "component_kind": "binary",
+            "content_hash": "bf454f6ab7c363d1bba17b03990af9ca51ba42a4f2a972381a0e73c3ed000ebb",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "b337d043e4ae47421aa3d16b76321e16f6335289378c869e69afc0fe02cf5646",
+            "extensions": {
+              "binding_mode": "release_index_required",
+              "product_id": "launcher"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "binary.server",
+            "component_kind": "binary",
+            "content_hash": "99272520011faa8add3980c7aff438662feaddd5106fa015e017d6c63b50c651",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "4ec6f0401cd23b2f64d837aa4f2e8c8d11487bee3458f1e6174801dd41ac6d02",
+            "extensions": {
+              "binding_mode": "release_index_required",
+              "product_id": "server"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "binary.setup",
+            "component_kind": "binary",
+            "content_hash": "b3811f237d3b7f575eaa335de7d01ad4ba5ffc0c949b88e7de1cef7c461a40eb",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "8a1c5fde3ef7780a03cd6cc1f7a055a3e6af293af2ecd6207898976e5890f1e3",
+            "extensions": {
+              "binding_mode": "release_index_required",
+              "product_id": "setup"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "docs.release_notes",
+            "component_kind": "docs",
+            "content_hash": "5680acb64c327c5a32c5ff882cbbb03e4f16299375df4270e2c87c55ed6b01b6",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "f75bafeee1daf4eafa190504c772274e072fdafa7c7182dc784b396c38d9ba25",
+            "extensions": {
+              "doc_rel": "docs\\release\\RELEASE_NOTES_v0_0_0_mock.md"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "v0.0.0-mock",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "lock.pack_lock.mvp_default",
+            "component_kind": "lock",
+            "content_hash": "60bdee0f775bcb05eafa3922e8eabf9fc0a64ebc332c26d3ddf3c5b993b65687",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "b755a15fc2b53fbd1f123dee6f6def2da9900c7077cee34159ef34be9e0fdcf9",
+            "extensions": {
+              "pack_lock_hash": "60bdee0f775bcb05eafa3922e8eabf9fc0a64ebc332c26d3ddf3c5b993b65687",
+              "pack_lock_id": "pack_lock.mvp_default"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "manifest.appshell.runtime",
+            "component_kind": "manifest",
+            "content_hash": "b7a9d9e32aa7cbd1b3de24164378f8a241a6ebfbb5f004b6a1081956d3c4e75e",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "2510ce34eb51df51c8d430b72b57bbb12ebb230e01e7a0596ec77f1e990efe2e",
+            "extensions": {
+              "binding_mode": "release_index_required"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "manifest.compat.negotiation",
+            "component_kind": "manifest",
+            "content_hash": "572fb2aea4904c7df2abf4d3e3c773554257813c3ec71e111c29c3faec57eb46",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "35112034238d1c5a763692eedcc32b4797bad6c1d4be55debaa4091107a3c460",
+            "extensions": {
+              "binding_mode": "release_index_required"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "manifest.instance.default",
+            "component_kind": "manifest",
+            "content_hash": "777eee8361c925aed14b38ac1b18aab67158950cd76732dd833b30c879158ae2",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "72192b54e0f32c021a407850653b1b581badb9e3d7bf092956634dd2097db296",
+            "extensions": {
+              "binding_mode": "dist_assembly_required"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "1.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "manifest.lib.runtime",
+            "component_kind": "manifest",
+            "content_hash": "a662647da67e516275bbdc55de08684dc19ecd043e6708a2840d933b77ebded1",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "8b53599218819c5d3563443d0c579f9a5f966551bd213493b9f31034afb3ae69",
+            "extensions": {
+              "binding_mode": "release_index_required"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "manifest.pack_compat.runtime",
+            "component_kind": "manifest",
+            "content_hash": "673c5ae9b984b95fdc84305bef2aa004b406b564c0145aebc64655b9e1bb4ac5",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "d649ef762832c592a5bc42bf19c7f4b71f7c32c981b2a1c20e732be3ae84dbe4",
+            "extensions": {
+              "binding_mode": "release_index_required"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "manifest.release_manifest",
+            "component_kind": "manifest",
+            "content_hash": "03e424ba6cd9947f934249cd67e9998cea1a5a4ce60686ce8dd5f9698cdb266b",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "fd71600718c48c1db0f4e45fd8014cc6996302d3f0a495b2c38f8c14a1f0753c",
+            "extensions": {
+              "binding_mode": "dist_assembly_required"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "1.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "pack.base.procedural",
+            "component_kind": "pack",
+            "content_hash": "7cc5704c8f47bc0cb4e6ce3901eaf4f99763fc1169aa3afa5d3b30f2dfebad6c",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "d589b0fa328690ba9a12a0a6f885349f5cb5815748a4d5f559d3fc59a68e85fc",
+            "extensions": {
+              "distribution_rel": "packs/base/pack.base.procedural",
+              "pack_compat_hash": "6a293aafd157df582f4e341010a1a64b0faf4f0fa5b182ca1b323c2f7770b631",
+              "pack_id": "pack.base.procedural"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "pack.earth.procedural",
+            "component_kind": "pack",
+            "content_hash": "35b37ea4cccbf6ccf739ab5fe3ab16ec9bc1fd67c30198f7ccb5ce9eefa5ba0d",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "265293c72dff5bc4fa20f924040af8665f9c99d6f690f1ae7cc4daf86d728970",
+            "extensions": {
+              "distribution_rel": "packs/official/pack.earth.procedural",
+              "pack_compat_hash": "cf39c04098865ab74e8b3c2dc2f4d971bc0cab52e256397ee9cd50a7a8c7deaf",
+              "pack_id": "pack.earth.procedural"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "pack.sol.pin_minimal",
+            "component_kind": "pack",
+            "content_hash": "3ed4a56385660a1a6f7bcafbc1acf94fbf75ed6114d1640945dd7494f95bdd5f",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "5a1e97055c5da04351fb0ea792460a81d194c37f4b68269a6af3011b31000798",
+            "extensions": {
+              "distribution_rel": "packs/official/pack.sol.pin_minimal",
+              "pack_compat_hash": "3fb9cd6ad8729faa541e6fe84aee67c693b5949d725315ecf54b0001c185d53f",
+              "pack_id": "pack.sol.pin_minimal"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          },
+          {
+            "capability_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "component_id": "profile.bundle.mvp_default",
+            "component_kind": "profile",
+            "content_hash": "f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239",
+            "contract_requirements": {},
+            "deterministic_fingerprint": "b6911b8b1ded62444345b756e915092013b2868dfef7078a1b900977c2d8386c",
+            "extensions": {
+              "profile_bundle_hash": "f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239",
+              "profile_bundle_id": "profile.bundle.mvp_default"
+            },
+            "platform_filters": {
+              "abi_ids": [],
+              "arch_ids": [],
+              "exclude_abi_ids": [],
+              "exclude_arch_ids": [],
+              "exclude_platform_ids": [],
+              "excluded_capability_ids": [],
+              "extensions": {},
+              "platform_ids": [],
+              "required_capability_ids": [],
+              "required_contract_ids": []
+            },
+            "provides_ids": [
+              "provides.profile.bundle.v1"
+            ],
+            "trust_requirements": {},
+            "version": "0.0.0",
+            "yank_policy": "warn",
+            "yank_reason": "",
+            "yanked": false
+          }
+        ],
+        "selection_reasons": [
+          {
+            "component_id": "binary.client",
+            "reasons": [
+              "profile_required:install.profile.full:binary.client"
+            ]
+          },
+          {
+            "component_id": "binary.engine",
+            "reasons": [
+              "edge_requires:binary.client->binary.engine",
+              "edge_requires:binary.game->binary.engine",
+              "edge_requires:binary.server->binary.engine"
+            ]
+          },
+          {
+            "component_id": "binary.game",
+            "reasons": [
+              "profile_required:install.profile.full:binary.game"
+            ]
+          },
+          {
+            "component_id": "binary.launcher",
+            "reasons": [
+              "profile_required:install.profile.full:binary.launcher"
+            ]
+          },
+          {
+            "component_id": "binary.server",
+            "reasons": [
+              "profile_required:install.profile.full:binary.server"
+            ]
+          },
+          {
+            "component_id": "binary.setup",
+            "reasons": [
+              "edge_requires:binary.launcher->binary.setup",
+              "profile_required:install.profile.full:binary.setup"
+            ]
+          },
+          {
+            "component_id": "docs.release_notes",
+            "reasons": [
+              "edge_recommends:binary.launcher->docs.release_notes",
+              "profile_required:install.profile.full:docs.release_notes"
+            ]
+          },
+          {
+            "component_id": "lock.pack_lock.mvp_default",
+            "reasons": [
+              "edge_requires:binary.client->lock.pack_lock.mvp_default",
+              "edge_requires:binary.game->lock.pack_lock.mvp_default",
+              "edge_requires:binary.server->lock.pack_lock.mvp_default",
+              "edge_requires:manifest.instance.default->lock.pack_lock.mvp_default"
+            ]
+          },
+          {
+            "component_id": "manifest.appshell.runtime",
+            "reasons": [
+              "edge_requires:binary.client->manifest.appshell.runtime",
+              "edge_requires:binary.engine->manifest.appshell.runtime",
+              "edge_requires:binary.launcher->manifest.appshell.runtime",
+              "edge_requires:binary.server->manifest.appshell.runtime",
+              "edge_requires:binary.setup->manifest.appshell.runtime"
+            ]
+          },
+          {
+            "component_id": "manifest.compat.negotiation",
+            "reasons": [
+              "edge_requires:binary.client->manifest.compat.negotiation",
+              "edge_requires:binary.launcher->manifest.compat.negotiation",
+              "edge_requires:binary.server->manifest.compat.negotiation"
+            ]
+          },
+          {
+            "component_id": "manifest.instance.default",
+            "reasons": [
+              "edge_recommends:binary.launcher->manifest.instance.default",
+              "profile_required:install.profile.full:manifest.instance.default"
+            ]
+          },
+          {
+            "component_id": "manifest.lib.runtime",
+            "reasons": [
+              "edge_requires:binary.launcher->manifest.lib.runtime",
+              "edge_requires:binary.setup->manifest.lib.runtime"
+            ]
+          },
+          {
+            "component_id": "manifest.pack_compat.runtime",
+            "reasons": [
+              "edge_requires:binary.setup->manifest.pack_compat.runtime"
+            ]
+          },
+          {
+            "component_id": "manifest.release_manifest",
+            "reasons": [
+              "edge_requires:binary.setup->manifest.release_manifest",
+              "profile_required:install.profile.full:manifest.release_manifest"
+            ]
+          },
+          {
+            "component_id": "pack.base.procedural",
+            "reasons": [
+              "edge_requires:lock.pack_lock.mvp_default->pack.base.procedural"
+            ]
+          },
+          {
+            "component_id": "pack.earth.procedural",
+            "reasons": [
+              "edge_requires:lock.pack_lock.mvp_default->pack.earth.procedural"
+            ]
+          },
+          {
+            "component_id": "pack.sol.pin_minimal",
+            "reasons": [
+              "edge_requires:lock.pack_lock.mvp_default->pack.sol.pin_minimal"
+            ]
+          },
+          {
+            "component_id": "profile.bundle.mvp_default",
+            "reasons": [
+              "edge_requires:binary.client->profile.bundle.mvp_default",
+              "edge_requires:binary.game->profile.bundle.mvp_default",
+              "edge_requires:binary.server->profile.bundle.mvp_default",
+              "edge_requires:manifest.instance.default->profile.bundle.mvp_default"
+            ]
+          }
+        ],
+        "target_abi": "abi.msvc"
+      },
+      "install_profile_id": "install.profile.full",
+      "plan_id": "install_plan.709d130a369bc7da",
+      "resolved_providers": [],
+      "selected_components": [
+        "binary.client",
+        "binary.engine",
+        "binary.game",
+        "binary.launcher",
+        "binary.server",
+        "binary.setup",
+        "docs.release_notes",
+        "lock.pack_lock.mvp_default",
+        "manifest.appshell.runtime",
+        "manifest.compat.negotiation",
+        "manifest.instance.default",
+        "manifest.lib.runtime",
+        "manifest.pack_compat.runtime",
+        "manifest.release_manifest",
+        "pack.base.procedural",
+        "pack.earth.procedural",
+        "pack.sol.pin_minimal",
+        "profile.bundle.mvp_default"
+      ],
+      "target_arch": "arch.x86_64",
+      "target_platform": "platform.winnt",
+      "verification_steps": [
+        {
+          "action": "verify_content_hash",
+          "component_id": "binary.client",
+          "step_id": "verify.component.binary.client"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "binary.engine",
+          "step_id": "verify.component.binary.engine"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "binary.game",
+          "step_id": "verify.component.binary.game"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "binary.launcher",
+          "step_id": "verify.component.binary.launcher"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "binary.server",
+          "step_id": "verify.component.binary.server"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "binary.setup",
+          "step_id": "verify.component.binary.setup"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "docs.release_notes",
+          "step_id": "verify.component.docs.release_notes"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "lock.pack_lock.mvp_default",
+          "step_id": "verify.component.lock.pack_lock.mvp_default"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "manifest.appshell.runtime",
+          "step_id": "verify.component.manifest.appshell.runtime"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "manifest.compat.negotiation",
+          "step_id": "verify.component.manifest.compat.negotiation"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "manifest.instance.default",
+          "step_id": "verify.component.manifest.instance.default"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "manifest.lib.runtime",
+          "step_id": "verify.component.manifest.lib.runtime"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "manifest.pack_compat.runtime",
+          "step_id": "verify.component.manifest.pack_compat.runtime"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "manifest.release_manifest",
+          "step_id": "verify.component.manifest.release_manifest"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "pack.base.procedural",
+          "step_id": "verify.component.pack.base.procedural"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "pack.earth.procedural",
+          "step_id": "verify.component.pack.earth.procedural"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "pack.sol.pin_minimal",
+          "step_id": "verify.component.pack.sol.pin_minimal"
+        },
+        {
+          "action": "verify_content_hash",
+          "component_id": "profile.bundle.mvp_default",
+          "step_id": "verify.component.profile.bundle.mvp_default"
+        }
+      ]
+    },
+    "install_profile": {
+      "default_mod_policy_id": "mod_policy.lab",
+      "default_overlay_conflict_policy_id": "overlay.conflict.last_wins",
+      "deterministic_fingerprint": "a9088b9587b24571e1c4b817354cf6c2f919d01e0bb93bba269060aa749be505",
+      "extensions": {
+        "default_mod_policy": "mods.disabled_by_default",
+        "summary": "Full MVP bundle with all default runtime products and default instance artifacts."
+      },
+      "install_profile_id": "install.profile.full",
+      "optional_selectors": [],
+      "required_selectors": [
+        "binary.client",
+        "binary.game",
+        "binary.launcher",
+        "binary.server",
+        "binary.setup",
+        "docs.release_notes",
+        "manifest.instance.default",
+        "manifest.release_manifest"
+      ]
+    },
+    "refusal_code": "",
+    "release_id": "release.v0.0.0-mock",
+    "result": "complete",
+    "selected_component_descriptors": [
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "binary.client",
+        "component_kind": "binary",
+        "content_hash": "f2ca367361897dd3debe0ee3665b2c2c6d12d3a73085b8d2feb70b99feba4fb8",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "a41e236e4acf87bee51555b60224cfabc03345f0681c580af64ccd276b7994d6",
+        "extensions": {
+          "binding_mode": "release_index_required",
+          "product_id": "client"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "binary.engine",
+        "component_kind": "binary",
+        "content_hash": "6ef98fa77e4543d7d4e0e0d2d2c347187025d4a735459e9d9360526f526ab0a1",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "49547ee5604f32a5505f76def996281f754f7c7f8f87a47fbfa6517e126e9a32",
+        "extensions": {
+          "binding_mode": "release_index_required",
+          "product_id": "engine"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "binary.game",
+        "component_kind": "binary",
+        "content_hash": "19e3b52c174db2a1700675199675c0b09cdba032c0fa3f1bf0e8bb76e1610f4a",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "4670c6bc62d7ed1d4ba1f068aded0400f47b97e7f8110ee39d511fc8df6add4a",
+        "extensions": {
+          "binding_mode": "release_index_required",
+          "product_id": "game"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "binary.launcher",
+        "component_kind": "binary",
+        "content_hash": "bf454f6ab7c363d1bba17b03990af9ca51ba42a4f2a972381a0e73c3ed000ebb",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "b337d043e4ae47421aa3d16b76321e16f6335289378c869e69afc0fe02cf5646",
+        "extensions": {
+          "binding_mode": "release_index_required",
+          "product_id": "launcher"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "binary.server",
+        "component_kind": "binary",
+        "content_hash": "99272520011faa8add3980c7aff438662feaddd5106fa015e017d6c63b50c651",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "4ec6f0401cd23b2f64d837aa4f2e8c8d11487bee3458f1e6174801dd41ac6d02",
+        "extensions": {
+          "binding_mode": "release_index_required",
+          "product_id": "server"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "binary.setup",
+        "component_kind": "binary",
+        "content_hash": "b3811f237d3b7f575eaa335de7d01ad4ba5ffc0c949b88e7de1cef7c461a40eb",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "8a1c5fde3ef7780a03cd6cc1f7a055a3e6af293af2ecd6207898976e5890f1e3",
+        "extensions": {
+          "binding_mode": "release_index_required",
+          "product_id": "setup"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "docs.release_notes",
+        "component_kind": "docs",
+        "content_hash": "5680acb64c327c5a32c5ff882cbbb03e4f16299375df4270e2c87c55ed6b01b6",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "f75bafeee1daf4eafa190504c772274e072fdafa7c7182dc784b396c38d9ba25",
+        "extensions": {
+          "doc_rel": "docs\\release\\RELEASE_NOTES_v0_0_0_mock.md"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "v0.0.0-mock",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "lock.pack_lock.mvp_default",
+        "component_kind": "lock",
+        "content_hash": "60bdee0f775bcb05eafa3922e8eabf9fc0a64ebc332c26d3ddf3c5b993b65687",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "b755a15fc2b53fbd1f123dee6f6def2da9900c7077cee34159ef34be9e0fdcf9",
+        "extensions": {
+          "pack_lock_hash": "60bdee0f775bcb05eafa3922e8eabf9fc0a64ebc332c26d3ddf3c5b993b65687",
+          "pack_lock_id": "pack_lock.mvp_default"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "manifest.appshell.runtime",
+        "component_kind": "manifest",
+        "content_hash": "b7a9d9e32aa7cbd1b3de24164378f8a241a6ebfbb5f004b6a1081956d3c4e75e",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "2510ce34eb51df51c8d430b72b57bbb12ebb230e01e7a0596ec77f1e990efe2e",
+        "extensions": {
+          "binding_mode": "release_index_required"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "manifest.compat.negotiation",
+        "component_kind": "manifest",
+        "content_hash": "572fb2aea4904c7df2abf4d3e3c773554257813c3ec71e111c29c3faec57eb46",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "35112034238d1c5a763692eedcc32b4797bad6c1d4be55debaa4091107a3c460",
+        "extensions": {
+          "binding_mode": "release_index_required"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "manifest.instance.default",
+        "component_kind": "manifest",
+        "content_hash": "777eee8361c925aed14b38ac1b18aab67158950cd76732dd833b30c879158ae2",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "72192b54e0f32c021a407850653b1b581badb9e3d7bf092956634dd2097db296",
+        "extensions": {
+          "binding_mode": "dist_assembly_required"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "1.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "manifest.lib.runtime",
+        "component_kind": "manifest",
+        "content_hash": "a662647da67e516275bbdc55de08684dc19ecd043e6708a2840d933b77ebded1",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "8b53599218819c5d3563443d0c579f9a5f966551bd213493b9f31034afb3ae69",
+        "extensions": {
+          "binding_mode": "release_index_required"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "manifest.pack_compat.runtime",
+        "component_kind": "manifest",
+        "content_hash": "673c5ae9b984b95fdc84305bef2aa004b406b564c0145aebc64655b9e1bb4ac5",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "d649ef762832c592a5bc42bf19c7f4b71f7c32c981b2a1c20e732be3ae84dbe4",
+        "extensions": {
+          "binding_mode": "release_index_required"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "manifest.release_manifest",
+        "component_kind": "manifest",
+        "content_hash": "03e424ba6cd9947f934249cd67e9998cea1a5a4ce60686ce8dd5f9698cdb266b",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "fd71600718c48c1db0f4e45fd8014cc6996302d3f0a495b2c38f8c14a1f0753c",
+        "extensions": {
+          "binding_mode": "dist_assembly_required"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "1.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "pack.base.procedural",
+        "component_kind": "pack",
+        "content_hash": "7cc5704c8f47bc0cb4e6ce3901eaf4f99763fc1169aa3afa5d3b30f2dfebad6c",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "d589b0fa328690ba9a12a0a6f885349f5cb5815748a4d5f559d3fc59a68e85fc",
+        "extensions": {
+          "distribution_rel": "packs/base/pack.base.procedural",
+          "pack_compat_hash": "6a293aafd157df582f4e341010a1a64b0faf4f0fa5b182ca1b323c2f7770b631",
+          "pack_id": "pack.base.procedural"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "pack.earth.procedural",
+        "component_kind": "pack",
+        "content_hash": "35b37ea4cccbf6ccf739ab5fe3ab16ec9bc1fd67c30198f7ccb5ce9eefa5ba0d",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "265293c72dff5bc4fa20f924040af8665f9c99d6f690f1ae7cc4daf86d728970",
+        "extensions": {
+          "distribution_rel": "packs/official/pack.earth.procedural",
+          "pack_compat_hash": "cf39c04098865ab74e8b3c2dc2f4d971bc0cab52e256397ee9cd50a7a8c7deaf",
+          "pack_id": "pack.earth.procedural"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "pack.sol.pin_minimal",
+        "component_kind": "pack",
+        "content_hash": "3ed4a56385660a1a6f7bcafbc1acf94fbf75ed6114d1640945dd7494f95bdd5f",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "5a1e97055c5da04351fb0ea792460a81d194c37f4b68269a6af3011b31000798",
+        "extensions": {
+          "distribution_rel": "packs/official/pack.sol.pin_minimal",
+          "pack_compat_hash": "3fb9cd6ad8729faa541e6fe84aee67c693b5949d725315ecf54b0001c185d53f",
+          "pack_id": "pack.sol.pin_minimal"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      },
+      {
+        "capability_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "component_id": "profile.bundle.mvp_default",
+        "component_kind": "profile",
+        "content_hash": "f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239",
+        "contract_requirements": {},
+        "deterministic_fingerprint": "b6911b8b1ded62444345b756e915092013b2868dfef7078a1b900977c2d8386c",
+        "extensions": {
+          "profile_bundle_hash": "f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239",
+          "profile_bundle_id": "profile.bundle.mvp_default"
+        },
+        "platform_filters": {
+          "abi_ids": [],
+          "arch_ids": [],
+          "exclude_abi_ids": [],
+          "exclude_arch_ids": [],
+          "exclude_platform_ids": [],
+          "excluded_capability_ids": [],
+          "extensions": {},
+          "platform_ids": [],
+          "required_capability_ids": [],
+          "required_contract_ids": []
+        },
+        "provides_ids": [
+          "provides.profile.bundle.v1"
+        ],
+        "trust_requirements": {},
+        "version": "0.0.0",
+        "yank_policy": "warn",
+        "yank_reason": "",
+        "yanked": false
+      }
+    ]
+  },
+  "deterministic_fingerprint": "549dd72f826e1541fc39534d1bb58b68c431a72d5b660a9789fb9fccdc606479",
   "docs": [
     "README",
     "LICENSE",
     "docs/COMPATIBILITY.md",
     "docs/RELEASE_NOTES_v0_0_0_mock.md"
   ],
-  "file_count": 2911,
+  "file_count": 2982,
   "filelist": {
-    "file_count": 2907,
-    "file_hash": "3a9ed2866e070e9b5be14699019a815f3b4fb5f279a349da82e5acfb69576488",
+    "file_count": 2979,
+    "file_hash": "46d7c8204ca099d00217f047d6af715f46629a634bd09c663376524e3d7d1165",
     "file_list_path": "manifests/filelist.txt"
   },
   "install_manifest_path": "install.manifest.json",
+  "install_profile_id": "install.profile.full",
   "instance_manifest_path": "instances/default/instance.manifest.json",
   "platform_tag": "win64",
-  "release_manifest_hash": "daed22f814c1bd6843da822a7eec41fcc315bb6c622bf9f39950d54410a5ee0b",
+  "release_index_hash": "fa59a735f5c84923bb1b377e737e4163c992fa49e3b2adaed2f466fd427885b3",
+  "release_index_path": "manifests/release_index.json",
+  "release_manifest_hash": "52b5638abe47d665833ca9241d3a7cbe63306918769758fffa8d6094f28c1841",
   "release_manifest_path": "manifests/release_manifest.json",
   "release_tag": "v0.0.0-mock",
   "report_id": "dist.tree.assembly.v1",
   "result": "complete",
   "runtime": {
-    "compiled_count": 949,
+    "compiled_count": 956,
     "compiled_files": [
       "src/__init__.pyc",
       "src/appshell/__init__.pyc",
@@ -60,6 +1858,8 @@
       "src/appshell/tui/tui_engine.pyc",
       "src/appshell/tui_stub.pyc",
       "src/appshell/ui_mode_selector.pyc",
+      "src/archive/__init__.pyc",
+      "src/archive/deterministic_bundle.pyc",
       "src/astro/__init__.pyc",
       "src/astro/ephemeris/__init__.pyc",
       "src/astro/ephemeris/kepler_proxy_engine.pyc",
@@ -103,6 +1903,7 @@
       "src/compat/descriptor/descriptor_engine.pyc",
       "src/compat/handshake/__init__.pyc",
       "src/compat/handshake/handshake_engine.pyc",
+      "src/compat/migration_lifecycle.pyc",
       "src/compat/negotiation/__init__.pyc",
       "src/compat/negotiation/degrade_enforcer.pyc",
       "src/compat/negotiation/negotiation_engine.pyc",
@@ -179,6 +1980,9 @@
       "src/embodiment/tools/teleport_tool.pyc",
       "src/embodiment/tools/terrain_edit_tool.pyc",
       "src/embodiment/tools/toolbelt_engine.pyc",
+      "src/engine/__init__.pyc",
+      "src/engine/concurrency/__init__.pyc",
+      "src/engine/concurrency/canonical_merge.pyc",
       "src/epistemics/__init__.pyc",
       "src/epistemics/memory/__init__.pyc",
       "src/epistemics/memory/memory_kernel.pyc",
@@ -222,6 +2026,8 @@
       "src/geo/render/floating_origin_policy.pyc",
       "src/geo/worldgen/__init__.pyc",
       "src/geo/worldgen/worldgen_engine.pyc",
+      "src/governance/__init__.pyc",
+      "src/governance/governance_profile.pyc",
       "src/infrastructure/__init__.pyc",
       "src/infrastructure/formalization/__init__.pyc",
       "src/infrastructure/formalization/inference_engine.pyc",
@@ -258,6 +2064,9 @@
       "src/lib/provides/provider_resolution.pyc",
       "src/lib/save/__init__.pyc",
       "src/lib/save/save_validator.pyc",
+      "src/lib/store/__init__.pyc",
+      "src/lib/store/gc_engine.pyc",
+      "src/lib/store/reachability_engine.pyc",
       "src/logic/__init__.pyc",
       "src/logic/compile/__init__.pyc",
       "src/logic/compile/logic_compiler.pyc",
@@ -330,9 +2139,12 @@
       "src/meta/explain/explain_engine.pyc",
       "src/meta/extensions/__init__.pyc",
       "src/meta/extensions/extensions_engine.pyc",
+      "src/meta/identity/__init__.pyc",
+      "src/meta/identity/identity_validator.pyc",
       "src/meta/instrumentation/__init__.pyc",
       "src/meta/instrumentation/instrumentation_engine.pyc",
       "src/meta/numeric.pyc",
+      "src/meta/observability.pyc",
       "src/meta/profile/__init__.pyc",
       "src/meta/profile/profile_engine.pyc",
       "src/meta/provenance/__init__.pyc",
@@ -386,6 +2198,7 @@
       "src/net/transport/loopback.pyc",
       "src/net/transport/tcp_stub.pyc",
       "src/net/transport/udp_stub.pyc",
+      "src/numeric_discipline.pyc",
       "src/packs/__init__.pyc",
       "src/packs/compat/__init__.pyc",
       "src/packs/compat/pack_compat_validator.pyc",
@@ -408,6 +2221,7 @@
       "src/platform/platform_input_routing.pyc",
       "src/platform/platform_probe.pyc",
       "src/platform/platform_window.pyc",
+      "src/platform/target_matrix.pyc",
       "src/pollution/__init__.pyc",
       "src/pollution/compliance_engine.pyc",
       "src/pollution/dispersion_engine.pyc",
@@ -438,12 +2252,18 @@
       "src/reality/transitions/__init__.pyc",
       "src/reality/transitions/transition_controller.pyc",
       "src/release/__init__.pyc",
+      "src/release/archive_policy.pyc",
       "src/release/build_id_engine.pyc",
+      "src/release/component_graph_resolver.pyc",
       "src/release/release_manifest_engine.pyc",
+      "src/release/update_resolver.pyc",
       "src/runtime/__init__.pyc",
       "src/runtime/process_spawn.pyc",
       "src/safety/__init__.pyc",
       "src/safety/safety_engine.pyc",
+      "src/security/__init__.pyc",
+      "src/security/trust/__init__.pyc",
+      "src/security/trust/trust_verifier.pyc",
       "src/server/__init__.pyc",
       "src/server/net/__init__.pyc",
       "src/server/net/loopback_transport.pyc",
@@ -589,12 +2409,16 @@
       "tools/ci/validate_sol_data.pyc",
       "tools/ci/validate_world_definition.pyc",
       "tools/compat/cap_neg4_common.pyc",
+      "tools/compat/migration_lifecycle_common.pyc",
+      "tools/compat/tool_apply_migration.pyc",
       "tools/compat/tool_emit_descriptor.pyc",
       "tools/compat/tool_generate_descriptor_manifest.pyc",
       "tools/compat/tool_generate_interop_matrix.pyc",
+      "tools/compat/tool_plan_migration.pyc",
       "tools/compat/tool_replay_migration.pyc",
       "tools/compat/tool_replay_negotiation.pyc",
       "tools/compat/tool_run_interop_stress.pyc",
+      "tools/compat/tool_run_migration_lifecycle.pyc",
       "tools/compatx/compatx.pyc",
       "tools/compatx/core/__init__.pyc",
       "tools/compatx/core/compatibility_matrix.pyc",
@@ -663,6 +2487,10 @@
       "tools/embodiment/tool_replay_movement_window.pyc",
       "tools/embodiment/tool_replay_tool_session.pyc",
       "tools/embodiment/toolbelt_cli.pyc",
+      "tools/engine/concurrency_contract_common.pyc",
+      "tools/engine/numeric_discipline_common.pyc",
+      "tools/engine/tool_run_concurrency_contract.pyc",
+      "tools/engine/tool_run_numeric_discipline.pyc",
       "tools/fab/fab_diff.pyc",
       "tools/fab/fab_inspect.pyc",
       "tools/fab/fab_lib.pyc",
@@ -690,8 +2518,10 @@
       "tools/governance/__init__.pyc",
       "tools/governance/adapters/deprecation_registry_adapter.pyc",
       "tools/governance/adapters/deprecation_schema_adapter.pyc",
+      "tools/governance/governance_model_common.pyc",
       "tools/governance/tool_deprecation_check.pyc",
       "tools/governance/tool_migration_report.pyc",
+      "tools/governance/tool_run_governance_model.pyc",
       "tools/governance/tool_semantic_impact.pyc",
       "tools/governance/tool_topology_generate.pyc",
       "tools/inspect/interaction_inspector.pyc",
@@ -703,9 +2533,12 @@
       "tools/launcher/launcher_cli.pyc",
       "tools/lib/content_store.pyc",
       "tools/lib/lib_stress_common.pyc",
+      "tools/lib/store_gc_common.pyc",
       "tools/lib/tool_generate_lib_stress.pyc",
       "tools/lib/tool_replay_save_open.pyc",
       "tools/lib/tool_run_lib_stress.pyc",
+      "tools/lib/tool_run_store_gc.pyc",
+      "tools/lib/tool_store_verify.pyc",
       "tools/lib/tool_verify_bundle.pyc",
       "tools/logic/logic10_stress_common.pyc",
       "tools/logic/tool_generate_logic_stress.pyc",
@@ -727,8 +2560,13 @@
       "tools/materials/tool_generate_factory_planet_scenario.pyc",
       "tools/materials/tool_reenact_generate.pyc",
       "tools/materials/tool_run_stress.pyc",
+      "tools/meta/identity_common.pyc",
+      "tools/meta/observability_common.pyc",
+      "tools/meta/tool_diff_identity.pyc",
       "tools/meta/tool_generate_demand_gap_report.pyc",
+      "tools/meta/tool_print_identity.pyc",
       "tools/meta/tool_provenance_stress.pyc",
+      "tools/meta/tool_run_observability.pyc",
       "tools/meta/tool_run_reference_suite.pyc",
       "tools/meta/tool_verify_compiled_model.pyc",
       "tools/meta/tool_verify_numeric_stability.pyc",
@@ -759,6 +2597,11 @@
       "tools/pack/capability_inspect.pyc",
       "tools/pack/migrate_capability_gating.pyc",
       "tools/pack/pack_validate.pyc",
+      "tools/perf/performance_envelope_common.pyc",
+      "tools/perf/tool_measure_memory.pyc",
+      "tools/perf/tool_measure_startup.pyc",
+      "tools/perf/tool_measure_store_size.pyc",
+      "tools/perf/tool_run_performance_envelope.pyc",
       "tools/performx/core/__init__.pyc",
       "tools/performx/core/benchmark_runner.pyc",
       "tools/performx/core/cache.pyc",
@@ -811,8 +2654,10 @@
       "tools/securex/core/reproducible_build_check.pyc",
       "tools/securex/core/trust_model.pyc",
       "tools/securex/securex.pyc",
+      "tools/security/tool_run_trust_model.pyc",
       "tools/security/tool_securex_verify_lockfile.pyc",
       "tools/security/tool_securex_verify_pack.pyc",
+      "tools/security/trust_model_common.pyc",
       "tools/server/__init__.pyc",
       "tools/server/server_mvp0_probe.pyc",
       "tools/server/server_mvp1_probe.pyc",
@@ -886,10 +2731,6 @@
       "tools/worldgen_offline/validation_checker.pyc",
       "tools/worldgen_offline/world_definition_cli.pyc",
       "tools/worldgen_offline/world_definition_lib.pyc",
-      "tools/xstack/auditx/__init__.pyc",
-      "tools/xstack/auditx/check.pyc",
-      "tools/xstack/bundle_list.pyc",
-      "tools/xstack/bundle_validate.pyc",
       "tools/xstack/cache_store/__init__.pyc",
       "tools/xstack/cache_store/merkle.pyc",
       "tools/xstack/cache_store/store.pyc",
@@ -901,28 +2742,6 @@
       "tools/xstack/compatx/schema_validate.pyc",
       "tools/xstack/compatx/validator.pyc",
       "tools/xstack/compatx/versioning.pyc",
-      "tools/xstack/controlx/__init__.pyc",
-      "tools/xstack/controlx/orchestrator.pyc",
-      "tools/xstack/controlx/types.pyc",
-      "tools/xstack/controlx/utils.pyc",
-      "tools/xstack/core/__init__.pyc",
-      "tools/xstack/core/artifact_contract.pyc",
-      "tools/xstack/core/cache_store.pyc",
-      "tools/xstack/core/execution_ledger.pyc",
-      "tools/xstack/core/failure.pyc",
-      "tools/xstack/core/impact_graph.pyc",
-      "tools/xstack/core/log.pyc",
-      "tools/xstack/core/merkle_tree.pyc",
-      "tools/xstack/core/plan.pyc",
-      "tools/xstack/core/profiler.pyc",
-      "tools/xstack/core/repo_health.pyc",
-      "tools/xstack/core/runners.pyc",
-      "tools/xstack/core/runners_base.pyc",
-      "tools/xstack/core/scheduler.pyc",
-      "tools/xstack/core/time_estimator.pyc",
-      "tools/xstack/extensions/__init__.pyc",
-      "tools/xstack/extensions/example_x/__init__.pyc",
-      "tools/xstack/extensions/example_x/extension.pyc",
       "tools/xstack/pack_contrib/__init__.pyc",
       "tools/xstack/pack_contrib/parser.pyc",
       "tools/xstack/pack_loader/__init__.pyc",
@@ -933,8 +2752,6 @@
       "tools/xstack/pack_loader/pack_list.pyc",
       "tools/xstack/packagingx/__init__.pyc",
       "tools/xstack/packagingx/dist_build.pyc",
-      "tools/xstack/performx/__init__.pyc",
-      "tools/xstack/performx/check.pyc",
       "tools/xstack/registry_compile/__init__.pyc",
       "tools/xstack/registry_compile/bundle_profile.pyc",
       "tools/xstack/registry_compile/compiler.pyc",
@@ -944,15 +2761,6 @@
       "tools/xstack/registry_compile/lockfile_build.pyc",
       "tools/xstack/registry_compile/lockfile_validate.pyc",
       "tools/xstack/registry_compile/registry_compile.pyc",
-      "tools/xstack/run.pyc",
-      "tools/xstack/securex/__init__.pyc",
-      "tools/xstack/securex/check.pyc",
-      "tools/xstack/session_boot.pyc",
-      "tools/xstack/session_control.pyc",
-      "tools/xstack/session_create.pyc",
-      "tools/xstack/session_script_run.pyc",
-      "tools/xstack/session_server.pyc",
-      "tools/xstack/session_surface.pyc",
       "tools/xstack/sessionx/__init__.pyc",
       "tools/xstack/sessionx/boundary_debug.pyc",
       "tools/xstack/sessionx/common.pyc",
@@ -973,16 +2781,13 @@
       "tools/xstack/sessionx/stage_parity.pyc",
       "tools/xstack/sessionx/time_lineage.pyc",
       "tools/xstack/sessionx/ui_host.pyc",
-      "tools/xstack/sessionx/universe_physics.pyc",
-      "tools/xstack/srz_status.pyc",
-      "tools/xstack/testx_all.pyc",
-      "tools/xstack/ui_bind.pyc"
+      "tools/xstack/sessionx/universe_physics.pyc"
     ],
-    "compiled_hash": "1f83d971db30108bb9d1b3d7cfb68107b320011fc744a5de23b88c83dfdc626d"
+    "compiled_hash": "c5f7ae9db5f2f2b7ce9b07a488caa44fb11467607b3e439f2b940e06c2d83047"
   },
   "runtime_data": {
-    "copied_hash": "0cf2b7508fbf6024fd585855416744966b981bc1f6414c53170002cdd84d3a16",
-    "copied_json_count": 955
+    "copied_hash": "b049ac3f4406591d6ba1dae7542698894c053fd4e1abe646fd9cdc43a5318cb9",
+    "copied_json_count": 995
   },
   "smoke": {
     "smoke_checks": [
@@ -1015,7 +2820,7 @@
         "product_id": "setup",
         "result": "complete",
         "returncode": 0,
-        "stderr": "{\"build_id\":\"build.5fe3dda4965e9929\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"20c2a516c4e184908a3db5e19441429df7957a5b50573a180681a9db6cfd4361\",\"event_id\":\"log.0000000000000001\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.bootstrap.start\",\"params\":{\"mode_source\":\"default\",\"repo_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.5fe3dda4965e9929\",\"category\":\"paths\",\"deterministic_fingerprint\":\"e35918c3e061ea0dbc184cf7526f81b2ff8ac6cd739f8e17b29fcaae48f9f339\",\"event_id\":\"log.0000000000000002\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.paths.initialized\",\"params\":{\"install_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"product_id\":\"setup\",\"resolution_source\":\"explicit_override\",\"result\":\"complete\",\"store_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium/store\",\"warning_count\":0},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.5fe3dda4965e9929\",\"category\":\"compat\",\"deterministic_fingerprint\":\"073f58ea0b06f3d48b60c8c30d7552f9041dcee33ec8f453a4e87f5e9f945f7c\",\"event_id\":\"log.0000000000000003\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"compat.install_selected\",\"params\":{\"install_id\":\"install.6f68ac2bc528170c82571d80\",\"mode\":\"explicit\",\"product_id\":\"setup\",\"resolution_source\":\"explicit_override\"},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.5fe3dda4965e9929\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"8905834079ac726e3654f169c053ad873ce4160b0fd7326eaf558a3799194dac\",\"event_id\":\"log.0000000000000004\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.mode.selected\",\"params\":{\"compatibility_mode_id\":\"compat.full\",\"context_kind\":\"tty\",\"mode_source\":\"tty_policy\",\"product_id\":\"setup\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.5fe3dda4965e9929\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"922a7497e1708d4941c059f884aa3c93078b4de26afc9c7958b6b8986b54219b\",\"event_id\":\"log.0000000000000005\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.command.dispatch\",\"params\":{\"command_path\":\"verify --root D:\\\\Projects\\\\Dominium\\\\dominium\\\\dist\\\\v0.0.0-mock\\\\win64\\\\dominium\",\"mode_id\":\"tui\",\"product_id\":\"setup\"},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.5fe3dda4965e9929\",\"category\":\"packs\",\"deterministic_fingerprint\":\"24ccff7d8aaa1ddba73da2ef01a60d8535ddf14ddb1b85ed658c12fb8787b7d5\",\"event_id\":\"log.0000000000000006\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"packs.verify.result\",\"params\":{\"dist_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"error_count\":0,\"result\":\"complete\",\"warning_count\":0},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}"
+        "stderr": "{\"build_id\":\"build.29caade4c99aaf08\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"2cc62ba76028216d21daabb92b1b39d477294d7376bd11b6b59e205da9d514e6\",\"event_id\":\"log.0000000000000001\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.bootstrap.start\",\"params\":{\"mode_source\":\"default\",\"repo_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.29caade4c99aaf08\",\"category\":\"paths\",\"deterministic_fingerprint\":\"c52c80c3568cdb303a66e92eb076edc948dad5d9ca359c509f6df4736484c82c\",\"event_id\":\"log.0000000000000002\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.paths.initialized\",\"params\":{\"install_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"product_id\":\"setup\",\"resolution_source\":\"explicit_override\",\"result\":\"complete\",\"store_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium/store\",\"warning_count\":0},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.29caade4c99aaf08\",\"category\":\"compat\",\"deterministic_fingerprint\":\"87ba6b5ba5f929998c1bbb2702f3d609263f10e17175ab178a554522569a35b9\",\"event_id\":\"log.0000000000000003\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":true,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"compat.install_selected\",\"params\":{\"install_id\":\"install.eca409f42eda308acdb9c344\",\"mode\":\"explicit\",\"product_id\":\"setup\",\"resolution_source\":\"explicit_override\"},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.29caade4c99aaf08\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"8893d9147b4ad7a6a731a81078cd2122b17d3d17472dc8c1e8915a44d628cb6c\",\"event_id\":\"log.0000000000000004\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.mode.selected\",\"params\":{\"compatibility_mode_id\":\"compat.full\",\"context_kind\":\"tty\",\"mode_source\":\"tty_policy\",\"product_id\":\"setup\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.29caade4c99aaf08\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"8c703cfaae972fcefad1939930256b46f6fbca855bd1ee8d4466a09a0192aced\",\"event_id\":\"log.0000000000000005\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.command.dispatch\",\"params\":{\"command_path\":\"verify --root D:\\\\Projects\\\\Dominium\\\\dominium\\\\dist\\\\v0.0.0-mock\\\\win64\\\\dominium\",\"mode_id\":\"tui\",\"product_id\":\"setup\"},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.29caade4c99aaf08\",\"category\":\"packs\",\"deterministic_fingerprint\":\"80ba30eb7c9a3b798dfc493e3485c5b3125c41b7dc4f4f8243efef19c089a403\",\"event_id\":\"log.0000000000000006\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":true,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"packs.verify.result\",\"params\":{\"dist_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"error_count\":0,\"result\":\"complete\",\"warning_count\":0},\"product_id\":\"setup\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}"
       },
       {
         "argv": [
@@ -1026,7 +2831,7 @@
         "product_id": "launcher",
         "result": "complete",
         "returncode": 0,
-        "stderr": "{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"bbf2d7c73faaaddf34b4a42002e955c99a1ad193f8de6068a3ca1d21eb41f0ec\",\"event_id\":\"log.0000000000000001\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.bootstrap.start\",\"params\":{\"mode_source\":\"default\",\"repo_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"paths\",\"deterministic_fingerprint\":\"6f55614979b5ee013b24413a94a984049686f19d38b01a199f4a24fe6ede0176\",\"event_id\":\"log.0000000000000002\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.paths.initialized\",\"params\":{\"install_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"product_id\":\"launcher\",\"resolution_source\":\"portable_manifest\",\"result\":\"complete\",\"store_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium/store\",\"warning_count\":0},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"compat\",\"deterministic_fingerprint\":\"16375e7811daaeac9ca098a7ed73e86ce90c1eb842c782f1475aea38804d8c35\",\"event_id\":\"log.0000000000000003\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"compat.install_selected\",\"params\":{\"install_id\":\"install.6f68ac2bc528170c82571d80\",\"mode\":\"portable\",\"product_id\":\"launcher\",\"resolution_source\":\"portable_manifest\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"920a65e02c9513d2e250c605773e669014948c2785ae607bd62860818aa6d6e8\",\"event_id\":\"log.0000000000000004\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.mode.selected\",\"params\":{\"compatibility_mode_id\":\"compat.full\",\"context_kind\":\"tty\",\"mode_source\":\"tty_policy\",\"product_id\":\"launcher\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"4055c3cf8255687d47b70fe305d05d8d6d4777afffab00a4cd25abb504324e13\",\"event_id\":\"log.0000000000000005\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.command.dispatch\",\"params\":{\"command_path\":\"instances list\",\"mode_id\":\"tui\",\"product_id\":\"launcher\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"refusal\",\"deterministic_fingerprint\":\"a529068bfd8488f1914343d08d2e1ce5baff5bacddf1fb2a152aaac9224c633f\",\"event_id\":\"log.0000000000000006\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.refusal\",\"params\":{\"reason\":\"command is not registered in the AppShell registry\",\"refusal_code\":\"refusal.debug.command_unknown\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"error\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"72665214e82618480d43ccb8304d6b729be62b658d97b52647a88a061c8fdf57\",\"event_id\":\"log.0000000000000007\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.mode.enter\",\"params\":{\"entry_surface\":\"product_bootstrap_fallback\",\"mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}"
+        "stderr": "{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"1f33c0093a7d00592d616239a56db7eb9d0aae7bbd41133b55a0a535bc503210\",\"event_id\":\"log.0000000000000001\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.bootstrap.start\",\"params\":{\"mode_source\":\"default\",\"repo_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"paths\",\"deterministic_fingerprint\":\"9388f3011d7bb9768075a72588da921192163b4ddd318d48f22b63d2c95e2432\",\"event_id\":\"log.0000000000000002\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.paths.initialized\",\"params\":{\"install_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"product_id\":\"launcher\",\"resolution_source\":\"portable_manifest\",\"result\":\"complete\",\"store_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium/store\",\"warning_count\":0},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"compat\",\"deterministic_fingerprint\":\"a60dc93a03006e8aff51ae7162f702b675b64c6fc46cf84c566f5383f68bfec8\",\"event_id\":\"log.0000000000000003\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":true,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"compat.install_selected\",\"params\":{\"install_id\":\"install.eca409f42eda308acdb9c344\",\"mode\":\"portable\",\"product_id\":\"launcher\",\"resolution_source\":\"portable_manifest\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"d9fe13cec9756e273823974f138ac021a3eafe5119e43e1ebe4c467b9bb66048\",\"event_id\":\"log.0000000000000004\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.mode.selected\",\"params\":{\"compatibility_mode_id\":\"compat.full\",\"context_kind\":\"tty\",\"mode_source\":\"tty_policy\",\"product_id\":\"launcher\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"5111d27fa7fc4e86cc0c3991f3e22ac08db54bd3fdb5d4146dca90d2395e7ac7\",\"event_id\":\"log.0000000000000005\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.command.dispatch\",\"params\":{\"command_path\":\"instances list\",\"mode_id\":\"tui\",\"product_id\":\"launcher\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"refusal\",\"deterministic_fingerprint\":\"204acaa94ec17c22338b77e15232b4e69c9960ee3a5bbf0c6813681a584ac3eb\",\"event_id\":\"log.0000000000000006\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":true,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.refusal\",\"params\":{\"reason\":\"command is not registered in the AppShell registry\",\"refusal_code\":\"refusal.debug.command_unknown\",\"remediation_hint\":\"Run `--help` to inspect the stable command tree for this product.\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"error\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"de54495b9758d95db37fa97786fbbab8ea0976c586d91997c89f1564ca777a8c\",\"event_id\":\"log.0000000000000007\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.mode.enter\",\"params\":{\"entry_surface\":\"product_bootstrap_fallback\",\"mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}"
       },
       {
         "argv": [
@@ -1036,10 +2841,10 @@
         "product_id": "launcher",
         "result": "complete",
         "returncode": 0,
-        "stderr": "{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"bbf2d7c73faaaddf34b4a42002e955c99a1ad193f8de6068a3ca1d21eb41f0ec\",\"event_id\":\"log.0000000000000001\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.bootstrap.start\",\"params\":{\"mode_source\":\"default\",\"repo_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"paths\",\"deterministic_fingerprint\":\"6f55614979b5ee013b24413a94a984049686f19d38b01a199f4a24fe6ede0176\",\"event_id\":\"log.0000000000000002\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.paths.initialized\",\"params\":{\"install_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"product_id\":\"launcher\",\"resolution_source\":\"portable_manifest\",\"result\":\"complete\",\"store_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium/store\",\"warning_count\":0},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"compat\",\"deterministic_fingerprint\":\"16375e7811daaeac9ca098a7ed73e86ce90c1eb842c782f1475aea38804d8c35\",\"event_id\":\"log.0000000000000003\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"compat.install_selected\",\"params\":{\"install_id\":\"install.6f68ac2bc528170c82571d80\",\"mode\":\"portable\",\"product_id\":\"launcher\",\"resolution_source\":\"portable_manifest\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"920a65e02c9513d2e250c605773e669014948c2785ae607bd62860818aa6d6e8\",\"event_id\":\"log.0000000000000004\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.mode.selected\",\"params\":{\"compatibility_mode_id\":\"compat.full\",\"context_kind\":\"tty\",\"mode_source\":\"tty_policy\",\"product_id\":\"launcher\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"53867776f1e668026ef71f7d9207e5d1cfc883adbc63b3a5ae0686fa4d9621c7\",\"event_id\":\"log.0000000000000005\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"appshell.command.dispatch\",\"params\":{\"command_path\":\"compat-status\",\"mode_id\":\"tui\",\"product_id\":\"launcher\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.bedd67cb1fb5a907\",\"category\":\"compat\",\"deterministic_fingerprint\":\"26fa9fd230a0abf57e0dfe28d5ddfed52bb1b11e075a189c7a56d5e5ecbe85f2\",\"event_id\":\"log.0000000000000006\",\"extensions\":{},\"host_meta\":{},\"message_key\":\"compat.negotiation.result\",\"params\":{\"compatibility_mode_id\":\"compat.full\",\"disabled_capability_count\":0,\"peer_product_id\":\"launcher\",\"product_id\":\"launcher\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}"
+        "stderr": "{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"1f33c0093a7d00592d616239a56db7eb9d0aae7bbd41133b55a0a535bc503210\",\"event_id\":\"log.0000000000000001\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.bootstrap.start\",\"params\":{\"mode_source\":\"default\",\"repo_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"paths\",\"deterministic_fingerprint\":\"9388f3011d7bb9768075a72588da921192163b4ddd318d48f22b63d2c95e2432\",\"event_id\":\"log.0000000000000002\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.paths.initialized\",\"params\":{\"install_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium\",\"product_id\":\"launcher\",\"resolution_source\":\"portable_manifest\",\"result\":\"complete\",\"store_root\":\"D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium/store\",\"warning_count\":0},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"compat\",\"deterministic_fingerprint\":\"a60dc93a03006e8aff51ae7162f702b675b64c6fc46cf84c566f5383f68bfec8\",\"event_id\":\"log.0000000000000003\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":true,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"compat.install_selected\",\"params\":{\"install_id\":\"install.eca409f42eda308acdb9c344\",\"mode\":\"portable\",\"product_id\":\"launcher\",\"resolution_source\":\"portable_manifest\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"d9fe13cec9756e273823974f138ac021a3eafe5119e43e1ebe4c467b9bb66048\",\"event_id\":\"log.0000000000000004\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.mode.selected\",\"params\":{\"compatibility_mode_id\":\"compat.full\",\"context_kind\":\"tty\",\"mode_source\":\"tty_policy\",\"product_id\":\"launcher\",\"requested_mode_id\":\"\",\"selected_mode_id\":\"tui\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"appshell\",\"deterministic_fingerprint\":\"290e9b7e1c9c6769bb48027258f4eda4c70730634c79972d6ad4baa677a4a7a0\",\"event_id\":\"log.0000000000000005\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":false,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"appshell.command.dispatch\",\"params\":{\"command_path\":\"compat-status\",\"mode_id\":\"tui\",\"product_id\":\"launcher\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}\n{\"build_id\":\"build.fbc1244f7f81f25e\",\"category\":\"compat\",\"deterministic_fingerprint\":\"d06c5526f6ddae14f4d09541ab1b0ec4584719cdee4fb8234b0d580be0b97b59\",\"event_id\":\"log.0000000000000006\",\"extensions\":{\"observability\":{\"error_codes\":[],\"guaranteed\":true,\"redacted_field_count\":0,\"warning_codes\":[]}},\"host_meta\":{},\"message_key\":\"compat.negotiation.result\",\"params\":{\"compatibility_mode_id\":\"compat.full\",\"disabled_capability_count\":0,\"peer_product_id\":\"launcher\",\"product_id\":\"launcher\"},\"product_id\":\"launcher\",\"schema_version\":\"1.0.0\",\"session_id\":\"\",\"severity\":\"info\",\"tick\":null}"
       }
     ],
-    "smoke_hash": "0f79f42f5698e09eea93fad2ba9f5b948c25ea88ba69e460ce0bbe2d3ae54149"
+    "smoke_hash": "b834ee505f8059fe2517e321e4da28046377caf2088c26c54f5d709c8ebb27e6"
   },
   "store": {
     "pack_lock_path": "store/locks/pack_lock.mvp_default.json",

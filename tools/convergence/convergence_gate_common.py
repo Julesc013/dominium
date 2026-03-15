@@ -22,7 +22,7 @@ from tools.appshell.supervisor_hardening_common import (  # noqa: E402
     SUPERVISOR_HARDENING_TOOL_PATH,
     build_supervisor_hardening_report,
 )
-from tools.audit.arch_audit_common import run_arch_audit  # noqa: E402
+from tools.audit.arch_audit_common import build_arch_audit2_report, run_arch_audit  # noqa: E402
 from tools.compat.cap_neg4_common import (  # noqa: E402
     DEFAULT_BASELINE_REL as CAP_NEG_BASELINE_REL,
     DEFAULT_CAP_NEG4_SEED,
@@ -71,6 +71,8 @@ from tools.mvp.stress_gate_common import (  # noqa: E402
     DEFAULT_MVP_STRESS_SEED,
     DEFAULT_PROOF_REPORT_REL as STRESS_PROOF_REPORT_REL,
     DEFAULT_REPORT_REL as STRESS_REPORT_REL,
+    _gate_report_result,
+    _gate_suite_rows,
     build_mvp_stress_baseline,
     maybe_load_cached_mvp_stress_proof_report,
     maybe_load_cached_mvp_stress_report,
@@ -612,6 +614,7 @@ def _time_anchor_step(repo_root: str, spec: Mapping[str, object], *, step_no: in
 
 def _arch_audit_step(repo_root: str, spec: Mapping[str, object], *, step_no: int) -> dict:
     report = run_arch_audit(repo_root)
+    audit2_report = build_arch_audit2_report(report)
     result = _token(report.get("result")) or "refused"
     blocking = int(_as_int(report.get("blocking_finding_count", 0), 0))
     first_blocking = _as_map((_as_list(report.get("blocking_findings")) or [{}])[0])
@@ -623,16 +626,24 @@ def _arch_audit_step(repo_root: str, spec: Mapping[str, object], *, step_no: int
         step_no=step_no,
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=["docs/audit/ARCH_AUDIT_REPORT.md", "data/audit/arch_audit_report.json"],
+        source_paths=[
+            "docs/audit/ARCH_AUDIT_REPORT.md",
+            "data/audit/arch_audit_report.json",
+            "docs/audit/ARCH_AUDIT2_REPORT.md",
+            "data/audit/arch_audit2_report.json",
+            "docs/audit/ARCH_AUDIT2_FINAL.md",
+        ],
         observed_refusal_count=blocking,
         default_path_refusal_count=blocking,
         key_hashes={
             "arch_audit_fingerprint": _token(report.get("deterministic_fingerprint")),
+            "arch_audit2_fingerprint": _token(audit2_report.get("deterministic_fingerprint")),
             "blocking_findings_hash": canonical_sha256(_as_list(report.get("blocking_findings"))),
         },
         notes=[
             "blocking_finding_count={}".format(blocking),
             "known_exception_count={}".format(int(_as_int(report.get("known_exception_count", 0), 0))),
+            "arch_audit2_blocking_finding_count={}".format(int(_as_int(audit2_report.get("blocking_finding_count", 0), 0))),
         ],
         remediation=_default_remediation(spec, message=failure_reason),
         failure_reason=failure_reason,
@@ -943,15 +954,18 @@ def _mvp_stress_step(
         gate_results={"repox": {"status": "PASS"}, "auditx": {"status": "PASS"}, "testx": {"status": "PASS"}, "orchestrator": {"status": "PASS"}},
     )
     baseline_status = _baseline_status(repo_root, STRESS_BASELINE_REL, build_mvp_stress_baseline(report, proof_report))
-    result = "complete" if _token(report.get("result")) == "complete" and _token(proof_report.get("result")) == "complete" and bool(baseline_status.get("match", False)) else "refused"
+    gate_result = _gate_report_result(report)
+    result = "complete" if gate_result == "complete" and _token(proof_report.get("result")) == "complete" and bool(baseline_status.get("match", False)) else "refused"
     failure_reason = ""
-    if _token(report.get("result")) != "complete":
+    if gate_result != "complete":
         failure_reason = "MVP stress suite reported non-complete result"
     elif _token(proof_report.get("result")) != "complete":
         failure_reason = "MVP stress proof verification reported non-complete result"
     elif not bool(baseline_status.get("match", False)):
         failure_reason = "MVP stress baseline mismatch detected"
     suite_summaries = [_as_map(item) for item in _as_list(report.get("suite_summaries")) if _as_map(item)]
+    if not suite_summaries:
+        suite_summaries = [_as_map(item) for item in _gate_suite_rows(report) if _as_map(item)]
     return _make_step_summary(
         spec,
         step_no=step_no,

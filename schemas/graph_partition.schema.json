@@ -55,5 +55,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "cross_shard_boundary_nodes": [],
+      "edge_shard_map": {},
+      "extensions": {},
+      "graph_id": "graph_id.example",
+      "node_shard_map": {},
+      "partition_id": "partition_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

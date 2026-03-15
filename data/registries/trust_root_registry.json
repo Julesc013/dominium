@@ -1,0 +1,13 @@
+{
+  "schema_id": "dominium.registry.security.trust_root_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.security.trust_root_registry",
+    "registry_version": "1.0.0",
+    "trust_roots": [],
+    "extensions": {
+      "official.source": "TRUST-MODEL0-2"
+    }
+  }
+}
+

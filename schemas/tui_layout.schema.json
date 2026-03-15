@@ -60,5 +60,14 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "layout_id": "layout_id.example",
+      "panels": [],
+      "schema_version": "1.0.0"
+    }
+  ]
 }

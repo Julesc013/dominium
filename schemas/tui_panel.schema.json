@@ -41,5 +41,15 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "panel_id": "panel_id.example",
+      "required_capabilities": [],
+      "schema_version": "1.0.0",
+      "title": "Example"
+    }
+  ]
 }

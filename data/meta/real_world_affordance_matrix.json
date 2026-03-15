@@ -273,12 +273,12 @@
   "schema_version": "1.0.0",
   "series_affordance_coverage": [
     {
+      "series_id": "ABS",
       "affordance_ids": [
         "motion_force_transmission",
         "containment_interfaces",
         "time_synchronization"
       ],
-      "series_id": "ABS",
       "tiers": [
         "macro",
         "meso",
@@ -286,24 +286,37 @@
       ]
     },
     {
+      "series_id": "ACT",
       "affordance_ids": [
         "containment_interfaces",
         "measurement_verification"
       ],
-      "series_id": "ACT",
       "tiers": [
         "meso",
         "micro"
       ]
     },
     {
+      "series_id": "APPSHELL",
+      "affordance_ids": [
+        "communication_coordination",
+        "measurement_verification",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "CHEM",
       "affordance_ids": [
         "matter_transformation",
         "measurement_verification",
         "environment_living_systems",
         "safety_protection"
       ],
-      "series_id": "CHEM",
       "tiers": [
         "macro",
         "meso",
@@ -315,6 +328,19 @@
       "affordance_ids": [
         "matter_transformation",
         "measurement_verification",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "CONCURRENCY",
+      "affordance_ids": [
+        "measurement_verification",
+        "safety_protection",
         "time_synchronization"
       ],
       "tiers": [
@@ -337,13 +363,53 @@
       ]
     },
     {
+      "series_id": "CTRL",
       "affordance_ids": [
         "institutions_contracts",
         "time_synchronization",
         "safety_protection",
         "measurement_verification"
       ],
-      "series_id": "CTRL",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "DIAG",
+      "affordance_ids": [
+        "communication_coordination",
+        "measurement_verification",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "DIST",
+      "affordance_ids": [
+        "communication_coordination",
+        "institutions_contracts",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "EARTH",
+      "affordance_ids": [
+        "environment_living_systems",
+        "measurement_verification",
+        "motion_force_transmission",
+        "time_synchronization"
+      ],
       "tiers": [
         "macro",
         "meso",
@@ -366,12 +432,25 @@
       ]
     },
     {
+      "series_id": "EMB",
+      "affordance_ids": [
+        "containment_interfaces",
+        "measurement_verification",
+        "motion_force_transmission"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "FIELD",
       "affordance_ids": [
         "environment_living_systems",
         "motion_force_transmission",
         "communication_coordination"
       ],
-      "series_id": "FIELD",
       "tiers": [
         "macro",
         "meso",
@@ -393,121 +472,24 @@
       ]
     },
     {
+      "series_id": "FORM",
       "affordance_ids": [
         "measurement_verification"
       ],
-      "series_id": "FORM",
       "tiers": [
         "macro",
         "meso"
       ]
     },
     {
+      "series_id": "GAL",
       "affordance_ids": [
-        "containment_interfaces",
-        "environment_living_systems"
-      ],
-      "series_id": "INT",
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
-        "matter_transformation",
-        "institutions_contracts",
-        "time_synchronization",
-        "safety_protection"
-      ],
-      "series_id": "MAT",
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
-        "matter_transformation",
-        "motion_force_transmission",
-        "safety_protection",
-        "environment_living_systems"
-      ],
-      "series_id": "MECH",
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
-        "matter_transformation",
-        "motion_force_transmission",
-        "containment_interfaces",
         "measurement_verification",
-        "communication_coordination",
-        "institutions_contracts",
-        "environment_living_systems",
-        "time_synchronization",
-        "safety_protection"
-      ],
-      "series_id": "META_MODEL",
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
         "motion_force_transmission",
-        "safety_protection",
         "time_synchronization"
       ],
-      "series_id": "MOB",
       "tiers": [
         "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
-        "motion_force_transmission",
-        "environment_living_systems",
-        "measurement_verification",
-        "time_synchronization"
-      ],
-      "series_id": "PHYS",
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
-        "environment_living_systems",
-        "measurement_verification",
-        "safety_protection"
-      ],
-      "series_id": "POLL",
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
-        "containment_interfaces",
-        "motion_force_transmission"
-      ],
-      "series_id": "POSE",
-      "tiers": [
         "meso",
         "micro"
       ]
@@ -521,6 +503,179 @@
       ],
       "tiers": [
         "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "GOVERNANCE",
+      "affordance_ids": [
+        "communication_coordination",
+        "institutions_contracts",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso"
+      ]
+    },
+    {
+      "series_id": "INT",
+      "affordance_ids": [
+        "containment_interfaces",
+        "environment_living_systems"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "LIB",
+      "affordance_ids": [
+        "containment_interfaces",
+        "institutions_contracts",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "MAT",
+      "affordance_ids": [
+        "matter_transformation",
+        "institutions_contracts",
+        "time_synchronization",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "MECH",
+      "affordance_ids": [
+        "matter_transformation",
+        "motion_force_transmission",
+        "safety_protection",
+        "environment_living_systems"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "META_MODEL",
+      "affordance_ids": [
+        "matter_transformation",
+        "motion_force_transmission",
+        "containment_interfaces",
+        "measurement_verification",
+        "communication_coordination",
+        "institutions_contracts",
+        "environment_living_systems",
+        "time_synchronization",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "MOB",
+      "affordance_ids": [
+        "motion_force_transmission",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "MVP",
+      "affordance_ids": [
+        "institutions_contracts",
+        "measurement_verification",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso"
+      ]
+    },
+    {
+      "series_id": "MW",
+      "affordance_ids": [
+        "measurement_verification",
+        "motion_force_transmission",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "OBSERVABILITY",
+      "affordance_ids": [
+        "communication_coordination",
+        "measurement_verification",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "PHYS",
+      "affordance_ids": [
+        "motion_force_transmission",
+        "environment_living_systems",
+        "measurement_verification",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "POLL",
+      "affordance_ids": [
+        "environment_living_systems",
+        "measurement_verification",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "POSE",
+      "affordance_ids": [
+        "containment_interfaces",
+        "motion_force_transmission"
+      ],
+      "tiers": [
         "meso",
         "micro"
       ]
@@ -555,11 +710,23 @@
       ]
     },
     {
+      "series_id": "RELEASE",
+      "affordance_ids": [
+        "institutions_contracts",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso"
+      ]
+    },
+    {
+      "series_id": "RS",
       "affordance_ids": [
         "time_synchronization",
         "measurement_verification"
       ],
-      "series_id": "RS",
       "tiers": [
         "macro",
         "meso",
@@ -567,12 +734,12 @@
       ]
     },
     {
+      "series_id": "SIG",
       "affordance_ids": [
         "communication_coordination",
         "measurement_verification",
         "institutions_contracts"
       ],
-      "series_id": "SIG",
       "tiers": [
         "macro",
         "meso",
@@ -580,13 +747,26 @@
       ]
     },
     {
+      "series_id": "SOL",
+      "affordance_ids": [
+        "measurement_verification",
+        "motion_force_transmission",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "SPEC",
       "affordance_ids": [
         "containment_interfaces",
         "measurement_verification",
         "institutions_contracts",
         "safety_protection"
       ],
-      "series_id": "SPEC",
       "tiers": [
         "macro",
         "meso"
@@ -622,11 +802,11 @@
       ]
     },
     {
+      "series_id": "TEMP",
       "affordance_ids": [
         "time_synchronization",
         "measurement_verification"
       ],
-      "series_id": "TEMP",
       "tiers": [
         "macro",
         "meso",
@@ -634,13 +814,13 @@
       ]
     },
     {
+      "series_id": "THERM",
       "affordance_ids": [
         "matter_transformation",
         "measurement_verification",
         "environment_living_systems",
         "safety_protection"
       ],
-      "series_id": "THERM",
       "tiers": [
         "macro",
         "meso",
@@ -658,6 +838,17 @@
         "macro",
         "meso",
         "micro"
+      ]
+    },
+    {
+      "series_id": "UX",
+      "affordance_ids": [
+        "communication_coordination",
+        "measurement_verification"
+      ],
+      "tiers": [
+        "macro",
+        "meso"
       ]
     }
   ]

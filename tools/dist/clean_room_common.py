@@ -197,6 +197,8 @@ def _text_absolute_path_hits(text: str, bundle_root: str, *, location: str) -> l
     for match in UNC_ABSOLUTE_RE.finditer(text_value):
         matched = _token(match.group(1) if match.lastindex else match.group(0))
         start = int(match.start(1) if match.lastindex else match.start(0))
+        if start > 0 and text_value[start - 1] not in (" ", "\n", "\r", "\t", "\"", "'", "<", ">", "|", "(", "[", "{", ",", ":"):
+            continue
         boundary = max(text_value.rfind(token, 0, start) for token in (" ", "\n", "\r", "\t", "\"", "'", "<", ">", "|"))
         prefix = text_value[boundary + 1 : start]
         if re.search(r"[A-Za-z]:\\\\", prefix):

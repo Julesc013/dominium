@@ -62,5 +62,19 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "event_ids": [],
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "stream_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "stream_id": "stream_id.example",
+      "target_id": "target_id.example",
+      "tick_range": {
+        "end_tick": 0,
+        "start_tick": 0
+      }
+    }
+  ]
 }

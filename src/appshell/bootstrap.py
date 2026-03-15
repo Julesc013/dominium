@@ -97,6 +97,24 @@ def appshell_main(
         product_id=str(product_id).strip(),
         argv=list(flag_shim_state.get("raw_args") or []),
     )
+    command_rows = build_root_command_descriptors(repo_root, str(product_id).strip())
+    version_payload = build_version_payload(repo_root, product_id=str(product_id).strip())
+    if shell_args.help_requested:
+        topic_tokens = shell_args.command_args if str(shell_args.command or "").strip() == "help" else []
+        print(format_help_text(str(product_id).strip(), command_rows, topic_tokens))
+        return EXIT_SUCCESS
+    if bool(shell_args.descriptor) or str(shell_args.descriptor_file).strip():
+        _print_json(
+            emit_descriptor_payload(
+                repo_root,
+                product_id=str(product_id).strip(),
+                descriptor_file=str(shell_args.descriptor_file),
+            )
+        )
+        return EXIT_SUCCESS
+    if bool(shell_args.version):
+        _print_json(version_payload)
+        return EXIT_SUCCESS
     vpath_context = vpath_init(
         {
             "repo_root": repo_root,
@@ -118,8 +136,6 @@ def appshell_main(
             for row in list(flag_shim_state.get("warnings") or [])
             if isinstance(row, dict)
         ]
-    command_rows = build_root_command_descriptors(repo_root, str(product_id).strip())
-    version_payload = build_version_payload(repo_root, product_id=str(product_id).strip())
     logger = create_log_engine(
         product_id=str(product_id).strip(),
         build_id=str(version_payload.get("build_id", "")).strip(),
@@ -162,6 +178,8 @@ def appshell_main(
                 params={
                     "refusal_code": str(payload.get("refusal_code", "")).strip(),
                     "product_id": str(product_id).strip(),
+                    "reason": str(payload.get("reason", "")).strip(),
+                    "remediation_hint": str(payload.get("remediation_hint", "")).strip(),
                 },
             )
             _print_json(payload)
@@ -277,35 +295,12 @@ def appshell_main(
                 params={
                     "refusal_code": str(payload.get("refusal_code", "")).strip(),
                     "requested_mode_id": str(mode_resolution.get("requested_mode_id", "")).strip(),
+                    "reason": str(payload.get("reason", "")).strip(),
+                    "remediation_hint": str(payload.get("remediation_hint", "")).strip(),
                 },
             )
             _print_json(payload)
             return EXIT_REFUSAL
-
-        if shell_args.help_requested:
-            topic_tokens = shell_args.command_args if str(shell_args.command or "").strip() == "help" else []
-            log_emit(
-                category="appshell",
-                severity="info",
-                message_key="appshell.mode.enter",
-                params={"mode_id": "cli", "entry_surface": "help"},
-            )
-            print(format_help_text(str(product_id).strip(), command_rows, topic_tokens))
-            return EXIT_SUCCESS
-
-        if bool(shell_args.descriptor) or str(shell_args.descriptor_file).strip():
-            _print_json(
-                emit_descriptor_payload(
-                    repo_root,
-                    product_id=str(product_id).strip(),
-                    descriptor_file=str(shell_args.descriptor_file),
-                )
-            )
-            return EXIT_SUCCESS
-
-        if bool(shell_args.version):
-            _print_json(version_payload)
-            return EXIT_SUCCESS
 
         if str(shell_args.command or "").strip():
             dispatch = dispatch_registered_command(
@@ -327,6 +322,14 @@ def appshell_main(
                     mode_selection=mode_selection,
                     version_payload=version_payload,
                 )
+                if not bool(dict(bootstrap_context.get("legacy_fallback") or {}).get("allow_unknown_command_fallback", False)):
+                    dispatch_kind = str(dict(dispatch or {}).get("dispatch_kind", "")).strip()
+                    if dispatch_kind == "text":
+                        print(str(dict(dispatch or {}).get("text", "")))
+                    else:
+                        _print_json(payload)
+                    exit_code = dict(dispatch or {}).get("exit_code", EXIT_INTERNAL)
+                    return int(EXIT_INTERNAL if exit_code is None else exit_code)
                 if bool(shell_args.ipc_enabled) and ipc_server is None:
                     ipc_server = AppShellIPCEndpointServer(
                         repo_root=repo_root,

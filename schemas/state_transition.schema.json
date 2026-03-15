@@ -50,5 +50,17 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "extensions": {},
+      "from_state": "example",
+      "guard_conditions": {},
+      "priority": 0,
+      "schema_version": "1.0.0",
+      "to_state": "example",
+      "transition_id": "transition_id.example",
+      "trigger_process_id": "trigger_process_id.example"
+    }
+  ]
 }

@@ -1,0 +1,111 @@
+{
+  "schema_id": "dominium.registry.security.trust_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.security.trust_policy_registry",
+    "registry_version": "1.0.0",
+    "trust_policies": [
+      {
+        "trust_policy_id": "trust.anarchy",
+        "require_signatures_for": [],
+        "allow_unsigned_for": [
+          "artifact.pack",
+          "artifact.pack_compat",
+          "artifact.release_index",
+          "artifact.release_manifest"
+        ],
+        "deterministic_fingerprint": "e68c37cd3c45366c1edc73516cb2f0994b4566b4108934f84710ade83a905d38",
+        "extensions": {
+          "official.source": "TRUST-MODEL0-2",
+          "trust_tier": "anarchy",
+          "warn_unsigned_for": [],
+          "untrusted_root_behavior": "warn",
+          "allow_signed_bridge_trust_levels": [
+            "trust.official_signed",
+            "trust.thirdparty_signed"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Anarchy trust policy remains provisional while signed pack and release ecosystems are still being formalized.",
+          "future_series": "TRUST/UPDATE-MODEL",
+          "replacement_target": "Replace provisional open trust policy with release-index governed trust and server policy bundles.",
+          "contract_id": "",
+          "deterministic_fingerprint": "7e38ff1291173a8c567203636053a43974da0d0dcdd5498644607bd91ba933e1",
+          "extensions": {}
+        }
+      },
+      {
+        "trust_policy_id": "trust.default_mock",
+        "require_signatures_for": [],
+        "allow_unsigned_for": [
+          "artifact.pack",
+          "artifact.pack_compat",
+          "artifact.release_index",
+          "artifact.release_manifest"
+        ],
+        "deterministic_fingerprint": "4fd40e02407222d190cfbef8f421957b16c15d8e7122d6e312479e395a666ac5",
+        "extensions": {
+          "official.source": "TRUST-MODEL0-2",
+          "trust_tier": "default",
+          "warn_unsigned_for": [
+            "artifact.pack",
+            "artifact.pack_compat",
+            "artifact.release_index",
+            "artifact.release_manifest"
+          ],
+          "untrusted_root_behavior": "warn",
+          "allow_signed_bridge_trust_levels": [
+            "trust.official_signed",
+            "trust.thirdparty_signed"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Mock-channel default trust behavior is provisional until release signing and trust-root rotation are frozen.",
+          "future_series": "TRUST/RELEASE",
+          "replacement_target": "Replace provisional mock trust defaults with channel-specific release trust policies and signed root bundles.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e7a7fd6abece0f3da519a3e0f9616c4a53c34251430eaae4806e4d4e2625a25c",
+          "extensions": {}
+        }
+      },
+      {
+        "trust_policy_id": "trust.strict_ranked",
+        "require_signatures_for": [
+          "artifact.pack",
+          "artifact.pack_compat",
+          "artifact.release_index",
+          "artifact.release_manifest"
+        ],
+        "allow_unsigned_for": [],
+        "deterministic_fingerprint": "5668858b0768d2074a9b5a61217000fe3df83fcbb3a90a4f5c4be475095ce42c",
+        "extensions": {
+          "official.source": "TRUST-MODEL0-2",
+          "trust_tier": "strict",
+          "warn_unsigned_for": [],
+          "untrusted_root_behavior": "refuse",
+          "allow_signed_bridge_trust_levels": [
+            "trust.official_signed",
+            "trust.thirdparty_signed"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Strict ranked trust enforcement is provisional until trusted signer bundles and revocation governance are frozen.",
+          "future_series": "TRUST/RELEASE",
+          "replacement_target": "Replace provisional ranked trust policy with signed trust-root bundles, revocation lists, and final server policy bindings.",
+          "contract_id": "",
+          "deterministic_fingerprint": "23710c2ac1c85ebeabf5b0df48c847718069bdc5985336620e55c0d8fcc307d4",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "TRUST-MODEL0-2"
+    }
+  }
+}

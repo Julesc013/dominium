@@ -1,0 +1,25 @@
+SCHEMA: lib/gc_report.schema
+schema_id: dominium.schema.lib.gc_report
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Record the deterministic outcome of a store GC pass.
+- Preserve the reachable, deleted, and quarantined artifact sets for audit and rollback workflows.
+
+REQUIRED SHAPE:
+record gc_report
+  required:
+    - report_id: id
+    - gc_policy_id: id
+    - reachable_hashes: list<string>
+    - deleted_hashes: list<string>
+    - quarantined_hashes: list<string>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Artifact token ordering MUST be canonical and sorted.
+- `deleted_hashes` MUST be empty for `gc.none` and `gc.safe`.
+- `quarantined_hashes` MUST be empty for `gc.none` and `gc.aggressive`.
+- deterministic_fingerprint MUST derive from canonical payload fields only.

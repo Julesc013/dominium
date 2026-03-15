@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Install Plan Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "plan_id",
+    "target_platform",
+    "target_arch",
+    "install_profile_id",
+    "selected_components",
+    "resolved_providers",
+    "verification_steps",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_platform": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_arch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "install_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selected_components": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "resolved_providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "verification_steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "install_profile_id": "install_profile_id.example",
+      "plan_id": "plan_id.example",
+      "resolved_providers": [],
+      "selected_components": [],
+      "target_arch": "example",
+      "target_platform": "example",
+      "verification_steps": []
+    }
+  ]
+}

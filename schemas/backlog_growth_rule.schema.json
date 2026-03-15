@@ -52,5 +52,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "base_increment_per_tick": 0,
+      "description": "example",
+      "extensions": {},
+      "model_kind": "linear",
+      "rule_id": "rule_id.example",
+      "schema_version": "1.0.0",
+      "thresholds": []
+    }
+  ]
 }

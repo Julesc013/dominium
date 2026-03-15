@@ -19,18 +19,78 @@
   ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "type": "string", "const": "1.0.0" },
-    "event_id": { "type": "string", "minLength": 1 },
-    "product_id": { "type": "string", "minLength": 1 },
-    "build_id": { "type": "string" },
-    "session_id": { "type": "string" },
-    "tick": { "type": ["integer", "null"] },
-    "severity": { "type": "string", "enum": ["debug", "info", "warn", "error"] },
-    "category": { "type": "string", "minLength": 1 },
-    "message_key": { "type": "string", "minLength": 1 },
-    "params": { "type": "object", "additionalProperties": true },
-    "host_meta": { "type": "object", "additionalProperties": true },
-    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "extensions": { "type": "object", "additionalProperties": true }
-  }
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "product_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "build_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "tick": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ]
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1
+    },
+    "message_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "params": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "host_meta": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "build_id": "build_id.example",
+      "category": "example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "event_id": "event_id.example",
+      "extensions": {},
+      "host_meta": {},
+      "message_key": "example",
+      "params": {},
+      "product_id": "product_id.example",
+      "schema_version": "1.0.0",
+      "session_id": "session_id.example",
+      "severity": "debug"
+    }
+  ]
 }

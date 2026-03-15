@@ -9,6 +9,16 @@ from typing import Dict, List, Mapping, Sequence, Tuple
 
 from src.compat.capability_negotiation import READ_ONLY_LAW_PROFILE_ID
 from src.compat.descriptor.descriptor_engine import build_product_descriptor
+from src.compat.migration_lifecycle import (
+    ARTIFACT_KIND_BLUEPRINT,
+    ARTIFACT_KIND_PACK_LOCK,
+    ARTIFACT_KIND_PROFILE_BUNDLE,
+    ARTIFACT_KIND_SESSION_TEMPLATE,
+    DECISION_LOAD,
+    DECISION_MIGRATE,
+    DECISION_READ_ONLY,
+    determine_migration_decision,
+)
 from tools.compatx.core.migration_runner import apply_migration, load_and_validate
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -92,6 +102,13 @@ _ARTIFACT_RULES = {
         "supports_required_contract_ranges": False,
         "fingerprint_ignored_fields": ("engine_version_created",),
     },
+}
+
+_LIFECYCLE_ARTIFACT_KIND_MAP = {
+    "blueprint_file": ARTIFACT_KIND_BLUEPRINT,
+    "profile_bundle": ARTIFACT_KIND_PROFILE_BUNDLE,
+    "session_template": ARTIFACT_KIND_SESSION_TEMPLATE,
+    "pack_lock": ARTIFACT_KIND_PACK_LOCK,
 }
 
 
@@ -414,54 +431,104 @@ def load_versioned_artifact(
         )
     raw_version = str(payload.get("format_version", "")).strip() or LEGACY_ARTIFACT_FORMAT_VERSION
     migration_events: List[dict] = []
-    read_only_mode = False
+    read_only_applied = False
+    migration_decision_record = {}
+    lifecycle_artifact_kind = str(_LIFECYCLE_ARTIFACT_KIND_MAP.get(str(artifact_kind).strip(), "")).strip()
 
-    current_tuple = _semver_tuple(CURRENT_ARTIFACT_FORMAT_VERSION)
-    raw_tuple = _semver_tuple(raw_version)
-    if raw_version == CURRENT_ARTIFACT_FORMAT_VERSION:
-        loaded = copy.deepcopy(payload)
-    elif raw_tuple < current_tuple:
-        loaded, migration_events, migration_error = _apply_migration_chain(
+    if lifecycle_artifact_kind:
+        migration_decision_record = determine_migration_decision(
             repo_root=repo_root,
-            artifact_kind=artifact_kind,
+            artifact_kind_id=lifecycle_artifact_kind,
             payload=payload,
-            semantic_contract_bundle_hash=semantic_contract_bundle_hash,
+            allow_read_only=bool(allow_read_only),
+            expected_contract_bundle_hash=str(semantic_contract_bundle_hash or "").strip(),
+            artifact_path=path,
         )
-        if migration_error:
-            return {}, {}, migration_error
-    else:
-        if not allow_read_only:
-            return {}, {}, _refusal(
-                REFUSAL_FORMAT_FUTURE_VERSION,
-                "artifact format_version is newer than this engine build supports",
-                "Open the artifact in a newer engine build or use a read-only compatibility path.",
-                path="$.format_version",
-                relevant_ids={"artifact_kind": artifact_kind, "path": _norm(path), "format_version": raw_version},
+        action = str(migration_decision_record.get("decision_action_id", "")).strip()
+        if action == DECISION_LOAD:
+            loaded = copy.deepcopy(payload)
+        elif action == DECISION_MIGRATE:
+            loaded, migration_events, migration_error = _apply_migration_chain(
+                repo_root=repo_root,
+                artifact_kind=artifact_kind,
+                payload=payload,
+                semantic_contract_bundle_hash=semantic_contract_bundle_hash,
             )
-        base_report = _validate_base_schema(repo_root, artifact_kind, payload, strict_top_level=False)
-        if str(dict(payload).get("semantic_contract_bundle_hash", "")).strip():
-            expected = str(semantic_contract_bundle_hash or "").strip()
-            actual = str(dict(payload).get("semantic_contract_bundle_hash", "")).strip()
-            if expected and actual != expected:
+            if migration_error:
+                return {}, {}, migration_error
+        elif action == DECISION_READ_ONLY:
+            base_report = _validate_base_schema(repo_root, artifact_kind, payload, strict_top_level=False)
+            if not bool(base_report.get("valid", False)):
                 return {}, {}, _refusal(
-                    REFUSAL_FORMAT_CONTRACT_MISMATCH,
-                    "future-format artifact contract hash does not match the expected pinned contract bundle",
-                    "Use a compatible artifact or run a CompatX migration tool before loading.",
-                    path="$.semantic_contract_bundle_hash",
-                    relevant_ids={"artifact_kind": artifact_kind, "expected": expected, "actual": actual},
+                    REFUSAL_FORMAT_READ_ONLY_UNAVAILABLE,
+                    "future-format artifact cannot be opened safely in read-only mode",
+                    "Use a newer engine build or install a migration path for the artifact.",
+                    path="$",
+                    relevant_ids={"artifact_kind": artifact_kind, "path": _norm(path), "format_version": raw_version},
                 )
-        if not bool(base_report.get("valid", False)):
+            loaded = copy.deepcopy(payload)
+            read_only_applied = True
+        else:
+            refusal_code = str(migration_decision_record.get("refusal_code", "")).strip() or REFUSAL_FORMAT_MIGRATION_MISSING
             return {}, {}, _refusal(
-                REFUSAL_FORMAT_READ_ONLY_UNAVAILABLE,
-                "future-format artifact cannot be opened safely in read-only mode",
-                "Use a newer engine build or install a migration path for the artifact.",
-                path="$",
-                relevant_ids={"artifact_kind": artifact_kind, "path": _norm(path), "format_version": raw_version},
+                refusal_code,
+                "artifact format lifecycle policy refused the load request",
+                str(migration_decision_record.get("remediation_hint", "")).strip() or "Provide a deterministic migration path or use a compatible engine build.",
+                path="$.format_version",
+                relevant_ids={
+                    "artifact_kind": artifact_kind,
+                    "path": _norm(path),
+                    "format_version": raw_version,
+                },
             )
-        loaded = copy.deepcopy(payload)
-        read_only_mode = True
+    else:
 
-    strict_base = not read_only_mode
+        current_tuple = _semver_tuple(CURRENT_ARTIFACT_FORMAT_VERSION)
+        raw_tuple = _semver_tuple(raw_version)
+        if raw_version == CURRENT_ARTIFACT_FORMAT_VERSION:
+            loaded = copy.deepcopy(payload)
+        elif raw_tuple < current_tuple:
+            loaded, migration_events, migration_error = _apply_migration_chain(
+                repo_root=repo_root,
+                artifact_kind=artifact_kind,
+                payload=payload,
+                semantic_contract_bundle_hash=semantic_contract_bundle_hash,
+            )
+            if migration_error:
+                return {}, {}, migration_error
+        else:
+            if not allow_read_only:
+                return {}, {}, _refusal(
+                    REFUSAL_FORMAT_FUTURE_VERSION,
+                    "artifact format_version is newer than this engine build supports",
+                    "Open the artifact in a newer engine build or use a read-only compatibility path.",
+                    path="$.format_version",
+                    relevant_ids={"artifact_kind": artifact_kind, "path": _norm(path), "format_version": raw_version},
+                )
+            base_report = _validate_base_schema(repo_root, artifact_kind, payload, strict_top_level=False)
+            if str(dict(payload).get("semantic_contract_bundle_hash", "")).strip():
+                expected = str(semantic_contract_bundle_hash or "").strip()
+                actual = str(dict(payload).get("semantic_contract_bundle_hash", "")).strip()
+                if expected and actual != expected:
+                    return {}, {}, _refusal(
+                        REFUSAL_FORMAT_CONTRACT_MISMATCH,
+                        "future-format artifact contract hash does not match the expected pinned contract bundle",
+                        "Use a compatible artifact or run a CompatX migration tool before loading.",
+                        path="$.semantic_contract_bundle_hash",
+                        relevant_ids={"artifact_kind": artifact_kind, "expected": expected, "actual": actual},
+                    )
+            if not bool(base_report.get("valid", False)):
+                return {}, {}, _refusal(
+                    REFUSAL_FORMAT_READ_ONLY_UNAVAILABLE,
+                    "future-format artifact cannot be opened safely in read-only mode",
+                    "Use a newer engine build or install a migration path for the artifact.",
+                    path="$",
+                    relevant_ids={"artifact_kind": artifact_kind, "path": _norm(path), "format_version": raw_version},
+                )
+            loaded = copy.deepcopy(payload)
+            read_only_applied = True
+
+    strict_base = not read_only_applied
     base_report = _validate_base_schema(repo_root, artifact_kind, loaded, strict_top_level=strict_base)
     if not bool(base_report.get("valid", False)):
         return {}, {}, _refusal(
@@ -476,7 +543,7 @@ def load_versioned_artifact(
         artifact_kind,
         loaded,
         expected_contract_bundle_hash=semantic_contract_bundle_hash,
-        future_version_allowed=read_only_mode,
+        future_version_allowed=read_only_applied,
     )
     if metadata_errors:
         return {}, {}, _refusal(
@@ -494,10 +561,11 @@ def load_versioned_artifact(
         "path": _norm(path),
         "format_version": str(loaded.get("format_version", "")).strip(),
         "migration_events": list(migration_events),
-        "read_only_mode": bool(read_only_mode),
-        "law_profile_id_override": READ_ONLY_LAW_PROFILE_ID if read_only_mode else "",
+        "migration_decision_record": dict(migration_decision_record),
+        "read_only_applied": bool(read_only_applied),
+        "law_profile_id_override": READ_ONLY_LAW_PROFILE_ID if read_only_applied else "",
         "explain_keys": [
-            "explain.read_only_mode" if read_only_mode else "",
+            "explain.read_only_applied" if read_only_applied else "",
             "explain.migration_applied" if migration_events else "",
         ],
     }

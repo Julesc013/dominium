@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Archive Record Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "release_id",
+    "release_manifest_hash",
+    "release_index_hash",
+    "component_graph_hash",
+    "governance_profile_hash",
+    "mirror_list",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "release_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_manifest_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "release_index_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "component_graph_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "governance_profile_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "source_archive_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mirror_list": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "component_graph_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "governance_profile_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "mirror_list": [],
+      "release_id": "release_id.example",
+      "release_index_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "release_manifest_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
+}

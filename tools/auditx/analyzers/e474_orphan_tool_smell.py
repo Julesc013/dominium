@@ -36,7 +36,7 @@ def run(graph, repo_root, changed_files=None):
                     str(item.get("message", "")).strip() or "tool surface drift detected",
                 ],
                 suggested_classification="TODO-BLOCKED",
-                recommended_action="CONSOLIDATE",
+                recommended_action="REWRITE",
                 related_invariants=[rule for rule in RULE_IDS if rule == str(item.get("rule_id", "")).strip()] or list(RULE_IDS),
                 related_paths=[rel_path or "data/registries/command_registry.json"],
             )

@@ -23,6 +23,7 @@ record profile_bundle_metadata
     - degrade_mode_id: tag
     - migration_refs: [id]
     - migration_history: [map]
+    - universal_identity_block: universal_identity_block
     - extensions: map
 
 INVARIANTS:

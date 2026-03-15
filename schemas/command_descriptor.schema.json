@@ -82,5 +82,22 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "args_schema_id": "args_schema_id.example",
+      "command_id": "command_id.example",
+      "command_path": "command_path.json",
+      "description": "example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "exit_code_mapping_id": "exit_code_mapping_id.example",
+      "extensions": {},
+      "handler_id": "handler_id.example",
+      "output_schema_id": "output_schema_id.example",
+      "product_ids": [],
+      "refusal_codes": [],
+      "schema_version": "1.1.0",
+      "supported_mode_ids": []
+    }
+  ]
 }

@@ -83,9 +83,21 @@ def main(argv: list[str] | None = None) -> int:
         update_tag=str(args.update_tag),
         gate_results=gate_results,
     )
-    payload = dict(report)
-    payload["written_outputs"] = written
-    print(json.dumps(payload, indent=2, sort_keys=True))
+    summary = {
+        "result": str(report.get("result", "")).strip(),
+        "scenario_id": str(report.get("scenario_id", "")).strip(),
+        "scenario_seed": int(report.get("scenario_seed", args.seed) or args.seed),
+        "refusal_count": int(report.get("refusal_count", 0) or 0),
+        "deterministic_fingerprint": str(report.get("deterministic_fingerprint", "")).strip(),
+        "written_outputs": {
+            "report_path": str(written.get("report_path", "")).strip(),
+            "final_doc_path": str(written.get("final_doc_path", "")).strip(),
+            "baseline_path": str(written.get("baseline_path", "")).strip(),
+            "baseline_written": bool(written.get("baseline_written", False)),
+            "deterministic_fingerprint": str(written.get("deterministic_fingerprint", "")).strip(),
+        },
+    }
+    print(json.dumps(summary, indent=2, sort_keys=True))
     return 0 if str(report.get("result", "")).strip() == "complete" else 1
 
 

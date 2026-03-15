@@ -27,6 +27,8 @@ record session_stage
     - deterministic: bool
     - run_meta_only: bool
     - extensions: map
+  optional:
+    - stability: stability_marker
 
 INVARIANTS:
 - deterministic MUST be true for canonical stages.

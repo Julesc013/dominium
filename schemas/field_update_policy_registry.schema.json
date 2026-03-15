@@ -25,13 +25,26 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["pack_id", "version", "canonical_hash", "signature_status"],
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
         "additionalProperties": false,
         "properties": {
-          "pack_id": {"type": "string"},
-          "version": {"type": "string"},
-          "canonical_hash": {"type": "string"},
-          "signature_status": {"type": "string"}
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
         }
       }
     },
@@ -47,13 +60,38 @@
         ],
         "additionalProperties": false,
         "properties": {
-          "schema_version": {"type": "string", "const": "1.0.0"},
-          "update_policy_id": {"type": "string"},
-          "description": {"type": "string"},
-          "schedule_id": {"type": ["string", "null"]},
-          "flow_channel_ref": {"type": ["string", "null"]},
-          "hazard_ref": {"type": ["string", "null"]},
-          "extensions": {"type": "object", "additionalProperties": true}
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "update_policy_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "schedule_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "flow_channel_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "hazard_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
         }
       }
     },
@@ -61,5 +99,13 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     }
-  }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "policies": [],
+      "registry_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
 }

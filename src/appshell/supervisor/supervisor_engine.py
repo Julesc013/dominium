@@ -10,6 +10,7 @@ import threading
 from typing import Mapping, Sequence
 
 from src.diag import write_repro_bundle
+from src.engine.concurrency import build_field_sort_key, canonicalize_parallel_mapping_rows
 from src.appshell.ipc import (
     attach_ipc_endpoint,
     discover_ipc_endpoints,
@@ -17,10 +18,12 @@ from src.appshell.ipc import (
     query_ipc_status,
     run_ipc_console_command,
 )
+from src.appshell.ipc.ipc_transport import remove_ipc_manifest_entry
 from src.appshell.logging import append_jsonl, log_emit
 from src.appshell.paths import (
     VROOT_EXPORTS,
     VROOT_IPC,
+    VROOT_INSTALL,
     VROOT_LOCKS,
     VROOT_LOGS,
     VROOT_PROFILES,
@@ -45,6 +48,8 @@ SUPERVISOR_AGGREGATED_LOG_REL = os.path.join("supervisor", "aggregated_logs.json
 SUPERVISOR_DIAG_ROOT_REL = os.path.join("supervisor", "diag")
 SUPERVISOR_SERVICE_SCRIPT_REL = os.path.join("tools", "appshell", "supervisor_service.py")
 SUPERVISED_PRODUCT_HOST_REL = os.path.join("tools", "appshell", "supervised_product_host.py")
+SUPERVISOR_SERVICE_MODULE = "tools.appshell.supervisor_service"
+SUPERVISED_PRODUCT_HOST_MODULE = "tools.appshell.supervised_product_host"
 MVP_SESSION_TEMPLATE_REL = os.path.join("data", "session_templates", "session.mvp_default.json")
 MVP_PROFILE_BUNDLE_REL = os.path.join("profiles", "bundles", "bundle.mvp_default.json")
 MVP_PACK_LOCK_REL = os.path.join("locks", "pack_lock.mvp_default.json")
@@ -126,6 +131,27 @@ def _vpath_context() -> dict | None:
     return dict(context)
 
 
+def _supervisor_vpath_flag_pairs() -> tuple[tuple[str, str], ...]:
+    context = _vpath_context()
+    if context is None:
+        return ()
+    roots = _as_map(context.get("roots"))
+    rows: list[tuple[str, str]] = []
+    install_root = str(roots.get(VROOT_INSTALL, "")).strip()
+    store_root = str(roots.get(VROOT_STORE, "")).strip()
+    install_id = str(context.get("install_id", "")).strip()
+    install_registry_path = str(context.get("install_registry_path", "")).strip()
+    if install_root:
+        rows.append(("--install-root", install_root))
+    if store_root:
+        rows.append(("--store-root", store_root))
+    if install_id:
+        rows.append(("--install-id", install_id))
+    if install_registry_path:
+        rows.append(("--install-registry-path", install_registry_path))
+    return tuple(rows)
+
+
 def _deterministic_id(*parts: object, prefix: str, size: int = 12) -> str:
     body = "|".join(str(part).strip() for part in parts)
     return "{}.{}".format(str(prefix).strip(), hashlib.sha256(body.encode("utf-8")).hexdigest()[: max(4, int(size or 12))])
@@ -177,14 +203,13 @@ def _restart_backoff_iterations(run_spec: Mapping[str, object]) -> int:
 
 
 def _log_merge_sort_key(row: Mapping[str, object]) -> tuple[str, str, int, str, str]:
-    row_map = dict(row or {})
-    return (
-        str(row_map.get("source_product_id", "")).strip(),
-        str(row_map.get("channel_id", "")).strip(),
-        int(row_map.get("seq_no", 0) or 0),
-        str(row_map.get("endpoint_id", "")).strip(),
-        str(row_map.get("event_id", "")).strip(),
-    )
+    return _LOG_MERGE_SORT_KEY(dict(row or {}))
+
+
+_LOG_MERGE_SORT_KEY = build_field_sort_key(
+    ("source_product_id", "channel_id", "seq_no", "endpoint_id", "event_id"),
+    int_fields=("seq_no",),
+)
 
 
 def _wait_for_endpoint_ready_process(
@@ -316,6 +341,104 @@ def load_supervisor_runtime_state(repo_root: str) -> dict:
     return _read_json(_supervisor_runtime_paths(repo_root).get("state_path", ""))
 
 
+def _supervisor_endpoint_rows(repo_root: str) -> list[dict]:
+    rows = []
+    discovered = discover_ipc_endpoints(repo_root)
+    for row in _as_list(discovered.get("endpoints")):
+        row_map = _as_map(row)
+        session_id = str(row_map.get("session_id", "")).strip()
+        endpoint_id = str(row_map.get("endpoint_id", "")).strip()
+        if endpoint_id and session_id.startswith("supervisor."):
+            rows.append(row_map)
+    return sorted(
+        rows,
+        key=lambda row: (
+            str(row.get("endpoint_id", "")).strip(),
+            str(row.get("product_id", "")).strip(),
+            str(row.get("session_id", "")).strip(),
+        ),
+    )
+
+
+def _endpoint_row_reachable(repo_root: str, endpoint_row: Mapping[str, object]) -> bool:
+    endpoint_id = str(_as_map(endpoint_row).get("endpoint_id", "")).strip()
+    if not endpoint_id:
+        return False
+    try:
+        attach_report = attach_ipc_endpoint(
+            repo_root,
+            local_product_id="tool.attach_console_stub",
+            endpoint_id=endpoint_id,
+            allow_read_only=True,
+            accept_degraded=True,
+        )
+    except OSError:
+        return False
+    return str(dict(attach_report).get("result", "")).strip() == "complete"
+
+
+def sanitize_supervisor_runtime(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(str(repo_root or ".")))
+    reachable_ids: set[str] = set()
+    pruned_endpoint_ids: list[str] = []
+    for row in _supervisor_endpoint_rows(repo_root_abs):
+        endpoint_id = str(row.get("endpoint_id", "")).strip()
+        if not endpoint_id:
+            continue
+        if _endpoint_row_reachable(repo_root_abs, row):
+            reachable_ids.add(endpoint_id)
+            continue
+        remove_ipc_manifest_entry(repo_root_abs, endpoint_id)
+        pruned_endpoint_ids.append(endpoint_id)
+    state_path = _supervisor_runtime_paths(repo_root_abs).get("state_path", "")
+    state = load_supervisor_runtime_state(repo_root_abs)
+    state_changed = False
+    if state:
+        state_map = dict(state)
+        service = dict(_as_map(state_map.get("service")))
+        service_endpoint_id = str(service.get("endpoint_id", "")).strip()
+        if service_endpoint_id and service_endpoint_id not in reachable_ids:
+            service["endpoint_id"] = ""
+            service["address"] = ""
+            service["status"] = "stopped"
+            state_map["service"] = service
+            state_changed = True
+        process_rows = []
+        for row in _as_list(state_map.get("processes")):
+            row_map = dict(_as_map(row))
+            endpoint_id = str(row_map.get("endpoint_id", "")).strip()
+            status = str(row_map.get("status", "")).strip()
+            if status == "running" and endpoint_id and endpoint_id not in reachable_ids:
+                row_map["status"] = "exited"
+                row_map["attach_status"] = "detached"
+                if row_map.get("exit_code") is None:
+                    row_map["exit_code"] = 0
+                if not str(row_map.get("attach_error", "")).strip():
+                    row_map["attach_error"] = "stale endpoint pruned"
+                state_changed = True
+            process_rows.append(row_map)
+        if state_changed:
+            state_map["processes"] = process_rows
+            state_map["deterministic_fingerprint"] = canonical_sha256(dict(state_map, deterministic_fingerprint=""))
+            write_canonical_json(state_path, state_map)
+            state = state_map
+    return {
+        "result": "complete",
+        "reachable_endpoint_ids": sorted(reachable_ids),
+        "pruned_endpoint_ids": sorted(pruned_endpoint_ids),
+        "state_changed": bool(state_changed),
+        "state_present": bool(state),
+        "deterministic_fingerprint": canonical_sha256(
+            {
+                "reachable_endpoint_ids": sorted(reachable_ids),
+                "pruned_endpoint_ids": sorted(pruned_endpoint_ids),
+                "state_changed": bool(state_changed),
+                "state_present": bool(state),
+            }
+        ),
+    }
+
+
 def _load_supervisor_policy(repo_root: str, policy_id: str) -> tuple[dict, str]:
     payload = _read_json(_runtime_abs(repo_root, SUPERVISOR_POLICY_REGISTRY_REL))
     for row in _as_list(_as_map(payload.get("record")).get("policies")):
@@ -328,7 +451,24 @@ def _load_supervisor_policy(repo_root: str, policy_id: str) -> tuple[dict, str]:
 def _verification_root(repo_root: str) -> str:
     context = _vpath_context()
     if context is not None:
-        return vpath_root(VROOT_STORE, context)
+        store_root = vpath_root(VROOT_STORE, context)
+        store_contract_registry = _runtime_abs(
+            store_root,
+            os.path.join("data", "registries", "semantic_contract_registry.json"),
+        )
+        store_packs_root = _runtime_abs(store_root, "packs")
+        if os.path.isfile(store_contract_registry) and os.path.isdir(store_packs_root):
+            return store_root
+        repo_contract_registry = _runtime_abs(
+            repo_root,
+            os.path.join("data", "registries", "semantic_contract_registry.json"),
+        )
+        if os.path.isfile(repo_contract_registry) and os.path.isdir(store_packs_root):
+            return _runtime_abs(repo_root, ".")
+        resolution_source = str(context.get("resolution_source", "")).strip()
+        if resolution_source != "repo_wrapper_shim":
+            return _runtime_abs(repo_root, ".")
+        return _runtime_abs(repo_root, ".")
     dist_contract_registry = _runtime_abs(repo_root, os.path.join("dist", "data", "registries", "semantic_contract_registry.json"))
     dist_packs_root = _runtime_abs(repo_root, os.path.join("dist", "packs"))
     if os.path.isfile(dist_contract_registry) and os.path.isdir(dist_packs_root):
@@ -393,6 +533,7 @@ def _discover_endpoint_row(repo_root: str, endpoint_id: str) -> dict:
 
 
 def discover_active_supervisor_endpoint(repo_root: str) -> dict:
+    sanitize_supervisor_runtime(repo_root)
     state = load_supervisor_runtime_state(repo_root)
     endpoint_id = str(_as_map(state.get("service")).get("endpoint_id", "")).strip()
     if not endpoint_id:
@@ -714,7 +855,15 @@ def _build_child_process_spec(repo_root: str, process_row: Mapping[str, object])
         repo_root=repo_root,
         spawn_id="spawn.supervisor.{}".format(str(process_row.get("product_id", "")).strip()),
         script_path=SUPERVISED_PRODUCT_HOST_REL,
-        args=list(process_row.get("args") or []),
+        module_name=SUPERVISED_PRODUCT_HOST_MODULE,
+        args=[
+            *[
+                token
+                for pair in _supervisor_vpath_flag_pairs()
+                for token in pair
+            ],
+            *list(process_row.get("args") or []),
+        ],
         extensions={"pid_stub": str(process_row.get("pid_stub", "")).strip()},
     )
 
@@ -981,14 +1130,14 @@ class SupervisorEngine:
                 "readiness_iteration_count": int(attach_result.get("readiness_iteration_count", readiness_iterations) or readiness_iterations),
             }
             log_emit(
-                category="appshell",
+                category="supervisor",
                 severity="info",
                 message_key="supervisor.process.spawned",
                 params={"product_id": product_id, "endpoint_id": str(attach_result.get("endpoint_id", "")).strip()},
             )
         self.refresh()
         log_emit(
-            category="appshell",
+            category="supervisor",
             severity="info",
             message_key="supervisor.start.complete",
             params={"run_id": str(self.run_spec.get("session_id", "")).strip(), "process_count": len(self._runtime_rows)},
@@ -1017,7 +1166,7 @@ class SupervisorEngine:
                         row["restart_pending"] = True
                         row["restart_backoff_remaining"] = int(restart_backoff_iterations)
                         log_emit(
-                            category="appshell",
+                            category="supervisor",
                             severity="warn",
                             message_key="explain.supervisor_restart",
                             params={
@@ -1038,7 +1187,7 @@ class SupervisorEngine:
             aggregated_rows.extend(self._refresh_logs_for_process(row))
             if str(row.get("endpoint_id", "")).strip():
                 self._query_status_for_row(row)
-        self._aggregated_logs = sorted(
+        self._aggregated_logs = canonicalize_parallel_mapping_rows(
             [
                 {
                     **dict(row),
@@ -1046,7 +1195,7 @@ class SupervisorEngine:
                 }
                 for row in aggregated_rows
             ],
-            key=_log_merge_sort_key,
+            key_fn=_log_merge_sort_key,
         )[-128:]
         return {"result": "complete", "state": self._write_state()}
 
@@ -1089,7 +1238,7 @@ class SupervisorEngine:
         if shutdown_supervisor:
             self.request_shutdown()
         log_emit(
-            category="appshell",
+            category="supervisor",
             severity="info",
             message_key="explain.supervisor_stop",
             params={"run_id": str(self.run_spec.get("session_id", "")).strip(), "shutdown_supervisor": bool(shutdown_supervisor)},
@@ -1167,7 +1316,7 @@ class SupervisorEngine:
         row["readiness_iteration_count"] = int(attach_result.get("readiness_iteration_count", 0) or 0)
         row["attach_error"] = "" if str(attach_result.get("endpoint_id", "")).strip() else str(attach_result.get("reason", "")).strip()
         log_emit(
-            category="appshell",
+            category="supervisor",
             severity="warn",
             message_key="supervisor.restart.applied",
             params={
@@ -1231,6 +1380,7 @@ def launch_supervisor_service(
         positional=[],
         flag_pairs=(
             ("--contract-bundle-hash", str(run_spec.get("contract_bundle_hash", "")).strip()),
+            *_supervisor_vpath_flag_pairs(),
             ("--mod-policy-id", str(run_spec.get("mod_policy_id", "")).strip()),
             ("--overlay-conflict-policy-id", str(run_spec.get("overlay_conflict_policy_id", "")).strip()),
             ("--pack-lock-path", str(run_spec.get("pack_lock_path", "")).strip()),
@@ -1247,6 +1397,7 @@ def launch_supervisor_service(
         repo_root=repo_root,
         spawn_id="spawn.supervisor.service",
         script_path=SUPERVISOR_SERVICE_SCRIPT_REL,
+        module_name=SUPERVISOR_SERVICE_MODULE,
         args=list(arg_payload.get("args") or []),
         extensions={
             "service_session_id": str(run_spec.get("session_id", "")).strip(),

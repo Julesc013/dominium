@@ -125,6 +125,18 @@ def _ensure_dir(path: str) -> None:
         os.makedirs(token, exist_ok=True)
 
 
+def _safe_rmtree(path: str) -> None:
+    target = str(path or "").strip()
+    if not target or not os.path.isdir(target):
+        return
+    try:
+        shutil.rmtree(target)
+    except FileNotFoundError:
+        return
+    except OSError:
+        shutil.rmtree(target, ignore_errors=True)
+
+
 def _repo_abs(repo_root: str, rel_path: str) -> str:
     token = str(rel_path or "").strip()
     if not token:
@@ -401,23 +413,65 @@ def _pack_root_from_manifest_path(manifest_path: str) -> str:
     return _norm(os.path.dirname(_norm(manifest_path)))
 
 
+def _pack_manifest_index(repo_root: str) -> dict[str, str]:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    packs_root = os.path.join(repo_root_abs, "packs")
+    manifest_index: dict[str, str] = {}
+    if not os.path.isdir(packs_root):
+        return manifest_index
+    for current_root, _dirs, files in os.walk(packs_root):
+        if "pack.json" not in files:
+            continue
+        manifest_path = os.path.join(current_root, "pack.json")
+        payload = _read_json(manifest_path)
+        pack_id = _token(payload.get("pack_id"))
+        if pack_id:
+            manifest_index[pack_id] = _norm(manifest_path)
+    return manifest_index
+
+
 def _default_bundle_source_pack_roots(repo_root: str) -> list[str]:
     payload = build_pack_lock_payload(repo_root=repo_root)
-    out = []
+    manifest_index = _pack_manifest_index(repo_root)
+    queued_manifest_paths: list[str] = []
+    queued_pack_ids: list[str] = []
     for pack_row in _as_list(payload.get("ordered_packs")):
         row = _as_map(pack_row)
         for source_row in _as_list(row.get("source_packs")):
-            manifest_path = _token(_as_map(source_row).get("manifest_path"))
+            source_map = _as_map(source_row)
+            manifest_path = _token(source_map.get("manifest_path"))
+            pack_id = _token(source_map.get("pack_id"))
             if manifest_path:
-                out.append(_pack_root_from_manifest_path(manifest_path))
-    return _sorted_tokens(out)
+                queued_manifest_paths.append(_repo_abs(os.path.normpath(os.path.abspath(repo_root)), manifest_path))
+            if pack_id:
+                queued_pack_ids.append(pack_id)
+    pending = list(queued_manifest_paths)
+    pending.extend(manifest_index[pack_id] for pack_id in sorted(set(queued_pack_ids)) if pack_id in manifest_index)
+    visited_manifest_paths: set[str] = set()
+    pack_roots: list[str] = []
+    while pending:
+        manifest_path = _norm(pending.pop(0))
+        if not manifest_path or manifest_path in visited_manifest_paths:
+            continue
+        visited_manifest_paths.add(manifest_path)
+        payload = _read_json(manifest_path)
+        if not payload:
+            continue
+        pack_roots.append(_pack_root_from_manifest_path(_relative_path(os.path.normpath(os.path.abspath(repo_root)), manifest_path)))
+        for dependency in _as_list(payload.get("dependencies")):
+            dependency_token = _token(dependency)
+            dependency_pack_id = dependency_token.split("@", 1)[0].strip()
+            dependency_manifest_path = _token(manifest_index.get(dependency_pack_id))
+            if dependency_manifest_path and dependency_manifest_path not in visited_manifest_paths:
+                pending.append(dependency_manifest_path)
+    return _sorted_tokens(pack_roots)
 
 
 def _copy_curated_pack_root(repo_root: str, *, curated_root_rel: str, pack_root_rels: Sequence[str]) -> str:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     curated_root_abs = _repo_abs(repo_root_abs, curated_root_rel)
     if os.path.isdir(curated_root_abs):
-        shutil.rmtree(curated_root_abs)
+        _safe_rmtree(curated_root_abs)
     _ensure_dir(curated_root_abs)
     registries_src = os.path.join(repo_root_abs, "data", "registries")
     registries_dst = os.path.join(curated_root_abs, "data", "registries")

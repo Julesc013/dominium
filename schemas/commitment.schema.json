@@ -118,5 +118,21 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "actor_subject_id": "actor_subject_id.example",
+      "commitment_id": "commitment_id.example",
+      "commitment_type_id": "commitment_type_id.example",
+      "created_tick": 0,
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "linked_event_ids": [],
+      "scheduled_start_tick": 0,
+      "schema_version": "1.0.0",
+      "status": "planned",
+      "target_id": "target_id.example",
+      "target_kind": "structure"
+    }
+  ]
 }

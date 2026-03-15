@@ -3,24 +3,60 @@
   "title": "AppShell Log Category Registry Schema",
   "version": "1.0.0",
   "type": "object",
-  "required": ["schema_version", "registry_id", "categories", "deterministic_fingerprint", "extensions"],
+  "required": [
+    "schema_version",
+    "registry_id",
+    "categories",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "type": "string", "const": "1.0.0" },
-    "registry_id": { "type": "string", "minLength": 1 },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "registry_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "categories": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["category_id", "description"],
+        "required": [
+          "category_id",
+          "description"
+        ],
         "additionalProperties": false,
         "properties": {
-          "category_id": { "type": "string", "minLength": 1 },
-          "description": { "type": "string", "minLength": 1 }
+          "category_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
-    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "extensions": { "type": "object", "additionalProperties": true }
-  }
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "categories": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "registry_id": "registry_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

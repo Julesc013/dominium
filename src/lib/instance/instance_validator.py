@@ -6,6 +6,12 @@ import json
 import os
 from typing import Dict, List, Mapping, Tuple
 
+from src.compat.migration_lifecycle import (
+    ARTIFACT_KIND_INSTANCE_MANIFEST,
+    DECISION_READ_ONLY,
+    DECISION_REFUSE,
+    determine_migration_decision,
+)
 from src.lib.provides import (
     RESOLUTION_POLICY_VALUES,
     normalize_provides_resolutions,
@@ -452,9 +458,15 @@ def validate_instance_manifest(
     instance_manifest_path: str = "",
     manifest_payload: Mapping[str, object] | None = None,
 ) -> Dict[str, object]:
-    del repo_root
     manifest = normalize_instance_manifest(
         manifest_payload if manifest_payload is not None else json.load(open(instance_manifest_path, "r", encoding="utf-8"))
+    )
+    migration_decision_record = determine_migration_decision(
+        repo_root,
+        artifact_kind_id=ARTIFACT_KIND_INSTANCE_MANIFEST,
+        payload=manifest,
+        allow_read_only=instance_allow_read_only_fallback(manifest),
+        artifact_path=instance_manifest_path,
     )
     missing = _required_fields(manifest)
     if missing:
@@ -464,6 +476,7 @@ def validate_instance_manifest(
             "refusal_code": refusal_code,
             "missing_fields": missing,
             "instance_manifest": manifest,
+            "migration_decision_record": migration_decision_record,
         }
     if str(manifest.get("mode", "")).strip() == "linked" and not str(_as_map(manifest.get("install_ref")).get("install_id", "")).strip():
         return {
@@ -471,17 +484,19 @@ def validate_instance_manifest(
             "refusal_code": REFUSAL_INSTANCE_MISSING_PROFILE_BUNDLE,
             "message": "linked instances require install_ref.install_id",
             "instance_manifest": manifest,
+            "migration_decision_record": migration_decision_record,
         }
     if str(manifest.get("mode", "")).strip() == "portable":
         embedded_builds = _as_map(manifest.get("embedded_builds"))
         install_ref = _as_map(manifest.get("install_ref"))
         if not embedded_builds and not str(install_ref.get("install_id", "")).strip():
             return {
-                "result": "refused",
-                "refusal_code": REFUSAL_INSTANCE_MISSING_PROFILE_BUNDLE,
-                "message": "portable instances require install_ref or embedded_builds",
-                "instance_manifest": manifest,
-            }
+            "result": "refused",
+            "refusal_code": REFUSAL_INSTANCE_MISSING_PROFILE_BUNDLE,
+            "message": "portable instances require install_ref or embedded_builds",
+            "instance_manifest": manifest,
+            "migration_decision_record": migration_decision_record,
+        }
     invalid_save_refs = _invalid_save_refs(list(manifest.get("save_refs") or []))
     if invalid_save_refs:
         return {
@@ -489,6 +504,7 @@ def validate_instance_manifest(
             "refusal_code": REFUSAL_INSTANCE_INVALID_SAVE_REF,
             "invalid_save_refs": invalid_save_refs,
             "instance_manifest": manifest,
+            "migration_decision_record": migration_decision_record,
         }
     resolution_policy_id = str(manifest.get("resolution_policy_id", "")).strip()
     if resolution_policy_id and resolution_policy_id not in RESOLUTION_POLICY_VALUES:
@@ -497,6 +513,7 @@ def validate_instance_manifest(
             "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
             "message": "instance resolution_policy_id is invalid",
             "instance_manifest": manifest,
+            "migration_decision_record": migration_decision_record,
         }
     seen_provides_ids = set()
     for row in list(manifest.get("provides_resolutions") or []):
@@ -513,6 +530,7 @@ def validate_instance_manifest(
                 "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
                 "provides_resolution_validation": validation,
                 "instance_manifest": manifest,
+                "migration_decision_record": migration_decision_record,
             }
         if str(resolution.get("instance_id", "")).strip() != str(manifest.get("instance_id", "")).strip():
             return {
@@ -520,6 +538,7 @@ def validate_instance_manifest(
                 "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
                 "message": "provides resolution instance_id must match manifest instance_id",
                 "instance_manifest": manifest,
+                "migration_decision_record": migration_decision_record,
             }
         if resolution_policy_id and str(resolution.get("resolution_policy_id", "")).strip() != resolution_policy_id:
             return {
@@ -527,6 +546,7 @@ def validate_instance_manifest(
                 "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
                 "message": "provides resolution policy must match manifest resolution_policy_id",
                 "instance_manifest": manifest,
+                "migration_decision_record": migration_decision_record,
             }
         if provides_id in seen_provides_ids:
             return {
@@ -534,6 +554,7 @@ def validate_instance_manifest(
                 "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
                 "message": "duplicate provides_id in provides_resolutions",
                 "instance_manifest": manifest,
+                "migration_decision_record": migration_decision_record,
             }
         seen_provides_ids.add(provides_id)
     expected = deterministic_fingerprint(manifest)
@@ -544,8 +565,49 @@ def validate_instance_manifest(
             "expected_deterministic_fingerprint": expected,
             "actual_deterministic_fingerprint": str(manifest.get("deterministic_fingerprint", "")).strip(),
             "instance_manifest": manifest,
+            "migration_decision_record": migration_decision_record,
+        }
+    if str(migration_decision_record.get("decision_action_id", "")).strip() == DECISION_REFUSE:
+        return {
+            "result": "refused",
+            "refusal_code": str(migration_decision_record.get("refusal_code", "")).strip(),
+            "instance_manifest": manifest,
+            "migration_decision_record": migration_decision_record,
         }
     return {
         "result": "complete",
         "instance_manifest": manifest,
+        "migration_decision_record": migration_decision_record,
+    }
+
+
+def evaluate_instance_manifest_load(
+    *,
+    repo_root: str,
+    instance_manifest_path: str = "",
+    manifest_payload: Mapping[str, object] | None = None,
+) -> Dict[str, object]:
+    validation = validate_instance_manifest(
+        repo_root=repo_root,
+        instance_manifest_path=instance_manifest_path,
+        manifest_payload=manifest_payload,
+    )
+    decision = dict(validation.get("migration_decision_record") or {})
+    action = str(decision.get("decision_action_id", "")).strip()
+    if str(validation.get("result", "")).strip() != "complete":
+        return {
+            "result": "refused",
+            "refusal_code": str(validation.get("refusal_code", "")).strip(),
+            "instance_manifest": dict(validation.get("instance_manifest") or {}),
+            "instance_validation": validation,
+            "migration_decision_record": decision,
+            "read_only_required": False,
+        }
+    return {
+        "result": "complete",
+        "refusal_code": "",
+        "instance_manifest": dict(validation.get("instance_manifest") or {}),
+        "instance_validation": validation,
+        "migration_decision_record": decision,
+        "read_only_required": action == DECISION_READ_ONLY,
     }

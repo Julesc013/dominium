@@ -24,6 +24,7 @@ from src.appshell.logging import (  # noqa: E402
     log_emit,
     set_current_log_engine,
 )
+from src.appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
@@ -66,12 +67,35 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ipc-manifest-path", default="")
     parser.add_argument("--run-manifest-path", default="")
     parser.add_argument("--pid-stub", default="")
+    parser.add_argument("--install-root", default="")
+    parser.add_argument("--store-root", default="")
+    parser.add_argument("--install-id", default="")
+    parser.add_argument("--install-registry-path", default="")
     args = parser.parse_args(argv)
 
     repo_root = os.path.normpath(os.path.abspath(str(args.repo_root or REPO_ROOT_HINT)))
     product_id = str(args.product_id or "").strip()
     session_id = str(args.session_id or "").strip()
     pid_stub = str(args.pid_stub or "").strip() or "proc.{}.0001".format(product_id)
+    vpath_args: list[str] = []
+    if str(args.install_root or "").strip():
+        vpath_args.extend(["--install-root", str(args.install_root).strip()])
+    if str(args.store_root or "").strip():
+        vpath_args.extend(["--store-root", str(args.store_root).strip()])
+    if str(args.install_id or "").strip():
+        vpath_args.extend(["--install-id", str(args.install_id).strip()])
+    if str(args.install_registry_path or "").strip():
+        vpath_args.extend(["--install-registry-path", str(args.install_registry_path).strip()])
+    set_current_virtual_paths(
+        vpath_init(
+            {
+                "repo_root": repo_root,
+                "product_id": product_id,
+                "raw_args": vpath_args,
+                "executable_path": os.path.join(repo_root, "bin", product_id),
+            }
+        )
+    )
 
     version_payload = build_version_payload(repo_root, product_id=product_id)
     log_file_path = build_default_log_file_path(repo_root, product_id=product_id, session_id=session_id)
@@ -109,7 +133,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         started = endpoint_server.start()
         log_emit(
-            category="appshell",
+            category="supervisor",
             severity="info",
             message_key="supervisor.child.ready",
             params={
@@ -134,7 +158,7 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             if command == "stop":
                 log_emit(
-                    category="appshell",
+                    category="supervisor",
                     severity="info",
                     message_key="supervisor.child.stop_requested",
                     params={"product_id": product_id, "pid_stub": pid_stub},
@@ -142,14 +166,14 @@ def main(argv: list[str] | None = None) -> int:
                 break
             if command == "crash":
                 log_emit(
-                    category="appshell",
+                    category="supervisor",
                     severity="error",
                     message_key="supervisor.child.crash_requested",
                     params={"product_id": product_id, "pid_stub": pid_stub},
                 )
                 return 3
             log_emit(
-                category="appshell",
+                category="supervisor",
                 severity="info",
                 message_key="supervisor.child.stdin_ignored",
                 params={"product_id": product_id, "pid_stub": pid_stub, "command": command},
@@ -158,6 +182,7 @@ def main(argv: list[str] | None = None) -> int:
     finally:
         endpoint_server.stop()
         clear_current_log_engine()
+        clear_current_virtual_paths()
 
 
 if __name__ == "__main__":

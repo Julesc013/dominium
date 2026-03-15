@@ -58,5 +58,18 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "extensions": {},
+      "from_volume_id": "from_volume_id.example",
+      "portal_id": "portal_id.example",
+      "portal_type_id": "portal_type_id.example",
+      "schema_version": "1.0.0",
+      "sealing_coefficient": 0,
+      "state_machine_id": "state_machine_id.example",
+      "tags": [],
+      "to_volume_id": "to_volume_id.example"
+    }
+  ]
 }

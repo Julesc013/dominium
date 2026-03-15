@@ -12,8 +12,8 @@ def run(repo_root: str):
 
     rendered_row = scenario_row(interop_stress_report(repo_root), "interop.client_server.rendered_to_tui")
     rendered_substitutions = set(str(item).strip() for item in list(rendered_row.get("substituted_capability_ids") or []))
-    if "cap.ui.rendered->cap.ui.cli" not in rendered_substitutions:
-        return {"status": "fail", "message": "missing rendered->cli fallback substitution"}
+    if "cap.ui.rendered->cap.ui.tui" not in rendered_substitutions:
+        return {"status": "fail", "message": "missing rendered->tui fallback substitution"}
 
     compiled_row = scenario_row(interop_stress_report(repo_root), "interop.engine_server.compiled_to_l1")
     compiled_substitutions = set(str(item).strip() for item in list(compiled_row.get("substituted_capability_ids") or []))

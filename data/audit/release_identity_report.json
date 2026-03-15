@@ -1,0 +1,203 @@
+{
+  "baseline_doc_path": "docs/audit/RELEASE_IDENTITY_BASELINE.md",
+  "baseline_fingerprint": "53e99968d06bba3a394ba1b39358dcd9c11711b6336c56c8e9fe48b33e461cc1",
+  "constitution_path": "docs/release/RELEASE_IDENTITY_CONSTITUTION.md",
+  "deterministic_fingerprint": "ffde01d676fde0554cdd92f17f94073af0ad93126af3c54f91a3ba1831eef599",
+  "hash_prefix_length": 12,
+  "naming_rules_path": "docs/release/ARTIFACT_NAMING_RULES.md",
+  "naming_templates": {
+    "binary": "<product_id>-<semver>+<build_id>-<platform_tag>",
+    "bundle": "<bundle_kind>-<bundle_id>-<bundle_hash_prefix>",
+    "lock": "pack_lock-<hash_prefix>",
+    "manifest": "manifest-<kind>-<hash_prefix>",
+    "pack": "<pack_id>-<pack_version>-<pack_hash_prefix>"
+  },
+  "products": [
+    {
+      "binary_name_example": "client-0.0.0+build.910117421584d245-platform.portable",
+      "build_id": "build.910117421584d245",
+      "compilation_options_hash": "ba3f3d1ad649070196d6c08c7b8c296eea18fa7230a2c1e7347026fbd72a12dd",
+      "inputs_hash": "910117421584d24500488f9c2dded154f12b68e4e1f8bd05ba447d4e0b434f08",
+      "product_id": "client",
+      "release_tag_example": "v0.0.0-mock",
+      "semantic_contract_registry_hash": "500f86d45022f5fffb44b7e425bacb2e0b9b98601064c9416f9bb923fdac1334",
+      "semver": "0.0.0",
+      "source_revision_id": "c39b69de8a5ceae98bc9776c17ca14bffd75bd35"
+    },
+    {
+      "binary_name_example": "engine-0.0.0+build.fc58dd22f0effa69-platform.portable",
+      "build_id": "build.fc58dd22f0effa69",
+      "compilation_options_hash": "24aa758bc5a573526899a0eed730fdb8e67f12a105ad3df698a469789a72dece",
+      "inputs_hash": "fc58dd22f0effa69ba08adda6adaa341a1f1d671d351eab9fe146226feb647be",
+      "product_id": "engine",
+      "release_tag_example": "v0.0.0-mock",
+      "semantic_contract_registry_hash": "500f86d45022f5fffb44b7e425bacb2e0b9b98601064c9416f9bb923fdac1334",
+      "semver": "0.0.0",
+      "source_revision_id": "c39b69de8a5ceae98bc9776c17ca14bffd75bd35"
+    },
+    {
+      "binary_name_example": "game-0.0.0+build.3a7f01a2be0ae05c-platform.portable",
+      "build_id": "build.3a7f01a2be0ae05c",
+      "compilation_options_hash": "e1700dac041c46d04a686b1f8b407a92fc7bd90882a8dc8ffa7527d8445c932f",
+      "inputs_hash": "3a7f01a2be0ae05c6dfee7d985c5fa0d8c546074daf32216133ab3985e418149",
+      "product_id": "game",
+      "release_tag_example": "v0.0.0-mock",
+      "semantic_contract_registry_hash": "500f86d45022f5fffb44b7e425bacb2e0b9b98601064c9416f9bb923fdac1334",
+      "semver": "0.0.0",
+      "source_revision_id": "c39b69de8a5ceae98bc9776c17ca14bffd75bd35"
+    },
+    {
+      "binary_name_example": "launcher-0.0.0+build.d22e625cbeccdd6d-platform.portable",
+      "build_id": "build.d22e625cbeccdd6d",
+      "compilation_options_hash": "2676babfd3b82a7d87607ba00292eff0d1fd748a2312e3e2edc1a53f901c90d8",
+      "inputs_hash": "d22e625cbeccdd6d507c19d8b6ae2d1755cc84333d4976b18ff2bd65bb861eb7",
+      "product_id": "launcher",
+      "release_tag_example": "v0.0.0-mock",
+      "semantic_contract_registry_hash": "500f86d45022f5fffb44b7e425bacb2e0b9b98601064c9416f9bb923fdac1334",
+      "semver": "0.0.0",
+      "source_revision_id": "c39b69de8a5ceae98bc9776c17ca14bffd75bd35"
+    },
+    {
+      "binary_name_example": "server-0.0.0+build.f0a17683bab09c03-platform.portable",
+      "build_id": "build.f0a17683bab09c03",
+      "compilation_options_hash": "53945142a4f488be9768696791998b4bb39473b83247c2b393db8714a3e621a9",
+      "inputs_hash": "f0a17683bab09c031df532275dd6157f8efa01c6b434186da5d7b6fb738a0d1a",
+      "product_id": "server",
+      "release_tag_example": "v0.0.0-mock",
+      "semantic_contract_registry_hash": "500f86d45022f5fffb44b7e425bacb2e0b9b98601064c9416f9bb923fdac1334",
+      "semver": "0.0.0",
+      "source_revision_id": "c39b69de8a5ceae98bc9776c17ca14bffd75bd35"
+    },
+    {
+      "binary_name_example": "setup-0.0.0+build.fcf70f8e523e044d-platform.portable",
+      "build_id": "build.fcf70f8e523e044d",
+      "compilation_options_hash": "4b43762ec9db513e43d955786c27259353b95a7a3f06dcfb92a43c0217656324",
+      "inputs_hash": "fcf70f8e523e044d52ce9590da8830d0b4ad194267b3f3e7e83680a106fb5e50",
+      "product_id": "setup",
+      "release_tag_example": "v0.0.0-mock",
+      "semantic_contract_registry_hash": "500f86d45022f5fffb44b7e425bacb2e0b9b98601064c9416f9bb923fdac1334",
+      "semver": "0.0.0",
+      "source_revision_id": "c39b69de8a5ceae98bc9776c17ca14bffd75bd35"
+    },
+    {
+      "binary_name_example": "tool.attach_console_stub-0.0.0+build.ec65f6a644c5ca4f-platform.portable",
+      "build_id": "build.ec65f6a644c5ca4f",
+      "compilation_options_hash": "359437c6eb2aeaeba9381d4985c4f6be0ea974705405e9052fbfedb0d695025a",
+      "inputs_hash": "ec65f6a644c5ca4f27e47535cd24b8010ac4589f4b94c0c01e654b37d00951f1",
+      "product_id": "tool.attach_console_stub",
+      "release_tag_example": "v0.0.0-mock",
+      "semantic_contract_registry_hash": "500f86d45022f5fffb44b7e425bacb2e0b9b98601064c9416f9bb923fdac1334",
+      "semver": "0.0.0",
+      "source_revision_id": "c39b69de8a5ceae98bc9776c17ca14bffd75bd35"
+    }
+  ],
+  "release_channels": [
+    {
+      "channel_id": "alpha",
+      "description": "Deterministic alpha release channel for early governed pre-release builds.",
+      "deterministic_fingerprint": "1e655f5eaad4c15f337cc4b200ff19b9527320ea2a2d0545605e6482474b7b58",
+      "extensions": {
+        "official.source": "RELEASE0-2"
+      },
+      "schema_version": "1.0.0",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+        "extensions": {},
+        "future_series": "RELEASE",
+        "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+        "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      }
+    },
+    {
+      "channel_id": "beta",
+      "description": "Deterministic beta release channel for broader governed pre-release builds.",
+      "deterministic_fingerprint": "f12cf246f2643fd7c701258f3c6e3b8a3def1930670fecf47960d417eb359a2a",
+      "extensions": {
+        "official.source": "RELEASE0-2"
+      },
+      "schema_version": "1.0.0",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+        "extensions": {},
+        "future_series": "RELEASE",
+        "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+        "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      }
+    },
+    {
+      "channel_id": "mock",
+      "description": "Deterministic mock release channel for dry-run and governance rehearsal builds.",
+      "deterministic_fingerprint": "58a138a8033254f6676884a71d858c951464e84b7664972be8b9a4aa4522e541",
+      "extensions": {
+        "official.source": "RELEASE0-2"
+      },
+      "schema_version": "1.0.0",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+        "extensions": {},
+        "future_series": "RELEASE",
+        "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+        "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      }
+    },
+    {
+      "channel_id": "rc",
+      "description": "Deterministic release candidate channel for near-final governed builds.",
+      "deterministic_fingerprint": "e3d83dcd6604d4b0eddb7c3ec43fefe70275c3370134a2a1fee3a53f86c40cf8",
+      "extensions": {
+        "official.source": "RELEASE0-2"
+      },
+      "schema_version": "1.0.0",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+        "extensions": {},
+        "future_series": "RELEASE",
+        "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+        "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      }
+    },
+    {
+      "channel_id": "stable",
+      "description": "Deterministic stable release channel for governed public release builds.",
+      "deterministic_fingerprint": "cfdf6e14d60f8ce764f79517c753cb17ee23a7556ea65f827df0c6de59a1af6f",
+      "extensions": {
+        "official.source": "RELEASE0-2"
+      },
+      "schema_version": "1.0.0",
+      "stability": {
+        "contract_id": "",
+        "deterministic_fingerprint": "cf7739a90b585ed29d30a71eed3ece6099cc7a35ee3040242ffdb32d0f8d608b",
+        "extensions": {},
+        "future_series": "RELEASE",
+        "rationale": "Release identity channel semantics remain provisional until release manifest generation and packaging policy are frozen.",
+        "replacement_target": "Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional"
+      }
+    }
+  ],
+  "report_id": "release.identity.v1",
+  "required_release_artifact_kinds": [
+    "artifact.binary",
+    "artifact.pack",
+    "artifact.lock",
+    "artifact.profile",
+    "artifact.bundle",
+    "artifact.manifest"
+  ],
+  "result": "complete",
+  "retro_audit_path": "docs/audit/RELEASE0_RETRO_AUDIT.md",
+  "violations": []
+}

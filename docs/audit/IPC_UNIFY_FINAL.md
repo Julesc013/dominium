@@ -23,14 +23,14 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 ## Attach Discipline Summary
 
 - Unnegotiated attach refusal: `refusal.connection.no_negotiation`
-- Negotiation record hash: `d7ff28f88830e885090d8c3dd10f731eee4c5e04735569e2e54e49e500ed0892`
+- Negotiation record hash: `d835395666963dcfe0b71e548660c9ede5bb16ac4722d614f32063a61d8f8732`
 - Replay result: `complete`
 - VROOT discovery result: `complete`
 
 ## Runtime Verification
 
 - Attach probe result: `complete`
-- Cross-platform IPC hash: `cc7a2e076ee5b107e607af4efd53fe1e7145510ceb106c595112d1e823f6b422`
+- Cross-platform IPC hash: `077479cca928e1344809927ef75fd807bacaba0232352f7c52fe635d9b5bae2d`
 - Replay mismatches: `none`
 - Descriptor file path: `D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime/endpoints/ipc.server.session.ipc_unify.vroot.json`
 

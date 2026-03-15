@@ -64,5 +64,18 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "composition": {},
+      "compound_id": "compound_id.example",
+      "deprecated": false,
+      "extensions": {},
+      "molar_mass_mode": "declared",
+      "molar_mass_raw": 0,
+      "schema_version": "1.0.0",
+      "tags": [],
+      "version_introduced": "example"
+    }
+  ]
 }

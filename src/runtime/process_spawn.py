@@ -99,6 +99,7 @@ def build_python_process_spec(
     repo_root: str,
     spawn_id: str,
     script_path: str,
+    module_name: str = "",
     args: list[str] | tuple[str, ...],
     cwd: str = "",
     env: Mapping[str, object] | None = None,
@@ -106,13 +107,22 @@ def build_python_process_spec(
 ) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(str(repo_root or ".")))
     script_rel = _repo_rel_path(repo_root_abs, script_path)
+    module_token = str(module_name or "").strip()
+    argv = [str(item) for item in list(args or []) if str(item).strip()]
+    if module_token:
+        process_args = ["-m", module_token] + argv
+        spawn_kind = "python_module"
+    else:
+        process_args = [str(script_rel).strip()] + argv
+        spawn_kind = "python_process"
     payload = {
         "spawn_id": str(spawn_id or "spawn.python").strip() or "spawn.python",
-        "spawn_kind": "python_process",
+        "spawn_kind": spawn_kind,
         "executable": os.path.normpath(sys.executable),
         "cwd": os.path.normpath(os.path.abspath(str(cwd or repo_root_abs))),
         "script_rel": str(script_rel).strip(),
-        "args": [str(script_rel).strip()] + [str(item) for item in list(args or []) if str(item).strip()],
+        "module_name": module_token,
+        "args": process_args,
         "env": _spawn_env(env),
         "deterministic_fingerprint": "",
         "extensions": dict((str(key), str(value)) for key, value in sorted(dict(extensions or {}).items(), key=lambda item: str(item[0]))),

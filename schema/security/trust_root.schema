@@ -1,0 +1,22 @@
+SCHEMA: security/trust_root.schema
+schema_id: dominium.schema.security.trust_root
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define one offline trust-root public key record for artifact verification policy.
+
+REQUIRED SHAPE:
+record trust_root
+  required:
+    - signer_id: id
+    - public_key_bytes: bytes
+    - trust_level_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- signer_id is stable across releases for the same trust root.
+- public_key_bytes are treated as opaque canonical bytes.
+- deterministic_fingerprint is computed from canonical serialized content.
+

@@ -30,31 +30,122 @@
   ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "type": "string", "const": "1.0.0" },
-    "bundle_version": { "type": "string", "const": "1.0.0" },
-    "created_by_product_id": { "type": "string", "minLength": 1 },
-    "build_id": { "type": "string" },
-    "seed": { "type": "string" },
-    "session_id": { "type": "string" },
-    "session_template_id": { "type": "string" },
-    "contract_bundle_hash": { "type": "string" },
-    "semantic_contract_registry_hash": { "type": "string" },
-    "pack_lock_hash": { "type": "string" },
-    "overlay_manifest_hash": { "type": "string" },
-    "proof_anchor_count": { "type": "integer", "minimum": 0 },
-    "canonical_event_count": { "type": "integer", "minimum": 0 },
-    "log_event_count": { "type": "integer", "minimum": 0 },
-    "view_fingerprint_count": { "type": "integer", "minimum": 0 },
-    "proof_window_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "canonical_event_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "log_window_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "environment_summary": { "type": "object", "additionalProperties": true },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bundle_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "created_by_product_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "build_id": {
+      "type": "string"
+    },
+    "seed": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "session_template_id": {
+      "type": "string"
+    },
+    "contract_bundle_hash": {
+      "type": "string"
+    },
+    "semantic_contract_registry_hash": {
+      "type": "string"
+    },
+    "pack_lock_hash": {
+      "type": "string"
+    },
+    "overlay_manifest_hash": {
+      "type": "string"
+    },
+    "proof_anchor_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "canonical_event_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "log_event_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "view_fingerprint_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "proof_window_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "canonical_event_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "log_window_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "environment_summary": {
+      "type": "object",
+      "additionalProperties": true
+    },
     "included_artifacts": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
-    "bundle_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "extensions": { "type": "object", "additionalProperties": true }
-  }
+    "bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "universal_identity_block": {
+      "$ref": "./universal_identity_block.schema.json"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "build_id": "build_id.example",
+      "bundle_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "bundle_version": "1.0.0",
+      "canonical_event_count": 0,
+      "canonical_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "contract_bundle_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "created_by_product_id": "created_by_product_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "environment_summary": {},
+      "extensions": {},
+      "included_artifacts": [],
+      "log_event_count": 0,
+      "log_window_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "overlay_manifest_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "pack_lock_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "proof_anchor_count": 0,
+      "proof_window_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "schema_version": "1.0.0",
+      "seed": "example",
+      "semantic_contract_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "session_id": "session_id.example",
+      "session_template_id": "session_template_id.example",
+      "view_fingerprint_count": 0
+    }
+  ]
 }

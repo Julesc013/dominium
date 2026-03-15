@@ -24,6 +24,7 @@ from src.appshell.logging import (  # noqa: E402
     log_emit,
     set_current_log_engine,
 )
+from src.appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init  # noqa: E402
 from src.appshell.supervisor import (  # noqa: E402
     DEFAULT_SUPERVISOR_POLICY_ID,
     SupervisorEngine,
@@ -62,9 +63,32 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--contract-bundle-hash", default="")
     parser.add_argument("--supervisor-policy-id", default=DEFAULT_SUPERVISOR_POLICY_ID)
     parser.add_argument("--topology", default="singleplayer")
+    parser.add_argument("--install-root", default="")
+    parser.add_argument("--store-root", default="")
+    parser.add_argument("--install-id", default="")
+    parser.add_argument("--install-registry-path", default="")
     args = parser.parse_args(argv)
 
     repo_root = os.path.normpath(os.path.abspath(str(args.repo_root or REPO_ROOT_HINT)))
+    vpath_args: list[str] = []
+    if str(args.install_root or "").strip():
+        vpath_args.extend(["--install-root", str(args.install_root).strip()])
+    if str(args.store_root or "").strip():
+        vpath_args.extend(["--store-root", str(args.store_root).strip()])
+    if str(args.install_id or "").strip():
+        vpath_args.extend(["--install-id", str(args.install_id).strip()])
+    if str(args.install_registry_path or "").strip():
+        vpath_args.extend(["--install-registry-path", str(args.install_registry_path).strip()])
+    set_current_virtual_paths(
+        vpath_init(
+            {
+                "repo_root": repo_root,
+                "product_id": "launcher",
+                "raw_args": vpath_args,
+                "executable_path": os.path.join(repo_root, "bin", "launcher"),
+            }
+        )
+    )
     run_spec = build_supervisor_run_spec(
         repo_root=repo_root,
         seed=str(args.seed or "0").strip() or "0",
@@ -116,7 +140,7 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(started, sort_keys=True), flush=True)
             return 1
         log_emit(
-            category="appshell",
+            category="supervisor",
             severity="info",
             message_key="supervisor.service.ready",
             params={
@@ -135,6 +159,7 @@ def main(argv: list[str] | None = None) -> int:
         endpoint_server.stop()
         clear_current_supervisor_engine()
         clear_current_log_engine()
+        clear_current_virtual_paths()
 
 
 if __name__ == "__main__":

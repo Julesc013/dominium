@@ -1259,25 +1259,30 @@ def build_earth_mvp_regression_baseline(
     repo_root: str,
     scenario: Mapping[str, object] | None = None,
     seed: int = DEFAULT_EARTH9_SEED,
+    stress_report: Mapping[str, object] | None = None,
 ) -> dict:
     repo_root = os.path.normpath(os.path.abspath(repo_root))
     scenario_payload = dict(scenario or generate_earth_mvp_stress_scenario(repo_root=repo_root, seed=int(seed)))
-    stress_report = verify_earth_mvp_stress_scenario(repo_root=repo_root, scenario=scenario_payload, seed=int(seed))
+    stress_report_payload = _as_map(stress_report) or verify_earth_mvp_stress_scenario(
+        repo_root=repo_root,
+        scenario=scenario_payload,
+        seed=int(seed),
+    )
     view_replay = replay_earth_view_window(repo_root=repo_root, scenario=scenario_payload, seed=int(seed))
     physics_replay = replay_earth_physics_window(repo_root=repo_root, seed=int(seed))
-    climate_year = _as_map(_as_map(stress_report.get("subsystem_reports")).get("climate_year_delta"))
-    geometry_edit = _as_map(_as_map(stress_report.get("physics_window")).get("geometry_edit_report"))
-    hydrology_local = _as_map(_as_map(stress_report.get("subsystem_reports")).get("hydrology_local_edit"))
-    proof_summary = _as_map(stress_report.get("proof_summary"))
+    climate_year = _as_map(_as_map(stress_report_payload.get("subsystem_reports")).get("climate_year_delta"))
+    geometry_edit = _as_map(_as_map(stress_report_payload.get("physics_window")).get("geometry_edit_report"))
+    hydrology_local = _as_map(_as_map(stress_report_payload.get("subsystem_reports")).get("hydrology_local_edit"))
+    proof_summary = _as_map(stress_report_payload.get("proof_summary"))
     view_fingerprints = _as_map(view_replay.get("view_fingerprints"))
-    support_snapshots = _as_map(_as_map(stress_report.get("view_window")).get("support_snapshots"))
+    support_snapshots = _as_map(_as_map(stress_report_payload.get("view_window")).get("support_snapshots"))
     baseline = {
         "schema_version": "1.0.0",
         "baseline_id": "earth.mvp.baseline.v1",
         "description": "Deterministic EARTH-9 regression lock for traversal, time warp, views, local edits, and replay surfaces.",
         "scenario_id": str(scenario_payload.get("scenario_id", "")).strip(),
         "scenario_fingerprint": str(scenario_payload.get("deterministic_fingerprint", "")).strip(),
-        "stress_report_fingerprint": str(stress_report.get("deterministic_fingerprint", "")).strip(),
+        "stress_report_fingerprint": str(stress_report_payload.get("deterministic_fingerprint", "")).strip(),
         "view_replay_fingerprint": str(view_replay.get("deterministic_fingerprint", "")).strip(),
         "physics_replay_fingerprint": str(physics_replay.get("deterministic_fingerprint", "")).strip(),
         "cross_platform_determinism_hash": str(proof_summary.get("cross_platform_determinism_hash", "")).strip(),
@@ -1322,9 +1327,9 @@ def build_earth_mvp_regression_baseline(
             "collision_cache_invalidated_entries": int(_as_int(geometry_edit.get("collision_cache_invalidated_entries", 0), 0)),
         },
         "degradation_summary": {
-            "map_downsampled": bool(_as_map(stress_report.get("degradation_report")).get("map_downsampled", False)),
-            "debug_view_limit": int(_as_int(_as_map(stress_report.get("degradation_report")).get("debug_view_limit", 0), 0)),
-            "throttled_debug_view_ids": list(_as_map(stress_report.get("degradation_report")).get("throttled_debug_view_ids") or []),
+            "map_downsampled": bool(_as_map(stress_report_payload.get("degradation_report")).get("map_downsampled", False)),
+            "debug_view_limit": int(_as_int(_as_map(stress_report_payload.get("degradation_report")).get("debug_view_limit", 0), 0)),
+            "throttled_debug_view_ids": list(_as_map(stress_report_payload.get("degradation_report")).get("throttled_debug_view_ids") or []),
         },
         "update_policy": {
             "required_commit_tag": "EARTH-REGRESSION-UPDATE",

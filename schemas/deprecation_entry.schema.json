@@ -9,6 +9,7 @@
   ],
   "type": "object",
   "required": [
+    "schema_version",
     "deprecated_id",
     "deprecated_kind",
     "replacement_id",
@@ -23,6 +24,10 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
     "deprecated_id": {
       "type": "string",
       "minLength": 1
@@ -82,6 +87,7 @@
   },
   "examples": [
     {
+      "schema_version": "1.0.0",
       "deprecated_id": "data/registries/deprecation_registry.json",
       "deprecated_kind": "registry",
       "replacement_id": "data/governance/deprecations.json",

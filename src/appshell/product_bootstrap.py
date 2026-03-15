@@ -366,6 +366,9 @@ def build_product_bootstrap_context(
         "supervisor": {
             "required": product_token == "launcher",
         },
+        "legacy_fallback": {
+            "allow_unknown_command_fallback": product_token in {"launcher", "setup"},
+        },
         "install_reference": _token(
             _value_after(shell_args.raw_args, "--install-root", "--manifest", "--instance-manifest", "--instance-id")
         ),

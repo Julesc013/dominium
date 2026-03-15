@@ -32,11 +32,13 @@ from src.geo.kernel.geo_kernel import (
     _topology_row,
     _wrapped_delta,
 )
+from src.numeric_discipline import allowed_error_bound_for_tolerance, tolerance_rows_by_id
 
 
 REFUSAL_GEO_METRIC_INVALID = "refusal.geo.metric_invalid"
 
 _TOLERANCE_POLICY_REGISTRY_REL = "data/registries/tolerance_policy_registry.json"
+_ENGINE_TOLERANCE_REGISTRY_REL = "data/registries/tolerance_registry.json"
 _METRIC_POLICY_REGISTRY_REL = "data/registries/metric_policy_registry.json"
 _GEODESIC_POLICY_REGISTRY_REL = "data/registries/geodesic_approx_policy_registry.json"
 _METRIC_ENGINE_VERSION = "GEO3-3"
@@ -86,6 +88,10 @@ def _tolerance_rows(payload: Mapping[str, object] | None = None) -> Dict[str, di
         row_key="tolerance_policies",
         id_key="tolerance_policy_id",
     )
+
+
+def _engine_tolerance_rows(payload: Mapping[str, object] | None = None) -> Dict[str, dict]:
+    return tolerance_rows_by_id(_as_map(payload) or _registry_payload(_ENGINE_TOLERANCE_REGISTRY_REL))
 
 
 def _metric_policy_rows(payload: Mapping[str, object] | None = None) -> Dict[str, dict]:
@@ -225,6 +231,8 @@ def _spherical_arc_mm(coords_a: Sequence[int], coords_b: Sequence[int], radius_m
     lat_b_rad = math.radians(lat_b)
     hav = (math.sin(dlat * 0.5) ** 2) + math.cos(lat_a_rad) * math.cos(lat_b_rad) * (math.sin(dlon * 0.5) ** 2)
     angle = 2.0 * math.asin(min(1.0, math.sqrt(max(0.0, hav))))
+    if __debug__ and (not math.isfinite(hav) or not math.isfinite(angle)):
+        raise AssertionError("geo_projection_bridge produced non-finite spherical arc state")
     return int(round(float(max(1, int(radius_mm))) * float(angle)))
 
 
@@ -287,7 +295,21 @@ def _bounded_error_mm(
     geodesic_bound = int(max(0, _as_int(_as_map(geodesic_policy_row).get("bounded_error_mm", 0), 0)))
     bound = max(metric_bound, policy_bound, geodesic_bound if str(query_kind) == "geodesic" else 0)
     quantization_bound = int(max(0, int(max(1, tolerance_scale)) - 1))
-    return int(max(bound, quantization_bound))
+    resolved_bound = int(max(bound, quantization_bound))
+    if __debug__:
+        allowed_bound = allowed_error_bound_for_tolerance(
+            tolerance_id="tol.geo_projection",
+            tolerance_registry={"tolerances": list(_engine_tolerance_rows().values())},
+            default_value=resolved_bound,
+        )
+        if resolved_bound > allowed_bound:
+            raise AssertionError(
+                "geo projection bound exceeded tol.geo_projection (resolved={}, allowed={})".format(
+                    int(resolved_bound),
+                    int(allowed_bound),
+                )
+            )
+    return resolved_bound
 
 
 def _normalize_raw_positions(

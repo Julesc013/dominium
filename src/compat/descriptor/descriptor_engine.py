@@ -13,6 +13,7 @@ from src.compat.capability_negotiation import (
     semantic_contract_rows_by_category,
 )
 from src.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
+from src.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
 from src.release.build_id_engine import (
     DEFAULT_PRODUCT_SEMVER,
     build_product_build_metadata as release_build_product_build_metadata,
@@ -153,6 +154,10 @@ def build_product_descriptor(
         if isinstance(platform_descriptor_override, Mapping)
         else probe_platform_descriptor(repo_root, product_id=str(product_id).strip(), platform_id=str(platform_id).strip())
     )
+    target_row = select_target_matrix_row(
+        repo_root,
+        platform_id=str(platform_descriptor.get("platform_id", "")).strip(),
+    )
     build_meta = build_product_build_metadata(
         repo_root,
         str(product_id).strip(),
@@ -186,6 +191,14 @@ def build_product_descriptor(
     descriptor_extensions["official.platform_descriptor_hash"] = str(platform_descriptor.get("deterministic_fingerprint", "")).strip()
     descriptor_extensions["official.platform_capability_ids"] = list(platform_descriptor.get("supported_capability_ids") or [])
     descriptor_extensions["official.platform_descriptor"] = dict(platform_descriptor)
+    descriptor_extensions["official.target_matrix_registry_rel"] = TARGET_MATRIX_REGISTRY_REL.replace("\\", "/")
+    descriptor_extensions["official.target_id"] = str(target_row.get("target_id", "")).strip()
+    descriptor_extensions["official.os_id"] = str(target_row.get("os_id", "")).strip()
+    descriptor_extensions["official.arch_id"] = str(target_row.get("arch_id", "")).strip()
+    descriptor_extensions["official.abi_id"] = str(target_row.get("abi_id", "")).strip()
+    descriptor_extensions["official.target_tier"] = int(target_row.get("tier", 0) or 0)
+    descriptor_extensions["official.target_matrix_row_hash"] = canonical_sha256(target_row) if target_row else ""
+    descriptor_extensions["official.target_matrix_row"] = dict(target_row)
 
     contract_ranges = list(_as_list(defaults_row.get("semantic_contract_versions_supported")))
     if not contract_ranges:

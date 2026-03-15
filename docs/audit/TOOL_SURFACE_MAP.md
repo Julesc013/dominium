@@ -10,10 +10,10 @@ Replacement Target: release surface index regenerated from TOOL-SURFACE-0 toolin
 
 Source: `data/audit/repo_inventory.json` + `src/tools/tool_surface_adapter.py`
 
-- Wrapped commands: `113`
+- Wrapped commands: `118`
 - Alias commands: `12`
-- Subprocess adapters: `101`
-- Surface fingerprint: `14a3a96edc24bb407ec2fa72b83efae7097b0abb89fa2159ce536e12ad4e45ec`
+- Subprocess adapters: `106`
+- Surface fingerprint: `9ea4eacbdef150a59d8ed33c5a944d3b159238e96e9047fe85b1e4d4b5bb1d14`
 
 ## `geo`
 
@@ -158,18 +158,23 @@ Source: `data/audit/repo_inventory.json` + `src/tools/tool_surface_adapter.py`
 | `tools/lib/tool_generate_lib_stress.py` | unknown | `dom lib generate-lib-stress` | `dom.lib.generate-lib-stress.v1` | `python_subprocess` | - |
 | `tools/lib/tool_replay_save_open.py` | unknown | `dom lib replay-save-open` | `dom.lib.replay-save-open.v1` | `python_subprocess` | - |
 | `tools/lib/tool_run_lib_stress.py` | unknown | `dom lib run-lib-stress` | `dom.lib.run-lib-stress.v1` | `python_subprocess` | - |
+| `tools/lib/tool_run_store_gc.py` | Run deterministic STORE-GC-0 baseline generation | `dom lib run-store-gc` | `dom.lib.run-store-gc.v1` | `python_subprocess` | - |
+| `tools/lib/tool_store_verify.py` | Run deterministic store verification and write STORE-GC-0 verify outputs | `dom lib store-verify` | `dom.lib.store-verify.v1` | `python_subprocess` | - |
 | `tools/lib/tool_verify_bundle.py` | unknown | `dom lib verify-bundle` | `dom.lib.verify-bundle.v1` | `python_subprocess` | - |
 
 ## `compat`
 
 | Current Path | Function | Stable Namespace | Stable ID | Adapter | Required Capabilities |
 | --- | --- | --- | --- | --- | --- |
+| `tools/compat/tool_apply_migration.py` | Apply deterministic migration lifecycle actions for a single artifact | `dom compat apply-migration` | `dom.compat.apply-migration.v1` | `python_subprocess` | - |
 | `tools/compat/tool_emit_descriptor.py` | unknown | `dom compat emit-descriptor` | `dom.compat.emit-descriptor.v1` | `python_subprocess` | - |
 | `tools/compat/tool_generate_descriptor_manifest.py` | unknown | `dom compat generate-descriptor-manifest` | `dom.compat.generate-descriptor-manifest.v1` | `python_subprocess` | - |
 | `tools/compat/tool_generate_interop_matrix.py` | unknown | `dom compat generate-interop-matrix` | `dom.compat.generate-interop-matrix.v1` | `python_subprocess` | - |
+| `tools/compat/tool_plan_migration.py` | Plan deterministic migration lifecycle actions for a single artifact | `dom compat plan-migration` | `dom.compat.plan-migration.v1` | `python_subprocess` | - |
 | `tools/compat/tool_replay_migration.py` | unknown | `dom compat replay-migration` | `dom.compat.replay-migration.v1` | `python_subprocess` | - |
 | `tools/compat/tool_replay_negotiation.py` | unknown | `dom compat replay-negotiation` | `dom.compat.replay-negotiation.v1` | `python_subprocess` | - |
 | `tools/compat/tool_run_interop_stress.py` | unknown | `dom compat run-interop-stress` | `dom.compat.run-interop-stress.v1` | `python_subprocess` | - |
+| `tools/compat/tool_run_migration_lifecycle.py` | Generate deterministic MIGRATION-LIFECYCLE-0 report artifacts | `dom compat run-migration-lifecycle` | `dom.compat.run-migration-lifecycle.v1` | `python_subprocess` | - |
 | `appshell:tool.attach_console_stub:compat-status` | Run deterministic endpoint compatibility status and show negotiated mode plus disabled features. | `dom compat status` | `dom.compat.status.v1` | `appshell_alias` | - |
 
 ## `diag`

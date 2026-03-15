@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Signature Record Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "signer_id",
+    "signed_hash",
+    "signature_bytes",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "signature_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "signer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "signed_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "signature_bytes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "signature_bytes": "example",
+      "signed_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "signer_id": "signer_id.example"
+    }
+  ]
+}

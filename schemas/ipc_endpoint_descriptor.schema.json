@@ -43,5 +43,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "address": "example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "endpoint_id": "endpoint_id.example",
+      "extensions": {},
+      "product_id": "product_id.example",
+      "schema_version": "1.0.0",
+      "session_id": "session_id.example"
+    }
+  ]
 }

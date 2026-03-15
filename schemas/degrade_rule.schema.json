@@ -62,5 +62,18 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "examples": [
+    {
+      "action_kind": "disable_feature",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "fallback_mode_id": "fallback_mode_id.example",
+      "priority": 0,
+      "rule_id": "rule_id.example",
+      "schema_version": "1.0.0",
+      "trigger_id": "trigger_id.example",
+      "trigger_kind": "missing_optional_capability"
+    }
+  ]
 }

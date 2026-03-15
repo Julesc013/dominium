@@ -9,6 +9,7 @@ PURPOSE:
 REQUIRED SHAPE:
 record topology_edge
   required:
+    - schema_version: semver
     - edge_id: id
     - from_node_id: id
     - to_node_id: id

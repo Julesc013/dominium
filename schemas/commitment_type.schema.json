@@ -56,5 +56,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "commitment_type_id": "commitment_type_id.example",
+      "description": "example",
+      "extensions": {},
+      "produces_event_type_ids": [],
+      "required_entitlements": [],
+      "schema_version": "1.0.0",
+      "strictness_requirements": []
+    }
+  ]
 }

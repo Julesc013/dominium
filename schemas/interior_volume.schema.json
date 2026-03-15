@@ -42,22 +42,42 @@
       "properties": {
         "translation_mm": {
           "type": "object",
-          "required": ["x", "y", "z"],
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
           "additionalProperties": false,
           "properties": {
-            "x": {"type": "integer"},
-            "y": {"type": "integer"},
-            "z": {"type": "integer"}
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "z": {
+              "type": "integer"
+            }
           }
         },
         "rotation_mdeg": {
           "type": "object",
-          "required": ["yaw", "pitch", "roll"],
+          "required": [
+            "yaw",
+            "pitch",
+            "roll"
+          ],
           "additionalProperties": false,
           "properties": {
-            "yaw": {"type": "integer"},
-            "pitch": {"type": "integer"},
-            "roll": {"type": "integer"}
+            "yaw": {
+              "type": "integer"
+            },
+            "pitch": {
+              "type": "integer"
+            },
+            "roll": {
+              "type": "integer"
+            }
           }
         },
         "scale_permille": {
@@ -68,12 +88,18 @@
     },
     "bounding_shape": {
       "type": "object",
-      "required": ["shape_type", "shape_data"],
+      "required": [
+        "shape_type",
+        "shape_data"
+      ],
       "additionalProperties": false,
       "properties": {
         "shape_type": {
           "type": "string",
-          "enum": ["aabb", "convex_hull"]
+          "enum": [
+            "aabb",
+            "convex_hull"
+          ]
         },
         "shape_data": {
           "type": "object",
@@ -95,5 +121,32 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "bounding_shape": {
+        "shape_data": {},
+        "shape_type": "aabb"
+      },
+      "extensions": {},
+      "local_transform": {
+        "rotation_mdeg": {
+          "pitch": 0,
+          "roll": 0,
+          "yaw": 0
+        },
+        "scale_permille": 1,
+        "translation_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "parent_spatial_id": "parent_spatial_id.example",
+      "schema_version": "1.0.0",
+      "tags": [],
+      "volume_id": "volume_id.example",
+      "volume_type_id": "volume_type_id.example"
+    }
+  ]
 }

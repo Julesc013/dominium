@@ -22,6 +22,15 @@ def _fingerprint(payload: dict) -> str:
     return canonical_sha256(body)
 
 
+def _pack_compat_fingerprint(payload: dict) -> str:
+    from src.packs.compat.pack_compat_validator import _normalize_manifest
+    from tools.xstack.compatx.canonical_json import canonical_sha256
+
+    body = dict(_normalize_manifest(payload))
+    body["deterministic_fingerprint"] = ""
+    return canonical_sha256(body)
+
+
 def _canonical_pack_hash(payload: dict) -> str:
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -50,6 +59,11 @@ def _normalize_fixture_manifest_hashes(temp_repo: str) -> None:
         manifest = read_json(manifest_path)
         manifest["canonical_hash"] = _canonical_pack_hash(manifest)
         write_json(manifest_path, manifest)
+        compat_path = os.path.join(root, "pack.compat.json")
+        if os.path.isfile(compat_path):
+            compat_payload = read_json(compat_path)
+            compat_payload["deterministic_fingerprint"] = _pack_compat_fingerprint(compat_payload)
+            write_json(compat_path, compat_payload)
 
 
 def _rewrite_capability_sidecars(pack_dir: str, capability_ids: list[str]) -> None:
@@ -64,7 +78,7 @@ def _rewrite_capability_sidecars(pack_dir: str, capability_ids: list[str]) -> No
     if os.path.isfile(compat_path):
         payload = read_json(compat_path)
         payload["capability_ids"] = list(sorted_caps)
-        payload["deterministic_fingerprint"] = _fingerprint(payload)
+        payload["deterministic_fingerprint"] = _pack_compat_fingerprint(payload)
         write_json(compat_path, payload)
 
 

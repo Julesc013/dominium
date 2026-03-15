@@ -122,6 +122,15 @@ def write_json(path: str, payload: Mapping[str, object]) -> str:
     return target
 
 
+def _safe_rmtree(path: str) -> None:
+    try:
+        shutil.rmtree(path)
+    except FileNotFoundError:
+        return
+    except OSError:
+        shutil.rmtree(path, ignore_errors=True)
+
+
 def _write_text(path: str, text: str) -> str:
     target = os.path.abspath(str(path or "").strip())
     _ensure_dir(os.path.dirname(target))
@@ -629,6 +638,31 @@ def _scenario_projection(payload: Mapping[str, object]) -> dict:
     return body
 
 
+def _sanitize_validation_payload(workspace_root: str, payload: object) -> object:
+    workspace_abs = os.path.abspath(workspace_root)
+    if isinstance(payload, Mapping):
+        sanitized = {}
+        for key, value in sorted(dict(payload).items(), key=lambda row: str(row[0])):
+            key_token = str(key)
+            if key_token == "artifact_path" and isinstance(value, str) and str(value).strip():
+                candidate = os.path.abspath(str(value))
+                try:
+                    rel_path = os.path.relpath(candidate, workspace_abs)
+                except ValueError:
+                    sanitized[key_token] = _norm(value)
+                else:
+                    if not rel_path.startswith(".."):
+                        sanitized[key_token] = _norm(rel_path)
+                    else:
+                        sanitized[key_token] = _norm(value)
+                continue
+            sanitized[key_token] = _sanitize_validation_payload(workspace_root, value)
+        return sanitized
+    if isinstance(payload, list):
+        return [_sanitize_validation_payload(workspace_root, item) for item in list(payload)]
+    return payload
+
+
 def generate_lib_stress_scenario(
     *,
     repo_root: str,
@@ -639,7 +673,7 @@ def generate_lib_stress_scenario(
     repo_root = os.path.abspath(str(repo_root or REPO_ROOT_HINT).strip() or REPO_ROOT_HINT)
     workspace_root = os.path.abspath(str(out_root or "").strip())
     if os.path.isdir(workspace_root):
-        shutil.rmtree(workspace_root)
+        _safe_rmtree(workspace_root)
     _ensure_dir(workspace_root)
     _copy_registries(repo_root, workspace_root)
 
@@ -1114,40 +1148,40 @@ def generate_lib_stress_scenario(
 
     validations = {
         "installs": {
-            _relative_path(workspace_root, install_a_manifest_path): validate_install_manifest(
+            _relative_path(workspace_root, install_a_manifest_path): _sanitize_validation_payload(workspace_root, validate_install_manifest(
                 repo_root=workspace_root, install_manifest_path=install_a_manifest_path
-            ),
-            _relative_path(workspace_root, install_b_manifest_path): validate_install_manifest(
+            )),
+            _relative_path(workspace_root, install_b_manifest_path): _sanitize_validation_payload(workspace_root, validate_install_manifest(
                 repo_root=workspace_root, install_manifest_path=install_b_manifest_path
-            ),
-            _relative_path(workspace_root, install_c_manifest_path): validate_install_manifest(
+            )),
+            _relative_path(workspace_root, install_c_manifest_path): _sanitize_validation_payload(workspace_root, validate_install_manifest(
                 repo_root=workspace_root, install_manifest_path=install_c_manifest_path
-            ),
+            )),
         },
         "instances": {
-            _relative_path(workspace_root, os.path.join(linked_client_root, "instance.manifest.json")): validate_instance_manifest(
+            _relative_path(workspace_root, os.path.join(linked_client_root, "instance.manifest.json")): _sanitize_validation_payload(workspace_root, validate_instance_manifest(
                 repo_root=workspace_root, instance_manifest_path=os.path.join(linked_client_root, "instance.manifest.json")
-            ),
-            _relative_path(workspace_root, os.path.join(linked_server_root, "instance.manifest.json")): validate_instance_manifest(
+            )),
+            _relative_path(workspace_root, os.path.join(linked_server_root, "instance.manifest.json")): _sanitize_validation_payload(workspace_root, validate_instance_manifest(
                 repo_root=workspace_root, instance_manifest_path=os.path.join(linked_server_root, "instance.manifest.json")
-            ),
-            _relative_path(workspace_root, os.path.join(portable_root, "instance.manifest.json")): validate_instance_manifest(
+            )),
+            _relative_path(workspace_root, os.path.join(portable_root, "instance.manifest.json")): _sanitize_validation_payload(workspace_root, validate_instance_manifest(
                 repo_root=workspace_root, instance_manifest_path=os.path.join(portable_root, "instance.manifest.json")
-            ),
-            _relative_path(workspace_root, os.path.join(strict_root, "instance.manifest.json")): validate_instance_manifest(
+            )),
+            _relative_path(workspace_root, os.path.join(strict_root, "instance.manifest.json")): _sanitize_validation_payload(workspace_root, validate_instance_manifest(
                 repo_root=workspace_root, instance_manifest_path=os.path.join(strict_root, "instance.manifest.json")
-            ),
+            )),
         },
         "saves": {
-            _relative_path(workspace_root, os.path.join(mutable_save_root, "save.manifest.json")): validate_save_manifest(
+            _relative_path(workspace_root, os.path.join(mutable_save_root, "save.manifest.json")): _sanitize_validation_payload(workspace_root, validate_save_manifest(
                 repo_root=workspace_root, save_manifest_path=os.path.join(mutable_save_root, "save.manifest.json")
-            ),
-            _relative_path(workspace_root, os.path.join(readonly_save_root, "save.manifest.json")): validate_save_manifest(
+            )),
+            _relative_path(workspace_root, os.path.join(readonly_save_root, "save.manifest.json")): _sanitize_validation_payload(workspace_root, validate_save_manifest(
                 repo_root=workspace_root, save_manifest_path=os.path.join(readonly_save_root, "save.manifest.json")
-            ),
-            _relative_path(workspace_root, os.path.join(legacy_save_root, "save.manifest.json")): validate_save_manifest(
+            )),
+            _relative_path(workspace_root, os.path.join(legacy_save_root, "save.manifest.json")): _sanitize_validation_payload(workspace_root, validate_save_manifest(
                 repo_root=workspace_root, save_manifest_path=os.path.join(legacy_save_root, "save.manifest.json")
-            ),
+            )),
         },
     }
 
@@ -1361,6 +1395,7 @@ def _run_python_tool(script_rel: str, args: Sequence[str]) -> Tuple[int, dict]:
         [sys.executable, script_path] + list(args),
         check=False,
         capture_output=True,
+        stdin=subprocess.DEVNULL,
         text=True,
         encoding="utf-8",
     )
@@ -1993,7 +2028,7 @@ def run_lib_stress(
 ) -> dict:
     run_root = os.path.abspath(str(out_root or "").strip())
     if os.path.isdir(run_root):
-        shutil.rmtree(run_root)
+        _safe_rmtree(run_root)
     _ensure_dir(run_root)
 
     round_a_root = os.path.join(run_root, "round_a")

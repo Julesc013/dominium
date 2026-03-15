@@ -475,10 +475,23 @@ from analyzers import e471_direct_simulation_start_smell
 from analyzers import e472_direct_pack_load_smell
 from analyzers import e473_duplicate_validation_surface_smell
 from analyzers import e474_orphan_tool_smell
-from analyzers import e483_silent_shim_smell
-from analyzers import e484_shim_bypass_smell
 from analyzers import e480_hardcoded_relative_path_smell
 from analyzers import e481_os_path_separator_smell
+from analyzers import e483_silent_shim_smell
+from analyzers import e484_shim_bypass_smell
+from analyzers import e528_race_dependent_truth_smell
+from analyzers import e529_uncanonicalized_parallel_output_smell
+from analyzers import e530_missing_guaranteed_log_smell
+from analyzers import e531_secrets_in_log_smell
+from analyzers import e532_nondeterministic_gc_order_smell
+from analyzers import e533_delete_without_quarantine_smell
+from analyzers import e534_missing_governance_profile_smell
+from analyzers import e535_performance_regression_smell
+from analyzers import e536_missing_archive_record_smell
+from analyzers import e537_overwritten_release_index_smell
+from analyzers import e538_silent_upgrade_smell
+from analyzers import e539_yanked_build_selectable_smell
+from analyzers import e540_non_deterministic_selection_smell
 
 
 ANALYZERS = (
@@ -957,10 +970,23 @@ ANALYZERS = (
     e472_direct_pack_load_smell,
     e473_duplicate_validation_surface_smell,
     e474_orphan_tool_smell,
-    e483_silent_shim_smell,
-    e484_shim_bypass_smell,
     e480_hardcoded_relative_path_smell,
     e481_os_path_separator_smell,
+    e483_silent_shim_smell,
+    e484_shim_bypass_smell,
+    e528_race_dependent_truth_smell,
+    e529_uncanonicalized_parallel_output_smell,
+    e530_missing_guaranteed_log_smell,
+    e531_secrets_in_log_smell,
+    e532_nondeterministic_gc_order_smell,
+    e533_delete_without_quarantine_smell,
+    e534_missing_governance_profile_smell,
+    e535_performance_regression_smell,
+    e536_missing_archive_record_smell,
+    e537_overwritten_release_index_smell,
+    e538_silent_upgrade_smell,
+    e539_yanked_build_selectable_smell,
+    e540_non_deterministic_selection_smell,
 )
 
 

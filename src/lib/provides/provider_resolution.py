@@ -43,6 +43,9 @@ REFUSAL_PROVIDES_HASH_MISMATCH = "refusal.provides.hash_mismatch"
 
 PACK_TOKEN_RE = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$")
 LEGACY_PACK_ID_RE = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)*(?:\.[a-z0-9]+(?:[._-][a-z0-9]+)*)+$")
+LEGACY_SHORT_PACK_IDS = {
+    "base",
+}
 
 
 def _as_map(value: object) -> dict:
@@ -112,6 +115,10 @@ def classify_pack_namespace(pack_id: str) -> Dict[str, object]:
             row["message"] = "pack ids must use official.<org>.<pack>, mod.<author>.<pack>, or local.<user>.<pack>"
             return row
         row["namespace_kind"] = parts[0]
+        row["valid"] = True
+        return row
+    if token in LEGACY_SHORT_PACK_IDS:
+        row["namespace_kind"] = "legacy_short"
         row["valid"] = True
         return row
     if LEGACY_PACK_ID_RE.fullmatch(token):

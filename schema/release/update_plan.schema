@@ -1,0 +1,29 @@
+SCHEMA: release/update_plan.schema
+schema_id: dominium.schema.release.update_plan
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic offline-first update plan derived from a release index and current install state.
+
+REQUIRED SHAPE:
+record update_plan
+  required:
+    - plan_id: id
+    - from_release_id: id
+    - to_release_id: id
+    - target_platform: tag
+    - install_profile_id: id
+    - resolution_policy_id: id
+    - components_to_add: [map]
+    - components_to_remove: [map]
+    - components_to_upgrade: [map]
+    - verification_steps: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- component delta rows are ordered canonically by component_id.
+- verification steps are ordered canonically by step_id and component_id.
+- update planning must be deterministic for identical current state, release index, and policies.
+- resolution_policy_id must be explicit so latest-compatible selection never occurs silently.

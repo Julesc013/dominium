@@ -61,5 +61,19 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "asset_id": "asset_id.example",
+      "consequences": {},
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "event_id": "event_id.example",
+      "extensions": {},
+      "failure_mode_id": "failure_mode_id.example",
+      "provenance_event_id": "provenance_event_id.example",
+      "schema_version": "1.0.0",
+      "severity": 0,
+      "tick": 0
+    }
+  ]
 }

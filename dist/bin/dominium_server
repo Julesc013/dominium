@@ -1,12 +1,23 @@
 #!/usr/bin/env python3
 import os
+import subprocess
 import sys
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
-if REPO_ROOT not in sys.path:
-    sys.path.insert(0, REPO_ROOT)
+SCRIPT = os.path.join(REPO_ROOT, "tools", "mvp", "runtime_entry.py")
+DESCRIPTOR_TOOL = os.path.join(REPO_ROOT, "tools", "compat", "tool_emit_descriptor.py")
 
-from tools.mvp.runtime_entry import server_main
+if "--descriptor" in sys.argv[1:] or "--descriptor-file" in sys.argv[1:]:
+    if not os.path.isfile(DESCRIPTOR_TOOL):
+        print("descriptor tool missing: {}".format(DESCRIPTOR_TOOL))
+        raise SystemExit(2)
+    cmd = [sys.executable, DESCRIPTOR_TOOL, "--product-id", "server"] + sys.argv[1:]
+    raise SystemExit(subprocess.call(cmd))
 
-raise SystemExit(server_main(sys.argv[1:]))
+if not os.path.isfile(SCRIPT):
+    print("dominium runtime bootstrap missing: {}".format(SCRIPT))
+    raise SystemExit(2)
+
+cmd = [sys.executable, SCRIPT, "server", "--ui", "headless"] + sys.argv[1:]
+raise SystemExit(subprocess.call(cmd))

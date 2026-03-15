@@ -1,0 +1,26 @@
+SCHEMA: engine/concurrency_policy.schema
+schema_id: dominium.schema.engine.concurrency_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic concurrency policies that bound where parallel execution is allowed.
+- Separate authoritative truth execution policy from derived and validation-only parallelism.
+
+REQUIRED SHAPE:
+record concurrency_policy
+  required:
+    - policy_id: id
+    - allow_parallel_derived: bool
+    - allow_parallel_validation: bool
+    - allow_parallel_truth: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - max_threads: int (>=1)
+    - stability: stability_marker
+
+INVARIANTS:
+- allow_parallel_truth MUST remain false unless deterministic shard merge is separately declared and verified.
+- Parallel derived and validation results MUST be canonically ordered before hashing or persistence.
+- deterministic_fingerprint MUST derive from canonical payload fields only.

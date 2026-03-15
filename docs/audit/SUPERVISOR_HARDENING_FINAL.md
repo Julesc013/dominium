@@ -10,7 +10,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Supervisor Hardening Final
 
-Fingerprint: `f74d839ab38ce0d12efee8667d308b24ec9201dbea81d8a2460552b0bef576a1`
+Fingerprint: `354fac9b3d1ace550667c518ea6d0271e3f3d6b94a901de6cc19f18968fbbb66`
 
 ## Removed Wall-Clock Usage
 
@@ -34,7 +34,7 @@ Fingerprint: `f74d839ab38ce0d12efee8667d308b24ec9201dbea81d8a2460552b0bef576a1`
 - Runtime probe result: `complete`
 - Replay probe result: `complete`
 - Crash policy probe result: `complete`
-- Portable/installed parity fingerprint: `7c3582caade62390d721e338f21826cc73360bc8179c642d53a2a197e9d3275d`
+- Portable/installed parity fingerprint: `04749a43ff16ad354964cdaf301a5c491a0f3d0bb48db31f500dc274f386697e`
 
 ## Violations
 

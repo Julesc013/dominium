@@ -42,6 +42,9 @@
         "$ref": "./signature_block.schema.json"
       }
     },
+    "universal_identity_block": {
+      "$ref": "./universal_identity_block.schema.json"
+    },
     "artifacts": {
       "type": "array",
       "items": {
@@ -60,5 +63,17 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "artifacts": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "manifest_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "manifest_version": "1.0.0",
+      "platform_tag": "example",
+      "release_id": "release_id.example",
+      "semantic_contract_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
 }

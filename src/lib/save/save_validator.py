@@ -7,6 +7,14 @@ import os
 from typing import Dict, List, Mapping, Tuple
 
 from src.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_candidate_roots
+from src.compat.migration_lifecycle import (
+    ARTIFACT_KIND_SAVE,
+    DECISION_MIGRATE,
+    DECISION_READ_ONLY,
+    DECISION_REFUSE,
+    REFUSAL_MIGRATION_NOT_ALLOWED,
+    determine_migration_decision,
+)
 from src.meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -275,7 +283,6 @@ def validate_save_manifest(
     save_manifest_path: str = "",
     manifest_payload: Mapping[str, object] | None = None,
 ) -> Dict[str, object]:
-    del repo_root
     if manifest_payload is None:
         try:
             payload = json.load(open(save_manifest_path, "r", encoding="utf-8"))
@@ -297,6 +304,14 @@ def validate_save_manifest(
         payload = dict(manifest_payload or {})
 
     manifest = normalize_save_manifest(payload)
+    migration_decision_record = determine_migration_decision(
+        repo_root,
+        artifact_kind_id=ARTIFACT_KIND_SAVE,
+        payload=manifest,
+        allow_read_only=bool(manifest.get("allow_read_only_open", False)),
+        expected_contract_bundle_hash=str(manifest.get("universe_contract_bundle_hash", "")).strip(),
+        artifact_path=save_manifest_path,
+    )
     errors: List[dict] = []
     warnings: List[dict] = []
 
@@ -339,6 +354,7 @@ def validate_save_manifest(
         "errors": sorted(errors, key=lambda row: (str(row.get("path", "")), str(row.get("code", "")), str(row.get("message", "")))),
         "warnings": sorted(warnings, key=lambda row: (str(row.get("path", "")), str(row.get("code", "")), str(row.get("message", "")))),
         "save_manifest": manifest,
+        "migration_decision_record": migration_decision_record,
     }
 
 
@@ -544,6 +560,7 @@ def evaluate_save_open(
         }
 
     save_manifest = dict(validation.get("save_manifest") or {})
+    migration_decision_record = dict(validation.get("migration_decision_record") or {})
     save_root = os.path.dirname(os.path.abspath(save_manifest_path))
     read_only_allowed = save_read_only_allowed(
         save_manifest,
@@ -552,6 +569,7 @@ def evaluate_save_open(
     )
     degrade_reasons: List[str] = []
     migration_applied = False
+    decision_action_id = str(migration_decision_record.get("decision_action_id", "")).strip()
 
     contract_bundle_payload, contract_bundle_path, contract_bundle_error = load_save_contract_bundle(save_root, save_manifest)
     contract_bundle_hash = canonical_sha256(contract_bundle_payload) if contract_bundle_payload else ""
@@ -665,15 +683,28 @@ def evaluate_save_open(
             }
         degrade_reasons.append("save_created_by_build_mismatch")
 
-    current_version = str(save_manifest.get("save_format_version", CURRENT_SAVE_FORMAT_VERSION)).strip() or CURRENT_SAVE_FORMAT_VERSION
-    migration_required = current_version != CURRENT_SAVE_FORMAT_VERSION
+    if decision_action_id == DECISION_REFUSE:
+        refusal_code = str(migration_decision_record.get("refusal_code", "")).strip() or REFUSAL_MIGRATION_NOT_ALLOWED
+        return {
+            "result": "refused",
+            "refusal_code": refusal_code,
+            "save_manifest": save_manifest,
+            "save_validation": validation,
+            "migration_decision_record": migration_decision_record,
+            "degrade_reasons": [],
+            "migration_applied": False,
+            "migration_required": False,
+            "read_only_required": False,
+        }
+
+    migration_required = decision_action_id == DECISION_MIGRATE
     if migration_required:
         if allow_save_migration:
             migration = migrate_save_manifest(
                 repo_root=repo_root,
                 save_manifest_path=save_manifest_path,
                 manifest_payload=save_manifest,
-                to_version=CURRENT_SAVE_FORMAT_VERSION,
+                to_version=str(migration_decision_record.get("target_version", CURRENT_SAVE_FORMAT_VERSION)).strip() or CURRENT_SAVE_FORMAT_VERSION,
                 migration_id=migration_id,
                 tick_applied=migration_tick,
             )
@@ -705,6 +736,20 @@ def evaluate_save_open(
             }
         else:
             degrade_reasons.append("save_migration_required")
+    elif decision_action_id == DECISION_READ_ONLY:
+        if not read_only_allowed:
+            return {
+                "result": "refused",
+                "refusal_code": REFUSAL_SAVE_READ_ONLY_REQUIRED,
+                "save_manifest": save_manifest,
+                "save_validation": validation,
+                "migration_decision_record": migration_decision_record,
+                "degrade_reasons": [],
+                "migration_applied": False,
+                "migration_required": False,
+                "read_only_required": True,
+            }
+        degrade_reasons.append("save_read_only_forward_version")
 
     read_only_required = bool(degrade_reasons)
     return {
@@ -717,6 +762,7 @@ def evaluate_save_open(
         "contract_bundle_path": contract_bundle_path,
         "contract_bundle_hash": contract_bundle_hash,
         "expected_contract_bundle_hash": str(save_manifest.get("universe_contract_bundle_hash", "")).strip(),
+        "migration_decision_record": migration_decision_record,
         "degrade_reasons": degrade_reasons,
         "migration_applied": migration_applied,
         "migration_required": migration_required,

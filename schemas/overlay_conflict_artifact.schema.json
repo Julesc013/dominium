@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Derived conflict artifact emitted by the GEO-9 overlay merge engine.",
   "x-doc-ref": [
-    "docs/canon/constitution_v1.md §3 A1/A6/A10",
+    "docs/canon/constitution_v1.md \u00a73 A1/A6/A10",
     "docs/geo/OVERLAY_CONFLICT_POLICIES.md"
   ],
   "type": "object",
@@ -75,5 +75,25 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "examples": [
+    {
+      "conflict_id": "overlay.conflict.0000000000000000",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "involved_patches": [],
+      "mode": "last_wins",
+      "object_id": "object_id.example",
+      "property_path": "property_path.json"
+    },
+    {
+      "conflict_id": "conflict_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "involved_patches": [],
+      "mode": "last_wins",
+      "object_id": "object_id.example",
+      "property_path": "property_path.json"
+    }
+  ]
 }

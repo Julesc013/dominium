@@ -41,5 +41,15 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "data": {},
+      "epistemic_redaction_level": "example",
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "section_id": "section_id.example",
+      "title": "Example"
+    }
+  ]
 }

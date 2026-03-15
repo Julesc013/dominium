@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import copy
+import contextlib
+import io
 import json
 import os
 from typing import Mapping, Sequence
@@ -61,6 +64,7 @@ from src.validation import build_validation_report, write_validation_outputs
 REFUSAL_TO_EXIT_REGISTRY_REL = os.path.join("data", "registries", "refusal_to_exit_registry.json")
 EXIT_INTERNAL = 60
 EXIT_SUCCESS = 0
+_VALIDATION_COMMAND_CACHE: dict[tuple[str, str], dict] = {}
 
 
 def _read_json(path: str) -> tuple[dict, str]:
@@ -179,6 +183,7 @@ def _refusal_dispatch(repo_root: str, refusal_code: str, reason: str, remediatio
         params={
             "refusal_code": str(refusal_code).strip(),
             "reason": str(reason).strip(),
+            "remediation_hint": str(remediation_hint).strip(),
         },
     )
     return _json_dispatch(payload, _exit_code_for_refusal(repo_root, refusal_code))
@@ -200,6 +205,7 @@ def _build_verify_parser(prog: str) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog=prog, add_help=False)
     parser.add_argument("--root", default="dist")
     parser.add_argument("--release-manifest", default="")
+    parser.add_argument("--trust-policy-id", default="")
     parser.add_argument("--bundle-id", default="")
     parser.add_argument("--mod-policy-id", default="mod_policy.lab")
     parser.add_argument("--overlay-conflict-policy-id", default="")
@@ -245,6 +251,25 @@ def _run_descriptor_command(repo_root: str, product_id: str, args: Sequence[str]
             descriptor_file=str(getattr(parsed, "descriptor_file", "")).strip(),
         )
     )
+
+
+def _run_setup_legacy_command(repo_root: str, args: Sequence[str]) -> dict:
+    del repo_root
+    from tools.setup import setup_cli as setup_cli_module
+
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        exit_code = int(setup_cli_module._legacy_main(list(args or [])))
+    output = str(buffer.getvalue() or "").strip()
+    if not output:
+        return _json_dispatch({"result": "complete", "message": "setup command completed"}, exit_code)
+    try:
+        payload = json.loads(output)
+    except ValueError:
+        return _text_dispatch(output, exit_code)
+    if isinstance(payload, Mapping):
+        return _json_dispatch(dict(payload), exit_code)
+    return _text_dispatch(output, exit_code)
 
 
 def _load_descriptor_payload(peer_descriptor_file: str) -> tuple[dict, str]:
@@ -419,7 +444,12 @@ def _verify_pack_command(repo_root: str, args: Sequence[str], *, build_lock: boo
         dist_root = str(getattr(parsed, "root", "")).strip()
         if not dist_root:
             dist_root = infer_dist_root_from_manifest_path(release_manifest_path)
-        result = verify_release_manifest(dist_root, release_manifest_path, repo_root=repo_root)
+        result = verify_release_manifest(
+            dist_root,
+            release_manifest_path,
+            repo_root=repo_root,
+            trust_policy_id=str(getattr(parsed, "trust_policy_id", "")).strip(),
+        )
         exit_code = EXIT_SUCCESS if str(result.get("result", "")).strip() == "complete" else _exit_code_for_refusal(
             repo_root,
             "refusal.release_manifest.content_hash_mismatch",
@@ -449,6 +479,7 @@ def _verify_pack_command(repo_root: str, args: Sequence[str], *, build_lock: boo
         out_report=out_report,
         out_lock=out_lock,
         write_outputs=bool(build_lock or getattr(parsed, "write_outputs", False)),
+        trust_policy_id=str(getattr(parsed, "trust_policy_id", "")).strip(),
     )
     log_emit(
         category="packs",
@@ -546,7 +577,11 @@ def _run_validate_command(repo_root: str, args: Sequence[str]) -> dict:
             details={"command_path": "validate"},
         )
     profile = str(getattr(parsed, "profile", "FAST") or "FAST").strip().upper() or "FAST"
-    report = build_validation_report(repo_root, profile=profile)
+    cache_key = (os.path.normpath(os.path.abspath(str(repo_root or "."))), profile)
+    cached_report = _VALIDATION_COMMAND_CACHE.get(cache_key)
+    report = copy.deepcopy(cached_report) if cached_report is not None else build_validation_report(repo_root, profile=profile)
+    if cached_report is None:
+        _VALIDATION_COMMAND_CACHE[cache_key] = copy.deepcopy(report)
     write_validation_outputs(repo_root, report)
     log_emit(
         category="validation",
@@ -876,7 +911,7 @@ def _run_launcher_start_command(repo_root: str, args: Sequence[str]) -> dict:
         "run_spec": dict(result.get("run_spec") or {}),
     }
     log_emit(
-        category="appshell",
+        category="supervisor",
         severity="info",
         message_key="supervisor.command.start",
         params={"service_endpoint_id": str(payload.get("service_endpoint_id", "")).strip()},
@@ -927,7 +962,7 @@ def _run_launcher_stop_command(repo_root: str) -> dict:
             details=details,
         )
     log_emit(
-        category="appshell",
+        category="supervisor",
         severity="info",
         message_key="supervisor.command.stop",
         params={"endpoint_id": str(endpoint.get("endpoint_id", "")).strip()},
@@ -955,7 +990,7 @@ def _run_launcher_attach_command(repo_root: str, args: Sequence[str]) -> dict:
         attach_all=bool(getattr(parsed, "all", False)),
     )
     log_emit(
-        category="ipc",
+        category="supervisor",
         severity="info",
         message_key="supervisor.command.attach",
         params={
@@ -1067,6 +1102,30 @@ def dispatch_registered_command(
         return _run_launcher_stop_command(repo_root)
     if handler_id == "launcher_attach":
         return _run_launcher_attach_command(repo_root, remaining)
+    if handler_id == "setup_install_plan":
+        return _run_setup_legacy_command(repo_root, ["install", "plan"] + list(remaining))
+    if handler_id == "setup_install_apply":
+        return _run_setup_legacy_command(repo_root, ["install", "apply"] + list(remaining))
+    if handler_id == "setup_update_check":
+        return _run_setup_legacy_command(repo_root, ["update", "check"] + list(remaining))
+    if handler_id == "setup_update_plan":
+        return _run_setup_legacy_command(repo_root, ["update", "plan"] + list(remaining))
+    if handler_id == "setup_update_apply":
+        return _run_setup_legacy_command(repo_root, ["update", "apply"] + list(remaining))
+    if handler_id == "setup_rollback":
+        return _run_setup_legacy_command(repo_root, ["rollback"] + list(remaining))
+    if handler_id == "setup_trust_list":
+        return _run_setup_legacy_command(repo_root, ["trust", "list"] + list(remaining))
+    if handler_id == "setup_trust_status":
+        return _run_setup_legacy_command(repo_root, ["trust", "status"] + list(remaining))
+    if handler_id == "setup_trust_import":
+        return _run_setup_legacy_command(repo_root, ["trust", "import"] + list(remaining))
+    if handler_id == "setup_trust_policy_set":
+        return _run_setup_legacy_command(repo_root, ["trust", "policy", "set"] + list(remaining))
+    if handler_id == "setup_governance_status":
+        return _run_setup_legacy_command(repo_root, ["governance", "status"] + list(remaining))
+    if handler_id == "setup_store_gc":
+        return _run_setup_legacy_command(repo_root, ["store", "gc"] + list(remaining))
     if handler_id == "tool_surface_root_help":
         return _run_tool_surface_root_help(repo_root)
     if handler_id == "tool_surface_area_help":

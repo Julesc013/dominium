@@ -53,5 +53,17 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "allowed_capabilities": [],
+      "allowed_trust_levels": [],
+      "conflict_policy_id": "conflict_policy_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "forbid_nondeterminism": false,
+      "mod_policy_id": "mod_policy_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

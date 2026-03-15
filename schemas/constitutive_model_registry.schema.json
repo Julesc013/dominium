@@ -4,12 +4,38 @@
   "version": "1.0.0",
   "description": "Derived deterministic constitutive model registry output.",
   "type": "object",
-  "required": ["format_version", "generated_from", "models", "registry_hash"],
+  "required": [
+    "format_version",
+    "generated_from",
+    "models",
+    "registry_hash"
+  ],
   "additionalProperties": false,
   "properties": {
-    "format_version": {"type": "string", "const": "1.0.0"},
-    "generated_from": {"type": "array"},
-    "models": {"type": "array", "items": {"$ref": "constitutive_model.schema.json"}},
-    "registry_hash": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}
-  }
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "$ref": "constitutive_model.schema.json"
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "models": [],
+      "registry_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
 }

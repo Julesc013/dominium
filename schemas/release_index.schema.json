@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Release Index Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "channel",
+    "release_series",
+    "semantic_contract_registry_hash",
+    "governance_profile_hash",
+    "supported_protocol_ranges",
+    "platform_matrix",
+    "component_graph_hash",
+    "components",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "channel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_series": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semantic_contract_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "governance_profile_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "supported_protocol_ranges": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "platform_matrix": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "os",
+          "arch",
+          "abi",
+          "artifact_url_or_path",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "os": {
+            "type": "string",
+            "minLength": 1
+          },
+          "arch": {
+            "type": "string",
+            "minLength": 1
+          },
+          "abi": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_url_or_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "component_graph_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "universal_identity_block": {
+      "$ref": "./universal_identity_block.schema.json"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "channel": "mock",
+      "component_graph_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "components": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "governance_profile_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "platform_matrix": [],
+      "release_series": "0.x",
+      "semantic_contract_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "supported_protocol_ranges": {}
+    }
+  ]
+}

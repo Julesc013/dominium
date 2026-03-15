@@ -78,7 +78,6 @@ Replacement Target: DIST-1 packaged bundle baseline and DIST-2 installer constit
 ### Staging-Only Exclusions Still Present
 
 - staging exclusion to remove during DIST-1 packaging: `bin/__pycache__`
-- staging exclusion to remove during DIST-1 packaging: `bin/__pycache__/domcpython-311.pyc`
 - staging exclusion to remove during DIST-1 packaging: `logs/.gitkeep`
 - staging exclusion to remove during DIST-1 packaging: `saves/.gitkeep`
 

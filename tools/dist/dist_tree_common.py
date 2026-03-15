@@ -25,7 +25,21 @@ from src.lib.instance import (
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from src.release import build_release_manifest, verify_release_manifest, write_release_manifest
+from src.governance import (
+    DEFAULT_GOVERNANCE_PROFILE_REL,
+    governance_profile_hash,
+    load_governance_profile,
+)
+from src.release import (
+    DEFAULT_INSTALL_PROFILE_ID,
+    build_default_component_install_plan,
+    build_release_manifest,
+    platform_targets_for_tag,
+    verify_release_manifest,
+    write_release_index,
+    write_release_manifest,
+)
+from tools.release.update_model_common import build_release_index_payload
 from tools.lib.content_store import (
     STORE_ROOT_MANIFEST,
     build_install_ref,
@@ -79,6 +93,24 @@ EXCLUDED_RUNTIME_PREFIXES = (
     "tools/xstack/repox",
     "tools/xstack/testx",
 )
+
+
+def _selected_component_ids(component_plan: Mapping[str, object] | None) -> set[str]:
+    plan = dict(component_plan or {})
+    install_plan = dict(plan.get("install_plan") or {})
+    return {
+        str(value).strip()
+        for value in list(install_plan.get("selected_components") or [])
+        if str(value).strip()
+    }
+
+
+def _selected_product_specs(component_plan: Mapping[str, object] | None) -> list[dict]:
+    selected_ids = _selected_component_ids(component_plan)
+    if not selected_ids:
+        return list(PRODUCT_SPECS)
+    rows = [dict(spec) for spec in PRODUCT_SPECS if "binary.{}".format(str(spec.get("product_id"))) in selected_ids]
+    return rows or [dict(spec) for spec in PRODUCT_SPECS]
 EXCLUDED_RUNTIME_BASENAMES = {"__pycache__"}
 EXCLUDED_RUNTIME_FILES = {
     "tools/xstack/bundle_list.py",
@@ -243,6 +275,7 @@ def _copy_runtime_data(repo_root: str, bundle_root: str) -> dict:
     copied: list[str] = []
     for rel_path in (
         "data/registries",
+        "data/governance/governance_profile.json",
         "data/session_templates/session.mvp_default.json",
         "schema",
         "schemas",
@@ -294,7 +327,7 @@ def _alias_pack_payload(alias_row: Mapping[str, object]) -> dict:
     return payload
 
 
-def _write_store_artifacts(repo_root: str, bundle_root: str) -> dict:
+def _write_store_artifacts(repo_root: str, bundle_root: str, component_plan: Mapping[str, object] | None = None) -> dict:
     repo_root_abs = _repo_root(repo_root)
     store_root = os.path.join(bundle_root, "store")
     os.makedirs(store_root, exist_ok=True)
@@ -303,17 +336,27 @@ def _write_store_artifacts(repo_root: str, bundle_root: str) -> dict:
     store_manifest = _build_store_manifest_payload()
     _write_json(os.path.join(store_root, STORE_ROOT_MANIFEST), store_manifest)
 
-    pack_lock_dest, pack_lock_payload = _copy_json(
-        os.path.join(repo_root_abs, DEFAULT_PACK_LOCK_SOURCE.replace("/", os.sep)),
-        os.path.join(bundle_root, "store", "locks", "pack_lock.mvp_default.json"),
-    )
-    profile_dest, profile_payload = _copy_json(
-        os.path.join(repo_root_abs, DEFAULT_PROFILE_BUNDLE_SOURCE.replace("/", os.sep)),
-        os.path.join(bundle_root, "store", "profiles", "bundles", "bundle.mvp_default.json"),
-    )
+    selected_ids = _selected_component_ids(component_plan)
+    pack_lock_dest = ""
+    pack_lock_payload = {}
+    profile_dest = ""
+    profile_payload = {}
+    if not selected_ids or "lock.pack_lock.mvp_default" in selected_ids:
+        pack_lock_dest, pack_lock_payload = _copy_json(
+            os.path.join(repo_root_abs, DEFAULT_PACK_LOCK_SOURCE.replace("/", os.sep)),
+            os.path.join(bundle_root, "store", "locks", "pack_lock.mvp_default.json"),
+        )
+    if not selected_ids or "profile.bundle.mvp_default" in selected_ids:
+        profile_dest, profile_payload = _copy_json(
+            os.path.join(repo_root_abs, DEFAULT_PROFILE_BUNDLE_SOURCE.replace("/", os.sep)),
+            os.path.join(bundle_root, "store", "profiles", "bundles", "bundle.mvp_default.json"),
+        )
     copied_pack_paths: list[str] = []
     for row in list(pack_lock_payload.get("ordered_packs") or []):
         alias_row = dict(row or {})
+        component_id = "pack.{}".format(_token(alias_row.get("pack_id")).replace("pack.", "", 1))
+        if selected_ids and component_id not in selected_ids:
+            continue
         rel_dir = _norm("store/" + _token(alias_row.get("distribution_rel")))
         alias_path = os.path.join(bundle_root, rel_dir.replace("/", os.sep), "pack.alias.json")
         _write_json(alias_path, _alias_pack_payload(alias_row))
@@ -322,9 +365,9 @@ def _write_store_artifacts(repo_root: str, bundle_root: str) -> dict:
     return {
         "store_root": _norm(os.path.relpath(store_root, bundle_root)),
         "store_manifest": store_manifest,
-        "pack_lock_path": _norm(os.path.relpath(pack_lock_dest, bundle_root)),
+        "pack_lock_path": _norm(os.path.relpath(pack_lock_dest, bundle_root)) if pack_lock_dest else "",
         "pack_lock_payload": pack_lock_payload,
-        "profile_bundle_path": _norm(os.path.relpath(profile_dest, bundle_root)),
+        "profile_bundle_path": _norm(os.path.relpath(profile_dest, bundle_root)) if profile_dest else "",
         "profile_bundle_payload": profile_payload,
         "pack_paths": sorted(copied_pack_paths),
     }
@@ -467,9 +510,9 @@ def _wrapper_cmd_text(product_id: str) -> str:
     return "@echo off\r\npython \"%~dp0{}\" %*\r\n".format(_token(product_id))
 
 
-def _write_product_wrappers(bundle_root: str) -> dict:
+def _write_product_wrappers(bundle_root: str, component_plan: Mapping[str, object] | None = None) -> dict:
     product_rows: list[dict[str, str]] = []
-    for spec in PRODUCT_SPECS:
+    for spec in _selected_product_specs(component_plan):
         product_id = _token(spec.get("product_id"))
         script_path = _write_text(os.path.join(bundle_root, "bin", product_id), _wrapper_script_text(spec))
         cmd_path = _write_text(os.path.join(bundle_root, "bin", product_id + ".cmd"), _wrapper_cmd_text(product_id), newline="")
@@ -511,7 +554,7 @@ def _run_wrapper(bundle_root: str, product_id: str, args: Sequence[str]) -> dict
     }
 
 
-def _build_install_manifest(bundle_root: str, repo_root: str, platform_tag: str) -> dict:
+def _build_install_manifest(bundle_root: str, repo_root: str, platform_tag: str, component_plan: Mapping[str, object] | None = None) -> dict:
     descriptors: dict[str, dict] = {}
     descriptor_hashes: dict[str, str] = {}
     binary_hashes: dict[str, str] = {}
@@ -519,7 +562,7 @@ def _build_install_manifest(bundle_root: str, repo_root: str, platform_tag: str)
     product_build_descriptors: dict[str, dict] = {}
     protocol_rows: list[dict] = []
     contract_rows: list[dict] = []
-    for product_id in PRODUCT_IDS:
+    for product_id in tuple(str(row.get("product_id")) for row in _selected_product_specs(component_plan)):
         result = _run_wrapper(bundle_root, product_id, ["--descriptor"])
         payload = dict(result.get("payload") or {})
         descriptor = dict(payload.get("descriptor") or payload)
@@ -580,6 +623,19 @@ def _build_install_manifest(bundle_root: str, repo_root: str, platform_tag: str)
         },
         "deterministic_fingerprint": "",
     }
+    install_plan = dict(dict(component_plan or {}).get("install_plan") or {})
+    if str(dict(component_plan or {}).get("graph_id", "")).strip():
+        payload["extensions"]["official.component_graph_id"] = str(dict(component_plan or {}).get("graph_id", "")).strip()
+    if str(install_plan.get("deterministic_fingerprint", "")).strip():
+        payload["extensions"]["official.component_install_plan_fingerprint"] = str(install_plan.get("deterministic_fingerprint", "")).strip()
+    if str(install_plan.get("install_profile_id", "")).strip():
+        payload["extensions"]["official.install_profile_id"] = str(install_plan.get("install_profile_id", "")).strip()
+    selected_component_ids = list(install_plan.get("selected_components") or [])
+    if selected_component_ids:
+        payload["extensions"]["official.selected_component_ids"] = sorted(str(value).strip() for value in selected_component_ids if str(value).strip())
+    selected_descriptors = list(dict(install_plan.get("extensions") or {}).get("selected_component_descriptors") or [])
+    if selected_descriptors:
+        payload["extensions"]["official.selected_component_descriptors"] = selected_descriptors
     payload = normalize_install_manifest(payload)
     payload["deterministic_fingerprint"] = ""
     payload["deterministic_fingerprint"] = install_deterministic_fingerprint(payload)
@@ -599,7 +655,12 @@ def _build_install_manifest(bundle_root: str, repo_root: str, platform_tag: str)
     }
 
 
-def _write_default_instance_manifest(bundle_root: str, install_manifest: Mapping[str, object], store_manifest: Mapping[str, object]) -> dict:
+def _write_default_instance_manifest(
+    bundle_root: str,
+    install_manifest: Mapping[str, object],
+    store_manifest: Mapping[str, object],
+    component_plan: Mapping[str, object] | None = None,
+) -> dict:
     instance_root = os.path.join(bundle_root, "instances", "default")
     os.makedirs(instance_root, exist_ok=True)
     pack_lock_payload = _read_json(os.path.join(bundle_root, "store", "locks", "pack_lock.mvp_default.json"))
@@ -640,6 +701,9 @@ def _write_default_instance_manifest(bundle_root: str, install_manifest: Mapping
         "extensions": {},
         "deterministic_fingerprint": "",
     }
+    install_plan = dict(dict(component_plan or {}).get("install_plan") or {})
+    if str(install_plan.get("install_profile_id", "")).strip():
+        instance_payload["extensions"]["install_profile_id"] = str(install_plan.get("install_profile_id", "")).strip()
     instance_payload = normalize_instance_manifest(instance_payload)
     instance_payload["deterministic_fingerprint"] = ""
     instance_payload["deterministic_fingerprint"] = instance_deterministic_fingerprint(instance_payload)
@@ -658,8 +722,10 @@ def _write_default_instance_manifest(bundle_root: str, install_manifest: Mapping
     }
 
 
-def _write_bundle_docs(repo_root: str, bundle_root: str, pack_lock_payload: Mapping[str, object]) -> dict:
+def _write_bundle_docs(repo_root: str, bundle_root: str, pack_lock_payload: Mapping[str, object], component_plan: Mapping[str, object] | None = None) -> dict:
     included_packs = [_token(row.get("pack_id")) for row in list(pack_lock_payload.get("ordered_packs") or []) if _token(row.get("pack_id"))]
+    selected_ids = _selected_component_ids(component_plan)
+    include_release_notes = not selected_ids or "docs.release_notes" in selected_ids
     readme_text = "\n".join(
         [
             "Dominium v0.0.0-mock portable bundle",
@@ -716,15 +782,11 @@ def _write_bundle_docs(repo_root: str, bundle_root: str, pack_lock_payload: Mapp
     _copy_file(os.path.join(_repo_root(repo_root), "LICENSE.md"), os.path.join(bundle_root, "LICENSE"))
     _write_text(os.path.join(bundle_root, "README"), readme_text)
     _write_text(os.path.join(bundle_root, DEFAULT_COMPAT_DOC_REL.replace("/", os.sep)), compat_text)
-    _write_text(os.path.join(bundle_root, DEFAULT_RELEASE_NOTES_REL.replace("/", os.sep)), release_notes_text)
-    return {
-        "docs": [
-            "README",
-            "LICENSE",
-            _norm(DEFAULT_COMPAT_DOC_REL),
-            _norm(DEFAULT_RELEASE_NOTES_REL),
-        ]
-    }
+    docs = ["README", "LICENSE", _norm(DEFAULT_COMPAT_DOC_REL)]
+    if include_release_notes:
+        _write_text(os.path.join(bundle_root, DEFAULT_RELEASE_NOTES_REL.replace("/", os.sep)), release_notes_text)
+        docs.append(_norm(DEFAULT_RELEASE_NOTES_REL))
+    return {"docs": docs}
 
 
 def _iter_bundle_files(bundle_root: str, *, exclude_paths: Sequence[str] | None = None) -> list[str]:
@@ -756,14 +818,24 @@ def _write_filelist(bundle_root: str, *, exclude_paths: Sequence[str] | None = N
     }
 
 
-def _run_smoke_checks(bundle_root: str) -> dict:
-    checks = (
-        ("client_descriptor", "client", ["--descriptor"], "descriptor"),
-        ("server_descriptor", "server", ["--descriptor"], "descriptor"),
-        ("setup_packs_verify", "setup", ["packs", "verify"], "complete"),
-        ("launcher_instances_list", "launcher", ["instances", "list"], "complete"),
-        ("launcher_compat_status", "launcher", ["compat-status"], "complete"),
-    )
+def _run_smoke_checks(bundle_root: str, component_plan: Mapping[str, object] | None = None) -> dict:
+    selected_products = {str(row.get("product_id", "")).strip() for row in _selected_product_specs(component_plan)}
+    selected_ids = _selected_component_ids(component_plan)
+    checks = []
+    for product_id in ("client", "server", "setup", "launcher"):
+        if product_id not in selected_products:
+            continue
+        if product_id in {"client", "server"}:
+            checks.append(("{}_descriptor".format(product_id), product_id, ["--descriptor"], "descriptor"))
+            continue
+        if product_id == "setup":
+            if (not selected_ids) or ("lock.pack_lock.mvp_default" in selected_ids):
+                checks.append(("setup_packs_verify", "setup", ["packs", "verify"], "complete"))
+            continue
+        if product_id == "launcher":
+            if (not selected_ids) or ("manifest.instance.default" in selected_ids):
+                checks.append(("launcher_instances_list", "launcher", ["instances", "list"], "complete"))
+                checks.append(("launcher_compat_status", "launcher", ["compat-status"], "complete"))
     rows: list[dict[str, object]] = []
     for check_id, product_id, argv, expected_result in checks:
         result = _run_wrapper(bundle_root, product_id, argv)
@@ -804,34 +876,38 @@ def build_dist_tree(
     platform_tag: str = DEFAULT_PLATFORM_TAG,
     channel_id: str = DEFAULT_RELEASE_CHANNEL,
     output_root: str = DEFAULT_OUTPUT_ROOT,
+    install_profile_id: str = DEFAULT_INSTALL_PROFILE_ID,
 ) -> dict:
     repo_root_abs = _repo_root(repo_root)
     bundle_root = _bundle_root(output_root, platform_tag, channel_id)
     if os.path.isdir(bundle_root):
         shutil.rmtree(bundle_root)
     os.makedirs(os.path.join(bundle_root, "manifests"), exist_ok=True)
-    os.makedirs(os.path.join(bundle_root, "instances", "default"), exist_ok=True)
     os.makedirs(os.path.join(bundle_root, "saves"), exist_ok=True)
     build_number = _read_build_number(repo_root_abs)
     _write_text(os.path.join(bundle_root, DEFAULT_BUILD_NUMBER_REL.replace("/", os.sep)), build_number + "\n")
+    target_ids = platform_targets_for_tag(platform_tag, repo_root=repo_root_abs)
+    component_plan = build_default_component_install_plan(
+        repo_root_abs,
+        install_profile_id=str(install_profile_id or DEFAULT_INSTALL_PROFILE_ID).strip() or DEFAULT_INSTALL_PROFILE_ID,
+        target_platform=str(target_ids.get("platform_id", "")).strip(),
+        target_arch=str(target_ids.get("arch_id", "")).strip(),
+        target_abi=str(target_ids.get("abi_id", "")).strip(),
+    )
 
     runtime_row = _compile_runtime_tree(repo_root_abs, bundle_root)
     runtime_data_row = _copy_runtime_data(repo_root_abs, bundle_root)
-    wrapper_row = _write_product_wrappers(bundle_root)
-    store_row = _write_store_artifacts(repo_root_abs, bundle_root)
-    install_row = _build_install_manifest(bundle_root, repo_root_abs, platform_tag)
+    wrapper_row = _write_product_wrappers(bundle_root, component_plan)
+    store_row = _write_store_artifacts(repo_root_abs, bundle_root, component_plan)
+    install_row = _build_install_manifest(bundle_root, repo_root_abs, platform_tag, component_plan)
     install_payload = dict(install_row.get("install_manifest") or {})
     install_manifest_path = os.path.join(bundle_root, DEFAULT_INSTALL_MANIFEST_NAME)
     _copy_file(install_manifest_path, os.path.join(bundle_root, "manifests", DEFAULT_INSTALL_MANIFEST_NAME))
-    instance_row = _write_default_instance_manifest(bundle_root, install_payload, dict(store_row.get("store_manifest") or {}))
-    docs_row = _write_bundle_docs(repo_root_abs, bundle_root, dict(store_row.get("pack_lock_payload") or {}))
-    filelist_row = _write_filelist(
-        bundle_root,
-        exclude_paths=(
-            DEFAULT_FILELIST_REL,
-            DEFAULT_RELEASE_MANIFEST_REL,
-        ),
-    )
+    if "manifest.instance.default" in _selected_component_ids(component_plan):
+        instance_row = _write_default_instance_manifest(bundle_root, install_payload, dict(store_row.get("store_manifest") or {}), component_plan)
+    else:
+        instance_row = {"instance_manifest_path": "", "instance_manifest": {}}
+    docs_row = _write_bundle_docs(repo_root_abs, bundle_root, dict(store_row.get("pack_lock_payload") or {}), component_plan)
     manifest_payload = build_release_manifest(
         bundle_root,
         platform_tag=_token(platform_tag) or DEFAULT_PLATFORM_TAG,
@@ -843,7 +919,73 @@ def build_dist_tree(
     verify_row = verify_release_manifest(bundle_root, release_manifest_path, repo_root=repo_root_abs)
     if _token(verify_row.get("result")) != "complete":
         raise RuntimeError("release manifest verification failed")
-    smoke_row = _run_smoke_checks(bundle_root)
+    release_index_payload = build_release_index_payload(
+        repo_root_abs,
+        dist_root=bundle_root,
+        platform_tag=_token(platform_tag) or DEFAULT_PLATFORM_TAG,
+        channel_id=_token(channel_id) or DEFAULT_RELEASE_CHANNEL,
+    )
+    release_index_path = write_release_index(
+        os.path.join(bundle_root, "manifests", "release_index.json"),
+        release_index_payload,
+    )
+    install_payload = _read_json(install_manifest_path)
+    install_payload.setdefault("extensions", {})
+    release_index_extensions = dict(dict(release_index_payload or {}).get("extensions") or {})
+    actualized_graph = dict(release_index_extensions.get("component_graph") or {})
+    governance_profile = load_governance_profile(repo_root_abs, install_root=bundle_root)
+    actualized_components = [
+        dict(row)
+        for row in list(actualized_graph.get("components") or [])
+        if isinstance(row, Mapping)
+    ]
+    if actualized_components:
+        install_payload["extensions"]["official.selected_component_descriptors"] = actualized_components
+        install_payload["extensions"]["official.selected_component_ids"] = [
+            _token(dict(row).get("component_id"))
+            for row in actualized_components
+            if _token(dict(row).get("component_id"))
+        ]
+    install_payload["extensions"]["official.release_id"] = _token(manifest_payload.get("release_id"))
+    install_payload["extensions"]["official.governance_profile_ref"] = _norm(DEFAULT_GOVERNANCE_PROFILE_REL)
+    install_payload["extensions"]["official.governance_profile_hash"] = governance_profile_hash(governance_profile)
+    install_payload["extensions"]["official.release_manifest_ref"] = _norm(DEFAULT_RELEASE_MANIFEST_REL)
+    install_payload["extensions"]["official.release_index_ref"] = "manifests/release_index.json"
+    install_payload["extensions"]["official.component_graph_hash"] = _token(dict(release_index_payload or {}).get("component_graph_hash")).lower()
+    install_payload = normalize_install_manifest(install_payload)
+    install_payload["deterministic_fingerprint"] = install_deterministic_fingerprint(install_payload)
+    _write_json(install_manifest_path, install_payload)
+    _copy_file(install_manifest_path, os.path.join(bundle_root, "manifests", DEFAULT_INSTALL_MANIFEST_NAME))
+    manifest_payload = build_release_manifest(
+        bundle_root,
+        platform_tag=_token(platform_tag) or DEFAULT_PLATFORM_TAG,
+        channel_id=_token(channel_id) or DEFAULT_RELEASE_CHANNEL,
+        repo_root=repo_root_abs,
+        verify_build_ids=True,
+    )
+    release_manifest_path = write_release_manifest(
+        bundle_root,
+        manifest_payload,
+        manifest_path=os.path.join(bundle_root, DEFAULT_RELEASE_MANIFEST_REL.replace("/", os.sep)),
+    )
+    release_index_payload = build_release_index_payload(
+        repo_root_abs,
+        dist_root=bundle_root,
+        platform_tag=_token(platform_tag) or DEFAULT_PLATFORM_TAG,
+        channel_id=_token(channel_id) or DEFAULT_RELEASE_CHANNEL,
+    )
+    release_index_path = write_release_index(
+        os.path.join(bundle_root, "manifests", "release_index.json"),
+        release_index_payload,
+    )
+    verify_row = verify_release_manifest(bundle_root, release_manifest_path, repo_root=repo_root_abs)
+    if _token(verify_row.get("result")) != "complete":
+        raise RuntimeError("release manifest verification failed")
+    filelist_row = _write_filelist(
+        bundle_root,
+        exclude_paths=(DEFAULT_FILELIST_REL,),
+    )
+    smoke_row = _run_smoke_checks(bundle_root, component_plan)
     rel_files = _iter_bundle_files(bundle_root)
     report = {
         "report_id": "dist.tree.assembly.v1",
@@ -851,9 +993,11 @@ def build_dist_tree(
         "release_tag": "v0.0.0-{}".format(_token(channel_id) or DEFAULT_RELEASE_CHANNEL),
         "platform_tag": _token(platform_tag) or DEFAULT_PLATFORM_TAG,
         "channel_id": _token(channel_id) or DEFAULT_RELEASE_CHANNEL,
+        "install_profile_id": str(dict(component_plan.get("install_plan") or {}).get("install_profile_id", "")).strip() or str(install_profile_id or DEFAULT_INSTALL_PROFILE_ID).strip() or DEFAULT_INSTALL_PROFILE_ID,
         "bundle_root": _norm(os.path.relpath(bundle_root, repo_root_abs)),
         "bundle_root_abs": bundle_root,
         "build_number": build_number,
+        "component_plan": component_plan,
         "runtime": runtime_row,
         "runtime_data": runtime_data_row,
         "wrappers": wrapper_row,
@@ -868,6 +1012,8 @@ def build_dist_tree(
         "filelist": filelist_row,
         "release_manifest_path": _norm(os.path.relpath(release_manifest_path, bundle_root)),
         "release_manifest_hash": _token(manifest_payload.get("manifest_hash")).lower(),
+        "release_index_path": _norm(os.path.relpath(release_index_path, bundle_root)),
+        "release_index_hash": canonical_sha256(release_index_payload),
         "smoke": smoke_row,
         "top_level": _build_top_level_summary(bundle_root),
         "file_count": len(rel_files),
@@ -890,11 +1036,16 @@ def build_dist_tree(
 
 def build_dist_minimize_report(bundle_root: str) -> dict:
     root = os.path.normpath(os.path.abspath(bundle_root))
-    pack_lock_payload = _read_json(os.path.join(root, "store", "locks", "pack_lock.mvp_default.json"))
-    expected_packs = sorted(
-        _norm("store/" + _token(row.get("distribution_rel")))
-        for row in list(pack_lock_payload.get("ordered_packs") or [])
-        if _token(row.get("distribution_rel"))
+    pack_lock_path = os.path.join(root, "store", "locks", "pack_lock.mvp_default.json")
+    pack_lock_payload = _read_json(pack_lock_path) if os.path.isfile(pack_lock_path) else {}
+    expected_packs = (
+        sorted(
+            _norm("store/" + _token(row.get("distribution_rel")))
+            for row in list(pack_lock_payload.get("ordered_packs") or [])
+            if _token(row.get("distribution_rel"))
+        )
+        if pack_lock_payload
+        else []
     )
     actual_packs = sorted(
         _norm(os.path.relpath(os.path.dirname(path), root))

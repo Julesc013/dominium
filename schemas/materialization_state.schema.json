@@ -50,5 +50,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "extensions": {},
+      "last_materialization_tick": 0,
+      "materialized_nodes": [],
+      "materialized_part_ids": [],
+      "roi_id": "roi_id.example",
+      "schema_version": "1.0.0",
+      "structure_id": "structure_id.example"
+    }
+  ]
 }

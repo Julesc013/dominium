@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Migration Chain Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "chain_id",
+    "artifact_kind_id",
+    "steps",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "chain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_kind_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "migration_id",
+          "from_version",
+          "to_version",
+          "artifact_kind_id"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "migration_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "from_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_kind_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "artifact_kind_id": "artifact_kind_id.example",
+      "chain_id": "chain_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "steps": []
+    }
+  ]
+}

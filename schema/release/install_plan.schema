@@ -1,0 +1,24 @@
+SCHEMA: release/install_plan.schema
+schema_id: dominium.schema.release.install_plan
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a deterministic component-graph install plan emitted by setup/launcher/release tooling.
+
+REQUIRED SHAPE:
+record install_plan
+  required:
+    - plan_id: id
+    - target_platform: tag
+    - target_arch: tag
+    - install_profile_id: id
+    - selected_components: [id]
+    - resolved_providers: [map]
+    - verification_steps: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- selected_components are canonically ordered.
+- resolved_providers and verification_steps use deterministic ordering only.

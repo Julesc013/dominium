@@ -376,6 +376,68 @@
           "deterministic_fingerprint": "945ced62a692c10cea4ae07f6eaff12fae21829ffaf7378488328a4949641560",
           "extensions": {}
         }
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.release.resolution.exact_suite.v1",
+        "description": "Exact-suite release resolution meaning for suite-pinned component selection, rollback identity, and archive-replay stability.",
+        "deterministic_fingerprint": "0b4ee8daad75a605cd6956353e01a1820e6784d1c7d10a8f5050d5645ab68d04",
+        "guaranteed_invariants": [
+          "same exact-suite contract yields identical suite-pinned component selection meaning",
+          "exact-suite rollback preserves the suite-selected component set hash",
+          "suite-pinned policy semantics do not drift without explicit versioning"
+        ],
+        "version": "1.0.0",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.release.resolution.exact_suite.v1",
+          "deterministic_fingerprint": "5a0d5235b454272327a6fb11c4e9ab3e056611a356f53344b718b5a6988f8b3b",
+          "extensions": {}
+        }
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.release.resolution.latest_compatible.v1",
+        "description": "Latest-compatible release resolution meaning for deterministic candidate ranking, yanked exclusion, and explicit selection explanations.",
+        "deterministic_fingerprint": "015c74cd9c9c485a99dc7081b98811e057db96aeb083861ca089671d2c7a9458",
+        "guaranteed_invariants": [
+          "same latest-compatible contract yields identical candidate ranking and selection meaning",
+          "yanked exclusion and explainability remain explicit and deterministic",
+          "latest-compatible ranking changes require explicit versioning"
+        ],
+        "version": "1.0.0",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.release.resolution.latest_compatible.v1",
+          "deterministic_fingerprint": "bd4a2752a29eb54e2566ef004f733e92f1210ba864a80d70c66a89808b3ec754",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {}

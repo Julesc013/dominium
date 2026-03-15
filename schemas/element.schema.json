@@ -69,5 +69,19 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "atomic_number": 1,
+      "base_energy_content_raw": 0,
+      "charge_default": 0,
+      "deprecated": false,
+      "element_id": "element_id.example",
+      "extensions": {},
+      "molar_mass_raw": 1,
+      "schema_version": "1.0.0",
+      "tags": [],
+      "version_introduced": "example"
+    }
+  ]
 }

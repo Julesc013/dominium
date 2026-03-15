@@ -54,5 +54,14 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "build_id": "build_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "inputs_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

@@ -38,5 +38,15 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "extensions": {},
+      "material_id": "material_id.example",
+      "override_pack_id": "override_pack_id.example",
+      "property_name": "example",
+      "schema_version": "1.0.0",
+      "value": "example"
+    }
+  ]
 }

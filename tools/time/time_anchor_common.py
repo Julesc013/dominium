@@ -317,6 +317,17 @@ def _required_file_violations(repo_root: str) -> list[str]:
     return sorted(missing)
 
 
+def _safe_rmtree(path: str) -> None:
+    target = os.path.normpath(os.path.abspath(path))
+    if not os.path.isdir(target):
+        return
+    try:
+        shutil.rmtree(target)
+    except FileNotFoundError:
+        # Fixture cleanup is idempotent; disappearing children are benign.
+        return
+
+
 def _build_interval_anchor_fixture(repo_root: str) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     policy_row, error = load_time_anchor_policy(repo_root_abs)
@@ -324,8 +335,7 @@ def _build_interval_anchor_fixture(repo_root: str) -> dict:
         return dict(error)
     interval_tick = int(anchor_interval_ticks(policy_row))
     fixture_root = _repo_abs(repo_root_abs, os.path.join("build", "time", "interval_anchor_fixture"))
-    if os.path.isdir(fixture_root):
-        shutil.rmtree(fixture_root)
+    _safe_rmtree(fixture_root)
     _ensure_dir(fixture_root)
     schema_payload = build_tick_record(tick_value=interval_tick)
     schema_valid = validate_instance(
@@ -374,8 +384,7 @@ def _build_interval_anchor_fixture(repo_root: str) -> dict:
 
 def _cleanup_save(repo_root: str, save_id: str) -> None:
     save_dir = _repo_abs(repo_root, os.path.join("saves", str(save_id)))
-    if os.path.isdir(save_dir):
-        shutil.rmtree(save_dir)
+    _safe_rmtree(save_dir)
 
 
 def _source_registry_rows(repo_root: str, registry_rel: str, key: str) -> list[dict]:

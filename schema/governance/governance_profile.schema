@@ -1,0 +1,29 @@
+SCHEMA: governance/governance_profile.schema
+schema_id: dominium.schema.governance.governance_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic governance profile embedded in release and distribution policy.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown extension fields MUST be preserved.
+- Governance mode changes require explicit versioning and migration notes.
+
+REQUIRED SHAPE:
+record governance_profile
+  required:
+    - governance_version: tag
+    - governance_mode_id: id
+    - official_signer_ids: [id]
+    - redistribution_policy_id: id
+    - fork_policy_id: id
+    - archive_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- official_signer_ids are canonically ordered.
+- governance_mode_id must be declared in governance_mode_registry.json.
+- release indices must record the matching governance_profile hash.

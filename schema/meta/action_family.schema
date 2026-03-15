@@ -14,6 +14,8 @@ record action_family
     - description: string
     - deterministic_fingerprint: sha256
     - extensions: map
+  optional:
+    - stability: stability_marker
 
 INVARIANTS:
 - Every action family row is deterministic and data-driven.

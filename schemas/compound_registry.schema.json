@@ -84,5 +84,13 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     }
-  }
+  },
+  "examples": [
+    {
+      "compounds": [],
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "registry_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
 }

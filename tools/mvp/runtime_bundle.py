@@ -47,6 +47,8 @@ MVP_PROFILE_BUNDLE_REL = os.path.join("profiles", "bundles", "bundle.mvp_default
 MVP_PACK_LOCK_REL = os.path.join("locks", "pack_lock.mvp_default.json")
 MVP_SESSION_TEMPLATE_REL = os.path.join("data", "session_templates", "session.mvp_default.json")
 MVP_DIST_ROOT_REL = "dist"
+MVP_STORE_PROFILE_BUNDLE_REL = os.path.join("store", "profiles", "bundles", "bundle.mvp_default.json")
+MVP_STORE_PACK_LOCK_REL = os.path.join("store", "locks", "pack_lock.mvp_default.json")
 
 MVP_SOURCE_PACKS = (
     {
@@ -111,6 +113,28 @@ def load_json_object(path: str) -> dict:
     if not isinstance(payload, dict):
         raise ValueError("JSON root must be object: {}".format(_norm(path)))
     return payload
+
+
+def _artifact_exists(repo_root: str, rel_path: str) -> bool:
+    return os.path.isfile(os.path.join(str(repo_root or ""), str(rel_path or "").replace("/", os.sep)))
+
+
+def _load_runtime_artifact_if_present(repo_root: str, *rel_paths: str) -> Dict[str, object]:
+    repo_root_abs = os.path.abspath(str(repo_root or REPO_ROOT_HINT))
+    for rel_path in rel_paths:
+        token = _norm(rel_path)
+        if not token:
+            continue
+        abs_path = os.path.join(repo_root_abs, token.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            continue
+        try:
+            payload = load_json_object(abs_path)
+        except ValueError:
+            continue
+        if payload:
+            return dict(payload)
+    return {}
 
 
 def _write_canonical_json(path: str, payload: Dict[str, object]) -> None:
@@ -288,6 +312,10 @@ def _ordered_alias_pack_rows(repo_root: str) -> List[Dict[str, object]]:
 
 def build_profile_bundle_payload(repo_root: str | None = None) -> Dict[str, object]:
     repo_root = os.path.abspath(str(repo_root or REPO_ROOT_HINT))
+    if not _artifact_exists(repo_root, MVP_PROFILE_BUNDLE_REL):
+        runtime_payload = _load_runtime_artifact_if_present(repo_root, MVP_STORE_PROFILE_BUNDLE_REL)
+        if runtime_payload:
+            return runtime_payload
     payload = {
         "schema_version": "1.0.0",
         "profile_bundle_id": MVP_PROFILE_BUNDLE_ID,
@@ -397,6 +425,11 @@ def _alias_pack_compat_hash(source_rows: List[Dict[str, object]]) -> str:
 
 
 def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, object] | None = None) -> Dict[str, object]:
+    runtime_payload = {}
+    if not any(_artifact_exists(repo_root, source["manifest_rel"]) for item in MVP_SOURCE_PACKS for source in item["source_packs"]):
+        runtime_payload = _load_runtime_artifact_if_present(repo_root, MVP_STORE_PACK_LOCK_REL)
+        if runtime_payload:
+            return runtime_payload
     profile_bundle_payload = dict(profile_bundle_payload or build_profile_bundle_payload(repo_root=repo_root))
     mod_policy_row, mod_policy_registry_hash_value = _default_mod_policy_row(repo_root)
     pack_rows = _ordered_alias_pack_rows(repo_root=repo_root)
@@ -561,7 +594,7 @@ def build_default_universe_identity(
     pack_lock_payload: Dict[str, object] | None = None,
     profile_bundle_payload: Dict[str, object] | None = None,
 ) -> Dict[str, object]:
-    profile_bundle = dict(profile_bundle_payload or build_profile_bundle_payload())
+    profile_bundle = dict(profile_bundle_payload or build_profile_bundle_payload(repo_root=repo_root))
     pack_lock = dict(pack_lock_payload or build_pack_lock_payload(repo_root=repo_root, profile_bundle_payload=profile_bundle))
     universe_seed, _warnings = _resolve_seed(seed=seed, authority_mode=authority_mode)
     generator_version_id = str(profile_bundle.get("generator_version_lock", "")).strip() or "gen.v0_stub"

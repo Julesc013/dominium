@@ -9,6 +9,7 @@ from math import isqrt
 from typing import Dict, Mapping, Sequence
 
 from src.geo import build_position_ref
+from src.numeric_discipline import debug_assert_no_float_payload
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -442,6 +443,8 @@ def build_emitter_descriptor(
             **_as_map(extensions),
         },
     }
+    if __debug__:
+        debug_assert_no_float_payload(payload, context="illumination_view_artifact")
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
     return payload
 

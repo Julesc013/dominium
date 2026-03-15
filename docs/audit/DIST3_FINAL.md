@@ -9,11 +9,11 @@ Replacement Target: DIST-4 platform matrix and archive verification
 - result: `complete`
 - platforms: `win64`
 - failure_count: `0`
-- deterministic_fingerprint: `d5856997566f8b7d771d60fc7f48a3436c63d2ae2b6924ccb9fbb836cb3ff83e`
+- deterministic_fingerprint: `c0e1f5506773e1a288e5e861a29ccb2962c1842e19eaa907e84d00ef85d36e6d`
 
 ## Per-Platform Results
 
-- `win64` result=`complete` source=`build/tmp/dist3_bundle_c/v0.0.0-mock/win64/dominium` fingerprint=`b57061ccde8d12400a48bb6967b97ed66aacabac2c2b6324f0c1f5c3d2654e83`
+- `win64` result=`complete` source=`dist/v0.0.0-mock/win64/dominium` fingerprint=`f9715b489dcd45d9e0642b75e85e77c69adc0ae87d7525413e7c63d0cc97dbc6`
 
 ## Readiness
 

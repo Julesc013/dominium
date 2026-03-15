@@ -221,6 +221,9 @@ BODY_MUTATION_ALLOWED_PREFIXES = (
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/sessionx/creator.py",
     "tools/xstack/testx/tests/",
+    "tools/embodiment/earth6_probe.py",
+    "tools/embodiment/emb2_probe.py",
+    "tools/auditx/analyzers/",
 )
 
 CIV_MUTATION_ALLOWED_PREFIXES = (
@@ -261,6 +264,10 @@ DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS = (
     "src/control/**",
     "tools/xstack/testx/tests/**",
 )
+
+
+def _token(value: object) -> str:
+    return str(value or "").strip()
 
 BOUNDARY_ALIAS_RULES = {
     "INV-NO-DUPLICATE-GRAPH-SUBSTRATE": {
@@ -464,6 +471,11 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-DETERMINISTIC-ROUND-ONLY",
     "INV-NO-IMPLICIT-FLOAT",
     "INV-NO-IMPLICIT-OVERFLOW",
+    "INV-FLOAT-ONLY-IN-RENDER",
+    "INV-CANONICAL-NUMERIC-SERIALIZATION",
+    "INV-SAFE-FLOAT-COMPILER-FLAGS",
+    "INV-NO-PARALLEL-TRUTH-WITHOUT-SHARD-MERGE",
+    "INV-PARALLEL-DERIVED-MUST-CANONICALIZE",
     "INV-ENTROPY-UPDATE-THROUGH-ENGINE",
     "INV-NO-SILENT-EFFICIENCY-DROP",
     "INV-FLUID-USES-BUNDLE",
@@ -819,6 +831,11 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E236_IMPLICIT_FLOAT_USAGE_SMELL": "INV-NO-IMPLICIT-FLOAT",
     "E237_MISSING_TOLERANCE_SMELL": "INV-QUANTITY-TOLERANCE-DECLARED",
     "E238_DIRECT_DIVISION_WITHOUT_ROUND_SMELL": "INV-DETERMINISTIC-ROUND-ONLY",
+    "E525_FLOAT_IN_TRUTH_NAMESPACE_SMELL": "INV-FLOAT-ONLY-IN-RENDER",
+    "E526_NON_CANONICAL_NUMERIC_SERIALIZATION_SMELL": "INV-CANONICAL-NUMERIC-SERIALIZATION",
+    "E527_UNSAFE_FLOAT_COMPILER_FLAG_SMELL": "INV-SAFE-FLOAT-COMPILER-FLAGS",
+    "E528_RACE_DEPENDENT_TRUTH_SMELL": "INV-NO-PARALLEL-TRUTH-WITHOUT-SHARD-MERGE",
+    "E529_UNCANONICALIZED_PARALLEL_OUTPUT_SMELL": "INV-PARALLEL-DERIVED-MUST-CANONICALIZE",
     "E239_CANONICAL_ARTIFACT_COMPACTION_SMELL": "INV-CANONICAL-EVENT-NOT-DISCARDED",
     "E240_UNCLASSIFIED_ARTIFACT_SMELL": "INV-DERIVED-ONLY-COMPACTABLE",
     "E241_MISSING_COMPACTION_MARKER_SMELL": "INV-COMPACTION-MARKER-REQUIRED",
@@ -1039,6 +1056,11 @@ ARCH_AUDIT_TOOL_PATH = "tools/audit/tool_run_arch_audit.py"
 ARCH_AUDIT_REPORT_PATH = "docs/audit/ARCH_AUDIT_REPORT.md"
 ARCH_AUDIT_REPORT_JSON_PATH = "data/audit/arch_audit_report.json"
 ARCH_AUDIT_BASELINE_PATH = "docs/audit/ARCH_AUDIT_BASELINE.md"
+ARCH_AUDIT2_RETRO_AUDIT_PATH = "docs/audit/ARCH_AUDIT2_RETRO_AUDIT.md"
+ARCH_AUDIT2_CONSTITUTION_PATH = "docs/audit/ARCH_AUDIT2_CONSTITUTION.md"
+ARCH_AUDIT2_REPORT_PATH = "docs/audit/ARCH_AUDIT2_REPORT.md"
+ARCH_AUDIT2_REPORT_JSON_PATH = "data/audit/arch_audit2_report.json"
+ARCH_AUDIT2_FINAL_PATH = "docs/audit/ARCH_AUDIT2_FINAL.md"
 
 REPO_INVENTORY_TOOL_PATH = "tools/review/tool_repo_inventory.py"
 REPO_INVENTORY_COMMON_PATH = "tools/review/repo_inventory_common.py"
@@ -5502,7 +5524,10 @@ def _derived_artifact_files(repo_root: str) -> List[str]:
         for name in sorted(files):
             if not str(name).lower().endswith(".json"):
                 continue
-            if str(name).lower() == "pack.json":
+            lower_name = str(name).lower()
+            if lower_name == "pack.json":
+                continue
+            if lower_name.startswith("pack."):
                 continue
             abs_path = os.path.join(walk_root, name)
             rows.append(_norm(os.path.relpath(abs_path, repo_root)))
@@ -7815,6 +7840,103 @@ def _append_arch_audit_findings(
         )
 
 
+def _append_arch_audit2_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    required_files = (
+        (ARCH_AUDIT2_RETRO_AUDIT_PATH, "ARCH-AUDIT-2 retro audit is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        (ARCH_AUDIT2_CONSTITUTION_PATH, "ARCH-AUDIT-2 constitution is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        (ARCH_AUDIT2_REPORT_PATH, "ARCH-AUDIT-2 markdown report is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        (ARCH_AUDIT2_REPORT_JSON_PATH, "ARCH-AUDIT-2 JSON report is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        (ARCH_AUDIT2_FINAL_PATH, "ARCH-AUDIT-2 final report is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        ("tools/auditx/analyzers/e517_hardcoded_component_set_smell.py", "HardcodedComponentSetSmell analyzer is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        ("tools/auditx/analyzers/e518_trust_bypass_smell.py", "TrustBypassSmell analyzer is required", "INV-TRUST-VERIFY-NONBYPASS"),
+        ("tools/auditx/analyzers/e519_tier_policy_violation_smell.py", "TierPolicyViolationSmell analyzer is required", "INV-TIER3-NOT-DOWNLOADABLE"),
+        ("tools/auditx/analyzers/e520_non_deterministic_archive_smell.py", "NonDeterministicArchiveSmell analyzer is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        ("tools/xstack/testx/tests/test_arch_audit2_tool_runs.py", "ARCH-AUDIT-2 tool TestX coverage is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        ("tools/xstack/testx/tests/test_arch_audit2_detects_hardcoded_bundle_list.py", "ARCH-AUDIT-2 hardcoded-bundle TestX coverage is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        ("tools/xstack/testx/tests/test_arch_audit2_detects_trust_bypass.py", "ARCH-AUDIT-2 trust-bypass TestX coverage is required", "INV-TRUST-VERIFY-NONBYPASS"),
+        ("tools/xstack/testx/tests/test_arch_audit2_reports_deterministically.py", "ARCH-AUDIT-2 determinism TestX coverage is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    constitution_text = _file_text(repo_root, ARCH_AUDIT2_CONSTITUTION_PATH).lower()
+    for token, message, rule_id in (
+        ("component composition purity", "ARCH-AUDIT-2 constitution must define Component Composition Purity", "INV-DIST-USES-COMPONENT-GRAPH"),
+        ("update purity", "ARCH-AUDIT-2 constitution must define Update Purity", "INV-UPDATES-USE-RELEASE-INDEX"),
+        ("trust enforcement purity", "ARCH-AUDIT-2 constitution must define Trust Enforcement Purity", "INV-TRUST-VERIFY-NONBYPASS"),
+        ("target matrix compliance", "ARCH-AUDIT-2 constitution must define Target Matrix Compliance", "INV-TIER3-NOT-DOWNLOADABLE"),
+        ("manifest / bundle determinism", "ARCH-AUDIT-2 constitution must define Manifest / Bundle Determinism", "INV-DIST-USES-COMPONENT-GRAPH"),
+    ):
+        if token in constitution_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=ARCH_AUDIT2_CONSTITUTION_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.audit.arch_audit_common import build_arch_audit2_report, run_arch_audit
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=ARCH_AUDIT_TOOL_PATH,
+                line_number=1,
+                snippet="build_arch_audit2_report",
+                message="unable to import ARCH-AUDIT-2 tool helpers ({})".format(str(exc)),
+                rule_id="INV-DIST-USES-COMPONENT-GRAPH",
+            )
+        )
+        return
+
+    report = build_arch_audit2_report(run_arch_audit(repo_root))
+    for row in list(report.get("blocking_findings") or []):
+        finding_row = dict(row or {})
+        category = str(finding_row.get("category", "")).strip()
+        if category == "dist_bundle_composition":
+            rule_id = "INV-DIST-USES-COMPONENT-GRAPH"
+        elif category == "update_model":
+            rule_id = "INV-UPDATES-USE-RELEASE-INDEX"
+        elif category == "trust_bypass":
+            rule_id = "INV-TRUST-VERIFY-NONBYPASS"
+        elif category == "target_matrix":
+            rule_id = "INV-TIER3-NOT-DOWNLOADABLE"
+        else:
+            rule_id = "INV-DIST-USES-COMPONENT-GRAPH"
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(finding_row.get("path", "")).replace("\\", "/"),
+                line_number=int(finding_row.get("line", 0) or 0),
+                snippet=str(finding_row.get("snippet", ""))[:160],
+                message=str(finding_row.get("message", "")).strip() or "ARCH-AUDIT-2 blocking finding detected",
+                rule_id=rule_id,
+            )
+        )
+
+
 def _append_repo_inventory_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -9660,6 +9782,110 @@ def _append_dist5_findings(
                 snippet=str(row.get("code", ""))[:160],
                 message=str(row.get("message", "")).strip() or "DIST-5 UX drift detected",
                 rule_id=str(row.get("rule_id", "")).strip() or help_rule_id,
+            )
+        )
+
+
+def _append_dist6_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rule_id = "INV-VERSION-INTEROP-MUST-PASS-BEFORE-DIST"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/release/INTEROP_MATRIX_v0_0_0_mock.md", "DIST-6 interop matrix doctrine is required", rule_id),
+        ("tools/dist/dist6_interop_common.py", "DIST-6 interop helper is required", rule_id),
+        ("tools/dist/tool_run_version_interop.py", "DIST-6 interop runner is required", rule_id),
+        ("docs/audit/DIST6_FINAL.md", "DIST-6 final report is required", rule_id),
+        ("tools/auditx/analyzers/e507_silent_degrade_smell.py", "SilentDegradeSmell analyzer is required", rule_id),
+        ("tools/auditx/analyzers/e508_negotiation_record_missing_smell.py", "NegotiationRecordMissingSmell analyzer is required", rule_id),
+        ("tools/xstack/testx/tests/dist6_testlib.py", "DIST-6 TestX helper is required", rule_id),
+        ("tools/xstack/testx/tests/test_same_build_negotiates_cleanly.py", "DIST-6 same-build TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_identical_rebuild_negotiation_hash_match.py", "DIST-6 identical rebuild TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_pack_lock_mismatch_refuses.py", "DIST-6 pack-lock mismatch TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_read_only_fallback_logged.py", "DIST-6 read-only fallback TestX coverage is required", rule_id),
+        ("tools/xstack/testx/tests/test_cross_platform_negotiation_consistent.py", "DIST-6 cross-platform TestX coverage is required", rule_id),
+    )
+    for rel_path, message, current_rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=current_rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/release/INTEROP_MATRIX_v0_0_0_mock.md").lower()
+    for token, message in (
+        ("# interop matrix v0.0.0 mock", "DIST-6 doctrine must declare the canonical title"),
+        ("## cases", "DIST-6 doctrine must define the governed matrix cases"),
+        ("## expected observations", "DIST-6 doctrine must define required observations"),
+        ("## runtime inputs", "DIST-6 doctrine must define runtime inputs"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/release/INTEROP_MATRIX_v0_0_0_mock.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    final_text = _file_text(repo_root, "docs/audit/DIST6_FINAL.md").lower()
+    for token, message in (
+        ("# dist6 final", "DIST-6 final report must declare the canonical title"),
+        ("## matrix summary", "DIST-6 final report must summarize the interop matrix"),
+        ("## refusal and degrade cases", "DIST-6 final report must summarize refusal and degrade cases"),
+        ("## readiness", "DIST-6 final report must declare readiness"),
+    ):
+        if token in final_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/DIST6_FINAL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.dist.dist6_interop_common import version_interop_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/dist/dist6_interop_common.py",
+                line_number=1,
+                snippet="version_interop_violations",
+                message="unable to import DIST-6 interop checks ({})".format(str(exc)),
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    for violation in version_interop_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "DIST-6 version interop drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or rule_id,
             )
         )
 
@@ -32109,16 +32335,22 @@ def _append_numeric_tolerance_invariant_findings(
     rounding_rule_id = "INV-DETERMINISTIC-ROUND-ONLY"
     float_rule_id = "INV-NO-IMPLICIT-FLOAT"
     overflow_rule_id = "INV-NO-IMPLICIT-OVERFLOW"
+    render_rule_id = "INV-FLOAT-ONLY-IN-RENDER"
+    serialization_rule_id = "INV-CANONICAL-NUMERIC-SERIALIZATION"
+    compiler_rule_id = "INV-SAFE-FLOAT-COMPILER-FLAGS"
 
     quantity_registry_rel = "data/registries/quantity_registry.json"
     tolerance_registry_rel = "data/registries/quantity_tolerance_registry.json"
+    engine_tolerance_registry_rel = "data/registries/tolerance_registry.json"
     numeric_helper_rel = "src/meta/numeric.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
 
     quantity_payload, quantity_error = _load_json_object(repo_root, quantity_registry_rel)
     tolerance_payload, tolerance_error = _load_json_object(repo_root, tolerance_registry_rel)
+    engine_tolerance_payload, engine_tolerance_error = _load_json_object(repo_root, engine_tolerance_registry_rel)
     quantity_rows = list((dict(quantity_payload.get("record") or {})).get("quantities") or [])
     tolerance_rows = list((dict(tolerance_payload.get("record") or {})).get("quantity_tolerances") or [])
+    engine_tolerance_rows = list((dict(engine_tolerance_payload.get("record") or {})).get("tolerances") or [])
     if not tolerance_rows:
         tolerance_rows = list(tolerance_payload.get("quantity_tolerances") or [])
 
@@ -32154,6 +32386,17 @@ def _append_numeric_tolerance_invariant_findings(
                 snippet="record.quantity_tolerances",
                 message="quantity tolerance registry is missing or empty",
                 rule_id=tolerance_rule_id,
+            )
+        )
+    if engine_tolerance_error or not engine_tolerance_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_tolerance_registry_rel,
+                line_number=1,
+                snippet="record.tolerances",
+                message="engine tolerance registry is missing or empty",
+                rule_id=render_rule_id,
             )
         )
     if quantity_ids and tolerance_ids:
@@ -32197,6 +32440,24 @@ def _append_numeric_tolerance_invariant_findings(
                 snippet=token,
                 message="overflow policy helper token is missing",
                 rule_id=overflow_rule_id,
+            )
+        )
+    for token, rule_id, message in (
+        ("normalize_tolerance_rows(", render_rule_id, "engine tolerance helper token is missing"),
+        ("allowed_error_bound_for_tolerance(", render_rule_id, "engine tolerance bound helper token is missing"),
+        ("debug_assert_no_float_payload(", render_rule_id, "debug float-payload assertion helper token is missing"),
+        ("debug_assert_tolerance_bound(", render_rule_id, "debug tolerance assertion helper token is missing"),
+    ):
+        if token in helper_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=numeric_helper_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
             )
         )
 
@@ -32267,6 +32528,217 @@ def _append_numeric_tolerance_invariant_findings(
                 )
             )
             break
+
+    try:
+        from tools.audit.arch_audit_common import (
+            scan_compiler_flags,
+            scan_float_in_truth,
+            scan_noncanonical_numeric_serialization,
+        )
+    except Exception:
+        return
+
+    for scan_payload, default_rule_id in (
+        (scan_float_in_truth(repo_root), render_rule_id),
+        (scan_noncanonical_numeric_serialization(repo_root), serialization_rule_id),
+        (scan_compiler_flags(repo_root), compiler_rule_id),
+    ):
+        for row in list(dict(scan_payload or {}).get("blocking_findings") or []):
+            finding = dict(row or {})
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=str(finding.get("path", "")).strip() or "tools/audit/arch_audit_common.py",
+                    line_number=int(finding.get("line", 1) or 1),
+                    snippet=str(finding.get("snippet", "")).strip()[:140],
+                    message=str(finding.get("message", "")).strip() or "numeric governance violation detected",
+                    rule_id=str(finding.get("rule_id", "")).strip() or default_rule_id,
+                )
+            )
+
+
+def _append_concurrency_contract_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    default_rule_id = "INV-NO-PARALLEL-TRUTH-WITHOUT-SHARD-MERGE"
+    try:
+        from tools.engine.concurrency_contract_common import concurrency_contract_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/engine/concurrency_contract_common.py",
+                line_number=1,
+                snippet="concurrency_contract_violations",
+                message="unable to import concurrency contract checks ({})".format(str(exc)),
+                rule_id=default_rule_id,
+            )
+        )
+        return
+
+    for violation in concurrency_contract_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "concurrency governance drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or default_rule_id,
+            )
+        )
+
+
+def _append_observability_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    guarantees_rule_id = "INV-GUARANTEED-CATEGORIES-LOGGED"
+    default_rule_id = "INV-NO-SECRETS-IN-LOGS"
+    severity = _strict_only_severity(profile)
+    try:
+        from tools.meta.observability_common import observability_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/meta/observability_common.py",
+                line_number=1,
+                snippet="observability_violations",
+                message="unable to import observability checks ({})".format(str(exc)),
+                rule_id=guarantees_rule_id,
+            )
+        )
+        return
+
+    for violation in observability_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "observability governance drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or default_rule_id,
+            )
+        )
+
+
+def _append_store_gc_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    graph_rule_id = "INV-GC-USES-REACHABILITY-GRAPH"
+    deterministic_rule_id = "INV-GC-DETERMINISTIC"
+    policy_rule_id = "INV-NO-DELETE-WITHOUT-POLICY"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/STORE_GC0_RETRO_AUDIT.md", "STORE-GC retro audit is required", graph_rule_id),
+        ("docs/lib/STORE_INTEGRITY_AND_GC.md", "store integrity and GC doctrine is required", graph_rule_id),
+        ("schema/lib/gc_policy.schema", "gc_policy schema is required", policy_rule_id),
+        ("schema/lib/gc_report.schema", "gc_report schema is required", policy_rule_id),
+        ("schemas/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
+        ("schemas/gc_report.schema.json", "compiled gc_report schema is required", policy_rule_id),
+        ("data/registries/gc_policy_registry.json", "gc policy registry is required", policy_rule_id),
+        ("src/lib/store/reachability_engine.py", "reachability engine is required", graph_rule_id),
+        ("src/lib/store/gc_engine.py", "gc engine is required", graph_rule_id),
+        ("tools/lib/store_gc_common.py", "STORE-GC helper is required", deterministic_rule_id),
+        ("tools/lib/tool_store_verify.py", "store verification tool is required", deterministic_rule_id),
+        ("tools/lib/tool_run_store_gc.py", "STORE-GC runner is required", deterministic_rule_id),
+        ("docs/audit/STORE_VERIFY_REPORT.md", "store verification report is required", deterministic_rule_id),
+        ("data/audit/store_verify_report.json", "store verification machine report is required", deterministic_rule_id),
+        ("docs/audit/STORE_GC_BASELINE.md", "STORE-GC baseline is required", deterministic_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/lib/STORE_INTEGRITY_AND_GC.md").lower()
+    for token, message, rule_id in (
+        ("# store integrity and gc", "STORE-GC doctrine must declare the canonical title", graph_rule_id),
+        ("## store integrity checks", "STORE-GC doctrine must define integrity checks", graph_rule_id),
+        ("## reference graph", "STORE-GC doctrine must define reachability sources", graph_rule_id),
+        ("## gc policies", "STORE-GC doctrine must define GC policies", policy_rule_id),
+        ("## determinism", "STORE-GC doctrine must define deterministic traversal and deletion ordering", deterministic_rule_id),
+        ("## portable bundles", "STORE-GC doctrine must define portable bundle restrictions", policy_rule_id),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/lib/STORE_INTEGRITY_AND_GC.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    baseline_text = _file_text(repo_root, "docs/audit/STORE_GC_BASELINE.md").lower()
+    for token, message in (
+        ("# store gc baseline", "STORE-GC baseline must declare the canonical title"),
+        ("## policy definitions", "STORE-GC baseline must summarize policy definitions"),
+        ("## reachability sources", "STORE-GC baseline must summarize reachability sources"),
+        ("## quarantine behavior", "STORE-GC baseline must summarize quarantine behavior"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/STORE_GC_BASELINE.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=deterministic_rule_id,
+            )
+        )
+
+    try:
+        from tools.lib.store_gc_common import store_gc_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/lib/store_gc_common.py",
+                line_number=1,
+                snippet="store_gc_violations",
+                message="unable to import STORE-GC checks ({})".format(str(exc)),
+                rule_id=deterministic_rule_id,
+            )
+        )
+        return
+
+    for violation in store_gc_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "STORE-GC governance drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or deterministic_rule_id,
+            )
+        )
 
 
 def _append_constitutive_model_invariant_findings(
@@ -33200,8 +33672,930 @@ def _append_forking_provides_invariant_findings(
                         snippet="",
                         message="required forking/provides enforcement file is missing",
                         rule_id=invariant_id,
-                    )
-                )
+            )
+        )
+
+
+def _append_component_graph_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    install_rule_id = "INV-INSTALLS-RESOLVED-VIA-COMPONENT-GRAPH"
+    hardcoded_rule_id = "INV-NO-HARDCODED-COMPONENT-SETS"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/COMPONENT_GRAPH0_RETRO_AUDIT.md", "COMPONENT-GRAPH-0 retro audit is required", install_rule_id),
+        ("docs/release/COMPONENT_GRAPH_CONSTITUTION.md", "COMPONENT-GRAPH-0 constitution is required", install_rule_id),
+        ("docs/release/RELEASE_NOTES_v0_0_0_mock.md", "release notes doc is required for graph-backed docs component coverage", hardcoded_rule_id),
+        ("schema/release/component_id.schema", "component_id schema is required", install_rule_id),
+        ("schema/release/component_descriptor.schema", "component descriptor schema is required", install_rule_id),
+        ("schema/release/component_edge.schema", "component edge schema is required", install_rule_id),
+        ("schema/release/component_graph.schema", "component graph schema is required", install_rule_id),
+        ("schema/release/install_plan.schema", "install plan schema is required", install_rule_id),
+        ("schemas/component_id.schema.json", "compiled component_id schema is required", install_rule_id),
+        ("schemas/component_descriptor.schema.json", "compiled component descriptor schema is required", install_rule_id),
+        ("schemas/component_edge.schema.json", "compiled component edge schema is required", install_rule_id),
+        ("schemas/component_graph.schema.json", "compiled component graph schema is required", install_rule_id),
+        ("schemas/install_plan.schema.json", "compiled install plan schema is required", install_rule_id),
+        ("data/registries/arch_registry.json", "architecture registry is required", install_rule_id),
+        ("data/registries/os_registry.json", "operating-system registry is required", install_rule_id),
+        ("data/registries/component_graph_registry.json", "component graph registry is required", install_rule_id),
+        ("src/release/component_graph_resolver.py", "component graph resolver is required", install_rule_id),
+        ("tools/release/component_graph_common.py", "component graph helper is required", install_rule_id),
+        ("tools/release/tool_run_component_graph.py", "component graph runner is required", install_rule_id),
+        ("docs/audit/COMPONENT_GRAPH_BASELINE.md", "component graph baseline report is required", install_rule_id),
+        ("data/audit/component_graph_report.json", "component graph machine report is required", install_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/release/COMPONENT_GRAPH_CONSTITUTION.md").lower()
+    for token, message in (
+        ("# component graph constitution", "component graph constitution must declare the canonical title"),
+        ("## component model", "component graph constitution must define the component model"),
+        ("## edge model", "component graph constitution must define dependency edge kinds"),
+        ("## resolution", "component graph constitution must define deterministic resolution"),
+        ("## determinism", "component graph constitution must define determinism rules"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/release/COMPONENT_GRAPH_CONSTITUTION.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=install_rule_id,
+            )
+        )
+
+    baseline_text = _file_text(repo_root, "docs/audit/COMPONENT_GRAPH_BASELINE.md").lower()
+    for token, message in (
+        ("# component graph baseline", "component graph baseline must declare the canonical title"),
+        ("## component list", "component graph baseline must list components"),
+        ("## edge list", "component graph baseline must list edges"),
+        ("## resolution algorithm", "component graph baseline must summarize the deterministic resolver"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/COMPONENT_GRAPH_BASELINE.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=install_rule_id,
+            )
+        )
+
+    try:
+        from tools.release.component_graph_common import component_graph_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/component_graph_common.py",
+                line_number=1,
+                snippet="component_graph_violations",
+                message="unable to import component graph checks ({})".format(str(exc)),
+                rule_id=install_rule_id,
+            )
+        )
+        return
+
+    for violation in component_graph_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "component graph governance drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or install_rule_id,
+            )
+        )
+
+
+def _append_install_profile_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    use_rule_id = "INV-DIST-BUNDLES-MUST-USE-INSTALL-PROFILES"
+    hardcoded_rule_id = "INV-NO-HARDCODED-BUNDLE-CONTENTS"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/DIST_REFINE1_RETRO_AUDIT.md", "DIST-REFINE-1 retro audit is required", use_rule_id),
+        ("docs/release/INSTALL_PROFILES.md", "install profile doctrine is required", use_rule_id),
+        ("schema/release/install_profile.schema", "install_profile schema is required", use_rule_id),
+        ("schemas/install_profile.schema.json", "compiled install_profile schema is required", use_rule_id),
+        ("data/registries/install_profile_registry.json", "install profile registry is required", use_rule_id),
+        ("tools/release/install_profile_common.py", "install profile helper is required", use_rule_id),
+        ("tools/release/tool_run_install_profiles.py", "install profile runner is required", use_rule_id),
+        ("docs/audit/INSTALL_PROFILE_BASELINE.md", "install profile baseline report is required", use_rule_id),
+        ("data/audit/install_profile_report.json", "install profile machine report is required", use_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/release/INSTALL_PROFILES.md").lower()
+    for token, message in (
+        ("# install profiles", "install profile doctrine must declare the canonical title"),
+        ("install.profile.full", "install profile doctrine must define the full profile"),
+        ("install.profile.client", "install profile doctrine must define the client profile"),
+        ("install.profile.server", "install profile doctrine must define the server profile"),
+        ("install.profile.tools", "install profile doctrine must define the tools profile"),
+        ("install.profile.sdk", "install profile doctrine must define the sdk profile"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/release/INSTALL_PROFILES.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=use_rule_id,
+            )
+        )
+
+    baseline_text = _file_text(repo_root, "docs/audit/INSTALL_PROFILE_BASELINE.md").lower()
+    for token, message in (
+        ("# install profile baseline", "install profile baseline must declare the canonical title"),
+        ("## profile definitions", "install profile baseline must list profile definitions"),
+        ("## resolved component sets", "install profile baseline must list resolved component sets"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/INSTALL_PROFILE_BASELINE.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=use_rule_id,
+            )
+        )
+
+    try:
+        from tools.release.install_profile_common import install_profile_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/install_profile_common.py",
+                line_number=1,
+                snippet="install_profile_violations",
+                message="unable to import install profile checks ({})".format(str(exc)),
+                rule_id=use_rule_id,
+            )
+        )
+        return
+
+    for violation in install_profile_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "install profile governance drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or use_rule_id,
+            )
+        )
+
+
+def _append_update_model_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    graph_rule_id = "INV-UPDATE-MUST-USE-COMPONENT-GRAPH"
+    rollback_rule_id = "INV-ROLLBACK-REQUIRES-TRANSACTION-LOG"
+    silent_rule_id = "INV-NO-SILENT-UPGRADE"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/UPDATE_MODEL0_RETRO_AUDIT.md", "UPDATE-MODEL-0 retro audit is required", graph_rule_id),
+        ("docs/release/RELEASE_INDEX_MODEL.md", "release index doctrine is required", graph_rule_id),
+        ("docs/release/SETUP_SELF_UPDATE.md", "setup self-update doctrine is required", graph_rule_id),
+        ("schema/release/release_index.schema", "release_index schema is required", graph_rule_id),
+        ("schema/release/update_plan.schema", "update_plan schema is required", graph_rule_id),
+        ("schemas/release_index.schema.json", "compiled release_index schema is required", graph_rule_id),
+        ("schemas/update_plan.schema.json", "compiled update_plan schema is required", graph_rule_id),
+        ("src/release/update_resolver.py", "update resolver is required", graph_rule_id),
+        ("tools/release/update_model_common.py", "update-model helper is required", graph_rule_id),
+        ("tools/release/tool_run_update_model.py", "update-model runner is required", graph_rule_id),
+        ("docs/audit/UPDATE_MODEL_BASELINE.md", "update-model baseline is required", graph_rule_id),
+        ("data/audit/update_model_report.json", "update-model machine report is required", graph_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/release/RELEASE_INDEX_MODEL.md").lower()
+    for token, message in (
+        ("# release index model", "release index doctrine must declare the canonical title"),
+        ("## release index", "release index doctrine must define the index surface"),
+        ("## channel semantics", "release index doctrine must define channel semantics"),
+        ("## update resolution", "release index doctrine must define deterministic update resolution"),
+        ("## rollback", "release index doctrine must define rollback behavior"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/release/RELEASE_INDEX_MODEL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=graph_rule_id,
+            )
+        )
+
+    baseline_text = _file_text(repo_root, "docs/audit/UPDATE_MODEL_BASELINE.md").lower()
+    for token, message in (
+        ("# update model baseline", "update-model baseline must declare the canonical title"),
+        ("## release index schema", "update-model baseline must summarize the release index schema"),
+        ("## update plan logic", "update-model baseline must summarize update planning"),
+        ("## rollback model", "update-model baseline must summarize rollback behavior"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/UPDATE_MODEL_BASELINE.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=graph_rule_id,
+            )
+        )
+
+    try:
+        from tools.release.update_model_common import update_model_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/update_model_common.py",
+                line_number=1,
+                snippet="update_model_violations",
+                message="unable to import update-model checks ({})".format(str(exc)),
+                rule_id=graph_rule_id,
+            )
+        )
+        return
+
+    for violation in update_model_violations(repo_root):
+        row = dict(violation or {})
+        current_rule_id = str(row.get("rule_id", "")).strip() or graph_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "update-model governance drift detected",
+                rule_id=current_rule_id,
+            )
+        )
+
+
+def _append_release_index_policy_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    default_rule_id = "INV-RELEASE-INDEX-POLICY-DECLARED"
+    severity = _invariant_severity(profile)
+    try:
+        from tools.release.release_index_policy_common import release_index_policy_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/release_index_policy_common.py",
+                line_number=1,
+                snippet="release_index_policy_violations",
+                message="unable to import release-index policy checks ({})".format(str(exc)),
+                rule_id=default_rule_id,
+            )
+        )
+        return
+
+    for violation in release_index_policy_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "release-index policy governance drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or default_rule_id,
+            )
+        )
+
+
+def _append_trust_model_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    hashes_rule_id = "INV-HASHES-MANDATORY-FOR-ARTIFACTS"
+    policy_rule_id = "INV-TRUST-POLICY-DECLARED"
+    strict_rule_id = "INV-STRICT-REQUIRES-SIGNATURES"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/TRUST_MODEL0_RETRO_AUDIT.md", "TRUST-MODEL-0 retro audit is required", policy_rule_id),
+        ("docs/security/TRUST_AND_SIGNING_MODEL.md", "trust and signing doctrine is required", policy_rule_id),
+        ("schema/security/trust_root.schema", "trust_root schema is required", policy_rule_id),
+        ("schema/security/trust_policy.schema", "trust_policy schema is required", policy_rule_id),
+        ("schema/security/signature_record.schema", "signature_record schema is required", policy_rule_id),
+        ("schemas/trust_root.schema.json", "compiled trust_root schema is required", policy_rule_id),
+        ("schemas/trust_policy.schema.json", "compiled trust_policy schema is required", policy_rule_id),
+        ("schemas/signature_record.schema.json", "compiled signature_record schema is required", policy_rule_id),
+        ("data/registries/trust_root_registry.json", "trust root registry is required", policy_rule_id),
+        ("data/registries/trust_policy_registry.json", "trust policy registry is required", policy_rule_id),
+        ("src/security/trust/trust_verifier.py", "trust verifier is required", hashes_rule_id),
+        ("tools/security/trust_model_common.py", "trust-model helper is required", policy_rule_id),
+        ("tools/security/tool_run_trust_model.py", "trust-model runner is required", policy_rule_id),
+        ("docs/audit/TRUST_MODEL_BASELINE.md", "trust-model baseline is required", policy_rule_id),
+        ("data/audit/trust_model_report.json", "trust-model machine report is required", policy_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/security/TRUST_AND_SIGNING_MODEL.md").lower()
+    for token, message in (
+        ("# trust and signing model", "trust doctrine must declare the canonical title"),
+        ("## trust objects", "trust doctrine must define trust objects"),
+        ("## offline-first policy", "trust doctrine must define offline-first behavior"),
+        ("## trust levels mapping", "trust doctrine must define trust level mapping"),
+        ("## revocation / rotation", "trust doctrine must define trust root rotation"),
+        ("## refusals", "trust doctrine must declare trust refusal codes"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/security/TRUST_AND_SIGNING_MODEL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=policy_rule_id,
+            )
+        )
+
+    baseline_text = _file_text(repo_root, "docs/audit/TRUST_MODEL_BASELINE.md").lower()
+    for token, message in (
+        ("# trust model baseline", "trust-model baseline must declare the canonical title"),
+        ("## policies", "trust-model baseline must summarize policies"),
+        ("## default behavior for mock channel", "trust-model baseline must summarize mock-channel behavior"),
+        ("## integration points", "trust-model baseline must summarize integration points"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/TRUST_MODEL_BASELINE.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=policy_rule_id,
+            )
+        )
+
+    try:
+        from tools.security.trust_model_common import trust_model_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/security/trust_model_common.py",
+                line_number=1,
+                snippet="trust_model_violations",
+                message="unable to import trust-model checks ({})".format(str(exc)),
+                rule_id=policy_rule_id,
+            )
+        )
+        return
+
+    for violation in trust_model_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "trust-model governance drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or policy_rule_id,
+            )
+        )
+
+
+def _append_governance_model_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    rule_id = "INV-GOVERNANCE-PROFILE-PRESENT-IN-RELEASE"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/GOVERNANCE0_RETRO_AUDIT.md", "GOVERNANCE-0 retro audit is required", rule_id),
+        ("docs/governance/GOVERNANCE_MODEL.md", "governance doctrine is required", rule_id),
+        ("docs/governance/TRUST_ROOT_GOVERNANCE.md", "trust-root governance doctrine is required", rule_id),
+        ("docs/governance/LICENSING_STRATEGY.md", "licensing strategy document is required", rule_id),
+        ("schema/governance/governance_profile.schema", "governance_profile schema is required", rule_id),
+        ("schemas/governance_profile.schema.json", "compiled governance_profile schema is required", rule_id),
+        ("data/registries/governance_mode_registry.json", "governance mode registry is required", rule_id),
+        ("data/governance/governance_profile.json", "governance profile is required", rule_id),
+        ("tools/governance/governance_model_common.py", "governance-model helper is required", rule_id),
+        ("tools/governance/tool_run_governance_model.py", "governance-model runner is required", rule_id),
+        ("docs/audit/GOVERNANCE_POLICY_BASELINE.md", "governance baseline is required", rule_id),
+        ("data/audit/governance_policy_report.json", "governance machine report is required", rule_id),
+    )
+    for rel_path, message, current_rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=current_rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/governance/GOVERNANCE_MODEL.md").lower()
+    for token, message in (
+        ("# governance model", "governance doctrine must declare the canonical title"),
+        ("## project parts", "governance doctrine must define project parts"),
+        ("## governance modes", "governance doctrine must define governance modes"),
+        ("## official vs third-party", "governance doctrine must define official versus third-party ecosystems"),
+        ("## namespacing and fork policy", "governance doctrine must define fork and namespace policy"),
+        ("## archive and extinction prevention", "governance doctrine must define archive policy"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/governance/GOVERNANCE_MODEL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.governance.governance_model_common import governance_model_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/governance/governance_model_common.py",
+                line_number=1,
+                snippet="governance_model_violations",
+                message="unable to import governance-model checks ({})".format(str(exc)),
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    for violation in governance_model_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "governance policy drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or rule_id,
+            )
+        )
+
+
+def _append_performance_envelope_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    default_rule_id = "INV-PERFORMANCE-BASELINE-RECORDED"
+    severity = _invariant_severity(profile)
+    try:
+        from tools.perf.performance_envelope_common import performance_envelope_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/perf/performance_envelope_common.py",
+                line_number=1,
+                snippet="performance_envelope_violations",
+                message="unable to import performance-envelope checks ({})".format(str(exc)),
+                rule_id=default_rule_id,
+            )
+        )
+        return
+
+    for violation in performance_envelope_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "performance envelope governance drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or default_rule_id,
+            )
+        )
+
+
+def _append_archive_policy_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    default_rule_id = "INV-RELEASES-MUST-GENERATE-ARCHIVE-RECORD"
+    severity = _invariant_severity(profile)
+    try:
+        from tools.release.archive_policy_common import archive_policy_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/archive_policy_common.py",
+                line_number=1,
+                snippet="archive_policy_violations",
+                message="unable to import archive-policy checks ({})".format(str(exc)),
+                rule_id=default_rule_id,
+            )
+        )
+        return
+
+    for violation in archive_policy_violations(repo_root):
+        row = dict(violation or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "archive policy drift detected",
+                rule_id=str(row.get("rule_id", "")).strip() or default_rule_id,
+            )
+        )
+
+
+def _append_arch_matrix_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    matrix_rule_id = "INV-TARGET-MATRIX-DECLARED"
+    tier1_rule_id = "INV-TIER1-MUST-PASS-ALL-GATES"
+    tier3_rule_id = "INV-TIER3-NOT-IN-DEFAULT-RELEASE_INDEX"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/ARCH_MATRIX0_RETRO_AUDIT.md", "ARCH-MATRIX-0 retro audit is required", matrix_rule_id),
+        ("docs/release/TARGET_MATRIX_v0_0_0_mock.md", "target matrix doctrine is required", matrix_rule_id),
+        ("docs/release/TARGET_CAPABILITY_RULES.md", "target capability rules are required", matrix_rule_id),
+        ("data/registries/target_matrix_registry.json", "target matrix registry is required", matrix_rule_id),
+        ("tools/release/arch_matrix_common.py", "ARCH-MATRIX helper is required", matrix_rule_id),
+        ("tools/release/tool_run_arch_matrix.py", "ARCH-MATRIX runner is required", matrix_rule_id),
+        ("docs/audit/ARCH_MATRIX_FINAL.md", "ARCH-MATRIX final report is required", matrix_rule_id),
+        ("data/audit/arch_matrix_report.json", "ARCH-MATRIX machine report is required", matrix_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/release/TARGET_MATRIX_v0_0_0_mock.md").lower()
+    for token, message in (
+        ("# target matrix v0.0.0 mock", "target matrix doctrine must declare the canonical title"),
+        ("## axes", "target matrix doctrine must define matrix axes"),
+        ("## support tiers", "target matrix doctrine must define support tiers"),
+        ("tier 1", "target matrix doctrine must declare tier 1 policy"),
+        ("tier 2", "target matrix doctrine must declare tier 2 policy"),
+        ("tier 3", "target matrix doctrine must declare tier 3 policy"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/release/TARGET_MATRIX_v0_0_0_mock.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=matrix_rule_id,
+            )
+        )
+
+    baseline_text = _file_text(repo_root, "docs/audit/ARCH_MATRIX_FINAL.md").lower()
+    for token, message in (
+        ("# arch-matrix final", "ARCH-MATRIX final report must declare the canonical title"),
+        ("## full target matrix table", "ARCH-MATRIX final report must include the full target table"),
+        ("## tier breakdown", "ARCH-MATRIX final report must summarize tier counts"),
+        ("## readiness", "ARCH-MATRIX final report must summarize readiness"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/audit/ARCH_MATRIX_FINAL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=matrix_rule_id,
+            )
+        )
+
+    try:
+        from tools.release.arch_matrix_common import arch_matrix_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/release/arch_matrix_common.py",
+                line_number=1,
+                snippet="arch_matrix_violations",
+                message="unable to import ARCH-MATRIX checks ({})".format(str(exc)),
+                rule_id=matrix_rule_id,
+            )
+        )
+        return
+
+    for violation in arch_matrix_violations(repo_root):
+        row = dict(violation or {})
+        current_rule_id = str(row.get("rule_id", "")).strip() or matrix_rule_id
+        if current_rule_id not in {matrix_rule_id, tier1_rule_id, tier3_rule_id}:
+            current_rule_id = matrix_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "ARCH-MATRIX governance drift detected",
+                rule_id=current_rule_id,
+            )
+        )
+
+
+def _append_universal_identity_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    warn_rule_id = "INV-ARTIFACTS-MUST-HAVE-UNIVERSAL-IDENTITY"
+    namespaced_rule_id = "INV-IDENTITY-NAMESPACED"
+    canonical_rule_id = "INV-IDENTITY-CANONICAL-SERIALIZED"
+    blocker_severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/UNIVERSAL_IDENTITY0_RETRO_AUDIT.md", "UNIVERSAL-ID retro audit is required", warn_rule_id),
+        ("docs/meta/UNIVERSAL_IDENTITY_MODEL.md", "universal identity doctrine is required", warn_rule_id),
+        ("docs/meta/IDENTITY_INTEGRATION_MAP.md", "identity integration map is required", warn_rule_id),
+        ("schema/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
+        ("schemas/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
+        ("data/registries/identity_kind_registry.json", "identity kind registry is required", namespaced_rule_id),
+        ("src/meta/identity/identity_validator.py", "identity validator is required", canonical_rule_id),
+        ("tools/meta/identity_common.py", "identity helper is required", canonical_rule_id),
+        ("tools/meta/tool_print_identity.py", "identity print tool is required", warn_rule_id),
+        ("tools/meta/tool_diff_identity.py", "identity diff tool is required", warn_rule_id),
+        ("docs/audit/UNIVERSAL_IDENTITY_BASELINE.md", "universal identity baseline is required", warn_rule_id),
+        ("data/audit/universal_identity_report.json", "universal identity machine report is required", warn_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        severity = "warn" if rule_id == warn_rule_id else blocker_severity
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/meta/UNIVERSAL_IDENTITY_MODEL.md").lower()
+    for token, message, rule_id in (
+        ("# universal identity model", "universal identity doctrine must declare the canonical title", warn_rule_id),
+        ("## universalidentityblock", "universal identity doctrine must define the universal identity block", warn_rule_id),
+        ("## identity kinds", "universal identity doctrine must define identity kinds", warn_rule_id),
+        ("## rules", "universal identity doctrine must define kind rules", warn_rule_id),
+    ):
+        if token in doctrine_text:
+            continue
+        severity = "warn" if rule_id == warn_rule_id else blocker_severity
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/meta/UNIVERSAL_IDENTITY_MODEL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.meta.identity_common import identity_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=blocker_severity,
+                file_path="tools/meta/identity_common.py",
+                line_number=1,
+                snippet="identity_violations",
+                message="unable to import universal identity checks ({})".format(str(exc)),
+                rule_id=canonical_rule_id,
+            )
+        )
+        return
+
+    for violation in identity_violations(repo_root, strict_missing=False):
+        row = dict(violation or {})
+        rule_id = str(row.get("rule_id", "")).strip() or warn_rule_id
+        severity = "warn" if rule_id == warn_rule_id else blocker_severity
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "universal identity governance drift detected",
+                rule_id=rule_id,
+            )
+        )
+
+
+def _append_migration_lifecycle_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    policy_rule_id = "INV-MIGRATION-POLICY-DECLARED-FOR-ALL-ARTIFACTS"
+    silent_rule_id = "INV-NO-SILENT-MIGRATION"
+    readonly_rule_id = "INV-READONLY-LOGGED"
+    severity = _invariant_severity(profile)
+    required_files = (
+        ("docs/audit/MIGRATION_LIFECYCLE0_RETRO_AUDIT.md", "migration lifecycle retro audit is required", policy_rule_id),
+        ("docs/compat/MIGRATION_LIFECYCLE_MODEL.md", "migration lifecycle doctrine is required", policy_rule_id),
+        ("schema/compat/migration_policy.schema", "migration policy schema is required", policy_rule_id),
+        ("schema/compat/migration_chain.schema", "migration chain schema is required", policy_rule_id),
+        ("schema/compat/migration_decision_record.schema", "migration decision record schema is required", policy_rule_id),
+        ("schemas/migration_policy.schema.json", "compiled migration policy schema is required", policy_rule_id),
+        ("schemas/migration_chain.schema.json", "compiled migration chain schema is required", policy_rule_id),
+        ("schemas/migration_decision_record.schema.json", "compiled migration decision record schema is required", policy_rule_id),
+        ("data/registries/migration_policy_registry.json", "migration policy registry is required", policy_rule_id),
+        ("src/compat/migration_lifecycle.py", "migration lifecycle helper is required", policy_rule_id),
+        ("tools/compat/migration_lifecycle_common.py", "migration lifecycle helper/reporting tool is required", policy_rule_id),
+        ("tools/compat/tool_plan_migration.py", "migration planning tool is required", silent_rule_id),
+        ("tools/compat/tool_apply_migration.py", "migration apply tool is required", silent_rule_id),
+        ("docs/audit/MIGRATION_LIFECYCLE_BASELINE.md", "migration lifecycle baseline is required", policy_rule_id),
+        ("data/audit/migration_lifecycle_report.json", "migration lifecycle report is required", policy_rule_id),
+    )
+    for rel_path, message, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_text = _file_text(repo_root, "docs/compat/MIGRATION_LIFECYCLE_MODEL.md").lower()
+    for token, message, rule_id in (
+        ("# migration lifecycle model", "migration lifecycle doctrine must declare the canonical title", policy_rule_id),
+        ("## artifact classes", "migration lifecycle doctrine must define artifact classes", policy_rule_id),
+        ("## compatibility ranges", "migration lifecycle doctrine must define compatibility ranges", policy_rule_id),
+        ("## migration policy", "migration lifecycle doctrine must define migration policy", silent_rule_id),
+        ("## read-only policy", "migration lifecycle doctrine must define read-only policy", readonly_rule_id),
+        ("## refusal and remediation", "migration lifecycle doctrine must define refusal/remediation rules", silent_rule_id),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="docs/compat/MIGRATION_LIFECYCLE_MODEL.md",
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    try:
+        from tools.compat.migration_lifecycle_common import migration_lifecycle_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/compat/migration_lifecycle_common.py",
+                line_number=1,
+                snippet="migration_lifecycle_violations",
+                message="unable to import migration lifecycle checks ({})".format(str(exc)),
+                rule_id=policy_rule_id,
+            )
+        )
+        return
+
+    for violation in migration_lifecycle_violations(repo_root):
+        row = dict(violation or {})
+        rule_id = str(row.get("rule_id", "")).strip() or policy_rule_id
+        if rule_id not in {policy_rule_id, silent_rule_id, readonly_rule_id}:
+            rule_id = policy_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(row.get("file_path", "")).replace("\\", "/"),
+                line_number=1,
+                snippet=str(row.get("code", ""))[:160],
+                message=str(row.get("message", "")).strip() or "migration lifecycle governance drift detected",
+                rule_id=rule_id,
+            )
+        )
 
 
 def _append_bundle_invariant_findings(
@@ -34007,6 +35401,21 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         repo_root=repo_root,
         profile=token,
     )
+    _append_concurrency_contract_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_store_gc_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_observability_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
     _append_electric_invariant_findings(
         findings=findings,
         repo_root=repo_root,
@@ -34103,6 +35512,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_arch_audit_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_arch_audit2_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
@@ -34213,6 +35627,66 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_dist5_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_dist6_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_component_graph_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_install_profile_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_update_model_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_release_index_policy_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_trust_model_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_governance_model_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_performance_envelope_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_archive_policy_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_universal_identity_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_migration_lifecycle_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_arch_matrix_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

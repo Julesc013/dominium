@@ -47,5 +47,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "base_exponents": {},
+      "deprecated": false,
+      "description": "example",
+      "dimension_id": "dimension_id.example",
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "version_introduced": "example"
+    }
+  ]
 }

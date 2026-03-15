@@ -56,5 +56,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "allow_parallel_steps": false,
+      "default_step_duration_ticks": "example",
+      "deterministic_scheduling_rule_id": "deterministic_scheduling_rule_id.example",
+      "extensions": {},
+      "max_parallel_steps": 1,
+      "policy_id": "policy_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

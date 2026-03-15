@@ -47,5 +47,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "causality_strictness_id": "causality_strictness_id.example",
+      "description": "example",
+      "event_required_for_macro_change": false,
+      "extensions": {},
+      "level": "C0",
+      "major_change_requires_commitment": false,
+      "schema_version": "1.0.0"
+    }
+  ]
 }

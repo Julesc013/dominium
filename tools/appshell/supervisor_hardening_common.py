@@ -250,8 +250,9 @@ def _log_merge_findings(repo_root: str) -> list[dict]:
     engine_text = _read_text(repo_root, "src/appshell/supervisor/supervisor_engine.py")
     required = (
         "\"channel_id\": \"log\"",
-        "key=_log_merge_sort_key",
-        "str(row_map.get(\"channel_id\", \"\")).strip()",
+        "_LOG_MERGE_SORT_KEY = build_field_sort_key(",
+        "key_fn=_log_merge_sort_key",
+        "(\"source_product_id\", \"channel_id\", \"seq_no\", \"endpoint_id\", \"event_id\")",
     )
     missing = [token for token in required if token not in engine_text]
     if missing:

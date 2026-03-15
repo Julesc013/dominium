@@ -8,7 +8,19 @@ import subprocess
 import sys
 from typing import Mapping, Sequence
 
+from src.meta.identity import (
+    IDENTITY_KIND_SUITE_RELEASE,
+    UNIVERSAL_IDENTITY_FIELD,
+    attach_universal_identity_block,
+)
 from src.release.build_id_engine import build_build_id_input_payload, build_id_identity_from_input_payload
+from src.release.component_graph_resolver import DEFAULT_COMPONENT_GRAPH_ID, load_default_component_graph
+from src.security.trust import (
+    ARTIFACT_KIND_RELEASE_MANIFEST,
+    effective_trust_policy_id,
+    verify_artifact_trust,
+    verify_signature_records,
+)
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -207,6 +219,7 @@ def _manifest_hash_payload(payload: Mapping[str, object]) -> dict:
     out["manifest_hash"] = ""
     out["deterministic_fingerprint"] = ""
     out.pop("signatures", None)
+    out.pop(UNIVERSAL_IDENTITY_FIELD, None)
     return out
 
 
@@ -214,6 +227,7 @@ def _manifest_fingerprint_payload(payload: Mapping[str, object]) -> dict:
     out = dict(payload or {})
     out["deterministic_fingerprint"] = ""
     out.pop("signatures", None)
+    out.pop(UNIVERSAL_IDENTITY_FIELD, None)
     return out
 
 
@@ -651,51 +665,23 @@ def load_signature_blocks(signature_path: str) -> list[dict]:
 
 
 def verify_signature_blocks(signed_hash: str, signatures: Sequence[Mapping[str, object]] | None) -> dict:
-    rows = _normalized_signature_rows(signatures)
-    if not rows:
-        return {"status": "signature_missing", "verified_count": 0, "errors": []}
-    errors: list[dict[str, str]] = []
-    verified_count = 0
-    for row in rows:
-        scheme_id = _token(_as_map(row.get("extensions")).get("scheme_id")) or DEFAULT_SIGNATURE_SCHEME_ID
-        if _token(row.get("signed_hash")).lower() != _token(signed_hash).lower():
-            errors.append(
-                {
-                    "code": "signature_signed_hash_mismatch",
-                    "signature_id": _token(row.get("signature_id")),
-                    "message": "signature signed_hash does not match the manifest hash",
-                }
-            )
-            continue
-        if scheme_id != DEFAULT_SIGNATURE_SCHEME_ID:
-            errors.append(
-                {
-                    "code": "signature_unknown_scheme",
-                    "signature_id": _token(row.get("signature_id")),
-                    "message": "unsupported signature scheme '{}'".format(scheme_id),
-                }
-            )
-            continue
-        expected = build_mock_signature_block(
-            signer_id=_token(row.get("signer_id")),
-            signed_hash=_token(row.get("signed_hash")),
-            signature_id=_token(row.get("signature_id")),
-        )
-        if _token(expected.get("signature_bytes")) != _token(row.get("signature_bytes")):
-            errors.append(
-                {
-                    "code": "signature_bytes_mismatch",
-                    "signature_id": _token(row.get("signature_id")),
-                    "message": "signature bytes do not match the deterministic mock signature hook",
-                }
-            )
-            continue
-        verified_count += 1
+    report = verify_signature_records(signed_hash, _normalized_signature_rows(signatures))
     return {
-        "status": "verified" if not errors else "signature_invalid",
-        "verified_count": verified_count,
-        "errors": errors,
+        "status": _token(report.get("status")),
+        "verified_count": int(report.get("verified_count") or 0),
+        "errors": list(report.get("errors") or []),
+        "verified_signer_ids": list(report.get("verified_signer_ids") or []),
     }
+
+
+def _install_manifest_for_root(root: str) -> dict:
+    path = os.path.join(os.path.normpath(os.path.abspath(root)), "install.manifest.json")
+    if not os.path.isfile(path):
+        return {}
+    payload, error = _read_json(path)
+    if error:
+        return {}
+    return payload
 
 
 def infer_dist_root_from_manifest_path(manifest_path: str) -> str:
@@ -810,11 +796,26 @@ def build_release_manifest(
             "regression_hashes": dict((key, regression_hashes[key]) for key in sorted(regression_hashes.keys())),
         },
     }
+    component_graph = load_default_component_graph(repo_token or root, graph_id=DEFAULT_COMPONENT_GRAPH_ID)
+    if component_graph:
+        payload["extensions"]["component_graph_hash"] = _token(component_graph.get("deterministic_fingerprint")).lower()
+        payload["extensions"]["component_graph_id"] = _token(component_graph.get("graph_id"))
     normalized_signatures = _normalized_signature_rows(signatures)
     if normalized_signatures:
         payload["signatures"] = normalized_signatures
     payload["manifest_hash"] = canonical_sha256(_manifest_hash_payload(payload))
     payload["deterministic_fingerprint"] = canonical_sha256(_manifest_fingerprint_payload(payload))
+    payload = attach_universal_identity_block(
+        payload,
+        identity_kind_id=IDENTITY_KIND_SUITE_RELEASE,
+        identity_id="identity.release.{}".format(_token(payload.get("release_id")) or "unknown"),
+        stability_class_id="provisional",
+        semver=_token(_as_map(payload.get("extensions")).get("release_semver")),
+        format_version=_token(payload.get("manifest_version")),
+        schema_version=_token(payload.get("manifest_version")),
+        contract_bundle_hash=_token(payload.get("semantic_contract_registry_hash")).lower(),
+        extensions={"official.rel_path": _norm_rel(DEFAULT_RELEASE_MANIFEST_REL)},
+    )
     if verify_build_ids:
         build_id_report = cross_check_release_manifest_build_ids(payload, root)
         if _token(build_id_report.get("result")) != "complete":
@@ -851,6 +852,9 @@ def verify_release_manifest(
     *,
     repo_root: str = "",
     signature_path: str = "",
+    trust_policy_id: str = "",
+    trust_policy_registry_path: str = "",
+    trust_root_registry_path: str = "",
 ) -> dict:
     root = os.path.normpath(os.path.abspath(dist_root))
     payload = load_release_manifest(manifest_path)
@@ -1103,6 +1107,41 @@ def verify_release_manifest(
             }
         )
 
+    install_manifest = _install_manifest_for_root(root)
+    effective_policy_id = effective_trust_policy_id(
+        requested_trust_policy_id=trust_policy_id,
+        install_manifest=install_manifest,
+    )
+    trust_report = verify_artifact_trust(
+        artifact_kind=ARTIFACT_KIND_RELEASE_MANIFEST,
+        content_hash=expected_manifest_hash,
+        signatures=signature_rows,
+        trust_policy_id=effective_policy_id,
+        repo_root=_token(repo_root) or root,
+        install_root=root,
+        trust_policy_registry_path=trust_policy_registry_path,
+        trust_root_registry_path=trust_root_registry_path,
+        signature_status_hint=_token(signature_report.get("status")),
+        verified_signer_ids_hint=list(signature_report.get("verified_signer_ids") or []),
+    )
+    if _token(trust_report.get("result")) == "refused":
+        errors.append(
+            {
+                "code": _token(trust_report.get("refusal_code")) or "refusal.trust.policy_missing",
+                "path": "signatures",
+                "message": _token(trust_report.get("reason")) or "trust policy refused the release manifest",
+            }
+        )
+    for row in list(trust_report.get("warnings") or []):
+        item = _as_map(row)
+        warnings.append(
+            {
+                "code": _token(item.get("code")) or "warn.trust.signature_missing",
+                "path": "signatures",
+                "message": _token(item.get("message")) or "trust policy warning",
+            }
+        )
+
     return {
         "result": "complete" if not errors else "refused",
         "dist_root": _norm_rel(root),
@@ -1113,6 +1152,8 @@ def verify_release_manifest(
         "build_id_cross_checked": build_id_cross_checked,
         "signature_status": _token(signature_report.get("status")) or "signature_missing",
         "verified_signature_count": int(signature_report.get("verified_count") or 0),
+        "trust_policy_id": effective_policy_id,
+        "trust_result": trust_report,
         "errors": errors,
         "warnings": warnings,
     }

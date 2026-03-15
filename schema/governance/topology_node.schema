@@ -9,6 +9,7 @@ PURPOSE:
 REQUIRED SHAPE:
 record topology_node
   required:
+    - schema_version: semver
     - node_id: id
     - node_kind: enum(module|schema|registry|tool|process_family|contract_set|policy_set)
     - path: optional_text

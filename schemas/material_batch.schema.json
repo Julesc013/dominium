@@ -60,5 +60,18 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "batch_id": "batch_id.example",
+      "extensions": {},
+      "material_id": "material_id.example",
+      "origin_process_id": "origin_process_id.example",
+      "origin_tick": 0,
+      "parent_batch_ids": [],
+      "quality_distribution": {},
+      "quantity_mass_raw": 0,
+      "schema_version": "1.0.0"
+    }
+  ]
 }

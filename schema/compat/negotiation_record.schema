@@ -28,6 +28,8 @@ record negotiation_record
     - input_hashes: map
     - deterministic_fingerprint: sha256
     - extensions: map
+  optional:
+    - universal_identity_block: universal_identity_block
 
 INVARIANTS:
 - list ordering is deterministic

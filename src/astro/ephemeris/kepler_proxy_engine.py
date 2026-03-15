@@ -14,6 +14,7 @@ from src.astro.illumination.illumination_geometry_engine import (
 )
 from src.geo import build_position_ref
 from src.lib.provides.provider_resolution import resolve_providers
+from src.numeric_discipline import debug_assert_no_float_payload
 from src.worldgen.mw import (
     normalize_planet_basic_artifact_rows,
     normalize_planet_orbit_artifact_rows,
@@ -472,7 +473,7 @@ def build_orbit_position_ref(
     chart_id: str = DEFAULT_ORBIT_CHART_ID,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
-    return build_position_ref(
+    payload = build_position_ref(
         object_id=str(object_id or "").strip(),
         frame_id=str(frame_id or DEFAULT_ORBIT_FRAME_ID).strip() or DEFAULT_ORBIT_FRAME_ID,
         local_position=[int(_as_int(value, 0)) for value in list(local_position or [])[:3]],
@@ -483,6 +484,9 @@ def build_orbit_position_ref(
             **_as_map(extensions),
         },
     )
+    if __debug__:
+        debug_assert_no_float_payload(payload, context="orbit_position_ref")
+    return payload
 
 
 def sample_orbit_path_points(
@@ -524,6 +528,8 @@ def sample_orbit_path_points(
                 ),
             }
         )
+    if __debug__:
+        debug_assert_no_float_payload(out, context="orbit_path_samples")
     return out
 
 

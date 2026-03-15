@@ -1,0 +1,88 @@
+{
+  "schema_id": "dominium.registry.concurrency_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.concurrency_policy_registry",
+    "registry_version": "1.0.0",
+    "concurrency_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "concurrency.parallel_derived",
+        "max_threads": 8,
+        "allow_parallel_derived": true,
+        "allow_parallel_validation": false,
+        "allow_parallel_truth": false,
+        "deterministic_fingerprint": "7bab75a7133014fca61f9de31f937e9b85a50e01d7a16622a5c14934484c0a04",
+        "extensions": {
+          "id_stability": "stable",
+          "summary": "Derived-only parallel work is allowed when merged output is canonicalized before hashing or persistence."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Parallel derived output is safe only when the merge utility and ordering discipline remain explicit and versioned.",
+          "future_series": "CONCURRENCY",
+          "replacement_target": "Replace MVP derived-only concurrency policy with release-pinned shard and renderer worker envelopes.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b9b912120aaef8940f085c4886cd4c600f55e71911d375356979a2a92b639562",
+          "extensions": {
+            "id_stability": "stable"
+          }
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "concurrency.parallel_validation",
+        "max_threads": 8,
+        "allow_parallel_derived": false,
+        "allow_parallel_validation": true,
+        "allow_parallel_truth": false,
+        "deterministic_fingerprint": "edb694885de564b0b1a6fabb1f5a9b212d5441bf0284e83876dea8b94674d789",
+        "extensions": {
+          "id_stability": "stable",
+          "summary": "Validation and audit orchestration may run concurrently when result ordering is canonicalized before reduction."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Parallel validation is safe only when result reduction and reporting are canonically ordered.",
+          "future_series": "CONCURRENCY",
+          "replacement_target": "Replace MVP validation concurrency policy with target-tier-specific worker policies after concurrency envelopes are frozen.",
+          "contract_id": "",
+          "deterministic_fingerprint": "45e3346f611003e7c5c2eb9754277fb6bc38befb23f7e68ac49787b3224bd66c",
+          "extensions": {
+            "id_stability": "stable"
+          }
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "concurrency.single_thread",
+        "max_threads": 1,
+        "allow_parallel_derived": false,
+        "allow_parallel_validation": false,
+        "allow_parallel_truth": false,
+        "deterministic_fingerprint": "2c4b16ed6f4dc81f4147e615863e2e80a3083599dfb4f16edf18f27e8f5b5a2c",
+        "extensions": {
+          "id_stability": "stable",
+          "summary": "Default authoritative policy; all governed execution remains single-threaded."
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Single-thread authoritative execution is the MVP baseline and keeps truth invariance explicit while shard merge is not yet formalized.",
+          "future_series": "CONCURRENCY",
+          "replacement_target": "Replace MVP single-thread default with per-domain shard execution policies only after deterministic merge contracts exist.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6d89f945d887db2cd46fc0d5b842b99b30ffa4c650fa098b015748c52c2f4193",
+          "extensions": {
+            "id_stability": "stable"
+          }
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "CONCURRENCY0-2"
+    }
+  }
+}

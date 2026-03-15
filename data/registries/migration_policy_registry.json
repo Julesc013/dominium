@@ -1,0 +1,475 @@
+{
+  "schema_id": "dominium.registry.compat.migration_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compat.migration_policy_registry",
+    "registry_version": "1.0.0",
+    "migration_policies": [
+      {
+        "artifact_kind_id": "artifact.blueprint",
+        "backward_read_range": {
+          "min_version": "2.0.0",
+          "max_version": "2.0.0",
+          "deterministic_fingerprint": "4edc8e53a6085dd91675920d711e2f6179dddaa01e9eb4e8117c2d887bd95bd7",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "2.0.1",
+          "max_version": "2.99.99",
+          "deterministic_fingerprint": "b647f2670694b0c2c75155e3ba0beedcfafebb1a8e9dcead4c2d5e91f4622db5",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "2.0.0",
+          "deterministic_fingerprint": "87c23286aaf0a1e49007fedc6c14ce88cd7ef954d6bb581972c5ba338910dd1e",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "2.0.0",
+          "version_field": "format_version"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Blueprint migration policy is frozen for the mock release while future artifact lifecycles remain provisional.",
+          "future_series": "COMPAT/BLUEPRINT",
+          "replacement_target": "Replace provisional blueprint migration policy with release-pinned lifecycle bundles and explicit shareable artifact migrations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4edc8e53a6085dd91675920d711e2f6179dddaa01e9eb4e8117c2d887bd95bd7",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.component_graph",
+        "backward_read_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "ef5180b42fb9f9ab2959e65dbafbfc485499b7504662f085999720ccbe0c1360",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "1.0.1",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "3f2620fc970e6a205a0c2cdec130ee2e73a349ba834b018c32b8a15e4161573a",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "8161eef81ce710a2f013f5936208c7db80980a309f81e482a78156a5cb1fa60b",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "1.0.0",
+          "version_field": "format_version",
+          "missing_version_treatment": "assume_current"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Component graph lifecycle policy is frozen while the release/update ecosystem continues to evolve.",
+          "future_series": "DIST/UPDATE-MODEL",
+          "replacement_target": "Replace provisional component graph lifecycle policy with release-index governed graph migrations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b647f2670694b0c2c75155e3ba0beedcfafebb1a8e9dcead4c2d5e91f4622db5",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.install_manifest",
+        "backward_read_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "5f51dafd899942ecd5a9cddc1e024b0bebd7cf28c8e843ac22f228d0ad414c07",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "1.0.1",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "0c624bcce28845a6393fdb4cb3ddf7696251846f6b1f8dda127e0618ca8b2a4d",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "bbfd285f8d6b57b6bd5303ea4737ace216a57aa68a10366d9962383adc5fe33f",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "1.0.0",
+          "version_field": "format_version",
+          "missing_version_treatment": "assume_current"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Install manifest lifecycle policy is frozen for the mock release while install/update governance is still converging.",
+          "future_series": "LIB/UPDATE-MODEL",
+          "replacement_target": "Replace provisional install-manifest lifecycle policy with release-index governed install migrations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "87c23286aaf0a1e49007fedc6c14ce88cd7ef954d6bb581972c5ba338910dd1e",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.install_plan",
+        "backward_read_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "1.0.1",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "1.0.0",
+          "version_field": "format_version",
+          "missing_version_treatment": "assume_current"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Install plan lifecycle policy is frozen while update transactions and distribution refinement are still provisional.",
+          "future_series": "DIST/UPDATE-MODEL",
+          "replacement_target": "Replace provisional install-plan lifecycle policy with release-index governed transactional migrations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "d992e2265b92b80ad1f91d2781315d4393ce94d237806f7ccaa7da3d99c74f60",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.instance_manifest",
+        "backward_read_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "1.0.1",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "1.0.0",
+          "version_field": "format_version",
+          "missing_version_treatment": "assume_current"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Instance lifecycle policy is frozen while install/profile coupling remains provisional.",
+          "future_series": "LIB/DIST",
+          "replacement_target": "Replace provisional instance lifecycle policy with release-pinned instance migration chains.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ef5180b42fb9f9ab2959e65dbafbfc485499b7504662f085999720ccbe0c1360",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.negotiation_record",
+        "backward_read_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "1.0.1",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "1.0.0",
+          "version_field": "schema_version"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Negotiation record lifecycle policy is frozen for replay and audit only; explicit migrations remain rare.",
+          "future_series": "CAP-NEG/REPLAY",
+          "replacement_target": "Replace provisional negotiation-record lifecycle policy with protocol-range-governed replay migrations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "3f2620fc970e6a205a0c2cdec130ee2e73a349ba834b018c32b8a15e4161573a",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.pack_lock",
+        "backward_read_range": {
+          "min_version": "2.0.0",
+          "max_version": "2.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "2.0.1",
+          "max_version": "2.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "2.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "2.0.0",
+          "version_field": "format_version"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Pack lock lifecycle policy is frozen for the mock release while future lock semantics remain provisional.",
+          "future_series": "PACK-COMPAT/RELEASE",
+          "replacement_target": "Replace provisional pack-lock lifecycle policy with final lockfile contract governance and release migrations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "8161eef81ce710a2f013f5936208c7db80980a309f81e482a78156a5cb1fa60b",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.profile_bundle",
+        "backward_read_range": {
+          "min_version": "2.0.0",
+          "max_version": "2.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "2.0.1",
+          "max_version": "2.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "2.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "2.0.0",
+          "version_field": "format_version"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Profile bundle lifecycle policy is frozen while final shareable profile semantics remain provisional.",
+          "future_series": "LIB/PROFILE",
+          "replacement_target": "Replace provisional profile-bundle lifecycle policy with release-pinned artifact migrations and profile contracts.",
+          "contract_id": "",
+          "deterministic_fingerprint": "d7cf71bbfcc847719791e5372c5456ee2231051beaf93a3eaa5d22f739bf1ea3",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.release_index",
+        "backward_read_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "1.0.1",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "1.0.0",
+          "version_field": "format_version",
+          "missing_version_treatment": "assume_current"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release-index lifecycle policy is frozen while update acquisition and trust governance remain provisional.",
+          "future_series": "UPDATE/TRUST",
+          "replacement_target": "Replace provisional release-index lifecycle policy with signed release-index migrations and channel governance.",
+          "contract_id": "",
+          "deterministic_fingerprint": "5f51dafd899942ecd5a9cddc1e024b0bebd7cf28c8e843ac22f228d0ad414c07",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.release_manifest",
+        "backward_read_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "1.0.1",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "1.0.0",
+          "version_field": "manifest_version"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Release-manifest lifecycle policy is frozen while packaging and signing governance remain provisional.",
+          "future_series": "RELEASE/DIST",
+          "replacement_target": "Replace provisional release-manifest lifecycle policy with final archive and signing migrations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "0c624bcce28845a6393fdb4cb3ddf7696251846f6b1f8dda127e0618ca8b2a4d",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.save",
+        "backward_read_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "1.0.1",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "1.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "1.0.0",
+          "version_field": "save_format_version",
+          "contract_hash_field": "universe_contract_bundle_hash"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Save lifecycle policy is frozen while save-format evolution and formal migration tooling remain provisional.",
+          "future_series": "SAVE/COMPAT",
+          "replacement_target": "Replace provisional save lifecycle policy with release-pinned save migrations and read-only governance.",
+          "contract_id": "",
+          "deterministic_fingerprint": "bbfd285f8d6b57b6bd5303ea4737ace216a57aa68a10366d9962383adc5fe33f",
+          "extensions": {}
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.session_template",
+        "backward_read_range": {
+          "min_version": "2.0.0",
+          "max_version": "2.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "forward_read_range": {
+          "min_version": "2.0.1",
+          "max_version": "2.99.99",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "migration_supported_range": {
+          "min_version": "1.0.0",
+          "max_version": "2.0.0",
+          "deterministic_fingerprint": "",
+          "extensions": {}
+        },
+        "read_only_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "MIGRATION-LIFE0-2",
+          "current_version": "2.0.0",
+          "version_field": "format_version"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Session-template lifecycle policy is frozen while session artifact governance remains provisional.",
+          "future_series": "SESSION/COMPAT",
+          "replacement_target": "Replace provisional session-template lifecycle policy with final session artifact contracts and migrations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "56d91ee8757f164e7fd2ebb6d6734de2042d69054f4130a651ef79da639d3fd2",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "MIGRATION-LIFE0-2"
+    }
+  }
+}

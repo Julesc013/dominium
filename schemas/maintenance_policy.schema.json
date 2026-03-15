@@ -50,5 +50,17 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "backlog_growth_rule_id": "backlog_growth_rule_id.example",
+      "description": "example",
+      "extensions": {},
+      "inspection_interval_ticks": 0,
+      "maintenance_interval_ticks": 0,
+      "maintenance_policy_id": "maintenance_policy_id.example",
+      "max_backlog": 0,
+      "schema_version": "1.0.0"
+    }
+  ]
 }

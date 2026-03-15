@@ -31,7 +31,7 @@ def run(repo_root: str):
         )
         if error:
             return {"status": "fail", "message": "future save did not open in read-only mode"}
-        if not bool(meta.get("read_only_mode", False)):
+        if not bool(meta.get("read_only_applied", False)):
             return {"status": "fail", "message": "future save did not negotiate read-only mode"}
         if str(meta.get("law_profile_id_override", "")).strip() != READ_ONLY_LAW_PROFILE_ID:
             return {"status": "fail", "message": "read-only law profile override missing"}

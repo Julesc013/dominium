@@ -98,5 +98,18 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "desired_fidelity": "macro",
+      "extensions": {},
+      "max_cost_units": 0,
+      "request_id": "request_id.example",
+      "requester_subject_id": "requester_subject_id.example",
+      "schema_version": "1.0.0",
+      "target_id": "target_id.example",
+      "target_kind": "structure",
+      "tick": 0
+    }
+  ]
 }

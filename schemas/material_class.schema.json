@@ -125,5 +125,23 @@
         }
       }
     }
-  }
+  },
+  "examples": [
+    {
+      "base_ref_id": "base_ref_id.example",
+      "base_type": "element",
+      "conductivity": "example",
+      "density": "example",
+      "deprecated": false,
+      "extensions": {},
+      "heat_capacity": "example",
+      "material_id": "material_id.example",
+      "phase_tags": [],
+      "quality_distribution_model_id": "quality_distribution_model_id.example",
+      "schema_version": "1.0.0",
+      "specific_energy": "example",
+      "tags": [],
+      "version_introduced": "example"
+    }
+  ]
 }

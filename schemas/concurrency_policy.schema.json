@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Concurrency Policy Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "policy_id",
+    "allow_parallel_derived",
+    "allow_parallel_validation",
+    "allow_parallel_truth",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_threads": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "allow_parallel_derived": {
+      "type": "boolean"
+    },
+    "allow_parallel_validation": {
+      "type": "boolean"
+    },
+    "allow_parallel_truth": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "allow_parallel_derived": false,
+      "allow_parallel_truth": false,
+      "allow_parallel_validation": false,
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "policy_id": "policy_id.example"
+    }
+  ]
+}

@@ -49,6 +49,7 @@ record instance_manifest
     - required_contract_ranges: map
     - resolution_policy_id: id
     - provides_resolutions: [provides_resolution]
+    - universal_identity_block: universal_identity_block
     - notes: map
 
 TYPE DEFINITIONS:

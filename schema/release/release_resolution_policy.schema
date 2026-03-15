@@ -1,0 +1,21 @@
+SCHEMA: release/release_resolution_policy.schema
+schema_id: dominium.schema.release.release_resolution_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic release-index component selection policy for suite installs and updates.
+
+REQUIRED SHAPE:
+record release_resolution_policy
+  required:
+    - policy_id: id
+    - selection_rule_id: id
+    - allow_yanked: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- policy_id is stable and user-facing.
+- latest-compatible policies MUST define deterministic candidate tie-break behavior.
+- exact-suite policies MUST preserve suite-pinned component selection even when later compatible candidates exist.

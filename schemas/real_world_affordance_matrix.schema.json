@@ -140,5 +140,26 @@
         }
       }
     }
-  }
+  },
+  "examples": [
+    {
+      "affordances": [
+        {
+          "gaps": [],
+          "id": "matter_transformation",
+          "series_implemented": [],
+          "series_planned": [],
+          "substrates": [
+            "example"
+          ],
+          "tiers": [
+            "macro"
+          ]
+        }
+      ],
+      "schema_id": "dominium.meta.real_world_affordance_matrix",
+      "schema_version": "1.0.0",
+      "series_affordance_coverage": []
+    }
+  ]
 }

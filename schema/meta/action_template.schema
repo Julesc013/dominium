@@ -22,6 +22,7 @@ record action_template
     - extensions: map
   optional:
     - uses_constitutive_model_ids: list[id]
+    - stability: stability_marker
 
 INVARIANTS:
 - Every control-plane-exposed action must resolve to exactly one action_template row.

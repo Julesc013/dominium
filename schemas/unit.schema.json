@@ -54,5 +54,18 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "deprecated": false,
+      "description": "example",
+      "dimension_id": "dimension_id.example",
+      "display_symbol": "example",
+      "extensions": {},
+      "scale_factor_to_canonical": 0,
+      "schema_version": "1.0.0",
+      "unit_id": "unit_id.example",
+      "version_introduced": "example"
+    }
+  ]
 }

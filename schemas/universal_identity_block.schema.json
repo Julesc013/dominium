@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Universal Identity Block Schema",
+  "version": "1.0.0",
+  "description": "Canonical additive identity grammar embedded in governed artifacts and manifests.",
+  "type": "object",
+  "required": [
+    "identity_kind_id",
+    "identity_id",
+    "stability_class_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "identity_kind_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "identity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "semver": {
+      "type": "string",
+      "minLength": 1
+    },
+    "build_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "format_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protocol_range": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "contract_bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "stability_class_id": {
+      "type": "string",
+      "enum": [
+        "stable",
+        "provisional",
+        "experimental"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "identity_kind_id": "identity.product_binary",
+      "identity_id": "official.dominium.client",
+      "content_hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "build_id": "release.v0.0.0-mock-0123456789abcdef",
+      "schema_version": "1.0.0",
+      "stability_class_id": "provisional",
+      "deterministic_fingerprint": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+      "extensions": {}
+    }
+  ]
+}

@@ -218,6 +218,9 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "universal_identity_block": {
+      "$ref": "./universal_identity_block.schema.json"
+    },
     "deterministic_fingerprint": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"

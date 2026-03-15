@@ -14,10 +14,20 @@
   ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "type": "string", "const": "1.0.0" },
-    "bundle_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "hash_match": { "type": "boolean" },
-    "proof_hash_match": { "type": "boolean" },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "hash_match": {
+      "type": "boolean"
+    },
+    "proof_hash_match": {
+      "type": "boolean"
+    },
     "mismatch_details": {
       "type": "array",
       "items": {
@@ -25,7 +35,24 @@
         "additionalProperties": true
       }
     },
-    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "extensions": { "type": "object", "additionalProperties": true }
-  }
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "bundle_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "hash_match": false,
+      "mismatch_details": [],
+      "proof_hash_match": false,
+      "schema_version": "1.0.0"
+    }
+  ]
 }

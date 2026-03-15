@@ -50,6 +50,20 @@ def _with_fingerprint(payload: Mapping[str, object]) -> dict:
     return row
 
 
+def _canonicalize_descriptor_for_interop(payload: Mapping[str, object] | None) -> dict:
+    row = dict(payload or {})
+    extensions = dict(_as_map(row.get("extensions")))
+    # CAP-NEG regression locks should not depend on the host tty/gui context the
+    # harness inherited. Keep platform/target identity fields, but strip the
+    # volatile probe snapshot so descriptor hashes are stable across launch
+    # environments.
+    extensions.pop("official.platform_descriptor", None)
+    extensions.pop("official.platform_descriptor_hash", None)
+    row["extensions"] = extensions
+    row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+    return row
+
+
 def write_json(path: str, payload: Mapping[str, object]) -> None:
     abs_path = os.path.normpath(os.path.abspath(str(path)))
     parent = os.path.dirname(abs_path)
@@ -111,7 +125,8 @@ def _descriptor_from_defaults(
     )
     base_extensions = dict(_as_map(base.get("extensions")))
     base_extensions.update(dict(extensions or {}))
-    return build_endpoint_descriptor(
+    return _canonicalize_descriptor_for_interop(
+        build_endpoint_descriptor(
         product_id=str(product_id).strip(),
         product_version=str(product_version).strip(),
         protocol_versions_supported=list(
@@ -131,6 +146,7 @@ def _descriptor_from_defaults(
         ),
         degrade_ladders=list(_as_list(base.get("degrade_ladders"))),
         extensions=base_extensions,
+        )
     )
 
 
@@ -641,7 +657,10 @@ def _descriptor_from_wrapper(repo_root: str, *, product_id: str) -> dict:
             last_error = "wrapper {} emitted invalid JSON".format(wrapper_name)
             continue
         if isinstance(payload, dict):
-            return dict(payload)
+            descriptor = payload.get("descriptor")
+            if isinstance(descriptor, Mapping):
+                return _canonicalize_descriptor_for_interop(descriptor)
+            return _canonicalize_descriptor_for_interop(payload)
     raise RuntimeError(last_error or "no descriptor wrapper available for {}".format(product_id))
 
 

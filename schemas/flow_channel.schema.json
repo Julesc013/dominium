@@ -119,6 +119,28 @@
   },
   "examples": [
     {
+      "channel_id": "channel_id.example",
+      "extensions": {},
+      "graph_id": "graph_id.example",
+      "priority": 0,
+      "quantity_id": "quantity_id.example",
+      "schema_version": "1.1.0",
+      "sink_node_id": "sink_node_id.example",
+      "solver_policy_id": "solver_policy_id.example",
+      "source_node_id": "source_node_id.example"
+    },
+    {
+      "channel_id": "channel_id.example",
+      "extensions": {},
+      "graph_id": "graph_id.example",
+      "priority": 0,
+      "quantity_id": "quantity_id.example",
+      "schema_version": "1.0.0",
+      "sink_node_id": "sink_node_id.example",
+      "solver_policy_id": "solver_policy_id.example",
+      "source_node_id": "source_node_id.example"
+    },
+    {
       "schema_version": "1.0.0",
       "channel_id": "flow.logistics.mass.alpha",
       "graph_id": "graph.logistics.alpha",

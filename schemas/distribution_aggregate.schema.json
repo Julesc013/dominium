@@ -52,5 +52,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "ag_node_id": "ag_node_id.example",
+      "defect_distribution_vector": {},
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "structure_id": "structure_id.example",
+      "total_mass": 0,
+      "wear_distribution_vector": {}
+    }
+  ]
 }

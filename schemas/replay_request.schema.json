@@ -13,11 +13,38 @@
   ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "type": "string", "const": "1.0.0" },
-    "bundle_path": { "type": "string", "minLength": 1 },
-    "tick_window": { "type": "integer", "minimum": 0 },
-    "include_views": { "type": "boolean" },
-    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "extensions": { "type": "object", "additionalProperties": true }
-  }
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bundle_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick_window": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "include_views": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "bundle_path": "bundle_path.json",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "include_views": false,
+      "schema_version": "1.0.0",
+      "tick_window": 0
+    }
+  ]
 }

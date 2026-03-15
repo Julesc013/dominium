@@ -1,0 +1,52 @@
+SCHEMA: meta/universal_identity_block.schema
+schema_id: dominium.schema.meta.universal_identity_block
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical additive identity grammar embedded in governed artifacts and manifests.
+
+NON-SEMANTICS:
+- The universal identity block does not change artifact behavior.
+- The universal identity block standardizes identity and verification metadata only.
+
+REQUIRED SHAPE:
+record universal_identity_block
+  required:
+    - identity_kind_id: tag
+    - identity_id: id
+    - stability_class_id: tag
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - content_hash: sha256
+    - semver: text
+    - build_id: id
+    - format_version: version
+    - schema_version: version
+    - protocol_range: map
+    - contract_bundle_hash: sha256
+
+INVARIANTS:
+- `identity_kind_id` MUST be declared in `identity_kind_registry.json`
+- `identity_id` MUST be namespaced and MUST NOT contain path separators
+- `stability_class_id` MUST be one of `stable|provisional|experimental`
+- content-addressed artifacts use `content_hash` computed from canonical payload content with the identity block removed from the hash seed
+- `identity.product_binary` requires `build_id` and `content_hash`
+- `identity.pack` requires `content_hash` and `semver`
+- `identity.save` requires `contract_bundle_hash` and `format_version`
+- `identity.protocol` requires `protocol_range`
+- `identity.schema` requires `content_hash` and `schema_version`
+- deterministic_fingerprint is computed with the fingerprint field blanked
+
+EXAMPLES:
+- {
+    "identity_kind_id": "identity.product_binary",
+    "identity_id": "official.dominium.client",
+    "content_hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    "build_id": "release.v0.0.0-mock-0123456789abcdef",
+    "schema_version": "1.0.0",
+    "stability_class_id": "provisional",
+    "deterministic_fingerprint": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+    "extensions": {}
+  }

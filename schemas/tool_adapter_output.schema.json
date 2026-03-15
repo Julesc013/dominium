@@ -24,21 +24,101 @@
   ],
   "additionalProperties": true,
   "properties": {
-    "result": { "type": "string", "enum": ["complete", "tool_error", "refused"] },
-    "stable_id": { "type": "string", "minLength": 1 },
-    "command_path": { "type": "string", "minLength": 1 },
-    "adapter_kind": { "type": "string", "const": "python_subprocess" },
-    "tool_relpath": { "type": "string", "minLength": 1 },
-    "tool_module": { "type": "string", "minLength": 1 },
-    "invocation_args": { "type": "array", "items": { "type": "string" } },
-    "virtual_path_policy": { "type": "string", "minLength": 1 },
-    "pack_context_mode": { "type": "string", "minLength": 1 },
-    "offline_only": { "type": "boolean" },
-    "tool_exit_code": { "type": "integer" },
-    "stdout_kind": { "type": "string", "enum": ["json", "text", "empty"] },
-    "tool_output": { "type": ["object", "array", "string", "number", "boolean", "null"] },
-    "tool_output_text": { "type": "string" },
-    "stderr_text": { "type": "string" },
-    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" }
-  }
+    "result": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "tool_error",
+        "refused"
+      ]
+    },
+    "stable_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "command_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapter_kind": {
+      "type": "string",
+      "const": "python_subprocess"
+    },
+    "tool_relpath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tool_module": {
+      "type": "string",
+      "minLength": 1
+    },
+    "invocation_args": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "virtual_path_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pack_context_mode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "offline_only": {
+      "type": "boolean"
+    },
+    "tool_exit_code": {
+      "type": "integer"
+    },
+    "stdout_kind": {
+      "type": "string",
+      "enum": [
+        "json",
+        "text",
+        "empty"
+      ]
+    },
+    "tool_output": {
+      "type": [
+        "object",
+        "array",
+        "string",
+        "number",
+        "boolean",
+        "null"
+      ]
+    },
+    "tool_output_text": {
+      "type": "string"
+    },
+    "stderr_text": {
+      "type": "string"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "adapter_kind": "python_subprocess",
+      "command_path": "command_path.json",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "invocation_args": [],
+      "offline_only": false,
+      "pack_context_mode": "example",
+      "result": "complete",
+      "stable_id": "stable_id.example",
+      "stderr_text": "example",
+      "stdout_kind": "json",
+      "tool_exit_code": 0,
+      "tool_module": "example",
+      "tool_output": {},
+      "tool_output_text": "example",
+      "tool_relpath": "example",
+      "virtual_path_policy": "example"
+    }
+  ]
 }

@@ -12,7 +12,7 @@ Replacement Target: release UX smoke report regenerated from DIST-5 tooling
 
 - result: `complete`
 - violation_count: `0`
-- fingerprint: `ab72e3dcc2b7e9afcb10493a45d1eb152a181928f80f74d729ae585ca084d459`
+- fingerprint: `d4e39e289f6b23e77fb2f35cee2713a680a0340683a3f1d4b61c52f82766d1e2`
 
 ## Help Surfaces
 

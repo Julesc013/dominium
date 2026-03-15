@@ -1,35 +1,32 @@
 Status: DERIVED
 Version: 1.0.0
-Stability: provisional
-Future Series: DOC-CONVERGENCE
-Replacement Target: canon-aligned documentation set for convergence and release preparation
 
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:562edcdb018f566c04ab4ae08d5c8a0deb202ab7`
+- repository_hash: `HEAD:93f0bb7be1fe65b90a2de1604db4d7a7da7a16de`
 - generated_tick: `0`
-- deterministic_fingerprint: `dec738b7b4ce337ebc4e1b1aa21c284429c1ffead349faa8f6a2c5334aef880f`
+- deterministic_fingerprint: `827bded77ce03fc57ee3edc797bc0d3d36fbb6771f23b480094e98bffb73018b`
 
 ## Counts
-- node_count: 4943
-- edge_count: 10303
+- node_count: 5596
+- edge_count: 11458
 
 ## Node Kinds
 - contract_set: 147
-- module: 98
-- policy_set: 312
-- process_family: 394
-- registry: 375
-- schema: 1315
-- tool: 2302
+- module: 107
+- policy_set: 333
+- process_family: 408
+- registry: 408
+- schema: 1398
+- tool: 2795
 
 ## Edge Kinds
-- consumes: 4789
-- depends_on: 2776
-- enforces: 963
+- consumes: 5282
+- depends_on: 3292
+- enforces: 1005
 - produces: 1
-- validates: 1774
+- validates: 1878
 
 ## Major Runtime Modules
 - `module:client`
@@ -78,6 +75,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - `module:setup/tui`
 - `module:src`
 - `module:src/appshell`
+- `module:src/archive`
+- `module:src/astro`
 - `module:src/chem`
 - `module:src/client`
 - `module:src/compat`
@@ -93,9 +92,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - `module:src/diegetics`
 - `module:src/electric`
 - `module:src/embodiment`
-- `module:src/epistemics`
-- `module:src/field`
-- `module:src/fields`
+- `module:src/engine`
 
 ## Control Subsystem Nodes
 - `module:src/control/control_plane_engine.py`

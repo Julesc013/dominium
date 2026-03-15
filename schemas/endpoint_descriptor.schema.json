@@ -74,5 +74,20 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "examples": [
+    {
+      "degrade_ladders": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "feature_capabilities": [],
+      "optional_capabilities": [],
+      "product_id": "product_id.example",
+      "product_version": "1.0.0",
+      "protocol_versions_supported": [],
+      "required_capabilities": [],
+      "schema_version": "1.0.0",
+      "semantic_contract_versions_supported": []
+    }
+  ]
 }

@@ -20,6 +20,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from src.appshell import appshell_main
+from src.appshell.logging import log_emit
 from src.appshell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
 from src.appshell.paths import (
     VROOT_INSTANCES,
@@ -32,6 +33,13 @@ from src.compat import (
     build_product_descriptor,
     descriptor_json_text,
     emit_product_descriptor,
+)
+from src.governance import (
+    governance_profile_hash,
+    governance_profile_path,
+    load_governance_mode_registry,
+    load_governance_profile,
+    select_governance_mode_row,
 )
 from src.lib.install import (
     build_product_build_descriptor,
@@ -53,8 +61,44 @@ from src.lib.export import (
     export_pack_bundle,
     export_save_bundle,
 )
-from src.release import infer_dist_root_from_manifest_path, verify_release_manifest
+from src.release import (
+    DEFAULT_INSTALL_PROFILE_ID,
+    DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
+    DEFAULT_INSTALL_TRANSACTION_LOG_REL,
+    DEFAULT_RELEASE_INDEX_REL,
+    DEFAULT_RELEASE_MANIFEST_REL,
+    RESOLUTION_POLICY_EXACT_SUITE,
+    build_default_component_install_plan,
+    canonicalize_release_resolution_policy,
+    component_managed_paths,
+    append_install_transaction,
+    infer_release_index_path,
+    infer_dist_root_from_manifest_path,
+    load_install_transaction_log,
+    load_release_index,
+    load_release_manifest,
+    load_install_profile_registry,
+    load_release_resolution_policy_registry,
+    platform_targets_for_tag,
+    resolve_release_artifact_root,
+    resolve_update_plan,
+    select_install_profile,
+    select_release_resolution_policy,
+    select_rollback_transaction,
+    verify_release_manifest,
+)
+from src.security.trust import (
+    DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL,
+    DEFAULT_TRUST_POLICY_ID,
+    DEFAULT_TRUST_POLICY_REGISTRY_REL,
+    effective_trust_policy_id,
+    load_trust_policy_registry,
+    load_trust_root_registry,
+    select_trust_policy,
+    write_trust_root_registry,
+)
 from src.lib.save import resolve_save_manifest_path
+from src.lib.store import DEFAULT_GC_POLICY_ID, resolve_store_root_from_install, run_store_gc
 from tools.lib.content_store import initialize_store_root
 
 
@@ -68,6 +112,15 @@ EXIT_OK = 0
 EXIT_ERROR = 1
 EXIT_USAGE = 2
 EXIT_REFUSED = 3
+
+
+def _emit_setup_event(category: str, message_key: str, *, severity: str = "info", params: dict | None = None) -> None:
+    log_emit(
+        category=str(category or "").strip() or "lib",
+        severity=str(severity or "info").strip() or "info",
+        message_key=str(message_key or "").strip() or "appshell.log.event",
+        params=dict(params or {}),
+    )
 
 
 def now_timestamp(deterministic: bool) -> str:
@@ -251,6 +304,14 @@ def resolve_ops_cli() -> str:
 
 def resolve_share_cli() -> str:
     return os.path.join(REPO_ROOT_HINT, "tools", "share", "share_cli.py")
+
+
+def resolve_plan_migration_cli() -> str:
+    return os.path.join(REPO_ROOT_HINT, "tools", "compat", "tool_plan_migration.py")
+
+
+def resolve_apply_migration_cli() -> str:
+    return os.path.join(REPO_ROOT_HINT, "tools", "compat", "tool_apply_migration.py")
 
 
 def resolve_import_engine_module():
@@ -613,6 +674,7 @@ def install_manifest_payload(install_id: str,
         "created_at": created_at,
         "extensions": {
             "official.semantic_contract_registry_ref": "semantic_contract_registry.json",
+            "official.trust_policy_id": DEFAULT_TRUST_POLICY_ID,
         },
         "deterministic_fingerprint": "",
     }
@@ -695,6 +757,174 @@ def backup_install_root(install_root: str, data_root: str, tx_id: str, determini
     return backup_root
 
 
+def transaction_log_path(install_root: str) -> str:
+    return os.path.join(normalize_path(install_root), DEFAULT_INSTALL_TRANSACTION_LOG_REL.replace("/", os.sep))
+
+
+def _update_refusal(code: str, reason: str, remediation: Optional[List[str]] = None) -> dict:
+    details = {"remediation": sorted({str(item).strip() for item in (remediation or []) if str(item).strip()})}
+    return refusal_payload(5, code, reason, details)
+
+
+def _trust_root_local_registry_path(install_root: str) -> str:
+    return os.path.join(normalize_path(install_root), DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL.replace("/", os.sep))
+
+
+def _load_effective_trust_policy(
+    *,
+    install_root: str = "",
+    install_manifest: Optional[dict] = None,
+    requested_trust_policy_id: str = "",
+    mod_policy_id: str = "",
+) -> tuple[str, dict]:
+    effective_id = effective_trust_policy_id(
+        requested_trust_policy_id=str(requested_trust_policy_id or "").strip(),
+        install_manifest=dict(install_manifest or {}),
+        mod_policy_id=str(mod_policy_id or "").strip(),
+    )
+    policy_registry_root = REPO_ROOT_HINT
+    if install_root:
+        bundle_registry_path = os.path.join(normalize_path(install_root), DEFAULT_TRUST_POLICY_REGISTRY_REL.replace("/", os.sep))
+        if os.path.isfile(bundle_registry_path):
+            policy_registry_root = normalize_path(install_root)
+    policy_registry = load_trust_policy_registry(repo_root=policy_registry_root)
+    return effective_id, select_trust_policy(policy_registry, trust_policy_id=effective_id)
+
+
+def _load_imported_trust_root_rows(bundle_path: str) -> list[dict]:
+    payload = load_json(bundle_path)
+    if isinstance(payload.get("trust_roots"), list):
+        return [dict(row or {}) for row in list(payload.get("trust_roots") or []) if isinstance(row, dict)]
+    if isinstance(dict(payload.get("record") or {}).get("trust_roots"), list):
+        return [dict(row or {}) for row in list(dict(payload.get("record") or {}).get("trust_roots") or []) if isinstance(row, dict)]
+    if str(payload.get("signer_id", "")).strip():
+        return [dict(payload)]
+    return []
+
+
+def _governance_status_payload(install_root: str = "") -> dict:
+    install_root_token = normalize_path(install_root) if str(install_root or "").strip() else ""
+    profile_path = governance_profile_path(REPO_ROOT_HINT, install_root=install_root_token)
+    profile_payload = load_governance_profile(REPO_ROOT_HINT, install_root=install_root_token)
+    registry_payload = load_governance_mode_registry(REPO_ROOT_HINT)
+    mode_row = select_governance_mode_row(registry_payload, str(profile_payload.get("governance_mode_id", "")).strip())
+    profile_hash = governance_profile_hash(profile_payload) if profile_payload else ""
+    release_index_path = os.path.join(install_root_token, DEFAULT_RELEASE_INDEX_REL.replace("/", os.sep)) if install_root_token else ""
+    release_index_payload = load_release_index(release_index_path) if release_index_path and os.path.isfile(release_index_path) else {}
+    release_governance_hash = str(release_index_payload.get("governance_profile_hash", "")).strip().lower()
+    if install_root_token:
+        profile_source = "install" if normalize_path(profile_path).startswith(install_root_token) else "repo_fallback"
+    else:
+        profile_source = "repo_default"
+    return {
+        "install_root": install_root_token,
+        "governance_profile_path": normalize_path(profile_path) if profile_path else "",
+        "governance_profile_hash": profile_hash,
+        "governance_profile": profile_payload,
+        "governance_mode": mode_row,
+        "governance_profile_source": profile_source,
+        "release_index_path": normalize_path(release_index_path) if release_index_path and os.path.isfile(release_index_path) else "",
+        "release_index_governance_hash": release_governance_hash,
+        "release_index_governance_match": bool(release_governance_hash) and release_governance_hash == profile_hash,
+    }
+
+
+def _discover_install_context(args: argparse.Namespace) -> dict:
+    raw_args: List[str] = []
+    if getattr(args, "install_root", ""):
+        raw_args.extend(["--install-root", str(getattr(args, "install_root", "")).strip()])
+    if getattr(args, "install_id", ""):
+        raw_args.extend(["--install-id", str(getattr(args, "install_id", "")).strip()])
+    if getattr(args, "registry_path", ""):
+        raw_args.extend(["--install-registry-path", str(getattr(args, "registry_path", "")).strip()])
+    return discover_install(
+        raw_args=raw_args,
+        executable_path=os.path.abspath(sys.argv[0]),
+        cwd=os.getcwd(),
+        env=os.environ,
+    )
+
+
+def _load_install_profile_for_root(install_root: str, install_profile_id: str) -> dict:
+    registry = load_install_profile_registry(normalize_path(install_root))
+    profile = select_install_profile(registry, install_profile_id=install_profile_id)
+    if profile:
+        return profile
+    return select_install_profile(load_install_profile_registry(REPO_ROOT_HINT), install_profile_id=install_profile_id)
+
+
+def _load_release_resolution_policy_for_root(install_root: str, resolution_policy_id: str) -> dict:
+    registry = load_release_resolution_policy_registry(normalize_path(install_root))
+    policy = select_release_resolution_policy(registry, policy_id=resolution_policy_id)
+    if policy:
+        return policy
+    return select_release_resolution_policy(load_release_resolution_policy_registry(REPO_ROOT_HINT), policy_id=resolution_policy_id)
+
+
+def _managed_paths_from_rows(rows: List[dict]) -> List[str]:
+    out: List[str] = []
+    for row in rows:
+        out.extend(component_managed_paths(dict(row or {})))
+    return sorted({str(path).strip().replace("\\", "/") for path in out if str(path).strip()})
+
+
+def _remove_managed_paths(install_root: str, rows: List[dict]) -> None:
+    for rel_path in _managed_paths_from_rows(rows):
+        target = os.path.join(install_root, rel_path.replace("/", os.sep))
+        if os.path.isdir(target):
+            shutil.rmtree(target, ignore_errors=True)
+        elif os.path.isfile(target):
+            os.remove(target)
+
+
+def _copy_managed_paths(source_root: str, install_root: str, rows: List[dict]) -> None:
+    for rel_path in _managed_paths_from_rows(rows):
+        source = os.path.join(source_root, rel_path.replace("/", os.sep))
+        target = os.path.join(install_root, rel_path.replace("/", os.sep))
+        if os.path.isdir(source):
+            if os.path.isdir(target):
+                shutil.rmtree(target, ignore_errors=True)
+            shutil.copytree(source, target)
+            continue
+        if not os.path.isfile(source):
+            continue
+        ensure_dir(os.path.dirname(target))
+        setup_target = normalize_path(os.path.join(install_root, "bin", "setup"))
+        if normalize_path(target) == setup_target:
+            staged = target + ".new"
+            shutil.copyfile(source, staged)
+            os.replace(staged, target)
+            continue
+        shutil.copyfile(source, target)
+
+
+def _merge_install_manifest_for_update(current_manifest: dict, source_manifest: dict, update_plan: dict) -> dict:
+    current_payload = normalize_install_manifest(dict(current_manifest or {}))
+    source_payload = normalize_install_manifest(dict(source_manifest or {}))
+    merged = dict(source_payload)
+    merged["install_id"] = str(current_payload.get("install_id", "")).strip() or str(source_payload.get("install_id", "")).strip()
+    merged["mode"] = str(current_payload.get("mode", "")).strip() or str(source_payload.get("mode", "")).strip()
+    merged["store_root_ref"] = dict(current_payload.get("store_root_ref") or source_payload.get("store_root_ref") or {})
+    merged["install_root"] = "."
+    merged.setdefault("extensions", {})
+    merged["extensions"] = dict(source_payload.get("extensions") or {})
+    merged["extensions"]["official.install_profile_id"] = str(update_plan.get("install_profile_id", "")).strip() or str(merged["extensions"].get("official.install_profile_id", "")).strip()
+    merged["extensions"]["official.install_resolution_policy_id"] = (
+        str(update_plan.get("resolution_policy_id", "")).strip()
+        or str(merged["extensions"].get("official.install_resolution_policy_id", "")).strip()
+        or DEFAULT_RELEASE_RESOLUTION_POLICY_ID
+    )
+    merged["extensions"]["official.trust_policy_id"] = (
+        str(dict(current_payload.get("extensions") or {}).get("official.trust_policy_id", "")).strip()
+        or str(merged["extensions"].get("official.trust_policy_id", "")).strip()
+        or DEFAULT_TRUST_POLICY_ID
+    )
+    merged["extensions"]["official.selected_component_ids"] = list(dict(update_plan.get("extensions") or {}).get("target_selected_component_ids") or [])
+    merged["extensions"]["official.selected_component_descriptors"] = list(dict(update_plan.get("extensions") or {}).get("target_selected_component_descriptors") or [])
+    merged["deterministic_fingerprint"] = install_deterministic_fingerprint(merged)
+    return merged
+
+
 def write_output(payload: dict, fmt: str) -> None:
     if fmt == "text":
         msg = payload.get("message") or payload.get("result") or ""
@@ -704,6 +934,17 @@ def write_output(payload: dict, fmt: str) -> None:
 
 
 def output_refusal(message: str, refusal: dict, fmt: str) -> None:
+    refusal_row = dict(refusal or {})
+    _emit_setup_event(
+        "refusal",
+        "appshell.refusal",
+        severity="error",
+        params={
+            "refusal_code": str(refusal_row.get("reason_code", "")).strip(),
+            "reason": str(refusal_row.get("message", "")).strip() or str(message or "").strip(),
+            "remediation_hint": str(refusal_row.get("remediation_hint", "")).strip(),
+        },
+    )
     write_output({
         "result": "refused",
         "message": message,
@@ -764,6 +1005,7 @@ def _verify_pack_root(
     overlay_conflict_policy_id: str,
     schema_root: str,
     universe_contract_bundle_path: str,
+    trust_policy_id: str,
 ) -> dict:
     return appshell_verify_pack_root(
         repo_root=REPO_ROOT_HINT,
@@ -772,6 +1014,7 @@ def _verify_pack_root(
         mod_policy_id=str(mod_policy_id or "").strip() or "mod_policy.lab",
         overlay_conflict_policy_id=str(overlay_conflict_policy_id or "").strip(),
         contract_bundle_path=str(universe_contract_bundle_path or "").strip(),
+        trust_policy_id=str(trust_policy_id or "").strip(),
     )
 
 
@@ -802,13 +1045,29 @@ def handle_verify(args: argparse.Namespace, deterministic: bool) -> int:
         root = _compat_root(getattr(args, "root", "") or getattr(args, "install_root", ""))
         if not root:
             root = normalize_path(infer_dist_root_from_manifest_path(release_manifest_path))
-        verification = verify_release_manifest(root, release_manifest_path, repo_root=REPO_ROOT_HINT)
+        install_manifest = {}
+        install_manifest_path = os.path.join(root, DEFAULT_INSTALL_MANIFEST)
+        if os.path.isfile(install_manifest_path):
+            validation = validate_install_manifest(repo_root=REPO_ROOT_HINT, install_manifest_path=install_manifest_path)
+            install_manifest = dict(validation.get("install_manifest") or {})
+        effective_policy_id, _policy_row = _load_effective_trust_policy(
+            install_root=root,
+            install_manifest=install_manifest,
+            requested_trust_policy_id=str(getattr(args, "trust_policy_id", "") or "").strip(),
+        )
+        verification = verify_release_manifest(
+            root,
+            release_manifest_path,
+            repo_root=REPO_ROOT_HINT,
+            trust_policy_id=effective_policy_id,
+        )
         details = {
             "root": root,
             "release_manifest_path": release_manifest_path,
             "release_id": str(verification.get("release_id", "")),
             "manifest_hash": str(verification.get("manifest_hash", "")),
             "verified_artifact_count": int(verification.get("verified_artifact_count", 0)),
+            "trust_policy_id": effective_policy_id,
             "warnings": list(verification.get("warnings") or []),
             "errors": list(verification.get("errors") or []),
         }
@@ -840,6 +1099,12 @@ def handle_verify(args: argparse.Namespace, deterministic: bool) -> int:
         output_refusal("missing verification root", refusal, args.format)
         return EXIT_REFUSED
     schema_root = _compat_root(getattr(args, "schema_root", "") or root)
+    effective_policy_id, _policy_row = _load_effective_trust_policy(
+        install_root=root,
+        install_manifest={},
+        requested_trust_policy_id=str(getattr(args, "trust_policy_id", "") or "").strip(),
+        mod_policy_id=str(getattr(args, "mod_policy_id", "") or "").strip(),
+    )
     verification = _verify_pack_root(
         root=root,
         bundle_id=getattr(args, "bundle_id", ""),
@@ -847,6 +1112,7 @@ def handle_verify(args: argparse.Namespace, deterministic: bool) -> int:
         overlay_conflict_policy_id=getattr(args, "overlay_conflict_policy_id", ""),
         schema_root=schema_root,
         universe_contract_bundle_path=getattr(args, "contract_bundle_path", ""),
+        trust_policy_id=effective_policy_id,
     )
     if str(verification.get("result", "")) != "complete":
         refusal = refusal_payload(
@@ -871,6 +1137,7 @@ def handle_verify(args: argparse.Namespace, deterministic: bool) -> int:
     details = {
         "root": root,
         "schema_root": schema_root,
+        "trust_policy_id": effective_policy_id,
         "report": report,
         "pack_lock": pack_lock,
         "warnings": list(verification.get("warnings") or []),
@@ -909,6 +1176,7 @@ def handle_list_packs(args: argparse.Namespace, deterministic: bool) -> int:
         overlay_conflict_policy_id=getattr(args, "overlay_conflict_policy_id", ""),
         schema_root=schema_root,
         universe_contract_bundle_path=getattr(args, "contract_bundle_path", ""),
+        trust_policy_id=str(getattr(args, "trust_policy_id", "") or "").strip(),
     )
     if str(verification.get("result", "")) != "complete":
         refusal = refusal_payload(5, "REFUSE_PACK_VERIFICATION_FAILED", "offline verification pipeline failed", {"root": root})
@@ -946,6 +1214,7 @@ def handle_build_lock(args: argparse.Namespace, deterministic: bool) -> int:
         overlay_conflict_policy_id=getattr(args, "overlay_conflict_policy_id", ""),
         schema_root=schema_root,
         universe_contract_bundle_path=getattr(args, "contract_bundle_path", ""),
+        trust_policy_id=str(getattr(args, "trust_policy_id", "") or "").strip(),
     )
     if str(verification.get("result", "")) != "complete":
         refusal = refusal_payload(5, "REFUSE_PACK_VERIFICATION_FAILED", "offline verification pipeline failed", {"root": root})
@@ -1000,6 +1269,7 @@ def handle_diagnose_pack(args: argparse.Namespace, deterministic: bool) -> int:
         overlay_conflict_policy_id=getattr(args, "overlay_conflict_policy_id", ""),
         schema_root=schema_root,
         universe_contract_bundle_path=getattr(args, "contract_bundle_path", ""),
+        trust_policy_id=str(getattr(args, "trust_policy_id", "") or "").strip(),
     )
     if str(verification.get("result", "")) != "complete":
         refusal = refusal_payload(5, "REFUSE_PACK_VERIFICATION_FAILED", "offline verification pipeline failed", {"root": root})
@@ -1452,7 +1722,16 @@ def rollback_from_plan(plan: dict, args: argparse.Namespace, deterministic: bool
         return EXIT_REFUSED, {"message": "install root missing", "refusal": refusal}
 
     backup_index = os.path.join(install_root, ".dsu", "rollback_index.json")
-    entry = latest_backup(backup_index)
+    transaction_entry = select_rollback_transaction(
+        transaction_log_path(install_root),
+        to_release_id=str(getattr(args, "to", "") or "").strip(),
+    )
+    entry = None
+    backup_target = str(transaction_entry.get("backup_path", "")).strip()
+    if backup_target:
+        entry = {"path": backup_target, "transaction_id": str(transaction_entry.get("transaction_id", "")).strip()}
+    if entry is None:
+        entry = latest_backup(backup_index)
     if not entry:
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "no rollback backup available", {})
         return EXIT_REFUSED, {"message": "no rollback available", "refusal": refusal}
@@ -1481,6 +1760,21 @@ def rollback_from_plan(plan: dict, args: argparse.Namespace, deterministic: bool
         shutil.rmtree(backup_path, ignore_errors=True)
 
     shutil.rmtree(staging, ignore_errors=True)
+    append_install_transaction(
+        transaction_log_path(install_root),
+        {
+            "transaction_id": tx_id,
+            "action": "update.rollback",
+            "from_release_id": str(dict(plan or {}).get("from_release_id", "")).strip(),
+            "to_release_id": str(getattr(args, "to", "") or "").strip(),
+            "backup_path": normalize_path(backup_path),
+            "status": "complete",
+            "install_profile_id": str(dict(plan or {}).get("install_profile_id", "")).strip(),
+            "resolution_policy_id": str(dict(transaction_entry or {}).get("resolution_policy_id", "")).strip() or DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
+            "install_plan_hash": str(dict(transaction_entry or {}).get("install_plan_hash", "")).strip(),
+            "prior_component_set_hash": str(dict(transaction_entry or {}).get("prior_component_set_hash", "")).strip(),
+        },
+    )
     txn.log("COMMIT", "ok", "rollback committed")
     return EXIT_OK, {
         "details": {
@@ -1574,6 +1868,81 @@ def handle_install_registry(args: argparse.Namespace) -> int:
     cmd = str(getattr(args, "registry_cmd", "") or "").strip().lower()
     target = str(getattr(args, "registry_target", "") or "").strip()
     install_id = str(getattr(args, "install_id", "") or "").strip() or target
+    install_profile_id = str(getattr(args, "install_profile_id", "") or getattr(args, "profile", "") or "").strip() or DEFAULT_INSTALL_PROFILE_ID
+    requested_resolution_policy_id = str(getattr(args, "resolution_policy_id", "") or getattr(args, "policy", "") or "").strip()
+    resolution_policy = _load_release_resolution_policy_for_root(
+        str(getattr(args, "install_root", "") or "").strip() or REPO_ROOT_HINT,
+        requested_resolution_policy_id or DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
+    )
+    if requested_resolution_policy_id and not resolution_policy:
+        refusal = refusal_payload(
+            1,
+            "REFUSE_INVALID_INTENT",
+            "unknown install resolution policy",
+            {"policy": requested_resolution_policy_id},
+        )
+        output_refusal("unknown install policy", refusal, args.format)
+        return EXIT_REFUSED
+    resolution_policy_id = (
+        str(canonicalize_release_resolution_policy(resolution_policy).get("policy_id", "")).strip()
+        or DEFAULT_RELEASE_RESOLUTION_POLICY_ID
+    )
+
+    def _plan_targets() -> dict:
+        platform_value = str(getattr(args, "platform", "") or "").strip()
+        mapped = platform_targets_for_tag(platform_value, repo_root=_plan_source_root())
+        if any(str(value).strip() for value in mapped.values()):
+            return {
+                "target_id": str(mapped.get("target_id", "")).strip(),
+                "platform_id": str(mapped.get("platform_id", "")).strip(),
+                "os_id": str(mapped.get("os_id", "")).strip(),
+                "arch_id": str(mapped.get("arch_id", "")).strip(),
+                "abi_id": str(mapped.get("abi_id", "")).strip(),
+                "tier": int(mapped.get("tier", 0) or 0),
+                "platform_tag": platform_value,
+            }
+        return {
+            "target_id": "",
+            "platform_id": platform_value,
+            "os_id": "",
+            "arch_id": str(getattr(args, "arch", "") or "").strip(),
+            "abi_id": str(getattr(args, "abi", "") or "").strip(),
+            "tier": 0,
+            "platform_tag": platform_value,
+        }
+
+    def _plan_source_root() -> str:
+        if str(getattr(args, "install_root", "") or "").strip():
+            return normalize_path(str(getattr(args, "install_root", "")).strip())
+        return REPO_ROOT_HINT
+
+    def _build_component_plan() -> dict:
+        targets = _plan_targets()
+        plan_result = build_default_component_install_plan(
+            _plan_source_root(),
+            install_profile_id=install_profile_id,
+            target_platform=str(targets.get("platform_id", "")).strip(),
+            target_arch=str(targets.get("arch_id", "")).strip(),
+            target_abi=str(targets.get("abi_id", "")).strip(),
+        )
+        install_plan = dict(plan_result.get("install_plan") or {})
+        if install_plan:
+            extensions = dict(install_plan.get("extensions") or {})
+            extensions["resolution_policy_id"] = resolution_policy_id
+            install_plan["extensions"] = extensions
+            plan_result = dict(plan_result)
+            plan_result["install_plan"] = install_plan
+            plan_result["resolution_policy"] = dict(resolution_policy)
+        return plan_result
+
+    def _plan_storage_root() -> str:
+        explicit_store_root = str(getattr(args, "store_root", "") or "").strip()
+        if explicit_store_root:
+            return normalize_path(explicit_store_root)
+        explicit_install_root = str(getattr(args, "install_root", "") or "").strip()
+        if explicit_install_root:
+            return normalize_path(os.path.join(explicit_install_root, "store"))
+        return normalize_path(os.path.join(REPO_ROOT_HINT, "store"))
 
     if cmd == "status":
         raw_args: List[str] = []
@@ -1597,6 +1966,36 @@ def handle_install_registry(args: argparse.Namespace) -> int:
             if str(row_map.get("code", "")).strip() == refusal_code and str(row_map.get("message", "")).strip():
                 reason = str(row_map.get("message", "")).strip()
                 break
+        component_plan = {}
+        resolved_root = str(result.get("resolved_install_root_path", "")).strip()
+        if resolved_root:
+            release_manifest_path = os.path.join(resolved_root, "manifests", "release_manifest.json")
+            platform_tag = ""
+            if os.path.isfile(release_manifest_path):
+                try:
+                    platform_tag = str(load_release_manifest(release_manifest_path).get("platform_tag", "")).strip()
+                except ValueError:
+                    platform_tag = ""
+            targets = platform_targets_for_tag(platform_tag, repo_root=resolved_root)
+            plan_result = build_default_component_install_plan(
+                resolved_root,
+                install_profile_id=install_profile_id,
+                target_platform=str(targets.get("platform_id", "")).strip(),
+                target_arch=str(targets.get("arch_id", "")).strip(),
+                target_abi=str(targets.get("abi_id", "")).strip(),
+            )
+            install_plan = dict(plan_result.get("install_plan") or {})
+            component_plan = {
+                "result": str(plan_result.get("result", "")).strip(),
+                "graph_id": str(plan_result.get("graph_id", "")).strip(),
+                "target_id": str(targets.get("target_id", "")).strip(),
+                "target_platform": str(install_plan.get("target_platform", "")).strip(),
+                "target_arch": str(install_plan.get("target_arch", "")).strip(),
+                "target_abi": str(dict(install_plan.get("extensions") or {}).get("target_abi", "")).strip(),
+                "target_tier": int(targets.get("tier", 0) or 0),
+                "selected_component_count": int(len(list(install_plan.get("selected_components") or []))),
+                "install_plan_fingerprint": str(install_plan.get("deterministic_fingerprint", "")).strip(),
+            }
         write_output(
             {
                 "result": discovery_result,
@@ -1618,11 +2017,125 @@ def handle_install_registry(args: argparse.Namespace) -> int:
                     "product_id": "setup",
                     "default_registry_path": registry_path,
                     "install_discovery": result,
+                    "install_profile_id": install_profile_id,
+                    "resolution_policy_id": resolution_policy_id,
+                    "component_install_plan": component_plan,
                 },
             },
             args.format,
         )
+        _emit_setup_event(
+            "lib",
+            "lib.install.status",
+            severity="info" if discovery_result == "complete" else "warn",
+            params={
+                "result": discovery_result,
+                "install_profile_id": install_profile_id,
+                "resolved_install_root": str(result.get("resolved_install_root_path", "")).strip(),
+                "resolution_source": str(result.get("resolution_source", "")).strip(),
+            },
+        )
         return EXIT_OK if str(result.get("result", "")).strip() == "complete" else EXIT_REFUSED
+
+    if cmd == "plan":
+        plan_result = _build_component_plan()
+        install_plan = dict(plan_result.get("install_plan") or {})
+        payload = {
+            "result": str(plan_result.get("result", "")).strip() or "refused",
+            "message": "setup install plan",
+            "install_profile_id": install_profile_id,
+            "resolution_policy_id": resolution_policy_id,
+            "source_root": _plan_source_root(),
+            "target": _plan_targets(),
+            "graph_id": str(plan_result.get("graph_id", "")).strip(),
+            "release_id": str(plan_result.get("release_id", "")).strip(),
+            "install_plan": install_plan,
+            "errors": list(plan_result.get("errors") or []),
+        }
+        out_path = str(getattr(args, "out_plan", "") or getattr(args, "out", "") or "").strip()
+        if out_path:
+            write_json(out_path, payload)
+            payload["plan_path"] = normalize_path(out_path)
+        write_output(payload, args.format)
+        _emit_setup_event(
+            "lib",
+            "lib.install.plan",
+            severity="info" if payload["result"] == "complete" else "warn",
+            params={
+                "result": payload["result"],
+                "install_profile_id": install_profile_id,
+                "resolution_policy_id": resolution_policy_id,
+                "plan_id": str(install_plan.get("plan_id", "")).strip(),
+                "graph_id": str(payload.get("graph_id", "")).strip(),
+                "plan_path": str(payload.get("plan_path", "")).strip(),
+            },
+        )
+        return EXIT_OK if payload["result"] == "complete" else EXIT_REFUSED
+
+    if cmd == "apply":
+        plan_token = str(getattr(args, "plan", "") or "").strip()
+        payload = {}
+        if plan_token:
+            if os.path.isfile(plan_token):
+                payload = load_json(plan_token)
+            else:
+                candidate = os.path.join(_plan_storage_root(), "plans", "{}.json".format(plan_token))
+                if os.path.isfile(candidate):
+                    payload = load_json(candidate)
+        if not payload:
+            plan_result = _build_component_plan()
+            payload = {
+                "result": str(plan_result.get("result", "")).strip() or "refused",
+                "install_profile_id": install_profile_id,
+                "graph_id": str(plan_result.get("graph_id", "")).strip(),
+                "release_id": str(plan_result.get("release_id", "")).strip(),
+                "install_plan": dict(plan_result.get("install_plan") or {}),
+                "errors": list(plan_result.get("errors") or []),
+            }
+        if str(payload.get("result", "")).strip() != "complete":
+            write_output(
+                {
+                    "result": "refused",
+                    "message": "setup install apply refused",
+                    "install_profile_id": install_profile_id,
+                    "resolution_policy_id": resolution_policy_id,
+                    "errors": list(payload.get("errors") or []),
+                    "install_plan": dict(payload.get("install_plan") or {}),
+                },
+                args.format,
+            )
+            return EXIT_REFUSED
+        install_plan = dict(payload.get("install_plan") or {})
+        store_root = _plan_storage_root()
+        plan_id = str(install_plan.get("plan_id", "")).strip() or "install_plan.unnamed"
+        plan_path = os.path.join(store_root, "plans", "{}.json".format(plan_id))
+        write_json(plan_path, payload)
+        write_output(
+            {
+                "result": "complete",
+                "message": "setup install apply completed",
+                "install_profile_id": str(install_plan.get("install_profile_id", "")).strip() or install_profile_id,
+                "resolution_policy_id": resolution_policy_id,
+                "store_root": store_root,
+                "plan_path": normalize_path(plan_path),
+                "selected_component_ids": list(install_plan.get("selected_components") or []),
+                "disabled_optional_components": list(dict(install_plan.get("extensions") or {}).get("disabled_optional_components") or []),
+                "mode": "mock_store_apply",
+            },
+            args.format,
+        )
+        _emit_setup_event(
+            "lib",
+            "lib.install.apply",
+            params={
+                "install_profile_id": str(install_plan.get("install_profile_id", "")).strip() or install_profile_id,
+                "resolution_policy_id": resolution_policy_id,
+                "plan_id": plan_id,
+                "store_root": store_root,
+                "selected_component_count": int(len(list(install_plan.get("selected_components") or []))),
+            },
+        )
+        return EXIT_OK
 
     if cmd == "list":
         registry = load_install_registry(registry_path)
@@ -1703,6 +2216,536 @@ def handle_install_registry(args: argparse.Namespace) -> int:
     refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown install registry command", {"cmd": cmd})
     output_refusal("unknown install registry command", refusal, args.format)
     return EXIT_REFUSED
+
+
+def handle_update(args: argparse.Namespace, deterministic: bool) -> int:
+    cmd = str(getattr(args, "update_cmd", "") or "").strip().lower()
+    if not cmd:
+        refusal = _update_refusal(
+            "refusal.update.invalid_intent",
+            "update command is required",
+            ["Run `setup update check --channel mock` to inspect the local release index."],
+        )
+        output_refusal("missing update command", refusal, args.format)
+        return EXIT_REFUSED
+
+    discovery = _discover_install_context(args)
+    if str(discovery.get("result", "")).strip() != "complete":
+        refusal = _update_refusal(
+            str(discovery.get("refusal_code", "")).strip() or "refusal.install.not_found",
+            "install discovery failed",
+            [
+                "Run `setup install status` to inspect install discovery.",
+                "Use `setup install register <path>` for installed mode or place `install.manifest.json` beside the product binaries for portable mode.",
+            ],
+        )
+        write_output({"result": "refused", "message": "setup update refused", "refusal": refusal, "details": {"install_discovery": discovery}}, args.format)
+        return EXIT_REFUSED
+
+    install_root = normalize_path(str(discovery.get("resolved_install_root_path", "")).strip())
+    install_manifest_path = os.path.join(install_root, DEFAULT_INSTALL_MANIFEST)
+    current_validation = validate_install_manifest(repo_root=REPO_ROOT_HINT, install_manifest_path=install_manifest_path)
+    if str(current_validation.get("result", "")).strip() != "complete":
+        refusal = _update_refusal(
+            str(current_validation.get("refusal_code", "")).strip() or "refusal.update.current_install_invalid",
+            "current install manifest is invalid",
+            ["Run `setup verify --root {}` to inspect the current install.".format(install_root)],
+        )
+        write_output({"result": "refused", "message": "setup update refused", "refusal": refusal, "details": {"validation": current_validation}}, args.format)
+        return EXIT_REFUSED
+
+    current_install_manifest = dict(current_validation.get("install_manifest") or {})
+    effective_policy_id, effective_policy_row = _load_effective_trust_policy(
+        install_root=install_root,
+        install_manifest=current_install_manifest,
+        requested_trust_policy_id=str(getattr(args, "trust_policy_id", "") or "").strip(),
+        mod_policy_id=str(current_install_manifest.get("default_mod_policy_id", "")).strip(),
+    )
+    trust_roots = load_trust_root_registry(repo_root=REPO_ROOT_HINT, install_root=install_root)
+    planned_payload = {}
+    if cmd == "apply":
+        plan_token = str(getattr(args, "plan", "") or "").strip()
+        if plan_token and os.path.isfile(plan_token):
+            planned_payload = load_json(plan_token)
+    install_profile_id = (
+        str(getattr(args, "install_profile_id", "") or getattr(args, "profile", "") or "").strip()
+        or str(planned_payload.get("install_profile_id", "")).strip()
+        or str(dict(current_install_manifest.get("extensions") or {}).get("official.install_profile_id", "")).strip()
+        or DEFAULT_INSTALL_PROFILE_ID
+    )
+    requested_resolution_policy_id = (
+        str(getattr(args, "resolution_policy_id", "") or getattr(args, "policy", "") or "").strip()
+        or str(dict(planned_payload.get("update_plan") or {}).get("resolution_policy_id", "")).strip()
+        or str(planned_payload.get("resolution_policy_id", "")).strip()
+        or str(dict(current_install_manifest.get("extensions") or {}).get("official.install_resolution_policy_id", "")).strip()
+        or DEFAULT_RELEASE_RESOLUTION_POLICY_ID
+    )
+    release_index_path = infer_release_index_path(
+        install_root,
+        str(getattr(args, "release_index", "") or "").strip() or str(planned_payload.get("release_index_path", "")).strip(),
+    )
+    if not os.path.isfile(release_index_path):
+        refusal = _update_refusal(
+            "refusal.update.index_missing",
+            "release index is missing",
+            [
+                "Place `manifests/release_index.json` inside the target bundle, or pass `--release-index <path>`.",
+                "Rebuild the distribution bundle if the release index was not generated.",
+            ],
+        )
+        write_output({"result": "refused", "message": "setup update refused", "refusal": refusal, "details": {"release_index_path": release_index_path}}, args.format)
+        return EXIT_REFUSED
+
+    release_index = load_release_index(release_index_path)
+    install_profile = _load_install_profile_for_root(install_root, install_profile_id)
+    resolution_policy = _load_release_resolution_policy_for_root(install_root, requested_resolution_policy_id)
+    if requested_resolution_policy_id and not resolution_policy:
+        refusal = _update_refusal(
+            "refusal.update.invalid_policy",
+            "unknown release resolution policy",
+            ["Use `setup update --policy exact_suite|latest_compatible|lab`."],
+        )
+        write_output({"result": "refused", "message": "setup update refused", "refusal": refusal}, args.format)
+        return EXIT_REFUSED
+    resolution_policy_id = (
+        str(canonicalize_release_resolution_policy(resolution_policy).get("policy_id", "")).strip()
+        or DEFAULT_RELEASE_RESOLUTION_POLICY_ID
+    )
+    target_ids = platform_targets_for_tag(
+        str(getattr(args, "platform", "") or "").strip(),
+        repo_root=install_root,
+    )
+    resolution = resolve_update_plan(
+        current_install_manifest,
+        release_index,
+        install_profile_id=install_profile_id,
+        install_profile=install_profile,
+        resolution_policy_id=resolution_policy_id,
+        resolution_policy=resolution_policy,
+        target_platform=str(target_ids.get("platform_id", "")).strip(),
+        target_arch=str(target_ids.get("arch_id", "")).strip(),
+        target_abi=str(target_ids.get("abi_id", "")).strip(),
+        component_graph=dict(dict(release_index.get("extensions") or {}).get("component_graph") or {}),
+        trust_policy=effective_policy_row,
+        trust_policy_id=effective_policy_id,
+        trust_roots=list(trust_roots.get("trust_roots") or []),
+        install_root=install_root,
+        release_index_path=release_index_path,
+    )
+    update_plan = dict(resolution.get("update_plan") or {})
+    update_required = bool(dict(update_plan.get("extensions") or {}).get("update_required"))
+
+    if cmd == "check":
+        payload = {
+            "result": str(resolution.get("result", "")).strip() or "refused",
+            "message": "setup update check",
+            "install_root": install_root,
+            "release_index_path": release_index_path,
+            "install_profile_id": install_profile_id,
+            "resolution_policy_id": resolution_policy_id,
+            "trust_policy_id": effective_policy_id,
+            "current_release_id": str(update_plan.get("from_release_id", "")).strip(),
+            "target_release_id": str(update_plan.get("to_release_id", "")).strip(),
+            "update_required": update_required,
+            "components_to_add": list(update_plan.get("components_to_add") or []),
+            "components_to_remove": list(update_plan.get("components_to_remove") or []),
+            "components_to_upgrade": list(update_plan.get("components_to_upgrade") or []),
+            "selected_yanked_component_ids": list(dict(update_plan.get("extensions") or {}).get("selected_yanked_component_ids") or []),
+            "warnings": list(resolution.get("warnings") or []),
+            "errors": list(resolution.get("errors") or []),
+        }
+        write_output(payload, args.format)
+        _emit_setup_event(
+            "update",
+            "update.check.result",
+            severity="info" if payload["result"] == "complete" else "warn",
+            params={
+                "result": payload["result"],
+                "install_profile_id": install_profile_id,
+                "resolution_policy_id": resolution_policy_id,
+                "install_root": install_root,
+                "target_release_id": str(payload.get("target_release_id", "")).strip(),
+                "update_required": bool(update_required),
+            },
+        )
+        return EXIT_OK if payload["result"] == "complete" else EXIT_REFUSED
+
+    if cmd == "plan":
+        payload = {
+            "result": str(resolution.get("result", "")).strip() or "refused",
+            "message": "setup update plan",
+            "install_root": install_root,
+            "release_index_path": release_index_path,
+            "install_profile_id": install_profile_id,
+            "resolution_policy_id": resolution_policy_id,
+            "trust_policy_id": effective_policy_id,
+            "update_plan": update_plan,
+            "warnings": list(resolution.get("warnings") or []),
+            "errors": list(resolution.get("errors") or []),
+        }
+        out_path = str(getattr(args, "out_plan", "") or getattr(args, "out", "") or "").strip()
+        if out_path:
+            write_json(out_path, payload)
+            payload["plan_path"] = normalize_path(out_path)
+        write_output(payload, args.format)
+        _emit_setup_event(
+            "update",
+            "update.plan.generated",
+            severity="info" if payload["result"] == "complete" else "warn",
+            params={
+                "result": payload["result"],
+                "install_profile_id": install_profile_id,
+                "resolution_policy_id": resolution_policy_id,
+                "install_root": install_root,
+                "plan_id": str(update_plan.get("plan_id", "")).strip(),
+                "plan_path": str(payload.get("plan_path", "")).strip(),
+            },
+        )
+        return EXIT_OK if payload["result"] == "complete" else EXIT_REFUSED
+
+    if cmd != "apply":
+        refusal = _update_refusal(
+            "refusal.update.invalid_intent",
+            "unknown update command",
+            ["Use `setup update check`, `setup update plan`, or `setup update apply`."],
+        )
+        output_refusal("unknown update command", refusal, args.format)
+        return EXIT_REFUSED
+
+    if str(resolution.get("result", "")).strip() != "complete":
+        refusal = _update_refusal(
+            str(resolution.get("refusal_code", "")).strip() or "refusal.update.resolution_failed",
+            "update resolution failed",
+            ["Run `setup update plan --channel {}` to inspect the refusal details.".format(str(getattr(args, "channel", "") or "mock").strip() or "mock")],
+        )
+        write_output(
+            {
+                "result": "refused",
+                "message": "setup update apply refused",
+                "refusal": refusal,
+                "details": {
+                    "update_plan": update_plan,
+                    "warnings": list(resolution.get("warnings") or []),
+                    "errors": list(resolution.get("errors") or []),
+                },
+            },
+            args.format,
+        )
+        return EXIT_REFUSED
+
+    if not update_required:
+        write_output(
+            {
+                "result": "complete",
+                "message": "setup update apply completed",
+                "install_root": install_root,
+                "install_profile_id": install_profile_id,
+                "resolution_policy_id": resolution_policy_id,
+                "update_required": False,
+                "details": {"update_plan": update_plan},
+            },
+            args.format,
+        )
+        _emit_setup_event(
+            "update",
+            "update.apply.completed",
+            params={
+                "install_root": install_root,
+                "install_profile_id": install_profile_id,
+                "resolution_policy_id": resolution_policy_id,
+                "plan_id": str(update_plan.get("plan_id", "")).strip(),
+                "target_release_id": str(update_plan.get("to_release_id", "")).strip(),
+                "update_required": False,
+            },
+        )
+        return EXIT_OK
+
+    source_root = resolve_release_artifact_root(release_index_path, resolution.get("platform_entry") or {})
+    source_manifest_path = os.path.join(source_root, DEFAULT_RELEASE_MANIFEST_REL)
+    verify_result = verify_release_manifest(
+        source_root,
+        source_manifest_path,
+        repo_root=source_root,
+        trust_policy_id=effective_policy_id,
+    )
+    if str(verify_result.get("result", "")).strip() != "complete":
+        refusal = _update_refusal(
+            "refusal.update.verification_failed",
+            "target release manifest verification failed",
+            ["Run `setup verify --release-manifest {}` against the target bundle.".format(source_manifest_path)],
+        )
+        write_output({"result": "refused", "message": "setup update apply refused", "refusal": refusal, "details": {"verification": verify_result}}, args.format)
+        return EXIT_REFUSED
+
+    tx_id = str(getattr(args, "transaction_id", "") or "").strip() or str(uuid.uuid4())
+    data_root = str((read_setup_state(install_root) or {}).get("data_root", "")).strip()
+    backup_index = os.path.join(install_root, ".dsu", "rollback_index.json")
+    ensure_dir(os.path.dirname(backup_index))
+    backup_path = backup_install_root(install_root, data_root, tx_id, deterministic)
+    append_backup(
+        backup_index,
+        {
+            "transaction_id": tx_id,
+            "path": normalize_path(backup_path),
+            "created_at": now_timestamp(deterministic),
+        },
+    )
+
+    add_rows = list(update_plan.get("components_to_add") or [])
+    remove_rows = list(update_plan.get("components_to_remove") or [])
+    upgrade_rows = list(update_plan.get("components_to_upgrade") or [])
+    try:
+        _remove_managed_paths(install_root, remove_rows)
+        _copy_managed_paths(source_root, install_root, add_rows + upgrade_rows)
+        _copy_file = shutil.copyfile
+        for rel_path in (
+            "manifests/release_manifest.json",
+            "manifests/release_index.json",
+            "data/registries/semantic_contract_registry.json",
+        ):
+            src_path = os.path.join(source_root, rel_path.replace("/", os.sep))
+            if not os.path.isfile(src_path):
+                continue
+            dst_path = os.path.join(install_root, rel_path.replace("/", os.sep))
+            ensure_dir(os.path.dirname(dst_path))
+            _copy_file(src_path, dst_path)
+        source_install_manifest = load_json(os.path.join(source_root, DEFAULT_INSTALL_MANIFEST))
+        merged_manifest = _merge_install_manifest_for_update(current_install_manifest, source_install_manifest, update_plan)
+        merged_validation = validate_install_manifest(
+            repo_root=REPO_ROOT_HINT,
+            install_manifest_path=install_manifest_path,
+            manifest_payload=merged_manifest,
+        )
+        if str(merged_validation.get("result", "")).strip() != "complete":
+            raise RuntimeError(str(merged_validation.get("refusal_code", "refusal.update.install_manifest_invalid")))
+        write_json(install_manifest_path, merged_manifest)
+        write_json(os.path.join(install_root, "manifests", DEFAULT_INSTALL_MANIFEST), merged_manifest)
+        append_install_transaction(
+            transaction_log_path(install_root),
+            {
+                "transaction_id": tx_id,
+                "action": "update.apply",
+                "from_release_id": str(update_plan.get("from_release_id", "")).strip(),
+                "to_release_id": str(update_plan.get("to_release_id", "")).strip(),
+                "backup_path": normalize_path(backup_path),
+                "install_profile_id": install_profile_id,
+                "resolution_policy_id": resolution_policy_id,
+                "install_plan_hash": str(update_plan.get("deterministic_fingerprint", "")).strip(),
+                "prior_component_set_hash": str(dict(update_plan.get("extensions") or {}).get("prior_component_set_hash", "")).strip(),
+                "selected_component_ids": list(dict(update_plan.get("extensions") or {}).get("target_selected_component_ids") or []),
+                "extensions": {
+                    "release_index_path": normalize_path(release_index_path),
+                    "release_root": normalize_path(source_root),
+                },
+            },
+        )
+    except Exception as exc:
+        if os.path.isdir(backup_path):
+            shutil.rmtree(install_root, ignore_errors=True)
+            shutil.copytree(backup_path, install_root)
+        refusal = _update_refusal(
+            "refusal.update.apply_failed",
+            str(exc),
+            ["Run `setup rollback --to {}` if the install no longer matches the expected release.".format(str(update_plan.get("from_release_id", "")).strip() or "<previous_release_id>")],
+        )
+        write_output({"result": "refused", "message": "setup update apply failed", "refusal": refusal, "details": {"update_plan": update_plan}}, args.format)
+        return EXIT_REFUSED
+
+    write_output(
+        {
+            "result": "complete",
+            "message": "setup update apply completed",
+            "install_root": install_root,
+            "install_profile_id": install_profile_id,
+            "resolution_policy_id": resolution_policy_id,
+            "current_release_id": str(update_plan.get("from_release_id", "")).strip(),
+            "target_release_id": str(update_plan.get("to_release_id", "")).strip(),
+            "update_required": True,
+            "plan_id": str(update_plan.get("plan_id", "")).strip(),
+            "details": {
+                "transaction_id": tx_id,
+                "backup_path": normalize_path(backup_path),
+                "verification_steps": list(update_plan.get("verification_steps") or []),
+            },
+        },
+        args.format,
+    )
+    _emit_setup_event(
+        "update",
+        "update.apply.completed",
+        params={
+            "install_root": install_root,
+            "install_profile_id": install_profile_id,
+            "resolution_policy_id": resolution_policy_id,
+            "plan_id": str(update_plan.get("plan_id", "")).strip(),
+            "target_release_id": str(update_plan.get("to_release_id", "")).strip(),
+            "update_required": True,
+            "transaction_id": tx_id,
+        },
+    )
+    return EXIT_OK
+
+
+def handle_trust(args: argparse.Namespace) -> int:
+    cmd = str(getattr(args, "trust_cmd", "") or "").strip().lower()
+    requested_policy_id = str(getattr(args, "trust_policy_id", "") or "").strip()
+
+    if cmd in {"list", "status"}:
+        install_root = normalize_path(str(getattr(args, "install_root", "") or "").strip()) if str(getattr(args, "install_root", "") or "").strip() else ""
+        if not install_root:
+            discovery = _discover_install_context(args)
+            if str(discovery.get("result", "")).strip() == "complete":
+                install_root = normalize_path(str(discovery.get("resolved_install_root_path", "")).strip())
+        install_manifest = {}
+        if install_root:
+            manifest_path = os.path.join(install_root, DEFAULT_INSTALL_MANIFEST)
+            if os.path.isfile(manifest_path):
+                validation = validate_install_manifest(repo_root=REPO_ROOT_HINT, install_manifest_path=manifest_path)
+                install_manifest = dict(validation.get("install_manifest") or {})
+        effective_policy_id, policy_row = _load_effective_trust_policy(
+            install_root=install_root,
+            install_manifest=install_manifest,
+            requested_trust_policy_id=requested_policy_id,
+        )
+        root_registry = load_trust_root_registry(repo_root=REPO_ROOT_HINT, install_root=install_root)
+        output_ok(
+            "trust status",
+            {
+                "details": {
+                    "install_root": install_root,
+                    "trust_policy_id": effective_policy_id,
+                    "trust_policy": policy_row,
+                    "trust_roots": list(dict(root_registry.get("record") or {}).get("trust_roots") or []),
+                    "status_kind": "status" if cmd == "status" else "list",
+                }
+            },
+            args.format,
+        )
+        return EXIT_OK
+
+    discovery = _discover_install_context(args)
+    if str(discovery.get("result", "")).strip() != "complete":
+        refusal = refusal_payload(
+            5,
+            str(discovery.get("refusal_code", "")).strip() or "refusal.install.not_found",
+            "install discovery failed",
+            {"remediation": "Use `setup install register <path>` or `--install-root <path>` to target an install."},
+        )
+        output_refusal("trust operation refused", refusal, args.format)
+        return EXIT_REFUSED
+
+    install_root = normalize_path(str(discovery.get("resolved_install_root_path", "")).strip())
+    install_manifest_path = os.path.join(install_root, DEFAULT_INSTALL_MANIFEST)
+    validation = validate_install_manifest(repo_root=REPO_ROOT_HINT, install_manifest_path=install_manifest_path)
+    install_manifest = dict(validation.get("install_manifest") or {})
+
+    if cmd == "import":
+        bundle_path = normalize_path(str(getattr(args, "bundle", "") or "").strip())
+        if not bundle_path or not os.path.isfile(bundle_path):
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "trust root bundle is required", {})
+            output_refusal("missing trust root bundle", refusal, args.format)
+            return EXIT_REFUSED
+        imported_rows = _load_imported_trust_root_rows(bundle_path)
+        if not imported_rows:
+            refusal = refusal_payload(5, "REFUSE_INVALID_INTENT", "trust root bundle did not contain any trust roots", {})
+            output_refusal("trust import refused", refusal, args.format)
+            return EXIT_REFUSED
+        local_path = _trust_root_local_registry_path(install_root)
+        existing_local = []
+        if os.path.isfile(local_path):
+            existing_local = list(dict(load_json(local_path).get("record") or {}).get("trust_roots") or [])
+        merged = {}
+        for row in existing_local + imported_rows:
+            row_map = dict(row or {})
+            signer_id = str(row_map.get("signer_id", "")).strip()
+            if signer_id:
+                merged[signer_id] = row_map
+        write_trust_root_registry(local_path, [merged[key] for key in sorted(merged.keys())])
+        output_ok(
+            "trust roots imported",
+            {
+                "details": {
+                    "install_root": install_root,
+                    "local_registry_path": local_path.replace("\\", "/"),
+                    "imported_signer_ids": sorted(merged.keys()),
+                }
+            },
+            args.format,
+        )
+        return EXIT_OK
+
+    if cmd == "policy":
+        subcmd = str(getattr(args, "trust_policy_cmd", "") or "").strip().lower()
+        if subcmd != "set":
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown trust policy command", {"cmd": subcmd})
+            output_refusal("unknown trust policy command", refusal, args.format)
+            return EXIT_REFUSED
+        effective_policy_id, policy_row = _load_effective_trust_policy(
+            install_root=install_root,
+            install_manifest=install_manifest,
+            requested_trust_policy_id=requested_policy_id,
+        )
+        if not policy_row:
+            refusal = refusal_payload(5, "REFUSE_INVALID_INTENT", "trust policy is not declared", {"trust_policy_id": effective_policy_id})
+            output_refusal("trust policy set refused", refusal, args.format)
+            return EXIT_REFUSED
+        updated_manifest = normalize_install_manifest(dict(install_manifest or {}))
+        updated_manifest.setdefault("extensions", {})
+        updated_manifest["extensions"] = dict(updated_manifest.get("extensions") or {})
+        updated_manifest["extensions"]["official.trust_policy_id"] = effective_policy_id
+        updated_manifest["deterministic_fingerprint"] = install_deterministic_fingerprint(updated_manifest)
+        manifest_validation = validate_install_manifest(
+            repo_root=REPO_ROOT_HINT,
+            install_manifest_path=install_manifest_path,
+            manifest_payload=updated_manifest,
+        )
+        if str(manifest_validation.get("result", "")).strip() != "complete":
+            refusal = refusal_payload(5, "REFUSE_INVALID_INTENT", "updated install manifest failed validation", {})
+            output_refusal("trust policy set refused", refusal, args.format)
+            return EXIT_REFUSED
+        write_json(install_manifest_path, updated_manifest)
+        mirrored_manifest_path = os.path.join(install_root, "manifests", DEFAULT_INSTALL_MANIFEST)
+        if os.path.isdir(os.path.dirname(mirrored_manifest_path)):
+            write_json(mirrored_manifest_path, updated_manifest)
+        output_ok(
+            "trust policy set",
+            {
+                "details": {
+                    "install_root": install_root,
+                    "trust_policy_id": effective_policy_id,
+                }
+            },
+            args.format,
+        )
+        return EXIT_OK
+
+    refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown trust command", {"cmd": cmd})
+    output_refusal("unknown trust command", refusal, args.format)
+    return EXIT_REFUSED
+
+
+def handle_governance(args: argparse.Namespace) -> int:
+    cmd = str(getattr(args, "governance_cmd", "") or "").strip().lower()
+    if cmd != "status":
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown governance command", {"cmd": cmd})
+        output_refusal("unknown governance command", refusal, args.format)
+        return EXIT_REFUSED
+
+    install_root = normalize_path(str(getattr(args, "install_root", "") or "").strip()) if str(getattr(args, "install_root", "") or "").strip() else ""
+    if not install_root:
+        discovery = _discover_install_context(args)
+        if str(discovery.get("result", "")).strip() == "complete":
+            install_root = normalize_path(str(discovery.get("resolved_install_root_path", "")).strip())
+
+    payload = _governance_status_payload(install_root)
+    output_ok(
+        "governance status",
+        {
+            "details": payload,
+        },
+        args.format,
+    )
+    return EXIT_OK
 
 
 def handle_instance(args: argparse.Namespace, deterministic: bool) -> int:
@@ -1914,6 +2957,64 @@ def handle_save(args: argparse.Namespace) -> int:
     return EXIT_REFUSED
 
 
+def handle_migrate_save(args: argparse.Namespace, deterministic: bool) -> int:
+    extra: List[str] = [
+        "--repo-root", REPO_ROOT_HINT,
+        "--artifact-kind-id", "artifact.save",
+        "--artifact-path", args.save_manifest,
+        "--tick-applied", str(int(getattr(args, "tick_applied", 0) or 0)),
+    ]
+    if str(getattr(args, "out", "") or "").strip():
+        extra += ["--output-path", args.out]
+    if str(getattr(args, "to_version", "") or "").strip():
+        extra += ["--migration-id", "migration.save_format.manual_to_{}".format(str(args.to_version).strip())]
+    rc, payload, _stderr = run_script(resolve_apply_migration_cli(), extra)
+    if deterministic and isinstance(payload, dict):
+        payload.setdefault("extensions", {})
+        payload["extensions"] = dict(payload.get("extensions") or {})
+        payload["extensions"]["official.deterministic_invocation"] = True
+    write_output(payload, args.format)
+    if isinstance(payload, dict):
+        _emit_setup_event(
+            "lib",
+            "lib.save.migrated",
+            severity="info" if int(rc) == 0 else "warn",
+            params={
+                "result": str(payload.get("result", "")).strip() or ("complete" if int(rc) == 0 else "refused"),
+                "artifact_path": str(getattr(args, "save_manifest", "")).strip(),
+                "migration_chain_id": str(dict(payload.get("decision_record") or {}).get("chain_id", "")).strip(),
+            },
+        )
+    return rc
+
+
+def handle_migrate_instance(args: argparse.Namespace, deterministic: bool) -> int:
+    del deterministic
+    extra: List[str] = [
+        "--repo-root", REPO_ROOT_HINT,
+        "--artifact-kind-id", "artifact.instance_manifest",
+        "--artifact-path", args.instance_manifest,
+    ]
+    if str(getattr(args, "out", "") or "").strip():
+        extra += ["--output-path", args.out]
+    if bool(getattr(args, "allow_read_only", False)):
+        extra += ["--allow-read-only"]
+    rc, payload, _stderr = run_script(resolve_apply_migration_cli(), extra)
+    write_output(payload, args.format)
+    if isinstance(payload, dict):
+        _emit_setup_event(
+            "lib",
+            "lib.instance.migrated",
+            severity="info" if int(rc) == 0 else "warn",
+            params={
+                "result": str(payload.get("result", "")).strip() or ("complete" if int(rc) == 0 else "refused"),
+                "artifact_path": str(getattr(args, "instance_manifest", "")).strip(),
+                "migration_chain_id": str(dict(payload.get("decision_record") or {}).get("chain_id", "")).strip(),
+            },
+        )
+    return rc
+
+
 def handle_pack(args: argparse.Namespace) -> int:
     cmd = str(getattr(args, "pack_cmd", "") or "").strip().lower()
     if cmd == "export":
@@ -1992,9 +3093,132 @@ def handle_rollback(args: argparse.Namespace, deterministic: bool) -> int:
     code, payload = rollback_from_plan(plan, args, deterministic)
     if code == EXIT_OK:
         output_ok("rollback ok", payload, args.format)
+        _emit_setup_event(
+            "update",
+            "update.rollback.completed",
+            params={
+                "install_root": str(getattr(args, "install_root", "") or "").strip(),
+                "target_release_id": str(getattr(args, "to", "") or "").strip(),
+                "transaction_id": str(dict(payload.get("details") or {}).get("transaction_id", "")).strip(),
+            },
+        )
     else:
         output_refusal("rollback failed", payload.get("refusal", {}), args.format)
     return code
+
+
+def handle_store(args: argparse.Namespace) -> int:
+    cmd = str(getattr(args, "store_cmd", "") or "").strip().lower()
+    if cmd != "gc":
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown store command", {"cmd": cmd})
+        output_refusal("unknown store command", refusal, args.format)
+        return EXIT_REFUSED
+
+    install_root = normalize_path(str(getattr(args, "install_root", "") or "").strip()) if str(getattr(args, "install_root", "") or "").strip() else ""
+    explicit_store_root = normalize_path(str(getattr(args, "store_root", "") or "").strip()) if str(getattr(args, "store_root", "") or "").strip() else ""
+    store_root = explicit_store_root
+    install_roots: List[str] = []
+    if install_root:
+        install_roots.append(install_root)
+
+    if not store_root:
+        discovery = _discover_install_context(args)
+        if str(discovery.get("result", "")).strip() != "complete":
+            refusal = refusal_payload(
+                5,
+                str(discovery.get("refusal_code", "")).strip() or "refusal.install.not_found",
+                "store GC requires a target install or store root",
+                {
+                    "remediation": "Use `setup store gc --install-root <path>` or `--store-root <path>` to target the store explicitly.",
+                },
+            )
+            output_refusal("store gc refused", refusal, args.format)
+            return EXIT_REFUSED
+        install_root = normalize_path(str(discovery.get("resolved_install_root_path", "")).strip())
+        install_roots = [install_root] if install_root else []
+        install_manifest_path = os.path.join(install_root, DEFAULT_INSTALL_MANIFEST)
+        validation = validate_install_manifest(repo_root=REPO_ROOT_HINT, install_manifest_path=install_manifest_path)
+        if str(validation.get("result", "")).strip() != "complete":
+            refusal = refusal_payload(
+                5,
+                str(validation.get("refusal_code", "")).strip() or "refusal.install.invalid_manifest",
+                "install manifest validation failed",
+                {
+                    "remediation": "Run `setup verify --root {}` to repair the install before retrying store GC.".format(install_root),
+                },
+            )
+            output_refusal("store gc refused", refusal, args.format)
+            return EXIT_REFUSED
+        store_root = normalize_path(resolve_store_root_from_install(install_root, dict(validation.get("install_manifest") or {})))
+
+    if not store_root:
+        refusal = refusal_payload(
+            5,
+            "refusal.store.gc.store_root_missing",
+            "store root could not be resolved",
+            {
+                "remediation": "Provide `--store-root <path>` or ensure `install.manifest.json` declares `store_root_ref`.",
+            },
+        )
+        output_refusal("store gc refused", refusal, args.format)
+        return EXIT_REFUSED
+
+    result = run_store_gc(
+        store_root,
+        repo_root=REPO_ROOT_HINT,
+        gc_policy_id=str(getattr(args, "gc_policy_id", "") or DEFAULT_GC_POLICY_ID).strip() or DEFAULT_GC_POLICY_ID,
+        install_roots=install_roots,
+        registry_path=str(getattr(args, "registry_path", "") or "").strip(),
+        allow_aggressive=bool(getattr(args, "allow_aggressive", False)),
+        allow_portable=bool(getattr(args, "allow_portable_store", False)),
+    )
+    if str(result.get("result", "")).strip() != "complete":
+        refusal = refusal_payload(
+            5,
+            str(result.get("refusal_code", "")).strip() or "refusal.store.gc.unknown",
+            str(result.get("message", "")).strip() or "store gc refused",
+            {
+                "remediation": str(result.get("remediation", "")).strip(),
+            },
+        )
+        output_refusal("store gc refused", refusal, args.format)
+        _emit_setup_event(
+            "lib",
+            "lib.store.gc.refused",
+            severity="warn",
+            params={
+                "store_root": store_root,
+                "gc_policy_id": str(getattr(args, "gc_policy_id", "") or DEFAULT_GC_POLICY_ID).strip() or DEFAULT_GC_POLICY_ID,
+                "refusal_code": str(result.get("refusal_code", "")).strip(),
+            },
+        )
+        return EXIT_REFUSED
+
+    gc_report = dict(result.get("gc_report") or {})
+    output_ok(
+        "store gc completed",
+        {
+            "details": {
+                "store_root": store_root,
+                "gc_policy": dict(result.get("gc_policy") or {}),
+                "gc_report": gc_report,
+                "reachability_report": dict(result.get("reachability_report") or {}),
+                "store_verify_report": dict(result.get("store_verify_report") or {}),
+            }
+        },
+        args.format,
+    )
+    _emit_setup_event(
+        "lib",
+        "lib.store.gc.completed",
+        params={
+            "store_root": store_root,
+            "gc_policy_id": str(gc_report.get("gc_policy_id", "")).strip(),
+            "deleted_count": int(len(list(gc_report.get("deleted_hashes") or []))),
+            "quarantined_count": int(len(list(gc_report.get("quarantined_hashes") or []))),
+        },
+    )
+    return EXIT_OK
 
 
 def _legacy_main(argv: list[str] | None = None) -> int:
@@ -2068,21 +3292,49 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     manifest_validate.add_argument("--json", action="store_true")
 
     install_cmd = sub.add_parser("install")
-    install_cmd.add_argument("registry_cmd", nargs="?", choices=["list", "add", "remove", "verify", "register", "unregister", "status"])
+    install_cmd.add_argument("registry_cmd", nargs="?", choices=["list", "add", "remove", "verify", "register", "unregister", "status", "plan", "apply"])
     install_cmd.add_argument("registry_target", nargs="?")
     install_cmd.add_argument("--registry-path", dest="registry_path", default="")
     install_cmd.add_argument("--install-id", dest="install_id", default="")
+    install_cmd.add_argument("--profile", dest="install_profile_id", default="")
+    install_cmd.add_argument("--policy", dest="resolution_policy_id", default="")
     install_cmd.add_argument("--manifest", required=False)
     install_cmd.add_argument("--op", default="install")
     install_cmd.add_argument("--scope", default="portable")
     install_cmd.add_argument("--platform", default="")
+    install_cmd.add_argument("--arch", default="")
+    install_cmd.add_argument("--abi", default="")
     install_cmd.add_argument("--install-root", dest="install_root", default="")
     install_cmd.add_argument("--data-root", dest="data_root", default="")
     install_cmd.add_argument("--frontend-id", default="")
     install_cmd.add_argument("--ui-mode", default=None)
     install_cmd.add_argument("--install-mode", dest="install_mode", default="")
     install_cmd.add_argument("--store-root", dest="store_root", default="")
+    install_cmd.add_argument("--plan", default="")
+    install_cmd.add_argument("--out", default="")
+    install_cmd.add_argument("--out-plan", dest="out_plan", default="")
     install_cmd.add_argument("--json", action="store_true")
+
+    update_cmd = sub.add_parser("update")
+    update_sub = update_cmd.add_subparsers(dest="update_cmd")
+
+    for update_name in ("check", "plan", "apply"):
+        update_parser = update_sub.add_parser(update_name)
+        update_parser.add_argument("--channel", default="mock")
+        update_parser.add_argument("--release-index", default="")
+        update_parser.add_argument("--plan", default="")
+        update_parser.add_argument("--install-root", dest="install_root", default="")
+        update_parser.add_argument("--install-id", dest="install_id", default="")
+        update_parser.add_argument("--registry-path", dest="registry_path", default="")
+        update_parser.add_argument("--profile", dest="install_profile_id", default="")
+        update_parser.add_argument("--policy", dest="resolution_policy_id", default="")
+        update_parser.add_argument("--platform", default="")
+        update_parser.add_argument("--arch", default="")
+        update_parser.add_argument("--abi", default="")
+        update_parser.add_argument("--trust-policy-id", default="")
+        update_parser.add_argument("--out", default="")
+        update_parser.add_argument("--out-plan", dest="out_plan", default="")
+        update_parser.add_argument("--json", action="store_true")
 
     instance_cmd = sub.add_parser("instance")
     instance_sub = instance_cmd.add_subparsers(dest="instance_cmd")
@@ -2233,6 +3485,69 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     rollback_cmd.add_argument("--data-root", dest="data_root", default="")
     rollback_cmd.add_argument("--frontend-id", default="")
     rollback_cmd.add_argument("--ui-mode", default=None)
+    rollback_cmd.add_argument("--to", default="")
+
+    trust_cmd = sub.add_parser("trust")
+    trust_sub = trust_cmd.add_subparsers(dest="trust_cmd")
+
+    trust_list_cmd = trust_sub.add_parser("list")
+    trust_list_cmd.add_argument("--install-root", dest="install_root", default="")
+    trust_list_cmd.add_argument("--trust-policy-id", default="")
+    trust_list_cmd.add_argument("--json", action="store_true")
+
+    trust_status_cmd = trust_sub.add_parser("status")
+    trust_status_cmd.add_argument("--install-root", dest="install_root", default="")
+    trust_status_cmd.add_argument("--install-id", dest="install_id", default="")
+    trust_status_cmd.add_argument("--registry-path", dest="registry_path", default="")
+    trust_status_cmd.add_argument("--trust-policy-id", default="")
+    trust_status_cmd.add_argument("--json", action="store_true")
+
+    trust_import_cmd = trust_sub.add_parser("import")
+    trust_import_cmd.add_argument("bundle")
+    trust_import_cmd.add_argument("--install-root", dest="install_root", default="")
+    trust_import_cmd.add_argument("--trust-policy-id", default="")
+    trust_import_cmd.add_argument("--json", action="store_true")
+
+    trust_policy_cmd = trust_sub.add_parser("policy")
+    trust_policy_sub = trust_policy_cmd.add_subparsers(dest="trust_policy_cmd")
+    trust_policy_set_cmd = trust_policy_sub.add_parser("set")
+    trust_policy_set_cmd.add_argument("policy_id")
+    trust_policy_set_cmd.add_argument("--install-root", dest="install_root", default="")
+    trust_policy_set_cmd.add_argument("--trust-policy-id", default="")
+    trust_policy_set_cmd.add_argument("--json", action="store_true")
+
+    governance_cmd = sub.add_parser("governance")
+    governance_sub = governance_cmd.add_subparsers(dest="governance_cmd")
+    governance_status_cmd = governance_sub.add_parser("status")
+    governance_status_cmd.add_argument("--install-root", dest="install_root", default="")
+    governance_status_cmd.add_argument("--install-id", dest="install_id", default="")
+    governance_status_cmd.add_argument("--registry-path", dest="registry_path", default="")
+    governance_status_cmd.add_argument("--json", action="store_true")
+
+    store_cmd = sub.add_parser("store")
+    store_sub = store_cmd.add_subparsers(dest="store_cmd")
+    store_gc_cmd = store_sub.add_parser("gc")
+    store_gc_cmd.add_argument("--policy", dest="gc_policy_id", default=DEFAULT_GC_POLICY_ID)
+    store_gc_cmd.add_argument("--store-root", dest="store_root", default="")
+    store_gc_cmd.add_argument("--install-root", dest="install_root", default="")
+    store_gc_cmd.add_argument("--install-id", dest="install_id", default="")
+    store_gc_cmd.add_argument("--registry-path", dest="registry_path", default="")
+    store_gc_cmd.add_argument("--allow-aggressive", action="store_true")
+    store_gc_cmd.add_argument("--allow-portable-store", action="store_true")
+    store_gc_cmd.add_argument("--json", action="store_true")
+
+    migrate_save_cmd = sub.add_parser("migrate-save")
+    migrate_save_cmd.add_argument("--save-manifest", required=True)
+    migrate_save_cmd.add_argument("--out", default="")
+    migrate_save_cmd.add_argument("--to-version", default="")
+    migrate_save_cmd.add_argument("--tick-applied", type=int, default=0)
+    migrate_save_cmd.add_argument("--json", action="store_true")
+
+    migrate_instance_cmd = sub.add_parser("migrate-instance")
+    migrate_instance_cmd.add_argument("--instance-manifest", required=True)
+    migrate_instance_cmd.add_argument("--out", default="")
+    migrate_instance_cmd.add_argument("--allow-read-only", action="store_true")
+    migrate_instance_cmd.add_argument("--json", action="store_true")
 
     verify_cmd = sub.add_parser("verify")
     verify_cmd.add_argument("--root", default="")
@@ -2242,6 +3557,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     verify_cmd.add_argument("--overlay-conflict-policy-id", default="")
     verify_cmd.add_argument("--contract-bundle-path", default="")
     verify_cmd.add_argument("--release-manifest", default="")
+    verify_cmd.add_argument("--trust-policy-id", default="")
     verify_cmd.add_argument("--out-report", default="")
     verify_cmd.add_argument("--out-lock", default="")
     verify_cmd.add_argument("--write-outputs", action="store_true")
@@ -2253,6 +3569,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     list_packs_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
     list_packs_cmd.add_argument("--overlay-conflict-policy-id", default="")
     list_packs_cmd.add_argument("--contract-bundle-path", default="")
+    list_packs_cmd.add_argument("--trust-policy-id", default="")
 
     build_lock_cmd = sub.add_parser("build-lock")
     build_lock_cmd.add_argument("--root", default="")
@@ -2261,6 +3578,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     build_lock_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
     build_lock_cmd.add_argument("--overlay-conflict-policy-id", default="")
     build_lock_cmd.add_argument("--contract-bundle-path", default="")
+    build_lock_cmd.add_argument("--trust-policy-id", default="")
     build_lock_cmd.add_argument("--out-report", default="")
     build_lock_cmd.add_argument("--out-lock", default="")
 
@@ -2271,6 +3589,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     diagnose_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
     diagnose_cmd.add_argument("--overlay-conflict-policy-id", default="")
     diagnose_cmd.add_argument("--contract-bundle-path", default="")
+    diagnose_cmd.add_argument("--trust-policy-id", default="")
     diagnose_cmd.add_argument("--pack-id", required=True)
 
     args = ap.parse_args(argv)
@@ -2318,6 +3637,8 @@ def _legacy_main(argv: list[str] | None = None) -> int:
         return handle_manifest_validate(args, deterministic)
     if args.cmd == "install":
         return handle_install(args, deterministic)
+    if args.cmd == "update":
+        return handle_update(args, deterministic)
     if args.cmd == "instance":
         return handle_instance(args, deterministic)
     if args.cmd == "save":
@@ -2330,6 +3651,16 @@ def _legacy_main(argv: list[str] | None = None) -> int:
         return handle_uninstall(args, deterministic)
     if args.cmd == "rollback":
         return handle_rollback(args, deterministic)
+    if args.cmd == "trust":
+        return handle_trust(args)
+    if args.cmd == "governance":
+        return handle_governance(args)
+    if args.cmd == "store":
+        return handle_store(args)
+    if args.cmd == "migrate-save":
+        return handle_migrate_save(args, deterministic)
+    if args.cmd == "migrate-instance":
+        return handle_migrate_instance(args, deterministic)
     if args.cmd == "verify":
         return handle_verify(args, deterministic)
     if args.cmd == "list-packs":

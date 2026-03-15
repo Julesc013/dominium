@@ -20,11 +20,11 @@ Replacement Target: DIST-2 artifact integrity verification and DIST-3 installer 
 
 ## File Counts and Hashes
 
-- Bundle file count: `2911`
-- Bundle hash: `da25308d7acecd5fd847d68ccb47e84c0a9c551a1c99cc6f8ab9f95765bfa716`
-- File list hash: `3a9ed2866e070e9b5be14699019a815f3b4fb5f279a349da82e5acfb69576488`
-- Release manifest hash: `daed22f814c1bd6843da822a7eec41fcc315bb6c622bf9f39950d54410a5ee0b`
-- Smoke hash: `0f79f42f5698e09eea93fad2ba9f5b948c25ea88ba69e460ce0bbe2d3ae54149`
+- Bundle file count: `2982`
+- Bundle hash: `c660ca7a0e4bb5380339b8e28a437085e6bc58dac202da20db83bff6aca83d32`
+- File list hash: `46d7c8204ca099d00217f047d6af715f46629a634bd09c663376524e3d7d1165`
+- Release manifest hash: `52b5638abe47d665833ca9241d3a7cbe63306918769758fffa8d6094f28c1841`
+- Smoke hash: `b834ee505f8059fe2517e321e4da28046377caf2088c26c54f5d709c8ebb27e6`
 
 ## Included Docs
 

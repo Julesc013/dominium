@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-TEST_ID = "test_read_only_mode_for_contract_mismatch_when_allowed"
+TEST_ID = "test_read_only_applied_for_contract_mismatch_when_allowed"
 TEST_TAGS = ["fast", "compat", "cap_neg"]
 
 

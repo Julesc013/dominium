@@ -15,6 +15,7 @@ from .supervisor_engine import (
     invoke_supervisor_service_command,
     launch_supervisor_service,
     load_supervisor_runtime_state,
+    sanitize_supervisor_runtime,
     set_current_supervisor_engine,
 )
 
@@ -35,5 +36,6 @@ __all__ = [
     "invoke_supervisor_service_command",
     "launch_supervisor_service",
     "load_supervisor_runtime_state",
+    "sanitize_supervisor_runtime",
     "set_current_supervisor_engine",
 ]

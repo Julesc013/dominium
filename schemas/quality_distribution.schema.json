@@ -52,5 +52,17 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "deprecated": false,
+      "description": "example",
+      "extensions": {},
+      "parameters": {},
+      "quality_distribution_model_id": "quality_distribution_model_id.example",
+      "schema_version": "1.0.0",
+      "tags": [],
+      "version_introduced": "example"
+    }
+  ]
 }

@@ -1,0 +1,26 @@
+SCHEMA: engine/tolerance.schema
+schema_id: dominium.schema.engine.tolerance
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic numeric tolerance rows used by engine-level numeric governance.
+- Separate cross-domain numeric policy from quantity-specific tolerances and render-only approximations.
+
+REQUIRED SHAPE:
+record tolerance
+  required:
+    - schema_version: semver
+    - tol_id: id
+    - domain_id: id
+    - allowed_error_bound: int (>=0)
+    - rounding_mode: enum(round_half_to_even|floor|ceiling|truncate)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - stability: stability_marker
+
+INVARIANTS:
+- Truth tolerances MUST be fixed-point/integer bounded.
+- Render tolerances MUST NOT be interpreted as truth-hash tolerances.
+- deterministic_fingerprint MUST derive from canonical payload fields only.

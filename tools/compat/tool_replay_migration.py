@@ -75,7 +75,7 @@ def main() -> int:
         "input_hash": canonical_sha256(original),
         "loaded_hash": canonical_sha256(migrated) if not error else "",
         "migration_events": list(meta.get("migration_events") or []) if not error else [],
-        "read_only_mode": bool(meta.get("read_only_mode", False)) if not error else False,
+        "read_only_applied": bool(meta.get("read_only_applied", False)) if not error else False,
         "law_profile_id_override": str(meta.get("law_profile_id_override", "")).strip() if not error else "",
         "deterministic_fingerprint": "",
         "refusal": dict(error.get("refusal") or {}) if error else {},
@@ -86,7 +86,7 @@ def main() -> int:
             "input_hash": str(payload.get("input_hash", "")),
             "loaded_hash": str(payload.get("loaded_hash", "")),
             "migration_events": list(payload.get("migration_events") or []),
-            "read_only_mode": bool(payload.get("read_only_mode", False)),
+            "read_only_applied": bool(payload.get("read_only_applied", False)),
             "law_profile_id_override": str(payload.get("law_profile_id_override", "")),
             "refusal": dict(payload.get("refusal") or {}),
         }

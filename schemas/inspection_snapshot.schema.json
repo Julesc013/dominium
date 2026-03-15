@@ -101,5 +101,21 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "achieved_fidelity": "macro",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "inputs_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "ledger_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "request_id": "request_id.example",
+      "schema_version": "1.0.0",
+      "snapshot_id": "snapshot_id.example",
+      "summary_sections": {},
+      "target_id": "target_id.example",
+      "tick": 0,
+      "truth_hash_anchor": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ]
 }

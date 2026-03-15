@@ -75,6 +75,20 @@
         }
       },
       {
+        "category_id": "lib",
+        "description": "Install, instance, save, and migration lifecycle events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for lib; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "9d72c92c7e378d38a70b428fcf1e0b785ae56e835ab0f2c248e9273d846e2aec",
+          "extensions": {}
+        }
+      },
+      {
         "category_id": "packs",
         "description": "Offline pack verification and pack-lock generation.",
         "stability": {
@@ -85,6 +99,20 @@
           "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
           "contract_id": "",
           "deterministic_fingerprint": "8acd9e3e000eedb8c65e5955f20db90bcc14f7131970f73cd9bf4c571012addc",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "paths",
+        "description": "Install and virtual-path resolution events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for paths; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "c64c856444f81b0a2e500287cebe3cc625d4b5cff699c7b047dd6f092624c794",
           "extensions": {}
         }
       },
@@ -117,6 +145,20 @@
         }
       },
       {
+        "category_id": "supervisor",
+        "description": "Supervisor spawn, restart, stop, and child lifecycle events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for supervisor; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "4cea3eb3d3e3651b18af116d30a789983fd793d9a7ec2e8a9c04459c04fb487f",
+          "extensions": {}
+        }
+      },
+      {
         "category_id": "tool",
         "description": "Tool session and capability events.",
         "stability": {
@@ -145,6 +187,34 @@
         }
       },
       {
+        "category_id": "update",
+        "description": "Release-index update planning, apply, and rollback events.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for update; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a8d60fdb09fe35de9bfe814815930eb337296c3cc9567c0d56bc68702afe03c5",
+          "extensions": {}
+        }
+      },
+      {
+        "category_id": "validation",
+        "description": "Unified validation pipeline summaries.",
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for validation; semantics remain loadable but are not yet frozen for release governance.",
+          "future_series": "APPSHELL",
+          "replacement_target": "Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a1ec383bb8016da810345bbc3702370553baa7c8ec8e9b5ccaafbca5786b1c28",
+          "extensions": {}
+        }
+      },
+      {
         "category_id": "worldgen",
         "description": "Worldgen and refinement request summaries.",
         "stability": {
@@ -159,7 +229,7 @@
         }
       }
     ],
-    "deterministic_fingerprint": "",
+    "deterministic_fingerprint": "db0467e6bc76ba46cf806436e3df84c950e6e16cacdf3985270d228de6bb0ff6",
     "extensions": {
       "official.source": "APPSHELL-2"
     }

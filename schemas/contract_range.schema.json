@@ -35,5 +35,15 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "examples": [
+    {
+      "contract_category_id": "contract_category_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "max_version": 0,
+      "min_version": 0,
+      "schema_version": "1.0.0"
+    }
+  ]
 }

@@ -60,5 +60,17 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "accumulated_wear": {},
+      "asset_id": "asset_id.example",
+      "extensions": {},
+      "failure_mode_ids": [],
+      "last_inspection_tick": 0,
+      "last_maintenance_tick": 0,
+      "maintenance_backlog": 0,
+      "schema_version": "1.0.0"
+    }
+  ]
 }

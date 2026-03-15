@@ -130,7 +130,7 @@ def run_supervisor_probe(
                     "attach_status": str(_as_map(row).get("attach_status", "")).strip(),
                     "restart_count": int(_as_map(row).get("restart_count", 0) or 0),
                     "compatibility_mode_id": str(_as_map(row).get("compatibility_mode_id", "")).strip(),
-                    "read_only_mode": bool(_as_map(row).get("read_only_mode", False)),
+                    "read_only_applied": bool(_as_map(row).get("read_only_applied", False)),
                 }
                 for row in process_rows
             ],

@@ -31,6 +31,7 @@ record pack_compat_manifest
     - provides: [id]
     - provides_declarations: [map]
     - required_provides_ids: [id]
+    - universal_identity_block: universal_identity_block
 
 INVARIANTS:
 - pack_id and pack_version must match adjacent `pack.json`

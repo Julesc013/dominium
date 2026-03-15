@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Observability Guarantee Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "category_id",
+    "guaranteed",
+    "minimum_fields",
+    "redaction_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "category_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "guaranteed": {
+      "type": "boolean"
+    },
+    "minimum_fields": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "redaction_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "stability": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "category_id": "category_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "guaranteed": false,
+      "minimum_fields": [],
+      "redaction_policy_id": "redaction_policy_id.example"
+    }
+  ]
+}

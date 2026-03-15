@@ -48,6 +48,7 @@ record save_manifest
     - state_snapshots_ref: path_ref
     - patches_ref: path_ref
     - proofs_ref: path_ref
+    - universal_identity_block: universal_identity_block
     - notes: map
 
 INVARIANTS:

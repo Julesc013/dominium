@@ -37,7 +37,7 @@ def run(graph, repo_root, changed_files=None):
                     "route store, pack, profile, save, export, log, and IPC access through src/appshell/paths/virtual_paths.py",
                 ],
                 suggested_classification="TODO-BLOCKED",
-                recommended_action="ROUTE_THROUGH_VPATH",
+                recommended_action="REWRITE",
                 related_invariants=["INV-NO-HARDCODED-PATHS", "INV-VPATH-USED-FOR-STORE_ACCESS"],
                 related_paths=[rel_path, "src/appshell/paths/virtual_paths.py"],
             )

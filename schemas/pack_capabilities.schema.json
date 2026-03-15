@@ -36,5 +36,14 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "capability_ids": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "pack_id": "pack_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

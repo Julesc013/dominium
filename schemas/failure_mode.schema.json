@@ -64,5 +64,19 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "applies_to_part_classes": [],
+      "base_hazard_rate_per_tick": 0,
+      "description": "example",
+      "extensions": {},
+      "failure_event_type_id": "failure_event_type_id.example",
+      "failure_mode_id": "failure_mode_id.example",
+      "hazard_inputs": [],
+      "maintenance_effect_model_id": "maintenance_effect_model_id.example",
+      "modifiers": {},
+      "schema_version": "1.0.0"
+    }
+  ]
 }

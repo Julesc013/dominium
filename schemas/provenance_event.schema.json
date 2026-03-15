@@ -84,5 +84,20 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "actor_subject_id": "actor_subject_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "event_id": "event_id.example",
+      "event_type_id": "event_type_id.example",
+      "extensions": {},
+      "inputs": [],
+      "ledger_deltas": {},
+      "outputs": [],
+      "schema_version": "1.0.0",
+      "site_ref": "example",
+      "tick": 0
+    }
+  ]
 }

@@ -9,6 +9,7 @@
   ],
   "type": "object",
   "required": [
+    "schema_version",
     "topology_id",
     "generated_tick",
     "repository_hash",
@@ -20,6 +21,10 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
     "topology_id": {
       "type": "string",
       "minLength": 1
@@ -89,6 +94,7 @@
   },
   "examples": [
     {
+      "schema_version": "1.0.0",
       "topology_id": "dominium.audit.topology_map",
       "generated_tick": 0,
       "repository_hash": "HEAD:0000000000000000000000000000000000000000",

@@ -38,5 +38,15 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "signature_bytes": "example",
+      "signature_id": "signature_id.example",
+      "signed_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "signer_id": "signer_id.example"
+    }
+  ]
 }

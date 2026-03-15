@@ -42,5 +42,14 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "extensions": {},
+      "graph_id": "graph_id.example",
+      "portals": [],
+      "schema_version": "1.0.0",
+      "volumes": []
+    }
+  ]
 }

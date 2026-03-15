@@ -2106,6 +2106,7 @@ def boot_session_spec(
     _state_payload, state_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_state", path=state_path)
     if state_error:
         return state_error
+    state_payload = dict(_state_payload if isinstance(_state_payload, dict) else {})
 
     session_context = session_spec.get("authority_context")
     if not isinstance(session_context, dict):
@@ -2981,11 +2982,11 @@ def boot_session_spec(
         "mod_policy_id": selected_mod_policy_id,
         "mod_policy_registry_hash": str(mod_policy_proof_bundle.get("mod_policy_registry_hash", "")).strip(),
         "mod_policy_proof_bundle": dict(mod_policy_proof_bundle),
-        "overlay_manifest_hash": str(universe_state.get("overlay_manifest_hash", "")).strip(),
-        "worldgen_request_hash_chain": str(universe_state.get("worldgen_request_hash_chain", "")).strip(),
-        "worldgen_result_hash_chain": str(universe_state.get("worldgen_result_hash_chain", "")).strip(),
-        "refinement_request_hash_chain": str(universe_state.get("refinement_request_hash_chain", "")).strip(),
-        "refinement_cache_hash_chain": str(universe_state.get("refinement_cache_hash_chain", "")).strip(),
+        "overlay_manifest_hash": str(state_payload.get("overlay_manifest_hash", "")).strip(),
+        "worldgen_request_hash_chain": str(state_payload.get("worldgen_request_hash_chain", "")).strip(),
+        "worldgen_result_hash_chain": str(state_payload.get("worldgen_result_hash_chain", "")).strip(),
+        "refinement_request_hash_chain": str(state_payload.get("refinement_request_hash_chain", "")).strip(),
+        "refinement_cache_hash_chain": str(state_payload.get("refinement_cache_hash_chain", "")).strip(),
         "registry_hashes": registry_hashes,
         "session_stage_registry_hash": str(pipeline_contract.get("stage_registry_hash", "")),
         "session_pipeline_registry_hash": str(pipeline_contract.get("pipeline_registry_hash", "")),
@@ -3081,11 +3082,11 @@ def boot_session_spec(
         "mod_policy_id": selected_mod_policy_id,
         "mod_policy_registry_hash": str(mod_policy_proof_bundle.get("mod_policy_registry_hash", "")).strip(),
         "mod_policy_proof_bundle": dict(mod_policy_proof_bundle),
-        "overlay_manifest_hash": str(universe_state.get("overlay_manifest_hash", "")).strip(),
-        "worldgen_request_hash_chain": str(universe_state.get("worldgen_request_hash_chain", "")).strip(),
-        "worldgen_result_hash_chain": str(universe_state.get("worldgen_result_hash_chain", "")).strip(),
-        "refinement_request_hash_chain": str(universe_state.get("refinement_request_hash_chain", "")).strip(),
-        "refinement_cache_hash_chain": str(universe_state.get("refinement_cache_hash_chain", "")).strip(),
+        "overlay_manifest_hash": str(state_payload.get("overlay_manifest_hash", "")).strip(),
+        "worldgen_request_hash_chain": str(state_payload.get("worldgen_request_hash_chain", "")).strip(),
+        "worldgen_result_hash_chain": str(state_payload.get("worldgen_result_hash_chain", "")).strip(),
+        "refinement_request_hash_chain": str(state_payload.get("refinement_request_hash_chain", "")).strip(),
+        "refinement_cache_hash_chain": str(state_payload.get("refinement_cache_hash_chain", "")).strip(),
         "registry_hashes": registry_hashes,
         "physics_profile_id": identity_physics_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,

@@ -71,6 +71,9 @@
     "input_hashes": {
       "type": "object"
     },
+    "universal_identity_block": {
+      "$ref": "./universal_identity_block.schema.json"
+    },
     "deterministic_fingerprint": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -78,5 +81,22 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "examples": [
+    {
+      "chosen_contract_versions": {},
+      "chosen_protocol_id": "chosen_protocol_id.example",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compatibility_mode_id.example",
+      "degrade_plan": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "disabled_capabilities": [],
+      "enabled_capabilities": [],
+      "endpoints": [],
+      "extensions": {},
+      "input_hashes": {},
+      "negotiation_id": "negotiation_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

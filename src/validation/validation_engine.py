@@ -22,6 +22,7 @@ from src.lib.artifact import validate_artifact_manifest  # noqa: E402
 from src.lib.instance import validate_instance_manifest  # noqa: E402
 from src.lib.install import default_install_registry_path, verify_install_registry, validate_install_manifest  # noqa: E402
 from src.lib.save import validate_save_manifest  # noqa: E402
+from src.meta.identity import validate_identity_repo  # noqa: E402
 from src.meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
 from tools.audit.arch_audit_common import run_arch_audit, scan_determinism  # noqa: E402
 from tools.compatx.core.semantic_contract_validator import (  # noqa: E402
@@ -35,6 +36,10 @@ from tools.mvp import build_pack_lock_payload, validate_pack_lock_payload  # noq
 from tools.mvp.cross_platform_gate_common import maybe_load_cached_mvp_cross_platform_report  # noqa: E402
 from tools.review.repo_inventory_common import load_or_run_inventory_report  # noqa: E402
 from tools.time.time_anchor_common import verify_compaction_anchor_alignment, verify_longrun_ticks  # noqa: E402
+from tools.meta.identity_common import BASELINE_DOC_REL as IDENTITY_BASELINE_DOC_REL  # noqa: E402
+from tools.meta.identity_common import REPORT_JSON_REL as IDENTITY_REPORT_JSON_REL  # noqa: E402
+from tools.meta.identity_common import STRICT_MISSING_POLICY_ACTIVE  # noqa: E402
+from tools.meta.identity_common import write_identity_artifacts  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 from tools.xstack.compatx.check import run_compatx_check  # noqa: E402
 from tools.xstack.compatx.validator import validate_instance  # noqa: E402
@@ -58,6 +63,7 @@ GOVERNED_SCHEMA_NAMES: tuple[str, ...] = (
     "pack_lock",
     "pack_manifest",
     "stability_marker",
+    "universal_identity_block",
     "universe_contract_bundle",
     "validation_result",
 )
@@ -763,6 +769,66 @@ def _adapt_registry_suite(repo_root: str, suite_row: Mapping[str, object], profi
     )
 
 
+def _adapt_identity_suite(repo_root: str, suite_row: Mapping[str, object], profile: str) -> dict:
+    strict_missing = bool(STRICT_MISSING_POLICY_ACTIVE and str(profile).strip().upper() in {"STRICT", "FULL"})
+    report = write_identity_artifacts(repo_root, strict_missing=strict_missing)
+    errors = []
+    warnings = []
+    checked_paths: list[str] = []
+    for row in _as_list(report.get("reports")):
+        item = _as_map(row)
+        rel_path = _token(item.get("path"))
+        if rel_path:
+            checked_paths.append(rel_path)
+        for error in _as_list(item.get("errors")):
+            error_row = _as_map(error)
+            errors.append(
+                _finding_row(
+                    code=_token(error_row.get("code")) or "refusal.validation.identity",
+                    path=rel_path or _token(error_row.get("path")),
+                    message=_token(error_row.get("message")) or "universal identity validation failed",
+                    suite_id=_token(suite_row.get("suite_id")),
+                )
+            )
+        for warning in _as_list(item.get("warnings")):
+            warning_row = _as_map(warning)
+            warnings.append(
+                _finding_row(
+                    code=_token(warning_row.get("code")) or "warn.validation.identity",
+                    path=rel_path or _token(warning_row.get("path")),
+                    message=_token(warning_row.get("message")) or "universal identity warning",
+                    suite_id=_token(suite_row.get("suite_id")),
+                    severity="warn",
+                )
+            )
+    return _build_suite_result(
+        suite_id=_token(suite_row.get("suite_id")),
+        category_id=_token(suite_row.get("category_id")),
+        profile=profile,
+        suite_order=int(suite_row.get("suite_order", 0) or 0),
+        adapter_id=_token(suite_row.get("adapter_id")),
+        description=_token(suite_row.get("description")),
+        checked_paths=sorted(set(checked_paths + [IDENTITY_BASELINE_DOC_REL, IDENTITY_REPORT_JSON_REL])),
+        result="complete" if not errors else "refused",
+        message="identity validation {} (artifacts={}, warnings={}, errors={})".format(
+            "passed" if not errors else "found_errors",
+            int(report.get("artifact_count", 0) or 0),
+            int(report.get("warning_count", 0) or 0),
+            int(report.get("error_count", 0) or 0),
+        ),
+        errors=errors,
+        warnings=warnings,
+        metrics={
+            "artifact_count": int(report.get("artifact_count", 0) or 0),
+            "warning_count": int(report.get("warning_count", 0) or 0),
+            "error_count": int(report.get("error_count", 0) or 0),
+            "strict_missing": bool(strict_missing),
+        },
+        fingerprints={"identity_report_fingerprint": _token(report.get("deterministic_fingerprint"))},
+        legacy_adapters=_legacy_rows_for_suite(repo_root, _token(suite_row.get("suite_id"))),
+    )
+
+
 def _adapt_contract_suite(repo_root: str, suite_row: Mapping[str, object], profile: str) -> dict:
     registry_payload, load_error = load_semantic_contract_registry(repo_root)
     errors: list[dict] = []
@@ -1329,6 +1395,7 @@ def _adapt_platform_matrix_suite(repo_root: str, suite_row: Mapping[str, object]
 SUITE_ADAPTERS: dict[str, Callable[[str, Mapping[str, object], str], dict]] = {
     "compatx_schema_suite": _adapt_schema_suite,
     "stability_registry_suite": _adapt_registry_suite,
+    "identity_suite": _adapt_identity_suite,
     "semantic_contract_suite": _adapt_contract_suite,
     "pack_verification_suite": _adapt_pack_suite,
     "negotiation_suite": _adapt_negotiation_suite,

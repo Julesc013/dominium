@@ -16,9 +16,17 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from tools.audit.arch_audit_common import (  # noqa: E402
+    DEFAULT_AUDIT2_FINAL_DOC_REL,
+    DEFAULT_AUDIT2_REPORT_JSON_REL,
+    DEFAULT_AUDIT2_REPORT_MD_REL,
     DEFAULT_BASELINE_DOC_REL,
+    DEFAULT_CONCURRENCY_SCAN_REPORT_MD_REL,
+    DEFAULT_NUMERIC_SCAN_REPORT_MD_REL,
     DEFAULT_REPORT_JSON_REL,
     DEFAULT_REPORT_MD_REL,
+    build_arch_audit2_report,
+    build_concurrency_scan_report,
+    build_numeric_scan_report,
     load_json_if_present,
     run_arch_audit,
     write_arch_audit_outputs,
@@ -31,6 +39,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--report-path", default=DEFAULT_REPORT_MD_REL)
     parser.add_argument("--json-path", default=DEFAULT_REPORT_JSON_REL)
     parser.add_argument("--baseline-path", default="")
+    parser.add_argument("--numeric-scan-path", default=DEFAULT_NUMERIC_SCAN_REPORT_MD_REL)
+    parser.add_argument("--concurrency-scan-path", default=DEFAULT_CONCURRENCY_SCAN_REPORT_MD_REL)
+    parser.add_argument("--audit2-report-path", default=DEFAULT_AUDIT2_REPORT_MD_REL)
+    parser.add_argument("--audit2-json-path", default=DEFAULT_AUDIT2_REPORT_JSON_REL)
+    parser.add_argument("--audit2-final-path", default=DEFAULT_AUDIT2_FINAL_DOC_REL)
     parser.add_argument("--prefer-cached", action="store_true")
     args = parser.parse_args(argv)
 
@@ -45,8 +58,16 @@ def main(argv: list[str] | None = None) -> int:
         report_path=str(args.report_path),
         json_path=str(args.json_path),
         baseline_path=str(args.baseline_path),
+        numeric_scan_path=str(args.numeric_scan_path),
+        concurrency_scan_path=str(args.concurrency_scan_path),
+        audit2_report_path=str(args.audit2_report_path),
+        audit2_json_path=str(args.audit2_json_path),
+        audit2_final_path=str(args.audit2_final_path),
     )
     payload = dict(report)
+    payload["numeric_scan_report"] = build_numeric_scan_report(report)
+    payload["concurrency_scan_report"] = build_concurrency_scan_report(report)
+    payload["audit2_report"] = build_arch_audit2_report(report)
     payload["written_outputs"] = written
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0 if str(report.get("result", "")).strip() == "complete" else 1

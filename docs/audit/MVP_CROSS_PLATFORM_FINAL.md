@@ -1,11 +1,3 @@
-Status: DERIVED
-Last Reviewed: unknown
-Supersedes: none
-Superseded By: none
-Stability: provisional
-Future Series: DOC-CONVERGENCE
-Replacement Target: canon-aligned documentation set for convergence and release preparation
-
 # MVP Cross-Platform Final
 
 ## Run Summary
@@ -42,10 +34,10 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ## Gates
 
-- RepoX STRICT: `PASS` (cross-platform invariant scope; full repo strict is blocked by pre-existing repository debt)
-- AuditX STRICT: `PASS` (cross-platform analyzer scope; full repo scan reports unrelated existing findings)
-- TestX: `PASS` (4 cross-platform tests)
-- cross-platform matrix: `PASS` (deterministic cached gate report)
+- RepoX STRICT: `PASS`
+- AuditX STRICT: `PASS`
+- TestX: `PASS`
+- cross-platform matrix: `PASS`
 
 ## Regression Lock
 

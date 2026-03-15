@@ -10,6 +10,14 @@ from .platform_probe import (
     probe_platform_descriptor,
     project_feature_capabilities_for_platform,
 )
+from .target_matrix import (
+    TARGET_MATRIX_REGISTRY_REL,
+    load_target_matrix_registry,
+    release_index_target_rows,
+    select_target_matrix_row,
+    target_matrix_registry_hash,
+    target_matrix_rows_by_id,
+)
 from .platform_gfx import (
     create_graphics_context,
     destroy_graphics_context,
@@ -53,5 +61,11 @@ __all__ = [
     "resize_graphics_surface",
     "resize_window",
     "route_platform_events_to_commands",
+    "TARGET_MATRIX_REGISTRY_REL",
+    "load_target_matrix_registry",
+    "release_index_target_rows",
     "submit_audio_frame",
+    "select_target_matrix_row",
+    "target_matrix_registry_hash",
+    "target_matrix_rows_by_id",
 ]

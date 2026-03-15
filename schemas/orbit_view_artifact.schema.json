@@ -124,5 +124,17 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "bodies": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "sampled_paths": [],
+      "schema_version": "1.0.0",
+      "tick": 0,
+      "view_id": "view_id.example",
+      "viewer_ref": {}
+    }
+  ]
 }

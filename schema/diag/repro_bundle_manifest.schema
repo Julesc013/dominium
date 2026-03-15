@@ -36,6 +36,8 @@ record repro_bundle_manifest
     - bundle_hash: sha256
     - deterministic_fingerprint: sha256
     - extensions: map
+  optional:
+    - universal_identity_block: universal_identity_block
 
 INVARIANTS:
 - included_artifacts ordering is deterministic

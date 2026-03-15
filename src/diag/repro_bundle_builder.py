@@ -147,6 +147,18 @@ def _write_jsonl(path: str, rows: Sequence[Mapping[str, object]]) -> str:
     return abs_path
 
 
+def _minimum_observability_payload(kind: str) -> dict:
+    payload = {
+        "result": "unavailable",
+        "reason": "not_captured",
+        "artifact_kind": str(kind or "").strip(),
+        "extensions": {},
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = _fingerprint(payload)
+    return payload
+
+
 def _file_hash(abs_path: str) -> str:
     try:
         with open(abs_path, "rb") as handle:
@@ -333,6 +345,12 @@ def write_repro_bundle(
     semantic_contract_registry_hash: str = "",
     contract_bundle_hash: str = "",
     overlay_manifest_hash: str = "",
+    pack_verification_report_payload: Mapping[str, object] | None = None,
+    pack_verification_report_path: str = "",
+    install_plan_payload: Mapping[str, object] | None = None,
+    install_plan_path: str = "",
+    update_plan_payload: Mapping[str, object] | None = None,
+    update_plan_path: str = "",
     seed: str = "",
     session_id: str = "",
     session_template_id: str = "",
@@ -365,11 +383,29 @@ def write_repro_bundle(
     pack_lock_abs = _repo_abs(repo_root_abs, pack_lock_path)
     contract_bundle_abs = _repo_abs(repo_root_abs, contract_bundle_path)
     run_manifest_abs = _repo_abs(repo_root_abs, run_manifest_path)
+    pack_verification_report_abs = _repo_abs(repo_root_abs, pack_verification_report_path)
+    install_plan_abs = _repo_abs(repo_root_abs, install_plan_path)
+    update_plan_abs = _repo_abs(repo_root_abs, update_plan_path)
 
     session_spec_map = dict(_normalize_tree(dict(session_spec_payload or _read_json(session_spec_abs))))
     pack_lock_map = dict(_normalize_tree(dict(pack_lock_payload or _read_json(pack_lock_abs))))
     contract_bundle_map = dict(_normalize_tree(dict(contract_bundle_payload or _read_json(contract_bundle_abs))))
     run_manifest_map = dict(_normalize_tree(dict(run_manifest_payload or _read_json(run_manifest_abs))))
+    pack_verification_report_map = dict(
+        _normalize_tree(
+            dict(pack_verification_report_payload or _read_json(pack_verification_report_abs) or _minimum_observability_payload("pack_verification_report"))
+        )
+    )
+    install_plan_map = dict(
+        _normalize_tree(
+            dict(install_plan_payload or _read_json(install_plan_abs) or _minimum_observability_payload("install_plan"))
+        )
+    )
+    update_plan_map = dict(
+        _normalize_tree(
+            dict(update_plan_payload or _read_json(update_plan_abs) or _minimum_observability_payload("update_plan"))
+        )
+    )
 
     selected_contract_bundle_hash = (
         str(contract_bundle_hash or "").strip()
@@ -446,9 +482,27 @@ def write_repro_bundle(
         bundle_files.append((rel, _write_json(os.path.join(bundle_dir, rel), pack_lock_map)))
         rel = os.path.join("packs", "pack_hashes.json")
         bundle_files.append((rel, _write_json(os.path.join(bundle_dir, rel), _pack_hash_summary(pack_lock_map))))
+    bundle_files.append(
+        (
+            os.path.join("packs", "pack_verification_report.json"),
+            _write_json(os.path.join(bundle_dir, "packs", "pack_verification_report.json"), pack_verification_report_map),
+        )
+    )
     if run_manifest_map:
         rel = os.path.join("run", "run_manifest.json")
         bundle_files.append((rel, _write_json(os.path.join(bundle_dir, rel), run_manifest_map)))
+    bundle_files.append(
+        (
+            os.path.join("plans", "install_plan.json"),
+            _write_json(os.path.join(bundle_dir, "plans", "install_plan.json"), install_plan_map),
+        )
+    )
+    bundle_files.append(
+        (
+            os.path.join("plans", "update_plan.json"),
+            _write_json(os.path.join(bundle_dir, "plans", "update_plan.json"), update_plan_map),
+        )
+    )
     bundle_files.extend(
         _related_bundle_files(
             bundle_dir,

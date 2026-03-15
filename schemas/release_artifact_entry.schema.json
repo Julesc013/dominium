@@ -44,5 +44,14 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "artifact_kind": "example",
+      "artifact_name": "example",
+      "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {}
+    }
+  ]
 }

@@ -146,6 +146,39 @@ def boot_server_fixture(
     return dict(fixture, boot=dict(boot))
 
 
+def teardown_server_fixture(
+    boot_payload: Mapping[str, object],
+    *,
+    client_transport: object = None,
+) -> dict:
+    runtime = dict((dict(boot_payload or {})).get("runtime") or {})
+    closed_targets: list[str] = []
+    if client_transport is not None:
+        close_client = getattr(client_transport, "close", None)
+        if callable(close_client):
+            close_client()
+            closed_targets.append("client_transport")
+    live_transports = dict(runtime.get("_server_mvp_live_transports") or {})
+    for connection_id in sorted(str(item).strip() for item in live_transports.keys() if str(item).strip()):
+        transport = live_transports.get(connection_id)
+        close_transport = getattr(transport, "close", None)
+        if callable(close_transport):
+            close_transport()
+            closed_targets.append("server_transport:{}".format(connection_id))
+    runtime["_server_mvp_live_transports"] = {}
+    runtime["server_mvp_connections"] = {}
+    reset_loopback_state()
+    return {
+        "result": "complete",
+        "closed_targets": closed_targets,
+        "deterministic_fingerprint": canonical_sha256(
+            {
+                "closed_targets": closed_targets,
+            }
+        ),
+    }
+
+
 def connect_loopback_client(
     boot_payload: Mapping[str, object],
     *,
@@ -235,103 +268,106 @@ def run_server_window(
 
     handshake = {"result": "empty"}
     client_transport = None
-    if with_client:
-        handshake = connect_loopback_client(boot)
-        if str(handshake.get("result", "")) != "complete":
-            safe_handshake = {
-                "result": str(handshake.get("result", "")).strip(),
-                "listener": dict(handshake.get("listener") or {}),
-                "hello": {
-                    "result": str((dict(handshake.get("hello") or {})).get("result", "")).strip(),
-                    "connection_id": str((dict(handshake.get("hello") or {})).get("connection_id", "")).strip(),
-                    "client_peer_id": str((dict(handshake.get("hello") or {})).get("client_peer_id", "")).strip(),
-                },
-                "accepted": dict(handshake.get("accepted") or {}),
-            }
-            return {
-                "result": "refused",
-                "boot": boot,
-                "handshake": safe_handshake,
-                "deterministic_fingerprint": canonical_sha256({"boot": boot, "handshake": safe_handshake}),
-            }
-        client_transport = handshake.get("client_transport")
+    try:
+        if with_client:
+            handshake = connect_loopback_client(boot)
+            if str(handshake.get("result", "")) != "complete":
+                safe_handshake = {
+                    "result": str(handshake.get("result", "")).strip(),
+                    "listener": dict(handshake.get("listener") or {}),
+                    "hello": {
+                        "result": str((dict(handshake.get("hello") or {})).get("result", "")).strip(),
+                        "connection_id": str((dict(handshake.get("hello") or {})).get("connection_id", "")).strip(),
+                        "client_peer_id": str((dict(handshake.get("hello") or {})).get("client_peer_id", "")).strip(),
+                    },
+                    "accepted": dict(handshake.get("accepted") or {}),
+                }
+                return {
+                    "result": "refused",
+                    "boot": boot,
+                    "handshake": safe_handshake,
+                    "deterministic_fingerprint": canonical_sha256({"boot": boot, "handshake": safe_handshake}),
+                }
+            client_transport = handshake.get("client_transport")
 
-    tick_report = run_server_ticks(boot, int(max(0, int(ticks or 0))))
-    runtime = dict(boot.get("runtime") or {})
-    server = dict(runtime.get("server") or {})
-    meta = dict(runtime.get("server_mvp") or {})
-    connections = dict(runtime.get("server_mvp_connections") or {})
-    anchors = [dict(row) for row in list(runtime.get("server_mvp_proof_anchors") or []) if isinstance(row, dict)]
-    epoch_anchors = [dict(row) for row in list(runtime.get("server_mvp_epoch_anchors") or []) if isinstance(row, dict)]
-    client_messages = drain_client_messages(repo_root_abs, client_transport)
-    tick_stream_messages = [
-        row
-        for row in client_messages
-        if str(row.get("msg_type", "")).strip() == "payload"
-        and str(row.get("payload_schema_id", "")).strip() == "server.tick_stream.stub.v1"
-    ]
-    anchor_ticks = [int(row.get("tick", 0) or 0) for row in anchors]
-    epoch_anchor_ticks = [int(row.get("tick", 0) or 0) for row in epoch_anchors]
-    summary = {
-        "result": "complete" if str(tick_report.get("result", "")) == "complete" else str(tick_report.get("result", "")).strip(),
-        "save_id": str(fixture.get("save_id", "")).strip(),
-        "tick_count_requested": int(ticks),
-        "final_tick": int(server.get("network_tick", 0) or 0),
-        "listener_endpoint": str(meta.get("listener_endpoint", "")).strip(),
-        "client_count": len(connections),
-        "connection_ids": sorted(str(item) for item in connections.keys()),
-        "handshake": {
-            "connection_id": str((dict(handshake.get("accepted") or {})).get("connection_id", "")).strip(),
-            "account_id": str((dict(handshake.get("accepted") or {})).get("account_id", "")).strip(),
-            "ack_msg_type": str((dict(handshake.get("ack_proto") or {})).get("msg_type", "")).strip(),
-            "ack_payload_schema_id": str((dict(handshake.get("ack_proto") or {})).get("payload_schema_id", "")).strip(),
-            "session_info": dict((dict((dict(handshake.get("ack_proto") or {}).get("payload_ref") or {})).get("inline_json") or {}).get("session_info") or {}),
-            "compatibility_mode_id": str((dict(handshake.get("accepted") or {})).get("compatibility_mode_id", "")).strip(),
-            "negotiation_record_hash": str((dict(handshake.get("accepted") or {})).get("negotiation_record_hash", "")).strip(),
-            "authority_context_created": bool((dict(handshake.get("accepted") or {})).get("authority_context")),
-        },
-        "proof_anchor_interval_ticks": int(meta.get("proof_anchor_interval_ticks", 0) or 0),
-        "proof_anchor_ticks": anchor_ticks,
-        "proof_anchor_hashes": [canonical_sha256(row) for row in anchors],
-        "epoch_anchor_ticks": epoch_anchor_ticks,
-        "epoch_anchor_hashes": [canonical_sha256(row) for row in epoch_anchors],
-        "proof_anchor_contract_hashes": [
-            {
-                "contract_bundle_hash": str(row.get("contract_bundle_hash", "")).strip(),
-                "semantic_contract_registry_hash": str(row.get("semantic_contract_registry_hash", "")).strip(),
-                "pack_lock_hash": str(row.get("pack_lock_hash", "")).strip(),
-                "negotiation_record_hashes": list((dict(row.get("extensions") or {})).get("official.negotiation_record_hashes") or []),
-                "endpoint_descriptor_hashes": list((dict(row.get("extensions") or {})).get("official.endpoint_descriptor_hashes") or []),
-            }
-            for row in anchors
-        ],
-        "tick_stream_count": len(tick_stream_messages),
-        "tick_stream_ticks": [
-            int((dict((dict(row.get("payload_ref") or {})).get("inline_json") or {})).get("tick", 0) or 0)
-            for row in tick_stream_messages
-        ],
-        "tick_hash": str(server.get("last_tick_hash", "")).strip(),
-        "overlay_manifest_hash": str(meta.get("overlay_manifest_hash", "")).strip(),
-        "contract_bundle_hash": str(meta.get("contract_bundle_hash", "")).strip(),
-        "semantic_contract_registry_hash": str(meta.get("semantic_contract_registry_hash", "")).strip(),
-        "mod_policy_id": str(meta.get("mod_policy_id", "")).strip(),
-        "deterministic_fingerprint": "",
-    }
-    summary["cross_platform_server_hash"] = canonical_sha256(
-        {
-            "final_tick": int(summary.get("final_tick", 0)),
-            "connection_ids": list(summary.get("connection_ids") or []),
-            "proof_anchor_hashes": list(summary.get("proof_anchor_hashes") or []),
-            "epoch_anchor_hashes": list(summary.get("epoch_anchor_hashes") or []),
-            "tick_hash": str(summary.get("tick_hash", "")).strip(),
-            "mod_policy_id": str(summary.get("mod_policy_id", "")).strip(),
-            "contract_bundle_hash": str(summary.get("contract_bundle_hash", "")).strip(),
-            "semantic_contract_registry_hash": str(summary.get("semantic_contract_registry_hash", "")).strip(),
-            "negotiation_record_hash": str((dict(summary.get("handshake") or {})).get("negotiation_record_hash", "")).strip(),
+        tick_report = run_server_ticks(boot, int(max(0, int(ticks or 0))))
+        runtime = dict(boot.get("runtime") or {})
+        server = dict(runtime.get("server") or {})
+        meta = dict(runtime.get("server_mvp") or {})
+        connections = dict(runtime.get("server_mvp_connections") or {})
+        anchors = [dict(row) for row in list(runtime.get("server_mvp_proof_anchors") or []) if isinstance(row, dict)]
+        epoch_anchors = [dict(row) for row in list(runtime.get("server_mvp_epoch_anchors") or []) if isinstance(row, dict)]
+        client_messages = drain_client_messages(repo_root_abs, client_transport)
+        tick_stream_messages = [
+            row
+            for row in client_messages
+            if str(row.get("msg_type", "")).strip() == "payload"
+            and str(row.get("payload_schema_id", "")).strip() == "server.tick_stream.stub.v1"
+        ]
+        anchor_ticks = [int(row.get("tick", 0) or 0) for row in anchors]
+        epoch_anchor_ticks = [int(row.get("tick", 0) or 0) for row in epoch_anchors]
+        summary = {
+            "result": "complete" if str(tick_report.get("result", "")) == "complete" else str(tick_report.get("result", "")).strip(),
+            "save_id": str(fixture.get("save_id", "")).strip(),
+            "tick_count_requested": int(ticks),
+            "final_tick": int(server.get("network_tick", 0) or 0),
+            "listener_endpoint": str(meta.get("listener_endpoint", "")).strip(),
+            "client_count": len(connections),
+            "connection_ids": sorted(str(item) for item in connections.keys()),
+            "handshake": {
+                "connection_id": str((dict(handshake.get("accepted") or {})).get("connection_id", "")).strip(),
+                "account_id": str((dict(handshake.get("accepted") or {})).get("account_id", "")).strip(),
+                "ack_msg_type": str((dict(handshake.get("ack_proto") or {})).get("msg_type", "")).strip(),
+                "ack_payload_schema_id": str((dict(handshake.get("ack_proto") or {})).get("payload_schema_id", "")).strip(),
+                "session_info": dict((dict((dict(handshake.get("ack_proto") or {}).get("payload_ref") or {})).get("inline_json") or {}).get("session_info") or {}),
+                "compatibility_mode_id": str((dict(handshake.get("accepted") or {})).get("compatibility_mode_id", "")).strip(),
+                "negotiation_record_hash": str((dict(handshake.get("accepted") or {})).get("negotiation_record_hash", "")).strip(),
+                "authority_context_created": bool((dict(handshake.get("accepted") or {})).get("authority_context")),
+            },
+            "proof_anchor_interval_ticks": int(meta.get("proof_anchor_interval_ticks", 0) or 0),
+            "proof_anchor_ticks": anchor_ticks,
+            "proof_anchor_hashes": [canonical_sha256(row) for row in anchors],
+            "epoch_anchor_ticks": epoch_anchor_ticks,
+            "epoch_anchor_hashes": [canonical_sha256(row) for row in epoch_anchors],
+            "proof_anchor_contract_hashes": [
+                {
+                    "contract_bundle_hash": str(row.get("contract_bundle_hash", "")).strip(),
+                    "semantic_contract_registry_hash": str(row.get("semantic_contract_registry_hash", "")).strip(),
+                    "pack_lock_hash": str(row.get("pack_lock_hash", "")).strip(),
+                    "negotiation_record_hashes": list((dict(row.get("extensions") or {})).get("official.negotiation_record_hashes") or []),
+                    "endpoint_descriptor_hashes": list((dict(row.get("extensions") or {})).get("official.endpoint_descriptor_hashes") or []),
+                }
+                for row in anchors
+            ],
+            "tick_stream_count": len(tick_stream_messages),
+            "tick_stream_ticks": [
+                int((dict((dict(row.get("payload_ref") or {})).get("inline_json") or {})).get("tick", 0) or 0)
+                for row in tick_stream_messages
+            ],
+            "tick_hash": str(server.get("last_tick_hash", "")).strip(),
+            "overlay_manifest_hash": str(meta.get("overlay_manifest_hash", "")).strip(),
+            "contract_bundle_hash": str(meta.get("contract_bundle_hash", "")).strip(),
+            "semantic_contract_registry_hash": str(meta.get("semantic_contract_registry_hash", "")).strip(),
+            "mod_policy_id": str(meta.get("mod_policy_id", "")).strip(),
+            "deterministic_fingerprint": "",
         }
-    )
-    summary["deterministic_fingerprint"] = canonical_sha256(dict(summary, deterministic_fingerprint=""))
-    return summary
+        summary["cross_platform_server_hash"] = canonical_sha256(
+            {
+                "final_tick": int(summary.get("final_tick", 0)),
+                "connection_ids": list(summary.get("connection_ids") or []),
+                "proof_anchor_hashes": list(summary.get("proof_anchor_hashes") or []),
+                "epoch_anchor_hashes": list(summary.get("epoch_anchor_hashes") or []),
+                "tick_hash": str(summary.get("tick_hash", "")).strip(),
+                "mod_policy_id": str(summary.get("mod_policy_id", "")).strip(),
+                "contract_bundle_hash": str(summary.get("contract_bundle_hash", "")).strip(),
+                "semantic_contract_registry_hash": str(summary.get("semantic_contract_registry_hash", "")).strip(),
+                "negotiation_record_hash": str((dict(summary.get("handshake") or {})).get("negotiation_record_hash", "")).strip(),
+            }
+        )
+        summary["deterministic_fingerprint"] = canonical_sha256(dict(summary, deterministic_fingerprint=""))
+        return summary
+    finally:
+        teardown_server_fixture(boot, client_transport=client_transport)
 
 
 def verify_server_window_replay(repo_root: str = REPO_ROOT_HINT) -> dict:
@@ -376,6 +412,7 @@ __all__ = [
     "drain_client_messages",
     "materialize_server_fixture",
     "run_server_window",
+    "teardown_server_fixture",
     "unauthorized_intent_report",
     "verify_server_window_replay",
 ]

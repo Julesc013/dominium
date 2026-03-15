@@ -71,5 +71,19 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "ag_node_id": "ag_node_id.example",
+      "batch_id": "batch_id.example",
+      "deterministic_seed": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "mass": 0,
+      "material_id": "material_id.example",
+      "micro_part_id": "micro_part_id.example",
+      "parent_structure_id": "parent_structure_id.example",
+      "schema_version": "1.0.0",
+      "transform": {}
+    }
+  ]
 }

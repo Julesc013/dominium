@@ -64,5 +64,19 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "ag_nodes_involved": [],
+      "batch_ids": [],
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "seed_reference": "example",
+      "structure_id": "structure_id.example",
+      "tick_range": {
+        "tick_end": 0,
+        "tick_start": 0
+      }
+    }
+  ]
 }

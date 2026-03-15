@@ -18,6 +18,12 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from src.appshell.logging import create_log_engine, get_current_log_engine, set_current_log_engine  # noqa: E402
+from src.appshell.supervisor import (  # noqa: E402
+    discover_active_supervisor_endpoint,
+    invoke_supervisor_service_command,
+    load_supervisor_runtime_state,
+    sanitize_supervisor_runtime,
+)
 from src.appshell.tui import build_tui_surface, run_tui_mode  # noqa: E402
 from src.compat import build_default_endpoint_descriptor, build_degrade_runtime_state, negotiate_endpoint_descriptors  # noqa: E402
 from src.diag.repro_bundle_builder import verify_repro_bundle, write_repro_bundle  # noqa: E402
@@ -78,6 +84,9 @@ MVP_SOURCE_PACK_MANIFESTS = (
     os.path.join("packs", "official", "pack.sol.pin_minimal"),
 )
 
+_EARTH_STRESS_REPORT_CACHE: dict[tuple[str, int, str], dict] = {}
+_EARTH_BASELINE_CACHE: dict[tuple[str, int, str, str], dict] = {}
+
 
 def _norm(path: str) -> str:
     return str(path or "").replace("\\", "/")
@@ -87,6 +96,18 @@ def _ensure_dir(path: str) -> None:
     token = str(path or "").strip()
     if token and not os.path.isdir(token):
         os.makedirs(token, exist_ok=True)
+
+
+def _safe_rmtree(path: str) -> None:
+    target = str(path or "").strip()
+    if not target or not os.path.isdir(target):
+        return
+    try:
+        shutil.rmtree(target)
+    except FileNotFoundError:
+        return
+    except OSError:
+        shutil.rmtree(target, ignore_errors=True)
 
 
 def _repo_abs(repo_root: str, rel_path: str) -> str:
@@ -124,6 +145,18 @@ def _read_json(path: str) -> dict:
         with open(path, "r", encoding="utf-8") as handle:
             payload = json.load(handle)
     except (OSError, ValueError):
+        return {}
+    return dict(payload) if isinstance(payload, Mapping) else {}
+
+
+def _parse_json_prefix(text: str) -> dict:
+    token = str(text or "").lstrip()
+    if not token:
+        return {}
+    decoder = json.JSONDecoder()
+    try:
+        payload, _end = decoder.raw_decode(token)
+    except ValueError:
         return {}
     return dict(payload) if isinstance(payload, Mapping) else {}
 
@@ -181,6 +214,52 @@ def _payload_fingerprint(payload: Mapping[str, object] | None) -> str:
     return canonical_sha256(dict(_as_map(payload), deterministic_fingerprint=""))
 
 
+def _earth_cache_key(repo_root: str, seed: int, scenario: Mapping[str, object] | None) -> tuple[str, int, str]:
+    scenario_payload = _as_map(scenario)
+    return (
+        os.path.normpath(os.path.abspath(repo_root)),
+        int(seed),
+        _token(scenario_payload.get("deterministic_fingerprint")) or _token(scenario_payload.get("scenario_id")),
+    )
+
+
+def _cached_earth_stress_report(repo_root: str, *, scenario: Mapping[str, object] | None, seed: int) -> dict:
+    cache_key = _earth_cache_key(repo_root, int(seed), scenario)
+    cached = _EARTH_STRESS_REPORT_CACHE.get(cache_key)
+    if cached:
+        return copy.deepcopy(cached)
+    report = verify_earth_mvp_stress_scenario(
+        repo_root=os.path.normpath(os.path.abspath(repo_root)),
+        scenario=_as_map(scenario),
+        seed=int(seed),
+    )
+    _EARTH_STRESS_REPORT_CACHE[cache_key] = copy.deepcopy(report)
+    return copy.deepcopy(report)
+
+
+def _cached_earth_baseline(
+    repo_root: str,
+    *,
+    scenario: Mapping[str, object] | None,
+    seed: int,
+    stress_report: Mapping[str, object] | None,
+) -> dict:
+    scenario_key = _earth_cache_key(repo_root, int(seed), scenario)
+    stress_payload = _as_map(stress_report)
+    cache_key = scenario_key + (_token(stress_payload.get("deterministic_fingerprint")),)
+    cached = _EARTH_BASELINE_CACHE.get(cache_key)
+    if cached:
+        return copy.deepcopy(cached)
+    baseline = build_earth_mvp_regression_baseline(
+        repo_root=os.path.normpath(os.path.abspath(repo_root)),
+        scenario=_as_map(scenario),
+        seed=int(seed),
+        stress_report=stress_payload,
+    )
+    _EARTH_BASELINE_CACHE[cache_key] = copy.deepcopy(baseline)
+    return copy.deepcopy(baseline)
+
+
 def _derived_seed(seed: int, stream: str) -> int:
     digest = canonical_sha256({"seed": int(seed), "stream": str(stream).strip()})
     return int(digest[:12], 16) % 1000000
@@ -223,7 +302,7 @@ def build_curated_pack_runtime(repo_root: str) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     curated_root_abs = _repo_abs(repo_root_abs, CURATED_VERIFY_ROOT_REL)
     if os.path.isdir(curated_root_abs):
-        shutil.rmtree(curated_root_abs)
+        _safe_rmtree(curated_root_abs)
     _ensure_dir(curated_root_abs)
 
     registries_src = os.path.join(repo_root_abs, "data", "registries")
@@ -329,13 +408,7 @@ def _run_wrapper(repo_root: str, bin_name: str, args: Sequence[str]) -> dict:
     )
     stdout = str(proc.stdout or "")
     stderr = str(proc.stderr or "")
-    payload = {}
-    try:
-        parsed = json.loads(stdout.strip() or "{}")
-    except ValueError:
-        parsed = {}
-    if isinstance(parsed, Mapping):
-        payload = dict(parsed)
+    payload = _parse_json_prefix(stdout)
     return {
         "command": " ".join([str(bin_name)] + [str(item) for item in list(args or [])]),
         "bin_name": str(bin_name),
@@ -353,6 +426,37 @@ def _run_wrapper(repo_root: str, bin_name: str, args: Sequence[str]) -> dict:
             }
         ),
     }
+
+
+def _cleanup_launcher_supervisor(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    initial_sanitize = _as_map(sanitize_supervisor_runtime(repo_root_abs))
+    stop_results: list[dict] = []
+    for _ in range(4):
+        endpoint = _as_map(discover_active_supervisor_endpoint(repo_root_abs))
+        state = _as_map(load_supervisor_runtime_state(repo_root_abs))
+        process_rows = [_as_map(row) for row in _as_list(state.get("processes"))]
+        any_running = any(_token(row.get("status")) == "running" for row in process_rows)
+        if not endpoint and not any_running:
+            break
+        if endpoint:
+            stop_results.append(_as_map(invoke_supervisor_service_command(repo_root_abs, "launcher stop")))
+    final_sanitize = _as_map(sanitize_supervisor_runtime(repo_root_abs))
+    payload = {
+        "result": "complete",
+        "initial_sanitize": initial_sanitize,
+        "final_sanitize": final_sanitize,
+        "endpoint_present": bool(_as_map(discover_active_supervisor_endpoint(repo_root_abs))),
+        "running_rows_present": any(
+            _token(_as_map(row).get("status")) == "running"
+            for row in _as_list(_as_map(load_supervisor_runtime_state(repo_root_abs)).get("processes"))
+        ),
+        "stop_attempts": len(stop_results),
+        "stop_results": stop_results,
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
 
 
 def _extract_process_endpoint_ids(status_payload: Mapping[str, object] | None) -> dict:
@@ -651,93 +755,96 @@ def run_server_window_with_pack_lock(
 
     handshake = {"result": "empty"}
     client_transport = None
-    if with_client:
-        handshake = server_probe.connect_loopback_client(boot)
-        if _token(handshake.get("result")) != "complete":
-            safe_handshake = {
-                "result": _token(handshake.get("result")),
-                "listener": _as_map(handshake.get("listener")),
-                "hello": {
-                    "result": _token(_as_map(handshake.get("hello")).get("result")),
-                    "connection_id": _token(_as_map(handshake.get("hello")).get("connection_id")),
-                    "client_peer_id": _token(_as_map(handshake.get("hello")).get("client_peer_id")),
-                },
-                "accepted": _as_map(handshake.get("accepted")),
-            }
-            return {
-                "result": "refused",
-                "boot": boot,
-                "handshake": safe_handshake,
-                "session_spec_path": _relative_path(repo_root_abs, _token(fixture.get("session_spec_abs"))),
-                "save_dir": _relative_path(repo_root_abs, _token(fixture.get("save_dir"))),
-                "deterministic_fingerprint": canonical_sha256({"boot": boot, "handshake": safe_handshake}),
-            }
-        client_transport = handshake.get("client_transport")
+    try:
+        if with_client:
+            handshake = server_probe.connect_loopback_client(boot)
+            if _token(handshake.get("result")) != "complete":
+                safe_handshake = {
+                    "result": _token(handshake.get("result")),
+                    "listener": _as_map(handshake.get("listener")),
+                    "hello": {
+                        "result": _token(_as_map(handshake.get("hello")).get("result")),
+                        "connection_id": _token(_as_map(handshake.get("hello")).get("connection_id")),
+                        "client_peer_id": _token(_as_map(handshake.get("hello")).get("client_peer_id")),
+                    },
+                    "accepted": _as_map(handshake.get("accepted")),
+                }
+                return {
+                    "result": "refused",
+                    "boot": boot,
+                    "handshake": safe_handshake,
+                    "session_spec_path": _relative_path(repo_root_abs, _token(fixture.get("session_spec_abs"))),
+                    "save_dir": _relative_path(repo_root_abs, _token(fixture.get("save_dir"))),
+                    "deterministic_fingerprint": canonical_sha256({"boot": boot, "handshake": safe_handshake}),
+                }
+            client_transport = handshake.get("client_transport")
 
-    tick_report = server_probe.run_server_ticks(boot, int(max(0, int(ticks or 0))))
-    runtime = _as_map(boot.get("runtime"))
-    server_runtime = _as_map(runtime.get("server"))
-    meta = _as_map(runtime.get("server_mvp"))
-    connections = _as_map(runtime.get("server_mvp_connections"))
-    proof_anchor_rows = [dict(row) for row in _as_list(runtime.get("server_mvp_proof_anchors")) if isinstance(row, Mapping)]
-    client_messages = server_probe.drain_client_messages(repo_root_abs, client_transport)
-    tick_stream_messages = [
-        row
-        for row in client_messages
-        if _token(_as_map(row).get("msg_type")) == "payload"
-        and _token(_as_map(row).get("payload_schema_id")) == "server.tick_stream.stub.v1"
-    ]
-    summary = {
-        "result": "complete" if _token(tick_report.get("result")) == "complete" else _token(tick_report.get("result")) or "refused",
-        "save_id": _token(fixture.get("save_id")),
-        "tick_count_requested": int(ticks),
-        "final_tick": int(server_runtime.get("network_tick", 0) or 0),
-        "listener_endpoint": _token(meta.get("listener_endpoint")),
-        "client_count": len(connections),
-        "connection_ids": sorted(_token(item) for item in connections.keys() if _token(item)),
-        "handshake": {
-            "connection_id": _token(_as_map(handshake.get("accepted")).get("connection_id")),
-            "account_id": _token(_as_map(handshake.get("accepted")).get("account_id")),
-            "compatibility_mode_id": _token(_as_map(handshake.get("accepted")).get("compatibility_mode_id")),
-            "negotiation_record_hash": _token(_as_map(handshake.get("accepted")).get("negotiation_record_hash")),
-            "session_info": _as_map(_as_map(_as_map(handshake.get("ack_proto")).get("payload_ref")).get("inline_json")).get("session_info", {}),
-        },
-        "proof_anchor_rows": proof_anchor_rows,
-        "proof_anchor_ticks": [int(_as_map(row).get("tick", 0) or 0) for row in proof_anchor_rows],
-        "proof_anchor_hashes": [canonical_sha256(row) for row in proof_anchor_rows],
-        "proof_anchor_hashes_by_tick": {
-            str(int(_as_map(row).get("tick", 0) or 0)): canonical_sha256(row)
-            for row in proof_anchor_rows
-        },
-        "tick_stream_messages": tick_stream_messages,
-        "tick_stream_ticks": [
-            int(_as_map(_as_map(row).get("payload_ref")).get("inline_json", {}).get("tick", 0) or 0)
-            for row in tick_stream_messages
-        ],
-        "tick_hash": _token(server_runtime.get("last_tick_hash")),
-        "overlay_manifest_hash": _token(meta.get("overlay_manifest_hash")),
-        "contract_bundle_hash": _token(meta.get("contract_bundle_hash")),
-        "semantic_contract_registry_hash": _token(meta.get("semantic_contract_registry_hash")),
-        "mod_policy_id": _token(meta.get("mod_policy_id")),
-        "session_spec_path": _relative_path(repo_root_abs, _token(fixture.get("session_spec_abs"))),
-        "save_dir": _relative_path(repo_root_abs, _token(fixture.get("save_dir"))),
-        "pack_lock_path": _relative_path(repo_root_abs, pack_lock_path),
-        "deterministic_fingerprint": "",
-    }
-    summary["cross_platform_server_hash"] = canonical_sha256(
-        {
-            "final_tick": int(summary.get("final_tick", 0)),
-            "connection_ids": list(summary.get("connection_ids") or []),
-            "proof_anchor_hashes": list(summary.get("proof_anchor_hashes") or []),
-            "tick_hash": _token(summary.get("tick_hash")),
-            "mod_policy_id": _token(summary.get("mod_policy_id")),
-            "contract_bundle_hash": _token(summary.get("contract_bundle_hash")),
-            "semantic_contract_registry_hash": _token(summary.get("semantic_contract_registry_hash")),
-            "negotiation_record_hash": _token(_as_map(summary.get("handshake")).get("negotiation_record_hash")),
+        tick_report = server_probe.run_server_ticks(boot, int(max(0, int(ticks or 0))))
+        runtime = _as_map(boot.get("runtime"))
+        server_runtime = _as_map(runtime.get("server"))
+        meta = _as_map(runtime.get("server_mvp"))
+        connections = _as_map(runtime.get("server_mvp_connections"))
+        proof_anchor_rows = [dict(row) for row in _as_list(runtime.get("server_mvp_proof_anchors")) if isinstance(row, Mapping)]
+        client_messages = server_probe.drain_client_messages(repo_root_abs, client_transport)
+        tick_stream_messages = [
+            row
+            for row in client_messages
+            if _token(_as_map(row).get("msg_type")) == "payload"
+            and _token(_as_map(row).get("payload_schema_id")) == "server.tick_stream.stub.v1"
+        ]
+        summary = {
+            "result": "complete" if _token(tick_report.get("result")) == "complete" else _token(tick_report.get("result")) or "refused",
+            "save_id": _token(fixture.get("save_id")),
+            "tick_count_requested": int(ticks),
+            "final_tick": int(server_runtime.get("network_tick", 0) or 0),
+            "listener_endpoint": _token(meta.get("listener_endpoint")),
+            "client_count": len(connections),
+            "connection_ids": sorted(_token(item) for item in connections.keys() if _token(item)),
+            "handshake": {
+                "connection_id": _token(_as_map(handshake.get("accepted")).get("connection_id")),
+                "account_id": _token(_as_map(handshake.get("accepted")).get("account_id")),
+                "compatibility_mode_id": _token(_as_map(handshake.get("accepted")).get("compatibility_mode_id")),
+                "negotiation_record_hash": _token(_as_map(handshake.get("accepted")).get("negotiation_record_hash")),
+                "session_info": _as_map(_as_map(_as_map(handshake.get("ack_proto")).get("payload_ref")).get("inline_json")).get("session_info", {}),
+            },
+            "proof_anchor_rows": proof_anchor_rows,
+            "proof_anchor_ticks": [int(_as_map(row).get("tick", 0) or 0) for row in proof_anchor_rows],
+            "proof_anchor_hashes": [canonical_sha256(row) for row in proof_anchor_rows],
+            "proof_anchor_hashes_by_tick": {
+                str(int(_as_map(row).get("tick", 0) or 0)): canonical_sha256(row)
+                for row in proof_anchor_rows
+            },
+            "tick_stream_messages": tick_stream_messages,
+            "tick_stream_ticks": [
+                int(_as_map(_as_map(row).get("payload_ref")).get("inline_json", {}).get("tick", 0) or 0)
+                for row in tick_stream_messages
+            ],
+            "tick_hash": _token(server_runtime.get("last_tick_hash")),
+            "overlay_manifest_hash": _token(meta.get("overlay_manifest_hash")),
+            "contract_bundle_hash": _token(meta.get("contract_bundle_hash")),
+            "semantic_contract_registry_hash": _token(meta.get("semantic_contract_registry_hash")),
+            "mod_policy_id": _token(meta.get("mod_policy_id")),
+            "session_spec_path": _relative_path(repo_root_abs, _token(fixture.get("session_spec_abs"))),
+            "save_dir": _relative_path(repo_root_abs, _token(fixture.get("save_dir"))),
+            "pack_lock_path": _relative_path(repo_root_abs, pack_lock_path),
+            "deterministic_fingerprint": "",
         }
-    )
-    summary["deterministic_fingerprint"] = canonical_sha256(dict(summary, deterministic_fingerprint=""))
-    return summary
+        summary["cross_platform_server_hash"] = canonical_sha256(
+            {
+                "final_tick": int(summary.get("final_tick", 0)),
+                "connection_ids": list(summary.get("connection_ids") or []),
+                "proof_anchor_hashes": list(summary.get("proof_anchor_hashes") or []),
+                "tick_hash": _token(summary.get("tick_hash")),
+                "mod_policy_id": _token(summary.get("mod_policy_id")),
+                "contract_bundle_hash": _token(summary.get("contract_bundle_hash")),
+                "semantic_contract_registry_hash": _token(summary.get("semantic_contract_registry_hash")),
+                "negotiation_record_hash": _token(_as_map(summary.get("handshake")).get("negotiation_record_hash")),
+            }
+        )
+        summary["deterministic_fingerprint"] = canonical_sha256(dict(summary, deterministic_fingerprint=""))
+        return summary
+    finally:
+        server_probe.teardown_server_fixture(boot, client_transport=client_transport)
 
 
 def generate_mvp_smoke_scenario(repo_root: str, seed: int = DEFAULT_MVP_SMOKE_SEED) -> dict:
@@ -862,6 +969,21 @@ def _build_hash_summary(
     tool_mine = _as_map(tool_session_report.get("mine"))
     tool_fill = _as_map(tool_session_report.get("fill"))
     tool_teleport = _as_map(tool_session_report.get("teleport"))
+    earth_stable_fingerprint = canonical_sha256(
+        {
+            "scenario_fingerprint": _token(earth_report.get("scenario_fingerprint")),
+            "aggregate_metrics": dict(sorted(_as_map(earth_report.get("aggregate_metrics")).items(), key=lambda item: str(item[0]))),
+            "assertions": dict(sorted(_as_map(earth_report.get("assertions")).items(), key=lambda item: str(item[0]))),
+            "proof_summary": dict(sorted(earth_proof.items(), key=lambda item: str(item[0]))),
+            "degradation_report": dict(sorted(_as_map(earth_report.get("degradation_report")).items(), key=lambda item: str(item[0]))),
+            "view_window_fingerprint": _token(_as_map(earth_report.get("view_window")).get("deterministic_fingerprint")),
+            "physics_window_fingerprint": _token(_as_map(earth_report.get("physics_window")).get("deterministic_fingerprint")),
+            "subsystem_fingerprints": {
+                str(key): _token(_as_map(value).get("deterministic_fingerprint"))
+                for key, value in sorted(_as_map(earth_report.get("subsystem_reports")).items(), key=lambda item: str(item[0]))
+            },
+        }
+    )
     return {
         "scenario_id": _token(scenario.get("scenario_id")),
         "scenario_fingerprint": _token(scenario.get("deterministic_fingerprint")),
@@ -889,7 +1011,7 @@ def _build_hash_summary(
         },
         "teleport_chain": [dict(row) for row in _as_list(scenario.get("teleport_chain"))],
         "earth": {
-            "report_fingerprint": _token(earth_report.get("deterministic_fingerprint")),
+            "report_fingerprint": earth_stable_fingerprint,
             "cross_platform_determinism_hash": _token(earth_proof.get("cross_platform_determinism_hash")),
             "hydrology_flow_hash": _token(earth_proof.get("hydrology_flow_hash")),
             "collision_final_state_hash": _token(earth_proof.get("collision_final_state_hash")),
@@ -970,15 +1092,16 @@ def build_expected_hash_fingerprints(
         ],
     )
     earth_seed = int(_as_map(scenario_payload.get("derived_seeds")).get("earth_seed", 0) or 0)
-    earth_report = verify_earth_mvp_stress_scenario(
-        repo_root=repo_root_abs,
+    earth_report = _cached_earth_stress_report(
+        repo_root_abs,
         scenario=_as_map(scenario_payload.get("earth_scenario")),
         seed=int(earth_seed),
     )
-    earth_baseline = build_earth_mvp_regression_baseline(
-        repo_root=repo_root_abs,
+    earth_baseline = _cached_earth_baseline(
+        repo_root_abs,
         scenario=_as_map(scenario_payload.get("earth_scenario")),
         seed=int(earth_seed),
+        stress_report=earth_report,
     )
     tool_session_report = build_tool_session_report(repo_root_abs)
     logic_report = run_logic_smoke_suite(repo_root_abs)
@@ -1163,6 +1286,20 @@ def run_mvp_smoke(
                 _norm(LAUNCHER_BUILD_LOCK_LOCK_REL),
             ],
         )
+        command_results["launcher_cleanup"] = {
+            "command": "launcher cleanup-preflight",
+            "returncode": 0,
+            "stdout": "",
+            "stderr": "",
+            "payload": _cleanup_launcher_supervisor(repo_root_abs),
+            "deterministic_fingerprint": "",
+        }
+        command_results["launcher_cleanup"]["deterministic_fingerprint"] = canonical_sha256(
+            {
+                "command": str(command_results["launcher_cleanup"].get("command", "")).strip(),
+                "payload": _as_map(command_results["launcher_cleanup"].get("payload")),
+            }
+        )
         command_results["launcher_start"] = _run_wrapper(
             repo_root_abs,
             "launcher",
@@ -1218,15 +1355,16 @@ def run_mvp_smoke(
         command_results["launcher_stop"] = stop_result
 
     earth_seed = int(_as_map(scenario_payload.get("derived_seeds")).get("earth_seed", 0) or 0)
-    earth_report = verify_earth_mvp_stress_scenario(
-        repo_root=repo_root_abs,
+    earth_report = _cached_earth_stress_report(
+        repo_root_abs,
         scenario=_as_map(scenario_payload.get("earth_scenario")),
         seed=int(earth_seed),
     )
-    earth_baseline = build_earth_mvp_regression_baseline(
-        repo_root=repo_root_abs,
+    earth_baseline = _cached_earth_baseline(
+        repo_root_abs,
         scenario=_as_map(scenario_payload.get("earth_scenario")),
         seed=int(earth_seed),
+        stress_report=earth_report,
     )
     tool_session_report = build_tool_session_report(repo_root_abs)
     logic_report = run_logic_smoke_suite(repo_root_abs)
@@ -1629,6 +1767,31 @@ def maybe_load_cached_mvp_smoke_report(
     return report_payload
 
 
+def _sync_report_with_baseline(report: Mapping[str, object] | None, baseline: Mapping[str, object] | None) -> dict:
+    report_payload = dict(_as_map(report))
+    baseline_payload = dict(_as_map(baseline))
+    assertions = dict(_as_map(report_payload.get("assertions")))
+    baseline_candidate = dict(_as_map(report_payload.get("baseline_candidate")))
+    baseline_comparison = {
+        "checked": bool(baseline_payload),
+        "match": False,
+        "mismatches": [],
+        "deterministic_fingerprint": "",
+    }
+    if baseline_payload:
+        baseline_comparison["mismatches"] = _collect_mismatch_rows(baseline_payload, baseline_candidate)
+        baseline_comparison["match"] = not bool(baseline_comparison["mismatches"])
+        assertions["baseline_match"] = bool(baseline_comparison["match"])
+    baseline_comparison["deterministic_fingerprint"] = canonical_sha256(
+        dict(baseline_comparison, deterministic_fingerprint="")
+    )
+    report_payload["baseline_comparison"] = baseline_comparison
+    report_payload["assertions"] = assertions
+    report_payload["result"] = "complete" if all(bool(value) for value in assertions.values()) else "violation"
+    report_payload["deterministic_fingerprint"] = canonical_sha256(dict(report_payload, deterministic_fingerprint=""))
+    return report_payload
+
+
 def write_mvp_smoke_outputs(
     repo_root: str,
     *,
@@ -1646,7 +1809,6 @@ def write_mvp_smoke_outputs(
     final_doc_abs = _repo_abs(repo_root_abs, final_doc_path or DEFAULT_FINAL_DOC_REL)
     report_payload = dict(_as_map(report))
     baseline_payload = dict(_as_map(report_payload.get("baseline_candidate")))
-    _write_canonical_json(report_abs, report_payload)
     if update_baseline:
         if _token(update_tag) != MVP_SMOKE_REGRESSION_UPDATE_TAG:
             raise ValueError("baseline update requires {}".format(MVP_SMOKE_REGRESSION_UPDATE_TAG))
@@ -1655,6 +1817,8 @@ def write_mvp_smoke_outputs(
         existing_baseline = load_json_if_present(repo_root_abs, _relative_path(repo_root_abs, baseline_abs))
         if existing_baseline:
             baseline_payload = existing_baseline
+    report_payload = _sync_report_with_baseline(report_payload, baseline_payload)
+    _write_canonical_json(report_abs, report_payload)
     markdown = render_mvp_smoke_final_markdown(report_payload, baseline=baseline_payload, gate_results=gate_results)
     _write_text(final_doc_abs, markdown)
     return {

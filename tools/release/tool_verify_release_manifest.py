@@ -24,6 +24,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--manifest-path", required=True)
     parser.add_argument("--signature-path", default="")
     parser.add_argument("--repo-root", default="")
+    parser.add_argument("--trust-policy-id", default="")
+    parser.add_argument("--trust-policy-registry", default="")
+    parser.add_argument("--trust-root-registry", default="")
     args = parser.parse_args(argv)
 
     manifest_path = os.path.normpath(os.path.abspath(str(args.manifest_path)))
@@ -39,6 +42,9 @@ def main(argv: list[str] | None = None) -> int:
         manifest_path,
         repo_root=repo_root,
         signature_path=str(args.signature_path).strip(),
+        trust_policy_id=str(args.trust_policy_id).strip(),
+        trust_policy_registry_path=str(args.trust_policy_registry).strip(),
+        trust_root_registry_path=str(args.trust_root_registry).strip(),
     )
     sys.stdout.write(json.dumps(report, indent=2, sort_keys=True))
     sys.stdout.write("\n")

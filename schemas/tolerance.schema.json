@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Engine Tolerance Schema",
+  "version": "1.0.0",
+  "description": "Deterministic numeric tolerance row used by NUMERIC-DISCIPLINE-0.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tol_id",
+    "domain_id",
+    "allowed_error_bound",
+    "rounding_mode",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tol_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_error_bound": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "rounding_mode": {
+      "type": "string",
+      "enum": [
+        "round_half_to_even",
+        "floor",
+        "ceiling",
+        "truncate"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "stability": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "tol_id": "tol.geo_projection",
+      "domain_id": "domain.geo",
+      "allowed_error_bound": 1000,
+      "rounding_mode": "round_half_to_even",
+      "deterministic_fingerprint": "71de5fed6a4ebbe4dfb75421d58bf2a21af6adf54815f2a875c6549ed09134d3",
+      "extensions": {}
+    }
+  ]
+}

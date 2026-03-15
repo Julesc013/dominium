@@ -60,5 +60,14 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "ranges": [],
+      "registry_id": "registry_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

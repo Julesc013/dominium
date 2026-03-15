@@ -45,6 +45,7 @@ def _compile_runtime_tree(
     runtime_roots: tuple[str, ...],
     excluded_prefixes: tuple[str, ...],
     excluded_basenames: set[str],
+    excluded_files: set[str],
 ) -> dict:
     compiled: list[str] = []
     invalidation_mode = py_compile.PycInvalidationMode.UNCHECKED_HASH
@@ -67,6 +68,8 @@ def _compile_runtime_tree(
                 if not name.endswith(".py"):
                     continue
                 rel_path = _norm(os.path.join(rel_root, name))
+                if rel_path in excluded_files:
+                    continue
                 if _source_is_excluded(
                     rel_path,
                     excluded_prefixes=excluded_prefixes,
@@ -99,6 +102,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--roots-json", required=True)
     parser.add_argument("--excluded-prefixes-json", required=True)
     parser.add_argument("--excluded-basenames-json", required=True)
+    parser.add_argument("--excluded-files-json", required=True)
     args = parser.parse_args(argv)
 
     source_root = os.path.normpath(os.path.abspath(str(args.source_root).strip()))
@@ -106,12 +110,14 @@ def main(argv: list[str] | None = None) -> int:
     runtime_roots = tuple(_read_json_list(args.roots_json))
     excluded_prefixes = tuple(_read_json_list(args.excluded_prefixes_json))
     excluded_basenames = set(_read_json_list(args.excluded_basenames_json))
+    excluded_files = set(_read_json_list(args.excluded_files_json))
     payload = _compile_runtime_tree(
         source_root,
         target_root,
         runtime_roots=runtime_roots,
         excluded_prefixes=excluded_prefixes,
         excluded_basenames=excluded_basenames,
+        excluded_files=excluded_files,
     )
     print(canonical_json_text(payload))
     return 0

@@ -40,5 +40,15 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "base_dimension_id": "base_dimension_id.example",
+      "deprecated": false,
+      "description": "example",
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "version_introduced": "example"
+    }
+  ]
 }

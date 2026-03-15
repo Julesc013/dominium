@@ -9,6 +9,7 @@ import sys
 from typing import Mapping
 
 from src.appshell.paths import VROOT_LOGS, get_current_virtual_paths, vpath_resolve
+from src.meta.observability import redact_observability_mapping, validate_observability_event
 
 
 LOG_SCHEMA_VERSION = "1.0.0"
@@ -66,12 +67,17 @@ def build_log_event(
     event_kind: str = "",
     message: str = "",
     simulation_tick: int | None = None,
+    strict_guarantees: bool = False,
+    repo_root: str = "",
 ) -> dict:
     tick_value = _normalize_tick(tick if tick is not None else simulation_tick)
     category_token = str(category or event_kind or "appshell").strip() or "appshell"
-    params_payload = dict(_normalize_tree(dict(params or {})))
+    params_redacted, params_redaction_count = redact_observability_mapping(params)
+    host_meta_redacted, host_meta_redaction_count = redact_observability_mapping(host_meta)
+    params_payload = dict(_normalize_tree(params_redacted))
     if str(message or "").strip() and "message" not in params_payload:
         params_payload["message"] = str(message).strip()
+    extensions_payload = dict(_normalize_tree(dict(extensions or {})))
     payload = {
         "schema_version": LOG_SCHEMA_VERSION,
         "event_id": "log.{:016d}".format(max(1, int(event_index or 1))),
@@ -83,10 +89,27 @@ def build_log_event(
         "category": category_token,
         "message_key": str(message_key or "appshell.log.event").strip() or "appshell.log.event",
         "params": params_payload,
-        "host_meta": dict(_normalize_tree(dict(host_meta or {}))),
-        "extensions": dict(_normalize_tree(dict(extensions or {}))),
+        "host_meta": dict(_normalize_tree(host_meta_redacted)),
+        "extensions": extensions_payload,
         "deterministic_fingerprint": "",
     }
+    contract_report = validate_observability_event(payload, repo_root=repo_root)
+    observability_meta = {
+        "guaranteed": bool(contract_report.get("guaranteed", False)),
+        "redacted_field_count": int(params_redaction_count) + int(host_meta_redaction_count),
+        "warning_codes": [str(dict(row).get("code", "")).strip() for row in list(contract_report.get("warnings") or []) if str(dict(row).get("code", "")).strip()],
+        "error_codes": [str(dict(row).get("code", "")).strip() for row in list(contract_report.get("errors") or []) if str(dict(row).get("code", "")).strip()],
+    }
+    merged_extensions = dict(payload.get("extensions") or {})
+    merged_extensions["observability"] = dict(_normalize_tree(observability_meta))
+    payload["extensions"] = merged_extensions
+    if bool(strict_guarantees) and list(contract_report.get("errors") or []):
+        raise ValueError(
+            "; ".join(
+                str(dict(row).get("message", "")).strip() or "observability contract violation"
+                for row in list(contract_report.get("errors") or [])
+            )
+        )
     payload["deterministic_fingerprint"] = _fingerprint(payload)
     return payload
 
@@ -119,17 +142,21 @@ class LogEngine:
         *,
         product_id: str,
         build_id: str,
+        repo_root: str = "",
         session_id: str = "",
         console_enabled: bool = True,
         file_path: str = "",
         ring_capacity: int = DEFAULT_RING_CAPACITY,
+        strict_guarantees: bool = False,
     ) -> None:
         self.product_id = str(product_id or "").strip()
         self.build_id = str(build_id or "").strip()
+        self.repo_root = os.path.normpath(os.path.abspath(str(repo_root))) if str(repo_root or "").strip() else ""
         self.session_id = str(session_id or "").strip()
         self.console_enabled = bool(console_enabled)
         self.file_path = os.path.normpath(os.path.abspath(str(file_path))) if str(file_path or "").strip() else ""
         self.ring_capacity = max(1, int(ring_capacity or DEFAULT_RING_CAPACITY))
+        self.strict_guarantees = bool(strict_guarantees)
         self._event_index = 0
         self._ring: list[dict] = []
         if self.file_path:
@@ -162,6 +189,8 @@ class LogEngine:
             params=params,
             host_meta=host_meta,
             extensions=extensions,
+            strict_guarantees=self.strict_guarantees,
+            repo_root=self.repo_root,
         )
         self._ring.append(dict(payload))
         self._ring = list(self._ring[-self.ring_capacity :])
@@ -182,18 +211,22 @@ def create_log_engine(
     *,
     product_id: str,
     build_id: str,
+    repo_root: str = "",
     session_id: str = "",
     console_enabled: bool = True,
     file_path: str = "",
     ring_capacity: int = DEFAULT_RING_CAPACITY,
+    strict_guarantees: bool = False,
 ) -> LogEngine:
     return LogEngine(
         product_id=product_id,
         build_id=build_id,
+        repo_root=repo_root,
         session_id=session_id,
         console_enabled=console_enabled,
         file_path=file_path,
         ring_capacity=ring_capacity,
+        strict_guarantees=strict_guarantees,
     )
 
 
@@ -222,6 +255,7 @@ def log_emit(
     session_id: str = "",
     product_id: str = "",
     build_id: str = "",
+    repo_root: str = "",
 ) -> dict:
     engine = get_current_log_engine()
     if engine is None:
@@ -237,6 +271,7 @@ def log_emit(
             params=params,
             host_meta=host_meta,
             extensions=extensions,
+            repo_root=repo_root,
         )
     return engine.emit(
         category=category,

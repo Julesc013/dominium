@@ -8,6 +8,7 @@
   ],
   "type": "object",
   "required": [
+    "schema_version",
     "edge_id",
     "from_node_id",
     "to_node_id",
@@ -16,6 +17,10 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
     "edge_id": {
       "type": "string",
       "minLength": 1
@@ -46,6 +51,7 @@
   },
   "examples": [
     {
+      "schema_version": "1.0.0",
       "edge_id": "edge.depends_on.schema_to_json",
       "from_node_id": "schema:schema/governance/topology_map.schema",
       "to_node_id": "schema:schemas/topology_map.schema.json",

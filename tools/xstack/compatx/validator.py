@@ -74,7 +74,47 @@ def _child_path(parent: str, key: str) -> str:
     return "{}.{}".format(parent, key)
 
 
+def _append_nested_errors(errors: List[Dict[str, str]], prefix: str, nested: List[Dict[str, str]]) -> None:
+    for row in nested:
+        if not isinstance(row, dict):
+            continue
+        path = str(row.get("path", "$")).strip() or "$"
+        if path == "$":
+            path = prefix
+        elif path.startswith("$."):
+            path = "{}{}".format(prefix, path[1:])
+        errors.append(
+            _error(
+                str(row.get("code", "nested_validation_error")),
+                path,
+                str(row.get("message", "")),
+            )
+        )
+
+
+def _validate_cross_cutting_field(
+    repo_root: str,
+    key: str,
+    value: Any,
+    subpath: str,
+    errors: List[Dict[str, str]],
+) -> bool:
+    if key != "stability":
+        return False
+    result = validate_instance(
+        repo_root=repo_root,
+        schema_name="stability_marker",
+        payload=value,
+        strict_top_level=True,
+    )
+    if bool(result.get("valid", False)):
+        return True
+    _append_nested_errors(errors, subpath, result.get("errors") or [])
+    return True
+
+
 def _validate_node(
+    repo_root: str,
     schema_node: Dict[str, Any],
     value: Any,
     path: str,
@@ -144,9 +184,11 @@ def _validate_node(
             if key in properties:
                 child_schema = properties.get(key)
                 if isinstance(child_schema, dict):
-                    _validate_node(child_schema, value.get(key), subpath, errors, strict_top_level)
+                    _validate_node(repo_root, child_schema, value.get(key), subpath, errors, strict_top_level)
                 continue
 
+            if _validate_cross_cutting_field(repo_root, key, value.get(key), subpath, errors):
+                continue
             if path == "$" and strict_top_level:
                 errors.append(_error("unknown_top_level_field", subpath, "unknown top-level field '{}'".format(key)))
                 continue
@@ -154,13 +196,13 @@ def _validate_node(
                 errors.append(_error("unknown_field", subpath, "unknown field '{}'".format(key)))
                 continue
             if isinstance(additional, dict):
-                _validate_node(additional, value.get(key), subpath, errors, strict_top_level)
+                _validate_node(repo_root, additional, value.get(key), subpath, errors, strict_top_level)
 
     if isinstance(value, list):
         items = schema_node.get("items")
         if isinstance(items, dict):
             for idx, item in enumerate(value):
-                _validate_node(items, item, "{}[{}]".format(path, idx), errors, strict_top_level)
+                _validate_node(repo_root, items, item, "{}[{}]".format(path, idx), errors, strict_top_level)
 
 
 def _schema_registry_entry(version_registry: Dict[str, Any], schema_name: str) -> Dict[str, Any]:
@@ -176,10 +218,23 @@ def _version_field_name(schema: Dict[str, Any]) -> str:
     properties = schema.get("properties")
     required_fields = set(str(item) for item in required if isinstance(item, str)) if isinstance(required, list) else set()
     property_fields = set(str(key) for key in properties.keys()) if isinstance(properties, dict) else set()
-    for key in ("schema_version", "format_version", "lockfile_version"):
+    for key in ("schema_version", "format_version", "lockfile_version", "manifest_version"):
         if key in required_fields or key in property_fields:
             return key
     return "schema_version"
+
+
+def _schema_declares_version_field(schema: Dict[str, Any], version_field: str) -> bool:
+    if not isinstance(schema, dict):
+        return False
+    token = str(version_field or "").strip()
+    if not token:
+        return False
+    required = schema.get("required")
+    properties = schema.get("properties")
+    required_fields = set(str(item) for item in required if isinstance(item, str)) if isinstance(required, list) else set()
+    property_fields = set(str(key) for key in properties.keys()) if isinstance(properties, dict) else set()
+    return token in required_fields or token in property_fields
 
 
 def _deterministic_errors(errors: List[Dict[str, str]]) -> List[Dict[str, str]]:
@@ -220,7 +275,9 @@ def validate_instance(
         errors.append(_error("missing_registry_entry", "$", "missing schema entry in version registry for '{}'".format(key)))
     if not schema_version:
         errors.append(_error("missing_schema_version", "$", "schema file missing required top-level 'version'"))
-    if schema_version and current_version and schema_version != current_version:
+    version_field = _version_field_name(schema) if isinstance(schema, dict) else "schema_version"
+    declares_payload_version = _schema_declares_version_field(schema, version_field) if isinstance(schema, dict) else False
+    if schema_version and current_version and schema_version != current_version and version_field == "schema_version":
         errors.append(
             _error(
                 "schema_registry_mismatch",
@@ -230,11 +287,10 @@ def validate_instance(
         )
 
     payload_version = ""
-    version_field = _version_field_name(schema) if isinstance(schema, dict) else "schema_version"
     if isinstance(payload, dict):
         payload_version = str(payload.get(version_field, "")).strip()
 
-    if current_version:
+    if current_version and declares_payload_version:
         version_result = resolve_payload_version(
             schema_name=key,
             payload_version=payload_version,
@@ -252,7 +308,7 @@ def validate_instance(
             )
 
     if isinstance(schema, dict):
-        _validate_node(schema, payload, "$", errors, strict_top_level=bool(strict_top_level))
+        _validate_node(repo_root, schema, payload, "$", errors, strict_top_level=bool(strict_top_level))
 
     extension_report = validate_extensions_tree(
         owner_schema_id=key,

@@ -7,6 +7,7 @@ import os
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from src.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
+from src.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -438,10 +439,22 @@ def build_default_endpoint_descriptor(
         if isinstance(platform_descriptor_override, Mapping)
         else probe_platform_descriptor(repo_root, product_id=str(product_id).strip(), platform_id=str(platform_id).strip())
     )
+    target_row = select_target_matrix_row(
+        repo_root,
+        platform_id=str(platform_descriptor.get("platform_id", "")).strip(),
+    )
     merged_extensions["official.platform_id"] = str(platform_descriptor.get("platform_id", "")).strip()
     merged_extensions["official.platform_descriptor_hash"] = str(platform_descriptor.get("deterministic_fingerprint", "")).strip()
     merged_extensions["official.platform_capability_ids"] = list(platform_descriptor.get("supported_capability_ids") or [])
     merged_extensions["official.platform_descriptor"] = dict(platform_descriptor)
+    merged_extensions["official.target_matrix_registry_rel"] = TARGET_MATRIX_REGISTRY_REL.replace("\\", "/")
+    merged_extensions["official.target_id"] = str(target_row.get("target_id", "")).strip()
+    merged_extensions["official.os_id"] = str(target_row.get("os_id", "")).strip()
+    merged_extensions["official.arch_id"] = str(target_row.get("arch_id", "")).strip()
+    merged_extensions["official.abi_id"] = str(target_row.get("abi_id", "")).strip()
+    merged_extensions["official.target_tier"] = int(target_row.get("tier", 0) or 0)
+    merged_extensions["official.target_matrix_row_hash"] = canonical_sha256(target_row) if target_row else ""
+    merged_extensions["official.target_matrix_row"] = dict(target_row)
     merged_feature_capabilities = list(row.get("default_feature_capabilities") or []) + list(feature_capabilities or [])
     merged_required_capabilities = list(row.get("default_required_capabilities") or []) + list(required_capabilities or [])
     merged_optional_capabilities = list(row.get("default_optional_capabilities") or []) + list(optional_capabilities or [])

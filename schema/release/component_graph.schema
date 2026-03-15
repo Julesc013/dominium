@@ -1,0 +1,21 @@
+SCHEMA: release/component_graph.schema
+schema_id: dominium.schema.release.component_graph
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic release component dependency graph.
+
+REQUIRED SHAPE:
+record component_graph
+  required:
+    - graph_id: id
+    - release_id: id
+    - components: [component_descriptor]
+    - edges: [component_edge]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- components and edges are canonically ordered.
+- graph resolution must be deterministic for identical inputs.

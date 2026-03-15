@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Migration Policy Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "artifact_kind_id",
+    "backward_read_range",
+    "forward_read_range",
+    "migration_supported_range",
+    "read_only_allowed",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "artifact_kind_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "backward_read_range": {
+      "$ref": "#/$defs/versionRange"
+    },
+    "forward_read_range": {
+      "$ref": "#/$defs/versionRange"
+    },
+    "migration_supported_range": {
+      "$ref": "#/$defs/versionRange"
+    },
+    "read_only_allowed": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "versionRange": {
+      "type": "object",
+      "required": [
+        "min_version",
+        "max_version",
+        "deterministic_fingerprint",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "min_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "max_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deterministic_fingerprint": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "artifact_kind_id": "artifact_kind_id.example",
+      "backward_read_range": "example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "forward_read_range": "example",
+      "migration_supported_range": "example",
+      "read_only_allowed": false
+    }
+  ]
+}

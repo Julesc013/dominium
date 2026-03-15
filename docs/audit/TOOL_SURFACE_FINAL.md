@@ -11,10 +11,10 @@ Replacement Target: release tool surface audit regenerated from TOOL-SURFACE-0 t
 ## Summary
 
 - Stable umbrella product: `tool.attach_console_stub`
-- Wrapped commands: `113`
+- Wrapped commands: `118`
 - Alias adapters: `12`
-- Subprocess adapters: `101`
-- Surface fingerprint: `14a3a96edc24bb407ec2fa72b83efae7097b0abb89fa2159ce536e12ad4e45ec`
+- Subprocess adapters: `106`
+- Surface fingerprint: `9ea4eacbdef150a59d8ed33c5a944d3b159238e96e9047fe85b1e4d4b5bb1d14`
 
 ## Adapter Policy
 

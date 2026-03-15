@@ -57,6 +57,31 @@
       },
       {
         "schema_version": "1.0.0",
+        "suite_id": "validate.identity",
+        "category_id": "validate.identity",
+        "suite_order": 25,
+        "adapter_id": "identity_suite",
+        "profiles": [
+          "FAST",
+          "STRICT",
+          "FULL"
+        ],
+        "description": "Validate additive universal identity blocks and canonical identity serialization.",
+        "deterministic_fingerprint": "7aea764d46eaa9ceecdb97c5475700aaad128ed3af563f2732c43a3539eb8394",
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Unified validation suite semantics remain adjustable during MVP convergence.",
+          "future_series": "VALIDATION-GOV",
+          "replacement_target": "Release-pinned validation suite contract registry.",
+          "contract_id": "",
+          "deterministic_fingerprint": "ea8b59c86337583dd494ca8a1e6c8dacfc1bf4982339b26805b6243a448ff5f0",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "suite_id": "validate.contracts",
         "category_id": "validate.contracts",
         "suite_order": 30,

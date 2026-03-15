@@ -37,5 +37,15 @@
     "extensions": {
       "type": "object"
     }
-  }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "max_version": "1.0.0",
+      "min_version": "1.0.0",
+      "protocol_id": "protocol_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

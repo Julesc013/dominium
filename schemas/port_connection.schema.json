@@ -98,5 +98,18 @@
         }
       ]
     }
+  ],
+  "examples": [
+    {
+      "active": false,
+      "connection_id": "connection_id.example",
+      "connection_kind": "direct",
+      "created_tick": 0,
+      "extensions": {},
+      "from_port_id": "from_port_id.example",
+      "logistics_node_id": "logistics_node_id.example",
+      "schema_version": "1.0.0",
+      "to_port_id": "to_port_id.example"
+    }
   ]
 }

@@ -55,5 +55,17 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "fidelity_achieved": "macro",
+      "inputs_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "output_timeline_ref": "example",
+      "reenactment_id": "reenactment_id.example",
+      "request_id": "request_id.example",
+      "schema_version": "1.0.0"
+    }
+  ]
 }

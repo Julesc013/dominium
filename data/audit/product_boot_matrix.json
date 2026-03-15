@@ -3,7 +3,7 @@
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "da94942a31e5dd1fb779a9a1e1c32e58bbc1c7466ac4d3fc8e719efe4a3e4645",
+      "descriptor_hash": "097fb867be92af2ba5f93ba9bc6afbcf746b8c4bc4dbe901d5723d7100765eb9",
       "descriptor_product_id": "client",
       "display_name": "Client",
       "executable_path": "build/mvp/prod_gate0/installed/bin/client",
@@ -13,14 +13,9 @@
       "product_id": "client",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "45b942c0b19a4bfa22ce1606ab8c0821e010a2484064653e807e49e04fd62eaa",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "11335c22bb0bdc5ee6090d64f8cdcc5ea633d703842c5eaa4d8b143087f3e43e"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "d2c90e27ead0b334a8bfa07ea454fd16a19ed3fb4440b78f10ed49f7f9e29b20"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -34,15 +29,9 @@
       "product_id": "client",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "b1f87c2aeca2c9c9535144081e987d3c41015804ecb4718335d3d55d15ce9f3a",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "74dac5c8ea5fc2e38159e0071be782c06634d3f05a09fde822c36f33ddfde0b4"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "13f655157a1c440c3e667daaec6f10240a1a3336a88c07bcb46ec4e654272804"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -61,7 +50,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "8633642dd6088123ac1ea9d180d72c02837d6e50ccd31ac315b8f32990c1ae73",
+      "stderr_fingerprint": "35dbf5a0e2c413d6218c0d5e92165df64b7a2d9981b629286ffab30a3b960b36",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -70,12 +59,12 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "b98d69f787e36c1984c3e07a76253e79a790188901595bf31d277b99c86ff478"
+      "stdout_fingerprint": "8c49fbe530f7fc499e5e5aa5ebd3124d274199e812fb4d58440e492042469bf8"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "da94942a31e5dd1fb779a9a1e1c32e58bbc1c7466ac4d3fc8e719efe4a3e4645",
+      "descriptor_hash": "097fb867be92af2ba5f93ba9bc6afbcf746b8c4bc4dbe901d5723d7100765eb9",
       "descriptor_product_id": "client",
       "display_name": "Client",
       "executable_path": "build/mvp/prod_gate0/portable/client",
@@ -85,14 +74,9 @@
       "product_id": "client",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "7661d6d7ce235b08b76a6fd588d8b697e96a90a5e0931706f63134f394ac8cb2",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "11335c22bb0bdc5ee6090d64f8cdcc5ea633d703842c5eaa4d8b143087f3e43e"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "d2c90e27ead0b334a8bfa07ea454fd16a19ed3fb4440b78f10ed49f7f9e29b20"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -106,15 +90,9 @@
       "product_id": "client",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "df3a95b17ece85777b1c3b8537632c2ec9f5c4526f7e3a029ca6d1844a91b718",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "74dac5c8ea5fc2e38159e0071be782c06634d3f05a09fde822c36f33ddfde0b4"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "13f655157a1c440c3e667daaec6f10240a1a3336a88c07bcb46ec4e654272804"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -133,7 +111,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "835231537a4ab1bc409ef8c67c1f13074f8b7d3ffadd3f69d9cb90e8a3c669c0",
+      "stderr_fingerprint": "79088d464f9a159d5b7113e5545c81141cc0cb867519d8b8026443597ddc1326",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -142,7 +120,7 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "ecc626616c260a24d91cd5f93263be060706a68b75874f25be65435db3c68c12"
+      "stdout_fingerprint": "ec4fc89a8b4c76ab19bae8ab5508e482936f31c18d62fc41e6b9cd89cc43ffce"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium validate --all --profile FAST",
@@ -155,7 +133,7 @@
       "product_id": "client",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "83888346141262d088490eddc19b75eb162697cccf84e7bdec63ee860a8e5d15",
+      "stderr_fingerprint": "ad134a0da4c58cd138a5a83f0287950927fc37cf2bd0925a628351ddb3b97d62",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -164,14 +142,14 @@
         "appshell.command.dispatch",
         "validation.pipeline.result"
       ],
-      "stdout_fingerprint": "e2d5e31678d5365b7fda18daeffdf0044dfa173d85d41552a8fb43fe22940692",
+      "stdout_fingerprint": "754639ba992304312c7a45f341b1ded5bddaade1b718cc2a8d0f9a3567eb31ff",
       "validation_profile": "FAST",
       "validation_report_id": ""
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "aef4ad749c8ac8e3ae19d1e195a92366b284752736a00727040f724e7d3d39fc",
+      "descriptor_hash": "baa0c88c865edd133673dc499b24ca59a31a636ef1f10babb07a07541307edbb",
       "descriptor_product_id": "engine",
       "display_name": "Engine",
       "executable_path": "build/mvp/prod_gate0/installed/bin/engine",
@@ -181,14 +159,9 @@
       "product_id": "engine",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "10e5d0c111ad6c8a41d1dae10f9d486be32145f32e7df533736b0017ceda6af2",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "c3f5950bb2be253453af605fa478a7b190351d86b7026c1f66d6dc5a082277a0"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "470ed8e30f0eeb0c17f0f852083d2ecfa0bd06d1d9544fa36f47884eee9dcb57"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -202,15 +175,9 @@
       "product_id": "engine",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "3245e6ec42f88d2bd73398a60937080fc923bf82fe11f676a95b83eda6a11852",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "ae1d2f609f99ded7076c203a07861556e057b0f95fe577ed3d61735854f97693"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "254bbc3d36c0dfbbe84f2138cbded8b92dd3c042ba018763c31cfd8177aa53f8"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -229,7 +196,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "cli",
-      "stderr_fingerprint": "6665d1fc6dfbc3ec98786a0cf28c275d18224c011a938a2f509279498d40dd25",
+      "stderr_fingerprint": "d43bd620ac10269564ca511a1bf2ae44db89cdd6fa5a86df0add6a386dbb7cc9",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -238,12 +205,12 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "f4c400da1dbbc525db1b642614b67fde08f941dc6b0c955bc6dcca7fb8429519"
+      "stdout_fingerprint": "3c1ed4aaee3a9836fac2b6c79774e82d8cff456ebcfe3dc4e3861afb7746501b"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "aef4ad749c8ac8e3ae19d1e195a92366b284752736a00727040f724e7d3d39fc",
+      "descriptor_hash": "baa0c88c865edd133673dc499b24ca59a31a636ef1f10babb07a07541307edbb",
       "descriptor_product_id": "engine",
       "display_name": "Engine",
       "executable_path": "build/mvp/prod_gate0/portable/engine",
@@ -253,14 +220,9 @@
       "product_id": "engine",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "972e3295d609a5213131a1c13fb8c798f2d7d152b2fd9b4157ee8c3d36d95d21",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "c3f5950bb2be253453af605fa478a7b190351d86b7026c1f66d6dc5a082277a0"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "470ed8e30f0eeb0c17f0f852083d2ecfa0bd06d1d9544fa36f47884eee9dcb57"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -274,15 +236,9 @@
       "product_id": "engine",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "4311957db3edcfbb7445456dc6f986c0de74a08982c7bd2215a4e15ab1b82ae2",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "ae1d2f609f99ded7076c203a07861556e057b0f95fe577ed3d61735854f97693"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "254bbc3d36c0dfbbe84f2138cbded8b92dd3c042ba018763c31cfd8177aa53f8"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -301,7 +257,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "cli",
-      "stderr_fingerprint": "603029df9f459a4af75cc2d28c09cf71ca9215ed131a4799744889919c3ed549",
+      "stderr_fingerprint": "3a630602f0bd1b756b103d87e66c7c2f8a3fc27f90c3d1d8a62d395457889f3e",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -310,7 +266,7 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "dba1ed3e01940e7a92b2540e7830276e89bcab151908a6670c205e78f8a9a3ee"
+      "stdout_fingerprint": "6b28470d07ff379fdb9869e82690dd6b4e4c1bcb09b5e28121a27cdba71de973"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium validate --all --profile FAST",
@@ -323,7 +279,7 @@
       "product_id": "engine",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "55398414aca63e420823a1cfbc1e3fd9ce2d9223d6fed18f5c5e42bb95b52eef",
+      "stderr_fingerprint": "23f361945e5ed78f35c7e07cfdd8f72bcce52fc13a0a42278195c91585c86e54",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -332,14 +288,14 @@
         "appshell.command.dispatch",
         "validation.pipeline.result"
       ],
-      "stdout_fingerprint": "e2d5e31678d5365b7fda18daeffdf0044dfa173d85d41552a8fb43fe22940692",
+      "stdout_fingerprint": "754639ba992304312c7a45f341b1ded5bddaade1b718cc2a8d0f9a3567eb31ff",
       "validation_profile": "FAST",
       "validation_report_id": ""
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "215fabf730488080acf1ad5f15181554912703bc089fdd969d05bd553dda498f",
+      "descriptor_hash": "153b1b9acdcc61c8f8811995edb5e169be5675cee6fea2e2d04b1d5364c82eaa",
       "descriptor_product_id": "game",
       "display_name": "Game",
       "executable_path": "build/mvp/prod_gate0/installed/bin/game",
@@ -349,14 +305,9 @@
       "product_id": "game",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "49eb50c4d19352aa207e4b3c8713c3abd2ba4c2847407acc4844d65d57e41425",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "b4506edc7ff33ca1d37232f51b582e24e67072766d28b5de779e6c4b5638fbfa"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "c88b0136414827b9efe957293782b630884d154866750e3eedb6ad9474ddc5c2"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -370,15 +321,9 @@
       "product_id": "game",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "842d698331d32ef1a1210565ee4a88911765abe6eb08febe31f5b2d864db06c9",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "ad73acc9f6d7eb3cc2f95b7972e9b14fd7545bec3a2c6007d83e079ca0165739"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "b7c529357c5de20cb010b2f8882cf219747ee567e1218e67a65a7f7c13908fdb"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -397,7 +342,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "6ef7134080a9abcfb9783867c90397e5b18e95eb6c782460d7c025262d63806c",
+      "stderr_fingerprint": "c414bc686f78f48556bc51fe0ecd2d545ccd93ae11709160c73280f88fbe6da6",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -406,12 +351,12 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "4ca2e6106eb7a7671c3e656864a275a01610a46bd9e9c961dc4d881ad0638653"
+      "stdout_fingerprint": "a343cdfebe9898887807df15a66c08b029b63cfd198154f42f44bbc4e831dfa0"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "215fabf730488080acf1ad5f15181554912703bc089fdd969d05bd553dda498f",
+      "descriptor_hash": "153b1b9acdcc61c8f8811995edb5e169be5675cee6fea2e2d04b1d5364c82eaa",
       "descriptor_product_id": "game",
       "display_name": "Game",
       "executable_path": "build/mvp/prod_gate0/portable/game",
@@ -421,14 +366,9 @@
       "product_id": "game",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "1b1efc32021a652d002e9e20ea8c928d15761f97b5790db97511cb0ed174ab61",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "b4506edc7ff33ca1d37232f51b582e24e67072766d28b5de779e6c4b5638fbfa"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "c88b0136414827b9efe957293782b630884d154866750e3eedb6ad9474ddc5c2"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -442,15 +382,9 @@
       "product_id": "game",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "a58a422813f627b335e8a704fd6b01943a405619ffa2b3f1a72d0c4ff9aa88c2",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "ad73acc9f6d7eb3cc2f95b7972e9b14fd7545bec3a2c6007d83e079ca0165739"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "b7c529357c5de20cb010b2f8882cf219747ee567e1218e67a65a7f7c13908fdb"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -469,7 +403,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "24cf9f60a7ec7da95963f4be9437ba552648ae7c199edd53f20c0e842e915eb1",
+      "stderr_fingerprint": "2c9f489cd540e9e5d2c1678e82d8121d729e2ba3732172330ca1a945f3f2c4d6",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -478,7 +412,7 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "df28385afada527e7cf649f242fc91b189dcf8ff80cc7e87215d160a34873903"
+      "stdout_fingerprint": "3685dc2e60ed7d0fe7c3c3c281e0c86e695d2a2738cb879c6039ae404f30e3fd"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium validate --all --profile FAST",
@@ -491,7 +425,7 @@
       "product_id": "game",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "6d0b4bb8b1e65cc66bf0c7db5eb833ea0228e215ff3ccee203b9698d80b1265a",
+      "stderr_fingerprint": "8f3a195e0fc1009d957a9a459dea4d07c1c49e9f7575a18a086a9099d2bf66d7",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -500,14 +434,14 @@
         "appshell.command.dispatch",
         "validation.pipeline.result"
       ],
-      "stdout_fingerprint": "e2d5e31678d5365b7fda18daeffdf0044dfa173d85d41552a8fb43fe22940692",
+      "stdout_fingerprint": "754639ba992304312c7a45f341b1ded5bddaade1b718cc2a8d0f9a3567eb31ff",
       "validation_profile": "FAST",
       "validation_report_id": ""
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "37562f0e4a5bc151ea446d10c6c528226c238bd031990844cb526587464e5986",
+      "descriptor_hash": "edf0e1e71fad6fde31096dcaa133cbf4f8a2c7c01234ecaaf598c01e62e56de7",
       "descriptor_product_id": "launcher",
       "display_name": "Launcher",
       "executable_path": "build/mvp/prod_gate0/installed/bin/launcher",
@@ -517,14 +451,9 @@
       "product_id": "launcher",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "a3392914ca3bbf23242700c08ba16df016ef62770ba286a8f45d69336a9e5771",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "f8780932754bc833fc85bc6ccfa62cbed9277445edf8c8b44d64a208440e06d4"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "4542e27622f342c6237835c2d09917406318363f6b37387748d8de6d981d4a2c"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -538,15 +467,9 @@
       "product_id": "launcher",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "167bb5602c9fe1f9185bc907b1a481c226a18e25f00e5da9fa43dfed23ece91f",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "fcaf0e0e6825c20ce6e8ca440c59efcacc8ab1434922fd444aca560d73c758c1"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "4acb3dead8edc33a85aa56db8feaf5dc6991ce111ea4348f670265439feb2b67"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -565,7 +488,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "f8b04eeee92f4775a81892b64bdd7644226c7400ce43f1bc7d4ce93ebe249e57",
+      "stderr_fingerprint": "314e7005030e3bb73ce9088782766a4401efa24965d6f97a48d6e4db08003eac",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -574,12 +497,12 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "93ae06731b06818ab2b996f740538735ece721b317992ffd091a8fe24d0e2942"
+      "stdout_fingerprint": "6e1846293978e4a13f8e073adcf3faf116bc21178f73b79d0679a4a3679d8507"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "37562f0e4a5bc151ea446d10c6c528226c238bd031990844cb526587464e5986",
+      "descriptor_hash": "edf0e1e71fad6fde31096dcaa133cbf4f8a2c7c01234ecaaf598c01e62e56de7",
       "descriptor_product_id": "launcher",
       "display_name": "Launcher",
       "executable_path": "build/mvp/prod_gate0/portable/launcher",
@@ -589,14 +512,9 @@
       "product_id": "launcher",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "5c3a29f0ef65e69c8811e3be2843cea28f090818ced1f07ea9fe78e997b94525",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "f8780932754bc833fc85bc6ccfa62cbed9277445edf8c8b44d64a208440e06d4"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "4542e27622f342c6237835c2d09917406318363f6b37387748d8de6d981d4a2c"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -610,15 +528,9 @@
       "product_id": "launcher",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "1fd408b9e72c80d2887f070318bbdc1cadad6d7fa42688f2facfbec9d92c1c63",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "fcaf0e0e6825c20ce6e8ca440c59efcacc8ab1434922fd444aca560d73c758c1"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "4acb3dead8edc33a85aa56db8feaf5dc6991ce111ea4348f670265439feb2b67"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -637,7 +549,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "94b87bfdb8696b0147b0457eb84e088f7a07b4369ff4edc8c0571339dcd17296",
+      "stderr_fingerprint": "bb8f07cf69ff18e03a5280e83eb0903e2edaf5fa37a596c7b7ac50a7fadc1a8f",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -646,7 +558,7 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "d87b9549bd83647739de2309c57e77a387083fd72d636cb516996efb18ff9584"
+      "stdout_fingerprint": "640e83d426c0198f1619a7ae98d5c605e4bf1699730258cfd474e02c3919fee2"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium validate --all --profile FAST",
@@ -659,7 +571,7 @@
       "product_id": "launcher",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "30900e67c07057fd33d315241fc22ffb22aeb8dc31093c39983d1612bb4f1391",
+      "stderr_fingerprint": "3a8bb00e3543f66ebf3899ddd491b643b516752fbb2ebff6ee5cbc13a9b1aac6",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -668,14 +580,14 @@
         "appshell.command.dispatch",
         "validation.pipeline.result"
       ],
-      "stdout_fingerprint": "e2d5e31678d5365b7fda18daeffdf0044dfa173d85d41552a8fb43fe22940692",
+      "stdout_fingerprint": "754639ba992304312c7a45f341b1ded5bddaade1b718cc2a8d0f9a3567eb31ff",
       "validation_profile": "FAST",
       "validation_report_id": ""
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "1967840f8f64d3283519d37599c218d748e163845f7e41ca1f7fcee68607efb0",
+      "descriptor_hash": "67b5ff1b14a130e0d3ca27dac0fcb8be6772235a861b321d561f25645017fd91",
       "descriptor_product_id": "server",
       "display_name": "Server",
       "executable_path": "build/mvp/prod_gate0/installed/bin/server",
@@ -685,14 +597,9 @@
       "product_id": "server",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "e376284155812e2114cd617801ea2357fc8a6735d93f70c7d6aec38ac4e6e44f",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "c954d9c89da41d11bf85ed3f8c62c7e1d583cf532a0f179bac8a11ee618f052a"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "7cd54176e2d898b8b51f31e39920ca208c47dabcc38fe7f97a77334371da18b0"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -706,15 +613,9 @@
       "product_id": "server",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "acd8b459daf35172e52e15add4c64e15de8f9663b8cb893eb2ae95d8741f050e",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "1c4e3e89825d2804f4eb33a9438060411fb18f4e5b808686001daa6abac2999d"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "842cb0d50d6eb22e13915e4ab8e879239694a9ca1f7c1de346693dbc496bbf18"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -733,7 +634,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "18d46ce7164ddb0cd6267fac3df64919e194330841201e1120728fd73e0a15a7",
+      "stderr_fingerprint": "df6e6054be87e66f075de8ff82cc6e3ce41b376e953c109515ebf8808493c6ee",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -742,12 +643,12 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "24c6e75027665e81bc190a30c849862f666bd6826f8fbe28dd5c340cd5853e56"
+      "stdout_fingerprint": "8b2117378e25841d20ad58d733b3c13fb6bd247eb1db5460c8bb4a5967f73856"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "1967840f8f64d3283519d37599c218d748e163845f7e41ca1f7fcee68607efb0",
+      "descriptor_hash": "67b5ff1b14a130e0d3ca27dac0fcb8be6772235a861b321d561f25645017fd91",
       "descriptor_product_id": "server",
       "display_name": "Server",
       "executable_path": "build/mvp/prod_gate0/portable/server",
@@ -757,14 +658,9 @@
       "product_id": "server",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "5421fdab312a99de0ad6bc2a7fdad124650dd6d06e0a04c8ec2d0ddc31e3057f",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "c954d9c89da41d11bf85ed3f8c62c7e1d583cf532a0f179bac8a11ee618f052a"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "7cd54176e2d898b8b51f31e39920ca208c47dabcc38fe7f97a77334371da18b0"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -778,15 +674,9 @@
       "product_id": "server",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "61af901158c821099ae150bdc4c6611b6d077bedc181a081cc244691c7fe2907",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "1c4e3e89825d2804f4eb33a9438060411fb18f4e5b808686001daa6abac2999d"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "842cb0d50d6eb22e13915e4ab8e879239694a9ca1f7c1de346693dbc496bbf18"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -805,7 +695,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "2f931d66a6d626790b25b1f3f0aa6ec6614f2fdd092afbcf10b7a1588d21261f",
+      "stderr_fingerprint": "a6c0194280f8574c59447301e120d405fc8b69a1a02a65108be30fd5f1dfe8c1",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -814,7 +704,7 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "e6ed483e78776d8bf201bb0dcad4166f5191282cd0cc4388b071dea42cf2d846"
+      "stdout_fingerprint": "34696249f71a285044cabc58efe104bcc51056a536a5b4036660d0e08cef5d1f"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium validate --all --profile FAST",
@@ -827,7 +717,7 @@
       "product_id": "server",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "85483e2cb717fde952c815d9c2ab98e159a81919a51786ae63cc2957a9e3edd1",
+      "stderr_fingerprint": "520b3cfdc89279331d55a885213b51eb5919413958ed7e2cfe012a023ea51a9e",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -836,14 +726,14 @@
         "appshell.command.dispatch",
         "validation.pipeline.result"
       ],
-      "stdout_fingerprint": "e2d5e31678d5365b7fda18daeffdf0044dfa173d85d41552a8fb43fe22940692",
+      "stdout_fingerprint": "754639ba992304312c7a45f341b1ded5bddaade1b718cc2a8d0f9a3567eb31ff",
       "validation_profile": "FAST",
       "validation_report_id": ""
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "9dde03c05705633d894d53085f63c352ac32381c8ae1bdbc5e94861f52f0f02a",
+      "descriptor_hash": "de34f40af028a45771a89ebb2870fd09f8d5df7df75e4b622b136e4e1ae1a918",
       "descriptor_product_id": "setup",
       "display_name": "Setup",
       "executable_path": "build/mvp/prod_gate0/installed/bin/setup",
@@ -853,14 +743,9 @@
       "product_id": "setup",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "1d92c38a757113ae36319e94136dcf6c8629a335aa2ab695f15699ea35602e6b",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "e29974f57afacfa16fd3c8d34cfb8e6524d65f28dec37b336fdefb2a0cad45ba"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "96389a46deca1873d4fd79ba9d448d02be8fdfb887844d9023d9db7aa310d7c4"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -874,15 +759,9 @@
       "product_id": "setup",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "157f1f7f8b6b2071748bc86c7dc21fe56379445d76b46c9cab1a5fbadab2c353",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "e0fa33e7685f09e8b756eea50839b5117600df8866fa59ed782dff7b34ef850b"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "a71707c6590d6a1979a1e073c2558ddbb0f80730e3e9a2fe76daba5e44558818"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -901,7 +780,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "03d40653c5e62687bccd01efda46a5bba383412e31581851cbe97adde519b74c",
+      "stderr_fingerprint": "b527a2189b3bfbc63c58543a0148115aab42abb9b155e62861beff43a818d96d",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -910,12 +789,12 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "bc0d62d6b93ad03600b5d4086b3a0a43f013d872776a121efa765de4a7933627"
+      "stdout_fingerprint": "8bcd8aeef0b8ca8bd6157e998ce92a7a92465fe3d13cf084698839df7d2f124f"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "9dde03c05705633d894d53085f63c352ac32381c8ae1bdbc5e94861f52f0f02a",
+      "descriptor_hash": "de34f40af028a45771a89ebb2870fd09f8d5df7df75e4b622b136e4e1ae1a918",
       "descriptor_product_id": "setup",
       "display_name": "Setup",
       "executable_path": "build/mvp/prod_gate0/portable/setup",
@@ -925,14 +804,9 @@
       "product_id": "setup",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "a04dbf5f2af5afa9693ac5000b26409f405fe1e51e1d31ffb1f16752ef1235ed",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "e29974f57afacfa16fd3c8d34cfb8e6524d65f28dec37b336fdefb2a0cad45ba"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "96389a46deca1873d4fd79ba9d448d02be8fdfb887844d9023d9db7aa310d7c4"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -946,15 +820,9 @@
       "product_id": "setup",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "23dd47fa1da42533db9f8068f6739b9befe1ca3383cf3a29a054badbfd6dc7a7",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "e0fa33e7685f09e8b756eea50839b5117600df8866fa59ed782dff7b34ef850b"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "a71707c6590d6a1979a1e073c2558ddbb0f80730e3e9a2fe76daba5e44558818"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -973,7 +841,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "8557906cbb00450341f7f259be331a17fdee81e2130a96416b7ddb81eabfcf40",
+      "stderr_fingerprint": "cb9a94074285d178ab16de190cf4811c23e2f4c0d8f6238a08dcf24e0f9f1165",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -982,7 +850,7 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "465cf25b95cd0c8400d15a092fe3a5ddfb52fed3b232faffd6e6813fdd958eb6"
+      "stdout_fingerprint": "596ddd9ea28b0b405c1069ace62432b98242f133235e72aeab2869a15c8a1fbd"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium validate --all --profile FAST",
@@ -995,7 +863,7 @@
       "product_id": "setup",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "71fa159af0e18094bf0def471383d5b2e0aad24a904037c6d70d51a543946b7f",
+      "stderr_fingerprint": "6b961f1bb8082dfbd42a3b007b82f76897723383cf27b05a07f7ff55963ddc2c",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -1004,14 +872,14 @@
         "appshell.command.dispatch",
         "validation.pipeline.result"
       ],
-      "stdout_fingerprint": "e2d5e31678d5365b7fda18daeffdf0044dfa173d85d41552a8fb43fe22940692",
+      "stdout_fingerprint": "754639ba992304312c7a45f341b1ded5bddaade1b718cc2a8d0f9a3567eb31ff",
       "validation_profile": "FAST",
       "validation_report_id": ""
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "e90ca16d36ebb1426b7fa421cb7bb2977ce2e7a7bbcdf22224e8485f1daac0ae",
+      "descriptor_hash": "4c62bfe1d32f9f7df7f3479e8ba31888e701164e698399008f1a64d3e7eff609",
       "descriptor_product_id": "tool.attach_console_stub",
       "display_name": "Tools",
       "executable_path": "build/mvp/prod_gate0/installed/bin/tool_attach_console_stub",
@@ -1021,14 +889,9 @@
       "product_id": "tool.attach_console_stub",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "0a5bec0b0623ac6035e6a0bb1eb80aabaf2147e28456b3c6dd7d8c35bddea861",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "db4a286256db64903ff855fdc0397cb009817178008a3b92563b7209736cf897"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "1d2d5212b513e75344334bb60875e5758ddbc6ee52567538e9dd8c9532ddab58"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -1042,15 +905,9 @@
       "product_id": "tool.attach_console_stub",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "4c3abb9efe3d5a0f5080a7f067cd469c372621c2c3459c430763f31b156fff2d",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "c1c490a8e150ee73bf8e1b0091f54aec5e3ca0dac725553e11e59cfbf6d7b79f"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "24a6d6450336673c2cd8ad6ac7e595ac7892d281d9494ca025c3e987f68cab2d"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -1069,7 +926,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "3df24f2c6e5990a79c3528ff96d2614d246886c223148770278acbe1cc64136b",
+      "stderr_fingerprint": "61f07596e45672d8480a10f13bff7f878e4368e79682293f83d708132205319f",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -1078,12 +935,12 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "d37b4543ecc11ed4dc3f6ce162e14bc428bb151ad7019f7de281691da21abc39"
+      "stdout_fingerprint": "3fe4fa443567171c4f3ce7aacac421045a45511f3f9b1d1920b5401d9527ef55"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium --descriptor",
       "command_id": "descriptor",
-      "descriptor_hash": "e90ca16d36ebb1426b7fa421cb7bb2977ce2e7a7bbcdf22224e8485f1daac0ae",
+      "descriptor_hash": "4c62bfe1d32f9f7df7f3479e8ba31888e701164e698399008f1a64d3e7eff609",
       "descriptor_product_id": "tool.attach_console_stub",
       "display_name": "Tools",
       "executable_path": "build/mvp/prod_gate0/portable/tool_attach_console_stub",
@@ -1093,14 +950,9 @@
       "product_id": "tool.attach_console_stub",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "abbed54fd459c8f6320e029dfbdca9658143aac7f92e061200be2337f1f2d732",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected"
-      ],
-      "stdout_fingerprint": "db4a286256db64903ff855fdc0397cb009817178008a3b92563b7209736cf897"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "1d2d5212b513e75344334bb60875e5758ddbc6ee52567538e9dd8c9532ddab58"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium help",
@@ -1114,15 +966,9 @@
       "product_id": "tool.attach_console_stub",
       "refusal_code": "",
       "result": "",
-      "stderr_fingerprint": "a5ab9c7c438257280d369be79bbf49c9a6552297a63978f8d67001cd34a16d4d",
-      "stderr_message_keys": [
-        "appshell.bootstrap.start",
-        "appshell.paths.initialized",
-        "compat.install_selected",
-        "appshell.mode.selected",
-        "appshell.mode.enter"
-      ],
-      "stdout_fingerprint": "c1c490a8e150ee73bf8e1b0091f54aec5e3ca0dac725553e11e59cfbf6d7b79f"
+      "stderr_fingerprint": "4f82707cb49fd36c873e1a3448738f0807cc81bd6f03b73414beb19e0cb47923",
+      "stderr_message_keys": [],
+      "stdout_fingerprint": "24a6d6450336673c2cd8ad6ac7e595ac7892d281d9494ca025c3e987f68cab2d"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium compat-status",
@@ -1141,7 +987,7 @@
       "refusal_code": "",
       "result": "complete",
       "selected_mode_id": "tui",
-      "stderr_fingerprint": "5c35a496c97a5b3264cdc50ae427216240c39916e34398d6506d93fdeb4ce2b9",
+      "stderr_fingerprint": "7c16f0e16ec4d9c0b27f682bf534df55c2d950fcbed6cdf7cf0e62fabccb02a1",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -1150,7 +996,7 @@
         "appshell.command.dispatch",
         "compat.negotiation.result"
       ],
-      "stdout_fingerprint": "2aad06c737f917bae6013dcf4c0552a525340372877776fa44515feb434f8ac5"
+      "stdout_fingerprint": "0497acdee1d0e2c9d94fbc7d248195b794df8ffc4cfe8ab71c92e851c3e57c3f"
     },
     {
       "argv": "--repo-root D:\\Projects\\Dominium\\dominium validate --all --profile FAST",
@@ -1163,7 +1009,7 @@
       "product_id": "tool.attach_console_stub",
       "refusal_code": "",
       "result": "complete",
-      "stderr_fingerprint": "127e157ed31be2236c0786e9c60209176815a69a58043b93b1af7911787998be",
+      "stderr_fingerprint": "9c84313e1392bb20a7c4124e1a623e6d1805d6938bcf7879096cd0a2c25a6449",
       "stderr_message_keys": [
         "appshell.bootstrap.start",
         "appshell.paths.initialized",
@@ -1172,12 +1018,12 @@
         "appshell.command.dispatch",
         "validation.pipeline.result"
       ],
-      "stdout_fingerprint": "e2d5e31678d5365b7fda18daeffdf0044dfa173d85d41552a8fb43fe22940692",
+      "stdout_fingerprint": "754639ba992304312c7a45f341b1ded5bddaade1b718cc2a8d0f9a3567eb31ff",
       "validation_profile": "FAST",
       "validation_report_id": ""
     }
   ],
-  "deterministic_fingerprint": "def0eb6b78ee0c7bbfbed23c7e34747456bb82df2f515bcbdbbc15cc0a4e5d05",
+  "deterministic_fingerprint": "f50aae97b9691c219597f9aef9a2c22289c1fca9345dbb0f192f8f4e2ffc6d6e",
   "failures": [],
   "fixture_layout": {
     "install_registry_path": "build/mvp/prod_gate0/config_posix/dominium/install_registry.json",
@@ -1192,7 +1038,7 @@
       "endpoint_count": 0,
       "negotiation_record_hash": "",
       "passed": true,
-      "probe_fingerprint": "0c64b15bfa221098cabff09b28aa48c51f3594b37a39ed60b4d51d8223e574ad",
+      "probe_fingerprint": "2313a5dded4c957b86af9415ce3f4395e35f34113046ead5b8a75e5047e7de19",
       "product_id": "client",
       "result": "complete"
     },
@@ -1203,7 +1049,7 @@
       "endpoint_count": 0,
       "negotiation_record_hash": "",
       "passed": true,
-      "probe_fingerprint": "d1af4462e6e32bde7800592f014d5f19ffd793d0f467ec240ce209678ef850b2",
+      "probe_fingerprint": "3468413526752ce5465a62958aba07b1244086573a2287b4e10f1405173786ab",
       "product_id": "launcher",
       "result": "complete"
     },
@@ -1214,7 +1060,7 @@
       "endpoint_count": 0,
       "negotiation_record_hash": "",
       "passed": true,
-      "probe_fingerprint": "e5876d3f623a9b87a0449152c6eae919510dc9f16ee67191db66bbdd3d4a0abd",
+      "probe_fingerprint": "8c15da5a17e6608eb00d88bd6cb145262e63a780816cc57686935e4729c3b5ec",
       "product_id": "server",
       "result": "complete"
     },
@@ -1225,7 +1071,7 @@
       "endpoint_count": 0,
       "negotiation_record_hash": "",
       "passed": true,
-      "probe_fingerprint": "2d71dd43709cc7521c56490f48a4f7126ddbf202fbabc837584fe228118a1bf5",
+      "probe_fingerprint": "402b13b0398f5bb96b2a7eccd805a6171124dbd18ca02aa57e43a1b304145177",
       "product_id": "setup",
       "result": "complete"
     },
@@ -1236,7 +1082,7 @@
       "endpoint_count": 0,
       "negotiation_record_hash": "",
       "passed": true,
-      "probe_fingerprint": "da9421cbe9c807d30e63a18b087fc0a34e7d67a2edf3eef36ab68abcfc5d37fa",
+      "probe_fingerprint": "5cafe4dea42ec7cd2a93320073081c0be9eae3f7fefb027b377676505eec154e",
       "product_id": "tool.attach_console_stub",
       "result": "complete"
     }
@@ -1267,8 +1113,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "8633642dd6088123ac1ea9d180d72c02837d6e50ccd31ac315b8f32990c1ae73",
-      "observed_stdout_fingerprint": "82de46059f8de07b83da70bdb51e318e79c5ceee274d4c0fe2a8a957b8ba748e",
+      "observed_stderr_fingerprint": "3c07126a0b1f4ca608ebfb78d86d7ea2845f8f0e27bd0ed1fbd20d0b1a16c998",
+      "observed_stdout_fingerprint": "d57a5d77e9da5208f5d8e26a57d1ee34fecc21dfbe8e8f1fa9de3465e779cb4c",
       "passed": true,
       "probe_fingerprint": "e4c3a6b9640b7a2a5e6468a590a55d3668c5e20e98c152d732a55f52b4f3faf8",
       "product_id": "client",
@@ -1292,8 +1138,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "rendered",
-      "observed_stderr_fingerprint": "1f9f0ff0ebf79b23bc7e343caa1c707d133862020247da30643a85ad4ac5f3f8",
-      "observed_stdout_fingerprint": "4ae56a08554f5344a2bad6fbe63741c9e1d26b173e9b02fa1cd93a52ba98fc29",
+      "observed_stderr_fingerprint": "2a50c795b631141e0a8fdae3f253e69480c2aba6c19f40c50c72d605fabb07d5",
+      "observed_stdout_fingerprint": "31e5e693d86f68287d1fe1ade6910f1a480261d7050f81ab6191d7bc7c6d8b70",
       "passed": true,
       "probe_fingerprint": "deb6503fed8e918f2c1b736f85bd79c1e99b4002066f4bce15973d616c492a54",
       "product_id": "client",
@@ -1317,8 +1163,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "33c83b4b6e139ed057e16f96774386ca04f0801a96e56ac745d9a7914729e181",
-      "observed_stdout_fingerprint": "01d1c62206afd21c1135f9286417eb479a4cab16cc42e7d5f3ffcb5f400ba8e2",
+      "observed_stderr_fingerprint": "f45b43fac1621ed9acff6276b8800a18e279e9710f01bd63d8c4cbc8acf38530",
+      "observed_stdout_fingerprint": "b0a3d719327694af1eafbac0f3b7ca1ad26333875584b175b4a390ca52606812",
       "passed": true,
       "probe_fingerprint": "9a8939a4c3e3ef5c69581486fcc3e6357d322fa627be7f7c039d2c3a4fb19fe9",
       "product_id": "client",
@@ -1342,8 +1188,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "835231537a4ab1bc409ef8c67c1f13074f8b7d3ffadd3f69d9cb90e8a3c669c0",
-      "observed_stdout_fingerprint": "a9accb1d7f353cdfd86569cd4033cae57a90a938a7738431c4ee86c4d8bdc849",
+      "observed_stderr_fingerprint": "69aa794c782cab5ede003d992f4d01fb4109238e7209286ff5f67690d660d62d",
+      "observed_stdout_fingerprint": "7c3b0de21d1129be92b3aa5a7b9deeb40f8814ba7baf0a390ca7c55abedd6755",
       "passed": true,
       "probe_fingerprint": "e4c3a6b9640b7a2a5e6468a590a55d3668c5e20e98c152d732a55f52b4f3faf8",
       "product_id": "client",
@@ -1367,8 +1213,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "rendered",
-      "observed_stderr_fingerprint": "11034101efd136524d6b626f79042c2be5fa9e8acbaf71265b091d539db4e426",
-      "observed_stdout_fingerprint": "cf286c7b1ea603a85715b3a7c6252267668107376f78a14ea49d6445e31d5501",
+      "observed_stderr_fingerprint": "bd989dc88482305411a8cbbbce523fb420c4ac3bbb7ea5029cc2235b9f98b867",
+      "observed_stdout_fingerprint": "048438354e567d9e336f04648f34be601b8f0631452a8849bc9b22637c86343b",
       "passed": true,
       "probe_fingerprint": "deb6503fed8e918f2c1b736f85bd79c1e99b4002066f4bce15973d616c492a54",
       "product_id": "client",
@@ -1392,8 +1238,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "239f582ec04fffb4ee6795d1d1ef7827b4e8a98ead7a9d4197d7766610983916",
-      "observed_stdout_fingerprint": "61bcf186061830c0dd827997d4d86032c9b5e5a8596d6bdae59690da31b5ab1d",
+      "observed_stderr_fingerprint": "c19f771181960525b4f0bad7f312434774b640646fa24e420fd1f6dcfd634598",
+      "observed_stdout_fingerprint": "c3c6edbb0b4ae3d793c8323a74d3bcffdc2c9a0835d13f63b5ff0714953fef56",
       "passed": true,
       "probe_fingerprint": "9a8939a4c3e3ef5c69581486fcc3e6357d322fa627be7f7c039d2c3a4fb19fe9",
       "product_id": "client",
@@ -1417,8 +1263,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "6665d1fc6dfbc3ec98786a0cf28c275d18224c011a938a2f509279498d40dd25",
-      "observed_stdout_fingerprint": "7ad79280b0bc2fd05a987bf8faf8d4a4aa98335f00d02cd8bd6092948fb2e248",
+      "observed_stderr_fingerprint": "82ea9db36180642eec390ac6e195033800144dc73998ec9219ed97e3991ff06b",
+      "observed_stdout_fingerprint": "fd3094223b898c418ba32ad5c24c2172dcdc754751b955609f0a16cd54c6615a",
       "passed": true,
       "probe_fingerprint": "1ea6b15c5c86ee8c0166e3f45bc71f3ce6b07b1250a12ef9567404f99d75e723",
       "product_id": "engine",
@@ -1442,8 +1288,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "a7f514d17972029613506a866a136106c5d32b6d535c0d272098e411192dc87f",
-      "observed_stdout_fingerprint": "988e3c32c681e7db1b6475cbb1f801120dbef4008414511aef5388c699700a7a",
+      "observed_stderr_fingerprint": "7c0a8a6013cd046a7f0763b56c317650f4d8bfffecfa788c333cc4089a6623d2",
+      "observed_stdout_fingerprint": "ccbcc8566bbf676bfaa586645eb689aa0c74fcd3093b0b398e01796979da5791",
       "passed": true,
       "probe_fingerprint": "bc7ea54662863779c83110dd258b5e4790368472c7e9fb870b68f0b47a60295c",
       "product_id": "engine",
@@ -1467,8 +1313,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "932ad543240a4c87feff590255a7452b7de337365bf646d2a87aa845511d98e0",
-      "observed_stdout_fingerprint": "7b402140f1ee240184a23be9ac019cd8ee660de0f78d8395394606d5ea32d56b",
+      "observed_stderr_fingerprint": "8316040953b073899a3c1e682ecb374098550a267a9d242271ed4bd270145eff",
+      "observed_stdout_fingerprint": "39dc21a82aaa9e42d3019ec042f384884f39ddbe3d3864ec3bd12c235d1dd898",
       "passed": true,
       "probe_fingerprint": "87cc8bc57edb62d6bbdce827a4bdbc25aa82e740e2a3ad09e71d66de8e249b9a",
       "product_id": "engine",
@@ -1492,8 +1338,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "603029df9f459a4af75cc2d28c09cf71ca9215ed131a4799744889919c3ed549",
-      "observed_stdout_fingerprint": "d7df55479b0f22e8123b08739b8812f534609ddd930f45dd6f122f31d89f5bde",
+      "observed_stderr_fingerprint": "2fa3cdf4ca52b9fa88d19d9165e7996db61ea5db0dae66beae5e23fea0720e3c",
+      "observed_stdout_fingerprint": "9c4140789b56f363e5fb76583058f08e9dea5190c0b27eab039e06ef5f9524c5",
       "passed": true,
       "probe_fingerprint": "1ea6b15c5c86ee8c0166e3f45bc71f3ce6b07b1250a12ef9567404f99d75e723",
       "product_id": "engine",
@@ -1517,8 +1363,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "5ac1a300a9d6687bf81c18b3724e1efaf7c9aa45407a1ff1309a3efa4b3c87aa",
-      "observed_stdout_fingerprint": "2a94a5a8fad21e5f105cc0e49abf826e2dc5c9c2436e8c5f1aa68e9348e00504",
+      "observed_stderr_fingerprint": "c4eca2a3569e332f5e84571a81d78c854d02459d0f95c94322897d865ea1aa29",
+      "observed_stdout_fingerprint": "1b3f1bbc0f96447c5671b5068aba8cf74fcf021c7cc739a94f201aaf3e4b6c5e",
       "passed": true,
       "probe_fingerprint": "bc7ea54662863779c83110dd258b5e4790368472c7e9fb870b68f0b47a60295c",
       "product_id": "engine",
@@ -1542,8 +1388,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "9c8d61b3eda2d4ff5b4f53f11a6bac5fe87b04ee29d65383369b501c87264c7c",
-      "observed_stdout_fingerprint": "8cc10feb88545671aed866de7cda67ae663d8487a9853f396dffa8f54cb1d657",
+      "observed_stderr_fingerprint": "08244ddbd429036e0a2d5bab8feb5a025118eb68fd84eda95668d6ae3d3e91fc",
+      "observed_stdout_fingerprint": "0847a74c5e17f444c58ce43ce439ad41cfdcd653e2c2475dac93c62edbaf2e7b",
       "passed": true,
       "probe_fingerprint": "87cc8bc57edb62d6bbdce827a4bdbc25aa82e740e2a3ad09e71d66de8e249b9a",
       "product_id": "engine",
@@ -1567,8 +1413,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "6ef7134080a9abcfb9783867c90397e5b18e95eb6c782460d7c025262d63806c",
-      "observed_stdout_fingerprint": "12d5a2b397f78dc72285252f988d20cbbfe576aa8629acfb4ce05f6255dd9370",
+      "observed_stderr_fingerprint": "da6ba369d471d142def9f239d865db1d258e13ffbf67415628b7223ee3be2f80",
+      "observed_stdout_fingerprint": "e8db448cd424f8497cbf19a94d321dfb3cc1f6c2bfa8acaf7ea62e27181465bb",
       "passed": true,
       "probe_fingerprint": "af408ccfb58fd6edf20a801f7b3b643a25ca6e61bc8f9d3abbba6fb122e12f0f",
       "product_id": "game",
@@ -1592,8 +1438,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 1,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "a47305442641afffb622544db2ff4881c826392ad269983394b04fc4eb84c939",
-      "observed_stdout_fingerprint": "a9ae19bcb819c3822900aa4b14d4a339af7083c9be40fd5942f4dfe9dcc8e91f",
+      "observed_stderr_fingerprint": "7473e13c3aa9ffe690d7cde68c6c3e2211abcdadb2f721ea37c7f1d6896126e6",
+      "observed_stdout_fingerprint": "763cba6d4588cea5accf5f7312f17cc3085b491bbf668847290b9fa567a07674",
       "passed": true,
       "probe_fingerprint": "43f040dd2abf683e469f886e31568282c882636b7ce35fe6c8758f6c52376a05",
       "product_id": "game",
@@ -1617,8 +1463,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "582a1d5a800514a5431593c5ee38328bda16cb0a818d6c360eee7890aa1b2daa",
-      "observed_stdout_fingerprint": "620276fea28366511d36f7a5f52b558d7fba351ebbefdb23b37cc4d9fc64043a",
+      "observed_stderr_fingerprint": "add68224082c678b1c029ef2aebf3547665793711e1359adc6cc5c6519ecc7b8",
+      "observed_stdout_fingerprint": "982c987f7401821c90cd17ac38f9a558e70b7b6c92f17c6a104d25f5dab7ca1c",
       "passed": true,
       "probe_fingerprint": "77fcdecad97e60f8f98efd813a2d3cb2644a752fda3cb22afa751ac7c370c7de",
       "product_id": "game",
@@ -1642,8 +1488,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "24cf9f60a7ec7da95963f4be9437ba552648ae7c199edd53f20c0e842e915eb1",
-      "observed_stdout_fingerprint": "6e70f4062b2723e4abef6b8c6785c1fdc31cf93582ee6ff2da073bf7677f55cc",
+      "observed_stderr_fingerprint": "6fc0d951946881295af72b13296a7e931fc19461d17623619e0be947b09f00d9",
+      "observed_stdout_fingerprint": "f3b02bde54f9e2dd5a6323673e8cd8aab2bed05d06da20798c1b4675694d1439",
       "passed": true,
       "probe_fingerprint": "af408ccfb58fd6edf20a801f7b3b643a25ca6e61bc8f9d3abbba6fb122e12f0f",
       "product_id": "game",
@@ -1667,8 +1513,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 1,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "bea721400fa29ab79148cc88ad14eb67888cb4eb320801896ae3ff7d035fe69b",
-      "observed_stdout_fingerprint": "f379fc586f15fea332976d6d072f066dc67ffbad46dea0b8fb9794c7335bc7e8",
+      "observed_stderr_fingerprint": "795cc14bfa8c961ae092469f802a3b754f5f51b0e08d9a20a476a2711f59a950",
+      "observed_stdout_fingerprint": "a60ff2d65bff3aaa91cc211379dc5bd5c81c5b20a5bd0156d7d70e94d50e8ce0",
       "passed": true,
       "probe_fingerprint": "43f040dd2abf683e469f886e31568282c882636b7ce35fe6c8758f6c52376a05",
       "product_id": "game",
@@ -1692,8 +1538,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "898337178e9c9d0e28d8ae07604182cedc96881e9b22d16a65b4219cc7f9f02f",
-      "observed_stdout_fingerprint": "e92aed0e2b8f8ca5bc0fc33d3e0b6b40d9b3dfe46c9b61ba67a564ae91b5f8a8",
+      "observed_stderr_fingerprint": "2ef9a4a07189bdd949a6d054f1a9a5e504a6de0cfab8b2d1fe52b05d14ad068c",
+      "observed_stdout_fingerprint": "a9ffe92ddefe898bd80c33fd7d18033b58579110d755604401c25ac3a4bdaeca",
       "passed": true,
       "probe_fingerprint": "77fcdecad97e60f8f98efd813a2d3cb2644a752fda3cb22afa751ac7c370c7de",
       "product_id": "game",
@@ -1717,8 +1563,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "f8b04eeee92f4775a81892b64bdd7644226c7400ce43f1bc7d4ce93ebe249e57",
-      "observed_stdout_fingerprint": "41c85a9cc20bc5f49004d87c9819c2d29cc796537adfc97f21563289d6bc3644",
+      "observed_stderr_fingerprint": "6c98bc43361feb6f250f9a3a94d938c8d0d1b371b93ca03a1262f27e6f343aa1",
+      "observed_stdout_fingerprint": "c19a456a0e286e52c576ec512c195af43d17c0351c52f1a32d9ad7d4de73810c",
       "passed": true,
       "probe_fingerprint": "f05d107e9ce70f0bcf390d72c734f75def3bfc207c3b9d5288da244d12892674",
       "product_id": "launcher",
@@ -1742,8 +1588,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 2,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "b5eeaba0c54ebbde10b9877a78c36feeb829dff03fffcb6b422f1a16fb729276",
-      "observed_stdout_fingerprint": "efc2062244b72cf3484df8bfe42157f49d558d8f698a7d4164195a443f0f280c",
+      "observed_stderr_fingerprint": "7dd232251ac9f87a03a6dec9150a3064233f423c981ff95947c732b43caaddbd",
+      "observed_stdout_fingerprint": "1f34ecbe3858ef0749214233bb1aed0da03ea9f05010b770da45eec413e9b46e",
       "passed": true,
       "probe_fingerprint": "09a05c01b40581c838e133d7aa524136a1daea62b19498a1c9c7100cefac106d",
       "product_id": "launcher",
@@ -1767,8 +1613,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "dce84fb7e7b4cb147225b518ecbe8ba9cbbbf04bc492faa7b657319597c51376",
-      "observed_stdout_fingerprint": "42afb49bd34c7159c64e348c4c5086544c8d805bb9d45f67ec2dfe880bec24d7",
+      "observed_stderr_fingerprint": "e0ca0f2c88197448aec30c7c21b98068baeeb9d3557a61e79fc06d4461bb7198",
+      "observed_stdout_fingerprint": "7d3e435cba7b2109280f2ed4ea9c9fd1afc347c5e1db34304757fe42f2eb2139",
       "passed": true,
       "probe_fingerprint": "6aed6921944784bcdd5b25b823a89263ee6013bb96433c953cf02afda0f514c2",
       "product_id": "launcher",
@@ -1792,8 +1638,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "94b87bfdb8696b0147b0457eb84e088f7a07b4369ff4edc8c0571339dcd17296",
-      "observed_stdout_fingerprint": "a806cff2b10f70348997800f0dcbf71ad58b139509801b99c3e4e86388c66699",
+      "observed_stderr_fingerprint": "92197e740d61f015b8814c1220e32f767e0e477078121da588b2dd2eeb228887",
+      "observed_stdout_fingerprint": "835daba31b287667382ff909674400089265ed702187f490dd12adf02648b8a1",
       "passed": true,
       "probe_fingerprint": "f05d107e9ce70f0bcf390d72c734f75def3bfc207c3b9d5288da244d12892674",
       "product_id": "launcher",
@@ -1817,8 +1663,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 2,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "5519dac337b5e35dee3ca6c848f02706a1b499663a3d9beed572a6543c598ba2",
-      "observed_stdout_fingerprint": "3d058944cdcfdf7264959962b31e96f040ba57f928cae8e32e676d66129d1e46",
+      "observed_stderr_fingerprint": "d8b5dcbb14ec7290f413a4cd734db505a852ed727d988304302fa0b4dcba8640",
+      "observed_stdout_fingerprint": "82d8d336aac73ac0c7cffeec4398f2f9990f3c078fe858e2e2cc75cc3c9de7d5",
       "passed": true,
       "probe_fingerprint": "09a05c01b40581c838e133d7aa524136a1daea62b19498a1c9c7100cefac106d",
       "product_id": "launcher",
@@ -1842,8 +1688,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "3db7893008fae558e85552f9e5b775ca182f4d087014922176b1d33a6c3574b5",
-      "observed_stdout_fingerprint": "777d4179336cb2675c2d246c8dc44cf194b521fa1ed8bfd8ed0e1e3cfd23b41b",
+      "observed_stderr_fingerprint": "f9d2c2d90db20ae0bcbd5ac7b395fd9ac5a762016812b1c1216562835adde010",
+      "observed_stdout_fingerprint": "99ccf2999a59368aead2af2fe4916f409b4d5bf24318d7b669ee43f9a5d19b01",
       "passed": true,
       "probe_fingerprint": "6aed6921944784bcdd5b25b823a89263ee6013bb96433c953cf02afda0f514c2",
       "product_id": "launcher",
@@ -1867,8 +1713,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "18d46ce7164ddb0cd6267fac3df64919e194330841201e1120728fd73e0a15a7",
-      "observed_stdout_fingerprint": "a5eafef40c576b96264fe2f2b18bfb1e1680dad2805a6abea75098df80e3bef1",
+      "observed_stderr_fingerprint": "39e73194a20a784ca3c01188b883b54587c0c136b41419efbd1ce1936d07f515",
+      "observed_stdout_fingerprint": "763a1f402f44a1fea2b0c6cf89735d72fff04058f22daf85f22b3789d15fb8cb",
       "passed": true,
       "probe_fingerprint": "1eca0346d56ce2214b3e2199a37862749f14b606ba1e4251391578174a79011f",
       "product_id": "server",
@@ -1892,8 +1738,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 1,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "4c49ed7ec271e3f4c3a9d328dea1e5a5c021fe9b5c1ea8110fe53027f854d895",
-      "observed_stdout_fingerprint": "71c312ad1b869f77f14364311b78d823a54efce25f59f2b3b62982a01d99215b",
+      "observed_stderr_fingerprint": "cfbb91469e6dd4bcde52b2194045d68c40597fc0199b5dd866e92b6d9840a365",
+      "observed_stdout_fingerprint": "7221f5640dcc5873611184f1784d90418381756cc6fb9458c2fd614396ae2766",
       "passed": true,
       "probe_fingerprint": "a2f5943b2d1d26b16e75496f7f64c1ed2107a60f0497e87578ece79409e6c58b",
       "product_id": "server",
@@ -1917,8 +1763,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "fe293f11e7b9f7602dea779dc4f9e3c79c39af9294d4ac17dae9943d5c055524",
-      "observed_stdout_fingerprint": "0d7bb927ac197a35c73f2ecba89977547fb06168b26206cbb25aaa63e97c8581",
+      "observed_stderr_fingerprint": "02767d94e2fbdcf7a4a7c2292f442bd04c71d8a06a6f9aa3dc8f6e901a08eff1",
+      "observed_stdout_fingerprint": "9d0fb9bf09f1601854faa1636f301bc1e37095dd7021e3e4864606d7adb1e5be",
       "passed": true,
       "probe_fingerprint": "2e453968105a284aac1a0499522043ab43099e20cd75bd68ddd7ee9b909f82de",
       "product_id": "server",
@@ -1942,8 +1788,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "2f931d66a6d626790b25b1f3f0aa6ec6614f2fdd092afbcf10b7a1588d21261f",
-      "observed_stdout_fingerprint": "6b52465c8fce5f87bc00224d33f65700bc3b3eceb7235b6b2abfbf0970565c21",
+      "observed_stderr_fingerprint": "cb805e53b2d3dae689fa1dfedf6dda9f03ac29a4e7276c3587c0234062b7b7df",
+      "observed_stdout_fingerprint": "84b09b7ff8146aa82b9a6799f1c7bb9136d28ed6f7e9cb4f6ebef46029573734",
       "passed": true,
       "probe_fingerprint": "1eca0346d56ce2214b3e2199a37862749f14b606ba1e4251391578174a79011f",
       "product_id": "server",
@@ -1967,8 +1813,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 1,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "fa65b139f1a34dec75a1add44cca416f022dc5fd9df563b915ed0f0ce2dbc70e",
-      "observed_stdout_fingerprint": "949a7dd9f3c7c46472be7a555194a32bd309018d58a66641ad2cfc0a203c0be3",
+      "observed_stderr_fingerprint": "8ee18104a174cad6ff82a6843e6d2cb363db3218b1e60360f3e387e7b30c21c8",
+      "observed_stdout_fingerprint": "06168f82f4a659fe688d015f9a18c4f93e45cf543bf270f2c14a6641930581ba",
       "passed": true,
       "probe_fingerprint": "a2f5943b2d1d26b16e75496f7f64c1ed2107a60f0497e87578ece79409e6c58b",
       "product_id": "server",
@@ -1992,8 +1838,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "77798bcd7f4a146ce1f0ff5225362d4a87c8583d0318080692e77b8d10d98bda",
-      "observed_stdout_fingerprint": "7fc629fb7c8d9f71493f2db9fd4c0ce691d1e37cbd08a24458fa21c363b12418",
+      "observed_stderr_fingerprint": "114d97bd366a9eae9208c950ae0859af5e3a28e630c389721a68cdbf46f3725b",
+      "observed_stdout_fingerprint": "b9b74709bd3122ed42f4eeeeae4f456ed6e6db3d3f8796663825cbeb504cf0e5",
       "passed": true,
       "probe_fingerprint": "2e453968105a284aac1a0499522043ab43099e20cd75bd68ddd7ee9b909f82de",
       "product_id": "server",
@@ -2017,8 +1863,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "03d40653c5e62687bccd01efda46a5bba383412e31581851cbe97adde519b74c",
-      "observed_stdout_fingerprint": "e3e7c8d8a8f175a58e8cf50202d17f2645c8e365a226f8ca3a9be43bb8622f21",
+      "observed_stderr_fingerprint": "3a0111e12d8e0b66456a49280224f76ab3be9c982d9ad2f7df9dfbdd0652e114",
+      "observed_stdout_fingerprint": "fc1201f86cb5c7aedab1296d7b868f5157fef0706c7142768f867b72125c3ec9",
       "passed": true,
       "probe_fingerprint": "accebe30cd2cbfb6b44c14af2af124a0dac21e76e20c413f225abd28cb357397",
       "product_id": "setup",
@@ -2042,8 +1888,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 2,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "a2505594b113744fb2c280716138735d325a061abd3ccc4915bde95b5b3aafeb",
-      "observed_stdout_fingerprint": "8b91783174ace1712d38b7137db8d7cb70158f7f29ec2c11c4575f92c367b0b4",
+      "observed_stderr_fingerprint": "11c94fb7affefb704506a199f154b7264cf3aef3664428d16618f7c9ca9635e8",
+      "observed_stdout_fingerprint": "2eea74dd785e6933ec3c6a14c818a61f7288eb606802cd69432af652b1d01699",
       "passed": true,
       "probe_fingerprint": "0ee51e672a9f8c0a4b26fde72ffebe82f90799705af3448d27ef2ebad2ce3366",
       "product_id": "setup",
@@ -2067,8 +1913,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "bb50737eb7202311b81ac9d8ed7b88db44aef816449f96229e00d5c236cf926e",
-      "observed_stdout_fingerprint": "8a34238f42e60038f7eb5af806301c899f2ec74a20738009da7ae2a79815dcd5",
+      "observed_stderr_fingerprint": "5f95d3ab82ab6a034da2c927087cd9aebdfd697b54486379178e832e1e6187a5",
+      "observed_stdout_fingerprint": "d9820f4a6b132e409f67e64454161bdbf76ed58c26d3bab5e3510df7fbaa3444",
       "passed": true,
       "probe_fingerprint": "6387bf9fd6a15d9acec93bae1b8f5ecc499bf3fd6842f2e0492506d37fc7f4a0",
       "product_id": "setup",
@@ -2092,8 +1938,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "8557906cbb00450341f7f259be331a17fdee81e2130a96416b7ddb81eabfcf40",
-      "observed_stdout_fingerprint": "5e117e0572587794d8682d6968ad25f6789c7eacede8fb8857d87e3d2c79700b",
+      "observed_stderr_fingerprint": "fb91023743297458f57dc7e2fc0ca9b5be66c6aedf15354fc7e40e262533db17",
+      "observed_stdout_fingerprint": "be0da00fbe91e406842a0c28610190b1b51a87d4577f2ca8e18355dd1dd54c1a",
       "passed": true,
       "probe_fingerprint": "accebe30cd2cbfb6b44c14af2af124a0dac21e76e20c413f225abd28cb357397",
       "product_id": "setup",
@@ -2117,8 +1963,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 2,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "ce4bb5c930612209443b9b6b36664bb501bafa6807b777e8ea1958147aac08d3",
-      "observed_stdout_fingerprint": "e2b06a30f4e81e08679388fb22dd3b1dc879f803ade22af632d49ffaaf7daa6b",
+      "observed_stderr_fingerprint": "8c392bc9b247abd1138ad6c01ee6a8d7e9fef7e116ecaf396ff332a0c16f2517",
+      "observed_stdout_fingerprint": "016dde726cfe8580f960f962d8eb63ef208482b3d8bfc5f428ef43697bf0f624",
       "passed": true,
       "probe_fingerprint": "0ee51e672a9f8c0a4b26fde72ffebe82f90799705af3448d27ef2ebad2ce3366",
       "product_id": "setup",
@@ -2142,8 +1988,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "2322fa21f5e9c4b956ec03b2b7cbf8a0890242d363f6a28e3a97ebedcd48f6df",
-      "observed_stdout_fingerprint": "008b12939f71ca814c7916016e62237f326d556247e3c0bffc04c3678a3a7b2c",
+      "observed_stderr_fingerprint": "780cedce0080ca51acf605301772d82dfe5b633cf4df4cd671bd4411e0ea2166",
+      "observed_stdout_fingerprint": "93cd79168407d5f09222a279a003e3ceebda17bdbbbc8bf8ad05ef4d793867b5",
       "passed": true,
       "probe_fingerprint": "6387bf9fd6a15d9acec93bae1b8f5ecc499bf3fd6842f2e0492506d37fc7f4a0",
       "product_id": "setup",
@@ -2167,8 +2013,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "3df24f2c6e5990a79c3528ff96d2614d246886c223148770278acbe1cc64136b",
-      "observed_stdout_fingerprint": "2aa417da0ffa3d37a019dae941e2ab092d7b4f1b73c0e0c1584a6d12ab4e9036",
+      "observed_stderr_fingerprint": "ee3bbd94cf69fb215221545b4544ec432097cb52602a2cc90177d9536a6b0659",
+      "observed_stdout_fingerprint": "e7f88c929dc7a88a4178646fa495265a10f4c1b9e6b992dcfd693e2fdd0054fa",
       "passed": true,
       "probe_fingerprint": "781650eb8a6d2ab502265a71f8b8b444d78e291e35b1b159056dce1cb99feec6",
       "product_id": "tool.attach_console_stub",
@@ -2192,8 +2038,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 1,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "279ddcf309d651efc6f36212bcc0c939b6690fe39d02395a1fc543c8b507d35d",
-      "observed_stdout_fingerprint": "b3b9e793297e236b3c09a16fec7f7232d7399282b7f6e31787bc4556104eb51e",
+      "observed_stderr_fingerprint": "ea6b837c86ac105f7a06a4920c8361989bd23ae0fe4648a54a1d751a4f131b5c",
+      "observed_stdout_fingerprint": "ce98b1a1feb45027a071ac07ce127cfe1f543a3e93c8b6233e448f95791362ad",
       "passed": true,
       "probe_fingerprint": "9679978fe3e981b77fdd2a824456bb47905cd79701907e9a4cd9c07460960a7d",
       "product_id": "tool.attach_console_stub",
@@ -2217,8 +2063,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "e6b125f68d7a40d8eaedb038ceb097202d6002dd132606d8428e2c91c8c6b8cb",
-      "observed_stdout_fingerprint": "fabba8b8c0961105923d69aabe0906d24ac8e7d4ccebc6cff23951a0725c53a2",
+      "observed_stderr_fingerprint": "5657a583fd4ca7d36bbe277d21f2a9bd25ba06b12c62790ae46a254507da6211",
+      "observed_stdout_fingerprint": "1ba6e274f54fb77bfdf095d651f00f1703f7e8e1f6bbf6dd8177b53df8f11078",
       "passed": true,
       "probe_fingerprint": "7bade787f3bb43181067f88399672ea52d80323e8d590b27f8c417248febd6b9",
       "product_id": "tool.attach_console_stub",
@@ -2242,8 +2088,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "tui",
-      "observed_stderr_fingerprint": "5c35a496c97a5b3264cdc50ae427216240c39916e34398d6506d93fdeb4ce2b9",
-      "observed_stdout_fingerprint": "baa40825da35797a688ebf3fa6491978d1ed3d316c69d46bb68189b419c03258",
+      "observed_stderr_fingerprint": "f042fcad5343862673cbc3ae2fda0224054611127a60949694ce0a88aac57e30",
+      "observed_stdout_fingerprint": "178e53f9090563d2c742de518236fa471ce0a773292b6fea8e73ebe34d85394e",
       "passed": true,
       "probe_fingerprint": "781650eb8a6d2ab502265a71f8b8b444d78e291e35b1b159056dce1cb99feec6",
       "product_id": "tool.attach_console_stub",
@@ -2267,8 +2113,8 @@
       "observed_compatibility_mode_id": "compat.degraded",
       "observed_degrade_step_count": 1,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "886626131467535229dd95c2b9695c2e59f2de42a87e04e15bfaa296d2fab91d",
-      "observed_stdout_fingerprint": "28e5bf6634d86a356b3e10920b46dc53d0fb8d54cb8944124e3e7e247a54762d",
+      "observed_stderr_fingerprint": "a3cb9ec688c1faabead4bb0f036bf8f16f44a4b2dacea2c1baf12a1ad08a60ce",
+      "observed_stdout_fingerprint": "8c8f14c68e4d91439a05220611a68d5655c5e421d6238e6396cd90fda8373a27",
       "passed": true,
       "probe_fingerprint": "9679978fe3e981b77fdd2a824456bb47905cd79701907e9a4cd9c07460960a7d",
       "product_id": "tool.attach_console_stub",
@@ -2292,8 +2138,8 @@
       "observed_compatibility_mode_id": "compat.full",
       "observed_degrade_step_count": 0,
       "observed_selected_mode_id": "cli",
-      "observed_stderr_fingerprint": "f7a584325c3b0f8651864b4214eafcc385d0ce5b8bcd33800b2f43d7907e9746",
-      "observed_stdout_fingerprint": "da5cfd07cbb98b79fb02402d82ee030c181ba151fc10100e8b5cb990628aff71",
+      "observed_stderr_fingerprint": "425aba7b6eb438051db52899983b22751a8593084b26e1e5ba11bfd195669e91",
+      "observed_stdout_fingerprint": "014d588dde5390aa04b95722b38691e9e28b7551628cf5906195d488db346053",
       "passed": true,
       "probe_fingerprint": "7bade787f3bb43181067f88399672ea52d80323e8d590b27f8c417248febd6b9",
       "product_id": "tool.attach_console_stub",

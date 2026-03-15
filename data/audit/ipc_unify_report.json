@@ -25,7 +25,7 @@
       "surface": "Endpoint listener"
     }
   ],
-  "deterministic_fingerprint": "9bbb8835f3bad7f8a45f4b8dc2b983e0176fd20ece6837ddf49607154118289f",
+  "deterministic_fingerprint": "cc2b79dbe3d18035571489e63fefb72cec00feb405855cf03f7aaa2a2e85853a",
   "direct_socket_users": [
     {
       "classification": "canonical",
@@ -88,18 +88,18 @@
   ],
   "replay_probe": {
     "deterministic_fingerprint": "",
-    "first_cross_platform_ipc_hash": "cc7a2e076ee5b107e607af4efd53fe1e7145510ceb106c595112d1e823f6b422",
+    "first_cross_platform_ipc_hash": "077479cca928e1344809927ef75fd807bacaba0232352f7c52fe635d9b5bae2d",
     "mismatches": [],
     "result": "complete",
-    "second_cross_platform_ipc_hash": "cc7a2e076ee5b107e607af4efd53fe1e7145510ceb106c595112d1e823f6b422"
+    "second_cross_platform_ipc_hash": "077479cca928e1344809927ef75fd807bacaba0232352f7c52fe635d9b5bae2d"
   },
   "result": "complete",
   "runtime_probe": {
     "compatibility_mode_id": "compat.full",
-    "cross_platform_ipc_hash": "cc7a2e076ee5b107e607af4efd53fe1e7145510ceb106c595112d1e823f6b422",
-    "deterministic_fingerprint": "59a3203549e6f9ca53d6795d8f1ce2e5d78cf671b7ae6b397e028469bc646ea1",
+    "cross_platform_ipc_hash": "077479cca928e1344809927ef75fd807bacaba0232352f7c52fe635d9b5bae2d",
+    "deterministic_fingerprint": "4abb5ebf7351f46020f1f26cbac26bcad3abfee4d4442a0774162c12d83b4b45",
     "missing_negotiation_refusal_code": "refusal.connection.no_negotiation",
-    "negotiation_record_hash": "d7ff28f88830e885090d8c3dd10f731eee4c5e04735569e2e54e49e500ed0892",
+    "negotiation_record_hash": "d835395666963dcfe0b71e548660c9ede5bb16ac4722d614f32063a61d8f8732",
     "result": "complete",
     "seq_monotonic_by_channel": {
       "console": true,
@@ -184,11 +184,11 @@
   "violations": [],
   "vroot_probe": {
     "descriptor_exists": true,
-    "descriptor_hash": "6e51b94af243a1361b26484b2696ddef3e321ce3770c25d2a4432a49f8e5de9e",
+    "descriptor_hash": "26bbc7dc575e9fcc1e6e10fc026b6ef4c598ba39f388b44fd1e2fc9eece09977",
     "descriptor_path": "D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime/endpoints/ipc.server.session.ipc_unify.vroot.json",
     "descriptor_payload_result": "complete",
     "descriptor_rel_path": "endpoints/ipc.server.session.ipc_unify.vroot.json",
-    "deterministic_fingerprint": "00c901c49c53d3401e04e56301280722e133255d80276047cdfd53867271c763",
+    "deterministic_fingerprint": "37261b9691e93380a44b3282cff9d665326b33863f1f1d2bd6cd724a15b80539",
     "endpoint_id": "ipc.server.session.ipc_unify.vroot",
     "manifest_exists": true,
     "manifest_path": "D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime/ipc_endpoints.json",

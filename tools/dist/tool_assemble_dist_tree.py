@@ -16,6 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from tools.dist.dist_tree_common import (  # noqa: E402
+    DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_OUTPUT_ROOT,
     DEFAULT_PLATFORM_TAG,
     DEFAULT_RELEASE_CHANNEL,
@@ -49,6 +50,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--platform-tag", default=DEFAULT_PLATFORM_TAG)
     parser.add_argument("--channel", default=DEFAULT_RELEASE_CHANNEL)
     parser.add_argument("--output-root", default=DEFAULT_OUTPUT_ROOT)
+    parser.add_argument("--install-profile-id", default=DEFAULT_INSTALL_PROFILE_ID)
     parser.add_argument("--report-path", default="data/audit/dist_tree_assembly_report.json")
     parser.add_argument("--content-report-path", default="data/audit/dist_content_audit.json")
     parser.add_argument("--content-doc-path", default="docs/audit/DIST_CONTENT_AUDIT.md")
@@ -60,6 +62,7 @@ def main(argv: list[str] | None = None) -> int:
         platform_tag=str(args.platform_tag).strip(),
         channel_id=str(args.channel).strip() or DEFAULT_RELEASE_CHANNEL,
         output_root=str(args.output_root).strip() or DEFAULT_OUTPUT_ROOT,
+        install_profile_id=str(args.install_profile_id).strip() or DEFAULT_INSTALL_PROFILE_ID,
     )
     bundle_root = str(report.get("bundle_root_abs", "")).strip()
     content_report = build_dist_minimize_report(bundle_root)
@@ -73,6 +76,7 @@ def main(argv: list[str] | None = None) -> int:
         "bundle_hash": str(report.get("bundle_hash", "")).strip(),
         "release_manifest_hash": str(report.get("release_manifest_hash", "")).strip(),
         "file_count": int(report.get("file_count", 0)),
+        "install_profile_id": str(report.get("install_profile_id", "")).strip(),
         "platform_tag": str(report.get("platform_tag", "")).strip(),
     }
     sys.stdout.write(json.dumps(stdout_payload, indent=2, sort_keys=True))

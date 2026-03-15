@@ -31,6 +31,7 @@ record release_manifest
   optional:
     - stability_report_hash: sha256
     - signatures: [signature_block]
+    - universal_identity_block: universal_identity_block
     - notes: map
 
 INVARIANTS:

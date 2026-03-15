@@ -1,0 +1,20 @@
+SCHEMA: release/component_edge.schema
+schema_id: dominium.schema.release.component_edge
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define one dependency or provider edge in the release component graph.
+
+REQUIRED SHAPE:
+record component_edge
+  required:
+    - from_component_id: id
+    - edge_kind: tag
+    - to_component_selector: id
+    - filters: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- edges are traversed deterministically by lexical component/selector ordering.

@@ -9,6 +9,7 @@
   ],
   "type": "object",
   "required": [
+    "schema_version",
     "registry_id",
     "entries",
     "deterministic_fingerprint",
@@ -16,6 +17,10 @@
   ],
   "additionalProperties": false,
   "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
     "registry_id": {
       "type": "string",
       "const": "dominium.governance.deprecations"
@@ -37,6 +42,7 @@
   },
   "examples": [
     {
+      "schema_version": "1.0.0",
       "registry_id": "dominium.governance.deprecations",
       "entries": [],
       "deterministic_fingerprint": "f7b1213ec47de4f7c3264904b12eaaf77ecfdecf61765ea53bfeb6982f5a89ca",

@@ -15,6 +15,8 @@ They may not change without a semantic contract bump, a migration plan when pers
 Frozen registry-backed semantic contracts:
 
 - `contract.geo.metric.v1`
+- `contract.geo.partition.v1`
+- `contract.geo.projection.v1`
 - `contract.overlay.merge.v1`
 - `contract.logic.eval.v1`
 - `contract.worldgen.refinement.v1`
@@ -22,10 +24,14 @@ Frozen registry-backed semantic contracts:
 - `contract.pack.compat.v1`
 - `contract.time.anchor.v1`
 - `contract.appshell.lifecycle.v1`
+- `contract.proc.capsule.v1`
+- `contract.sys.collapse.v1`
+- `contract.release.resolution.exact_suite.v1`
+- `contract.release.resolution.latest_compatible.v1`
 
 Registry hash frozen at scope lock:
 
-- `semantic_contract_registry_hash`: `500f86d45022f5fffb44b7e425bacb2e0b9b98601064c9416f9bb923fdac1334`
+- `semantic_contract_registry_hash`: `48da2506959f53847207b0d0a6eac7445cdcb78ff6a23c25526c06210ad5aba5`
 
 Requested but not declared in the current semantic contract registry:
 

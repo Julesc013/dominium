@@ -1,0 +1,27 @@
+SCHEMA: compat/migration_decision_record.schema
+schema_id: dominium.schema.compat.migration_decision_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical derived decision emitted when loading a versioned persistent artifact.
+
+REQUIRED SHAPE:
+record migration_decision_record
+  required:
+    - decision_record_id: id
+    - artifact_kind_id: id
+    - observed_version: tag
+    - target_version: tag
+    - decision_action_id: id
+    - read_only_applied: bool
+    - migration_chain: [map]
+    - refusal_code: id
+    - remediation_hint: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- exactly one decision action is authoritative per record.
+- migration_chain is empty for direct-load and refusal decisions.
+- read_only_applied may be true only when decision_action_id is `decision.read_only`.

@@ -1,0 +1,16 @@
+SCHEMA: release/component_id.schema
+schema_id: dominium.schema.release.component_id
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical component identifier token used by the release component graph.
+
+REQUIRED SHAPE:
+record component_id
+  required:
+    - component_id: id
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- component_id is a stable namespaced string token.

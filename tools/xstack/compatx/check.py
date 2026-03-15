@@ -22,6 +22,7 @@ from tools.xstack.compatx.schema_registry import (  # noqa: E402
     load_version_registry,
 )
 from tools.xstack.compatx.validator import (  # noqa: E402
+    _version_field_name,
     validate_instance,
     validate_schema_example,
 )
@@ -139,7 +140,8 @@ def run_compatx_check(repo_root: str, profile: str) -> Dict[str, object]:
         else:
             schema_version = str(schema.get("version", "")).strip()
             current_version = str(entry.get("current_version", "")).strip()
-            if schema_version and current_version and schema_version != current_version:
+            version_field = _version_field_name(schema) if isinstance(schema, dict) else "schema_version"
+            if schema_version and current_version and schema_version != current_version and version_field == "schema_version":
                 findings.append(
                     _finding(
                         schema_name=schema_name,

@@ -1,0 +1,108 @@
+{
+  "schema_id": "dominium.registry.tolerance_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.tolerance_registry",
+    "registry_version": "1.0.0",
+    "tolerances": [
+      {
+        "schema_version": "1.0.0",
+        "tol_id": "tol.geo_projection",
+        "domain_id": "domain.geo",
+        "allowed_error_bound": 1000,
+        "rounding_mode": "round_half_to_even",
+        "deterministic_fingerprint": "2c1dd8c785a063de844127fcede29592b2d79b9e04ba3a38899ae551c701af95",
+        "extensions": {
+          "classification": "reviewed_float_bridge",
+          "applies_to_paths": [
+            "src/geo/kernel/geo_kernel.py",
+            "src/geo/metric/metric_engine.py"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "Projection and metric approximation bridges must remain bounded and deterministic across compilers.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.geo.metric.v1",
+          "deterministic_fingerprint": "73393fa0a9108900cb239d19ffeb6020eecaca44b0211dd4cace3f95446bd869",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tol_id": "tol.illumination_fixed",
+        "domain_id": "domain.astro",
+        "allowed_error_bound": 1,
+        "rounding_mode": "round_half_to_even",
+        "deterministic_fingerprint": "5e2fbf04e6c847a3d70e58a74dd6df549da96aee0ec90451e4a66f243665a638",
+        "extensions": {
+          "classification": "truth_fixed_point",
+          "applies_to_paths": [
+            "src/astro/illumination/illumination_geometry_engine.py"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "Illumination geometry uses versioned fixed-point lookup tables and must remain hash-stable across compilers.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.geo.metric.v1",
+          "deterministic_fingerprint": "81ed40cd26a28c40cdf9935105bb260032ec19b1c5373c114dd423566f521703",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tol_id": "tol.orbit_sampling",
+        "domain_id": "domain.astro",
+        "allowed_error_bound": 1,
+        "rounding_mode": "round_half_to_even",
+        "deterministic_fingerprint": "63922ab038599c275cb31cdcd32ee9c1e0911623a6114c27baa0aaeebd5a72bc",
+        "extensions": {
+          "classification": "truth_fixed_point",
+          "applies_to_paths": [
+            "src/astro/ephemeris/kepler_proxy_engine.py"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable",
+          "rationale": "Orbit sampling is part of the fixed-point deterministic ephemeris contract for MVP cross-platform replay.",
+          "future_series": "",
+          "replacement_target": "",
+          "contract_id": "contract.time.anchor.v1",
+          "deterministic_fingerprint": "c987ac6e8faf5232c5a23d798bcbd2e1d03c1b43b547e51ef5d72da0f168662d",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tol_id": "tol.render_interp",
+        "domain_id": "domain.render",
+        "allowed_error_bound": 4,
+        "rounding_mode": "round_half_to_even",
+        "deterministic_fingerprint": "a0d86ff3bdd4c83a13ba3284eae723c734aad6360eac4decf4cdf8b6c047a2ab",
+        "extensions": {
+          "classification": "render_only",
+          "applies_to_paths": [
+            "src/client/render/renderers/software_renderer.py"
+          ]
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Render interpolation remains presentation-only and may be refined after MVP distribution hardening.",
+          "future_series": "RENDER",
+          "replacement_target": "Replace MVP render interpolation tolerance with renderer-backend-specific release policies.",
+          "contract_id": "",
+          "deterministic_fingerprint": "bea96eb6edd06a90cf1fd11021447d9bb1ef0c3789332f8e43a39a51b25aa890",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

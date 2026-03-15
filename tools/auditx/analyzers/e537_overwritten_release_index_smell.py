@@ -1,0 +1,50 @@
+"""E537 overwritten release index smell analyzer."""
+
+from __future__ import annotations
+
+import os
+
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+if REPO_ROOT_HINT not in os.sys.path:
+    os.sys.path.insert(0, REPO_ROOT_HINT)
+
+
+from analyzers.base import make_finding
+from tools.release.archive_policy_common import RULE_INDEX_HISTORY, archive_policy_violations
+
+
+ANALYZER_ID = "E537_OVERWRITTEN_RELEASE_INDEX_SMELL"
+
+
+def run(graph, repo_root, changed_files=None):
+    del graph, changed_files
+    findings = []
+    for row in archive_policy_violations(repo_root):
+        item = dict(row or {})
+        if str(item.get("rule_id", "")).strip() != RULE_INDEX_HISTORY:
+            continue
+        rel_path = str(item.get("file_path", "")).replace("\\", "/")
+        findings.append(
+            make_finding(
+                analyzer_id=ANALYZER_ID,
+                category="release.overwritten_release_index_smell",
+                severity="HIGH",
+                confidence=0.99,
+                file_path=rel_path or "manifests/release_index_history",
+                evidence=[
+                    str(item.get("code", "")).strip() or "release_index_overwrite",
+                    str(item.get("message", "")).strip() or "release index history must remain append-only and immutable",
+                ],
+                suggested_classification="TODO-BLOCKED",
+                recommended_action="PRESERVE_APPEND_ONLY_RELEASE_INDEX_HISTORY_AND_REFUSE_CONTENT_REWRITES",
+                related_invariants=[RULE_INDEX_HISTORY],
+                related_paths=[
+                    rel_path or "manifests/release_index_history",
+                    "tools/release/archive_policy_common.py",
+                    "docs/release/ARCHIVE_AND_RETENTION_POLICY.md",
+                ],
+            )
+        )
+    return findings

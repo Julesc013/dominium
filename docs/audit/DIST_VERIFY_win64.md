@@ -8,7 +8,7 @@ Replacement Target: DIST-3 clean-room distribution verification baseline
 
 - result: `complete`
 - bundle_root: `dist/v0.0.0-mock/win64/dominium`
-- deterministic_fingerprint: `4c112fbe56059cd83835767848a3546329f125baa84ec01b8de4be460445e6d3`
+- deterministic_fingerprint: `1ff37f176bcee282b8c235fa18ae822107766187d3ee0bfd4a8a3eb641e55743`
 
 ## Layout Check
 
@@ -19,7 +19,7 @@ Replacement Target: DIST-3 clean-room distribution verification baseline
 
 - result: `complete`
 - verified_artifact_count: `25`
-- manifest_hash: `e1eb0b012222f432f88c30a4fd1e56054c4f565779f5e68ff088568cefa74eb9`
+- manifest_hash: `52b5638abe47d665833ca9241d3a7cbe63306918769758fffa8d6094f28c1841`
 
 ## Pack Verification
 
@@ -28,12 +28,12 @@ Replacement Target: DIST-3 clean-room distribution verification baseline
 
 ## Descriptor Checks
 
-- `bin/client` passed=`True` expected=`10389f5d3aaa8422af4cf7a342b1c9d97ff07c82596634ea2343ac53235d05c2` actual=`10389f5d3aaa8422af4cf7a342b1c9d97ff07c82596634ea2343ac53235d05c2`
-- `bin/engine` passed=`True` expected=`8c145a8278ab2a38aca8d24e2a0b8efeb868cb1002787d3e7328df3708e630a9` actual=`8c145a8278ab2a38aca8d24e2a0b8efeb868cb1002787d3e7328df3708e630a9`
-- `bin/game` passed=`True` expected=`08a671f790395f15466ea538bb3b4d14399de0c6263676780860034559374bc7` actual=`08a671f790395f15466ea538bb3b4d14399de0c6263676780860034559374bc7`
-- `bin/launcher` passed=`True` expected=`633a8a256e68cefd3874091eca36697cd9d129bfdf9e219c93e15314ae836f64` actual=`633a8a256e68cefd3874091eca36697cd9d129bfdf9e219c93e15314ae836f64`
-- `bin/server` passed=`True` expected=`f4a881b90ec8082962b5561da2ecd73c2050ef32b43aae925bec1160bef6048b` actual=`f4a881b90ec8082962b5561da2ecd73c2050ef32b43aae925bec1160bef6048b`
-- `bin/setup` passed=`True` expected=`be061344ec1910a4203f07060e5e2e8b058b7a18f3ae952a377961862b126f11` actual=`be061344ec1910a4203f07060e5e2e8b058b7a18f3ae952a377961862b126f11`
+- `bin/client` passed=`True` expected=`34fd0035af11b634d4a5180d76b81b9fd8f8fcd6c8079ca6cff7ff30666a3e86` actual=`34fd0035af11b634d4a5180d76b81b9fd8f8fcd6c8079ca6cff7ff30666a3e86`
+- `bin/engine` passed=`True` expected=`d33f608afc35402b65ba06e912db8984f992c855a475bc166570e0b35a3fee36` actual=`d33f608afc35402b65ba06e912db8984f992c855a475bc166570e0b35a3fee36`
+- `bin/game` passed=`True` expected=`ef2c0f08e623cdc566bf62f4b6af1fa87b7110778390f4e9ee4bfdc647ef4736` actual=`ef2c0f08e623cdc566bf62f4b6af1fa87b7110778390f4e9ee4bfdc647ef4736`
+- `bin/launcher` passed=`True` expected=`ad9fecfad3277d6467686a5743d86064103b1cd5409e50b21848360623f50b27` actual=`ad9fecfad3277d6467686a5743d86064103b1cd5409e50b21848360623f50b27`
+- `bin/server` passed=`True` expected=`fc68dcf24ba122bec867ff75ed67328162f20faab119681ff21c082d506bc5e1` actual=`fc68dcf24ba122bec867ff75ed67328162f20faab119681ff21c082d506bc5e1`
+- `bin/setup` passed=`True` expected=`a06bae4e9613042538d64604901e5367e84b733cc1987df2f276002769e074d9` actual=`a06bae4e9613042538d64604901e5367e84b733cc1987df2f276002769e074d9`
 
 ## Forbidden File Scan
 
@@ -63,3 +63,4 @@ Replacement Target: DIST-3 clean-room distribution verification baseline
 ## Warnings
 
 - `warn.release_manifest.signature_missing` `signatures`: no detached or inline signatures were provided
+- `warn.trust.signature_missing` `signatures`: artifact is unsigned but the selected trust policy allows it

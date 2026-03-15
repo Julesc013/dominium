@@ -15,13 +15,51 @@
   ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "type": "string", "const": "1.0.0" },
-    "sink_id": { "type": "string", "minLength": 1 },
-    "sink_kind": { "type": "string", "enum": ["console", "file", "memory_ring"] },
-    "enabled": { "type": "boolean" },
-    "output_ref": { "type": "string" },
-    "ring_capacity": { "type": "integer", "minimum": 0 },
-    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
-    "extensions": { "type": "object", "additionalProperties": true }
-  }
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "sink_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sink_kind": {
+      "type": "string",
+      "enum": [
+        "console",
+        "file",
+        "memory_ring"
+      ]
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "output_ref": {
+      "type": "string"
+    },
+    "ring_capacity": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "enabled": false,
+      "extensions": {},
+      "output_ref": "example",
+      "ring_capacity": 0,
+      "schema_version": "1.0.0",
+      "sink_id": "sink_id.example",
+      "sink_kind": "console"
+    }
+  ]
 }

@@ -9,6 +9,12 @@ import sys
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from src.appshell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing
+from src.compat.migration_lifecycle import (
+    ARTIFACT_KIND_INSTALL_MANIFEST,
+    DECISION_READ_ONLY,
+    DECISION_REFUSE,
+    determine_migration_decision,
+)
 from src.meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -132,6 +138,22 @@ def _stable_relpath(base_root: str, target_path: str) -> str:
     except ValueError:
         return ""
     return _norm(rel)
+
+
+def _effective_install_root(manifest_path: str) -> str:
+    manifest_abs = os.path.abspath(str(manifest_path or "").strip())
+    install_root = os.path.dirname(manifest_abs)
+    parent_name = os.path.basename(install_root).strip().lower()
+    if parent_name != "manifests":
+        return install_root
+    candidate_root = os.path.dirname(install_root)
+    candidate_manifest = os.path.join(candidate_root, "install.manifest.json")
+    if os.path.isfile(candidate_manifest):
+        return candidate_root
+    for rel_path in ("bin", os.path.join("data", "registries", "semantic_contract_registry.json")):
+        if os.path.exists(os.path.join(candidate_root, rel_path)):
+            return candidate_root
+    return install_root
 
 
 def normalize_protocol_range(row: Mapping[str, object] | None) -> dict:
@@ -447,9 +469,8 @@ def validate_install_manifest(
     install_manifest_path: str,
     manifest_payload: Mapping[str, object] | None = None,
 ) -> Dict[str, object]:
-    del repo_root
     manifest_path = os.path.abspath(str(install_manifest_path or "").strip())
-    install_root = os.path.dirname(manifest_path)
+    install_root = _effective_install_root(manifest_path)
     manifest, error = (_read_json(manifest_path) if manifest_payload is None else (_normalize_value(normalize_extensions_tree(dict(manifest_payload or {}))), ""))
     if error:
         return {
@@ -461,6 +482,13 @@ def validate_install_manifest(
         }
 
     normalized = normalize_install_manifest(manifest)
+    migration_decision_record = determine_migration_decision(
+        repo_root,
+        artifact_kind_id=ARTIFACT_KIND_INSTALL_MANIFEST,
+        payload=normalized,
+        allow_read_only=False,
+        artifact_path=install_manifest_path,
+    )
     errors: List[dict] = []
     warnings: List[dict] = []
 
@@ -541,6 +569,49 @@ def validate_install_manifest(
         "errors": sorted(errors, key=lambda row: (str(row.get("path", "")), str(row.get("code", "")), str(row.get("message", "")))),
         "warnings": sorted(warnings, key=lambda row: (str(row.get("path", "")), str(row.get("code", "")), str(row.get("message", "")))),
         "install_manifest": normalized,
+        "migration_decision_record": migration_decision_record,
+    }
+
+
+def evaluate_install_manifest_load(
+    *,
+    repo_root: str,
+    install_manifest_path: str,
+    manifest_payload: Mapping[str, object] | None = None,
+) -> Dict[str, object]:
+    validation = validate_install_manifest(
+        repo_root=repo_root,
+        install_manifest_path=install_manifest_path,
+        manifest_payload=manifest_payload,
+    )
+    decision = dict(validation.get("migration_decision_record") or {})
+    action = str(decision.get("decision_action_id", "")).strip()
+    result = str(validation.get("result", "")).strip()
+    if result != "complete":
+        return {
+            "result": "refused",
+            "refusal_code": str(validation.get("refusal_code", "")).strip(),
+            "install_manifest": dict(validation.get("install_manifest") or {}),
+            "install_validation": validation,
+            "migration_decision_record": decision,
+            "read_only_required": False,
+        }
+    if action == DECISION_REFUSE:
+        return {
+            "result": "refused",
+            "refusal_code": str(decision.get("refusal_code", "")).strip(),
+            "install_manifest": dict(validation.get("install_manifest") or {}),
+            "install_validation": validation,
+            "migration_decision_record": decision,
+            "read_only_required": False,
+        }
+    return {
+        "result": "complete",
+        "refusal_code": "",
+        "install_manifest": dict(validation.get("install_manifest") or {}),
+        "install_validation": validation,
+        "migration_decision_record": decision,
+        "read_only_required": action == DECISION_READ_ONLY,
     }
 
 
@@ -755,6 +826,7 @@ __all__ = [
     "default_install_registry_path",
     "deterministic_fingerprint",
     "load_install_registry",
+    "evaluate_install_manifest_load",
     "merge_contract_ranges",
     "merge_protocol_ranges",
     "normalize_contract_range",

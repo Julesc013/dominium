@@ -51,5 +51,16 @@
       "type": "object",
       "additionalProperties": true
     }
-  }
+  },
+  "examples": [
+    {
+      "components": {},
+      "deprecated": false,
+      "extensions": {},
+      "mixture_id": "mixture_id.example",
+      "schema_version": "1.0.0",
+      "tags": [],
+      "version_introduced": "example"
+    }
+  ]
 }

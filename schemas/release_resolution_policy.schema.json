@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Release Resolution Policy Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "policy_id",
+    "selection_rule_id",
+    "allow_yanked",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allow_yanked": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "allow_yanked": false,
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "policy_id": "policy_id.example",
+      "selection_rule_id": "selection_rule_id.example"
+    }
+  ]
+}

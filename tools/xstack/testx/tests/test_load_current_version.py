@@ -28,7 +28,7 @@ def run(repo_root: str):
             return {"status": "fail", "message": "current save format_version mismatch"}
         if list(meta.get("migration_events") or []):
             return {"status": "fail", "message": "current save triggered unexpected migrations"}
-        if bool(meta.get("read_only_mode", False)):
+        if bool(meta.get("read_only_applied", False)):
             return {"status": "fail", "message": "current save opened in read-only mode unexpectedly"}
     finally:
         cleanup_temp_dir(temp_dir)
