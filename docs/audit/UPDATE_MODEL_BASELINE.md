@@ -27,10 +27,10 @@ Replacement Target: trust-governed remote release indices and signed acquisition
 
 ## Report Fingerprints
 
-- release index hash: `befe97b00d8aa96e1a768a34864c4f643c5d1b277834931d78a8b140220eec73`
+- release index hash: `fa59a735f5c84923bb1b377e737e4163c992fa49e3b2adaed2f466fd427885b3`
 - governance profile hash: `09273dc808ff2cf8edab36eb30ce4139212bcce8903a3ab5a3043a9fcfd08187`
-- update plan fingerprint: `7369f2c66dfdbbb31b6d75b3298975742dd1ee1fa98bb61a2ba0a19177c6a008`
-- report fingerprint: `e42e88e42d035378fd7909f93b4fcbb61771a644e790a96f848228eade3f2edc`
+- update plan fingerprint: `3251f3010f0c45140c2f0b8949a641f5d508214c2ff4fb905522610b727e7a80`
+- report fingerprint: `80d30f05297b93720ad24628bf96db0278c3e2a6769df73235f4c5ef87bd0c6e`
 
 ## Readiness
 
