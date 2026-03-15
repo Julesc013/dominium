@@ -229,7 +229,7 @@ def _archive_root(bundle_root: str) -> str:
 
 def _ensure_bundle(repo_root: str, platform_tag: str) -> str:
     from tools.dist.dist_tree_common import build_dist_tree
-    from tools.release.update_model_common import write_update_model_outputs
+    from tools.release.update_model_common import build_release_index_payload
     import shutil
 
     temp_root = os.path.join(_norm(repo_root), "build", "tmp", "archive_policy_dist")
@@ -243,7 +243,12 @@ def _ensure_bundle(repo_root: str, platform_tag: str) -> str:
         install_profile_id="install.profile.full",
     )
     bundle_root = os.path.join(temp_root, "v0.0.0-mock", _token(platform_tag) or DEFAULT_PLATFORM_TAG, "dominium")
-    write_update_model_outputs(repo_root, platform_tag=_token(platform_tag) or DEFAULT_PLATFORM_TAG, dist_root=bundle_root, write_release_index_file=True)
+    release_index_payload = build_release_index_payload(
+        repo_root,
+        dist_root=bundle_root,
+        platform_tag=_token(platform_tag) or DEFAULT_PLATFORM_TAG,
+    )
+    write_release_index(os.path.join(bundle_root, DEFAULT_RELEASE_INDEX_REL), release_index_payload)
     return bundle_root
 
 
@@ -274,9 +279,14 @@ def archive_release(
     if not os.path.isfile(release_manifest_path):
         raise FileNotFoundError(release_manifest_path)
     if not os.path.isfile(release_index_path):
-        from tools.release.update_model_common import write_update_model_outputs
+        from tools.release.update_model_common import build_release_index_payload
 
-        write_update_model_outputs(root, platform_tag=DEFAULT_PLATFORM_TAG, dist_root=bundle_root, write_release_index_file=True)
+        release_index_payload = build_release_index_payload(
+            root,
+            dist_root=bundle_root,
+            platform_tag=DEFAULT_PLATFORM_TAG,
+        )
+        write_release_index(release_index_path, release_index_payload)
     release_manifest = load_release_manifest(release_manifest_path)
     release_index = load_release_index(release_index_path)
     resolved_release_id = (
