@@ -896,7 +896,7 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E306_SILENT_THROTTLE_SMELL": "INV-THROTTLE-LOGGED",
 }
 
-CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
+CI_LANE_WORKFLOW_PATH = ".github/workflows/ci.yml"
 CI_LANE_REQUIRED_JOBS = (
     "ci-dev",
     "ci-verify",

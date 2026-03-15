@@ -48,7 +48,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ## CI Lane Summary
 
-- Lane workflow: `.github/workflows/xstack_lanes.yml`
+- Lane workflow: `.github/workflows/ci.yml`
 - `ci-dev`:
   - strict build
   - impacted tests

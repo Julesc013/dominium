@@ -1,6 +1,8 @@
 #ifndef DOMINIUM_CLIENT_SESSION_ARTIFACTS_H
 #define DOMINIUM_CLIENT_SESSION_ARTIFACTS_H
 
+#include <stddef.h>
+
 #include "domino/core/types.h"
 
 #ifdef __cplusplus

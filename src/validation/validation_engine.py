@@ -1615,7 +1615,7 @@ def render_validation_unify_final(report: Mapping[str, object], inventory: Mappi
             "",
             "## Legacy Validators Mapped",
             "",
-            "- Total legacy/significant validation surfaces: `{}`".format(int(surface_inventory.get("surface_count", 0) or 0)),
+            "- Total prior significant validation surfaces: `{}`".format(int(surface_inventory.get("surface_count", 0) or 0)),
             "- Active direct adapters: `{}`".format(int(_as_map(surface_inventory.get("summary")).get("active_adapter_count", 0) or 0)),
             "- Coverage/deprecation adapters: `{}`".format(int(_as_map(surface_inventory.get("summary")).get("coverage_adapter_count", 0) or 0)),
             "",

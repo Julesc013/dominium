@@ -60,6 +60,8 @@ int mkdir(const char* path, int mode);
 
 static void client_print_platform_caps(void);
 static void client_ui_copy_string(char* out, size_t cap, const char* value);
+static int client_open_readonly(dom_app_readonly_adapter* ro,
+                                const dom_app_compat_expect* expect);
 
 static void print_help(void)
 {
@@ -1292,6 +1294,14 @@ typedef struct client_ui_state {
     dom_client_shell shell;
     uint32_t tick;
 } client_ui_state;
+
+static int client_ui_execute_command(const char* cmd,
+                                     client_ui_settings* settings,
+                                     dom_app_ui_event_log* log,
+                                     client_ui_state* ui_state,
+                                     char* status,
+                                     size_t status_cap,
+                                     int emit_text);
 
 typedef struct client_ui_menu_item {
     const char* id;
