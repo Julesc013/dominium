@@ -342,7 +342,7 @@ def _portable_installed_parity(repo_root: str) -> dict:
                     "installs": [
                         {
                             "install_id": "install.registry.supervisor",
-                            "path": "../../installs/primary",
+                            "path": "../../../installs/primary",
                             "version": "0.0.0",
                             "contract_registry_hash": "0" * 64,
                         }
@@ -403,6 +403,14 @@ def _portable_installed_parity(repo_root: str) -> dict:
                 "runtime_paths": dict(installed_spec.get("runtime_paths") or {}),
             },
         }
+        outputs["result"] = (
+            "complete"
+            if outputs["portable"]["vpath_result"] == "complete"
+            and outputs["portable"]["run_spec_result"] == "complete"
+            and outputs["installed"]["vpath_result"] == "complete"
+            and outputs["installed"]["run_spec_result"] == "complete"
+            else "refused"
+        )
         outputs["deterministic_fingerprint"] = canonical_sha256(outputs)
         return outputs
 

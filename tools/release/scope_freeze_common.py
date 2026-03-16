@@ -226,9 +226,14 @@ def render_provisional_feature_list(repo_root: str) -> str:
     stable_rows = stable_feature_rows(repo_root)
     experimental_rows = experimental_feature_rows(repo_root)
     lines = [
-        "Status: RELEASE-LOCKED",
+        "Status: CANONICAL",
         "Last Reviewed: 2026-03-13",
+        "Supersedes: none",
+        "Superseded By: none",
         "Scope: provisional registry entries at the v0.0.0 convergence freeze.",
+        "Stability: provisional",
+        "Future Series: RELEASE/STABILITY",
+        "Replacement Target: stable-contract inventory after authoritative registry promotion completes",
         "",
         "# Provisional Feature List",
         "",

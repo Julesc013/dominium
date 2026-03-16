@@ -207,7 +207,7 @@ def _log_merge_sort_key(row: Mapping[str, object]) -> tuple[str, str, int, str, 
 
 
 _LOG_MERGE_SORT_KEY = build_field_sort_key(
-    ("source_product_id", "seq_no", "endpoint_id", "event_id"),
+    ("source_product_id", "channel_id", "seq_no", "endpoint_id", "event_id"),
     int_fields=("seq_no",),
 )
 

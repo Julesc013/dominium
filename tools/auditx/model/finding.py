@@ -106,7 +106,6 @@ def validate_finding_record(record: Dict[str, object]) -> List[str]:
         "related_invariants",
         "related_paths",
         "fingerprint",
-        "created_utc",
     )
     for key in required:
         if key not in record:
@@ -161,7 +160,7 @@ def validate_finding_record(record: Dict[str, object]) -> List[str]:
 
     if not str(record.get("fingerprint", "")).strip():
         errors.append("fingerprint is required")
-    if not str(record.get("created_utc", "")).strip():
+    if "created_utc" in record and not str(record.get("created_utc", "")).strip():
         errors.append("created_utc is required")
 
     return errors

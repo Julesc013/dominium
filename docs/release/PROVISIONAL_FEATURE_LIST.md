@@ -14,15 +14,15 @@ It is a release-planning surface only and does not alter runtime behavior.
 
 ## Summary
 
-- provisional_entry_count: `3458`
-- stable_entry_count: `44`
+- provisional_entry_count: `3670`
+- stable_entry_count: `53`
 - experimental_entry_count: `0`
-- future_series_count: `33`
+- future_series_count: `61`
 - risk_method: `future_series heuristic`
 
 ## APPSHELL
 
-- entry_count: `199`
+- entry_count: `230`
 
 - registry_path=`data/registries/app_mode_registry.json` item_id=`cli` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.`
 - registry_path=`data/registries/app_mode_registry.json` item_id=`headless` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.`
@@ -103,19 +103,30 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/log_category_registry.json` item_id=`compat` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_category_registry.json` item_id=`diag` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_category_registry.json` item_id=`ipc` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_category_registry.json` item_id=`lib` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_category_registry.json` item_id=`packs` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_category_registry.json` item_id=`paths` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_category_registry.json` item_id=`refusal` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_category_registry.json` item_id=`server` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_category_registry.json` item_id=`supervisor` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_category_registry.json` item_id=`tool` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_category_registry.json` item_id=`ui` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_category_registry.json` item_id=`update` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_category_registry.json` item_id=`validation` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_category_registry.json` item_id=`worldgen` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.bootstrap.context` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.bootstrap.start` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.command.dispatch` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.mode.degraded` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.mode.enter` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.mode.selected` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.paths.initialized` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.refusal` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.tui.backend_degraded` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.tui.command.executed` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`appshell.tui.surface.ready` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`compat.install.refused` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`compat.install_selected` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`compat.negotiation.client_refused` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`compat.negotiation.mismatch` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`compat.negotiation.read_only` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
@@ -123,15 +134,23 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`compat.negotiation.result` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`diag.capture.written` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`diag.snapshot.written` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`explain.supervisor_restart` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`explain.supervisor_stop` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`ipc.attach.accepted` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`ipc.attach.refused` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`ipc.endpoint.started` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`ipc.endpoint.stopped` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`lib.install.apply` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`lib.install.plan` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`lib.install.status` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`lib.instance.migrated` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`lib.save.migrated` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`packs.lock.generated` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`packs.verify.result` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`server.connection.accepted` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`server.control.processed` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`server.listener.bound` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`server.log.event` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`server.proof_anchor.emitted` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`server.tick.advanced` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`supervisor.child.crash_requested` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
@@ -146,6 +165,11 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`supervisor.service.ready` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`supervisor.start.complete` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`supervisor.stop.complete` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`update.apply.completed` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`update.check.result` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`update.plan.generated` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`update.rollback.completed` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
+- registry_path=`data/registries/log_message_key_registry.json` item_id=`validation.pipeline.result` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/log_message_key_registry.json` item_id=`worldgen.refinement.request.summary` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/maintenance_policy_registry.json` item_id=`maint.policy.default_realistic` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.`
 - registry_path=`data/registries/maintenance_policy_registry.json` item_id=`maint.policy.none` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.`
@@ -156,6 +180,13 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/net_resync_strategy_registry.json` item_id=`resync.authoritative.snapshot` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.`
 - registry_path=`data/registries/net_resync_strategy_registry.json` item_id=`resync.hybrid.shard_snapshot` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.`
 - registry_path=`data/registries/net_resync_strategy_registry.json` item_id=`resync.lockstep.replay_intents` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace MVP app shell defaults with release-pinned CLI/TUI/supervisor contracts.`
+- registry_path=`data/registries/platform_capability_registry.json` item_id=`platform.linux_gtk` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.`
+- registry_path=`data/registries/platform_capability_registry.json` item_id=`platform.macos_classic` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.`
+- registry_path=`data/registries/platform_capability_registry.json` item_id=`platform.macos_cocoa` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.`
+- registry_path=`data/registries/platform_capability_registry.json` item_id=`platform.posix_min` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.`
+- registry_path=`data/registries/platform_capability_registry.json` item_id=`platform.sdl_stub` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.`
+- registry_path=`data/registries/platform_capability_registry.json` item_id=`platform.win9x` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.`
+- registry_path=`data/registries/platform_capability_registry.json` item_id=`platform.winnt` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional platform capability rows with release-pinned platform adapter contracts and install discovery coverage.`
 - registry_path=`data/registries/refusal_code_registry.json` item_id=`$.record.refusal_codes[0]` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/refusal_code_registry.json` item_id=`$.record.refusal_codes[10]` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
 - registry_path=`data/registries/refusal_code_registry.json` item_id=`$.record.refusal_codes[11]` stability_class=`provisional` future_series=`APPSHELL` risk=`low` replacement_target=`Replace provisional AppShell semantics with release-pinned APPSHELL registry definitions.`
@@ -226,19 +257,22 @@ It is a release-planning surface only and does not alter runtime behavior.
 
 ## APPSHELL-TOOLS
 
-- entry_count: `128`
+- entry_count: `133`
 
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_client` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_client_compat_status` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_client_console` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_client_descriptor` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
+- registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_apply_migration` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_emit_descriptor` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_generate_descriptor_manifest` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_generate_interop_matrix` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
+- registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_plan_migration` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_replay_migration` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_replay_negotiation` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_run_interop_stress` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
+- registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_run_migration_lifecycle` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_compat_status` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_diag` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_diag_capture` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
@@ -280,6 +314,8 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_lib_generate_lib_stress` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_lib_replay_save_open` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_lib_run_lib_stress` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
+- registry_path=`data/registries/command_registry.json` item_id=`command.dom_lib_run_store_gc` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
+- registry_path=`data/registries/command_registry.json` item_id=`command.dom_lib_store_verify` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_lib_verify_bundle` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_logic` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_logic_generate_logic_stress` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
@@ -356,6 +392,14 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_replay_wind_window` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_run_refinement_stress` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_verify_earth_surface` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
+
+## ARCHIVE-POLICY
+
+- entry_count: `3`
+
+- registry_path=`data/registries/archive_policy_registry.json` item_id=`archive.immutable_release` stability_class=`provisional` future_series=`ARCHIVE-POLICY` risk=`medium` replacement_target=`Release-series publication bundles and signed mirror manifests.`
+- registry_path=`data/registries/archive_policy_registry.json` item_id=`archive.mirror_required` stability_class=`provisional` future_series=`ARCHIVE-POLICY` risk=`medium` replacement_target=`Release-series publication bundles and signed mirror manifests.`
+- registry_path=`data/registries/archive_policy_registry.json` item_id=`archive.no_overwrite` stability_class=`provisional` future_series=`ARCHIVE-POLICY` risk=`medium` replacement_target=`Release-series publication bundles and signed mirror manifests.`
 
 ## ASTRO
 
@@ -434,6 +478,26 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/transition_policy_registry.json` item_id=`transition.policy.null` stability_class=`provisional` future_series=`CAP-NEG/PACK-COMPAT` risk=`medium` replacement_target=`Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.`
 - registry_path=`data/registries/transition_policy_registry.json` item_id=`transition.policy.rank_strict` stability_class=`provisional` future_series=`CAP-NEG/PACK-COMPAT` risk=`medium` replacement_target=`Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.`
 - registry_path=`data/registries/worldgen_constraints_registry.json` item_id=`constraints.worldgen.default_lab` stability_class=`provisional` future_series=`CAP-NEG/PACK-COMPAT` risk=`medium` replacement_target=`Replace provisional negotiation and pack compatibility defaults with release-pinned compatibility contracts.`
+
+## CAP-NEG/REPLAY
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.negotiation_record` stability_class=`provisional` future_series=`CAP-NEG/REPLAY` risk=`medium` replacement_target=`Replace provisional negotiation-record lifecycle policy with protocol-range-governed replay migrations.`
+
+## COMPAT/BLUEPRINT
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.blueprint` stability_class=`provisional` future_series=`COMPAT/BLUEPRINT` risk=`medium` replacement_target=`Replace provisional blueprint migration policy with release-pinned lifecycle bundles and explicit shareable artifact migrations.`
+
+## CONCURRENCY
+
+- entry_count: `3`
+
+- registry_path=`data/registries/concurrency_policy_registry.json` item_id=`concurrency.parallel_derived` stability_class=`provisional` future_series=`CONCURRENCY` risk=`medium` replacement_target=`Replace MVP derived-only concurrency policy with release-pinned shard and renderer worker envelopes.`
+- registry_path=`data/registries/concurrency_policy_registry.json` item_id=`concurrency.parallel_validation` stability_class=`provisional` future_series=`CONCURRENCY` risk=`medium` replacement_target=`Replace MVP validation concurrency policy with target-tier-specific worker policies after concurrency envelopes are frozen.`
+- registry_path=`data/registries/concurrency_policy_registry.json` item_id=`concurrency.single_thread` stability_class=`provisional` future_series=`CONCURRENCY` risk=`medium` replacement_target=`Replace MVP single-thread default with per-domain shard execution policies only after deterministic merge contracts exist.`
 
 ## CONTROL/LAW
 
@@ -752,6 +816,52 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/provenance_event_type_registry.json` item_id=`event.maintenance_performed` stability_class=`provisional` future_series=`DIAG` risk=`low` replacement_target=`Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.`
 - registry_path=`data/registries/provenance_event_type_registry.json` item_id=`event.maintenance_scheduled` stability_class=`provisional` future_series=`DIAG` risk=`low` replacement_target=`Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.`
 - registry_path=`data/registries/provenance_event_type_registry.json` item_id=`event.material_consumed` stability_class=`provisional` future_series=`DIAG` risk=`low` replacement_target=`Replace MVP diagnostic scaffolds with release-pinned provenance and replay artifact contracts.`
+
+## DIST-REFINE/TRUST
+
+- entry_count: `1`
+
+- registry_path=`data/registries/component_graph_registry.json` item_id=`graph.release.v0_0_0_mock` stability_class=`provisional` future_series=`DIST-REFINE/TRUST` risk=`medium` replacement_target=`Replace the MVP baseline graph with install-profile and release-index governed component graphs.`
+
+## DIST-SDK/UPDATE-MODEL
+
+- entry_count: `1`
+
+- registry_path=`data/registries/install_profile_registry.json` item_id=`install.profile.sdk` stability_class=`provisional` future_series=`DIST-SDK/UPDATE-MODEL` risk=`medium` replacement_target=`Replace the SDK placeholder with release-index governed SDK components and acquisition policy.`
+
+## DIST/PLATFORM
+
+- entry_count: `18`
+
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.arm32` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.arm64` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.ppc32` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.ppc64` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.riscv64` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.wasm32` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.wasm64` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.x86_32` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/arch_registry.json` item_id=`arch.x86_64` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP architecture stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.bsd` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.linux` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.macos_classic` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.macosx` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.msdos` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.posix` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.web` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.win9x` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+- registry_path=`data/registries/os_registry.json` item_id=`os.winnt` stability_class=`provisional` future_series=`DIST/PLATFORM` risk=`medium` replacement_target=`Replace MVP operating-system stubs with release-index governed platform availability metadata.`
+
+## DIST/UPDATE-MODEL
+
+- entry_count: `6`
+
+- registry_path=`data/registries/install_profile_registry.json` item_id=`install.profile.client` stability_class=`provisional` future_series=`DIST/UPDATE-MODEL` risk=`medium` replacement_target=`Refine client profile contents once release indices and remote acquisition are formalized.`
+- registry_path=`data/registries/install_profile_registry.json` item_id=`install.profile.full` stability_class=`provisional` future_series=`DIST/UPDATE-MODEL` risk=`medium` replacement_target=`Replace selector contents with release-index governed install profiles.`
+- registry_path=`data/registries/install_profile_registry.json` item_id=`install.profile.server` stability_class=`provisional` future_series=`DIST/UPDATE-MODEL` risk=`medium` replacement_target=`Refine server profile contents once update model and remote acquisition are formalized.`
+- registry_path=`data/registries/install_profile_registry.json` item_id=`install.profile.tools` stability_class=`provisional` future_series=`DIST/UPDATE-MODEL` risk=`medium` replacement_target=`Refine tools profile once dedicated tool components and update policy are formalized.`
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.component_graph` stability_class=`provisional` future_series=`DIST/UPDATE-MODEL` risk=`medium` replacement_target=`Replace provisional component graph lifecycle policy with release-index governed graph migrations.`
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.install_plan` stability_class=`provisional` future_series=`DIST/UPDATE-MODEL` risk=`medium` replacement_target=`Replace provisional install-plan lifecycle policy with release-index governed transactional migrations.`
 
 ## DOM
 
@@ -1168,9 +1278,22 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/view_type_registry.json` item_id=`view.minimap` stability_class=`provisional` future_series=`GEO/MW` risk=`medium` replacement_target=`Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.`
 - registry_path=`data/registries/view_type_registry.json` item_id=`view.slice_nd_stub` stability_class=`provisional` future_series=`GEO/MW` risk=`medium` replacement_target=`Replace MVP spatial and galaxy scaffolds with release-pinned GEO and MW registry contracts.`
 
+## GOVERNANCE/COMMERCIAL
+
+- entry_count: `2`
+
+- registry_path=`data/registries/governance_mode_registry.json` item_id=`gov.core_closed_ecosystem_open` stability_class=`provisional` future_series=`GOVERNANCE/COMMERCIAL` risk=`medium` replacement_target=`Final artifact-specific licensing bundles and official publication policy.`
+- registry_path=`data/registries/governance_mode_registry.json` item_id=`gov.mixed` stability_class=`provisional` future_series=`GOVERNANCE/COMMERCIAL` risk=`medium` replacement_target=`Final artifact-specific licensing bundles and signed official publication policy.`
+
+## GOVERNANCE/RELEASE
+
+- entry_count: `1`
+
+- registry_path=`data/registries/governance_mode_registry.json` item_id=`gov.open` stability_class=`provisional` future_series=`GOVERNANCE/RELEASE` risk=`medium` replacement_target=`Channel-specific governance bundles for released series.`
+
 ## INF/TOOLING
 
-- entry_count: `1766`
+- entry_count: `1833`
 
 - registry_path=`data/registries/access_policy_registry.json` item_id=`access.admin_only` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/access_policy_registry.json` item_id=`access.physical_contact_required` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1774,6 +1897,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.allow_named_rng_noise` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.allow_retrigger` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.allow_roi_bounce` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.allow_signed_bridge_trust_levels` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.allow_srz_transfer` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.allowed_process_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.allowed_signal_type_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1782,17 +1906,21 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.allowed_view_modes` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.analysis_radius` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.arbitration_policy_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.artifact_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.asset_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.axial_tilt_deg` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.axial_tilt_mdeg` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.base_chart_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.base_failure_chance_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.batches_consumed` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.binary_role` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.biome_overlay_tags` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.blueprint_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.bound_subject_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.boundary_flux_event_rows` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.budget_envelope_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.build_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.built_in_mock_release` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.bundle_quantity_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.bus_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.camera_viewpoint` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1803,6 +1931,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.coastal_proximity_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.commitment_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.compiled_model_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.component_graph` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.component_quantity_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.component_weights` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.compute_profile_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1811,6 +1940,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.consumed_batch_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.contested_by_faction_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.continent_score_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.contract_bundle_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.corrupted_view` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.cosmetic_policy_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.cycle_policy` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1828,6 +1958,8 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.disabled_reason_code` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.display_name` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.distance_bands_mm` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.distribution_rel` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.doc_rel` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.effect_auto_key` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.effect_influence` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.element_definition_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1846,6 +1978,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.escalation_rules` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.event_kind_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.event_rows` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.exception_event_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.expanded_micro_count` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.failure_risk_summary` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.fallback_capability_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1858,6 +1991,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.fixed_ticks` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.fov_deg` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.from_edge_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.galactic_region_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.geo_cell_key` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.graph_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.habitable_filter_bias_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1865,6 +1999,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.hadley_max_mdeg` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.hadley_meridional_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.hadley_zonal_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.hazard_effects` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.hydrology_effective_height_proxy` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.hydrology_params_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.hydrology_structure_kind` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1875,6 +2010,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.interface_system_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.interior_volume_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.invariant_tolerances` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.known_missing_features` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.l1_timing_refused` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.lake_flag` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.last_tick` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1890,6 +2026,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.longitude_mdeg` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.lunar_period_ticks` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.machine_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.managed_paths` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.manifest_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.mapping_policy_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.material_mass_totals` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1901,6 +2038,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.migration` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.missing_entitlements` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.missing_lens_channels` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.moon_stub_descriptors` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.network_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.next_maintenance_commitment_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.null_boot_safe` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1910,16 +2048,24 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.origin_geo_cell_key` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.oscillation_window_ticks` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.output_batch_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.overlay_manifest_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.pack_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.parent_system_object_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.partition_profile_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.path_edge_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.perception_interest_policy_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.physics_profile_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.planet_tags` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.platform_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.platform_tag` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.platform_tags` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.polar_meridional_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.polar_zonal_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.port_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.pose_granted_process_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.product_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.product_version` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.profile_gate_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.project_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.projection_profile_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.protocol_frame_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1932,12 +2078,16 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.reenactment_descriptor` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.refinement_level` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.rejected` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.release_index_default` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.remote_monitoring` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.replay_hash_after` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.replay_hash_before` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.replay_only` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.require_attestation` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.required_capabilities` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.required_contract_ranges` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.required_manifest_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.required_platform_capabilities` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.required_substrates` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.requires_l2_timing` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.risk_quantization_step` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1975,6 +2125,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.system_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.tags` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.target_frame_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.target_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.target_semantic_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.target_slots` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.targets` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -1983,6 +2134,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.temporal_delay_ticks` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.temporal_domain_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.threshold_crossed` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.tier` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.tier_taxonomy_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.time_control_policy_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.time_mapping_cost_units` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -2001,12 +2153,19 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.triggering_conditions` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.ui_command_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.unstable_oscillation_action` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.untrusted_root_behavior` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.update_history` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.user_message_key` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.validation` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.visible_fraction_permille` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.warn_unsigned_for` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.water_view_artifact` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`mod.unknown.year_length_ticks` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.abi_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.arch_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.attach_record` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.binary_ref` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.build_configuration` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.build_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.client_endpoint_descriptor_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.compat.contract_mismatches` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -2016,24 +2175,55 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.compat.required_capability_violations` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.compatibility_mode_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.compilation_options_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.component_graph_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.component_graph_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.component_install_plan_fingerprint` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.default_semver` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.descriptor_command` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.descriptor_ref` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.deterministic_invocation` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.dist_bin_names` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.enabled_capabilities` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.endpoint_descriptor_hashes` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.explicit_build_number` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.git_commit_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.governance_profile_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.governance_profile_ref` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.handshake_messages` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.inputs_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.install_profile_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.install_resolution_policy_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.legacy_ref_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.negotiation_record_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.negotiation_record_hashes` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.os_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.payload_ref` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.platform_descriptor_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.platform_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.platform_tag` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.product_version` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.rel_path` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.release_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.release_index_ref` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.release_manifest_ref` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.remote_endpoint_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.remote_last_event_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.remote_log_events` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.remote_status` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.requests_nondeterministic_allowance` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.selected_component_descriptors` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.selected_component_ids` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.semantic_contract_registry_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.semantic_contract_registry_ref` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.server_endpoint_descriptor_hash` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.session_begin` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.source` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.source_revision_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.target_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.target_tier` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.tool_surface` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.transport_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/extension_interpretation_registry.json` item_id=`official.trust_policy_id` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/failure_classes.json` item_id=`dominium.playbook.build_output_missing` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/failure_classes.json` item_id=`dominium.playbook.derived_artifact_stale` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/failure_classes.json` item_id=`dominium.playbook.doc_canon_drift` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -3004,6 +3194,28 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/software_toolchain_registry.json` item_id=`toolchain.stub_cpp98` stability_class=`provisional` future_series=`LIB` risk=`low` replacement_target=`Replace provisional distribution and library semantics with release-pinned LIB registry definitions.`
 - registry_path=`data/registries/software_toolchain_registry.json` item_id=`toolchain.stub_script` stability_class=`provisional` future_series=`LIB` risk=`low` replacement_target=`Replace provisional distribution and library semantics with release-pinned LIB registry definitions.`
 
+## LIB/APPSHELL
+
+- entry_count: `11`
+
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_BIN` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_EXPORTS` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_INSTALL` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_INSTANCES` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_IPC` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_LOCKS` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_LOGS` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_PACKS` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_PROFILES` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_SAVES` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+- registry_path=`data/registries/virtual_root_registry.json` item_id=`VROOT_STORE` stability_class=`provisional` future_series=`LIB/APPSHELL` risk=`medium` replacement_target=`release-pinned virtual path contract and install discovery registry`
+
+## LIB/DIST
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.instance_manifest` stability_class=`provisional` future_series=`LIB/DIST` risk=`medium` replacement_target=`Replace provisional instance lifecycle policy with release-pinned instance migration chains.`
+
 ## LIB/PACK-COMPAT
 
 - entry_count: `2`
@@ -3011,11 +3223,23 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/provides_registry.json` item_id=`provides.earth.dem.v1` stability_class=`provisional` future_series=`LIB/PACK-COMPAT` risk=`low` replacement_target=`Replace provisional provides surfaces with release-pinned LIB and PACK-COMPAT provider definitions.`
 - registry_path=`data/registries/provides_registry.json` item_id=`provides.profile.bundle.v1` stability_class=`provisional` future_series=`LIB/PACK-COMPAT` risk=`low` replacement_target=`Replace provisional provides surfaces with release-pinned LIB and PACK-COMPAT provider definitions.`
 
+## LIB/PROFILE
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.profile_bundle` stability_class=`provisional` future_series=`LIB/PROFILE` risk=`medium` replacement_target=`Replace provisional profile-bundle lifecycle policy with release-pinned artifact migrations and profile contracts.`
+
 ## LIB/SERVER
 
 - entry_count: `1`
 
 - registry_path=`data/registries/server_config_registry.json` item_id=`session.mvp_default` stability_class=`provisional` future_series=`LIB/SERVER` risk=`low` replacement_target=`Replace MVP server config placeholder with release-pinned server configuration semantics.`
+
+## LIB/UPDATE-MODEL
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.install_manifest` stability_class=`provisional` future_series=`LIB/UPDATE-MODEL` risk=`medium` replacement_target=`Replace provisional install-manifest lifecycle policy with release-index governed install migrations.`
 
 ## LOGIC
 
@@ -3101,6 +3325,43 @@ It is a release-planning surface only and does not alter runtime behavior.
 - entry_count: `1`
 
 - registry_path=`data/registries/generator_version_registry.json` item_id=`gen.v0_stub` stability_class=`provisional` future_series=`MW/EARTH/SOL` risk=`medium` replacement_target=`Replace MVP generator version placeholders with release lineage metadata for MW/EARTH/SOL generators.`
+
+## OBSERVABILITY/DIAG
+
+- entry_count: `8`
+
+- registry_path=`data/registries/observability_guarantee_registry.json` item_id=`redaction.compat` stability_class=`provisional` future_series=`OBSERVABILITY/DIAG` risk=`medium` replacement_target=`Release-pinned observability guarantee bundles and per-channel message governance.`
+- registry_path=`data/registries/observability_guarantee_registry.json` item_id=`redaction.diag` stability_class=`provisional` future_series=`OBSERVABILITY/DIAG` risk=`medium` replacement_target=`Release-pinned observability guarantee bundles and per-channel message governance.`
+- registry_path=`data/registries/observability_guarantee_registry.json` item_id=`redaction.lib` stability_class=`provisional` future_series=`OBSERVABILITY/DIAG` risk=`medium` replacement_target=`Release-pinned observability guarantee bundles and per-channel message governance.`
+- registry_path=`data/registries/observability_guarantee_registry.json` item_id=`redaction.packs` stability_class=`provisional` future_series=`OBSERVABILITY/DIAG` risk=`medium` replacement_target=`Release-pinned observability guarantee bundles and per-channel message governance.`
+- registry_path=`data/registries/observability_guarantee_registry.json` item_id=`redaction.refusal` stability_class=`provisional` future_series=`OBSERVABILITY/DIAG` risk=`medium` replacement_target=`Release-pinned observability guarantee bundles and per-channel message governance.`
+- registry_path=`data/registries/observability_guarantee_registry.json` item_id=`redaction.server` stability_class=`provisional` future_series=`OBSERVABILITY/DIAG` risk=`medium` replacement_target=`Release-pinned observability guarantee bundles and per-channel message governance.`
+- registry_path=`data/registries/observability_guarantee_registry.json` item_id=`redaction.supervisor` stability_class=`provisional` future_series=`OBSERVABILITY/DIAG` risk=`medium` replacement_target=`Release-pinned observability guarantee bundles and per-channel message governance.`
+- registry_path=`data/registries/observability_guarantee_registry.json` item_id=`redaction.update` stability_class=`provisional` future_series=`OBSERVABILITY/DIAG` risk=`medium` replacement_target=`Release-pinned observability guarantee bundles and per-channel message governance.`
+
+## PACK-COMPAT/RELEASE
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.pack_lock` stability_class=`provisional` future_series=`PACK-COMPAT/RELEASE` risk=`medium` replacement_target=`Replace provisional pack-lock lifecycle policy with final lockfile contract governance and release migrations.`
+
+## PLATFORM/DIST
+
+- entry_count: `13`
+
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_bsd.abi_null.arch_x86_64` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote BSD only after a real bundle exists and passes clean-room, platform-matrix, and convergence gates.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_linux.abi_glibc.arch_arm64` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote Linux ARM64 after DIST clean-room and platform-matrix lanes run on built artifacts.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_linux.abi_glibc.arch_x86_64` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Keep the target as declared Tier 1 and enable release-index publication only once the Linux bundle passes all gates.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_macos_classic.abi_carbon.arch_ppc32` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote only after Carbon-specific runtime validation and packaging exist.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_macosx.abi_cocoa.arch_arm64` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote after macOS clean-room and DIST matrix validation are available.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_msdos.abi_freestanding.arch_x86_32` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Replace the placeholder once a DOS-targeted runtime and packaging flow exist.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_posix.abi_null.arch_riscv64` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote after a POSIX-min RISC-V bundle passes the platform matrix and clean-room lanes.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_posix.abi_null.arch_x86_64` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote only after a dedicated POSIX-min distribution bundle exists.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_posix.abi_sdl.arch_x86_64` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote after a real SDL-backed windowing/runtime path exists.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_web.abi_wasm.arch_wasm32` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote after a browser packaging model and capability-gated rendered shell exist.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_win9x.abi_mingw.arch_x86_32` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote only after a Win9x-specific bundle and validation lane exist.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_winnt.abi_msvc.arch_x86_32` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Promote after a real Win32 bundle exists and passes DIST/CONVERGENCE gates.`
+- registry_path=`data/registries/target_matrix_registry.json` item_id=`target.os_winnt.abi_msvc.arch_x86_64` stability_class=`provisional` future_series=`PLATFORM/DIST` risk=`medium` replacement_target=`Keep the target official; replace only if the release line moves to a new Tier 1 baseline.`
 
 ## PROC
 
@@ -3439,6 +3700,52 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/tool_type_registry.json` item_id=`tool.welder.basic` stability_class=`provisional` future_series=`PROC` risk=`medium` replacement_target=`Replace MVP process defaults with release-pinned process and capsule contracts.`
 - registry_path=`data/registries/tool_type_registry.json` item_id=`tool.wrench.basic` stability_class=`provisional` future_series=`PROC` risk=`medium` replacement_target=`Replace MVP process defaults with release-pinned process and capsule contracts.`
 
+## RELEASE
+
+- entry_count: `11`
+
+- registry_path=`data/registries/artifact_kind_registry.json` item_id=`artifact.binary` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.`
+- registry_path=`data/registries/artifact_kind_registry.json` item_id=`artifact.bundle` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.`
+- registry_path=`data/registries/artifact_kind_registry.json` item_id=`artifact.lock` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.`
+- registry_path=`data/registries/artifact_kind_registry.json` item_id=`artifact.manifest` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.`
+- registry_path=`data/registries/artifact_kind_registry.json` item_id=`artifact.pack` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.`
+- registry_path=`data/registries/artifact_kind_registry.json` item_id=`artifact.profile` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 artifact kind stubs with release-pinned artifact manifest and packaging contracts.`
+- registry_path=`data/registries/release_channel_registry.json` item_id=`alpha` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.`
+- registry_path=`data/registries/release_channel_registry.json` item_id=`beta` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.`
+- registry_path=`data/registries/release_channel_registry.json` item_id=`mock` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.`
+- registry_path=`data/registries/release_channel_registry.json` item_id=`rc` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.`
+- registry_path=`data/registries/release_channel_registry.json` item_id=`stable` stability_class=`provisional` future_series=`RELEASE` risk=`medium` replacement_target=`Replace RELEASE-0 channel stubs with release-pinned channel and distribution policy contracts.`
+
+## RELEASE-INDEX/LAB
+
+- entry_count: `1`
+
+- registry_path=`data/registries/release_resolution_policy_registry.json` item_id=`policy.lab` stability_class=`provisional` future_series=`RELEASE-INDEX/LAB` risk=`medium` replacement_target=`Replace with a trust-governed experimental acquisition policy family when remote indices are formalized.`
+
+## RELEASE/DIST
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.release_manifest` stability_class=`provisional` future_series=`RELEASE/DIST` risk=`medium` replacement_target=`Replace provisional release-manifest lifecycle policy with final archive and signing migrations.`
+
+## RENDER
+
+- entry_count: `1`
+
+- registry_path=`data/registries/tolerance_registry.json` item_id=`tol.render_interp` stability_class=`provisional` future_series=`RENDER` risk=`medium` replacement_target=`Replace MVP render interpolation tolerance with renderer-backend-specific release policies.`
+
+## SAVE/COMPAT
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.save` stability_class=`provisional` future_series=`SAVE/COMPAT` risk=`medium` replacement_target=`Replace provisional save lifecycle policy with release-pinned save migrations and read-only governance.`
+
+## SESSION/COMPAT
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.session_template` stability_class=`provisional` future_series=`SESSION/COMPAT` risk=`medium` replacement_target=`Replace provisional session-template lifecycle policy with final session artifact contracts and migrations.`
+
 ## SOL
 
 - entry_count: `6`
@@ -3476,6 +3783,14 @@ It is a release-planning surface only and does not alter runtime behavior.
 - entry_count: `1`
 
 - registry_path=`data/registries/provides_registry.json` item_id=`provides.ephemeris.system.v1` stability_class=`provisional` future_series=`SOL/LIB` risk=`medium` replacement_target=`Replace the provisional ephemeris provides surface with contract-pinned provider selection once N-body and real ephemeris overlays are formalized.`
+
+## STORE-GC
+
+- entry_count: `3`
+
+- registry_path=`data/registries/gc_policy_registry.json` item_id=`gc.aggressive` stability_class=`provisional` future_series=`STORE-GC` risk=`medium` replacement_target=`Release-pinned store lifecycle policy bundles after shared install/store transactions are hardened.`
+- registry_path=`data/registries/gc_policy_registry.json` item_id=`gc.none` stability_class=`provisional` future_series=`STORE-GC` risk=`medium` replacement_target=`Release-pinned store lifecycle policy bundles after shared install/store transactions are hardened.`
+- registry_path=`data/registries/gc_policy_registry.json` item_id=`gc.safe` stability_class=`provisional` future_series=`STORE-GC` risk=`medium` replacement_target=`Release-pinned store lifecycle policy bundles after shared install/store transactions are hardened.`
 
 ## SYS
 
@@ -3628,13 +3943,50 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/trust_policy.json` item_id=`$.record.entries[6]` stability_class=`provisional` future_series=`SYS` risk=`medium` replacement_target=`Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.`
 - registry_path=`data/registries/universe_physics_profile_registry.json` item_id=`physics.null` stability_class=`provisional` future_series=`SYS` risk=`medium` replacement_target=`Replace MVP system defaults with release-pinned boundary, macro, and reliability contracts.`
 
+## TRUST/RELEASE
+
+- entry_count: `2`
+
+- registry_path=`data/registries/trust_policy_registry.json` item_id=`trust.default_mock` stability_class=`provisional` future_series=`TRUST/RELEASE` risk=`medium` replacement_target=`Replace provisional mock trust defaults with channel-specific release trust policies and signed root bundles.`
+- registry_path=`data/registries/trust_policy_registry.json` item_id=`trust.strict_ranked` stability_class=`provisional` future_series=`TRUST/RELEASE` risk=`medium` replacement_target=`Replace provisional ranked trust policy with signed trust-root bundles, revocation lists, and final server policy bindings.`
+
+## TRUST/UPDATE-MODEL
+
+- entry_count: `1`
+
+- registry_path=`data/registries/trust_policy_registry.json` item_id=`trust.anarchy` stability_class=`provisional` future_series=`TRUST/UPDATE-MODEL` risk=`medium` replacement_target=`Replace provisional open trust policy with release-index governed trust and server policy bundles.`
+
+## UNIVERSAL-ID
+
+- entry_count: `12`
+
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.bundle` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.format` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.install` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.instance` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.manifest` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.pack` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.product_binary` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.protocol` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.repro_bundle` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.save` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.schema` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.suite_release` stability_class=`provisional` future_series=`UNIVERSAL-ID` risk=`medium` replacement_target=`Release-pinned universal identity kind contract registry.`
+
+## UPDATE/TRUST
+
+- entry_count: `1`
+
+- registry_path=`data/registries/migration_policy_registry.json` item_id=`artifact.release_index` stability_class=`provisional` future_series=`UPDATE/TRUST` risk=`medium` replacement_target=`Replace provisional release-index lifecycle policy with signed release-index migrations and channel governance.`
+
 ## VALIDATION-GOV
 
-- entry_count: `10`
+- entry_count: `11`
 
 - registry_path=`data/registries/validation_suite_registry.json` item_id=`validate.arch_audit` stability_class=`provisional` future_series=`VALIDATION-GOV` risk=`medium` replacement_target=`Release-pinned validation suite contract registry.`
 - registry_path=`data/registries/validation_suite_registry.json` item_id=`validate.contracts` stability_class=`provisional` future_series=`VALIDATION-GOV` risk=`medium` replacement_target=`Release-pinned validation suite contract registry.`
 - registry_path=`data/registries/validation_suite_registry.json` item_id=`validate.determinism` stability_class=`provisional` future_series=`VALIDATION-GOV` risk=`medium` replacement_target=`Release-pinned validation suite contract registry.`
+- registry_path=`data/registries/validation_suite_registry.json` item_id=`validate.identity` stability_class=`provisional` future_series=`VALIDATION-GOV` risk=`medium` replacement_target=`Release-pinned validation suite contract registry.`
 - registry_path=`data/registries/validation_suite_registry.json` item_id=`validate.library` stability_class=`provisional` future_series=`VALIDATION-GOV` risk=`medium` replacement_target=`Release-pinned validation suite contract registry.`
 - registry_path=`data/registries/validation_suite_registry.json` item_id=`validate.negotiation` stability_class=`provisional` future_series=`VALIDATION-GOV` risk=`medium` replacement_target=`Release-pinned validation suite contract registry.`
 - registry_path=`data/registries/validation_suite_registry.json` item_id=`validate.packs` stability_class=`provisional` future_series=`VALIDATION-GOV` risk=`medium` replacement_target=`Release-pinned validation suite contract registry.`

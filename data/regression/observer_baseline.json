@@ -161,6 +161,6 @@
   },
   "update_policy": {
     "required_commit_tag": "REGRESSION-UPDATE",
-    "notes": "Baseline changes require explicit review and deterministic revalidation. Updated under REGRESSION-UPDATE on 2026-03-16 (Omega prep schema-sync and packaging regression lock refresh)."
+    "notes": "Baseline changes require explicit review and deterministic revalidation. Reverified under REGRESSION-UPDATE on 2026-03-17 during Omega prep governance cleanup."
   }
 }
