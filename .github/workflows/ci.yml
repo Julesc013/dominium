@@ -263,14 +263,14 @@ jobs:
             PYTHON_BIN=python3
           fi
           "$PYTHON_BIN" - <<'PY'
-import shutil
-required = ("tool_ui_bind", "tool_ui_validate", "tool_ui_doc_annotate")
-for tool in required:
-    path = shutil.which(tool) or shutil.which(tool + ".exe")
-    if not path:
-        raise SystemExit("missing canonical tool on PATH: {}".format(tool))
-    print("{}={}".format(tool, path.replace("\\\\", "/")))
-PY
+          import shutil
+          required = ("tool_ui_bind", "tool_ui_validate", "tool_ui_doc_annotate")
+          for tool in required:
+              path = shutil.which(tool) or shutil.which(tool + ".exe")
+              if not path:
+                  raise SystemExit("missing canonical tool on PATH: {}".format(tool))
+              print("{}={}".format(tool, path.replace("\\\\", "/")))
+          PY
 
       - name: Test
         run: python scripts/dev/run_testx.py --repo-root . --test-dir build/${{ matrix.name }} --output-on-failure --extra-args "${{ matrix.ctest_args }}"
@@ -374,14 +374,14 @@ PY
             PYTHON_BIN=python3
           fi
           "$PYTHON_BIN" - <<'PY'
-import shutil
-required = ("tool_ui_bind", "tool_ui_validate", "tool_ui_doc_annotate")
-for tool in required:
-    path = shutil.which(tool) or shutil.which(tool + ".exe")
-    if not path:
-        raise SystemExit("missing canonical tool on PATH: {}".format(tool))
-    print("{}={}".format(tool, path.replace("\\\\", "/")))
-PY
+          import shutil
+          required = ("tool_ui_bind", "tool_ui_validate", "tool_ui_doc_annotate")
+          for tool in required:
+              path = shutil.which(tool) or shutil.which(tool + ".exe")
+              if not path:
+                  raise SystemExit("missing canonical tool on PATH: {}".format(tool))
+              print("{}={}".format(tool, path.replace("\\\\", "/")))
+          PY
 
       - name: Test
         run: python scripts/dev/run_testx.py --repo-root . --test-dir build/${{ matrix.name }} --output-on-failure --extra-args "${{ matrix.ctest_args }}"
