@@ -35,9 +35,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Strict build (dev lane)
-        run: |
-          cmake -S . -B build/ci_dev -G Ninja -DCMAKE_BUILD_TYPE=Debug -DDOM_DISALLOW_DOWNLOADS=ON -DFETCHCONTENT_FULLY_DISCONNECTED=ON -DFETCHCONTENT_UPDATES_DISCONNECTED=ON -DDOM_PLATFORM=posix_headless -DDOM_BACKEND_SOFT=OFF -DDOM_BACKEND_NULL=ON -DDOM_ENABLE_NET=ON -DDOM_BUILD_TESTS=ON -DDOM_BUILD_TOOLS=ON
-          cmake --build build/ci_dev --config Debug
+        run: python scripts/ci/run_strict_build_and_annotate.py --repo-root . --build-dir build/ci_dev --label "dev lane"
       - name: Impact graph and impacted tests
         run: |
           python tools/dev/dev.py --repo-root . impact-graph
@@ -63,9 +61,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Strict build (verify lane)
-        run: |
-          cmake -S . -B build/ci_verify -G Ninja -DCMAKE_BUILD_TYPE=Debug -DDOM_DISALLOW_DOWNLOADS=ON -DFETCHCONTENT_FULLY_DISCONNECTED=ON -DFETCHCONTENT_UPDATES_DISCONNECTED=ON -DDOM_PLATFORM=posix_headless -DDOM_BACKEND_SOFT=OFF -DDOM_BACKEND_NULL=ON -DDOM_ENABLE_NET=ON -DDOM_BUILD_TESTS=ON -DDOM_BUILD_TOOLS=ON
-          cmake --build build/ci_verify --config Debug
+        run: python scripts/ci/run_strict_build_and_annotate.py --repo-root . --build-dir build/ci_verify --label "verify lane"
       - name: STRICT profile
         run: python tools/xstack/run.py --repo-root . --cache on strict
       - name: Packaging dry-run
@@ -89,9 +85,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Strict build (dist lane)
-        run: |
-          cmake -S . -B build/ci_dist -G Ninja -DCMAKE_BUILD_TYPE=Debug -DDOM_DISALLOW_DOWNLOADS=ON -DFETCHCONTENT_FULLY_DISCONNECTED=ON -DFETCHCONTENT_UPDATES_DISCONNECTED=ON -DDOM_PLATFORM=posix_headless -DDOM_BACKEND_SOFT=OFF -DDOM_BACKEND_NULL=ON -DDOM_ENABLE_NET=ON -DDOM_BUILD_TESTS=ON -DDOM_BUILD_TOOLS=ON
-          cmake --build build/ci_dist --config Debug
+        run: python scripts/ci/run_strict_build_and_annotate.py --repo-root . --build-dir build/ci_dist --label "dist lane"
       - name: Full verify with deterministic packaging
         run: |
           python tools/xstack/run.py --repo-root . --cache on strict
