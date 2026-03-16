@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: PLATFORM/DIST
 Replacement Target: release-pinned target policy contracts and trust-gated update selection

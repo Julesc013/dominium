@@ -4,10 +4,16 @@ Shared app-layer runtime helpers.
 #include "dominium/app/app_runtime.h"
 
 #include <ctype.h>
+#include <errno.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined(_WIN32)
+#include <direct.h>
+#else
+#include <sys/stat.h>
+#endif
 
 #include "dom_contracts/_internal/dom_build_version.h"
 #include "dom_contracts/version.h"
@@ -63,6 +69,58 @@ static dom_app_ui_mode dom_app_parse_ui_value(const char* value, int* ok)
         *ok = 0;
     }
     return DOM_APP_UI_NONE;
+}
+
+static int dom_app_make_dir_single(const char* path)
+{
+    int res;
+
+    if (!path || path[0] == '\0') {
+        return 0;
+    }
+#if defined(_WIN32)
+    res = _mkdir(path);
+#else
+    res = mkdir(path, 0777);
+#endif
+    if (res == 0) {
+        return 1;
+    }
+    if (errno == EEXIST) {
+        return 1;
+    }
+    return 0;
+}
+
+int dom_app_ensure_directory_exists(const char* path)
+{
+    char partial[260];
+    size_t i;
+    size_t len;
+
+    if (!path || path[0] == '\0') {
+        return 0;
+    }
+    len = strlen(path);
+    if (len >= sizeof(partial)) {
+        return 0;
+    }
+
+    memcpy(partial, path, len + 1u);
+    for (i = 0u; i < len; ++i) {
+        char saved;
+        if (partial[i] != '/' && partial[i] != '\\') {
+            continue;
+        }
+        if (i == 0u) {
+            continue;
+        }
+        saved = partial[i];
+        partial[i] = '\0';
+        (void)dom_app_make_dir_single(partial);
+        partial[i] = saved;
+    }
+    return dom_app_make_dir_single(partial);
 }
 
 void dom_app_ui_request_init(dom_app_ui_request* req)

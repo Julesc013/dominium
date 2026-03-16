@@ -3,6 +3,7 @@ Client shell core implementation.
 */
 #include "client_shell.h"
 
+#include "dominium/app/app_runtime.h"
 #include "domino/app/runtime.h"
 #include "dominium/physical/physical_audit.h"
 
@@ -10,17 +11,9 @@ Client shell core implementation.
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <errno.h>
 #include <ctype.h>
 #include <math.h>
 #include <time.h>
-#if defined(_WIN32)
-#include <direct.h>
-#endif
-
-#if !defined(_WIN32)
-int mkdir(const char* path, int mode);
-#endif
 
 
 #define DOM_REFUSAL_INVALID "WD-REFUSAL-INVALID"
@@ -3440,25 +3433,7 @@ static void dom_shell_join_path(char* out, size_t cap, const char* base, const c
 
 static int dom_shell_ensure_dir(const char* path)
 {
-    if (!path || !path[0]) {
-        return 0;
-    }
-#if defined(_WIN32)
-    if (_mkdir(path) == 0) {
-        return 1;
-    }
-    if (errno == EEXIST) {
-        return 1;
-    }
-#else
-    if (mkdir(path, 0755) == 0) {
-        return 1;
-    }
-    if (errno == EEXIST) {
-        return 1;
-    }
-#endif
-    return 0;
+    return dom_app_ensure_directory_exists(path);
 }
 
 static int dom_shell_file_exists(const char* path)

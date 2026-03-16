@@ -21,15 +21,7 @@ Minimal server entrypoint with MP0 loopback/local modes.
 #include <string.h>
 #include <stdarg.h>
 #include <ctype.h>
-#include <errno.h>
 #include <time.h>
-#if defined(_WIN32)
-#include <direct.h>
-#endif
-
-#if !defined(_WIN32)
-int mkdir(const char* path, int mode);
-#endif
 
 #define SERVER_PATH_MAX 512
 #define SERVER_DEFAULT_TICKS 60u
@@ -231,48 +223,9 @@ static void server_join_path(char* out, size_t cap, const char* base, const char
     }
 }
 
-static int server_mkdir_single(const char* path)
-{
-    if (!path || !path[0]) {
-        return 0;
-    }
-#if defined(_WIN32)
-    if (_mkdir(path) == 0) {
-        return 1;
-    }
-#else
-    if (mkdir(path, 0755) == 0) {
-        return 1;
-    }
-#endif
-    return (errno == EEXIST);
-}
-
 static int server_ensure_dir(const char* path)
 {
-    char tmp[SERVER_PATH_MAX];
-    size_t len;
-    size_t i;
-    if (!path || !path[0]) {
-        return 0;
-    }
-    server_copy_string(tmp, sizeof(tmp), path);
-    len = strlen(tmp);
-    if (len == 0u) {
-        return 0;
-    }
-    for (i = 1u; i < len; ++i) {
-        if (tmp[i] == '/' || tmp[i] == '\\') {
-            char ch = tmp[i];
-            tmp[i] = '\0';
-            if (!server_mkdir_single(tmp)) {
-                tmp[i] = ch;
-                return 0;
-            }
-            tmp[i] = ch;
-        }
-    }
-    return server_mkdir_single(tmp);
+    return dom_app_ensure_directory_exists(path);
 }
 
 static int server_ensure_dir_for_file(const char* path)

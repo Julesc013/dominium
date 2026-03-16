@@ -40,18 +40,10 @@ Minimal client entrypoint with MP0 local-connect demo.
 #include <stdarg.h>
 #include <ctype.h>
 #include <math.h>
-#include <errno.h>
-#if defined(_WIN32)
-#include <direct.h>
-#endif
 #if defined(_WIN32)
 #include <io.h>
 #else
 #include <dirent.h>
-#endif
-
-#if !defined(_WIN32)
-int mkdir(const char* path, int mode);
 #endif
 
 #define CLIENT_UI_DEFAULT_SCENARIO_PATH "data/scenarios/default.scenario"
@@ -1825,25 +1817,7 @@ static uint32_t client_ui_list_files(const char* root,
 
 static int client_ui_ensure_dir(const char* path)
 {
-    if (!path || !path[0]) {
-        return 0;
-    }
-#if defined(_WIN32)
-    if (_mkdir(path) == 0) {
-        return 1;
-    }
-    if (errno == EEXIST) {
-        return 1;
-    }
-#else
-    if (mkdir(path, 0755) == 0) {
-        return 1;
-    }
-    if (errno == EEXIST) {
-        return 1;
-    }
-#endif
-    return 0;
+    return dom_app_ensure_directory_exists(path);
 }
 
 static int client_ui_file_exists(const char* path)

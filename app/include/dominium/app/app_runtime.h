@@ -120,6 +120,7 @@ void dom_app_build_info_init(dom_app_build_info* info,
                              const char* product_name,
                              const char* product_version);
 void dom_app_print_build_info(const dom_app_build_info* info);
+int  dom_app_ensure_directory_exists(const char* path);
 
 typedef struct dom_app_platform_caps {
     dsys_caps caps;
