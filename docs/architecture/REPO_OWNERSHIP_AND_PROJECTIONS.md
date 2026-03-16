@@ -72,10 +72,10 @@ Scope: repository sovereignty, authoritative sources, and IDE projections.
 | `/ide/README.md`, `/ide/manifests/**` | AUTHORITATIVE metadata | Projection policy + manifest schema/examples. |
 
 
-| `/setup/**/package/**/vs/**` | FROZEN PACKAGING INPUT | Grandfathered packaging inputs (none currently). |
+| `/setup/**/package/**/vs/**` | FROZEN PACKAGING INPUT | No current first-class paths; see legacy grandfathered archival inputs below. |
 
 
-| `/setup/**/xcode/**` | FROZEN PACKAGING INPUT | Grandfathered packaging inputs (none currently). |
+| `/setup/**/xcode/**` | FROZEN PACKAGING INPUT | No current first-class paths; see legacy grandfathered archival inputs below. |
 
 
 | `/.vs`, `/.vscode` | GENERATED | Local IDE state; must never be committed. |
@@ -90,10 +90,12 @@ Scope: repository sovereignty, authoritative sources, and IDE projections.
 ## Grandfathered packaging inputs
 
 
-None discovered in the repository at the time of REPOX survey.
+Legacy archival exceptions retained in-tree:
 
+- `/legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs/**`
+- `/legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/**`
 
-If any are added later, they MUST be listed here with exact paths.
+If any new non-legacy paths are added later, they MUST be listed here with exact paths.
 
 
 

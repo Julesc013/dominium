@@ -13,16 +13,13 @@ import re
 import sys
 
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
 
 KERNEL_ROOTS = (
-    REPO_ROOT / "source/dominium/launcher/core/include",
-    REPO_ROOT / "source/dominium/launcher/core/src",
-    REPO_ROOT / "source/dominium/launcher/core/tests",
-    REPO_ROOT / "source/dominium/setup/core/include",
-    REPO_ROOT / "source/dominium/setup/core/src",
-    REPO_ROOT / "source/dominium/setup/kernel/include",
-    REPO_ROOT / "source/dominium/setup/kernel/src",
+    REPO_ROOT / "launcher" / "include" / "launcher",
+    REPO_ROOT / "launcher" / "include" / "launcher" / "_internal" / "launcher_internal",
+    REPO_ROOT / "launcher" / "core",
+    REPO_ROOT / "setup" / "core",
 )
 
 FORBIDDEN_INCLUDE_EXACT = {

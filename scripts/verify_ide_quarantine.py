@@ -16,6 +16,13 @@ IDE_DIR_SUFFIXES = {
     ".xcodeproj",
     ".xcworkspace",
 }
+GENERATED_ROOT_PREFIXES = (
+    "build/",
+    "out/",
+    "dist/",
+    "bin/",
+    ".xstack_cache/",
+)
 STATE_DIR_NAMES = {
     ".vs",
     "DerivedData",
@@ -45,6 +52,8 @@ def is_allowed_projection_path(rel_path):
     allow_patterns = [
         "setup/**/package/**/vs/**",
         "setup/**/xcode/**",
+        "legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs/**",
+        "legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/**",
     ]
     for pattern in allow_patterns:
         if fnmatch.fnmatch(rel_path, pattern):
@@ -75,8 +84,14 @@ def main():
             continue
 
         rel_root = norm_rel(root, repo_root)
+        if any(rel_root == prefix.rstrip("/") or rel_root.startswith(prefix) for prefix in GENERATED_ROOT_PREFIXES):
+            dirs[:] = []
+            continue
         for d in list(dirs):
             rel_dir = norm_rel(os.path.join(root, d), repo_root)
+            if any(rel_dir == prefix.rstrip("/") or rel_dir.startswith(prefix) for prefix in GENERATED_ROOT_PREFIXES):
+                dirs.remove(d)
+                continue
             if d in STATE_DIR_NAMES:
                 if d == ".vs":
                     if rel_dir != ".vs" and not rel_dir.startswith("ide/"):

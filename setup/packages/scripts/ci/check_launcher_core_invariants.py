@@ -17,9 +17,11 @@ import re
 import sys
 
 
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
 CORE_ROOTS = (
-    pathlib.Path("source/dominium/launcher/core/include"),
-    pathlib.Path("source/dominium/launcher/core/src"),
+    REPO_ROOT / "launcher" / "include" / "launcher",
+    REPO_ROOT / "launcher" / "include" / "launcher" / "_internal" / "launcher_internal",
+    REPO_ROOT / "launcher" / "core",
 )
 
 
@@ -138,9 +140,9 @@ def main() -> int:
 
             code, in_block = strip_c_comments_line(line, in_block)
             for pat in FORBIDDEN_CALL_PATTERNS:
-                # Allow time() only in the null-services time implementation (core/src/launcher_core.cpp),
+                # Allow time() only in the null-services time implementation (launcher/core/launcher_core.c),
                 # where it is used to seed a monotonic now_us() provider for audit/run ids.
-                if path.name == "launcher_core.cpp" and pat.pattern == r"\btime\s*\(":
+                if path.name == "launcher_core.c" and pat.pattern == r"\btime\s*\(":
                     continue
                 if pat.search(code):
                     violations.append(f"{path}:{i}: forbidden_call:{pat.pattern}")
