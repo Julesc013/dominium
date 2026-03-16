@@ -1,5 +1,7 @@
-Status: BASELINE
+Status: DERIVED
 Last Reviewed: 2026-03-08
+Supersedes: none
+Superseded By: none
 Scope: LOGIC-6 deterministic compilation, proof, runtime selection, and SYS collapse integration.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

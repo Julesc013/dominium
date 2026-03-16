@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import sys
+from datetime import date
 from collections import Counter
 from typing import Mapping
 
@@ -23,6 +24,10 @@ CANON_MAP_MD_REL = "docs/audit/CANON_MAP.md"
 DOC_DRIFT_MATRIX_MD_REL = "docs/audit/DOC_DRIFT_MATRIX.md"
 DOC_GAPS_MD_REL = "docs/audit/DOC_GAPS.md"
 REPO_REVIEW_3_FINAL_MD_REL = "docs/audit/REPO_REVIEW_3_FINAL.md"
+
+
+def _today_iso() -> str:
+    return date.today().isoformat()
 
 SKIP_DIR_NAMES = {
     ".git",
@@ -493,6 +498,9 @@ def contradictory_doc_header_issues(report: Mapping[str, object] | None) -> list
 def _render_doc_index(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
+        "Last Reviewed: {}".format(_today_iso()),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: DOC-CONVERGENCE",
         "Replacement Target: Canon-aligned documentation set tracked by REPO-REVIEW-3.",
@@ -506,6 +514,8 @@ def _render_doc_index(report: Mapping[str, object]) -> str:
     ]
     for row in list(dict(report).get("entries") or []):
         item = dict(row or {})
+        if _token(item.get("path")).startswith(("docs/archive/", "data/archive/")):
+            continue
         lines.append(
             "| `{}` | {} | `{}` | `{}` |".format(
                 _token(item.get("path")),
@@ -521,6 +531,9 @@ def _render_doc_index(report: Mapping[str, object]) -> str:
 def _render_canon_map(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
+        "Last Reviewed: {}".format(_today_iso()),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: DOC-CONVERGENCE",
         "Replacement Target: Canon-aligned documentation set tracked by REPO-REVIEW-3.",
@@ -534,6 +547,8 @@ def _render_canon_map(report: Mapping[str, object]) -> str:
     ]
     for row in list(dict(report).get("entries") or []):
         item = dict(row or {})
+        if _token(item.get("path")).startswith(("docs/archive/", "data/archive/")):
+            continue
         lines.append(
             "| `{}` | `{}` | `{}` | `{}` | `{}` |".format(
                 _token(item.get("path")),
@@ -550,6 +565,9 @@ def _render_canon_map(report: Mapping[str, object]) -> str:
 def _render_drift_matrix(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
+        "Last Reviewed: {}".format(_today_iso()),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: DOC-CONVERGENCE",
         "Replacement Target: Canon-aligned documentation set tracked by REPO-REVIEW-3.",
@@ -575,6 +593,9 @@ def _render_drift_matrix(report: Mapping[str, object]) -> str:
 def _render_doc_gaps(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
+        "Last Reviewed: {}".format(_today_iso()),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: DOC-CONVERGENCE",
         "Replacement Target: Canon-aligned documentation set tracked by REPO-REVIEW-3.",
@@ -597,6 +618,9 @@ def _render_final_report(report: Mapping[str, object]) -> str:
     gaps = [dict(row or {}) for row in list(dict(report).get("gap_rows") or [])][:5]
     lines = [
         "Status: DERIVED",
+        "Last Reviewed: {}".format(_today_iso()),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: DOC-CONVERGENCE",
         "Replacement Target: Canon-aligned documentation set tracked by REPO-REVIEW-3.",

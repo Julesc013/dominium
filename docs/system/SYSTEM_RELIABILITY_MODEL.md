@@ -1,5 +1,7 @@
-Status: AUTHORITATIVE
+Status: CANONICAL
 Last Reviewed: 2026-03-06
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: SYS-6 system reliability and predictive failure budgeting for macro capsules.
 Stability: provisional

@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md` and `docs/canon/glossary_v1.md`.
-Stability: provisional
+Stability: stable
 Future Series: DOC-CONVERGENCE
 Replacement Target: patched document aligned to current canon ownership and release scope
 

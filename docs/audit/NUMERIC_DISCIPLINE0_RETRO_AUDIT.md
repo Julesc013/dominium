@@ -1,4 +1,7 @@
 Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: Numeric discipline baseline and release-pinned engine policy docs.

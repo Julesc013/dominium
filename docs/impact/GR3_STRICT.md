@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change: GR3 STRICT invariant unblock (action family coverage + field token hygiene)
 Stability: provisional
 Future Series: DOC-ARCHIVE

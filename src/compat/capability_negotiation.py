@@ -6,7 +6,11 @@ import json
 import os
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from src.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
+from src.platform.platform_probe import (
+    endpoint_descriptor_platform_snapshot,
+    probe_platform_descriptor,
+    project_feature_capabilities_for_platform,
+)
 from src.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -443,10 +447,11 @@ def build_default_endpoint_descriptor(
         repo_root,
         platform_id=str(platform_descriptor.get("platform_id", "")).strip(),
     )
+    platform_snapshot = endpoint_descriptor_platform_snapshot(platform_descriptor)
     merged_extensions["official.platform_id"] = str(platform_descriptor.get("platform_id", "")).strip()
-    merged_extensions["official.platform_descriptor_hash"] = str(platform_descriptor.get("deterministic_fingerprint", "")).strip()
+    merged_extensions["official.platform_descriptor_hash"] = str(platform_snapshot.get("deterministic_fingerprint", "")).strip()
     merged_extensions["official.platform_capability_ids"] = list(platform_descriptor.get("supported_capability_ids") or [])
-    merged_extensions["official.platform_descriptor"] = dict(platform_descriptor)
+    merged_extensions["official.platform_descriptor"] = dict(platform_snapshot)
     merged_extensions["official.target_matrix_registry_rel"] = TARGET_MATRIX_REGISTRY_REL.replace("\\", "/")
     merged_extensions["official.target_id"] = str(target_row.get("target_id", "")).strip()
     merged_extensions["official.os_id"] = str(target_row.get("os_id", "")).strip()

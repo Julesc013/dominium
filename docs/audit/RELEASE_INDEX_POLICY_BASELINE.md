@@ -10,7 +10,7 @@ Replacement Target: signed suite and product evolution policy with explicit yank
 
 - default policy: `policy.exact_suite`
 - latest-compatible fixture selected client version: `0.0.1`
-- exact-suite fixture selected client version: `0.0.0+build.8166d8e67e934a11`
+- exact-suite fixture selected client version: `0.0.0+build.813e37c9c4cfd11e`
 
 ## Yanking Behavior
 
@@ -46,4 +46,4 @@ Replacement Target: signed suite and product evolution policy with explicit yank
 ## Report Fingerprints
 
 - policy registry hash: `5c7df3d88913321fe827bf1ceba5f765d0c7f0ae7ca07048714a1842b96f0788`
-- report fingerprint: `75237ebe50f48215717b34dcc84353dfe57934def932b9dd376fbba9e1062fbb`
+- report fingerprint: `7d1546dcaee165c861aa353e80a22b318946d6f496922c8e4f657e7c7a4bda75`

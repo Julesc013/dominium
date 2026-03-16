@@ -1,4 +1,7 @@
 Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: OBSERVABILITY
 Replacement Target: release-pinned observability registry and redaction policies

@@ -1,5 +1,7 @@
-Status: BASELINE
-Last Updated: 2026-03-01
+Status: DERIVED
+Last Reviewed: 2026-03-01
+Supersedes: none
+Superseded By: none
 Scope: CTRL-7 capability registry enforcement, migration, and tests
 Stability: provisional
 Future Series: DOC-ARCHIVE

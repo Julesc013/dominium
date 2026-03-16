@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: RELEASE
 Replacement Target: release-pinned signed manifest surfaces and reproducible-build audit outputs after RELEASE-3

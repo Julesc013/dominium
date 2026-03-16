@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-16
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, and `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

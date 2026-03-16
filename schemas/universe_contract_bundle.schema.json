@@ -88,7 +88,7 @@
       "deterministic_fingerprint": "95313b59cd3663a63c46d7ced657b12a0fa1eec1c730d334fef8b198ff89e279",
       "extensions": {
         "migration_policy": "compatx.explicit_only",
-        "semantic_contract_registry_hash": "a996c8327410bd3965108401f98c0d0aacd1fb173b9e7bcbace0da6241f5625b"
+        "semantic_contract_registry_hash": "55bef1f0337c3a311cc5a30c8880715bffbf93d93eb64c24cc2f1d7f86b1df94"
       }
     }
   ]

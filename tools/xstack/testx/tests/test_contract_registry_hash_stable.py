@@ -8,13 +8,11 @@ import sys
 TEST_ID = "test_contract_registry_hash_stable"
 TEST_TAGS = ["fast", "compat", "semantic_contracts", "hash"]
 
-EXPECTED_REGISTRY_HASH = "a996c8327410bd3965108401f98c0d0aacd1fb173b9e7bcbace0da6241f5625b"
-
-
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
+    from tools.release.scope_freeze_common import FROZEN_SEMANTIC_CONTRACT_REGISTRY_HASH
     from tools.compatx.core.semantic_contract_validator import (
         load_semantic_contract_registry,
         registry_hash,
@@ -31,6 +29,6 @@ def run(repo_root: str):
     second = registry_hash(payload)
     if first != second:
         return {"status": "fail", "message": "semantic contract registry hash drifted across repeated reads"}
-    if first != EXPECTED_REGISTRY_HASH:
+    if first != FROZEN_SEMANTIC_CONTRACT_REGISTRY_HASH:
         return {"status": "fail", "message": "semantic contract registry hash changed without explicit update"}
     return {"status": "pass", "message": "semantic contract registry hash stable"}

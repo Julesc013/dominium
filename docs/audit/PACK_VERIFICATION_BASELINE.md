@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-11
+Supersedes: none
+Superseded By: none
 Derived From:
 Stability: provisional
 Future Series: DOC-CONVERGENCE

@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DIST
 Replacement Target: DIST-2 artifact integrity verification and DIST-3 installer constitution
@@ -39,4 +41,3 @@ Replacement Target: DIST-2 artifact integrity verification and DIST-3 installer 
 - Unexpected top-level entries: `none`
 - Dev artifacts: `none`
 - Missing required packs: `none`
-

@@ -1,5 +1,7 @@
-Status: AUDIT
-Last Updated: 2026-03-08
+Status: DERIVED
+Last Reviewed: 2026-03-08
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: GEO-1 retro-consistency audit for deterministic spatial indexing and stable identity.
 Stability: provisional

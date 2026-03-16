@@ -1,4 +1,4 @@
-Status: AUTHORITATIVE
+Status: CANONICAL
 Last Reviewed: 2026-03-13
 Supersedes: none
 Superseded By: none

@@ -1,5 +1,7 @@
 Status: CANONICAL
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: RELEASE
 Replacement Target: release-pinned artifact manifest and packaging naming contract after DIST packaging lanes are frozen

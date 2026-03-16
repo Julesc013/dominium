@@ -1,5 +1,7 @@
-Status: AUDIT
+Status: DERIVED
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: RELEASE
 Replacement Target: release-pinned versioning and artifact identity baseline after RELEASE-1 manifest generation

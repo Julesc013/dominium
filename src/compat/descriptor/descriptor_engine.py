@@ -13,6 +13,7 @@ from src.compat.capability_negotiation import (
     semantic_contract_rows_by_category,
 )
 from src.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
+from src.platform.platform_probe import endpoint_descriptor_platform_snapshot
 from src.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
 from src.release.build_id_engine import (
     DEFAULT_PRODUCT_SEMVER,
@@ -23,6 +24,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 PRODUCT_CAPABILITY_DEFAULTS_REL = os.path.join("data", "registries", "product_capability_defaults.json")
 SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
+_BUILD_ID_TEMPLATE = "build.{}"
 
 
 def _read_json(path: str) -> Tuple[dict, str]:
@@ -117,6 +119,24 @@ def _default_semver(product_row: Mapping[str, object]) -> str:
     return token or DEFAULT_PRODUCT_SEMVER
 
 
+def _semantic_contract_registry_hash(build_meta: Mapping[str, object]) -> str:
+    return str(_as_map(build_meta).get("semantic_contract_registry_hash", "")).strip()
+
+
+def _git_commit_hash(build_meta: Mapping[str, object]) -> str:
+    return str(_as_map(build_meta).get("git_commit_hash", "")).strip()
+
+
+def _resolved_build_id(build_meta: Mapping[str, object]) -> str:
+    build_id = str(_as_map(build_meta).get("build_id", "")).strip()
+    if build_id:
+        return build_id
+    git_commit_hash = _git_commit_hash(build_meta)
+    if git_commit_hash:
+        return _BUILD_ID_TEMPLATE.format(git_commit_hash)
+    return ""
+
+
 def product_descriptor_bin_names(repo_root: str) -> List[str]:
     rows_by_id, _error = _product_rows_by_id(repo_root)
     out: List[str] = []
@@ -161,11 +181,11 @@ def build_product_descriptor(
     build_meta = build_product_build_metadata(
         repo_root,
         str(product_id).strip(),
-        platform_tag=str(platform_descriptor.get("platform_id", "")).strip(),
     )
+    platform_snapshot = endpoint_descriptor_platform_snapshot(platform_descriptor)
     resolved_version = str(product_version or "").strip()
     if not resolved_version:
-        resolved_version = "{}+{}".format(_default_semver(product_row), str(build_meta.get("build_id", "")).strip())
+        resolved_version = "{}+{}".format(_default_semver(product_row), _resolved_build_id(build_meta))
 
     product_extensions = _as_map(product_row.get("extensions"))
     defaults_extensions = _as_map(defaults_row.get("extensions"))
@@ -173,10 +193,10 @@ def build_product_descriptor(
     descriptor_extensions.update(defaults_extensions)
     descriptor_extensions.update(
         {
-            "official.build_id": str(build_meta.get("build_id", "")).strip(),
+            "official.build_id": _resolved_build_id(build_meta),
             "official.inputs_hash": str(build_meta.get("inputs_hash", "")).strip(),
-            "official.git_commit_hash": str(build_meta.get("git_commit_hash", "")).strip(),
-            "official.semantic_contract_registry_hash": str(build_meta.get("semantic_contract_registry_hash", "")).strip(),
+            "official.git_commit_hash": _git_commit_hash(build_meta),
+            "official.semantic_contract_registry_hash": _semantic_contract_registry_hash(build_meta),
             "official.compilation_options_hash": str(build_meta.get("compilation_options_hash", "")).strip(),
             "official.source_revision_id": str(build_meta.get("source_revision_id", "")).strip(),
             "official.explicit_build_number": str(build_meta.get("explicit_build_number", "")).strip(),
@@ -188,9 +208,9 @@ def build_product_descriptor(
         }
     )
     descriptor_extensions["official.platform_id"] = str(platform_descriptor.get("platform_id", "")).strip()
-    descriptor_extensions["official.platform_descriptor_hash"] = str(platform_descriptor.get("deterministic_fingerprint", "")).strip()
+    descriptor_extensions["official.platform_descriptor_hash"] = str(platform_snapshot.get("deterministic_fingerprint", "")).strip()
     descriptor_extensions["official.platform_capability_ids"] = list(platform_descriptor.get("supported_capability_ids") or [])
-    descriptor_extensions["official.platform_descriptor"] = dict(platform_descriptor)
+    descriptor_extensions["official.platform_descriptor"] = dict(platform_snapshot)
     descriptor_extensions["official.target_matrix_registry_rel"] = TARGET_MATRIX_REGISTRY_REL.replace("\\", "/")
     descriptor_extensions["official.target_id"] = str(target_row.get("target_id", "")).strip()
     descriptor_extensions["official.os_id"] = str(target_row.get("os_id", "")).strip()

@@ -41,6 +41,7 @@ from src.governance import (
     load_governance_profile,
     select_governance_mode_row,
 )
+from src.meta.identity import IDENTITY_KIND_INSTALL, attach_universal_identity_block
 from src.lib.install import (
     build_product_build_descriptor,
     default_install_registry_path,
@@ -679,6 +680,18 @@ def install_manifest_payload(install_id: str,
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = install_deterministic_fingerprint(payload)
+    payload = attach_universal_identity_block(
+        payload,
+        identity_kind_id=IDENTITY_KIND_INSTALL,
+        identity_id="identity.install.{}".format(str(payload.get("install_id", "")).strip() or "unknown"),
+        stability_class_id="provisional",
+        semver=str(payload.get("install_version", "")).strip(),
+        schema_version=str(payload.get("schema_version", "")).strip() or "2.0.0",
+        protocol_range=dict(payload.get("supported_protocol_versions") or {}),
+        contract_bundle_hash=str(payload.get("semantic_contract_registry_hash", "")).strip().lower(),
+        extensions={"official.rel_path": DEFAULT_INSTALL_MANIFEST},
+    )
+    payload["deterministic_fingerprint"] = install_deterministic_fingerprint(payload)
     return payload
 
 
@@ -1007,6 +1020,8 @@ def _verify_pack_root(
     universe_contract_bundle_path: str,
     trust_policy_id: str,
 ) -> dict:
+    # verify_pack_set(...) runs inside the AppShell adapter together with trust
+    # policy evaluation and deterministic output writing.
     return appshell_verify_pack_root(
         repo_root=REPO_ROOT_HINT,
         root=root,
@@ -3684,6 +3699,7 @@ def main(argv: list[str] | None = None) -> int:
         argv=list(sys.argv[1:] if argv is None else argv),
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
+        legacy_main=_legacy_main,
     )
 
 

@@ -4,55 +4,55 @@
     "canonical_artifact_hashes": [
       {
         "id": "artifact.auditx.findings",
-        "sha256": "1e812e5fe3ae5a1ee443722b5eea60b2f9c7f8ca8b49edefbcc230a221273b84",
+        "sha256": "4aafd6c08646de937c8ef82cde28f4404bf38740556ca01e5bb5542fc0243e4a",
         "source": "docs/audit/auditx/FINDINGS.json"
       },
       {
         "id": "artifact.compatx.baseline",
-        "sha256": "c4d0385ccca0c297c8f9b7ce500a9ada1320268474ed6b39ab89e64cf6cbc7f4",
+        "sha256": "f39b7d1a8c84d767d17bb563607b6528c66c21248eed17800cbfa474ada6e1f5",
         "source": "docs/audit/compat/COMPAT_BASELINE.json"
       },
       {
         "id": "artifact.identity_fingerprint",
-        "sha256": "9b7ff7c081eddfc0d06c1017ce0937437be4036103ad263c044e9c37fd3fce51",
+        "sha256": "9ea291264cf1970d5f5248f8bdf372f926cc5eb9e8ae8960ec4a2fabc605a0fc",
         "source": "docs/audit/identity_fingerprint.json"
       }
     ],
     "extensions": {},
-    "identity_fingerprint_sha256": "b4a17fc71f9ba1a2303e01f4baa68a2e229ba3a13e20bc55f86da5ae3222e3ea",
+    "identity_fingerprint_sha256": "2134b9dd9cee8f4b3954444746c7847f79d49f87bbd9f530bc86289adb7ded40",
     "manifest_id": "securex.integrity_manifest",
     "manifest_version": "1.0.0",
     "pack_hashes": [
       {
         "id": "registry.security_roles",
-        "sha256": "0376f14888cfc8bbf7622f3cc51cba49ef26f5caf5388f71299fd21f5c58d421",
+        "sha256": "8a3961ecb82eb584ade30be28349d6ed356df034b5306258690c197fb0f09a8b",
         "source": "data/registries/security_roles.json"
       },
       {
         "id": "registry.trust_policy",
-        "sha256": "408e33ce2bb49a88e0a366e901a0a3e284f2599185b45ce780698b1ab4395fcc",
+        "sha256": "c65ee9ee1e9d82c9edec2e5d322cac28aee786182dce035dd0428c876fa12922",
         "source": "data/registries/trust_policy.json"
       }
     ],
     "schema_hashes": [
       {
         "id": "schema.integrity_manifest",
-        "sha256": "471338341c998121ee5d5f3e012fdb63771e140ba559617291551dc7fc613a22",
+        "sha256": "1a1f0b087d7bfbe32ab78705e02f2b3dc91d0a085bdc45363be904922489a17e",
         "source": "schema/governance/integrity_manifest.schema"
       },
       {
         "id": "schema.pack_signature",
-        "sha256": "263883e8db0638bfbf4efa6193010be5a3a4ad1e76cce55524cf253a87a9b9b3",
+        "sha256": "39277dfbe2fe9bf92820041d436678c98b8b8f1c554c5b58319b8b2fdf3dbc23",
         "source": "schema/governance/pack_signature.schema"
       },
       {
         "id": "schema.privilege_model",
-        "sha256": "4736f78cbb655858bae6f5ade958b63d38acce2dc33b23030c362b72a75a6d39",
+        "sha256": "511798be83df9b92738d94c6d885794eab1fc758aede01226179d5a17712fa65",
         "source": "schema/governance/privilege_model.schema"
       },
       {
         "id": "schema.trust_policy",
-        "sha256": "0e91add5a7d2e336bcf56dbc18a1f50813def9b96fa0eb6b21b43d0da9e755f5",
+        "sha256": "4e287bbfa264c635ae7d7b0c8813856e669a0852f668dee187c4193fc509e3a5",
         "source": "schema/governance/trust_policy.schema"
       }
     ],
@@ -60,22 +60,22 @@
     "tool_hashes": [
       {
         "id": "tool.auditx",
-        "sha256": "4350ab3a056da7ae0b6b3d86166d5bb165d76ed8e40372e7447835f6a789407e",
+        "sha256": "144b6dc8f67d81350e2cf88020af5341a623aa3cda17471dfa3afd2ef474930b",
         "source": "tools/auditx/auditx.py"
       },
       {
         "id": "tool.compatx",
-        "sha256": "09c1dde3b93df65ba1df0fba2f184fbd80fe64e57e9bd9f7a68c980774659af1",
+        "sha256": "14038782c57cde4ba0b1645fefa3b6b23d3d488a60201fa66d39c6470d503d1a",
         "source": "tools/compatx/compatx.py"
       },
       {
         "id": "tool.controlx",
-        "sha256": "97e4890766339d131cfee5694b5429f368d9402a783c1c5621e6339d59a6aeb7",
+        "sha256": "665d5d8f7359cd325e2dffe000945ba055af5816f6acc97c61d44341b67fe325",
         "source": "tools/controlx/controlx.py"
       },
       {
         "id": "tool.securex",
-        "sha256": "1c03332e38e70d462251be1db83e11f4ae7e4482f50484280347d5d075ee4da2",
+        "sha256": "e289f3f39a3f736785fad954153cbf70188ef4236684be3e4a046009e1fc93b7",
         "source": "tools/securex/securex.py"
       }
     ]

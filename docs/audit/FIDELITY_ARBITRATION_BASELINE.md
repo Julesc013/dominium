@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-01
+Supersedes: none
+Superseded By: none
 Scope: CTRL-5 unified fidelity and budget arbitration baseline
 Stability: provisional
 Future Series: DOC-ARCHIVE

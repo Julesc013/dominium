@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `docs/canon/glossary_v1.md` v1.0.0.
-Stability: provisional
+Stability: stable
 Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
 

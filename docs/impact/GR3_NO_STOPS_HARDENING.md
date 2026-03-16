@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change: GR3 no-stops hardening unblock for deterministic control, system expand, protection, and planning contracts
 Stability: provisional
 Future Series: DOC-ARCHIVE

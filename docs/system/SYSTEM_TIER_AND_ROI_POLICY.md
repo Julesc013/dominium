@@ -1,4 +1,4 @@
-Status: BASELINE
+Status: DERIVED
 Last Reviewed: 2026-03-05
 Supersedes: docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md
 Superseded By: none

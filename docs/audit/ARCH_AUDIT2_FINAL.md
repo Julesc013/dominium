@@ -1,4 +1,7 @@
 Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: Final release/distribution audit baseline governed by ARCH-AUDIT-2.

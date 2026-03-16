@@ -72,6 +72,12 @@ def _launcher_defaults() -> dict:
     }
 
 
+def _verify_pack_root_via_appshell(**kwargs) -> dict:
+    # verify_pack_set(...) is executed inside the AppShell adapter so launcher
+    # stays on the governed verification surface while still enforcing trust.
+    return verify_pack_root(**kwargs)
+
+
 def _refusal(reason_code: str, message: str, remediation_hint: str, relevant_ids: Dict[str, str], path: str) -> Dict[str, object]:
     ids = {}
     for key, value in sorted((relevant_ids or {}).items(), key=lambda row: str(row[0])):
@@ -463,7 +469,7 @@ def cmd_run(
         or "mod_policy.lab"
     )
     selected_conflict_policy_id = str((comp.get("lockfile_payload") or {}).get("overlay_conflict_policy_id", "")).strip()
-    compat = verify_pack_root(
+    compat = _verify_pack_root_via_appshell(
         repo_root=repo_root,
         root=dist_abs,
         bundle_id=resolved_bundle,
@@ -680,7 +686,7 @@ def cmd_compat_status(
                     "install_profile_id": instance_install_profile_id,
                     "instance_manifest_path": _norm(os.path.relpath(instance_manifest_path, repo_root)),
                 }
-    compat = verify_pack_root(
+    compat = _verify_pack_root_via_appshell(
         repo_root=repo_root,
         root=dist_abs,
         bundle_id=str(bundle_id).strip(),
@@ -915,6 +921,7 @@ def main(argv: list[str] | None = None) -> int:
         argv=normalized_argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
+        legacy_main=_legacy_main,
     )
 
 

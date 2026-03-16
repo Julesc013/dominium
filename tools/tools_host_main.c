@@ -31,6 +31,12 @@ Stub tools host entrypoint; replace with tool router once runtime is wired.
 #include <unistd.h>
 #endif
 
+static int tools_run_inspect(dom_app_output_format format,
+                             const dom_app_compat_expect* compat_expect);
+static int tools_run_validate(dom_app_output_format format,
+                              const dom_app_compat_expect* compat_expect);
+static int tools_run_replay(const char* path, int emit_text);
+
 static void tools_print_help(void)
 {
     printf("usage: tools [options] <command>\\n");
@@ -422,12 +428,12 @@ static int tools_resolve_ai_script(char* out, size_t cap)
     if (!out || cap == 0u) {
         return 0;
     }
-    out[0] = '\\0';
+    out[0] = '\0';
     if (tools_find_upward(out, cap, rel)) {
         return 1;
     }
     strncpy(out, rel, cap - 1u);
-    out[cap - 1u] = '\\0';
+    out[cap - 1u] = '\0';
     return 1;
 }
 
@@ -472,12 +478,12 @@ static int tools_resolve_share_script(char* out, size_t cap)
     if (!out || cap == 0u) {
         return 0;
     }
-    out[0] = '\\0';
+    out[0] = '\0';
     if (tools_find_upward(out, cap, rel)) {
         return 1;
     }
     strncpy(out, rel, cap - 1u);
-    out[cap - 1u] = '\\0';
+    out[cap - 1u] = '\0';
     return 1;
 }
 
@@ -2411,13 +2417,13 @@ static void tools_print_json_string(const char* s)
     while (*p) {
         unsigned char c = *p++;
         switch (c) {
-        case '\\\\': putchar('\\\\'); putchar('\\\\'); break;
-        case '\"':  putchar('\\\\'); putchar('\"'); break;
-        case '\\b': putchar('\\\\'); putchar('b'); break;
-        case '\\f': putchar('\\\\'); putchar('f'); break;
-        case '\\n': putchar('\\\\'); putchar('n'); break;
-        case '\\r': putchar('\\\\'); putchar('r'); break;
-        case '\\t': putchar('\\\\'); putchar('t'); break;
+        case '\\': putchar('\\'); putchar('\\'); break;
+        case '\"':  putchar('\\'); putchar('\"'); break;
+        case '\b': putchar('\\'); putchar('b'); break;
+        case '\f': putchar('\\'); putchar('f'); break;
+        case '\n': putchar('\\'); putchar('n'); break;
+        case '\r': putchar('\\'); putchar('r'); break;
+        case '\t': putchar('\\'); putchar('t'); break;
         default:
             if (c < 0x20) {
                 printf("\\\\u%04x", (unsigned int)c);

@@ -8,22 +8,21 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 2
-- RISK: 542
-- VIOLATION: 20
-- WARN: 1029
+- INFO: 153
+- RISK: 665
+- VIOLATION: 24
+- WARN: 1092
 
 ## Counts By Category
 
-- appshell.ad_hoc_entry_point_smell: 5
-- appshell.supervisor.nondeterministic_supervisor_smell: 1
+- appshell.ad_hoc_entry_point_smell: 2
+- appshell.direct_pack_load_smell: 2
 - architecture.adhoc_loss_smell: 1
 - architecture.adhoc_scheduler_smell: 1
 - architecture.adhoc_speed_limit_smell: 2
 - architecture.adhoc_state_flag_smell: 2
 - architecture.adhoc_valve_smell: 3
 - architecture.affordance_gap_smell: 317
-- architecture.boundary_violation_analyzer: 1
 - architecture.broadcast_bypass_smell: 5
 - architecture.deprecated_usage_smell: 1
 - architecture.derailment_bypass_smell: 1
@@ -42,8 +41,6 @@ Superseded By: none
 - architecture.inline_strength_check_smell: 1
 - architecture.intent_bypass_smell: 1
 - architecture.ir_nondeterminism_smell: 2
-- architecture.legacy_import_smell: 1
-- architecture.legacy_reference_smell: 1
 - architecture.magic_silent_violation_smell: 2
 - architecture.missing_decision_log_smell: 3
 - architecture.missing_failsafe_smell: 1
@@ -69,13 +66,14 @@ Superseded By: none
 - bundle.nondeterministic_bundle_smell: 1
 - canon_drift: 898
 - capability_bypass_smell: 1
+- capability_misuse: 35
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - compat.behavior_without_contract_smell: 1
-- compat.silent_semantic_change_smell: 8
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 19
+- derived_freshness: 137
 - epistemics.hidden_state_leak_smell: 6
+- geometry.adhoc_spatial_key_smell: 6
 - install.path_dependent_install_smell: 1
 - interaction.interaction_bypass_smell: 2
 - logic.adhoc_wiring_smell: 5
@@ -84,19 +82,21 @@ Superseded By: none
 - logic.random_failure_smell: 1
 - logic.truth_leak_via_debug_smell: 1
 - logic.unbounded_trace_smell: 1
+- materials.hardcoded_blueprint_smell: 7
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
-- packs.pack_loaded_without_verification_smell: 2
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- reachability: 1
+- reachability: 54
 - reliability.silent_reaction_smell: 3
+- schema_usage: 128
+- security.boundary_io: 1
 - security.hidden_privilege_escalation_smell: 2
 - semantic.capability_drift: 5
-- semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
+- ui_parity: 9
 - worldgen.unbounded_shadow_sampling_smell: 1

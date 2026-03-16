@@ -1,4 +1,7 @@
 Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: Canon-aligned documentation set tracked by REPO-REVIEW-3.
@@ -9,10 +12,10 @@ Source: `tools/review/tool_doc_inventory.py`
 
 ## Alignment Status Counts
 
-- `aligned`: `842`
+- `aligned`: `969`
 - `contradictory`: `2`
-- `legacy_reference_only`: `799`
-- `partially_aligned`: `292`
+- `legacy_reference_only`: `882`
+- `partially_aligned`: `302`
 - `superseded`: `47`
 
 ## Top Contradictions

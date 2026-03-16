@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change: LOGIC-8 deterministic fault, noise, EMI-stub, and protocol-security hooks for logic networks
 Stability: provisional
 Future Series: DOC-ARCHIVE

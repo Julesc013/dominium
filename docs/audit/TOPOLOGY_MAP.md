@@ -1,5 +1,11 @@
 Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: regenerated topology audit artifact retained for release verification
 
 # System Topology Map
 

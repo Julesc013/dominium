@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: COMPAT/MIGRATION
 Replacement Target: release-pinned migration bundles and stricter lifecycle enforcement after v0.0.0-mock

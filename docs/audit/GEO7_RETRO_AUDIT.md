@@ -1,5 +1,7 @@
-Status: AUDIT
-Last Updated: 2026-03-09
+Status: DERIVED
+Last Reviewed: 2026-03-09
+Supersedes: none
+Superseded By: none
 Scope: GEO-7 geometry edit contract retro-consistency audit
 Stability: provisional
 Future Series: DOC-CONVERGENCE

@@ -30174,4 +30174,3 @@ o Vector-only 2D/3D drawing.
 o Everything else is secondary.
 
 This addendum is binding and overrides any earlier ambiguity in the V3 volumes about platform, rendering, or OS integration.
-

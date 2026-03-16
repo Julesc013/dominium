@@ -1,4 +1,7 @@
 Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Purpose: Stage-gating token removal and capability-gating reconciliation report
 Authority: NON-CANONICAL
 Stability: provisional

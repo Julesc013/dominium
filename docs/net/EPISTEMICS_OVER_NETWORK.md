@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-15
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Compatibility: Bound to Truth/Perceived/Render separation, Observation Kernel contracts, and LawProfile lens gating.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

@@ -382,6 +382,8 @@ def render_migration_lifecycle_baseline(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: COMPAT/MIGRATION",
         "Replacement Target: release-pinned migration bundles and stricter lifecycle enforcement after v0.0.0-mock",

@@ -1,5 +1,7 @@
-Status: BASELINE
-Last Updated: 2026-03-09
+Status: DERIVED
+Last Reviewed: 2026-03-09
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: GEO-2 deterministic reference frames, floating-origin policy, and precision baseline.
 Stability: provisional

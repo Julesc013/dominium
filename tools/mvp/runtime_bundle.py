@@ -25,6 +25,7 @@ from src.modding import (
 )
 from src.packs.compat import attach_pack_compat_manifest
 from src.compat.data_format_loader import artifact_deterministic_fingerprint, load_versioned_artifact, stamp_artifact_metadata
+from src.meta.identity import IDENTITY_KIND_BUNDLE, UNIVERSAL_IDENTITY_FIELD, attach_universal_identity_block
 from src.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 
@@ -153,6 +154,7 @@ def _write_text(path: str, text: str) -> None:
 def _payload_hash(payload: Dict[str, object], field_name: str = "deterministic_fingerprint", ignored_fields: Tuple[str, ...] = ()) -> str:
     body = dict(payload)
     body[field_name] = ""
+    body.pop(UNIVERSAL_IDENTITY_FIELD, None)
     for token in ignored_fields:
         field_token = str(token or "").strip()
         if field_token:
@@ -161,8 +163,10 @@ def _payload_hash(payload: Dict[str, object], field_name: str = "deterministic_f
 
 
 def _profile_bundle_hash(payload: Dict[str, object]) -> str:
+    body = dict(payload)
+    body.pop(UNIVERSAL_IDENTITY_FIELD, None)
     return artifact_deterministic_fingerprint(
-        dict(payload),
+        body,
         ignored_fields=("engine_version_created", "profile_bundle_hash"),
     )
 
@@ -384,6 +388,18 @@ def build_profile_bundle_payload(repo_root: str | None = None) -> Dict[str, obje
     )
     payload["deterministic_fingerprint"] = _profile_bundle_hash(payload)
     payload["profile_bundle_hash"] = payload["deterministic_fingerprint"]
+    payload = attach_universal_identity_block(
+        payload,
+        identity_kind_id=IDENTITY_KIND_BUNDLE,
+        identity_id="identity.bundle.{}".format(str(payload.get("profile_bundle_id", "")).strip() or "unknown"),
+        stability_class_id="provisional",
+        build_id=str(payload.get("engine_version_created", "")).strip(),
+        format_version=str(payload.get("format_version", "")).strip(),
+        schema_version=str(payload.get("schema_version", "")).strip() or "1.0.0",
+        extensions={"official.rel_path": _norm(MVP_PROFILE_BUNDLE_REL)},
+    )
+    payload["deterministic_fingerprint"] = _profile_bundle_hash(payload)
+    payload["profile_bundle_hash"] = payload["deterministic_fingerprint"]
     return payload
 
 
@@ -486,6 +502,17 @@ def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, ob
         artifact_kind="pack_lock",
         payload=payload,
         update_fingerprint=False,
+    )
+    payload["deterministic_fingerprint"] = _payload_hash(payload, ignored_fields=("engine_version_created",))
+    payload = attach_universal_identity_block(
+        payload,
+        identity_kind_id=IDENTITY_KIND_BUNDLE,
+        identity_id="identity.bundle.{}".format(str(payload.get("pack_lock_id", "")).strip() or "unknown"),
+        stability_class_id="provisional",
+        build_id=str(payload.get("engine_version_created", "")).strip(),
+        format_version=str(payload.get("format_version", "")).strip(),
+        schema_version=str(payload.get("schema_version", "")).strip() or "1.0.0",
+        extensions={"official.rel_path": _norm(MVP_PACK_LOCK_REL)},
     )
     payload["deterministic_fingerprint"] = _payload_hash(payload, ignored_fields=("engine_version_created",))
     return payload
@@ -690,31 +717,26 @@ def _dist_alias_payload(alias_row: Dict[str, object]) -> Dict[str, object]:
 def _dist_python_stub(entrypoint: str, ui_mode: str) -> str:
     return """#!/usr/bin/env python3
 import os
-import subprocess
 import sys
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
-SCRIPT = os.path.join(REPO_ROOT, "tools", "mvp", "runtime_entry.py")
-DESCRIPTOR_TOOL = os.path.join(REPO_ROOT, "tools", "compat", "tool_emit_descriptor.py")
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
-if "--descriptor" in sys.argv[1:] or "--descriptor-file" in sys.argv[1:]:
-    if not os.path.isfile(DESCRIPTOR_TOOL):
-        print("descriptor tool missing: {{}}".format(DESCRIPTOR_TOOL))
-        raise SystemExit(2)
-    cmd = [sys.executable, DESCRIPTOR_TOOL, "--product-id", "{product_id}"] + sys.argv[1:]
-    raise SystemExit(subprocess.call(cmd))
+from tools.mvp.runtime_entry import main
 
-if not os.path.isfile(SCRIPT):
-    print("dominium runtime bootstrap missing: {{}}".format(SCRIPT))
-    raise SystemExit(2)
 
-cmd = [sys.executable, SCRIPT, "{entrypoint}", "--ui", "{ui_mode}"] + sys.argv[1:]
-raise SystemExit(subprocess.call(cmd))
+def _delegate_argv():
+    return ["{entrypoint}", "--ui", "{ui_mode}"] + sys.argv[1:]
+
+
+if __name__ == "__main__":
+    sys.argv = [sys.argv[0]] + _delegate_argv()
+    raise SystemExit(main(sys.argv[1:]))
 """.format(
         entrypoint=entrypoint,
         ui_mode=ui_mode,
-        product_id=entrypoint,
     )
 
 

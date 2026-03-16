@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-16
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Compatibility: Bound to Session pipeline contract, lockfile contract, CompatX schema registry, and refusal contract.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

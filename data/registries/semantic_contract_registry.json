@@ -1,9 +1,5 @@
 {
-  "schema_id": "dominium.registry.semantic_contract_registry",
-  "schema_version": "1.0.0",
   "record": {
-    "registry_id": "dominium.registry.semantic_contracts",
-    "registry_version": "1.0.0",
     "contracts": [
       {
         "allowed_evolution": [
@@ -24,265 +20,17 @@
           "resume and replay refusal semantics remain explicit",
           "lifecycle meaning does not drift across saved universes"
         ],
-        "version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
           "contract_id": "contract.appshell.lifecycle.v1",
           "deterministic_fingerprint": "22beb4c2dbb0ea685169371f313f25a4728e3304e5e5979d4aa38a94bb1ea719",
-          "extensions": {}
-        }
-      },
-      {
-        "allowed_evolution": [
-          "additive proof surface metadata only",
-          "new versioned contract entry for any behavior change"
-        ],
-        "breaking_change_requires": [
-          "CompatX migration descriptor",
-          "explicit migration tool or explicit refusal path",
-          "regression lock update",
-          "release notes"
-        ],
-        "contract_id": "contract.geo.metric.v1",
-        "description": "Metric and distance-query meaning for GEO coordinate spaces.",
-        "deterministic_fingerprint": "f172a0971a30e9fa7b7c99c2a3dd713d6ce714bb1969b5de17e529dda828db7f",
-        "guaranteed_invariants": [
-          "same metric contract yields identical distance semantics",
-          "metric query ordering remains deterministic",
-          "distance meaning changes require explicit versioning"
-        ],
-        "version": "1.0.0",
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "extensions": {},
           "future_series": "",
-          "replacement_target": "",
-          "contract_id": "contract.geo.metric.v1",
-          "deterministic_fingerprint": "4174801de622fd3fceb2185231164138f510e0679b93054bfdedbf7a82fc2d7e",
-          "extensions": {}
-        }
-      },
-      {
-        "allowed_evolution": [
-          "additive proof surface metadata only",
-          "new versioned contract entry for any behavior change"
-        ],
-        "breaking_change_requires": [
-          "CompatX migration descriptor",
-          "explicit migration tool or explicit refusal path",
-          "regression lock update",
-          "release notes"
-        ],
-        "contract_id": "contract.geo.partition.v1",
-        "description": "Partition and stable cell-resolution meaning for GEO substrate enumeration.",
-        "deterministic_fingerprint": "2a4ed6b7e6b10e0a6cb05d2f2c87a5ab014c46534fa11cfeeb728502b8ff129a",
-        "guaranteed_invariants": [
-          "same partition contract yields identical cell enumeration meaning",
-          "cell ancestry and neighbor semantics remain stable",
-          "partition meaning changes require explicit versioning"
-        ],
-        "version": "1.0.0",
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
           "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
           "replacement_target": "",
-          "contract_id": "contract.geo.partition.v1",
-          "deterministic_fingerprint": "3fd6ce7459d82d5c3bc779886cb997aefb37285f371a0e78e01078b5b5ce7d3e",
-          "extensions": {}
-        }
-      },
-      {
-        "allowed_evolution": [
-          "additive proof surface metadata only",
-          "new versioned contract entry for any behavior change"
-        ],
-        "breaking_change_requires": [
-          "CompatX migration descriptor",
-          "explicit migration tool or explicit refusal path",
-          "regression lock update",
-          "release notes"
-        ],
-        "contract_id": "contract.geo.projection.v1",
-        "description": "Projection and lens-space meaning for GEO map and view derivation.",
-        "deterministic_fingerprint": "09342caca1ca66db80685084158438b3de5570405a98da86d4121932790bb0da",
-        "guaranteed_invariants": [
-          "same projection contract yields identical projection meaning",
-          "lens and projection semantics remain explicit",
-          "projection reinterpretation requires explicit versioning"
-        ],
-        "version": "1.0.0",
-        "stability": {
           "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
-          "contract_id": "contract.geo.projection.v1",
-          "deterministic_fingerprint": "7678814d20f80e690d86acc89df61cb3ffafb8be2b0a4228ae28fdb90bcad63a",
-          "extensions": {}
-        }
-      },
-      {
-        "allowed_evolution": [
-          "additive proof surface metadata only",
-          "new versioned contract entry for any behavior change"
-        ],
-        "breaking_change_requires": [
-          "CompatX migration descriptor",
-          "explicit migration tool or explicit refusal path",
-          "regression lock update",
-          "release notes"
-        ],
-        "contract_id": "contract.logic.eval.v1",
-        "description": "Logic network evaluation meaning, including deterministic ordering and compiled equivalence.",
-        "deterministic_fingerprint": "fed65c70dfafbadc3161b3fe54a958ad198e91f88e19ee094350b0ebd9ab9e81",
-        "guaranteed_invariants": [
-          "same logic contract yields identical logical outcomes",
-          "compiled and interpreted equivalence stays pinned",
-          "logic timing meaning changes require explicit versioning"
-        ],
-        "version": "1.0.0",
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
-          "contract_id": "contract.logic.eval.v1",
-          "deterministic_fingerprint": "0bc0c835ed35d68117734e910c56fc09dce3af49816dc5ee533670c38232383e",
-          "extensions": {}
-        }
-      },
-      {
-        "allowed_evolution": [
-          "additive proof surface metadata only",
-          "new versioned contract entry for any behavior change"
-        ],
-        "breaking_change_requires": [
-          "CompatX migration descriptor",
-          "explicit migration tool or explicit refusal path",
-          "regression lock update",
-          "release notes"
-        ],
-        "contract_id": "contract.overlay.merge.v1",
-        "description": "Overlay precedence, merge ordering, and provenance meaning.",
-        "deterministic_fingerprint": "f14ca1bc5473ad657dfd9d105d4729ac57d62e5163a3f080067c0133168f3e09",
-        "guaranteed_invariants": [
-          "same overlay contract yields identical merge semantics",
-          "identity is not replaced silently by overlays",
-          "overlay provenance meaning stays replay-stable"
-        ],
-        "version": "1.0.0",
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
-          "contract_id": "contract.overlay.merge.v1",
-          "deterministic_fingerprint": "4ee36e856e5e085b1aecd6ee18eff03f3f0174e27ce83426dd81e8e1d0d96d30",
-          "extensions": {}
-        }
-      },
-      {
-        "allowed_evolution": [
-          "additive proof surface metadata only",
-          "new versioned contract entry for any behavior change"
-        ],
-        "breaking_change_requires": [
-          "CompatX migration descriptor",
-          "explicit migration tool or explicit refusal path",
-          "regression lock update",
-          "release notes"
-        ],
-        "contract_id": "contract.proc.capsule.v1",
-        "description": "Process capsule validity, execution gating, and reuse meaning.",
-        "deterministic_fingerprint": "4a04d7e2042275a636cc4159eabbc6ef3cfda04e6749c83d7d89ac6da6104aa3",
-        "guaranteed_invariants": [
-          "same process capsule contract yields identical validity meaning",
-          "capsule invalidity refusal semantics remain explicit",
-          "capsule meaning changes require explicit versioning"
-        ],
-        "version": "1.0.0",
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
-          "contract_id": "contract.proc.capsule.v1",
-          "deterministic_fingerprint": "a259850ef0decf0febdd217779a2ca68a2751bdddc32d3fe7b8a327982e1cab4",
-          "extensions": {}
-        }
-      },
-      {
-        "allowed_evolution": [
-          "additive proof surface metadata only",
-          "new versioned contract entry for any behavior change"
-        ],
-        "breaking_change_requires": [
-          "CompatX migration descriptor",
-          "explicit migration tool or explicit refusal path",
-          "regression lock update",
-          "release notes"
-        ],
-        "contract_id": "contract.sys.collapse.v1",
-        "description": "System collapse and expand meaning, including idempotence and refusal semantics.",
-        "deterministic_fingerprint": "0e971da769ce16e80242f8cb290ab7f62af09ebd31f0eff7c48ba8de1847c420",
-        "guaranteed_invariants": [
-          "same system contract yields identical collapse meaning",
-          "collapse and expand semantics remain explicit",
-          "tier transitions do not drift silently"
-        ],
-        "version": "1.0.0",
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
-          "contract_id": "contract.sys.collapse.v1",
-          "deterministic_fingerprint": "8225485f0da727e8a4ee0599664a51f6d3bc88c37c7f6f7262c8aee5e255b067",
-          "extensions": {}
-        }
-      },
-      {
-        "allowed_evolution": [
-          "additive proof surface metadata only",
-          "new versioned contract entry for any behavior change"
-        ],
-        "breaking_change_requires": [
-          "CompatX migration descriptor",
-          "explicit migration tool or explicit refusal path",
-          "regression lock update",
-          "release notes"
-        ],
-        "contract_id": "contract.worldgen.refinement.v1",
-        "description": "Worldgen refinement meaning for L0-L3 generation, refinement requests, and artifact instantiation boundaries.",
-        "deterministic_fingerprint": "5fb3d6648ddd7bd2b52d9727cb93e27c9b0bc04e7a583bce1e88ee09858069dd",
-        "guaranteed_invariants": [
-          "same refinement contract yields identical refinement meaning",
-          "refinement levels remain replay-stable",
-          "worldgen meaning changes require explicit versioning"
-        ],
-        "version": "1.0.0",
-        "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
-          "contract_id": "contract.worldgen.refinement.v1",
-          "deterministic_fingerprint": "e252c98d45df387a688ebb66ed90c9c48259ce64604296c8461a92da9caa5ba8",
-          "extensions": {}
-        }
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
       },
       {
         "allowed_evolution": [
@@ -303,17 +51,203 @@
           "fallback and degrade decisions remain explicit and deterministic",
           "negotiation semantic drift requires explicit versioning"
         ],
-        "version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
           "contract_id": "contract.cap_neg.negotiation.v1",
           "deterministic_fingerprint": "b7a5618206735786cbedbae95b9244d1428e8a392c2de39366371976a82e8ee4",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.geo.metric.v1",
+        "description": "Metric and distance-query meaning for GEO coordinate spaces.",
+        "deterministic_fingerprint": "f172a0971a30e9fa7b7c99c2a3dd713d6ce714bb1969b5de17e529dda828db7f",
+        "guaranteed_invariants": [
+          "same metric contract yields identical distance semantics",
+          "metric query ordering remains deterministic",
+          "distance meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.geo.metric.v1",
+          "deterministic_fingerprint": "4174801de622fd3fceb2185231164138f510e0679b93054bfdedbf7a82fc2d7e",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.geo.partition.v1",
+        "description": "Partition and stable cell-resolution meaning for GEO substrate enumeration.",
+        "deterministic_fingerprint": "2a4ed6b7e6b10e0a6cb05d2f2c87a5ab014c46534fa11cfeeb728502b8ff129a",
+        "guaranteed_invariants": [
+          "same partition contract yields identical cell enumeration meaning",
+          "cell ancestry and neighbor semantics remain stable",
+          "partition meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.geo.partition.v1",
+          "deterministic_fingerprint": "3fd6ce7459d82d5c3bc779886cb997aefb37285f371a0e78e01078b5b5ce7d3e",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.geo.projection.v1",
+        "description": "Projection and lens-space meaning for GEO map and view derivation.",
+        "deterministic_fingerprint": "09342caca1ca66db80685084158438b3de5570405a98da86d4121932790bb0da",
+        "guaranteed_invariants": [
+          "same projection contract yields identical projection meaning",
+          "lens and projection semantics remain explicit",
+          "projection reinterpretation requires explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.geo.projection.v1",
+          "deterministic_fingerprint": "7678814d20f80e690d86acc89df61cb3ffafb8be2b0a4228ae28fdb90bcad63a",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.lib.manifest.v1",
+        "description": "LIB manifest semantics for install, instance, and save manifest identity, fingerprinting, and deterministic resolution surfaces.",
+        "deterministic_fingerprint": "2968e31ae0a9b1ae83e9bf76bcc88f5ad46c37ba49df9f49574709b123350291",
+        "guaranteed_invariants": [
+          "same LIB manifest contract yields identical install, instance, and save manifest interpretation",
+          "manifest fingerprints and refusal semantics remain explicit and deterministic",
+          "additive metadata does not silently change LIB manifest meaning"
+        ],
+        "stability": {
+          "contract_id": "contract.lib.manifest.v1",
+          "deterministic_fingerprint": "285e20efc407c744150c0d5d7c0397ceb0526f9f768d132d45f0ac5eedfaf75e",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.logic.eval.v1",
+        "description": "Logic network evaluation meaning, including deterministic ordering and compiled equivalence.",
+        "deterministic_fingerprint": "fed65c70dfafbadc3161b3fe54a958ad198e91f88e19ee094350b0ebd9ab9e81",
+        "guaranteed_invariants": [
+          "same logic contract yields identical logical outcomes",
+          "compiled and interpreted equivalence stays pinned",
+          "logic timing meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.logic.eval.v1",
+          "deterministic_fingerprint": "0bc0c835ed35d68117734e910c56fc09dce3af49816dc5ee533670c38232383e",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.overlay.merge.v1",
+        "description": "Overlay precedence, merge ordering, and provenance meaning.",
+        "deterministic_fingerprint": "f14ca1bc5473ad657dfd9d105d4729ac57d62e5163a3f080067c0133168f3e09",
+        "guaranteed_invariants": [
+          "same overlay contract yields identical merge semantics",
+          "identity is not replaced silently by overlays",
+          "overlay provenance meaning stays replay-stable"
+        ],
+        "stability": {
+          "contract_id": "contract.overlay.merge.v1",
+          "deterministic_fingerprint": "4ee36e856e5e085b1aecd6ee18eff03f3f0174e27ce83426dd81e8e1d0d96d30",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
       },
       {
         "allowed_evolution": [
@@ -334,17 +268,17 @@
           "optional pack absence remains explicit and deterministic",
           "pack compatibility semantic drift requires explicit versioning"
         ],
-        "version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
           "contract_id": "contract.pack.compat.v1",
           "deterministic_fingerprint": "26b603103075e521f92617543e90768db67ccad3ea6d4dc05913ef166e807991",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
       },
       {
         "allowed_evolution": [
@@ -357,25 +291,25 @@
           "regression lock update",
           "release notes"
         ],
-        "contract_id": "contract.time.anchor.v1",
-        "description": "Canonical tick width, epoch anchor cadence, overflow refusal, and anchor-bounded compaction meaning.",
-        "deterministic_fingerprint": "73a4eab7ce52e2eda199fbfcd317276fc5725adae99017e3e4db68f79f6b1568",
+        "contract_id": "contract.proc.capsule.v1",
+        "description": "Process capsule validity, execution gating, and reuse meaning.",
+        "deterministic_fingerprint": "4a04d7e2042275a636cc4159eabbc6ef3cfda04e6749c83d7d89ac6da6104aa3",
         "guaranteed_invariants": [
-          "canonical truth time remains explicit uint64 tick space",
-          "epoch anchors remain aligned to absolute tick boundaries",
-          "compaction and replay semantics remain anchored and deterministic"
+          "same process capsule contract yields identical validity meaning",
+          "capsule invalidity refusal semantics remain explicit",
+          "capsule meaning changes require explicit versioning"
         ],
-        "version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "contract_id": "contract.proc.capsule.v1",
+          "deterministic_fingerprint": "a259850ef0decf0febdd217779a2ca68a2751bdddc32d3fe7b8a327982e1cab4",
+          "extensions": {},
           "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
           "replacement_target": "",
-          "contract_id": "contract.time.anchor.v1",
-          "deterministic_fingerprint": "945ced62a692c10cea4ae07f6eaff12fae21829ffaf7378488328a4949641560",
-          "extensions": {}
-        }
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
       },
       {
         "allowed_evolution": [
@@ -396,17 +330,17 @@
           "exact-suite rollback preserves the suite-selected component set hash",
           "suite-pinned policy semantics do not drift without explicit versioning"
         ],
-        "version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
           "contract_id": "contract.release.resolution.exact_suite.v1",
           "deterministic_fingerprint": "5a0d5235b454272327a6fb11c4e9ab3e056611a356f53344b718b5a6988f8b3b",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
       },
       {
         "allowed_evolution": [
@@ -427,19 +361,147 @@
           "yanked exclusion and explainability remain explicit and deterministic",
           "latest-compatible ranking changes require explicit versioning"
         ],
-        "version": "1.0.0",
         "stability": {
-          "schema_version": "1.0.0",
-          "stability_class_id": "stable",
-          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
-          "future_series": "",
-          "replacement_target": "",
           "contract_id": "contract.release.resolution.latest_compatible.v1",
           "deterministic_fingerprint": "bd4a2752a29eb54e2566ef004f733e92f1210ba864a80d70c66a89808b3ec754",
-          "extensions": {}
-        }
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.scan.v1",
+        "description": "Deterministic governed scan-report semantics for repository audit, validation, and scan artifacts that publish versioned report identities.",
+        "deterministic_fingerprint": "71c5ffa8aa2cf037eba237b798b6b618b60af85b6b7478d11353304fda920e49",
+        "guaranteed_invariants": [
+          "same scan contract yields identical report-id interpretation and result meaning",
+          "scan finding ordering and deterministic fingerprints remain canonicalized",
+          "scan report meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.scan.v1",
+          "deterministic_fingerprint": "3f771b2338b1cbae9f043317d38eed210651649db94f5ecfb3ec58b73cd27089",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.sys.collapse.v1",
+        "description": "System collapse and expand meaning, including idempotence and refusal semantics.",
+        "deterministic_fingerprint": "0e971da769ce16e80242f8cb290ab7f62af09ebd31f0eff7c48ba8de1847c420",
+        "guaranteed_invariants": [
+          "same system contract yields identical collapse meaning",
+          "collapse and expand semantics remain explicit",
+          "tier transitions do not drift silently"
+        ],
+        "stability": {
+          "contract_id": "contract.sys.collapse.v1",
+          "deterministic_fingerprint": "8225485f0da727e8a4ee0599664a51f6d3bc88c37c7f6f7262c8aee5e255b067",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.time.anchor.v1",
+        "description": "Canonical tick width, epoch anchor cadence, overflow refusal, and anchor-bounded compaction meaning.",
+        "deterministic_fingerprint": "73a4eab7ce52e2eda199fbfcd317276fc5725adae99017e3e4db68f79f6b1568",
+        "guaranteed_invariants": [
+          "canonical truth time remains explicit uint64 tick space",
+          "epoch anchors remain aligned to absolute tick boundaries",
+          "compaction and replay semantics remain anchored and deterministic"
+        ],
+        "stability": {
+          "contract_id": "contract.time.anchor.v1",
+          "deterministic_fingerprint": "945ced62a692c10cea4ae07f6eaff12fae21829ffaf7378488328a4949641560",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.worldgen.refinement.v1",
+        "description": "Worldgen refinement meaning for L0-L3 generation, refinement requests, and artifact instantiation boundaries.",
+        "deterministic_fingerprint": "5fb3d6648ddd7bd2b52d9727cb93e27c9b0bc04e7a583bce1e88ee09858069dd",
+        "guaranteed_invariants": [
+          "same refinement contract yields identical refinement meaning",
+          "refinement levels remain replay-stable",
+          "worldgen meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.worldgen.refinement.v1",
+          "deterministic_fingerprint": "e252c98d45df387a688ebb66ed90c9c48259ce64604296c8461a92da9caa5ba8",
+          "extensions": {},
+          "future_series": "",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
       }
     ],
-    "extensions": {}
-  }
+    "extensions": {},
+    "registry_id": "dominium.registry.semantic_contracts",
+    "registry_version": "1.0.0"
+  },
+  "schema_id": "dominium.registry.semantic_contract_registry",
+  "schema_version": "1.0.0"
 }

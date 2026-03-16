@@ -1,5 +1,7 @@
 Status: CANONICAL
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DIST
 Replacement Target: release-pinned interop contract and signed archive compatibility guidance

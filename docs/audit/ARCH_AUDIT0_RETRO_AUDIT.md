@@ -1,5 +1,7 @@
-Status: DRAFT
+Status: DERIVED
 Last Reviewed: 2026-03-12
+Supersedes: none
+Superseded By: none
 Scope: ARCH-AUDIT-0 retro audit
 Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`
 Stability: provisional

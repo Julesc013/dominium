@@ -1,6 +1,8 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
-Stability: provisional
+Supersedes: none
+Superseded By: none
+Stability: stable
 Future Series: GOVERNANCE/LICENSE
 Replacement Target: final artifact-specific license texts and redistribution notices
 

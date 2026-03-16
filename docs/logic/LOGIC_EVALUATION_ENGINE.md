@@ -1,5 +1,7 @@
-Status: AUTHORITATIVE
+Status: CANONICAL
 Last Reviewed: 2026-03-08
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: LOGIC-4 deterministic L1 evaluation for validated logic networks.
 Stability: provisional

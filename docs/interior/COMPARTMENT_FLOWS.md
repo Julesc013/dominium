@@ -1,5 +1,7 @@
 Status: CANONICAL
 Last Reviewed: 2026-02-28
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: INT-2 compartment-level interior flows over FlowSystem.
 Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/interior/INTERIOR_VOLUME_MODEL.md`, and `docs/architecture/FLOWSYSTEM_STANDARD.md`.

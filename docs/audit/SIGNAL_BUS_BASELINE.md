@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-08
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: LOGIC-1 signal, bus, carrier, and protocol-hook baseline.
 Stability: provisional

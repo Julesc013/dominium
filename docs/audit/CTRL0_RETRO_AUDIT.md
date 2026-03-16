@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-28
+Supersedes: none
+Superseded By: none
 Scope: CTRL-0 Phase 0 retro-consistency audit
 Stability: provisional
 Future Series: DOC-CONVERGENCE

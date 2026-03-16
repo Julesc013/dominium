@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-15
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Compatibility: Bound to `schemas/net_anti_cheat_event.schema.json`, anti-cheat policy registries, and `src/net/anti_cheat/anti_cheat_engine.py`.
 Stability: provisional
 Future Series: DOC-ARCHIVE

@@ -1,5 +1,7 @@
-Status: BASELINE
+Status: DERIVED
 Last Reviewed: 2026-03-11
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: LIB-7 deterministic stress/proof/regression envelope for installs, instances, saves, packs, providers, and export/import.
 Stability: provisional

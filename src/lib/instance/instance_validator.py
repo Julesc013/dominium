@@ -17,6 +17,7 @@ from src.lib.provides import (
     normalize_provides_resolutions,
     validate_provides_resolution,
 )
+from src.meta.identity import UNIVERSAL_IDENTITY_FIELD
 from src.meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -112,6 +113,7 @@ def deterministic_fingerprint(payload: Mapping[str, object]) -> str:
     body = _normalize_value(normalize_extensions_tree(dict(payload or {})))
     if isinstance(body, dict):
         body["deterministic_fingerprint"] = ""
+        body.pop(UNIVERSAL_IDENTITY_FIELD, None)
     return canonical_sha256(body)
 
 

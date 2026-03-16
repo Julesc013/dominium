@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-15
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Scope: Prompt 20 Phase 2 canon conformance sweep
 Stability: provisional
 Future Series: DOC-CONVERGENCE

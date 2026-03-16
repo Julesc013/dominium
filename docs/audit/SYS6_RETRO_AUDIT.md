@@ -1,5 +1,7 @@
-Status: BASELINE
+Status: DERIVED
 Last Reviewed: 2026-03-06
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: SYS-6 retro-consistency audit for reliability coverage.
 Stability: provisional

@@ -12286,7 +12286,7 @@ def check_raw_paths(repo_root):
             try:
                 with open(path, "r", encoding="utf-8", errors="ignore") as handle:
                     for idx, line in enumerate(handle, start=1):
-                        if ABS_WIN_RE.search(line):
+                        if _contains_windows_absolute_path(line):
                             violations.append("{}: {}:{}: windows absolute path".format(invariant_id, rel, idx))
                             break
                         if ABS_UNIX_RE.search(line):
@@ -12298,6 +12298,14 @@ def check_raw_paths(repo_root):
             except OSError:
                 continue
     return violations
+
+
+def _contains_windows_absolute_path(line):
+    for match in ABS_WIN_RE.finditer(line):
+        if line[match.start() + 1:match.start() + 4] == "://":
+            continue
+        return True
+    return False
 
 
 def check_magic_numbers(repo_root):

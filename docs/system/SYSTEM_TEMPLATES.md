@@ -1,4 +1,4 @@
-Status: BASELINE
+Status: DERIVED
 Last Reviewed: 2026-03-06
 Supersedes: docs/system/SYSTEM_TIER_AND_ROI_POLICY.md
 Superseded By: none

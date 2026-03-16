@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change: META-GENRE-0 Player Demand Coverage Matrix + enforcement wiring
 Stability: provisional
 Future Series: DOC-ARCHIVE

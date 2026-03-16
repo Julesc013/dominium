@@ -1,5 +1,7 @@
 Status: CANONICAL
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Stability: provisional
 Future Series: UI/APPSHELL
@@ -69,4 +71,3 @@ UI adapters must never:
 - The rendered client menu surface must bind through `src/ui/ui_model.py`.
 - The rendered client session/view surface must consume derived GEO/EARTH/SOL view artifacts only.
 - Rendered UI must always preserve a console or IPC attach path for command fallback.
-

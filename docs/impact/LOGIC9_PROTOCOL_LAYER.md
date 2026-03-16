@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change: LOGIC-9 deterministic distributed protocol framing, arbitration, SIG transport, and debug surfaces for logic networks
 Stability: provisional
 Future Series: DOC-ARCHIVE

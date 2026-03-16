@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: COMPAT/RELEASE
 Replacement Target: migration-policy-governed artifact loaders and release-pinned migration governance

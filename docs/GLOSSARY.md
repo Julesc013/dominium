@@ -1,4 +1,4 @@
-Status: Superseded
+Status: DERIVED
 Last Reviewed: 2026-02-13
 Supersedes: docs/architecture/ARCH_GLOSSARY.md
 Superseded By: docs/canon/glossary_v1.md

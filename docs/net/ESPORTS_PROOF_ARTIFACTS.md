@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-15
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Compatibility: Bound to run-meta contract, anti-cheat event schema, handshake schema, and hash-anchor chain.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

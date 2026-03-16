@@ -93,10 +93,9 @@ The supervisor never uses wall-clock timeouts. It uses bounded polling iteration
 The unified supervisor log view merges child streams by:
 
 1. `source_product_id`
-2. `channel_id`
-3. `seq_no`
-4. `endpoint_id`
-5. `event_id`
+2. `seq_no`
+3. `endpoint_id`
+4. `event_id`
 
 This merge order is stable and must not depend on arrival timing.
 

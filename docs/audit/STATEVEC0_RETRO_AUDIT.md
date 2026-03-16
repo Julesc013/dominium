@@ -1,5 +1,7 @@
-Status: AUDIT
+Status: DERIVED
 Last Reviewed: 2026-03-06
+Supersedes: none
+Superseded By: none
 Scope: STATEVEC-0 retro-consistency audit for explicit output-affecting state exposure.
 Stability: provisional
 Future Series: DOC-ARCHIVE

@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-26
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: CIV-2/4 cohort refinement baseline
 Stability: provisional

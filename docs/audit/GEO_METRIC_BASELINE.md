@@ -1,5 +1,7 @@
-Status: BASELINE
-Last Updated: 2026-03-09
+Status: DERIVED
+Last Reviewed: 2026-03-09
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: GEO-3 deterministic metric queries, geodesic stubs, neighborhood enumeration, and cache baseline.
 Stability: provisional

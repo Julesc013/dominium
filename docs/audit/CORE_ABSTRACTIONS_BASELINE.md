@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-28
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: ABS-1 core abstraction substrate and MAT logistics migration baseline.
 Stability: provisional

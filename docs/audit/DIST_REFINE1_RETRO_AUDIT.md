@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DIST
 Replacement Target: install-profile refinement and release-index availability governance

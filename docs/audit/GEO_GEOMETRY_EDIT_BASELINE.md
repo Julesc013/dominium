@@ -1,5 +1,7 @@
-Status: BASELINE
-Last Updated: 2026-03-09
+Status: DERIVED
+Last Reviewed: 2026-03-09
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: GEO-7 deterministic geometry state, process-only edit application, MAT provenance, coupling outputs, ROI micro hooks, proof/replay, and enforcement.
 Stability: provisional

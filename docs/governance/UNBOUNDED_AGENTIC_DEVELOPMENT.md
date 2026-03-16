@@ -2,7 +2,7 @@ Status: CANONICAL
 Last Reviewed: 2026-02-10
 Supersedes: none
 Superseded By: none
-Stability: provisional
+Stability: stable
 Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
 

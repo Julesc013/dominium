@@ -2,7 +2,6 @@ Status: CANONICAL
 Last Reviewed: 2026-01-29
 Supersedes: none
 Superseded By: none
-STATUS: CANONICAL
 OWNER: architecture
 LAST_VERIFIED: 2026-01-29
 Stability: provisional

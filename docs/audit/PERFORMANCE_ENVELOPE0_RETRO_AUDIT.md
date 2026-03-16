@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: PERFORMANCE/CI
 Replacement Target: release-pinned platform performance baselines with retained historical measurements

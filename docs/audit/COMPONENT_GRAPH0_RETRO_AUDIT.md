@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DIST
 Replacement Target: release-pinned component graph audits after install profiles and update channels are frozen
@@ -32,7 +34,7 @@ Replacement Target: release-pinned component graph audits after install profiles
 - The component graph must remain additive: current dist trees, install manifests, instance manifests, and pack locks must keep loading without migration.
 - Resolver output must be deterministic and offline; provider selection must reuse the existing deterministic provides resolver.
 - Graph resolution must not invent a new runtime authority path. It may only plan distribution/install composition and validation surfaces.
-- `contract.lib.manifest.v1` is still not declared in the current semantic contract registry, so this task must not claim a frozen LIB manifest semantic contract that does not exist.
+- `contract.lib.manifest.v1` is now declared in the semantic contract registry, but the component graph must still remain additive and must not over-claim LIB manifest guarantees beyond the pinned contract text.
 
 ## Safest Insertion Points
 

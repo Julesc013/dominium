@@ -2,7 +2,7 @@ Status: CANONICAL
 Last Reviewed: 2026-02-11
 Supersedes: none
 Superseded By: none
-Stability: provisional
+Stability: stable
 Future Series: DOC-CONVERGENCE
 Replacement Target: patched document aligned to current canon ownership and release scope
 

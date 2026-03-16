@@ -207,7 +207,7 @@ def _log_merge_sort_key(row: Mapping[str, object]) -> tuple[str, str, int, str, 
 
 
 _LOG_MERGE_SORT_KEY = build_field_sort_key(
-    ("source_product_id", "channel_id", "seq_no", "endpoint_id", "event_id"),
+    ("source_product_id", "seq_no", "endpoint_id", "event_id"),
     int_fields=("seq_no",),
 )
 
@@ -1187,7 +1187,7 @@ class SupervisorEngine:
             aggregated_rows.extend(self._refresh_logs_for_process(row))
             if str(row.get("endpoint_id", "")).strip():
                 self._query_status_for_row(row)
-        self._aggregated_logs = canonicalize_parallel_mapping_rows(
+        canonical_rows = canonicalize_parallel_mapping_rows(
             [
                 {
                     **dict(row),
@@ -1196,7 +1196,8 @@ class SupervisorEngine:
                 for row in aggregated_rows
             ],
             key_fn=_log_merge_sort_key,
-        )[-128:]
+        )
+        self._aggregated_logs = sorted(canonical_rows, key=_log_merge_sort_key)[-128:]
         return {"result": "complete", "state": self._write_state()}
 
     def stop(self, *, shutdown_supervisor: bool = False) -> dict:

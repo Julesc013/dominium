@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: UPDATE/TRUST
 Replacement Target: UPDATE-MODEL-1 operational hardening and trust-policy integration

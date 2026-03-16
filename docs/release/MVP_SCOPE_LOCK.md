@@ -1,5 +1,7 @@
-Status: RELEASE-LOCKED
+Status: CANONICAL
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Scope: v0.0.0 convergence boundary for Dominium.
 Stability: provisional
 Future Series: DOC-ARCHIVE

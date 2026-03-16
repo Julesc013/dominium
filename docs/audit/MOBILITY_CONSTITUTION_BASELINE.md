@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-02
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: MOB-0 Mobility Constitution baseline and readiness handoff.
 Stability: provisional

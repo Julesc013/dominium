@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DIST/UPDATE-MODEL
 Replacement Target: release-index governed install profiles with trust-policy and acquisition planning

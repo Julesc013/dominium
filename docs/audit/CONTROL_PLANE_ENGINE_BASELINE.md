@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-28
+Supersedes: none
+Superseded By: none
 Scope: CTRL-1 baseline
 Stability: provisional
 Future Series: DOC-CONVERGENCE

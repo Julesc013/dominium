@@ -161,6 +161,16 @@ def _ordered_tokens(values: Iterable[object]) -> list[str]:
     return out
 
 
+def endpoint_descriptor_platform_snapshot(platform_descriptor: Mapping[str, object] | None) -> dict:
+    descriptor = _as_map(platform_descriptor)
+    snapshot = dict(descriptor)
+    snapshot.pop("cocoa_runtime_available", None)
+    snapshot.pop("ncurses_runtime_available", None)
+    snapshot.pop("detection_methods", None)
+    snapshot["deterministic_fingerprint"] = canonical_sha256(dict(snapshot, deterministic_fingerprint=""))
+    return snapshot
+
+
 def _platform_sort_key(platform_id: str) -> tuple[int, int | str]:
     token = canonical_platform_id(platform_id)
     if token in PLATFORM_ID_ORDER:
@@ -672,6 +682,7 @@ __all__ = [
     "PLATFORM_ID_WINNT",
     "UI_CAPABILITY_KEYS",
     "canonical_platform_id",
+    "endpoint_descriptor_platform_snapshot",
     "load_platform_capability_registry",
     "platform_capability_rows_by_id",
     "platform_family_id",

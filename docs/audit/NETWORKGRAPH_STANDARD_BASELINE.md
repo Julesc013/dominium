@@ -1,5 +1,7 @@
-Status: BASELINE
+Status: DERIVED
 Last Reviewed: 2026-02-28
+Supersedes: none
+Superseded By: none
 Scope: ABS-2 NetworkGraph substrate hardening.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

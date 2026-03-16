@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change: LOGIC-4 deterministic evaluation engine, proof surfaces, and replay/stress governance
 Stability: provisional
 Future Series: DOC-ARCHIVE

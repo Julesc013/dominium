@@ -35,10 +35,15 @@ _MODE_TO_LEGACY_UI = {
 }
 
 
-def build_parser(entrypoint: str) -> argparse.ArgumentParser:
+def build_parser(entrypoint: str = "") -> argparse.ArgumentParser:
+    entrypoint_token = str(entrypoint).strip()
+    description = "Bootstrap Dominium MVP runtime entrypoint."
+    if entrypoint_token:
+        description = "Bootstrap Dominium MVP runtime entrypoint for {}.".format(entrypoint_token)
     parser = argparse.ArgumentParser(
-        description="Bootstrap Dominium MVP runtime entrypoint for {}.".format(str(entrypoint).strip())
+        description=description
     )
+    parser.add_argument("entrypoint", nargs="?", default=entrypoint_token or "client", choices=("client", "server"))
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--descriptor", action="store_true")
     parser.add_argument("--descriptor-file", default="")
@@ -140,16 +145,17 @@ def _delegate_args_for_legacy(context: dict) -> list[str]:
 
 def _legacy_main(entrypoint: str, argv: Sequence[str] | None = None) -> int:
     args = build_parser(entrypoint).parse_args(argv)
+    resolved_entrypoint = str(args.entrypoint or entrypoint).strip() or str(entrypoint).strip()
     repo_root = os.path.abspath(str(args.repo_root))
     if bool(args.descriptor) or str(args.descriptor_file or "").strip():
         emitted = emit_product_descriptor(
             repo_root,
-            product_id=str(entrypoint),
+            product_id=resolved_entrypoint,
             descriptor_file=str(args.descriptor_file or "").strip(),
         )
         print(descriptor_json_text(dict(emitted.get("descriptor") or {})))
         return 0
-    if str(entrypoint) == "client" and bool(args.local_singleplayer):
+    if resolved_entrypoint == "client" and bool(args.local_singleplayer):
         from src.client.local_server import request_local_server_control, run_local_server_ticks, start_local_singleplayer
 
         started = start_local_singleplayer(
@@ -189,8 +195,8 @@ def _legacy_main(entrypoint: str, argv: Sequence[str] | None = None) -> int:
     try:
         payload = build_runtime_bootstrap(
             repo_root=repo_root,
-            entrypoint=str(entrypoint),
-            ui=_default_ui(entrypoint=str(entrypoint), ui=str(args.ui)),
+            entrypoint=resolved_entrypoint,
+            ui=_default_ui(entrypoint=resolved_entrypoint, ui=str(args.ui)),
             seed=str(args.seed),
             profile_bundle_path=str(args.profile_bundle),
             pack_lock_path=str(args.pack_lock),
@@ -217,6 +223,7 @@ def client_main(argv: Sequence[str] | None = None) -> int:
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
+        legacy_main=lambda delegate_argv: _legacy_main("client", delegate_argv),
     )
 
 
@@ -226,6 +233,7 @@ def server_main(argv: Sequence[str] | None = None) -> int:
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
+        legacy_main=lambda delegate_argv: _legacy_main("server", delegate_argv),
     )
 
 

@@ -1,5 +1,7 @@
 Status: CANONICAL
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: RESTRUCTURE
 Replacement Target: release-pinned convergence and deprecation policy after layout cleanup

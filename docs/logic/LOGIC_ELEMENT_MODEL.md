@@ -1,5 +1,7 @@
-Status: AUTHORITATIVE
+Status: CANONICAL
 Last Reviewed: 2026-03-08
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: LOGIC-2 element declarations for pack-defined logic assemblies.
 Stability: provisional

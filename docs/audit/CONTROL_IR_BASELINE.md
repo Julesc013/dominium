@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-01
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Compatibility: Bound to `schema/control/control_ir*.schema`, `src/control/ir/*`, and control-plane decision logs.
 Stability: provisional

@@ -1,5 +1,7 @@
-Status: AUTHORITATIVE
+Status: CANONICAL
 Last Reviewed: 2026-02-17
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Stability: provisional
 Future Series: DOC-ARCHIVE

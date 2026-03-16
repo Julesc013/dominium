@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-28
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: ABS-2 NetworkGraph payload typing, routing, partition hooks, inspection, and visualization standards.
 Stability: provisional

@@ -1,5 +1,7 @@
 Status: CANONICAL
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DIST
 Replacement Target: release-pinned install profile, update model, and trust policy constitution
@@ -99,8 +101,9 @@ The baseline `v0.0.0-mock` graph is platform-agnostic.
 
 Concrete platform-specific artifact availability remains bound later by release manifests and platform packaging outputs.
 
-Because `contract.lib.manifest.v1` is not present in the current semantic contract registry, the component graph registry in MVP remains conservatively provisional even though it is designed to align with:
+The component graph registry in MVP remains provisional even though it is designed to align with:
 
+- `contract.lib.manifest.v1`
 - `contract.pack.compat.v1`
 - current LIB install/instance/save manifest behavior
 

@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: TRUST/UPDATE-MODEL
 Replacement Target: release-index governed trust-root bundles and signed acquisition policy

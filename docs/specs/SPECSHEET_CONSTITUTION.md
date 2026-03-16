@@ -1,7 +1,9 @@
-Status: ACTIVE
+Status: DERIVED
+Last Reviewed: 2026-03-01
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Owner: Core Engineering
-Last Updated: 2026-03-01
 Stability: provisional
 Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority

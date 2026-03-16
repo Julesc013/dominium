@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change: GR3 FAST integrity stabilization and enforcement hygiene
 Stability: provisional
 Future Series: DOC-ARCHIVE

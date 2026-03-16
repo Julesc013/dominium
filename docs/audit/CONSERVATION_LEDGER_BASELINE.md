@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-26
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Scope: RS-2/5 conservation contracts + deterministic exception ledger.
 Stability: provisional
 Future Series: DOC-ARCHIVE

@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change:
 Stability: provisional
 Future Series: DOC-ARCHIVE

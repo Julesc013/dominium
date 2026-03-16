@@ -1,3 +1,7 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Change: META-COMPUTE-0 deterministic compute budgeting, throttling, and coupling hooks
 Stability: provisional
 Future Series: DOC-ARCHIVE

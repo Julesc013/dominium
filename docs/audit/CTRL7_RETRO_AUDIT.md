@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-01
+Supersedes: none
+Superseded By: none
 Scope: CTRL-7 retro-consistency audit for capability-driven control
 Stability: provisional
 Future Series: DOC-ARCHIVE

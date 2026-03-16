@@ -1,4 +1,7 @@
-Status: Baseline implemented for SIG-0 (signals + communication constitution).
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Date: 2026-03-03
 Stability: provisional
 Future Series: DOC-ARCHIVE

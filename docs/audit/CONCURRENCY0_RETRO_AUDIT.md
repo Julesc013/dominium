@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: ENGINE/CONCURRENCY
 Replacement Target: release-pinned concurrency and scheduling governance after sharded truth execution exists

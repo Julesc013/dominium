@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-15
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Scope: Prompt 19/20 acceleration baseline
 Stability: provisional
 Future Series: DOC-CONVERGENCE

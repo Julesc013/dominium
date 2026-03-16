@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-27
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: MAT-2 material taxonomy and composition baseline.
 Stability: provisional

@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: GOVERNANCE/DIST
 Replacement Target: governance profile and release-integrated policy baseline

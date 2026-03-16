@@ -107,6 +107,7 @@ static const launcher_ui_menu_item g_launcher_menu_items[LAUNCHER_UI_MENU_COUNT]
 };
 
 static void launcher_settings_set_renderer(launcher_ui_settings* settings, const char* name);
+static int launcher_ui_collect_diagnostics_lines(char lines[][LAUNCHER_UI_LABEL_MAX], int max_lines);
 
 static const char* launcher_ui_text(const launcher_ui_state* state,
                                     const char* id,

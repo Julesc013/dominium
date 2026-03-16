@@ -1,6 +1,8 @@
-Status: AUTHORITATIVE
-Version: 1.0.0
+Status: CANONICAL
 Last Reviewed: 2026-03-06
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Scope: STATEVEC-0 explicit state exposure for SYS/COMPILE/process capsules.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

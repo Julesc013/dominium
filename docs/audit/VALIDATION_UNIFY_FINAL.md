@@ -12,7 +12,7 @@ Replacement Target: release-pinned validation governance report
 
 - `validate.schemas` -> `complete` via `compatx_schema_suite` (errors=0, warnings=0)
 - `validate.registries` -> `complete` via `stability_registry_suite` (errors=0, warnings=0)
-- `validate.identity` -> `complete` via `identity_suite` (errors=0, warnings=55)
+- `validate.identity` -> `complete` via `identity_suite` (errors=0, warnings=0)
 - `validate.contracts` -> `complete` via `semantic_contract_suite` (errors=0, warnings=0)
 - `validate.packs` -> `complete` via `pack_verification_suite` (errors=0, warnings=0)
 - `validate.negotiation` -> `complete` via `negotiation_suite` (errors=0, warnings=0)
@@ -23,7 +23,7 @@ Replacement Target: release-pinned validation governance report
 
 ## Legacy Validators Mapped
 
-- Total legacy/significant validation surfaces: `23`
+- Total prior significant validation surfaces: `23`
 - Active direct adapters: `11`
 - Coverage/deprecation adapters: `12`
 

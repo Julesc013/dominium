@@ -1,4 +1,7 @@
-Status: BASELINE
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Scope: STATEVEC-0 explicit state exposure for SYS/COMPILE/PROC
 Stability: provisional
 Future Series: DOC-CONVERGENCE

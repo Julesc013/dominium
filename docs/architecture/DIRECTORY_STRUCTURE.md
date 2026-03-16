@@ -1,4 +1,4 @@
-Status: Superseded
+Status: DERIVED
 Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: docs/audit/REPO_TREE_INDEX.md

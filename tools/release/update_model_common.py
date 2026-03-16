@@ -404,6 +404,8 @@ def render_update_model_baseline(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: UPDATE/TRUST",
         "Replacement Target: trust-governed remote release indices and signed acquisition policy",

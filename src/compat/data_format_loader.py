@@ -27,6 +27,7 @@ from tools.xstack.compatx.validator import validate_instance
 CURRENT_ARTIFACT_FORMAT_VERSION = "2.0.0"
 LEGACY_ARTIFACT_FORMAT_VERSION = "1.0.0"
 MIGRATION_REGISTRY_REL = os.path.join("data", "registries", "migration_registry.json")
+UNIVERSAL_IDENTITY_FIELD = "universal_identity_block"
 
 REFUSAL_FORMAT_MISSING_VERSION = "refusal.format.missing_version"
 REFUSAL_FORMAT_MIGRATION_MISSING = "refusal.format.migration_missing"
@@ -176,6 +177,7 @@ def current_format_version(_artifact_kind: str) -> str:
 
 def artifact_deterministic_fingerprint(payload: Mapping[str, object], *, ignored_fields: Sequence[str] | None = None) -> str:
     body = dict(payload or {})
+    body.pop(UNIVERSAL_IDENTITY_FIELD, None)
     body["deterministic_fingerprint"] = ""
     for field_name in list(ignored_fields or []):
         token = str(field_name).strip()

@@ -1,4 +1,7 @@
-Status: AUDIT
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Scope: MOB-8 signaling/interlocking retrofit
 Date: 2026-03-03
 Stability: provisional

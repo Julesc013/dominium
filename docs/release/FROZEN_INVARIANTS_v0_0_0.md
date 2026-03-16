@@ -1,5 +1,7 @@
-Status: RELEASE-LOCKED
+Status: CANONICAL
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Scope: v0.0.0 frozen invariant declaration.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
@@ -24,20 +26,16 @@ Frozen registry-backed semantic contracts:
 - `contract.pack.compat.v1`
 - `contract.time.anchor.v1`
 - `contract.appshell.lifecycle.v1`
+- `contract.lib.manifest.v1`
 - `contract.proc.capsule.v1`
+- `contract.scan.v1`
 - `contract.sys.collapse.v1`
 - `contract.release.resolution.exact_suite.v1`
 - `contract.release.resolution.latest_compatible.v1`
 
 Registry hash frozen at scope lock:
 
-- `semantic_contract_registry_hash`: `48da2506959f53847207b0d0a6eac7445cdcb78ff6a23c25526c06210ad5aba5`
-
-Requested but not declared in the current semantic contract registry:
-
-- `contract.lib.manifest.v1`
-  - This contract is not introduced by `SCOPE-FREEZE-0`.
-  - Adding it here would create a new semantic surface, which is out of scope for convergence lock work.
+- `semantic_contract_registry_hash`: `55bef1f0337c3a311cc5a30c8880715bffbf93d93eb64c24cc2f1d7f86b1df94`
 
 ## Determinism Guarantees
 

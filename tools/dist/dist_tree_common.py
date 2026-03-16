@@ -26,6 +26,7 @@ from src.lib.instance import (
     normalize_instance_manifest,
     validate_instance_manifest,
 )
+from src.meta.identity import IDENTITY_KIND_INSTALL, IDENTITY_KIND_INSTANCE, attach_universal_identity_block
 from src.governance import (
     DEFAULT_GOVERNANCE_PROFILE_REL,
     governance_profile_hash,
@@ -312,6 +313,37 @@ def _build_store_manifest_payload() -> dict:
     }
     payload["deterministic_fingerprint"] = store_deterministic_fingerprint(payload)
     return payload
+
+
+def _attach_install_identity(payload: Mapping[str, object]) -> dict:
+    row = attach_universal_identity_block(
+        dict(payload or {}),
+        identity_kind_id=IDENTITY_KIND_INSTALL,
+        identity_id="identity.install.{}".format(_token(dict(payload or {}).get("install_id")) or "unknown"),
+        stability_class_id="provisional",
+        semver=_token(dict(payload or {}).get("install_version")),
+        schema_version=_token(dict(payload or {}).get("schema_version")) or "2.0.0",
+        protocol_range=dict(dict(payload or {}).get("supported_protocol_versions") or {}),
+        contract_bundle_hash=_token(dict(payload or {}).get("semantic_contract_registry_hash")).lower(),
+        extensions={"official.rel_path": DEFAULT_INSTALL_MANIFEST_NAME},
+    )
+    row["deterministic_fingerprint"] = install_deterministic_fingerprint(row)
+    return row
+
+
+def _attach_instance_identity(payload: Mapping[str, object]) -> dict:
+    required_ranges = dict(dict(payload or {}).get("required_contract_ranges") or {})
+    row = attach_universal_identity_block(
+        dict(payload or {}),
+        identity_kind_id=IDENTITY_KIND_INSTANCE,
+        identity_id="identity.instance.{}".format(_token(dict(payload or {}).get("instance_id")) or "unknown"),
+        stability_class_id="provisional",
+        schema_version=_token(dict(payload or {}).get("schema_version")) or "2.1.0",
+        contract_bundle_hash=canonical_sha256(required_ranges) if required_ranges else "",
+        extensions={"official.rel_path": _norm(DEFAULT_INSTANCE_MANIFEST_REL)},
+    )
+    row["deterministic_fingerprint"] = instance_deterministic_fingerprint(row)
+    return row
 
 
 def _alias_pack_payload(alias_row: Mapping[str, object]) -> dict:
@@ -640,6 +672,7 @@ def _build_install_manifest(bundle_root: str, repo_root: str, platform_tag: str,
     payload = normalize_install_manifest(payload)
     payload["deterministic_fingerprint"] = ""
     payload["deterministic_fingerprint"] = install_deterministic_fingerprint(payload)
+    payload = _attach_install_identity(payload)
     install_manifest_path = os.path.join(bundle_root, DEFAULT_INSTALL_MANIFEST_NAME)
     _write_json(install_manifest_path, payload)
     validation = validate_install_manifest(
@@ -708,6 +741,7 @@ def _write_default_instance_manifest(
     instance_payload = normalize_instance_manifest(instance_payload)
     instance_payload["deterministic_fingerprint"] = ""
     instance_payload["deterministic_fingerprint"] = instance_deterministic_fingerprint(instance_payload)
+    instance_payload = _attach_instance_identity(instance_payload)
     manifest_path = os.path.join(instance_root, "instance.manifest.json")
     _write_json(manifest_path, instance_payload)
     validation = validate_instance_manifest(
@@ -978,6 +1012,7 @@ def build_dist_tree(
     install_payload["extensions"]["official.component_graph_hash"] = _token(dict(release_index_payload or {}).get("component_graph_hash")).lower()
     install_payload = normalize_install_manifest(install_payload)
     install_payload["deterministic_fingerprint"] = install_deterministic_fingerprint(install_payload)
+    install_payload = _attach_install_identity(install_payload)
     _write_json(install_manifest_path, install_payload)
     _copy_file(install_manifest_path, os.path.join(bundle_root, "manifests", DEFAULT_INSTALL_MANIFEST_NAME))
     manifest_payload = build_release_manifest(

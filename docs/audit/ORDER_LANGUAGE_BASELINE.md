@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-26
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: CIV-3/4 order language + institution scaffold baseline
 Stability: provisional

@@ -1,4 +1,7 @@
-Status: AUDIT
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Scope: SIG-5 trust graph and belief dynamics
 Date: 2026-03-03
 Stability: provisional

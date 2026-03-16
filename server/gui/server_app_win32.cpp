@@ -27,3 +27,9 @@ int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmdline, int show)
 
     return domui_win32_run_shell(L"Dominium Server");
 }
+
+int WINAPI WinMain(HINSTANCE inst, HINSTANCE prev, LPSTR cmdline, int show)
+{
+    (void)cmdline;
+    return wWinMain(inst, prev, GetCommandLineW(), show);
+}

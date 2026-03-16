@@ -9,14 +9,14 @@ Replacement Target: regenerated validation run artifact
 # Validation Report STRICT
 
 - Result: `complete`
-- Fingerprint: `ea37c57933934cd0b4bb0051ea055df12bfe40661e2b07ddfc9ef49aee67cf26`
+- Fingerprint: `60ddee6ba204f14aef6dfbc161f80193fcbb8a46a62f698fdf225328518a7159`
 - Suite count: `10`
 
 | Suite | Result | Adapter | Errors | Warnings |
 | --- | --- | --- | --- | --- |
 | `validate.schemas` | `complete` | `compatx_schema_suite` | `0` | `0` |
 | `validate.registries` | `complete` | `stability_registry_suite` | `0` | `0` |
-| `validate.identity` | `complete` | `identity_suite` | `0` | `55` |
+| `validate.identity` | `complete` | `identity_suite` | `0` | `0` |
 | `validate.contracts` | `complete` | `semantic_contract_suite` | `0` | `0` |
 | `validate.packs` | `complete` | `pack_verification_suite` | `0` | `0` |
 | `validate.negotiation` | `complete` | `negotiation_suite` | `0` | `0` |

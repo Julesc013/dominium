@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: OBSERVABILITY/DIAG
 Replacement Target: release-pinned observability policies and repro-bundle minimum-set governance

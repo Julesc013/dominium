@@ -1,6 +1,8 @@
-Status: BASELINE
+Status: DERIVED
+Last Reviewed: 2026-03-02
+Supersedes: none
+Superseded By: none
 Scope: MOB-7 micro free motion
-Last Updated: 2026-03-02
 Stability: provisional
 Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority

@@ -1,5 +1,7 @@
-Status: BASELINE
+Status: DERIVED
 Last Reviewed: 2026-03-08
+Supersedes: none
+Superseded By: none
 Scope: LOGIC-4 deterministic L1 evaluation engine baseline.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

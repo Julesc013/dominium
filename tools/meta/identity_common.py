@@ -105,6 +105,8 @@ def render_identity_baseline(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: UNIVERSAL-ID",
         "Replacement Target: contract-pinned universal identity enforcement after v0.0.0-mock",

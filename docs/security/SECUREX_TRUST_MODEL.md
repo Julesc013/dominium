@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-15
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Compatibility: Bound to pack manifest signature metadata, lockfile contract, SecureX policy registry, and handshake compatibility gates.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

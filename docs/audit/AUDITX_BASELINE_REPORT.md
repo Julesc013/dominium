@@ -1,4 +1,7 @@
 Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Source: `docs/audit/auditx/FINDINGS.json`, `docs/audit/auditx/PROMOTION_CANDIDATES.json`
 Generated UTC: 2026-02-15T06:52:05Z
 Compatibility: AuditX Prompt 16 baseline

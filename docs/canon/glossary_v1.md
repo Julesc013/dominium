@@ -5,7 +5,7 @@ Superseded By: none
 Version: 1.0.0 (Normative)
 Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0.
 Scope: Dominium / Domino ecosystem vocabulary.
-Stability: provisional
+Stability: stable
 Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
 

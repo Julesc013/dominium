@@ -154,7 +154,7 @@ def _build_promotion_candidates(findings):
         elif category.startswith("prompt") or category.startswith("docs"):
             suggested_ruleset = "prompt_policy.json"
         elif category.startswith("derived"):
-            suggested_ruleset = "derived.json"
+            suggested_ruleset = "derived_artifacts.json"
         elif category.startswith("tool"):
             suggested_ruleset = "tooling.json"
         elif category.startswith("identity"):
@@ -278,6 +278,11 @@ def _build_trends(findings, cache):
 
 
 def _canonical_findings_payload(findings, graph_hash, changed_only, scan_result):
+    canonical_findings = []
+    for finding in list(findings):
+        row = dict(finding or {})
+        row.pop("created_utc", None)
+        canonical_findings.append(row)
     return canonicalize_json_payload(
         {
         "artifact_class": CANONICAL_ARTIFACT_CLASS,
@@ -286,8 +291,8 @@ def _canonical_findings_payload(findings, graph_hash, changed_only, scan_result)
         "result": scan_result,
         "changed_only": bool(changed_only),
         "graph_hash": graph_hash,
-        "finding_count": len(findings),
-        "findings": findings,
+        "finding_count": len(canonical_findings),
+        "findings": canonical_findings,
         }
     )
 

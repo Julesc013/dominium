@@ -1,4 +1,4 @@
-Status: Superseded
+Status: DERIVED
 Last Reviewed: 2026-02-08
 Supersedes: none
 Superseded By: docs/architecture/CAPABILITY_ONLY_CANON.md

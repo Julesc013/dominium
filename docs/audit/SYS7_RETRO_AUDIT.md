@@ -1,5 +1,7 @@
-Status: BASELINE
+Status: DERIVED
 Last Reviewed: 2026-03-06
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: SYS-7 retro-consistency audit for system-level forensics and explain coverage.
 Stability: provisional

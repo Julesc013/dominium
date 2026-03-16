@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-03-01
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Scope: CTRL-8 retro-consistency audit for deterministic temporary modifiers
 Stability: provisional
 Future Series: DOC-ARCHIVE

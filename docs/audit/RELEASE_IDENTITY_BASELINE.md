@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: RELEASE
 Replacement Target: release-pinned artifact manifest generator and packaging baseline after RELEASE-1

@@ -1,6 +1,8 @@
-Status: BASELINE
+Status: DERIVED
+Last Reviewed: 2026-03-01
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
-Last Updated: 2026-03-01
 Scope: FORM-1 FormalizationState substrate
 Stability: provisional
 Future Series: DOC-CONVERGENCE

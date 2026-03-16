@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: UNIVERSAL-ID
 Replacement Target: contract-pinned universal identity enforcement after v0.0.0-mock
@@ -32,8 +34,8 @@ Replacement Target: contract-pinned universal identity enforcement after v0.0.0-
 ## Integration Status
 
 - Artifacts scanned: `57`
-- Embedded identity blocks present: `2`
-- Missing-block warnings: `55`
+- Embedded identity blocks present: `57`
+- Missing-block warnings: `0`
 - Current policy: missing blocks warn in `v0.0.0-mock`; malformed blocks refuse
 
 ## Readiness

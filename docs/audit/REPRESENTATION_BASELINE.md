@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-16
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Compatibility: EB-5 representation decoupling baseline for pill->high-fidelity proxy selection and cosmetic governance.
 Stability: provisional
 Future Series: DOC-CONVERGENCE

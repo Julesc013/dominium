@@ -1,3 +1,11 @@
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-ARCHIVE
+Replacement Target: release-pinned audit artifact retained after convergence signoff
+
 # MVP Cross-Platform Final
 
 ## Run Summary

@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: LIB/APPSHELL
 Replacement Target: release-pinned install discovery and installation governance contract

@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: RELEASE/GOVERNANCE
 Replacement Target: signed suite and product tagging policy with archive-index binding

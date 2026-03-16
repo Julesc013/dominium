@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: STORE-GC
 Replacement Target: release-pinned store lifecycle bundles after shared-store transactions and rollback policies are hardened.

@@ -1,6 +1,8 @@
 Status: DERIVED
-Version: 1.0.0
 Last Reviewed: 2026-02-26
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
 Scope: ED-4/4 epistemic invariance under LOD switching.
 Stability: provisional
 Future Series: DOC-ARCHIVE

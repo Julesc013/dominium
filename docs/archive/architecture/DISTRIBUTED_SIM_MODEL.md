@@ -1,4 +1,4 @@
-Status: Superseded
+Status: HISTORICAL
 Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md

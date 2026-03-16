@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-02-28
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Scope: INT-1 InteriorVolumeGraph doctrine for deterministic interior topology, portal state, and occlusion.
 Stability: provisional

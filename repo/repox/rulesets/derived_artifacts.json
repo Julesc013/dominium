@@ -38,6 +38,13 @@
       "exemption_policy": "allow_with_expiry"
     },
     {
+      "rule_id": "INV-AUDITX-PROMOTION-CANDIDATE-SHAPE",
+      "severity": "FAIL",
+      "scope_paths": ["docs/audit/auditx/PROMOTION_CANDIDATES.json", "tools/auditx/output", "scripts/ci/check_repox_rules.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-auditx-promotion-candidate-shape",
+      "exemption_policy": "allow_with_expiry"
+    },
+    {
       "rule_id": "INV-AUDITX-OUTPUT-STALE",
       "severity": "WARN",
       "scope_paths": ["docs/audit/auditx", "tools/auditx"],

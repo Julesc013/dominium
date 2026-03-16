@@ -1,4 +1,7 @@
-Status: BASELINE
+Status: DERIVED
+Last Reviewed: 2026-03-16
+Supersedes: none
+Superseded By: none
 Version: 1.0.0
 Date: 2026-03-01
 Scope: CTRL-10 final hardening envelope before MOB series

@@ -1,6 +1,8 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
-Stability: provisional
+Supersedes: none
+Superseded By: none
+Stability: stable
 Future Series: GOVERNANCE/RELEASE
 Replacement Target: release-pinned governance profile and signed publication bundles
 

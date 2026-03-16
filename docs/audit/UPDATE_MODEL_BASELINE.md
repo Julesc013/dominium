@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: UPDATE/TRUST
 Replacement Target: trust-governed remote release indices and signed acquisition policy
@@ -27,10 +29,10 @@ Replacement Target: trust-governed remote release indices and signed acquisition
 
 ## Report Fingerprints
 
-- release index hash: `fa59a735f5c84923bb1b377e737e4163c992fa49e3b2adaed2f466fd427885b3`
+- release index hash: `140b9943619390778a8d2fce87d32faa861b3d3718878bb58308885485b1bf20`
 - governance profile hash: `09273dc808ff2cf8edab36eb30ce4139212bcce8903a3ab5a3043a9fcfd08187`
-- update plan fingerprint: `3251f3010f0c45140c2f0b8949a641f5d508214c2ff4fb905522610b727e7a80`
-- report fingerprint: `80d30f05297b93720ad24628bf96db0278c3e2a6769df73235f4c5ef87bd0c6e`
+- update plan fingerprint: `4afa2588a1e1321a09fc0ff7a02d4b877bae19da3d5c038fb1158072079e4d40`
+- report fingerprint: `024060e8eae7bf67c0d33729efa60c3e2a9e0ddc30d67187dc8371021e649fd7`
 
 ## Readiness
 

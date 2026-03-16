@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-13
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: regenerated shim coverage report after convergence cleanup

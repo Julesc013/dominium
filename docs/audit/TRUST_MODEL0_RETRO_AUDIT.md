@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: TRUST
 Replacement Target: updated trust audit after trust-root bundles, revocation, and signed pack artifacts are finalized
@@ -26,4 +28,3 @@ Replacement Target: updated trust audit after trust-root bundles, revocation, an
 - AppShell pack verifier adapter is the cleanest place to add policy enforcement without forking PACK-COMPAT
 - Setup verify and update command flows already centralize offline verification decisions
 - distribution verification already routes through release-manifest verification
-
