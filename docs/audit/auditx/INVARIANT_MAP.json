@@ -198,44 +198,6 @@
         "WARN": 898
       }
     },
-    "INV-CAPABILITY-GATED-RUNTIME": {
-      "finding_count": 35,
-      "recommended_actions": {
-        "ADD_RULE": 7,
-        "ADD_TEST": 28
-      },
-      "sample_findings": [
-        {
-          "category": "capability_misuse",
-          "finding_id": "A5_CAPABILITY_MISUSE:0001",
-          "location": "client/gui/client_app_win32.cpp"
-        },
-        {
-          "category": "capability_misuse",
-          "finding_id": "A5_CAPABILITY_MISUSE:0002",
-          "location": "launcher/cli/launcher_ui_shell.c"
-        },
-        {
-          "category": "capability_misuse",
-          "finding_id": "A5_CAPABILITY_MISUSE:0003",
-          "location": "launcher/gui/launcher_app_win32.cpp"
-        },
-        {
-          "category": "capability_misuse",
-          "finding_id": "A5_CAPABILITY_MISUSE:0004",
-          "location": "server/gui/server_app_win32.cpp"
-        },
-        {
-          "category": "capability_misuse",
-          "finding_id": "A5_CAPABILITY_MISUSE:0005",
-          "location": "setup/gui/setup_app_win32.cpp"
-        }
-      ],
-      "severities": {
-        "INFO": 28,
-        "WARN": 7
-      }
-    },
     "INV-CAPABILITY-SCOPE": {
       "finding_count": 5,
       "recommended_actions": {
@@ -302,44 +264,6 @@
       ],
       "severities": {
         "RISK": 1
-      }
-    },
-    "INV-CLI-CANONICAL-UI": {
-      "finding_count": 9,
-      "recommended_actions": {
-        "ADD_RULE": 4,
-        "ADD_TEST": 5
-      },
-      "sample_findings": [
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0001",
-          "location": "client/gui/client_app_win32.cpp"
-        },
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0002",
-          "location": "launcher/gui/launcher_app_win32.cpp"
-        },
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0003",
-          "location": "server/gui/server_app_win32.cpp"
-        },
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0004",
-          "location": "setup/gui/setup_app_win32.cpp"
-        },
-        {
-          "category": "ui_parity",
-          "finding_id": "A6_UI_PARITY_BYPASS:0005",
-          "location": "domino/tui/tui.h"
-        }
-      ],
-      "severities": {
-        "INFO": 5,
-        "RISK": 4
       }
     },
     "INV-COLLAPSE-ONLY-VIA-PROCESS": {
@@ -511,9 +435,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 131,
+      "finding_count": 13,
       "recommended_actions": {
-        "ADD_RULE": 131
+        "ADD_RULE": 13
       },
       "sample_findings": [
         {
@@ -543,7 +467,7 @@
         }
       ],
       "severities": {
-        "INFO": 120,
+        "INFO": 2,
         "RISK": 11
       }
     },
@@ -850,6 +774,27 @@
         "RISK": 1
       }
     },
+    "INV-LEGACY-CODE-QUARANTINED": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_TEST": 2
+      },
+      "sample_findings": [
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
+          "location": "tools/release/entrypoint_unify_common.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
     "INV-LIB-DETERMINISTIC": {
       "finding_count": 1,
       "recommended_actions": {
@@ -1064,6 +1009,22 @@
         "RISK": 3
       }
     },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
     "INV-MODEL-OUTPUTS-PROCESS-ONLY": {
       "finding_count": 7,
       "recommended_actions": {
@@ -1236,10 +1197,9 @@
       }
     },
     "INV-NO-ADHOC-MAIN": {
-      "finding_count": 4,
+      "finding_count": 2,
       "recommended_actions": {
-        "REWRITE": 2,
-        "USE_APPSHELL_PACK_GATE": 2
+        "REWRITE": 2
       },
       "sample_findings": [
         {
@@ -1251,20 +1211,10 @@
           "category": "appshell.ad_hoc_entry_point_smell",
           "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0002",
           "location": "dist/bin/dominium_server"
-        },
-        {
-          "category": "appshell.direct_pack_load_smell",
-          "finding_id": "E472_DIRECT_PACK_LOAD_SMELL:0001",
-          "location": "tools/launcher/launch.py"
-        },
-        {
-          "category": "appshell.direct_pack_load_smell",
-          "finding_id": "E472_DIRECT_PACK_LOAD_SMELL:0002",
-          "location": "tools/setup/setup_cli.py"
         }
       ],
       "severities": {
-        "RISK": 4
+        "RISK": 2
       }
     },
     "INV-NO-ADHOC-PRESSURE-LOGIC": {
@@ -1344,42 +1294,6 @@
       ],
       "severities": {
         "RISK": 18
-      }
-    },
-    "INV-NO-ADHOC-SPATIAL-KEYS": {
-      "finding_count": 6,
-      "recommended_actions": {
-        "REWRITE": 6
-      },
-      "sample_findings": [
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0001",
-          "location": "src/worldgen/earth/climate_field_engine.py"
-        },
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0002",
-          "location": "src/worldgen/earth/material/material_proxy_engine.py"
-        },
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0003",
-          "location": "src/worldgen/earth/tide_field_engine.py"
-        },
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0004",
-          "location": "src/worldgen/earth/water/water_view_engine.py"
-        },
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0005",
-          "location": "src/worldgen/earth/wind/wind_field_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 6
       }
     },
     "INV-NO-ADHOC-STATE-FLAGS": {
@@ -1674,6 +1588,22 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
       }
     },
     "INV-NO-HARDCODED-STRUCTURES": {
@@ -2084,22 +2014,6 @@
         "WARN": 120
       }
     },
-    "INV-SECUREX-TRUST-POLICY-VALID": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0001",
-          "location": "launcher/cli/launcher_ui_shell.c"
-        }
-      ],
-      "severities": {
-        "WARN": 1
-      }
-    },
     "INV-SHADOW-BOUNDED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -2289,46 +2203,31 @@
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 54,
+      "finding_count": 2,
       "recommended_actions": {
-        "RETIRE": 54
+        "RETIRE": 2
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "dom_audio_commands.h"
+          "location": "tools/auditx/analyzers/e416_pack_loaded_without_verification_smell.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "dom_audio_state.h"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "dom_client_input.h"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "dom_client_state.h"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "dom_client_view.h"
+          "location": "tools/xstack/testx/tests/cap_neg1_testlib.py"
         }
       ],
       "severities": {
-        "WARN": 54
+        "WARN": 2
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 128,
+      "finding_count": 59,
       "recommended_actions": {
-        "ADD_RULE": 126,
-        "ADD_TEST": 2
+        "ADD_RULE": 58,
+        "ADD_TEST": 1
       },
       "sample_findings": [
         {
@@ -2354,12 +2253,12 @@
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "src/server/server_main.py"
         }
       ],
       "severities": {
-        "RISK": 126,
-        "WARN": 2
+        "RISK": 58,
+        "WARN": 1
       }
     }
   },

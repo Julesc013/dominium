@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Canonical mutable universe state snapshot contract for deterministic tooling.",
   "x-doc-ref": [
-    "docs/canon/constitution_v1.md §3 A1/A2/A6",
+    "docs/canon/constitution_v1.md \u00a73 A1/A2/A6",
     "docs/canon/glossary_v1.md UniverseState",
     "docs/roadmap/milestone_lab_galaxy.md"
   ],
@@ -3932,6 +3932,828 @@
           }
         }
       }
+    },
+    "active_drift_policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "batch_quality_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "batch_quality_rows": {
+      "type": "array"
+    },
+    "body_states": {
+      "type": "array"
+    },
+    "boundary_field_exchange_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "boundary_flux_events": {
+      "type": "array"
+    },
+    "boundary_flux_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "candidate_model_binding_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "candidate_model_binding_rows": {
+      "type": "array"
+    },
+    "candidate_process_definition_rows": {
+      "type": "array"
+    },
+    "candidate_process_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "candidate_promotion_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "candidate_promotion_record_rows": {
+      "type": "array"
+    },
+    "certificate_artifact_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "certification_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "certification_result_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "chem_degradation_event_rows": {
+      "type": "array"
+    },
+    "chem_degradation_state_rows": {
+      "type": "array"
+    },
+    "chem_maintenance_action_rows": {
+      "type": "array"
+    },
+    "chem_process_run_state_rows": {
+      "type": "array"
+    },
+    "compaction_marker_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compaction_markers": {
+      "type": "array"
+    },
+    "compaction_post_anchor_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compaction_pre_anchor_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compartment_flow_runtime_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "compartment_hazard_models": {
+      "type": "array"
+    },
+    "compartment_provenance_events": {
+      "type": "array"
+    },
+    "compartment_states": {
+      "type": "array"
+    },
+    "compile_request_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compile_request_rows": {
+      "type": "array"
+    },
+    "compile_result_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compile_result_rows": {
+      "type": "array"
+    },
+    "compiled_model_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compiled_model_rows": {
+      "type": "array"
+    },
+    "coupling_constraints": {
+      "type": "array"
+    },
+    "cure_states": {
+      "type": "array"
+    },
+    "degradation_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "degradation_event_rows": {
+      "type": "array"
+    },
+    "degradation_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "degradation_state_rows": {
+      "type": "array"
+    },
+    "drift_policy_id": {
+      "type": "string"
+    },
+    "drift_policy_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "edge_occupancies": {
+      "type": "array"
+    },
+    "effect_provenance_events": {
+      "type": "array"
+    },
+    "effect_rows": {
+      "type": "array"
+    },
+    "elec_flow_channels": {
+      "type": "array"
+    },
+    "elec_storage_states": {
+      "type": "array"
+    },
+    "energy_ledger_entries": {
+      "type": "array"
+    },
+    "energy_ledger_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "entropy_effect_rows": {
+      "type": "array"
+    },
+    "entropy_event_rows": {
+      "type": "array"
+    },
+    "entropy_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "entropy_reset_events": {
+      "type": "array"
+    },
+    "entropy_reset_events_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "entropy_reset_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "entropy_state_rows": {
+      "type": "array"
+    },
+    "equivalence_proof_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "equivalence_proof_rows": {
+      "type": "array"
+    },
+    "exception_events": {
+      "type": "array"
+    },
+    "experiment_definition_rows": {
+      "type": "array"
+    },
+    "experiment_result_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "experiment_result_rows": {
+      "type": "array"
+    },
+    "experiment_run_binding_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "experiment_run_binding_rows": {
+      "type": "array"
+    },
+    "failure_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "field_binding_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "field_cells": {
+      "type": "array"
+    },
+    "field_layers": {
+      "type": "array"
+    },
+    "field_modifier_rows": {
+      "type": "array"
+    },
+    "field_sample_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "field_sample_rows": {
+      "type": "array"
+    },
+    "field_update_events": {
+      "type": "array"
+    },
+    "field_update_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "fire_event_rows": {
+      "type": "array"
+    },
+    "fire_state_rows": {
+      "type": "array"
+    },
+    "force_application_rows": {
+      "type": "array"
+    },
+    "formalization_events": {
+      "type": "array"
+    },
+    "formalization_inference_candidates": {
+      "type": "array"
+    },
+    "formalization_states": {
+      "type": "array"
+    },
+    "free_motion_states": {
+      "type": "array"
+    },
+    "generator_version_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "geometry_candidates": {
+      "type": "array"
+    },
+    "geometry_cell_states": {
+      "type": "array"
+    },
+    "geometry_chunk_states": {
+      "type": "array"
+    },
+    "geometry_derived_metrics": {
+      "type": "array"
+    },
+    "geometry_edit_events": {
+      "type": "array"
+    },
+    "geometry_edit_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "guide_geometries": {
+      "type": "array"
+    },
+    "impact_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "impulse_application_rows": {
+      "type": "array"
+    },
+    "impulse_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "interior_graphs": {
+      "type": "array"
+    },
+    "interior_leak_hazards": {
+      "type": "array"
+    },
+    "interior_portal_state_machines": {
+      "type": "array"
+    },
+    "interior_portals": {
+      "type": "array"
+    },
+    "interior_volumes": {
+      "type": "array"
+    },
+    "interpolation_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "itineraries": {
+      "type": "array"
+    },
+    "lens_layer_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "logic_compile_policy_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "maintenance_action_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "maintenance_action_rows": {
+      "type": "array"
+    },
+    "material_batches": {
+      "type": "array"
+    },
+    "mechanics_provenance_events": {
+      "type": "array"
+    },
+    "micro_motion_states": {
+      "type": "array"
+    },
+    "mobility_block_reservations": {
+      "type": "array"
+    },
+    "mobility_junctions": {
+      "type": "array"
+    },
+    "mobility_maintenance_due_events": {
+      "type": "array"
+    },
+    "mobility_maintenance_schedules": {
+      "type": "array"
+    },
+    "mobility_network_bindings": {
+      "type": "array"
+    },
+    "mobility_reservations": {
+      "type": "array"
+    },
+    "mobility_route_cache_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "mobility_route_results": {
+      "type": "array"
+    },
+    "mobility_signal_hazards": {
+      "type": "array"
+    },
+    "mobility_signal_maintenance_events": {
+      "type": "array"
+    },
+    "mobility_signal_maintenance_schedules": {
+      "type": "array"
+    },
+    "mobility_signal_state_machines": {
+      "type": "array"
+    },
+    "mobility_signals": {
+      "type": "array"
+    },
+    "mobility_switch_locks": {
+      "type": "array"
+    },
+    "mobility_switch_state_machines": {
+      "type": "array"
+    },
+    "mobility_wear_pending_updates": {
+      "type": "array"
+    },
+    "mobility_wear_runtime_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "mobility_wear_states": {
+      "type": "array"
+    },
+    "model_bindings": {
+      "type": "array"
+    },
+    "model_cache_rows": {
+      "type": "array"
+    },
+    "model_evaluation_results": {
+      "type": "array"
+    },
+    "model_flow_adjustment_rows": {
+      "type": "array"
+    },
+    "model_hazard_rows": {
+      "type": "array"
+    },
+    "model_runtime_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "momentum_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "momentum_states": {
+      "type": "array"
+    },
+    "mount_points": {
+      "type": "array"
+    },
+    "plan_artifacts": {
+      "type": "array"
+    },
+    "pollutant_mass_total": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "pollution_compliance_report_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_compliance_report_rows": {
+      "type": "array"
+    },
+    "pollution_deposition_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_deposition_rows": {
+      "type": "array"
+    },
+    "pollution_dispersion_degrade_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_dispersion_degrade_rows": {
+      "type": "array"
+    },
+    "pollution_dispersion_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_dispersion_processed_source_event_ids": {
+      "type": "array"
+    },
+    "pollution_dispersion_step_rows": {
+      "type": "array"
+    },
+    "pollution_exposure_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_exposure_increment_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_exposure_increment_rows": {
+      "type": "array"
+    },
+    "pollution_exposure_rows": {
+      "type": "array"
+    },
+    "pollution_exposure_state_rows": {
+      "type": "array"
+    },
+    "pollution_field_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_health_risk_event_rows": {
+      "type": "array"
+    },
+    "pollution_health_risk_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_measurement_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_measurement_rows": {
+      "type": "array"
+    },
+    "pollution_source_event_rows": {
+      "type": "array"
+    },
+    "pollution_source_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_total_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_total_rows": {
+      "type": "array"
+    },
+    "portal_flow_params": {
+      "type": "array"
+    },
+    "pose_mount_provenance_events": {
+      "type": "array"
+    },
+    "pose_slots": {
+      "type": "array"
+    },
+    "process_run_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "process_run_state_rows": {
+      "type": "array"
+    },
+    "projection_profile_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "proper_time_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "proper_time_states": {
+      "type": "array"
+    },
+    "quantity_tolerance_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "realism_profile_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "reverse_engineering_record_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "reverse_engineering_record_rows": {
+      "type": "array"
+    },
+    "revocation_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "rounding_mode_policy_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "safety_events": {
+      "type": "array"
+    },
+    "safety_instances": {
+      "type": "array"
+    },
+    "safety_runtime_state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "schedule_domain_evaluation_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "schedule_domain_evaluations": {
+      "type": "array"
+    },
+    "schedule_time_bindings": {
+      "type": "array"
+    },
+    "spec_bindings": {
+      "type": "array"
+    },
+    "spec_compliance_results": {
+      "type": "array"
+    },
+    "spec_provenance_events": {
+      "type": "array"
+    },
+    "state_vector_definition_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "state_vector_definition_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "state_vector_snapshot_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "state_vector_snapshot_rows": {
+      "type": "array"
+    },
+    "structural_edges": {
+      "type": "array"
+    },
+    "structural_graphs": {
+      "type": "array"
+    },
+    "structural_nodes": {
+      "type": "array"
+    },
+    "sync_policy_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "system_certificate_artifact_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "system_certificate_artifact_rows": {
+      "type": "array"
+    },
+    "system_certificate_revocation_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "system_certificate_revocation_rows": {
+      "type": "array"
+    },
+    "system_certification_result_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "system_certification_result_rows": {
+      "type": "array"
+    },
+    "system_explain_artifact_rows": {
+      "type": "array"
+    },
+    "system_explain_cache_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "system_explain_cache_rows": {
+      "type": "array"
+    },
+    "system_explain_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "system_explain_request_rows": {
+      "type": "array"
+    },
+    "system_failure_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "system_failure_event_rows": {
+      "type": "array"
+    },
+    "system_health_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "system_health_state_rows": {
+      "type": "array"
+    },
+    "system_reliability_rng_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "system_reliability_rng_outcome_rows": {
+      "type": "array"
+    },
+    "system_reliability_warning_rows": {
+      "type": "array"
+    },
+    "system_warning_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "thermal_cure_events": {
+      "type": "array"
+    },
+    "thermal_fire_events": {
+      "type": "array"
+    },
+    "thermal_fire_states": {
+      "type": "array"
+    },
+    "thermal_phase_events": {
+      "type": "array"
+    },
+    "time_adjust_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "time_adjust_events": {
+      "type": "array"
+    },
+    "time_mapping_cache_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "time_mapping_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "time_stamp_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "time_stamp_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "time_stamp_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "travel_commitments": {
+      "type": "array"
+    },
+    "travel_events": {
+      "type": "array"
+    },
+    "travel_schedules": {
+      "type": "array"
+    },
+    "traversal_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "validity_domain_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "validity_domain_rows": {
+      "type": "array"
+    },
+    "vehicle_compatibility_results": {
+      "type": "array"
+    },
+    "vehicle_events": {
+      "type": "array"
+    },
+    "vehicle_motion_states": {
+      "type": "array"
+    },
+    "vehicles": {
+      "type": "array"
+    },
+    "view_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "worldgen_request_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "worldgen_requests": {
+      "type": "array"
+    },
+    "worldgen_result_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "worldgen_results": {
+      "type": "array"
+    },
+    "worldgen_spawned_object_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "worldgen_spawned_objects": {
+      "type": "array"
+    },
+    "worldgen_star_system_artifacts": {
+      "type": "array"
+    },
+    "yield_model_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
     }
   },
   "examples": [

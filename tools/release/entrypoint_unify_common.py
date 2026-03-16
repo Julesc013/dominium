@@ -270,7 +270,11 @@ def build_entrypoint_unify_report(repo_root: str) -> dict:
         row["compliance_status"] = _compliance_status(product_id, text)
         row["calls_appshell_main"] = "appshell_main(" in text
         row["uses_product_bootstrap"] = "product_bootstrap=appshell_product_bootstrap" in text
-        row["bootstrap_steps"] = bootstrap_steps_for_product(repo_root, product_id)
+        try:
+            row["bootstrap_steps"] = bootstrap_steps_for_product(repo_root, product_id)
+        except ValueError as exc:
+            row["bootstrap_steps"] = []
+            row["bootstrap_error"] = _token(exc)
         rows.append(row)
         violations.extend(_violations_for_row(repo_root, row))
     report = {

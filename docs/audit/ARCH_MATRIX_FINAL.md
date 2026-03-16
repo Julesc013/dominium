@@ -1,14 +1,12 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
-Supersedes: none
-Superseded By: none
 Stability: provisional
 Future Series: PLATFORM/DIST
 Replacement Target: release-pinned target matrix and downloadable artifact availability model
 
 # ARCH-MATRIX Final
 
-Fingerprint: `1fda69af0918a7cb43fa8ff850ac3dd7319261710085e7d913e72fb10596dcd0`
+Fingerprint: `ffd0a93dc11d3a09035a5bbe71357a9b9d7a4bba04d050b013257113db6fce6d`
 
 ## Full Target Matrix Table
 

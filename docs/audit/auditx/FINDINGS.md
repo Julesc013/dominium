@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-15
+Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
 
@@ -8,12 +8,15 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1934
-- Severities: INFO=153, RISK=665, VIOLATION=24, WARN=1092
-- Categories: appshell.ad_hoc_entry_point_smell=2, appshell.direct_pack_load_smell=2, architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=5, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_intent_bypass_smell=1, architecture.direct_knowledge_mutation_smell=1, architecture.direct_message_smell=8, architecture.direct_position_mutation_smell=4, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=3, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=13, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=17, architecture.inline_strength_check_smell=1, architecture.intent_bypass_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=3, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=4, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=6, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=7, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=5, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, bundle.nondeterministic_bundle_smell=1, canon_drift=898, capability_bypass_smell=1, capability_misuse=35, civilisation.nondeterministic_cohort_mapping_smell=1, compat.behavior_without_contract_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=137, epistemics.hidden_state_leak_smell=6, geometry.adhoc_spatial_key_smell=6, install.path_dependent_install_smell=1, interaction.interaction_bypass_smell=2, logic.adhoc_wiring_smell=5, logic.carrier_bias_smell=9, logic.protocol_security_bypass_smell=1, logic.random_failure_smell=1, logic.truth_leak_via_debug_smell=1, logic.unbounded_trace_smell=1, materials.hardcoded_blueprint_smell=7, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=54, reliability.silent_reaction_smell=3, schema_usage=128, security.boundary_io=1, security.hidden_privilege_escalation_smell=2, semantic.capability_drift=5, semantic.schema_shadowing=120, semantic.workspace_contamination=1, ui_parity=9, worldgen.unbounded_shadow_sampling_smell=1
+- Total findings: 1645
+- Severities: INFO=2, RISK=587, VIOLATION=25, WARN=1031
+- Categories: appshell.ad_hoc_entry_point_smell=2, architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=5, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_intent_bypass_smell=1, architecture.direct_knowledge_mutation_smell=1, architecture.direct_message_smell=8, architecture.direct_position_mutation_smell=4, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=3, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=13, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=17, architecture.inline_strength_check_smell=1, architecture.intent_bypass_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=3, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=4, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=6, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=7, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=5, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, bundle.nondeterministic_bundle_smell=1, canon_drift=898, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, compat.behavior_without_contract_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=19, epistemics.hidden_state_leak_smell=6, install.path_dependent_install_smell=1, interaction.interaction_bypass_smell=2, legacy_contamination=2, logic.adhoc_wiring_smell=5, logic.carrier_bias_smell=9, logic.protocol_security_bypass_smell=1, logic.random_failure_smell=1, logic.truth_leak_via_debug_smell=1, logic.unbounded_trace_smell=1, materials.hardcoded_blueprint_smell=7, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, mode_flag_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=2, reliability.silent_reaction_smell=3, schema_usage=59, security.hidden_privilege_escalation_smell=2, semantic.capability_drift=5, semantic.schema_shadowing=120, semantic.workspace_contamination=1, worldgen.unbounded_shadow_sampling_smell=1
 
 ## Top Findings
 
+- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/xstack/repox/check.py)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
 - `E111_INTENT_BYPASS_SMELL:0001` VIOLATION `E111_INTENT_BYPASS_SMELL` `architecture.intent_bypass_smell` (src/server/server_boot.py)
   - build_client_intent_envelope(
   - intent envelope construction outside whitelist
@@ -85,290 +88,287 @@ Superseded By: none
   - hardcoded blueprint token detected in non-data source
   - "\"migration.blueprint.v1_to_v2\"",
 - `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
-  - Detected key access without obvious schema anchor: body_states
+  - Detected key access without obvious schema anchor: failure_ref
   - Best-effort heuristic; verify if schema declaration exists.
 - `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
-  - Detected key access without obvious schema anchor: momentum_states
+  - Detected key access without obvious schema anchor: failure_ref
   - Best-effort heuristic; verify if schema declaration exists.
 - `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
-  - Detected key access without obvious schema anchor: failure_ref
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
-  - Detected key access without obvious schema anchor: failure_ref
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
-  - Detected key access without obvious schema anchor: force_application_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
   - Detected key access without obvious schema anchor: tool.geo.explain_property_origin
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
   - Detected key access without obvious schema anchor: restart_result
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: service
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_status
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: exit_code
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_error
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: manifest_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: manifest_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: ipc_manifest_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: state_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: manifest_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: aggregated_log_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: manifest_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: manifest_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: state_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: aggregated_log_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: diag_root
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_status
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_error
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_record
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_status
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_error
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: status_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_record
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: last_event_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_record
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_status
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_error
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: exit_code
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_status
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: diag_bundle_dir
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_pending
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_backoff_remaining
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_backoff_remaining
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_result
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_pending
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_backoff_remaining
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: stop_requested
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_status
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_pending
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_backoff_remaining
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: exit_code
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0048` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: manifest_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0049` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_count
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0050` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: stop_requested
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0051` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_pending
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0052` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: restart_backoff_remaining
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0053` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: exit_code
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0054` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_status
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0055` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: read_only_mode
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0056` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_record
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0057` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: status_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0058` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: last_event_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0059` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: diag_bundle_dir
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0060` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: ready_payload
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0061` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: readiness_iteration_count
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0062` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: attach_error
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0063` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/appshell/supervisor/supervisor_engine.py)
-  - Detected key access without obvious schema anchor: manifest_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0064` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/data_format_loader.py)
-  - Detected key access without obvious schema anchor: explain_keys
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0065` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/data_format_loader.py)
-  - Detected key access without obvious schema anchor: explain_keys
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0066` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.platform_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0067` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.platform_descriptor_hash
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0068` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.platform_capability_ids
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0069` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.platform_descriptor
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0070` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.target_matrix_registry_rel
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0071` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.target_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0072` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.os_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0073` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.arch_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0074` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.abi_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0075` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.target_tier
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0076` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.target_matrix_row_hash
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0077` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/compat/descriptor/descriptor_engine.py)
-  - Detected key access without obvious schema anchor: official.target_matrix_row
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0078` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/server/server_main.py)
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/server/server_main.py)
   - Detected key access without obvious schema anchor: repo_root
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0079` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: severities
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/appshell/supervisor_hardening_common.py)
+  - Detected key access without obvious schema anchor: missing_markers
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0080` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: severities
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/appshell/supervisor_hardening_common.py)
+  - Detected key access without obvious schema anchor: missing_markers
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0081` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: recommended_actions
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/launcher/launch.py)
+  - Detected key access without obvious schema anchor: dist_root
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0082` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: recommended_actions
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: descriptor_product_id
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0083` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: sample_findings
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: descriptor_hash
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0084` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: sample_findings
+- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: selected_mode_id
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0085` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: severities
+- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: install_mode
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0086` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: recommended_actions
+- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: install_result
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0087` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: sample_findings
+- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: install_resolution_source
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0088` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: evidence_paths
+- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: degrade_step_count
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0089` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: risk_score
+- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: validation_profile
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0090` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: risk_score
+- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: validation_report_id
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0091` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: evidence_paths
+- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/prod_gate0_common.py)
+  - Detected key access without obvious schema anchor: help_first_line
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0092` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: suggested_ruleset
+- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: bsd-x86_64
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0093` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: risk_score
+- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: linux-arm64
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0094` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: risk_score
+- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: linux-x86_64
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0095` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: suggested_ruleset
+- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: install.profile.tools
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0096` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/auditx/output/writers.py)
-  - Detected key access without obvious schema anchor: evidence_paths
+- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: macos-classic
   - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: macos-universal
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: install.profile.tools
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: msdos-x86_32
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: posix-riscv64
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: posix-min
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: web-wasm32
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: win9x
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: win32
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: win64
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/arch_matrix_common.py)
+  - Detected key access without obvious schema anchor: sdl-x86_64
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/component_graph_common.py)
+  - Detected key access without obvious schema anchor: provides.profile.bundle.v1
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: tool_attach_console_stub
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: current_main_implementation
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: current_boot_flow
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: calls_appshell_main
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: uses_product_bootstrap
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: bootstrap_steps
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: bootstrap_steps
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: bootstrap_error
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/release/entrypoint_unify_common.py)
+  - Detected key access without obvious schema anchor: deprecated_flags
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: version_key
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: backups
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: official.install_profile_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: official.install_resolution_policy_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0048` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: official.trust_policy_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0049` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: official.selected_component_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0050` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: official.selected_component_descriptors
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0051` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: invocation_digest64
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0052` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: invocation_digest64
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0053` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: resolution_policy
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0054` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: plan_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0055` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: plan_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0056` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: official.trust_policy_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0057` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/setup/setup_cli.py)
+  - Detected key access without obvious schema anchor: official.deterministic_invocation
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0058` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: process.earth_material_proxy_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A7_LEGACY_CONTAMINATION:0001` RISK `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/release/entrypoint_unify_common.py)
+  - Canonical file contains direct legacy path token.
+  - Potential legacy coupling not captured by include/import graph.
+- `A7_LEGACY_CONTAMINATION:0002` RISK `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/xstack/repox/check.py)
+  - Canonical file contains direct legacy path token.
+  - Potential legacy coupling not captured by include/import graph.
+- `A8_DERIVED_FRESHNESS_SMELL:0001` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/auditx/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.auditx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0002` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/performx/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.performx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0003` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/REPOX_PROFILE.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.repox.profile
+- `A8_DERIVED_FRESHNESS_SMELL:0004` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/proof_manifest.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.repox.proof_manifest
+- `A8_DERIVED_FRESHNESS_SMELL:0005` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/securex/RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.securex.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0006` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/testx/TESTX_RUN_META.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.testx.run_meta
+- `A8_DERIVED_FRESHNESS_SMELL:0007` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.full_plan_warning
+- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (dist/pkg/winnt/x86_64/index/pkg_index.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.pkg.index
+- `A8_DERIVED_FRESHNESS_SMELL:0009` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/perf/profile_trace.sample.json)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.perf.trace.sample
+- `A8_DERIVED_FRESHNESS_SMELL:0010` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/system/LEDGER_SNAPSHOT.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.ledger_snapshot
+- `A8_DERIVED_FRESHNESS_SMELL:0011` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md)
+  - Derived artifact listed in registry is missing on disk.
+  - artifact_id=artifact.xstack.performance_ceiling_alert
+- `A8_DERIVED_FRESHNESS_SMELL:0012` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.earth.tiles/pack.capabilities.json)
+  - Derived pack JSON artifact has no provenance object.
+  - Expected deterministic source->derived traceability header.
+- `A8_DERIVED_FRESHNESS_SMELL:0013` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.earth.tiles/pack.compat.json)
+  - Derived pack JSON artifact has no provenance object.
+  - Expected deterministic source->derived traceability header.
+- `A8_DERIVED_FRESHNESS_SMELL:0014` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.earth.tiles/pack.trust.json)
+  - Derived pack JSON artifact has no provenance object.
+  - Expected deterministic source->derived traceability header.
+- `A8_DERIVED_FRESHNESS_SMELL:0015` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.sol.ephemeris/pack.capabilities.json)
+  - Derived pack JSON artifact has no provenance object.
+  - Expected deterministic source->derived traceability header.
+- `A8_DERIVED_FRESHNESS_SMELL:0016` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.sol.ephemeris/pack.compat.json)
+  - Derived pack JSON artifact has no provenance object.
+  - Expected deterministic source->derived traceability header.
+- `A8_DERIVED_FRESHNESS_SMELL:0017` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.sol.ephemeris/pack.trust.json)
+  - Derived pack JSON artifact has no provenance object.
+  - Expected deterministic source->derived traceability header.
+- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
+  - Bridge is missing required capability/entitlement guard markers.
+  - Missing markers: refuse.profile_not_selected
+- `E104_DIRECT_INTENT_BYPASS_SMELL:0001` RISK `E104_DIRECT_INTENT_BYPASS_SMELL` `architecture.direct_intent_bypass_smell` (src/server/server_boot.py)
+  - build_client_intent_envelope(
+  - direct intent dispatch detected outside canonical pipeline
+- `E113_DEPRECATED_USAGE_SMELL:0001` RISK `E113_DEPRECATED_USAGE_SMELL` `architecture.deprecated_usage_smell` (tools/xstack/repox/check.py)
+  - data/registries/deprecation_registry.json
+  - reference to deprecated/quarantined/removed identifier
+- `E117_IR_NONDETERMINISM_SMELL:0001` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
+  - missing deterministic token
+  - canonical_sha256(
+- `E117_IR_NONDETERMINISM_SMELL:0002` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
+  - missing deterministic token
+  - sorted(
+- `E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0002` RISK `E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL` `security.hidden_privilege_escalation_smell` (src/client/ui/viewer_shell.py)
+  - privilege escalation marker detected outside control subsystem
+  - "entitlement.control.admin",
+- `E131_SILENT_DOWNGRADE_SMELL:0001` RISK `E131_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)
+  - downgrade marker found outside control subsystem
+  - module_node_id=module:src/inspection
+- `E133_SPEC_HARDCODE_SMELL:0001` RISK `E133_SPEC_HARDCODE_SMELL` `architecture.spec_hardcode_smell` (src/mobility/geometry/geometry_engine.py)
+  - hardcoded infrastructure spec literal outside SpecSheet declarations
+  - clearance = {"width_mm": 3000, "height_mm": 4000}
+- `E138_INLINE_STRENGTH_CHECK_SMELL:0001` RISK `E138_INLINE_STRENGTH_CHECK_SMELL` `architecture.inline_strength_check_smell` (tools/xstack/sessionx/process_runtime.py)
+  - inline structural load/strength check outside mechanics substrate
+  - max_load=0 if bool(inputs.get("zero_max_load_on_fracture", True)) else int(max(0, _as_int(edge_row.get("max_load", 0), 0))),
+- `E139_INLINE_FRICTION_SMELL:0001` RISK `E139_INLINE_FRICTION_SMELL` `architecture.inline_friction_smell` (src/mobility/micro/constrained_motion_solver.py)
+  - inline friction/traction logic outside FIELD runtime
+  - friction_permille=int(friction_permille),
+- `E139_INLINE_FRICTION_SMELL:0002` RISK `E139_INLINE_FRICTION_SMELL` `architecture.inline_friction_smell` (src/mobility/micro/free_motion_solver.py)
+  - inline friction/traction logic outside FIELD runtime
+  - traction_permille = int(max(1, _as_int(effects.get("traction_permille", 1000), 1000)))
+- `E141_WEATHER_HACK_SMELL:0001` RISK `E141_WEATHER_HACK_SMELL` `architecture.weather_hack_smell` (tools/xstack/sessionx/ui_host.py)
+  - possible direct weather/render hack outside FIELD process path
+  - if window_is_nondiegetic and not required_entitlements:
+- `E142_MOBILITY_SPECIAL_CASE_SMELL:0001` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (src/logic/protocol/protocol_engine.py)
+  - mobility special-case branch detected
+  - send = process_signal_send(current_tick=tick, channel_id=channel_id, from_node_id=source_node, artifact_id=_t(winner.get("frame_id")), sende
+- `E142_MOBILITY_SPECIAL_CASE_SMELL:0002` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (src/specs/spec_engine.py)
+  - mobility special-case branch detected
+  - if measured_derailment is not None and int(measured_derailment) >= 900 and grade == "pass":
+- `E142_MOBILITY_SPECIAL_CASE_SMELL:0003` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (tools/xstack/sessionx/process_runtime.py)
+  - mobility special-case branch detected
+  - derail_risk_band = "high" if int(derail_risk_permille) >= 1000 else ("medium" if int(derail_risk_permille) >= 700 else "low")
+- `E143_DIRECT_POSITION_MUTATION_SMELL:0001` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/client/ui/teleport_controller.py)
+  - direct position/body mutation outside process runtime
+  - position_mm=_as_map(coords.get("position_mm")),
+- `E143_DIRECT_POSITION_MUTATION_SMELL:0002` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/client/ui/viewer_shell.py)
+  - direct position/body mutation outside process runtime
+  - position_mm = _vector3_int(state.get("position_mm"))
+- `E143_DIRECT_POSITION_MUTATION_SMELL:0003` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/embodiment/collision/macro_heightfield_provider.py)
+  - direct position/body mutation outside process runtime
+  - position_mm=position,

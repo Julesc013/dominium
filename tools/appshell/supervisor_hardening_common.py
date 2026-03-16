@@ -285,6 +285,20 @@ def _portable_installed_parity(repo_root: str) -> dict:
     pack_lock_abs = os.path.join(actual_repo_root, "dist", "locks", "pack_lock.mvp_default.json")
     registry_src = os.path.join(actual_repo_root, "data", "registries", "supervisor_policy_registry.json")
     vroot_registry_src = os.path.join(actual_repo_root, "data", "registries", "virtual_root_registry.json")
+    required_sources = (
+        template_abs,
+        profile_abs,
+        pack_lock_abs,
+        registry_src,
+        vroot_registry_src,
+    )
+    missing_sources = [path.replace("\\", "/") for path in required_sources if not os.path.isfile(path)]
+    if missing_sources:
+        return {
+            "result": "refused",
+            "reason": "missing_required_source",
+            "missing_sources": missing_sources,
+        }
     temp_parent = os.path.join(actual_repo_root, "build", "tmp")
     os.makedirs(temp_parent, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="dominium.supervisor.harden.", dir=temp_parent) as temp_root:
@@ -554,6 +568,14 @@ def build_supervisor_hardening_report(repo_root: str) -> dict:
                     "message": "default policy did not leave the crashed child exited within the bounded refresh sequence",
                 }
             )
+    if _token(parity_probe.get("result")) != "complete":
+        violations.append(
+            {
+                "code": "portable_installed_parity_failed",
+                "file_path": "tools/appshell/supervisor_hardening_common.py",
+                "message": "portable/installed parity probe did not complete",
+            }
+        )
     report = {
         "schema_version": "1.0.0",
         "report_id": SUPERVISOR_HARDENING_REPORT_ID,

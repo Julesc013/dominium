@@ -73,7 +73,7 @@ def _launcher_defaults() -> dict:
 
 
 def _verify_pack_root_via_appshell(**kwargs) -> dict:
-    # verify_pack_set(...) is executed inside the AppShell adapter so launcher
+    # Pack verification is executed inside the AppShell adapter so launcher
     # stays on the governed verification surface while still enforcing trust.
     return verify_pack_root(**kwargs)
 
@@ -921,7 +921,6 @@ def main(argv: list[str] | None = None) -> int:
         argv=normalized_argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
-        legacy_main=_legacy_main,
     )
 
 

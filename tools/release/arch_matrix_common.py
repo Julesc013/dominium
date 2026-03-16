@@ -633,14 +633,28 @@ def _tier1_gate_status(repo_root: str, built_rows: list[dict]) -> list[dict]:
 
 def _descriptor_row(repo_root: str, *, product_id: str = "client") -> dict:
     root = _norm(repo_root)
-    descriptor = build_product_descriptor(
-        root,
-        product_id=product_id,
-        product_version="0.0.0+arch_matrix",
-        platform_id="platform.winnt",
-    )
-    extensions = _as_map(descriptor.get("extensions"))
     keys = ["official.target_id", "official.os_id", "official.arch_id", "official.abi_id", "official.target_tier"]
+    try:
+        descriptor = build_product_descriptor(
+            root,
+            product_id=product_id,
+            product_version="0.0.0+arch_matrix",
+            platform_id="platform.winnt",
+        )
+    except ValueError as exc:
+        return {
+            "product_id": product_id,
+            "present_fields": [],
+            "missing_fields": list(keys),
+            "target_id": "",
+            "os_id": "",
+            "arch_id": "",
+            "abi_id": "",
+            "target_tier": 0,
+            "descriptor_fingerprint": "",
+            "error": str(exc),
+        }
+    extensions = _as_map(descriptor.get("extensions"))
     return {
         "product_id": product_id,
         "present_fields": [key for key in keys if key in extensions],

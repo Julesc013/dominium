@@ -223,7 +223,6 @@ def client_main(argv: Sequence[str] | None = None) -> int:
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
-        legacy_main=lambda delegate_argv: _legacy_main("client", delegate_argv),
     )
 
 
@@ -233,7 +232,6 @@ def server_main(argv: Sequence[str] | None = None) -> int:
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
-        legacy_main=lambda delegate_argv: _legacy_main("server", delegate_argv),
     )
 
 

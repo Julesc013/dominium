@@ -134,7 +134,6 @@ def main(argv: list[str] | None = None) -> int:
         argv=argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
-        legacy_main=_legacy_main,
     )
 
 

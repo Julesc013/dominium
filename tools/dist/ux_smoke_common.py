@@ -233,7 +233,12 @@ def build_ux_smoke_report(repo_root: str) -> dict:
     status_rows = _status_rows(root)
     tui_probe = _tui_probe(root)
     rendered_probe = _rendered_probe()
-    cli_reference_text = generate_cli_reference(root)
+    cli_reference_text = ""
+    cli_reference_error = ""
+    try:
+        cli_reference_text = generate_cli_reference(root)
+    except ValueError as exc:
+        cli_reference_error = _token(exc)
 
     violations: list[dict] = []
     for row in help_rows:
@@ -264,7 +269,16 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                     "rule_id": RULE_HELP_ID,
                 }
             )
-    if "## Getting Started" not in cli_reference_text or "diag capture" not in cli_reference_text:
+    if cli_reference_error:
+        violations.append(
+            {
+                "code": "cli_reference_generation_failed",
+                "message": "CLI reference generation failed",
+                "file_path": CLI_REFERENCE_PATH,
+                "rule_id": RULE_HELP_ID,
+            }
+        )
+    elif "## Getting Started" not in cli_reference_text or "diag capture" not in cli_reference_text:
         violations.append(
             {
                 "code": "cli_reference_missing_examples",

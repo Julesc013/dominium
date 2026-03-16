@@ -24,10 +24,10 @@ def product_bin_map(repo_root: str) -> dict[str, str]:
 
     payload, error = load_product_registry(repo_root)
     if error:
-        raise ValueError(error)
+        return {}
     defaults, defaults_error = product_capability_default_rows_by_id(repo_root)
     if defaults_error:
-        raise ValueError(defaults_error)
+        return {}
     record = dict(payload.get("record") or {})
     rows = list(record.get("products") or [])
     out: dict[str, str] = {}

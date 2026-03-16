@@ -87,9 +87,12 @@ def _write_text(path: str, text: str) -> str:
 
 def _sha256_file(path: str) -> str:
     digest = hashlib.sha256()
-    with open(_norm(path), "rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
+    try:
+        with open(_norm(path), "rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(chunk)
+    except OSError:
+        return ""
     return digest.hexdigest()
 
 

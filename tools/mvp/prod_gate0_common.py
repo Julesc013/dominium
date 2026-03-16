@@ -895,7 +895,38 @@ def build_product_boot_matrix_report(
     install_root: str = "",
 ) -> dict:
     repo_root_abs = _norm(repo_root)
-    fixture_layout = _prepare_fixture_layout(repo_root_abs, work_root=install_root)
+    try:
+        fixture_layout = _prepare_fixture_layout(repo_root_abs, work_root=install_root)
+    except ValueError as exc:
+        report = {
+            "result": "refused",
+            "report_id": PRODUCT_BOOT_MATRIX_REPORT_ID,
+            "simulate_tty": _token(simulate_tty) or "auto",
+            "simulate_gui": _token(simulate_gui) or "auto",
+            "fixture_layout": {},
+            "product_rows": [dict(row) for row in PRODUCT_RUNTIME_ROWS],
+            "command_rows": [],
+            "mode_rows": [],
+            "ipc_rows": [],
+            "failures": [
+                {
+                    "product_id": "fixture",
+                    "surface": "fixture_layout",
+                    "message": _token(exc) or "fixture layout preparation failed",
+                }
+            ],
+            "metrics": {
+                "product_count": int(len(PRODUCT_RUNTIME_ROWS)),
+                "command_run_count": 0,
+                "mode_run_count": 0,
+                "ipc_run_count": 0,
+                "failure_count": 1,
+                "degrade_count": 0,
+            },
+            "deterministic_fingerprint": "",
+        }
+        report["deterministic_fingerprint"] = _canonical_fingerprint(report)
+        return report
     product_registry = _load_product_registry(repo_root_abs)
     command_rows = _build_command_rows(repo_root_abs, fixture_layout)
     mode_rows = _build_mode_rows(

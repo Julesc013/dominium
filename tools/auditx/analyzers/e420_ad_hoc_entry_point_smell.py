@@ -22,20 +22,25 @@ REQUIRED_TOKENS = {
     ),
     "tools/mvp/runtime_entry.py": (
         "from src.appshell import appshell_main",
+        "def appshell_product_bootstrap(",
         "def client_main(",
         "def server_main(",
+        "product_bootstrap=appshell_product_bootstrap",
     ),
     "src/server/server_main.py": (
         "from src.appshell import appshell_main",
-        "legacy_main=_legacy_main",
+        "def appshell_product_bootstrap(",
+        "product_bootstrap=appshell_product_bootstrap",
     ),
     "tools/setup/setup_cli.py": (
         "from src.appshell import appshell_main",
-        "legacy_main=_legacy_main",
+        "def appshell_product_bootstrap(",
+        "product_bootstrap=appshell_product_bootstrap",
     ),
     "tools/launcher/launch.py": (
         "from src.appshell import appshell_main",
-        "legacy_main=_legacy_main",
+        "def appshell_product_bootstrap(",
+        "product_bootstrap=appshell_product_bootstrap",
     ),
     "dist/bin/dominium_client": (
         "client_main(sys.argv[1:])",

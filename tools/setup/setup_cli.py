@@ -1020,7 +1020,7 @@ def _verify_pack_root(
     universe_contract_bundle_path: str,
     trust_policy_id: str,
 ) -> dict:
-    # verify_pack_set(...) runs inside the AppShell adapter together with trust
+    # Pack verification runs inside the AppShell adapter together with trust
     # policy evaluation and deterministic output writing.
     return appshell_verify_pack_root(
         repo_root=REPO_ROOT_HINT,
@@ -3699,7 +3699,6 @@ def main(argv: list[str] | None = None) -> int:
         argv=list(sys.argv[1:] if argv is None else argv),
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
-        legacy_main=_legacy_main,
     )
 
 

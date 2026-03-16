@@ -21,10 +21,10 @@ REQUIRED_TOKENS = {
     "tools/setup/setup_cli.py": (
         "handle_verify(",
         "handle_build_lock(",
-        "verify_pack_set(",
+        "appshell_verify_pack_root(",
     ),
     "tools/launcher/launch.py": (
-        "verify_pack_set(",
+        "verify_pack_root(",
         "cmd_compat_status(",
         "\"pack_compatibility_report\"",
     ),

@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-15
+Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
 
@@ -8,15 +8,14 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 153
-- RISK: 665
-- VIOLATION: 24
-- WARN: 1092
+- INFO: 2
+- RISK: 587
+- VIOLATION: 25
+- WARN: 1031
 
 ## Counts By Category
 
 - appshell.ad_hoc_entry_point_smell: 2
-- appshell.direct_pack_load_smell: 2
 - architecture.adhoc_loss_smell: 1
 - architecture.adhoc_scheduler_smell: 1
 - architecture.adhoc_speed_limit_smell: 2
@@ -66,16 +65,15 @@ Superseded By: none
 - bundle.nondeterministic_bundle_smell: 1
 - canon_drift: 898
 - capability_bypass_smell: 1
-- capability_misuse: 35
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - compat.behavior_without_contract_smell: 1
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 137
+- derived_freshness: 19
 - epistemics.hidden_state_leak_smell: 6
-- geometry.adhoc_spatial_key_smell: 6
 - install.path_dependent_install_smell: 1
 - interaction.interaction_bypass_smell: 2
+- legacy_contamination: 2
 - logic.adhoc_wiring_smell: 5
 - logic.carrier_bias_smell: 9
 - logic.protocol_security_bypass_smell: 1
@@ -86,17 +84,16 @@ Superseded By: none
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
+- mode_flag_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- reachability: 54
+- reachability: 2
 - reliability.silent_reaction_smell: 3
-- schema_usage: 128
-- security.boundary_io: 1
+- schema_usage: 59
 - security.hidden_privilege_escalation_smell: 2
 - semantic.capability_drift: 5
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
-- ui_parity: 9
 - worldgen.unbounded_shadow_sampling_smell: 1

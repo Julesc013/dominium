@@ -89,22 +89,10 @@
     },
     {
       "evidence_paths": [
-        "dist/bin/dominium_client",
-        "dist/bin/dominium_server",
-        "dist/bin/engine",
-        "dist/bin/game",
-        "dist/bin/launcher",
-        "dist/bin/setup",
-        "dist/bin/tool_attach_console_stub",
-        "docs/appshell/APPSHELL_CONSTITUTION.md",
-        "src/appshell/bootstrap.py",
-        "src/server/server_main.py",
-        "tools/launcher/launch.py",
-        "tools/mvp/runtime_entry.py",
-        "tools/setup/setup_cli.py"
+        "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.7425,
+      "risk_score": 0.9,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -151,6 +139,27 @@
     },
     {
       "evidence_paths": [
+        "dist/bin/dominium_client",
+        "dist/bin/dominium_server",
+        "dist/bin/engine",
+        "dist/bin/game",
+        "dist/bin/launcher",
+        "dist/bin/setup",
+        "dist/bin/tool_attach_console_stub",
+        "docs/appshell/APPSHELL_CONSTITUTION.md",
+        "src/appshell/bootstrap.py",
+        "src/server/server_main.py",
+        "tools/launcher/launch.py",
+        "tools/mvp/runtime_entry.py",
+        "tools/setup/setup_cli.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.7125,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
         "docs/architecture/INSTALL_MODEL.md",
         "tools/launcher/launcher_cli.py",
         "tools/ops/ops_cli.py",
@@ -158,21 +167,6 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.705,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "src/geo/index/geo_index_engine.py",
-        "src/worldgen/earth/climate_field_engine.py",
-        "src/worldgen/earth/material/material_proxy_engine.py",
-        "src/worldgen/earth/tide_field_engine.py",
-        "src/worldgen/earth/water/water_view_engine.py",
-        "src/worldgen/earth/wind/wind_field_engine.py",
-        "src/worldgen/galaxy/galaxy_proxy_field_engine.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.69,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -842,14 +836,12 @@
     },
     {
       "evidence_paths": [
-        "client/gui/client_app_win32.cpp",
-        "launcher/gui/launcher_app_win32.cpp",
-        "server/gui/server_app_win32.cpp",
-        "setup/gui/setup_app_win32.cpp"
+        "tools/release/entrypoint_unify_common.py",
+        "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.555,
-      "rule_type": "INVARIANT_HARDEN",
+      "risk_score": 0.525,
+      "rule_type": "TEST_REGRESSION",
       "suggested_ruleset": "core.json"
     }
   ],

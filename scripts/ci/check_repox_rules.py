@@ -5263,20 +5263,25 @@ def check_products_must_use_appshell(repo_root):
         ),
         runtime_entry_rel: (
             "from src.appshell import appshell_main",
+            "def appshell_product_bootstrap(",
             "def client_main(",
             "def server_main(",
+            "product_bootstrap=appshell_product_bootstrap",
         ),
         server_main_rel: (
             "from src.appshell import appshell_main",
-            "legacy_main=_legacy_main",
+            "def appshell_product_bootstrap(",
+            "product_bootstrap=appshell_product_bootstrap",
         ),
         setup_rel: (
             "from src.appshell import appshell_main",
-            "legacy_main=_legacy_main",
+            "def appshell_product_bootstrap(",
+            "product_bootstrap=appshell_product_bootstrap",
         ),
         launcher_rel: (
             "from src.appshell import appshell_main",
-            "legacy_main=_legacy_main",
+            "def appshell_product_bootstrap(",
+            "product_bootstrap=appshell_product_bootstrap",
         ),
     }
     for rel_path, tokens in sorted(required_tokens.items()):
@@ -5342,8 +5347,20 @@ def check_no_adhoc_main(repo_root):
         text = read_text(path) or ""
         if "from src.appshell import appshell_main" not in text:
             violations.append("{}: {} missing appshell_main import".format(invariant_id, normalize_path(rel_path)))
-        if "legacy_main=_legacy_main" not in text and "lambda delegate_argv: _legacy_main(" not in text:
-            violations.append("{}: {} missing delegated legacy bootstrap".format(invariant_id, normalize_path(rel_path)))
+        if "def appshell_product_bootstrap(" not in text:
+            violations.append(
+                "{}: {} missing AppShell product bootstrap".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                )
+            )
+        if "product_bootstrap=appshell_product_bootstrap" not in text:
+            violations.append(
+                "{}: {} missing product_bootstrap delegation".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                )
+            )
     return violations
 
 
@@ -6428,10 +6445,10 @@ def check_pack_verification_required_before_load(repo_root):
             "handle_verify(",
             "handle_build_lock(",
             "handle_diagnose_pack(",
-            "verify_pack_set(",
+            "appshell_verify_pack_root(",
         ),
         LAUNCHER_CLI_REL: (
-            "verify_pack_set(",
+            "verify_pack_root(",
             "cmd_compat_status(",
             "\"pack_compatibility_report\"",
             "offline pack verification refused the selected pack set",
