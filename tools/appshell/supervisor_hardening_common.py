@@ -278,6 +278,20 @@ def _sample_canonical_args() -> dict:
     )
 
 
+def _probe_with_retries(probe_fn, *, attempts: int = 3) -> dict:
+    total_attempts = max(1, int(attempts or 0))
+    last_result: dict = {}
+    for _ in range(total_attempts):
+        try:
+            payload = probe_fn()
+        except Exception as exc:
+            payload = {"result": "refused", "reason": "probe_exception", "details": str(exc)}
+        last_result = dict(payload or {}) if isinstance(payload, Mapping) else {"result": "refused", "reason": "probe_payload_invalid"}
+        if _token(last_result.get("result")) == "complete":
+            return last_result
+    return last_result
+
+
 def _portable_installed_parity(repo_root: str) -> dict:
     actual_repo_root = _norm(repo_root)
     template_abs = os.path.join(actual_repo_root, "data", "session_templates", "session.mvp_default.json")
@@ -507,10 +521,12 @@ def _crash_policy_probe(repo_root: str) -> dict:
 def build_supervisor_hardening_report(repo_root: str) -> dict:
     root = _norm(repo_root)
     surface_rows = _surface_rows(root)
-    runtime_probe = run_supervisor_probe(root, suffix="supervisor_harden", topology="singleplayer", supervisor_policy_id="supervisor.policy.lab")
-    replay_probe = verify_supervisor_replay(root, suffix="supervisor_harden")
-    crash_policy_probe = _crash_policy_probe(root)
-    parity_probe = _portable_installed_parity(root)
+    runtime_probe = _probe_with_retries(
+        lambda: run_supervisor_probe(root, suffix="supervisor_harden", topology="singleplayer", supervisor_policy_id="supervisor.policy.lab")
+    )
+    replay_probe = _probe_with_retries(lambda: verify_supervisor_replay(root, suffix="supervisor_harden"))
+    crash_policy_probe = _probe_with_retries(lambda: _crash_policy_probe(root))
+    parity_probe = _probe_with_retries(lambda: _portable_installed_parity(root))
     sample_args = _sample_canonical_args()
     violations = []
     for row in surface_rows:
