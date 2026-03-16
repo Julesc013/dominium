@@ -6,7 +6,7 @@ Replacement Target: release-pinned target policy contracts and trust-gated updat
 
 # Target Capability Rules
 
-Fingerprint: `ffd0a93dc11d3a09035a5bbe71357a9b9d7a4bba04d050b013257113db6fce6d`
+Fingerprint: `23c806eb2270a3538317815717afe3a1c45a405b95ccd058a91869452dfe8f73`
 
 ## Gate Requirements
 

@@ -716,6 +716,8 @@ def render_arch_matrix_retro_audit(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: PLATFORM/DIST",
         "Replacement Target: release-pinned target matrix and release-index availability model",
@@ -768,6 +770,8 @@ def render_target_matrix_doctrine(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: PLATFORM/DIST",
         "Replacement Target: release-pinned target matrix and downloadable artifact availability model",
@@ -848,6 +852,8 @@ def render_target_capability_rules(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: PLATFORM/DIST",
         "Replacement Target: release-pinned target policy contracts and trust-gated update selection",
@@ -884,6 +890,8 @@ def render_arch_matrix_final(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: PLATFORM/DIST",
         "Replacement Target: release-pinned target matrix and downloadable artifact availability model",

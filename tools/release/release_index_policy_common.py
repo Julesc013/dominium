@@ -522,6 +522,8 @@ def render_release_index_policy_baseline(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: RELEASE-INDEX",
         "Replacement Target: signed suite and product evolution policy with explicit yanking and rollback governance",
