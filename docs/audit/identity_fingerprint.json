@@ -1,5 +1,5 @@
 {
-  "fingerprint_sha256": "4420fab049a0d4ee918de071f9924bc4afb0f0ca5f66267c1d44e9910f22ee57",
+  "fingerprint_sha256": "5d30706017f8654429c5f21ade89b13574cff583d53976778e4519097e9417ee",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
@@ -28,7 +28,7 @@
     },
     "unbounded_doctrine": {
       "path": "docs/governance/UNBOUNDED_AGENTIC_DEVELOPMENT.md",
-      "sha256": "16eb272417d5c4c4a6e5586ccb774f824847f2399b60395bf37d2f4c0e636b4e"
+      "sha256": "205cc5fc79d8f46ee2ce12d7bc9c5d04ac36ad78ccc377d74c68baeb50ef7020"
     }
   },
   "schema_id": "dominium.audit.identity_fingerprint",
