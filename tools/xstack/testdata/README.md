@@ -13,8 +13,10 @@ Provide deterministic fixtures for TestX tool tests without relying on OS file o
 ## Fixture Roots
 - `tools/xstack/testdata/packs/`: fixture pack manifests and contribution payloads.
 - `tools/xstack/testdata/bundles/`: fixture BundleProfile manifests for fixture packs.
+- `tools/xstack/testdata/registries/`: fixture registries used by isolated compile and server-profile tests.
 - `tools/xstack/testdata/session/`: session creator/boot fixture inputs and schema-valid sample files.
   - includes camera/time intent scripts and restrictive law fixtures for process-gating tests.
+- `tools/xstack/testdata/ui/`: shared UI descriptor fixtures for deterministic surface validation.
 
 ## Invariants
 - Fixtures are canonical JSON and deterministic.

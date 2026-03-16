@@ -11,11 +11,13 @@ FORBIDDEN DEPENDENCIES: `include/dominium/**`.
 
 #include "domino/sys.h"
 
+struct dsys_backend_vtable_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-const dsys_backend_vtable* dsys_sdl1_get_vtable(void);
+const struct dsys_backend_vtable_t* dsys_sdl1_get_vtable(void);
 
 #ifdef __cplusplus
 }

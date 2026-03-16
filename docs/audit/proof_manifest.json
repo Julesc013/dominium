@@ -3,20 +3,52 @@
   "schema_version": "1.0.0",
   "generated_by": "scripts/ci/check_repox_rules.py",
   "changed_paths": [
-    "app/src/app_runtime.c",
     "docs/audit/proof_manifest.json",
     "docs/audit/repox/REPOX_PROFILE.json",
-    "engine/modules/system/dsys_internal.h"
+    "engine/modules/system/dsys_internal.h",
+    "engine/modules/system/plat/cocoa/cocoa_sys.h",
+    "engine/modules/system/plat/posix/posix_sys.h",
+    "engine/modules/system/plat/sdl1/sdl1_sys.h",
+    "engine/modules/system/plat/wayland/wayland_sys.h",
+    "engine/modules/system/plat/x11/x11_sys.h",
+    "src/modding/mod_policy_engine.py",
+    "src/packs/compat/pack_compat_validator.py",
+    "tests/invariant/registry_compile_testlib.py",
+    "tests/invariant/test_registry_compile_conflict_refusal_deterministic.py",
+    "tools/xstack/registry_compile/compiler.py",
+    "tools/xstack/testdata/README.md",
+    "tools/xstack/testdata/packs/core/pack.test.base/pack.compat.json",
+    "tools/xstack/testdata/packs/domain/pack.test.domain/pack.compat.json",
+    "tools/xstack/testdata/packs/experience/pack.test.experience/pack.compat.json",
+    "tools/xstack/testdata/packs/law/pack.test.law/pack.compat.json",
+    "tools/xstack/testdata/packs/tool/pack.test.catalog/pack.compat.json"
   ],
   "changed_files": [
-    "app/src/app_runtime.c",
     "docs/audit/proof_manifest.json",
     "docs/audit/repox/REPOX_PROFILE.json",
-    "engine/modules/system/dsys_internal.h"
+    "engine/modules/system/dsys_internal.h",
+    "engine/modules/system/plat/cocoa/cocoa_sys.h",
+    "engine/modules/system/plat/posix/posix_sys.h",
+    "engine/modules/system/plat/sdl1/sdl1_sys.h",
+    "engine/modules/system/plat/wayland/wayland_sys.h",
+    "engine/modules/system/plat/x11/x11_sys.h",
+    "src/modding/mod_policy_engine.py",
+    "src/packs/compat/pack_compat_validator.py",
+    "tests/invariant/registry_compile_testlib.py",
+    "tests/invariant/test_registry_compile_conflict_refusal_deterministic.py",
+    "tools/xstack/registry_compile/compiler.py",
+    "tools/xstack/testdata/README.md",
+    "tools/xstack/testdata/packs/core/pack.test.base/pack.compat.json",
+    "tools/xstack/testdata/packs/domain/pack.test.domain/pack.compat.json",
+    "tools/xstack/testdata/packs/experience/pack.test.experience/pack.compat.json",
+    "tools/xstack/testdata/packs/law/pack.test.law/pack.compat.json",
+    "tools/xstack/testdata/packs/tool/pack.test.catalog/pack.compat.json"
   ],
   "impacted_subsystems": [
     "docs",
-    "engine"
+    "engine",
+    "tests",
+    "tools"
   ],
   "impacted_invariants": [
     "INV-PROCESS-REGISTRY",
@@ -25,9 +57,11 @@
   "required_test_tags": [
     "determinism",
     "docs",
+    "integration",
     "invariant",
     "regression",
-    "runtime"
+    "runtime",
+    "tools"
   ],
   "required_capability_checks": [
     "tool.memory.read",

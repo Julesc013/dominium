@@ -16,11 +16,13 @@ EXTENSION POINTS: Replace with richer POSIX backends (X11/Wayland).
 
 #include "domino/sys.h"
 
+struct dsys_backend_vtable_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-const dsys_backend_vtable* dsys_posix_get_vtable(void);
+const struct dsys_backend_vtable_t* dsys_posix_get_vtable(void);
 
 #ifdef __cplusplus
 }

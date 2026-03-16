@@ -127,8 +127,10 @@ def _profile_exception_requested(payload: Mapping[str, object] | None) -> bool:
 
 
 def load_mod_policy_registry(repo_root: str, schema_repo_root: str = "") -> Tuple[dict, List[dict]]:
-    path = os.path.join(repo_root, MOD_POLICY_REGISTRY_REL)
     schema_root = os.path.abspath(schema_repo_root) if str(schema_repo_root).strip() else repo_root
+    path = os.path.join(repo_root, MOD_POLICY_REGISTRY_REL)
+    if not os.path.isfile(path) and schema_root != repo_root:
+        path = os.path.join(schema_root, MOD_POLICY_REGISTRY_REL)
     payload, error = _read_json(path)
     if error:
         return {}, [_error("$.mod_policy_registry", "unable to load mod policy registry", code="mod_policy_registry_invalid")]

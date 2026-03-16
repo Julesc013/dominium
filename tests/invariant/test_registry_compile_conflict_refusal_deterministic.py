@@ -7,6 +7,11 @@ import sys
 from registry_compile_testlib import make_temp_repo_fixture
 
 
+def _read_json(path: str) -> dict:
+    with open(path, "r", encoding="utf-8") as handle:
+        return json.load(handle)
+
+
 def _write_json(path: str, payload: dict) -> None:
     parent = os.path.dirname(path)
     if parent and not os.path.isdir(parent):
@@ -28,43 +33,18 @@ def main() -> int:
 
     tmp_repo = make_temp_repo_fixture(source_repo)
     try:
-        conflict_pack_dir = os.path.join(tmp_repo, "packs", "tool", "pack.test.conflict")
-        _write_json(
-            os.path.join(conflict_pack_dir, "pack.json"),
+        conflict_manifest_path = os.path.join(tmp_repo, "packs", "domain", "pack.test.domain", "pack.json")
+        conflict_manifest = _read_json(conflict_manifest_path)
+        contributions = list(conflict_manifest.get("contributions") or [])
+        contributions.append(
             {
-                "schema_version": "1.0.0",
-                "pack_id": "pack.test.conflict",
-                "version": "1.0.0",
-                "compatibility": {
-                    "session_spec_min": "1.0.0",
-                    "session_spec_max": "1.0.0"
-                },
-                "dependencies": [
-                    "pack.test.base@1.0.0"
-                ],
-                "contribution_types": [
-                    "ui_windows"
-                ],
-                "contributions": [
-                    {
-                        "type": "ui_windows",
-                        "id": "ui.window.test.lab",
-                        "path": "ui/window.conflict.json"
-                    }
-                ],
-                "canonical_hash": "placeholder.pack.test.conflict.v1",
-                "signature_status": "signed"
-            },
+                "type": "domain",
+                "id": "experience.test.lab",
+                "path": "data/domain.navigation.json",
+            }
         )
-        _write_json(
-            os.path.join(conflict_pack_dir, "ui", "window.conflict.json"),
-            {
-                "window_id": "ui.window.test.lab",
-                "required_entitlements": [
-                    "ui.map"
-                ]
-            },
-        )
+        conflict_manifest["contributions"] = contributions
+        _write_json(conflict_manifest_path, conflict_manifest)
 
         first = compile_bundle(
             repo_root=tmp_repo,

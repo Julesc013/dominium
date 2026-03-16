@@ -42,7 +42,7 @@ int  dsys_internal_event_pop(dsys_event* out);
 #if defined(_WIN32)
 #include <io.h>
 #include <direct.h>
-#elif defined(_POSIX_VERSION)
+#else
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>

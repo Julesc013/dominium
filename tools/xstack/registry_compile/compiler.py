@@ -29,6 +29,8 @@ from .constants import (
 )
 from .lockfile import compute_pack_lock_hash, validate_lockfile_payload
 
+_SOURCE_REGISTRY_FALLBACK_ROOT = ""
+
 
 def _norm(path: str) -> str:
     return path.replace("\\", "/")
@@ -1282,6 +1284,23 @@ def _read_json_payload(path: str) -> Tuple[dict, str]:
     return payload, ""
 
 
+def _source_root_for_path(repo_root: str, rel_path: str) -> str:
+    repo_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+    if os.path.isfile(repo_path):
+        return repo_root
+    fallback_root = str(_SOURCE_REGISTRY_FALLBACK_ROOT).strip()
+    if fallback_root:
+        fallback_path = os.path.join(fallback_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(fallback_path):
+            return fallback_root
+    return repo_root
+
+
+def _source_path(repo_root: str, rel_path: str) -> str:
+    source_root = _source_root_for_path(repo_root, rel_path)
+    return os.path.join(source_root, rel_path.replace("/", os.sep))
+
+
 def _load_registry_record(
     repo_root: str,
     registry_rel_path: str,
@@ -1289,7 +1308,7 @@ def _load_registry_record(
     expected_schema_version: str,
     expected_entry_key: str,
 ) -> Tuple[dict, List[dict], List[dict]]:
-    abs_path = os.path.join(repo_root, registry_rel_path.replace("/", os.sep))
+    abs_path = _source_path(repo_root, registry_rel_path)
     if not os.path.isfile(abs_path):
         return {}, [], [
             {
@@ -6467,7 +6486,7 @@ def _materials_structure_registry_rows(
                 }
             )
             continue
-        blueprint_abs = os.path.join(repo_root, blueprint_path.replace("/", os.sep))
+        blueprint_abs = _source_path(repo_root, blueprint_path)
         if not os.path.isfile(blueprint_abs):
             errors.append(
                 {
@@ -11780,11 +11799,12 @@ def compile_bundle(
     mod_policy_id: str = DEFAULT_MOD_POLICY_ID,
     use_cache: bool = True,
 ) -> Dict[str, object]:
+    global _SOURCE_REGISTRY_FALLBACK_ROOT
     schema_root = os.path.abspath(schema_repo_root) if str(schema_repo_root).strip() else repo_root
+    _SOURCE_REGISTRY_FALLBACK_ROOT = schema_root
     out_dir = os.path.join(repo_root, out_dir_rel)
     lockfile_out = os.path.join(repo_root, lockfile_out_rel)
     _ensure_dir(out_dir)
-
     loaded = load_pack_set(
         repo_root=repo_root,
         packs_root_rel=packs_root_rel,
@@ -13861,7 +13881,7 @@ def compile_bundle(
         output_files.append(out_path)
 
     rwam_rel_path = "data/meta/real_world_affordance_matrix.json"
-    rwam_abs_path = os.path.join(repo_root, rwam_rel_path.replace("/", os.sep))
+    rwam_abs_path = _source_path(repo_root, rwam_rel_path)
     rwam_payload, rwam_err = _read_json_payload(rwam_abs_path)
     if rwam_err:
         return _refusal(
@@ -14075,6 +14095,21 @@ def compile_bundle(
         if cache_row.get("result") != "complete":
             return _refusal("refuse.cache_store.store_failed", "failed to store cache entry", "$.cache")
 
+        return {
+            "result": "complete",
+            "bundle_id": str(bundle_id),
+            "mod_policy_id": str(mod_policy_eval.get("mod_policy_id", "")),
+            "mod_policy_registry_hash": str(mod_policy_eval.get("mod_policy_registry_hash", "")),
+            "overlay_conflict_policy_id": str(mod_policy_eval.get("overlay_conflict_policy_id", "")),
+            "mod_policy_proof_bundle": dict(mod_policy_eval.get("proof_bundle") or {}),
+            "cache_key": key,
+            "cache_hit": False,
+            "out_dir": _norm(os.path.relpath(out_dir, repo_root)),
+            "lockfile_path": _norm(os.path.relpath(lockfile_out, repo_root)),
+            "ordered_pack_ids": [row["pack_id"] for row in resolved_packs],
+            "registry_hashes": lockfile_payload["registries"],
+            "pack_lock_hash": pack_lock_hash,
+        }
     return {
         "result": "complete",
         "bundle_id": str(bundle_id),

@@ -63,8 +63,31 @@ def _error(code: str, path: str, message: str) -> dict:
     }
 
 
-def _load_pack_degrade_modes(repo_root: str) -> Tuple[set[str], List[dict]]:
-    payload, err = _read_json(os.path.join(repo_root, PACK_DEGRADE_MODE_REGISTRY_REL))
+def _resolve_core_registry_root(repo_root: str, schema_root: str) -> str:
+    repo_registry_dir = os.path.join(repo_root, "data", "registries")
+    if os.path.isdir(repo_registry_dir):
+        return repo_root
+    return schema_root
+
+
+def _resolve_registry_path(repo_root: str, schema_root: str, registry_rel: str) -> str:
+    repo_path = os.path.join(repo_root, registry_rel)
+    if os.path.isfile(repo_path):
+        return repo_path
+    return os.path.join(schema_root, registry_rel)
+
+
+def _iter_registry_dirs(repo_root: str, schema_root: str) -> List[str]:
+    rows: List[str] = []
+    for root in (repo_root, schema_root):
+        registry_dir = os.path.join(root, "data", "registries")
+        if os.path.isdir(registry_dir) and registry_dir not in rows:
+            rows.append(registry_dir)
+    return rows
+
+
+def _load_pack_degrade_modes(repo_root: str, schema_root: str) -> Tuple[set[str], List[dict]]:
+    payload, err = _read_json(_resolve_registry_path(repo_root, schema_root, PACK_DEGRADE_MODE_REGISTRY_REL))
     if err:
         return set(), [_error("pack_compat_registry_invalid", "$.pack_degrade_mode_registry", "unable to load pack degrade mode registry")]
     rows = list(_as_map(payload.get("record")).get("pack_degrade_modes") or [])
@@ -80,8 +103,8 @@ def _load_pack_degrade_modes(repo_root: str) -> Tuple[set[str], List[dict]]:
     return set(sorted(modes)), []
 
 
-def _load_capability_ids(repo_root: str) -> Tuple[set[str], List[dict]]:
-    payload, err = _read_json(os.path.join(repo_root, CAPABILITY_REGISTRY_REL))
+def _load_capability_ids(repo_root: str, schema_root: str) -> Tuple[set[str], List[dict]]:
+    payload, err = _read_json(_resolve_registry_path(repo_root, schema_root, CAPABILITY_REGISTRY_REL))
     if err:
         return set(), [_error(REFUSAL_PACK_MISSING_CAPABILITY, "$.capability_registry", "unable to load capability registry")]
     rows = list(_as_map(payload.get("record")).get("capabilities") or [])
@@ -213,14 +236,18 @@ def validate_pack_compat_manifest(
             errors.append(_error("pack_compat_duplicate_provides_id", "$.provides_declarations", "pack.compat.json declares duplicate provides_id '{}'".format(provides_id)))
             continue
         seen_provides_ids.add(provides_id)
-    capability_ids, capability_errors = _load_capability_ids(repo_root)
+    capability_ids, capability_errors = _load_capability_ids(repo_root, schema_root)
     errors.extend(capability_errors)
     for capability_id in payload["capability_ids"]:
         if capability_id not in capability_ids:
             errors.append(_error(REFUSAL_PACK_MISSING_CAPABILITY, "$.capability_ids", "capability '{}' is not present in the capability registry".format(capability_id)))
 
     known_contract_ids = set()
-    contract_registry, contract_registry_error = load_semantic_contract_registry(repo_root)
+    contract_registry_root = _resolve_core_registry_root(
+        repo_root if os.path.isfile(os.path.join(repo_root, "data", "registries", "semantic_contract_registry.json")) else schema_root,
+        schema_root,
+    )
+    contract_registry, contract_registry_error = load_semantic_contract_registry(contract_registry_root)
     if contract_registry_error:
         errors.append(_error(REFUSAL_PACK_CONTRACT_MISMATCH, "$.required_contract_ranges", "semantic contract registry is unavailable"))
     else:
@@ -240,14 +267,13 @@ def validate_pack_compat_manifest(
         if max_version and max_version != contract_id:
             errors.append(_error(REFUSAL_PACK_CONTRACT_MISMATCH, "$.required_contract_ranges.{}.max_version".format(contract_id), "max_version is not supported by the current contract registry"))
 
-    degrade_modes, degrade_errors = _load_pack_degrade_modes(repo_root)
+    degrade_modes, degrade_errors = _load_pack_degrade_modes(repo_root, schema_root)
     errors.extend(degrade_errors)
     if payload["degrade_mode_id"] and payload["degrade_mode_id"] not in degrade_modes:
         errors.append(_error("pack_compat_degrade_mode_unknown", "$.degrade_mode_id", "degrade_mode_id is not declared in the pack degrade mode registry"))
 
-    registry_dir = os.path.join(repo_root, "data", "registries")
     registry_ids = set()
-    if os.path.isdir(registry_dir):
+    for registry_dir in _iter_registry_dirs(repo_root, schema_root):
         for name in sorted(os.listdir(registry_dir)):
             if not name.endswith(".json"):
                 continue
