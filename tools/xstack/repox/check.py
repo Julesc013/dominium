@@ -15715,6 +15715,28 @@ def _load_deprecation_entries(repo_root: str) -> Tuple[List[Dict[str, object]], 
 
 
 def _collect_changed_paths(repo_root: str) -> List[str]:
+    def _matches_head(rel_path: str) -> bool:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            return False
+        try:
+            proc = subprocess.run(
+                ["git", "show", "HEAD:{}".format(rel_path)],
+                cwd=repo_root,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+        except OSError:
+            return False
+        if int(proc.returncode) != 0:
+            return False
+        try:
+            with open(abs_path, "rb") as handle:
+                return handle.read() == bytes(proc.stdout or b"")
+        except OSError:
+            return False
+
     try:
         proc = subprocess.run(
             ["git", "status", "--porcelain", "-uall"],
@@ -15731,9 +15753,15 @@ def _collect_changed_paths(repo_root: str) -> List[str]:
         return []
     out: List[str] = []
     for line in str(proc.stdout or "").splitlines():
+        status = str(line[:2] if len(line) >= 2 else "").ljust(2)
         token = str(line[3:] if len(line) >= 3 else line).strip()
         if not token:
             continue
+        if status != "??":
+            index_status = status[:1]
+            worktree_status = status[1:2]
+            if index_status == " " and worktree_status != " " and _matches_head(_norm(token)):
+                continue
         out.append(_norm(token))
     return sorted(set(out))
 
