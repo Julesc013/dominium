@@ -64,8 +64,9 @@ static unsigned int g_dsys_event_tail = 0u;
 static volatile sig_atomic_t g_dsys_shutdown_requested = 0;
 static volatile sig_atomic_t g_dsys_shutdown_reason = (sig_atomic_t)DSYS_SHUTDOWN_NONE;
 #if !defined(_WIN32)
-static struct sigaction g_dsys_prev_sigint;
-static struct sigaction g_dsys_prev_sigterm;
+typedef void (*dsys_signal_handler_fn)(int);
+static dsys_signal_handler_fn g_dsys_prev_sigint = SIG_DFL;
+static dsys_signal_handler_fn g_dsys_prev_sigterm = SIG_DFL;
 #endif
 
 static void dsys_set_last_error(dsys_result code, const char* text)
@@ -1459,14 +1460,8 @@ void dsys_lifecycle_init(void)
 #if defined(_WIN32)
     SetConsoleCtrlHandler(dsys_console_ctrl_handler, TRUE);
 #else
-    {
-        struct sigaction sa;
-        memset(&sa, 0, sizeof(sa));
-        sa.sa_handler = dsys_posix_signal_handler;
-        sigemptyset(&sa.sa_mask);
-        sigaction(SIGINT, &sa, &g_dsys_prev_sigint);
-        sigaction(SIGTERM, &sa, &g_dsys_prev_sigterm);
-    }
+    g_dsys_prev_sigint = signal(SIGINT, dsys_posix_signal_handler);
+    g_dsys_prev_sigterm = signal(SIGTERM, dsys_posix_signal_handler);
 #endif
 }
 
@@ -1475,8 +1470,12 @@ void dsys_lifecycle_shutdown(void)
 #if defined(_WIN32)
     SetConsoleCtrlHandler(dsys_console_ctrl_handler, FALSE);
 #else
-    sigaction(SIGINT, &g_dsys_prev_sigint, NULL);
-    sigaction(SIGTERM, &g_dsys_prev_sigterm, NULL);
+    if (g_dsys_prev_sigint != SIG_ERR) {
+        signal(SIGINT, g_dsys_prev_sigint);
+    }
+    if (g_dsys_prev_sigterm != SIG_ERR) {
+        signal(SIGTERM, g_dsys_prev_sigterm);
+    }
 #endif
 }
 
