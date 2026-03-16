@@ -1029,7 +1029,7 @@ static int setup_run_setup_cli(int argc, char** argv, const char* ui_mode_overri
 static char setup_path_sep(void)
 {
 #if defined(_WIN32)
-    return '\\\\';
+    return '\\';
 #else
     return '/';
 #endif
@@ -1068,7 +1068,7 @@ static int setup_join_path(char* out, size_t cap, const char* root, const char* 
     }
     root_len = strlen(root);
     sep = setup_path_sep();
-    if (root_len > 0u && root[root_len - 1u] != '/' && root[root_len - 1u] != '\\\\') {
+    if (root_len > 0u && root[root_len - 1u] != '/' && root[root_len - 1u] != '\\') {
         written = snprintf(out, cap, "%s%c%s", root, sep, leaf);
     } else {
         written = snprintf(out, cap, "%s%s", root, leaf);

@@ -1331,7 +1331,7 @@ if(DOM_BUILD_TESTS)
 endif()
 
 if(DOMINIUM_ENABLE_PACKAGING)
-    add_subdirectory(scripts/packaging)
+    add_subdirectory(setup/packages/scripts/packaging)
 endif()
 
 get_property(_dom_dist_targets GLOBAL PROPERTY DOM_DIST_ROLE_TARGETS)
