@@ -37,7 +37,7 @@ int  dsys_internal_event_pop(dsys_event* out);
 #include "plat/sdl1/sdl1_sys.h"
 #elif defined(DSYS_BACKEND_POSIX)
 #include "plat/posix/posix_sys.h"
-#else
+#endif
 
 #if defined(_WIN32)
 #include <io.h>
@@ -79,7 +79,5 @@ struct dsys_dir_iter_t {
 struct dsys_process_t {
     void* handle;
 };
-
-#endif /* DSYS_BACKEND_X11 */
 
 #endif /* DOMINO_DSYS_INTERNAL_H */

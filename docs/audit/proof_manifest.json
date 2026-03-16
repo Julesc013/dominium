@@ -3,49 +3,31 @@
   "schema_version": "1.0.0",
   "generated_by": "scripts/ci/check_repox_rules.py",
   "changed_paths": [
-    "data/audit/arch_matrix_report.json",
-    "data/audit/update_model_report.json",
-    "docs/audit/ARCH_MATRIX0_RETRO_AUDIT.md",
-    "docs/audit/ARCH_MATRIX_FINAL.md",
-    "docs/audit/RELEASE_INDEX_POLICY_BASELINE.md",
-    "docs/audit/UPDATE_MODEL_BASELINE.md",
+    "app/src/app_runtime.c",
     "docs/audit/proof_manifest.json",
     "docs/audit/repox/REPOX_PROFILE.json",
-    "docs/release/TARGET_CAPABILITY_RULES.md",
-    "docs/release/TARGET_MATRIX_v0_0_0_mock.md",
-    "tools/release/arch_matrix_common.py",
-    "tools/release/release_index_policy_common.py"
+    "engine/modules/system/dsys_internal.h"
   ],
   "changed_files": [
-    "data/audit/arch_matrix_report.json",
-    "data/audit/update_model_report.json",
-    "docs/audit/ARCH_MATRIX0_RETRO_AUDIT.md",
-    "docs/audit/ARCH_MATRIX_FINAL.md",
-    "docs/audit/RELEASE_INDEX_POLICY_BASELINE.md",
-    "docs/audit/UPDATE_MODEL_BASELINE.md",
+    "app/src/app_runtime.c",
     "docs/audit/proof_manifest.json",
     "docs/audit/repox/REPOX_PROFILE.json",
-    "docs/release/TARGET_CAPABILITY_RULES.md",
-    "docs/release/TARGET_MATRIX_v0_0_0_mock.md",
-    "tools/release/arch_matrix_common.py",
-    "tools/release/release_index_policy_common.py"
+    "engine/modules/system/dsys_internal.h"
   ],
   "impacted_subsystems": [
-    "data",
     "docs",
-    "tools"
+    "engine"
   ],
   "impacted_invariants": [
-    "INV-SCHEMA-MIGRATION-ROUTES",
-    "INV-SCHEMA-VERSION-BUMP"
+    "INV-PROCESS-REGISTRY",
+    "INV-PROCESS-RUNTIME-ID"
   ],
   "required_test_tags": [
+    "determinism",
     "docs",
-    "integration",
     "invariant",
-    "registry",
-    "schema",
-    "tools"
+    "regression",
+    "runtime"
   ],
   "required_capability_checks": [
     "tool.memory.read",
@@ -61,16 +43,18 @@
     "REFUSE_CAPABILITY_MISSING"
   ],
   "required_invariants": [
-    "INV-SCHEMA-MIGRATION-ROUTES",
-    "INV-SCHEMA-VERSION-BUMP"
+    "INV-PROCESS-REGISTRY",
+    "INV-PROCESS-RUNTIME-ID"
   ],
   "required_tests": [
-    "schema_migration_contracts",
-    "schema_version_immutability_contracts"
+    "determinism_replay_hash_invariance",
+    "inv_process_only_mutation",
+    "invariant_process_only_mutation"
   ],
   "focused_test_subset": [
-    "schema_migration_contracts",
-    "schema_version_immutability_contracts"
+    "determinism_replay_hash_invariance",
+    "inv_process_only_mutation",
+    "invariant_process_only_mutation"
   ],
   "warnings": [
     "WARN-GLOSSARY-TERM-CANON: docs/audit/auditx/FINDINGS.md uses forbidden synonym 'survival_mode' for ExperienceProfile",

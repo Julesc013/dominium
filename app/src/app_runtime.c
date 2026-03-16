@@ -262,7 +262,7 @@ dom_app_ui_mode dom_app_select_ui_mode(const dom_app_ui_request* req,
 
 static int dom_app_ui_is_sep(char c)
 {
-    return (c == ' ' || c == '\\t' || c == ',' || c == ';' || c == '|' || c == '>');
+    return (c == ' ' || c == '\t' || c == ',' || c == ';' || c == '|' || c == '>');
 }
 
 void dom_app_ui_script_init(dom_app_ui_script* script, const char* text)
