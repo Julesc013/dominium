@@ -20,7 +20,7 @@ EXTENSION POINTS: Replace with windowed POSIX backends (X11/Wayland) behind same
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <time.h>
+#include <sys/select.h>
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -47,25 +47,17 @@ static void dsys_posix_shutdown(void)
 
 static uint64_t dsys_posix_time_now_us(void)
 {
-#if defined(CLOCK_MONOTONIC)
-    struct timespec ts;
-    if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
-        return (uint64_t)ts.tv_sec * 1000000ull + (uint64_t)(ts.tv_nsec / 1000ull);
-    }
-#endif
-    {
-        struct timeval tv;
-        gettimeofday(&tv, NULL);
-        return (uint64_t)tv.tv_sec * 1000000ull + (uint64_t)tv.tv_usec;
-    }
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (uint64_t)tv.tv_sec * 1000000ull + (uint64_t)tv.tv_usec;
 }
 
 static void dsys_posix_sleep_ms(uint32_t ms)
 {
-    struct timespec ts;
-    ts.tv_sec = (time_t)(ms / 1000u);
-    ts.tv_nsec = (long)((ms % 1000u) * 1000000u);
-    nanosleep(&ts, NULL);
+    struct timeval tv;
+    tv.tv_sec = (long)(ms / 1000u);
+    tv.tv_usec = (long)((ms % 1000u) * 1000u);
+    select(0, NULL, NULL, NULL, &tv);
 }
 
 static dsys_window* dsys_posix_window_create(const dsys_window_desc* desc)

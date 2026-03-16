@@ -23,7 +23,7 @@ EXTENSION POINTS: Replace stubs with real platform backends behind same contract
 #if defined(_WIN32)
 #include <windows.h>
 #else
-#include <time.h>
+#include <sys/select.h>
 #include <sys/time.h>
 #include <unistd.h>
 #endif
@@ -48,17 +48,9 @@ static uint64_t dsys_stub_time_now_us(void)
 #if defined(_WIN32)
     return (uint64_t)GetTickCount64() * 1000ull;
 #else
-#if defined(CLOCK_MONOTONIC)
-    struct timespec ts;
-    if (clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
-        return (uint64_t)ts.tv_sec * 1000000ull + (uint64_t)(ts.tv_nsec / 1000ull);
-    }
-#endif
-    {
-        struct timeval tv;
-        gettimeofday(&tv, NULL);
-        return (uint64_t)tv.tv_sec * 1000000ull + (uint64_t)tv.tv_usec;
-    }
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (uint64_t)tv.tv_sec * 1000000ull + (uint64_t)tv.tv_usec;
 #endif
 }
 
@@ -67,10 +59,10 @@ static void dsys_stub_sleep_ms(uint32_t ms)
 #if defined(_WIN32)
     Sleep(ms);
 #else
-    struct timespec ts;
-    ts.tv_sec = (time_t)(ms / 1000u);
-    ts.tv_nsec = (long)((ms % 1000u) * 1000000u);
-    nanosleep(&ts, NULL);
+    struct timeval tv;
+    tv.tv_sec = (long)(ms / 1000u);
+    tv.tv_usec = (long)((ms % 1000u) * 1000u);
+    select(0, NULL, NULL, NULL, &tv);
 #endif
 }
 
