@@ -8,6 +8,7 @@ import re
 import shutil
 import sys
 import copy
+import time
 from typing import Mapping
 
 
@@ -321,11 +322,21 @@ def _safe_rmtree(path: str) -> None:
     target = os.path.normpath(os.path.abspath(path))
     if not os.path.isdir(target):
         return
-    try:
-        shutil.rmtree(target)
-    except FileNotFoundError:
-        # Fixture cleanup is idempotent; disappearing children are benign.
-        return
+    last_error: OSError | None = None
+    for attempt in range(8):
+        try:
+            shutil.rmtree(target)
+            return
+        except FileNotFoundError:
+            # Fixture cleanup is idempotent; disappearing children are benign.
+            return
+        except OSError as exc:
+            last_error = exc
+            if not os.path.isdir(target):
+                return
+            time.sleep(0.1 * float(attempt + 1))
+    if last_error is not None:
+        raise last_error
 
 
 def _build_interval_anchor_fixture(repo_root: str) -> dict:

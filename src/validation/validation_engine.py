@@ -6,6 +6,7 @@ import json
 import os
 import shutil
 import sys
+import tempfile
 from collections import Counter
 from functools import lru_cache
 from typing import Callable, Iterable, Mapping
@@ -434,7 +435,14 @@ def _sorted_strings(values: Iterable[object]) -> list[str]:
 
 def _scoped_schema_workspace(repo_root: str, *, schema_names: Iterable[str], workspace_id: str = "schema_scope") -> str:
     root = _repo_root(repo_root)
-    workspace = _reset_dir(_repo_abs(root, os.path.join(VALIDATION_WORK_ROOT_REL, workspace_id)))
+    work_root = _repo_abs(root, VALIDATION_WORK_ROOT_REL)
+    os.makedirs(work_root, exist_ok=True)
+    workspace = os.path.normpath(
+        tempfile.mkdtemp(
+            prefix="{}_".format(_token(workspace_id) or "schema_scope"),
+            dir=work_root,
+        )
+    )
     schemas_dir = os.path.join(workspace, "schemas")
     version_registry_dir = os.path.join(workspace, "tools", "xstack", "compatx")
     os.makedirs(schemas_dir, exist_ok=True)
