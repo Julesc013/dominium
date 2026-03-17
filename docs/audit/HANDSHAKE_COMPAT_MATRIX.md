@@ -8,8 +8,6 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Handshake Compatibility Matrix
 
-Status: DERIVED
-
 | case_id | expected_result | expected_reason_code | actual_result | actual_reason_code | match |
 |---|---|---|---|---|---|
 | private.refuse_schema_version | refused | refusal.net.handshake_schema_version_mismatch | refused | refusal.net.handshake_schema_version_mismatch | yes |

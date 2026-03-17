@@ -20,6 +20,13 @@ from tools.perf.performance_envelope_common import (
 
 
 def ensure_assets(repo_root: str, *, platform_tag: str = DEFAULT_PLATFORM_TAG) -> dict:
+    report_path = report_json_path(repo_root, platform_tag=platform_tag)
+    report_doc = report_doc_path(repo_root, platform_tag=platform_tag)
+    baseline_path = baseline_doc_path(repo_root)
+    retro_path = retro_doc_path(repo_root)
+    doctrine_path = doctrine_doc_path(repo_root)
+    if all(os.path.isfile(path) for path in (report_path, report_doc, baseline_path, retro_path, doctrine_path)):
+        return {"report": build_report(repo_root, platform_tag=platform_tag)}
     return write_performance_outputs(repo_root, platform_tag=platform_tag)
 
 

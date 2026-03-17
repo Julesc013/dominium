@@ -14,10 +14,17 @@ from src.compat.migration_lifecycle import (
     determine_migration_decision,
     load_migration_policy_registry,
 )
-from tools.compat.migration_lifecycle_common import build_migration_lifecycle_report, write_migration_lifecycle_outputs
+import os
+
+from tools.compat.migration_lifecycle_common import BASELINE_DOC_REL, REPORT_JSON_REL, build_migration_lifecycle_report, write_migration_lifecycle_outputs
 
 
 def ensure_assets(repo_root: str) -> dict:
+    root = os.path.abspath(repo_root)
+    report_path = os.path.join(root, REPORT_JSON_REL.replace("/", os.sep))
+    baseline_path = os.path.join(root, BASELINE_DOC_REL.replace("/", os.sep))
+    if os.path.isfile(report_path) and os.path.isfile(baseline_path):
+        return build_migration_lifecycle_report(repo_root)
     return write_migration_lifecycle_outputs(repo_root)
 
 

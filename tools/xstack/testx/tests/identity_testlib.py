@@ -31,6 +31,9 @@ def _write_json(path: str, payload: dict) -> str:
 
 
 def ensure_assets(repo_root: str) -> dict:
+    report_path = os.path.join(os.path.abspath(repo_root), REPORT_JSON_REL.replace("/", os.sep))
+    if os.path.isfile(report_path):
+        return build_identity_report(repo_root, strict_missing=False)
     return write_identity_artifacts(repo_root, strict_missing=False)
 
 

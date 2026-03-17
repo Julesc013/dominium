@@ -5,10 +5,18 @@ from __future__ import annotations
 import os
 
 from src.lib.store import DEFAULT_GC_POLICY_ID, REFUSAL_GC_EXPLICIT_FLAG, build_store_reachability_report, run_store_gc
-from tools.lib.store_gc_common import build_store_gc_fixture, write_store_gc_outputs
+from tools.lib.store_gc_common import BASELINE_DOC_REL, GC_REPORT_JSON_REL, VERIFY_REPORT_JSON_REL, build_store_gc_fixture, build_store_gc_report, write_store_gc_outputs
 
 
 def ensure_assets(repo_root: str) -> dict:
+    root = os.path.abspath(repo_root)
+    required = (
+        os.path.join(root, BASELINE_DOC_REL.replace("/", os.sep)),
+        os.path.join(root, VERIFY_REPORT_JSON_REL.replace("/", os.sep)),
+        os.path.join(root, GC_REPORT_JSON_REL.replace("/", os.sep)),
+    )
+    if all(os.path.isfile(path) for path in required):
+        return build_store_gc_report(repo_root)
     return write_store_gc_outputs(repo_root)
 
 

@@ -22,6 +22,12 @@ from tools.xstack.compatx.canonical_json import canonical_json_text
 
 
 def ensure_assets(repo_root: str, *, platform_tag: str = DEFAULT_PLATFORM_TAG) -> dict:
+    report_path = report_json_path(repo_root)
+    baseline_path = baseline_doc_path(repo_root)
+    retro_path = retro_doc_path(repo_root)
+    doctrine_path = doctrine_doc_path(repo_root)
+    if all(os.path.isfile(path) for path in (report_path, baseline_path, retro_path, doctrine_path)):
+        return {"report": build_report(repo_root, platform_tag=platform_tag)}
     return write_archive_policy_outputs(repo_root, platform_tag=platform_tag)
 
 

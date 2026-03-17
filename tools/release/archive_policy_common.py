@@ -665,6 +665,8 @@ def render_archive_policy_baseline(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: DIST-7/RELEASE",
         "Replacement Target: signed publication bundles and multi-mirror release automation",

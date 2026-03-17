@@ -10,6 +10,8 @@ from tools.governance.governance_model_common import REPORT_JSON_REL, build_gove
 
 
 def ensure_assets(repo_root: str, *, platform_tag: str = "win64") -> None:
+    if os.path.isfile(report_json_path(repo_root)):
+        return
     write_governance_outputs(repo_root, platform_tag=platform_tag)
 
 

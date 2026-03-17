@@ -728,6 +728,8 @@ def render_performance_report(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: PERFORMANCE/CI",
         "Replacement Target: channel-specific performance budgets and regression history after DIST-7 packaging",
@@ -786,6 +788,8 @@ def render_performance_retro_audit(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: PERFORMANCE/CI",
         "Replacement Target: release-pinned platform performance baselines with retained historical measurements",
@@ -842,6 +846,8 @@ def render_performance_doctrine(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: PERFORMANCE/CI",
         "Replacement Target: release-series performance budgets with per-target historical regression lanes",
@@ -899,6 +905,8 @@ def render_performance_baseline(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: {}".format(LAST_REVIEWED),
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: PERFORMANCE/CI",
         "Replacement Target: release-series performance baselines with retained regression history and per-target budgets",

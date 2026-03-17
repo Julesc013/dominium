@@ -13,7 +13,7 @@ Replacement Target: release-series performance baselines with retained regressio
 - platform_tag: `win64`
 - report_fingerprint: `f2d73a03bbb6324d0ba3f4105238ac263f7f41ea36b1f254ebce1fbc7045085b`
 - portable_full_bundle_mb: `29.60`
-- clean_room_elapsed_ms: `6112`
+- clean_room_elapsed_ms: `8121`
 
 ## Declared Targets
 

@@ -24,7 +24,7 @@ from src.governance import (
 from src.meta.stability import build_stability_marker
 from src.release import DEFAULT_RELEASE_INDEX_REL, load_release_index
 from tools.dist.dist_tree_common import build_dist_tree
-from tools.release.update_model_common import write_update_model_outputs
+from tools.release.update_model_common import build_update_model_report
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -240,7 +240,7 @@ def _ensure_bundle(repo_root: str, platform_tag: str) -> str:
             install_profile_id="install.profile.full",
         )
         bundle_root = os.path.join(_norm(repo_root), "build", "tmp", "governance_model_dist", "v0.0.0-mock", _token(platform_tag) or "win64", "dominium")
-    write_update_model_outputs(repo_root, platform_tag=_token(platform_tag) or "win64", dist_root=bundle_root, write_release_index_file=True)
+    build_update_model_report(repo_root, dist_root=bundle_root, platform_tag=_token(platform_tag) or "win64", write_release_index_file=True)
     return bundle_root
 
 

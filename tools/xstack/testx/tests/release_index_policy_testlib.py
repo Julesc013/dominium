@@ -14,6 +14,8 @@ from tools.release.release_index_policy_common import (
 
 
 def ensure_assets(repo_root: str, *, platform_tag: str = "win64") -> None:
+    if os.path.isfile(report_json_path(repo_root)):
+        return
     write_release_index_policy_outputs(
         os.path.abspath(repo_root),
         platform_tag=platform_tag,

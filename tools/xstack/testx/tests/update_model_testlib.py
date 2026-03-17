@@ -12,7 +12,7 @@ from src.release import (
     resolve_update_plan,
 )
 from tools.dist.dist_tree_common import build_dist_tree
-from tools.release.update_model_common import REPORT_JSON_REL, build_update_model_report, update_model_violations, write_update_model_outputs
+from tools.release.update_model_common import REPORT_JSON_REL, build_update_model_report, update_model_violations
 
 
 def _bundle_root(repo_root: str, *, platform_tag: str = "win64") -> str:
@@ -38,12 +38,14 @@ def ensure_assets(repo_root: str, *, platform_tag: str = "win64") -> None:
             output_root=os.path.join(os.path.abspath(repo_root), "build", "tmp", "update_model_test_dist"),
             install_profile_id="install.profile.full",
         )
-    write_update_model_outputs(
-        repo_root,
-        platform_tag=platform_tag,
-        dist_root=bundle_root,
-        write_release_index_file=True,
-    )
+    release_index_path = os.path.join(bundle_root, DEFAULT_RELEASE_INDEX_REL)
+    if not os.path.isfile(release_index_path):
+        build_update_model_report(
+            repo_root,
+            dist_root=bundle_root,
+            platform_tag=platform_tag,
+            write_release_index_file=True,
+        )
 
 
 def load_release_index_payload(repo_root: str, *, platform_tag: str = "win64") -> dict:

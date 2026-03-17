@@ -15,6 +15,8 @@ def _registry_path(repo_root: str) -> str:
 
 def ensure_assets(repo_root: str) -> None:
     ensure_update_assets(repo_root)
+    if os.path.isfile(_registry_path(repo_root)):
+        return
     write_arch_matrix_outputs(repo_root, write_registry=True)
 
 

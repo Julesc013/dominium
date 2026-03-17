@@ -131,9 +131,15 @@ def _matrix_cases() -> List[dict]:
 
 def _markdown(rows: List[dict], content_hash: str) -> str:
     lines = [
-        "# Handshake Compatibility Matrix",
-        "",
         "Status: DERIVED",
+        "Last Reviewed: 2026-03-16",
+        "Supersedes: none",
+        "Superseded By: none",
+        "Stability: provisional",
+        "Future Series: DOC-CONVERGENCE",
+        "Replacement Target: canon-aligned documentation set for convergence and release preparation",
+        "",
+        "# Handshake Compatibility Matrix",
         "",
         "| case_id | expected_result | expected_reason_code | actual_result | actual_reason_code | match |",
         "|---|---|---|---|---|---|",
