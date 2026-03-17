@@ -431,9 +431,20 @@ def build_default_endpoint_descriptor(
     if error:
         return {}
     row = dict(rows_by_id.get(str(product_id).strip()) or {})
-    contract_ranges = list(row.get("default_semantic_contract_versions_supported") or [])
-    if not contract_ranges:
-        contract_ranges = _default_contract_ranges(repo_root)
+    contract_rows_by_category = {
+        str(item.get("contract_category_id", "")).strip(): dict(item)
+        for item in _default_contract_ranges(repo_root)
+        if str(item.get("contract_category_id", "")).strip()
+    }
+    for item in list(row.get("default_semantic_contract_versions_supported") or []):
+        category_id = str(_as_map(item).get("contract_category_id", "")).strip()
+        if not category_id:
+            continue
+        contract_rows_by_category[category_id] = _normalize_contract_range(item)
+    contract_ranges = [
+        dict(contract_rows_by_category[key])
+        for key in sorted(contract_rows_by_category.keys())
+    ]
     merged_extensions = dict(row.get("extensions") or {})
     merged_extensions.update(_as_map(extensions))
     if allow_read_only:

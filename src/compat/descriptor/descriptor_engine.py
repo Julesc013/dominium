@@ -100,6 +100,21 @@ def _semantic_contract_ranges(repo_root: str) -> List[dict]:
     return out
 
 
+def _merged_semantic_contract_ranges(repo_root: str, product_rows: object) -> List[dict]:
+    rows_by_category = {
+        str(row.get("contract_category_id", "")).strip(): dict(row)
+        for row in _semantic_contract_ranges(repo_root)
+        if str(row.get("contract_category_id", "")).strip()
+    }
+    for item in _as_list(product_rows):
+        row = _as_map(item)
+        category_id = str(row.get("contract_category_id", "")).strip()
+        if not category_id:
+            continue
+        rows_by_category[category_id] = dict(row)
+    return [dict(rows_by_category[key]) for key in sorted(rows_by_category.keys())]
+
+
 def build_product_build_metadata(
     repo_root: str,
     product_id: str,
@@ -220,9 +235,10 @@ def build_product_descriptor(
     descriptor_extensions["official.target_matrix_row_hash"] = canonical_sha256(target_row) if target_row else ""
     descriptor_extensions["official.target_matrix_row"] = dict(target_row)
 
-    contract_ranges = list(_as_list(defaults_row.get("semantic_contract_versions_supported")))
-    if not contract_ranges:
-        contract_ranges = _semantic_contract_ranges(repo_root)
+    contract_ranges = _merged_semantic_contract_ranges(
+        repo_root,
+        defaults_row.get("semantic_contract_versions_supported"),
+    )
 
     return build_endpoint_descriptor(
         product_id=str(product_id).strip(),

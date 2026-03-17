@@ -54544,6 +54544,7 @@ def execute_intent(
             registry_rel_path="data/registries/field_type_registry.json",
             entry_key="field_types",
         )
+        field_binding_registry = _field_binding_registry_payload(policy_context)
         sample_rows = [
             {"target_id": vehicle_id, "spatial_position": _target_spatial_position(state, vehicle_id)}
             for vehicle_id in list(candidate_vehicle_ids or [])
@@ -54645,8 +54646,12 @@ def execute_intent(
             max_speed_row = dict(effect_modifier_rows.get("max_speed_permille") or {})
             traction_row = dict(effect_modifier_rows.get("traction_permille") or {})
             effect_modifiers = {
-                "max_speed_permille": int(_as_int(max_speed_row.get("value", 1000), 1000)),
-                "traction_permille": int(_as_int(traction_row.get("value", 1000), 1000)),
+                "max_speed_permille": int(_as_int(max_speed_row.get("value", 1000), 1000))
+                if bool(max_speed_row.get("present", False))
+                else 1000,
+                "traction_permille": int(_as_int(traction_row.get("value", 1000), 1000))
+                if bool(traction_row.get("present", False))
+                else 1000,
                 "speed_cap_mm_per_tick": int(default_speed_cap_mm_per_tick),
             }
             signal_edge_id = str(edge_id_by_geometry.get(geometry_id, "")).strip()
@@ -55978,19 +55983,23 @@ def execute_intent(
                 effect_type_registry=effect_type_registry,
                 stacking_policy_registry=stacking_policy_registry,
             )
+            max_speed_effect = dict(effect_map_rows.get("max_speed_permille") or {})
+            traction_effect = dict(effect_map_rows.get("traction_permille") or {})
+            wind_drift_effect = dict(effect_map_rows.get("wind_drift_permille") or {})
+            visibility_effect = dict(effect_map_rows.get("visibility_permille") or {})
             effect_values = {
-                "max_speed_permille": int(
-                    _as_int((dict(effect_map_rows.get("max_speed_permille") or {})).get("value", 1000), 1000)
-                ),
-                "traction_permille": int(
-                    _as_int((dict(effect_map_rows.get("traction_permille") or {})).get("value", 1000), 1000)
-                ),
-                "wind_drift_permille": int(
-                    _as_int((dict(effect_map_rows.get("wind_drift_permille") or {})).get("value", 0), 0)
-                ),
-                "visibility_permille": int(
-                    _as_int((dict(effect_map_rows.get("visibility_permille") or {})).get("value", 1000), 1000)
-                ),
+                "max_speed_permille": int(_as_int(max_speed_effect.get("value", 1000), 1000))
+                if bool(max_speed_effect.get("present", False))
+                else 1000,
+                "traction_permille": int(_as_int(traction_effect.get("value", 1000), 1000))
+                if bool(traction_effect.get("present", False))
+                else 1000,
+                "wind_drift_permille": int(_as_int(wind_drift_effect.get("value", 0), 0))
+                if bool(wind_drift_effect.get("present", False))
+                else 0,
+                "visibility_permille": int(_as_int(visibility_effect.get("value", 1000), 1000))
+                if bool(visibility_effect.get("present", False))
+                else 1000,
             }
             existing_momentum_row = dict(momentum_rows_by_assembly.get(body_id) or {})
             mass_value = _mass_value_for_assembly(

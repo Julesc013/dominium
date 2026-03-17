@@ -35639,6 +35639,7 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
             )
 
     for append_fn in (
+        _append_worktree_hygiene_findings,
         _append_release_identity_findings,
         _append_release_manifest_findings,
         _append_distribution_model_findings,
@@ -35668,7 +35669,6 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         _append_gal1_findings,
         _append_cross_system_matrix_findings,
         _append_status_now_findings,
-        _append_worktree_hygiene_findings,
         _append_representation_invariant_findings,
         _append_instance_manifest_invariant_findings,
         _append_save_manifest_invariant_findings,

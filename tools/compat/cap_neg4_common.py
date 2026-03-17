@@ -44,6 +44,10 @@ def _sorted_tokens(values: Iterable[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in list(values or []) if str(item).strip()))
 
 
+def _normalized_repo_root(repo_root: str) -> str:
+    return os.path.normcase(os.path.normpath(os.path.abspath(repo_root)))
+
+
 def _with_fingerprint(payload: Mapping[str, object]) -> dict:
     row = dict(payload or {})
     row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
@@ -191,14 +195,16 @@ def _scenario_row(
             ),
             "extensions": {
                 "interop_tags": _sorted_tokens(tags),
-                "repo_root_hash_anchor": canonical_sha256({"repo_root": os.path.normpath(os.path.abspath(repo_root)).replace("\\", "/")}),
+                "repo_root_hash_anchor": canonical_sha256(
+                    {"repo_root": _normalized_repo_root(repo_root).replace("\\", "/")}
+                ),
             },
         }
     )
 
 
 def generate_interop_matrix(*, repo_root: str, seed: int = DEFAULT_CAP_NEG4_SEED) -> dict:
-    repo_root = os.path.normpath(os.path.abspath(repo_root))
+    repo_root = _normalized_repo_root(repo_root)
     seed_value = int(_as_int(seed, DEFAULT_CAP_NEG4_SEED))
     v1_contracts = _contract_ranges(repo_root, overrides={})
     v2_refinement_contracts = _contract_ranges(repo_root, overrides={"contract.worldgen.refinement": 2})
@@ -633,6 +639,7 @@ def _preferred_wrapper_names(product_id: str) -> List[str]:
 
 
 def _descriptor_from_wrapper(repo_root: str, *, product_id: str) -> dict:
+    repo_root = _normalized_repo_root(repo_root)
     last_error = ""
     for wrapper_name in _preferred_wrapper_names(product_id):
         wrapper_path = os.path.join(repo_root, "dist", "bin", wrapper_name)
@@ -765,7 +772,7 @@ def run_interop_stress(
     matrix: Mapping[str, object] | None = None,
     seed: int = DEFAULT_CAP_NEG4_SEED,
 ) -> dict:
-    repo_root = os.path.normpath(os.path.abspath(repo_root))
+    repo_root = _normalized_repo_root(repo_root)
     matrix_payload = dict(matrix or generate_interop_matrix(repo_root=repo_root, seed=int(seed)))
     scenario_rows = [dict(row) for row in _as_list(matrix_payload.get("scenarios")) if isinstance(row, Mapping)]
     reports = [_scenario_report(repo_root, scenario_row=row) for row in scenario_rows]
