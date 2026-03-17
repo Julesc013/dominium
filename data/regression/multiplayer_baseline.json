@@ -5,13 +5,13 @@
   "bundle_id": "bundle.base.lab",
   "policy_baselines": {
     "policy.net.lockstep": {
-      "final_composite_hash": "1eafec56811affe81ceb307df6b0c577efc7b0f4cc98782691ce9aa66bcd7420"
+      "final_composite_hash": "652357b9fe74fdb0097650dff759ec7524cba1ed6752fee790d5a37193c33cce"
     },
     "policy.net.server_authoritative": {
-      "final_composite_hash": "f13ca1e99f4a531a3dd7a8b027cc15c45744ef394190abf73743c3b47f597b6f"
+      "final_composite_hash": "a7d7b023b34da06fd1419005343dd4fb8435d099fae7d87653839d38d505bd17"
     },
     "policy.net.srz_hybrid": {
-      "final_composite_hash": "bec5f34366e5e04a2113326e1c719373692d48a6e9ad7a6f46c1f350630fc867"
+      "final_composite_hash": "9e6afbb7fb9986c2d426d4cb1f1094bbc7446231759445228f588d7809085bac"
     }
   },
   "ranked_handshake_matrix_hash": "1926e51d42b7bca86246ca523439c0674245e19f9f141662021d54394f366fb6",
@@ -22,6 +22,6 @@
   },
   "update_policy": {
     "required_commit_tag": "MULTIPLAYER-REGRESSION-UPDATE",
-    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-02-26 (RS4 tier transition hash input integration)."
+    "notes": "Baseline updates require explicit multiplayer determinism review and approval. Updated under MULTIPLAYER-REGRESSION-UPDATE on 2026-03-17 (Omega prep full-stack anchor refresh after deterministic runtime and CAP-NEG fixes)."
   }
 }

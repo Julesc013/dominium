@@ -6,7 +6,7 @@
       "chosen_protocol_version": "1.0.0",
       "compatibility_mode_id": "compat.read_only",
       "disabled_capability_ids": [],
-      "negotiation_record_hash": "86e62757e30e09d4909f2797560234f216616de717a40fcb284a024e2518a058",
+      "negotiation_record_hash": "71b6af34587f1a11b440c8657413c97c70bea847d45cf26e52851f84f2b9845b",
       "refusal_code": "",
       "scenario_id": "interop.client_server.contract_mismatch_read_only",
       "substituted_capability_ids": []
@@ -16,7 +16,7 @@
       "chosen_protocol_version": "1.0.0",
       "compatibility_mode_id": "compat.refuse",
       "disabled_capability_ids": [],
-      "negotiation_record_hash": "fe6a07aba6fa74361323d0ee29a617a328411c677220ca34c9b91137cb405593",
+      "negotiation_record_hash": "d4de2dff1a49c1686dee868fd2c94855ecf2c034f63ac506a15c642d351b5c8c",
       "refusal_code": "refusal.compat.contract_mismatch",
       "scenario_id": "interop.client_server.contract_mismatch_refuse",
       "substituted_capability_ids": []
@@ -26,7 +26,7 @@
       "chosen_protocol_version": "1.0.0",
       "compatibility_mode_id": "compat.full",
       "disabled_capability_ids": [],
-      "negotiation_record_hash": "aabb1a32fa53e5ba31357039dfaa446f5dc923173ca4a942d631158ad5615ffc",
+      "negotiation_record_hash": "046afa7515bcf61c9ada92c8c74725ac59c5f1dcded21ce210a121c70faeda3f",
       "refusal_code": "",
       "scenario_id": "interop.client_server.full_v1",
       "substituted_capability_ids": []
@@ -39,7 +39,7 @@
         "cap.logic.protocol_layer",
         "cap.ui.rendered"
       ],
-      "negotiation_record_hash": "fd62c881a21c63a2627d355822ff07855ddad0a210d589883086b179879e7422",
+      "negotiation_record_hash": "5810ace95e46f185e431f4ba5df0540bd96cc0fd53a89f0d58cdcca3911d138a",
       "refusal_code": "refusal.compat.no_common_protocol",
       "scenario_id": "interop.client_server.no_common_protocol",
       "substituted_capability_ids": [
@@ -53,7 +53,7 @@
       "disabled_capability_ids": [
         "cap.logic.protocol_layer"
       ],
-      "negotiation_record_hash": "59069c94c313bacb8f9e21131bb648400c92f04977c10bf4fa00a06712cf6086",
+      "negotiation_record_hash": "c8cc60ec90f0b5cdb787ca740c69d70c726eee8b3c2480cc266f44d25843aedd",
       "refusal_code": "",
       "scenario_id": "interop.client_server.protocol_layer_disabled",
       "substituted_capability_ids": []
@@ -65,7 +65,7 @@
       "disabled_capability_ids": [
         "cap.ui.rendered"
       ],
-      "negotiation_record_hash": "1d095f627ebecb951f092c43167ae58beba46d109e5744b75dad4253ae86ceeb",
+      "negotiation_record_hash": "63b6baf7670bed18e91cc4231b508d9574934a24b378bda07952355dafa6662a",
       "refusal_code": "",
       "scenario_id": "interop.client_server.rendered_to_tui",
       "substituted_capability_ids": [
@@ -79,7 +79,7 @@
       "disabled_capability_ids": [
         "cap.unknown.synthetic_render_channel"
       ],
-      "negotiation_record_hash": "2a9a78e302509c143784bc32eae6ce44a8961a3a7e1f64cb446c0ccb2c56a7e0",
+      "negotiation_record_hash": "9ea087ada95e58b7fac4e93b29a04908a13e756036e33340cef4df189fb54d36",
       "refusal_code": "",
       "scenario_id": "interop.client_server.unknown_capability_ignored",
       "substituted_capability_ids": []
@@ -92,7 +92,7 @@
         "cap.logic.protocol_layer",
         "cap.ui.rendered"
       ],
-      "negotiation_record_hash": "7c209c2359e09554f84ca452844b589fb939d396ab00a9634ecf10c10b791651",
+      "negotiation_record_hash": "d648f620fc2f8ba33f20577980af97d5b6a8ab0191fc4a6d8b5050ded7d2d9eb",
       "refusal_code": "",
       "scenario_id": "interop.client_v2_server_v1.degrade",
       "substituted_capability_ids": [
@@ -106,7 +106,7 @@
       "disabled_capability_ids": [
         "cap.logic.compiled_automaton"
       ],
-      "negotiation_record_hash": "2a8425c192e33b4284fd134d2769aca4fd9eb5b9198f724ad70c371bfca8b3a6",
+      "negotiation_record_hash": "1b94a3273a03dbd769b6bd9b2fac22af4cb5ba333159dbe171ea5479afeaa3ab",
       "refusal_code": "",
       "scenario_id": "interop.engine_server.compiled_to_l1",
       "substituted_capability_ids": [
@@ -120,14 +120,14 @@
       "disabled_capability_ids": [
         "cap.pack.install"
       ],
-      "negotiation_record_hash": "a77e33f576ace47a299df58b2f631d9c32c0b0e3a31c4355bc750da0c8d74c93",
+      "negotiation_record_hash": "8c30d982e3203585ea4cdc83d44a8b3962f98313fe918e8d59ab6717f8056bbe",
       "refusal_code": "",
       "scenario_id": "interop.setup_pack.verify_older_newer",
       "substituted_capability_ids": []
     }
   ],
   "description": "Deterministic CAP-NEG-4 regression lock for mixed-version negotiation, degrade ladders, read-only fallback, and refusal surfaces.",
-  "deterministic_fingerprint": "00cd5f6e84587559e7b7678c21d1cc3ae1b476fd2d70bf9e2ef6fd07ee55ec40",
+  "deterministic_fingerprint": "758cf8a362900448de7de1fb880b30a4d7fe370e48a9f48fdbd8a50b73bd1656",
   "disabled_capability_frequency": [
     {
       "capability_id": "cap.logic.protocol_layer",
@@ -157,7 +157,7 @@
     },
     "lock_scope": "capability_negotiation_envelope"
   },
-  "matrix_fingerprint": "64f7385dd55163a7ca8dd3a15a2ad5da5b799b6ab3168adab33434c140ed85ec",
+  "matrix_fingerprint": "0985baf5f63baccc10af2eb66ac0649e2d6ebeefa2e882bcdd80e7bc77ac8ed0",
   "mode_counts": {
     "compat.degraded": 5,
     "compat.full": 2,
@@ -216,7 +216,7 @@
   "replay_summary_fingerprint": "f0677d9f32d261839d1a941cafb5915d975e840e57d4784267f4472f3a12bc65",
   "scenario_seed": 41004,
   "schema_version": "1.0.0",
-  "stress_report_fingerprint": "c3d73e7dd930284b743bc2223eb3a814bf4926bfda49d5fc4a6e94cb4c8ca36a",
+  "stress_report_fingerprint": "b68c0fce4c9274db8082571f3a14917ae9de1d034e2f6465114558c1b08e8ef0",
   "update_policy": {
     "notes": "Baseline updates require rerunning CAP-NEG-4 matrix, stress, and replay verification under explicit CAP-NEG-REGRESSION-UPDATE review.",
     "required_commit_tag": "CAP-NEG-REGRESSION-UPDATE"
