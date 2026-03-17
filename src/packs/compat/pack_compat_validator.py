@@ -55,6 +55,14 @@ def _fingerprint(payload: Mapping[str, object]) -> str:
     return canonical_sha256(body)
 
 
+def normalize_pack_compat_manifest_payload(payload: Mapping[str, object]) -> dict:
+    return _normalize_manifest(payload)
+
+
+def pack_compat_manifest_fingerprint(payload: Mapping[str, object]) -> str:
+    return _fingerprint(normalize_pack_compat_manifest_payload(payload))
+
+
 def _error(code: str, path: str, message: str) -> dict:
     return {
         "code": str(code),
@@ -174,7 +182,7 @@ def validate_pack_compat_manifest(
     schema_repo_root: str = "",
 ) -> Dict[str, object]:
     schema_root = os.path.abspath(schema_repo_root) if str(schema_repo_root).strip() else repo_root
-    payload = _normalize_manifest(manifest_payload)
+    payload = normalize_pack_compat_manifest_payload(manifest_payload)
     errors: List[dict] = []
     warnings: List[dict] = []
 
@@ -197,7 +205,7 @@ def validate_pack_compat_manifest(
             )
         return {"result": "refused", "errors": sorted(errors, key=lambda row: (row["code"], row["path"], row["message"])), "warnings": []}
 
-    if payload["deterministic_fingerprint"] != _fingerprint(payload):
+    if payload["deterministic_fingerprint"] != pack_compat_manifest_fingerprint(payload):
         errors.append(
             _error(
                 "pack_compat_manifest_fingerprint_mismatch",

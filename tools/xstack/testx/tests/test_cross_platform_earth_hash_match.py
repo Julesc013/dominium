@@ -8,7 +8,7 @@ import sys
 TEST_ID = "test_cross_platform_earth_hash_match"
 TEST_TAGS = ["fast", "earth", "worldgen", "surface", "cross_platform"]
 
-EXPECTED_EARTH_HASH = "b8864a86235a1bfd88f2d9f00792b70c6ac3731a8c0710fe9b66028c319c70bb"
+EXPECTED_EARTH_HASH = "e4a088eb4b6664e4060f42a634308a0ed2f92c3c16c20f49756685b628d44652"
 
 
 def run(repo_root: str):

@@ -20,13 +20,13 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 EARTH-0 now upgrades the routed Sol Earth planet into a dedicated data-light Earth macro generator.
 
-Observed far-LOD Earth probe on 2026-03-09:
+Observed far-LOD Earth probe on 2026-03-17:
 
 - `sample_count = 128` atlas tiles
-- weighted `ocean_ratio_permille = 600`
-- weighted `land_ratio_permille = 383`
+- weighted `ocean_ratio_permille = 612`
+- weighted `land_ratio_permille = 372`
 - weighted `polar_ice_ratio_permille = 15`
-- canonical sampled Earth surface hash `= b8864a86235a1bfd88f2d9f00792b70c6ac3731a8c0710fe9b66028c319c70bb`
+- canonical sampled Earth surface hash `= e4a088eb4b6664e4060f42a634308a0ed2f92c3c16c20f49756685b628d44652`
 
 The resulting macro Earth remains intentionally approximate:
 
@@ -72,7 +72,7 @@ Drivers:
 Observed seasonal daylight probe:
 
 - `tick_0 daylight_value = 157`
-- `tick_500000 daylight_value = 166`
+- `tick_500000 daylight_value = 142`
 - `axial_tilt_affects_daylight = true`
 
 ## Overlay And Upgrade Readiness

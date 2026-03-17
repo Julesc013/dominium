@@ -8,7 +8,7 @@ Replacement Target: release-pinned install discovery and virtual root contract
 
 # Virtual Paths Baseline
 
-Fingerprint: `035898f504e80489de4423dbaea083b9c12e414c549a9d359ed7914a77405193`
+Fingerprint: `9f680a5970dd78dd84c0540b0c473d81a505ee43396728dd423369a2c9d589f0`
 
 ## Roots Table
 
@@ -85,30 +85,30 @@ Fingerprint: `035898f504e80489de4423dbaea083b9c12e414c549a9d359ed7914a77405193`
 
 | Classification | File | Line |
 | --- | --- | --- |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `270` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `287` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `288` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `315` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `316` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `317` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `318` |
-| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `1197` |
-| `shim` | `src/appshell/commands/command_engine.py` | `371` |
-| `shim` | `src/appshell/commands/command_engine.py` | `376` |
-| `shim` | `src/appshell/commands/command_engine.py` | `419` |
-| `shim` | `src/appshell/commands/command_engine.py` | `420` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `333` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `350` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `351` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `378` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `379` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `380` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `381` |
+| `allowed_packaging_layout` | `tools/setup/setup_cli.py` | `1520` |
+| `shim` | `src/appshell/commands/command_engine.py` | `466` |
+| `shim` | `src/appshell/commands/command_engine.py` | `471` |
+| `shim` | `src/appshell/commands/command_engine.py` | `515` |
+| `shim` | `src/appshell/commands/command_engine.py` | `516` |
 | `shim` | `src/appshell/config_loader.py` | `47` |
 | `shim` | `src/appshell/config_loader.py` | `48` |
 | `shim` | `src/appshell/config_loader.py` | `82` |
 | `shim` | `src/appshell/diag/diag_snapshot.py` | `104` |
-| `shim` | `src/appshell/ipc/ipc_transport.py` | `79` |
-| `shim` | `src/appshell/ipc/ipc_transport.py` | `170` |
-| `shim` | `src/appshell/pack_verifier_adapter.py` | `30` |
-| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `178` |
-| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `179` |
-| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `180` |
-| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `181` |
-| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `182` |
+| `shim` | `src/appshell/ipc/ipc_transport.py` | `80` |
+| `shim` | `src/appshell/ipc/ipc_transport.py` | `171` |
+| `shim` | `src/appshell/pack_verifier_adapter.py` | `37` |
+| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `332` |
+| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `333` |
+| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `334` |
+| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `335` |
+| `shim` | `src/appshell/supervisor/supervisor_engine.py` | `336` |
 
 ## Integration Coverage Report
 

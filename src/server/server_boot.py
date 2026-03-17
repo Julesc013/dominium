@@ -9,10 +9,9 @@ from src.geo import build_default_overlay_manifest, overlay_proof_surface, valid
 from src.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
 from src.net.policies.policy_server_authoritative import (
     POLICY_ID_SERVER_AUTHORITATIVE,
-    build_client_intent_envelope,
     initialize_authoritative_runtime,
     prepare_server_authoritative_baseline,
-    queue_intent_envelope,
+    submit_client_intent,
 )
 from src.compat import COMPAT_MODE_READ_ONLY, REFUSAL_CONNECTION_NO_NEGOTIATION
 from src.compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
@@ -945,16 +944,14 @@ def submit_client_intent(
         )
     inputs = dict(intent_payload.get("inputs") or {})
     inputs.setdefault("target", target)
-    envelope_result = build_client_intent_envelope(
+    queued = submit_client_intent(
+        repo_root=str((dict(server_boot_payload or {})).get("repo_root", "")) or os.getcwd(),
         runtime=runtime,
         peer_id=str(connection.get("peer_id", "")).strip(),
         intent_id=intent_id,
         process_id=process_id,
         inputs=inputs,
     )
-    if str(envelope_result.get("result", "")) != "complete":
-        return dict(envelope_result)
-    queued = queue_intent_envelope(repo_root=str((dict(server_boot_payload or {})).get("repo_root", "")) or os.getcwd(), runtime=runtime, envelope=dict(envelope_result.get("envelope") or {}))
     if str(queued.get("result", "")) != "complete":
         return dict(queued)
     return {

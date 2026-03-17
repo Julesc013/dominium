@@ -9958,9 +9958,6 @@ def check_authority_required(repo_root):
         server_boot_rel: (
             "REFUSAL_CLIENT_UNAUTHORIZED",
             "build_connection_authority_context(",
-            "submit_client_intent(",
-            "build_client_intent_envelope(",
-            "queue_intent_envelope(",
             "incoming client intent must declare intent_id and target",
         ),
         loopback_rel: (
@@ -9985,6 +9982,11 @@ def check_authority_required(repo_root):
             continue
         text = read_text(path) or ""
         missing = [token for token in tokens if token not in text]
+        if rel == server_boot_rel:
+            has_governed_ingress = "submit_client_intent(" in text
+            has_legacy_ingress = ("build_client_intent_envelope(" in text) and ("queue_intent_envelope(" in text)
+            if not (has_governed_ingress or has_legacy_ingress):
+                missing.extend(["submit_client_intent() or build_client_intent_envelope()+queue_intent_envelope()"])
         if missing:
             violations.append(
                 "{}: {} missing authority-enforcement marker(s): {}".format(

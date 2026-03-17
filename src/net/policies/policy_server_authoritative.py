@@ -1092,6 +1092,39 @@ def build_client_intent_envelope(
     return {"result": "complete", "envelope": envelope}
 
 
+def submit_client_intent(
+    *,
+    repo_root: str,
+    runtime: dict,
+    peer_id: str,
+    intent_id: str,
+    process_id: str,
+    inputs: dict,
+    submission_tick: int | None = None,
+    target_shard_id: str = DEFAULT_SHARD_ID,
+) -> Dict[str, object]:
+    envelope_result = build_client_intent_envelope(
+        runtime=runtime,
+        peer_id=peer_id,
+        intent_id=intent_id,
+        process_id=process_id,
+        inputs=inputs,
+        submission_tick=submission_tick,
+        target_shard_id=target_shard_id,
+    )
+    if str(envelope_result.get("result", "")) != "complete":
+        return dict(envelope_result)
+    envelope = dict(envelope_result.get("envelope") or {})
+    queued = queue_intent_envelope(repo_root=repo_root, runtime=runtime, envelope=envelope)
+    if str(queued.get("result", "")) != "complete":
+        return dict(queued)
+    return {
+        "result": "complete",
+        "envelope": envelope,
+        "queue_size": int(queued.get("queue_size", 0) or 0),
+    }
+
+
 def _queue_sort_key(envelope: dict) -> Tuple[int, str, str, int, str]:
     return (
         _as_int(envelope.get("submission_tick", 0), 0),

@@ -359,6 +359,8 @@ def render_virtual_paths_doc(report: Mapping[str, object]) -> str:
     lines = [
         "Status: CANONICAL",
         "Last Reviewed: 2026-03-13",
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: APPSHELL/LIB",
         "Replacement Target: release-pinned install discovery and virtual root contract",
@@ -412,6 +414,8 @@ def render_virtual_paths_baseline(report: Mapping[str, object]) -> str:
     lines = [
         "Status: DERIVED",
         "Last Reviewed: 2026-03-13",
+        "Supersedes: none",
+        "Superseded By: none",
         "Stability: provisional",
         "Future Series: DOC-CONVERGENCE",
         "Replacement Target: release-pinned install discovery and virtual root contract",

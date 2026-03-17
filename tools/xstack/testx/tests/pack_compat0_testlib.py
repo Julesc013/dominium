@@ -38,11 +38,9 @@ def write_json(path: str, payload: dict) -> None:
 
 
 def _descriptor_hash(payload: dict) -> str:
-    from tools.xstack.compatx.canonical_json import canonical_sha256
+    from src.packs.compat.pack_compat_validator import pack_compat_manifest_fingerprint
 
-    body = dict(payload)
-    body["deterministic_fingerprint"] = ""
-    return canonical_sha256(body)
+    return pack_compat_manifest_fingerprint(payload)
 
 
 def _find_pack_dir(repo_root: str, pack_id: str) -> str:
