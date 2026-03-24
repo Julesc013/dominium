@@ -492,6 +492,8 @@ from analyzers import e537_overwritten_release_index_smell
 from analyzers import e538_silent_upgrade_smell
 from analyzers import e539_yanked_build_selectable_smell
 from analyzers import e540_non_deterministic_selection_smell
+from analyzers import e541_worldgen_unnamed_rng_smell
+from analyzers import e542_worldgen_float_truth_smell
 
 
 ANALYZERS = (
@@ -987,6 +989,8 @@ ANALYZERS = (
     e538_silent_upgrade_smell,
     e539_yanked_build_selectable_smell,
     e540_non_deterministic_selection_smell,
+    e541_worldgen_unnamed_rng_smell,
+    e542_worldgen_float_truth_smell,
 )
 
 

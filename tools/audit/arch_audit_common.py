@@ -29,6 +29,17 @@ DEFAULT_AUDIT2_REPORT_JSON_REL = os.path.join("data", "audit", "arch_audit2_repo
 DEFAULT_AUDIT2_FINAL_DOC_REL = os.path.join("docs", "audit", "ARCH_AUDIT2_FINAL.md")
 DEFAULT_NUMERIC_SCAN_REPORT_MD_REL = os.path.join("docs", "audit", "NUMERIC_SCAN_REPORT.md")
 DEFAULT_CONCURRENCY_SCAN_REPORT_MD_REL = os.path.join("docs", "audit", "CONCURRENCY_SCAN_REPORT.md")
+WORLDGEN_LOCK_DOC_REL = os.path.join("docs", "worldgen", "WORLDGEN_LOCK_v0_0_0.md")
+WORLDGEN_LOCK_RETRO_AUDIT_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK0_RETRO_AUDIT.md")
+WORLDGEN_LOCK_REGISTRY_REL = os.path.join("data", "registries", "worldgen_lock_registry.json")
+WORLDGEN_LOCK_BASELINE_SEED_REL = os.path.join("data", "baselines", "worldgen", "baseline_seed.txt")
+WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL = os.path.join("data", "baselines", "worldgen", "baseline_worldgen_snapshot.json")
+WORLDGEN_LOCK_GENERATE_TOOL_REL = os.path.join("tools", "worldgen", "tool_generate_worldgen_baseline")
+WORLDGEN_LOCK_GENERATE_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_generate_worldgen_baseline.py")
+WORLDGEN_LOCK_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock")
+WORLDGEN_LOCK_VERIFY_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock.py")
+WORLDGEN_LOCK_VERIFY_JSON_REL = os.path.join("data", "audit", "worldgen_lock_verify.json")
+WORLDGEN_LOCK_VERIFY_DOC_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK_VERIFY.md")
 
 TRUTH_PURITY_TARGETS = (
     os.path.join("schema", "universe", "universe_state.schema"),
@@ -165,6 +176,22 @@ NUMERIC_TRUTH_TARGETS = (
     os.path.join("src", "physics", "energy", "energy_ledger_engine.py"),
     os.path.join("src", "physics", "momentum_engine.py"),
     os.path.join("src", "time", "time_mapping_engine.py"),
+)
+WORLDGEN_NUMERIC_TRUTH_TARGETS = (
+    os.path.join("src", "geo", "worldgen", "worldgen_engine.py"),
+    os.path.join("src", "worldgen", "galaxy", "galaxy_object_stub_generator.py"),
+    os.path.join("src", "worldgen", "mw", "mw_cell_generator.py"),
+    os.path.join("src", "worldgen", "mw", "mw_system_refiner_l2.py"),
+    os.path.join("src", "worldgen", "mw", "mw_surface_refiner_l3.py"),
+    os.path.join("src", "worldgen", "mw", "insolation_proxy.py"),
+    os.path.join("src", "worldgen", "mw", "sol_anchor.py"),
+    os.path.join("src", "worldgen", "earth", "earth_surface_generator.py"),
+    os.path.join("src", "worldgen", "earth", "climate_field_engine.py"),
+    os.path.join("src", "worldgen", "earth", "hydrology_engine.py"),
+    os.path.join("src", "worldgen", "earth", "tide_field_engine.py"),
+    os.path.join("src", "worldgen", "earth", "season_phase_engine.py"),
+    os.path.join("src", "worldgen", "earth", "tide_phase_engine.py"),
+    os.path.join("src", "worldgen", "earth", "material", "material_proxy_engine.py"),
 )
 REVIEWED_NUMERIC_BRIDGE_PATHS = {
     os.path.join("src", "geo", "kernel", "geo_kernel.py"): "projection/query bridge with deterministic quantization",
@@ -856,6 +883,166 @@ def scan_float_in_truth(repo_root: str, override_paths: Sequence[str] | None = N
     )
 
 
+def scan_worldgen_lock(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    required_paths = [
+        WORLDGEN_LOCK_DOC_REL,
+        WORLDGEN_LOCK_RETRO_AUDIT_REL,
+        WORLDGEN_LOCK_REGISTRY_REL,
+        WORLDGEN_LOCK_BASELINE_SEED_REL,
+        WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL,
+        WORLDGEN_LOCK_GENERATE_TOOL_REL,
+        WORLDGEN_LOCK_GENERATE_TOOL_PY_REL,
+        WORLDGEN_LOCK_VERIFY_TOOL_REL,
+        WORLDGEN_LOCK_VERIFY_TOOL_PY_REL,
+        WORLDGEN_LOCK_VERIFY_JSON_REL,
+        WORLDGEN_LOCK_VERIFY_DOC_REL,
+    ]
+    scanned_paths = sorted(set(required_paths + list(WORLDGEN_NUMERIC_TRUTH_TARGETS)))
+    findings: list[dict] = []
+
+    for rel_path in required_paths:
+        abs_path = _repo_abs(repo_root_abs, rel_path)
+        if abs_path and os.path.exists(abs_path):
+            continue
+        findings.append(
+            _finding_row(
+                category="worldgen_lock.required_surface",
+                path=rel_path,
+                line=1,
+                message="required WORLDGEN-LOCK surface is missing.",
+                rule_id="INV-WORLDGEN-LOCK-REQUIRED",
+            )
+        )
+
+    registry_payload = load_json_if_present(repo_root_abs, WORLDGEN_LOCK_REGISTRY_REL)
+    registry_record = _as_map(registry_payload.get("record"))
+    registry_fp = _token(registry_record.get("deterministic_fingerprint"))
+    if registry_payload and (not registry_fp):
+        findings.append(
+            _finding_row(
+                category="worldgen_lock.registry_fingerprint",
+                path=WORLDGEN_LOCK_REGISTRY_REL,
+                line=1,
+                message="worldgen lock registry is missing deterministic_fingerprint.",
+                rule_id="INV-WORLDGEN-LOCK-REQUIRED",
+            )
+        )
+
+    snapshot_payload = load_json_if_present(repo_root_abs, WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL)
+    snapshot_record = _as_map(snapshot_payload.get("record"))
+    snapshot_fp = _token(snapshot_record.get("deterministic_fingerprint"))
+    if snapshot_payload and (not snapshot_fp):
+        findings.append(
+            _finding_row(
+                category="worldgen_lock.snapshot_fingerprint",
+                path=WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL,
+                line=1,
+                message="worldgen lock baseline snapshot is missing deterministic_fingerprint.",
+                rule_id="INV-WORLDGEN-LOCK-REQUIRED",
+            )
+        )
+
+    determinism_scan = scan_determinism(repo_root_abs)
+    unnamed_rng_rows = [
+        dict(row)
+        for row in list(determinism_scan.get("blocking_findings") or [])
+        if _token(row.get("category")) == "determinism.unnamed_rng"
+        and (
+            _token(row.get("path")).startswith("src/worldgen/")
+            or _token(row.get("path")).startswith("src/geo/worldgen/")
+        )
+    ]
+    for row in unnamed_rng_rows:
+        findings.append(
+            _finding_row(
+                category="worldgen_lock.unnamed_rng",
+                path=_token(row.get("path")),
+                line=int(row.get("line", 1) or 1),
+                message=_token(row.get("message")) or "unnamed RNG detected in worldgen truth path.",
+                snippet=_token(row.get("snippet")),
+                rule_id="INV-NO-UNNAMED-RNG",
+            )
+        )
+
+    float_scan = scan_float_in_truth(repo_root_abs, override_paths=WORLDGEN_NUMERIC_TRUTH_TARGETS)
+    float_rows = [dict(row) for row in list(float_scan.get("blocking_findings") or []) if isinstance(row, Mapping)]
+    for row in float_rows:
+        findings.append(
+            _finding_row(
+                category="worldgen_lock.float_in_truth",
+                path=_token(row.get("path")),
+                line=int(row.get("line", 1) or 1),
+                message=_token(row.get("message")) or "floating-point usage detected in worldgen truth path.",
+                snippet=_token(row.get("snippet")),
+                rule_id="INV-WORLDGEN-LOCK-REQUIRED",
+            )
+        )
+
+    if registry_payload and registry_record and snapshot_payload and snapshot_record:
+        try:
+            from tools.worldgen.worldgen_lock_common import registry_record_hash, snapshot_record_hash, verify_worldgen_lock
+        except Exception:
+            findings.append(
+                _finding_row(
+                    category="worldgen_lock.tooling_missing",
+                    path=WORLDGEN_LOCK_VERIFY_TOOL_PY_REL,
+                    line=1,
+                    message="worldgen lock verification helpers could not be imported.",
+                    rule_id="INV-WORLDGEN-LOCK-REQUIRED",
+                )
+            )
+        else:
+            expected_registry_fp = registry_record_hash(registry_record)
+            if registry_fp != expected_registry_fp:
+                findings.append(
+                    _finding_row(
+                        category="worldgen_lock.registry_fingerprint",
+                        path=WORLDGEN_LOCK_REGISTRY_REL,
+                        line=1,
+                        message="worldgen lock registry deterministic_fingerprint does not match canonical record hash.",
+                        rule_id="INV-WORLDGEN-LOCK-REQUIRED",
+                    )
+                )
+            expected_snapshot_fp = snapshot_record_hash(snapshot_record)
+            if snapshot_fp != expected_snapshot_fp:
+                findings.append(
+                    _finding_row(
+                        category="worldgen_lock.snapshot_fingerprint",
+                        path=WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL,
+                        line=1,
+                        message="worldgen lock baseline snapshot deterministic_fingerprint does not match canonical record hash.",
+                        rule_id="INV-WORLDGEN-LOCK-REQUIRED",
+                    )
+                )
+            verify_report = verify_worldgen_lock(repo_root_abs)
+            if not bool(verify_report.get("matches_snapshot")):
+                findings.append(
+                    _finding_row(
+                        category="worldgen_lock.snapshot_drift",
+                        path=WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL,
+                        line=1,
+                        message="committed baseline snapshot does not match regeneration from baseline seed.",
+                        snippet="; ".join(str(item).strip() for item in list(verify_report.get("mismatched_fields") or [])[:4] if str(item).strip()),
+                        rule_id="INV-WORLDGEN-LOCK-REQUIRED",
+                    )
+                )
+
+    return _check_result_payload(
+        check_id="worldgen_lock_scan",
+        description="Verify required WORLDGEN-LOCK artifacts, committed baseline replay, worldgen RNG discipline, and worldgen float discipline.",
+        scanned_paths=scanned_paths,
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "unnamed_rng_worldgen_findings": len(unnamed_rng_rows),
+            "float_in_worldgen_findings": len(float_rows),
+            "registry_fingerprint": registry_fp,
+            "snapshot_fingerprint": snapshot_fp,
+        },
+    )
+
+
 def scan_noncanonical_numeric_serialization(repo_root: str, override_paths: Sequence[str] | None = None) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     scanned_paths = _iter_override_paths(repo_root_abs, override_paths, NUMERIC_SERIALIZATION_TARGETS)
@@ -1457,6 +1644,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "duplicate_semantics_scan",
         "determinism_scan",
         "float_in_truth_scan",
+        "worldgen_lock_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -1477,6 +1665,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "duplicate_semantics_scan": scan_duplicate_semantics(repo_root_abs),
         "determinism_scan": scan_determinism(repo_root_abs),
         "float_in_truth_scan": scan_float_in_truth(repo_root_abs),
+        "worldgen_lock_scan": scan_worldgen_lock(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),

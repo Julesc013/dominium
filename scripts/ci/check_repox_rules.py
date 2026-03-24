@@ -394,6 +394,17 @@ EARTH_SKY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_sky_v
 EARTH_LIGHTING_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth5_probe.py")
 EARTH_LIGHTING_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_illumination_view.py")
 EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "worldgen", "EARTH_PROCEDURAL_CONSTITUTION.md")
+WORLDGEN_LOCK_DOC_REL = os.path.join("docs", "worldgen", "WORLDGEN_LOCK_v0_0_0.md")
+WORLDGEN_LOCK_RETRO_AUDIT_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK0_RETRO_AUDIT.md")
+WORLDGEN_LOCK_REGISTRY_REL = os.path.join("data", "registries", "worldgen_lock_registry.json")
+WORLDGEN_LOCK_BASELINE_SEED_REL = os.path.join("data", "baselines", "worldgen", "baseline_seed.txt")
+WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL = os.path.join("data", "baselines", "worldgen", "baseline_worldgen_snapshot.json")
+WORLDGEN_LOCK_GENERATE_TOOL_REL = os.path.join("tools", "worldgen", "tool_generate_worldgen_baseline")
+WORLDGEN_LOCK_GENERATE_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_generate_worldgen_baseline.py")
+WORLDGEN_LOCK_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock")
+WORLDGEN_LOCK_VERIFY_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock.py")
+WORLDGEN_LOCK_VERIFY_DOC_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK_VERIFY.md")
+WORLDGEN_LOCK_VERIFY_JSON_REL = os.path.join("data", "audit", "worldgen_lock_verify.json")
 EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODEL.md")
 EARTH_SEASONAL_CLIMATE_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SEASONAL_CLIMATE_MODEL.md")
 EARTH_TIDE_PROXY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_TIDE_PROXY_MODEL.md")
@@ -7348,6 +7359,112 @@ def check_named_rng_worldgen_only(repo_root):
     return violations
 
 
+def check_no_unnamed_rng_worldgen(repo_root):
+    invariant_id = "INV-NO-UNNAMED-RNG"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    truth_paths = (
+        MW_WORLDGEN_ENGINE_REL,
+        os.path.join("src", "worldgen", "galaxy", "galaxy_object_stub_generator.py"),
+        MW_CELL_GENERATOR_REL,
+        MW_SYSTEM_REFINER_L2_REL,
+        MW_SURFACE_REFINER_L3_REL,
+        MW_INSOLATION_PROXY_REL,
+        EARTH_SURFACE_GENERATOR_REL,
+        EARTH_HYDROLOGY_ENGINE_REL,
+        EARTH_CLIMATE_ENGINE_REL,
+        EARTH_TIDE_ENGINE_REL,
+        os.path.join("src", "worldgen", "earth", "material", "material_proxy_engine.py"),
+    )
+    for rel in truth_paths:
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in MW_NAMED_RNG_FORBIDDEN_TOKENS if item in snippet), "")
+            if token:
+                violations.append(
+                    "{}: forbidden nondeterministic token '{}' in {}:{}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                        line_no,
+                    )
+                )
+                break
+    return violations
+
+
+def check_worldgen_lock_required(repo_root):
+    invariant_id = "INV-WORLDGEN-LOCK-REQUIRED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    required_paths = (
+        WORLDGEN_LOCK_DOC_REL,
+        WORLDGEN_LOCK_RETRO_AUDIT_REL,
+        WORLDGEN_LOCK_REGISTRY_REL,
+        WORLDGEN_LOCK_BASELINE_SEED_REL,
+        WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL,
+        WORLDGEN_LOCK_GENERATE_TOOL_REL,
+        WORLDGEN_LOCK_GENERATE_TOOL_PY_REL,
+        WORLDGEN_LOCK_VERIFY_TOOL_REL,
+        WORLDGEN_LOCK_VERIFY_TOOL_PY_REL,
+        WORLDGEN_LOCK_VERIFY_DOC_REL,
+        WORLDGEN_LOCK_VERIFY_JSON_REL,
+    )
+    violations = []
+    for rel in required_paths:
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.exists(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+
+    try:
+        from tools.worldgen.worldgen_lock_common import (
+            load_worldgen_lock_registry,
+            load_worldgen_lock_snapshot,
+            registry_record_hash,
+            snapshot_record_hash,
+            verify_worldgen_lock,
+        )
+    except Exception:
+        return violations + ["{}: unable to import worldgen lock helpers".format(invariant_id)]
+
+    registry_payload = load_worldgen_lock_registry(repo_root)
+    registry_record = dict(registry_payload.get("record") or {})
+    registry_fp = str(registry_record.get("deterministic_fingerprint", "")).strip()
+    if not registry_record:
+        violations.append("{}: registry record missing from {}".format(invariant_id, normalize_path(WORLDGEN_LOCK_REGISTRY_REL)))
+    elif registry_fp != registry_record_hash(registry_record):
+        violations.append("{}: deterministic_fingerprint mismatch in {}".format(invariant_id, normalize_path(WORLDGEN_LOCK_REGISTRY_REL)))
+
+    snapshot_payload = load_worldgen_lock_snapshot(repo_root)
+    snapshot_record = dict(snapshot_payload.get("record") or {})
+    snapshot_fp = str(snapshot_record.get("deterministic_fingerprint", "")).strip()
+    if not snapshot_record:
+        violations.append("{}: snapshot record missing from {}".format(invariant_id, normalize_path(WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL)))
+    elif snapshot_fp != snapshot_record_hash(snapshot_record):
+        violations.append("{}: deterministic_fingerprint mismatch in {}".format(invariant_id, normalize_path(WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL)))
+
+    verify_report = verify_worldgen_lock(repo_root)
+    if not bool(verify_report.get("matches_snapshot")):
+        violations.append(
+            "{}: baseline regeneration mismatch in {} ({})".format(
+                invariant_id,
+                normalize_path(WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL),
+                ", ".join(str(item).strip() for item in list(verify_report.get("mismatched_fields") or [])[:4] if str(item).strip()) or "no mismatch detail",
+            )
+        )
+    return violations
+
+
 def check_system_instantiation_via_worldgen(repo_root):
     invariant_id = "INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN"
     if is_override_active(repo_root, invariant_id):
@@ -13992,6 +14109,8 @@ def main() -> int:
                 lambda: check_no_catalog_required(repo_root),
                 lambda: check_mw_cell_on_demand_only(repo_root),
                 lambda: check_named_rng_worldgen_only(repo_root),
+                lambda: check_no_unnamed_rng_worldgen(repo_root),
+                lambda: check_worldgen_lock_required(repo_root),
                 lambda: check_system_instantiation_via_worldgen(repo_root),
                 lambda: check_no_eager_system_generation(repo_root),
                 lambda: check_l2_objects_id_stable(repo_root),
