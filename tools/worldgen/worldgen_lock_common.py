@@ -34,6 +34,8 @@ WORLDGEN_LOCK_VERSION = 0
 WORLDGEN_LOCK_REGISTRY_REL = os.path.join("data", "registries", "worldgen_lock_registry.json")
 WORLDGEN_BASELINE_SEED_REL = os.path.join("data", "baselines", "worldgen", "baseline_seed.txt")
 WORLDGEN_BASELINE_SNAPSHOT_REL = os.path.join("data", "baselines", "worldgen", "baseline_worldgen_snapshot.json")
+WORLDGEN_VERIFY_JSON_REL = os.path.join("data", "audit", "worldgen_lock_verify.json")
+WORLDGEN_VERIFY_DOC_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK_VERIFY.md")
 
 WORLD_CELL_SAMPLE_INDEX_TUPLES = (
     [0, 0, 0],
@@ -102,8 +104,45 @@ def _load_json(path: str) -> dict:
     return dict(payload) if isinstance(payload, Mapping) else {}
 
 
+def _diff_values(expected: object, observed: object, *, path: str = "$", out: List[str] | None = None, limit: int = 64) -> List[str]:
+    rows = out if out is not None else []
+    if len(rows) >= int(limit):
+        return rows
+    if isinstance(expected, Mapping) and isinstance(observed, Mapping):
+        keys = sorted(set(list(expected.keys()) + list(observed.keys())))
+        for key in keys:
+            token = str(key)
+            if key not in expected:
+                rows.append("{}.{}: unexpected key".format(path, token))
+            elif key not in observed:
+                rows.append("{}.{}: missing key".format(path, token))
+            else:
+                _diff_values(expected.get(key), observed.get(key), path="{}.{}".format(path, token), out=rows, limit=limit)
+            if len(rows) >= int(limit):
+                break
+        return rows
+    if isinstance(expected, list) and isinstance(observed, list):
+        if len(expected) != len(observed):
+            rows.append("{}: list length {} != {}".format(path, len(expected), len(observed)))
+            return rows
+        for index, (left, right) in enumerate(zip(expected, observed)):
+            _diff_values(left, right, path="{}[{}]".format(path, index), out=rows, limit=limit)
+            if len(rows) >= int(limit):
+                break
+        return rows
+    if expected != observed:
+        rows.append(path)
+    return rows
+
+
 def load_worldgen_lock_registry(repo_root: str) -> dict:
     return _load_json(_repo_abs(repo_root, WORLDGEN_LOCK_REGISTRY_REL))
+
+
+def load_worldgen_lock_snapshot(repo_root: str, snapshot_path: str = "") -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    path = os.path.normpath(os.path.abspath(snapshot_path)) if str(snapshot_path or "").strip() else _repo_abs(repo_root_abs, WORLDGEN_BASELINE_SNAPSHOT_REL)
+    return _load_json(path)
 
 
 def read_worldgen_baseline_seed(repo_root: str, seed_text: str = "") -> str:
@@ -395,8 +434,105 @@ def write_worldgen_seed_file(repo_root: str, seed_text: str) -> str:
     return _write_text(_repo_abs(repo_root, WORLDGEN_BASELINE_SEED_REL), "{}\n".format(str(seed_text)))
 
 
-def stage_names() -> List[str]:
-    return [str(item).strip() for item in _as_list(_as_map(load_worldgen_lock_registry(".").get("record")).get("refinement_stages")) if str(item).strip()]
+def verify_worldgen_lock(repo_root: str, seed_text: str = "", snapshot_path: str = "") -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    expected_snapshot = load_worldgen_lock_snapshot(repo_root_abs, snapshot_path=snapshot_path)
+    resolved_seed = read_worldgen_baseline_seed(repo_root_abs, seed_text=seed_text)
+    observed_snapshot = build_worldgen_lock_snapshot(repo_root_abs, seed_text=resolved_seed)
+    expected_record = _as_map(expected_snapshot.get("record"))
+    observed_record = _as_map(observed_snapshot.get("record"))
+    mismatched_fields = _diff_values(expected_snapshot, observed_snapshot)
+    matches = not bool(mismatched_fields)
+    report = {
+        "result": "complete" if matches else "mismatch",
+        "baseline_seed": resolved_seed,
+        "expected_snapshot_rel": str(snapshot_path or WORLDGEN_BASELINE_SNAPSHOT_REL).replace("\\", "/"),
+        "expected_snapshot_fingerprint": str(expected_record.get("deterministic_fingerprint", "")).strip(),
+        "observed_snapshot_fingerprint": str(observed_record.get("deterministic_fingerprint", "")).strip(),
+        "matches_snapshot": bool(matches),
+        "mismatch_count": len(mismatched_fields),
+        "mismatched_fields": list(mismatched_fields),
+        "expected_refinement_stage_hashes": _as_map(expected_record.get("refinement_stage_hashes")),
+        "observed_refinement_stage_hashes": _as_map(observed_record.get("refinement_stage_hashes")),
+        "expected_sol_system_id": str(expected_record.get("sol_system_id", "")).strip(),
+        "observed_sol_system_id": str(observed_record.get("sol_system_id", "")).strip(),
+        "expected_earth_planet_id": str(expected_record.get("earth_planet_id", "")).strip(),
+        "observed_earth_planet_id": str(observed_record.get("earth_planet_id", "")).strip(),
+        "deterministic_fingerprint": "",
+    }
+    report["deterministic_fingerprint"] = canonical_sha256(dict(report, deterministic_fingerprint=""))
+    return report
+
+
+def render_worldgen_lock_verify_report(report: Mapping[str, object]) -> str:
+    payload = _as_map(report)
+    lines = [
+        "Status: DERIVED",
+        "Last Reviewed: 2026-03-24",
+        "Supersedes: none",
+        "Superseded By: none",
+        "Stability: provisional",
+        "Future Series: OMEGA",
+        "Replacement Target: WORLDGEN_LOCK_BASELINE final report and mock release archive",
+        "",
+        "# Worldgen Lock Verify",
+        "",
+        "- result: `{}`".format(str(payload.get("result", "")).strip()),
+        "- baseline_seed: `{}`".format(str(payload.get("baseline_seed", "")).strip()),
+        "- matches_snapshot: `{}`".format("true" if bool(payload.get("matches_snapshot")) else "false"),
+        "- expected_snapshot_fingerprint: `{}`".format(str(payload.get("expected_snapshot_fingerprint", "")).strip()),
+        "- observed_snapshot_fingerprint: `{}`".format(str(payload.get("observed_snapshot_fingerprint", "")).strip()),
+        "- mismatch_count: `{}`".format(int(payload.get("mismatch_count", 0) or 0)),
+        "- deterministic_fingerprint: `{}`".format(str(payload.get("deterministic_fingerprint", "")).strip()),
+        "",
+        "## Refinement Stage Hashes",
+        "",
+    ]
+    expected_stage_hashes = _as_map(payload.get("expected_refinement_stage_hashes"))
+    observed_stage_hashes = _as_map(payload.get("observed_refinement_stage_hashes"))
+    for key in sorted(set(list(expected_stage_hashes.keys()) + list(observed_stage_hashes.keys()))):
+        lines.append("- `{}` expected=`{}` observed=`{}`".format(
+            str(key),
+            str(expected_stage_hashes.get(key, "")).strip(),
+            str(observed_stage_hashes.get(key, "")).strip(),
+        ))
+    lines.extend(
+        [
+            "",
+            "## Identity Anchors",
+            "",
+            "- expected_sol_system_id: `{}`".format(str(payload.get("expected_sol_system_id", "")).strip()),
+            "- observed_sol_system_id: `{}`".format(str(payload.get("observed_sol_system_id", "")).strip()),
+            "- expected_earth_planet_id: `{}`".format(str(payload.get("expected_earth_planet_id", "")).strip()),
+            "- observed_earth_planet_id: `{}`".format(str(payload.get("observed_earth_planet_id", "")).strip()),
+            "",
+            "## Mismatches",
+            "",
+        ]
+    )
+    mismatches = [str(item).strip() for item in _as_list(payload.get("mismatched_fields")) if str(item).strip()]
+    if not mismatches:
+        lines.append("- none")
+    else:
+        for token in mismatches[:32]:
+            lines.append("- `{}`".format(token))
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def write_worldgen_lock_verify_outputs(
+    repo_root: str,
+    report: Mapping[str, object],
+    *,
+    json_path: str = "",
+    doc_path: str = "",
+) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    resolved_json = os.path.normpath(os.path.abspath(json_path)) if str(json_path or "").strip() else _repo_abs(repo_root_abs, WORLDGEN_VERIFY_JSON_REL)
+    resolved_doc = os.path.normpath(os.path.abspath(doc_path)) if str(doc_path or "").strip() else _repo_abs(repo_root_abs, WORLDGEN_VERIFY_DOC_REL)
+    return {
+        "json_path": _write_canonical_json(resolved_json, dict(report or {})),
+        "doc_path": _write_text(resolved_doc, render_worldgen_lock_verify_report(report)),
+    }
 
 
 __all__ = [
@@ -410,15 +546,21 @@ __all__ = [
     "WORLDGEN_LOCK_ID",
     "WORLDGEN_LOCK_REGISTRY_REL",
     "WORLDGEN_LOCK_VERSION",
+    "WORLDGEN_VERIFY_DOC_REL",
+    "WORLDGEN_VERIFY_JSON_REL",
     "WORLD_CELL_SAMPLE_INDEX_TUPLES",
     "build_locked_identity_context",
     "build_worldgen_lock_snapshot",
     "load_worldgen_lock_registry",
+    "load_worldgen_lock_snapshot",
     "read_worldgen_baseline_seed",
     "registry_record_hash",
+    "render_worldgen_lock_verify_report",
     "seed_text_hash",
     "snapshot_record_hash",
+    "verify_worldgen_lock",
     "world_cell_key",
+    "write_worldgen_lock_verify_outputs",
     "write_worldgen_lock_snapshot",
     "write_worldgen_seed_file",
 ]
