@@ -530,3 +530,24 @@ dom_add_testx(NAME test_cross_platform_compute_hash_match
         --case cross_platform_compute_hash_match
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME test_omega_plan_exists
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/omega_series_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case plan_exists
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_omega_gates_consistent
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/omega_series_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case gates_consistent
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_omega_artifact_registry_complete
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/omega_series_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case artifact_registry_complete
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

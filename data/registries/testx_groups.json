@@ -10,6 +10,8 @@
         "paths": [
           "schema/**",
           "schemas/**",
+          "docs/omega/**",
+          "docs/audit/OMEGA_0_FINAL.md",
           "packs/**",
           "build/registries/**",
           "build/lockfile.json",

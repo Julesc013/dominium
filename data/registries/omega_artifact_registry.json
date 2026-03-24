@@ -1,0 +1,85 @@
+{
+  "schema_id": "dominium.schema.governance.omega_artifact_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.omega_artifact_registry",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.omega_artifact_registry@1.0.0",
+    "expected_outputs": [
+      {
+        "stage_id": "OMEGA-1",
+        "stage_token": "WORLDGEN-LOCK-0",
+        "output_name": "worldgen_lock_baseline.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-2",
+        "stage_token": "BASELINE-UNIVERSE-0",
+        "output_name": "baseline_universe_manifest.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-3",
+        "stage_token": "MVP-GAMEPLAY-0",
+        "output_name": "gameplay_loop_baseline.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-4",
+        "stage_token": "DISASTER-TEST-0",
+        "output_name": "disaster_suite_baseline.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-5",
+        "stage_token": "ECOSYSTEM-VERIFY-0",
+        "output_name": "ecosystem_resolution_baseline.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-6",
+        "stage_token": "UPDATE-CHANNEL-SIM-0",
+        "output_name": "update_sim_baseline.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-7",
+        "stage_token": "TRUST-STRICT-VERIFY-0",
+        "output_name": "trust_suite_baseline.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-8",
+        "stage_token": "ARCHIVE-OFFLINE-VERIFY-0",
+        "output_name": "archive_baseline.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-9",
+        "stage_token": "TOOLCHAIN-MATRIX-0",
+        "output_name": "toolchain_matrix_reports",
+        "artifact_kind": "report_bundle",
+        "required_for_gate": true
+      },
+      {
+        "stage_id": "OMEGA-10",
+        "stage_token": "DIST-FINAL-PLAN",
+        "output_name": "final_dist_signoff.json",
+        "artifact_kind": "json_file",
+        "required_for_gate": true
+      }
+    ],
+    "extensions": {
+      "checklist_scope": "OMEGA-1..OMEGA-10",
+      "omega_11_note": "DIST-7 IMPLEMENTATION consumes the approved signoff and produces the final package set outside this checklist registry."
+    }
+  }
+}
