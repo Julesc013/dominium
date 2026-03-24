@@ -1,0 +1,40 @@
+{
+  "schema_id": "dominium.schema.governance.worldgen_lock_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.governance.worldgen_lock_registry",
+    "registry_version": "1.0.0",
+    "worldgen_lock_id": "worldgen_lock.v0_0_0",
+    "seed_hash_algorithm": "canonical_sha256({\"seed_text\": <seed_string>})",
+    "rng_streams": [
+      "rng.worldgen.galaxy",
+      "rng.worldgen.galaxy_objects",
+      "rng.worldgen.system",
+      "rng.worldgen.system.primary_star",
+      "rng.worldgen.system.planet_count",
+      "rng.worldgen.system.planet.{planet_index}",
+      "rng.worldgen.planet",
+      "rng.worldgen.surface",
+      "rng.worldgen.surface.tile",
+      "rng.worldgen.surface.generator",
+      "rng.worldgen.surface.elevation",
+      "rng.worldgen.surface.earth.elevation"
+    ],
+    "refinement_stages": [
+      "L0.galaxy_coarse_structure",
+      "L1.star_distribution",
+      "L2.sol_system_derivation",
+      "L3.earth_terrain_projection"
+    ],
+    "worldgen_lock_version": 0,
+    "deterministic_fingerprint": "b0a67499bc36ca58f0a98408230085fc470f3d46226d6a9fe9e93872bd28fa87",
+    "stability_class": "stable",
+    "extensions": {
+      "canonical_serialization": "tools.xstack.compatx.canonical_json.canonical_json_text",
+      "lock_doc_rel": "docs/worldgen/WORLDGEN_LOCK_v0_0_0.md",
+      "retro_audit_rel": "docs/audit/WORLDGEN_LOCK0_RETRO_AUDIT.md",
+      "baseline_seed_rel": "data/baselines/worldgen/baseline_seed.txt",
+      "baseline_snapshot_rel": "data/baselines/worldgen/baseline_worldgen_snapshot.json"
+    }
+  }
+}
