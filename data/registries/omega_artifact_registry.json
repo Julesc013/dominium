@@ -11,70 +11,170 @@
         "stage_token": "WORLDGEN-LOCK-0",
         "output_name": "worldgen_lock_baseline.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-2",
         "stage_token": "BASELINE-UNIVERSE-0",
         "output_name": "baseline_universe_manifest.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-3",
         "stage_token": "MVP-GAMEPLAY-0",
         "output_name": "gameplay_loop_baseline.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-4",
         "stage_token": "DISASTER-TEST-0",
         "output_name": "disaster_suite_baseline.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-5",
         "stage_token": "ECOSYSTEM-VERIFY-0",
         "output_name": "ecosystem_resolution_baseline.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-6",
         "stage_token": "UPDATE-CHANNEL-SIM-0",
         "output_name": "update_sim_baseline.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-7",
         "stage_token": "TRUST-STRICT-VERIFY-0",
         "output_name": "trust_suite_baseline.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-8",
         "stage_token": "ARCHIVE-OFFLINE-VERIFY-0",
         "output_name": "archive_baseline.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-9",
         "stage_token": "TOOLCHAIN-MATRIX-0",
         "output_name": "toolchain_matrix_reports",
         "artifact_kind": "report_bundle",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       },
       {
         "stage_id": "OMEGA-10",
         "stage_token": "DIST-FINAL-PLAN",
         "output_name": "final_dist_signoff.json",
         "artifact_kind": "json_file",
-        "required_for_gate": true
+        "required_for_gate": true,
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "INF/TOOLING",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {}
+        }
       }
     ],
     "extensions": {

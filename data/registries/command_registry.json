@@ -7066,6 +7066,58 @@
       },
       {
         "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
+        "command_id": "command.dom_worldgen_generate_worldgen_baseline",
+        "command_path": "dom worldgen generate-worldgen-baseline",
+        "description": "Generate the Omega worldgen lock baseline snapshot",
+        "deterministic_fingerprint": "bece1d7dc7161361bdc662c4bce0e674a5348d5782404366d819a7948129f58f",
+        "exit_code_mapping_id": "exit.refusal",
+        "extensions": {
+          "official.source": "TOOL-SURFACE-0",
+          "official.tool_surface": {
+            "adapter_kind": "python_subprocess",
+            "alias_command_tokens": [],
+            "alias_product_id": "",
+            "area_id": "worldgen",
+            "deterministic_fingerprint": "8e16ec8a08c586841ab1b746087fb9e08dea567c09332d9e62a3df508bfc6dba",
+            "inject_repo_root_arg": true,
+            "offline_only": true,
+            "pack_context_mode": "repo_root_context_only",
+            "required_capabilities": [],
+            "stable_id": "dom.worldgen.generate-worldgen-baseline.v1",
+            "surface_role": "leaf",
+            "tool_module": "tools.worldgen.tool_generate_worldgen_baseline",
+            "tool_relpath": "tools/worldgen/tool_generate_worldgen_baseline.py",
+            "virtual_path_policy": "repo_relative_cwd"
+          }
+        },
+        "handler_id": "tool_surface_adapter",
+        "output_schema_id": "dominium.schema.appshell.output.tool_adapter_result",
+        "product_ids": [
+          "tool.attach_console_stub"
+        ],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
+        "schema_version": "1.1.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "dfb4e87c70b9d7c7189ea052dfde97ee9c056cc923c7ad6ec089d6aade37eb4e",
+          "extensions": {},
+          "future_series": "APPSHELL-TOOLS",
+          "rationale": "Unified tool umbrella command rows remain provisional while the tool surface converges for release governance.",
+          "replacement_target": "Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ]
+      },
+      {
+        "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
         "command_id": "command.dom_worldgen_replay_climate_window",
         "command_path": "dom worldgen replay-climate-window",
         "description": "Verify EARTH-2 seasonal climate replay determinism",
@@ -7815,6 +7867,58 @@
             "surface_role": "leaf",
             "tool_module": "tools.worldgen.tool_verify_earth_surface",
             "tool_relpath": "tools/worldgen/tool_verify_earth_surface.py",
+            "virtual_path_policy": "repo_relative_cwd"
+          }
+        },
+        "handler_id": "tool_surface_adapter",
+        "output_schema_id": "dominium.schema.appshell.output.tool_adapter_result",
+        "product_ids": [
+          "tool.attach_console_stub"
+        ],
+        "refusal_codes": [
+          "refusal.io.invalid_args"
+        ],
+        "schema_version": "1.1.0",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "dfb4e87c70b9d7c7189ea052dfde97ee9c056cc923c7ad6ec089d6aade37eb4e",
+          "extensions": {},
+          "future_series": "APPSHELL-TOOLS",
+          "rationale": "Unified tool umbrella command rows remain provisional while the tool surface converges for release governance.",
+          "replacement_target": "Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "supported_mode_ids": [
+          "cli",
+          "headless",
+          "rendered",
+          "tui"
+        ]
+      },
+      {
+        "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
+        "command_id": "command.dom_worldgen_verify_worldgen_lock",
+        "command_path": "dom worldgen verify-worldgen-lock",
+        "description": "Verify the Omega worldgen lock against the committed baseline snapshot",
+        "deterministic_fingerprint": "a17e8a77b5470c83b36373fb98e9871f1eeed59a91701bf5f8fdc7038637f843",
+        "exit_code_mapping_id": "exit.refusal",
+        "extensions": {
+          "official.source": "TOOL-SURFACE-0",
+          "official.tool_surface": {
+            "adapter_kind": "python_subprocess",
+            "alias_command_tokens": [],
+            "alias_product_id": "",
+            "area_id": "worldgen",
+            "deterministic_fingerprint": "cdb9404d87ca68049d6f8dc12f6ab7e91cab93464a14e6e2034bf57d1e506318",
+            "inject_repo_root_arg": true,
+            "offline_only": true,
+            "pack_context_mode": "repo_root_context_only",
+            "required_capabilities": [],
+            "stable_id": "dom.worldgen.verify-worldgen-lock.v1",
+            "surface_role": "leaf",
+            "tool_module": "tools.worldgen.tool_verify_worldgen_lock",
+            "tool_relpath": "tools/worldgen/tool_verify_worldgen_lock.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },

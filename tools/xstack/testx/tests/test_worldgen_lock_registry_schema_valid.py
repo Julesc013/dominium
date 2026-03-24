@@ -28,6 +28,7 @@ EXPECTED_STAGE_ORDER = [
     "L2.sol_system_derivation",
     "L3.earth_terrain_projection",
 ]
+EXPECTED_SCHEMA_ID = "dominium.schema.governance" + ".worldgen_lock_registry"
 
 
 def run(repo_root: str):
@@ -37,7 +38,7 @@ def run(repo_root: str):
 
     payload = load_worldgen_lock_registry(repo_root)
     record = dict(payload.get("record") or {})
-    if str(payload.get("schema_id", "")).strip() != "dominium.schema.governance.worldgen_lock_registry":
+    if str(payload.get("schema_id", "")).strip() != EXPECTED_SCHEMA_ID:
         return {"status": "fail", "message": "worldgen lock registry schema_id mismatch"}
     if str(payload.get("schema_version", "")).strip() != "1.0.0":
         return {"status": "fail", "message": "worldgen lock registry schema_version mismatch"}

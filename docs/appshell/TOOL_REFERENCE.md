@@ -38,6 +38,7 @@ Deterministic GEO replay, identity, overlay, and metric tooling.
 
 World generation replay, verification, and stress helpers.
 
+- `dom worldgen generate-worldgen-baseline`: Generate the Omega worldgen lock baseline snapshot
 - `dom worldgen replay-climate-window`: Verify EARTH-2 seasonal climate replay determinism
 - `dom worldgen replay-galaxy-objects`: Verify GAL-1 galaxy object replay determinism
 - `dom worldgen replay-galaxy-proxies`: Verify GAL-0 galaxy-proxy replay determinism
@@ -53,6 +54,7 @@ World generation replay, verification, and stress helpers.
 - `dom worldgen replay-wind-window`: Verify EARTH-7 wind replay determinism
 - `dom worldgen run-refinement-stress`: Run the MW-4 rapid-teleport and ROI-thrash stress fixture
 - `dom worldgen verify-earth-surface`: Verify EARTH-0 far-LOD surface consistency without renderer dependencies
+- `dom worldgen verify-worldgen-lock`: Verify the Omega worldgen lock against the committed baseline snapshot
 
 ## `earth`
 

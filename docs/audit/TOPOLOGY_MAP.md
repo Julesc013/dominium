@@ -1,35 +1,29 @@
 Status: DERIVED
-Last Reviewed: 2026-03-16
-Supersedes: none
-Superseded By: none
 Version: 1.0.0
-Stability: provisional
-Future Series: DOC-ARCHIVE
-Replacement Target: regenerated topology audit artifact retained for release verification
 
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:93f0bb7be1fe65b90a2de1604db4d7a7da7a16de`
+- repository_hash: `HEAD:2b1bea5f45656e7030fdf7ff706e81874865b85d`
 - generated_tick: `0`
-- deterministic_fingerprint: `827bded77ce03fc57ee3edc797bc0d3d36fbb6771f23b480094e98bffb73018b`
+- deterministic_fingerprint: `d3e7e28dbf37cd387dc6a5fa547f4c3b5b35b5f801e3a4b057b7a3208013157c`
 
 ## Counts
-- node_count: 5596
-- edge_count: 11458
+- node_count: 5608
+- edge_count: 11472
 
 ## Node Kinds
 - contract_set: 147
 - module: 107
 - policy_set: 333
 - process_family: 408
-- registry: 408
+- registry: 410
 - schema: 1398
-- tool: 2795
+- tool: 2805
 
 ## Edge Kinds
-- consumes: 5282
-- depends_on: 3292
+- consumes: 5286
+- depends_on: 3302
 - enforces: 1005
 - produces: 1
 - validates: 1878

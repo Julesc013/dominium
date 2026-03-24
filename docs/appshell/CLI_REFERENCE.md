@@ -50,12 +50,15 @@ bin/setup instance export --instance-id default --out exports/default.instance.b
 | `dom client compat-status` | Run deterministic endpoint compatibility status and show negotiated mode plus disabled features. | `refusal.compat.contract_mismatch`, `refusal.compat.no_common_protocol`, `refusal.io.invalid_args` |
 | `dom client console` | Alias of `console enter` for deterministic REPL console access. | `refusal.io.invalid_args` |
 | `dom client descriptor` | Emit the CAP-NEG endpoint descriptor for the active product. | `refusal.io.invalid_args` |
+| `dom compat apply-migration` | Apply deterministic migration lifecycle actions for a single artifact | `refusal.io.invalid_args` |
 | `dom compat emit-descriptor` | Emit deterministic CAP-NEG-1 endpoint descriptors for product surfaces | `refusal.io.invalid_args` |
 | `dom compat generate-descriptor-manifest` | Generate deterministic offline descriptor manifest from dist/bin wrappers | `refusal.io.invalid_args` |
 | `dom compat generate-interop-matrix` | Generate the deterministic CAP-NEG-4 synthetic interoperability matrix | `refusal.io.invalid_args` |
+| `dom compat plan-migration` | Plan deterministic migration lifecycle actions for a single artifact | `refusal.io.invalid_args` |
 | `dom compat replay-migration` | Replay deterministic PACK-COMPAT-2 artifact migrations | `refusal.io.invalid_args` |
 | `dom compat replay-negotiation` | Replay deterministic endpoint negotiation from recorded or default descriptors | `refusal.io.invalid_args` |
 | `dom compat run-interop-stress` | Run the deterministic CAP-NEG-4 interoperability stress harness | `refusal.io.invalid_args` |
+| `dom compat run-migration-lifecycle` | Generate deterministic MIGRATION-LIFECYCLE-0 report artifacts | `refusal.io.invalid_args` |
 | `dom compat status` | Run deterministic endpoint compatibility status and show negotiated mode plus disabled features. | `refusal.compat.contract_mismatch`, `refusal.compat.no_common_protocol`, `refusal.io.invalid_args` |
 | `dom diag capture` | Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs. | `refusal.io.invalid_args` |
 | `dom diag replay-bundle` | Replay a DIAG-0 repro bundle and verify deterministic hashes | `refusal.io.invalid_args` |
@@ -92,6 +95,8 @@ bin/setup instance export --instance-id default --out exports/default.instance.b
 | `dom lib generate-lib-stress` | Generate the deterministic LIB-7 library stress scenario workspace | `refusal.io.invalid_args` |
 | `dom lib replay-save-open` | Replay deterministic save-open policy decisions and optionally verify a recorded decision | `refusal.io.invalid_args` |
 | `dom lib run-lib-stress` | Run the deterministic LIB-7 library stress harness | `refusal.io.invalid_args` |
+| `dom lib run-store-gc` | Run deterministic STORE-GC-0 baseline generation | `refusal.io.invalid_args` |
+| `dom lib store-verify` | Run deterministic store verification and write STORE-GC-0 verify outputs | `refusal.io.invalid_args` |
 | `dom lib verify-bundle` | Verify deterministic LIB-6 bundles offline | `refusal.io.invalid_args` |
 | `dom logic generate-logic-stress` | Generate deterministic LOGIC-10 stress scenario packs | `refusal.io.invalid_args` |
 | `dom logic replay-compiled-logic-window` | Replay LOGIC windows through L1 and compiled paths and compare output/state hashes | `refusal.io.invalid_args` |
@@ -451,12 +456,15 @@ bin/setup instance export --instance-id default --out exports/default.instance.b
 - `dom client compat-status`: Run deterministic endpoint compatibility status and show negotiated mode plus disabled features.
 - `dom client console`: Alias of `console enter` for deterministic REPL console access.
 - `dom client descriptor`: Emit the CAP-NEG endpoint descriptor for the active product.
+- `dom compat apply-migration`: Apply deterministic migration lifecycle actions for a single artifact
 - `dom compat emit-descriptor`: Emit deterministic CAP-NEG-1 endpoint descriptors for product surfaces
 - `dom compat generate-descriptor-manifest`: Generate deterministic offline descriptor manifest from dist/bin wrappers
 - `dom compat generate-interop-matrix`: Generate the deterministic CAP-NEG-4 synthetic interoperability matrix
+- `dom compat plan-migration`: Plan deterministic migration lifecycle actions for a single artifact
 - `dom compat replay-migration`: Replay deterministic PACK-COMPAT-2 artifact migrations
 - `dom compat replay-negotiation`: Replay deterministic endpoint negotiation from recorded or default descriptors
 - `dom compat run-interop-stress`: Run the deterministic CAP-NEG-4 interoperability stress harness
+- `dom compat run-migration-lifecycle`: Generate deterministic MIGRATION-LIFECYCLE-0 report artifacts
 - `dom compat status`: Run deterministic endpoint compatibility status and show negotiated mode plus disabled features.
 - `dom diag capture`: Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.
 - `dom diag replay-bundle`: Replay a DIAG-0 repro bundle and verify deterministic hashes
@@ -493,6 +501,8 @@ bin/setup instance export --instance-id default --out exports/default.instance.b
 - `dom lib generate-lib-stress`: Generate the deterministic LIB-7 library stress scenario workspace
 - `dom lib replay-save-open`: Replay deterministic save-open policy decisions and optionally verify a recorded decision
 - `dom lib run-lib-stress`: Run the deterministic LIB-7 library stress harness
+- `dom lib run-store-gc`: Run deterministic STORE-GC-0 baseline generation
+- `dom lib store-verify`: Run deterministic store verification and write STORE-GC-0 verify outputs
 - `dom lib verify-bundle`: Verify deterministic LIB-6 bundles offline
 - `dom logic generate-logic-stress`: Generate deterministic LOGIC-10 stress scenario packs
 - `dom logic replay-compiled-logic-window`: Replay LOGIC windows through L1 and compiled paths and compare output/state hashes

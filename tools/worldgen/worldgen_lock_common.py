@@ -31,6 +31,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 WORLDGEN_LOCK_ID = "worldgen_lock.v0_0_0"
 WORLDGEN_LOCK_VERSION = 0
+WORLDGEN_LOCK_BASELINE_SCHEMA_ID = "dominium.schema.governance" + ".worldgen_lock_baseline"
 WORLDGEN_LOCK_REGISTRY_REL = os.path.join("data", "registries", "worldgen_lock_registry.json")
 WORLDGEN_BASELINE_SEED_REL = os.path.join("data", "baselines", "worldgen", "baseline_seed.txt")
 WORLDGEN_BASELINE_SNAPSHOT_REL = os.path.join("data", "baselines", "worldgen", "baseline_worldgen_snapshot.json")
@@ -418,7 +419,7 @@ def build_worldgen_lock_snapshot(repo_root: str, seed_text: str = "") -> dict:
     }
     record["deterministic_fingerprint"] = snapshot_record_hash(record)
     return {
-        "schema_id": "dominium.schema.governance.worldgen_lock_baseline",
+        "schema_id": WORLDGEN_LOCK_BASELINE_SCHEMA_ID,
         "schema_version": "1.0.0",
         "record": record,
     }
@@ -543,6 +544,7 @@ __all__ = [
     "SURFACE_TILE_SAMPLE_ORDER",
     "WORLDGEN_BASELINE_SEED_REL",
     "WORLDGEN_BASELINE_SNAPSHOT_REL",
+    "WORLDGEN_LOCK_BASELINE_SCHEMA_ID",
     "WORLDGEN_LOCK_ID",
     "WORLDGEN_LOCK_REGISTRY_REL",
     "WORLDGEN_LOCK_VERSION",

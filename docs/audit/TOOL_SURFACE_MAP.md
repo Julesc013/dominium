@@ -10,10 +10,10 @@ Replacement Target: release surface index regenerated from TOOL-SURFACE-0 toolin
 
 Source: `data/audit/repo_inventory.json` + `src/tools/tool_surface_adapter.py`
 
-- Wrapped commands: `118`
+- Wrapped commands: `120`
 - Alias commands: `12`
-- Subprocess adapters: `106`
-- Surface fingerprint: `9ea4eacbdef150a59d8ed33c5a944d3b159238e96e9047fe85b1e4d4b5bb1d14`
+- Subprocess adapters: `108`
+- Surface fingerprint: `6eaf0d4aaedb87847485ab88b1e4901d0a701c593631d33cc79399888cbb49cd`
 
 ## `geo`
 
@@ -39,6 +39,7 @@ Source: `data/audit/repo_inventory.json` + `src/tools/tool_surface_adapter.py`
 
 | Current Path | Function | Stable Namespace | Stable ID | Adapter | Required Capabilities |
 | --- | --- | --- | --- | --- | --- |
+| `tools/worldgen/tool_generate_worldgen_baseline.py` | Generate the Omega worldgen lock baseline snapshot | `dom worldgen generate-worldgen-baseline` | `dom.worldgen.generate-worldgen-baseline.v1` | `python_subprocess` | - |
 | `tools/worldgen/tool_replay_climate_window.py` | tool.utility | `dom worldgen replay-climate-window` | `dom.worldgen.replay-climate-window.v1` | `python_subprocess` | - |
 | `tools/worldgen/tool_replay_galaxy_objects.py` | tool.utility | `dom worldgen replay-galaxy-objects` | `dom.worldgen.replay-galaxy-objects.v1` | `python_subprocess` | - |
 | `tools/worldgen/tool_replay_galaxy_proxies.py` | tool.utility | `dom worldgen replay-galaxy-proxies` | `dom.worldgen.replay-galaxy-proxies.v1` | `python_subprocess` | - |
@@ -54,6 +55,7 @@ Source: `data/audit/repo_inventory.json` + `src/tools/tool_surface_adapter.py`
 | `tools/worldgen/tool_replay_wind_window.py` | tool.utility | `dom worldgen replay-wind-window` | `dom.worldgen.replay-wind-window.v1` | `python_subprocess` | - |
 | `tools/worldgen/tool_run_refinement_stress.py` | tool.utility | `dom worldgen run-refinement-stress` | `dom.worldgen.run-refinement-stress.v1` | `python_subprocess` | - |
 | `tools/worldgen/tool_verify_earth_surface.py` | tool.utility | `dom worldgen verify-earth-surface` | `dom.worldgen.verify-earth-surface.v1` | `python_subprocess` | - |
+| `tools/worldgen/tool_verify_worldgen_lock.py` | Verify the Omega worldgen lock against the committed baseline snapshot | `dom worldgen verify-worldgen-lock` | `dom.worldgen.verify-worldgen-lock.v1` | `python_subprocess` | - |
 
 ## `earth`
 
