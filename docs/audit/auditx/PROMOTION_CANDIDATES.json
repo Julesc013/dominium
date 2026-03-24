@@ -1,21 +1,12 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 70,
+  "candidate_count": 67,
   "candidates": [
     {
       "evidence_paths": [
         "docs/audit/TOPOLOGY_MAP.json",
         "src/client/ui/viewer_shell.py",
         "src/server/server_boot.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.95,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "scripts/ci/check_repox_rules.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.95,
@@ -33,16 +24,6 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.95,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "data/registries/intent_dispatch_whitelist.json",
-        "src/server/server_boot.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.94,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -81,15 +62,6 @@
         "src/control/control_plane_engine.py",
         "src/inspection/inspection_engine.py",
         "src/materials/materialization/materialization_engine.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.9,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
@@ -152,6 +124,18 @@
         "tools/launcher/launch.py",
         "tools/mvp/runtime_entry.py",
         "tools/setup/setup_cli.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.7125,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "docs/server/SERVER_MVP_BASELINE.md",
+        "src/server/net/loopback_transport.py",
+        "src/server/server_boot.py",
+        "tools/server/server_mvp0_probe.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.7125,
@@ -832,16 +816,6 @@
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.5625,
       "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "tools/release/entrypoint_unify_common.py",
-        "tools/xstack/repox/check.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.525,
-      "rule_type": "TEST_REGRESSION",
       "suggested_ruleset": "core.json"
     }
   ],

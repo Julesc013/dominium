@@ -716,19 +716,15 @@ SECUREX_INTEGRITY_MANIFEST_REL = os.path.join("docs", "audit", "security", "INTE
 SECUREX_INTEGRITY_MANIFEST_SCHEMA_ID = "dominium.schema.governance.integrity_manifest"  # schema_version: 1.0.0
 
 BUILD_PRESET_CONTRACT_CONFIGURE = (
-    "msvc-dev-debug",
-    "msvc-dev-release",
-    "msvc-verify",
-    "msvc-verify-full",
+    "local",
+    "verify",
+    "release-check",
     "release-winnt-x86_64",
     "linux-gcc-dev",
-    "linux-clang-dev",
     "linux-verify",
-    "linux-verify-full",
     "release-linux-x86_64",
     "macos-dev",
     "macos-verify",
-    "macos-verify-full",
     "release-macos-arm64",
     "win9x-x86_32-legacy",
     "win16-x86_16",
@@ -736,19 +732,15 @@ BUILD_PRESET_CONTRACT_CONFIGURE = (
 )
 
 BUILD_PRESET_CONTRACT_TARGETS = {
-    "msvc-dev-debug": "all_runtime",
-    "msvc-dev-release": "all_runtime",
-    "msvc-verify": "verify_fast",
-    "msvc-verify-full": "verify_full",
+    "local": "all_runtime",
+    "verify": "verify_fast",
+    "release-check": "verify_full",
     "release-winnt-x86_64": "dist_all",
     "linux-gcc-dev": "all_runtime",
-    "linux-clang-dev": "all_runtime",
     "linux-verify": "verify_fast",
-    "linux-verify-full": "verify_full",
     "release-linux-x86_64": "dist_all",
     "macos-dev": "all_runtime",
     "macos-verify": "verify_fast",
-    "macos-verify-full": "verify_full",
     "release-macos-arm64": "dist_all",
     "win9x-x86_32-legacy": "all_runtime",
     "win16-x86_16": "all_runtime",
@@ -2984,24 +2976,40 @@ def check_build_preset_contract(repo_root):
         violations.append("{}: missing tasks in {}".format(invariant_id, vscode_tasks_rel))
         return violations
 
+    def _task_arg_variants(task_row):
+        variants = []
+        for key in ("", "windows", "linux", "osx"):
+            block = task_row if key == "" else task_row.get(key)
+            if not isinstance(block, dict):
+                continue
+            args = block.get("args")
+            if isinstance(args, list):
+                variants.append([str(value).strip() for value in args])
+        return variants
+
     build_task_ok = False
     test_task_ok = False
     for task in tasks:
         if not isinstance(task, dict):
             continue
         label = str(task.get("label", "")).strip()
-        args = task.get("args")
-        if not isinstance(args, list):
-            continue
-        args_norm = [str(value).strip() for value in args]
-        if label == "Build (MSVC DEV DEBUG)" and "msvc-dev-debug" in args_norm:
-            build_task_ok = True
-        if label == "Test (VERIFY FAST)" and "verify_fast" in args_norm:
-            test_task_ok = True
+        arg_variants = _task_arg_variants(task)
+        if label == "Build (Local)":
+            for args_norm in arg_variants:
+                if any(preset in args_norm for preset in ("local", "linux-gcc-dev", "macos-dev")):
+                    build_task_ok = True
+                    break
+        if label == "Test (Verify Fast)":
+            for args_norm in arg_variants:
+                if "verify_fast" in args_norm and any(
+                    preset in args_norm for preset in ("verify", "linux-verify", "macos-verify")
+                ):
+                    test_task_ok = True
+                    break
     if not build_task_ok:
-        violations.append("{}: missing VSCode default build task for msvc-dev-debug".format(invariant_id))
+        violations.append("{}: missing VSCode default build task for the local preset surface".format(invariant_id))
     if not test_task_ok:
-        violations.append("{}: missing VSCode default test task for verify_fast".format(invariant_id))
+        violations.append("{}: missing VSCode default test task for verify_fast on the visible preset surface".format(invariant_id))
 
     return violations
 

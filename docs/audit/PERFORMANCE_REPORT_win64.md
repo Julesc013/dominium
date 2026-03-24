@@ -1,7 +1,5 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
-Supersedes: none
-Superseded By: none
 Stability: provisional
 Future Series: PERFORMANCE/CI
 Replacement Target: channel-specific performance budgets and regression history after DIST-7 packaging
@@ -10,23 +8,23 @@ Replacement Target: channel-specific performance budgets and regression history 
 
 - result: `complete`
 - report_fingerprint: `f2d73a03bbb6324d0ba3f4105238ac263f7f41ea36b1f254ebce1fbc7045085b`
-- observed_metric_fingerprint: `e899e774da1406c0376362b38fec3aedac69ca9e907c3b2a53d15fd19384179c`
+- observed_metric_fingerprint: `c0aa0bc7a0b07da038716281962c7e0ea62271349aa6218ef716ebf7ea72f6eb`
 
 ## Startup
 
-- setup_help_ms: `1178`
-- client_compat_status_ms: `1054`
-- server_compat_status_ms: `937`
-- launcher_compat_status_ms: `987`
-- clean_room_elapsed_ms: `8121`
+- setup_help_ms: `1674`
+- client_compat_status_ms: `1589`
+- server_compat_status_ms: `1624`
+- launcher_compat_status_ms: `1010`
+- clean_room_elapsed_ms: `5171`
 - clean_room_result: `refused`
 
 ## Memory
 
-- client_peak_working_set_mb: `50.37`
-- server_peak_working_set_mb: `50.55`
-- setup_peak_working_set_mb: `51.02`
-- launcher_peak_working_set_mb: `50.91`
+- client_peak_working_set_mb: `64.13`
+- server_peak_working_set_mb: `50.82`
+- setup_peak_working_set_mb: `50.92`
+- launcher_peak_working_set_mb: `50.64`
 - idle_proxy_note: `loopback_supervisor_children_exit_after_startup_probe`
 
 ## Storage
@@ -42,6 +40,6 @@ Replacement Target: channel-specific performance budgets and regression history 
 
 - component_graph_component_count: `18`
 - install_profile_full_component_count: `18`
-- clean_room_fingerprint: `42a096ffa41611da67e5a0e79af0ba5b4e49c86c1ddbb3b169ac6c926fef92c3`
+- clean_room_fingerprint: `c8772c4ed34917637be19055fc44b75229df87b739c453460a249d84278e9c2b`
 - replay_fingerprint: ``
 - release_manifest_hash_unchanged: `true`

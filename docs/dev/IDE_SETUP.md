@@ -18,7 +18,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 Scope: daily developer IDE setup and CMake preset usage.
 
 Primary IDEs
-- Visual Studio 2026 Community (Windows)
+- Visual Studio 2022 Community (Windows)
 - Xcode (macOS)
 
 Secondary / compatibility toolchains
@@ -30,25 +30,28 @@ Rules (binding for dev workflow)
 - IDE version does not define the language standard.
 - C89/C++98 is enforced via CMake flags and presets.
 - Use CMake presets; do not hand-edit generated project files.
+- Default IDE surfaces expose only the daily-use presets for the current host OS.
+- Set `DOMINIUM_ADVANCED_PRESETS=1` before configure if you need alternate toolchains, legacy lanes, or IDE projection presets.
 
-Windows (VS2026)
+Windows (VS2022)
 1) Open the repo folder in Visual Studio (CMake mode).
 2) Select a preset:
-   - dev-win-vs2026 (fast debug)
-   - verify-win-vs2026 (strict C89/C++98 + tests)
-   - release-win-vs2026 (release)
-   - legacy-win-vs2015 (compatibility)
+   - local (fast debug)
+   - verify (strict C89/C++98 + tests)
+   - release-check (dry-run release lane)
+   - release-winnt-x86_64 (release packaging lane)
 3) Configure and build all targets.
 
 macOS (Xcode)
 1) Configure:
-   - cmake --preset dev-macos-xcode
+   - cmake --preset macos-dev
 2) Open the generated Xcode project from the preset binary directory.
 3) Build the desired targets.
 
 Linux (GCC/Clang)
-- Use dev-linux-gcc or dev-linux-clang for fast debug.
-- Use verify-linux-gcc for strict validation.
+- Use linux-gcc-dev for the default fast debug lane.
+- Use linux-verify for strict validation.
+- Unlock alternate Linux toolchains by setting `DOMINIUM_ADVANCED_PRESETS=1`.
 
 Debugging tips
 - Headless smoke runs: use --headless or --ui=none where available.

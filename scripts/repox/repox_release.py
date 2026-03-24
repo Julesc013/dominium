@@ -138,11 +138,11 @@ def main() -> int:
     preset = args.ctest_preset
     if not preset:
         if sys.platform.startswith("win"):
-            preset = "verify-win-vs2026"
+            preset = "verify"
         elif sys.platform == "darwin":
-            preset = "verify-macos-xcode"
+            preset = "macos-verify"
         else:
-            preset = "verify-linux-gcc"
+            preset = "linux-verify"
     ctest_cmd = ["ctest", "--preset", preset, "--output-on-failure"]
     if args.ctest_exclude_regex:
         ctest_cmd += ["--exclude-regex", args.ctest_exclude_regex]

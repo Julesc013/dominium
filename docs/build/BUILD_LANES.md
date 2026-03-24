@@ -17,9 +17,20 @@ Superseded By: none
 Canonical commands:
 
 ```
-cmake --preset msvc-dev-debug
-cmake --build --preset msvc-dev-debug
-cmake --build --preset msvc-verify --target verify_fast
+Windows:
+  cmake --preset local
+  cmake --build --preset local
+  cmake --build --preset verify --target verify_fast
+
+Linux:
+  cmake --preset linux-gcc-dev
+  cmake --build --preset linux-gcc-dev
+  cmake --build --preset linux-verify --target verify_fast
+
+macOS:
+  cmake --preset macos-dev
+  cmake --build --preset macos-dev
+  cmake --build --preset macos-verify --target verify_fast
 ```
 
 ## VERIFY lane
@@ -31,8 +42,17 @@ cmake --build --preset msvc-verify --target verify_fast
 Canonical commands:
 
 ```
-cmake --preset msvc-verify-full
-cmake --build --preset msvc-verify-full --target verify_full
+Windows:
+  cmake --preset verify
+  cmake --build --preset verify --target verify_full
+
+Linux:
+  cmake --preset linux-verify
+  cmake --build --preset linux-verify --target verify_full
+
+macOS:
+  cmake --preset macos-verify
+  cmake --build --preset macos-verify --target verify_full
 ```
 
 ## RELEASE lane
@@ -49,3 +69,6 @@ cmake --preset release-winnt-x86_64 -DDOM_BUILD_GBN=<allocated_gbn>
 cmake --build --preset release-winnt-x86_64 --target verify_full
 cmake --build --preset release-winnt-x86_64 --target dist_all
 ```
+
+Advanced preset surface:
+- Set `DOMINIUM_ADVANCED_PRESETS=1` before configure if you need non-default toolchains, legacy lanes, or IDE projection presets.

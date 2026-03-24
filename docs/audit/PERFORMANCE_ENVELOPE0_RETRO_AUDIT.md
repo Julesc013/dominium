@@ -1,7 +1,5 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
-Supersedes: none
-Superseded By: none
 Stability: provisional
 Future Series: PERFORMANCE/CI
 Replacement Target: release-pinned platform performance baselines with retained historical measurements
@@ -14,16 +12,16 @@ Replacement Target: release-pinned platform performance baselines with retained 
 
 ## Startup Baseline
 
-- setup startup proxy (`bin/setup help`): `1178` ms
-- client startup proxy (`bin/client compat-status`): `1054` ms
-- server startup proxy (`bin/server compat-status`): `937` ms
-- clean-room end-to-end: `8121` ms
+- setup startup proxy (`bin/setup help`): `1674` ms
+- client startup proxy (`bin/client compat-status`): `1589` ms
+- server startup proxy (`bin/server compat-status`): `1624` ms
+- clean-room end-to-end: `5171` ms
 - clean-room result: `refused`
 
 ## Resource Baseline
 
-- client peak working set: `50.37` MB
-- server peak working set: `50.55` MB
+- client peak working set: `64.13` MB
+- server peak working set: `50.82` MB
 - idle client CPU proxy: `0%`
 - idle server CPU proxy: `0%`
 - idle proxy note: `loopback_supervisor_children_exit_after_startup_probe`

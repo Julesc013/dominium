@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-16
+Last Reviewed: 2026-03-17
 Supersedes: none
 Superseded By: none
 
@@ -8,10 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 2
-- RISK: 587
-- VIOLATION: 25
-- WARN: 1031
+- RISK: 527
+- VIOLATION: 16
+- WARN: 1028
 
 ## Counts By Category
 
@@ -25,7 +24,6 @@ Superseded By: none
 - architecture.broadcast_bypass_smell: 5
 - architecture.deprecated_usage_smell: 1
 - architecture.derailment_bypass_smell: 1
-- architecture.direct_intent_bypass_smell: 1
 - architecture.direct_knowledge_mutation_smell: 1
 - architecture.direct_message_smell: 8
 - architecture.direct_position_mutation_smell: 4
@@ -38,7 +36,6 @@ Superseded By: none
 - architecture.inline_power_loss_smell: 1
 - architecture.inline_protection_smell: 17
 - architecture.inline_strength_check_smell: 1
-- architecture.intent_bypass_smell: 1
 - architecture.ir_nondeterminism_smell: 2
 - architecture.magic_silent_violation_smell: 2
 - architecture.missing_decision_log_smell: 3
@@ -69,31 +66,27 @@ Superseded By: none
 - compat.behavior_without_contract_smell: 1
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 19
+- derived_freshness: 17
 - epistemics.hidden_state_leak_smell: 6
 - install.path_dependent_install_smell: 1
 - interaction.interaction_bypass_smell: 2
-- legacy_contamination: 2
 - logic.adhoc_wiring_smell: 5
 - logic.carrier_bias_smell: 9
 - logic.protocol_security_bypass_smell: 1
 - logic.random_failure_smell: 1
 - logic.truth_leak_via_debug_smell: 1
 - logic.unbounded_trace_smell: 1
-- materials.hardcoded_blueprint_smell: 7
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
-- mode_flag_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- reachability: 2
 - reliability.silent_reaction_smell: 3
-- schema_usage: 59
 - security.hidden_privilege_escalation_smell: 2
 - semantic.capability_drift: 5
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
+- server.intent_without_authority_smell: 1
 - worldgen.unbounded_shadow_sampling_smell: 1

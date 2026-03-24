@@ -1,7 +1,5 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
-Supersedes: none
-Superseded By: none
 Stability: provisional
 Future Series: DIST-7/RELEASE
 Replacement Target: signed publication bundles and multi-mirror release automation
@@ -31,7 +29,7 @@ Replacement Target: signed publication bundles and multi-mirror release automati
 
 ## Readiness
 
-- Offline archive bundle hash: `52d8343669f2a60bbc90e6d2609d22b6148a0328993e44d270c8be88ef337cc1`
+- Offline archive bundle hash: `085bda3301ae3b57a5952a720d695030111022a3d32387e3465944e19bb9b3a1`
 - Archive verification result: `complete`
 - Ready for DIST-7 packaging: yes, with immutable release record, no-overwrite history path, and deterministic offline archive bundle generation.
 

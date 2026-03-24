@@ -21,48 +21,46 @@ Key
 - dev: fast, debug, local iteration
 - verify: strict C89/C++98 + full TestX/RepoX
 - release: release configuration
-- legacy: compatibility toolchains
+- advanced: compatibility or alternate toolchains unlocked explicitly via `DOMINIUM_ADVANCED_PRESETS=1`
 
 Windows (x64)
-- dev-win-vs2026
-  - Toolchain: Visual Studio 2026 (MSVC)
+- local
+  - Toolchain: Visual Studio 2022 (MSVC)
   - Purpose: daily debug
-- verify-win-vs2026
-  - Toolchain: Visual Studio 2026 (MSVC)
+- verify
+  - Toolchain: Visual Studio 2022 (MSVC)
   - Purpose: strict validation (C89/C++98 enforced)
-- release-win-vs2026
-  - Toolchain: Visual Studio 2026 (MSVC)
+- release-check
+  - Toolchain: Visual Studio 2022 (MSVC)
+  - Purpose: release dry-run lane without packaging
+- release-winnt-x86_64
+  - Toolchain: Visual Studio 2022 (MSVC)
   - Purpose: release build
-- legacy-win-vs2015
-  - Toolchain: Visual Studio 2015
-  - Purpose: compatibility checks
 
 macOS (x64/arm64)
-- dev-macos-xcode
+- macos-dev
   - Toolchain: Xcode (latest)
   - Purpose: daily debug
-- verify-macos-xcode
+- macos-verify
   - Toolchain: Xcode (latest)
   - Purpose: strict validation (C89/C++98 enforced)
-- release-macos-xcode
+- release-macos-arm64
   - Toolchain: Xcode (latest)
   - Purpose: release build
 
 Linux (x64)
-- dev-linux-gcc
+- linux-gcc-dev
   - Toolchain: GCC
   - Purpose: daily debug
-- dev-linux-clang
-  - Toolchain: Clang
-  - Purpose: daily debug
-- verify-linux-gcc
+- linux-verify
   - Toolchain: GCC
   - Purpose: strict validation (C89/C++98 enforced)
-- release-linux-gcc
+- release-linux-x86_64
   - Toolchain: GCC
   - Purpose: release build
 
 Notes
 - C89/C++98 is enforced in verify presets via explicit CMake flags.
 - Tests are enabled in verify presets.
+- Advanced presets stay out of the default IDE picker until `DOMINIUM_ADVANCED_PRESETS=1` is set in the environment.
 - Use docs/architecture/IDE_AND_TOOLCHAIN_POLICY.md for policy details.

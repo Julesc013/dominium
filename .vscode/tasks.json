@@ -2,10 +2,16 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build (MSVC DEV DEBUG)",
+      "label": "Build (Local)",
       "type": "shell",
       "command": "cmake",
-      "args": ["--build", "--preset", "msvc-dev-debug"],
+      "args": ["--build", "--preset", "local"],
+      "linux": {
+        "args": ["--build", "--preset", "linux-gcc-dev"]
+      },
+      "osx": {
+        "args": ["--build", "--preset", "macos-dev"]
+      },
       "group": {
         "kind": "build",
         "isDefault": true
@@ -13,10 +19,16 @@
       "problemMatcher": []
     },
     {
-      "label": "Test (VERIFY FAST)",
+      "label": "Test (Verify Fast)",
       "type": "shell",
       "command": "cmake",
-      "args": ["--build", "--preset", "msvc-verify", "--target", "verify_fast"],
+      "args": ["--build", "--preset", "verify", "--target", "verify_fast"],
+      "linux": {
+        "args": ["--build", "--preset", "linux-verify", "--target", "verify_fast"]
+      },
+      "osx": {
+        "args": ["--build", "--preset", "macos-verify", "--target", "verify_fast"]
+      },
       "group": {
         "kind": "test",
         "isDefault": true
@@ -39,6 +51,34 @@
         "--ctest-preset",
         "verify"
       ],
+      "linux": {
+        "args": [
+          "scripts/repox/repox_release.py",
+          "--repo-root",
+          "${workspaceFolder}",
+          "--kind",
+          "beta",
+          "--channel",
+          "beta",
+          "--dry-run",
+          "--ctest-preset",
+          "linux-verify"
+        ]
+      },
+      "osx": {
+        "args": [
+          "scripts/repox/repox_release.py",
+          "--repo-root",
+          "${workspaceFolder}",
+          "--kind",
+          "beta",
+          "--channel",
+          "beta",
+          "--dry-run",
+          "--ctest-preset",
+          "macos-verify"
+        ]
+      },
       "problemMatcher": []
     }
   ]

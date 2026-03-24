@@ -34,14 +34,14 @@ DEFAULT_GATE_RESULTS_REL = os.path.join("build", "mvp", "mvp_cross_platform_gate
 LIB_BASELINE_REL = os.path.join("data", "regression", "lib_full_baseline.json")
 PLATFORM_ORDER = ("windows", "macos", "linux")
 RELEASE_PRESETS = {
-    "windows": "release-win-vs2026",
-    "macos": "release-macos-xcode",
-    "linux": "release-linux-gcc",
+    "windows": "release-winnt-x86_64",
+    "macos": "release-macos-arm64",
+    "linux": "release-linux-x86_64",
 }
 DEBUG_PRESETS = {
-    "windows": "dev-win-vs2026",
-    "macos": "dev-macos-xcode",
-    "linux": "dev-linux-gcc",
+    "windows": "local",
+    "macos": "macos-dev",
+    "linux": "linux-gcc-dev",
 }
 HOST_META_IGNORED = ("timestamps", "path_separators", "absolute_paths")
 

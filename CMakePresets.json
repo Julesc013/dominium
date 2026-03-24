@@ -53,9 +53,9 @@
     },
     {
       "name": "msvc-base",
-      "displayName": "MSVC (VS 2026)",
+      "displayName": "MSVC (VS 2022)",
       "description": "Native MSVC toolchain (SDL2 platform; GL2 preferred, DX9 fallback).",
-      "generator": "Visual Studio 18 2026",
+      "generator": "Visual Studio 17 2022",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "architecture": "x64",
       "cacheVariables": {
@@ -75,11 +75,17 @@
         "DOM_TOOLCHAIN_LINK": "static",
         "DOM_TARGET_OS_FAMILY": "winnt",
         "DOM_TARGET_OS_MIN": "win10_1507"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "vs2026-x64-debug",
-      "displayName": "VS 2026 x64 Debug",
+      "displayName": "VS 2022 x64 Debug",
       "inherits": "msvc-base",
       "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
       "cacheVariables": {
@@ -90,11 +96,17 @@
         "DOM_BUILD_GAME": "ON",
         "DOM_BUILD_TESTS": "ON",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "vs2026-x64-release",
-      "displayName": "VS 2026 x64 Release",
+      "displayName": "VS 2022 x64 Release",
       "inherits": "msvc-base",
       "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
       "cacheVariables": {
@@ -105,11 +117,17 @@
         "DOM_BUILD_GAME": "ON",
         "DOM_BUILD_TESTS": "ON",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "dev-win-vs2026",
-      "displayName": "Dev Win VS 2026",
+      "displayName": "Dev Win VS 2022",
       "inherits": "msvc-base",
       "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
       "cacheVariables": {
@@ -120,17 +138,28 @@
         "DOM_BUILD_GAME": "ON",
         "DOM_BUILD_TESTS": "OFF",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "local",
       "displayName": "LOCAL (Default)",
       "description": "Local fast dev build (no GBN, minimal TestX).",
-      "inherits": "dev-win-vs2026"
+      "inherits": "dev-win-vs2026",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "verify-win-vs2026",
-      "displayName": "Verify Win VS 2026 (C89/C++98)",
+      "displayName": "Verify Win VS 2022 (C89/C++98)",
       "inherits": "msvc-base",
       "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
       "cacheVariables": {
@@ -147,7 +176,13 @@
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "verify",
@@ -161,6 +196,11 @@
         "CMAKE_CXX_STANDARD": "98",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -176,11 +216,16 @@
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "DOM_REPOX_RELEASE_CHECK": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
       "name": "release-win-vs2026",
-      "displayName": "Release Win VS 2026",
+      "displayName": "Release Win VS 2022",
       "inherits": "msvc-base",
       "binaryDir": "${sourceDir}/out/build/vs2026/${presetName}",
       "cacheVariables": {
@@ -192,7 +237,13 @@
         "DOM_BUILD_TESTS": "OFF",
         "DOM_BUILD_KIND": "release",
         "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "msvc-dev-debug",
@@ -200,7 +251,13 @@
       "inherits": "dev-win-vs2026",
       "cacheVariables": {
         "DOM_BUILD_KIND": "dev"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "msvc-dev-release",
@@ -209,7 +266,13 @@
       "cacheVariables": {
         "DOM_BUILD_MODE": "Release",
         "DOM_BUILD_KIND": "dev"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "msvc-verify",
@@ -217,7 +280,13 @@
       "inherits": "verify-win-vs2026",
       "cacheVariables": {
         "DOM_BUILD_KIND": "dev"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "msvc-verify-full",
@@ -225,26 +294,51 @@
       "inherits": "verify-win-vs2026",
       "cacheVariables": {
         "DOM_BUILD_KIND": "dev"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "release-winnt-x86_64",
-      "displayName": "Release WinNT x86_64",
+      "displayName": "RELEASE (Windows x86_64)",
       "inherits": "release-win-vs2026",
       "cacheVariables": {
         "DOM_BUILD_KIND": "release"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
       "name": "win9x-x86_32-legacy",
       "displayName": "Win9x x86_32 Legacy (Declared)",
       "inherits": "msvc-base",
-      "hidden": true,
       "architecture": "Win32",
       "cacheVariables": {
         "DOM_TARGET_OS_FAMILY": "win9x",
         "DOM_TARGET_ARCH": "x86_32",
         "DOM_BUILD_MODE": "Debug"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -252,12 +346,26 @@
       "displayName": "Win16 x86_16 (Declared)",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
-      "hidden": true,
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/toolchain_x86_16.cmake",
         "DOM_TARGET_OS_FAMILY": "win16",
         "DOM_TARGET_ARCH": "x86_16",
         "DOM_BUILD_MODE": "Debug"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -265,12 +373,26 @@
       "displayName": "DOS x86_16 (Declared)",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
-      "hidden": true,
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/toolchain_x86_16.cmake",
         "DOM_TARGET_OS_FAMILY": "dos",
         "DOM_TARGET_ARCH": "x86_16",
         "DOM_BUILD_MODE": "Debug"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -286,6 +408,21 @@
         "DOM_BUILD_SETUP": "ON",
         "DOM_BUILD_LAUNCHER": "ON",
         "DOM_BUILD_GAME": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -298,6 +435,21 @@
         "DOM_BACKEND_SDL2": "OFF",
         "DOM_BACKEND_GL2": "OFF",
         "DOM_BACKEND_DX9": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -311,7 +463,13 @@
         "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
         "CMAKE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb",
         "CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "msvc-release",
@@ -324,7 +482,13 @@
         "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
         "CMAKE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb",
         "CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "windows-msvc-x64-debug",
@@ -338,7 +502,13 @@
         "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
         "CMAKE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb",
         "CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "windows-msvc-x86-debug",
@@ -352,12 +522,33 @@
         "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/lib",
         "CMAKE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb",
         "CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY": "${sourceDir}/build/${presetName}/out/pdb"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "hidden": true
     },
     {
       "name": "windows-msvc-vs2026",
-      "displayName": "Windows VS 2026 (Live UI Preview)",
-      "inherits": "msvc-debug"
+      "displayName": "Windows VS 2022 (Live UI Preview)",
+      "inherits": "msvc-debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "windows-clangcl-debug",
@@ -380,6 +571,21 @@
         "DOM_TOOLCHAIN_LINK": "dynamic",
         "DOM_TARGET_OS_FAMILY": "winnt",
         "DOM_TARGET_OS_MIN": "win10_1507"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -403,6 +609,21 @@
         "DOM_TOOLCHAIN_LINK": "dynamic",
         "DOM_TARGET_OS_FAMILY": "winnt",
         "DOM_TARGET_OS_MIN": "win7"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -421,12 +642,33 @@
         "DOM_TOOLCHAIN_LINK": "dynamic",
         "DOM_TARGET_OS_FAMILY": "macosx",
         "DOM_TARGET_OS_MIN": "11.0"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "hidden": true
     },
     {
       "name": "macos-xcode",
       "displayName": "macOS Xcode (Live UI Preview)",
-      "inherits": "macos-xcode-debug"
+      "inherits": "macos-xcode-debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Darwin"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "dev-macos-xcode",
@@ -434,7 +676,13 @@
       "inherits": "macos-xcode-debug",
       "cacheVariables": {
         "DOM_BUILD_MODE": "Debug"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "hidden": true
     },
     {
       "name": "verify-macos-xcode",
@@ -449,7 +697,13 @@
         "CMAKE_CXX_STANDARD": "98",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "hidden": true
     },
     {
       "name": "release-macos-xcode",
@@ -459,30 +713,66 @@
         "DOM_BUILD_MODE": "Release",
         "DOM_BUILD_KIND": "release",
         "CMAKE_BUILD_TYPE": "Release"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "hidden": true
     },
     {
       "name": "macos-dev",
-      "displayName": "macOS Dev",
-      "inherits": "dev-macos-xcode"
+      "displayName": "LOCAL (macOS)",
+      "inherits": "dev-macos-xcode",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
     },
     {
       "name": "macos-verify",
-      "displayName": "macOS Verify Fast",
-      "inherits": "verify-macos-xcode"
+      "displayName": "VERIFY (macOS)",
+      "inherits": "verify-macos-xcode",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
     },
     {
       "name": "macos-verify-full",
       "displayName": "macOS Verify Full",
-      "inherits": "verify-macos-xcode"
+      "inherits": "verify-macos-xcode",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Darwin"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "release-macos-arm64",
-      "displayName": "Release macOS arm64",
+      "displayName": "RELEASE (macOS arm64)",
       "inherits": "release-macos-xcode",
       "cacheVariables": {
         "DOM_TARGET_ARCH": "arm64",
         "DOM_BUILD_KIND": "release"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
       }
     },
     {
@@ -504,7 +794,13 @@
         "DOM_TOOLCHAIN_LINK": "dynamic",
         "DOM_TARGET_OS_FAMILY": "linux",
         "DOM_TARGET_OS_MIN": "glibc_2.17"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "hidden": true
     },
     {
       "name": "linux-clang-debug",
@@ -527,6 +823,21 @@
         "DOM_TOOLCHAIN_LINK": "dynamic",
         "DOM_TARGET_OS_FAMILY": "linux",
         "DOM_TARGET_OS_MIN": "glibc_2.17"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -550,22 +861,45 @@
         "DOM_TOOLCHAIN_LINK": "static",
         "DOM_TARGET_OS_FAMILY": "linux",
         "DOM_TARGET_OS_MIN": "musl_1.2"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
       "name": "linux-dev",
       "displayName": "Linux Dev (Live UI Preview)",
-      "inherits": "linux-debug"
+      "inherits": "linux-debug",
+      "hidden": true
     },
     {
       "name": "dev-linux-gcc",
       "displayName": "Dev Linux GCC",
-      "inherits": "linux-debug"
+      "inherits": "linux-debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "hidden": true
     },
     {
       "name": "dev-linux-clang",
       "displayName": "Dev Linux Clang",
-      "inherits": "linux-clang-debug"
+      "inherits": "linux-clang-debug",
+      "hidden": true
     },
     {
       "name": "verify-linux-gcc",
@@ -580,7 +914,13 @@
         "CMAKE_CXX_STANDARD": "98",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "hidden": true
     },
     {
       "name": "release-linux-gcc",
@@ -590,41 +930,93 @@
         "CMAKE_BUILD_TYPE": "Release",
         "DOM_BUILD_MODE": "Release",
         "DOM_BUILD_KIND": "release"
-      }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "hidden": true
     },
     {
       "name": "linux-gcc-dev",
-      "displayName": "Linux GCC Dev",
-      "inherits": "dev-linux-gcc"
+      "displayName": "LOCAL (Linux GCC)",
+      "inherits": "dev-linux-gcc",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
       "name": "linux-clang-dev",
       "displayName": "Linux Clang Dev",
-      "inherits": "dev-linux-clang"
+      "inherits": "dev-linux-clang",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "linux-verify",
-      "displayName": "Linux Verify Fast",
-      "inherits": "verify-linux-gcc"
+      "displayName": "VERIFY (Linux GCC)",
+      "inherits": "verify-linux-gcc",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
       "name": "linux-verify-full",
       "displayName": "Linux Verify Full",
-      "inherits": "verify-linux-gcc"
+      "inherits": "verify-linux-gcc",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "release-linux-x86_64",
-      "displayName": "Release Linux x86_64",
+      "displayName": "RELEASE (Linux x86_64)",
       "inherits": "release-linux-gcc",
       "cacheVariables": {
         "DOM_TARGET_ARCH": "x86_64",
         "DOM_BUILD_KIND": "release"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
       "name": "debug",
       "displayName": "Debug (MSVC)",
-      "inherits": "msvc-debug"
+      "inherits": "msvc-debug",
+      "hidden": true
     },
     {
       "name": "deterministic",
@@ -632,7 +1024,8 @@
       "inherits": "msvc-base",
       "cacheVariables": {
         "DOM_BUILD_MODE": "DeterministicRelease"
-      }
+      },
+      "hidden": true
     },
     {
       "name": "baseline-debug",
@@ -659,7 +1052,8 @@
         "DOM_DISALLOW_DOWNLOADS": "OFF",
         "FETCHCONTENT_FULLY_DISCONNECTED": "OFF",
         "FETCHCONTENT_UPDATES_DISCONNECTED": "OFF"
-      }
+      },
+      "hidden": true
     },
     {
       "name": "baseline-release",
@@ -669,7 +1063,8 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
         "DOM_BUILD_MODE": "Release"
-      }
+      },
+      "hidden": true
     },
     {
       "name": "modern-debug",
@@ -680,7 +1075,8 @@
         "DOM_ENABLE_MODERN": "ON",
         "DOM_BACKEND_GL2": "ON",
         "DOM_BACKEND_DX9": "ON"
-      }
+      },
+      "hidden": true
     },
     {
       "name": "modern-release",
@@ -690,7 +1086,8 @@
       "cacheVariables": {
         "DOM_ENABLE_MODERN": "ON",
         "DOM_BACKEND_DX9": "ON"
-      }
+      },
+      "hidden": true
     },
     {
       "name": "ide-win-vc6-win9x-client-gui",
@@ -718,6 +1115,21 @@
         "DOM_IDE_OUT_DIR": "ide/win/vc6_win9x/client_gui",
         "DOM_IDE_GENERATOR_OVERRIDE": "VC6",
         "DOM_BUILD_GAME": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -740,6 +1152,21 @@
         "DOM_IDE_OUT_DIR": "ide/win/vc6_nt/server_cli",
         "DOM_IDE_GENERATOR_OVERRIDE": "VC6",
         "DOM_BUILD_GAME": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -762,6 +1189,21 @@
         "DOM_IDE_OUT_DIR": "ide/win/vc71_xp/launcher_gui",
         "DOM_IDE_GENERATOR_OVERRIDE": "VC7.1",
         "DOM_BUILD_LAUNCHER": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -783,12 +1225,27 @@
         "DOM_CRT_POLICY": "static:/MT",
         "DOM_IDE_OUT_DIR": "ide/win/vs2015_win10_1507_1607/setup_gui",
         "DOM_BUILD_SETUP": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
       "name": "ide-win-vs2026-win11-client-gui",
-      "displayName": "IDE VS2026 Win11 Client GUI",
-      "generator": "Visual Studio 18 2026",
+      "displayName": "IDE VS2022 Win11 Client GUI",
+      "generator": "Visual Studio 17 2022",
       "binaryDir": "${sourceDir}/ide/win/vs2026_win10plus/client_gui",
       "cacheVariables": {
         "DOM_PROJECTION": "ON",
@@ -804,6 +1261,21 @@
         "DOM_CRT_POLICY": "static:/MT",
         "DOM_IDE_OUT_DIR": "ide/win/vs2026_win10plus/client_gui",
         "DOM_BUILD_GAME": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -826,6 +1298,21 @@
         "DOM_IDE_OUT_DIR": "ide/mac/cw_classic/launcher_gui",
         "DOM_IDE_GENERATOR_OVERRIDE": "CodeWarrior Classic 10",
         "DOM_BUILD_LAUNCHER": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Darwin"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -848,6 +1335,21 @@
         "DOM_IDE_OUT_DIR": "ide/mac/xcode3_universal/setup_gui",
         "DOM_IDE_GENERATOR_OVERRIDE": "Xcode3",
         "DOM_BUILD_SETUP": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Darwin"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -870,6 +1372,21 @@
         "DOM_IDE_OUT_DIR": "ide/linux/gcc295_legacy/client_gui",
         "DOM_IDE_GENERATOR_OVERRIDE": "GCC 2.95",
         "DOM_BUILD_GAME": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -891,6 +1408,21 @@
         "DOM_CRT_POLICY": "dynamic:glibc",
         "DOM_IDE_OUT_DIR": "ide/linux/clang_modern/client_gui",
         "DOM_BUILD_GAME": "ON"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     }
   ],
@@ -898,142 +1430,324 @@
     {
       "name": "vs2026-x64-debug",
       "configurePreset": "vs2026-x64-debug",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "hidden": true
     },
     {
       "name": "vs2026-x64-release",
       "configurePreset": "vs2026-x64-release",
-      "configuration": "Release"
+      "configuration": "Release",
+      "hidden": true
     },
     {
       "name": "dev-win-vs2026",
       "configurePreset": "dev-win-vs2026",
       "configuration": "Debug",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "hidden": true
     },
     {
       "name": "local",
       "configurePreset": "local",
       "configuration": "Debug",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "verify-win-vs2026",
       "configurePreset": "verify-win-vs2026",
       "configuration": "Debug",
-      "targets": ["verify_fast"]
+      "targets": [
+        "verify_fast"
+      ],
+      "hidden": true
     },
     {
       "name": "verify",
       "configurePreset": "verify",
       "configuration": "Debug",
-      "targets": ["verify_fast"]
+      "targets": [
+        "verify_fast"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "release-check",
       "configurePreset": "release-check",
       "configuration": "Debug",
-      "targets": ["verify_full"]
+      "targets": [
+        "verify_full"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "release-win-vs2026",
       "configurePreset": "release-win-vs2026",
       "configuration": "Release",
-      "targets": ["dist_all"]
+      "targets": [
+        "dist_all"
+      ],
+      "hidden": true
     },
     {
       "name": "msvc-dev-debug",
       "configurePreset": "msvc-dev-debug",
       "configuration": "Debug",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "hidden": true
     },
     {
       "name": "msvc-dev-release",
       "configurePreset": "msvc-dev-release",
       "configuration": "Release",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "hidden": true
     },
     {
       "name": "msvc-verify",
       "configurePreset": "msvc-verify",
       "configuration": "Debug",
-      "targets": ["verify_fast"]
+      "targets": [
+        "verify_fast"
+      ],
+      "hidden": true
     },
     {
       "name": "msvc-verify-full",
       "configurePreset": "msvc-verify-full",
       "configuration": "Debug",
-      "targets": ["verify_full"]
+      "targets": [
+        "verify_full"
+      ],
+      "hidden": true
     },
     {
       "name": "release-winnt-x86_64",
       "configurePreset": "release-winnt-x86_64",
       "configuration": "Release",
-      "targets": ["dist_all"]
+      "targets": [
+        "dist_all"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "win9x-x86_32-legacy",
       "configurePreset": "win9x-x86_32-legacy",
       "configuration": "Debug",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "win16-x86_16",
       "configurePreset": "win16-x86_16",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "dos-x86_16",
       "configurePreset": "dos-x86_16",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "legacy-win-vs2015",
       "configurePreset": "legacy-win-vs2015",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "msvc-debug",
       "configurePreset": "msvc-debug",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "hidden": true
     },
     {
       "name": "msvc-release",
       "configurePreset": "msvc-release",
-      "configuration": "Release"
+      "configuration": "Release",
+      "hidden": true
     },
     {
       "name": "windows-msvc-x64-debug",
       "configurePreset": "windows-msvc-x64-debug",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "hidden": true
     },
     {
       "name": "windows-msvc-x86-debug",
       "configurePreset": "windows-msvc-x86-debug",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "hidden": true
     },
     {
       "name": "windows-msvc-vs2026",
       "configurePreset": "windows-msvc-vs2026",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "windows-clangcl-debug",
-      "configurePreset": "windows-clangcl-debug"
+      "configurePreset": "windows-clangcl-debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "windows-mingw-debug",
-      "configurePreset": "windows-mingw-debug"
+      "configurePreset": "windows-mingw-debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "msvc-win32-dx9",
       "configurePreset": "msvc-win32-dx9",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "macos-xcode-debug",
       "configurePreset": "macos-xcode-debug",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "hidden": true
     },
     {
       "name": "macos-xcode",
@@ -1041,151 +1755,320 @@
       "configuration": "Debug",
       "targets": [
         "ui_preview_launcher_macos"
-      ]
+      ],
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Darwin"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "dev-macos-xcode",
       "configurePreset": "dev-macos-xcode",
       "configuration": "Debug",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "hidden": true
     },
     {
       "name": "verify-macos-xcode",
       "configurePreset": "verify-macos-xcode",
       "configuration": "Debug",
-      "targets": ["verify_fast"]
+      "targets": [
+        "verify_fast"
+      ],
+      "hidden": true
     },
     {
       "name": "release-macos-xcode",
       "configurePreset": "release-macos-xcode",
       "configuration": "Release",
-      "targets": ["dist_all"]
+      "targets": [
+        "dist_all"
+      ],
+      "hidden": true
     },
     {
       "name": "macos-dev",
       "configurePreset": "macos-dev",
       "configuration": "Debug",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
     },
     {
       "name": "macos-verify",
       "configurePreset": "macos-verify",
       "configuration": "Debug",
-      "targets": ["verify_fast"]
+      "targets": [
+        "verify_fast"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
     },
     {
       "name": "macos-verify-full",
       "configurePreset": "macos-verify-full",
       "configuration": "Debug",
-      "targets": ["verify_full"]
+      "targets": [
+        "verify_full"
+      ],
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Darwin"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "release-macos-arm64",
       "configurePreset": "release-macos-arm64",
       "configuration": "Release",
-      "targets": ["dist_all"]
+      "targets": [
+        "dist_all"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
     },
     {
       "name": "linux-debug",
-      "configurePreset": "linux-debug"
+      "configurePreset": "linux-debug",
+      "hidden": true
     },
     {
       "name": "linux-clang-debug",
-      "configurePreset": "linux-clang-debug"
+      "configurePreset": "linux-clang-debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "linux-musl-debug",
-      "configurePreset": "linux-musl-debug"
+      "configurePreset": "linux-musl-debug",
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "linux-dev",
       "configurePreset": "linux-dev",
       "targets": [
         "ui_preview_launcher_linux"
-      ]
+      ],
+      "hidden": true
     },
     {
       "name": "dev-linux-gcc",
       "configurePreset": "dev-linux-gcc",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "hidden": true
     },
     {
       "name": "dev-linux-clang",
       "configurePreset": "dev-linux-clang",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "hidden": true
     },
     {
       "name": "verify-linux-gcc",
       "configurePreset": "verify-linux-gcc",
-      "targets": ["verify_fast"]
+      "targets": [
+        "verify_fast"
+      ],
+      "hidden": true
     },
     {
       "name": "release-linux-gcc",
       "configurePreset": "release-linux-gcc",
-      "targets": ["dist_all"]
+      "targets": [
+        "dist_all"
+      ],
+      "hidden": true
     },
     {
       "name": "linux-gcc-dev",
       "configurePreset": "linux-gcc-dev",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
       "name": "linux-clang-dev",
       "configurePreset": "linux-clang-dev",
-      "targets": ["all_runtime"]
+      "targets": [
+        "all_runtime"
+      ],
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "linux-verify",
       "configurePreset": "linux-verify",
-      "targets": ["verify_fast"]
+      "targets": [
+        "verify_fast"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
       "name": "linux-verify-full",
       "configurePreset": "linux-verify-full",
-      "targets": ["verify_full"]
+      "targets": [
+        "verify_full"
+      ],
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
+      }
     },
     {
       "name": "release-linux-x86_64",
       "configurePreset": "release-linux-x86_64",
-      "targets": ["dist_all"]
+      "targets": [
+        "dist_all"
+      ],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
     },
     {
       "name": "msys2-debug",
-      "configurePreset": "msys2-debug"
+      "configurePreset": "msys2-debug",
+      "hidden": true
     },
     {
       "name": "msys2-release",
-      "configurePreset": "msys2-release"
+      "configurePreset": "msys2-release",
+      "hidden": true
     },
     {
       "name": "debug",
       "configurePreset": "debug",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "hidden": true
     },
     {
       "name": "deterministic",
       "configurePreset": "deterministic",
-      "configuration": "Release"
+      "configuration": "Release",
+      "hidden": true
     },
     {
       "name": "baseline-debug",
       "configurePreset": "baseline-debug",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "hidden": true
     },
     {
       "name": "baseline-release",
       "configurePreset": "baseline-release",
-      "configuration": "Release"
+      "configuration": "Release",
+      "hidden": true
     },
     {
       "name": "modern-debug",
       "configurePreset": "modern-debug",
-      "configuration": "Debug"
+      "configuration": "Debug",
+      "hidden": true
     },
     {
       "name": "modern-release",
       "configurePreset": "modern-release",
-      "configuration": "Release"
+      "configuration": "Release",
+      "hidden": true
     }
   ],
   "testPresets": [
@@ -1195,7 +2078,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "vs2026-x64-release",
@@ -1203,7 +2087,8 @@
       "configuration": "Release",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "dev-win-vs2026",
@@ -1211,7 +2096,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "local",
@@ -1219,6 +2105,11 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -1227,7 +2118,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "verify",
@@ -1235,6 +2127,11 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -1243,6 +2140,11 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -1251,7 +2153,8 @@
       "configuration": "Release",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "msvc-dev-debug",
@@ -1259,7 +2162,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "msvc-dev-release",
@@ -1267,7 +2171,8 @@
       "configuration": "Release",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "msvc-verify",
@@ -1275,7 +2180,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "msvc-verify-full",
@@ -1283,7 +2189,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "release-winnt-x86_64",
@@ -1291,6 +2198,11 @@
       "configuration": "Release",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -1299,6 +2211,21 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -1306,6 +2233,21 @@
       "configurePreset": "win16-x86_16",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -1313,6 +2255,21 @@
       "configurePreset": "dos-x86_16",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -1321,6 +2278,21 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Windows"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -1329,7 +2301,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "windows-msvc-x64-debug",
@@ -1337,7 +2310,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "windows-msvc-x86-debug",
@@ -1345,7 +2319,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "macos-xcode-debug",
@@ -1353,7 +2328,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "dev-macos-xcode",
@@ -1361,7 +2337,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "macos-dev",
@@ -1369,6 +2346,11 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
       }
     },
     {
@@ -1377,7 +2359,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "macos-verify",
@@ -1385,6 +2368,11 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
       }
     },
     {
@@ -1393,6 +2381,21 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Darwin"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -1401,7 +2404,8 @@
       "configuration": "Release",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "release-macos-arm64",
@@ -1409,6 +2413,11 @@
       "configuration": "Release",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
       }
     },
     {
@@ -1416,20 +2425,27 @@
       "configurePreset": "linux-debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "dev-linux-gcc",
       "configurePreset": "dev-linux-gcc",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "linux-gcc-dev",
       "configurePreset": "linux-gcc-dev",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
@@ -1437,13 +2453,29 @@
       "configurePreset": "dev-linux-clang",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "linux-clang-dev",
       "configurePreset": "linux-clang-dev",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -1451,13 +2483,19 @@
       "configurePreset": "verify-linux-gcc",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "linux-verify",
       "configurePreset": "linux-verify",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
@@ -1465,6 +2503,21 @@
       "configurePreset": "linux-verify-full",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          },
+          {
+            "type": "equals",
+            "lhs": "$env{DOMINIUM_ADVANCED_PRESETS}",
+            "rhs": "1"
+          }
+        ]
       }
     },
     {
@@ -1472,13 +2525,19 @@
       "configurePreset": "release-linux-gcc",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "release-linux-x86_64",
       "configurePreset": "release-linux-x86_64",
       "output": {
         "outputOnFailure": true
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
@@ -1487,7 +2546,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "baseline-debug",
@@ -1495,7 +2555,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     },
     {
       "name": "modern-debug",
@@ -1503,7 +2564,8 @@
       "configuration": "Debug",
       "output": {
         "outputOnFailure": true
-      }
+      },
+      "hidden": true
     }
   ]
 }

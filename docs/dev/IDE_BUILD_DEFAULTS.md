@@ -15,19 +15,19 @@ Replacement Target: patched document aligned to current canon ownership and rele
 - Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
 
 
-## Windows (VS 2026 / VSCode CMake Tools)
+## Windows (VS 2022 / VSCode CMake Tools)
 
 Default configure preset:
-- `msvc-dev-debug`
+- `local`
 
 Default build target:
 - `all_runtime`
 
 Default fast verification:
-- `verify_fast` (`msvc-verify`)
+- `verify_fast` (`verify`)
 
 Full verification:
-- `verify_full` (`msvc-verify-full`)
+- `verify_full` (`cmake --build --preset verify --target verify_full`)
 
 ## macOS (Xcode / CMake)
 
@@ -39,7 +39,7 @@ Default build target:
 
 Verification:
 - `macos-verify` for fast checks
-- `macos-verify-full` for full checks
+- `cmake --build --preset macos-verify --target verify_full` for full checks
 
 ## Linux (CMake + Ninja IDE flows)
 
@@ -51,7 +51,7 @@ Default build target:
 
 Verification:
 - `linux-verify` for fast checks
-- `linux-verify-full` for full checks
+- `cmake --build --preset linux-verify --target verify_full` for full checks
 
 ## Release builds
 
@@ -62,3 +62,6 @@ Release packaging is explicit and not the IDE default:
 
 Release packaging target:
 - `dist_all`
+
+Advanced preset surface:
+- Set `DOMINIUM_ADVANCED_PRESETS=1` before configure if you need legacy, alternate-toolchain, or IDE projection presets.

@@ -115,6 +115,22 @@
         "RISK": 3
       }
     },
+    "INV-AUTHORITY-REQUIRED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "server.intent_without_authority_smell",
+          "finding_id": "E403_INTENT_WITHOUT_AUTHORITY_SMELL:0001",
+          "location": "src/server/server_boot.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-BODY-MUTATION-PROCESS-ONLY": {
       "finding_count": 4,
       "recommended_actions": {
@@ -348,25 +364,15 @@
       }
     },
     "INV-CONTROL-PLANE-ONLY-DISPATCH": {
-      "finding_count": 4,
+      "finding_count": 2,
       "recommended_actions": {
-        "ADD_RULE": 2,
-        "REWRITE": 2
+        "ADD_RULE": 1,
+        "REWRITE": 1
       },
       "sample_findings": [
         {
-          "category": "architecture.intent_bypass_smell",
-          "finding_id": "E111_INTENT_BYPASS_SMELL:0001",
-          "location": "src/server/server_boot.py"
-        },
-        {
           "category": "security.hidden_privilege_escalation_smell",
           "finding_id": "E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0001",
-          "location": "src/server/server_boot.py"
-        },
-        {
-          "category": "architecture.direct_intent_bypass_smell",
-          "finding_id": "E104_DIRECT_INTENT_BYPASS_SMELL:0001",
           "location": "src/server/server_boot.py"
         },
         {
@@ -376,8 +382,8 @@
         }
       ],
       "severities": {
-        "RISK": 2,
-        "VIOLATION": 2
+        "RISK": 1,
+        "VIOLATION": 1
       }
     },
     "INV-DECISION-LOG-MANDATORY": {
@@ -435,9 +441,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 13,
+      "finding_count": 11,
       "recommended_actions": {
-        "ADD_RULE": 13
+        "ADD_RULE": 11
       },
       "sample_findings": [
         {
@@ -467,7 +473,6 @@
         }
       ],
       "severities": {
-        "INFO": 2,
         "RISK": 11
       }
     },
@@ -774,27 +779,6 @@
         "RISK": 1
       }
     },
-    "INV-LEGACY-CODE-QUARANTINED": {
-      "finding_count": 2,
-      "recommended_actions": {
-        "ADD_TEST": 2
-      },
-      "sample_findings": [
-        {
-          "category": "legacy_contamination",
-          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
-          "location": "tools/release/entrypoint_unify_common.py"
-        },
-        {
-          "category": "legacy_contamination",
-          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
-          "location": "tools/xstack/repox/check.py"
-        }
-      ],
-      "severities": {
-        "RISK": 2
-      }
-    },
     "INV-LIB-DETERMINISTIC": {
       "finding_count": 1,
       "recommended_actions": {
@@ -1007,22 +991,6 @@
       ],
       "severities": {
         "RISK": 3
-      }
-    },
-    "INV-MODE-AS-PROFILES": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "tools/xstack/repox/check.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 1
       }
     },
     "INV-MODEL-OUTPUTS-PROCESS-ONLY": {
@@ -1590,58 +1558,6 @@
         "RISK": 1
       }
     },
-    "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "tools/xstack/repox/check.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 1
-      }
-    },
-    "INV-NO-HARDCODED-STRUCTURES": {
-      "finding_count": 7,
-      "recommended_actions": {
-        "REWRITE": 7
-      },
-      "sample_findings": [
-        {
-          "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0001",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0003",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0004",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "materials.hardcoded_blueprint_smell",
-          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0005",
-          "location": "scripts/ci/check_repox_rules.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 7
-      }
-    },
     "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR": {
       "finding_count": 2,
       "recommended_actions": {
@@ -2199,65 +2115,6 @@
         }
       ],
       "severities": {
-        "WARN": 1
-      }
-    },
-    "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 2,
-      "recommended_actions": {
-        "RETIRE": 2
-      },
-      "sample_findings": [
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "tools/auditx/analyzers/e416_pack_loaded_without_verification_smell.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "tools/xstack/testx/tests/cap_neg1_testlib.py"
-        }
-      ],
-      "severities": {
-        "WARN": 2
-      }
-    },
-    "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 59,
-      "recommended_actions": {
-        "ADD_RULE": 58,
-        "ADD_TEST": 1
-      },
-      "sample_findings": [
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "scripts/ci/check_repox_rules.py"
-        },
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "src/server/server_main.py"
-        }
-      ],
-      "severities": {
-        "RISK": 58,
         "WARN": 1
       }
     }

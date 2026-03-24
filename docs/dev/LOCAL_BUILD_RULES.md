@@ -32,6 +32,11 @@ Presets
   - generates preview artifacts only
   - gbn=none
 
+Host equivalents
+- Linux daily-use presets: `linux-gcc-dev` and `linux-verify`
+- macOS daily-use presets: `macos-dev` and `macos-verify`
+- Set `DOMINIUM_ADVANCED_PRESETS=1` to expose non-default toolchains and legacy/IDE projection presets.
+
 Commands
 - Build: cmake --build --preset local
 - Verify: ctest --preset verify --output-on-failure
