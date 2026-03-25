@@ -1,0 +1,287 @@
+Status: DERIVED
+Last Reviewed: 2026-03-26
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: XI
+Replacement Target: XI-2 shadow-boundary audit
+
+# SRC Shadow Report
+
+- src_directory_count: `258`
+- shadow_module_count: `4`
+
+## Source-Like Directories
+
+- `[HIGH]` `src` files=`537` duplicates=`2142` products=`none`
+- `[HIGH]` `src/logic` files=`41` duplicates=`224` products=`none`
+- `[HIGH]` `src/lib` files=`22` duplicates=`199` products=`none`
+- `[HIGH]` `src/geo` files=`32` duplicates=`185` products=`none`
+- `[HIGH]` `src/meta` files=`26` duplicates=`154` products=`none`
+- `[HIGH]` `src/worldgen` files=`36` duplicates=`148` products=`none`
+- `[HIGH]` `src/worldgen/earth` files=`22` duplicates=`137` products=`none`
+- `[HIGH]` `src/system` files=`19` duplicates=`119` products=`none`
+- `[HIGH]` `src/signals` files=`15` duplicates=`99` products=`none`
+- `[HIGH]` `src/control` files=`21` duplicates=`97` products=`none`
+- `[HIGH]` `src/appshell` files=`31` duplicates=`82` products=`none`
+- `[HIGH]` `src/compat` files=`17` duplicates=`60` products=`none`
+- `[HIGH]` `src/client` files=`25` duplicates=`52` products=`none`
+- `[HIGH]` `src/time` files=`6` duplicates=`52` products=`none`
+- `[HIGH]` `src/lib/install` files=`3` duplicates=`50` products=`none`
+- `[HIGH]` `src/lib/artifact` files=`2` duplicates=`45` products=`none`
+- `[HIGH]` `src/interaction` files=`8` duplicates=`42` products=`none`
+- `[HIGH]` `src/geo/worldgen` files=`2` duplicates=`42` products=`none`
+- `[HIGH]` `src/geo/overlay` files=`2` duplicates=`39` products=`none`
+- `[HIGH]` `src/platform` files=`10` duplicates=`37` products=`none`
+- `[HIGH]` `src/lib/bundle` files=`2` duplicates=`34` products=`none`
+- `[HIGH]` `src/lib/store` files=`3` duplicates=`33` products=`none`
+- `[HIGH]` `src/logic/compile` files=`3` duplicates=`33` products=`none`
+- `[HIGH]` `src/lib/provides` files=`2` duplicates=`33` products=`none`
+- `[HIGH]` `src/lib/save` files=`2` duplicates=`31` products=`none`
+- `[HIGH]` `src/worldgen/earth/material` files=`2` duplicates=`31` products=`none`
+- `[HIGH]` `src/release` files=`6` duplicates=`29` products=`none`
+- `[HIGH]` `src/security` files=`4` duplicates=`26` products=`none`
+- `[HIGH]` `src/security/trust` files=`3` duplicates=`26` products=`none`
+- `[HIGH]` `src/worldgen/earth/sky` files=`5` duplicates=`25` products=`none`
+- `[HIGH]` `src/worldgen/earth/lighting` files=`4` duplicates=`25` products=`none`
+- `[HIGH]` `src/meta/stability` files=`3` duplicates=`25` products=`none`
+- `[HIGH]` `src/signals/trust` files=`2` duplicates=`25` products=`none`
+- `[HIGH]` `src/appshell/ipc` files=`4` duplicates=`23` products=`none`
+- `[HIGH]` `src/modding` files=`2` duplicates=`23` products=`none`
+- `[HIGH]` `src/meta/reference` files=`4` duplicates=`22` products=`none`
+- `[HIGH]` `src/appshell/supervisor` files=`3` duplicates=`22` products=`none`
+- `[HIGH]` `src/worldgen/earth/wind` files=`2` duplicates=`22` products=`none`
+- `[HIGH]` `src/client/ui` files=`6` duplicates=`21` products=`none`
+- `[HIGH]` `src/system/statevec` files=`2` duplicates=`21` products=`none`
+- `[HIGH]` `src/worldgen/earth/water` files=`2` duplicates=`21` products=`none`
+- `[HIGH]` `src/control/ir` files=`5` duplicates=`20` products=`none`
+- `[HIGH]` `src/packs` files=`4` duplicates=`20` products=`none`
+- `[HIGH]` `src/packs/compat` files=`3` duplicates=`20` products=`none`
+- `[HIGH]` `src/control/negotiation` files=`2` duplicates=`20` products=`none`
+- `[HIGH]` `src/ui` files=`2` duplicates=`17` products=`none`
+- `[HIGH]` `src/control/fidelity` files=`2` duplicates=`16` products=`none`
+- `[HIGH]` `src/client/interaction` files=`6` duplicates=`14` products=`none`
+- `[HIGH]` `src/appshell/tui` files=`2` duplicates=`14` products=`none`
+- `[HIGH]` `src/appshell/logging` files=`2` duplicates=`11` products=`none`
+- `[HIGH]` `src/interaction/mount` files=`2` duplicates=`10` products=`none`
+- `[HIGH]` `src/lib/export` files=`2` duplicates=`10` products=`none`
+- `[HIGH]` `src/geo/index` files=`3` duplicates=`9` products=`none`
+- `[HIGH]` `src/compat/negotiation` files=`3` duplicates=`7` products=`none`
+- `[HIGH]` `src/diag` files=`2` duplicates=`7` products=`none`
+- `[HIGH]` `src/lib/import` files=`2` duplicates=`7` products=`none`
+- `[HIGH]` `src/server` files=`8` duplicates=`6` products=`none`
+- `[HIGH]` `src/appshell/diag` files=`2` duplicates=`5` products=`none`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source` files=`63` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source` files=`31` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/util` files=`12` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/instance` files=`8` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/jobs` files=`7` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/plan` files=`7` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/launch` files=`4` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/contracts` files=`4` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/artifact` files=`3` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/pack` files=`3` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/fs` files=`3` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/splat` files=`3` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/state` files=`3` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/txn` files=`3` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/tlv` files=`2` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/log` files=`2` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/platform_iface` files=`2` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/tlv` files=`2` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/audit` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/installed_state` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/job` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/log` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/profile` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/run` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/safety` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/selection` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/task` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/launcher_core_launcher/launcher/core/source/tool` files=`1` duplicates=`0` products=`launcher`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/api` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/audit` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/digest` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/errors` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/import` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/invocation` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/job` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/manifest` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/report` files=`1` duplicates=`0` products=`setup`
+- `[HIGH]` `legacy/setup_core_setup/setup/core/source/resolve` files=`1` duplicates=`0` products=`setup`
+- `[MED]` `src/mobility` files=`20` duplicates=`150` products=`none`
+- `[MED]` `src/process` files=`18` duplicates=`104` products=`none`
+- `[MED]` `src/electric` files=`9` duplicates=`51` products=`none`
+- `[MED]` `src/astro` files=`7` duplicates=`50` products=`none`
+- `[MED]` `src/logic/network` files=`4` duplicates=`50` products=`none`
+- `[MED]` `src/signals/transport` files=`4` duplicates=`49` products=`none`
+- `[MED]` `src/materials` files=`16` duplicates=`47` products=`none`
+- `[MED]` `src/physics` files=`6` duplicates=`46` products=`none`
+- `[MED]` `src/net` files=`17` duplicates=`41` products=`none`
+- `[MED]` `src/logic/signal` files=`4` duplicates=`41` products=`none`
+- `[MED]` `src/net/srz` files=`3` duplicates=`40` products=`none`
+- `[MED]` `src/embodiment` files=`17` duplicates=`39` products=`none`
+- `[MED]` `src/logic/eval` files=`9` duplicates=`39` products=`none`
+- `[MED]` `src/net/policies` files=`4` duplicates=`39` products=`none`
+- `[MED]` `src/geo/edit` files=`2` duplicates=`39` products=`none`
+- `[MED]` `src/logic/debug` files=`4` duplicates=`36` products=`none`
+- `[MED]` `src/pollution` files=`6` duplicates=`35` products=`none`
+- `[MED]` `src/mobility/micro` files=`3` duplicates=`34` products=`none`
+- `[MED]` `src/meta/compile` files=`2` duplicates=`30` products=`none`
+- `[MED]` `src/mobility/signals` files=`2` duplicates=`28` products=`none`
+- `[MED]` `src/logic/element` files=`4` duplicates=`26` products=`none`
+- `[MED]` `src/fluid` files=`3` duplicates=`26` products=`none`
+- `[MED]` `src/astro/illumination` files=`2` duplicates=`26` products=`none`
+- `[MED]` `src/fields` files=`2` duplicates=`26` products=`none`
+- `[MED]` `src/fluid/network` files=`2` duplicates=`26` products=`none`
+- `[MED]` `src/governance` files=`2` duplicates=`26` products=`none`
+- `[MED]` `src/meta/instrumentation` files=`2` duplicates=`26` products=`none`
+- `[MED]` `src/embodiment/tools` files=`6` duplicates=`25` products=`none`
+- `[MED]` `src/mobility/travel` files=`4` duplicates=`23` products=`none`
+- `[MED]` `src/signals/institutions` files=`4` duplicates=`23` products=`none`
+- `[MED]` `src/process/research` files=`3` duplicates=`23` products=`none`
+- `[MED]` `src/validation` files=`2` duplicates=`23` products=`none`
+- `[MED]` `src/interior` files=`4` duplicates=`22` products=`none`
+- `[MED]` `src/astro/ephemeris` files=`2` duplicates=`22` products=`none`
+- `[MED]` `src/mobility/traffic` files=`2` duplicates=`22` products=`none`
+- `[MED]` `src/mobility/vehicle` files=`2` duplicates=`22` products=`none`
+- `[MED]` `src/models` files=`2` duplicates=`22` products=`none`
+- `[MED]` `src/physics/entropy` files=`2` duplicates=`22` products=`none`
+- `[MED]` `src/compat/shims` files=`6` duplicates=`21` products=`none`
+- `[MED]` `src/field` files=`3` duplicates=`21` products=`none`
+- `[MED]` `src/process/software` files=`2` duplicates=`21` products=`none`
+- `[MED]` `src/process/capsules` files=`3` duplicates=`20` products=`none`
+- `[MED]` `src/mobility/geometry` files=`2` duplicates=`20` products=`none`
+- `[MED]` `src/worldgen/mw` files=`7` duplicates=`19` products=`none`
+- `[MED]` `src/process/maturity` files=`3` duplicates=`19` products=`none`
+- `[MED]` `src/control/effects` files=`2` duplicates=`19` products=`none`
+- `[MED]` `src/geo/kernel` files=`2` duplicates=`19` products=`none`
+- `[MED]` `src/mobility/network` files=`2` duplicates=`19` products=`none`
+- `[MED]` `src/system/macro` files=`2` duplicates=`19` products=`none`
+- `[MED]` `src/client/render` files=`8` duplicates=`18` products=`none`
+- `[MED]` `src/geo/lens` files=`3` duplicates=`18` products=`none`
+- `[MED]` `src/thermal` files=`3` duplicates=`18` products=`none`
+- `[MED]` `src/compat/descriptor` files=`2` duplicates=`18` products=`none`
+- `[MED]` `src/meta/compute` files=`2` duplicates=`18` products=`none`
+- `[MED]` `src/system/certification` files=`2` duplicates=`18` products=`none`
+- `[MED]` `src/system/templates` files=`2` duplicates=`18` products=`none`
+- `[MED]` `src/thermal/network` files=`2` duplicates=`18` products=`none`
+- `[MED]` `src/tools` files=`2` duplicates=`18` products=`none`
+- `[MED]` `src/process/drift` files=`2` duplicates=`17` products=`none`
+- `[MED]` `src/logic/timing` files=`5` duplicates=`16` products=`none`
+- `[MED]` `src/geo/metric` files=`4` duplicates=`16` products=`none`
+- `[MED]` `src/geo/frame` files=`3` duplicates=`16` products=`none`
+- `[MED]` `src/geo/path` files=`3` duplicates=`16` products=`none`
+- `[MED]` `src/geo/projection` files=`3` duplicates=`16` products=`none`
+- `[MED]` `src/system/reliability` files=`3` duplicates=`16` products=`none`
+- `[MED]` `src/embodiment/collision` files=`2` duplicates=`16` products=`none`
+- `[MED]` `src/interaction/task` files=`2` duplicates=`16` products=`none`
+- `[MED]` `src/logic/fault` files=`2` duplicates=`16` products=`none`
+- `[MED]` `src/materials/commitments` files=`2` duplicates=`16` products=`none`
+- `[MED]` `src/mechanics` files=`2` duplicates=`16` products=`none`
+- `[MED]` `src/logic/protocol` files=`3` duplicates=`15` products=`none`
+- `[MED]` `src/control/planning` files=`2` duplicates=`15` products=`none`
+- `[MED]` `src/materials/maintenance` files=`2` duplicates=`15` products=`none`
+- `[MED]` `src/specs` files=`2` duplicates=`15` products=`none`
+- `[MED]` `src/chem` files=`4` duplicates=`14` products=`none`
+- `[MED]` `src/client/render/renderers` files=`4` duplicates=`14` products=`none`
+- `[MED]` `src/interaction/pose` files=`2` duplicates=`14` products=`none`
+- `[MED]` `src/mobility/maintenance` files=`2` duplicates=`14` products=`none`
+- `[MED]` `src/physics/energy` files=`2` duplicates=`14` products=`none`
+- `[MED]` `src/safety` files=`2` duplicates=`14` products=`none`
+- `[MED]` `src/system/forensics` files=`2` duplicates=`14` products=`none`
+- `[MED]` `src/control/view` files=`2` duplicates=`13` products=`none`
+- `[MED]` `src/electric/protection` files=`2` duplicates=`13` products=`none`
+- `[MED]` `src/meta/extensions` files=`2` duplicates=`13` products=`none`
+- `[MED]` `src/lib/instance` files=`3` duplicates=`12` products=`none`
+- `[MED]` `src/astro/views` files=`2` duplicates=`12` products=`none`
+- `[MED]` `src/meta/explain` files=`2` duplicates=`12` products=`none`
+- `[MED]` `src/process/qc` files=`2` duplicates=`12` products=`none`
+- `[MED]` `src/worldgen/galaxy` files=`3` duplicates=`11` products=`none`
+- `[MED]` `src/electric/storage` files=`2` duplicates=`11` products=`none`
+- `[MED]` `src/materials/materialization` files=`2` duplicates=`11` products=`none`
+- `[MED]` `src/electric/fault` files=`2` duplicates=`10` products=`none`
+- `[MED]` `src/signals/addressing` files=`2` duplicates=`10` products=`none`
+- `[MED]` `tools/ui_shared/src` files=`42` duplicates=`9` products=`engine`
+- `[MED]` `src/core` files=`16` duplicates=`9` products=`none`
+- `[MED]` `src/appshell/paths` files=`2` duplicates=`9` products=`none`
+- `[MED]` `src/control/capability` files=`2` duplicates=`9` products=`none`
+- `[MED]` `src/meta/profile` files=`2` duplicates=`9` products=`none`
+- `[MED]` `src/signals/aggregation` files=`2` duplicates=`9` products=`none`
+- `[MED]` `src/system/roi` files=`2` duplicates=`9` products=`none`
+- `[MED]` `src/embodiment/lens` files=`3` duplicates=`8` products=`none`
+- `[MED]` `src/chem/degradation` files=`2` duplicates=`8` products=`none`
+- `[MED]` `src/embodiment/body` files=`2` duplicates=`8` products=`none`
+- `[MED]` `tools/ui_shared/src/ui_ir` files=`28` duplicates=`7` products=`none`
+- `[MED]` `src/infrastructure` files=`3` duplicates=`7` products=`none`
+- `[MED]` `src/archive` files=`2` duplicates=`7` products=`none`
+- `[MED]` `src/control/proof` files=`2` duplicates=`7` products=`none`
+- `[MED]` `src/infrastructure/formalization` files=`2` duplicates=`7` products=`none`
+- `[MED]` `src/core/graph` files=`3` duplicates=`6` products=`none`
+- `[MED]` `src/embodiment/movement` files=`3` duplicates=`6` products=`none`
+- `[MED]` `src/worldgen/refinement` files=`3` duplicates=`6` products=`none`
+- `[MED]` `src/logic/noise` files=`2` duplicates=`6` products=`none`
+- `[MED]` `src/logistics` files=`2` duplicates=`6` products=`none`
+- `[MED]` `src/materials/construction` files=`2` duplicates=`6` products=`none`
+- `[MED]` `src/engine` files=`3` duplicates=`5` products=`none`
+- `[MED]` `src/engine/concurrency` files=`2` duplicates=`5` products=`none`
+- `[MED]` `src/geo/render` files=`2` duplicates=`5` products=`none`
+- `[MED]` `src/meta/identity` files=`2` duplicates=`5` products=`none`
+- `[MED]` `src/reality` files=`5` duplicates=`4` products=`none`
+- `[MED]` `src/core/flow` files=`2` duplicates=`4` products=`none`
+- `[MED]` `src/materials/provenance` files=`2` duplicates=`4` products=`none`
+- `[MED]` `src/reality/transitions` files=`2` duplicates=`4` products=`none`
+- `[MED]` `src/appshell/commands` files=`2` duplicates=`3` products=`none`
+- `[MED]` `src/core/constraints` files=`2` duplicates=`3` products=`none`
+- `[MED]` `src/core/spatial` files=`2` duplicates=`3` products=`none`
+- `[MED]` `src/net/anti_cheat` files=`2` duplicates=`3` products=`none`
+- `[MED]` `tools/ui_shared/src/dui` files=`10` duplicates=`2` products=`engine`
+- `[MED]` `src/performance` files=`3` duplicates=`2` products=`none`
+- `[MED]` `src/client/local_server` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/core/schedule` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/diegetics` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/inspection` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/machines` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/meta/provenance` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/reality/ledger` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/server/net` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/server/runtime` files=`2` duplicates=`2` products=`none`
+- `[MED]` `src/epistemics` files=`3` duplicates=`1` products=`none`
+- `[MED]` `src/compat/handshake` files=`2` duplicates=`1` products=`none`
+- `[MED]` `src/core/hazards` files=`2` duplicates=`1` products=`none`
+- `[MED]` `src/core/state` files=`2` duplicates=`1` products=`none`
+- `[MED]` `src/epistemics/memory` files=`2` duplicates=`1` products=`none`
+- `[MED]` `src/materials/performance` files=`2` duplicates=`1` products=`none`
+- `[MED]` `src/net/testing` files=`2` duplicates=`1` products=`none`
+- `[MED]` `legacy/source` files=`92` duplicates=`0` products=`game,tools`
+- `[MED]` `legacy/source/tests` files=`82` duplicates=`0` products=`game,tools`
+- `[MED]` `packs/source` files=`13` duplicates=`0` products=`none`
+- `[MED]` `legacy/source/provider` files=`9` duplicates=`0` products=`none`
+- `[MED]` `packs/source/org.dominium.sol.spice` files=`7` duplicates=`0` products=`none`
+- `[MED]` `app/src` files=`6` duplicates=`0` products=`none`
+- `[MED]` `packs/source/org.dominium.earth.srtm` files=`6` duplicates=`0` products=`none`
+- `[MED]` `libs/ui_backends/win32/src` files=`5` duplicates=`0` products=`none`
+- `[MED]` `src/net/transport` files=`5` duplicates=`0` products=`none`
+- `[MED]` `tools/ui_shared/src/ui_codegen` files=`4` duplicates=`0` products=`none`
+- `[MED]` `packs/source/org.dominium.sol.spice/data` files=`3` duplicates=`0` products=`none`
+- `[MED]` `src/universe` files=`3` duplicates=`0` products=`none`
+- `[MED]` `packs/source/org.dominium.earth.srtm/data` files=`2` duplicates=`0` products=`none`
+- `[MED]` `packs/source/org.dominium.sol.spice/data/kernels` files=`2` duplicates=`0` products=`none`
+- `[MED]` `src/client/net` files=`2` duplicates=`0` products=`none`
+- `[MED]` `src/runtime` files=`2` duplicates=`0` products=`none`
+- `[MED]` `libs/build_identity/src` files=`1` duplicates=`0` products=`none`
+- `[MED]` `packs/source/org.dominium.earth.srtm/data/raw` files=`1` duplicates=`0` products=`none`
+
+## Shadow Module Suspects
+
+- `src/lib/bundle` -> `tools.lib` score=`0.4279` exact=`6` near=`0` products=`none`
+- `src/client/interaction` -> `tools.xstack.sessionx` score=`0.3105` exact=`4` near=`0` products=`none`
+- `src/compat` -> `tools.xstack.testx.tests` score=`0.3051` exact=`4` near=`0` products=`none`
+- `src/lib/install` -> `tools.lib` score=`0.2585` exact=`3` near=`0` products=`none`
+
+## Future RepoX Recommendations
+
+- `INV-NO-SRC-DIRECTORY` except tests and explicitly-audited generated data roots.
+- `INV-SINGLE-SEMANTIC-ENGINE` to prevent shadow implementations in low-confidence or generic roots.
+- `INV-NO-DUPLICATE-SYMBOL-DEFINITIONS` to reduce shadow drift before XI-3 winner selection.
+
