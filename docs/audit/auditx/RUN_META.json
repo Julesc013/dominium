@@ -3,8 +3,8 @@
   "cache_mode": "incremental",
   "changed_only": false,
   "changed_paths_since_last": 18,
-  "generated_utc": "2026-03-25T02:53:27Z",
-  "graph_hash": "a92c4f3776ae69c398c171007264d0545efec9e342b3d836ab8429122696097b",
+  "generated_utc": "2026-03-25T04:53:48Z",
+  "graph_hash": "dc72d2dda330dec0838149502986bbb595a8ed4e786abc870ee2b7a34e0e3df5",
   "last_reviewed": "2026-03-25",
   "output_format": "both",
   "platform": "windows",
@@ -373,6 +373,8 @@
     "E542_WORLDGEN_FLOAT_TRUTH_SMELL",
     "E545_GAMEPLAY_NONDETERMINISTIC_SMELL",
     "E546_MISSING_GAMEPLAY_BASELINE_SMELL",
+    "E547_SILENT_FALLBACK_SMELL",
+    "E548_MISSING_REMEDIATION_HINT_SMELL",
     "E54_PLATFORM_LEAK_SMELL",
     "E55_RENDERER_BACKEND_TRUTH_LEAK_SMELL",
     "E56_RAW_FLOAT_IN_INVARIANT_SMELL",
@@ -511,5 +513,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-111d5f419f5a72dc"
+  "workspace_id": "ws-94521475c2d0602f"
 }
