@@ -6,11 +6,11 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 # ARCH Audit Report
 
 - report_id: `arch.audit.v1`
-- result: `complete`
-- release_status: `pass`
-- blocking_finding_count: `0`
+- result: `violation`
+- release_status: `fail`
+- blocking_finding_count: `2`
 - known_exception_count: `9`
-- deterministic_fingerprint: `0361a57da5f8e5e929ce4b6a528b4bff1442f8e436dd6d0b3c2ed2610713811b`
+- deterministic_fingerprint: `ce2931d71ec39a6ab037f99dcf02ea2791b142a6c4bc4987a475873324bc8e1a`
 
 ## Checks
 
@@ -30,7 +30,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `d2e828cb789392e4cae9044822b164fc3a814a25311e4c5bc98fd6b8c5cd1247`
+- deterministic_fingerprint: `2a8caa15a0fd1736b92b4e9aea0df30e0d4884521a53b1a93f75d54e3d7e9ea8`
 
 ### determinism_scan
 - result: `pass`
@@ -95,6 +95,15 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - blocking_finding_count: `0`
 - known_exception_count: `0`
 - deterministic_fingerprint: `da19a9f1f375cbf1e30f89371b01d9e61282c372b95f7e9a998b45a043cf70f8`
+
+### offline_archive_scan
+- result: `fail`
+- blocking_finding_count: `2`
+- known_exception_count: `0`
+- deterministic_fingerprint: `45d3b7f08f08f33fcef0bf19d11f78b2e4ce1d5f2f3dc9caad1c6226996f0653`
+- blocking findings:
+  - `data/audit/offline_archive_verify.json`:1 committed offline archive surface drifted from the fresh deterministic rerun.
+  - `data/regression/archive_baseline.json`:1 committed offline archive baseline drifted from the fresh deterministic rerun.
 
 ### noncanonical_serialization_scan
 - result: `pass`
@@ -172,4 +181,4 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `786b3dece0792f7cc81d4cac9da7a7645ee673eeb2ee9fde7165c12e8ac8b620`
+- deterministic_fingerprint: `25407b91ddbbd3a54edd9efb9e3c19184c9fb5e1c7afb1ab8d008448c6952ab4`

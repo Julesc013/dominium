@@ -179,9 +179,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 906,
+      "finding_count": 907,
       "recommended_actions": {
-        "DOC_FIX": 906
+        "DOC_FIX": 907
       },
       "sample_findings": [
         {
@@ -211,7 +211,7 @@
         }
       ],
       "severities": {
-        "WARN": 906
+        "WARN": 907
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -2039,27 +2039,6 @@
       ],
       "severities": {
         "VIOLATION": 1
-      }
-    },
-    "INV-NO-UNDECLARED-SCHEMA": {
-      "finding_count": 2,
-      "recommended_actions": {
-        "ADD_RULE": 2
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.undeclared_schema_smell",
-          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
-          "location": "schema/security/license_capability_artifact.schema"
-        },
-        {
-          "category": "architecture.undeclared_schema_smell",
-          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
-          "location": "schemas/license_capability_artifact.schema.json"
-        }
-      ],
-      "severities": {
-        "RISK": 2
       }
     },
     "INV-NO-WALLCLOCK-IN-PERFORMANCE": {

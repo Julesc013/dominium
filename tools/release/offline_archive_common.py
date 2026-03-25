@@ -465,11 +465,16 @@ def offline_archive_record_hash(payload: Mapping[str, object]) -> str:
 
 
 def offline_archive_verify_hash(payload: Mapping[str, object]) -> str:
-    return canonical_sha256(dict(dict(payload or {}), deterministic_fingerprint=""))
+    body = dict(dict(payload or {}), deterministic_fingerprint="")
+    body["archive_path"] = ""
+    body["baseline_path"] = ""
+    return canonical_sha256(body)
 
 
 def offline_archive_baseline_hash(payload: Mapping[str, object]) -> str:
-    return canonical_sha256(dict(dict(payload or {}), deterministic_fingerprint=""))
+    body = dict(dict(payload or {}), deterministic_fingerprint="")
+    body["archive_bundle_rel"] = ""
+    return canonical_sha256(body)
 
 
 def _render_verify_doc(report: Mapping[str, object]) -> str:
@@ -731,13 +736,32 @@ def _verify_support_surface_presence(extracted_root: str, support_surfaces: Sequ
     return errors
 
 
+def _stable_subcheck_fingerprint(payload: Mapping[str, object]) -> str:
+    return canonical_sha256(dict(payload or {}))
+
+
 def _verify_worldgen_subcheck(repo_root: str, extracted_root: str) -> dict:
     from tools.worldgen.worldgen_lock_common import verify_worldgen_lock
 
     seed_text = _read_text(os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "worldgen", "baseline_seed.txt")).strip()
     snapshot_path = os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "worldgen", "baseline_worldgen_snapshot.json")
     report = verify_worldgen_lock(repo_root, seed_text=seed_text, snapshot_path=snapshot_path)
-    return {"result": "complete" if bool(report.get("matches_snapshot")) else "refused", "fingerprint": _token(report.get("deterministic_fingerprint")), "matches_snapshot": bool(report.get("matches_snapshot"))}
+    summary = {
+        "result": "complete" if bool(report.get("matches_snapshot")) else "refused",
+        "matches_snapshot": bool(report.get("matches_snapshot")),
+        "mismatch_count": int(report.get("mismatch_count", 0) or 0),
+        "baseline_seed": _token(report.get("baseline_seed")),
+        "expected_snapshot_fingerprint": _token(report.get("expected_snapshot_fingerprint")),
+        "observed_snapshot_fingerprint": _token(report.get("observed_snapshot_fingerprint")),
+        "expected_refinement_stage_hashes": _as_map(report.get("expected_refinement_stage_hashes")),
+        "observed_refinement_stage_hashes": _as_map(report.get("observed_refinement_stage_hashes")),
+        "expected_sol_system_id": _token(report.get("expected_sol_system_id")),
+        "observed_sol_system_id": _token(report.get("observed_sol_system_id")),
+        "expected_earth_planet_id": _token(report.get("expected_earth_planet_id")),
+        "observed_earth_planet_id": _token(report.get("observed_earth_planet_id")),
+    }
+    summary["fingerprint"] = _stable_subcheck_fingerprint(summary)
+    return summary
 
 
 def _verify_baseline_universe_subcheck(repo_root: str, extracted_root: str) -> dict:
@@ -747,12 +771,21 @@ def _verify_baseline_universe_subcheck(repo_root: str, extracted_root: str) -> d
     snapshot_path = os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "universe", "baseline_universe_snapshot.json")
     save_path = os.path.join(extracted_root, ARCHIVE_BASELINES_DIR, "universe", "baseline_save_0.save")
     report = verify_baseline_universe(repo_root, seed_text=seed_text, snapshot_path=snapshot_path, save_path=save_path)
-    return {
+    summary = {
         "result": "complete" if bool(report.get("matches_snapshot")) and bool(report.get("save_reload_matches")) else "refused",
-        "fingerprint": _token(report.get("deterministic_fingerprint")),
         "matches_snapshot": bool(report.get("matches_snapshot")),
         "save_reload_matches": bool(report.get("save_reload_matches")),
+        "seed_matches_worldgen_lock": bool(report.get("seed_matches_worldgen_lock")),
+        "pack_lock_matches_worldgen_lock": bool(report.get("pack_lock_matches_worldgen_lock")),
+        "expected_snapshot_fingerprint": _token(report.get("expected_snapshot_fingerprint")),
+        "observed_snapshot_fingerprint": _token(report.get("observed_snapshot_fingerprint")),
+        "expected_save_rel": _token(report.get("expected_save_rel")),
+        "loaded_save_hash": _token(report.get("loaded_save_hash")),
+        "mismatch_count": len(_as_list(report.get("mismatched_fields"))),
+        "loaded_save_error_count": len(_as_map(report.get("loaded_save_error"))),
     }
+    summary["fingerprint"] = _stable_subcheck_fingerprint(summary)
+    return summary
 
 
 def _verify_gameplay_subcheck(repo_root: str, extracted_root: str) -> dict:

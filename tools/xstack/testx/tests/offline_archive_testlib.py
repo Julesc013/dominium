@@ -18,6 +18,8 @@ from tools.release.offline_archive_common import (
     verify_offline_archive,
 )
 
+_CACHE: dict[str, tuple[dict, dict]] = {}
+
 
 def committed_verify(repo_root: str) -> dict:
     return load_offline_archive_verify(repo_root, OFFLINE_ARCHIVE_VERIFY_JSON_REL)
@@ -28,10 +30,14 @@ def committed_baseline(repo_root: str) -> dict:
 
 
 def build_and_verify(repo_root: str, suffix: str) -> tuple[dict, dict]:
+    cached = _CACHE.get(str(suffix))
+    if cached:
+        return cached
     output_root_rel = os.path.join("build", "tmp", "testx_omega8_archive", suffix)
     build_report = build_offline_archive(repo_root, output_root_rel=output_root_rel)
     verify_report = verify_offline_archive(repo_root, archive_path=str(build_report.get("archive_bundle_path", "")).strip(), baseline_path="")
-    return build_report, verify_report
+    _CACHE[str(suffix)] = (build_report, verify_report)
+    return _CACHE[str(suffix)]
 
 
 def load_archive_record_from_build(build_report: dict) -> dict:

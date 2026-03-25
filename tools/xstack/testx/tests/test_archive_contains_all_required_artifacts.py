@@ -12,7 +12,7 @@ TEST_TAGS = ["strict", "omega", "archive", "contents"]
 def run(repo_root: str):
     from tools.xstack.testx.tests.offline_archive_testlib import build_and_verify, load_archive_record_from_build, unpack_archive
 
-    build_report, _verify_report = build_and_verify(repo_root, "contents")
+    build_report, _verify_report = build_and_verify(repo_root, "shared")
     record = load_archive_record_from_build(build_report)
     extracted_root = unpack_archive(str(build_report.get("archive_bundle_path", "")).strip())
 
