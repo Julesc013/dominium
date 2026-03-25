@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "License Capability Artifact Schema",
+  "version": "1.0.0",
+  "description": "Offline capability-enablement artifact for trusted commercialization hooks.",
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "artifact_kind_id",
+    "universal_identity_block",
+    "enabled_capabilities",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.schema.security.license_capability_artifact"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "artifact_kind_id": {
+      "type": "string",
+      "const": "artifact.license_capability"
+    },
+    "universal_identity_block": {
+      "$ref": "universal_identity_block.schema.json"
+    },
+    "enabled_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "valid_from_release": {
+      "type": "string",
+      "minLength": 1
+    },
+    "valid_to_release": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_id": "dominium.schema.security.license_capability_artifact",
+      "schema_version": "1.0.0",
+      "artifact_kind_id": "artifact.license_capability",
+      "universal_identity_block": {
+        "identity_kind_id": "identity.license_capability",
+        "identity_id": "identity.license_capability.official.fixture",
+        "content_hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "schema_version": "1.0.0",
+        "stability_class_id": "provisional",
+        "deterministic_fingerprint": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+        "extensions": {
+          "official.artifact_kind_id": "artifact.license_capability"
+        }
+      },
+      "enabled_capabilities": [
+        "cap.premium.*"
+      ],
+      "valid_from_release": "release.v0.0.0-mock",
+      "deterministic_fingerprint": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+      "extensions": {}
+    }
+  ]
+}

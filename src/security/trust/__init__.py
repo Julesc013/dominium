@@ -1,6 +1,7 @@
 """Offline-first trust and signing helpers."""
 
 from .trust_verifier import (
+    ARTIFACT_KIND_LICENSE_CAPABILITY,
     ARTIFACT_KIND_PACK,
     ARTIFACT_KIND_PACK_COMPAT,
     ARTIFACT_KIND_RELEASE_INDEX,
@@ -33,8 +34,22 @@ from .trust_verifier import (
     verify_signature_records,
     write_trust_root_registry,
 )
+from .license_capability import (
+    LICENSE_CAPABILITY_EXTENSION_REQUESTED_KEY,
+    LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY,
+    LICENSE_CAPABILITY_IDENTITY_KIND,
+    LICENSE_CAPABILITY_SCHEMA_ID,
+    LICENSE_CAPABILITY_SCHEMA_VERSION,
+    build_license_capability_artifact,
+    canonicalize_license_capability_artifact,
+    license_capability_enabled_view,
+    license_capability_signature_rows,
+    license_capability_signed_hash,
+    verify_license_capability_artifact,
+)
 
 __all__ = [
+    "ARTIFACT_KIND_LICENSE_CAPABILITY",
     "ARTIFACT_KIND_PACK",
     "ARTIFACT_KIND_PACK_COMPAT",
     "ARTIFACT_KIND_RELEASE_INDEX",
@@ -57,13 +72,24 @@ __all__ = [
     "TRUST_LEVEL_UNSIGNED",
     "TRUST_POLICY_ANARCHY",
     "TRUST_POLICY_STRICT",
+    "LICENSE_CAPABILITY_EXTENSION_REQUESTED_KEY",
+    "LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY",
+    "LICENSE_CAPABILITY_IDENTITY_KIND",
+    "LICENSE_CAPABILITY_SCHEMA_ID",
+    "LICENSE_CAPABILITY_SCHEMA_VERSION",
+    "build_license_capability_artifact",
+    "canonicalize_license_capability_artifact",
     "canonicalize_signature_record",
     "deterministic_fingerprint",
     "effective_trust_policy_id",
+    "license_capability_enabled_view",
+    "license_capability_signature_rows",
+    "license_capability_signed_hash",
     "load_trust_policy_registry",
     "load_trust_root_registry",
     "select_trust_policy",
     "verify_artifact_trust",
+    "verify_license_capability_artifact",
     "verify_signature_records",
     "write_trust_root_registry",
 ]

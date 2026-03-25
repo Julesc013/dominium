@@ -25,12 +25,14 @@ IDENTITY_KIND_INSTANCE = "identity.instance"
 IDENTITY_KIND_SAVE = "identity.save"
 IDENTITY_KIND_MANIFEST = "identity.manifest"
 IDENTITY_KIND_REPRO_BUNDLE = "identity.repro_bundle"
+IDENTITY_KIND_LICENSE_CAPABILITY = "identity.license_capability"
 
 IDENTITY_KINDS = (
     IDENTITY_KIND_BUNDLE,
     IDENTITY_KIND_FORMAT,
     IDENTITY_KIND_INSTALL,
     IDENTITY_KIND_INSTANCE,
+    IDENTITY_KIND_LICENSE_CAPABILITY,
     IDENTITY_KIND_MANIFEST,
     IDENTITY_KIND_PACK,
     IDENTITY_KIND_PRODUCT_BINARY,
@@ -43,6 +45,7 @@ IDENTITY_KINDS = (
 
 _CONTENT_HASH_REQUIRED_KINDS = {
     IDENTITY_KIND_BUNDLE,
+    IDENTITY_KIND_LICENSE_CAPABILITY,
     IDENTITY_KIND_MANIFEST,
     IDENTITY_KIND_PACK,
     IDENTITY_KIND_PRODUCT_BINARY,
@@ -53,6 +56,7 @@ _CONTENT_HASH_REQUIRED_KINDS = {
 _KIND_REQUIRED_FIELDS = {
     IDENTITY_KIND_PACK: ("content_hash", "semver"),
     IDENTITY_KIND_PRODUCT_BINARY: ("content_hash", "build_id"),
+    IDENTITY_KIND_LICENSE_CAPABILITY: ("content_hash", "schema_version"),
     IDENTITY_KIND_SAVE: ("contract_bundle_hash", "format_version"),
     IDENTITY_KIND_PROTOCOL: ("protocol_range",),
     IDENTITY_KIND_SCHEMA: ("content_hash", "schema_version"),
@@ -355,6 +359,8 @@ def _infer_identity_kind(rel_path: str, payload: Mapping[str, object] | None) ->
         return IDENTITY_KIND_BUNDLE
     if _token(item.get("profile_bundle_id")) or _token(item.get("artifact_kind_id")) == "artifact.profile_bundle":
         return IDENTITY_KIND_BUNDLE
+    if _token(item.get("artifact_kind_id")) == "artifact.license_capability":
+        return IDENTITY_KIND_LICENSE_CAPABILITY
     if _token(item.get("negotiation_id")):
         return IDENTITY_KIND_MANIFEST
     return IDENTITY_KIND_MANIFEST
@@ -370,6 +376,8 @@ def _candidate_identity_json(rel_path: str) -> bool:
     if "pack_lock" in name or "pack_lock" in path:
         return True
     if "profile_bundle" in name or "profile.bundle" in name or "/profiles/bundles/" in path:
+        return True
+    if "license_capability" in name or "license_capability" in path:
         return True
     if "negotiation" in name or "negotiation_record" in name:
         return True
@@ -488,6 +496,22 @@ def _expected_identity_fields(rel_path: str, payload: Mapping[str, object] | Non
             "semver": "",
             "build_id": _token(item.get("engine_version_created")),
             "format_version": _token(item.get("format_version")),
+            "schema_version": _token(item.get("schema_version")) or "1.0.0",
+            "protocol_range": {},
+            "contract_bundle_hash": "",
+            "stability_class_id": "provisional",
+            "extensions": extensions,
+        }
+    if _token(item.get("artifact_kind_id")) == "artifact.license_capability":
+        return {
+            "identity_kind_id": IDENTITY_KIND_LICENSE_CAPABILITY,
+            "identity_id": "identity.license_capability.{}".format(
+                _token(item.get("artifact_id")) or _token(_as_map(item.get(UNIVERSAL_IDENTITY_FIELD)).get("identity_id")) or "unknown"
+            ),
+            "content_hash": identity_content_hash_for_payload(item),
+            "semver": "",
+            "build_id": "",
+            "format_version": "",
             "schema_version": _token(item.get("schema_version")) or "1.0.0",
             "protocol_range": {},
             "contract_bundle_hash": "",

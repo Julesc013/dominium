@@ -22,6 +22,7 @@ ARTIFACT_KIND_RELEASE_INDEX = "artifact.release_index"
 ARTIFACT_KIND_RELEASE_MANIFEST = "artifact.release_manifest"
 ARTIFACT_KIND_PACK = "artifact.pack"
 ARTIFACT_KIND_PACK_COMPAT = "artifact.pack_compat"
+ARTIFACT_KIND_LICENSE_CAPABILITY = "artifact.license_capability"
 
 TRUST_LEVEL_OFFICIAL_SIGNED = "trust.official_signed"
 TRUST_LEVEL_THIRDPARTY_SIGNED = "trust.thirdparty_signed"
