@@ -7,9 +7,9 @@ Replacement Target: Frozen offline update simulation baseline for v0.0.0-mock di
 
 - result: `complete`
 - platform_tag: `win64`
-- deterministic_fingerprint: `2fd12a8ad0891b69597b5dfb412ca226adcb4d4bf6735ae4aac6c14100a3f00c`
-- baseline_present: `False`
-- baseline_matches: `False`
+- deterministic_fingerprint: `ac4c7dc999331a640c436fb44e8dc647411cf7d5a1ab35843287ceaa25bc4994`
+- baseline_present: `True`
+- baseline_matches: `True`
 
 ## Scenario Results
 
