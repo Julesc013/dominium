@@ -1,7 +1,4 @@
 Status: DERIVED
-Last Reviewed: 2026-03-16
-Supersedes: none
-Superseded By: none
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: Numeric discipline baseline and release-pinned numeric policy docs.
@@ -14,7 +11,7 @@ Replacement Target: Numeric discipline baseline and release-pinned numeric polic
 - release_status: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `6e00945230c147255b776e545fd34a1a45d57f0ed846511faa06327c006d82e1`
+- deterministic_fingerprint: `f09b1cd3abe7f3dc99c061224bdc3410a93f887171800efba7fde3960aac8400`
 
 ## Numeric Checks
 
@@ -44,4 +41,4 @@ Replacement Target: Numeric discipline baseline and release-pinned numeric polic
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `f3c96e99f71c95043373ef0a43f21ca1d308305e34bb4104f1afb26376d8dd87`
+- deterministic_fingerprint: `f1635a71df9a65a6a8f1c907c09c54d9220f01c064730d2887e03111f857be67`

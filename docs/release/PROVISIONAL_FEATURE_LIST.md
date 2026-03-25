@@ -14,7 +14,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 
 ## Summary
 
-- provisional_entry_count: `3670`
+- provisional_entry_count: `3685`
 - stable_entry_count: `53`
 - experimental_entry_count: `0`
 - future_series_count: `61`
@@ -257,7 +257,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 
 ## APPSHELL-TOOLS
 
-- entry_count: `133`
+- entry_count: `135`
 
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_client` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_client_compat_status` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
@@ -377,6 +377,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_sys_verify_statevec_roundtrip` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_sys_verify_template_reproducible` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
+- registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_generate_worldgen_baseline` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_replay_climate_window` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_replay_galaxy_objects` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_replay_galaxy_proxies` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
@@ -392,6 +393,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_replay_wind_window` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_run_refinement_stress` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 - registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_verify_earth_surface` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
+- registry_path=`data/registries/command_registry.json` item_id=`command.dom_worldgen_verify_worldgen_lock` stability_class=`provisional` future_series=`APPSHELL-TOOLS` risk=`medium` replacement_target=`Replace provisional tool surface adapters with release-pinned AppShell tool registry semantics.`
 
 ## ARCHIVE-POLICY
 
@@ -1280,10 +1282,13 @@ It is a release-planning surface only and does not alter runtime behavior.
 
 ## GOVERNANCE/COMMERCIAL
 
-- entry_count: `2`
+- entry_count: `5`
 
+- registry_path=`data/registries/artifact_kind_registry.json` item_id=`artifact.license_capability` stability_class=`provisional` future_series=`GOVERNANCE/COMMERCIAL` risk=`medium` replacement_target=`Replace this structural hook with a full licensing system only if commercialization is later productized.`
+- registry_path=`data/registries/capability_registry.json` item_id=`cap.premium.*` stability_class=`provisional` future_series=`GOVERNANCE/COMMERCIAL` risk=`medium` replacement_target=`Replace this placeholder namespace with a release-pinned premium capability contract only if commercialization is later productized.`
 - registry_path=`data/registries/governance_mode_registry.json` item_id=`gov.core_closed_ecosystem_open` stability_class=`provisional` future_series=`GOVERNANCE/COMMERCIAL` risk=`medium` replacement_target=`Final artifact-specific licensing bundles and official publication policy.`
 - registry_path=`data/registries/governance_mode_registry.json` item_id=`gov.mixed` stability_class=`provisional` future_series=`GOVERNANCE/COMMERCIAL` risk=`medium` replacement_target=`Final artifact-specific licensing bundles and signed official publication policy.`
+- registry_path=`data/registries/identity_kind_registry.json` item_id=`identity.license_capability` stability_class=`provisional` future_series=`GOVERNANCE/COMMERCIAL` risk=`medium` replacement_target=`Replace this identity hook with a full licensing identity contract only if commercialization is later productized.`
 
 ## GOVERNANCE/RELEASE
 
@@ -1293,7 +1298,7 @@ It is a release-planning surface only and does not alter runtime behavior.
 
 ## INF/TOOLING
 
-- entry_count: `1833`
+- entry_count: `1843`
 
 - registry_path=`data/registries/access_policy_registry.json` item_id=`access.admin_only` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/access_policy_registry.json` item_id=`access.physical_contact_required` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
@@ -2711,6 +2716,16 @@ It is a release-planning surface only and does not alter runtime behavior.
 - registry_path=`data/registries/net_replication_policy_registry.json` item_id=`policy.net.srz_hybrid` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/net_server_policy_registry.json` item_id=`server.policy.private.default` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/net_server_policy_registry.json` item_id=`server.policy.ranked.strict` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-1` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-10` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-2` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-3` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-4` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-5` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-6` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-7` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-8` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
+- registry_path=`data/registries/omega_artifact_registry.json` item_id=`OMEGA-9` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/order_type_registry.json` item_id=`order.assimilate` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/order_type_registry.json` item_id=`order.build_plan` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`
 - registry_path=`data/registries/order_type_registry.json` item_id=`order.communicate` stability_class=`provisional` future_series=`INF/TOOLING` risk=`low` replacement_target=`Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.`

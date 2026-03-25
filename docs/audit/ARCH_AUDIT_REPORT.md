@@ -1,7 +1,4 @@
 Status: DERIVED
-Last Reviewed: 2026-03-16
-Supersedes: none
-Superseded By: none
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and REPO-REVIEW-3.
@@ -13,7 +10,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - release_status: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `6f64ed2cd508ffd2730e13cea445bada9692b25eac1a19a32c50125b37a1da29`
+- deterministic_fingerprint: `0361a57da5f8e5e929ce4b6a528b4bff1442f8e436dd6d0b3c2ed2610713811b`
 
 ## Checks
 
@@ -33,7 +30,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `3fb7717bc4126a41b744a693d92416226436c0337454fb9bce7c16415ba15f22`
+- deterministic_fingerprint: `d2e828cb789392e4cae9044822b164fc3a814a25311e4c5bc98fd6b8c5cd1247`
 
 ### determinism_scan
 - result: `pass`
@@ -57,6 +54,48 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
   - `src/mobility/micro/constrained_motion_solver.py`:1 reviewed numeric bridge: deterministic quantization bridge
   - `src/process/qc/qc_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
 
+### worldgen_lock_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `907a5f66f846b736b6f187f5a3edc981b0d48fe6e8ba148605c0cb9010d34bb6`
+
+### baseline_universe_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `2d9eaed0a3eed22ce2ce6c5d6963df790bb42d0f7ae1a0077b9ca0f7651d3a05`
+
+### gameplay_loop_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `2260f31f266206435145932b03e0c043c03ddadc34f461b51b39df666563d8c4`
+
+### disaster_suite_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `5dcdade89acc202c9c9524de8581d141b8003f12a0de56b06ba7b458e7a7f3d7`
+
+### ecosystem_verify_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `8324082700520c3acb7a168d1f3bd175eff42a56d6e2f35d64c9f4d889e1c176`
+
+### update_sim_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `059b2be6a3277b588a28645833f4eab66148268a047e0429e43d602310a4c267`
+
+### trust_strict_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `da19a9f1f375cbf1e30f89371b01d9e61282c372b95f7e9a998b45a043cf70f8`
+
 ### noncanonical_serialization_scan
 - result: `pass`
 - blocking_finding_count: `0`
@@ -67,7 +106,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `f3c96e99f71c95043373ef0a43f21ca1d308305e34bb4104f1afb26376d8dd87`
+- deterministic_fingerprint: `f1635a71df9a65a6a8f1c907c09c54d9220f01c064730d2887e03111f857be67`
 
 ### parallel_truth_scan
 - result: `pass`
@@ -91,7 +130,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `1e501d20cbfb0622d48211ee9a01debb8e674f9eed2dd6b7fd0a15b9b274575a`
+- deterministic_fingerprint: `181c41d2978b084ed0091c554a11467038d28673d00f48ca2ed23d7afc20ce4d`
 
 ### contract_pin_scan
 - result: `pass`

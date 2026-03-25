@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 78,
+  "candidate_count": 79,
   "candidates": [
     {
       "evidence_paths": [
@@ -288,6 +288,17 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.69,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "docs/audit/TOPOLOGY_MAP.json",
+        "schema/security/license_capability_artifact.schema",
+        "schemas/license_capability_artifact.schema.json"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.6825,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
