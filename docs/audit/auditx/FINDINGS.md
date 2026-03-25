@@ -8,13 +8,220 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1583
-- Severities: RISK=536, VIOLATION=17, WARN=1030
-- Categories: appshell.ad_hoc_entry_point_smell=2, architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=5, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_knowledge_mutation_smell=1, architecture.direct_message_smell=8, architecture.direct_position_mutation_smell=4, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=3, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=13, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=17, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=3, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=4, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=6, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=7, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=5, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, bundle.nondeterministic_bundle_smell=1, canon_drift=900, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, compat.behavior_without_contract_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=17, epistemics.hidden_state_leak_smell=6, geometry.adhoc_spatial_key_smell=6, install.path_dependent_install_smell=1, interaction.interaction_bypass_smell=2, legacy_contamination=1, logic.adhoc_wiring_smell=5, logic.carrier_bias_smell=9, logic.protocol_security_bypass_smell=1, logic.random_failure_smell=1, logic.truth_leak_via_debug_smell=1, logic.unbounded_trace_smell=1, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, mode_flag_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reliability.silent_reaction_smell=3, schema_usage=1, security.hidden_privilege_escalation_smell=2, semantic.capability_drift=5, semantic.schema_shadowing=120, semantic.workspace_contamination=1, server.intent_without_authority_smell=1, worldgen.direct_system_spawn_smell=1, worldgen.unbounded_shadow_sampling_smell=1
+- Total findings: 2450
+- Severities: INFO=230, RISK=732, VIOLATION=108, WARN=1380
+- Categories: appshell.ad_hoc_entry_point_smell=2, architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=5, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_knowledge_mutation_smell=1, architecture.direct_message_smell=8, architecture.direct_position_mutation_smell=4, architecture.direct_schedule_mutation_smell=1, architecture.hardcoded_pack_path_smell=4, architecture.heat_loss_bypass_smell=3, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=13, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=17, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=3, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=4, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=6, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=7, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=5, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, bundle.nondeterministic_bundle_smell=1, canon_drift=901, capability_bypass_smell=1, capability_misuse=140, civilisation.nondeterministic_cohort_mapping_smell=1, compat.behavior_without_contract_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=137, epistemics.hidden_state_leak_smell=6, geometry.adhoc_spatial_key_smell=6, install.path_dependent_install_smell=1, interaction.interaction_bypass_smell=2, legacy_contamination=13, logic.adhoc_wiring_smell=5, logic.carrier_bias_smell=9, logic.protocol_security_bypass_smell=1, logic.random_failure_smell=1, logic.truth_leak_via_debug_smell=1, logic.unbounded_trace_smell=1, materials.hardcoded_blueprint_smell=19, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, mode_flag_smell=64, net.precision_leak_smell=2, net.truth_over_net_smell=6, ownership_boundary=10, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=80, reliability.silent_reaction_smell=3, schema_usage=160, security.boundary_io=29, security.hidden_privilege_escalation_smell=2, security.privilege_bypass=9, semantic.capability_drift=5, semantic.schema_shadowing=120, semantic.workspace_contamination=1, server.intent_without_authority_smell=1, terminology_misuse=1, ui_parity=220, worldgen.direct_system_spawn_smell=1, worldgen.unbounded_shadow_sampling_smell=1
 
 ## Top Findings
 
-- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/xstack/repox/check.py)
+- `C1:0001` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - bypass_law_profile
+- `C1:0002` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - disable_epistemic_guard
+- `C1:0003` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - override_authority_state
+- `C1:0004` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - bypass_law_profile
+- `C1:0005` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - disable_epistemic_guard
+- `C1:0006` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - override_authority_state
+- `C1:0007` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - bypass_law_profile
+- `C1:0008` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - disable_epistemic_guard
+- `C1:0009` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - override_authority_state
+- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-empty-path/artifacts/repox_runner/proof_manifest.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0002` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-empty-path/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0003` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-empty-path/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0004` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-random-cwd/artifacts/repox_runner/proof_manifest.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0005` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-random-cwd/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0006` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-random-cwd/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0007` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/auditx/meta_genre0_probe/FINDINGS.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0008` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/auditx/read_only_test/FINDINGS.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0009` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/auditx/repox_probe/FINDINGS.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0010` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0016b7a932b71402/repox/repox.docs.canon/abea3b0cd82d22195d4b85e755648a106136a08c69bb504835dae19e07d2d7b8.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0011` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-017201699aff1190/auditx/entries/7a46d1dc7aab8253ff852a88ec13645d246de30c3b13301928cfffde784a24db.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0012` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-017201699aff1190/repox/repox.docs.canon/45b236e1d1344b7a7ed9938658823d108caa2da59f17019ef15604c81991c2d9.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0013` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-017201699aff1190/repox/repox.docs.canon/b65cfefe59f08f715504a690ca4fc6702491830df924bdedb2e9525d689db662.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0014` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-01e2c135cf6f81ac/auditx/entries/48146d3b9fa338ea36d7159e9105c8967b254d35769f3d747a2589257ded6427.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0015` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-01e2c135cf6f81ac/auditx/entries/b3b3517b12b10bb2dc370378ec380f300247d81bb4fd51520e992d0b33b02659.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0016` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-02321d3a5bfcde66/auditx/entries/38da8cfd45cc21cfbe928be485a3033d7200b8636a923a395acd73e954a7e887.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0017` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-02afd0d6484c1ab2/auditx/entries/da6879864b5c2e0bd0ec606fecab77747fcec23390611cfd5ec6f0a6a78332d8.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0018` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-05f48c3468f9a5a3/repox/repox.docs.canon/8bc0b2fea5518f7312fc261fb750cb86bfa616a903c1f05d4a19cc3323f78427.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0019` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-06c1b301ced1b5e3/auditx/entries/5febaff944a14f8ed1d3d1d62611eff609ba734d5e0a9155648c44c1ac6a0171.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0020` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-06c1b301ced1b5e3/auditx/entries/cdd2a31431ac553185178ec84090897b26b0f96de5197284621ed678c9d653ec.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0021` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-07709c75eff3d3c9/auditx/entries/a30b673fda1b77835a1c66b0461296f1e9437e67b971f51a0e2b9b0f0843ac57.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0022` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-07709c75eff3d3c9/repox/repox.docs.canon/dd57766873443df5b14522b5d5869bfaac79c63739bbb44f8a9ca7d786d1f404.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0023` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0789a932553775e4/repox/repox.docs.canon/9a42324005424cb2844053ede324e67858af10e91325c155513fb1064a7dbb5f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0024` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0891e3febb23693e/repox/repox.docs.canon/7a15e8b69834dc1a2e12aab528be17b9ab498a145ba798a8399ca4211509f977.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0025` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0951d580c1942da0/auditx/entries/2530f259fdfdbdcefeb084953c23322e1fed81b754ea2e7f1b522f61048822f2.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0026` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0970fce33be30ca1/auditx/entries/12c006324f8002eeb5b44b4e04868a2d1daf1ccbe24bab23e69645f21d4c10e0.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0027` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0970fce33be30ca1/auditx/entries/2615217be31d04dd8dc4e12696cb1237f2b8cd48e3bb97a5c4e63a50b5f55fa8.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0028` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0970fce33be30ca1/auditx/entries/563bb5b0da052431d937f71934cf91d527c458306683c5ae30417fc1e84f2bd1.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0029` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0970fce33be30ca1/auditx/entries/5d2a11c77e15339e4a85827166c45f1c7352d6e4327dd721b8fbef00ea4ee4c1.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0030` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0970fce33be30ca1/auditx/entries/b4035d9cd5f7c4ff8fcebfa97e121fda8ff5c28b55980d77a894051527a6dc57.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0031` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0ceaab1160acec79/repox/repox.docs.canon/b65cfefe59f08f715504a690ca4fc6702491830df924bdedb2e9525d689db662.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0032` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0e62fd3b0a5ad5c6/auditx/entries/dd11229589367f55a2d3800b5384e3fa4269a97ff8d1c4e5de39b1746ecf0a12.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0033` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10082fc7e6cd6d6b/auditx/entries/0a2c4c992f0af2a9c95f42cd93d5cc1b32b4db83eefb9b6ee4405b7a35613a78.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0034` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/09d537a255add88415a6a6cd4de6298c1d500287a9b08cbed11b593654377af2.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0035` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/2644dd46e2b31cb15fd66d5a49b6e5206ed3874115fb04ee57601fc3c2eea922.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0036` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/3bc997c72007d81f38b386e88e032f39ffb1e851b736a3992c914ce78582f007.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0037` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/563fbf02a6b83e2d075e8c68f74956b71ea4b3d9cd9ed7a4c2ebb2f5dd70f079.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0038` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/6232c28682c044975cd136b9997c3865a65c9dca09007cced1b74a1f566a915f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0039` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/64350b82515d306ad7fea2244ba7726691b9171dc2c62c9b43b16303a8e88157.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0040` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/6d3df2bea179eb877acd61fe451a5a1a1c1b3ea5bb4ab2614c51059404421ced.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0041` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/7d1f369bb9f412864c19741f4939c964beef5e19ee955f2f78e1813b81536721.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0042` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/9479a9a56bbd4ec2931df4a2247adb0a8a5d6c9d24549f7502cc0fd43f7e1a46.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0043` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/9ac066143272f10df5668a80749bd7566c2598054ee350412ea3bbdb22c33687.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0044` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/9e5de1a3a7e520382c6eb460167ccb41ee6e94b6f23eb66bdefa96d62c5c548f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0045` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/e49cdd59d01a804bc5feadbe6535c273852fdc043e15b05ada806ba3ec6b673d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0046` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1108cd54723b1de0/auditx/entries/5c0c756330c8315fd0b80ee51bf32ebc159e9f6ceee7704b594653586475870c.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0047` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1108cd54723b1de0/auditx/entries/b102a9d32f9acf6c7437a218719bc641717d388d697a63ea20e8d422f17da0a2.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0048` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1108cd54723b1de0/auditx/entries/cc39f787b7425f6948c1eb4711d498a5ee45cbaf27952843858440d172fc6684.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0049` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-11cf12075af5c557/auditx/entries/bfe02d5e707e372fa06aa8c58fd0dc3eb114d0dc8ffec32b8560451921970270.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0050` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1209a834f2c73043/auditx/entries/41b653b9cd316096ac68ba9606694ad22627c814f229e81ca6efa636416acb15.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0051` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1209a834f2c73043/repox/repox.docs.canon/edeb7e691a5875b7fff3137508b158059e80f96f7fc0f0b627cea8234ec2daf0.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0052` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1343f865853870fe/repox/repox.docs.canon/12d3130411e1bb514c19e3922086d0a08b1aab9a9438a63d6c8ecb3c4dc8e792.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0053` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1343f865853870fe/repox/repox.docs.canon/4cc9d445f750a374f5ad82b2f37d2f914e833a80d08fae5ca9058910ae1b5a9c.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0054` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-147dfb3ed615ab36/auditx/entries/f7ddfb2c5f0ea093117b03549bf25b0b3a96a99aab4e7883e41450ffe3feb5f2.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0055` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-147dfb3ed615ab36/auditx/entries/fbbfa1a0a153916e5f877c9e0f23456d37303ed7d41300cc02c481a39ec1cc77.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0056` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-14b3387ffda6da72/auditx/entries/387eab0abc7f22a25eb7c5bd93b0f3c8a2eba265ca3dac1e782cee7075e2df63.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0057` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-14b3387ffda6da72/auditx/entries/61534d78df70251a10d855c02316df41cb50787d36ae341b2db0ee70692523f9.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0058` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-170993ed16bdf9b3/auditx/entries/3db332d93e58a6156cc60dcfdc2228ab1e94ebe772af20a63a0d8468cea6651a.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0059` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-170993ed16bdf9b3/repox/repox.docs.canon/d7199dbb582f3f956b07a777f9c0517eb86ac915e714a3ca084533f70a7f3d7d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0060` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-187b6e1dbdd5a474/auditx/entries/efbd29aec3a5d11462081012fb595f1f31f46e7b9f7ba7b9384dd503cba7585d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0061` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1889ca1278d3dbed/auditx/entries/606891d7acd5e41c881a59d7fe965c877f5940639ed70459fee22a993d673470.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0062` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1889ca1278d3dbed/auditx/entries/ad2b44f85927acca434235fba2546c5aa68e00bfb859a2401892cab00c2e0c67.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0063` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1889ca1278d3dbed/auditx/entries/dd04014c435a2ac2e43381ddc6334e0e152b0dbc49760ccc8e98bcc730ca8006.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0064` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1889ca1278d3dbed/auditx/entries/f0f8b290b24094216efa26272d914f1f8eb7a98e0f51b31bc78fe1c5282f7612.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
 - `E118_SILENT_DOWNGRADE_SMELL:0001` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)
@@ -63,312 +270,96 @@ Superseded By: none
 - `E323_RANDOM_FAILURE_SMELL:0001` VIOLATION `E323_RANDOM_FAILURE_SMELL` `logic.random_failure_smell` (src/logic/noise/noise_engine.py)
   - logic noise engine missing deterministic-noise token
   - build_logic_noise_decision_row(
-- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
-  - Detected key access without obvious schema anchor: process.earth_material_proxy_tick
+- `E60_HARDCODED_BLUEPRINT_SMELL:0001` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/client/interaction/preview_generator.py)
+  - hardcoded blueprint token detected in non-data source
+  - "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0002` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/client/interaction/preview_generator.py)
+  - hardcoded blueprint token detected in non-data source
+  - "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0003` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/control/ir/control_ir_programs.py)
+  - hardcoded blueprint token detected in non-data source
+  - creator="planner.blueprint.execution",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0004` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/interaction/action_surface_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - if isinstance(blueprint.get("action_surfaces"), list):
+- `E60_HARDCODED_BLUEPRINT_SMELL:0005` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/interaction/action_surface_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - out.append(("entity.blueprint_metadata.action_surfaces", list(blueprint.get("action_surfaces") or [])))
+- `E60_HARDCODED_BLUEPRINT_SMELL:0006` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - REFUSAL_BLUEPRINT_MISSING_PART_CLASS = "refusal.blueprint.missing_part_class"
+- `E60_HARDCODED_BLUEPRINT_SMELL:0007` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - REFUSAL_BLUEPRINT_INVALID_GRAPH = "refusal.blueprint.invalid_graph"
+- `E60_HARDCODED_BLUEPRINT_SMELL:0008` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - REFUSAL_BLUEPRINT_PARAMETER_INVALID = "refusal.blueprint.parameter_invalid"
+- `E60_HARDCODED_BLUEPRINT_SMELL:0009` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - material_id = "mat.blueprint.ghost.{}".format(material_digest[:12])
+- `E60_HARDCODED_BLUEPRINT_SMELL:0010` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - "semantic_id": "overlay.blueprint.node.{}".format(node_id),
+- `E60_HARDCODED_BLUEPRINT_SMELL:0011` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - label_material_id = "mat.blueprint.label.{}".format(canonical_sha256({"blueprint_id": blueprint_id, "label": True})[:12])
+- `E60_HARDCODED_BLUEPRINT_SMELL:0012` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - "renderable_id": "overlay.blueprint.label.{}".format(canonical_sha256({"blueprint_id": blueprint_id, "summary": True})[:16]),
+- `E60_HARDCODED_BLUEPRINT_SMELL:0013` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - "semantic_id": "overlay.blueprint.label.{}".format(blueprint_id),
+- `E60_HARDCODED_BLUEPRINT_SMELL:0014` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0015` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.parameter_invalid",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0016` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.parameter_invalid",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0017` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0018` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0019` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/xstack/sessionx/runner.py)
+  - hardcoded blueprint token detected in non-data source
+  - "blueprint_registry_hash": "blueprint.registry.json",
+- `A2_OWNERSHIP_BOUNDARY:0001` RISK `A2_OWNERSHIP_BOUNDARY` `ownership_boundary` (client/app/main_client.c)
+  - Client path appears to combine install tokens with mutation operations.
+  - Client should remain presentation-only for install mutation.
+- `A2_OWNERSHIP_BOUNDARY:0002` RISK `A2_OWNERSHIP_BOUNDARY` `ownership_boundary` (client/shell/client_shell.c)
+  - Client path appears to combine install tokens with mutation operations.
+  - Client should remain presentation-only for install mutation.
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
   - Best-effort heuristic; verify if schema declaration exists.
-- `A7_LEGACY_CONTAMINATION:0001` RISK `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/xstack/repox/check.py)
-  - Canonical file contains direct legacy path token.
-  - Potential legacy coupling not captured by include/import graph.
-- `A8_DERIVED_FRESHNESS_SMELL:0001` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/auditx/RUN_META.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.auditx.run_meta
-- `A8_DERIVED_FRESHNESS_SMELL:0002` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/performx/RUN_META.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.performx.run_meta
-- `A8_DERIVED_FRESHNESS_SMELL:0003` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/REPOX_PROFILE.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.repox.profile
-- `A8_DERIVED_FRESHNESS_SMELL:0004` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/proof_manifest.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.repox.proof_manifest
-- `A8_DERIVED_FRESHNESS_SMELL:0005` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/securex/RUN_META.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.securex.run_meta
-- `A8_DERIVED_FRESHNESS_SMELL:0006` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/testx/TESTX_RUN_META.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.testx.run_meta
-- `A8_DERIVED_FRESHNESS_SMELL:0007` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.xstack.full_plan_warning
-- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (dist/pkg/winnt/x86_64/index/pkg_index.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.pkg.index
-- `A8_DERIVED_FRESHNESS_SMELL:0009` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/perf/profile_trace.sample.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.perf.trace.sample
-- `A8_DERIVED_FRESHNESS_SMELL:0010` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/system/LEDGER_SNAPSHOT.md)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.xstack.ledger_snapshot
-- `A8_DERIVED_FRESHNESS_SMELL:0011` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.xstack.performance_ceiling_alert
-- `A8_DERIVED_FRESHNESS_SMELL:0012` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.earth.tiles/pack.capabilities.json)
-  - Derived pack JSON artifact has no provenance object.
-  - Expected deterministic source->derived traceability header.
-- `A8_DERIVED_FRESHNESS_SMELL:0013` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.earth.tiles/pack.compat.json)
-  - Derived pack JSON artifact has no provenance object.
-  - Expected deterministic source->derived traceability header.
-- `A8_DERIVED_FRESHNESS_SMELL:0014` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.earth.tiles/pack.trust.json)
-  - Derived pack JSON artifact has no provenance object.
-  - Expected deterministic source->derived traceability header.
-- `A8_DERIVED_FRESHNESS_SMELL:0015` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.sol.ephemeris/pack.capabilities.json)
-  - Derived pack JSON artifact has no provenance object.
-  - Expected deterministic source->derived traceability header.
-- `A8_DERIVED_FRESHNESS_SMELL:0016` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.sol.ephemeris/pack.compat.json)
-  - Derived pack JSON artifact has no provenance object.
-  - Expected deterministic source->derived traceability header.
-- `A8_DERIVED_FRESHNESS_SMELL:0017` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.sol.ephemeris/pack.trust.json)
-  - Derived pack JSON artifact has no provenance object.
-  - Expected deterministic source->derived traceability header.
-- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
-  - Bridge is missing required capability/entitlement guard markers.
-  - Missing markers: refuse.profile_not_selected
-- `E113_DEPRECATED_USAGE_SMELL:0001` RISK `E113_DEPRECATED_USAGE_SMELL` `architecture.deprecated_usage_smell` (tools/xstack/repox/check.py)
-  - data/registries/deprecation_registry.json
-  - reference to deprecated/quarantined/removed identifier
-- `E117_IR_NONDETERMINISM_SMELL:0001` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
-  - missing deterministic token
-  - canonical_sha256(
-- `E117_IR_NONDETERMINISM_SMELL:0002` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
-  - missing deterministic token
-  - sorted(
-- `E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0002` RISK `E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL` `security.hidden_privilege_escalation_smell` (src/client/ui/viewer_shell.py)
-  - privilege escalation marker detected outside control subsystem
-  - "entitlement.control.admin",
-- `E131_SILENT_DOWNGRADE_SMELL:0001` RISK `E131_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)
-  - downgrade marker found outside control subsystem
-  - module_node_id=module:src/inspection
-- `E133_SPEC_HARDCODE_SMELL:0001` RISK `E133_SPEC_HARDCODE_SMELL` `architecture.spec_hardcode_smell` (src/mobility/geometry/geometry_engine.py)
-  - hardcoded infrastructure spec literal outside SpecSheet declarations
-  - clearance = {"width_mm": 3000, "height_mm": 4000}
-- `E138_INLINE_STRENGTH_CHECK_SMELL:0001` RISK `E138_INLINE_STRENGTH_CHECK_SMELL` `architecture.inline_strength_check_smell` (tools/xstack/sessionx/process_runtime.py)
-  - inline structural load/strength check outside mechanics substrate
-  - max_load=0 if bool(inputs.get("zero_max_load_on_fracture", True)) else int(max(0, _as_int(edge_row.get("max_load", 0), 0))),
-- `E139_INLINE_FRICTION_SMELL:0001` RISK `E139_INLINE_FRICTION_SMELL` `architecture.inline_friction_smell` (src/mobility/micro/constrained_motion_solver.py)
-  - inline friction/traction logic outside FIELD runtime
-  - friction_permille=int(friction_permille),
-- `E139_INLINE_FRICTION_SMELL:0002` RISK `E139_INLINE_FRICTION_SMELL` `architecture.inline_friction_smell` (src/mobility/micro/free_motion_solver.py)
-  - inline friction/traction logic outside FIELD runtime
-  - traction_permille = int(max(1, _as_int(effects.get("traction_permille", 1000), 1000)))
-- `E141_WEATHER_HACK_SMELL:0001` RISK `E141_WEATHER_HACK_SMELL` `architecture.weather_hack_smell` (tools/xstack/sessionx/ui_host.py)
-  - possible direct weather/render hack outside FIELD process path
-  - if window_is_nondiegetic and not required_entitlements:
-- `E142_MOBILITY_SPECIAL_CASE_SMELL:0001` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (src/logic/protocol/protocol_engine.py)
-  - mobility special-case branch detected
-  - send = process_signal_send(current_tick=tick, channel_id=channel_id, from_node_id=source_node, artifact_id=_t(winner.get("frame_id")), sende
-- `E142_MOBILITY_SPECIAL_CASE_SMELL:0002` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (src/specs/spec_engine.py)
-  - mobility special-case branch detected
-  - if measured_derailment is not None and int(measured_derailment) >= 900 and grade == "pass":
-- `E142_MOBILITY_SPECIAL_CASE_SMELL:0003` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (tools/xstack/sessionx/process_runtime.py)
-  - mobility special-case branch detected
-  - derail_risk_band = "high" if int(derail_risk_permille) >= 1000 else ("medium" if int(derail_risk_permille) >= 700 else "low")
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0001` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/client/ui/teleport_controller.py)
-  - direct position/body mutation outside process runtime
-  - position_mm=_as_map(coords.get("position_mm")),
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0002` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/client/ui/viewer_shell.py)
-  - direct position/body mutation outside process runtime
-  - position_mm = _vector3_int(state.get("position_mm"))
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0003` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/embodiment/collision/macro_heightfield_provider.py)
-  - direct position/body mutation outside process runtime
-  - position_mm=position,
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0004` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/field/field_boundary_exchange.py)
-  - direct position/body mutation outside process runtime
-  - position_mm = _vector3_int(portal_ext.get("position_mm"))
-- `E144_ADHOC_SPEED_LIMIT_SMELL:0001` RISK `E144_ADHOC_SPEED_LIMIT_SMELL` `architecture.adhoc_speed_limit_smell` (src/mechanics/structural_graph_engine.py)
-  - ad-hoc speed limit logic detected
-  - recommended_speed_cap_permille = 1000
-- `E144_ADHOC_SPEED_LIMIT_SMELL:0002` RISK `E144_ADHOC_SPEED_LIMIT_SMELL` `architecture.adhoc_speed_limit_smell` (tools/xstack/sessionx/process_runtime.py)
-  - ad-hoc speed limit logic detected
-  - "recommended_speed_cap_permille": int(max(0, _as_int(mechanics_summary.get("recommended_speed_cap_permille", 1000), 1000))),
-- `E147_MOBILITY_GRAPH_DUPLICATION_SMELL:0001` RISK `E147_MOBILITY_GRAPH_DUPLICATION_SMELL` `architecture.mobility_graph_duplication_smell` (src/pollution/dispersion_engine.py)
-  - potential ad-hoc mobility graph duplication detected
-  - neighbor_map: Mapping[str, object],
-- `E154_DERAILMENT_BYPASS_SMELL:0001` RISK `E154_DERAILMENT_BYPASS_SMELL` `architecture.derailment_bypass_smell` (src/mobility/travel/reenactment.py)
-  - derailment signaling/state mutation outside process.mob_derail path
-  - if str(row.get("kind", "")).strip() == "incident_stub" and reason_code.startswith("incident.derailment."):
-- `E160_VEHICLE_INTERIOR_SPECIAL_CASE_SMELL:0001` RISK `E160_VEHICLE_INTERIOR_SPECIAL_CASE_SMELL` `architecture.vehicle_interior_special_case_smell` (tools/xstack/sessionx/observation.py)
-  - vehicle interior special-case detected
-  - if channel_id == "ch.diegetic.vehicle.pressure":
-- `E163_SUBSTRATE_BYPASS_SMELL:0001` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.elec.panel.close
-- `E163_SUBSTRATE_BYPASS_SMELL:0002` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.elec.panel.open
-- `E163_SUBSTRATE_BYPASS_SMELL:0003` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.fluid.isolate_section
-- `E163_SUBSTRATE_BYPASS_SMELL:0004` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.fluid.open_valve
-- `E163_SUBSTRATE_BYPASS_SMELL:0005` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.accept
-- `E163_SUBSTRATE_BYPASS_SMELL:0006` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.promote_network
-- `E163_SUBSTRATE_BYPASS_SMELL:0007` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.revert
-- `E163_SUBSTRATE_BYPASS_SMELL:0008` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.mobility.network_create_from_formalization
-- `E163_SUBSTRATE_BYPASS_SMELL:0009` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.inspect_commitments
-- `E163_SUBSTRATE_BYPASS_SMELL:0010` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.inspect_mobility_edge
-- `E163_SUBSTRATE_BYPASS_SMELL:0011` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.promote_to_network
-- `E163_SUBSTRATE_BYPASS_SMELL:0012` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.schedule_maintenance
-- `E163_SUBSTRATE_BYPASS_SMELL:0013` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - process.on_planet.maintenance.inspect_condition
-- `E164_DIRECT_MESSAGE_SMELL:0001` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/client/net/loopback_client.py)
-  - possible direct message propagation outside SIG transport path
-  - return transport.send(encode_proto_message(message))
-- `E164_DIRECT_MESSAGE_SMELL:0002` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/interface.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0003` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/loopback.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0004` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/tcp_stub.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0005` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/udp_stub.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0006` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/server/net/loopback_transport.py)
-  - possible direct message propagation outside SIG transport path
-  - sent = transport.send(encode_proto_message(proto))
-- `E164_DIRECT_MESSAGE_SMELL:0007` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/server/runtime/tick_loop.py)
-  - possible direct message propagation outside SIG transport path
-  - tick_stream = broadcast_tick_stream(
-- `E164_DIRECT_MESSAGE_SMELL:0008` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (tools/xstack/sessionx/net_handshake.py)
-  - possible direct message propagation outside SIG transport path
-  - sent = client.send(encode_proto_message(request_message))
-- `E167_NON_DETERMINISTIC_QUEUE_ORDER_SMELL:0001` RISK `E167_NON_DETERMINISTIC_QUEUE_ORDER_SMELL` `architecture.nondeterministic_queue_order_smell` (src/signals/transport/transport_engine.py)
-  - queue processing appears unsorted
-  - for queue_row in queue_rows:
-- `E169_BROADCAST_BYPASS_SMELL:0001` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/electric/protection/protection_engine.py)
-  - broadcast/group semantics outside address engine
-  - group_id = str(row.get("coordination_group_id", "")).strip() or "coord.group.default"
-- `E169_BROADCAST_BYPASS_SMELL:0002` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/logic/protocol/protocol_engine.py)
-  - broadcast/group semantics outside address engine
-  - "broadcast_subject_ids": [slot["subject_id"]],
-- `E169_BROADCAST_BYPASS_SMELL:0003` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/bulletin_engine.py)
-  - broadcast/group semantics outside address engine
-  - return {"kind": "broadcast", "broadcast_scope": target_id, "to_node_id": str(row.get("to_node_id", "node.unknown")).strip() or "node.unknown
-- `E169_BROADCAST_BYPASS_SMELL:0004` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/dispatch_engine.py)
-  - broadcast/group semantics outside address engine
-  - "group_id": str(policy_ext.get("dispatch_report_group_id", "group.dispatch.default")).strip() or "group.dispatch.default",
-- `E169_BROADCAST_BYPASS_SMELL:0005` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/standards_engine.py)
-  - broadcast/group semantics outside address engine
-  - "group_id": str(policy_ext.get("report_group_id", "group.dispatch.default")).strip() or "group.dispatch.default",
-- `E170_ADHOC_LOSS_SMELL:0001` RISK `E170_ADHOC_LOSS_SMELL` `architecture.adhoc_loss_smell` (src/inspection/inspection_engine.py)
-  - loss logic appears outside SIG transport quality layer
-  - int(max(0, _as_int(ext.get("field_loss_modifier_permille", 0), 0)))
-- `E171_SILENT_CORRUPTION_SMELL:0001` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/inspection/inspection_engine.py)
-  - possible corruption handling outside SIG transport event path
-  - elif state_token == "corrupted":
-- `E171_SILENT_CORRUPTION_SMELL:0002` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/lib/store/gc_engine.py)
-  - possible corruption handling outside SIG transport event path
-  - "remediation": "Run `python tools/lib/tool_store_verify.py --store-root {}` and repair the reported corruption before retrying GC.".format(_
-- `E171_SILENT_CORRUPTION_SMELL:0003` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/logic/protocol/protocol_engine.py)
-  - possible corruption handling outside SIG transport event path
-  - protocol_result = {"delivered": "delivered", "corrupted": "corrupted"}.get(delivery_state, "dropped")
-- `E171_SILENT_CORRUPTION_SMELL:0004` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/logic/protocol/rows.py)
-  - possible corruption handling outside SIG transport event path
-  - if result_token not in {"delivered", "dropped", "blocked", "corrupted"}:
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0001` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/geo/lens/cctv_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight=1.0,
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0002` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/inspection/inspection_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight = float(row.get("trust_weight", 1.0))
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0003` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/logic/protocol/protocol_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_edge_rows=state["signal_trust_edge_rows"],
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0004` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/signals/transport/transport_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight=float(row.get("trust_weight", 1.0)),
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0005` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (tools/xstack/sessionx/process_runtime.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight = float(_as_float(receipt_row.get("trust_weight", 1.0), 1.0))
-- `E174_DIRECT_SCHEDULE_MUTATION_SMELL:0001` RISK `E174_DIRECT_SCHEDULE_MUTATION_SMELL` `architecture.direct_schedule_mutation_smell` (tools/xstack/sessionx/process_runtime.py)
-  - possible direct travel schedule mutation outside dispatch control path
-  - rows = state.get("travel_schedules")
-- `E176_AFFORDANCE_GAP_SMELL:0001` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.admin.meta_override
-- `E176_AFFORDANCE_GAP_SMELL:0002` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0003` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0004` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0005` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0006` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0007` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0008` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0009` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0010` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0011` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
-- `E176_AFFORDANCE_GAP_SMELL:0012` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
-- `E176_AFFORDANCE_GAP_SMELL:0013` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
-- `E176_AFFORDANCE_GAP_SMELL:0014` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.unplug
-- `E176_AFFORDANCE_GAP_SMELL:0015` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.unplug
-- `E176_AFFORDANCE_GAP_SMELL:0016` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.unplug
-- `E176_AFFORDANCE_GAP_SMELL:0017` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.explain_trip
-- `E176_AFFORDANCE_GAP_SMELL:0018` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.explain_trip
-- `E176_AFFORDANCE_GAP_SMELL:0019` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.explain_trip
-- `E176_AFFORDANCE_GAP_SMELL:0020` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.flip_breaker
-- `E176_AFFORDANCE_GAP_SMELL:0021` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.flip_breaker
-- `E176_AFFORDANCE_GAP_SMELL:0022` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.flip_breaker
-- `E176_AFFORDANCE_GAP_SMELL:0023` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.isolator.close
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/ui_codegen/tests/ui_codegen_tests.cpp)
+  - Detected key access without obvious schema anchor: beta.action
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/ui_codegen/tests/ui_codegen_tests.cpp)
+  - Detected key access without obvious schema anchor: beta.action
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: default_install_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: default_modset_id
+  - Best-effort heuristic; verify if schema declaration exists.
