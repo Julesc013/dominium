@@ -95,6 +95,20 @@ UPDATE_SIM_RUN_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_run_update_sim.p
 UPDATE_SIM_RUN_JSON_REL = os.path.join("data", "audit", "update_sim_run.json")
 UPDATE_SIM_RUN_DOC_REL = os.path.join("docs", "audit", "UPDATE_SIM_RUN.md")
 UPDATE_SIM_BASELINE_REL = os.path.join("data", "regression", "update_sim_baseline.json")
+TRUST_STRICT_RETRO_AUDIT_REL = os.path.join("docs", "audit", "TRUST_STRICT0_RETRO_AUDIT.md")
+TRUST_STRICT_MODEL_DOC_REL = os.path.join("docs", "security", "TRUST_STRICT_MODEL_v0_0_0.md")
+TRUST_STRICT_RUN_TOOL_REL = os.path.join("tools", "security", "tool_run_trust_strict_suite")
+TRUST_STRICT_RUN_TOOL_PY_REL = os.path.join("tools", "security", "tool_run_trust_strict_suite.py")
+TRUST_STRICT_RUN_JSON_REL = os.path.join("data", "audit", "trust_strict_run.json")
+TRUST_STRICT_RUN_DOC_REL = os.path.join("docs", "audit", "TRUST_STRICT_SUITE_RUN.md")
+TRUST_STRICT_BASELINE_REL = os.path.join("data", "regression", "trust_strict_baseline.json")
+TRUST_STRICT_BASELINE_DOC_REL = os.path.join("docs", "audit", "TRUST_STRICT_BASELINE.md")
+TRUST_STRICT_UNSIGNED_RELEASE_INDEX_REL = os.path.join("data", "baselines", "trust", "unsigned_release_index.json")
+TRUST_STRICT_SIGNED_RELEASE_INDEX_REL = os.path.join("data", "baselines", "trust", "signed_release_index.json")
+TRUST_STRICT_UNSIGNED_PACK_REL = os.path.join("data", "baselines", "trust", "unsigned_official_pack.compat.json")
+TRUST_STRICT_SIGNED_LICENSE_REL = os.path.join("data", "baselines", "trust", "signed_license_capability.json")
+LICENSE_CAPABILITY_SCHEMA_REL = os.path.join("schema", "security", "license_capability_artifact.schema")
+LICENSE_CAPABILITY_SCHEMA_JSON_REL = os.path.join("schemas", "license_capability_artifact.schema.json")
 
 TRUTH_PURITY_TARGETS = (
     os.path.join("schema", "universe", "universe_state.schema"),
@@ -2136,6 +2150,173 @@ def scan_update_sim(repo_root: str) -> dict:
     )
 
 
+def scan_trust_strict_suite(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    required_paths = [
+        TRUST_STRICT_RETRO_AUDIT_REL,
+        TRUST_STRICT_MODEL_DOC_REL,
+        LICENSE_CAPABILITY_SCHEMA_REL,
+        LICENSE_CAPABILITY_SCHEMA_JSON_REL,
+        TRUST_STRICT_UNSIGNED_RELEASE_INDEX_REL,
+        TRUST_STRICT_SIGNED_RELEASE_INDEX_REL,
+        TRUST_STRICT_UNSIGNED_PACK_REL,
+        TRUST_STRICT_SIGNED_LICENSE_REL,
+        TRUST_STRICT_RUN_TOOL_REL,
+        TRUST_STRICT_RUN_TOOL_PY_REL,
+        TRUST_STRICT_RUN_JSON_REL,
+        TRUST_STRICT_RUN_DOC_REL,
+        TRUST_STRICT_BASELINE_REL,
+        TRUST_STRICT_BASELINE_DOC_REL,
+    ]
+    scanned_paths = sorted(set(required_paths))
+    findings: list[dict] = []
+
+    for rel_path in required_paths:
+        abs_path = _repo_abs(repo_root_abs, rel_path)
+        if abs_path and os.path.exists(abs_path):
+            continue
+        findings.append(
+            _finding_row(
+                category="trust_strict.required_surface",
+                path=rel_path,
+                line=1,
+                message="required trust strict surface is missing.",
+                rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST",
+            )
+        )
+
+    run_payload = load_json_if_present(repo_root_abs, TRUST_STRICT_RUN_JSON_REL)
+    baseline_payload = load_json_if_present(repo_root_abs, TRUST_STRICT_BASELINE_REL)
+    fresh_report = {}
+    fresh_baseline = {}
+
+    try:
+        from tools.security.trust_strict_common import (
+            TRUST_STRICT_BASELINE_SCHEMA_ID,
+            TRUST_STRICT_REQUIRED_TAG,
+            TRUST_STRICT_RUN_SCHEMA_ID,
+            build_trust_fixture_payloads,
+            build_trust_strict_baseline,
+            run_trust_strict_suite,
+            trust_strict_baseline_hash,
+            trust_strict_run_hash,
+        )
+    except Exception:
+        findings.append(
+            _finding_row(
+                category="trust_strict.required_surface",
+                path=TRUST_STRICT_RUN_TOOL_PY_REL,
+                line=1,
+                message="trust strict tooling could not be imported.",
+                rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST",
+            )
+        )
+    else:
+        if run_payload and _token(run_payload.get("schema_id")) != TRUST_STRICT_RUN_SCHEMA_ID:
+            findings.append(_finding_row(category="trust_strict.required_surface", path=TRUST_STRICT_RUN_JSON_REL, line=1, message="trust strict run schema_id mismatch.", rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST"))
+        if baseline_payload and _token(baseline_payload.get("schema_id")) != TRUST_STRICT_BASELINE_SCHEMA_ID:
+            findings.append(_finding_row(category="trust_strict.required_surface", path=TRUST_STRICT_BASELINE_REL, line=1, message="trust strict baseline schema_id mismatch.", rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST"))
+        if run_payload and _token(run_payload.get("deterministic_fingerprint")) != trust_strict_run_hash(run_payload):
+            findings.append(_finding_row(category="trust_strict.required_surface", path=TRUST_STRICT_RUN_JSON_REL, line=1, message="trust strict run deterministic_fingerprint mismatch.", rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST"))
+        if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != trust_strict_baseline_hash(baseline_payload):
+            findings.append(_finding_row(category="trust_strict.required_surface", path=TRUST_STRICT_BASELINE_REL, line=1, message="trust strict baseline deterministic_fingerprint mismatch.", rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST"))
+        if baseline_payload and _token(baseline_payload.get("required_update_tag")) != TRUST_STRICT_REQUIRED_TAG:
+            findings.append(_finding_row(category="trust_strict.required_surface", path=TRUST_STRICT_BASELINE_REL, line=1, message="trust strict baseline is missing the required regression update tag.", snippet=_token(baseline_payload.get("required_update_tag")), rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST"))
+
+        expected_fixtures = build_trust_fixture_payloads(repo_root_abs)
+        for fixture_id, rel_path in (
+            ("unsigned_release_index", TRUST_STRICT_UNSIGNED_RELEASE_INDEX_REL),
+            ("signed_release_index", TRUST_STRICT_SIGNED_RELEASE_INDEX_REL),
+            ("unsigned_official_pack", TRUST_STRICT_UNSIGNED_PACK_REL),
+            ("signed_license_capability", TRUST_STRICT_SIGNED_LICENSE_REL),
+        ):
+            current = load_json_if_present(repo_root_abs, rel_path)
+            expected = _as_map(expected_fixtures.get(fixture_id))
+            if current and canonical_json_text(current) == canonical_json_text(expected):
+                continue
+            findings.append(
+                _finding_row(
+                    category="trust_strict.required_surface",
+                    path=rel_path,
+                    line=1,
+                    message="committed trust strict fixture drifted from the deterministic generator.",
+                    snippet=_token(expected.get("deterministic_fingerprint")),
+                    rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        if run_payload and _token(run_payload.get("result")) != "complete":
+            findings.append(_finding_row(category="trust_strict.required_surface", path=TRUST_STRICT_RUN_JSON_REL, line=1, message="committed trust strict run report is not passing.", snippet=_token(run_payload.get("deterministic_fingerprint")), rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST"))
+
+        case_rows = { _token(_as_map(row).get("case_id")): _as_map(row) for row in list(run_payload.get("cases") or []) }
+        strict_release = case_rows.get("strict_ranked_refuses_unsigned_release_index", {})
+        strict_pack = case_rows.get("strict_ranked_refuses_unsigned_official_pack", {})
+        license_case = case_rows.get("license_capability_requires_trusted_signature", {})
+        display_case = case_rows.get("license_capability_availability_display", {})
+
+        for case_id, row in (("strict_ranked_refuses_unsigned_release_index", strict_release), ("strict_ranked_refuses_unsigned_official_pack", strict_pack)):
+            if _token(row.get("result")) == "complete":
+                continue
+            findings.append(
+                _finding_row(
+                    category="trust_strict.strict_allows_unsigned",
+                    path=TRUST_STRICT_RUN_JSON_REL,
+                    line=1,
+                    message="strict trust case '{}' no longer refuses unsigned governed artifacts deterministically.".format(case_id),
+                    snippet=_token(row.get("refusal_code")),
+                    rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        license_details = _as_map(license_case.get("details"))
+        if _token(license_case.get("result")) != "complete" or "signer.fixture.official" not in list(license_details.get("trusted_signer_ids") or []):
+            findings.append(
+                _finding_row(
+                    category="trust_strict.license_capability_not_signed",
+                    path=TRUST_STRICT_RUN_JSON_REL,
+                    line=1,
+                    message="license capability acceptance no longer proves a trusted signed artifact path.",
+                    snippet=_token(license_case.get("refusal_code")),
+                    rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        display_details = _as_map(display_case.get("details"))
+        if _token(display_case.get("result")) != "complete" or not list(display_details.get("available_capability_ids") or []):
+            findings.append(
+                _finding_row(
+                    category="trust_strict.required_surface",
+                    path=TRUST_STRICT_RUN_JSON_REL,
+                    line=1,
+                    message="license capability availability display drifted from the frozen baseline behavior.",
+                    snippet=_token(_as_map(display_case.get("details")).get("display_fingerprint")),
+                    rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        fresh_report = dict(run_trust_strict_suite(repo_root_abs, write_outputs=False) or {})
+        fresh_baseline = dict(build_trust_strict_baseline(fresh_report) or {})
+        if run_payload and _token(run_payload.get("deterministic_fingerprint")) != _token(fresh_report.get("deterministic_fingerprint")):
+            findings.append(_finding_row(category="trust_strict.required_surface", path=TRUST_STRICT_RUN_JSON_REL, line=1, message="committed trust strict run report drifted from the fresh deterministic rerun.", snippet=_token(fresh_report.get("deterministic_fingerprint")), rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST"))
+        if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != _token(fresh_baseline.get("deterministic_fingerprint")):
+            findings.append(_finding_row(category="trust_strict.required_surface", path=TRUST_STRICT_BASELINE_REL, line=1, message="committed trust strict baseline drifted from the fresh deterministic rerun.", snippet=_token(fresh_baseline.get("deterministic_fingerprint")), rule_id="INV-TRUST-STRICT-SUITE-MUST-PASS-BEFORE-DIST"))
+
+    return _check_result_payload(
+        check_id="trust_strict_scan",
+        description="Verify frozen strict trust surfaces, offline fixtures, commercialization hook signing behavior, and regression baseline agreement.",
+        scanned_paths=scanned_paths,
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "run_fingerprint": _token(run_payload.get("deterministic_fingerprint")),
+            "baseline_fingerprint": _token(baseline_payload.get("deterministic_fingerprint")),
+            "rerun_fingerprint": _token(_as_map(fresh_report).get("deterministic_fingerprint")),
+            "rerun_baseline_fingerprint": _token(_as_map(fresh_baseline).get("deterministic_fingerprint")),
+            "case_count": len(list(run_payload.get("cases") or [])),
+            "required_commit_tag": _token(baseline_payload.get("required_update_tag")),
+        },
+    )
+
+
 def scan_noncanonical_numeric_serialization(repo_root: str, override_paths: Sequence[str] | None = None) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     scanned_paths = _iter_override_paths(repo_root_abs, override_paths, NUMERIC_SERIALIZATION_TARGETS)
@@ -2743,6 +2924,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "disaster_suite_scan",
         "ecosystem_verify_scan",
         "update_sim_scan",
+        "trust_strict_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -2769,6 +2951,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "disaster_suite_scan": scan_disaster_suite(repo_root_abs),
         "ecosystem_verify_scan": scan_ecosystem_verify(repo_root_abs),
         "update_sim_scan": scan_update_sim(repo_root_abs),
+        "trust_strict_scan": scan_trust_strict_suite(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -3220,6 +3403,7 @@ __all__ = [
     "scan_renderer_truth_access",
     "scan_stability_markers",
     "scan_target_matrix",
+    "scan_trust_strict_suite",
     "scan_trust_bypass",
     "scan_truth_atomic_usage",
     "scan_truth_purity",
