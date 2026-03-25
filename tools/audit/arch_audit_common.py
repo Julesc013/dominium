@@ -3220,6 +3220,102 @@ def scan_toolchain_matrix(repo_root: str) -> dict:
     )
 
 
+def scan_dist_final_plan(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    findings: list[dict] = []
+    required_paths: list[str] = []
+    dryrun_report: dict = {}
+
+    try:
+        from tools.release.dist_final_common import (
+            DIST_FINAL_CHECKLIST_DOC_REL,
+            DIST_FINAL_DRYRUN_DOC_REL,
+            DIST_FINAL_DRYRUN_TOOL_PY_REL,
+            DIST_FINAL_DRYRUN_TOOL_REL,
+            DIST_FINAL_EXPECTED_ARTIFACTS_REL,
+            DIST_FINAL_PLAN_DOC_REL,
+            OMEGA10_RETRO_AUDIT_REL,
+            build_dist_final_dryrun_report,
+        )
+    except Exception:
+        return _check_result_payload(
+            check_id="dist_final_plan_scan",
+            description="Verify the Ω-10 final distribution plan, checklist, expected artifacts surface, and deterministic dry-run gate.",
+            scanned_paths=[],
+            blocking_findings=[
+                _finding_row(
+                    category="dist_final_plan.required_surface",
+                    path=os.path.join("tools", "release", "dist_final_common.py"),
+                    line=1,
+                    message="final distribution plan tooling could not be imported.",
+                    rule_id="INV-DIST-FINAL-PLAN-PRESENT",
+                )
+            ],
+            inventory={},
+        )
+
+    required_paths = [
+        OMEGA10_RETRO_AUDIT_REL,
+        DIST_FINAL_PLAN_DOC_REL,
+        DIST_FINAL_CHECKLIST_DOC_REL,
+        DIST_FINAL_EXPECTED_ARTIFACTS_REL,
+        DIST_FINAL_DRYRUN_TOOL_REL,
+        DIST_FINAL_DRYRUN_TOOL_PY_REL,
+        DIST_FINAL_DRYRUN_DOC_REL,
+    ]
+    for rel_path in required_paths:
+        if os.path.exists(_repo_abs(repo_root_abs, rel_path)):
+            continue
+        findings.append(
+            _finding_row(
+                category="dist_final_plan.required_surface",
+                path=rel_path,
+                line=1,
+                message="required Ω-10 final distribution plan surface is missing.",
+                rule_id="INV-DIST-FINAL-PLAN-PRESENT",
+            )
+        )
+
+    dryrun_report = build_dist_final_dryrun_report(repo_root_abs)
+    if _token(dryrun_report.get("result")) != "complete":
+        detail_parts: list[str] = []
+        missing_paths = list(dryrun_report.get("missing_paths") or [])
+        artifact_issues = list(dryrun_report.get("artifact_issues") or [])
+        if missing_paths:
+            detail_parts.append("missing={}".format(",".join(_token(path) for path in missing_paths[:6])))
+        if artifact_issues:
+            detail_parts.append(
+                "issues={}".format(
+                    ",".join(_token(_as_map(row).get("code")) for row in artifact_issues[:6])
+                )
+            )
+        findings.append(
+            _finding_row(
+                category="dist_final_plan.dryrun_failed",
+                path=DIST_FINAL_DRYRUN_DOC_REL,
+                line=1,
+                message="Ω-10 dry-run did not complete cleanly.",
+                snippet="; ".join(part for part in detail_parts if part)[:200],
+                rule_id="INV-DIST-FINAL-DRYRUN-PASS-BEFORE-DIST7",
+            )
+        )
+
+    return _check_result_payload(
+        check_id="dist_final_plan_scan",
+        description="Verify the Ω-10 final distribution plan, execution checklist, machine-readable expected artifacts registry, and deterministic dry-run gate.",
+        scanned_paths=sorted(set(required_paths)),
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "dryrun_result": _token(dryrun_report.get("result")),
+            "dryrun_missing_count": int(dryrun_report.get("missing_count", 0) or 0),
+            "dryrun_artifact_issue_count": int(dryrun_report.get("artifact_issue_count", 0) or 0),
+            "dryrun_expected_artifact_count": int(dryrun_report.get("expected_artifact_count", 0) or 0),
+            "dryrun_fingerprint": _token(dryrun_report.get("deterministic_fingerprint")),
+        },
+    )
+
+
 def run_arch_audit(repo_root: str) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     check_order = [
@@ -3237,6 +3333,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "trust_strict_scan",
         "offline_archive_scan",
         "toolchain_matrix_scan",
+        "dist_final_plan_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -3266,6 +3363,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "trust_strict_scan": scan_trust_strict_suite(repo_root_abs),
         "offline_archive_scan": scan_offline_archive(repo_root_abs),
         "toolchain_matrix_scan": scan_toolchain_matrix(repo_root_abs),
+        "dist_final_plan_scan": scan_dist_final_plan(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -3703,6 +3801,7 @@ __all__ = [
     "scan_archive_determinism",
     "scan_offline_archive",
     "scan_toolchain_matrix",
+    "scan_dist_final_plan",
     "scan_contract_pins",
     "scan_compiler_flags",
     "scan_disaster_suite",

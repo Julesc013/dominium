@@ -34978,6 +34978,74 @@ def _append_toolchain_matrix_invariant_findings(
         )
 
 
+def _append_dist_final_plan_invariant_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    plan_rule_id = "INV-DIST-FINAL-PLAN-PRESENT"
+    dryrun_rule_id = "INV-DIST-FINAL-DRYRUN-PASS-BEFORE-DIST7"
+    for rel_path, message in (
+        (
+            "docs/release/DIST_FINAL_PLAN_v0_0_0_mock.md",
+            "final distribution plan is required for Ω-10 integrated release execution",
+        ),
+        (
+            "docs/release/DIST_FINAL_CHECKLIST.md",
+            "final distribution checklist is required for Ω-10 execution tracking",
+        ),
+        (
+            "data/release/dist_final_expected_artifacts.json",
+            "expected artifacts registry is required for Ω-10 final distribution planning",
+        ),
+        (
+            "tools/release/tool_dist_final_dryrun.py",
+            "final distribution dry-run tool is required before DIST-7 execution",
+        ),
+    ):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message=message,
+                rule_id=plan_rule_id,
+            )
+        )
+
+    dryrun_rel = "docs/audit/DIST_FINAL_DRYRUN.md"
+    dryrun_text = _file_text(repo_root, dryrun_rel)
+    if not dryrun_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=dryrun_rel,
+                line_number=1,
+                snippet="missing",
+                message="final distribution dry-run report must exist before DIST-7 execution",
+                rule_id=dryrun_rule_id,
+            )
+        )
+        return
+    if "- result: `complete`" in dryrun_text:
+        return
+    findings.append(
+        _finding(
+            severity=severity,
+            file_path=dryrun_rel,
+            line_number=1,
+            snippet=dryrun_text[:140],
+            message="final distribution dry-run report must record result `complete` before DIST-7 execution",
+            rule_id=dryrun_rule_id,
+        )
+    )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -35709,6 +35777,7 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         _append_release_index_policy_findings,
         _append_trust_model_findings,
         _append_toolchain_matrix_invariant_findings,
+        _append_dist_final_plan_invariant_findings,
         _append_governance_model_findings,
         _append_performance_envelope_findings,
         _append_archive_policy_findings,
