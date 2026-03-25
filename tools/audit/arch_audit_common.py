@@ -54,6 +54,17 @@ BASELINE_UNIVERSE_VERIFY_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_verify
 BASELINE_UNIVERSE_VERIFY_JSON_REL = os.path.join("data", "audit", "baseline_universe_verify.json")
 BASELINE_UNIVERSE_VERIFY_DOC_REL = os.path.join("docs", "audit", "BASELINE_UNIVERSE_VERIFY.md")
 BASELINE_UNIVERSE_BASELINE_DOC_REL = os.path.join("docs", "audit", "BASELINE_UNIVERSE_BASELINE.md")
+MVP_GAMEPLAY_RETRO_AUDIT_REL = os.path.join("docs", "audit", "MVP_GAMEPLAY0_RETRO_AUDIT.md")
+MVP_GAMEPLAY_DOC_REL = os.path.join("docs", "mvp", "MVP_GAMEPLAY_LOOP_v0_0_0.md")
+MVP_GAMEPLAY_SNAPSHOT_REL = os.path.join("data", "baselines", "gameplay", "gameplay_loop_snapshot.json")
+MVP_GAMEPLAY_RUN_TOOL_REL = os.path.join("tools", "mvp", "tool_run_gameplay_loop")
+MVP_GAMEPLAY_RUN_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_run_gameplay_loop.py")
+MVP_GAMEPLAY_VERIFY_TOOL_REL = os.path.join("tools", "mvp", "tool_verify_gameplay_loop")
+MVP_GAMEPLAY_VERIFY_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_verify_gameplay_loop.py")
+MVP_GAMEPLAY_VERIFY_JSON_REL = os.path.join("data", "audit", "gameplay_verify.json")
+MVP_GAMEPLAY_VERIFY_DOC_REL = os.path.join("docs", "audit", "MVP_GAMEPLAY_VERIFY.md")
+MVP_GAMEPLAY_RUN_DOC_REL = os.path.join("docs", "audit", "MVP_GAMEPLAY_LOOP_RUN.md")
+MVP_GAMEPLAY_BASELINE_DOC_REL = os.path.join("docs", "audit", "MVP_GAMEPLAY_BASELINE.md")
 
 TRUTH_PURITY_TARGETS = (
     os.path.join("schema", "universe", "universe_state.schema"),
@@ -1227,6 +1238,150 @@ def scan_baseline_universe(repo_root: str) -> dict:
     )
 
 
+def scan_gameplay_loop(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    required_paths = [
+        MVP_GAMEPLAY_RETRO_AUDIT_REL,
+        MVP_GAMEPLAY_DOC_REL,
+        MVP_GAMEPLAY_SNAPSHOT_REL,
+        MVP_GAMEPLAY_RUN_TOOL_REL,
+        MVP_GAMEPLAY_RUN_TOOL_PY_REL,
+        MVP_GAMEPLAY_VERIFY_TOOL_REL,
+        MVP_GAMEPLAY_VERIFY_TOOL_PY_REL,
+        MVP_GAMEPLAY_VERIFY_JSON_REL,
+        MVP_GAMEPLAY_VERIFY_DOC_REL,
+        MVP_GAMEPLAY_RUN_DOC_REL,
+        MVP_GAMEPLAY_BASELINE_DOC_REL,
+    ]
+    scanned_paths = sorted(set(required_paths))
+    findings: list[dict] = []
+
+    for rel_path in required_paths:
+        abs_path = _repo_abs(repo_root_abs, rel_path)
+        if abs_path and os.path.exists(abs_path):
+            continue
+        findings.append(
+            _finding_row(
+                category="gameplay_loop.required_surface",
+                path=rel_path,
+                line=1,
+                message="required MVP gameplay loop surface is missing.",
+                rule_id="INV-MVP-GAMEPLAY-HARNESS-REQUIRED",
+            )
+        )
+
+    snapshot_payload = load_json_if_present(repo_root_abs, MVP_GAMEPLAY_SNAPSHOT_REL)
+    snapshot_record = _as_map(snapshot_payload.get("record"))
+    snapshot_fp = _token(snapshot_record.get("deterministic_fingerprint"))
+    if snapshot_payload and (not snapshot_fp):
+        findings.append(
+            _finding_row(
+                category="gameplay_loop.snapshot_fingerprint",
+                path=MVP_GAMEPLAY_SNAPSHOT_REL,
+                line=1,
+                message="MVP gameplay loop snapshot is missing deterministic_fingerprint.",
+                rule_id="INV-MVP-GAMEPLAY-HARNESS-REQUIRED",
+            )
+        )
+
+    verify_report = {}
+    if snapshot_payload and snapshot_record:
+        try:
+            from tools.mvp.gameplay_loop_common import gameplay_snapshot_record_hash, verify_gameplay_loop
+        except Exception:
+            findings.append(
+                _finding_row(
+                    category="gameplay_loop.tooling_missing",
+                    path=MVP_GAMEPLAY_VERIFY_TOOL_PY_REL,
+                    line=1,
+                    message="MVP gameplay loop verification helpers could not be imported.",
+                    rule_id="INV-MVP-GAMEPLAY-HARNESS-REQUIRED",
+                )
+            )
+        else:
+            expected_snapshot_fp = gameplay_snapshot_record_hash(snapshot_record)
+            if snapshot_fp != expected_snapshot_fp:
+                findings.append(
+                    _finding_row(
+                        category="gameplay_loop.snapshot_fingerprint",
+                        path=MVP_GAMEPLAY_SNAPSHOT_REL,
+                        line=1,
+                        message="MVP gameplay loop snapshot deterministic_fingerprint does not match canonical record hash.",
+                        rule_id="INV-MVP-GAMEPLAY-HARNESS-REQUIRED",
+                    )
+                )
+            verify_report = dict(verify_gameplay_loop(repo_root_abs) or {})
+            if not bool(verify_report.get("matches_snapshot")):
+                findings.append(
+                    _finding_row(
+                        category="gameplay_loop.replay_mismatch",
+                        path=MVP_GAMEPLAY_SNAPSHOT_REL,
+                        line=1,
+                        message="MVP gameplay loop snapshot does not match regeneration from the frozen baseline seed and baseline universe.",
+                        snippet="; ".join(str(item).strip() for item in list(verify_report.get("mismatched_fields") or [])[:6] if str(item).strip()),
+                        rule_id="INV-REPLAY-DETERMINISTIC",
+                    )
+                )
+            if not bool(verify_report.get("save_reload_matches")):
+                findings.append(
+                    _finding_row(
+                        category="gameplay_loop.replay_mismatch",
+                        path=MVP_GAMEPLAY_SNAPSHOT_REL,
+                        line=1,
+                        message="MVP gameplay loop save-reload cycle does not reproduce the frozen post-edit anchor.",
+                        snippet=_token(_as_map(verify_report.get("observed_record")).get("deterministic_fingerprint")),
+                        rule_id="INV-REPLAY-DETERMINISTIC",
+                    )
+                )
+            if not bool(verify_report.get("replay_matches_final_anchor")):
+                findings.append(
+                    _finding_row(
+                        category="gameplay_loop.replay_mismatch",
+                        path=MVP_GAMEPLAY_SNAPSHOT_REL,
+                        line=1,
+                        message="MVP gameplay loop replay does not reproduce the frozen final anchor after reload.",
+                        rule_id="INV-REPLAY-DETERMINISTIC",
+                    )
+                )
+            if not bool(verify_report.get("replay_matches_baseline")):
+                findings.append(
+                    _finding_row(
+                        category="gameplay_loop.replay_mismatch",
+                        path=MVP_GAMEPLAY_SNAPSHOT_REL,
+                        line=1,
+                        message="MVP gameplay loop replay does not reproduce the frozen baseline final anchor.",
+                        rule_id="INV-REPLAY-DETERMINISTIC",
+                    )
+                )
+            if not bool(verify_report.get("logic_deterministic")):
+                findings.append(
+                    _finding_row(
+                        category="gameplay_loop.logic_mismatch",
+                        path=MVP_GAMEPLAY_SNAPSHOT_REL,
+                        line=1,
+                        message="MVP gameplay loop logic interaction is no longer deterministic.",
+                        rule_id="INV-REPLAY-DETERMINISTIC",
+                    )
+                )
+
+    return _check_result_payload(
+        check_id="gameplay_loop_scan",
+        description="Verify required MVP gameplay loop surfaces, committed snapshot replay, save-reload continuity, and deterministic logic interaction.",
+        scanned_paths=scanned_paths,
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "snapshot_fingerprint": snapshot_fp,
+            "verify_fingerprint": _token(_as_map(verify_report).get("deterministic_fingerprint")),
+            "matches_snapshot": bool(_as_map(verify_report).get("matches_snapshot")),
+            "save_reload_matches": bool(_as_map(verify_report).get("save_reload_matches")),
+            "replay_matches_final_anchor": bool(_as_map(verify_report).get("replay_matches_final_anchor")),
+            "replay_matches_baseline": bool(_as_map(verify_report).get("replay_matches_baseline")),
+            "logic_deterministic": bool(_as_map(verify_report).get("logic_deterministic")),
+        },
+    )
+
+
 def scan_noncanonical_numeric_serialization(repo_root: str, override_paths: Sequence[str] | None = None) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     scanned_paths = _iter_override_paths(repo_root_abs, override_paths, NUMERIC_SERIALIZATION_TARGETS)
@@ -1830,6 +1985,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "float_in_truth_scan",
         "worldgen_lock_scan",
         "baseline_universe_scan",
+        "gameplay_loop_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -1852,6 +2008,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "float_in_truth_scan": scan_float_in_truth(repo_root_abs),
         "worldgen_lock_scan": scan_worldgen_lock(repo_root_abs),
         "baseline_universe_scan": scan_baseline_universe(repo_root_abs),
+        "gameplay_loop_scan": scan_gameplay_loop(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -2293,6 +2450,7 @@ __all__ = [
     "scan_determinism",
     "scan_duplicate_semantics",
     "scan_float_in_truth",
+    "scan_gameplay_loop",
     "scan_noncanonical_numeric_serialization",
     "scan_pack_compat",
     "scan_parallel_output_canonicalization",

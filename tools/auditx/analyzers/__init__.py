@@ -494,6 +494,8 @@ from analyzers import e539_yanked_build_selectable_smell
 from analyzers import e540_non_deterministic_selection_smell
 from analyzers import e541_worldgen_unnamed_rng_smell
 from analyzers import e542_worldgen_float_truth_smell
+from analyzers import e545_gameplay_nondeterministic_smell
+from analyzers import e546_missing_gameplay_baseline_smell
 
 
 ANALYZERS = (
@@ -991,6 +993,8 @@ ANALYZERS = (
     e540_non_deterministic_selection_smell,
     e541_worldgen_unnamed_rng_smell,
     e542_worldgen_float_truth_smell,
+    e545_gameplay_nondeterministic_smell,
+    e546_missing_gameplay_baseline_smell,
 )
 
 
