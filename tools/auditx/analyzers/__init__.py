@@ -498,6 +498,9 @@ from analyzers import e545_gameplay_nondeterministic_smell
 from analyzers import e546_missing_gameplay_baseline_smell
 from analyzers import e547_silent_fallback_smell
 from analyzers import e548_missing_remediation_hint_smell
+from analyzers import e549_missing_identity_block_smell
+from analyzers import e550_missing_migration_policy_smell
+from analyzers import e551_yanked_selectable_smell
 
 
 ANALYZERS = (
@@ -999,6 +1002,9 @@ ANALYZERS = (
     e546_missing_gameplay_baseline_smell,
     e547_silent_fallback_smell,
     e548_missing_remediation_hint_smell,
+    e549_missing_identity_block_smell,
+    e550_missing_migration_policy_smell,
+    e551_yanked_selectable_smell,
 )
 
 

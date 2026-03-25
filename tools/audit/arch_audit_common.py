@@ -76,6 +76,14 @@ DISASTER_RUN_JSON_REL = os.path.join("data", "audit", "disaster_suite_run.json")
 DISASTER_RUN_DOC_REL = os.path.join("docs", "audit", "DISASTER_SUITE_RUN.md")
 DISASTER_BASELINE_REL = os.path.join("data", "regression", "disaster_suite_baseline.json")
 DISASTER_BASELINE_DOC_REL = os.path.join("docs", "audit", "DISASTER_SUITE_BASELINE.md")
+ECOSYSTEM_VERIFY_RETRO_AUDIT_REL = os.path.join("docs", "audit", "ECOSYSTEM_VERIFY0_RETRO_AUDIT.md")
+ECOSYSTEM_VERIFY_MODEL_DOC_REL = os.path.join("docs", "mvp", "ECOSYSTEM_VERIFY_MODEL_v0_0_0.md")
+ECOSYSTEM_VERIFY_RUN_TOOL_REL = os.path.join("tools", "mvp", "tool_verify_ecosystem")
+ECOSYSTEM_VERIFY_RUN_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_verify_ecosystem.py")
+ECOSYSTEM_VERIFY_RUN_JSON_REL = os.path.join("data", "audit", "ecosystem_verify_run.json")
+ECOSYSTEM_VERIFY_RUN_DOC_REL = os.path.join("docs", "audit", "ECOSYSTEM_VERIFY_RUN.md")
+ECOSYSTEM_VERIFY_BASELINE_REL = os.path.join("data", "regression", "ecosystem_verify_baseline.json")
+ECOSYSTEM_VERIFY_BASELINE_DOC_REL = os.path.join("docs", "audit", "ECOSYSTEM_VERIFY_BASELINE.md")
 
 TRUTH_PURITY_TARGETS = (
     os.path.join("schema", "universe", "universe_state.schema"),
@@ -1650,6 +1658,231 @@ def scan_disaster_suite(repo_root: str) -> dict:
     )
 
 
+def scan_ecosystem_verify(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    required_paths = [
+        ECOSYSTEM_VERIFY_RETRO_AUDIT_REL,
+        ECOSYSTEM_VERIFY_MODEL_DOC_REL,
+        ECOSYSTEM_VERIFY_RUN_TOOL_REL,
+        ECOSYSTEM_VERIFY_RUN_TOOL_PY_REL,
+        ECOSYSTEM_VERIFY_RUN_JSON_REL,
+        ECOSYSTEM_VERIFY_RUN_DOC_REL,
+        ECOSYSTEM_VERIFY_BASELINE_REL,
+        ECOSYSTEM_VERIFY_BASELINE_DOC_REL,
+    ]
+    scanned_paths = sorted(set(required_paths))
+    findings: list[dict] = []
+
+    for rel_path in required_paths:
+        abs_path = _repo_abs(repo_root_abs, rel_path)
+        if abs_path and os.path.exists(abs_path):
+            continue
+        findings.append(
+            _finding_row(
+                category="ecosystem_verify.required_surface",
+                path=rel_path,
+                line=1,
+                message="required ecosystem verify surface is missing.",
+                rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+            )
+        )
+
+    run_payload = load_json_if_present(repo_root_abs, ECOSYSTEM_VERIFY_RUN_JSON_REL)
+    baseline_payload = load_json_if_present(repo_root_abs, ECOSYSTEM_VERIFY_BASELINE_REL)
+    fresh_report = {}
+    fresh_baseline = {}
+
+    try:
+        from tools.mvp.ecosystem_verify_common import (
+            ECOSYSTEM_REGRESSION_REQUIRED_TAG,
+            ECOSYSTEM_VERIFY_BASELINE_SCHEMA_ID,
+            ECOSYSTEM_VERIFY_RUN_SCHEMA_ID,
+            build_ecosystem_verify_baseline,
+            ecosystem_verify_baseline_hash,
+            ecosystem_verify_report_hash,
+            verify_ecosystem,
+        )
+    except Exception:
+        findings.append(
+            _finding_row(
+                category="ecosystem_verify.tooling_missing",
+                path=ECOSYSTEM_VERIFY_RUN_TOOL_PY_REL,
+                line=1,
+                message="ecosystem verify tooling could not be imported.",
+                rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+            )
+        )
+    else:
+        if run_payload and str(run_payload.get("schema_id", "")).strip() != ECOSYSTEM_VERIFY_RUN_SCHEMA_ID:
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.schema_invalid",
+                    path=ECOSYSTEM_VERIFY_RUN_JSON_REL,
+                    line=1,
+                    message="ecosystem verify run report schema_id mismatch.",
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if baseline_payload and str(baseline_payload.get("schema_id", "")).strip() != ECOSYSTEM_VERIFY_BASELINE_SCHEMA_ID:
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.schema_invalid",
+                    path=ECOSYSTEM_VERIFY_BASELINE_REL,
+                    line=1,
+                    message="ecosystem verify regression baseline schema_id mismatch.",
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if run_payload and _token(run_payload.get("deterministic_fingerprint")) != ecosystem_verify_report_hash(run_payload):
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.run_fingerprint",
+                    path=ECOSYSTEM_VERIFY_RUN_JSON_REL,
+                    line=1,
+                    message="ecosystem verify run report deterministic_fingerprint mismatch.",
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != ecosystem_verify_baseline_hash(baseline_payload):
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.baseline_fingerprint",
+                    path=ECOSYSTEM_VERIFY_BASELINE_REL,
+                    line=1,
+                    message="ecosystem verify regression baseline deterministic_fingerprint mismatch.",
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        required_tag = _token(_as_map(baseline_payload.get("update_policy")).get("required_commit_tag"))
+        if baseline_payload and required_tag != ECOSYSTEM_REGRESSION_REQUIRED_TAG:
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.baseline_guard",
+                    path=ECOSYSTEM_VERIFY_BASELINE_REL,
+                    line=1,
+                    message="ecosystem verify regression baseline is missing the required update tag guard.",
+                    snippet=required_tag,
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        identity_coverage = _as_map(run_payload.get("identity_coverage"))
+        migration_coverage = _as_map(run_payload.get("migration_coverage"))
+        update_coverage = _as_map(run_payload.get("update_coverage"))
+        resolved_profiles = [_as_map(row) for row in list(run_payload.get("resolved_profiles") or []) if isinstance(row, Mapping)]
+        if run_payload and _token(run_payload.get("result")) != "complete":
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.run_mismatch",
+                    path=ECOSYSTEM_VERIFY_RUN_JSON_REL,
+                    line=1,
+                    message="committed ecosystem verify run report is not passing.",
+                    snippet=_token(run_payload.get("deterministic_fingerprint")),
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if identity_coverage and (
+            _token(identity_coverage.get("result")) != "complete"
+            or list(identity_coverage.get("invalid_identity_paths") or [])
+            or list(identity_coverage.get("missing_identity_kind_ids") or [])
+            or _token(_as_map(identity_coverage.get("binary_identity")).get("result")) != "complete"
+        ):
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.identity_missing",
+                    path=ECOSYSTEM_VERIFY_RUN_JSON_REL,
+                    line=1,
+                    message="ecosystem verify identity coverage is incomplete.",
+                    snippet=", ".join(str(item).strip() for item in list(identity_coverage.get("invalid_identity_paths") or identity_coverage.get("missing_identity_kind_ids") or [])[:8] if str(item).strip()),
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if migration_coverage and (
+            _token(migration_coverage.get("result")) != "complete"
+            or list(migration_coverage.get("missing_policy_ids") or [])
+            or not bool(migration_coverage.get("read_only_decision_defined"))
+        ):
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.migration_missing",
+                    path=ECOSYSTEM_VERIFY_RUN_JSON_REL,
+                    line=1,
+                    message="ecosystem verify migration coverage is incomplete.",
+                    snippet=", ".join(str(item).strip() for item in list(migration_coverage.get("missing_policy_ids") or [])[:8] if str(item).strip()),
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if update_coverage and (
+            _token(update_coverage.get("result")) != "complete"
+            or list(update_coverage.get("selected_yanked_component_ids") or [])
+            or not bool(update_coverage.get("deterministic_replay_match"))
+        ):
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.yanked_selectable",
+                    path=ECOSYSTEM_VERIFY_RUN_JSON_REL,
+                    line=1,
+                    message="ecosystem verify update coverage is allowing or hiding a yanked selection path.",
+                    snippet=", ".join(str(item).strip() for item in list(update_coverage.get("selected_yanked_component_ids") or [])[:8] if str(item).strip()),
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if resolved_profiles and any(_token(row.get("result")) != "complete" or not bool(row.get("deterministic_replay_match")) for row in resolved_profiles):
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.resolution_nondeterministic",
+                    path=ECOSYSTEM_VERIFY_RUN_JSON_REL,
+                    line=1,
+                    message="ecosystem verify profile resolution is incomplete or nondeterministic.",
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        fresh_report = dict(verify_ecosystem(repo_root_abs, platform_tag="win64") or {})
+        fresh_baseline = dict(build_ecosystem_verify_baseline(fresh_report) or {})
+        if run_payload and _token(run_payload.get("deterministic_fingerprint")) != _token(fresh_report.get("deterministic_fingerprint")):
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.run_mismatch",
+                    path=ECOSYSTEM_VERIFY_RUN_JSON_REL,
+                    line=1,
+                    message="committed ecosystem verify run report drifted from the fresh deterministic rerun.",
+                    snippet=_token(fresh_report.get("deterministic_fingerprint")),
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != _token(fresh_baseline.get("deterministic_fingerprint")):
+            findings.append(
+                _finding_row(
+                    category="ecosystem_verify.run_mismatch",
+                    path=ECOSYSTEM_VERIFY_BASELINE_REL,
+                    line=1,
+                    message="committed ecosystem verify regression baseline drifted from the fresh deterministic rerun.",
+                    snippet=_token(fresh_baseline.get("deterministic_fingerprint")),
+                    rule_id="INV-ECOSYSTEM-VERIFY-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+    return _check_result_payload(
+        check_id="ecosystem_verify_scan",
+        description="Verify required ecosystem surfaces, deterministic install-profile resolution, identity coverage, migration-policy coverage, trust-policy integration, and yanked-safe update planning.",
+        scanned_paths=scanned_paths,
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "run_fingerprint": _token(run_payload.get("deterministic_fingerprint")),
+            "baseline_fingerprint": _token(baseline_payload.get("deterministic_fingerprint")),
+            "rerun_fingerprint": _token(_as_map(fresh_report).get("deterministic_fingerprint")),
+            "rerun_baseline_fingerprint": _token(_as_map(fresh_baseline).get("deterministic_fingerprint")),
+            "resolved_profile_count": len(list(run_payload.get("resolved_profiles") or [])),
+            "identity_invalid_count": len(list(_as_map(run_payload.get("identity_coverage")).get("invalid_identity_paths") or [])),
+            "missing_policy_count": len(list(_as_map(run_payload.get("migration_coverage")).get("missing_policy_ids") or [])),
+            "selected_yanked_count": len(list(_as_map(run_payload.get("update_coverage")).get("selected_yanked_component_ids") or [])),
+            "required_commit_tag": _token(_as_map(baseline_payload.get("update_policy")).get("required_commit_tag")),
+        },
+    )
+
+
 def scan_noncanonical_numeric_serialization(repo_root: str, override_paths: Sequence[str] | None = None) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     scanned_paths = _iter_override_paths(repo_root_abs, override_paths, NUMERIC_SERIALIZATION_TARGETS)
@@ -2255,6 +2488,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "baseline_universe_scan",
         "gameplay_loop_scan",
         "disaster_suite_scan",
+        "ecosystem_verify_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -2279,6 +2513,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "baseline_universe_scan": scan_baseline_universe(repo_root_abs),
         "gameplay_loop_scan": scan_gameplay_loop(repo_root_abs),
         "disaster_suite_scan": scan_disaster_suite(repo_root_abs),
+        "ecosystem_verify_scan": scan_ecosystem_verify(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -2719,6 +2954,7 @@ __all__ = [
     "scan_disaster_suite",
     "scan_dist_bundle_composition",
     "scan_determinism",
+    "scan_ecosystem_verify",
     "scan_duplicate_semantics",
     "scan_float_in_truth",
     "scan_gameplay_loop",
