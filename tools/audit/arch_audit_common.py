@@ -65,6 +65,17 @@ MVP_GAMEPLAY_VERIFY_JSON_REL = os.path.join("data", "audit", "gameplay_verify.js
 MVP_GAMEPLAY_VERIFY_DOC_REL = os.path.join("docs", "audit", "MVP_GAMEPLAY_VERIFY.md")
 MVP_GAMEPLAY_RUN_DOC_REL = os.path.join("docs", "audit", "MVP_GAMEPLAY_LOOP_RUN.md")
 MVP_GAMEPLAY_BASELINE_DOC_REL = os.path.join("docs", "audit", "MVP_GAMEPLAY_BASELINE.md")
+DISASTER_RETRO_AUDIT_REL = os.path.join("docs", "audit", "DISASTER_TEST0_RETRO_AUDIT.md")
+DISASTER_MODEL_DOC_REL = os.path.join("docs", "mvp", "DISASTER_SUITE_MODEL_v0_0_0.md")
+DISASTER_CASES_REL = os.path.join("data", "baselines", "disaster", "disaster_suite_cases.json")
+DISASTER_GENERATE_TOOL_REL = os.path.join("tools", "mvp", "tool_generate_disaster_suite")
+DISASTER_GENERATE_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_generate_disaster_suite.py")
+DISASTER_RUN_TOOL_REL = os.path.join("tools", "mvp", "tool_run_disaster_suite")
+DISASTER_RUN_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_run_disaster_suite.py")
+DISASTER_RUN_JSON_REL = os.path.join("data", "audit", "disaster_suite_run.json")
+DISASTER_RUN_DOC_REL = os.path.join("docs", "audit", "DISASTER_SUITE_RUN.md")
+DISASTER_BASELINE_REL = os.path.join("data", "regression", "disaster_suite_baseline.json")
+DISASTER_BASELINE_DOC_REL = os.path.join("docs", "audit", "DISASTER_SUITE_BASELINE.md")
 
 TRUTH_PURITY_TARGETS = (
     os.path.join("schema", "universe", "universe_state.schema"),
@@ -1382,6 +1393,263 @@ def scan_gameplay_loop(repo_root: str) -> dict:
     )
 
 
+def scan_disaster_suite(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    required_paths = [
+        DISASTER_RETRO_AUDIT_REL,
+        DISASTER_MODEL_DOC_REL,
+        DISASTER_CASES_REL,
+        DISASTER_GENERATE_TOOL_REL,
+        DISASTER_GENERATE_TOOL_PY_REL,
+        DISASTER_RUN_TOOL_REL,
+        DISASTER_RUN_TOOL_PY_REL,
+        DISASTER_RUN_JSON_REL,
+        DISASTER_RUN_DOC_REL,
+        DISASTER_BASELINE_REL,
+        DISASTER_BASELINE_DOC_REL,
+    ]
+    scanned_paths = sorted(set(required_paths))
+    findings: list[dict] = []
+
+    for rel_path in required_paths:
+        abs_path = _repo_abs(repo_root_abs, rel_path)
+        if abs_path and os.path.exists(abs_path):
+            continue
+        findings.append(
+            _finding_row(
+                category="disaster_suite.required_surface",
+                path=rel_path,
+                line=1,
+                message="required disaster suite surface is missing.",
+                rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+            )
+        )
+
+    cases_payload = load_json_if_present(repo_root_abs, DISASTER_CASES_REL)
+    cases_record = _as_map(cases_payload.get("record"))
+    run_payload = load_json_if_present(repo_root_abs, DISASTER_RUN_JSON_REL)
+    baseline_payload = load_json_if_present(repo_root_abs, DISASTER_BASELINE_REL)
+    run_report = _as_map(run_payload)
+    fresh_report = {}
+    fresh_baseline = {}
+
+    try:
+        from tools.mvp.disaster_suite_common import (
+            DISASTER_CASES_SCHEMA_ID,
+            DISASTER_REGRESSION_REQUIRED_TAG,
+            DISASTER_SUITE_BASELINE_SCHEMA_ID,
+            DISASTER_SUITE_RUN_SCHEMA_ID,
+            disaster_baseline_hash,
+            disaster_cases_record_hash,
+            disaster_run_report_hash,
+            run_disaster_suite,
+        )
+    except Exception:
+        findings.append(
+            _finding_row(
+                category="disaster_suite.tooling_missing",
+                path=DISASTER_RUN_TOOL_PY_REL,
+                line=1,
+                message="disaster suite tooling could not be imported.",
+                rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+            )
+        )
+    else:
+        if cases_payload and str(cases_payload.get("schema_id", "")).strip() != DISASTER_CASES_SCHEMA_ID:
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.schema_invalid",
+                    path=DISASTER_CASES_REL,
+                    line=1,
+                    message="disaster suite case registry schema_id mismatch.",
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if run_payload and str(run_payload.get("schema_id", "")).strip() != DISASTER_SUITE_RUN_SCHEMA_ID:
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.schema_invalid",
+                    path=DISASTER_RUN_JSON_REL,
+                    line=1,
+                    message="disaster suite run report schema_id mismatch.",
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if baseline_payload and str(baseline_payload.get("schema_id", "")).strip() != DISASTER_SUITE_BASELINE_SCHEMA_ID:
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.schema_invalid",
+                    path=DISASTER_BASELINE_REL,
+                    line=1,
+                    message="disaster suite regression baseline schema_id mismatch.",
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        cases_fp = _token(cases_record.get("deterministic_fingerprint"))
+        if cases_record and cases_fp != disaster_cases_record_hash(cases_record):
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.cases_fingerprint",
+                    path=DISASTER_CASES_REL,
+                    line=1,
+                    message="disaster suite case registry deterministic_fingerprint mismatch.",
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        run_fp = _token(run_report.get("deterministic_fingerprint"))
+        if run_report and run_fp != disaster_run_report_hash(run_report):
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.run_fingerprint",
+                    path=DISASTER_RUN_JSON_REL,
+                    line=1,
+                    message="disaster suite run report deterministic_fingerprint mismatch.",
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        baseline_fp = _token(baseline_payload.get("deterministic_fingerprint"))
+        if baseline_payload and baseline_fp != disaster_baseline_hash(baseline_payload):
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.baseline_fingerprint",
+                    path=DISASTER_BASELINE_REL,
+                    line=1,
+                    message="disaster suite regression baseline deterministic_fingerprint mismatch.",
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        required_tag = _token(_as_map(baseline_payload.get("update_policy")).get("required_commit_tag"))
+        if baseline_payload and required_tag != DISASTER_REGRESSION_REQUIRED_TAG:
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.regression_tag",
+                    path=DISASTER_BASELINE_REL,
+                    line=1,
+                    message="disaster suite regression baseline is missing the required update tag guard.",
+                    snippet=required_tag,
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if run_report and str(run_report.get("result", "")).strip() != "complete":
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.harness_mismatch",
+                    path=DISASTER_RUN_JSON_REL,
+                    line=1,
+                    message="committed disaster suite run report is not passing.",
+                    snippet="; ".join(str(item).strip() for item in list(run_report.get("mismatched_fields") or [])[:8] if str(item).strip()),
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if list(run_report.get("silent_success_case_ids") or []):
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.silent_fallback",
+                    path=DISASTER_RUN_JSON_REL,
+                    line=1,
+                    message="disaster suite recorded silent success on a failure scenario.",
+                    snippet=", ".join(str(item).strip() for item in list(run_report.get("silent_success_case_ids") or [])[:8] if str(item).strip()),
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if list(run_report.get("remediation_missing_case_ids") or []):
+            findings.append(
+                _finding_row(
+                    category="disaster_suite.remediation_missing",
+                    path=DISASTER_RUN_JSON_REL,
+                    line=1,
+                    message="disaster suite recorded refusal cases without remediation hints.",
+                    snippet=", ".join(str(item).strip() for item in list(run_report.get("remediation_missing_case_ids") or [])[:8] if str(item).strip()),
+                    rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if cases_record:
+            fresh_report = dict(
+                run_disaster_suite(
+                    repo_root_abs,
+                    output_root_rel=os.path.join("build", "tmp", "omega4_disaster_arch_audit"),
+                    write_outputs=False,
+                )
+                or {}
+            )
+            fresh_baseline = _as_map(fresh_report.get("baseline_payload"))
+            if not bool(fresh_report.get("cases_match_expected")):
+                findings.append(
+                    _finding_row(
+                        category="disaster_suite.harness_mismatch",
+                        path=DISASTER_RUN_JSON_REL,
+                        line=1,
+                        message="fresh disaster suite rerun did not match the frozen case expectations.",
+                        snippet="; ".join(str(item).strip() for item in list(fresh_report.get("mismatched_fields") or [])[:8] if str(item).strip()),
+                        rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                    )
+                )
+            if list(fresh_report.get("silent_success_case_ids") or []):
+                findings.append(
+                    _finding_row(
+                        category="disaster_suite.silent_fallback",
+                        path=DISASTER_RUN_JSON_REL,
+                        line=1,
+                        message="fresh disaster suite rerun produced silent success on a failure scenario.",
+                        snippet=", ".join(str(item).strip() for item in list(fresh_report.get("silent_success_case_ids") or [])[:8] if str(item).strip()),
+                        rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                    )
+                )
+            if list(fresh_report.get("remediation_missing_case_ids") or []):
+                findings.append(
+                    _finding_row(
+                        category="disaster_suite.remediation_missing",
+                        path=DISASTER_RUN_JSON_REL,
+                        line=1,
+                        message="fresh disaster suite rerun produced refusal cases without remediation hints.",
+                        snippet=", ".join(str(item).strip() for item in list(fresh_report.get("remediation_missing_case_ids") or [])[:8] if str(item).strip()),
+                        rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                    )
+                )
+            if run_report and _token(run_report.get("deterministic_fingerprint")) != _token(fresh_report.get("deterministic_fingerprint")):
+                findings.append(
+                    _finding_row(
+                        category="disaster_suite.harness_mismatch",
+                        path=DISASTER_RUN_JSON_REL,
+                        line=1,
+                        message="committed disaster suite run report drifted from the fresh deterministic rerun.",
+                        snippet=_token(fresh_report.get("deterministic_fingerprint")),
+                        rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                    )
+                )
+            if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != _token(fresh_baseline.get("deterministic_fingerprint")):
+                findings.append(
+                    _finding_row(
+                        category="disaster_suite.harness_mismatch",
+                        path=DISASTER_BASELINE_REL,
+                        line=1,
+                        message="committed disaster regression baseline drifted from the fresh deterministic rerun.",
+                        snippet=_token(fresh_baseline.get("deterministic_fingerprint")),
+                        rule_id="INV-DISASTER-SUITE-MUST-PASS-BEFORE-DIST",
+                    )
+                )
+
+    return _check_result_payload(
+        check_id="disaster_suite_scan",
+        description="Verify required disaster suite surfaces, committed regression baseline integrity, remediation completeness, silent-fallback refusal behavior, and deterministic rerun stability.",
+        scanned_paths=scanned_paths,
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "case_count": int(cases_record.get("case_count", 0) or 0),
+            "cases_fingerprint": _token(cases_record.get("deterministic_fingerprint")),
+            "run_fingerprint": _token(run_report.get("deterministic_fingerprint")),
+            "baseline_fingerprint": _token(baseline_payload.get("deterministic_fingerprint")),
+            "rerun_fingerprint": _token(fresh_report.get("deterministic_fingerprint")),
+            "rerun_baseline_fingerprint": _token(fresh_baseline.get("deterministic_fingerprint")),
+            "cases_match_expected": bool(_as_map(fresh_report).get("cases_match_expected")),
+            "silent_success_case_count": len(list(_as_map(fresh_report).get("silent_success_case_ids") or list(run_report.get("silent_success_case_ids") or []))),
+            "remediation_missing_case_count": len(list(_as_map(fresh_report).get("remediation_missing_case_ids") or list(run_report.get("remediation_missing_case_ids") or []))),
+            "required_commit_tag": _token(_as_map(baseline_payload.get("update_policy")).get("required_commit_tag")),
+        },
+    )
+
+
 def scan_noncanonical_numeric_serialization(repo_root: str, override_paths: Sequence[str] | None = None) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     scanned_paths = _iter_override_paths(repo_root_abs, override_paths, NUMERIC_SERIALIZATION_TARGETS)
@@ -1986,6 +2254,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "worldgen_lock_scan",
         "baseline_universe_scan",
         "gameplay_loop_scan",
+        "disaster_suite_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -2009,6 +2278,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "worldgen_lock_scan": scan_worldgen_lock(repo_root_abs),
         "baseline_universe_scan": scan_baseline_universe(repo_root_abs),
         "gameplay_loop_scan": scan_gameplay_loop(repo_root_abs),
+        "disaster_suite_scan": scan_disaster_suite(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -2446,6 +2716,7 @@ __all__ = [
     "scan_archive_determinism",
     "scan_contract_pins",
     "scan_compiler_flags",
+    "scan_disaster_suite",
     "scan_dist_bundle_composition",
     "scan_determinism",
     "scan_duplicate_semantics",

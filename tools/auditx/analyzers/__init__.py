@@ -496,6 +496,8 @@ from analyzers import e541_worldgen_unnamed_rng_smell
 from analyzers import e542_worldgen_float_truth_smell
 from analyzers import e545_gameplay_nondeterministic_smell
 from analyzers import e546_missing_gameplay_baseline_smell
+from analyzers import e547_silent_fallback_smell
+from analyzers import e548_missing_remediation_hint_smell
 
 
 ANALYZERS = (
@@ -995,6 +997,8 @@ ANALYZERS = (
     e542_worldgen_float_truth_smell,
     e545_gameplay_nondeterministic_smell,
     e546_missing_gameplay_baseline_smell,
+    e547_silent_fallback_smell,
+    e548_missing_remediation_hint_smell,
 )
 
 
