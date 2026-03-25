@@ -758,11 +758,11 @@ def run_update_sim(
             "install_plan_hash": _token(_as_map(rollback_row).get("install_plan_hash")),
             "prior_component_set_hash": _token(_as_map(rollback_row).get("prior_component_set_hash")),
         },
-        "transaction_log_rel": _relative_to(root, transaction_log_path),
+        "transaction_log_rel": ".dsu/install_transaction_log.json",
         "simulation_state_files": {
-            "baseline_state": _relative_to(root, baseline_state_path),
-            "install_state": _relative_to(root, install_after_apply_path or install_state_path),
-            "restored_state": _relative_to(root, restored_state_path),
+            "baseline_state": "baseline_state.json",
+            "install_state": "install_state.json",
+            "restored_state": "install_state.json" if restored_state_path else "",
         },
         "verification_hashes": {
             "baseline_install_hash": canonical_sha256(_as_map(baseline_resolution)),

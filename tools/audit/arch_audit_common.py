@@ -84,6 +84,17 @@ ECOSYSTEM_VERIFY_RUN_JSON_REL = os.path.join("data", "audit", "ecosystem_verify_
 ECOSYSTEM_VERIFY_RUN_DOC_REL = os.path.join("docs", "audit", "ECOSYSTEM_VERIFY_RUN.md")
 ECOSYSTEM_VERIFY_BASELINE_REL = os.path.join("data", "regression", "ecosystem_verify_baseline.json")
 ECOSYSTEM_VERIFY_BASELINE_DOC_REL = os.path.join("docs", "audit", "ECOSYSTEM_VERIFY_BASELINE.md")
+UPDATE_SIM_RETRO_AUDIT_REL = os.path.join("docs", "audit", "UPDATE_SIM0_RETRO_AUDIT.md")
+UPDATE_SIM_MODEL_DOC_REL = os.path.join("docs", "release", "UPDATE_SIM_MODEL_v0_0_0.md")
+UPDATE_SIM_BASELINE_INDEX_REL = os.path.join("data", "baselines", "update_sim", "release_index_baseline.json")
+UPDATE_SIM_UPGRADE_INDEX_REL = os.path.join("data", "baselines", "update_sim", "release_index_upgrade.json")
+UPDATE_SIM_YANKED_INDEX_REL = os.path.join("data", "baselines", "update_sim", "release_index_yanked.json")
+UPDATE_SIM_STRICT_INDEX_REL = os.path.join("data", "baselines", "update_sim", "release_index_strict.json")
+UPDATE_SIM_RUN_TOOL_REL = os.path.join("tools", "mvp", "tool_run_update_sim")
+UPDATE_SIM_RUN_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_run_update_sim.py")
+UPDATE_SIM_RUN_JSON_REL = os.path.join("data", "audit", "update_sim_run.json")
+UPDATE_SIM_RUN_DOC_REL = os.path.join("docs", "audit", "UPDATE_SIM_RUN.md")
+UPDATE_SIM_BASELINE_REL = os.path.join("data", "regression", "update_sim_baseline.json")
 
 TRUTH_PURITY_TARGETS = (
     os.path.join("schema", "universe", "universe_state.schema"),
@@ -1883,6 +1894,248 @@ def scan_ecosystem_verify(repo_root: str) -> dict:
     )
 
 
+def scan_update_sim(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    required_paths = [
+        UPDATE_SIM_RETRO_AUDIT_REL,
+        UPDATE_SIM_MODEL_DOC_REL,
+        UPDATE_SIM_BASELINE_INDEX_REL,
+        UPDATE_SIM_UPGRADE_INDEX_REL,
+        UPDATE_SIM_YANKED_INDEX_REL,
+        UPDATE_SIM_STRICT_INDEX_REL,
+        UPDATE_SIM_RUN_TOOL_REL,
+        UPDATE_SIM_RUN_TOOL_PY_REL,
+        UPDATE_SIM_RUN_JSON_REL,
+        UPDATE_SIM_RUN_DOC_REL,
+        UPDATE_SIM_BASELINE_REL,
+    ]
+    scanned_paths = sorted(set(required_paths))
+    findings: list[dict] = []
+
+    for rel_path in required_paths:
+        abs_path = _repo_abs(repo_root_abs, rel_path)
+        if abs_path and os.path.exists(abs_path):
+            continue
+        findings.append(
+            _finding_row(
+                category="update_sim.required_surface",
+                path=rel_path,
+                line=1,
+                message="required update simulation surface is missing.",
+                rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+            )
+        )
+
+    run_payload = load_json_if_present(repo_root_abs, UPDATE_SIM_RUN_JSON_REL)
+    baseline_payload = load_json_if_present(repo_root_abs, UPDATE_SIM_BASELINE_REL)
+    fresh_report = {}
+    fresh_baseline = {}
+    fixture_payloads = {
+        UPDATE_SIM_BASELINE_INDEX_REL: load_json_if_present(repo_root_abs, UPDATE_SIM_BASELINE_INDEX_REL),
+        UPDATE_SIM_UPGRADE_INDEX_REL: load_json_if_present(repo_root_abs, UPDATE_SIM_UPGRADE_INDEX_REL),
+        UPDATE_SIM_YANKED_INDEX_REL: load_json_if_present(repo_root_abs, UPDATE_SIM_YANKED_INDEX_REL),
+        UPDATE_SIM_STRICT_INDEX_REL: load_json_if_present(repo_root_abs, UPDATE_SIM_STRICT_INDEX_REL),
+    }
+
+    try:
+        from tools.mvp.update_sim_common import (
+            UPDATE_SIM_BASELINE_SCHEMA_ID,
+            UPDATE_SIM_REGRESSION_REQUIRED_TAG,
+            UPDATE_SIM_RUN_SCHEMA_ID,
+            build_update_sim_baseline,
+            build_update_sim_fixture_payloads,
+            run_update_sim,
+            update_sim_baseline_hash,
+            update_sim_report_hash,
+        )
+    except Exception:
+        findings.append(
+            _finding_row(
+                category="update_sim.tooling_missing",
+                path=UPDATE_SIM_RUN_TOOL_PY_REL,
+                line=1,
+                message="update simulation tooling could not be imported.",
+                rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+            )
+        )
+    else:
+        if run_payload and _token(run_payload.get("schema_id")) != UPDATE_SIM_RUN_SCHEMA_ID:
+            findings.append(
+                _finding_row(
+                    category="update_sim.schema_invalid",
+                    path=UPDATE_SIM_RUN_JSON_REL,
+                    line=1,
+                    message="update simulation run report schema_id mismatch.",
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if baseline_payload and _token(baseline_payload.get("schema_id")) != UPDATE_SIM_BASELINE_SCHEMA_ID:
+            findings.append(
+                _finding_row(
+                    category="update_sim.schema_invalid",
+                    path=UPDATE_SIM_BASELINE_REL,
+                    line=1,
+                    message="update simulation regression baseline schema_id mismatch.",
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if run_payload and _token(run_payload.get("deterministic_fingerprint")) != update_sim_report_hash(run_payload):
+            findings.append(
+                _finding_row(
+                    category="update_sim.run_fingerprint",
+                    path=UPDATE_SIM_RUN_JSON_REL,
+                    line=1,
+                    message="update simulation run report deterministic_fingerprint mismatch.",
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != update_sim_baseline_hash(baseline_payload):
+            findings.append(
+                _finding_row(
+                    category="update_sim.baseline_fingerprint",
+                    path=UPDATE_SIM_BASELINE_REL,
+                    line=1,
+                    message="update simulation regression baseline deterministic_fingerprint mismatch.",
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        required_tag = _token(_as_map(baseline_payload.get("update_policy")).get("required_commit_tag"))
+        if baseline_payload and required_tag != UPDATE_SIM_REGRESSION_REQUIRED_TAG:
+            findings.append(
+                _finding_row(
+                    category="update_sim.baseline_guard",
+                    path=UPDATE_SIM_BASELINE_REL,
+                    line=1,
+                    message="update simulation regression baseline is missing the required update tag guard.",
+                    snippet=required_tag,
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        expected_fixtures = build_update_sim_fixture_payloads(repo_root_abs)
+        for fixture_id, rel_path in (
+            ("baseline", UPDATE_SIM_BASELINE_INDEX_REL),
+            ("upgrade", UPDATE_SIM_UPGRADE_INDEX_REL),
+            ("yanked", UPDATE_SIM_YANKED_INDEX_REL),
+            ("strict", UPDATE_SIM_STRICT_INDEX_REL),
+        ):
+            current = _as_map(fixture_payloads.get(rel_path))
+            expected = _as_map(expected_fixtures.get(fixture_id))
+            if current and canonical_json_text(current) == canonical_json_text(expected):
+                continue
+            findings.append(
+                _finding_row(
+                    category="update_sim.fixture_drift",
+                    path=rel_path,
+                    line=1,
+                    message="committed update simulation fixture drifted from the deterministic fixture generator.",
+                    snippet=_token(expected.get("deterministic_fingerprint")),
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        if run_payload and _token(run_payload.get("result")) != "complete":
+            findings.append(
+                _finding_row(
+                    category="update_sim.run_mismatch",
+                    path=UPDATE_SIM_RUN_JSON_REL,
+                    line=1,
+                    message="committed update simulation run report is not passing.",
+                    snippet=_token(run_payload.get("deterministic_fingerprint")),
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        upgrade = _as_map(run_payload.get("latest_compatible_upgrade"))
+        yanked = _as_map(run_payload.get("yanked_candidate_exclusion"))
+        rollback = _as_map(run_payload.get("rollback_restore"))
+        if list(yanked.get("selected_yanked_component_ids") or []) or int(yanked.get("skipped_yanked_count", 0) or 0) < 1:
+            findings.append(
+                _finding_row(
+                    category="update_sim.yanked_selectable",
+                    path=UPDATE_SIM_RUN_JSON_REL,
+                    line=1,
+                    message="update simulation recorded yanked selection or failed to log the yanked skip deterministically.",
+                    snippet=", ".join(list(yanked.get("selected_yanked_component_ids") or [])) or _token(yanked.get("skipped_yanked_count")),
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if rollback and not bool(rollback.get("rollback_matches_baseline")):
+            findings.append(
+                _finding_row(
+                    category="update_sim.rollback_not_restoring",
+                    path=UPDATE_SIM_RUN_JSON_REL,
+                    line=1,
+                    message="update simulation rollback did not restore the baseline component-set hash.",
+                    snippet=_token(rollback.get("restored_component_set_hash")),
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if upgrade and (
+            (not bool(upgrade.get("update_required")) and _token(upgrade.get("installed_component_set_hash")) != _token(upgrade.get("prior_component_set_hash")))
+            or (not list(upgrade.get("upgraded_component_ids") or []) and _token(upgrade.get("installed_component_set_hash")) != _token(upgrade.get("prior_component_set_hash")))
+        ):
+            findings.append(
+                _finding_row(
+                    category="update_sim.silent_upgrade",
+                    path=UPDATE_SIM_RUN_JSON_REL,
+                    line=1,
+                    message="update simulation changed the installed component set without an explicit upgrade delta.",
+                    snippet=_token(upgrade.get("installed_component_set_hash")),
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+        fresh_report = dict(
+            run_update_sim(
+                repo_root_abs,
+                output_root_rel=os.path.join("build", "tmp", "omega6_update_arch_audit"),
+                write_outputs=False,
+            )
+            or {}
+        )
+        fresh_baseline = dict(build_update_sim_baseline(fresh_report) or {})
+        if run_payload and _token(run_payload.get("deterministic_fingerprint")) != _token(fresh_report.get("deterministic_fingerprint")):
+            findings.append(
+                _finding_row(
+                    category="update_sim.run_mismatch",
+                    path=UPDATE_SIM_RUN_JSON_REL,
+                    line=1,
+                    message="committed update simulation run report drifted from the fresh deterministic rerun.",
+                    snippet=_token(fresh_report.get("deterministic_fingerprint")),
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+        if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != _token(fresh_baseline.get("deterministic_fingerprint")):
+            findings.append(
+                _finding_row(
+                    category="update_sim.run_mismatch",
+                    path=UPDATE_SIM_BASELINE_REL,
+                    line=1,
+                    message="committed update simulation regression baseline drifted from the fresh deterministic rerun.",
+                    snippet=_token(fresh_baseline.get("deterministic_fingerprint")),
+                    rule_id="INV-UPDATE-SIM-MUST-PASS-BEFORE-DIST",
+                )
+            )
+
+    return _check_result_payload(
+        check_id="update_sim_scan",
+        description="Verify required offline update simulation surfaces, fixture stability, yanked exclusion, strict trust refusal, rollback restoration, and regression baseline agreement.",
+        scanned_paths=scanned_paths,
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "run_fingerprint": _token(run_payload.get("deterministic_fingerprint")),
+            "baseline_fingerprint": _token(baseline_payload.get("deterministic_fingerprint")),
+            "rerun_fingerprint": _token(_as_map(fresh_report).get("deterministic_fingerprint")),
+            "rerun_baseline_fingerprint": _token(_as_map(fresh_baseline).get("deterministic_fingerprint")),
+            "selected_yanked_count": len(list(_as_map(run_payload.get("yanked_candidate_exclusion")).get("selected_yanked_component_ids") or [])),
+            "rollback_matches_baseline": bool(_as_map(run_payload.get("rollback_restore")).get("rollback_matches_baseline")),
+            "required_commit_tag": _token(_as_map(baseline_payload.get("update_policy")).get("required_commit_tag")),
+        },
+    )
+
+
 def scan_noncanonical_numeric_serialization(repo_root: str, override_paths: Sequence[str] | None = None) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     scanned_paths = _iter_override_paths(repo_root_abs, override_paths, NUMERIC_SERIALIZATION_TARGETS)
@@ -2489,6 +2742,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "gameplay_loop_scan",
         "disaster_suite_scan",
         "ecosystem_verify_scan",
+        "update_sim_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -2514,6 +2768,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "gameplay_loop_scan": scan_gameplay_loop(repo_root_abs),
         "disaster_suite_scan": scan_disaster_suite(repo_root_abs),
         "ecosystem_verify_scan": scan_ecosystem_verify(repo_root_abs),
+        "update_sim_scan": scan_update_sim(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -2968,6 +3223,7 @@ __all__ = [
     "scan_trust_bypass",
     "scan_truth_atomic_usage",
     "scan_truth_purity",
+    "scan_update_sim",
     "scan_update_model",
     "write_arch_audit_outputs",
 ]

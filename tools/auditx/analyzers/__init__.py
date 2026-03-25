@@ -501,6 +501,8 @@ from analyzers import e548_missing_remediation_hint_smell
 from analyzers import e549_missing_identity_block_smell
 from analyzers import e550_missing_migration_policy_smell
 from analyzers import e551_yanked_selectable_smell
+from analyzers import e552_rollback_not_restoring_smell
+from analyzers import e553_silent_upgrade_smell
 
 
 ANALYZERS = (
@@ -1005,6 +1007,8 @@ ANALYZERS = (
     e549_missing_identity_block_smell,
     e550_missing_migration_policy_smell,
     e551_yanked_selectable_smell,
+    e552_rollback_not_restoring_smell,
+    e553_silent_upgrade_smell,
 )
 
 
