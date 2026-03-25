@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 67,
+  "candidate_count": 71,
   "candidates": [
     {
       "evidence_paths": [
@@ -62,6 +62,15 @@
         "src/control/control_plane_engine.py",
         "src/inspection/inspection_engine.py",
         "src/materials/materialization/materialization_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.9,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
@@ -144,6 +153,17 @@
     },
     {
       "evidence_paths": [
+        "src/geo/worldgen/worldgen_engine.py",
+        "src/worldgen/mw/sol_anchor.py",
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.7125,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
         "docs/architecture/INSTALL_MODEL.md",
         "tools/launcher/launcher_cli.py",
         "tools/ops/ops_cli.py",
@@ -151,6 +171,21 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.705,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/geo/index/geo_index_engine.py",
+        "src/worldgen/earth/climate_field_engine.py",
+        "src/worldgen/earth/material/material_proxy_engine.py",
+        "src/worldgen/earth/tide_field_engine.py",
+        "src/worldgen/earth/water/water_view_engine.py",
+        "src/worldgen/earth/wind/wind_field_engine.py",
+        "src/worldgen/galaxy/galaxy_proxy_field_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.69,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -816,6 +851,15 @@
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.5625,
       "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/xstack/repox/check.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.525,
+      "rule_type": "TEST_REGRESSION",
       "suggested_ruleset": "core.json"
     }
   ],

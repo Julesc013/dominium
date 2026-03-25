@@ -179,9 +179,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 898,
+      "finding_count": 900,
       "recommended_actions": {
-        "DOC_FIX": 898
+        "DOC_FIX": 900
       },
       "sample_findings": [
         {
@@ -211,7 +211,7 @@
         }
       ],
       "severities": {
-        "WARN": 898
+        "WARN": 900
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -779,6 +779,22 @@
         "RISK": 1
       }
     },
+    "INV-LEGACY-CODE-QUARANTINED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-LIB-DETERMINISTIC": {
       "finding_count": 1,
       "recommended_actions": {
@@ -991,6 +1007,22 @@
       ],
       "severities": {
         "RISK": 3
+      }
+    },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
       }
     },
     "INV-MODEL-OUTPUTS-PROCESS-ONLY": {
@@ -1262,6 +1294,42 @@
       ],
       "severities": {
         "RISK": 18
+      }
+    },
+    "INV-NO-ADHOC-SPATIAL-KEYS": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "REWRITE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0001",
+          "location": "src/worldgen/earth/climate_field_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0002",
+          "location": "src/worldgen/earth/material/material_proxy_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0003",
+          "location": "src/worldgen/earth/tide_field_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0004",
+          "location": "src/worldgen/earth/water/water_view_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0005",
+          "location": "src/worldgen/earth/wind/wind_field_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 6
       }
     },
     "INV-NO-ADHOC-STATE-FLAGS": {
@@ -1556,6 +1624,22 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
       }
     },
     "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR": {
@@ -1982,6 +2066,22 @@
         "RISK": 8
       }
     },
+    "INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "worldgen.direct_system_spawn_smell",
+          "finding_id": "E357_DIRECT_SYSTEM_SPAWN_SMELL:0001",
+          "location": "src/worldgen/mw/sol_anchor.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-THERM-DEGRADE-LOGGED": {
       "finding_count": 6,
       "recommended_actions": {
@@ -2116,6 +2216,22 @@
       ],
       "severities": {
         "WARN": 1
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
       }
     }
   },

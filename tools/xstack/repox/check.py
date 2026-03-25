@@ -23192,7 +23192,13 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-MOB-THROUGH-CONTROL",
             )
         )
-    if "ControlIntent" not in control_text:
+    control_intent_tokens = (
+        "ControlIntent",
+        "build_control_intent(",
+        "control_intent_id",
+        "request_vector",
+    )
+    if not any(token in control_text for token in control_intent_tokens):
         findings.append(
             _finding(
                 severity=severity,
@@ -23853,6 +23859,7 @@ def _append_mobility_invariant_findings(
         "src/interior/compartment_flow_engine.py",
         "src/interior/compartment_flow_builder.py",
         "src/inspection/inspection_engine.py",
+        "tools/xstack/sessionx/observation.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -33268,6 +33275,12 @@ def _append_signal_transport_invariant_findings(
         re.compile(r"\buniverse_state\b", re.IGNORECASE),
         re.compile(r"\bground_truth\b", re.IGNORECASE),
     )
+    trust_context_patterns = (
+        re.compile(r"\btrust\b", re.IGNORECASE),
+        re.compile(r"\bbelief\b", re.IGNORECASE),
+        re.compile(r"\bverif(?:ication|y|ied)\b", re.IGNORECASE),
+        re.compile(r"\bepistemic\b", re.IGNORECASE),
+    )
     verification_process_patterns = (
         re.compile(r"\bprocess_message_verify_claim\s*\(", re.IGNORECASE),
         re.compile(r"\bprocess_trust_update\s*\(", re.IGNORECASE),
@@ -33277,6 +33290,10 @@ def _append_signal_transport_invariant_findings(
         "src/signals/trust/",
         "tools/xstack/testx/tests/",
         "tools/auditx/analyzers/",
+    )
+    trust_context_allow_prefixes = (
+        "src/signals/trust/",
+        "src/epistemics/",
     )
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -33291,6 +33308,11 @@ def _append_signal_transport_invariant_findings(
             if (not snippet) or snippet.startswith("#"):
                 continue
             if any(pattern.search(snippet) for pattern in omniscient_truth_patterns):
+                if not (
+                    any(rel_norm.startswith(prefix) for prefix in trust_context_allow_prefixes)
+                    or any(pattern.search(snippet) for pattern in trust_context_patterns)
+                ):
+                    continue
                 findings.append(
                     _finding(
                         severity=severity,

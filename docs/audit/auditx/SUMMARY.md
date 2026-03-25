@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-17
+Last Reviewed: 2026-03-25
 Supersedes: none
 Superseded By: none
 
@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- RISK: 527
-- VIOLATION: 16
-- WARN: 1028
+- RISK: 536
+- VIOLATION: 17
+- WARN: 1030
 
 ## Counts By Category
 
@@ -60,7 +60,7 @@ Superseded By: none
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
 - bundle.nondeterministic_bundle_smell: 1
-- canon_drift: 898
+- canon_drift: 900
 - capability_bypass_smell: 1
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - compat.behavior_without_contract_smell: 1
@@ -68,8 +68,10 @@ Superseded By: none
 - control.direct_breaker_toggle_smell: 1
 - derived_freshness: 17
 - epistemics.hidden_state_leak_smell: 6
+- geometry.adhoc_spatial_key_smell: 6
 - install.path_dependent_install_smell: 1
 - interaction.interaction_bypass_smell: 2
+- legacy_contamination: 1
 - logic.adhoc_wiring_smell: 5
 - logic.carrier_bias_smell: 9
 - logic.protocol_security_bypass_smell: 1
@@ -79,14 +81,17 @@ Superseded By: none
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
+- mode_flag_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
 - reliability.silent_reaction_smell: 3
+- schema_usage: 1
 - security.hidden_privilege_escalation_smell: 2
 - semantic.capability_drift: 5
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
 - server.intent_without_authority_smell: 1
+- worldgen.direct_system_spawn_smell: 1
 - worldgen.unbounded_shadow_sampling_smell: 1
