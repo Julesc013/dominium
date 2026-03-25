@@ -507,6 +507,7 @@ from analyzers import e554_strict_allows_unsigned_smell
 from analyzers import e555_license_capability_not_signed_smell
 from analyzers import e556_missing_archive_artifact_smell
 from analyzers import e557_non_deterministic_archive_smell
+from analyzers import e558_toolchain_report_missing_smell
 
 
 ANALYZERS = (
@@ -1015,6 +1016,7 @@ ANALYZERS = (
     e553_silent_upgrade_smell,
     e556_missing_archive_artifact_smell,
     e557_non_deterministic_archive_smell,
+    e558_toolchain_report_missing_smell,
 )
 
 

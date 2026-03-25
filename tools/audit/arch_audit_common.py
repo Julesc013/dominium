@@ -3117,6 +3117,109 @@ def scan_offline_archive(repo_root: str) -> dict:
     )
 
 
+def scan_toolchain_matrix(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    findings: list[dict] = []
+    required_paths: list[str] = []
+    committed_run_dirs: list[str] = []
+    matrix_registry = {}
+    profile_registry = {}
+
+    try:
+        from tools.mvp.toolchain_matrix_common import (
+            DEFAULT_ENV_ID,
+            TOOLCHAIN_MATRIX_MODEL_DOC_REL,
+            TOOLCHAIN_MATRIX_REGISTRY_REL,
+            TOOLCHAIN_MATRIX_REGISTRY_SCHEMA_ID,
+            TOOLCHAIN_MATRIX_RETRO_AUDIT_REL,
+            TOOLCHAIN_TEST_PROFILE_REGISTRY_REL,
+            TOOLCHAIN_TEST_PROFILE_REGISTRY_SCHEMA_ID,
+            build_default_toolchain_matrix_registry,
+            build_default_toolchain_test_profile_registry,
+            list_committed_toolchain_run_dirs,
+            load_toolchain_matrix_registry,
+            load_toolchain_test_profile_registry,
+        )
+    except Exception:
+        return _check_result_payload(
+            check_id="toolchain_matrix_scan",
+            description="Verify the Ω-9 toolchain matrix registry, docs, and committed deterministic run surface.",
+            scanned_paths=[],
+            blocking_findings=[
+                _finding_row(
+                    category="toolchain_matrix.required_surface",
+                    path="tools/mvp/toolchain_matrix_common.py",
+                    line=1,
+                    message="toolchain matrix tooling could not be imported.",
+                    rule_id="INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT",
+                )
+            ],
+            inventory={},
+        )
+
+    required_paths = [
+        TOOLCHAIN_MATRIX_RETRO_AUDIT_REL,
+        TOOLCHAIN_MATRIX_MODEL_DOC_REL,
+        TOOLCHAIN_MATRIX_REGISTRY_REL,
+        TOOLCHAIN_TEST_PROFILE_REGISTRY_REL,
+        os.path.join("tools", "mvp", "tool_run_toolchain_matrix"),
+        os.path.join("tools", "mvp", "tool_run_toolchain_matrix.py"),
+        os.path.join("tools", "mvp", "tool_compare_toolchain_runs"),
+        os.path.join("tools", "mvp", "tool_compare_toolchain_runs.py"),
+        os.path.join("docs", "audit", "TOOLCHAIN_MATRIX_BASELINE.md"),
+    ]
+    for rel_path in required_paths:
+        if os.path.exists(_repo_abs(repo_root_abs, rel_path)):
+            continue
+        findings.append(
+            _finding_row(
+                category="toolchain_matrix.required_surface",
+                path=rel_path,
+                line=1,
+                message="required toolchain matrix surface is missing.",
+                rule_id="INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT",
+            )
+        )
+
+    matrix_registry = load_toolchain_matrix_registry(repo_root_abs)
+    profile_registry = load_toolchain_test_profile_registry(repo_root_abs)
+    expected_matrix_registry = build_default_toolchain_matrix_registry()
+    expected_profile_registry = build_default_toolchain_test_profile_registry()
+    if _token(matrix_registry.get("schema_id")) != TOOLCHAIN_MATRIX_REGISTRY_SCHEMA_ID:
+        findings.append(_finding_row(category="toolchain_matrix.required_surface", path=TOOLCHAIN_MATRIX_REGISTRY_REL, line=1, message="toolchain matrix registry schema_id mismatch.", rule_id="INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT"))
+    if _token(profile_registry.get("schema_id")) != TOOLCHAIN_TEST_PROFILE_REGISTRY_SCHEMA_ID:
+        findings.append(_finding_row(category="toolchain_matrix.required_surface", path=TOOLCHAIN_TEST_PROFILE_REGISTRY_REL, line=1, message="toolchain test profile registry schema_id mismatch.", rule_id="INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT"))
+    if matrix_registry != expected_matrix_registry:
+        findings.append(_finding_row(category="toolchain_matrix.required_surface", path=TOOLCHAIN_MATRIX_REGISTRY_REL, line=1, message="toolchain matrix registry drifted from the canonical Ω-9 surface.", rule_id="INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT"))
+    if profile_registry != expected_profile_registry:
+        findings.append(_finding_row(category="toolchain_matrix.required_surface", path=TOOLCHAIN_TEST_PROFILE_REGISTRY_REL, line=1, message="toolchain test profile registry drifted from the canonical Ω-9 surface.", rule_id="INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT"))
+
+    committed_run_dirs = list_committed_toolchain_run_dirs(repo_root_abs)
+    if not committed_run_dirs:
+        findings.append(
+            _finding_row(
+                category="toolchain_matrix.report_missing",
+                path=os.path.join("artifacts", "toolchain_runs", DEFAULT_ENV_ID),
+                line=1,
+                message="no committed Ω-9 toolchain run artifacts were found.",
+                rule_id="INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT",
+            )
+        )
+
+    return _check_result_payload(
+        check_id="toolchain_matrix_scan",
+        description="Verify the Ω-9 toolchain matrix docs, registries, comparison tooling, and presence of committed deterministic run outputs.",
+        scanned_paths=sorted(set(required_paths)),
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "matrix_env_count": len(_as_map(matrix_registry.get("record")).get("environments") or []),
+            "profile_count": len(_as_map(profile_registry.get("record")).get("profiles") or []),
+            "committed_run_count": len(committed_run_dirs),
+        },
+    )
+
+
 def run_arch_audit(repo_root: str) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     check_order = [
@@ -3133,6 +3236,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "update_sim_scan",
         "trust_strict_scan",
         "offline_archive_scan",
+        "toolchain_matrix_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -3161,6 +3265,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "update_sim_scan": scan_update_sim(repo_root_abs),
         "trust_strict_scan": scan_trust_strict_suite(repo_root_abs),
         "offline_archive_scan": scan_offline_archive(repo_root_abs),
+        "toolchain_matrix_scan": scan_toolchain_matrix(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -3597,6 +3702,7 @@ __all__ = [
     "scan_baseline_universe",
     "scan_archive_determinism",
     "scan_offline_archive",
+    "scan_toolchain_matrix",
     "scan_contract_pins",
     "scan_compiler_flags",
     "scan_disaster_suite",

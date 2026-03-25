@@ -34946,6 +34946,38 @@ def _append_lib_envelope_invariant_findings(
             )
 
 
+def _append_toolchain_matrix_invariant_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rule_id = "INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT"
+    for rel_path, message in (
+        (
+            "data/registries/toolchain_matrix_registry.json",
+            "toolchain matrix registry is required for Ω-9 environment declarations",
+        ),
+        (
+            "data/registries/toolchain_test_profile_registry.json",
+            "toolchain test profile registry is required for Ω-9 profile declarations",
+        ),
+    ):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -35676,6 +35708,7 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         _append_update_model_findings,
         _append_release_index_policy_findings,
         _append_trust_model_findings,
+        _append_toolchain_matrix_invariant_findings,
         _append_governance_model_findings,
         _append_performance_envelope_findings,
         _append_archive_policy_findings,
