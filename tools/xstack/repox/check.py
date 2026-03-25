@@ -7827,7 +7827,7 @@ def _append_arch_audit_findings(
     for row in list(report.get("blocking_findings") or []):
         finding_row = dict(row or {})
         category = str(finding_row.get("category", "")).strip()
-        rule_id = truth_rule_id if category == "truth_purity" else release_rule_id
+        rule_id = truth_rule_id if category == "truth_purity" else (str(finding_row.get("rule_id", "")).strip() or release_rule_id)
         findings.append(
             _finding(
                 severity=severity,

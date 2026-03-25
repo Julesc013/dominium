@@ -40,6 +40,20 @@ WORLDGEN_LOCK_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_w
 WORLDGEN_LOCK_VERIFY_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock.py")
 WORLDGEN_LOCK_VERIFY_JSON_REL = os.path.join("data", "audit", "worldgen_lock_verify.json")
 WORLDGEN_LOCK_VERIFY_DOC_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK_VERIFY.md")
+BASELINE_UNIVERSE_RETRO_AUDIT_REL = os.path.join("docs", "audit", "BASELINE_UNIVERSE0_RETRO_AUDIT.md")
+BASELINE_UNIVERSE_DOC_REL = os.path.join("docs", "mvp", "BASELINE_UNIVERSE_v0_0_0.md")
+BASELINE_UNIVERSE_INSTANCE_MANIFEST_REL = os.path.join("data", "baselines", "universe", "baseline_instance.manifest.json")
+BASELINE_UNIVERSE_PACK_LOCK_REL = os.path.join("data", "baselines", "universe", "baseline_pack_lock.json")
+BASELINE_UNIVERSE_PROFILE_BUNDLE_REL = os.path.join("data", "baselines", "universe", "baseline_profile_bundle.json")
+BASELINE_UNIVERSE_SAVE_REL = os.path.join("data", "baselines", "universe", "baseline_save_0.save")
+BASELINE_UNIVERSE_SNAPSHOT_REL = os.path.join("data", "baselines", "universe", "baseline_universe_snapshot.json")
+BASELINE_UNIVERSE_GENERATE_TOOL_REL = os.path.join("tools", "mvp", "tool_generate_baseline_universe")
+BASELINE_UNIVERSE_GENERATE_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_generate_baseline_universe.py")
+BASELINE_UNIVERSE_VERIFY_TOOL_REL = os.path.join("tools", "mvp", "tool_verify_baseline_universe")
+BASELINE_UNIVERSE_VERIFY_TOOL_PY_REL = os.path.join("tools", "mvp", "tool_verify_baseline_universe.py")
+BASELINE_UNIVERSE_VERIFY_JSON_REL = os.path.join("data", "audit", "baseline_universe_verify.json")
+BASELINE_UNIVERSE_VERIFY_DOC_REL = os.path.join("docs", "audit", "BASELINE_UNIVERSE_VERIFY.md")
+BASELINE_UNIVERSE_BASELINE_DOC_REL = os.path.join("docs", "audit", "BASELINE_UNIVERSE_BASELINE.md")
 
 TRUTH_PURITY_TARGETS = (
     os.path.join("schema", "universe", "universe_state.schema"),
@@ -1043,6 +1057,176 @@ def scan_worldgen_lock(repo_root: str) -> dict:
     )
 
 
+def scan_baseline_universe(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    required_paths = [
+        BASELINE_UNIVERSE_RETRO_AUDIT_REL,
+        BASELINE_UNIVERSE_DOC_REL,
+        BASELINE_UNIVERSE_INSTANCE_MANIFEST_REL,
+        BASELINE_UNIVERSE_PACK_LOCK_REL,
+        BASELINE_UNIVERSE_PROFILE_BUNDLE_REL,
+        BASELINE_UNIVERSE_SAVE_REL,
+        BASELINE_UNIVERSE_SNAPSHOT_REL,
+        BASELINE_UNIVERSE_GENERATE_TOOL_REL,
+        BASELINE_UNIVERSE_GENERATE_TOOL_PY_REL,
+        BASELINE_UNIVERSE_VERIFY_TOOL_REL,
+        BASELINE_UNIVERSE_VERIFY_TOOL_PY_REL,
+        BASELINE_UNIVERSE_VERIFY_JSON_REL,
+        BASELINE_UNIVERSE_VERIFY_DOC_REL,
+        BASELINE_UNIVERSE_BASELINE_DOC_REL,
+    ]
+    scanned_paths = sorted(set(required_paths))
+    findings: list[dict] = []
+
+    for rel_path in required_paths:
+        abs_path = _repo_abs(repo_root_abs, rel_path)
+        if abs_path and os.path.exists(abs_path):
+            continue
+        findings.append(
+            _finding_row(
+                category="baseline_universe.required_surface",
+                path=rel_path,
+                line=1,
+                message="required BASELINE-UNIVERSE surface is missing.",
+                rule_id="INV-BASELINE-UNIVERSE-REQUIRED",
+            )
+        )
+
+    snapshot_payload = load_json_if_present(repo_root_abs, BASELINE_UNIVERSE_SNAPSHOT_REL)
+    snapshot_record = _as_map(snapshot_payload.get("record"))
+    snapshot_fp = _token(snapshot_record.get("deterministic_fingerprint"))
+    if snapshot_payload and (not snapshot_fp):
+        findings.append(
+            _finding_row(
+                category="baseline_universe.snapshot_fingerprint",
+                path=BASELINE_UNIVERSE_SNAPSHOT_REL,
+                line=1,
+                message="baseline universe snapshot is missing deterministic_fingerprint.",
+                rule_id="INV-BASELINE-UNIVERSE-REQUIRED",
+            )
+        )
+
+    for rel_path in (
+        BASELINE_UNIVERSE_INSTANCE_MANIFEST_REL,
+        BASELINE_UNIVERSE_PACK_LOCK_REL,
+        BASELINE_UNIVERSE_PROFILE_BUNDLE_REL,
+    ):
+        payload = load_json_if_present(repo_root_abs, rel_path)
+        if not payload:
+            continue
+        if _as_map(payload.get("universal_identity_block")):
+            continue
+        findings.append(
+            _finding_row(
+                category="baseline_universe.identity_block_missing",
+                path=rel_path,
+                line=1,
+                message="baseline universe artifact is missing universal_identity_block.",
+                rule_id="INV-BASELINE-UNIVERSE-REQUIRED",
+            )
+        )
+
+    pack_lock_payload = load_json_if_present(repo_root_abs, BASELINE_UNIVERSE_PACK_LOCK_REL)
+    if pack_lock_payload and snapshot_record:
+        pack_lock_hash = _token(pack_lock_payload.get("pack_lock_hash"))
+        if pack_lock_hash and pack_lock_hash != _token(snapshot_record.get("pack_lock_hash")):
+            findings.append(
+                _finding_row(
+                    category="baseline_universe.pack_lock_drift",
+                    path=BASELINE_UNIVERSE_PACK_LOCK_REL,
+                    line=1,
+                    message="baseline universe pack lock hash does not match frozen snapshot.",
+                    snippet="expected={} actual={}".format(_token(snapshot_record.get("pack_lock_hash")), pack_lock_hash),
+                    rule_id="INV-BASELINE-UNIVERSE-REQUIRED",
+                )
+            )
+
+    verify_report = {}
+    if snapshot_payload and snapshot_record:
+        try:
+            from tools.mvp.baseline_universe_common import baseline_snapshot_record_hash, verify_baseline_universe
+        except Exception:
+            findings.append(
+                _finding_row(
+                    category="baseline_universe.tooling_missing",
+                    path=BASELINE_UNIVERSE_VERIFY_TOOL_PY_REL,
+                    line=1,
+                    message="baseline universe verification helpers could not be imported.",
+                    rule_id="INV-BASELINE-UNIVERSE-REQUIRED",
+                )
+            )
+        else:
+            expected_snapshot_fp = baseline_snapshot_record_hash(snapshot_record)
+            if snapshot_fp != expected_snapshot_fp:
+                findings.append(
+                    _finding_row(
+                        category="baseline_universe.snapshot_fingerprint",
+                        path=BASELINE_UNIVERSE_SNAPSHOT_REL,
+                        line=1,
+                        message="baseline universe snapshot deterministic_fingerprint does not match canonical record hash.",
+                        rule_id="INV-BASELINE-UNIVERSE-REQUIRED",
+                    )
+                )
+            verify_report = dict(verify_baseline_universe(repo_root_abs) or {})
+            if not bool(verify_report.get("matches_snapshot")):
+                findings.append(
+                    _finding_row(
+                        category="baseline_universe.anchor_mismatch",
+                        path=BASELINE_UNIVERSE_SNAPSHOT_REL,
+                        line=1,
+                        message="baseline universe snapshot does not match regeneration from frozen baseline seed and bundle lock.",
+                        snippet="; ".join(str(item).strip() for item in list(verify_report.get("mismatched_fields") or [])[:6] if str(item).strip()),
+                        rule_id="INV-BASELINE-ANCHORS-MATCH",
+                    )
+                )
+            if not bool(verify_report.get("save_reload_matches")):
+                findings.append(
+                    _finding_row(
+                        category="baseline_universe.anchor_mismatch",
+                        path=BASELINE_UNIVERSE_SAVE_REL,
+                        line=1,
+                        message="baseline universe save-reload checkpoint does not reproduce the frozen T2 anchor.",
+                        snippet=_token(verify_report.get("loaded_save_hash")),
+                        rule_id="INV-BASELINE-ANCHORS-MATCH",
+                    )
+                )
+            if not bool(verify_report.get("seed_matches_worldgen_lock")):
+                findings.append(
+                    _finding_row(
+                        category="baseline_universe.seed_mismatch",
+                        path=BASELINE_UNIVERSE_SNAPSHOT_REL,
+                        line=1,
+                        message="baseline universe seed does not match WORLDGEN-LOCK frozen seed.",
+                        rule_id="INV-BASELINE-UNIVERSE-REQUIRED",
+                    )
+                )
+            if not bool(verify_report.get("pack_lock_matches_worldgen_lock")):
+                findings.append(
+                    _finding_row(
+                        category="baseline_universe.pack_lock_drift",
+                        path=BASELINE_UNIVERSE_PACK_LOCK_REL,
+                        line=1,
+                        message="baseline universe pack lock drifted from WORLDGEN-LOCK freeze.",
+                        rule_id="INV-BASELINE-UNIVERSE-REQUIRED",
+                    )
+                )
+
+    return _check_result_payload(
+        check_id="baseline_universe_scan",
+        description="Verify required BASELINE-UNIVERSE artifacts, committed baseline replay, save-reload anchor continuity, and WORLDGEN-LOCK alignment.",
+        scanned_paths=scanned_paths,
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "snapshot_fingerprint": snapshot_fp,
+            "verify_fingerprint": _token(_as_map(verify_report).get("deterministic_fingerprint")),
+            "seed_matches_worldgen_lock": bool(_as_map(verify_report).get("seed_matches_worldgen_lock")),
+            "pack_lock_matches_worldgen_lock": bool(_as_map(verify_report).get("pack_lock_matches_worldgen_lock")),
+            "save_reload_matches": bool(_as_map(verify_report).get("save_reload_matches")),
+        },
+    )
+
+
 def scan_noncanonical_numeric_serialization(repo_root: str, override_paths: Sequence[str] | None = None) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     scanned_paths = _iter_override_paths(repo_root_abs, override_paths, NUMERIC_SERIALIZATION_TARGETS)
@@ -1645,6 +1829,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "determinism_scan",
         "float_in_truth_scan",
         "worldgen_lock_scan",
+        "baseline_universe_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -1666,6 +1851,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "determinism_scan": scan_determinism(repo_root_abs),
         "float_in_truth_scan": scan_float_in_truth(repo_root_abs),
         "worldgen_lock_scan": scan_worldgen_lock(repo_root_abs),
+        "baseline_universe_scan": scan_baseline_universe(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -2099,6 +2285,7 @@ __all__ = [
     "render_concurrency_scan_report",
     "render_numeric_scan_report",
     "run_arch_audit",
+    "scan_baseline_universe",
     "scan_archive_determinism",
     "scan_contract_pins",
     "scan_compiler_flags",

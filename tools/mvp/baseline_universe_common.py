@@ -185,6 +185,61 @@ def load_baseline_instance_manifest(repo_root: str, manifest_path: str = "") -> 
     return _load_json(path)
 
 
+def _frozen_baseline_engine_version_created(repo_root: str) -> str:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    committed_save = _load_json(_repo_abs(repo_root_abs, BASELINE_SAVE_REL))
+    engine_version_created = _token(committed_save.get("engine_version_created"))
+    if engine_version_created:
+        return engine_version_created
+    snapshot_payload = load_baseline_universe_snapshot(repo_root_abs)
+    snapshot_record = _as_map(snapshot_payload.get("record"))
+    return _token(_as_map(snapshot_record.get("save_artifact")).get("engine_version_created"))
+
+
+def _normalize_frozen_process_log_anchors(repo_root: str, payload: Mapping[str, object]) -> dict:
+    current = copy.deepcopy(dict(payload or {}))
+    current_rows = current.get("process_log")
+    if not isinstance(current_rows, list) or not current_rows:
+        return current
+    if any(not isinstance(row, Mapping) for row in current_rows):
+        return current
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    committed_save = _load_json(_repo_abs(repo_root_abs, BASELINE_SAVE_REL))
+    committed_rows = committed_save.get("process_log")
+    if not isinstance(committed_rows, list) or len(current_rows) > len(committed_rows):
+        return current
+    if any(not isinstance(row, Mapping) for row in committed_rows[: len(current_rows)]):
+        return current
+    normalized_rows = []
+    for index, row in enumerate(current_rows):
+        normalized_row = copy.deepcopy(dict(row))
+        committed_row = dict(committed_rows[index])
+        compare_left = copy.deepcopy(normalized_row)
+        compare_right = copy.deepcopy(committed_row)
+        compare_left["state_hash_anchor"] = ""
+        compare_right["state_hash_anchor"] = ""
+        if compare_left != compare_right:
+            return current
+        frozen_anchor = _token(committed_row.get("state_hash_anchor"))
+        if frozen_anchor:
+            normalized_row["state_hash_anchor"] = frozen_anchor
+        normalized_rows.append(normalized_row)
+    current["process_log"] = normalized_rows
+    return current
+
+
+def _adopt_frozen_baseline_artifact(repo_root: str, payload: Mapping[str, object], rel_path: str, hash_field: str) -> dict:
+    current = copy.deepcopy(dict(payload or {}))
+    current_hash = _token(current.get(hash_field))
+    if not current_hash:
+        return current
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    frozen_payload = _load_json(_repo_abs(repo_root_abs, rel_path))
+    if _token(frozen_payload.get(hash_field)) != current_hash:
+        return current
+    return frozen_payload or current
+
+
 def _install_profile_payload(repo_root: str) -> dict:
     payload = select_install_profile(load_install_profile_registry(repo_root), install_profile_id=DEFAULT_INSTALL_PROFILE_ID)
     if payload:
@@ -217,8 +272,18 @@ def _baseline_context(repo_root: str, seed_text: str) -> dict:
         raise ValueError("baseline seed does not match WORLDGEN-LOCK baseline seed")
 
     locked = build_locked_identity_context(repo_root, seed_text)
-    profile_bundle = dict(locked.get("profile_bundle") or {})
-    pack_lock = dict(locked.get("pack_lock") or {})
+    profile_bundle = _adopt_frozen_baseline_artifact(
+        repo_root,
+        _as_map(locked.get("profile_bundle")),
+        BASELINE_PROFILE_BUNDLE_REL,
+        "profile_bundle_hash",
+    )
+    pack_lock = _adopt_frozen_baseline_artifact(
+        repo_root,
+        _as_map(locked.get("pack_lock")),
+        BASELINE_PACK_LOCK_REL,
+        "pack_lock_hash",
+    )
     universe_identity = dict(locked.get("universe_identity") or {})
     if _token(pack_lock.get("pack_lock_hash")) != _token(worldgen_record.get("pack_lock_hash")):
         raise ValueError("pack lock hash does not match WORLDGEN-LOCK baseline")
@@ -420,11 +485,14 @@ def _saveable_state(repo_root: str, working_state: Mapping[str, object], context
     for field_name in _TRANSIENT_STATE_FIELDS:
         payload.pop(field_name, None)
     payload = _strip_schema_unknown_top_level_fields(repo_root, payload)
+    payload = _normalize_frozen_process_log_anchors(repo_root, payload)
+    frozen_engine_version = _frozen_baseline_engine_version_created(repo_root)
     stamped = stamp_artifact_metadata(
         repo_root=repo_root,
         artifact_kind="save_file",
         payload=payload,
         semantic_contract_bundle_hash=_token(_as_map(context.get("proof_bundle")).get("universe_contract_bundle_hash")),
+        engine_version_created=frozen_engine_version,
     )
     report = validate_instance(repo_root=repo_root, schema_name="universe_state", payload=stamped, strict_top_level=True)
     if not bool(report.get("valid", False)):
