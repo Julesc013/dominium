@@ -2910,6 +2910,213 @@ def scan_archive_determinism(repo_root: str, override_paths: Sequence[str] | Non
     )
 
 
+def scan_offline_archive(repo_root: str) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
+    findings: list[dict] = []
+    fresh_build = {}
+    fresh_verify = {}
+    fresh_baseline = {}
+    verify_payload = {}
+    baseline_payload = {}
+    required_paths = []
+
+    try:
+        from tools.release.offline_archive_common import (
+            OFFLINE_ARCHIVE_BASELINE_DOC_REL,
+            OFFLINE_ARCHIVE_BASELINE_REL,
+            OFFLINE_ARCHIVE_BASELINE_SCHEMA_ID,
+            OFFLINE_ARCHIVE_BUILD_TOOL_PY_REL,
+            OFFLINE_ARCHIVE_BUILD_TOOL_REL,
+            OFFLINE_ARCHIVE_MODEL_DOC_REL,
+            OFFLINE_ARCHIVE_REQUIRED_TAG,
+            OFFLINE_ARCHIVE_RETRO_AUDIT_REL,
+            OFFLINE_ARCHIVE_VERIFY_DOC_REL,
+            OFFLINE_ARCHIVE_VERIFY_JSON_REL,
+            OFFLINE_ARCHIVE_VERIFY_SCHEMA_ID,
+            OFFLINE_ARCHIVE_VERIFY_TOOL_PY_REL,
+            OFFLINE_ARCHIVE_VERIFY_TOOL_REL,
+            build_archive_baseline,
+            build_offline_archive,
+            load_offline_archive_baseline,
+            load_offline_archive_verify,
+            offline_archive_baseline_hash,
+            offline_archive_verify_hash,
+            verify_offline_archive,
+        )
+    except Exception:
+        return _check_result_payload(
+            check_id="offline_archive_scan",
+            description="Verify frozen offline archive build and verification surfaces.",
+            scanned_paths=[],
+            blocking_findings=[
+                _finding_row(
+                    category="offline_archive.required_surface",
+                    path="tools/release/offline_archive_common.py",
+                    line=1,
+                    message="offline archive tooling could not be imported.",
+                    rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE",
+                )
+            ],
+            inventory={},
+        )
+
+    required_paths = [
+        OFFLINE_ARCHIVE_RETRO_AUDIT_REL,
+        OFFLINE_ARCHIVE_MODEL_DOC_REL,
+        OFFLINE_ARCHIVE_BUILD_TOOL_REL,
+        OFFLINE_ARCHIVE_BUILD_TOOL_PY_REL,
+        OFFLINE_ARCHIVE_VERIFY_TOOL_REL,
+        OFFLINE_ARCHIVE_VERIFY_TOOL_PY_REL,
+        OFFLINE_ARCHIVE_VERIFY_JSON_REL,
+        OFFLINE_ARCHIVE_VERIFY_DOC_REL,
+        OFFLINE_ARCHIVE_BASELINE_REL,
+        OFFLINE_ARCHIVE_BASELINE_DOC_REL,
+    ]
+    for rel_path in required_paths:
+        if os.path.exists(_repo_abs(repo_root_abs, rel_path)):
+            continue
+        findings.append(
+            _finding_row(
+                category="offline_archive.required_surface",
+                path=rel_path,
+                line=1,
+                message="required offline archive surface is missing.",
+                rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE",
+            )
+        )
+
+    verify_payload = load_offline_archive_verify(repo_root_abs)
+    baseline_payload = load_offline_archive_baseline(repo_root_abs)
+    if verify_payload and _token(verify_payload.get("schema_id")) != OFFLINE_ARCHIVE_VERIFY_SCHEMA_ID:
+        findings.append(_finding_row(category="offline_archive.required_surface", path=OFFLINE_ARCHIVE_VERIFY_JSON_REL, line=1, message="offline archive verify schema_id mismatch.", rule_id="INV-OFFLINE-ARCHIVE-VERIFY-MUST-PASS"))
+    if baseline_payload and _token(baseline_payload.get("schema_id")) != OFFLINE_ARCHIVE_BASELINE_SCHEMA_ID:
+        findings.append(_finding_row(category="offline_archive.required_surface", path=OFFLINE_ARCHIVE_BASELINE_REL, line=1, message="offline archive baseline schema_id mismatch.", rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE"))
+    if verify_payload and _token(verify_payload.get("deterministic_fingerprint")) != offline_archive_verify_hash(verify_payload):
+        findings.append(_finding_row(category="offline_archive.nondeterministic_archive", path=OFFLINE_ARCHIVE_VERIFY_JSON_REL, line=1, message="offline archive verify deterministic_fingerprint mismatch.", rule_id="INV-OFFLINE-ARCHIVE-VERIFY-MUST-PASS"))
+    if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != offline_archive_baseline_hash(baseline_payload):
+        findings.append(_finding_row(category="offline_archive.nondeterministic_archive", path=OFFLINE_ARCHIVE_BASELINE_REL, line=1, message="offline archive baseline deterministic_fingerprint mismatch.", rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE"))
+    if baseline_payload and _token(baseline_payload.get("required_update_tag")) != OFFLINE_ARCHIVE_REQUIRED_TAG:
+        findings.append(_finding_row(category="offline_archive.required_surface", path=OFFLINE_ARCHIVE_BASELINE_REL, line=1, message="offline archive baseline is missing the required regression update tag.", snippet=_token(baseline_payload.get("required_update_tag")), rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE"))
+
+    if verify_payload and _token(verify_payload.get("result")) != "complete":
+        findings.append(
+            _finding_row(
+                category="offline_archive.verify_failed",
+                path=OFFLINE_ARCHIVE_VERIFY_JSON_REL,
+                line=1,
+                message="committed offline archive verify report is not passing.",
+                snippet=_token(verify_payload.get("deterministic_fingerprint")),
+                rule_id="INV-OFFLINE-ARCHIVE-VERIFY-MUST-PASS",
+            )
+        )
+
+    for row in list(_as_map(verify_payload).get("errors") or []):
+        item = _as_map(row)
+        code = _token(item.get("code"))
+        if code in {"archive_artifact_missing", "archive_support_surface_missing"}:
+            findings.append(
+                _finding_row(
+                    category="offline_archive.missing_archive_artifact",
+                    path=_token(item.get("path")) or OFFLINE_ARCHIVE_VERIFY_JSON_REL,
+                    line=1,
+                    message=_token(item.get("message")) or "offline archive is missing a required archived artifact",
+                    snippet=code,
+                    rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE",
+                )
+            )
+
+    try:
+        fresh_build = build_offline_archive(
+            repo_root_abs,
+            output_root_rel=os.path.join("build", "tmp", "omega8_archive_arch_audit"),
+        )
+        fresh_verify = verify_offline_archive(repo_root_abs, archive_path=_token(fresh_build.get("archive_bundle_path")), baseline_path="")
+        fresh_baseline = build_archive_baseline(fresh_build, fresh_verify)
+    except Exception as exc:
+        findings.append(
+            _finding_row(
+                category="offline_archive.verify_failed",
+                path=OFFLINE_ARCHIVE_VERIFY_JSON_REL,
+                line=1,
+                message="fresh offline archive build/verify rerun failed ({}).".format(str(exc)),
+                rule_id="INV-OFFLINE-ARCHIVE-VERIFY-MUST-PASS",
+            )
+        )
+    else:
+        if _token(fresh_verify.get("result")) != "complete":
+            findings.append(
+                _finding_row(
+                    category="offline_archive.verify_failed",
+                    path=OFFLINE_ARCHIVE_VERIFY_JSON_REL,
+                    line=1,
+                    message="fresh offline archive verify rerun is not passing.",
+                    snippet=_token(fresh_verify.get("deterministic_fingerprint")),
+                    rule_id="INV-OFFLINE-ARCHIVE-VERIFY-MUST-PASS",
+                )
+            )
+        for row in list(_as_map(fresh_verify).get("errors") or []):
+            item = _as_map(row)
+            code = _token(item.get("code"))
+            if code in {"archive_artifact_missing", "archive_support_surface_missing"}:
+                findings.append(
+                    _finding_row(
+                        category="offline_archive.missing_archive_artifact",
+                        path=_token(item.get("path")) or OFFLINE_ARCHIVE_VERIFY_JSON_REL,
+                        line=1,
+                        message=_token(item.get("message")) or "fresh offline archive rerun is missing a required archived artifact",
+                        snippet=code,
+                        rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE",
+                    )
+                )
+        for field_name, rel_path in (
+            ("archive_bundle_hash", OFFLINE_ARCHIVE_BASELINE_REL),
+            ("archive_record_hash", OFFLINE_ARCHIVE_BASELINE_REL),
+            ("archive_projection_hash", OFFLINE_ARCHIVE_BASELINE_REL),
+            ("deterministic_fingerprint", OFFLINE_ARCHIVE_VERIFY_JSON_REL),
+        ):
+            committed = _token(_as_map(baseline_payload if "archive_" in field_name else verify_payload).get(field_name))
+            fresh = _token(_as_map(fresh_baseline if "archive_" in field_name else fresh_verify).get(field_name))
+            if committed and committed != fresh:
+                findings.append(
+                    _finding_row(
+                        category="offline_archive.nondeterministic_archive",
+                        path=rel_path,
+                        line=1,
+                        message="committed offline archive surface drifted from the fresh deterministic rerun.",
+                        snippet="{} != {}".format(committed, fresh),
+                        rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE" if "archive_" in field_name else "INV-OFFLINE-ARCHIVE-VERIFY-MUST-PASS",
+                    )
+                )
+        if baseline_payload and _token(baseline_payload.get("deterministic_fingerprint")) != _token(fresh_baseline.get("deterministic_fingerprint")):
+            findings.append(
+                _finding_row(
+                    category="offline_archive.nondeterministic_archive",
+                    path=OFFLINE_ARCHIVE_BASELINE_REL,
+                    line=1,
+                    message="committed offline archive baseline drifted from the fresh deterministic rerun.",
+                    snippet=_token(fresh_baseline.get("deterministic_fingerprint")),
+                    rule_id="INV-OFFLINE-ARCHIVE-BUILT-FOR-RELEASE",
+                )
+            )
+
+    return _check_result_payload(
+        check_id="offline_archive_scan",
+        description="Verify the frozen offline archive build, retained reconstruction surfaces, archive hash stability, and offline rerun of the Ω baseline verification lane.",
+        scanned_paths=sorted(set(required_paths)),
+        blocking_findings=findings,
+        inventory={
+            "required_surface_count": len(required_paths),
+            "verify_fingerprint": _token(_as_map(verify_payload).get("deterministic_fingerprint")),
+            "baseline_fingerprint": _token(_as_map(baseline_payload).get("deterministic_fingerprint")),
+            "fresh_verify_fingerprint": _token(_as_map(fresh_verify).get("deterministic_fingerprint")),
+            "fresh_baseline_fingerprint": _token(_as_map(fresh_baseline).get("deterministic_fingerprint")),
+            "fresh_archive_bundle_hash": _token(_as_map(fresh_build).get("archive_bundle_hash")),
+            "fresh_archive_record_hash": _token(_as_map(fresh_build).get("archive_record_hash")),
+            "required_commit_tag": _token(_as_map(baseline_payload).get("required_update_tag")),
+        },
+    )
+
+
 def run_arch_audit(repo_root: str) -> dict:
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))
     check_order = [
@@ -2925,6 +3132,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "ecosystem_verify_scan",
         "update_sim_scan",
         "trust_strict_scan",
+        "offline_archive_scan",
         "noncanonical_serialization_scan",
         "compiler_flag_scan",
         "parallel_truth_scan",
@@ -2952,6 +3160,7 @@ def run_arch_audit(repo_root: str) -> dict:
         "ecosystem_verify_scan": scan_ecosystem_verify(repo_root_abs),
         "update_sim_scan": scan_update_sim(repo_root_abs),
         "trust_strict_scan": scan_trust_strict_suite(repo_root_abs),
+        "offline_archive_scan": scan_offline_archive(repo_root_abs),
         "noncanonical_serialization_scan": scan_noncanonical_numeric_serialization(repo_root_abs),
         "compiler_flag_scan": scan_compiler_flags(repo_root_abs),
         "parallel_truth_scan": scan_parallel_truth(repo_root_abs),
@@ -3387,6 +3596,7 @@ __all__ = [
     "run_arch_audit",
     "scan_baseline_universe",
     "scan_archive_determinism",
+    "scan_offline_archive",
     "scan_contract_pins",
     "scan_compiler_flags",
     "scan_disaster_suite",
