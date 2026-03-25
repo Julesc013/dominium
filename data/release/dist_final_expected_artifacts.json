@@ -1,0 +1,167 @@
+{
+  "channel_id": "mock",
+  "expected_outputs": [
+    {
+      "artifact_id": "bundle.full.win64.root",
+      "artifact_kind": "bundle_root",
+      "install_profile_id": "install.profile.full",
+      "path": "dist/v0.0.0-mock/win64/dominium",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "bundle.full.win64.release_manifest",
+      "artifact_kind": "release_manifest",
+      "install_profile_id": "install.profile.full",
+      "path": "dist/v0.0.0-mock/win64/dominium/manifests/release_manifest.json",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "bundle.full.win64.release_index",
+      "artifact_kind": "release_index",
+      "install_profile_id": "install.profile.full",
+      "path": "dist/v0.0.0-mock/win64/dominium/manifests/release_index.json",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "bundle.server.win64.root",
+      "artifact_kind": "bundle_root",
+      "install_profile_id": "install.profile.server",
+      "path": "build/dist.final/server/v0.0.0-mock/win64/dominium",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "bundle.server.win64.release_manifest",
+      "artifact_kind": "release_manifest",
+      "install_profile_id": "install.profile.server",
+      "path": "build/dist.final/server/v0.0.0-mock/win64/dominium/manifests/release_manifest.json",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "bundle.tools.win64.root",
+      "artifact_kind": "bundle_root",
+      "install_profile_id": "install.profile.tools",
+      "path": "build/dist.final/tools/v0.0.0-mock/win64/dominium",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "bundle.tools.win64.release_manifest",
+      "artifact_kind": "release_manifest",
+      "install_profile_id": "install.profile.tools",
+      "path": "build/dist.final/tools/v0.0.0-mock/win64/dominium/manifests/release_manifest.json",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "publication.archive.bundle",
+      "artifact_kind": "archive_bundle",
+      "path": "build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/dominium-archive-v0.0.0-mock.tar.gz",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "publication.archive.record",
+      "artifact_kind": "archive_record",
+      "path": "build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/archive_record.json",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "publication.release_index_history",
+      "artifact_kind": "release_index_history",
+      "path": "build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/manifests/release_index_history/mock/v0.0.0-mock.json",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "offline_archive.bundle",
+      "artifact_kind": "offline_archive_bundle",
+      "path": "build/offline_archive/dominium-archive-v0.0.0-mock.tar.gz",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "offline_archive.record",
+      "artifact_kind": "offline_archive_record",
+      "path": "build/tmp/omega8_offline_archive/staging/v0.0.0-mock/archive_record.json",
+      "sha256": ""
+    },
+    {
+      "artifact_id": "signoff.machine",
+      "artifact_kind": "release_signoff",
+      "path": "data/release/final_dist_signoff.json",
+      "sha256": ""
+    }
+  ],
+  "install_profiles": [
+    {
+      "execution_role": "release_anchor",
+      "install_profile_id": "install.profile.full",
+      "platform_tag": "win64"
+    },
+    {
+      "execution_role": "derivative_bundle",
+      "install_profile_id": "install.profile.server",
+      "platform_tag": "win64"
+    },
+    {
+      "execution_role": "derivative_bundle",
+      "install_profile_id": "install.profile.tools",
+      "platform_tag": "win64"
+    }
+  ],
+  "manual_prerequisites": [
+    "Tier-1 build environment availability for any non-win64 target packaged at Ω-11 time.",
+    "Operator review of Ω-10 dry-run output before writing final_dist_signoff.json.",
+    "Cold-storage destination selection for the offline reconstruction archive bundle."
+  ],
+  "omega_inputs": [
+    {
+      "artifact_id": "omega1.worldgen_snapshot",
+      "path": "data/baselines/worldgen/baseline_worldgen_snapshot.json"
+    },
+    {
+      "artifact_id": "omega2.baseline_universe_snapshot",
+      "path": "data/baselines/universe/baseline_universe_snapshot.json"
+    },
+    {
+      "artifact_id": "omega3.gameplay_snapshot",
+      "path": "data/baselines/gameplay/gameplay_loop_snapshot.json"
+    },
+    {
+      "artifact_id": "omega4.disaster_baseline",
+      "path": "data/regression/disaster_suite_baseline.json"
+    },
+    {
+      "artifact_id": "omega5.ecosystem_baseline",
+      "path": "data/regression/ecosystem_verify_baseline.json"
+    },
+    {
+      "artifact_id": "omega6.update_sim_baseline",
+      "path": "data/regression/update_sim_baseline.json"
+    },
+    {
+      "artifact_id": "omega7.trust_baseline",
+      "path": "data/regression/trust_strict_baseline.json"
+    },
+    {
+      "artifact_id": "omega8.archive_baseline",
+      "path": "data/regression/archive_baseline.json"
+    },
+    {
+      "artifact_id": "omega9.toolchain_run_manifest",
+      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/run_manifest.json"
+    },
+    {
+      "artifact_id": "omega9.toolchain_hashes",
+      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/hashes.json"
+    }
+  ],
+  "release_id": "v0.0.0-mock",
+  "tier1_targets": [
+    {
+      "execution_status": "required",
+      "platform_tag": "win64",
+      "target_id": "target.os_winnt.abi_msvc.arch_x86_64"
+    },
+    {
+      "execution_status": "requires_environment",
+      "platform_tag": "linux64",
+      "target_id": "target.os_linux.abi_glibc.arch_x86_64"
+    }
+  ]
+}
