@@ -62,6 +62,7 @@ DEFAULT_PROFILE_BUNDLE_REL = os.path.join(DEFAULT_DIST_ROOT_REL, "store", "profi
 DEFAULT_COMPONENT_GRAPH_REGISTRY_REL = os.path.join("data", "registries", "component_graph_registry.json")
 DEFAULT_INSTALL_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "install_profile_registry.json")
 DEFAULT_GOVERNANCE_PROFILE_REL = os.path.join("data", "governance", "governance_profile.json")
+DEFAULT_RELEASE_IDENTITY_REPORT_REL = os.path.join("data", "audit", "release_identity_report.json")
 DEFAULT_TEMP_SAVE_REL = os.path.join("build", "tmp", "omega5_ecosystem", "save_fixture", "save.manifest.json")
 TARGET_INSTALL_PROFILES = ("install.profile.full", "install.profile.server", "install.profile.tools")
 REQUIRED_IDENTITY_KINDS = (
@@ -331,7 +332,9 @@ def _build_temp_save_fixture(repo_root: str) -> dict:
 
 
 def _binary_identity_summary(repo_root: str, selected_product_ids: set[str], trust_policy_id: str, dist_root_rel: str, release_manifest_rel: str) -> dict:
-    release_identity = build_release_identity_report(repo_root)
+    release_identity = _load_json(_repo_abs(repo_root, DEFAULT_RELEASE_IDENTITY_REPORT_REL))
+    if not _token(release_identity.get("result")):
+        release_identity = build_release_identity_report(repo_root)
     matched_rows = [
         {
             "product_id": _token(_as_map(row).get("product_id")),
@@ -564,6 +567,17 @@ def _update_coverage(repo_root: str, platform_tag: str) -> dict:
 
 def build_ecosystem_verify_baseline(report: Mapping[str, object]) -> dict:
     payload = _as_map(report)
+    baseline_result = "complete"
+    if any(_token(_as_map(row).get("result")) != "complete" for row in _as_list(payload.get("resolved_profiles"))):
+        baseline_result = "refused"
+    if _token(_as_map(payload.get("identity_coverage")).get("result")) != "complete":
+        baseline_result = "refused"
+    if _token(_as_map(payload.get("migration_coverage")).get("result")) != "complete":
+        baseline_result = "refused"
+    if _token(_as_map(payload.get("trust_coverage")).get("result")) != "complete":
+        baseline_result = "refused"
+    if _token(_as_map(payload.get("update_coverage")).get("result")) != "complete":
+        baseline_result = "refused"
     profile_rows = []
     for row in _as_list(payload.get("resolved_profiles")):
         item = _as_map(row)
@@ -591,7 +605,7 @@ def build_ecosystem_verify_baseline(report: Mapping[str, object]) -> dict:
         "baseline_id": "ecosystem_verify.baseline.v0_0_0",
         "ecosystem_verify_version": ECOSYSTEM_VERIFY_VERSION,
         "stability_class": ECOSYSTEM_VERIFY_STABILITY_CLASS,
-        "result": _token(payload.get("result")) or "refused",
+        "result": baseline_result,
         "platform_tag": _token(payload.get("platform_tag")) or DEFAULT_PLATFORM_TAG,
         "resolved_profiles": sorted(profile_rows, key=lambda row: _token(row.get("install_profile_id"))),
         "identity_coverage": {
