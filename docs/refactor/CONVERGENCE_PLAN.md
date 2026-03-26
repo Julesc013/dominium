@@ -2,15 +2,15 @@
 
 - Generated: 2026-03-26
 - Duplicate clusters: 6066
-- Actions: 28316
-- Fingerprint: `66d74d52a8a502d83384b2096c80e7b2a6bd40ae71ff81bbd41d4fd2c66c0220`
+- Actions: 27062
+- Fingerprint: `5f0b7464cb6d4ecc2b53de3a08df8e6c5a8bb7c2f53dab811c37191e233b983d`
 
 ## Resolution Summary
 
-- Keep-only clusters: 1698
-- Merge-required clusters: 2970
-- Quarantine clusters: 1398
-- Source-like impacted clusters: 3232
+- Keep-only clusters: 1946
+- Merge-required clusters: 2764
+- Quarantine clusters: 1356
+- Source-like impacted clusters: 3230
 
 ## Deterministic Selection Rules
 

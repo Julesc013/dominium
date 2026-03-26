@@ -5,14 +5,14 @@
 ## Phase 1 - Safe merges (LOW risk)
 
 - Execute merge actions for LOW-risk clusters and validate with FAST gates.
-- Planned action count: 277
+- Planned action count: 7
 - Gate: `python tools/xstack/testx/runner.py --repo-root . --profile FAST`
 - Gate: `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
 
 ## Phase 2 - Medium risk merges
 
 - Execute MED-risk merges, then run STRICT validation plus the four Ω regression verifies.
-- Planned action count: 2016
+- Planned action count: 2009
 - Gate: `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
 - Gate: `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - Gate: `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
@@ -22,13 +22,13 @@
 ## Phase 3 - High risk merges (one per PR)
 
 - Execute one HIGH-risk merge action per PR and require the full convergence gate.
-- Planned action count: 2555
+- Planned action count: 2517
 - Gate: `python tools/convergence/tool_run_convergence_gate.py --repo-root .`
 
 ## Phase 4 - Rewire sweep
 
 - Update call sites and includes to the chosen canonical implementations, then rerun review and STRICT validation.
-- Planned action count: 7401
+- Planned action count: 6977
 - Gate: `python tools/review/tool_run_duplicate_impl_scan.py --repo-root .`
 - Gate: `python tools/review/tool_run_implementation_scoring.py --repo-root .`
 - Gate: `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
@@ -36,7 +36,7 @@
 ## Phase 5 - Deprecation and quarantine decisions
 
 - Review quarantined items manually, convert them to merge/rewire/deprecate, and record deprecations without deletion.
-- Planned action count: 10001
+- Planned action count: 9486
 - Gate: `python tools/review/tool_run_convergence_plan.py --repo-root .`
 - Gate: `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

@@ -868,6 +868,24 @@ def _cluster_actions(cluster: Mapping[str, object], winner: Mapping[str, object]
             ),
         ), summary
 
+    non_runtime_cluster = (
+        not focus_tags
+        and not _is_runtime_path(winner.get("file_path"))
+        and bool(secondary_paths)
+        and all(not _is_runtime_path(path) for path in secondary_paths)
+    )
+    if non_runtime_cluster:
+        summary["execution_note"] = "non_runtime_secondary_actions_suppressed"
+        return sorted(
+            actions,
+            key=lambda item: (
+                _token(item.get("cluster_id")),
+                ACTION_KIND_ORDER.get(_token(item.get("kind")), 99),
+                _norm_rel(item.get("secondary_file")),
+                _norm_rel(item.get("canonical_file")),
+            ),
+        ), summary
+
     cluster_has_merge = False
     cluster_has_quarantine = False
     for secondary in secondaries:

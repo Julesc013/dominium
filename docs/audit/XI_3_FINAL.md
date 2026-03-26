@@ -2,9 +2,9 @@
 
 - Generated: 2026-03-26
 - Duplicate clusters: 6066
-- Keep-only clusters: 1698
-- Merge-required clusters: 2970
-- Quarantine clusters: 1398
+- Keep-only clusters: 1946
+- Merge-required clusters: 2764
+- Quarantine clusters: 1356
 
 ## Top HIGH Risk Items
 
