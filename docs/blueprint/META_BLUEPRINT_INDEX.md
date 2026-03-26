@@ -36,7 +36,7 @@ Available Ξ evidence in the current workspace:
 - `XI_1`: present
 - `XI_2`: present
 - `XI_3`: present
-- `XI_4`: not_present
+- `XI_4`: present
 - `XI_5`: not_present
 - `XI_6`: not_present
 - `XI_7`: not_present
