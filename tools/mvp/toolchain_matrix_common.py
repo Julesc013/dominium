@@ -226,12 +226,12 @@ def _fingerprint(payload: Mapping[str, object]) -> str:
     return canonical_sha256(dict(dict(payload or {}), deterministic_fingerprint=""))
 
 
-def _stability(*, rationale: str, replacement_target: str) -> dict:
+def _stability(*, rationale: str, replacement_target: str, future_series: str = "DIST/PLATFORM") -> dict:
     payload = {
         "schema_version": "1.0.0",
         "stability_class_id": "provisional",
         "rationale": _token(rationale),
-        "future_series": "DIST/PLATFORM",
+        "future_series": _token(future_series),
         "replacement_target": _token(replacement_target),
         "contract_id": "",
         "extensions": {},
@@ -271,6 +271,7 @@ def canonicalize_toolchain_profile_row(payload: Mapping[str, object] | None) -> 
         "step_ids": [item for item in list(row.get("step_ids") or []) if _token(item)],
         "required_step_ids": _sorted_tokens(row.get("required_step_ids")),
         "optional_step_ids": _sorted_tokens(row.get("optional_step_ids")),
+        "stability": dict(_normalize_tree(_as_map(row.get("stability")))),
         "extensions": dict(_normalize_tree(_as_map(row.get("extensions")))),
         "deterministic_fingerprint": _token(row.get("deterministic_fingerprint")),
     }
@@ -657,6 +658,11 @@ def _default_profile_rows() -> list[dict]:
             "optional_step_ids": [
                 "smoke.release_manifest",
             ],
+            "stability": _stability(
+                rationale="Toolchain test profile registry row for smoke validation coverage; support artifact remains provisional.",
+                replacement_target="toolchain matrix and CI profile consolidation",
+                future_series="TOOLCHAIN",
+            ),
             "extensions": {
                 "official.source": "OMEGA-9",
             },
@@ -681,6 +687,11 @@ def _default_profile_rows() -> list[dict]:
             "optional_step_ids": [
                 "smoke.release_manifest",
             ],
+            "stability": _stability(
+                rationale="Toolchain test profile registry row for determinism-core validation coverage; support artifact remains provisional.",
+                replacement_target="toolchain matrix and CI profile consolidation",
+                future_series="TOOLCHAIN",
+            ),
             "extensions": {
                 "official.source": "OMEGA-9",
             },
@@ -709,6 +720,11 @@ def _default_profile_rows() -> list[dict]:
             "optional_step_ids": [
                 "smoke.release_manifest",
             ],
+            "stability": _stability(
+                rationale="Toolchain test profile registry row for ecosystem validation coverage; support artifact remains provisional.",
+                replacement_target="toolchain matrix and CI profile consolidation",
+                future_series="TOOLCHAIN",
+            ),
             "extensions": {
                 "official.source": "OMEGA-9",
             },
@@ -731,6 +747,11 @@ def _default_profile_rows() -> list[dict]:
                 "distribution.release_manifest_verify",
                 "heavy.convergence_gate",
             ],
+            "stability": _stability(
+                rationale="Toolchain test profile registry row for full validation coverage; support artifact remains provisional.",
+                replacement_target="toolchain matrix and CI profile consolidation",
+                future_series="TOOLCHAIN",
+            ),
             "extensions": {
                 "allow_heavy_default": False,
                 "official.source": "OMEGA-9",

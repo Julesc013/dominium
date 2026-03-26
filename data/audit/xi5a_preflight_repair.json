@@ -1,0 +1,82 @@
+{
+  "after": {
+    "fast": {
+      "error_count": 0,
+      "result": "complete",
+      "warning_count": 9
+    },
+    "strict": {
+      "error_count": 0,
+      "result": "complete",
+      "warning_count": 9
+    }
+  },
+  "before": {
+    "fast": {
+      "blocking_codes": [
+        "missing_stability",
+        "refusal.validation.arch_audit"
+      ],
+      "blocking_path": "data/registries/toolchain_test_profile_registry.json",
+      "result": "refused"
+    },
+    "strict": {
+      "blocking_codes": [
+        "missing_stability",
+        "refusal.validation.arch_audit"
+      ],
+      "blocking_path": "data/registries/toolchain_test_profile_registry.json",
+      "result": "refused"
+    }
+  },
+  "files_changed": [
+    "data/audit/validation_report_FAST.json",
+    "data/audit/validation_report_STRICT.json",
+    "data/registries/toolchain_test_profile_registry.json",
+    "docs/audit/VALIDATION_REPORT_FAST.md",
+    "docs/audit/VALIDATION_REPORT_STRICT.md",
+    "docs/audit/VALIDATION_UNIFY_FINAL.md",
+    "tools/mvp/toolchain_matrix_common.py"
+  ],
+  "notes": [
+    "validate --all FAST and validate --all STRICT were rerun sequentially for the final preflight result.",
+    "TIME-ANCHOR validation uses deterministic scratch save roots under saves/, so concurrent aggregate validation runs are not a valid preflight mode."
+  ],
+  "readiness": {
+    "approved_lock_path": "data/restructure/src_domain_mapping_lock_approved.json",
+    "readiness_contract_path": "data/restructure/xi5_readiness_contract.json",
+    "xi5a_can_proceed_unchanged": true
+  },
+  "repaired_blockers": [
+    {
+      "code": "missing_stability",
+      "path": "data/registries/toolchain_test_profile_registry.json",
+      "resolution": "Added conservative provisional stability markers to each record.profiles[] entry."
+    },
+    {
+      "code": "expected_surface_alignment",
+      "path": "tools/mvp/toolchain_matrix_common.py",
+      "resolution": "Updated the canonical Ω-9 toolchain profile registry helper to preserve and emit profile-level stability metadata."
+    }
+  ],
+  "scope": "xi5a_preflight_repair",
+  "status": "complete",
+  "targeted_tests": [
+    {
+      "status": "pass",
+      "test_id": "test_all_registries_have_stability"
+    },
+    {
+      "status": "pass",
+      "test_id": "test_toolchain_registry_schema_valid"
+    },
+    {
+      "status": "pass",
+      "test_id": "test_validate_all_runs_fast"
+    },
+    {
+      "status": "pass",
+      "test_id": "test_validate_all_runs_strict"
+    }
+  ]
+}
