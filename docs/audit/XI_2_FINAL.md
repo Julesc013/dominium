@@ -8,8 +8,8 @@ Replacement Target: XI-3 convergence planning
 
 # XI-2 Final
 
-- duplicate_clusters: `6066`
-- scored_implementations: `24122`
+- duplicate_clusters: `6065`
+- scored_implementations: `24119`
 - unique_candidates: `15896`
 
 ## Highest Scoring Canonical Candidates
