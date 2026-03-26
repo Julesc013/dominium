@@ -8,8 +8,8 @@ Replacement Target: XI-4b bounded follow-up and XI-5 src removal execution
 
 - Execution Mode: `conservative_preflight`
 - Execution Boundary: `record canonical selections, quarantine ambiguous clusters, defer code-changing merge/rewire work outside the bounded XI-4 slice`
-- Entry Count: `27062`
-- Applied Records: `6066`
+- Entry Count: `27061`
+- Applied Records: `6065`
 - Quarantined: `2415`
 - Skipped: `18581`
 - Quarantined Clusters: `1372`
@@ -19,7 +19,7 @@ Replacement Target: XI-4b bounded follow-up and XI-5 src removal execution
 
 - `build_strict` `cmake --build --preset verify --config Debug --target domino_engine dominium_game dominium_client` -> `pass`
 - `testx_targeted` `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable,test_deprecated_files_not_in_default_build,test_canonical_paths_used_for_core_concepts_smoke,test_convergence_execution_log_deterministic` -> `pass`
-- `validate_fast` `python tools/validation/tool_run_validation.py --repo-root . --profile FAST` -> `fail` note=`repo-global validation failure: dist smoke client_descriptor returned non-zero inside ARCH-AUDIT disaster scan`
+- `validate_fast` `python tools/validation/tool_run_validation.py --repo-root . --profile FAST` -> `fail` note=`repo-global validation refusal: registry entries must declare stability in data/registries/toolchain_test_profile_registry.json`
 - `validate_strict` `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT` -> `fail` note=`repo-global validation failure: ARCH-AUDIT disaster worktree cleanup under build/tmp/omega4_disaster_arch_audit failed`
 - `omega_1_worldgen_lock` `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .` -> `pass`
 - `omega_2_baseline_universe` `python tools/mvp/tool_verify_baseline_universe.py --repo-root .` -> `pass`

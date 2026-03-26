@@ -76,7 +76,7 @@ GATE_ROWS = (
         "command": "python tools/validation/tool_run_validation.py --repo-root . --profile FAST",
         "phase": "phase_1_safe_merges",
         "status": "fail",
-        "note": "repo-global validation failure: dist smoke client_descriptor returned non-zero inside ARCH-AUDIT disaster scan",
+        "note": "repo-global validation refusal: registry entries must declare stability in data/registries/toolchain_test_profile_registry.json",
     },
     {
         "gate_id": "validate_strict",

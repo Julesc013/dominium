@@ -10,7 +10,7 @@ Replacement Target: XI-4b bounded execution follow-up
 
 - Execution Mode: `conservative_preflight`
 - Execution Boundary: `record canonical selections, quarantine ambiguous clusters, defer bulk code-changing merge/rewire work until bounded XI-4 follow-up slices`
-- Applied Records: `6066`
+- Applied Records: `6065`
 - Quarantined Actions: `2415`
 - Deferred Actions: `18581`
 - Quarantined Clusters: `1372`
@@ -20,7 +20,7 @@ Replacement Target: XI-4b bounded execution follow-up
 
 - `HIGH` applied=`2981` quarantined=`2376` skipped=`11319`
 - `MED` applied=`2203` quarantined=`0` skipped=`7262`
-- `LOW` applied=`882` quarantined=`39` skipped=`0`
+- `LOW` applied=`881` quarantined=`39` skipped=`0`
 
 ## Quarantined Clusters
 
@@ -54,7 +54,7 @@ Replacement Target: XI-4b bounded execution follow-up
 
 - `build_strict` -> `pass`
 - `testx_targeted` -> `pass`
-- `validate_fast` -> `fail` note=`repo-global validation failure: dist smoke client_descriptor returned non-zero inside ARCH-AUDIT disaster scan`
+- `validate_fast` -> `fail` note=`repo-global validation refusal: registry entries must declare stability in data/registries/toolchain_test_profile_registry.json`
 - `validate_strict` -> `fail` note=`repo-global validation failure: ARCH-AUDIT disaster worktree cleanup under build/tmp/omega4_disaster_arch_audit failed`
 - `omega_1_worldgen_lock` -> `pass`
 - `omega_2_baseline_universe` -> `pass`
