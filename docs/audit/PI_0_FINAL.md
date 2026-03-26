@@ -16,7 +16,7 @@ Replacement Target: snapshot-anchored PI-0 audit summary after blueprint generat
 
 ## Fingerprints
 
-- Series dependency graph: `4ab3c1576854cc8fffa04539caaabc54c317912e28304a352fcd3364b218bc15`
+- Series dependency graph: `fb62a606d4871bf917fa81b647f1b61cc1a485ee64a69af28bcfdd4e669365a8`
 - Readiness matrix: `1090ea1ac9b5532d19251919d315ad47a4e0e1fbf9efb44c5e5298c926e1ebd4`
 - Pipe dreams matrix: `80a19adff52ab35a86e5bfb5067712903634314c00662fa68d0bb6d2c422fca6`
 
