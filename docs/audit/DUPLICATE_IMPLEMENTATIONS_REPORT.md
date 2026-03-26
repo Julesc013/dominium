@@ -9,7 +9,7 @@ Replacement Target: XI-3 duplicate convergence plan
 # Duplicate Implementations Report
 
 - exact_duplicate_groups: `3674`
-- near_duplicate_clusters: `2392`
+- near_duplicate_clusters: `2391`
 - shadow_module_suspects: `4`
 - src_directory_count: `258`
 

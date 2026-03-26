@@ -9,7 +9,7 @@ Replacement Target: XI-2 boundary audit and XI-3 duplicate convergence
 # XI-1 Final
 
 - exact_duplicate_groups: `3674`
-- near_duplicate_clusters: `2392`
+- near_duplicate_clusters: `2391`
 - src_directory_count: `258`
 - shadow_module_suspects: `4`
 
