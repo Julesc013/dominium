@@ -1,0 +1,343 @@
+Status: Quarantine
+Last Reviewed: 2026-03-26
+Stability: provisional
+Replacement Target: XI-4b manual review resolution
+
+# Quarantine Packet `duplicate.sig.0bb8d9b37100d6bc`
+
+- Symbol: `_as_list`
+- Cluster Kind: `exact`
+- Cluster Resolution: `quarantine`
+- Risk Level: `HIGH`
+- Canonical Candidate: `tools/process/tool_replay_capsule_window.py`
+- Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
+- Planned Action Kinds: `merge, rewire, deprecate, quarantine`
+
+## Competing Files
+
+- `src/appshell/supervisor/supervisor_engine.py`
+- `src/appshell/tui/tui_engine.py`
+- `src/appshell/ui_mode_selector.py`
+- `src/astro/ephemeris/kepler_proxy_engine.py`
+- `src/astro/illumination/illumination_geometry_engine.py`
+- `src/astro/views/orbit_view_engine.py`
+- `src/client/ui/inspect_panels.py`
+- `src/client/ui/teleport_controller.py`
+- `src/client/ui/viewer_shell.py`
+- `src/compat/capability_negotiation.py`
+- `src/compat/descriptor/descriptor_engine.py`
+- `src/compat/migration_lifecycle.py`
+- `src/embodiment/body/body_system.py`
+- `src/embodiment/collision/macro_heightfield_provider.py`
+- `src/embodiment/lens/camera_smoothing.py`
+- `src/embodiment/lens/lens_engine.py`
+- `src/embodiment/movement/jump_process.py`
+- `src/geo/edit/geometry_state_engine.py`
+- `src/geo/kernel/geo_kernel.py`
+- `src/geo/overlay/overlay_merge_engine.py`
+- `src/geo/worldgen/worldgen_engine.py`
+- `src/governance/governance_profile.py`
+- `src/lib/artifact/artifact_validator.py`
+- `src/lib/bundle/bundle_manifest.py`
+- `src/lib/install/install_validator.py`
+- `src/lib/instance/instance_validator.py`
+- `src/lib/provides/provider_resolution.py`
+- `src/lib/save/save_validator.py`
+- `src/lib/store/reachability_engine.py`
+- `src/logic/compile/logic_proof_engine.py`
+- `src/logic/debug/debug_engine.py`
+- `src/logic/debug/runtime_state.py`
+- `src/logic/element/instrumentation_binding.py`
+- `src/logic/element/logic_element_validator.py`
+- `src/logic/eval/degradation_policy.py`
+- `src/logic/fault/fault_engine.py`
+- `src/logic/network/instrumentation_binding.py`
+- `src/logic/network/logic_network_engine.py`
+- `src/logic/network/logic_network_validator.py`
+- `src/logic/protocol/rows.py`
+- `src/logic/signal/carrier_adapters.py`
+- `src/logic/signal/signal_store.py`
+- `src/meta/compile/compile_engine.py`
+- `src/meta/compute/compute_budget_engine.py`
+- `src/meta/identity/identity_validator.py`
+- `src/meta/instrumentation/instrumentation_engine.py`
+- `src/meta/numeric.py`
+- `src/meta/profile/profile_engine.py`
+- `src/meta/reference/logic_small_reference.py`
+- `src/meta/stability/stability_validator.py`
+- `src/meta_extensions_engine.py`
+- `src/modding/mod_policy_engine.py`
+- `src/numeric_discipline.py`
+- `src/packs/compat/pack_compat_validator.py`
+- `src/packs/compat/pack_verification_pipeline.py`
+- `src/platform/platform_probe.py`
+- `src/platform/target_matrix.py`
+- `src/process/capsules/capsule_builder.py`
+- `src/process/capsules/capsule_executor.py`
+- `src/process/drift/drift_engine.py`
+- `src/process/maturity/maturity_engine.py`
+- `src/process/maturity/metrics_engine.py`
+- `src/process/process_definition_validator.py`
+- `src/process/process_run_engine.py`
+- `src/process/qc/qc_engine.py`
+- `src/process/research/experiment_engine.py`
+- `src/process/research/inference_engine.py`
+- `src/process/software/pipeline_engine.py`
+- `src/release/archive_policy.py`
+- `src/release/build_id_engine.py`
+- `src/release/component_graph_resolver.py`
+- `src/release/release_manifest_engine.py`
+- `src/release/update_resolver.py`
+- `src/security/trust/license_capability.py`
+- `src/security/trust/trust_verifier.py`
+- `src/system/certification/system_cert_engine.py`
+- `src/system/forensics/system_forensics_engine.py`
+- `src/system/macro/macro_capsule_engine.py`
+- `src/system/reliability/reliability_engine.py`
+- `src/system/reliability/system_health_engine.py`
+- `src/system/statevec/statevec_engine.py`
+- `src/system/templates/template_compiler.py`
+- `src/ui/ui_model.py`
+- `src/validation/validation_engine.py`
+- `src/worldgen/earth/climate_field_engine.py`
+- `src/worldgen/earth/hydrology_engine.py`
+- `src/worldgen/earth/material/material_proxy_engine.py`
+- `src/worldgen/earth/water/water_view_engine.py`
+- `src/worldgen/galaxy/galaxy_proxy_field_engine.py`
+- `src/worldgen/mw/mw_surface_refiner_l3.py`
+- `src/worldgen/mw/mw_system_refiner_l2.py`
+- `src/worldgen/mw/system_query_engine.py`
+- `tools/appshell/appshell6_probe.py`
+- `tools/astro/sol2_runtime_common.py`
+- `tools/compat/cap_neg4_common.py`
+- `tools/compat/migration_lifecycle_common.py`
+- `tools/convergence/convergence_gate_common.py`
+- `tools/dist/dist6_interop_common.py`
+- `tools/dist/dist_platform_matrix_common.py`
+- `tools/dist/dist_verify_common.py`
+- `tools/earth/earth9_stress_common.py`
+- `tools/engine/numeric_discipline_common.py`
+- `tools/governance/governance_model_common.py`
+- `tools/lib/store_gc_common.py`
+- `tools/logic/tool_replay_trace_window.py`
+- `tools/logic/tool_run_logic_stress.py`
+- `tools/meta/observability_common.py`
+- `tools/mvp/baseline_universe_common.py`
+- `tools/mvp/cross_platform_gate_common.py`
+- `tools/mvp/disaster_suite_common.py`
+- `tools/mvp/ecosystem_verify_common.py`
+- `tools/mvp/gameplay_loop_common.py`
+- `tools/mvp/mvp_smoke_common.py`
+- `tools/mvp/prod_gate0_common.py`
+- `tools/mvp/stress_gate_common.py`
+- `tools/mvp/toolchain_matrix_common.py`
+- `tools/mvp/update_sim_common.py`
+- `tools/perf/performance_envelope_common.py`
+- `tools/process/tool_replay_capsule_window.py`
+- `tools/process/tool_replay_drift_window.py`
+- `tools/process/tool_replay_experiment_window.py`
+- `tools/process/tool_replay_maturity_window.py`
+- `tools/process/tool_replay_pipeline_window.py`
+- `tools/process/tool_replay_proc_window.py`
+- `tools/process/tool_replay_qc_window.py`
+- `tools/process/tool_replay_quality_window.py`
+- `tools/process/tool_replay_reverse_engineering_window.py`
+- `tools/release/arch_matrix_common.py`
+- `tools/release/archive_policy_common.py`
+- `tools/release/distribution_model_common.py`
+- `tools/release/offline_archive_common.py`
+- `tools/release/platform_formalize_common.py`
+- `tools/release/release_identity_common.py`
+- `tools/release/update_model_common.py`
+- `tools/security/trust_model_common.py`
+- `tools/security/trust_strict_common.py`
+- `tools/worldgen/earth0_probe.py`
+- `tools/worldgen/earth10_probe.py`
+- `tools/worldgen/earth1_probe.py`
+- `tools/worldgen/earth2_probe.py`
+- `tools/worldgen/earth3_probe.py`
+- `tools/worldgen/earth7_probe.py`
+- `tools/worldgen/earth8_probe.py`
+- `tools/worldgen/gal0_probe.py`
+- `tools/worldgen/gal1_probe.py`
+- `tools/worldgen/worldgen_lock_common.py`
+- `tools/xstack/testx/tests/sol0_testlib.py`
+
+## Scorecard
+
+- `tools/process/tool_replay_capsule_window.py` disposition=`canonical` rank=`1` total_score=`88.33` risk=`HIGH`
+- `tools/process/tool_replay_qc_window.py` disposition=`quarantine` rank=`2` total_score=`87.8` risk=`HIGH`
+- `tools/process/tool_replay_quality_window.py` disposition=`quarantine` rank=`3` total_score=`87.8` risk=`HIGH`
+- `tools/dist/dist_verify_common.py` disposition=`quarantine` rank=`4` total_score=`87.32` risk=`HIGH`
+- `tools/worldgen/worldgen_lock_common.py` disposition=`quarantine` rank=`5` total_score=`85.24` risk=`HIGH`
+- `tools/release/arch_matrix_common.py` disposition=`quarantine` rank=`6` total_score=`84.76` risk=`HIGH`
+- `tools/compat/migration_lifecycle_common.py` disposition=`quarantine` rank=`7` total_score=`84.64` risk=`HIGH`
+- `tools/mvp/baseline_universe_common.py` disposition=`quarantine` rank=`8` total_score=`84.64` risk=`HIGH`
+- `tools/release/archive_policy_common.py` disposition=`quarantine` rank=`9` total_score=`84.64` risk=`HIGH`
+- `tools/release/update_model_common.py` disposition=`quarantine` rank=`10` total_score=`84.64` risk=`HIGH`
+- `tools/meta/observability_common.py` disposition=`quarantine` rank=`11` total_score=`84.29` risk=`HIGH`
+- `tools/mvp/ecosystem_verify_common.py` disposition=`quarantine` rank=`12` total_score=`84.11` risk=`HIGH`
+- `tools/lib/store_gc_common.py` disposition=`quarantine` rank=`13` total_score=`83.57` risk=`HIGH`
+- `tools/process/tool_replay_proc_window.py` disposition=`quarantine` rank=`14` total_score=`83.21` risk=`HIGH`
+- `tools/security/trust_model_common.py` disposition=`quarantine` rank=`15` total_score=`83.16` risk=`HIGH`
+- `tools/release/offline_archive_common.py` disposition=`quarantine` rank=`16` total_score=`83.04` risk=`HIGH`
+- `tools/governance/governance_model_common.py` disposition=`quarantine` rank=`17` total_score=`82.5` risk=`HIGH`
+- `tools/mvp/disaster_suite_common.py` disposition=`quarantine` rank=`18` total_score=`82.26` risk=`HIGH`
+- `tools/mvp/gameplay_loop_common.py` disposition=`quarantine` rank=`19` total_score=`82.26` risk=`HIGH`
+- `tools/mvp/mvp_smoke_common.py` disposition=`quarantine` rank=`20` total_score=`81.79` risk=`HIGH`
+- `tools/mvp/cross_platform_gate_common.py` disposition=`quarantine` rank=`21` total_score=`81.43` risk=`HIGH`
+- `tools/compat/cap_neg4_common.py` disposition=`quarantine` rank=`22` total_score=`80.96` risk=`HIGH`
+- `tools/appshell/appshell6_probe.py` disposition=`quarantine` rank=`23` total_score=`79.99` risk=`HIGH`
+- `src/meta/numeric.py` disposition=`quarantine` rank=`24` total_score=`79.64` risk=`HIGH`
+- `src/meta_extensions_engine.py` disposition=`quarantine` rank=`25` total_score=`79.64` risk=`HIGH`
+- `src/platform/platform_probe.py` disposition=`quarantine` rank=`26` total_score=`78.45` risk=`HIGH`
+- `tools/dist/dist6_interop_common.py` disposition=`merge` rank=`27` total_score=`78.21` risk=`HIGH`
+- `tools/mvp/toolchain_matrix_common.py` disposition=`merge` rank=`28` total_score=`77.85` risk=`HIGH`
+- `tools/security/trust_strict_common.py` disposition=`merge` rank=`29` total_score=`77.8` risk=`HIGH`
+- `tools/process/tool_replay_maturity_window.py` disposition=`drop` rank=`30` total_score=`77.76` risk=`HIGH`
+- `src/compat/migration_lifecycle.py` disposition=`merge` rank=`31` total_score=`77.62` risk=`HIGH`
+- `src/process/maturity/metrics_engine.py` disposition=`merge` rank=`32` total_score=`77.62` risk=`HIGH`
+- `tools/logic/tool_replay_trace_window.py` disposition=`merge` rank=`33` total_score=`76.73` risk=`HIGH`
+- `tools/mvp/stress_gate_common.py` disposition=`merge` rank=`34` total_score=`76.49` risk=`HIGH`
+- `tools/perf/performance_envelope_common.py` disposition=`merge` rank=`35` total_score=`76.01` risk=`HIGH`
+- `tools/dist/dist_platform_matrix_common.py` disposition=`merge` rank=`36` total_score=`75.89` risk=`HIGH`
+- `tools/process/tool_replay_drift_window.py` disposition=`drop` rank=`37` total_score=`75.89` risk=`HIGH`
+- `tools/process/tool_replay_pipeline_window.py` disposition=`merge` rank=`38` total_score=`75.89` risk=`HIGH`
+- `tools/logic/tool_run_logic_stress.py` disposition=`merge` rank=`39` total_score=`75.71` risk=`HIGH`
+- `src/process/maturity/maturity_engine.py` disposition=`drop` rank=`40` total_score=`75.48` risk=`HIGH`
+- `tools/release/release_identity_common.py` disposition=`merge` rank=`41` total_score=`75.0` risk=`HIGH`
+- `src/platform/target_matrix.py` disposition=`drop` rank=`42` total_score=`75.0` risk=`HIGH`
+- `tools/earth/earth9_stress_common.py` disposition=`merge` rank=`43` total_score=`74.58` risk=`HIGH`
+- `tools/xstack/testx/tests/sol0_testlib.py` disposition=`drop` rank=`44` total_score=`74.19` risk=`HIGH`
+- `tools/mvp/prod_gate0_common.py` disposition=`merge` rank=`45` total_score=`74.05` risk=`HIGH`
+- `src/governance/governance_profile.py` disposition=`drop` rank=`46` total_score=`73.87` risk=`HIGH`
+- `src/meta/profile/profile_engine.py` disposition=`drop` rank=`47` total_score=`73.87` risk=`HIGH`
+- `src/process/drift/drift_engine.py` disposition=`drop` rank=`48` total_score=`73.87` risk=`HIGH`
+- `src/compat/capability_negotiation.py` disposition=`merge` rank=`49` total_score=`73.57` risk=`HIGH`
+- `src/release/archive_policy.py` disposition=`drop` rank=`50` total_score=`72.38` risk=`HIGH`
+- `tools/release/distribution_model_common.py` disposition=`merge` rank=`51` total_score=`72.02` risk=`HIGH`
+- `src/embodiment/body/body_system.py` disposition=`drop` rank=`52` total_score=`71.85` risk=`HIGH`
+- `tools/convergence/convergence_gate_common.py` disposition=`merge` rank=`53` total_score=`71.61` risk=`HIGH`
+- `src/process/process_run_engine.py` disposition=`drop` rank=`54` total_score=`71.25` risk=`HIGH`
+- `tools/process/tool_replay_experiment_window.py` disposition=`merge` rank=`55` total_score=`70.96` risk=`HIGH`
+- `src/logic/debug/runtime_state.py` disposition=`drop` rank=`56` total_score=`70.83` risk=`HIGH`
+- `src/compat/descriptor/descriptor_engine.py` disposition=`drop` rank=`57` total_score=`70.77` risk=`HIGH`
+- `src/lib/instance/instance_validator.py` disposition=`drop` rank=`58` total_score=`70.77` risk=`HIGH`
+- `src/meta/compile/compile_engine.py` disposition=`drop` rank=`59` total_score=`70.36` risk=`HIGH`
+- `tools/mvp/update_sim_common.py` disposition=`merge` rank=`60` total_score=`70.14` risk=`HIGH`
+- `tools/process/tool_replay_reverse_engineering_window.py` disposition=`merge` rank=`61` total_score=`70.0` risk=`HIGH`
+- `src/lib/artifact/artifact_validator.py` disposition=`drop` rank=`62` total_score=`69.82` risk=`HIGH`
+- `src/worldgen/earth/water/water_view_engine.py` disposition=`drop` rank=`63` total_score=`69.82` risk=`HIGH`
+- `src/process/qc/qc_engine.py` disposition=`drop` rank=`64` total_score=`69.76` risk=`HIGH`
+- `src/lib/save/save_validator.py` disposition=`drop` rank=`65` total_score=`69.7` risk=`HIGH`
+- `src/meta/identity/identity_validator.py` disposition=`drop` rank=`66` total_score=`69.64` risk=`HIGH`
+- `tools/worldgen/earth0_probe.py` disposition=`merge` rank=`67` total_score=`69.4` risk=`HIGH`
+- `src/logic/eval/degradation_policy.py` disposition=`drop` rank=`68` total_score=`69.11` risk=`HIGH`
+- `tools/engine/numeric_discipline_common.py` disposition=`merge` rank=`69` total_score=`68.94` risk=`HIGH`
+- `src/lib/provides/provider_resolution.py` disposition=`drop` rank=`70` total_score=`68.69` risk=`HIGH`
+- `src/logic/protocol/rows.py` disposition=`drop` rank=`71` total_score=`68.69` risk=`HIGH`
+- `src/process/capsules/capsule_builder.py` disposition=`drop` rank=`72` total_score=`68.57` risk=`HIGH`
+- `src/ui/ui_model.py` disposition=`drop` rank=`73` total_score=`68.57` risk=`HIGH`
+- `src/system/statevec/statevec_engine.py` disposition=`drop` rank=`74` total_score=`68.15` risk=`HIGH`
+- `src/logic/signal/signal_store.py` disposition=`drop` rank=`75` total_score=`67.74` risk=`HIGH`
+- `tools/release/platform_formalize_common.py` disposition=`merge` rank=`76` total_score=`67.45` risk=`HIGH`
+- `src/embodiment/lens/lens_engine.py` disposition=`drop` rank=`77` total_score=`67.26` risk=`HIGH`
+- `src/geo/worldgen/worldgen_engine.py` disposition=`drop` rank=`78` total_score=`67.26` risk=`HIGH`
+- `src/release/build_id_engine.py` disposition=`drop` rank=`79` total_score=`67.26` risk=`HIGH`
+- `src/release/component_graph_resolver.py` disposition=`drop` rank=`80` total_score=`66.43` risk=`HIGH`
+- `src/appshell/tui/tui_engine.py` disposition=`drop` rank=`81` total_score=`66.19` risk=`HIGH`
+- `src/process/process_definition_validator.py` disposition=`drop` rank=`82` total_score=`65.95` risk=`HIGH`
+- `tools/worldgen/earth8_probe.py` disposition=`merge` rank=`83` total_score=`65.46` risk=`HIGH`
+- `src/security/trust/trust_verifier.py` disposition=`drop` rank=`84` total_score=`65.42` risk=`HIGH`
+- `src/meta/compute/compute_budget_engine.py` disposition=`drop` rank=`85` total_score=`64.34` risk=`HIGH`
+- `src/system/macro/macro_capsule_engine.py` disposition=`drop` rank=`86` total_score=`64.05` risk=`HIGH`
+- `tools/worldgen/earth2_probe.py` disposition=`merge` rank=`87` total_score=`63.94` risk=`HIGH`
+- `tools/worldgen/earth1_probe.py` disposition=`merge` rank=`88` total_score=`63.35` risk=`HIGH`
+- `tools/worldgen/gal1_probe.py` disposition=`merge` rank=`89` total_score=`63.2` risk=`HIGH`
+- `tools/worldgen/earth3_probe.py` disposition=`merge` rank=`90` total_score=`62.98` risk=`HIGH`
+- `src/client/ui/viewer_shell.py` disposition=`drop` rank=`91` total_score=`62.56` risk=`HIGH`
+- `src/release/release_manifest_engine.py` disposition=`drop` rank=`92` total_score=`62.56` risk=`HIGH`
+- `tools/worldgen/earth10_probe.py` disposition=`merge` rank=`93` total_score=`62.44` risk=`HIGH`
+- `tools/worldgen/earth7_probe.py` disposition=`merge` rank=`94` total_score=`62.38` risk=`HIGH`
+- `src/meta/instrumentation/instrumentation_engine.py` disposition=`drop` rank=`95` total_score=`62.32` risk=`HIGH`
+- `src/system/reliability/reliability_engine.py` disposition=`drop` rank=`96` total_score=`62.32` risk=`HIGH`
+- `src/astro/illumination/illumination_geometry_engine.py` disposition=`drop` rank=`97` total_score=`61.9` risk=`HIGH`
+- `src/system/certification/system_cert_engine.py` disposition=`drop` rank=`98` total_score=`61.71` risk=`HIGH`
+- `src/appshell/ui_mode_selector.py` disposition=`drop` rank=`99` total_score=`61.67` risk=`HIGH`
+- `tools/astro/sol2_runtime_common.py` disposition=`merge` rank=`100` total_score=`61.48` risk=`HIGH`
+- `src/numeric_discipline.py` disposition=`drop` rank=`101` total_score=`61.2` risk=`HIGH`
+- `src/client/ui/inspect_panels.py` disposition=`drop` rank=`102` total_score=`60.46` risk=`HIGH`
+- `src/system/forensics/system_forensics_engine.py` disposition=`drop` rank=`103` total_score=`60.04` risk=`HIGH`
+- `src/worldgen/earth/climate_field_engine.py` disposition=`drop` rank=`104` total_score=`59.64` risk=`HIGH`
+- `src/logic/network/logic_network_validator.py` disposition=`drop` rank=`105` total_score=`59.52` risk=`HIGH`
+- `src/meta/stability/stability_validator.py` disposition=`drop` rank=`106` total_score=`59.4` risk=`HIGH`
+- `src/packs/compat/pack_verification_pipeline.py` disposition=`drop` rank=`107` total_score=`59.17` risk=`HIGH`
+- `src/logic/network/instrumentation_binding.py` disposition=`drop` rank=`108` total_score=`59.08` risk=`HIGH`
+- `src/system/reliability/system_health_engine.py` disposition=`drop` rank=`109` total_score=`59.07` risk=`HIGH`
+- `src/worldgen/mw/system_query_engine.py` disposition=`drop` rank=`110` total_score=`59.05` risk=`HIGH`
+- `src/logic/element/instrumentation_binding.py` disposition=`drop` rank=`111` total_score=`58.64` risk=`HIGH`
+- `src/lib/install/install_validator.py` disposition=`merge` rank=`112` total_score=`58.27` risk=`HIGH`
+- `src/worldgen/earth/hydrology_engine.py` disposition=`drop` rank=`113` total_score=`58.1` risk=`HIGH`
+- `tools/worldgen/gal0_probe.py` disposition=`merge` rank=`114` total_score=`58.02` risk=`HIGH`
+- `src/system/templates/template_compiler.py` disposition=`drop` rank=`115` total_score=`57.68` risk=`HIGH`
+- `src/geo/kernel/geo_kernel.py` disposition=`drop` rank=`116` total_score=`57.62` risk=`HIGH`
+- `src/geo/edit/geometry_state_engine.py` disposition=`drop` rank=`117` total_score=`57.56` risk=`HIGH`
+- `src/packs/compat/pack_compat_validator.py` disposition=`drop` rank=`118` total_score=`57.38` risk=`HIGH`
+- `src/client/ui/teleport_controller.py` disposition=`drop` rank=`119` total_score=`57.26` risk=`HIGH`
+- `src/worldgen/mw/mw_surface_refiner_l3.py` disposition=`drop` rank=`120` total_score=`57.2` risk=`HIGH`
+- `src/worldgen/mw/mw_system_refiner_l2.py` disposition=`drop` rank=`121` total_score=`57.06` risk=`HIGH`
+- `src/astro/views/orbit_view_engine.py` disposition=`drop` rank=`122` total_score=`56.07` risk=`HIGH`
+- `src/embodiment/lens/camera_smoothing.py` disposition=`drop` rank=`123` total_score=`55.73` risk=`HIGH`
+- `src/process/research/inference_engine.py` disposition=`drop` rank=`124` total_score=`55.73` risk=`HIGH`
+- `src/appshell/supervisor/supervisor_engine.py` disposition=`drop` rank=`125` total_score=`55.65` risk=`HIGH`
+- `src/logic/element/logic_element_validator.py` disposition=`drop` rank=`126` total_score=`55.58` risk=`HIGH`
+- `src/worldgen/earth/material/material_proxy_engine.py` disposition=`drop` rank=`127` total_score=`55.54` risk=`HIGH`
+- `src/logic/debug/debug_engine.py` disposition=`drop` rank=`128` total_score=`55.18` risk=`HIGH`
+- `src/geo/overlay/overlay_merge_engine.py` disposition=`drop` rank=`129` total_score=`54.94` risk=`HIGH`
+- `src/process/research/experiment_engine.py` disposition=`drop` rank=`130` total_score=`54.76` risk=`HIGH`
+- `src/logic/fault/fault_engine.py` disposition=`drop` rank=`131` total_score=`54.58` risk=`HIGH`
+- `src/process/software/pipeline_engine.py` disposition=`drop` rank=`132` total_score=`54.35` risk=`HIGH`
+- `src/lib/store/reachability_engine.py` disposition=`drop` rank=`133` total_score=`54.29` risk=`HIGH`
+- `src/release/update_resolver.py` disposition=`drop` rank=`134` total_score=`54.29` risk=`HIGH`
+- `src/process/capsules/capsule_executor.py` disposition=`drop` rank=`135` total_score=`53.75` risk=`HIGH`
+- `src/meta/reference/logic_small_reference.py` disposition=`drop` rank=`136` total_score=`53.55` risk=`HIGH`
+- `src/astro/ephemeris/kepler_proxy_engine.py` disposition=`drop` rank=`137` total_score=`52.89` risk=`HIGH`
+- `src/embodiment/movement/jump_process.py` disposition=`drop` rank=`138` total_score=`52.83` risk=`HIGH`
+- `src/logic/compile/logic_proof_engine.py` disposition=`drop` rank=`139` total_score=`52.38` risk=`HIGH`
+- `src/modding/mod_policy_engine.py` disposition=`drop` rank=`140` total_score=`51.2` risk=`HIGH`
+- `src/worldgen/galaxy/galaxy_proxy_field_engine.py` disposition=`drop` rank=`141` total_score=`51.14` risk=`HIGH`
+- `src/validation/validation_engine.py` disposition=`drop` rank=`142` total_score=`50.89` risk=`HIGH`
+- `src/security/trust/license_capability.py` disposition=`drop` rank=`143` total_score=`49.77` risk=`HIGH`
+- `src/logic/network/logic_network_engine.py` disposition=`drop` rank=`144` total_score=`49.76` risk=`HIGH`
+- `src/embodiment/collision/macro_heightfield_provider.py` disposition=`drop` rank=`145` total_score=`49.75` risk=`HIGH`
+- `src/logic/signal/carrier_adapters.py` disposition=`drop` rank=`146` total_score=`47.12` risk=`HIGH`
+- `src/lib/bundle/bundle_manifest.py` disposition=`merge` rank=`147` total_score=`46.76` risk=`HIGH`
+
+## Usage Sites
+
+- Build Targets: `none`
+- Docs: `docs/ARCHITECTURE.md, docs/GLOSSARY.md, docs/appshell/CLI_REFERENCE.md, docs/appshell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/CONTRACTS_INDEX.md, docs/architecture/LOCKLIST.md, docs/architecture/RISK_AND_LIABILITY_MODEL.md`
+
+## Tests Involved
+
+- `python tools/appshell/tool_run_ipc_unify.py --repo-root .`
+- `python tools/appshell/tool_run_supervisor_hardening.py --repo-root .`
+- `python tools/compat/tool_run_interop_stress.py --repo-root .`
+- `python tools/convergence/tool_run_convergence_gate.py --repo-root .`
+- `python tools/mvp/tool_run_all_stress.py --repo-root .`
+- `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
+- `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
+- `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
+- `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
+- `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
+- `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
+- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
+
+## Recommended Decision Options
+
+- Review file-local deltas and port only unique behavior into the canonical file.
+- Rewire call sites only after confirming the secondary file is not an active product entrypoint.
+- Deprecate the secondary file only after it is removed from default build targets and no longer carries unrelated active symbols.
+- If ambiguity remains after review, keep the cluster quarantined for XI-4b instead of forcing convergence.

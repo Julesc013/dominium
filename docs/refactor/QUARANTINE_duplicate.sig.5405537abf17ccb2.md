@@ -1,0 +1,283 @@
+Status: Quarantine
+Last Reviewed: 2026-03-26
+Stability: provisional
+Replacement Target: XI-4b manual review resolution
+
+# Quarantine Packet `duplicate.sig.5405537abf17ccb2`
+
+- Symbol: `_token`
+- Cluster Kind: `exact`
+- Cluster Resolution: `quarantine`
+- Risk Level: `HIGH`
+- Canonical Candidate: `tools/release/dist_final_common.py`
+- Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
+- Planned Action Kinds: `merge, rewire, deprecate, quarantine`
+
+## Competing Files
+
+- `src/appshell/paths/virtual_paths.py`
+- `src/appshell/product_bootstrap.py`
+- `src/appshell/supervisor/args_canonicalizer.py`
+- `src/appshell/ui_mode_selector.py`
+- `src/archive/deterministic_bundle.py`
+- `src/compat/migration_lifecycle.py`
+- `src/compat/shims/common.py`
+- `src/compat/shims/flag_shims.py`
+- `src/compat/shims/path_shims.py`
+- `src/compat/shims/tool_shims.py`
+- `src/compat/shims/validation_shims.py`
+- `src/engine/concurrency/canonical_merge.py`
+- `src/governance/governance_profile.py`
+- `src/lib/install/install_discovery_engine.py`
+- `src/lib/store/reachability_engine.py`
+- `src/logic/compile/logic_proof_engine.py`
+- `src/logic/debug/compute_hooks.py`
+- `src/logic/debug/debug_engine.py`
+- `src/logic/debug/runtime_state.py`
+- `src/logic/element/compute_hooks.py`
+- `src/logic/element/logic_element_validator.py`
+- `src/logic/eval/degradation_policy.py`
+- `src/logic/fault/fault_engine.py`
+- `src/logic/network/instrumentation_binding.py`
+- `src/logic/network/logic_network_engine.py`
+- `src/logic/network/logic_network_validator.py`
+- `src/logic/noise/noise_engine.py`
+- `src/logic/protocol/rows.py`
+- `src/logic/signal/carrier_adapters.py`
+- `src/logic/signal/observation.py`
+- `src/logic/signal/signal_store.py`
+- `src/logic/timing/compute_hooks.py`
+- `src/meta/compute/compute_budget_engine.py`
+- `src/meta/identity/identity_validator.py`
+- `src/meta/observability.py`
+- `src/meta/reference/logic_small_reference.py`
+- `src/meta/stability/stability_validator.py`
+- `src/platform/platform_probe.py`
+- `src/platform/target_matrix.py`
+- `src/process/drift/drift_engine.py`
+- `src/process/maturity/maturity_engine.py`
+- `src/process/maturity/metrics_engine.py`
+- `src/process/research/experiment_engine.py`
+- `src/process/research/inference_engine.py`
+- `src/process/software/pipeline_engine.py`
+- `src/release/archive_policy.py`
+- `src/release/component_graph_resolver.py`
+- `src/release/release_manifest_engine.py`
+- `src/release/update_resolver.py`
+- `src/security/trust/license_capability.py`
+- `src/security/trust/trust_verifier.py`
+- `src/time/epoch_anchor_engine.py`
+- `src/tools/tool_surface_adapter.py`
+- `src/ui/ui_model.py`
+- `src/validation/validation_engine.py`
+- `tools/appshell/ipc_unify_common.py`
+- `tools/appshell/supervisor_hardening_common.py`
+- `tools/audit/arch_audit_common.py`
+- `tools/compat/migration_lifecycle_common.py`
+- `tools/convergence/convergence_gate_common.py`
+- `tools/dist/clean_room_common.py`
+- `tools/dist/dist6_interop_common.py`
+- `tools/dist/dist_platform_matrix_common.py`
+- `tools/dist/dist_tree_common.py`
+- `tools/dist/dist_verify_common.py`
+- `tools/dist/ux_smoke_common.py`
+- `tools/engine/concurrency_contract_common.py`
+- `tools/engine/numeric_discipline_common.py`
+- `tools/governance/governance_model_common.py`
+- `tools/lib/store_gc_common.py`
+- `tools/logic/logic10_stress_common.py`
+- `tools/logic/tool_replay_compiled_logic_window.py`
+- `tools/logic/tool_replay_trace_window.py`
+- `tools/logic/tool_run_logic_compile_stress.py`
+- `tools/logic/tool_run_logic_stress.py`
+- `tools/logic/tool_verify_compiled_vs_l1.py`
+- `tools/meta/identity_common.py`
+- `tools/meta/observability_common.py`
+- `tools/mvp/baseline_universe_common.py`
+- `tools/mvp/cross_platform_gate_common.py`
+- `tools/mvp/disaster_suite_common.py`
+- `tools/mvp/ecosystem_verify_common.py`
+- `tools/mvp/gameplay_loop_common.py`
+- `tools/mvp/mvp_smoke_common.py`
+- `tools/mvp/prod_gate0_common.py`
+- `tools/mvp/stress_gate_common.py`
+- `tools/mvp/tool_run_update_sim.py`
+- `tools/mvp/toolchain_matrix_common.py`
+- `tools/mvp/update_sim_common.py`
+- `tools/perf/performance_envelope_common.py`
+- `tools/release/arch_matrix_common.py`
+- `tools/release/archive_policy_common.py`
+- `tools/release/component_graph_common.py`
+- `tools/release/dist_final_common.py`
+- `tools/release/distribution_model_common.py`
+- `tools/release/entrypoint_unify_common.py`
+- `tools/release/install_discovery_common.py`
+- `tools/release/install_profile_common.py`
+- `tools/release/offline_archive_common.py`
+- `tools/release/platform_formalize_common.py`
+- `tools/release/release_identity_common.py`
+- `tools/release/release_index_policy_common.py`
+- `tools/release/release_manifest_common.py`
+- `tools/release/reproducible_build_common.py`
+- `tools/release/scope_freeze_common.py`
+- `tools/release/shim_coverage_common.py`
+- `tools/release/tool_verify_build_reproducibility.py`
+- `tools/release/ui_mode_resolution_common.py`
+- `tools/release/ui_reconcile_common.py`
+- `tools/release/update_model_common.py`
+- `tools/release/virtual_paths_common.py`
+- `tools/review/architecture_graph_bootstrap_common.py`
+- `tools/review/doc_inventory_common.py`
+- `tools/review/repo_inventory_common.py`
+- `tools/security/trust_model_common.py`
+- `tools/security/trust_strict_common.py`
+- `tools/xstack/repox/check.py`
+
+## Scorecard
+
+- `tools/release/dist_final_common.py` disposition=`canonical` rank=`1` total_score=`88.33` risk=`HIGH`
+- `tools/review/doc_inventory_common.py` disposition=`quarantine` rank=`2` total_score=`88.33` risk=`HIGH`
+- `tools/meta/identity_common.py` disposition=`quarantine` rank=`3` total_score=`87.38` risk=`HIGH`
+- `tools/release/component_graph_common.py` disposition=`quarantine` rank=`4` total_score=`87.38` risk=`HIGH`
+- `tools/dist/dist_verify_common.py` disposition=`quarantine` rank=`5` total_score=`87.32` risk=`HIGH`
+- `tools/release/ui_mode_resolution_common.py` disposition=`quarantine` rank=`6` total_score=`86.43` risk=`HIGH`
+- `tools/dist/clean_room_common.py` disposition=`quarantine` rank=`7` total_score=`85.89` risk=`HIGH`
+- `tools/release/release_index_policy_common.py` disposition=`quarantine` rank=`8` total_score=`85.83` risk=`HIGH`
+- `tools/release/release_manifest_common.py` disposition=`quarantine` rank=`9` total_score=`85.77` risk=`HIGH`
+- `tools/release/install_profile_common.py` disposition=`quarantine` rank=`10` total_score=`85.36` risk=`HIGH`
+- `tools/release/arch_matrix_common.py` disposition=`quarantine` rank=`11` total_score=`84.76` risk=`HIGH`
+- `tools/compat/migration_lifecycle_common.py` disposition=`quarantine` rank=`12` total_score=`84.64` risk=`HIGH`
+- `tools/dist/dist_tree_common.py` disposition=`quarantine` rank=`13` total_score=`84.64` risk=`HIGH`
+- `tools/mvp/baseline_universe_common.py` disposition=`quarantine` rank=`14` total_score=`84.64` risk=`HIGH`
+- `tools/release/archive_policy_common.py` disposition=`quarantine` rank=`15` total_score=`84.64` risk=`HIGH`
+- `tools/release/update_model_common.py` disposition=`quarantine` rank=`16` total_score=`84.64` risk=`HIGH`
+- `tools/meta/observability_common.py` disposition=`quarantine` rank=`17` total_score=`84.29` risk=`HIGH`
+- `tools/mvp/ecosystem_verify_common.py` disposition=`quarantine` rank=`18` total_score=`84.11` risk=`HIGH`
+- `tools/lib/store_gc_common.py` disposition=`quarantine` rank=`19` total_score=`83.57` risk=`HIGH`
+- `tools/security/trust_model_common.py` disposition=`quarantine` rank=`20` total_score=`83.16` risk=`HIGH`
+- `tools/release/offline_archive_common.py` disposition=`quarantine` rank=`21` total_score=`83.04` risk=`HIGH`
+- `tools/governance/governance_model_common.py` disposition=`quarantine` rank=`22` total_score=`82.5` risk=`HIGH`
+- `tools/mvp/disaster_suite_common.py` disposition=`quarantine` rank=`23` total_score=`82.26` risk=`HIGH`
+- `tools/mvp/gameplay_loop_common.py` disposition=`quarantine` rank=`24` total_score=`82.26` risk=`HIGH`
+- `tools/release/scope_freeze_common.py` disposition=`quarantine` rank=`25` total_score=`82.0` risk=`HIGH`
+- `tools/mvp/mvp_smoke_common.py` disposition=`quarantine` rank=`26` total_score=`81.79` risk=`HIGH`
+- `tools/mvp/cross_platform_gate_common.py` disposition=`quarantine` rank=`27` total_score=`81.43` risk=`HIGH`
+- `tools/logic/tool_replay_compiled_logic_window.py` disposition=`quarantine` rank=`28` total_score=`79.46` risk=`HIGH`
+- `tools/appshell/ipc_unify_common.py` disposition=`quarantine` rank=`29` total_score=`78.95` risk=`HIGH`
+- `src/platform/platform_probe.py` disposition=`quarantine` rank=`30` total_score=`78.45` risk=`HIGH`
+- `tools/dist/dist6_interop_common.py` disposition=`merge` rank=`31` total_score=`78.21` risk=`HIGH`
+- `tools/mvp/toolchain_matrix_common.py` disposition=`merge` rank=`32` total_score=`77.85` risk=`HIGH`
+- `tools/security/trust_strict_common.py` disposition=`merge` rank=`33` total_score=`77.8` risk=`HIGH`
+- `src/compat/migration_lifecycle.py` disposition=`merge` rank=`34` total_score=`77.62` risk=`HIGH`
+- `src/process/maturity/metrics_engine.py` disposition=`merge` rank=`35` total_score=`77.62` risk=`HIGH`
+- `tools/logic/tool_replay_trace_window.py` disposition=`merge` rank=`36` total_score=`76.73` risk=`HIGH`
+- `tools/mvp/stress_gate_common.py` disposition=`merge` rank=`37` total_score=`76.49` risk=`HIGH`
+- `src/meta/observability.py` disposition=`drop` rank=`38` total_score=`76.43` risk=`HIGH`
+- `tools/review/repo_inventory_common.py` disposition=`merge` rank=`39` total_score=`76.25` risk=`HIGH`
+- `tools/perf/performance_envelope_common.py` disposition=`merge` rank=`40` total_score=`76.01` risk=`HIGH`
+- `tools/dist/dist_platform_matrix_common.py` disposition=`merge` rank=`41` total_score=`75.89` risk=`HIGH`
+- `tools/logic/tool_run_logic_stress.py` disposition=`merge` rank=`42` total_score=`75.71` risk=`HIGH`
+- `src/process/maturity/maturity_engine.py` disposition=`drop` rank=`43` total_score=`75.48` risk=`HIGH`
+- `tools/release/release_identity_common.py` disposition=`merge` rank=`44` total_score=`75.0` risk=`HIGH`
+- `src/platform/target_matrix.py` disposition=`drop` rank=`45` total_score=`75.0` risk=`HIGH`
+- `tools/release/virtual_paths_common.py` disposition=`merge` rank=`46` total_score=`74.94` risk=`HIGH`
+- `src/archive/deterministic_bundle.py` disposition=`drop` rank=`47` total_score=`74.94` risk=`HIGH`
+- `tools/release/install_discovery_common.py` disposition=`merge` rank=`48` total_score=`74.41` risk=`HIGH`
+- `tools/engine/concurrency_contract_common.py` disposition=`merge` rank=`49` total_score=`74.32` risk=`HIGH`
+- `tools/mvp/tool_run_update_sim.py` disposition=`merge` rank=`50` total_score=`74.24` risk=`HIGH`
+- `tools/mvp/prod_gate0_common.py` disposition=`merge` rank=`51` total_score=`74.05` risk=`HIGH`
+- `src/appshell/paths/virtual_paths.py` disposition=`drop` rank=`52` total_score=`73.87` risk=`HIGH`
+- `src/governance/governance_profile.py` disposition=`drop` rank=`53` total_score=`73.87` risk=`HIGH`
+- `src/process/drift/drift_engine.py` disposition=`drop` rank=`54` total_score=`73.87` risk=`HIGH`
+- `tools/dist/ux_smoke_common.py` disposition=`merge` rank=`55` total_score=`73.63` risk=`HIGH`
+- `tools/logic/tool_verify_compiled_vs_l1.py` disposition=`merge` rank=`56` total_score=`73.1` risk=`HIGH`
+- `src/lib/install/install_discovery_engine.py` disposition=`merge` rank=`57` total_score=`73.09` risk=`HIGH`
+- `tools/release/entrypoint_unify_common.py` disposition=`merge` rank=`58` total_score=`73.08` risk=`HIGH`
+- `src/release/archive_policy.py` disposition=`drop` rank=`59` total_score=`72.38` risk=`HIGH`
+- `tools/release/distribution_model_common.py` disposition=`merge` rank=`60` total_score=`72.02` risk=`HIGH`
+- `src/tools/tool_surface_adapter.py` disposition=`drop` rank=`61` total_score=`71.85` risk=`HIGH`
+- `tools/convergence/convergence_gate_common.py` disposition=`merge` rank=`62` total_score=`71.61` risk=`HIGH`
+- `tools/release/ui_reconcile_common.py` disposition=`merge` rank=`63` total_score=`71.08` risk=`HIGH`
+- `src/logic/debug/runtime_state.py` disposition=`drop` rank=`64` total_score=`70.83` risk=`HIGH`
+- `src/compat/shims/tool_shims.py` disposition=`drop` rank=`65` total_score=`70.54` risk=`HIGH`
+- `tools/logic/tool_run_logic_compile_stress.py` disposition=`merge` rank=`66` total_score=`70.48` risk=`HIGH`
+- `tools/mvp/update_sim_common.py` disposition=`merge` rank=`67` total_score=`70.14` risk=`HIGH`
+- `src/meta/identity/identity_validator.py` disposition=`drop` rank=`68` total_score=`69.64` risk=`HIGH`
+- `src/logic/eval/degradation_policy.py` disposition=`drop` rank=`69` total_score=`69.11` risk=`HIGH`
+- `tools/engine/numeric_discipline_common.py` disposition=`merge` rank=`70` total_score=`68.94` risk=`HIGH`
+- `src/compat/shims/common.py` disposition=`drop` rank=`71` total_score=`68.81` risk=`HIGH`
+- `src/logic/protocol/rows.py` disposition=`drop` rank=`72` total_score=`68.69` risk=`HIGH`
+- `src/ui/ui_model.py` disposition=`drop` rank=`73` total_score=`68.57` risk=`HIGH`
+- `tools/release/shim_coverage_common.py` disposition=`merge` rank=`74` total_score=`68.52` risk=`HIGH`
+- `tools/logic/logic10_stress_common.py` disposition=`merge` rank=`75` total_score=`68.29` risk=`HIGH`
+- `src/logic/signal/observation.py` disposition=`drop` rank=`76` total_score=`68.1` risk=`HIGH`
+- `src/logic/signal/signal_store.py` disposition=`drop` rank=`77` total_score=`67.74` risk=`HIGH`
+- `tools/review/architecture_graph_bootstrap_common.py` disposition=`merge` rank=`78` total_score=`67.64` risk=`HIGH`
+- `tools/release/platform_formalize_common.py` disposition=`merge` rank=`79` total_score=`67.45` risk=`HIGH`
+- `src/compat/shims/path_shims.py` disposition=`drop` rank=`80` total_score=`66.49` risk=`HIGH`
+- `src/release/component_graph_resolver.py` disposition=`drop` rank=`81` total_score=`66.43` risk=`HIGH`
+- `src/appshell/product_bootstrap.py` disposition=`drop` rank=`82` total_score=`66.19` risk=`HIGH`
+- `tools/audit/arch_audit_common.py` disposition=`merge` rank=`83` total_score=`66.07` risk=`HIGH`
+- `tools/xstack/repox/check.py` disposition=`drop` rank=`84` total_score=`66.07` risk=`HIGH`
+- `src/security/trust/trust_verifier.py` disposition=`drop` rank=`85` total_score=`65.42` risk=`HIGH`
+- `tools/appshell/supervisor_hardening_common.py` disposition=`merge` rank=`86` total_score=`64.8` risk=`HIGH`
+- `src/meta/compute/compute_budget_engine.py` disposition=`drop` rank=`87` total_score=`64.34` risk=`HIGH`
+- `src/logic/noise/noise_engine.py` disposition=`drop` rank=`88` total_score=`63.87` risk=`HIGH`
+- `tools/release/tool_verify_build_reproducibility.py` disposition=`merge` rank=`89` total_score=`63.13` risk=`HIGH`
+- `src/engine/concurrency/canonical_merge.py` disposition=`drop` rank=`90` total_score=`62.6` risk=`HIGH`
+- `src/release/release_manifest_engine.py` disposition=`drop` rank=`91` total_score=`62.56` risk=`HIGH`
+- `src/appshell/ui_mode_selector.py` disposition=`drop` rank=`92` total_score=`61.67` risk=`HIGH`
+- `tools/release/reproducible_build_common.py` disposition=`merge` rank=`93` total_score=`61.5` risk=`HIGH`
+- `src/logic/network/logic_network_validator.py` disposition=`drop` rank=`94` total_score=`59.52` risk=`HIGH`
+- `src/compat/shims/validation_shims.py` disposition=`drop` rank=`95` total_score=`59.44` risk=`HIGH`
+- `src/meta/stability/stability_validator.py` disposition=`drop` rank=`96` total_score=`59.4` risk=`HIGH`
+- `src/logic/network/instrumentation_binding.py` disposition=`drop` rank=`97` total_score=`59.08` risk=`HIGH`
+- `src/process/research/inference_engine.py` disposition=`drop` rank=`98` total_score=`55.73` risk=`HIGH`
+- `src/logic/element/logic_element_validator.py` disposition=`drop` rank=`99` total_score=`55.58` risk=`HIGH`
+- `src/logic/element/compute_hooks.py` disposition=`drop` rank=`100` total_score=`55.2` risk=`HIGH`
+- `src/logic/debug/debug_engine.py` disposition=`drop` rank=`101` total_score=`55.18` risk=`HIGH`
+- `src/process/research/experiment_engine.py` disposition=`drop` rank=`102` total_score=`54.76` risk=`HIGH`
+- `src/logic/fault/fault_engine.py` disposition=`drop` rank=`103` total_score=`54.58` risk=`HIGH`
+- `src/process/software/pipeline_engine.py` disposition=`drop` rank=`104` total_score=`54.35` risk=`HIGH`
+- `src/appshell/supervisor/args_canonicalizer.py` disposition=`drop` rank=`105` total_score=`54.33` risk=`HIGH`
+- `src/logic/debug/compute_hooks.py` disposition=`drop` rank=`106` total_score=`54.33` risk=`HIGH`
+- `src/lib/store/reachability_engine.py` disposition=`drop` rank=`107` total_score=`54.29` risk=`HIGH`
+- `src/release/update_resolver.py` disposition=`drop` rank=`108` total_score=`54.29` risk=`HIGH`
+- `src/logic/timing/compute_hooks.py` disposition=`drop` rank=`109` total_score=`53.8` risk=`HIGH`
+- `src/meta/reference/logic_small_reference.py` disposition=`drop` rank=`110` total_score=`53.55` risk=`HIGH`
+- `src/compat/shims/flag_shims.py` disposition=`drop` rank=`111` total_score=`53.11` risk=`HIGH`
+- `src/time/epoch_anchor_engine.py` disposition=`drop` rank=`112` total_score=`52.71` risk=`HIGH`
+- `src/logic/compile/logic_proof_engine.py` disposition=`drop` rank=`113` total_score=`52.38` risk=`HIGH`
+- `src/validation/validation_engine.py` disposition=`drop` rank=`114` total_score=`50.89` risk=`HIGH`
+- `src/security/trust/license_capability.py` disposition=`drop` rank=`115` total_score=`49.77` risk=`HIGH`
+- `src/logic/network/logic_network_engine.py` disposition=`drop` rank=`116` total_score=`49.76` risk=`HIGH`
+- `src/logic/signal/carrier_adapters.py` disposition=`drop` rank=`117` total_score=`47.12` risk=`HIGH`
+
+## Usage Sites
+
+- Build Targets: `none`
+- Docs: `docs/STATUS_NOW.md, docs/XSTACK.md, docs/architecture/CANON_INDEX.md, docs/architecture/session_lifecycle.md, docs/audit/ARCH_AUDIT2_CONSTITUTION.md, docs/audit/ARCH_AUDIT2_FINAL.md, docs/audit/ARCH_AUDIT2_REPORT.md, docs/audit/ARCH_AUDIT2_RETRO_AUDIT.md`
+
+## Tests Involved
+
+- `python tools/appshell/tool_run_ipc_unify.py --repo-root .`
+- `python tools/appshell/tool_run_supervisor_hardening.py --repo-root .`
+- `python tools/compat/tool_run_interop_stress.py --repo-root .`
+- `python tools/convergence/tool_run_convergence_gate.py --repo-root .`
+- `python tools/mvp/tool_run_all_stress.py --repo-root .`
+- `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
+- `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
+- `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
+- `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
+- `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
+- `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
+- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
+
+## Recommended Decision Options
+
+- Review file-local deltas and port only unique behavior into the canonical file.
+- Rewire call sites only after confirming the secondary file is not an active product entrypoint.
+- Deprecate the secondary file only after it is removed from default build targets and no longer carries unrelated active symbols.
+- If ambiguity remains after review, keep the cluster quarantined for XI-4b instead of forcing convergence.

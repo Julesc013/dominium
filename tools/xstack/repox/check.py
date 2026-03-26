@@ -10174,6 +10174,42 @@ def _append_convergence_gate_findings(
             )
         )
 
+
+def _append_xi4_convergence_warning_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    del profile
+    severity = "warn"
+    src_report, _ = _load_json_object(repo_root, "data/audit/src_directory_report.json")
+    src_rows = list(src_report.get("directories") or src_report.get("src_directories") or src_report.get("entries") or [])
+    if src_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/audit/src_directory_report.json",
+                line_number=1,
+                snippet=str(len(src_rows)),
+                message="source-like directories remain present and require XI-5 structural cleanup",
+                rule_id="WARN-SRC-DIRECTORY-PRESENT",
+            )
+        )
+    duplicate_impls, _ = _load_json_object(repo_root, "data/audit/duplicate_impls.json")
+    duplicate_groups = list(duplicate_impls.get("groups") or [])
+    if duplicate_groups:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/audit/duplicate_impls.json",
+                line_number=1,
+                snippet=str(len(duplicate_groups)),
+                message="duplicate implementation groups remain present and require XI convergence follow-up",
+                rule_id="WARN-DUPLICATE-IMPLEMENTATION",
+            )
+        )
+
+
 def _append_earth10_proxy_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -35732,6 +35768,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_convergence_gate_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_xi4_convergence_warning_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

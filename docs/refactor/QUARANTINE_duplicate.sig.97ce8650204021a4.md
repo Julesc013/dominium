@@ -1,0 +1,233 @@
+Status: Quarantine
+Last Reviewed: 2026-03-26
+Stability: provisional
+Replacement Target: XI-4b manual review resolution
+
+# Quarantine Packet `duplicate.sig.97ce8650204021a4`
+
+- Symbol: `_run_once`
+- Cluster Kind: `exact`
+- Cluster Resolution: `quarantine`
+- Risk Level: `HIGH`
+- Canonical Candidate: `tools/xstack/testx/tests/test_decay_tick_deterministic.py`
+- Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
+- Planned Action Kinds: `merge, rewire, deprecate, quarantine`
+
+## Competing Files
+
+- `tools/geo/tool_replay_frame_window.py`
+- `tools/geo/tool_replay_geometry_window.py`
+- `tools/geo/tool_replay_overlay_merge.py`
+- `tools/geo/tool_replay_path_request.py`
+- `tools/geo/tool_replay_view_window.py`
+- `tools/geo/tool_replay_worldgen_cell.py`
+- `tools/geo/tool_verify_metric_stability.py`
+- `tools/worldgen/tool_replay_system_instantiation.py`
+- `tools/worldgen/tool_replay_system_l2.py`
+- `tools/xstack/testx/tests/test_address_resolution_deterministic.py`
+- `tools/xstack/testx/tests/test_affiliation_join_leave_deterministic.py`
+- `tools/xstack/testx/tests/test_aggregation_deterministic.py`
+- `tools/xstack/testx/tests/test_attenuation_deterministic_no_rng.py`
+- `tools/xstack/testx/tests/test_attenuation_deterministic_with_named_rng.py`
+- `tools/xstack/testx/tests/test_budget_degrade_order_deterministic.py`
+- `tools/xstack/testx/tests/test_budget_degrade_reports.py`
+- `tools/xstack/testx/tests/test_budget_degrade_signal_processing_deterministic.py`
+- `tools/xstack/testx/tests/test_budget_degrade_wear_updates.py`
+- `tools/xstack/testx/tests/test_budget_parallelism_reduction_deterministic.py`
+- `tools/xstack/testx/tests/test_budget_partial_expansion_deterministic.py`
+- `tools/xstack/testx/tests/test_bulletin_generation_deterministic.py`
+- `tools/xstack/testx/tests/test_camera_bind_replay_determinism.py`
+- `tools/xstack/testx/tests/test_camera_bind_requires_entitlement.py`
+- `tools/xstack/testx/tests/test_capacity_queueing_deterministic.py`
+- `tools/xstack/testx/tests/test_capsule_aabb_collision_deterministic.py`
+- `tools/xstack/testx/tests/test_capsule_capsule_collision_deterministic.py`
+- `tools/xstack/testx/tests/test_cohort_expand_collapse_conservation.py`
+- `tools/xstack/testx/tests/test_cohort_expand_deterministic_ids.py`
+- `tools/xstack/testx/tests/test_corridor_clamp_deterministic.py`
+- `tools/xstack/testx/tests/test_cost_accounting_deterministic.py`
+- `tools/xstack/testx/tests/test_coupling_consist_order_deterministic.py`
+- `tools/xstack/testx/tests/test_courier_channel_delivery_matches_mob_arrival.py`
+- `tools/xstack/testx/tests/test_cross_shard_cohort_refusal.py`
+- `tools/xstack/testx/tests/test_decay_deterministic.py`
+- `tools/xstack/testx/tests/test_decay_tick_deterministic.py`
+- `tools/xstack/testx/tests/test_delay_accumulation_deterministic.py`
+- `tools/xstack/testx/tests/test_delay_event_logged.py`
+- `tools/xstack/testx/tests/test_demography_tick_deterministic.py`
+- `tools/xstack/testx/tests/test_deterministic_ordering_of_instances.py`
+- `tools/xstack/testx/tests/test_diplomacy_update_deterministic.py`
+- `tools/xstack/testx/tests/test_embodied_move_determinism.py`
+- `tools/xstack/testx/tests/test_epistemic_no_info_gain_from_expand.py`
+- `tools/xstack/testx/tests/test_event_stream_index_deterministic.py`
+- `tools/xstack/testx/tests/test_faction_create_deterministic.py`
+- `tools/xstack/testx/tests/test_failure_trigger_threshold_deterministic.py`
+- `tools/xstack/testx/tests/test_flow_migration_equivalence.py`
+- `tools/xstack/testx/tests/test_free_motion_deterministic.py`
+- `tools/xstack/testx/tests/test_hash_anchors_stable_under_stress.py`
+- `tools/xstack/testx/tests/test_inspection_snapshot_stable.py`
+- `tools/xstack/testx/tests/test_itinerary_deterministic.py`
+- `tools/xstack/testx/tests/test_loss_fraction_deterministic.py`
+- `tools/xstack/testx/tests/test_loss_policy_application_deterministic.py`
+- `tools/xstack/testx/tests/test_maintenance_reduces_backlog_deterministic.py`
+- `tools/xstack/testx/tests/test_manifest_create_deterministic.py`
+- `tools/xstack/testx/tests/test_manifest_tick_delivery_deterministic.py`
+- `tools/xstack/testx/tests/test_materialize_deterministic_ids.py`
+- `tools/xstack/testx/tests/test_message_delivery_deterministic.py`
+- `tools/xstack/testx/tests/test_micro_solver_deterministic.py`
+- `tools/xstack/testx/tests/test_migration_delay_deterministic.py`
+- `tools/xstack/testx/tests/test_mobility_transition_roi_entry_exit_deterministic.py`
+- `tools/xstack/testx/tests/test_move_refuse_ownership_violation.py`
+- `tools/xstack/testx/tests/test_move_refuse_unembodied.py`
+- `tools/xstack/testx/tests/test_movement_collision_blocking.py`
+- `tools/xstack/testx/tests/test_net_disorder_sim_deterministic.py`
+- `tools/xstack/testx/tests/test_no_agents_world_runs_ok.py`
+- `tools/xstack/testx/tests/test_notebook_write_entitlement.py`
+- `tools/xstack/testx/tests/test_occupancy_deterministic.py`
+- `tools/xstack/testx/tests/test_order_create_deterministic.py`
+- `tools/xstack/testx/tests/test_order_executor_stub_refusals_deterministic.py`
+- `tools/xstack/testx/tests/test_order_queue_ordering_deterministic.py`
+- `tools/xstack/testx/tests/test_port_connection_deterministic.py`
+- `tools/xstack/testx/tests/test_port_insert_extract_deterministic.py`
+- `tools/xstack/testx/tests/test_project_create_deterministic.py`
+- `tools/xstack/testx/tests/test_provenance_events_deterministic.py`
+- `tools/xstack/testx/tests/test_queue_order_deterministic.py`
+- `tools/xstack/testx/tests/test_radio_delivery_deterministic.py`
+- `tools/xstack/testx/tests/test_reenactment_deterministic_hash.py`
+- `tools/xstack/testx/tests/test_reenactment_event_stream_index_deterministic.py`
+- `tools/xstack/testx/tests/test_reenactment_seed_reproducible.py`
+- `tools/xstack/testx/tests/test_reservation_conflict.py`
+- `tools/xstack/testx/tests/test_roi_triggers_deterministic_refinement.py`
+- `tools/xstack/testx/tests/test_route_reservation_conflict_deterministic.py`
+- `tools/xstack/testx/tests/test_routing_cache_deterministic.py`
+- `tools/xstack/testx/tests/test_schedule_departures_deterministic.py`
+- `tools/xstack/testx/tests/test_signal_aspect_deterministic.py`
+- `tools/xstack/testx/tests/test_single_agent_world_runs_ok.py`
+- `tools/xstack/testx/tests/test_speed_cap_effect_applied.py`
+- `tools/xstack/testx/tests/test_step_scheduling_deterministic.py`
+- `tools/xstack/testx/tests/test_time_warp_large_dt_stable.py`
+- `tools/xstack/testx/tests/test_travel_tick_progress_deterministic.py`
+- `tools/xstack/testx/tests/test_truncation_deterministic.py`
+- `tools/xstack/testx/tests/test_trust_update_deterministic.py`
+- `tools/xstack/testx/tests/test_wear_accumulation_deterministic.py`
+
+## Scorecard
+
+- `tools/xstack/testx/tests/test_decay_tick_deterministic.py` disposition=`canonical` rank=`1` total_score=`74.17` risk=`HIGH`
+- `tools/xstack/testx/tests/test_budget_degrade_order_deterministic.py` disposition=`quarantine` rank=`2` total_score=`74.06` risk=`HIGH`
+- `tools/xstack/testx/tests/test_budget_degrade_signal_processing_deterministic.py` disposition=`quarantine` rank=`3` total_score=`73.1` risk=`HIGH`
+- `tools/xstack/testx/tests/test_manifest_create_deterministic.py` disposition=`quarantine` rank=`4` total_score=`73.1` risk=`HIGH`
+- `tools/xstack/testx/tests/test_embodied_move_determinism.py` disposition=`quarantine` rank=`5` total_score=`72.97` risk=`HIGH`
+- `tools/xstack/testx/tests/test_itinerary_deterministic.py` disposition=`quarantine` rank=`6` total_score=`71.91` risk=`HIGH`
+- `tools/xstack/testx/tests/test_faction_create_deterministic.py` disposition=`quarantine` rank=`7` total_score=`71.79` risk=`HIGH`
+- `tools/geo/tool_replay_view_window.py` disposition=`quarantine` rank=`8` total_score=`69.88` risk=`HIGH`
+- `tools/xstack/testx/tests/test_capsule_capsule_collision_deterministic.py` disposition=`quarantine` rank=`9` total_score=`68.35` risk=`HIGH`
+- `tools/xstack/testx/tests/test_cohort_expand_deterministic_ids.py` disposition=`quarantine` rank=`10` total_score=`68.33` risk=`HIGH`
+- `tools/xstack/testx/tests/test_decay_deterministic.py` disposition=`quarantine` rank=`11` total_score=`68.33` risk=`HIGH`
+- `tools/xstack/testx/tests/test_order_create_deterministic.py` disposition=`quarantine` rank=`12` total_score=`68.33` risk=`HIGH`
+- `tools/xstack/testx/tests/test_camera_bind_replay_determinism.py` disposition=`quarantine` rank=`13` total_score=`67.02` risk=`HIGH`
+- `tools/xstack/testx/tests/test_message_delivery_deterministic.py` disposition=`quarantine` rank=`14` total_score=`67.02` risk=`HIGH`
+- `tools/xstack/testx/tests/test_queue_order_deterministic.py` disposition=`quarantine` rank=`15` total_score=`67.02` risk=`HIGH`
+- `tools/xstack/testx/tests/test_free_motion_deterministic.py` disposition=`quarantine` rank=`16` total_score=`65.95` risk=`HIGH`
+- `tools/xstack/testx/tests/test_occupancy_deterministic.py` disposition=`quarantine` rank=`17` total_score=`65.95` risk=`HIGH`
+- `tools/xstack/testx/tests/test_project_create_deterministic.py` disposition=`quarantine` rank=`18` total_score=`65.95` risk=`HIGH`
+- `tools/xstack/testx/tests/test_provenance_events_deterministic.py` disposition=`quarantine` rank=`19` total_score=`65.95` risk=`HIGH`
+- `tools/geo/tool_replay_path_request.py` disposition=`quarantine` rank=`20` total_score=`65.6` risk=`HIGH`
+- `tools/xstack/testx/tests/test_camera_bind_requires_entitlement.py` disposition=`quarantine` rank=`21` total_score=`64.64` risk=`HIGH`
+- `tools/xstack/testx/tests/test_loss_fraction_deterministic.py` disposition=`drop` rank=`22` total_score=`63.57` risk=`HIGH`
+- `tools/xstack/testx/tests/test_budget_degrade_reports.py` disposition=`merge` rank=`23` total_score=`63.23` risk=`HIGH`
+- `tools/xstack/testx/tests/test_trust_update_deterministic.py` disposition=`merge` rank=`24` total_score=`63.23` risk=`HIGH`
+- `tools/geo/tool_replay_frame_window.py` disposition=`merge` rank=`25` total_score=`62.7` risk=`HIGH`
+- `tools/geo/tool_verify_metric_stability.py` disposition=`merge` rank=`26` total_score=`62.7` risk=`HIGH`
+- `tools/xstack/testx/tests/test_reenactment_deterministic_hash.py` disposition=`merge` rank=`27` total_score=`62.5` risk=`HIGH`
+- `tools/xstack/testx/tests/test_materialize_deterministic_ids.py` disposition=`drop` rank=`28` total_score=`62.38` risk=`HIGH`
+- `tools/xstack/testx/tests/test_aggregation_deterministic.py` disposition=`drop` rank=`29` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_attenuation_deterministic_no_rng.py` disposition=`merge` rank=`30` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_attenuation_deterministic_with_named_rng.py` disposition=`merge` rank=`31` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_courier_channel_delivery_matches_mob_arrival.py` disposition=`merge` rank=`32` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_delay_accumulation_deterministic.py` disposition=`merge` rank=`33` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_flow_migration_equivalence.py` disposition=`merge` rank=`34` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_move_refuse_ownership_violation.py` disposition=`merge` rank=`35` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_movement_collision_blocking.py` disposition=`merge` rank=`36` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_notebook_write_entitlement.py` disposition=`merge` rank=`37` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_radio_delivery_deterministic.py` disposition=`merge` rank=`38` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_routing_cache_deterministic.py` disposition=`merge` rank=`39` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_single_agent_world_runs_ok.py` disposition=`merge` rank=`40` total_score=`62.26` risk=`HIGH`
+- `tools/xstack/testx/tests/test_hash_anchors_stable_under_stress.py` disposition=`merge` rank=`41` total_score=`61.8` risk=`HIGH`
+- `tools/xstack/testx/tests/test_demography_tick_deterministic.py` disposition=`drop` rank=`42` total_score=`61.19` risk=`HIGH`
+- `tools/xstack/testx/tests/test_manifest_tick_delivery_deterministic.py` disposition=`drop` rank=`43` total_score=`61.19` risk=`HIGH`
+- `tools/xstack/testx/tests/test_micro_solver_deterministic.py` disposition=`drop` rank=`44` total_score=`61.19` risk=`HIGH`
+- `tools/xstack/testx/tests/test_order_queue_ordering_deterministic.py` disposition=`drop` rank=`45` total_score=`61.19` risk=`HIGH`
+- `tools/xstack/testx/tests/test_reservation_conflict.py` disposition=`drop` rank=`46` total_score=`61.19` risk=`HIGH`
+- `tools/xstack/testx/tests/test_event_stream_index_deterministic.py` disposition=`drop` rank=`47` total_score=`61.08` risk=`HIGH`
+- `tools/xstack/testx/tests/test_address_resolution_deterministic.py` disposition=`drop` rank=`48` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_affiliation_join_leave_deterministic.py` disposition=`merge` rank=`49` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_bulletin_generation_deterministic.py` disposition=`drop` rank=`50` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_capacity_queueing_deterministic.py` disposition=`merge` rank=`51` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_diplomacy_update_deterministic.py` disposition=`merge` rank=`52` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_loss_policy_application_deterministic.py` disposition=`merge` rank=`53` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_move_refuse_unembodied.py` disposition=`merge` rank=`54` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_net_disorder_sim_deterministic.py` disposition=`drop` rank=`55` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_no_agents_world_runs_ok.py` disposition=`merge` rank=`56` total_score=`61.07` risk=`HIGH`
+- `tools/xstack/testx/tests/test_delay_event_logged.py` disposition=`drop` rank=`57` total_score=`60.36` risk=`HIGH`
+- `tools/xstack/testx/tests/test_order_executor_stub_refusals_deterministic.py` disposition=`drop` rank=`58` total_score=`60.0` risk=`HIGH`
+- `tools/xstack/testx/tests/test_reenactment_event_stream_index_deterministic.py` disposition=`drop` rank=`59` total_score=`60.0` risk=`HIGH`
+- `tools/xstack/testx/tests/test_signal_aspect_deterministic.py` disposition=`drop` rank=`60` total_score=`60.0` risk=`HIGH`
+- `tools/xstack/testx/tests/test_capsule_aabb_collision_deterministic.py` disposition=`merge` rank=`61` total_score=`59.05` risk=`HIGH`
+- `tools/xstack/testx/tests/test_budget_degrade_wear_updates.py` disposition=`merge` rank=`62` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_budget_partial_expansion_deterministic.py` disposition=`drop` rank=`63` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_cohort_expand_collapse_conservation.py` disposition=`drop` rank=`64` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_corridor_clamp_deterministic.py` disposition=`drop` rank=`65` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_cost_accounting_deterministic.py` disposition=`merge` rank=`66` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_cross_shard_cohort_refusal.py` disposition=`drop` rank=`67` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_migration_delay_deterministic.py` disposition=`drop` rank=`68` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_mobility_transition_roi_entry_exit_deterministic.py` disposition=`drop` rank=`69` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_port_connection_deterministic.py` disposition=`drop` rank=`70` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_reenactment_seed_reproducible.py` disposition=`drop` rank=`71` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_speed_cap_effect_applied.py` disposition=`drop` rank=`72` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_step_scheduling_deterministic.py` disposition=`drop` rank=`73` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_time_warp_large_dt_stable.py` disposition=`drop` rank=`74` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_travel_tick_progress_deterministic.py` disposition=`drop` rank=`75` total_score=`58.81` risk=`HIGH`
+- `tools/xstack/testx/tests/test_wear_accumulation_deterministic.py` disposition=`drop` rank=`76` total_score=`58.81` risk=`HIGH`
+- `tools/worldgen/tool_replay_system_l2.py` disposition=`merge` rank=`77` total_score=`58.62` risk=`HIGH`
+- `tools/geo/tool_replay_overlay_merge.py` disposition=`merge` rank=`78` total_score=`57.82` risk=`HIGH`
+- `tools/xstack/testx/tests/test_budget_parallelism_reduction_deterministic.py` disposition=`drop` rank=`79` total_score=`57.62` risk=`HIGH`
+- `tools/xstack/testx/tests/test_coupling_consist_order_deterministic.py` disposition=`drop` rank=`80` total_score=`57.62` risk=`HIGH`
+- `tools/xstack/testx/tests/test_deterministic_ordering_of_instances.py` disposition=`drop` rank=`81` total_score=`57.62` risk=`HIGH`
+- `tools/xstack/testx/tests/test_failure_trigger_threshold_deterministic.py` disposition=`drop` rank=`82` total_score=`57.62` risk=`HIGH`
+- `tools/xstack/testx/tests/test_maintenance_reduces_backlog_deterministic.py` disposition=`drop` rank=`83` total_score=`57.62` risk=`HIGH`
+- `tools/xstack/testx/tests/test_port_insert_extract_deterministic.py` disposition=`drop` rank=`84` total_score=`57.62` risk=`HIGH`
+- `tools/xstack/testx/tests/test_roi_triggers_deterministic_refinement.py` disposition=`drop` rank=`85` total_score=`57.62` risk=`HIGH`
+- `tools/xstack/testx/tests/test_schedule_departures_deterministic.py` disposition=`drop` rank=`86` total_score=`57.62` risk=`HIGH`
+- `tools/xstack/testx/tests/test_truncation_deterministic.py` disposition=`drop` rank=`87` total_score=`57.62` risk=`HIGH`
+- `tools/geo/tool_replay_worldgen_cell.py` disposition=`merge` rank=`88` total_score=`57.23` risk=`HIGH`
+- `tools/xstack/testx/tests/test_inspection_snapshot_stable.py` disposition=`merge` rank=`89` total_score=`56.79` risk=`HIGH`
+- `tools/geo/tool_replay_geometry_window.py` disposition=`merge` rank=`90` total_score=`56.04` risk=`HIGH`
+- `tools/worldgen/tool_replay_system_instantiation.py` disposition=`merge` rank=`91` total_score=`55.73` risk=`HIGH`
+- `tools/xstack/testx/tests/test_epistemic_no_info_gain_from_expand.py` disposition=`merge` rank=`92` total_score=`55.6` risk=`HIGH`
+- `tools/xstack/testx/tests/test_route_reservation_conflict_deterministic.py` disposition=`drop` rank=`93` total_score=`55.36` risk=`HIGH`
+
+## Usage Sites
+
+- Build Targets: `none`
+- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/release/PROVISIONAL_FEATURE_LIST.md`
+
+## Tests Involved
+
+- `python tools/compat/tool_run_interop_stress.py --repo-root .`
+- `python tools/convergence/tool_run_convergence_gate.py --repo-root .`
+- `python tools/mvp/tool_run_all_stress.py --repo-root .`
+- `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
+- `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
+- `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
+- `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
+- `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
+- `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
+- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
+
+## Recommended Decision Options
+
+- Review file-local deltas and port only unique behavior into the canonical file.
+- Rewire call sites only after confirming the secondary file is not an active product entrypoint.
+- Deprecate the secondary file only after it is removed from default build targets and no longer carries unrelated active symbols.
+- If ambiguity remains after review, keep the cluster quarantined for XI-4b instead of forcing convergence.

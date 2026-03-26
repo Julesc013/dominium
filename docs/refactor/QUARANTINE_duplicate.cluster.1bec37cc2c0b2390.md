@@ -1,0 +1,543 @@
+Status: Quarantine
+Last Reviewed: 2026-03-26
+Stability: provisional
+Replacement Target: XI-4b manual review resolution
+
+# Quarantine Packet `duplicate.cluster.1bec37cc2c0b2390`
+
+- Symbol: `_as_int`
+- Cluster Kind: `near`
+- Cluster Resolution: `quarantine`
+- Risk Level: `HIGH`
+- Canonical Candidate: `tools/process/tool_replay_process_window.py`
+- Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
+- Planned Action Kinds: `merge, rewire, deprecate, quarantine`
+
+## Competing Files
+
+- `src/astro/ephemeris/kepler_proxy_engine.py`
+- `src/astro/illumination/illumination_geometry_engine.py`
+- `src/astro/views/orbit_view_engine.py`
+- `src/chem/degradation/degradation_engine.py`
+- `src/chem/process_run_engine.py`
+- `src/client/ui/inspect_panels.py`
+- `src/client/ui/map_views.py`
+- `src/client/ui/teleport_controller.py`
+- `src/client/ui/viewer_shell.py`
+- `src/compat/capability_negotiation.py`
+- `src/control/capability/capability_engine.py`
+- `src/control/effects/effect_engine.py`
+- `src/control/fidelity/fidelity_engine.py`
+- `src/control/planning/plan_engine.py`
+- `src/control/view/view_engine.py`
+- `src/core/constraints/constraint_engine.py`
+- `src/core/flow/flow_engine.py`
+- `src/core/graph/network_graph_engine.py`
+- `src/core/graph/routing_engine.py`
+- `src/core/hazards/hazard_engine.py`
+- `src/core/schedule/schedule_engine.py`
+- `src/core/spatial/spatial_engine.py`
+- `src/core/state/state_machine_engine.py`
+- `src/diegetics/instrument_kernel.py`
+- `src/electric/degradation_policy.py`
+- `src/electric/fault/fault_engine.py`
+- `src/electric/power_network_engine.py`
+- `src/electric/protection/protection_engine.py`
+- `src/electric/storage/storage_engine.py`
+- `src/embodiment/body/body_system.py`
+- `src/embodiment/collision/macro_heightfield_provider.py`
+- `src/embodiment/lens/camera_smoothing.py`
+- `src/embodiment/lens/lens_engine.py`
+- `src/embodiment/movement/friction_model.py`
+- `src/embodiment/movement/jump_process.py`
+- `src/embodiment/tools/logic_tool.py`
+- `src/embodiment/tools/scanner_tool.py`
+- `src/embodiment/tools/teleport_tool.py`
+- `src/embodiment/tools/terrain_edit_tool.py`
+- `src/epistemics/memory/memory_kernel.py`
+- `src/field/field_boundary_exchange.py`
+- `src/fields/field_engine.py`
+- `src/fluid/network/fluid_network_engine.py`
+- `src/geo/degradation_policy.py`
+- `src/geo/edit/geometry_state_engine.py`
+- `src/geo/kernel/geo_kernel.py`
+- `src/geo/lens/cctv_engine.py`
+- `src/geo/overlay/overlay_merge_engine.py`
+- `src/geo/projection/view_adapters.py`
+- `src/geo/worldgen/worldgen_engine.py`
+- `src/infrastructure/formalization/inference_engine.py`
+- `src/inspection/inspection_engine.py`
+- `src/interaction/task/task_engine.py`
+- `src/interior/compartment_flow_builder.py`
+- `src/interior/compartment_flow_engine.py`
+- `src/interior/interior_engine.py`
+- `src/logic/debug/compute_hooks.py`
+- `src/logic/debug/debug_engine.py`
+- `src/logic/debug/runtime_state.py`
+- `src/logic/element/compute_hooks.py`
+- `src/logic/element/logic_element_validator.py`
+- `src/logic/fault/fault_engine.py`
+- `src/logic/network/instrumentation_binding.py`
+- `src/logic/network/logic_network_engine.py`
+- `src/logic/network/logic_network_validator.py`
+- `src/logic/noise/noise_engine.py`
+- `src/logic/protocol/rows.py`
+- `src/logic/timing/compute_hooks.py`
+- `src/logistics/logistics_engine.py`
+- `src/machines/port_engine.py`
+- `src/materials/commitments/commitment_engine.py`
+- `src/materials/construction/construction_engine.py`
+- `src/materials/maintenance/decay_engine.py`
+- `src/materials/materialization/materialization_engine.py`
+- `src/materials/performance/mat_scale_engine.py`
+- `src/materials/provenance/event_stream_index.py`
+- `src/mechanics/structural_graph_engine.py`
+- `src/meta/compile/compile_engine.py`
+- `src/meta/compute/compute_budget_engine.py`
+- `src/meta/explain/explain_engine.py`
+- `src/meta/instrumentation/instrumentation_engine.py`
+- `src/meta/numeric.py`
+- `src/meta/profile/profile_engine.py`
+- `src/meta/provenance/compaction_engine.py`
+- `src/meta/reference/geo_small_reference.py`
+- `src/meta/reference/logic_small_reference.py`
+- `src/meta/reference/reference_engine.py`
+- `src/mobility/geometry/geometry_engine.py`
+- `src/mobility/maintenance/wear_engine.py`
+- `src/mobility/micro/constrained_motion_solver.py`
+- `src/mobility/micro/free_motion_solver.py`
+- `src/mobility/network/mobility_network_engine.py`
+- `src/mobility/signals/signal_engine.py`
+- `src/mobility/traffic/traffic_engine.py`
+- `src/mobility/travel/itinerary_engine.py`
+- `src/mobility/travel/reenactment.py`
+- `src/mobility/travel/travel_engine.py`
+- `src/mobility/vehicle/vehicle_engine.py`
+- `src/models/model_engine.py`
+- `src/net/anti_cheat/anti_cheat_engine.py`
+- `src/net/policies/policy_lockstep.py`
+- `src/net/policies/policy_server_authoritative.py`
+- `src/net/srz/routing.py`
+- `src/net/srz/shard_coordinator.py`
+- `src/net/testing/net_disorder_sim.py`
+- `src/numeric_discipline.py`
+- `src/performance/cost_engine.py`
+- `src/performance/inspection_cache.py`
+- `src/physics/energy/energy_ledger_engine.py`
+- `src/physics/entropy/entropy_engine.py`
+- `src/physics/momentum_engine.py`
+- `src/platform/target_matrix.py`
+- `src/pollution/compliance_engine.py`
+- `src/pollution/dispersion_engine.py`
+- `src/pollution/exposure_engine.py`
+- `src/pollution/measurement_engine.py`
+- `src/pollution/pollution_engine.py`
+- `src/process/capsules/capsule_builder.py`
+- `src/process/capsules/capsule_executor.py`
+- `src/process/drift/drift_engine.py`
+- `src/process/maturity/maturity_engine.py`
+- `src/process/maturity/metrics_engine.py`
+- `src/process/process_definition_validator.py`
+- `src/process/process_run_engine.py`
+- `src/process/qc/qc_engine.py`
+- `src/process/research/experiment_engine.py`
+- `src/process/research/inference_engine.py`
+- `src/process/software/pipeline_engine.py`
+- `src/reality/ledger/ledger_engine.py`
+- `src/reality/transitions/transition_controller.py`
+- `src/safety/safety_engine.py`
+- `src/signals/addressing/address_engine.py`
+- `src/signals/aggregation/aggregation_engine.py`
+- `src/signals/institutions/bulletin_engine.py`
+- `src/signals/institutions/dispatch_engine.py`
+- `src/signals/institutions/standards_engine.py`
+- `src/signals/transport/channel_executor.py`
+- `src/signals/transport/degradation_policy.py`
+- `src/signals/transport/transport_engine.py`
+- `src/signals/trust/trust_engine.py`
+- `src/specs/spec_engine.py`
+- `src/system/certification/system_cert_engine.py`
+- `src/system/forensics/system_forensics_engine.py`
+- `src/system/macro/macro_capsule_engine.py`
+- `src/system/reliability/reliability_engine.py`
+- `src/system/reliability/system_health_engine.py`
+- `src/system/roi/system_roi_scheduler.py`
+- `src/system/statevec/statevec_engine.py`
+- `src/system/system_collapse_engine.py`
+- `src/system/templates/template_compiler.py`
+- `src/thermal/network/thermal_network_engine.py`
+- `src/time/epoch_anchor_engine.py`
+- `src/time/tick_t.py`
+- `src/time/time_engine.py`
+- `src/time/time_mapping_engine.py`
+- `src/worldgen/earth/climate_field_engine.py`
+- `src/worldgen/earth/earth_surface_generator.py`
+- `src/worldgen/earth/hydrology_engine.py`
+- `src/worldgen/earth/lighting/horizon_shadow_engine.py`
+- `src/worldgen/earth/lighting/illumination_engine.py`
+- `src/worldgen/earth/lighting/lighting_view_engine.py`
+- `src/worldgen/earth/material/material_proxy_engine.py`
+- `src/worldgen/earth/season_phase_engine.py`
+- `src/worldgen/earth/sky/astronomy_proxy_engine.py`
+- `src/worldgen/earth/sky/sky_gradient_model.py`
+- `src/worldgen/earth/sky/sky_view_engine.py`
+- `src/worldgen/earth/sky/starfield_generator.py`
+- `src/worldgen/earth/tide_field_engine.py`
+- `src/worldgen/earth/tide_phase_engine.py`
+- `src/worldgen/earth/water/water_view_engine.py`
+- `src/worldgen/earth/wind/wind_field_engine.py`
+- `src/worldgen/galaxy/galaxy_object_stub_generator.py`
+- `src/worldgen/galaxy/galaxy_proxy_field_engine.py`
+- `src/worldgen/mw/insolation_proxy.py`
+- `src/worldgen/mw/mw_cell_generator.py`
+- `src/worldgen/mw/mw_surface_refiner_l3.py`
+- `src/worldgen/mw/mw_system_refiner_l2.py`
+- `src/worldgen/mw/sol_anchor.py`
+- `src/worldgen/mw/system_query_engine.py`
+- `src/worldgen/refinement/refinement_cache.py`
+- `src/worldgen/refinement/refinement_scheduler.py`
+- `tools/chem/tool_generate_chem_stress.py`
+- `tools/chem/tool_replay_combustion_window.py`
+- `tools/chem/tool_replay_degradation_window.py`
+- `tools/chem/tool_replay_process_run.py`
+- `tools/chem/tool_verify_energy_conservation.py`
+- `tools/chem/tool_verify_entropy_monotonicity.py`
+- `tools/chem/tool_verify_mass_conservation.py`
+- `tools/compat/cap_neg4_common.py`
+- `tools/convergence/convergence_gate_common.py`
+- `tools/earth/earth9_stress_common.py`
+- `tools/electric/tool_generate_elec_stress_scenario.py`
+- `tools/embodiment/earth6_probe.py`
+- `tools/embodiment/emb2_probe.py`
+- `tools/fluid/tool_generate_fluid_stress.py`
+- `tools/geo/geo10_stress_common.py`
+- `tools/logic/logic10_stress_common.py`
+- `tools/logic/tool_replay_trace_window.py`
+- `tools/meta/tool_provenance_stress.py`
+- `tools/meta/tool_run_reference_suite.py`
+- `tools/meta/tool_verify_numeric_stability.py`
+- `tools/mobility/tool_determinism_compare.py`
+- `tools/mobility/tool_mobility_stress.py`
+- `tools/mvp/cross_platform_gate_common.py`
+- `tools/mvp/mvp_smoke_common.py`
+- `tools/mvp/stress_gate_common.py`
+- `tools/net/tool_anti_cheat_report.py`
+- `tools/physics/tool_replay_energy_window.py`
+- `tools/physics/tool_replay_field_window.py`
+- `tools/physics/tool_verify_energy_conservation.py`
+- `tools/physics/tool_verify_entropy_monotonicity.py`
+- `tools/pollution/tool_generate_poll_stress.py`
+- `tools/pollution/tool_replay_dispersion_window.py`
+- `tools/pollution/tool_replay_exposure_window.py`
+- `tools/pollution/tool_replay_poll_window.py`
+- `tools/pollution/tool_verify_poll_mass_balance.py`
+- `tools/process/tool_generate_proc_stress.py`
+- `tools/process/tool_replay_capsule_window.py`
+- `tools/process/tool_replay_drift_window.py`
+- `tools/process/tool_replay_experiment_window.py`
+- `tools/process/tool_replay_maturity_window.py`
+- `tools/process/tool_replay_pipeline_window.py`
+- `tools/process/tool_replay_process_window.py`
+- `tools/process/tool_replay_qc_window.py`
+- `tools/process/tool_replay_quality_window.py`
+- `tools/process/tool_replay_reverse_engineering_window.py`
+- `tools/signals/tool_generate_sig_stress_scenario.py`
+- `tools/signals/tool_run_sig_stress.py`
+- `tools/system/tool_generate_sys_stress.py`
+- `tools/system/tool_replay_capsule_window.py`
+- `tools/system/tool_replay_certification_window.py`
+- `tools/system/tool_replay_system_failure_window.py`
+- `tools/system/tool_replay_tier_transitions.py`
+- `tools/system/tool_verify_explain_determinism.py`
+- `tools/system/tool_verify_statevec_roundtrip.py`
+- `tools/thermal/tool_generate_therm_stress_scenario.py`
+- `tools/time/tool_replay_time_window.py`
+- `tools/worldgen/earth10_probe.py`
+- `tools/worldgen/earth7_probe.py`
+- `tools/worldgen/gal0_probe.py`
+- `tools/xstack/sessionx/creator.py`
+- `tools/xstack/sessionx/process_runtime.py`
+- `tools/xstack/sessionx/scheduler.py`
+- `tools/xstack/sessionx/srz.py`
+- `tools/xstack/testx/tests/meta_ref0_testlib.py`
+- `tools/xstack/testx/tests/net_mp9_testlib.py`
+- `tools/xstack/testx/tests/test_cross_domain_energy_consistency.py`
+- `tools/xstack/testx/tests/test_mobility_transition_macro_meso_micro_continuity.py`
+
+## Scorecard
+
+- `tools/process/tool_replay_process_window.py` disposition=`canonical` rank=`1` total_score=`87.8` risk=`HIGH`
+- `tools/process/tool_replay_qc_window.py` disposition=`quarantine` rank=`2` total_score=`87.8` risk=`HIGH`
+- `tools/xstack/sessionx/srz.py` disposition=`quarantine` rank=`3` total_score=`85.0` risk=`HIGH`
+- `tools/time/tool_replay_time_window.py` disposition=`quarantine` rank=`4` total_score=`84.7` risk=`HIGH`
+- `tools/xstack/sessionx/creator.py` disposition=`quarantine` rank=`5` total_score=`84.64` risk=`HIGH`
+- `tools/process/tool_replay_capsule_window.py` disposition=`quarantine` rank=`6` total_score=`81.19` risk=`HIGH`
+- `src/core/graph/network_graph_engine.py` disposition=`quarantine` rank=`7` total_score=`79.64` risk=`HIGH`
+- `src/core/state/state_machine_engine.py` disposition=`quarantine` rank=`8` total_score=`79.64` risk=`HIGH`
+- `src/meta/numeric.py` disposition=`quarantine` rank=`9` total_score=`79.64` risk=`HIGH`
+- `tools/net/tool_anti_cheat_report.py` disposition=`quarantine` rank=`10` total_score=`79.41` risk=`HIGH`
+- `tools/meta/tool_provenance_stress.py` disposition=`quarantine` rank=`11` total_score=`78.44` risk=`HIGH`
+- `tools/fluid/tool_generate_fluid_stress.py` disposition=`quarantine` rank=`12` total_score=`78.04` risk=`HIGH`
+- `src/mobility/vehicle/vehicle_engine.py` disposition=`merge` rank=`13` total_score=`77.62` risk=`HIGH`
+- `tools/logic/tool_replay_trace_window.py` disposition=`merge` rank=`14` total_score=`76.73` risk=`HIGH`
+- `src/core/spatial/spatial_engine.py` disposition=`drop` rank=`15` total_score=`76.43` risk=`HIGH`
+- `src/time/time_engine.py` disposition=`drop` rank=`16` total_score=`76.37` risk=`HIGH`
+- `src/reality/transitions/transition_controller.py` disposition=`merge` rank=`17` total_score=`76.19` risk=`HIGH`
+- `tools/xstack/sessionx/process_runtime.py` disposition=`merge` rank=`18` total_score=`76.07` risk=`HIGH`
+- `src/time/tick_t.py` disposition=`merge` rank=`19` total_score=`76.01` risk=`HIGH`
+- `tools/process/tool_replay_quality_window.py` disposition=`merge` rank=`20` total_score=`75.89` risk=`HIGH`
+- `src/core/graph/routing_engine.py` disposition=`drop` rank=`21` total_score=`74.64` risk=`HIGH`
+- `src/worldgen/refinement/refinement_cache.py` disposition=`drop` rank=`22` total_score=`74.52` risk=`HIGH`
+- `src/core/schedule/schedule_engine.py` disposition=`drop` rank=`23` total_score=`74.17` risk=`HIGH`
+- `tools/thermal/tool_generate_therm_stress_scenario.py` disposition=`merge` rank=`24` total_score=`74.15` risk=`HIGH`
+- `tools/xstack/sessionx/scheduler.py` disposition=`drop` rank=`25` total_score=`74.02` risk=`HIGH`
+- `src/client/ui/map_views.py` disposition=`drop` rank=`26` total_score=`73.99` risk=`HIGH`
+- `tools/chem/tool_generate_chem_stress.py` disposition=`merge` rank=`27` total_score=`73.96` risk=`HIGH`
+- `src/control/capability/capability_engine.py` disposition=`drop` rank=`28` total_score=`73.87` risk=`HIGH`
+- `src/meta/profile/profile_engine.py` disposition=`drop` rank=`29` total_score=`73.87` risk=`HIGH`
+- `src/core/flow/flow_engine.py` disposition=`drop` rank=`30` total_score=`73.57` risk=`HIGH`
+- `tools/process/tool_replay_drift_window.py` disposition=`merge` rank=`31` total_score=`73.51` risk=`HIGH`
+- `tools/process/tool_replay_pipeline_window.py` disposition=`merge` rank=`32` total_score=`73.51` risk=`HIGH`
+- `tools/system/tool_generate_sys_stress.py` disposition=`merge` rank=`33` total_score=`73.39` risk=`HIGH`
+- `tools/geo/geo10_stress_common.py` disposition=`merge` rank=`34` total_score=`73.31` risk=`HIGH`
+- `tools/meta/tool_run_reference_suite.py` disposition=`merge` rank=`35` total_score=`73.17` risk=`HIGH`
+- `src/interior/interior_engine.py` disposition=`drop` rank=`36` total_score=`73.04` risk=`HIGH`
+- `tools/system/tool_replay_system_failure_window.py` disposition=`merge` rank=`37` total_score=`72.98` risk=`HIGH`
+- `tools/system/tool_replay_capsule_window.py` disposition=`merge` rank=`38` total_score=`72.44` risk=`HIGH`
+- `tools/process/tool_generate_proc_stress.py` disposition=`merge` rank=`39` total_score=`72.04` risk=`HIGH`
+- `tools/mvp/cross_platform_gate_common.py` disposition=`merge` rank=`40` total_score=`71.9` risk=`HIGH`
+- `src/interior/compartment_flow_builder.py` disposition=`drop` rank=`41` total_score=`71.9` risk=`HIGH`
+- `src/thermal/network/thermal_network_engine.py` disposition=`drop` rank=`42` total_score=`71.79` risk=`HIGH`
+- `src/control/fidelity/fidelity_engine.py` disposition=`drop` rank=`43` total_score=`71.49` risk=`HIGH`
+- `src/interior/compartment_flow_engine.py` disposition=`drop` rank=`44` total_score=`71.31` risk=`HIGH`
+- `src/embodiment/tools/logic_tool.py` disposition=`drop` rank=`45` total_score=`71.25` risk=`HIGH`
+- `src/process/process_run_engine.py` disposition=`drop` rank=`46` total_score=`71.25` risk=`HIGH`
+- `tools/electric/tool_generate_elec_stress_scenario.py` disposition=`merge` rank=`47` total_score=`71.06` risk=`HIGH`
+- `tools/physics/tool_replay_field_window.py` disposition=`merge` rank=`48` total_score=`70.95` risk=`HIGH`
+- `src/fields/field_engine.py` disposition=`drop` rank=`49` total_score=`70.89` risk=`HIGH`
+- `src/logic/debug/runtime_state.py` disposition=`drop` rank=`50` total_score=`70.83` risk=`HIGH`
+- `src/process/maturity/metrics_engine.py` disposition=`drop` rank=`51` total_score=`70.48` risk=`HIGH`
+- `src/meta/compile/compile_engine.py` disposition=`drop` rank=`52` total_score=`70.36` risk=`HIGH`
+- `src/platform/target_matrix.py` disposition=`drop` rank=`53` total_score=`70.24` risk=`HIGH`
+- `tools/system/tool_replay_certification_window.py` disposition=`merge` rank=`54` total_score=`70.08` risk=`HIGH`
+- `tools/pollution/tool_replay_poll_window.py` disposition=`drop` rank=`55` total_score=`69.91` risk=`HIGH`
+- `src/chem/degradation/degradation_engine.py` disposition=`drop` rank=`56` total_score=`69.82` risk=`HIGH`
+- `src/worldgen/earth/water/water_view_engine.py` disposition=`drop` rank=`57` total_score=`69.82` risk=`HIGH`
+- `src/embodiment/tools/teleport_tool.py` disposition=`drop` rank=`58` total_score=`69.76` risk=`HIGH`
+- `src/process/qc/qc_engine.py` disposition=`drop` rank=`59` total_score=`69.76` risk=`HIGH`
+- `tools/process/tool_replay_maturity_window.py` disposition=`merge` rank=`60` total_score=`69.65` risk=`HIGH`
+- `src/inspection/inspection_engine.py` disposition=`drop` rank=`61` total_score=`69.58` risk=`HIGH`
+- `src/reality/ledger/ledger_engine.py` disposition=`drop` rank=`62` total_score=`69.46` risk=`HIGH`
+- `tools/pollution/tool_replay_dispersion_window.py` disposition=`merge` rank=`63` total_score=`69.37` risk=`HIGH`
+- `src/worldgen/mw/sol_anchor.py` disposition=`drop` rank=`64` total_score=`69.23` risk=`HIGH`
+- `src/mobility/travel/travel_engine.py` disposition=`drop` rank=`65` total_score=`69.17` risk=`HIGH`
+- `src/electric/storage/storage_engine.py` disposition=`drop` rank=`66` total_score=`69.11` risk=`HIGH`
+- `tools/chem/tool_replay_process_run.py` disposition=`merge` rank=`67` total_score=`69.04` risk=`HIGH`
+- `tools/chem/tool_verify_mass_conservation.py` disposition=`drop` rank=`68` total_score=`69.04` risk=`HIGH`
+- `tools/physics/tool_replay_energy_window.py` disposition=`merge` rank=`69` total_score=`69.01` risk=`HIGH`
+- `tools/signals/tool_generate_sig_stress_scenario.py` disposition=`merge` rank=`70` total_score=`69.01` risk=`HIGH`
+- `src/logic/protocol/rows.py` disposition=`drop` rank=`71` total_score=`68.69` risk=`HIGH`
+- `src/materials/construction/construction_engine.py` disposition=`drop` rank=`72` total_score=`68.51` risk=`HIGH`
+- `src/pollution/dispersion_engine.py` disposition=`drop` rank=`73` total_score=`68.45` risk=`HIGH`
+- `src/core/hazards/hazard_engine.py` disposition=`drop` rank=`74` total_score=`68.33` risk=`HIGH`
+- `src/process/maturity/maturity_engine.py` disposition=`drop` rank=`75` total_score=`68.33` risk=`HIGH`
+- `src/control/view/view_engine.py` disposition=`drop` rank=`76` total_score=`68.15` risk=`HIGH`
+- `tools/pollution/tool_generate_poll_stress.py` disposition=`merge` rank=`77` total_score=`67.99` risk=`HIGH`
+- `src/chem/process_run_engine.py` disposition=`drop` rank=`78` total_score=`67.8` risk=`HIGH`
+- `tools/chem/tool_replay_degradation_window.py` disposition=`merge` rank=`79` total_score=`67.62` risk=`HIGH`
+- `tools/process/tool_replay_experiment_window.py` disposition=`merge` rank=`80` total_score=`67.62` risk=`HIGH`
+- `tools/mvp/mvp_smoke_common.py` disposition=`merge` rank=`81` total_score=`67.5` risk=`HIGH`
+- `tools/mobility/tool_mobility_stress.py` disposition=`merge` rank=`82` total_score=`67.43` risk=`HIGH`
+- `src/embodiment/body/body_system.py` disposition=`drop` rank=`83` total_score=`67.08` risk=`HIGH`
+- `tools/chem/tool_verify_energy_conservation.py` disposition=`drop` rank=`84` total_score=`67.01` risk=`HIGH`
+- `tools/mvp/stress_gate_common.py` disposition=`merge` rank=`85` total_score=`66.96` risk=`HIGH`
+- `tools/earth/earth9_stress_common.py` disposition=`merge` rank=`86` total_score=`66.93` risk=`HIGH`
+- `tools/compat/cap_neg4_common.py` disposition=`merge` rank=`87` total_score=`66.91` risk=`HIGH`
+- `src/materials/commitments/commitment_engine.py` disposition=`drop` rank=`88` total_score=`66.85` risk=`HIGH`
+- `src/meta/explain/explain_engine.py` disposition=`drop` rank=`89` total_score=`66.73` risk=`HIGH`
+- `src/physics/entropy/entropy_engine.py` disposition=`drop` rank=`90` total_score=`66.73` risk=`HIGH`
+- `src/pollution/pollution_engine.py` disposition=`drop` rank=`91` total_score=`66.73` risk=`HIGH`
+- `src/embodiment/tools/terrain_edit_tool.py` disposition=`drop` rank=`92` total_score=`66.67` risk=`HIGH`
+- `tools/process/tool_replay_reverse_engineering_window.py` disposition=`merge` rank=`93` total_score=`66.65` risk=`HIGH`
+- `tools/system/tool_replay_tier_transitions.py` disposition=`merge` rank=`94` total_score=`66.65` risk=`HIGH`
+- `src/mobility/geometry/geometry_engine.py` disposition=`drop` rank=`95` total_score=`66.13` risk=`HIGH`
+- `src/performance/cost_engine.py` disposition=`drop` rank=`96` total_score=`66.13` risk=`HIGH`
+- `src/net/policies/policy_server_authoritative.py` disposition=`drop` rank=`97` total_score=`66.07` risk=`HIGH`
+- `tools/pollution/tool_verify_poll_mass_balance.py` disposition=`merge` rank=`98` total_score=`66.05` risk=`HIGH`
+- `src/materials/provenance/event_stream_index.py` disposition=`drop` rank=`99` total_score=`65.95` risk=`HIGH`
+- `src/models/model_engine.py` disposition=`drop` rank=`100` total_score=`65.71` risk=`HIGH`
+- `tools/physics/tool_verify_energy_conservation.py` disposition=`merge` rank=`101` total_score=`65.69` risk=`HIGH`
+- `tools/meta/tool_verify_numeric_stability.py` disposition=`merge` rank=`102` total_score=`65.6` risk=`HIGH`
+- `tools/chem/tool_verify_entropy_monotonicity.py` disposition=`drop` rank=`103` total_score=`65.08` risk=`HIGH`
+- `tools/physics/tool_verify_entropy_monotonicity.py` disposition=`drop` rank=`104` total_score=`64.73` risk=`HIGH`
+- `tools/signals/tool_run_sig_stress.py` disposition=`merge` rank=`105` total_score=`64.63` risk=`HIGH`
+- `tools/xstack/testx/tests/test_mobility_transition_macro_meso_micro_continuity.py` disposition=`drop` rank=`106` total_score=`64.55` risk=`HIGH`
+- `src/worldgen/earth/earth_surface_generator.py` disposition=`drop` rank=`107` total_score=`64.34` risk=`HIGH`
+- `tools/chem/tool_replay_combustion_window.py` disposition=`merge` rank=`108` total_score=`64.19` risk=`HIGH`
+- `src/logistics/logistics_engine.py` disposition=`drop` rank=`109` total_score=`64.17` risk=`HIGH`
+- `src/compat/capability_negotiation.py` disposition=`merge` rank=`110` total_score=`64.05` risk=`HIGH`
+- `tools/xstack/testx/tests/test_cross_domain_energy_consistency.py` disposition=`drop` rank=`111` total_score=`63.98` risk=`HIGH`
+- `tools/xstack/testx/tests/net_mp9_testlib.py` disposition=`drop` rank=`112` total_score=`63.86` risk=`HIGH`
+- `tools/mobility/tool_determinism_compare.py` disposition=`merge` rank=`113` total_score=`63.6` risk=`HIGH`
+- `tools/embodiment/emb2_probe.py` disposition=`merge` rank=`114` total_score=`63.26` risk=`HIGH`
+- `tools/system/tool_verify_explain_determinism.py` disposition=`merge` rank=`115` total_score=`63.13` risk=`HIGH`
+- `tools/system/tool_verify_statevec_roundtrip.py` disposition=`drop` rank=`116` total_score=`62.7` risk=`HIGH`
+- `src/core/constraints/constraint_engine.py` disposition=`drop` rank=`117` total_score=`62.68` risk=`HIGH`
+- `src/worldgen/earth/tide_phase_engine.py` disposition=`drop` rank=`118` total_score=`62.68` risk=`HIGH`
+- `tools/pollution/tool_replay_exposure_window.py` disposition=`merge` rank=`119` total_score=`62.38` risk=`HIGH`
+- `tools/logic/logic10_stress_common.py` disposition=`merge` rank=`120` total_score=`62.33` risk=`HIGH`
+- `tools/embodiment/earth6_probe.py` disposition=`merge` rank=`121` total_score=`62.1` risk=`HIGH`
+- `src/worldgen/earth/wind/wind_field_engine.py` disposition=`drop` rank=`122` total_score=`62.08` risk=`HIGH`
+- `src/meta/compute/compute_budget_engine.py` disposition=`drop` rank=`123` total_score=`61.96` risk=`HIGH`
+- `src/process/drift/drift_engine.py` disposition=`drop` rank=`124` total_score=`61.96` risk=`HIGH`
+- `src/astro/illumination/illumination_geometry_engine.py` disposition=`drop` rank=`125` total_score=`61.9` risk=`HIGH`
+- `src/worldgen/earth/season_phase_engine.py` disposition=`drop` rank=`126` total_score=`61.66` risk=`HIGH`
+- `src/interaction/task/task_engine.py` disposition=`drop` rank=`127` total_score=`61.55` risk=`HIGH`
+- `src/logic/noise/noise_engine.py` disposition=`drop` rank=`128` total_score=`61.49` risk=`HIGH`
+- `src/embodiment/tools/scanner_tool.py` disposition=`drop` rank=`129` total_score=`61.39` risk=`HIGH`
+- `src/mobility/maintenance/wear_engine.py` disposition=`drop` rank=`130` total_score=`61.36` risk=`HIGH`
+- `src/worldgen/mw/mw_cell_generator.py` disposition=`drop` rank=`131` total_score=`61.25` risk=`HIGH`
+- `src/performance/inspection_cache.py` disposition=`drop` rank=`132` total_score=`61.19` risk=`HIGH`
+- `src/machines/port_engine.py` disposition=`drop` rank=`133` total_score=`61.12` risk=`HIGH`
+- `src/control/effects/effect_engine.py` disposition=`drop` rank=`134` total_score=`61.01` risk=`HIGH`
+- `src/physics/energy/energy_ledger_engine.py` disposition=`drop` rank=`135` total_score=`61.01` risk=`HIGH`
+- `src/mobility/network/mobility_network_engine.py` disposition=`drop` rank=`136` total_score=`60.83` risk=`HIGH`
+- `src/safety/safety_engine.py` disposition=`drop` rank=`137` total_score=`60.83` risk=`HIGH`
+- `src/signals/aggregation/aggregation_engine.py` disposition=`drop` rank=`138` total_score=`60.48` risk=`HIGH`
+- `src/process/process_definition_validator.py` disposition=`drop` rank=`139` total_score=`60.23` risk=`HIGH`
+- `src/embodiment/lens/lens_engine.py` disposition=`drop` rank=`140` total_score=`60.12` risk=`HIGH`
+- `src/geo/worldgen/worldgen_engine.py` disposition=`drop` rank=`141` total_score=`60.12` risk=`HIGH`
+- `tools/worldgen/earth10_probe.py` disposition=`merge` rank=`142` total_score=`60.06` risk=`HIGH`
+- `src/worldgen/earth/climate_field_engine.py` disposition=`drop` rank=`143` total_score=`59.64` risk=`HIGH`
+- `src/materials/materialization/materialization_engine.py` disposition=`drop` rank=`144` total_score=`59.62` risk=`HIGH`
+- `src/specs/spec_engine.py` disposition=`drop` rank=`145` total_score=`59.58` risk=`HIGH`
+- `src/pollution/exposure_engine.py` disposition=`drop` rank=`146` total_score=`59.52` risk=`HIGH`
+- `src/mobility/travel/itinerary_engine.py` disposition=`drop` rank=`147` total_score=`59.5` risk=`HIGH`
+- `src/net/policies/policy_lockstep.py` disposition=`drop` rank=`148` total_score=`59.45` risk=`HIGH`
+- `src/system/reliability/reliability_engine.py` disposition=`drop` rank=`149` total_score=`59.43` risk=`HIGH`
+- `src/geo/degradation_policy.py` disposition=`drop` rank=`150` total_score=`59.05` risk=`HIGH`
+- `src/process/capsules/capsule_builder.py` disposition=`drop` rank=`151` total_score=`59.05` risk=`HIGH`
+- `src/worldgen/mw/system_query_engine.py` disposition=`drop` rank=`152` total_score=`59.05` risk=`HIGH`
+- `tools/worldgen/earth7_probe.py` disposition=`merge` rank=`153` total_score=`59.04` risk=`HIGH`
+- `src/electric/degradation_policy.py` disposition=`drop` rank=`154` total_score=`58.73` risk=`HIGH`
+- `src/system/statevec/statevec_engine.py` disposition=`drop` rank=`155` total_score=`58.63` risk=`HIGH`
+- `src/meta/reference/reference_engine.py` disposition=`drop` rank=`156` total_score=`58.51` risk=`HIGH`
+- `src/field/field_boundary_exchange.py` disposition=`drop` rank=`157` total_score=`58.37` risk=`HIGH`
+- `src/electric/fault/fault_engine.py` disposition=`drop` rank=`158` total_score=`58.1` risk=`HIGH`
+- `src/worldgen/earth/hydrology_engine.py` disposition=`drop` rank=`159` total_score=`58.1` risk=`HIGH`
+- `src/worldgen/earth/sky/sky_gradient_model.py` disposition=`drop` rank=`160` total_score=`57.68` risk=`HIGH`
+- `src/geo/kernel/geo_kernel.py` disposition=`drop` rank=`161` total_score=`57.62` risk=`HIGH`
+- `src/pollution/compliance_engine.py` disposition=`drop` rank=`162` total_score=`57.6` risk=`HIGH`
+- `src/geo/edit/geometry_state_engine.py` disposition=`drop` rank=`163` total_score=`57.56` risk=`HIGH`
+- `tools/convergence/convergence_gate_common.py` disposition=`merge` rank=`164` total_score=`57.32` risk=`HIGH`
+- `src/system/reliability/system_health_engine.py` disposition=`drop` rank=`165` total_score=`57.14` risk=`HIGH`
+- `src/pollution/measurement_engine.py` disposition=`drop` rank=`166` total_score=`57.08` risk=`HIGH`
+- `src/electric/power_network_engine.py` disposition=`drop` rank=`167` total_score=`56.86` risk=`HIGH`
+- `src/system/templates/template_compiler.py` disposition=`drop` rank=`168` total_score=`56.71` risk=`HIGH`
+- `src/worldgen/refinement/refinement_scheduler.py` disposition=`drop` rank=`169` total_score=`56.65` risk=`HIGH`
+- `src/system/system_collapse_engine.py` disposition=`drop` rank=`170` total_score=`56.55` risk=`HIGH`
+- `src/materials/performance/mat_scale_engine.py` disposition=`drop` rank=`171` total_score=`56.27` risk=`HIGH`
+- `src/signals/transport/transport_engine.py` disposition=`drop` rank=`172` total_score=`56.25` risk=`HIGH`
+- `src/worldgen/galaxy/galaxy_object_stub_generator.py` disposition=`drop` rank=`173` total_score=`56.19` risk=`HIGH`
+- `src/electric/protection/protection_engine.py` disposition=`drop` rank=`174` total_score=`56.17` risk=`HIGH`
+- `src/numeric_discipline.py` disposition=`drop` rank=`175` total_score=`56.07` risk=`HIGH`
+- `src/diegetics/instrument_kernel.py` disposition=`drop` rank=`176` total_score=`55.83` risk=`HIGH`
+- `src/fluid/network/fluid_network_engine.py` disposition=`drop` rank=`177` total_score=`55.7` risk=`HIGH`
+- `src/worldgen/earth/material/material_proxy_engine.py` disposition=`drop` rank=`178` total_score=`55.54` risk=`HIGH`
+- `src/signals/transport/channel_executor.py` disposition=`drop` rank=`179` total_score=`55.52` risk=`HIGH`
+- `src/worldgen/earth/lighting/horizon_shadow_engine.py` disposition=`drop` rank=`180` total_score=`55.3` risk=`HIGH`
+- `src/worldgen/earth/lighting/illumination_engine.py` disposition=`drop` rank=`181` total_score=`55.3` risk=`HIGH`
+- `src/meta/provenance/compaction_engine.py` disposition=`drop` rank=`182` total_score=`55.2` risk=`HIGH`
+- `src/signals/transport/degradation_policy.py` disposition=`drop` rank=`183` total_score=`55.19` risk=`HIGH`
+- `src/meta/instrumentation/instrumentation_engine.py` disposition=`drop` rank=`184` total_score=`55.12` risk=`HIGH`
+- `src/geo/overlay/overlay_merge_engine.py` disposition=`drop` rank=`185` total_score=`54.94` risk=`HIGH`
+- `src/worldgen/mw/insolation_proxy.py` disposition=`drop` rank=`186` total_score=`54.94` risk=`HIGH`
+- `src/client/ui/teleport_controller.py` disposition=`drop` rank=`187` total_score=`54.88` risk=`HIGH`
+- `src/infrastructure/formalization/inference_engine.py` disposition=`drop` rank=`188` total_score=`54.76` risk=`HIGH`
+- `src/worldgen/earth/tide_field_engine.py` disposition=`drop` rank=`189` total_score=`54.55` risk=`HIGH`
+- `src/system/macro/macro_capsule_engine.py` disposition=`drop` rank=`190` total_score=`54.52` risk=`HIGH`
+- `src/mobility/micro/constrained_motion_solver.py` disposition=`drop` rank=`191` total_score=`54.51` risk=`HIGH`
+- `tools/worldgen/gal0_probe.py` disposition=`merge` rank=`192` total_score=`54.45` risk=`HIGH`
+- `src/client/ui/viewer_shell.py` disposition=`drop` rank=`193` total_score=`54.45` risk=`HIGH`
+- `src/materials/maintenance/decay_engine.py` disposition=`drop` rank=`194` total_score=`54.45` risk=`HIGH`
+- `src/signals/trust/trust_engine.py` disposition=`drop` rank=`195` total_score=`54.23` risk=`HIGH`
+- `src/logic/network/instrumentation_binding.py` disposition=`drop` rank=`196` total_score=`53.81` risk=`HIGH`
+- `src/worldgen/earth/sky/sky_view_engine.py` disposition=`drop` rank=`197` total_score=`53.75` risk=`HIGH`
+- `src/physics/momentum_engine.py` disposition=`drop` rank=`198` total_score=`53.7` risk=`HIGH`
+- `src/signals/institutions/dispatch_engine.py` disposition=`drop` rank=`199` total_score=`53.61` risk=`HIGH`
+- `src/mobility/traffic/traffic_engine.py` disposition=`drop` rank=`200` total_score=`53.41` risk=`HIGH`
+- `src/net/srz/routing.py` disposition=`drop` rank=`201` total_score=`53.31` risk=`HIGH`
+- `src/net/testing/net_disorder_sim.py` disposition=`drop` rank=`202` total_score=`53.28` risk=`HIGH`
+- `src/astro/views/orbit_view_engine.py` disposition=`drop` rank=`203` total_score=`53.18` risk=`HIGH`
+- `src/logic/debug/compute_hooks.py` disposition=`drop` rank=`204` total_score=`53.14` risk=`HIGH`
+- `src/embodiment/lens/camera_smoothing.py` disposition=`drop` rank=`205` total_score=`52.83` risk=`HIGH`
+- `src/embodiment/movement/friction_model.py` disposition=`drop` rank=`206` total_score=`52.83` risk=`HIGH`
+- `src/embodiment/movement/jump_process.py` disposition=`drop` rank=`207` total_score=`52.83` risk=`HIGH`
+- `src/epistemics/memory/memory_kernel.py` disposition=`drop` rank=`208` total_score=`52.83` risk=`HIGH`
+- `src/process/research/experiment_engine.py` disposition=`drop` rank=`209` total_score=`52.83` risk=`HIGH`
+- `src/process/research/inference_engine.py` disposition=`drop` rank=`210` total_score=`52.83` risk=`HIGH`
+- `src/system/forensics/system_forensics_engine.py` disposition=`drop` rank=`211` total_score=`52.83` risk=`HIGH`
+- `src/worldgen/earth/lighting/lighting_view_engine.py` disposition=`drop` rank=`212` total_score=`52.51` risk=`HIGH`
+- `src/mobility/signals/signal_engine.py` disposition=`drop` rank=`213` total_score=`52.38` risk=`HIGH`
+- `src/meta/reference/geo_small_reference.py` disposition=`drop` rank=`214` total_score=`52.23` risk=`HIGH`
+- `src/worldgen/earth/sky/starfield_generator.py` disposition=`drop` rank=`215` total_score=`52.21` risk=`HIGH`
+- `src/mobility/travel/reenactment.py` disposition=`drop` rank=`216` total_score=`52.14` risk=`HIGH`
+- `src/control/planning/plan_engine.py` disposition=`drop` rank=`217` total_score=`52.08` risk=`HIGH`
+- `src/time/time_mapping_engine.py` disposition=`drop` rank=`218` total_score=`52.08` risk=`HIGH`
+- `src/worldgen/mw/mw_surface_refiner_l3.py` disposition=`drop` rank=`219` total_score=`51.93` risk=`HIGH`
+- `src/geo/projection/view_adapters.py` disposition=`drop` rank=`220` total_score=`51.87` risk=`HIGH`
+- `src/logic/element/compute_hooks.py` disposition=`drop` rank=`221` total_score=`51.86` risk=`HIGH`
+- `src/worldgen/mw/mw_system_refiner_l2.py` disposition=`drop` rank=`222` total_score=`51.79` risk=`HIGH`
+- `src/mobility/micro/free_motion_solver.py` disposition=`drop` rank=`223` total_score=`51.77` risk=`HIGH`
+- `src/time/epoch_anchor_engine.py` disposition=`drop` rank=`224` total_score=`51.75` risk=`HIGH`
+- `src/system/certification/system_cert_engine.py` disposition=`drop` rank=`225` total_score=`51.68` risk=`HIGH`
+- `src/logic/timing/compute_hooks.py` disposition=`drop` rank=`226` total_score=`51.42` risk=`HIGH`
+- `src/astro/ephemeris/kepler_proxy_engine.py` disposition=`drop` rank=`227` total_score=`50.96` risk=`HIGH`
+- `src/geo/lens/cctv_engine.py` disposition=`drop` rank=`228` total_score=`50.81` risk=`HIGH`
+- `src/system/roi/system_roi_scheduler.py` disposition=`drop` rank=`229` total_score=`50.71` risk=`HIGH`
+- `src/logic/network/logic_network_validator.py` disposition=`drop` rank=`230` total_score=`50.45` risk=`HIGH`
+- `src/signals/addressing/address_engine.py` disposition=`drop` rank=`231` total_score=`50.45` risk=`HIGH`
+- `src/meta/reference/logic_small_reference.py` disposition=`drop` rank=`232` total_score=`50.2` risk=`HIGH`
+- `src/worldgen/galaxy/galaxy_proxy_field_engine.py` disposition=`drop` rank=`233` total_score=`50.18` risk=`HIGH`
+- `tools/xstack/testx/tests/meta_ref0_testlib.py` disposition=`drop` rank=`234` total_score=`50.12` risk=`HIGH`
+- `src/logic/fault/fault_engine.py` disposition=`drop` rank=`235` total_score=`49.82` risk=`HIGH`
+- `src/logic/network/logic_network_engine.py` disposition=`drop` rank=`236` total_score=`49.76` risk=`HIGH`
+- `src/mechanics/structural_graph_engine.py` disposition=`drop` rank=`237` total_score=`49.75` risk=`HIGH`
+- `src/process/software/pipeline_engine.py` disposition=`drop` rank=`238` total_score=`49.52` risk=`HIGH`
+- `src/client/ui/inspect_panels.py` disposition=`drop` rank=`239` total_score=`49.46` risk=`HIGH`
+- `src/worldgen/earth/sky/astronomy_proxy_engine.py` disposition=`drop` rank=`240` total_score=`49.32` risk=`HIGH`
+- `src/signals/institutions/standards_engine.py` disposition=`drop` rank=`241` total_score=`48.66` risk=`HIGH`
+- `src/logic/debug/debug_engine.py` disposition=`drop` rank=`242` total_score=`48.04` risk=`HIGH`
+- `src/embodiment/collision/macro_heightfield_provider.py` disposition=`drop` rank=`243` total_score=`47.82` risk=`HIGH`
+- `src/net/anti_cheat/anti_cheat_engine.py` disposition=`drop` rank=`244` total_score=`47.57` risk=`HIGH`
+- `src/logic/element/logic_element_validator.py` disposition=`drop` rank=`245` total_score=`46.06` risk=`HIGH`
+- `src/signals/institutions/bulletin_engine.py` disposition=`drop` rank=`246` total_score=`45.67` risk=`HIGH`
+- `src/process/capsules/capsule_executor.py` disposition=`drop` rank=`247` total_score=`45.58` risk=`HIGH`
+- `src/net/srz/shard_coordinator.py` disposition=`drop` rank=`248` total_score=`41.29` risk=`HIGH`
+
+## Usage Sites
+
+- Build Targets: `none`
+- Docs: `docs/audit/COUPLE0_RETRO_AUDIT.md, docs/audit/EMB2_RETRO_AUDIT.md, docs/audit/ENERGY_MOMENTUM_INTEGRITY_REPORT.md, docs/audit/FLUID_CONSTITUTION_BASELINE.md, docs/audit/FLUID_CONTAINMENT_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md`
+
+## Tests Involved
+
+- `python tools/compat/tool_run_interop_stress.py --repo-root .`
+- `python tools/convergence/tool_run_convergence_gate.py --repo-root .`
+- `python tools/mvp/tool_run_all_stress.py --repo-root .`
+- `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
+- `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
+- `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
+- `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
+- `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
+- `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
+- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
+
+## Recommended Decision Options
+
+- Review file-local deltas and port only unique behavior into the canonical file.
+- Rewire call sites only after confirming the secondary file is not an active product entrypoint.
+- Deprecate the secondary file only after it is removed from default build targets and no longer carries unrelated active symbols.
+- If ambiguity remains after review, keep the cluster quarantined for XI-4b instead of forcing convergence.
