@@ -88,6 +88,54 @@ MANUAL_REVIEW_LIMIT = 20
 ACTION_SYMBOL_SAMPLE_LIMIT = 12
 ACTION_KIND_ORDER = {"keep": 0, "merge": 1, "rewire": 2, "deprecate": 3, "quarantine": 4}
 RISK_ORDER = {"HIGH": 0, "MED": 1, "LOW": 2}
+GENERIC_ACTION_SYMBOLS = {
+    "_authority_context",
+    "_ensure_dir",
+    "_error",
+    "_law_profile",
+    "_load_json",
+    "_norm",
+    "_read",
+    "_read_json",
+    "_read_text",
+    "_refusal",
+    "_repo_root",
+    "_run",
+    "_rows",
+    "_sorted_tokens",
+    "_state",
+    "_write",
+    "_write_json",
+    "_write_text",
+    "authority_context",
+    "build_report",
+    "check_list",
+    "check_version",
+    "copy_dir",
+    "deterministic_fingerprint",
+    "ensure_dir",
+    "entries",
+    "fail",
+    "get",
+    "has",
+    "is_dir",
+    "list_dir",
+    "load_json",
+    "main",
+    "norm",
+    "path_join",
+    "read_file_text",
+    "read_json",
+    "read_text",
+    "report_json_path",
+    "run",
+    "run_cmd",
+    "usage",
+    "validation",
+    "void",
+    "write_json",
+    "write_text",
+}
 
 
 class XiInputMissingError(RuntimeError):
@@ -172,6 +220,15 @@ def _required_inputs(repo_root: str) -> dict[str, dict]:
 def _term_fragments(value: object) -> list[str]:
     normalized = re.sub(r"[^A-Za-z0-9]+", " ", _norm_rel(value))
     return [part.lower() for part in normalized.split() if part]
+
+
+def _simple_symbol_name(symbol_name: object) -> str:
+    token = _token(symbol_name)
+    if not token:
+        return ""
+    token = token.split("::")[-1]
+    token = token.split(".")[-1]
+    return token
 
 
 def _tests_only_path(path: object) -> bool:
@@ -264,6 +321,11 @@ def _shadow_links(shadow_modules: Sequence[Mapping[str, object]]) -> tuple[dict[
         if module_root:
             by_root[module_root] = dict(row)
     return by_module_id, by_root
+
+
+def _generic_action_symbol(symbol_name: object) -> bool:
+    lowered = _simple_symbol_name(symbol_name).lower()
+    return bool(lowered) and lowered in GENERIC_ACTION_SYMBOLS
 
 
 def _exact_duplicate_index(groups: Sequence[Mapping[str, object]]) -> dict[str, list[str]]:
@@ -740,6 +802,7 @@ def _action_payload(
 
 def _cluster_actions(cluster: Mapping[str, object], winner: Mapping[str, object], secondaries: Sequence[Mapping[str, object]], indexes: Mapping[str, object]) -> tuple[list[dict[str, object]], dict[str, object]]:
     focus_tags = sorted({_token(item) for item in cluster.get("focus_tags") or [] if _token(item)})
+    symbol_name = _token(cluster.get("symbol_name"))
     cluster_risk_reasons = _risk_reasons_for_values(
         winner.get("symbol_name"),
         winner.get("file_path"),
@@ -771,13 +834,39 @@ def _cluster_actions(cluster: Mapping[str, object], winner: Mapping[str, object]
         "cluster_kind": _token(cluster.get("cluster_kind")),
         "confidence_class": _token(cluster.get("confidence_class")),
         "focus_tags": focus_tags,
-        "symbol_name": _token(cluster.get("symbol_name")),
+        "symbol_name": symbol_name,
         "canonical_candidate": winner,
         "risk_level": cluster_risk_level,
         "risk_reasons": cluster_risk_reasons,
         "secondary_candidates": [],
         "cluster_resolution": "keep",
     }
+
+    if _generic_action_symbol(symbol_name):
+        summary["execution_note"] = "generic_symbol_secondary_actions_suppressed"
+        return sorted(
+            actions,
+            key=lambda item: (
+                _token(item.get("cluster_id")),
+                ACTION_KIND_ORDER.get(_token(item.get("kind")), 99),
+                _norm_rel(item.get("secondary_file")),
+                _norm_rel(item.get("canonical_file")),
+            ),
+        ), summary
+
+    secondary_paths = [_norm_rel(item.get("file_path")) for item in secondaries if _norm_rel(item.get("file_path"))]
+    tests_only_cluster = bool(_tests_only_path(winner.get("file_path"))) and bool(secondary_paths) and all(_tests_only_path(path) for path in secondary_paths)
+    if tests_only_cluster and not focus_tags:
+        summary["execution_note"] = "tests_only_secondary_actions_suppressed"
+        return sorted(
+            actions,
+            key=lambda item: (
+                _token(item.get("cluster_id")),
+                ACTION_KIND_ORDER.get(_token(item.get("kind")), 99),
+                _norm_rel(item.get("secondary_file")),
+                _norm_rel(item.get("canonical_file")),
+            ),
+        ), summary
 
     cluster_has_merge = False
     cluster_has_quarantine = False
