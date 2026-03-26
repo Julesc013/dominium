@@ -1,13 +1,13 @@
 # Deterministic Convergence Plan
 
 - Generated: 2026-03-26
-- Duplicate clusters: 6066
-- Actions: 27062
-- Fingerprint: `5f0b7464cb6d4ecc2b53de3a08df8e6c5a8bb7c2f53dab811c37191e233b983d`
+- Duplicate clusters: 6065
+- Actions: 27061
+- Fingerprint: `a7043329ff0293679a76a72bd3b47521b69d348bdc0571e8004ec86c6b09ed2e`
 
 ## Resolution Summary
 
-- Keep-only clusters: 1946
+- Keep-only clusters: 1945
 - Merge-required clusters: 2764
 - Quarantine clusters: 1356
 - Source-like impacted clusters: 3230

@@ -1,10 +1,10 @@
 # Convergence Risk Report
 
 - Generated: 2026-03-26
-- Fingerprint: `609bbbec0ac1aa950cc3efe74fbefab84ffc4073daf13a2d5ec608f6d6e346a8`
+- Fingerprint: `73aac832765e57652be4b887b21ed0921dcd29647971d4707ff93f0d11fee505`
 - HIGH risk actions: 16676
 - MED risk actions: 9465
-- LOW risk actions: 921
+- LOW risk actions: 920
 
 ## Top HIGH Risk Items
 
