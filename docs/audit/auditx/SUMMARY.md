@@ -8,10 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 230
-- RISK: 732
-- VIOLATION: 108
-- WARN: 1386
+- RISK: 549
+- VIOLATION: 17
+- WARN: 1044
 
 ## Counts By Category
 
@@ -29,7 +28,6 @@ Superseded By: none
 - architecture.direct_message_smell: 8
 - architecture.direct_position_mutation_smell: 4
 - architecture.direct_schedule_mutation_smell: 1
-- architecture.hardcoded_pack_path_smell: 4
 - architecture.heat_loss_bypass_smell: 3
 - architecture.implicit_system_collapse_smell: 3
 - architecture.inline_cure_smell: 5
@@ -55,6 +53,7 @@ Superseded By: none
 - architecture.substrate_bypass_smell: 13
 - architecture.thermal_bypass_smell: 1
 - architecture.unbounded_spread_smell: 7
+- architecture.undeclared_registry_smell: 2
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1
 - architecture.unlogged_trust_change_smell: 5
@@ -64,44 +63,37 @@ Superseded By: none
 - bundle.nondeterministic_bundle_smell: 1
 - canon_drift: 907
 - capability_bypass_smell: 1
-- capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - compat.behavior_without_contract_smell: 1
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 137
+- derived_freshness: 17
 - epistemics.hidden_state_leak_smell: 6
 - geometry.adhoc_spatial_key_smell: 6
 - install.path_dependent_install_smell: 1
 - interaction.interaction_bypass_smell: 2
-- legacy_contamination: 13
+- legacy_contamination: 1
 - logic.adhoc_wiring_smell: 5
 - logic.carrier_bias_smell: 9
 - logic.protocol_security_bypass_smell: 1
 - logic.random_failure_smell: 1
 - logic.truth_leak_via_debug_smell: 1
 - logic.unbounded_trace_smell: 1
-- materials.hardcoded_blueprint_smell: 19
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
-- mode_flag_smell: 64
+- meta.missing_stability_marker_smell: 4
+- mode_flag_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
-- ownership_boundary: 10
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- reachability: 80
+- reachability: 5
 - reliability.silent_reaction_smell: 3
-- schema_usage: 160
-- security.boundary_io: 29
+- schema_usage: 11
 - security.hidden_privilege_escalation_smell: 2
-- security.privilege_bypass: 9
 - semantic.capability_drift: 5
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
 - server.intent_without_authority_smell: 1
-- terminology_misuse: 1
-- ui_parity: 220
-- worldgen.direct_system_spawn_smell: 1
 - worldgen.unbounded_shadow_sampling_smell: 1

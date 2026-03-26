@@ -8,9 +8,9 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - report_id: `arch.audit.v1`
 - result: `violation`
 - release_status: `fail`
-- blocking_finding_count: `2`
+- blocking_finding_count: `4`
 - known_exception_count: `9`
-- deterministic_fingerprint: `ce2931d71ec39a6ab037f99dcf02ea2791b142a6c4bc4987a475873324bc8e1a`
+- deterministic_fingerprint: `522aab40952b2b4b890fd21cff6c9c53fa31ebe20461a225bc95be7bcae6f25f`
 
 ## Checks
 
@@ -30,7 +30,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `2a8caa15a0fd1736b92b4e9aea0df30e0d4884521a53b1a93f75d54e3d7e9ea8`
+- deterministic_fingerprint: `d3bf7ea1a99df7cdb85307f715a3adb946107e0c3b195f774cccc6cc21a5f1ed`
 
 ### determinism_scan
 - result: `pass`
@@ -97,13 +97,22 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - deterministic_fingerprint: `da19a9f1f375cbf1e30f89371b01d9e61282c372b95f7e9a998b45a043cf70f8`
 
 ### offline_archive_scan
-- result: `fail`
-- blocking_finding_count: `2`
+- result: `pass`
+- blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `45d3b7f08f08f33fcef0bf19d11f78b2e4ce1d5f2f3dc9caad1c6226996f0653`
-- blocking findings:
-  - `data/audit/offline_archive_verify.json`:1 committed offline archive surface drifted from the fresh deterministic rerun.
-  - `data/regression/archive_baseline.json`:1 committed offline archive baseline drifted from the fresh deterministic rerun.
+- deterministic_fingerprint: `6e1a79b8d4410d22e439847f9bdd6f7b509c6ecf9658c5f06ea53b46dfaef5d7`
+
+### toolchain_matrix_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `ed2d3d51957f44ffb3136290f1311c663c3638b7621fdb3433d67f546d70ef00`
+
+### dist_final_plan_scan
+- result: `pass`
+- blocking_finding_count: `0`
+- known_exception_count: `0`
+- deterministic_fingerprint: `5185f468b362074e9dd12806c2e0557756d820ee965a782e86b0dc48b38a0a70`
 
 ### noncanonical_serialization_scan
 - result: `pass`
@@ -136,10 +145,15 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - deterministic_fingerprint: `7af13f74d24a495e1846ca565cc17d88377987e080f79332e6022b81cac87196`
 
 ### stability_marker_scan
-- result: `pass`
-- blocking_finding_count: `0`
+- result: `fail`
+- blocking_finding_count: `4`
 - known_exception_count: `0`
-- deterministic_fingerprint: `181c41d2978b084ed0091c554a11467038d28673d00f48ca2ed23d7afc20ce4d`
+- deterministic_fingerprint: `0eb13c579e347d1eeddf0feff2df1a6b39d710adda28be8297464e1b11580123`
+- blocking findings:
+  - `data/registries/toolchain_test_profile_registry.json`:1 registry entries must declare stability
+  - `data/registries/toolchain_test_profile_registry.json`:1 registry entries must declare stability
+  - `data/registries/toolchain_test_profile_registry.json`:1 registry entries must declare stability
+  - `data/registries/toolchain_test_profile_registry.json`:1 registry entries must declare stability
 
 ### contract_pin_scan
 - result: `pass`
@@ -181,4 +195,4 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `25407b91ddbbd3a54edd9efb9e3c19184c9fb5e1c7afb1ab8d008448c6952ab4`
+- deterministic_fingerprint: `00c58935c367094cb46559fb23459c268ea3b328e9f870e9f2a7435ec2062ffd`

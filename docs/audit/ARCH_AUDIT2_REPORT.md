@@ -10,7 +10,7 @@ Replacement Target: Final release/distribution audit baseline governed by ARCH-A
 - result: `complete`
 - release_status: `pass`
 - blocking_finding_count: `0`
-- deterministic_fingerprint: `d0825b4f93b5cb1c7421a6c1bb7b411c77e9e00f7a95c9c00461c56e463f14e4`
+- deterministic_fingerprint: `28d042f111d76218557d3ef77f7a2e1ac2b5b5818bd51432734a6e96388983c4`
 
 ## Cross-Layer Checks
 
@@ -37,4 +37,4 @@ Replacement Target: Final release/distribution audit baseline governed by ARCH-A
 ### archive_determinism_scan
 - result: `pass`
 - blocking_finding_count: `0`
-- deterministic_fingerprint: `25407b91ddbbd3a54edd9efb9e3c19184c9fb5e1c7afb1ab8d008448c6952ab4`
+- deterministic_fingerprint: `00c58935c367094cb46559fb23459c268ea3b328e9f870e9f2a7435ec2062ffd`

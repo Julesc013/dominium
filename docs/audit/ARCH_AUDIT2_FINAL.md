@@ -7,7 +7,7 @@ Replacement Target: Final release/distribution audit baseline governed by ARCH-A
 
 - result: `complete`
 - blocking_finding_count: `0`
-- deterministic_fingerprint: `d0825b4f93b5cb1c7421a6c1bb7b411c77e9e00f7a95c9c00461c56e463f14e4`
+- deterministic_fingerprint: `28d042f111d76218557d3ef77f7a2e1ac2b5b5818bd51432734a6e96388983c4`
 
 ## Check Summary
 

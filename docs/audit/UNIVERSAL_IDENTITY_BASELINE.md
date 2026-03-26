@@ -14,6 +14,7 @@ Replacement Target: contract-pinned universal identity enforcement after v0.0.0-
 - `identity.format`
 - `identity.install`
 - `identity.instance`
+- `identity.license_capability`
 - `identity.manifest`
 - `identity.pack`
 - `identity.product_binary`
@@ -33,8 +34,8 @@ Replacement Target: contract-pinned universal identity enforcement after v0.0.0-
 
 ## Integration Status
 
-- Artifacts scanned: `57`
-- Embedded identity blocks present: `57`
+- Artifacts scanned: `59`
+- Embedded identity blocks present: `59`
 - Missing-block warnings: `0`
 - Current policy: missing blocks warn in `v0.0.0-mock`; malformed blocks refuse
 

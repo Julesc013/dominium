@@ -1,26 +1,12 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 78,
+  "candidate_count": 72,
   "candidates": [
     {
       "evidence_paths": [
         "docs/audit/TOPOLOGY_MAP.json",
         "src/client/ui/viewer_shell.py",
         "src/server/server_boot.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.95,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "src/client/interaction/preview_generator.py",
-        "src/control/ir/control_ir_programs.py",
-        "src/interaction/action_surface_engine.py",
-        "src/materials/blueprint_engine.py",
-        "tools/materials/tool_blueprint_compile.py",
-        "tools/xstack/sessionx/runner.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.95,
@@ -62,78 +48,6 @@
     },
     {
       "evidence_paths": [
-        ".xstack_cache/anb-omega-empty-path/artifacts/repox_runner/proof_manifest.json",
-        ".xstack_cache/anb-omega-empty-path/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json",
-        ".xstack_cache/anb-omega-empty-path/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json",
-        ".xstack_cache/anb-omega-random-cwd/artifacts/repox_runner/proof_manifest.json",
-        ".xstack_cache/anb-omega-random-cwd/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json",
-        ".xstack_cache/anb-omega-random-cwd/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json",
-        ".xstack_cache/auditx/meta_genre0_probe/FINDINGS.json",
-        ".xstack_cache/auditx/read_only_test/FINDINGS.json",
-        ".xstack_cache/auditx/repox_probe/FINDINGS.json",
-        ".xstack_cache/ws-0016b7a932b71402/repox/repox.docs.canon/abea3b0cd82d22195d4b85e755648a106136a08c69bb504835dae19e07d2d7b8.json",
-        ".xstack_cache/ws-017201699aff1190/auditx/entries/7a46d1dc7aab8253ff852a88ec13645d246de30c3b13301928cfffde784a24db.json",
-        ".xstack_cache/ws-017201699aff1190/repox/repox.docs.canon/45b236e1d1344b7a7ed9938658823d108caa2da59f17019ef15604c81991c2d9.json",
-        ".xstack_cache/ws-017201699aff1190/repox/repox.docs.canon/b65cfefe59f08f715504a690ca4fc6702491830df924bdedb2e9525d689db662.json",
-        ".xstack_cache/ws-01e2c135cf6f81ac/auditx/entries/48146d3b9fa338ea36d7159e9105c8967b254d35769f3d747a2589257ded6427.json",
-        ".xstack_cache/ws-01e2c135cf6f81ac/auditx/entries/b3b3517b12b10bb2dc370378ec380f300247d81bb4fd51520e992d0b33b02659.json",
-        ".xstack_cache/ws-02321d3a5bfcde66/auditx/entries/38da8cfd45cc21cfbe928be485a3033d7200b8636a923a395acd73e954a7e887.json",
-        ".xstack_cache/ws-02afd0d6484c1ab2/auditx/entries/da6879864b5c2e0bd0ec606fecab77747fcec23390611cfd5ec6f0a6a78332d8.json",
-        ".xstack_cache/ws-05f48c3468f9a5a3/repox/repox.docs.canon/8bc0b2fea5518f7312fc261fb750cb86bfa616a903c1f05d4a19cc3323f78427.json",
-        ".xstack_cache/ws-06c1b301ced1b5e3/auditx/entries/5febaff944a14f8ed1d3d1d62611eff609ba734d5e0a9155648c44c1ac6a0171.json",
-        ".xstack_cache/ws-06c1b301ced1b5e3/auditx/entries/cdd2a31431ac553185178ec84090897b26b0f96de5197284621ed678c9d653ec.json",
-        ".xstack_cache/ws-07709c75eff3d3c9/auditx/entries/a30b673fda1b77835a1c66b0461296f1e9437e67b971f51a0e2b9b0f0843ac57.json",
-        ".xstack_cache/ws-07709c75eff3d3c9/repox/repox.docs.canon/dd57766873443df5b14522b5d5869bfaac79c63739bbb44f8a9ca7d786d1f404.json",
-        ".xstack_cache/ws-0789a932553775e4/repox/repox.docs.canon/9a42324005424cb2844053ede324e67858af10e91325c155513fb1064a7dbb5f.json",
-        ".xstack_cache/ws-0891e3febb23693e/repox/repox.docs.canon/7a15e8b69834dc1a2e12aab528be17b9ab498a145ba798a8399ca4211509f977.json",
-        ".xstack_cache/ws-0951d580c1942da0/auditx/entries/2530f259fdfdbdcefeb084953c23322e1fed81b754ea2e7f1b522f61048822f2.json",
-        ".xstack_cache/ws-0970fce33be30ca1/auditx/entries/12c006324f8002eeb5b44b4e04868a2d1daf1ccbe24bab23e69645f21d4c10e0.json",
-        ".xstack_cache/ws-0970fce33be30ca1/auditx/entries/2615217be31d04dd8dc4e12696cb1237f2b8cd48e3bb97a5c4e63a50b5f55fa8.json",
-        ".xstack_cache/ws-0970fce33be30ca1/auditx/entries/563bb5b0da052431d937f71934cf91d527c458306683c5ae30417fc1e84f2bd1.json",
-        ".xstack_cache/ws-0970fce33be30ca1/auditx/entries/5d2a11c77e15339e4a85827166c45f1c7352d6e4327dd721b8fbef00ea4ee4c1.json",
-        ".xstack_cache/ws-0970fce33be30ca1/auditx/entries/b4035d9cd5f7c4ff8fcebfa97e121fda8ff5c28b55980d77a894051527a6dc57.json",
-        ".xstack_cache/ws-0ceaab1160acec79/repox/repox.docs.canon/b65cfefe59f08f715504a690ca4fc6702491830df924bdedb2e9525d689db662.json",
-        ".xstack_cache/ws-0e62fd3b0a5ad5c6/auditx/entries/dd11229589367f55a2d3800b5384e3fa4269a97ff8d1c4e5de39b1746ecf0a12.json",
-        ".xstack_cache/ws-10082fc7e6cd6d6b/auditx/entries/0a2c4c992f0af2a9c95f42cd93d5cc1b32b4db83eefb9b6ee4405b7a35613a78.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/09d537a255add88415a6a6cd4de6298c1d500287a9b08cbed11b593654377af2.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/2644dd46e2b31cb15fd66d5a49b6e5206ed3874115fb04ee57601fc3c2eea922.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/3bc997c72007d81f38b386e88e032f39ffb1e851b736a3992c914ce78582f007.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/563fbf02a6b83e2d075e8c68f74956b71ea4b3d9cd9ed7a4c2ebb2f5dd70f079.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/6232c28682c044975cd136b9997c3865a65c9dca09007cced1b74a1f566a915f.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/64350b82515d306ad7fea2244ba7726691b9171dc2c62c9b43b16303a8e88157.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/6d3df2bea179eb877acd61fe451a5a1a1c1b3ea5bb4ab2614c51059404421ced.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/7d1f369bb9f412864c19741f4939c964beef5e19ee955f2f78e1813b81536721.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/9479a9a56bbd4ec2931df4a2247adb0a8a5d6c9d24549f7502cc0fd43f7e1a46.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/9ac066143272f10df5668a80749bd7566c2598054ee350412ea3bbdb22c33687.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/9e5de1a3a7e520382c6eb460167ccb41ee6e94b6f23eb66bdefa96d62c5c548f.json",
-        ".xstack_cache/ws-10d79f66352c8094/auditx/entries/e49cdd59d01a804bc5feadbe6535c273852fdc043e15b05ada806ba3ec6b673d.json",
-        ".xstack_cache/ws-1108cd54723b1de0/auditx/entries/5c0c756330c8315fd0b80ee51bf32ebc159e9f6ceee7704b594653586475870c.json",
-        ".xstack_cache/ws-1108cd54723b1de0/auditx/entries/b102a9d32f9acf6c7437a218719bc641717d388d697a63ea20e8d422f17da0a2.json",
-        ".xstack_cache/ws-1108cd54723b1de0/auditx/entries/cc39f787b7425f6948c1eb4711d498a5ee45cbaf27952843858440d172fc6684.json",
-        ".xstack_cache/ws-111d5f419f5a72dc/auditx/entries/202d5f408b054ad295c43a99f8965618ed64056df3cf1cc9a01c2b3daa0c9679.json",
-        ".xstack_cache/ws-111d5f419f5a72dc/auditx/entries/9be716e5f2b5ce4b2b802838a9c160f765aaf568dbae6c22af8a4333661623b0.json",
-        ".xstack_cache/ws-11cf12075af5c557/auditx/entries/bfe02d5e707e372fa06aa8c58fd0dc3eb114d0dc8ffec32b8560451921970270.json",
-        ".xstack_cache/ws-1209a834f2c73043/auditx/entries/41b653b9cd316096ac68ba9606694ad22627c814f229e81ca6efa636416acb15.json",
-        ".xstack_cache/ws-1209a834f2c73043/repox/repox.docs.canon/edeb7e691a5875b7fff3137508b158059e80f96f7fc0f0b627cea8234ec2daf0.json",
-        ".xstack_cache/ws-1343f865853870fe/repox/repox.docs.canon/12d3130411e1bb514c19e3922086d0a08b1aab9a9438a63d6c8ecb3c4dc8e792.json",
-        ".xstack_cache/ws-1343f865853870fe/repox/repox.docs.canon/4cc9d445f750a374f5ad82b2f37d2f914e833a80d08fae5ca9058910ae1b5a9c.json",
-        ".xstack_cache/ws-147dfb3ed615ab36/auditx/entries/f7ddfb2c5f0ea093117b03549bf25b0b3a96a99aab4e7883e41450ffe3feb5f2.json",
-        ".xstack_cache/ws-147dfb3ed615ab36/auditx/entries/fbbfa1a0a153916e5f877c9e0f23456d37303ed7d41300cc02c481a39ec1cc77.json",
-        ".xstack_cache/ws-14b3387ffda6da72/auditx/entries/387eab0abc7f22a25eb7c5bd93b0f3c8a2eba265ca3dac1e782cee7075e2df63.json",
-        ".xstack_cache/ws-14b3387ffda6da72/auditx/entries/61534d78df70251a10d855c02316df41cb50787d36ae341b2db0ee70692523f9.json",
-        ".xstack_cache/ws-170993ed16bdf9b3/auditx/entries/3db332d93e58a6156cc60dcfdc2228ab1e94ebe772af20a63a0d8468cea6651a.json",
-        ".xstack_cache/ws-170993ed16bdf9b3/repox/repox.docs.canon/d7199dbb582f3f956b07a777f9c0517eb86ac915e714a3ca084533f70a7f3d7d.json",
-        ".xstack_cache/ws-187b6e1dbdd5a474/auditx/entries/efbd29aec3a5d11462081012fb595f1f31f46e7b9f7ba7b9384dd503cba7585d.json",
-        ".xstack_cache/ws-1889ca1278d3dbed/auditx/entries/606891d7acd5e41c881a59d7fe965c877f5940639ed70459fee22a993d673470.json",
-        ".xstack_cache/ws-1889ca1278d3dbed/auditx/entries/ad2b44f85927acca434235fba2546c5aa68e00bfb859a2401892cab00c2e0c67.json"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.9,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
         "docs/audit/TOPOLOGY_MAP.json",
         "src/control/control_plane_engine.py",
         "src/inspection/inspection_engine.py"
@@ -156,13 +70,11 @@
     },
     {
       "evidence_paths": [
-        "tools/auditx/analyzers/c1_security_boundary.py",
-        "tools/securex/core/boundary_validator.py",
-        "tools/securex/securex.py"
+        "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
-      "rule_type": "TEST_REGRESSION",
+      "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
     {
@@ -241,12 +153,10 @@
     },
     {
       "evidence_paths": [
-        "src/geo/worldgen/worldgen_engine.py",
-        "src/worldgen/mw/sol_anchor.py",
-        "tools/xstack/sessionx/process_runtime.py"
+        "data/registries/toolchain_test_profile_registry.json"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.7125,
+      "risk_score": 0.705,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -264,20 +174,6 @@
     },
     {
       "evidence_paths": [
-        "locks/pack_lock.mvp_default.json",
-        "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
-        "tools/auditx/analyzers/e363_large_data_in_pin_pack_smell.py",
-        "tools/auditx/analyzers/e364_identity_override_smell.py",
-        "tools/auditx/analyzers/e414_missing_pack_compat_smell.py",
-        "tools/mvp/runtime_bundle.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.69,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
         "src/geo/index/geo_index_engine.py",
         "src/worldgen/earth/climate_field_engine.py",
         "src/worldgen/earth/material/material_proxy_engine.py",
@@ -288,6 +184,17 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.69,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "data/registries/toolchain_matrix_registry.json",
+        "data/registries/toolchain_test_profile_registry.json",
+        "docs/audit/TOPOLOGY_MAP.json"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.6825,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -892,54 +799,11 @@
     },
     {
       "evidence_paths": [
-        "data/registries/glossary.json",
-        "docs/architecture/TERMINOLOGY_GLOSSARY.md"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.6,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
         "tools/xstack/sessionx/observation.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.6,
       "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "client/ui/workspaces/session_transition/session_transition.default.json",
-        "packs/tool/pack.tool.admin_security/ui/window.enforcement_actions.json",
-        "packs/tool/pack.tool.admin_security/ui/window.peer_status.json",
-        "packs/tool/pack.tool.admin_security/ui/window.security_events.json",
-        "packs/tool/pack.tool.control_debug/ui/window.controller_status.json",
-        "packs/tool/pack.tool.control_debug/ui/window.possession_graph.json",
-        "packs/tool/pack.tool.control_debug/ui/window.spectator_controls.json",
-        "packs/tool/pack.tool.inspector/ui/window.inspector.json",
-        "packs/tool/pack.tool.log_viewer/ui/window.log.json",
-        "packs/tool/pack.tool.navigation/ui/window.goto.json",
-        "packs/tool/pack.tool.navigation/ui/window.navigator.json",
-        "packs/tool/pack.tool.navigation/ui/window.site_browser.json",
-        "packs/tool/pack.tool.time_control/ui/window.time.json",
-        "src/client/ui/inspect_panels.py",
-        "src/client/ui/main_menu_surface.py",
-        "src/client/ui/viewer_shell.py",
-        "tools/launcher/ui/doc/launcher_ui_doc.json",
-        "tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp",
-        "tools/launcher/ui/registry/launcher_actions_registry.json",
-        "tools/launcher/ui/scripts/minecraft_launcher_v1.ops.json",
-        "tools/setup/ui/doc/setup_ui_doc.json",
-        "tools/setup/ui/gen/ui_setup_ui_actions_gen.cpp",
-        "tools/setup/ui/registry/setup_actions_registry.json",
-        "tools/setup/ui/scripts/minecraft_setup_v1.ops.json",
-        "tools/xstack/testdata/ui/perceived_model.fixture.json"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.6,
-      "rule_type": "TEST_REGRESSION",
       "suggested_ruleset": "core.json"
     },
     {
@@ -955,16 +819,6 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.5925,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "client/app/main_client.c",
-        "client/shell/client_shell.c"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.585,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -1010,74 +864,7 @@
     },
     {
       "evidence_paths": [
-        "client/gui/client_app_win32.cpp",
-        "client/ui/workspaces/session_transition/session_transition.default.json",
-        "launcher/gui/launcher_app_win32.cpp",
-        "launcher/gui/win32/launcher_app_win32.cpp",
-        "packs/tool/pack.tool.admin_security/ui/window.enforcement_actions.json",
-        "packs/tool/pack.tool.admin_security/ui/window.peer_status.json",
-        "packs/tool/pack.tool.admin_security/ui/window.security_events.json",
-        "packs/tool/pack.tool.control_debug/ui/window.controller_status.json",
-        "packs/tool/pack.tool.control_debug/ui/window.possession_graph.json",
-        "packs/tool/pack.tool.control_debug/ui/window.spectator_controls.json",
-        "packs/tool/pack.tool.inspector/ui/window.inspector.json",
-        "packs/tool/pack.tool.log_viewer/ui/window.log.json",
-        "packs/tool/pack.tool.navigation/ui/window.goto.json",
-        "packs/tool/pack.tool.navigation/ui/window.navigator.json",
-        "packs/tool/pack.tool.navigation/ui/window.site_browser.json",
-        "packs/tool/pack.tool.time_control/ui/window.time.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.03fbe31da7b41928.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.0eafc42e72a76bea.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.113b1cd1b351df7b.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.161a320a6e931b40.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.1ec86decaf93b9cd.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.209df6cf1e5c1d5a.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.22369acd22e2ba31.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.4007a5d1a203ce2a.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.4b070adf99dd5485.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.4c38e018bd81b417.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.50477dd9c1a423ae.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.53621764c3adb682.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.58840e2ddfec2a38.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.65a11fb1e019f9ad.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.68a52af959ea3080.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.6914b9056e17fa29.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.71e97c29ca112cb3.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.748b04c9a2320745.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.7f5a0d10287fcdc1.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.832854e07ce30a81.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.8a7ed06006d01120.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.a5e35e1c8266220c.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.b359bd5eb31c59ec.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.bebf7ef31a3c8783.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.c3baf47c7096acff.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.c78d8350b38560f3.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.d234f2c12d891706.json",
-        "saves/save.testx.session.fixture.parity.transition.gui/run_meta/run.e547abec0b9f8019.json",
-        "saves/save.testx.session.fixture.parity.transition.tui/run_meta/run.03b532f1a222eb08.json",
-        "saves/save.testx.session.fixture.parity.transition.tui/run_meta/run.075376e1db7000ef.json",
-        "saves/save.testx.session.fixture.parity.transition.tui/run_meta/run.160c8c030d6bdddd.json"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.555,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "setup/packages/scripts/packaging/pipeline.py",
-        "tools/auditx/analyzers/a1_reachability_orphaned.py",
-        "tools/auditx/analyzers/a5_capability_misuse.py",
-        "tools/auditx/analyzers/a6_ui_parity_bypass.py",
-        "tools/auditx/analyzers/a7_legacy_contamination.py",
-        "tools/auditx/analyzers/c2_mode_flag_smell.py",
-        "tools/auditx/analyzers/e105_legacy_reference_smell.py",
-        "tools/auditx/analyzers/e109_boundary_violation_analyzer.py",
-        "tools/auditx/analyzers/e112_legacy_import_smell.py",
-        "tools/release/entrypoint_unify_common.py",
-        "tools/release/ui_mode_resolution_common.py",
-        "tools/xstack/repox/check.py",
-        "tools/xstack/testx/tests/test_no_production_import_from_quarantine.py"
+        "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.525,
