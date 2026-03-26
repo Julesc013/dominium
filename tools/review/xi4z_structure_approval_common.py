@@ -593,6 +593,7 @@ def _json_payloads(
         ],
         "missing_inputs": missing_inputs,
         "readiness_status": readiness_status,
+        "readiness_contract_path": XI5_READINESS_CONTRACT_REL,
         "report_id": "xi.4z.xi5_readiness_contract.v1",
         "selected_layout_option": selected_option,
         "stop_conditions": [
@@ -612,6 +613,7 @@ def _json_payloads(
         "core_mapping_inputs_missing": False,
         "missing_inputs": missing_inputs,
         "readiness_status": readiness_status,
+        "readiness_contract_path": XI5_READINESS_CONTRACT_REL,
         "report_id": "xi.4z.decision_manifest.v1",
         "selected_option": selected_option,
         "selected_option_rationale": list(option_rationale),
@@ -693,7 +695,7 @@ def _render_conflict_resolution(conflicts: Sequence[Mapping[str, object]], decis
 def _render_readiness(decisions: Sequence[Mapping[str, object]], missing_inputs: Sequence[str]) -> str:
     counts = _counts(decisions)
     lines = [_doc_header("XI-4Z XI-5 Readiness", "XI-5 bounded execution against approved mapping lock"), "## Readiness", ""]
-    lines.append("- Ξ-5 can now proceed: `yes, as a bounded XI-5a pass constrained by xi5_readiness_contract.json`")
+    lines.append(f"- Ξ-5 can now proceed: `yes, as a bounded XI-5a pass constrained by {XI5_READINESS_CONTRACT_REL}`")
     lines.append(f"- Deferred rows remaining outside XI-5a: `{counts['deferred_to_xi5b']}`")
     lines.append(f"- Approved attic routes: `{counts['approved_to_attic']}`")
     lines.extend(
@@ -702,6 +704,7 @@ def _render_readiness(decisions: Sequence[Mapping[str, object]], missing_inputs:
             "## Exact Constraints",
             "",
             "- consume only `data/restructure/src_domain_mapping_lock_approved.json` as the structural authority",
+            f"- consume only `{XI5_READINESS_CONTRACT_REL}` as the readiness contract",
             "- move only `approved_for_xi5` rows",
             "- route only `approved_to_attic` rows",
             "- leave `deferred_to_xi5b` rows untouched",
@@ -732,6 +735,8 @@ def _render_decision_report(selected_option: str, decisions: Sequence[Mapping[st
             f"- Deferred to XI-5b: `{counts['deferred_to_xi5b']}`",
             f"- Total classified rows: `{counts['total_rows']}`",
             "- XI-5 readiness conclusion: `can proceed as bounded XI-5a under the approved lock contract`",
+            f"- Approved lock: `{SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL}`",
+            f"- Readiness contract: `{XI5_READINESS_CONTRACT_REL}`",
             "",
             "## Missing Inputs",
             "",
@@ -752,7 +757,7 @@ def _render_final_report(selected_option: str, decisions: Sequence[Mapping[str, 
             f"- Approved for XI-5: `{counts['approved_for_xi5']}`",
             f"- Approved to attic: `{counts['approved_to_attic']}`",
             f"- Deferred to XI-5b: `{counts['deferred_to_xi5b']}`",
-            "- Existing Ξ-5 can now proceed: `yes, when constrained by xi5_readiness_contract.json and src_domain_mapping_lock_approved.json`",
+            f"- Existing Ξ-5 can now proceed: `yes, when constrained by {XI5_READINESS_CONTRACT_REL} and {SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL}`",
             f"- Readiness bundle: `{TMP_BUNDLE_REL}`",
             f"- Bundle manifest: `{TMP_BUNDLE_MANIFEST_REL}`",
             "",
@@ -846,8 +851,8 @@ def _validate_json_payloads(json_payloads: Mapping[str, Mapping[str, object]], m
         SRC_DOMAIN_MAPPING_DECISIONS_REL: ("decisions", "summary", "selected_layout_option"),
         SRC_DOMAIN_MAPPING_ATTIC_APPROVED_REL: ("routes", "summary"),
         SRC_DOMAIN_MAPPING_DEFERRED_REL: ("deferred_rows", "summary"),
-        XI5_READINESS_CONTRACT_REL: ("allowed_actions", "forbidden_actions", "approved_lock_path", "gate_sequence_after_moves", "stop_conditions"),
-        XI4Z_DECISION_MANIFEST_REL: ("selected_option", "summary", "bundle_relpath", "bundle_manifest_relpath"),
+        XI5_READINESS_CONTRACT_REL: ("allowed_actions", "forbidden_actions", "approved_lock_path", "readiness_contract_path", "gate_sequence_after_moves", "stop_conditions"),
+        XI4Z_DECISION_MANIFEST_REL: ("selected_option", "summary", "approved_lock_path", "readiness_contract_path", "bundle_relpath", "bundle_manifest_relpath"),
     }
     for rel_path, keys in required_shapes.items():
         payload = dict(json_payloads.get(rel_path) or {})

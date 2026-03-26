@@ -10,13 +10,14 @@ Replacement Target: XI-5 bounded execution against approved mapping lock
 
 ## Readiness
 
-- Ξ-5 can now proceed: `yes, as a bounded XI-5a pass constrained by xi5_readiness_contract.json`
+- Ξ-5 can now proceed: `yes, as a bounded XI-5a pass constrained by data/restructure/xi5_readiness_contract.json`
 - Deferred rows remaining outside XI-5a: `2`
 - Approved attic routes: `23`
 
 ## Exact Constraints
 
 - consume only `data/restructure/src_domain_mapping_lock_approved.json` as the structural authority
+- consume only `data/restructure/xi5_readiness_contract.json` as the readiness contract
 - move only `approved_for_xi5` rows
 - route only `approved_to_attic` rows
 - leave `deferred_to_xi5b` rows untouched

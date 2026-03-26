@@ -16,6 +16,8 @@ Replacement Target: XI-5 bounded execution against approved mapping lock
 - Deferred to XI-5b: `2`
 - Total classified rows: `795`
 - XI-5 readiness conclusion: `can proceed as bounded XI-5a under the approved lock contract`
+- Approved lock: `data/restructure/src_domain_mapping_lock_approved.json`
+- Readiness contract: `data/restructure/xi5_readiness_contract.json`
 
 ## Missing Inputs
 

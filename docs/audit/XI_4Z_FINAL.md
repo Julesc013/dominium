@@ -14,6 +14,6 @@ Replacement Target: XI-5 bounded execution against approved mapping lock
 - Approved for XI-5: `770`
 - Approved to attic: `23`
 - Deferred to XI-5b: `2`
-- Existing Ξ-5 can now proceed: `yes, when constrained by xi5_readiness_contract.json and src_domain_mapping_lock_approved.json`
+- Existing Ξ-5 can now proceed: `yes, when constrained by data/restructure/xi5_readiness_contract.json and data/restructure/src_domain_mapping_lock_approved.json`
 - Readiness bundle: `tmp/xi4z_xi5_readiness_bundle.zip`
 - Bundle manifest: `tmp/xi4z_xi5_readiness_bundle_manifest.txt`
