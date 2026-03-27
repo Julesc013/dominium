@@ -1,10 +1,10 @@
 # Offline Archive Verify
 
 - Result: `PASS`
-- Archive Bundle Hash: `c4dc77363650f213a52f68f009fe262dc0889286b3f363e1f52b405345f01e4b`
-- Archive Record Hash: `3e688ac8f374fe7ee0141597a025899608ee46b1f36a82647089861dd153116a`
-- Archive Projection Hash: `019b100c2a85438352f7fa42b19ac13c483ae3050d25ae3ef01a3ab1196f9ef4`
-- Deterministic Fingerprint: `2dee462a7ec60e232e4970da5178a3bf804055d3a1a37015e54e48de33c9993d`
+- Archive Bundle Hash: `a0e643963905d97f81079569439ef67734e45afa6f7e4f8c9d1bc12f38bd7fa6`
+- Archive Record Hash: `6381c84ca1e2ab6a2a740dd15908492fee70a37280bc1857c86bbe117c74aca9`
+- Archive Projection Hash: `66bc99a4e5b758b90725290ab223e8d7638bbcbc8399ccf181bac90bdfe63bcd`
+- Deterministic Fingerprint: `f9015629695201f246606318e2d991a8bee4fb852523483573ae8ea2aa3cd87d`
 
 ## Subchecks
 

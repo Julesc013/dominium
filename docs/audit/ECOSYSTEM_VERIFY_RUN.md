@@ -7,7 +7,7 @@ Replacement Target: Frozen ecosystem integrity baseline for v0.0.0-mock distribu
 
 - result: `complete`
 - platform_tag: `win64`
-- deterministic_fingerprint: `0965f94d541807dc7e00bdf3e71529b5c2c54a412344c758d321d22eb5d2ec9c`
+- deterministic_fingerprint: `3ac2bb33c78eefe5264c6e07e975115390ad36ee29e97d5dceed5c42798ba682`
 - baseline_present: `True`
 - baseline_matches: `True`
 
