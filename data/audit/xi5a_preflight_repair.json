@@ -3,11 +3,13 @@
     "fast": {
       "error_count": 0,
       "result": "complete",
+      "validation_fingerprint": "1d952840f89288b798470493e19cdc8d0126b20316c03ad9dcea354dadec7a5f",
       "warning_count": 9
     },
     "strict": {
       "error_count": 0,
       "result": "complete",
+      "validation_fingerprint": "6a8eaaf3cd17508e387502d0722e33e60ff82f76d8ae41161100a0a17e65069f",
       "warning_count": 9
     }
   },
@@ -32,31 +34,63 @@
   "files_changed": [
     "data/audit/validation_report_FAST.json",
     "data/audit/validation_report_STRICT.json",
-    "data/registries/toolchain_test_profile_registry.json",
+    "data/audit/xi5a_preflight_disaster_cleanup_fix.json",
+    "data/audit/xi5a_preflight_repair.json",
     "docs/audit/VALIDATION_REPORT_FAST.md",
     "docs/audit/VALIDATION_REPORT_STRICT.md",
-    "docs/audit/VALIDATION_UNIFY_FINAL.md",
-    "tools/mvp/toolchain_matrix_common.py"
+    "docs/audit/XI_5A_PREFLIGHT_DISASTER_CLEANUP_DIAGNOSIS.md",
+    "docs/audit/XI_5A_PREFLIGHT_DISASTER_CLEANUP_FIX.md",
+    "docs/audit/XI_5A_PREFLIGHT_DISASTER_CLEANUP_FIX_FINAL.md",
+    "docs/audit/XI_5A_PREFLIGHT_REPAIR.md",
+    "docs/audit/XI_5A_PREFLIGHT_REPAIR_FINAL.md",
+    "tools/mvp/disaster_suite_common.py",
+    "tools/mvp/toolchain_matrix_common.py",
+    "tools/xstack/testx/tests/test_disaster_cleanup_removes_readonly_bytecode.py",
+    "tools/xstack/testx/tests/test_disaster_harness_reuses_output_root.py"
   ],
   "notes": [
-    "validate --all FAST and validate --all STRICT were rerun sequentially for the final preflight result.",
-    "TIME-ANCHOR validation uses deterministic scratch save roots under saves/, so concurrent aggregate validation runs are not a valid preflight mode."
+    "The original missing_stability blocker remains repaired in data/registries/toolchain_test_profile_registry.json.",
+    "The ecosystem verify drift remains repaired in data/audit/ecosystem_verify_run.json and data/regression/ecosystem_verify_baseline.json.",
+    "The offline archive arch-audit drift remains repaired in data/audit/offline_archive_verify.json and data/regression/archive_baseline.json.",
+    "FAST and STRICT were rerun sequentially because TIME-ANCHOR scratch save roots are deterministic but not intended for concurrent aggregate validation."
   ],
+  "original_repair_still_present": true,
   "readiness": {
-    "approved_lock_path": "data/restructure/src_domain_mapping_lock_approved.json",
-    "readiness_contract_path": "data/restructure/xi5_readiness_contract.json",
+    "approved_lock_path": "data/restructure/src_domain_mapping_lock_approved_v2.json",
+    "readiness_contract_path": "data/restructure/xi5_readiness_contract_v2.json",
+    "reason_ready": "FAST and STRICT are green after bounded validation baseline repairs only.",
     "xi5a_can_proceed_unchanged": true
   },
   "repaired_blockers": [
     {
-      "code": "missing_stability",
-      "path": "data/registries/toolchain_test_profile_registry.json",
-      "resolution": "Added conservative provisional stability markers to each record.profiles[] entry."
+      "code": "arch_audit_ecosystem_verify_baseline_drift",
+      "path": "data/regression/ecosystem_verify_baseline.json",
+      "status": "repaired"
     },
     {
-      "code": "expected_surface_alignment",
-      "path": "tools/mvp/toolchain_matrix_common.py",
-      "resolution": "Updated the canonical Ω-9 toolchain profile registry helper to preserve and emit profile-level stability metadata."
+      "code": "arch_audit_ecosystem_verify_run_drift",
+      "path": "data/audit/ecosystem_verify_run.json",
+      "status": "repaired"
+    },
+    {
+      "code": "disaster_cleanup_permission_error",
+      "path": "build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/dist/tools/xstack/packagingx/__init__.pyc",
+      "status": "repaired"
+    },
+    {
+      "code": "missing_stability_toolchain_registry",
+      "path": "data/registries/toolchain_test_profile_registry.json",
+      "status": "repaired"
+    },
+    {
+      "code": "offline_archive_verify_drift",
+      "path": "data/audit/offline_archive_verify.json",
+      "status": "repaired"
+    },
+    {
+      "code": "offline_archive_verify_baseline_drift",
+      "path": "data/regression/archive_baseline.json",
+      "status": "repaired"
     }
   ],
   "scope": "xi5a_preflight_repair",
@@ -68,15 +102,19 @@
     },
     {
       "status": "pass",
+      "test_id": "test_all_registries_have_stability_markers"
+    },
+    {
+      "status": "pass",
+      "test_id": "test_disaster_cleanup_removes_readonly_bytecode"
+    },
+    {
+      "status": "pass",
+      "test_id": "test_disaster_harness_reuses_output_root"
+    },
+    {
+      "status": "pass",
       "test_id": "test_toolchain_registry_schema_valid"
-    },
-    {
-      "status": "pass",
-      "test_id": "test_validate_all_runs_fast"
-    },
-    {
-      "status": "pass",
-      "test_id": "test_validate_all_runs_strict"
     }
   ]
 }

@@ -116,10 +116,88 @@ def _ensure_dir(path: str) -> None:
         os.makedirs(token, exist_ok=True)
 
 
+def _remove_readonly(func, path, _exc_info) -> None:
+    try:
+        os.chmod(path, 0o666)
+    except OSError:
+        pass
+    try:
+        func(path)
+    except FileNotFoundError:
+        return
+
+
+def _normalize_tree_permissions(path: str) -> None:
+    token = _token(path)
+    if not token or not os.path.exists(token):
+        return
+    for root, dir_names, file_names in os.walk(token, topdown=False):
+        for file_name in file_names:
+            candidate = os.path.join(root, file_name)
+            try:
+                os.chmod(candidate, 0o666)
+            except OSError:
+                continue
+        for dir_name in dir_names:
+            candidate = os.path.join(root, dir_name)
+            try:
+                os.chmod(candidate, 0o777)
+            except OSError:
+                continue
+    try:
+        os.chmod(token, 0o777)
+    except OSError:
+        pass
+
+
+def _prune_python_bytecode(path: str) -> None:
+    token = _token(path)
+    if not token or not os.path.isdir(token):
+        return
+    for root, dir_names, file_names in os.walk(token, topdown=False):
+        for file_name in file_names:
+            if not file_name.endswith((".pyc", ".pyo")):
+                continue
+            candidate = os.path.join(root, file_name)
+            try:
+                os.chmod(candidate, 0o666)
+            except OSError:
+                pass
+            try:
+                os.remove(candidate)
+            except FileNotFoundError:
+                continue
+            except OSError:
+                continue
+        for dir_name in dir_names:
+            if dir_name != "__pycache__":
+                continue
+            candidate = os.path.join(root, dir_name)
+            try:
+                shutil.rmtree(candidate, onerror=_remove_readonly)
+            except FileNotFoundError:
+                continue
+            except OSError:
+                continue
+
+
 def _safe_rmtree(path: str) -> None:
     token = _token(path)
-    if token and os.path.isdir(token):
-        shutil.rmtree(token)
+    if not token or not os.path.isdir(token):
+        return
+    for attempt in range(0, 4):
+        _normalize_tree_permissions(token)
+        _prune_python_bytecode(token)
+        try:
+            shutil.rmtree(token, onerror=_remove_readonly)
+            return
+        except FileNotFoundError:
+            return
+        except OSError:
+            if not os.path.exists(token):
+                return
+            if attempt >= 3:
+                raise
 
 
 def _copy_file(src: str, dst: str) -> str:

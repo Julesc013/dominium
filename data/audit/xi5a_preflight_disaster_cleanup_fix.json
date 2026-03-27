@@ -1,0 +1,67 @@
+{
+  "after": {
+    "fast": {
+      "error_count": 0,
+      "result": "complete",
+      "validation_fingerprint": "1d952840f89288b798470493e19cdc8d0126b20316c03ad9dcea354dadec7a5f",
+      "warning_count": 9
+    },
+    "strict": {
+      "error_count": 0,
+      "result": "complete",
+      "validation_fingerprint": "6a8eaaf3cd17508e387502d0722e33e60ff82f76d8ae41161100a0a17e65069f",
+      "warning_count": 9
+    }
+  },
+  "before": {
+    "strict": {
+      "blocking_artifacts": [
+        "build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/dist/tools/xstack/packagingx/__init__.pyc"
+      ],
+      "exception_class": "PermissionError",
+      "exception_message": "[WinError 5] Access is denied: 'D:\\Projects\\Dominium\\dominium\\build\\tmp\\omega4_disaster_arch_audit\\cases\\missing_components_missing_binary_referenced_by_install\\fixture\\dist\\tools\\xstack\\packagingx\\__init__.pyc'",
+      "result": "aborted"
+    }
+  },
+  "files_changed": [
+    "data/audit/validation_report_FAST.json",
+    "data/audit/validation_report_STRICT.json",
+    "data/audit/xi5a_preflight_disaster_cleanup_fix.json",
+    "data/audit/xi5a_preflight_repair.json",
+    "docs/audit/VALIDATION_REPORT_FAST.md",
+    "docs/audit/VALIDATION_REPORT_STRICT.md",
+    "docs/audit/XI_5A_PREFLIGHT_DISASTER_CLEANUP_DIAGNOSIS.md",
+    "docs/audit/XI_5A_PREFLIGHT_DISASTER_CLEANUP_FIX.md",
+    "docs/audit/XI_5A_PREFLIGHT_DISASTER_CLEANUP_FIX_FINAL.md",
+    "docs/audit/XI_5A_PREFLIGHT_REPAIR.md",
+    "docs/audit/XI_5A_PREFLIGHT_REPAIR_FINAL.md",
+    "tools/mvp/disaster_suite_common.py",
+    "tools/xstack/testx/tests/test_disaster_cleanup_removes_readonly_bytecode.py",
+    "tools/xstack/testx/tests/test_disaster_harness_reuses_output_root.py"
+  ],
+  "repair_actions": [
+    "normalize Windows file permissions before recursive disaster work-root deletion",
+    "prune generated Python bytecode before teardown",
+    "retry recursive deletion by bounded deterministic iteration count",
+    "keep cleanup failure fatal if the bounded retries still cannot remove the tree"
+  ],
+  "root_cause": {
+    "classification": [
+      "import-generated .pyc cleanup on Windows",
+      "insufficient bounded cleanup normalization for reused disaster work roots"
+    ],
+    "path": "build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/dist/tools/xstack/packagingx/__init__.pyc"
+  },
+  "scope": "xi5a_preflight_disaster_cleanup_fix",
+  "status": "complete",
+  "targeted_tests": [
+    {
+      "status": "pass",
+      "test_id": "test_disaster_cleanup_removes_readonly_bytecode"
+    },
+    {
+      "status": "pass",
+      "test_id": "test_disaster_harness_reuses_output_root"
+    }
+  ]
+}

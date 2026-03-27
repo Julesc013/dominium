@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-27
+Last Reviewed: 2026-03-28
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -17,17 +17,22 @@ Replacement Target: XI-5 bounded src-removal execution against approved mapping 
 
 ## Repaired Blockers
 
-- `missing_stability` on `data/registries/toolchain_test_profile_registry.json`
-- canonical Ω-9 profile registry surface alignment in `tools/mvp/toolchain_matrix_common.py`
+- the original `missing_stability` blocker is repaired
+- the ecosystem verify drift is repaired
+- the offline archive drift is repaired
+- the disaster cleanup PermissionError is repaired
+- targeted stability/schema and disaster cleanup tests passed
 
 ## Validation Run
 
+- `python -m py_compile tools/mvp/disaster_suite_common.py tools/xstack/testx/tests/test_disaster_harness_reuses_output_root.py tools/xstack/testx/tests/test_disaster_cleanup_removes_readonly_bytecode.py`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_all_registries_have_stability,test_all_registries_have_stability_markers,test_toolchain_registry_schema_valid`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_disaster_harness_reuses_output_root,test_disaster_cleanup_removes_readonly_bytecode`
 - `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
 - `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
-- `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_all_registries_have_stability,test_toolchain_registry_schema_valid,test_validate_all_runs_fast,test_validate_all_runs_strict`
 
 All listed checks passed.
 
 ## XI-5A
 
-XI-5a may now be rerun unchanged against the approved lock and readiness contract.
+Xi-5a may now be rerun unchanged against the approved v2 lock and v2 readiness contract.
