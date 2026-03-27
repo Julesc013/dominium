@@ -31,9 +31,9 @@ The following blockers are repaired:
 The repo validation baseline is now green.
 
 - `validate --all FAST`: `complete`
-- fingerprint: `1d952840f89288b798470493e19cdc8d0126b20316c03ad9dcea354dadec7a5f`
+- fingerprint: `c85403941bad0f036238c4554954b4b968bfc81075e1078ff468d156f9dc5e8e`
 - `validate --all STRICT`: `complete`
-- fingerprint: `6a8eaaf3cd17508e387502d0722e33e60ff82f76d8ae41161100a0a17e65069f`
+- fingerprint: `4475785ba553c27220ff322d86d926a6062d4ad5cf7ba10d0a3b86a7e94b5ba2`
 
 No blocking validation findings remain in the preflight surface.
 
