@@ -1,28 +1,29 @@
 Status: DERIVED
-Last Reviewed: 2026-03-27
-Supersedes: none
+Last Reviewed: 2026-03-28
+Supersedes: docs/restructure/XI_5A_EXECUTION_INPUTS.md (v2 content)
 Superseded By: none
 Stability: provisional
 Future Series: XI-5
-Replacement Target: XI-5a bounded execution against v2 approved lock
+Replacement Target: XI-5a bounded execution against v3 approved lock
 
 # XI-5A Execution Inputs
 
 ## Required Inputs
 
-- Approved lock: `data/restructure/src_domain_mapping_lock_approved_v2.json`
-- Readiness contract: `data/restructure/xi5_readiness_contract_v2.json`
-- Target path index: `data/restructure/src_domain_mapping_target_paths.json`
+- Approved lock: `data/restructure/src_domain_mapping_lock_approved_v3.json`
+- Readiness contract: `data/restructure/xi5_readiness_contract_v3.json`
+- Target path index: `data/restructure/src_domain_mapping_target_paths_v3.json`
 
 ## Execution Contract
 
 - Approved move rows: `769`
 - Approved attic rows: `23`
 - Deferred rows to leave untouched: `3`
-- Xi-5a must use the explicit `source_path` and `target_path` values in the v2 lock.
 - Path derivation policy: `forbidden`
-- Separate validation/preflight state remains an external gate and is not changed by Xi-4z-fix1.
+- Xi-5a must use the explicit `source_path` and `target_path` values in the v3 lock.
+- No further package-root derivation is allowed during Xi-5a.
 
-## Newly Deferred From V1 Approved
+## Collision Normalization Applied
 
-- `src/worldgen/__init__.py` deferred because `worldgen/__init__.py` is already occupied.
+- `platform` rebound from `src/platform/` to `engine/platform/` under `engine.platform`.
+- `time` rebound from `src/time/` to `engine/time/` under `engine.time`.
