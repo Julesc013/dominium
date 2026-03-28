@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    engine_rel = "src/logic/protocol/protocol_engine.py"
+    engine_rel = "logic/protocol/protocol_engine.py"
     engine_text = _read_text(repo_root, engine_rel)
     for token in ("security_policy_id", "protocol_security_block", "logic_security_fail_rows", "security_header"):
         if token in engine_text:

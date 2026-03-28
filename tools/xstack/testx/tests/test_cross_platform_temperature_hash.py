@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.thermal.network.thermal_network_engine import solve_thermal_network_t1
+    from thermal.network.thermal_network_engine import solve_thermal_network_t1
     from tools.xstack.testx.tests.thermal_testlib import build_thermal_graph
 
     graph_a = build_thermal_graph(source_energy=2750, sink_energy=100, conductance_value=35)

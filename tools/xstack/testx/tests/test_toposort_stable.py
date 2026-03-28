@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.process_definition_validator import build_process_step_row, stable_toposort
+    from process.process_definition_validator import build_process_step_row, stable_toposort
 
     steps = [
         build_process_step_row(step_id="step.b", step_kind="transform", inputs=[], outputs=[], cost_units=1),

@@ -46,7 +46,7 @@ def _belief_registry() -> dict:
 
 
 def _run_once(*, trust_weight: float) -> bool:
-    from src.signals import build_signal_channel, process_signal_send, process_signal_transport_tick
+    from signals import build_signal_channel, process_signal_send, process_signal_transport_tick
 
     channels = [
         build_signal_channel(

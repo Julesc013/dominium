@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping
 
-from src.release import (
+from release import (
     DEFAULT_COMPONENT_GRAPH_ID,
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_INSTALL_PROFILE_REGISTRY_REL,
@@ -15,7 +15,8 @@ from src.release import (
     platform_targets_for_tag,
     select_install_profile,
 )
-from src.release.component_graph_resolver import deterministic_fingerprint
+from tools.import_bridge import resolve_repo_path_equivalent
+from release.component_graph_resolver import deterministic_fingerprint
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -37,6 +38,18 @@ def _token(value: object) -> str:
 
 def _norm(path: str) -> str:
     return os.path.normpath(os.path.abspath(_token(path) or "."))
+
+
+def _norm_rel(path: str) -> str:
+    return _token(path).replace("\\", "/")
+
+
+def _equivalent_rel(repo_root: str, rel_path: str) -> str:
+    return _norm_rel(resolve_repo_path_equivalent(_norm(repo_root), _norm_rel(rel_path)))
+
+
+def _equivalent_abs(repo_root: str, rel_path: str) -> str:
+    return os.path.join(_norm(repo_root), _equivalent_rel(repo_root, rel_path).replace("/", os.sep))
 
 
 def _as_map(value: object) -> dict:
@@ -323,12 +336,13 @@ def install_profile_violations(repo_root: str) -> list[dict]:
         (os.path.join("tools", "release", "tool_run_install_profiles.py"), "install profile runner is required", RULE_USE_PROFILES),
     )
     for rel_path, message, rule_id in required_paths:
-        if os.path.exists(os.path.join(root, rel_path.replace("/", os.sep))):
+        effective_rel = _equivalent_rel(root, rel_path)
+        if os.path.exists(_equivalent_abs(root, rel_path)):
             continue
-        violations.append({"code": "missing_required_file", "message": message, "file_path": rel_path, "rule_id": rule_id})
+        violations.append({"code": "missing_required_file", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
-        ("src/release/component_graph_resolver.py", "select_install_profile(", "component resolver must load and select install profiles", RULE_USE_PROFILES),
-        ("src/release/component_graph_resolver.py", "disabled_optional_components", "install plans must report disabled optional components", RULE_USE_PROFILES),
+        ("release/component_graph_resolver.py", "select_install_profile(", "component resolver must load and select install profiles", RULE_USE_PROFILES),
+        ("release/component_graph_resolver.py", "disabled_optional_components", "install plans must report disabled optional components", RULE_USE_PROFILES),
         ("tools/setup/setup_cli.py", "\"plan\"", "setup install surface must expose install-profile plan/apply commands", RULE_USE_PROFILES),
         ("tools/setup/setup_cli.py", "install_profile_id", "setup install plan/apply must thread install_profile_id through the resolver", RULE_USE_PROFILES),
         ("tools/dist/dist_tree_common.py", "install_profile_id", "dist assembly must choose bundle contents through an install profile", RULE_NO_HARDCODED),
@@ -336,13 +350,14 @@ def install_profile_violations(repo_root: str) -> list[dict]:
         ("tools/launcher/launch.py", "install_profile_id", "launcher instance surfaces must expose instance install profile targeting", RULE_USE_PROFILES),
     ):
         try:
-            with open(os.path.join(root, rel_path.replace("/", os.sep)), "r", encoding="utf-8") as handle:
+            effective_rel = _equivalent_rel(root, rel_path)
+            with open(_equivalent_abs(root, rel_path), "r", encoding="utf-8") as handle:
                 text = handle.read()
         except OSError:
             text = ""
         if token in text:
             continue
-        violations.append({"code": "missing_integration_hook", "message": message, "file_path": rel_path, "rule_id": rule_id})
+        violations.append({"code": "missing_integration_hook", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     report = build_install_profile_report(root)
     if _token(report.get("result")) != "complete":
         violations.append(

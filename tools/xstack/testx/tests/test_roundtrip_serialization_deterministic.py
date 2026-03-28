@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system.statevec import deserialize_state, serialize_state
+    from system.statevec import deserialize_state, serialize_state
     from tools.xstack.testx.tests.statevec0_testlib import (
         source_state_payload,
         state_vector_definition_rows,

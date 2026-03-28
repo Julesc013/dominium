@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.signal import process_signal_set
+    from logic.signal import process_signal_set
     from tools.logic.tool_replay_logic_window import replay_logic_window_from_payload
     from tools.xstack.testx.tests._logic_eval_test_utils import make_chain_network, load_eval_inputs
 

@@ -17,14 +17,14 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.testx.tests.sol0_testlib import load_sol_pack_fixture_payloads  # noqa: E402
 from tools.xstack.testx.tests.geo8_testlib import worldgen_request_row  # noqa: E402
-from src.geo import (  # noqa: E402
+from geo import (  # noqa: E402
     RNG_WORLDGEN_SURFACE,
     generate_worldgen_result,
     worldgen_cache_clear,
     worldgen_rng_stream_policy,
 )
-from src.worldgen.mw import build_planet_surface_cell_key, generate_mw_surface_l3_payload  # noqa: E402
-from src.worldgen.mw.sol_anchor import SOL_ANCHOR_CELL_INDEX_TUPLE  # noqa: E402
+from worldgen.mw import build_planet_surface_cell_key, generate_mw_surface_l3_payload  # noqa: E402
+from worldgen.mw.sol_anchor import SOL_ANCHOR_CELL_INDEX_TUPLE  # noqa: E402
 
 
 REALISM_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "realism_profile_registry.json")

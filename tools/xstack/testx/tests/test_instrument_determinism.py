@@ -171,7 +171,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.diegetics.instrument_kernel import compute_diegetic_instruments
+    from diegetics.instrument_kernel import compute_diegetic_instruments
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     perceived_now = {

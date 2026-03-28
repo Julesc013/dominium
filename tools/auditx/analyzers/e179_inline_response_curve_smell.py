@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/models/model_engine.py",
+        "models/model_engine.py",
     }
 
     for root in scan_roots:

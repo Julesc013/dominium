@@ -7,15 +7,15 @@ import json
 import os
 from typing import Mapping
 
-from src.compat.descriptor.descriptor_engine import build_product_descriptor
-from src.platform.target_matrix import (
+from compat.descriptor.descriptor_engine import build_product_descriptor
+from engine.platform.target_matrix import (
     TARGET_MATRIX_REGISTRY_REL,
     canonicalize_target_matrix_row,
     load_target_matrix_registry,
     select_target_matrix_row,
     target_matrix_registry_hash,
 )
-from src.release import load_release_index
+from release import load_release_index
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -1066,7 +1066,7 @@ def arch_matrix_violations(repo_root: str, *, report_override: Mapping[str, obje
             {
                 "code": "descriptor_missing_target_fields",
                 "message": "Endpoint descriptors must include target ids and tier fields",
-                "file_path": "src/compat/descriptor/descriptor_engine.py",
+                "file_path": "compat/descriptor/descriptor_engine.py",
                 "rule_id": RULE_TARGET_MATRIX,
             }
         )

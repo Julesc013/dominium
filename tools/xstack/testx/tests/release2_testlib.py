@@ -7,7 +7,7 @@ import os
 import tempfile
 from contextlib import contextmanager
 
-from src.release import (
+from release import (
     build_build_id_input_payload,
     build_id_identity_from_input_payload,
     build_mock_signature_block,
@@ -157,7 +157,7 @@ def verify_without_signature(dist_root: str, *, platform_tag: str = "platform.po
     payload = build_manifest_payload(dist_root, platform_tag=platform_tag)
     manifest_path = os.path.join(dist_root, "manifests", "release_manifest.json")
     write_release_manifest(dist_root, payload, manifest_path=manifest_path)
-    return verify_release_manifest(dist_root, manifest_path)
+    return verify_release_manifest(dist_root, manifest_path, repo_root=os.getcwd())
 
 
 def signed_manifest_payload(dist_root: str, *, platform_tag: str = "platform.portable") -> dict:

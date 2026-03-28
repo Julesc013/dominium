@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E331_RAW_XYZ_DISTANCE_SMELL"
 WATCH_PREFIXES = ("src/client/render/",)
-TARGET_FILES = ("src/client/render/representation_resolver.py",)
+TARGET_FILES = ("client/render/representation_resolver.py",)
 LEGACY_TOKENS = (
     'abs(_to_int(transform.get("x", 0), 0))',
     'abs(_to_int(transform.get("y", 0), 0))',
@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
                         "INV-GEO-API-ONLY-FOR-DOMAIN-DISTANCE",
                         "INV-NO-HARDCODED-DIMENSION-ASSUMPTIONS",
                     ],
-                    related_paths=[rel_path, "src/geo/kernel/geo_kernel.py"],
+                    related_paths=[rel_path, "geo/kernel/geo_kernel.py"],
                 )
             )
             break

@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.interaction.interaction_dispatch import execute_affordance
+    from client.interaction.interaction_dispatch import execute_affordance
     from tools.xstack.testx.tests.interaction_testlib import authority_context, base_state, law_profile, policy_context
 
     affordance_list = {

@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.network import REFUSAL_LOGIC_LOOP_DETECTED
+    from logic.network import REFUSAL_LOGIC_LOOP_DETECTED
     from tools.xstack.testx.tests._logic_network_test_utils import binding_row, edge_row, graph_row, node_row, validate
 
     binding = binding_row(network_id="net.logic.comb_loop", graph_id="graph.logic.comb_loop")

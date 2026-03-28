@@ -18,7 +18,7 @@ WATCH_PREFIXES = (
 )
 
 _ALLOWED_PATHS = {
-    "src/logic/signal/signal_store.py",
+    "logic/signal/signal_store.py",
     "tools/xstack/sessionx/process_runtime.py",
 }
 _DIRECT_MUTATION_PATTERNS = (
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="INVALID",
                             recommended_action="REWRITE",
                             related_invariants=["INV-SIGNAL-UPDATES-PROCESS-ONLY"],
-                            related_paths=[rel_path, "src/logic/signal/signal_store.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "logic/signal/signal_store.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

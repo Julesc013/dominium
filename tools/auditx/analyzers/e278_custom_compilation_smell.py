@@ -28,7 +28,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    compile_engine_rel = "src/meta/compile/compile_engine.py"
+    compile_engine_rel = "meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "data/registries/process_registry.json"
 
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         _norm(compile_engine_rel),
         _norm(runtime_rel),
-        _norm("src/process/capsules/capsule_builder.py"),
+        _norm("process/capsules/capsule_builder.py"),
         _norm("tools/meta/tool_verify_compiled_model.py"),
         _norm("tools/xstack/repox/check.py"),
         _norm("tools/xstack/testx/tests/test_compile_engine_deterministic.py"),

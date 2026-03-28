@@ -9,8 +9,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E96_INTERIOR_OCCLUSION_LEAK_SMELL"
 OBSERVATION_PATH = "tools/xstack/sessionx/observation.py"
-INTERIOR_ENGINE_PATH = "src/interior/interior_engine.py"
-INSPECTION_ENGINE_PATH = "src/inspection/inspection_engine.py"
+INTERIOR_ENGINE_PATH = "interior/interior_engine.py"
+INSPECTION_ENGINE_PATH = "inspection/inspection_engine.py"
 REQUIRED_OBSERVATION_TOKENS = (
     "_apply_interior_occlusion(",
     "path_exists(",

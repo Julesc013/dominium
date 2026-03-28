@@ -35,8 +35,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    transport_rel = "src/signals/transport/transport_engine.py"
-    executor_rel = "src/signals/transport/channel_executor.py"
+    transport_rel = "signals/transport/transport_engine.py"
+    executor_rel = "signals/transport/channel_executor.py"
     transport_text = _read_text(repo_root, transport_rel)
     executor_text = _read_text(repo_root, executor_rel)
 

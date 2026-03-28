@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ROUTE_UPDATES_THROUGH_RELEASE_INDEX_AND_MANIFEST_VERIFICATION",
                 related_invariants=sorted(_RULE_IDS),
-                related_paths=[rel_path or "tools/setup/setup_cli.py", "src/release/update_resolver.py"],
+                related_paths=[rel_path or "tools/setup/setup_cli.py", "release/update_resolver.py"],
             )
         )
     return findings

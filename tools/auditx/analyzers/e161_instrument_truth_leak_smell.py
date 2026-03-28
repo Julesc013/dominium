@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E161_INSTRUMENT_TRUTH_LEAK_SMELL"
 OBSERVATION_PATH = "tools/xstack/sessionx/observation.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-INSPECTION_PATH = "src/inspection/inspection_engine.py"
+INSPECTION_PATH = "inspection/inspection_engine.py"
 REQUIRED_VEHICLE_INSTRUMENT_TOKENS = (
     "instrument.vehicle.pressure",
     "instrument.vehicle.oxygen",

@@ -11,7 +11,7 @@ if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 from analyzers.base import make_finding
-from src.tools import tool_surface_violations
+from tools import tool_surface_violations
 
 
 ANALYZER_ID = "E474_ORPHAN_TOOL_SMELL"

@@ -16,8 +16,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init  # noqa: E402
-from src.appshell.supervisor import SupervisorEngine, build_supervisor_run_spec, canonicalize_args  # noqa: E402
+from appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init  # noqa: E402
+from appshell.supervisor import SupervisorEngine, build_supervisor_run_spec, canonicalize_args  # noqa: E402
 from tools.appshell.appshell6_probe import run_supervisor_probe, verify_supervisor_replay  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
@@ -32,7 +32,7 @@ LAST_REVIEWED = "2026-03-13"
 
 SUPERVISOR_SURFACES = (
     {
-        "path": "src/runtime/process_spawn.py",
+        "path": "runtime/process_spawn.py",
         "surface": "process_spawn",
         "classification": "canonical",
         "purpose": "deterministic process spawn abstraction",
@@ -44,7 +44,7 @@ SUPERVISOR_SURFACES = (
         "required_markers": ("build_python_process_spec(", "spawn_process(", "poll_process("),
     },
     {
-        "path": "src/appshell/supervisor/args_canonicalizer.py",
+        "path": "appshell/supervisor/args_canonicalizer.py",
         "surface": "args_canonicalizer",
         "classification": "canonical",
         "purpose": "stable flag ordering, quoting, and arg hashing",
@@ -56,7 +56,7 @@ SUPERVISOR_SURFACES = (
         "required_markers": ("canonicalize_args(", "argv_text_hash", "_quote_arg("),
     },
     {
-        "path": "src/appshell/supervisor/supervisor_engine.py",
+        "path": "appshell/supervisor/supervisor_engine.py",
         "surface": "supervisor_engine",
         "classification": "canonical",
         "purpose": "spawn, readiness, attach, log merge, restart, and diag capture",
@@ -76,7 +76,7 @@ SUPERVISOR_SURFACES = (
         ),
     },
     {
-        "path": "src/appshell/commands/command_engine.py",
+        "path": "appshell/commands/command_engine.py",
         "surface": "launcher_commands",
         "classification": "canonical",
         "purpose": "launcher command entrypoints for start/status/stop/attach",
@@ -114,15 +114,15 @@ SUPERVISOR_SURFACES = (
 )
 
 SCAN_FILES = (
-    "src/appshell/supervisor/supervisor_engine.py",
-    "src/appshell/commands/command_engine.py",
+    "appshell/supervisor/supervisor_engine.py",
+    "appshell/commands/command_engine.py",
     "tools/appshell/supervisor_service.py",
     "tools/appshell/appshell6_probe.py",
 )
 WALLCLOCK_TOKENS = ("time.sleep(", "time.time(", "datetime.utcnow(", "perf_counter(", "monotonic(", "timeout=")
 ATTACH_BYPASS_TOKENS = ("socket.socket(", "open_ipc_listener(", "connect_ipc_client(")
 ATTACH_BYPASS_ALLOW = {
-    "src/appshell/supervisor/supervisor_engine.py": {"attach_ipc_endpoint("},
+    "appshell/supervisor/supervisor_engine.py": {"attach_ipc_endpoint("},
 }
 
 
@@ -247,7 +247,7 @@ def _attach_bypass_findings(repo_root: str) -> list[dict]:
 
 def _log_merge_findings(repo_root: str) -> list[dict]:
     findings: list[dict] = []
-    engine_text = _read_text(repo_root, "src/appshell/supervisor/supervisor_engine.py")
+    engine_text = _read_text(repo_root, "appshell/supervisor/supervisor_engine.py")
     required = (
         "\"channel_id\": \"log\"",
         "_LOG_MERGE_SORT_KEY = build_field_sort_key(",
@@ -259,7 +259,7 @@ def _log_merge_findings(repo_root: str) -> list[dict]:
         findings.append(
             {
                 "code": "log_merge_rule_missing",
-                "file_path": "src/appshell/supervisor/supervisor_engine.py",
+                "file_path": "appshell/supervisor/supervisor_engine.py",
                 "message": "supervisor log merge is missing stable merge markers: {}".format(", ".join(missing)),
             }
         )
@@ -561,7 +561,7 @@ def build_supervisor_hardening_report(repo_root: str) -> dict:
         violations.append(
             {
                 "code": "crash_policy_probe_failed",
-                "file_path": "src/appshell/supervisor/supervisor_engine.py",
+                "file_path": "appshell/supervisor/supervisor_engine.py",
                 "message": "supervisor crash policy probe did not complete",
             }
         )
@@ -572,7 +572,7 @@ def build_supervisor_hardening_report(repo_root: str) -> dict:
             violations.append(
                 {
                     "code": "restart_backoff_missing",
-                    "file_path": "src/appshell/supervisor/supervisor_engine.py",
+                    "file_path": "appshell/supervisor/supervisor_engine.py",
                     "message": "lab policy did not enter restart_pending on the bounded crash refresh sequence",
                 }
             )
@@ -580,7 +580,7 @@ def build_supervisor_hardening_report(repo_root: str) -> dict:
             violations.append(
                 {
                     "code": "restart_policy_not_applied",
-                    "file_path": "src/appshell/supervisor/supervisor_engine.py",
+                    "file_path": "appshell/supervisor/supervisor_engine.py",
                     "message": "lab policy did not restart the crashed child after deterministic backoff",
                 }
             )
@@ -588,7 +588,7 @@ def build_supervisor_hardening_report(repo_root: str) -> dict:
             violations.append(
                 {
                     "code": "restart_policy_bypassed",
-                    "file_path": "src/appshell/supervisor/supervisor_engine.py",
+                    "file_path": "appshell/supervisor/supervisor_engine.py",
                     "message": "default policy did not leave the crashed child exited within the bounded refresh sequence",
                 }
             )
@@ -666,7 +666,7 @@ def _render_surface_map(report: Mapping[str, object]) -> str:
             "",
             "## Notes",
             "",
-            "- Process spawning is centralized in `src/runtime/process_spawn.py`.",
+            "- Process spawning is centralized in `runtime/process_spawn.py`.",
             "- Readiness is driven by child ready handshakes plus bounded negotiated IPC attach/status verification.",
             "- Log aggregation is stable by `(source_product_id, channel_id, seq_no, endpoint_id, event_id)`.",
             "- Crash handling captures a diag bundle before restart decisions are evaluated.",
@@ -731,7 +731,7 @@ def _render_final_report(report: Mapping[str, object]) -> str:
             "",
             "## Canonical Arg Rules",
             "",
-            "- Long flags are serialized in stable lexical order through `src/appshell/supervisor/args_canonicalizer.py`.",
+            "- Long flags are serialized in stable lexical order through `appshell/supervisor/args_canonicalizer.py`.",
             "- Canonical argv text uses deterministic JSON quoting for whitespace and escape-sensitive tokens.",
             "- Each supervised process row records `args_hash` and `argv_text_hash` in the run manifest.",
             "",

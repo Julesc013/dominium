@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "release", "update-model", "compat"]
 
 
 def run(repo_root: str):
-    from src.release import resolve_update_plan
+    from release import resolve_update_plan
     from tools.xstack.testx.tests.update_model_testlib import load_install_manifest, load_release_index_payload
 
     install_manifest = load_install_manifest(repo_root)

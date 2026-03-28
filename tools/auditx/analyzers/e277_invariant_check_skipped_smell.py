@@ -34,8 +34,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    collapse_rel = "src/system/system_collapse_engine.py"
-    expand_rel = "src/system/system_expand_engine.py"
+    collapse_rel = "system/system_collapse_engine.py"
+    expand_rel = "system/system_expand_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     stress_rel = "tools/system/tool_run_sys_stress.py"
 

@@ -5,21 +5,21 @@ from __future__ import annotations
 import os
 from typing import Dict, List, Tuple
 
-from src.net.policies.policy_server_authoritative import (
+from net.policies.policy_server_authoritative import (
     POLICY_ID_SERVER_AUTHORITATIVE,
     initialize_authoritative_runtime,
     join_client_midstream,
     prepare_server_authoritative_baseline,
 )
-from src.net.policies.policy_srz_hybrid import (
+from net.policies.policy_srz_hybrid import (
     POLICY_ID_SRZ_HYBRID,
     initialize_hybrid_runtime,
     join_client_hybrid,
     prepare_hybrid_baseline,
 )
-from src.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
-from src.universe import enforce_session_contract_bundle
-from src.compat.data_format_loader import load_versioned_artifact
+from modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
+from universe import enforce_session_contract_bundle
+from compat.data_format_loader import load_versioned_artifact
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance

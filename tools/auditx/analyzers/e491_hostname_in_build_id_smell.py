@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REMOVE_HOST_METADATA_FROM_BUILD_ID",
                 related_invariants=["INV-NO-WALLCLOCK-IN-BUILD_ID"],
-                related_paths=[rel_path, "src/release/build_id_engine.py"],
+                related_paths=[rel_path, "release/build_id_engine.py"],
             )
         )
     return findings

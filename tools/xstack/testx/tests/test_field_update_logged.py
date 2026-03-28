@@ -17,7 +17,7 @@ def _build_state(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.fields import build_field_cell, build_field_layer
+    from fields import build_field_cell, build_field_layer
     from tools.xstack.testx.tests.mobility_free_testlib import seed_free_state
 
     state = seed_free_state(initial_velocity_x=0)

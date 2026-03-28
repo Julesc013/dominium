@@ -13,8 +13,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.ui.viewer_shell import STATE_BOOT, STATE_BUNDLE_SELECT, STATE_SEED_SELECT, STATE_SESSION_RUNNING
-    from src.client.ui.viewer_shell import build_viewer_shell_state
+    from client.ui.viewer_shell import STATE_BOOT, STATE_BUNDLE_SELECT, STATE_SEED_SELECT, STATE_SESSION_RUNNING
+    from client.ui.viewer_shell import build_viewer_shell_state
 
     first = build_viewer_shell_state(
         repo_root=repo_root,

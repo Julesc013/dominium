@@ -52,9 +52,9 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/interior/compartment_flow_engine.py",
-        "src/interior/compartment_flow_builder.py",
-        "src/models/model_engine.py",
+        "interior/compartment_flow_engine.py",
+        "interior/compartment_flow_builder.py",
+        "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -96,7 +96,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-NO-ADHOC-PRESSURE-LOGIC",
                                 "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
                             ],
-                            related_paths=[rel_path, "src/models/model_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "models/model_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

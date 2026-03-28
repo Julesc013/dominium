@@ -7,7 +7,7 @@ def compiled_fallback_negotiation(repo_root: str) -> dict:
     from tools.xstack.testx.tests.cap_neg_testlib import ensure_repo_on_path
 
     ensure_repo_on_path(repo_root)
-    from src.compat import build_default_endpoint_descriptor, negotiate_endpoint_descriptors
+    from compat import build_default_endpoint_descriptor, negotiate_endpoint_descriptors
 
     server = build_default_endpoint_descriptor(
         repo_root,

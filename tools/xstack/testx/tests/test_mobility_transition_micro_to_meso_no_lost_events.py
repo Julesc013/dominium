@@ -25,7 +25,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.mobility.travel import build_travel_event, deterministic_travel_event_id
+    from mobility.travel import build_travel_event, deterministic_travel_event_id
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.mobility_micro_testlib import (
         authority_context,

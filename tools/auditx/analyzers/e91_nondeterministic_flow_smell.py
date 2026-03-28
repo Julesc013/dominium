@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E91_NONDETERMINISTIC_FLOW_SMELL"
 WATCH_PREFIXES = ("src/core/flow/",)
 
-FLOW_ENGINE_PATH = "src/core/flow/flow_engine.py"
+FLOW_ENGINE_PATH = "core/flow/flow_engine.py"
 FORBIDDEN_NONDET_TOKENS = (
     "time.time(",
     "datetime.now(",

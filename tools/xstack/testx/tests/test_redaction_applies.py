@@ -11,7 +11,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.appshell2_testlib import ensure_repo_on_path
 
     ensure_repo_on_path(repo_root)
-    from src.appshell.logging import build_log_event
+    from appshell.logging import build_log_event
 
     payload = build_log_event(
         product_id="setup",

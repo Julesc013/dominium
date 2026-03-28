@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E302_OMNISCIENT_READOUT_SMELL"
 RULE_ID = "INV-NO-TRUTH-READOUT-WITHOUT-INSTRUMENT"
-TARGET_REL = "src/meta/instrumentation/instrumentation_engine.py"
+TARGET_REL = "meta/instrumentation/instrumentation_engine.py"
 
 FORBIDDEN_PATTERN = re.compile(r"\b(truth_model|universe_state|render_model)\b", re.IGNORECASE)
 REQUIRED_TOKENS = (

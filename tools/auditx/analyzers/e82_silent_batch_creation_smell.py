@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E82_SILENT_BATCH_CREATION_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-PORT_ENGINE_PATH = "src/machines/port_engine.py"
+PORT_ENGINE_PATH = "machines/port_engine.py"
 
 REQUIRED_RUNTIME_TOKENS = (
     "process.port_extract_batch",

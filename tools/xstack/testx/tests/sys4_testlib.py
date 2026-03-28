@@ -52,7 +52,7 @@ def compile_template(*, repo_root: str, template_id: str, instantiation_mode: st
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system import compile_system_template
+    from system import compile_system_template
 
     return compile_system_template(
         template_id=str(template_id),

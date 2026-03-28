@@ -12,8 +12,8 @@ WATCH_PREFIXES = ("src/worldgen/mw/", "src/geo/worldgen/", "tools/xstack/session
 SCAN_ROOTS = ("src/worldgen/mw", "src/geo/worldgen", "tools/xstack/sessionx", "tools/worldgen", "tools/mvp")
 SCAN_EXTS = (".py",)
 ALLOWLIST = {
-    "src/worldgen/mw/mw_cell_generator.py",
-    "src/geo/worldgen/worldgen_engine.py",
+    "worldgen/mw/mw_cell_generator.py",
+    "geo/worldgen/worldgen_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
 }
 SPAWN_TOKENS = (
@@ -83,7 +83,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN"],
-                    related_paths=[rel_path, "src/geo/worldgen/worldgen_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                    related_paths=[rel_path, "geo/worldgen/worldgen_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                 )
             )
             break

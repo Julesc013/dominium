@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.net.anti_cheat import action_blocks_submission, check_sequence_integrity
+    from net.anti_cheat import action_blocks_submission, check_sequence_integrity
     from tools.xstack.testx.tests.net_anti_cheat_testlib import apply_anti_cheat_policy
     from tools.xstack.testx.tests.net_authoritative_testlib import clone_runtime, prepare_authoritative_runtime_fixture
 

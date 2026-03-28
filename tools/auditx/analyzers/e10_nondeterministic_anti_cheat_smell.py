@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    anti_engine_rel = "src/net/anti_cheat/anti_cheat_engine.py"
+    anti_engine_rel = "net/anti_cheat/anti_cheat_engine.py"
     anti_engine_abs = os.path.join(repo_root, anti_engine_rel.replace("/", os.sep))
     if os.path.isfile(anti_engine_abs):
         try:

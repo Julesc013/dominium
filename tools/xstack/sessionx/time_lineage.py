@@ -5,9 +5,19 @@ from __future__ import annotations
 import hashlib
 import os
 import shutil
+import sys
 from typing import Dict, List, Tuple
 
-from src.time import (
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+
+
+from tools.import_bridge import install_src_aliases
+install_src_aliases(REPO_ROOT_HINT)
+
+from engine.time import (
     ANCHOR_REASON_MIGRATION,
     emit_epoch_anchor,
     load_epoch_anchor_rows,
@@ -18,6 +28,28 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 
 from .common import norm, read_json_object, refusal, write_canonical_json
+
+
+def _safe_remove_file(path: str) -> None:
+    token = str(path or "").strip()
+    if not token:
+        return
+    last_error: OSError | None = None
+    for _attempt in range(8):
+        try:
+            if os.path.exists(token):
+                try:
+                    os.chmod(token, 0o666)
+                except OSError:
+                    pass
+                os.remove(token)
+            return
+        except FileNotFoundError:
+            return
+        except OSError as exc:
+            last_error = exc
+    if last_error is not None:
+        raise last_error
 
 
 def _find_checkpoint_artifact(
@@ -160,7 +192,7 @@ def branch_from_checkpoint(
             "$.new_save_id",
         )
     child_save_dir = os.path.join(repo_root, "saves", str(child_save_id))
-    if os.path.isdir(child_save_dir):
+    if os.path.exists(child_save_dir):
         return refusal(
             "refusal.time.branch_save_exists",
             "target new_save_id already exists",
@@ -468,12 +500,12 @@ def compact_save(
                 continue
             checkpoint_path = str(row.get("path", ""))
             if checkpoint_path and os.path.isfile(checkpoint_path):
-                os.remove(checkpoint_path)
+                _safe_remove_file(checkpoint_path)
             snapshot_rel = str(row.get("payload_ref", "")).replace("/", os.sep)
             if snapshot_rel:
                 snapshot_abs = os.path.join(repo_root, snapshot_rel)
                 if os.path.isfile(snapshot_abs):
-                    os.remove(snapshot_abs)
+                    _safe_remove_file(snapshot_abs)
 
     kept_checkpoint_rows = [
         dict(row)
@@ -574,7 +606,7 @@ def compact_save(
                 row_in_merge = any(path == str(candidate.get("path", "")) for candidate in merged_source_rows)
                 if row_in_merge:
                     if path and os.path.isfile(path):
-                        os.remove(path)
+                        _safe_remove_file(path)
                     continue
                 if path:
                     keep_intent_log_paths.add(path)
@@ -598,7 +630,7 @@ def compact_save(
             if stop_tick >= cutoff:
                 continue
             if os.path.isfile(path):
-                os.remove(path)
+                _safe_remove_file(path)
             if path in kept_run_meta_paths:
                 kept_run_meta_paths.remove(path)
 

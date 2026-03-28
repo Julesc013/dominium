@@ -14,8 +14,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.stability.stability_validator import validate_all_registries  # noqa: E402
-from src.validation import build_validation_report  # noqa: E402
+from meta.stability.stability_validator import validate_all_registries  # noqa: E402
+from validation import build_validation_report  # noqa: E402
 from tools.appshell.appshell4_probe import run_ipc_attach_probe  # noqa: E402
 from tools.appshell.ipc_unify_common import IPC_UNIFY_TOOL_PATH  # noqa: E402
 from tools.appshell.supervisor_hardening_common import (  # noqa: E402
@@ -98,7 +98,7 @@ LIB_TOOL_PATH = "tools/lib/tool_run_lib_stress.py"
 TIME_ANCHOR_TOOL_PATH = "tools/time/tool_verify_longrun_ticks.py"
 ARCH_AUDIT_TOOL_PATH = "tools/audit/tool_run_arch_audit.py"
 VALIDATION_TOOL_PATH = "tools/validation/tool_run_validation.py"
-META_STABILITY_TOOL_PATH = "src/meta/stability/stability_validator.py"
+META_STABILITY_TOOL_PATH = "meta/stability/stability_validator.py"
 MVP_SMOKE_TOOL_PATH = "tools/mvp/tool_run_mvp_smoke.py"
 MVP_STRESS_TOOL_PATH = "tools/mvp/tool_run_all_stress.py"
 MVP_CROSS_PLATFORM_TOOL_PATH = "tools/mvp/tool_run_cross_platform_matrix.py"
@@ -265,7 +265,7 @@ def convergence_step_specs(*, include_cross_platform: bool = True, include_dist_
             "title": "META-STABILITY validator",
             "tool_path": META_STABILITY_TOOL_PATH,
             "rule_id": "INV-ALL-REGISTRIES-TAGGED",
-            "rerun_command": "@'\nfrom src.meta.stability.stability_validator import validate_all_registries\nimport json\nprint(json.dumps(validate_all_registries('.'), indent=2, sort_keys=True))\n'@ | python -",
+            "rerun_command": "@'\nfrom meta.stability.stability_validator import validate_all_registries\nimport json\nprint(json.dumps(validate_all_registries('.'), indent=2, sort_keys=True))\n'@ | python -",
         },
         {
             "step_id": "time_anchor",

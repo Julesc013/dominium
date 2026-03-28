@@ -43,7 +43,7 @@ def _rule(rule_id: str, allow_multi_hop: bool) -> dict:
 
 
 def _create_manifest_route(*, graph: dict, rule: dict, inventory_index: dict):
-    from src.logistics.logistics_engine import create_manifest_and_commitment
+    from logistics.logistics_engine import create_manifest_and_commitment
 
     created = create_manifest_and_commitment(
         graph_row=graph,
@@ -67,8 +67,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.core.graph.routing_engine import route_query_edges
-    from src.logistics.logistics_engine import _core_graph_payload, _core_routing_policy, build_inventory_index
+    from core.graph.routing_engine import route_query_edges
+    from logistics.logistics_engine import _core_graph_payload, _core_routing_policy, build_inventory_index
 
     graph = _graph_payload()
     inventory_index = build_inventory_index(

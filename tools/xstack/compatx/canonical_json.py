@@ -6,7 +6,7 @@ import hashlib
 import json
 from typing import Any
 
-from src.meta_extensions_engine import normalize_extensions_tree
+from meta_extensions_engine import normalize_extensions_tree
 
 
 def canonical_json_text(value: Any) -> str:

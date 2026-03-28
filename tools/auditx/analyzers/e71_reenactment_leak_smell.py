@@ -8,9 +8,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E71_REENACTMENT_LEAK_SMELL"
-COMMITMENT_ENGINE_PATH = "src/materials/commitments/commitment_engine.py"
+COMMITMENT_ENGINE_PATH = "materials/commitments/commitment_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-INSPECTION_OVERLAY_PATH = "src/client/interaction/inspection_overlays.py"
+INSPECTION_OVERLAY_PATH = "client/interaction/inspection_overlays.py"
 REQUIRED_ENGINE_TOKENS = (
     "REFUSAL_REENACTMENT_FORBIDDEN_BY_LAW",
     "\"derived_only\": True",

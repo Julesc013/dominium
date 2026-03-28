@@ -8,7 +8,7 @@ import tempfile
 from typing import Iterable, Mapping
 
 
-from src.release import build_release_manifest, verify_release_manifest, write_release_manifest
+from release import build_release_manifest, verify_release_manifest, write_release_manifest
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

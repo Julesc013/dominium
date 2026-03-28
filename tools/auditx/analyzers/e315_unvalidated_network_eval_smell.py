@@ -16,10 +16,10 @@ WATCH_PREFIXES = (
 )
 
 _ALLOWED_PATHS = {
-    "src/logic/network/logic_network_engine.py",
-    "src/logic/network/logic_network_validator.py",
-    "src/logic/network/instrumentation_binding.py",
-    "src/logic/network/__init__.py",
+    "logic/network/logic_network_engine.py",
+    "logic/network/logic_network_validator.py",
+    "logic/network/instrumentation_binding.py",
+    "logic/network/__init__.py",
 }
 _EXECUTION_TOKENS = (
     "evaluate_logic_network",
@@ -66,7 +66,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-LOGIC-NETWORK-VALIDATED-BEFORE-EVAL"],
-                related_paths=[runtime_rel, "src/logic/network/logic_network_engine.py"],
+                related_paths=[runtime_rel, "logic/network/logic_network_engine.py"],
             )
         )
 
@@ -99,7 +99,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="INVALID",
                     recommended_action="MOVE_TO_PROCESS",
                     related_invariants=["INV-LOGIC-NETWORK-VALIDATED-BEFORE-EVAL"],
-                    related_paths=[rel_path, "src/logic/network/logic_network_validator.py"],
+                    related_paths=[rel_path, "logic/network/logic_network_validator.py"],
                 )
             )
 

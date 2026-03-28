@@ -9,7 +9,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.meta.profile import (
+from meta.profile import (
     apply_override,
     build_profile_binding_row,
     build_profile_row,

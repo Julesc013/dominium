@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E63_NONDETERMINISTIC_ROUTING_SMELL"
-LOGISTICS_ENGINE_PATH = "src/logistics/logistics_engine.py"
+LOGISTICS_ENGINE_PATH = "logistics/logistics_engine.py"
 REQUIRED_TOKENS = (
     "_best_route(",
     "sorted(",

@@ -26,7 +26,7 @@ They do not own business logic, pack loading, negotiation, or truth mutation.
 UI adapters may consume:
 
 - command registry rows
-- `src/ui/ui_model.py` state
+- `ui/ui_model.py` state
 - derived view artifacts from GEO, EARTH, SOL, and related domain view engines
 - structured log events
 - validated LIB manifest summaries and manifest refs
@@ -51,7 +51,7 @@ UI adapters must never:
 
 ## Shared Model Rule
 
-- Rendered menu flows and TUI menu flows must share `src/ui/ui_model.py`.
+- Rendered menu flows and TUI menu flows must share `ui/ui_model.py`.
 - Native adapters, when present, must bind button/menu actions through the same command and selection surfaces.
 - View rendering must consume derived artifacts only.
 
@@ -68,6 +68,6 @@ UI adapters must never:
 
 ## Rendered UI Rule
 
-- The rendered client menu surface must bind through `src/ui/ui_model.py`.
+- The rendered client menu surface must bind through `ui/ui_model.py`.
 - The rendered client session/view surface must consume derived GEO/EARTH/SOL view artifacts only.
 - Rendered UI must always preserve a console or IPC attach path for command fallback.

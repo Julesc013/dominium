@@ -10,7 +10,7 @@ TEST_TAGS = ["strict", "interaction", "action_surface", "epistemic"]
 
 
 def _resolve(repo_root: str, *, entitlements: list[str]):
-    from src.interaction import resolve_action_surfaces
+    from interaction import resolve_action_surfaces
 
     perceived_model = {
         "schema_version": "1.0.0",

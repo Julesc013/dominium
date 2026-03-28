@@ -9,16 +9,16 @@ Replacement Target: legacy reference surface retained without current binding au
 
 Touched Paths:
 - data/registries/process_registry.json
-- src/control/proof/control_proof_bundle.py
-- src/logic/__init__.py
-- src/logic/eval/__init__.py
-- src/logic/eval/common.py
-- src/logic/eval/runtime_state.py
-- src/logic/eval/sense_engine.py
-- src/logic/eval/compute_engine.py
-- src/logic/eval/commit_engine.py
-- src/logic/eval/propagate_engine.py
-- src/logic/eval/logic_eval_engine.py
+- control/proof/control_proof_bundle.py
+- logic/__init__.py
+- logic/eval/__init__.py
+- logic/eval/common.py
+- logic/eval/runtime_state.py
+- logic/eval/sense_engine.py
+- logic/eval/compute_engine.py
+- logic/eval/commit_engine.py
+- logic/eval/propagate_engine.py
+- logic/eval/logic_eval_engine.py
 - tools/logic/tool_replay_logic_window.py
 - tools/logic/tool_run_logic_eval_stress.py
 - tools/xstack/sessionx/process_runtime.py

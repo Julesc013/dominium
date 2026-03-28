@@ -9,8 +9,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E134_SPEC_BYPASS_SMELL"
 RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-CONTROL_REL = "src/control/control_plane_engine.py"
-SPEC_ENGINE_REL = "src/specs/spec_engine.py"
+CONTROL_REL = "control/control_plane_engine.py"
+SPEC_ENGINE_REL = "specs/spec_engine.py"
 
 
 def _norm(path: str) -> str:

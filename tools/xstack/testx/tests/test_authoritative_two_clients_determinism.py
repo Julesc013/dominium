@@ -27,7 +27,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.net.policies.policy_server_authoritative import (
+    from net.policies.policy_server_authoritative import (
         POLICY_ID_SERVER_AUTHORITATIVE,
         build_client_intent_envelope,
         join_client_midstream,

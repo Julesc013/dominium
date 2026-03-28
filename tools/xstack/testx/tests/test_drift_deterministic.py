@@ -23,8 +23,8 @@ def _run_eval(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.models import model_type_rows_by_id
-    from src.time import evaluate_time_mappings, normalize_drift_policy_rows
+    from models import model_type_rows_by_id
+    from engine.time import evaluate_time_mappings, normalize_drift_policy_rows
 
     temporal_payload, temporal_error = _load_json(repo_root, "data/registries/temporal_domain_registry.json")
     mapping_payload, mapping_error = _load_json(repo_root, "data/registries/time_mapping_registry.json")

@@ -13,7 +13,7 @@ def ensure_repo_root(repo_root: str) -> None:
 
 def load_registry(repo_root: str) -> dict:
     ensure_repo_root(repo_root)
-    from src.platform import load_platform_capability_registry
+    from engine.platform import load_platform_capability_registry
 
     payload, error = load_platform_capability_registry(repo_root)
     if error:
@@ -33,7 +33,7 @@ def probe(
     tui: bool | None = None,
 ) -> dict:
     ensure_repo_root(repo_root)
-    from src.platform import probe_platform_descriptor
+    from engine.platform import probe_platform_descriptor
 
     return probe_platform_descriptor(
         repo_root,
@@ -58,7 +58,7 @@ def default_descriptor(
     platform_probe: Mapping[str, object] | None = None,
 ) -> dict:
     ensure_repo_root(repo_root)
-    from src.compat import build_default_endpoint_descriptor
+    from compat import build_default_endpoint_descriptor
 
     return build_default_endpoint_descriptor(
         repo_root,

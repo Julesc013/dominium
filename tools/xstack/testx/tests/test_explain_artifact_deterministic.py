@@ -17,7 +17,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.explain import cached_explain_artifact, generate_explain_artifact
+    from meta.explain import cached_explain_artifact, generate_explain_artifact
 
     build_inputs = {
         "event_id": "event.elec.trip.001",

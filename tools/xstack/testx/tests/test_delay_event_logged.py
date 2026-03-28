@@ -10,7 +10,7 @@ TEST_TAGS = ["fast", "mobility", "traffic", "congestion", "events"]
 
 
 def _seed_two_vehicle_state() -> dict:
-    from src.mobility.vehicle.vehicle_engine import (
+    from mobility.vehicle.vehicle_engine import (
         build_motion_state,
         build_vehicle,
         deterministic_motion_state_ref,

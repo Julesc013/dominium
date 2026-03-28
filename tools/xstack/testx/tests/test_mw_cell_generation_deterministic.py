@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "mw", "worldgen", "determinism"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.geo import generate_worldgen_result
+    from geo import generate_worldgen_result
     from tools.xstack.testx.tests.geo8_testlib import seed_worldgen_state, worldgen_request_row
 
     state = seed_worldgen_state()

@@ -175,7 +175,7 @@ The shell must compose:
 
 - `process.inspect_generate_snapshot`
 - inspection snapshots
-- `src/client/interaction/inspection_overlays.py`
+- `client/interaction/inspection_overlays.py`
 - explain/provenance tools
 
 The shell must not synthesize hidden state by reading runtime internals.

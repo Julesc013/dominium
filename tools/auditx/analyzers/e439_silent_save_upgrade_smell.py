@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "tick_applied",
         "migration_id",
     ),
-    "src/lib/save/save_validator.py": (
+    "lib/save/save_validator.py": (
         "migrate_save_manifest(",
         "allow_save_migration",
         "REFUSAL_SAVE_MIGRATION_REQUIRED",

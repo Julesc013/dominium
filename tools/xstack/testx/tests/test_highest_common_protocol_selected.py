@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "compat", "cap_neg"]
 
 
 def run(repo_root: str):
-    from src.compat import build_endpoint_descriptor, negotiate_endpoint_descriptors
+    from compat import build_endpoint_descriptor, negotiate_endpoint_descriptors
 
     protocol_rows_a = [
         {"protocol_id": "protocol.loopback.session", "min_version": "1.0.0", "max_version": "1.2.0"},

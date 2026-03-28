@@ -39,7 +39,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    canonical_engine_rel = "src/pollution/dispersion_engine.py"
+    canonical_engine_rel = "pollution/dispersion_engine.py"
     canonical_stress_rel = "tools/pollution/tool_run_poll_stress.py"
     engine_text = _read_text(repo_root, canonical_engine_rel)
     stress_text = _read_text(repo_root, canonical_stress_rel)

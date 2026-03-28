@@ -7,9 +7,9 @@ import json
 import os
 from typing import Iterable, Mapping
 
-from src.logic.eval import normalize_logic_eval_state, process_logic_network_evaluate
-from src.logic.signal import canonical_signal_hash, process_signal_emit_pulse, process_signal_set
-from src.system import (
+from logic.eval import normalize_logic_eval_state, process_logic_network_evaluate
+from logic.signal import canonical_signal_hash, process_signal_emit_pulse, process_signal_set
+from system import (
     build_state_vector_definition_row,
     deserialize_state,
     normalize_state_vector_definition_rows,

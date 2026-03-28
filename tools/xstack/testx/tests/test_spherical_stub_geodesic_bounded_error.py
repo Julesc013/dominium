@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.geo import geo_geodesic
+from geo import geo_geodesic
 
 
 TEST_ID = "test_spherical_stub_geodesic_bounded_error"

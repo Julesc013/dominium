@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E55_RENDERER_BACKEND_TRUTH_LEAK_SMELL"
 TARGETS = (
-    "src/client/render/renderers/hw_renderer_gl.py",
-    "src/client/render/snapshot_capture.py",
+    "client/render/renderers/hw_renderer_gl.py",
+    "client/render/snapshot_capture.py",
 )
 FORBIDDEN_PATTERN = re.compile(
     r"\b(truth_model|truthmodel|universe_state|process_runtime|apply_intent|authority_context)\b",
@@ -89,7 +89,7 @@ def run(graph, repo_root, changed_files=None):
                 )
             )
 
-    hw_text = _read_text(repo_root, "src/client/render/renderers/hw_renderer_gl.py")
+    hw_text = _read_text(repo_root, "client/render/renderers/hw_renderer_gl.py")
     for token in (
         "def render_hardware_gl_snapshot(",
         "render_model",
@@ -103,13 +103,13 @@ def run(graph, repo_root, changed_files=None):
                 category="render.renderer_backend_truth_leak_smell",
                 severity="RISK",
                 confidence=0.86,
-                file_path="src/client/render/renderers/hw_renderer_gl.py",
+                file_path="client/render/renderers/hw_renderer_gl.py",
                 line=1,
                 evidence=["hardware renderer backend missing deterministic RenderModel-only token", token],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-HW-RENDERER-RENDERMODEL-ONLY"],
-                related_paths=["src/client/render/renderers/hw_renderer_gl.py"],
+                related_paths=["client/render/renderers/hw_renderer_gl.py"],
             )
         )
 

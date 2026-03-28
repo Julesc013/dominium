@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    spec_engine_rel = "src/specs/spec_engine.py"
+    spec_engine_rel = "specs/spec_engine.py"
     if not _read_text(repo_root, spec_engine_rel):
         findings.append(
             make_finding(

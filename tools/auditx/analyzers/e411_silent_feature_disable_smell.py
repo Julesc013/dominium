@@ -14,16 +14,16 @@ REQUIRED_TOKENS = {
         "compat status",
         "explain.feature_disabled",
     ),
-    "src/compat/negotiation/degrade_enforcer.py": (
+    "compat/negotiation/degrade_enforcer.py": (
         "REFUSAL_COMPAT_FEATURE_DISABLED",
         "def build_compat_status_payload(",
         '"effective_ui_mode"',
     ),
-    "src/server/server_console.py": (
+    "server/server_console.py": (
         "def compat_status(",
         '"compat_rows"',
     ),
-    "src/embodiment/tools/logic_tool.py": (
+    "embodiment/tools/logic_tool.py": (
         "enforce_negotiated_capability",
         '"cap.logic.debug_analyzer"',
     ),

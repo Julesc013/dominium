@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="security.signature_required_but_missing_smell",
                 severity="BLOCKER",
                 confidence=0.99,
-                file_path=rel_path or "src/security/trust/trust_verifier.py",
+                file_path=rel_path or "security/trust/trust_verifier.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "strict_unsigned_not_refused",
                     str(item.get("message", "")).strip() or "strict trust policy is not enforcing required signatures deterministically",
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REFUSE_UNSIGNED_OR_INVALID_ARTIFACTS_UNDER_STRICT_TRUST_POLICY",
                 related_invariants=[RULE_STRICT],
-                related_paths=[rel_path or "src/security/trust/trust_verifier.py", "tools/security/trust_model_common.py"],
+                related_paths=[rel_path or "security/trust/trust_verifier.py", "tools/security/trust_model_common.py"],
             )
         )
     return findings

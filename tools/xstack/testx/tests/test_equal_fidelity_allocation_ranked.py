@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.fidelity import RANK_FAIR_POLICY_ID, arbitrate_fidelity_requests, build_fidelity_request
+    from control.fidelity import RANK_FAIR_POLICY_ID, arbitrate_fidelity_requests, build_fidelity_request
 
     subject_ids = ["subject.alpha", "subject.beta", "subject.gamma", "subject.delta"]
     requests = [

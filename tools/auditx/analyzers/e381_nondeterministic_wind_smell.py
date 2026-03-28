@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E381_NONDETERMINISTIC_WIND_SMELL"
-WIND_ENGINE_REL = "src/worldgen/earth/wind/wind_field_engine.py"
+WIND_ENGINE_REL = "worldgen/earth/wind/wind_field_engine.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
 WIND_PROBE_REL = "tools/worldgen/earth7_probe.py"
 WIND_REPLAY_REL = "tools/worldgen/tool_replay_wind_window.py"

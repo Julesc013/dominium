@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.worldgen.refinement.refinement_cache import build_refinement_cache_key
+    from worldgen.refinement.refinement_cache import build_refinement_cache_key
     from tools.xstack.testx.tests.geo8_testlib import worldgen_cell_key
 
     common = {

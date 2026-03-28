@@ -15,10 +15,10 @@ SOL1_SCOPE_PATHS = (
 )
 
 SOL1_RUNTIME_SCAN_FILES = (
-    "src/astro/illumination/illumination_geometry_engine.py",
-    "src/worldgen/earth/sky/astronomy_proxy_engine.py",
-    "src/worldgen/earth/sky/sky_view_engine.py",
-    "src/worldgen/earth/lighting/illumination_engine.py",
+    "astro/illumination/illumination_geometry_engine.py",
+    "worldgen/earth/sky/astronomy_proxy_engine.py",
+    "worldgen/earth/sky/sky_view_engine.py",
+    "worldgen/earth/lighting/illumination_engine.py",
 )
 
 

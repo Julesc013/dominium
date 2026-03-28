@@ -7,8 +7,8 @@ import json
 import os
 from typing import Iterable, Mapping
 
-from src.logic.compile import compile_logic_network
-from src.system import build_state_vector_definition_row, normalize_state_vector_definition_rows
+from logic.compile import compile_logic_network
+from system import build_state_vector_definition_row, normalize_state_vector_definition_rows
 from tools.logic.tool_replay_logic_window import _load_eval_inputs, _load_json, _write_json, replay_logic_window_from_payload
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

@@ -37,7 +37,7 @@ def seed_virtual_root_registry(source_repo_root: str, temp_root: str) -> str:
 
 def load_vpath_module(repo_root: str):
     ensure_repo_root(repo_root)
-    from src.appshell.paths import virtual_paths
+    from appshell.paths import virtual_paths
 
     return virtual_paths
 

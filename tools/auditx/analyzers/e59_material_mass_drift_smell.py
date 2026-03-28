@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E59_MATERIAL_MASS_DRIFT_SMELL"
 CONSERVATION_CONTRACT_SET_PATH = "data/registries/conservation_contract_set_registry.json"
-LEDGER_ENGINE_PATH = "src/reality/ledger/ledger_engine.py"
+LEDGER_ENGINE_PATH = "reality/ledger/ledger_engine.py"
 
 
 def _norm(path: str) -> str:

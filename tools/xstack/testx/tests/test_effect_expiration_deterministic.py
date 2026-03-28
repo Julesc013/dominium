@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.effects import build_effect, prune_expired_effect_rows
+    from control.effects import build_effect, prune_expired_effect_rows
 
     target_id = "portal.alpha"
     rows = [

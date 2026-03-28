@@ -18,7 +18,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.lib.install import registry_add_install, validate_install_manifest  # noqa: E402
+from lib.install import registry_add_install, validate_install_manifest  # noqa: E402
 from tools.appshell.appshell4_probe import run_ipc_attach_probe  # noqa: E402
 from tools.release.ui_mode_resolution_common import build_test_probe, selection_for_product  # noqa: E402
 from tools.setup.setup_cli import install_manifest_payload  # noqa: E402
@@ -98,7 +98,7 @@ PRODUCT_RUNTIME_ROWS = (
         "product_id": "server",
         "display_name": "Server",
         "kind": "server",
-        "entry_module": "src.server.server_main",
+        "entry_module": "server.server_main",
         "entry_function": "main",
         "invocation_handler": "direct",
         "portable_executable_name": "server",
@@ -414,10 +414,10 @@ def _patched_probe_payload(probe_payload: Mapping[str, object] | None):
     if probe_payload is None:
         yield
         return
-    import src.appshell.ui_mode_selector as ui_mode_selector
-    import src.compat.capability_negotiation as capability_negotiation
-    import src.compat.descriptor.descriptor_engine as descriptor_engine
-    import src.platform.platform_probe as platform_probe
+    import appshell.ui_mode_selector as ui_mode_selector
+    import compat.capability_negotiation as capability_negotiation
+    import compat.descriptor.descriptor_engine as descriptor_engine
+    import engine.platform.platform_probe as platform_probe
 
     replacements = {
         (ui_mode_selector, "probe_platform_descriptor"): ui_mode_selector.probe_platform_descriptor,
@@ -1054,7 +1054,7 @@ def render_product_boot_matrix_doc(report: Mapping[str, object]) -> str:
             "",
             "## Notes",
             "",
-            "- Product mode selection must route through `src/appshell/ui_mode_selector.py` with platform capabilities sourced from `src/platform/platform_probe.py`.",
+            "- Product mode selection must route through `appshell/ui_mode_selector.py` with platform capabilities sourced from `engine/platform/platform_probe.py`.",
             "- `compat-status` must expose both `mode_selection` and `install_discovery` for every product.",
             "- Portable runs resolve from `install.manifest.json` adjacent to the product executable.",
             "- Installed runs resolve through `install_registry.json` without bypassing virtual paths, negotiation, or validation surfaces.",

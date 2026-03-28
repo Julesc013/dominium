@@ -25,7 +25,7 @@ def _fingerprints_from_runtime(runtime: dict):
 
 
 def _run_sequence(repo_root: str, runtime: dict):
-    from src.net.anti_cheat import check_authority_integrity, check_replay_protection, check_sequence_integrity, check_state_integrity
+    from net.anti_cheat import check_authority_integrity, check_replay_protection, check_sequence_integrity, check_state_integrity
 
     check_sequence_integrity(
         repo_root=repo_root,

@@ -118,8 +118,8 @@ def capture_bundle(
 ) -> dict:
     ensure_repo_on_path(repo_root)
 
-    from src.compat import emit_product_descriptor
-    from src.diag import write_repro_bundle
+    from compat import emit_product_descriptor
+    from diag import write_repro_bundle
     from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL
 
     descriptor = emit_product_descriptor(repo_root, product_id="client")

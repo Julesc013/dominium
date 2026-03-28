@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E402_WALLCLOCK_TICK_SMELL"
 REQUIRED_TOKENS = {
-    "src/server/runtime/tick_loop.py": (
+    "server/runtime/tick_loop.py": (
         "advance_authoritative_tick(",
         "proof_anchor_interval_ticks",
         "build_server_proof_anchor(",
@@ -26,7 +26,7 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "src/server/runtime/tick_loop.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
+    "server/runtime/tick_loop.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
     "tools/server/server_mvp0_probe.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
 }
 

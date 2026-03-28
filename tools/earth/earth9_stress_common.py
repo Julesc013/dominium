@@ -10,12 +10,12 @@ from typing import Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from src.client.ui.map_views import build_map_view_surface, debug_view_limit_for_compute_profile
-from src.geo import build_position_ref
-from src.worldgen.earth.water import build_water_layer_source_payloads
-from src.worldgen.earth import DEFAULT_EARTH_CLIMATE_PARAMS_ID, DEFAULT_TIDE_PARAMS_ID, earth_climate_params_rows, tide_params_rows
-from src.worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key
-from src.worldgen.mw.system_query_engine import list_systems_in_cell
+from client.ui.map_views import build_map_view_surface, debug_view_limit_for_compute_profile
+from geo import build_position_ref
+from worldgen.earth.water import build_water_layer_source_payloads
+from worldgen.earth import DEFAULT_EARTH_CLIMATE_PARAMS_ID, DEFAULT_TIDE_PARAMS_ID, earth_climate_params_rows, tide_params_rows
+from worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key
+from worldgen.mw.system_query_engine import list_systems_in_cell
 from tools.embodiment.earth6_probe import (
     collision_hash,
     direct_surface_query_report,
@@ -85,7 +85,7 @@ from tools.worldgen.earth8_probe import (
     verify_water_view_replay,
     water_hash,
 )
-from src.client.ui.teleport_controller import build_teleport_plan
+from client.ui.teleport_controller import build_teleport_plan
 
 
 DEFAULT_EARTH9_SEED = 91029

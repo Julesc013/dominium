@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.ui.teleport_controller import RNG_UI_TELEPORT_RANDOM_STAR, build_teleport_plan
+    from client.ui.teleport_controller import RNG_UI_TELEPORT_RANDOM_STAR, build_teleport_plan
     from tools.xstack.testx.tests.ux0_testlib import candidate_system_rows
 
     rows = candidate_system_rows(repo_root)

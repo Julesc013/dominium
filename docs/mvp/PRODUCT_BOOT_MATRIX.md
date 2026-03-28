@@ -24,7 +24,7 @@ This matrix defines the minimum standalone product behaviors required for `PROD-
 
 ## Notes
 
-- Product mode selection must route through `src/appshell/ui_mode_selector.py` with platform capabilities sourced from `src/platform/platform_probe.py`.
+- Product mode selection must route through `appshell/ui_mode_selector.py` with platform capabilities sourced from `engine/platform/platform_probe.py`.
 - `compat-status` must expose both `mode_selection` and `install_discovery` for every product.
 - Portable runs resolve from `install.manifest.json` adjacent to the product executable.
 - Installed runs resolve through `install_registry.json` without bypassing virtual paths, negotiation, or validation surfaces.

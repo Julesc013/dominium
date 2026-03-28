@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E22_MEMORY_TRUTH_LEAK_SMELL"
-TARGET_PATH = "src/epistemics/memory/memory_kernel.py"
+TARGET_PATH = "epistemics/memory/memory_kernel.py"
 FORBIDDEN_PATTERN = re.compile(r"\b(truth_model|truthmodel|universe_state|registry_payloads)\b", re.IGNORECASE)
 
 

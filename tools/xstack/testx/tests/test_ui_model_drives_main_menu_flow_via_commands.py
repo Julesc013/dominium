@@ -11,7 +11,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.ui_reconcile_testlib import ensure_repo_on_path
 
     ensure_repo_on_path(repo_root)
-    from src.ui import MENU_STATE_MAIN, MENU_STATE_START_SESSION, build_ui_model
+    from ui import MENU_STATE_MAIN, MENU_STATE_START_SESSION, build_ui_model
 
     main_model = build_ui_model(repo_root=repo_root, product_id="client", current_state_id=MENU_STATE_MAIN, seed_value="456")
     start_model = build_ui_model(

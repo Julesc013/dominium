@@ -14,7 +14,7 @@ def base_scenario(
     active_project_count: int = 80,
     player_count: int = 64,
 ) -> dict:
-    from src.materials.performance.mat_scale_engine import default_factory_planet_scenario
+    from materials.performance.mat_scale_engine import default_factory_planet_scenario
 
     return default_factory_planet_scenario(
         seed=int(seed),
@@ -61,7 +61,7 @@ def run_report(
     tick_count: int = 16,
     multiplayer_policy_id: str = "policy.net.server_authoritative",
 ) -> dict:
-    from src.materials.performance.mat_scale_engine import run_stress_simulation
+    from materials.performance.mat_scale_engine import run_stress_simulation
 
     return run_stress_simulation(
         scenario_row=dict(scenario or {}),

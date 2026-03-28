@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E7_EPISTEMIC_LEAK_SMELL"
 TARGET_NET_FILES = (
-    "src/net/policies/policy_server_authoritative.py",
-    "src/net/srz/shard_coordinator.py",
+    "net/policies/policy_server_authoritative.py",
+    "net/srz/shard_coordinator.py",
 )
 REQUIRED_NET_TOKENS = (
     "schema_name=\"net_perceived_delta\"",

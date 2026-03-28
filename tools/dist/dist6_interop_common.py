@@ -16,7 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.compat.capability_negotiation import (
+from compat.capability_negotiation import (
     COMPAT_MODE_FULL,
     COMPAT_MODE_READ_ONLY,
     COMPAT_MODE_REFUSE,
@@ -24,19 +24,19 @@ from src.compat.capability_negotiation import (
     negotiate_endpoint_descriptors,
     verify_negotiation_record,
 )
-from src.compat.negotiation.degrade_enforcer import build_degrade_runtime_state
-from src.lib.save import (
+from compat.negotiation.degrade_enforcer import build_degrade_runtime_state
+from lib.save import (
     deterministic_fingerprint as save_deterministic_fingerprint,
     evaluate_save_open,
     normalize_save_manifest,
     write_json as write_save_json,
 )
-from src.platform.platform_probe import (
+from engine.platform.platform_probe import (
     PLATFORM_ID_LINUX_GTK,
     probe_platform_descriptor,
     project_feature_capabilities_for_platform,
 )
-from src.universe.universe_identity_builder import build_universe_contract_bundle_payload
+from universe.universe_identity_builder import build_universe_contract_bundle_payload
 from tools.dist.dist_tree_common import (
     DEFAULT_PLATFORM_TAG,
     DEFAULT_RELEASE_CHANNEL,

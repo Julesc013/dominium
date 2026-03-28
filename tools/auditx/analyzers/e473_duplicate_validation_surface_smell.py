@@ -12,7 +12,7 @@ if REPO_ROOT_HINT not in os.sys.path:
 
 
 from analyzers.base import make_finding
-from src.validation import validation_surface_findings
+from validation import validation_surface_findings
 
 
 ANALYZER_ID = "E473_DUPLICATE_VALIDATION_SURFACE_SMELL"

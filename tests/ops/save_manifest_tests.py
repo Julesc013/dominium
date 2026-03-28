@@ -10,7 +10,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.lib.save import (
+from lib.save import (
     deterministic_fingerprint,
     migrate_save_manifest,
     normalize_save_manifest,

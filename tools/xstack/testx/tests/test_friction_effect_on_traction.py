@@ -45,7 +45,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.fields import build_field_cell, build_field_layer
+    from fields import build_field_cell, build_field_layer
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.cohort_testlib import base_state
 

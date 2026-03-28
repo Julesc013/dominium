@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
 
     schema_rel = "schema/system/boundary_invariant.schema"
     registry_rel = "data/registries/boundary_invariant_template_registry.json"
-    validation_rel = "src/system/system_validation_engine.py"
+    validation_rel = "system/system_validation_engine.py"
 
     schema_text = _read_text(repo_root, schema_rel)
     for token in (

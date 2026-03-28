@@ -16,7 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
-from src.compat.data_format_loader import stamp_artifact_metadata  # noqa: E402
+from compat.data_format_loader import stamp_artifact_metadata  # noqa: E402
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID  # noqa: E402
 from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_canonical_json  # noqa: E402
 from tools.xstack.sessionx.runner import (  # noqa: E402

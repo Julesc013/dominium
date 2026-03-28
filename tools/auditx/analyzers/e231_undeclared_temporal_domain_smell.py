@@ -16,11 +16,11 @@ _REQUIRED_TOKENS = {
     "schema/core/schedule.schema": (
         "temporal_domain_id",
     ),
-    "src/core/schedule/schedule_engine.py": (
+    "core/schedule/schedule_engine.py": (
         "_normalize_temporal_domain_id(",
         "\"temporal_domain_id\": temporal_domain_id",
     ),
-    "src/signals/aggregation/aggregation_engine.py": (
+    "signals/aggregation/aggregation_engine.py": (
         "_normalize_temporal_domain_id(",
         "\"temporal_domain_id\": _normalize_temporal_domain_id(",
     ),

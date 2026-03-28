@@ -10,7 +10,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Anti-Cheat Policy Framework
 
-Implementation Status: Implemented in `src/net/anti_cheat/anti_cheat_engine.py` and integrated with authoritative + SRZ hybrid policy paths.
+Implementation Status: Implemented in `net/anti_cheat/anti_cheat_engine.py` and integrated with authoritative + SRZ hybrid policy paths.
 
 ## Purpose
 Define anti-cheat as modular, policy-driven components.

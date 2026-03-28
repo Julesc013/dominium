@@ -13,9 +13,9 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.appshell.command_registry import load_command_registry
-from src.appshell.commands.command_engine import REFUSAL_TO_EXIT_REGISTRY_REL
-from src.tools import TOOL_REFERENCE_PATH, build_tool_surface_report
+from appshell.command_registry import load_command_registry
+from appshell.commands.command_engine import REFUSAL_TO_EXIT_REGISTRY_REL
+from tools import TOOL_REFERENCE_PATH, build_tool_surface_report
 
 
 def _read_json(path: str) -> tuple[dict, str]:

@@ -15,7 +15,7 @@ from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
 from tools.xstack.sessionx.universe_physics import write_null_boot_artifacts
-from src.modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
+from modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
 
 from .bundle_profile import resolve_bundle_selection
 from .constants import (

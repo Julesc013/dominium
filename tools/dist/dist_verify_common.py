@@ -9,7 +9,7 @@ import subprocess
 import sys
 from typing import Iterable, Mapping, Sequence
 
-from src.release import DEFAULT_RELEASE_MANIFEST_REL, load_release_manifest, verify_release_manifest
+from release import DEFAULT_RELEASE_MANIFEST_REL, load_release_manifest, verify_release_manifest
 from tools.dist.dist_tree_common import (
     DEFAULT_OUTPUT_ROOT,
     DEFAULT_PLATFORM_TAG,

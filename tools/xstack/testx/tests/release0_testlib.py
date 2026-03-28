@@ -7,7 +7,7 @@ SAMPLE_CONTENT_HASH = "0123456789abcdef0123456789abcdef0123456789abcdef012345678
 
 
 def sample_build_metadata(repo_root: str, product_id: str, *, source_revision_id: str = "rev.test", feature_capability: str = "") -> dict:
-    from src.release import build_product_build_metadata
+    from release import build_product_build_metadata
 
     override = None
     if feature_capability:

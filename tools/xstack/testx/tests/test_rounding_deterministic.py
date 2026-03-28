@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.numeric import deterministic_divide, deterministic_mul_div
+    from meta.numeric import deterministic_divide, deterministic_mul_div
 
     sample_ops = [
         (17, 3, "truncate"),

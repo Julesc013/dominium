@@ -13,7 +13,7 @@ REQUIRED_TOKENS = {
         "Produce a deterministic `PackCompatibilityReport`.",
         "Generate a deterministic `pack_lock.json` when the report is valid.",
     ),
-    "src/packs/compat/pack_verification_pipeline.py": (
+    "packs/compat/pack_verification_pipeline.py": (
         "def verify_pack_set(",
         "merge_overlay_view(",
         "build_verified_pack_lock(",

@@ -20,14 +20,14 @@ SCAN_REPORT_DOC_REL = os.path.join("docs", "audit", "CONCURRENCY_SCAN_REPORT.md"
 BASELINE_DOC_REL = os.path.join("docs", "audit", "CONCURRENCY_CONTRACT_BASELINE.md")
 REPORT_JSON_REL = os.path.join("data", "audit", "concurrency_contract_report.json")
 POLICY_REGISTRY_REL = os.path.join("data", "registries", "concurrency_policy_registry.json")
-CANONICAL_MERGE_REL = os.path.join("src", "engine", "concurrency", "canonical_merge.py")
+CANONICAL_MERGE_REL = os.path.join("engine", "concurrency", "canonical_merge.py")
 RULE_TRUTH = "INV-NO-PARALLEL-TRUTH-WITHOUT-SHARD-MERGE"
 RULE_DERIVED = "INV-PARALLEL-DERIVED-MUST-CANONICALIZE"
 LAST_REVIEWED = "2026-03-14"
 
 ALLOWED_PARALLEL_ZONES = {
-    "src/appshell/ipc/ipc_endpoint_server.py": "Dedicated local IPC serving thread; no truth mutation.",
-    "src/appshell/supervisor/supervisor_engine.py": "Derived log/status aggregation only; merge order canonicalized before persistence.",
+    "appshell/ipc/ipc_endpoint_server.py": "Dedicated local IPC serving thread; no truth mutation.",
+    "appshell/supervisor/supervisor_engine.py": "Derived log/status aggregation only; merge order canonicalized before persistence.",
     "tools/xstack/core/scheduler.py": "Validation and audit execution only; ready and final results are canonically ordered.",
 }
 FORBIDDEN_PARALLEL_ZONES = {
@@ -190,8 +190,8 @@ def concurrency_contract_violations(repo_root: str) -> list[dict]:
             continue
         violations.append({"code": "missing_required_file", "message": message, "file_path": rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
-        ("src/appshell/supervisor/supervisor_engine.py", "canonicalize_parallel_mapping_rows(", "supervisor derived log merge must canonicalize output ordering", RULE_DERIVED),
-        ("src/appshell/supervisor/supervisor_engine.py", "build_field_sort_key(", "supervisor derived log merge must use the canonical merge key builder", RULE_DERIVED),
+        ("appshell/supervisor/supervisor_engine.py", "canonicalize_parallel_mapping_rows(", "supervisor derived log merge must canonicalize output ordering", RULE_DERIVED),
+        ("appshell/supervisor/supervisor_engine.py", "build_field_sort_key(", "supervisor derived log merge must use the canonical merge key builder", RULE_DERIVED),
         ("tools/xstack/core/scheduler.py", "ready.sort(", "parallel validation scheduler must canonicalize ready-node ordering", RULE_DERIVED),
         ("tools/xstack/core/scheduler.py", "ordered = sorted(", "parallel validation scheduler must canonicalize final result ordering", RULE_DERIVED),
         ("tools/xstack/sessionx/scheduler.py", "\"worker_count_effective\": 1", "truth scheduler must not silently enable parallel truth execution", RULE_TRUTH),

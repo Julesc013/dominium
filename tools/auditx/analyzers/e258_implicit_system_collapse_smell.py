@@ -39,8 +39,8 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    collapse_rel = "src/system/system_collapse_engine.py"
-    expand_rel = "src/system/system_expand_engine.py"
+    collapse_rel = "system/system_collapse_engine.py"
+    expand_rel = "system/system_expand_engine.py"
 
     runtime_text = _read_text(repo_root, runtime_rel)
     for token in (

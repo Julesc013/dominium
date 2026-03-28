@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from src.compat.migration_lifecycle import (
+from compat.migration_lifecycle import (
     ARTIFACT_KIND_BLUEPRINT,
     ARTIFACT_KIND_IDS,
     ARTIFACT_KIND_SAVE,

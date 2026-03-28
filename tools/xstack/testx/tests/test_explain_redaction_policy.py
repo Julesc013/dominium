@@ -17,7 +17,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.explain import build_explain_artifact, redact_explain_artifact
+    from meta.explain import build_explain_artifact, redact_explain_artifact
 
     base = build_explain_artifact(
         explain_id="explain.test.redaction.001",

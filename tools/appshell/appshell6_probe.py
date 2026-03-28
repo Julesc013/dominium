@@ -14,7 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.appshell.supervisor import (  # noqa: E402
+from appshell.supervisor import (  # noqa: E402
     SUPERVISOR_AGGREGATED_LOG_REL,
     SUPERVISOR_RUN_MANIFEST_REL,
     attach_supervisor_children,

@@ -71,7 +71,7 @@ def seed_signal_state(
     machine_id: str = "state_machine.safety.signal",
     initial_aspect: str = "clear",
 ) -> dict:
-    from src.mobility.signals import build_signal_state_machine
+    from mobility.signals import build_signal_state_machine
 
     out = copy.deepcopy(state)
     out["mobility_signals"] = [

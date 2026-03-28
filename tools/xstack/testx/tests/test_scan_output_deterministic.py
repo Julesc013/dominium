@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.embodiment import build_scan_result
+    from embodiment import build_scan_result
     from tools.xstack.testx.tests.emb1_testlib import authority_context, field_values, inspection_snapshot, property_origin_result, selection
 
     auth = authority_context(entitlements=["ent.tool.scan"])

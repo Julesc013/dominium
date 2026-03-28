@@ -233,26 +233,26 @@ CIV_MUTATION_ALLOWED_PREFIXES = (
 )
 
 REPRESENTATION_RENDER_ONLY_FILES = (
-    "src/client/render/render_model_adapter.py",
-    "src/client/render/representation_resolver.py",
+    "client/render/render_model_adapter.py",
+    "client/render/representation_resolver.py",
     "tools/xstack/sessionx/render_model.py",
 )
 
 RENDERER_RENDERMODEL_ONLY_FILES = (
-    "src/client/render/render_model_adapter.py",
-    "src/client/render/representation_resolver.py",
-    "src/client/render/snapshot_capture.py",
-    "src/client/render/renderers/null_renderer.py",
-    "src/client/render/renderers/software_renderer.py",
+    "client/render/render_model_adapter.py",
+    "client/render/representation_resolver.py",
+    "client/render/snapshot_capture.py",
+    "client/render/renderers/null_renderer.py",
+    "client/render/renderers/software_renderer.py",
     "tools/xstack/sessionx/render_model.py",
     "tools/render/tool_render_capture.py",
     "tools/render/render_cli.py",
 )
 
 RENDER_SNAPSHOT_DERIVED_FILES = (
-    "src/client/render/snapshot_capture.py",
-    "src/client/render/renderers/null_renderer.py",
-    "src/client/render/renderers/software_renderer.py",
+    "client/render/snapshot_capture.py",
+    "client/render/renderers/null_renderer.py",
+    "client/render/renderers/software_renderer.py",
     "tools/render/tool_render_capture.py",
 )
 
@@ -552,20 +552,20 @@ BOUNDARY_BLOCKER_RULE_IDS = (
 )
 
 PLATFORM_ABSTRACTION_FILES = (
-    "src/platform/__init__.py",
-    "src/platform/platform_window.py",
-    "src/platform/platform_input.py",
-    "src/platform/platform_gfx.py",
-    "src/platform/platform_audio.py",
-    "src/platform/platform_input_routing.py",
+    "engine/platform/__init__.py",
+    "engine/platform/platform_window.py",
+    "engine/platform/platform_input.py",
+    "engine/platform/platform_gfx.py",
+    "engine/platform/platform_audio.py",
+    "engine/platform/platform_input_routing.py",
 )
 
 HW_RENDERER_RENDERMODEL_ONLY_FILES = (
-    "src/client/render/renderers/hw_renderer_gl.py",
-    "src/client/render/snapshot_capture.py",
+    "client/render/renderers/hw_renderer_gl.py",
+    "client/render/snapshot_capture.py",
 )
 
-REPRESENTATION_DATA_DRIVEN_FILE = "src/client/render/representation_resolver.py"
+REPRESENTATION_DATA_DRIVEN_FILE = "client/render/representation_resolver.py"
 REPRESENTATION_DATA_DRIVEN_REQUIRED_TOKENS = (
     "representation_rule_registry",
     "_rule_rows(",
@@ -582,17 +582,17 @@ COSMETIC_SEMANTIC_FORBIDDEN_TOKENS = (
 )
 
 INTERACTION_UI_SURFACE_FILES = (
-    "src/client/interaction/affordance_generator.py",
-    "src/client/interaction/interaction_dispatch.py",
-    "src/client/interaction/preview_generator.py",
-    "src/client/interaction/inspection_overlays.py",
-    "src/client/interaction/interaction_panel.py",
+    "client/interaction/affordance_generator.py",
+    "client/interaction/interaction_dispatch.py",
+    "client/interaction/preview_generator.py",
+    "client/interaction/inspection_overlays.py",
+    "client/interaction/interaction_panel.py",
     "tools/xstack/sessionx/interaction.py",
     "tools/interaction/interaction_cli.py",
 )
 
 PUBLIC_INTERACTION_ENTRYPOINT_REQUIREMENTS = {
-    "src/client/interaction/interaction_dispatch.py": (
+    "client/interaction/interaction_dispatch.py": (
         "def run_interaction_command(",
         "def build_interaction_control_intent(",
         "build_control_intent(",
@@ -613,15 +613,15 @@ UI_DIRECT_PROCESS_SCAN_ROOTS = (
 )
 
 UI_DIRECT_PROCESS_ALLOWED_FILES = (
-    "src/client/interaction/interaction_dispatch.py",
+    "client/interaction/interaction_dispatch.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/testx/tests/",
     "tools/auditx/analyzers/",
 )
 
-INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "src/client/interaction/interaction_dispatch.py"
-INTERACTION_AFFORDANCE_FILE = "src/client/interaction/affordance_generator.py"
-ACTION_SURFACE_ENGINE_FILE = "src/interaction/action_surface_engine.py"
+INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "client/interaction/interaction_dispatch.py"
+INTERACTION_AFFORDANCE_FILE = "client/interaction/affordance_generator.py"
+ACTION_SURFACE_ENGINE_FILE = "interaction/action_surface_engine.py"
 ACTION_SURFACE_REGISTRY_FILES = (
     "data/registries/surface_type_registry.json",
     "data/registries/tool_tag_registry.json",
@@ -1033,8 +1033,8 @@ META_STABILITY_SCHEMA_DOC_PATH = "schema/meta/stability_marker.schema"
 META_STABILITY_SCHEMA_JSON_PATH = "schemas/stability_marker.schema.json"
 META_STABILITY_CLASS_REGISTRY_PATH = "data/registries/stability_class_registry.json"
 META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "data/registries/stability_requirements_registry.json"
-META_STABILITY_VALIDATOR_PATH = "src/meta/stability/stability_validator.py"
-META_STABILITY_SCOPE_PATH = "src/meta/stability/stability_scope.py"
+META_STABILITY_VALIDATOR_PATH = "meta/stability/stability_validator.py"
+META_STABILITY_SCOPE_PATH = "meta/stability/stability_scope.py"
 META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_TAGGING_FINAL.md"
 
 TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
@@ -1044,8 +1044,8 @@ TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "schema/time/epoch_anchor_record.schema"
 TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "schemas/tick_t.schema.json"
 TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH = "schemas/epoch_anchor_record.schema.json"
 TIME_ANCHOR_POLICY_REGISTRY_PATH = "data/registries/time_anchor_policy_registry.json"
-TIME_ANCHOR_TICK_MODULE_PATH = "src/time/tick_t.py"
-TIME_ANCHOR_ENGINE_PATH = "src/time/epoch_anchor_engine.py"
+TIME_ANCHOR_TICK_MODULE_PATH = "engine/time/tick_t.py"
+TIME_ANCHOR_ENGINE_PATH = "engine/time/epoch_anchor_engine.py"
 TIME_ANCHOR_VERIFY_TOOL_PATH = "tools/time/tool_verify_longrun_ticks.py"
 TIME_ANCHOR_COMPACTION_TOOL_PATH = "tools/time/tool_compaction_anchor_check.py"
 TIME_ANCHOR_BASELINE_PATH = "docs/audit/TIME_ANCHOR_BASELINE.md"
@@ -1083,14 +1083,14 @@ UI_MODE_RESOLUTION_DOC_PATH = "docs/appshell/UI_MODE_RESOLUTION.md"
 UI_MODE_RESOLUTION_BASELINE_PATH = "docs/audit/UI_MODE_RESOLUTION_BASELINE.md"
 UI_MODE_POLICY_REGISTRY_PATH = "data/registries/ui_mode_policy_registry.json"
 PLATFORM_CAPABILITY_REGISTRY_PATH = "data/registries/platform_capability_registry.json"
-PLATFORM_PROBE_PATH = "src/platform/platform_probe.py"
-PLATFORM_CAPS_PROBE_PATH = "src/platform/platform_caps_probe.py"
+PLATFORM_PROBE_PATH = "engine/platform/platform_probe.py"
+PLATFORM_CAPS_PROBE_PATH = "engine/platform/platform_caps_probe.py"
 PLATFORM_FORMALIZE_TOOL_PATH = "tools/release/tool_run_platform_formalize.py"
 PLATFORM_FORMALIZE_COMMON_PATH = "tools/release/platform_formalize_common.py"
 PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
 PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
 PLATFORM_FORMALIZE_REPORT_PATH = "data/audit/platform_formalize_report.json"
-UI_MODE_SELECTOR_PATH = "src/appshell/ui_mode_selector.py"
+UI_MODE_SELECTOR_PATH = "appshell/ui_mode_selector.py"
 UI_RECONCILE_TOOL_PATH = "tools/release/tool_run_ui_reconcile.py"
 UI_RECONCILE_COMMON_PATH = "tools/release/ui_reconcile_common.py"
 UI_ADAPTER_CONTRACT_PATH = "docs/ui/UI_ADAPTER_CONTRACT.md"
@@ -1098,18 +1098,18 @@ UI_SURFACE_MAP_AUDIT_PATH = "docs/audit/UI_SURFACE_MAP.md"
 UI_RECONCILE_FINAL_PATH = "docs/audit/UI_RECONCILE_FINAL.md"
 UI_SURFACE_REPORT_JSON_PATH = "data/audit/ui_surface_report.json"
 TOOL_SURFACE_TOOL_PATH = "tools/release/tool_run_tool_surface.py"
-TOOL_SURFACE_ADAPTER_PATH = "src/tools/tool_surface_adapter.py"
+TOOL_SURFACE_ADAPTER_PATH = "tools/tool_surface_adapter.py"
 TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
 TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
 TOOL_SURFACE_REFERENCE_PATH = "docs/appshell/TOOL_REFERENCE.md"
 VIRTUAL_ROOT_REGISTRY_PATH = "data/registries/virtual_root_registry.json"
-VIRTUAL_PATHS_ENGINE_PATH = "src/appshell/paths/virtual_paths.py"
+VIRTUAL_PATHS_ENGINE_PATH = "appshell/paths/virtual_paths.py"
 VIRTUAL_PATHS_DOC_PATH = "docs/appshell/VIRTUAL_PATHS.md"
 VIRTUAL_PATHS_TOOL_PATH = "tools/release/tool_run_virtual_paths.py"
 VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
 VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
 VIRTUAL_PATHS_REPORT_PATH = "data/audit/virtual_paths_report.json"
-INSTALL_DISCOVERY_ENGINE_PATH = "src/lib/install/install_discovery_engine.py"
+INSTALL_DISCOVERY_ENGINE_PATH = "lib/install/install_discovery_engine.py"
 INSTALL_DISCOVERY_SCHEMA_PATH = "schema/lib/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
@@ -1136,17 +1136,17 @@ SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
 SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
 SHIM_COMMON_PATH = "tools/release/shim_coverage_common.py"
-PATH_SHIMS_PATH = "src/compat/shims/path_shims.py"
-FLAG_SHIMS_PATH = "src/compat/shims/flag_shims.py"
-TOOL_SHIMS_PATH = "src/compat/shims/tool_shims.py"
-VALIDATION_SHIMS_PATH = "src/compat/shims/validation_shims.py"
+PATH_SHIMS_PATH = "compat/shims/path_shims.py"
+FLAG_SHIMS_PATH = "compat/shims/flag_shims.py"
+TOOL_SHIMS_PATH = "compat/shims/tool_shims.py"
+VALIDATION_SHIMS_PATH = "compat/shims/validation_shims.py"
 VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
 VALIDATION_RESULT_SCHEMA_DOC_PATH = "schema/validation/validation_result.schema"
 VALIDATION_RESULT_SCHEMA_JSON_PATH = "schemas/validation_result.schema.json"
 VALIDATION_SUITE_REGISTRY_PATH = "data/registries/validation_suite_registry.json"
-VALIDATION_ENGINE_PATH = "src/validation/validation_engine.py"
+VALIDATION_ENGINE_PATH = "validation/validation_engine.py"
 VALIDATION_TOOL_PATH = "tools/validation/tool_run_validation.py"
 DOC_INVENTORY_TOOL_PATH = "tools/review/tool_doc_inventory.py"
 DOC_INVENTORY_COMMON_PATH = "tools/review/doc_inventory_common.py"
@@ -1177,7 +1177,7 @@ SOL1_VIEW_SCHEMA_JSON_PATH = "schemas/illumination_view_artifact.schema.json"
 SOL1_EMITTER_REGISTRY_PATH = "data/registries/emitter_kind_registry.json"
 SOL1_RECEIVER_REGISTRY_PATH = "data/registries/receiver_kind_registry.json"
 SOL1_OCCLUSION_POLICY_REGISTRY_PATH = "data/registries/occlusion_policy_registry.json"
-SOL1_ENGINE_PATH = "src/astro/illumination/illumination_geometry_engine.py"
+SOL1_ENGINE_PATH = "astro/illumination/illumination_geometry_engine.py"
 SOL1_REPLAY_TOOL_PATH = "tools/astro/tool_replay_illumination_view.py"
 SOL1_AUDIT_COMMON_PATH = "tools/astro/sol1_audit_common.py"
 
@@ -1191,15 +1191,15 @@ SOL2_POLICY_SCHEMA_JSON_PATH = "schemas/orbit_path_policy.schema.json"
 SOL2_VIEW_SCHEMA_JSON_PATH = "schemas/orbit_view_artifact.schema.json"
 SOL2_PROVIDER_REGISTRY_PATH = "data/registries/ephemeris_provider_registry.json"
 SOL2_POLICY_REGISTRY_PATH = "data/registries/orbit_path_policy_registry.json"
-SOL2_ENGINE_PATH = "src/astro/ephemeris/kepler_proxy_engine.py"
-SOL2_VIEW_ENGINE_PATH = "src/astro/views/orbit_view_engine.py"
+SOL2_ENGINE_PATH = "astro/ephemeris/kepler_proxy_engine.py"
+SOL2_VIEW_ENGINE_PATH = "astro/views/orbit_view_engine.py"
 SOL2_REPLAY_TOOL_PATH = "tools/astro/tool_replay_orbit_view.py"
 SOL2_RUNTIME_COMMON_PATH = "tools/astro/sol2_runtime_common.py"
 SOL2_AUDIT_COMMON_PATH = "tools/astro/sol2_audit_common.py"
 GAL0_RETRO_AUDIT_PATH = "docs/audit/GAL0_RETRO_AUDIT.md"
 GAL0_DOCTRINE_PATH = "docs/worldgen/GALAXY_METADATA_PROXIES.md"
 GAL0_REGION_REGISTRY_PATH = "data/registries/galactic_region_registry.json"
-GAL0_ENGINE_PATH = "src/worldgen/galaxy/galaxy_proxy_field_engine.py"
+GAL0_ENGINE_PATH = "worldgen/galaxy/galaxy_proxy_field_engine.py"
 GAL0_PROBE_PATH = "tools/worldgen/gal0_probe.py"
 GAL0_AUDIT_COMMON_PATH = "tools/worldgen/gal0_audit_common.py"
 GAL0_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_galaxy_proxies.py"
@@ -1209,7 +1209,7 @@ GAL1_DOCTRINE_PATH = "docs/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
 GAL1_SCHEMA_DOC_PATH = "schema/worldgen/galaxy_object_stub.schema"
 GAL1_SCHEMA_JSON_PATH = "schemas/galaxy_object_stub.schema.json"
 GAL1_OBJECT_KIND_REGISTRY_PATH = "data/registries/object_kind_registry.json"
-GAL1_ENGINE_PATH = "src/worldgen/galaxy/galaxy_object_stub_generator.py"
+GAL1_ENGINE_PATH = "worldgen/galaxy/galaxy_object_stub_generator.py"
 GAL1_PROBE_PATH = "tools/worldgen/gal1_probe.py"
 GAL1_AUDIT_COMMON_PATH = "tools/worldgen/gal1_audit_common.py"
 GAL1_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_galaxy_objects.py"
@@ -2194,8 +2194,8 @@ def _append_multiplayer_contract_invariant_findings(
                 )
 
     perceived_required = (
-        ("src/net/policies/policy_server_authoritative.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
-        ("src/net/srz/shard_coordinator.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
+        ("net/policies/policy_server_authoritative.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
+        ("net/srz/shard_coordinator.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
     )
     for rel_path, required_tokens in perceived_required:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -2307,7 +2307,7 @@ def _append_multiplayer_contract_invariant_findings(
                         )
                     )
 
-    authoritative_rel = "src/net/policies/policy_server_authoritative.py"
+    authoritative_rel = "net/policies/policy_server_authoritative.py"
     authoritative_abs = os.path.join(repo_root, authoritative_rel.replace("/", os.sep))
     if not os.path.isfile(authoritative_abs):
         findings.append(
@@ -2359,7 +2359,7 @@ def _append_multiplayer_contract_invariant_findings(
                     )
                 )
 
-    srz_routing_rel = "src/net/srz/routing.py"
+    srz_routing_rel = "net/srz/routing.py"
     srz_routing_abs = os.path.join(repo_root, srz_routing_rel.replace("/", os.sep))
     if not os.path.isfile(srz_routing_abs):
         findings.append(
@@ -2391,7 +2391,7 @@ def _append_multiplayer_contract_invariant_findings(
                     )
                 )
 
-    srz_coordinator_rel = "src/net/srz/shard_coordinator.py"
+    srz_coordinator_rel = "net/srz/shard_coordinator.py"
     srz_coordinator_abs = os.path.join(repo_root, srz_coordinator_rel.replace("/", os.sep))
     if not os.path.isfile(srz_coordinator_abs):
         findings.append(
@@ -3173,7 +3173,7 @@ def _append_reference_evaluator_invariant_findings(
         "ref.compiled_model_verify",
     )
     required_paths = (
-        "src/meta/reference/reference_engine.py",
+        "meta/reference/reference_engine.py",
         "tools/meta/tool_run_reference_suite.py",
     )
     for rel_path in required_paths:
@@ -3315,7 +3315,7 @@ def _append_instrumentation_surface_invariant_findings(
                     )
                 )
 
-    engine_rel = "src/meta/instrumentation/instrumentation_engine.py"
+    engine_rel = "meta/instrumentation/instrumentation_engine.py"
     engine_abs = os.path.join(repo_root, engine_rel.replace("/", os.sep))
     if not os.path.isfile(engine_abs):
         findings.append(
@@ -3379,7 +3379,7 @@ def _append_profile_override_invariant_findings(
     mode_severity = _invariant_severity(profile)
 
     required_paths = (
-        "src/meta/profile/profile_engine.py",
+        "meta/profile/profile_engine.py",
         "schema/meta/profile.schema",
         "schema/meta/profile_binding.schema",
         "schema/meta/exception_event.schema",
@@ -3434,7 +3434,7 @@ def _append_profile_override_invariant_findings(
                     )
                     break
 
-    profile_engine_rel = "src/meta/profile/profile_engine.py"
+    profile_engine_rel = "meta/profile/profile_engine.py"
     profile_engine_text = _file_text(repo_root, profile_engine_rel)
     required_override_tokens = (
         "resolve_profile(",
@@ -3475,7 +3475,7 @@ def _append_profile_override_invariant_findings(
             )
         )
 
-    collapse_rel = "src/system/system_collapse_engine.py"
+    collapse_rel = "system/system_collapse_engine.py"
     collapse_text = _file_text(repo_root, collapse_rel)
     collapse_required = (
         "_statevec_output_guard_status(",
@@ -3512,7 +3512,7 @@ def _append_compute_budget_invariant_findings(
         "schema/meta/compute_consumption_record.schema",
         "data/registries/compute_budget_profile_registry.json",
         "data/registries/compute_degrade_policy_registry.json",
-        "src/meta/compute/compute_budget_engine.py",
+        "meta/compute/compute_budget_engine.py",
     )
     for rel_path in required_paths:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -3530,7 +3530,7 @@ def _append_compute_budget_invariant_findings(
 
     hook_specs = (
         (
-            "src/system/macro/macro_capsule_engine.py",
+            "system/macro/macro_capsule_engine.py",
             (
                 "request_compute(",
                 "compute_consumption_record_rows",
@@ -3538,7 +3538,7 @@ def _append_compute_budget_invariant_findings(
             ),
         ),
         (
-            "src/meta/compile/compile_engine.py",
+            "meta/compile/compile_engine.py",
             (
                 "request_compute(",
                 "compute_consumption_record_row",
@@ -3546,7 +3546,7 @@ def _append_compute_budget_invariant_findings(
             ),
         ),
         (
-            "src/process/software/pipeline_engine.py",
+            "process/software/pipeline_engine.py",
             (
                 "request_compute(",
                 "compute_consumption_record_rows",
@@ -3582,7 +3582,7 @@ def _append_compute_budget_invariant_findings(
                 )
             )
 
-    compute_engine_rel = "src/meta/compute/compute_budget_engine.py"
+    compute_engine_rel = "meta/compute/compute_budget_engine.py"
     compute_engine_text = _file_text(repo_root, compute_engine_rel)
     required_metering_tokens = (
         "build_compute_consumption_record_row(",
@@ -3666,9 +3666,9 @@ def _append_logic_constitution_invariant_findings(
     signal_delay_policy_rel = "data/registries/signal_delay_policy_registry.json"
     signal_noise_policy_rel = "data/registries/signal_noise_policy_registry.json"
     process_registry_rel = "data/registries/process_registry.json"
-    signal_store_rel = "src/logic/signal/signal_store.py"
-    carrier_adapter_rel = "src/logic/signal/carrier_adapters.py"
-    observation_rel = "src/logic/signal/observation.py"
+    signal_store_rel = "logic/signal/signal_store.py"
+    carrier_adapter_rel = "logic/signal/carrier_adapters.py"
+    observation_rel = "logic/signal/observation.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     logic_policy_rel = "data/registries/logic_policy_registry.json"
     compute_registry_rel = "data/registries/compute_budget_profile_registry.json"
@@ -4079,7 +4079,7 @@ def _append_logic_element_invariant_findings(
         ("data/registries/logic_state_machine_registry.json", statevec_rule_id),
         ("packs/core/pack.core.logic_base/data/logic_element_registry.json", compute_rule_id),
         ("packs/core/pack.core.logic_base/data/logic_state_vectors.json", statevec_rule_id),
-        ("src/logic/element/logic_element_validator.py", statevec_rule_id),
+        ("logic/element/logic_element_validator.py", statevec_rule_id),
     )
     for rel_path, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -4205,8 +4205,8 @@ def _append_logic_network_invariant_findings(
         ("data/registries/logic_node_kind_registry.json", substrate_rule_id),
         ("data/registries/logic_edge_kind_registry.json", substrate_rule_id),
         ("data/registries/logic_network_policy_registry.json", loop_rule_id),
-        ("src/logic/network/logic_network_engine.py", substrate_rule_id),
-        ("src/logic/network/logic_network_validator.py", loop_rule_id),
+        ("logic/network/logic_network_engine.py", substrate_rule_id),
+        ("logic/network/logic_network_validator.py", loop_rule_id),
     )
     for rel_path, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -4222,9 +4222,9 @@ def _append_logic_network_invariant_findings(
             )
         )
 
-    engine_rel = "src/logic/network/logic_network_engine.py"
+    engine_rel = "logic/network/logic_network_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
-    if "src.core.graph.network_graph_engine" not in engine_text or "normalize_network_graph" not in engine_text:
+    if "core.graph.network_graph_engine" not in engine_text or "normalize_network_graph" not in engine_text:
         findings.append(
             _finding(
                 severity=severity,
@@ -4275,7 +4275,7 @@ def _append_logic_network_invariant_findings(
             )
         )
 
-    validator_rel = "src/logic/network/logic_network_validator.py"
+    validator_rel = "logic/network/logic_network_validator.py"
     validator_text = _file_text(repo_root, validator_rel)
     validator_requirements = (
         ("REFUSAL_LOGIC_LOOP_DETECTED", "logic loop policy must refuse forbidden topologies explicitly"),
@@ -4372,10 +4372,10 @@ def _append_logic_network_invariant_findings(
         "commit_logic_network",
     )
     allowed_eval_paths = {
-        "src/logic/network/logic_network_engine.py",
-        "src/logic/network/logic_network_validator.py",
-        "src/logic/network/instrumentation_binding.py",
-        "src/logic/network/__init__.py",
+        "logic/network/logic_network_engine.py",
+        "logic/network/logic_network_validator.py",
+        "logic/network/instrumentation_binding.py",
+        "logic/network/__init__.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -4422,11 +4422,11 @@ def _append_logic_eval_invariant_findings(
         ("schema/logic/logic_network_runtime_state.schema", budget_rule_id),
         ("schema/logic/logic_eval_record.schema", budget_rule_id),
         ("schema/logic/logic_throttle_event.schema", budget_rule_id),
-        ("src/logic/eval/sense_engine.py", budget_rule_id),
-        ("src/logic/eval/compute_engine.py", budget_rule_id),
-        ("src/logic/eval/commit_engine.py", state_rule_id),
-        ("src/logic/eval/propagate_engine.py", signal_rule_id),
-        ("src/logic/eval/logic_eval_engine.py", budget_rule_id),
+        ("logic/eval/sense_engine.py", budget_rule_id),
+        ("logic/eval/compute_engine.py", budget_rule_id),
+        ("logic/eval/commit_engine.py", state_rule_id),
+        ("logic/eval/propagate_engine.py", signal_rule_id),
+        ("logic/eval/logic_eval_engine.py", budget_rule_id),
         ("tools/logic/tool_replay_logic_window.py", budget_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -4443,7 +4443,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    compute_rel = "src/logic/eval/compute_engine.py"
+    compute_rel = "logic/eval/compute_engine.py"
     compute_text = _file_text(repo_root, compute_rel)
     for token, message in (
         ("request_logic_element_compute(", "logic evaluation must meter every element through META-COMPUTE"),
@@ -4463,7 +4463,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    engine_rel = "src/logic/eval/logic_eval_engine.py"
+    engine_rel = "logic/eval/logic_eval_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     for token, message, rule_id in (
         ("build_logic_sense_snapshot(", "logic evaluation must begin with deterministic SENSE snapshots", budget_rule_id),
@@ -4486,7 +4486,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    commit_rel = "src/logic/eval/commit_engine.py"
+    commit_rel = "logic/eval/commit_engine.py"
     commit_text = _file_text(repo_root, commit_rel)
     for token, message in (
         ("process_statevec_update(", "logic COMMIT must use the canonical process.statevec_update path"),
@@ -4505,7 +4505,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    propagate_rel = "src/logic/eval/propagate_engine.py"
+    propagate_rel = "logic/eval/propagate_engine.py"
     propagate_text = _file_text(repo_root, propagate_rel)
     for token in ("process_signal_set_fn(", "process_signal_emit_pulse_fn("):
         if token in propagate_text:
@@ -4567,11 +4567,11 @@ def _append_logic_eval_invariant_findings(
         re.compile(r'\["coupling_change_rows"\]\s*='),
     )
     for rel_path in (
-        "src/logic/eval/sense_engine.py",
-        "src/logic/eval/compute_engine.py",
-        "src/logic/eval/commit_engine.py",
-        "src/logic/eval/propagate_engine.py",
-        "src/logic/eval/logic_eval_engine.py",
+        "logic/eval/sense_engine.py",
+        "logic/eval/compute_engine.py",
+        "logic/eval/commit_engine.py",
+        "logic/eval/propagate_engine.py",
+        "logic/eval/logic_eval_engine.py",
     ):
         text = _file_text(repo_root, rel_path)
         for pattern in forbidden_signal_patterns:
@@ -4591,9 +4591,9 @@ def _append_logic_eval_invariant_findings(
             break
 
     for rel_path in (
-        "src/logic/eval/sense_engine.py",
-        "src/logic/eval/compute_engine.py",
-        "src/logic/eval/propagate_engine.py",
+        "logic/eval/sense_engine.py",
+        "logic/eval/compute_engine.py",
+        "logic/eval/propagate_engine.py",
     ):
         text = _file_text(repo_root, rel_path)
         for token in ("serialize_state(", "process_statevec_update("):
@@ -4630,9 +4630,9 @@ def _append_logic_timing_invariant_findings(
         ("schema/logic/timing_violation_event.schema", explain_rule_id),
         ("schema/logic/watchdog_timeout_event.schema", explain_rule_id),
         ("data/registries/timing_pattern_registry.json", delay_rule_id),
-        ("src/logic/timing/oscillation_engine.py", explain_rule_id),
-        ("src/logic/timing/pattern_engine.py", explain_rule_id),
-        ("src/logic/timing/constraint_engine.py", delay_rule_id),
+        ("logic/timing/oscillation_engine.py", explain_rule_id),
+        ("logic/timing/pattern_engine.py", explain_rule_id),
+        ("logic/timing/constraint_engine.py", delay_rule_id),
         ("tools/logic/tool_replay_timing_window.py", explain_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -4673,7 +4673,7 @@ def _append_logic_timing_invariant_findings(
             )
         )
 
-    propagate_rel = "src/logic/eval/propagate_engine.py"
+    propagate_rel = "logic/eval/propagate_engine.py"
     propagate_text = _file_text(repo_root, propagate_rel)
     for token in ("evaluate_time_mappings(", "temporal_domain_registry_payload", "time_mapping_registry_payload"):
         if token in propagate_text:
@@ -4689,7 +4689,7 @@ def _append_logic_timing_invariant_findings(
             )
         )
 
-    engine_rel = "src/logic/eval/logic_eval_engine.py"
+    engine_rel = "logic/eval/logic_eval_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     for token, message, rule_id in (
         ("detect_network_oscillation(", "logic evaluation must run deterministic oscillation detection", explain_rule_id),
@@ -4788,10 +4788,10 @@ def _append_logic_compile_invariant_findings(
     required_files = (
         ("docs/logic/LOGIC_COMPILATION_MODEL.md", proof_rule_id),
         ("data/registries/logic_compile_policy_registry.json", deterministic_rule_id),
-        ("src/logic/compile/logic_compiler.py", deterministic_rule_id),
-        ("src/logic/compile/logic_proof_engine.py", proof_rule_id),
-        ("src/logic/eval/logic_eval_engine.py", fallback_rule_id),
-        ("src/control/proof/control_proof_bundle.py", proof_rule_id),
+        ("logic/compile/logic_compiler.py", deterministic_rule_id),
+        ("logic/compile/logic_proof_engine.py", proof_rule_id),
+        ("logic/eval/logic_eval_engine.py", fallback_rule_id),
+        ("control/proof/control_proof_bundle.py", proof_rule_id),
         ("tools/logic/tool_replay_logic_window.py", proof_rule_id),
         ("tools/logic/tool_replay_compiled_logic_window.py", deterministic_rule_id),
     )
@@ -4830,7 +4830,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    compiler_rel = "src/logic/compile/logic_compiler.py"
+    compiler_rel = "logic/compile/logic_compiler.py"
     compiler_text = _file_text(repo_root, compiler_rel)
     for token, rule_id, message in (
         ("_build_compile_source(", deterministic_rule_id, "logic compiler must canonicalize compile sources deterministically"),
@@ -4854,7 +4854,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    proof_rel = "src/logic/compile/logic_proof_engine.py"
+    proof_rel = "logic/compile/logic_proof_engine.py"
     proof_text = _file_text(repo_root, proof_rel)
     for token in ("build_logic_equivalence_proof_row(", "verify_logic_equivalence_proof(", "logic_equivalence_proof_hash("):
         if token in proof_text:
@@ -4870,7 +4870,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    eval_rel = "src/logic/eval/logic_eval_engine.py"
+    eval_rel = "logic/eval/logic_eval_engine.py"
     eval_text = _file_text(repo_root, eval_rel)
     for token, message in (
         ("compiled_fallback_logged", "logic runtime must log explicit compiled-to-L1 fallback"),
@@ -4955,7 +4955,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    proof_bundle_rel = "src/control/proof/control_proof_bundle.py"
+    proof_bundle_rel = "control/proof/control_proof_bundle.py"
     proof_bundle_text = _file_text(repo_root, proof_bundle_rel)
     for token in ("compile_result_hash_chain", "logic_compile_policy_hash_chain", "forced_expand_event_hash_chain"):
         if token in proof_bundle_text:
@@ -4989,8 +4989,8 @@ def _append_logic_debug_invariant_findings(
         ("schema/logic/debug_trace_artifact.schema", bounded_rule_id),
         ("schema/logic/debug_sampling_policy.schema", bounded_rule_id),
         ("data/registries/debug_sampling_policy_registry.json", bounded_rule_id),
-        ("src/logic/debug/debug_engine.py", budget_rule_id),
-        ("src/logic/debug/runtime_state.py", bounded_rule_id),
+        ("logic/debug/debug_engine.py", budget_rule_id),
+        ("logic/debug/runtime_state.py", bounded_rule_id),
         ("tools/logic/tool_replay_trace_window.py", bounded_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -5100,7 +5100,7 @@ def _append_logic_debug_invariant_findings(
             )
         )
 
-    engine_rel = "src/logic/debug/debug_engine.py"
+    engine_rel = "logic/debug/debug_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     for token, rule_id, message in (
         ("request_logic_debug_compute(", budget_rule_id, "logic debug operations must meter compute"),
@@ -5207,7 +5207,7 @@ def _append_logic_protocol_invariant_findings(
         ("schema/logic/protocol_event_record.schema", deterministic_rule_id),
         ("data/registries/arbitration_policy_registry.json", deterministic_rule_id),
         ("data/registries/error_detection_policy_registry.json", deterministic_rule_id),
-        ("src/logic/protocol/protocol_engine.py", bypass_rule_id),
+        ("logic/protocol/protocol_engine.py", bypass_rule_id),
         ("tools/logic/tool_replay_protocol_window.py", deterministic_rule_id),
         ("tools/logic/tool_run_logic_protocol_stress.py", deterministic_rule_id),
     )
@@ -5284,7 +5284,7 @@ def _append_logic_protocol_invariant_findings(
             )
         )
 
-    engine_rel = "src/logic/protocol/protocol_engine.py"
+    engine_rel = "logic/protocol/protocol_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     for token, rule_id, message in (
         ("build_protocol_frame_from_delivery(", deterministic_rule_id, "protocol engine must build deterministic frames"),
@@ -5308,7 +5308,7 @@ def _append_logic_protocol_invariant_findings(
             )
         )
 
-    eval_rel = "src/logic/eval/logic_eval_engine.py"
+    eval_rel = "logic/eval/logic_eval_engine.py"
     eval_text = _file_text(repo_root, eval_rel)
     for token, rule_id, message in (
         ("transport_logic_sig_receipts(", bypass_rule_id, "logic evaluation must flush SIG-backed protocol receipts through the protocol transport seam"),
@@ -5428,7 +5428,7 @@ def _append_logic_envelope_invariant_findings(
             )
         )
 
-    degrade_rel = "src/logic/eval/degradation_policy.py"
+    degrade_rel = "logic/eval/degradation_policy.py"
     degrade_text = _file_text(repo_root, degrade_rel)
     for token, rule_id, message in (
         ("prefer_compiled_execution", budget_rule_id, "logic degradation order must prefer compiled execution first"),
@@ -5628,7 +5628,7 @@ def _append_provenance_compaction_invariant_findings(
     severity = _invariant_severity(profile)
     registry_rel = "data/registries/provenance_classification_registry.json"
     schema_rel = "schemas/control_proof_bundle.schema.json"
-    engine_rel = "src/meta/provenance/compaction_engine.py"
+    engine_rel = "meta/provenance/compaction_engine.py"
     tool_rel = "tools/meta/tool_verify_replay_from_anchor.py"
 
     registry_payload, registry_error = _load_json_object(repo_root, registry_rel)
@@ -7487,7 +7487,7 @@ def _append_meta_stability_findings(
         )
 
     try:
-        from src.meta.stability import validate_all_registries
+        from meta.stability import validate_all_registries
     except Exception as exc:
         findings.append(
             _finding(
@@ -8471,8 +8471,8 @@ def _append_ui_reconcile_findings(
         (UI_SURFACE_MAP_AUDIT_PATH, "UI surface map is required", "INV-UI-SHARES-UI_MODEL"),
         (UI_RECONCILE_FINAL_PATH, "UI reconcile final report is required", "INV-UI-SHARES-UI_MODEL"),
         (UI_SURFACE_REPORT_JSON_PATH, "UI surface machine-readable report is required", "INV-UI-SHARES-UI_MODEL"),
-        ("src/ui/ui_model.py", "shared UI model is required", "INV-UI-SHARES-UI_MODEL"),
-        ("src/client/ui/main_menu_surface.py", "rendered client menu surface is required", "INV-UI-SHARES-UI_MODEL"),
+        ("ui/ui_model.py", "shared UI model is required", "INV-UI-SHARES-UI_MODEL"),
+        ("client/ui/main_menu_surface.py", "rendered client menu surface is required", "INV-UI-SHARES-UI_MODEL"),
         ("tools/auditx/analyzers/e477_business_logic_in_ui_adapter_smell.py", "BusinessLogicInUIAdapterSmell analyzer is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
         ("tools/auditx/analyzers/e478_truth_leak_in_ui_smell.py", "TruthLeakInUISmell analyzer is required", "INV-NO-TRUTH-READ-IN-UI"),
         ("tools/xstack/testx/tests/ui_reconcile_testlib.py", "UI reconcile TestX helper is required", "INV-UI-SHARES-UI_MODEL"),
@@ -8633,7 +8633,7 @@ def _append_validation_unify_findings(
         )
 
     try:
-        from src.validation import validation_surface_findings
+        from validation import validation_surface_findings
     except Exception as exc:
         findings.append(
             _finding(
@@ -8699,7 +8699,7 @@ def _append_tool_surface_findings(
         )
 
     try:
-        from src.tools import tool_surface_violations
+        from tools import tool_surface_violations
     except Exception as exc:
         findings.append(
             _finding(
@@ -9147,7 +9147,7 @@ def _append_release_identity_findings(
         ("docs/audit/RELEASE0_RETRO_AUDIT.md", "RELEASE0 retro audit is required", wallclock_rule_id),
         ("docs/release/RELEASE_IDENTITY_CONSTITUTION.md", "release identity constitution is required", wallclock_rule_id),
         ("docs/release/ARTIFACT_NAMING_RULES.md", "artifact naming rules are required", artifact_rule_id),
-        ("src/release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
+        ("release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
         ("data/registries/release_channel_registry.json", "release channel registry is required", artifact_rule_id),
         ("tools/release/release_identity_common.py", "release identity audit helper is required", artifact_rule_id),
         ("tools/release/tool_run_release_identity.py", "release identity report tool is required", artifact_rule_id),
@@ -9216,7 +9216,7 @@ def _append_release_manifest_findings(
     required_files = (
         ("docs/audit/RELEASE1_RETRO_AUDIT.md", "RELEASE1 retro audit is required", deterministic_rule_id),
         ("docs/release/RELEASE_MANIFEST_MODEL.md", "release manifest doctrine is required", deterministic_rule_id),
-        ("src/release/release_manifest_engine.py", "release manifest engine is required", deterministic_rule_id),
+        ("release/release_manifest_engine.py", "release manifest engine is required", deterministic_rule_id),
         ("tools/release/release_manifest_common.py", "release manifest audit helper is required", deterministic_rule_id),
         ("tools/release/tool_generate_release_manifest.py", "release manifest generator is required", deterministic_rule_id),
         ("tools/release/tool_verify_release_manifest.py", "release manifest verifier is required", verify_rule_id),
@@ -9284,8 +9284,8 @@ def _append_reproducible_build_findings(
         ("docs/audit/RELEASE2_RETRO_AUDIT.md", "RELEASE2 retro audit is required", reproducibility_rule_id),
         ("docs/release/REPRODUCIBLE_BUILD_RULES.md", "reproducible build doctrine is required", wallclock_rule_id),
         ("docs/release/SIGNING_POLICY.md", "signing policy is required", reproducibility_rule_id),
-        ("src/release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
-        ("src/release/release_manifest_engine.py", "release manifest engine is required", reproducibility_rule_id),
+        ("release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
+        ("release/release_manifest_engine.py", "release manifest engine is required", reproducibility_rule_id),
         ("tools/release/reproducible_build_common.py", "reproducible build helper is required", reproducibility_rule_id),
         ("tools/release/tool_verify_build_reproducibility.py", "reproducibility verifier is required", reproducibility_rule_id),
         ("tools/release/tool_run_reproducible_build.py", "reproducible build report tool is required", reproducibility_rule_id),
@@ -10012,7 +10012,7 @@ def _append_supervisor_hardening_findings(
                 ("data/audit/supervisor_hardening_report.json", "supervisor hardening machine-readable report is required"),
                 ("tools/appshell/supervisor_hardening_common.py", "supervisor hardening helper module is required"),
                 ("tools/appshell/tool_run_supervisor_hardening.py", "supervisor hardening tool runner is required"),
-                ("src/appshell/supervisor/args_canonicalizer.py", "supervisor args canonicalizer is required"),
+                ("appshell/supervisor/args_canonicalizer.py", "supervisor args canonicalizer is required"),
                 ("tools/xstack/testx/tests/test_args_canonicalization_stable.py", "supervisor args canonicalization TestX coverage is required"),
                 ("tools/xstack/testx/tests/test_readiness_bounded_no_wallclock.py", "supervisor bounded readiness TestX coverage is required"),
                 ("tools/xstack/testx/tests/test_log_merge_order_stable.py", "supervisor log merge TestX coverage is required"),
@@ -12196,8 +12196,8 @@ def _append_negative_invariant_findings(
         )
         micro_scan_paths = (
             observation_rel,
-            "src/net/policies/policy_server_authoritative.py",
-            "src/net/srz/shard_coordinator.py",
+            "net/policies/policy_server_authoritative.py",
+            "net/srz/shard_coordinator.py",
         )
         for rel_path in micro_scan_paths:
             for line_no, line in _iter_lines(repo_root, rel_path):
@@ -12226,7 +12226,7 @@ def _append_negative_invariant_findings(
                     )
                 )
 
-    memory_kernel_rel = "src/epistemics/memory/memory_kernel.py"
+    memory_kernel_rel = "epistemics/memory/memory_kernel.py"
     memory_kernel_abs = os.path.join(repo_root, memory_kernel_rel.replace("/", os.sep))
     if not os.path.isfile(memory_kernel_abs):
         findings.append(
@@ -12315,7 +12315,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-    instrument_kernel_rel = "src/diegetics/instrument_kernel.py"
+    instrument_kernel_rel = "diegetics/instrument_kernel.py"
     instrument_kernel_abs = os.path.join(repo_root, instrument_kernel_rel.replace("/", os.sep))
     if not os.path.isfile(instrument_kernel_abs):
         findings.append(
@@ -13141,7 +13141,7 @@ def _append_hidden_ban_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    anti_engine_rel = "src/net/anti_cheat/anti_cheat_engine.py"
+    anti_engine_rel = "net/anti_cheat/anti_cheat_engine.py"
     anti_engine_abs = os.path.join(repo_root, anti_engine_rel.replace("/", os.sep))
     if not os.path.isfile(anti_engine_abs):
         findings.append(
@@ -13190,9 +13190,9 @@ def _append_hidden_ban_invariant_findings(
             )
 
     termination_paths = (
-        "src/net/policies/policy_server_authoritative.py",
-        "src/net/srz/shard_coordinator.py",
-        "src/net/policies/policy_lockstep.py",
+        "net/policies/policy_server_authoritative.py",
+        "net/srz/shard_coordinator.py",
+        "net/policies/policy_lockstep.py",
     )
     for rel_path in termination_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -13555,7 +13555,7 @@ def _append_conservation_invariant_findings(
             "conservation_contract_set_id",
             "refusal.conservation_contract_set_mismatch",
         ),
-        "src/reality/ledger/ledger_engine.py": (
+        "reality/ledger/ledger_engine.py": (
             "finalize_process_accounting(",
             "record_unaccounted_delta(",
         ),
@@ -13698,12 +13698,12 @@ def _append_material_dimension_invariant_findings(
             "\"unit_registry\"",
             "\"base_dimension_registry\"",
         ),
-        "src/reality/ledger/ledger_engine.py": (
+        "reality/ledger/ledger_engine.py": (
             "_REFUSAL_DIMENSION_MISMATCH",
             "quantity_dimensions",
             "refusal.dimension.mismatch",
         ),
-        "src/materials/dimension_engine.py": (
+        "materials/dimension_engine.py": (
             "dimension_add(",
             "dimension_mul(",
             "dimension_div(",
@@ -13745,8 +13745,8 @@ def _append_material_dimension_invariant_findings(
             )
 
     invariant_math_files = (
-        "src/materials/dimension_engine.py",
-        "src/reality/ledger/ledger_engine.py",
+        "materials/dimension_engine.py",
+        "reality/ledger/ledger_engine.py",
     )
     for rel_path in invariant_math_files:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -13843,7 +13843,7 @@ def _append_material_taxonomy_invariant_findings(
             )
 
     required_tokens = {
-        "src/materials/composition_engine.py": (
+        "materials/composition_engine.py": (
             "validate_compound_composition(",
             "validate_mixture_composition(",
             "validate_material_class(",
@@ -13948,7 +13948,7 @@ def _append_material_structure_invariant_findings(
             )
 
     required_tokens = {
-        "src/materials/blueprint_engine.py": (
+        "materials/blueprint_engine.py": (
             "compile_blueprint_artifacts(",
             "blueprint_compile_cache_key(",
             "REFUSAL_BLUEPRINT_MISSING_PART_CLASS",
@@ -13960,12 +13960,12 @@ def _append_material_structure_invariant_findings(
             "cache_key",
             "pack_lock_hash",
         ),
-        "src/client/interaction/preview_generator.py": (
+        "client/interaction/preview_generator.py": (
             "_blueprint_preview_payload(",
             "process.blueprint_inspect",
             "build_blueprint_ghost_overlay(",
         ),
-        "src/client/interaction/inspection_overlays.py": (
+        "client/interaction/inspection_overlays.py": (
             "_blueprint_overlay_payload(",
             "build_blueprint_ghost_overlay(",
             "blueprint_bom_summary(",
@@ -14069,7 +14069,7 @@ def _append_material_logistics_invariant_findings(
             )
 
     required_no_silent_transfer_tokens = {
-        "src/logistics/logistics_engine.py": (
+        "logistics/logistics_engine.py": (
             "create_manifest_and_commitment(",
             "tick_manifests(",
             "shipment_depart",
@@ -14117,7 +14117,7 @@ def _append_material_logistics_invariant_findings(
             )
 
     required_routing_tokens = {
-        "src/logistics/logistics_engine.py": (
+        "logistics/logistics_engine.py": (
             "_best_route(",
             "sorted(",
             "heapq",
@@ -14223,7 +14223,7 @@ def _append_material_construction_invariant_findings(
             )
 
     required_commitment_tokens = {
-        "src/materials/construction/construction_engine.py": (
+        "materials/construction/construction_engine.py": (
             "_construction_commitment_row(",
             "milestone_commitment_ids",
             "start_commitment_id",
@@ -14268,7 +14268,7 @@ def _append_material_construction_invariant_findings(
             )
 
     required_provenance_tokens = {
-        "src/materials/construction/construction_engine.py": (
+        "materials/construction/construction_engine.py": (
             "_event_row(",
             "event.construct_project_created",
             "event.construct_step_started",
@@ -14315,7 +14315,7 @@ def _append_material_construction_invariant_findings(
             )
 
     required_ledger_tokens = {
-        "src/materials/construction/construction_engine.py": (
+        "materials/construction/construction_engine.py": (
             "ledger_deltas={\"quantity.mass\": -1 * int(total_mass_raw)}",
             "ledger_deltas={\"quantity.mass\": int(total_mass_raw)}",
         ),
@@ -14384,7 +14384,7 @@ def _append_material_maintenance_invariant_findings(
         )
 
     required_registry_tokens = {
-        "src/materials/maintenance/decay_engine.py": (
+        "materials/maintenance/decay_engine.py": (
             "failure_mode_rows_by_id(",
             "maintenance_policy_rows_by_id(",
             "backlog_growth_rule_rows_by_id(",
@@ -14462,7 +14462,7 @@ def _append_material_maintenance_invariant_findings(
             )
 
     required_no_silent_failure_tokens = {
-        "src/materials/maintenance/decay_engine.py": (
+        "materials/maintenance/decay_engine.py": (
             "_failure_event(",
             "_provenance_event(",
             "failed_mode_ids",
@@ -14507,7 +14507,7 @@ def _append_material_maintenance_invariant_findings(
             )
 
     required_commitment_tokens = {
-        "src/materials/maintenance/decay_engine.py": (
+        "materials/maintenance/decay_engine.py": (
             "schedule_maintenance_commitments(",
             "perform_inspection(",
             "perform_maintenance(",
@@ -14613,7 +14613,7 @@ def _append_material_materialization_invariant_findings(
             )
 
     no_global_tokens = {
-        "src/materials/materialization/materialization_engine.py": (
+        "materials/materialization/materialization_engine.py": (
             "max_micro_parts",
             "REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED",
             "materialize_structure_roi(",
@@ -14662,7 +14662,7 @@ def _append_material_materialization_invariant_findings(
             )
 
     deterministic_tokens = {
-        "src/materials/materialization/materialization_engine.py": (
+        "materials/materialization/materialization_engine.py": (
             "canonical_sha256",
             "\"stream\": \"materialization\"",
             "_stable_materialization_seed(",
@@ -14769,7 +14769,7 @@ def _append_material_commitment_reenactment_invariant_findings(
             )
 
     causality_tokens = {
-        "src/materials/commitments/commitment_engine.py": (
+        "materials/commitments/commitment_engine.py": (
             "strictness_requires_commitment(",
             "REFUSAL_COMMITMENT_REQUIRED_MISSING",
             "resolve_causality_strictness_row(",
@@ -14815,7 +14815,7 @@ def _append_material_commitment_reenactment_invariant_findings(
             )
 
     derived_only_tokens = {
-        "src/materials/commitments/commitment_engine.py": (
+        "materials/commitments/commitment_engine.py": (
             "\"derived_only\": True",
             "build_reenactment_artifact(",
         ),
@@ -14908,7 +14908,7 @@ def _append_material_scale_invariant_findings(
             )
 
     required_tokens = {
-        "src/materials/performance/mat_scale_engine.py": (
+        "materials/performance/mat_scale_engine.py": (
             "DEFAULT_MAT_DEGRADATION_ORDER",
             "compute_mat_cost_usage(",
             "apply_mat_degradation_policy(",
@@ -14964,7 +14964,7 @@ def _append_material_scale_invariant_findings(
         "datetime.now(",
     )
     for rel_path in (
-        "src/materials/performance/mat_scale_engine.py",
+        "materials/performance/mat_scale_engine.py",
         "tools/materials/tool_generate_factory_planet_scenario.py",
         "tools/materials/tool_run_stress.py",
     ):
@@ -15092,37 +15092,37 @@ def _append_core_abstraction_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_files = {
-        "src/core/graph/network_graph_engine.py": (
+        "core/graph/network_graph_engine.py": (
             "INV-NO-DUPLICATE-GRAPH-SUBSTRATES",
             ("normalize_network_graph(", "route_query(", "heapq.heappush("),
             "core graph substrate file missing deterministic graph tokens",
         ),
-        "src/core/graph/routing_engine.py": (
+        "core/graph/routing_engine.py": (
             "INV-NETWORKGRAPH-ONLY",
             ("query_route_result(", "route_query_edges(", "build_route_cache_key("),
             "core routing substrate file missing deterministic NetworkGraph routing tokens",
         ),
-        "src/core/schedule/schedule_engine.py": (
+        "core/schedule/schedule_engine.py": (
             "INV-NO-DUPLICATE-SCHEDULERS",
             ("normalize_schedule(", "advance_schedule(", "recurrence_rule"),
             "core schedule substrate file missing deterministic schedule tokens",
         ),
-        "src/core/state/state_machine_engine.py": (
+        "core/state/state_machine_engine.py": (
             "INV-NO-ADHOC-STATE-MACHINES",
             ("normalize_state_machine(", "apply_transition(", "trigger_process_id"),
             "core state-machine substrate file missing deterministic transition tokens",
         ),
-        "src/core/constraints/constraint_engine.py": (
+        "core/constraints/constraint_engine.py": (
             "INV-CONSTRAINTS-USE-COMPONENT",
             ("normalize_constraint_component(", "tick_constraints(", "build_constraint_enforcement_hooks("),
             "core constraint substrate file missing deterministic constraint component tokens",
         ),
-        "src/core/hazards/hazard_engine.py": (
+        "core/hazards/hazard_engine.py": (
             "INV-NO-ADHOC-HAZARD-LOOPS",
             ("normalize_hazard_model(", "tick_hazard_models(", "consequence_process_id"),
             "core hazard substrate file missing deterministic hazard component tokens",
         ),
-        "src/core/flow/flow_engine.py": (
+        "core/flow/flow_engine.py": (
             "INV-NO-DUPLICATE-FLOW-LOGIC",
             ("normalize_flow_channel(", "tick_flow_channels(", "normalize_flow_transfer_event(", "quantity_id"),
             "core flow substrate file missing deterministic flow tokens",
@@ -15212,9 +15212,9 @@ def _append_core_abstraction_invariant_findings(
             and "path_node_ids" in text
         )
         imports_core_graph = (
-            "from src.core.graph" in text
-            or "import src.core.graph" in text
-            or "src.core.graph." in text
+            "from core.graph" in text
+            or "import core.graph" in text
+            or "core.graph." in text
         )
         if has_custom_routing_tokens and (not imports_core_graph):
             findings.append(
@@ -15307,7 +15307,7 @@ def _append_core_abstraction_invariant_findings(
             )
 
     flow_required_tokens = {
-        "src/logistics/logistics_engine.py": ("tick_flow_channels(", "_best_route(", "flow_channel_id"),
+        "logistics/logistics_engine.py": ("tick_flow_channels(", "_best_route(", "flow_channel_id"),
         "tools/xstack/sessionx/process_runtime.py": ("_ledger_emit_exception(", "process.manifest_tick", "flow_transfer_events"),
     }
     for rel_path, tokens in flow_required_tokens.items():
@@ -15343,7 +15343,7 @@ def _append_core_abstraction_invariant_findings(
             )
 
     behavior_required_tokens = {
-        "src/materials/maintenance/decay_engine.py": {
+        "materials/maintenance/decay_engine.py": {
             "INV-NO-ADHOC-STATE-FLAGS": ("apply_transition(", "state_machine", "_STATE_MACHINE_TYPE_ID"),
             "INV-NO-ADHOC-SCHEDULERS": ("tick_schedules(", "_schedule_id(", "schedule_component"),
             "INV-NO-ADHOC-HAZARD-LOOPS": ("tick_hazard_models(", "_hazard_id(", "hazard_type_id"),
@@ -15396,7 +15396,7 @@ def _append_core_abstraction_invariant_findings(
                 )
 
     interior_required_tokens = {
-        "src/interior/interior_engine.py": {
+        "interior/interior_engine.py": {
             "INV-PORTAL-USES-STATE-MACHINE": (
                 "apply_portal_transition(",
                 "normalize_state_machine(",
@@ -15426,7 +15426,7 @@ def _append_core_abstraction_invariant_findings(
                 "interior.portal.",
             ),
         },
-        "src/interior/compartment_flow_builder.py": {
+        "interior/compartment_flow_builder.py": {
             "INV-INTERIOR-FLOWS-USE-FLOWSYSTEM": (
                 "normalize_flow_channel(",
                 "build_compartment_flow_channels(",
@@ -15438,7 +15438,7 @@ def _append_core_abstraction_invariant_findings(
                 "conductance_smoke",
             ),
         },
-        "src/interior/compartment_flow_engine.py": {
+        "interior/compartment_flow_engine.py": {
             "INV-INTERIOR-FLOWS-USE-FLOWSYSTEM": (
                 "tick_flow_channels(",
                 "build_compartment_flow_channels(",
@@ -15450,7 +15450,7 @@ def _append_core_abstraction_invariant_findings(
                 "_flow_balance_for_medium(",
             ),
         },
-        "src/inspection/inspection_engine.py": {
+        "inspection/inspection_engine.py": {
             "INV-INTERIOR-STATE-DIEGETIC-GATED": (
                 "section.interior.connectivity_summary",
                 "section.interior.flow_summary",
@@ -15462,7 +15462,7 @@ def _append_core_abstraction_invariant_findings(
                 "target_kind",
             ),
         },
-        "src/client/interaction/inspection_overlays.py": {
+        "client/interaction/inspection_overlays.py": {
             "INV-NO-OMNISCIENT-INTERIOR-UI": (
                 "_interior_overlay_payload(",
                 "section.interior.pressure_summary",
@@ -15527,7 +15527,7 @@ def _append_core_abstraction_invariant_findings(
                 "REFUSAL_POSE_NO_ACCESS_PATH",
             ),
         },
-        "src/interaction/pose/pose_engine.py": {
+        "interaction/pose/pose_engine.py": {
             "INV-POSE-REQUIRES-PROCESS": (
                 "def enter_pose_slot(",
                 "def exit_pose_slot(",
@@ -15535,7 +15535,7 @@ def _append_core_abstraction_invariant_findings(
                 "REFUSAL_POSE_NOT_OCCUPANT",
             ),
         },
-        "src/interaction/mount/mount_engine.py": {
+        "interaction/mount/mount_engine.py": {
             "INV-MOUNT-REQUIRES-PROCESS": (
                 "def attach_mount_points(",
                 "def detach_mount_point(",
@@ -15640,9 +15640,9 @@ def _append_core_abstraction_invariant_findings(
             and ("path_exists(" in text or "reachable_volumes(" in text)
         )
         uses_interior_substrate = (
-            "from src.interior" in text
-            or "import src.interior" in text
-            or "src.interior." in text
+            "from interior" in text
+            or "import interior" in text
+            or "interior." in text
         )
         if ad_hoc_occlusion_tokens and not uses_interior_substrate:
             findings.append(
@@ -16358,27 +16358,27 @@ def _append_retro_consistency_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     retro_required_files = {
-        "src/core/graph/network_graph_engine.py": (
+        "core/graph/network_graph_engine.py": (
             "INV-NO-DUPLICATE-GRAPH",
             ("normalize_network_graph(", "route_query("),
             "retro-consistency requires canonical core graph substrate",
         ),
-        "src/core/flow/flow_engine.py": (
+        "core/flow/flow_engine.py": (
             "INV-NO-DUPLICATE-FLOW",
             ("normalize_flow_channel(", "tick_flow_channels("),
             "retro-consistency requires canonical core flow substrate",
         ),
-        "src/core/state/state_machine_engine.py": (
+        "core/state/state_machine_engine.py": (
             "INV-NO-ADHOC-STATE-FLAG",
             ("normalize_state_machine(", "apply_transition("),
             "retro-consistency requires canonical state-machine substrate",
         ),
-        "src/core/schedule/schedule_engine.py": (
+        "core/schedule/schedule_engine.py": (
             "INV-NO-ADHOC-SCHEDULER",
             ("normalize_schedule(", "tick_schedules("),
             "retro-consistency requires canonical schedule substrate",
         ),
-        "src/core/hazards/hazard_engine.py": (
+        "core/hazards/hazard_engine.py": (
             "INV-NO-ADHOC-HAZARD",
             ("normalize_hazard_model(", "tick_hazard_models("),
             "retro-consistency requires canonical hazard substrate",
@@ -16551,10 +16551,10 @@ def _append_retro_consistency_invariant_findings(
             )
 
     allowed_intent_dispatch_paths = {
-        "src/control/control_plane_engine.py",
-        "src/client/interaction/interaction_dispatch.py",
-        "src/net/srz/shard_coordinator.py",
-        "src/net/policies/policy_server_authoritative.py",
+        "control/control_plane_engine.py",
+        "client/interaction/interaction_dispatch.py",
+        "net/srz/shard_coordinator.py",
+        "net/policies/policy_server_authoritative.py",
     }
     for rel_path in _scan_files(repo_root):
         if not rel_path.endswith(".py"):
@@ -16596,7 +16596,7 @@ def _append_retro_consistency_invariant_findings(
                 )
             )
 
-    control_plane_path = "src/control/control_plane_engine.py"
+    control_plane_path = "control/control_plane_engine.py"
     control_plane_text = _file_text(repo_root, control_plane_path)
     if (not control_plane_text) or ("_write_decision_log(" not in control_plane_text) or ('"decision_log_ref"' not in control_plane_text):
         findings.append(
@@ -16837,7 +16837,7 @@ def _append_time_constitution_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    time_engine_rel = "src/time/time_engine.py"
+    time_engine_rel = "engine/time/time_engine.py"
     time_engine_abs = os.path.join(repo_root, time_engine_rel.replace("/", os.sep))
     if not os.path.isfile(time_engine_abs):
         findings.append(
@@ -16976,7 +16976,7 @@ def _append_time_constitution_invariant_findings(
     runtime_lineage_files = (
         "tools/xstack/sessionx/time_lineage.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "src/time/time_engine.py",
+        "engine/time/time_engine.py",
     )
     for rel_path in runtime_lineage_files:
         for line_no, line in _iter_lines(repo_root, rel_path):
@@ -17038,12 +17038,12 @@ def _append_time_constitution_invariant_findings(
         "schema/core/schedule.schema": (
             "temporal_domain_id",
         ),
-        "src/core/schedule/schedule_engine.py": (
+        "core/schedule/schedule_engine.py": (
             "_normalize_temporal_domain_id(",
             "time.canonical_tick",
             "\"temporal_domain_id\": temporal_domain_id",
         ),
-        "src/signals/aggregation/aggregation_engine.py": (
+        "signals/aggregation/aggregation_engine.py": (
             "temporal_domain_id",
             "time.canonical_tick",
         ),
@@ -17207,7 +17207,7 @@ def _append_time_constitution_invariant_findings(
                 )
 
     deterministic_schedule_required_tokens = {
-        "src/core/schedule/schedule_engine.py": (
+        "core/schedule/schedule_engine.py": (
             "resolve_domain_time_fn",
             "domain_evaluations",
             "due_events_sorted = sorted(",
@@ -17250,7 +17250,7 @@ def _append_time_constitution_invariant_findings(
             )
 
     drift_required_tokens = {
-        "src/time/time_mapping_engine.py": (
+        "engine/time/time_mapping_engine.py": (
             "drift_policy_id",
             "_apply_drift_policy(",
             "active_drift_policy_ids",
@@ -17296,7 +17296,7 @@ def _append_time_constitution_invariant_findings(
             "time_adjust_events",
             "time_adjust_event_hash_chain",
         ),
-        "src/control/proof/control_proof_bundle.py": (
+        "control/proof/control_proof_bundle.py": (
             "time_adjust_event_hash_chain",
             "drift_policy_id",
         ),
@@ -17347,7 +17347,7 @@ def _append_time_constitution_invariant_findings(
         "tools/auditx/analyzers/",
     )
     canonical_tick_mutation_allowed_paths = {
-        "src/time/time_engine.py",
+        "engine/time/time_engine.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -17591,7 +17591,7 @@ def _append_tier_transition_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    transition_controller_rel = "src/reality/transitions/transition_controller.py"
+    transition_controller_rel = "reality/transitions/transition_controller.py"
     transition_controller_abs = os.path.join(repo_root, transition_controller_rel.replace("/", os.sep))
     try:
         transition_controller_text = open(transition_controller_abs, "r", encoding="utf-8").read()
@@ -17787,10 +17787,10 @@ def _append_performance_constitution_invariant_findings(
     profile: str,
 ) -> None:
     severity = _invariant_severity(profile)
-    cost_engine_rel = "src/performance/cost_engine.py"
-    inspection_cache_rel = "src/performance/inspection_cache.py"
+    cost_engine_rel = "performance/cost_engine.py"
+    inspection_cache_rel = "performance/inspection_cache.py"
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    transition_controller_rel = "src/reality/transitions/transition_controller.py"
+    transition_controller_rel = "reality/transitions/transition_controller.py"
 
     for rel_path, required_tokens in (
         (
@@ -17959,7 +17959,7 @@ def _append_performance_constitution_invariant_findings(
                     )
                 )
 
-    inspection_engine_rel = "src/inspection/inspection_engine.py"
+    inspection_engine_rel = "inspection/inspection_engine.py"
     inspection_engine_abs = os.path.join(repo_root, inspection_engine_rel.replace("/", os.sep))
     try:
         inspection_engine_text = open(inspection_engine_abs, "r", encoding="utf-8").read()
@@ -18344,7 +18344,7 @@ def _append_interaction_invariant_findings(
                 )
             )
 
-    task_engine_rel = "src/interaction/task/task_engine.py"
+    task_engine_rel = "interaction/task/task_engine.py"
     task_engine_abs = os.path.join(repo_root, task_engine_rel.replace("/", os.sep))
     try:
         task_engine_text = open(task_engine_abs, "r", encoding="utf-8").read()
@@ -18671,7 +18671,7 @@ def _append_interaction_invariant_findings(
                 )
 
     machine_data_tokens = {
-        "src/machines/port_engine.py": (
+        "machines/port_engine.py": (
             "port_type_rows_by_id(",
             "machine_type_rows_by_id(",
             "machine_operation_rows_by_id(",
@@ -18722,7 +18722,7 @@ def _append_interaction_invariant_findings(
             "event.batch_created",
             "_machine_output_batch_id(",
         ),
-        "src/machines/port_engine.py": (
+        "machines/port_engine.py": (
             "extract_from_port(",
         ),
     }
@@ -19379,7 +19379,7 @@ def _append_meta_contract_invariant_findings(
             "tools/xstack/testx/tests/",
         )
         allowed_files = {
-            "src/models/model_engine.py",
+            "models/model_engine.py",
             "tools/xstack/sessionx/process_runtime.py",
             "tools/xstack/repox/check.py",
         }
@@ -19823,7 +19823,7 @@ def _append_platform_renderer_invariant_findings(
                 )
             )
 
-    hw_renderer_rel = "src/client/render/renderers/hw_renderer_gl.py"
+    hw_renderer_rel = "client/render/renderers/hw_renderer_gl.py"
     hw_renderer_abs = os.path.join(repo_root, hw_renderer_rel.replace("/", os.sep))
     try:
         hw_text = open(hw_renderer_abs, "r", encoding="utf-8").read()
@@ -19856,9 +19856,9 @@ def _append_control_ir_enforcement_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_ir_files = (
-        "src/control/ir/control_ir_verifier.py",
-        "src/control/ir/control_ir_compiler.py",
-        "src/control/ir/control_ir_programs.py",
+        "control/ir/control_ir_verifier.py",
+        "control/ir/control_ir_compiler.py",
+        "control/ir/control_ir_programs.py",
     )
     for rel_path in required_ir_files:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -19956,11 +19956,11 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_tokens_by_file = {
-        "src/control/negotiation/negotiation_kernel.py": (
+        "control/negotiation/negotiation_kernel.py": (
             "def negotiate_request(",
             "NEGOTIATION_AXIS_ORDER",
         ),
-        "src/control/control_plane_engine.py": (
+        "control/control_plane_engine.py": (
             "negotiate_request(",
             "_decision_log_row(",
         ),
@@ -20006,7 +20006,7 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
             )
         ):
             continue
-        if rel_path == "src/control/negotiation/negotiation_kernel.py":
+        if rel_path == "control/negotiation/negotiation_kernel.py":
             continue
         for line_no, line in _iter_lines(repo_root, rel_path):
             token = str(line)
@@ -20031,7 +20031,7 @@ def _append_fidelity_engine_enforcement_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    fidelity_core_rel = "src/control/fidelity/fidelity_engine.py"
+    fidelity_core_rel = "control/fidelity/fidelity_engine.py"
     fidelity_core_text = _file_text(repo_root, fidelity_core_rel)
     if not fidelity_core_text:
         findings.append(
@@ -20060,15 +20060,15 @@ def _append_fidelity_engine_enforcement_invariant_findings(
         )
 
     domain_required_tokens = {
-        "src/materials/materialization/materialization_engine.py": (
+        "materials/materialization/materialization_engine.py": (
             "build_fidelity_request(",
             "arbitrate_fidelity_requests(",
         ),
-        "src/inspection/inspection_engine.py": (
+        "inspection/inspection_engine.py": (
             "build_fidelity_request(",
             "arbitrate_fidelity_requests(",
         ),
-        "src/materials/commitments/commitment_engine.py": (
+        "materials/commitments/commitment_engine.py": (
             "build_fidelity_request(",
             "arbitrate_fidelity_requests(",
         ),
@@ -20112,9 +20112,9 @@ def _append_fidelity_engine_enforcement_invariant_findings(
         "if desired_fidelity == \"micro\" and not micro_allowed",
     )
     for rel_path in (
-        "src/materials/commitments/commitment_engine.py",
-        "src/materials/materialization/materialization_engine.py",
-        "src/inspection/inspection_engine.py",
+        "materials/commitments/commitment_engine.py",
+        "materials/materialization/materialization_engine.py",
+        "inspection/inspection_engine.py",
     ):
         text = _file_text(repo_root, rel_path)
         if not text:
@@ -20200,7 +20200,7 @@ def _append_plan_execution_enforcement_invariant_findings(
                 )
             )
 
-    overlays_rel = "src/client/interaction/inspection_overlays.py"
+    overlays_rel = "client/interaction/inspection_overlays.py"
     overlays_text = _file_text(repo_root, overlays_rel)
     if not overlays_text:
         findings.append(
@@ -20237,11 +20237,11 @@ def _append_capability_enforcement_invariant_findings(
     severity = _invariant_severity(profile)
 
     capability_registry_rel = "data/registries/capability_registry.json"
-    capability_engine_rel = "src/control/capability/capability_engine.py"
-    control_plane_rel = "src/control/control_plane_engine.py"
-    plan_engine_rel = "src/control/planning/plan_engine.py"
+    capability_engine_rel = "control/capability/capability_engine.py"
+    control_plane_rel = "control/control_plane_engine.py"
+    plan_engine_rel = "control/planning/plan_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    power_engine_rel = "src/electric/power_network_engine.py"
+    power_engine_rel = "electric/power_network_engine.py"
 
     capability_registry_text = _file_text(repo_root, capability_registry_rel)
     capability_engine_text = _file_text(repo_root, capability_engine_rel)
@@ -20467,7 +20467,7 @@ def _append_effect_system_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_tokens_by_file = {
-        "src/control/effects/effect_engine.py": (
+        "control/effects/effect_engine.py": (
             "def build_effect(",
             "def prune_expired_effect_rows(",
             "def get_effective_modifier(",
@@ -20478,7 +20478,7 @@ def _append_effect_system_invariant_findings(
             "normalize_effect_rows(",
             "prune_expired_effect_rows(",
         ),
-        "src/control/control_plane_engine.py": (
+        "control/control_plane_engine.py": (
             "def _effect_influence(",
             "REFUSAL_EFFECT_FORBIDDEN",
             "get_effective_modifier_map(",
@@ -20557,7 +20557,7 @@ def _append_specsheet_invariant_findings(
     severity = _invariant_severity(profile)
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    spec_engine_rel = "src/specs/spec_engine.py"
+    spec_engine_rel = "specs/spec_engine.py"
     runtime_text = _file_text(repo_root, runtime_rel)
     spec_engine_text = _file_text(repo_root, spec_engine_rel)
     if not runtime_text or not spec_engine_text:
@@ -20656,7 +20656,7 @@ def _append_formalization_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    inference_rel = "src/infrastructure/formalization/inference_engine.py"
+    inference_rel = "infrastructure/formalization/inference_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     control_action_registry_rel = "data/registries/control_action_registry.json"
     control_policy_registry_rel = "data/registries/control_policy_registry.json"
@@ -20885,7 +20885,7 @@ def _append_mechanics_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    mechanics_engine_rel = "src/mechanics/structural_graph_engine.py"
+    mechanics_engine_rel = "mechanics/structural_graph_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     engine_text = _file_text(repo_root, mechanics_engine_rel)
     runtime_text = _file_text(repo_root, runtime_rel)
@@ -20999,7 +20999,7 @@ def _append_field_invariant_findings(
     severity = _invariant_severity(profile)
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    field_engine_rel = "src/fields/field_engine.py"
+    field_engine_rel = "fields/field_engine.py"
     runtime_text = _file_text(repo_root, runtime_rel)
     field_text = _file_text(repo_root, field_engine_rel)
     if (not runtime_text) or (not field_text):
@@ -21148,7 +21148,7 @@ def _append_field_generalization_invariant_findings(
         token_pattern = re.compile(r"\bfield\.[A-Za-z0-9_.-]+\b")
         scan_paths = (
             "src/fields/",
-            "src/models/model_engine.py",
+            "models/model_engine.py",
             "tools/xstack/sessionx/process_runtime.py",
             "data/registries/field_type_registry.json",
             "data/registries/constitutive_model_registry.json",
@@ -21256,7 +21256,7 @@ def _append_field_generalization_invariant_findings(
     )
     mutation_allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "src/fields/field_engine.py",
+        "fields/field_engine.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -21287,7 +21287,7 @@ def _append_field_generalization_invariant_findings(
             break
 
     sample_api_files = {
-        "src/fields/field_engine.py": (
+        "fields/field_engine.py": (
             "def get_field_value(",
             "def build_field_sample(",
             "def normalize_field_sample_rows(",
@@ -21297,7 +21297,7 @@ def _append_field_generalization_invariant_findings(
             "normalize_field_sample_rows(",
             "build_field_sample(",
         ),
-        "src/signals/transport/channel_executor.py": (
+        "signals/transport/channel_executor.py": (
             "build_field_sample(",
             "_field_sample_cache_key(",
             "_sample_field_permille(",
@@ -21349,9 +21349,9 @@ def _append_field_generalization_invariant_findings(
         "tools/xstack/testx/tests/",
     )
     sample_allowed_files = {
-        "src/fields/field_engine.py",
+        "fields/field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "src/inspection/inspection_engine.py",
+        "inspection/inspection_engine.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -21429,10 +21429,10 @@ def _append_geo_portability_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    field_engine_rel = "src/fields/field_engine.py"
-    pollution_rel = "src/pollution/dispersion_engine.py"
-    representation_rel = "src/client/render/representation_resolver.py"
-    renderer_rel = "src/client/render/renderers/software_renderer.py"
+    field_engine_rel = "fields/field_engine.py"
+    pollution_rel = "pollution/dispersion_engine.py"
+    representation_rel = "client/render/representation_resolver.py"
+    renderer_rel = "client/render/renderers/software_renderer.py"
 
     field_text = _file_text(repo_root, field_engine_rel)
     if "geo_partition_cell_key(" not in field_text:
@@ -21539,9 +21539,9 @@ def _append_geo_identity_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    index_rel = "src/geo/index/geo_index_engine.py"
-    object_rel = "src/geo/index/object_id_engine.py"
-    geo_init_rel = "src/geo/__init__.py"
+    index_rel = "geo/index/geo_index_engine.py"
+    object_rel = "geo/index/object_id_engine.py"
+    geo_init_rel = "geo/__init__.py"
     tool_rel = "tools/geo/tool_verify_id_stability.py"
     registry_rel = "data/registries/object_kind_registry.json"
 
@@ -21660,10 +21660,10 @@ def _append_geo_frame_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    frame_engine_rel = "src/geo/frame/frame_engine.py"
-    adapters_rel = "src/geo/frame/domain_adapters.py"
-    render_rel = "src/geo/render/floating_origin_policy.py"
-    geo_init_rel = "src/geo/__init__.py"
+    frame_engine_rel = "geo/frame/frame_engine.py"
+    adapters_rel = "geo/frame/domain_adapters.py"
+    render_rel = "geo/render/floating_origin_policy.py"
+    geo_init_rel = "geo/__init__.py"
 
     frame_engine_text = _file_text(repo_root, frame_engine_rel)
     for required_token in ("frame_get_transform(", "position_to_frame(", "position_distance("):
@@ -21755,13 +21755,13 @@ def _append_geo_metric_invariant_findings(
 ) -> None:
     severity = _strict_only_severity(profile)
     metric_registry_rel = "data/registries/metric_profile_registry.json"
-    metric_engine_rel = "src/geo/metric/metric_engine.py"
-    neighborhood_rel = "src/geo/metric/neighborhood_engine.py"
-    field_rel = "src/fields/field_engine.py"
-    pollution_rel = "src/pollution/dispersion_engine.py"
-    mobility_geometry_rel = "src/mobility/geometry/geometry_engine.py"
-    mobility_micro_rel = "src/mobility/micro/constrained_motion_solver.py"
-    roi_rel = "src/system/roi/system_roi_scheduler.py"
+    metric_engine_rel = "geo/metric/metric_engine.py"
+    neighborhood_rel = "geo/metric/neighborhood_engine.py"
+    field_rel = "fields/field_engine.py"
+    pollution_rel = "pollution/dispersion_engine.py"
+    mobility_geometry_rel = "mobility/geometry/geometry_engine.py"
+    mobility_micro_rel = "mobility/micro/constrained_motion_solver.py"
+    roi_rel = "system/roi/system_roi_scheduler.py"
     tool_rel = "tools/geo/tool_verify_metric_stability.py"
 
     metric_registry_text = _file_text(repo_root, metric_registry_rel)
@@ -21922,9 +21922,9 @@ def _append_geo_field_binding_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    field_rel = "src/fields/field_engine.py"
-    field_wrapper_rel = "src/field/field_engine.py"
-    boundary_rel = "src/field/field_boundary_exchange.py"
+    field_rel = "fields/field_engine.py"
+    field_wrapper_rel = "field/field_engine.py"
+    boundary_rel = "field/field_boundary_exchange.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     proof_tool_rel = "tools/geo/tool_replay_field_geo_window.py"
 
@@ -21944,13 +21944,13 @@ def _append_geo_field_binding_invariant_findings(
         )
 
     wrapper_text = _file_text(repo_root, field_wrapper_rel)
-    if "src.fields.field_engine" not in wrapper_text:
+    if "fields.field_engine" not in wrapper_text:
         findings.append(
             _finding(
                 severity=severity,
                 file_path=field_wrapper_rel,
                 line_number=1,
-                snippet="src.fields.field_engine",
+                snippet="fields.field_engine",
                 message="singular field package compatibility wrapper must route through canonical GEO-bound field engine",
                 rule_id="INV-FIELD-STORAGE-GEO-KEYED",
             )
@@ -22008,10 +22008,10 @@ def _append_geo_projection_lens_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    projection_rel = "src/geo/projection/projection_engine.py"
-    adapter_rel = "src/geo/projection/view_adapters.py"
-    lens_rel = "src/geo/lens/lens_engine.py"
-    cctv_rel = "src/geo/lens/cctv_engine.py"
+    projection_rel = "geo/projection/projection_engine.py"
+    adapter_rel = "geo/projection/view_adapters.py"
+    lens_rel = "geo/lens/lens_engine.py"
+    cctv_rel = "geo/lens/cctv_engine.py"
     proof_tool_rel = "tools/geo/tool_replay_view_window.py"
 
     projection_text = _file_text(repo_root, projection_rel)
@@ -22133,8 +22133,8 @@ def _append_geo_pathing_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    path_rel = "src/geo/path/path_engine.py"
-    shard_rel = "src/geo/path/shard_route_planner.py"
+    path_rel = "geo/path/path_engine.py"
+    shard_rel = "geo/path/shard_route_planner.py"
     proof_tool_rel = "tools/geo/tool_replay_path_request.py"
 
     path_text = _file_text(repo_root, path_rel)
@@ -22224,12 +22224,12 @@ def _append_geo_geometry_edit_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    engine_rel = "src/geo/edit/geometry_state_engine.py"
+    engine_rel = "geo/edit/geometry_state_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     proof_tool_rel = "tools/geo/tool_replay_geometry_window.py"
-    control_proof_rel = "src/control/proof/control_proof_bundle.py"
-    server_proof_rel = "src/net/policies/policy_server_authoritative.py"
-    shard_proof_rel = "src/net/srz/shard_coordinator.py"
+    control_proof_rel = "control/proof/control_proof_bundle.py"
+    server_proof_rel = "net/policies/policy_server_authoritative.py"
+    shard_proof_rel = "net/srz/shard_coordinator.py"
 
     engine_text = _file_text(repo_root, engine_rel)
     for required_token in (
@@ -22408,15 +22408,15 @@ def _append_geo_worldgen_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    engine_rel = "src/geo/worldgen/worldgen_engine.py"
+    engine_rel = "geo/worldgen/worldgen_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     creator_rel = "tools/xstack/sessionx/creator.py"
     runner_rel = "tools/xstack/sessionx/runner.py"
     script_runner_rel = "tools/xstack/sessionx/script_runner.py"
-    projection_rel = "src/geo/projection/projection_engine.py"
-    roi_rel = "src/system/roi/system_roi_scheduler.py"
+    projection_rel = "geo/projection/projection_engine.py"
+    roi_rel = "system/roi/system_roi_scheduler.py"
     replay_tool_rel = "tools/geo/tool_replay_worldgen_cell.py"
-    geo_init_rel = "src/geo/__init__.py"
+    geo_init_rel = "geo/__init__.py"
     schema_rel = "schema/universe/universe_identity.schema"
     schema_json_rel = "schemas/universe_identity.schema.json"
     realism_registry_rel = "data/registries/realism_profile_registry.json"
@@ -22607,15 +22607,15 @@ def _append_geo_overlay_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    engine_rel = "src/geo/overlay/overlay_merge_engine.py"
+    engine_rel = "geo/overlay/overlay_merge_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     creator_rel = "tools/xstack/sessionx/creator.py"
     replay_tool_rel = "tools/geo/tool_replay_overlay_merge.py"
     explain_tool_rel = "tools/geo/tool_explain_property_origin.py"
-    geo_init_rel = "src/geo/__init__.py"
-    control_proof_rel = "src/control/proof/control_proof_bundle.py"
-    server_proof_rel = "src/net/policies/policy_server_authoritative.py"
-    shard_proof_rel = "src/net/srz/shard_coordinator.py"
+    geo_init_rel = "geo/__init__.py"
+    control_proof_rel = "control/proof/control_proof_bundle.py"
+    server_proof_rel = "net/policies/policy_server_authoritative.py"
+    shard_proof_rel = "net/srz/shard_coordinator.py"
     overlay_policy_registry_rel = "data/registries/overlay_policy_registry.json"
 
     engine_text = _file_text(repo_root, engine_rel)
@@ -22890,7 +22890,7 @@ def _append_geo_envelope_invariant_findings(
     stress_tool_rel = "tools/geo/tool_run_geo_stress.py"
     replay_tool_rel = "tools/geo/tool_replay_geo_window.py"
     overlay_tool_rel = "tools/geo/tool_verify_overlay_identity.py"
-    degradation_rel = "src/geo/degradation_policy.py"
+    degradation_rel = "geo/degradation_policy.py"
     regression_rel = "data/regression/geo_full_baseline.json"
 
     for rel_path in (
@@ -23142,9 +23142,9 @@ def _append_mobility_invariant_findings(
     research_policy_registry_rel = "data/registries/research_policy_registry.json"
 
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    control_plane_rel = "src/control/control_plane_engine.py"
+    control_plane_rel = "control/control_plane_engine.py"
     constitution_rel = "docs/mobility/MOBILITY_CONSTITUTION.md"
-    travel_engine_rel = "src/mobility/travel/travel_engine.py"
+    travel_engine_rel = "mobility/travel/travel_engine.py"
 
     runtime_text = _file_text(repo_root, process_runtime_rel)
     control_text = _file_text(repo_root, control_plane_rel)
@@ -23458,7 +23458,7 @@ def _append_mobility_invariant_findings(
     )
     adhoc_stop_allowed = {
         process_runtime_rel,
-        "src/mobility/signals/signal_engine.py",
+        "mobility/signals/signal_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -23698,7 +23698,7 @@ def _append_mobility_invariant_findings(
     derail_bypass_pattern = re.compile(r"\b(?:incident\.derailment|vehicle_derailed)\b", re.IGNORECASE)
     derail_allowed_files = {
         process_runtime_rel,
-        "src/mobility/micro/constrained_motion_solver.py",
+        "mobility/micro/constrained_motion_solver.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -23766,8 +23766,8 @@ def _append_mobility_invariant_findings(
     )
     adhoc_friction_wind_allowed = {
         process_runtime_rel,
-        "src/fields/field_engine.py",
-        "src/mobility/micro/free_motion_solver.py",
+        "fields/field_engine.py",
+        "mobility/micro/free_motion_solver.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -23807,7 +23807,7 @@ def _append_mobility_invariant_findings(
     )
     adhoc_wear_allowed = {
         process_runtime_rel,
-        "src/mobility/maintenance/wear_engine.py",
+        "mobility/maintenance/wear_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -23892,9 +23892,9 @@ def _append_mobility_invariant_findings(
     )
     adhoc_vehicle_cabin_allowed = {
         process_runtime_rel,
-        "src/interior/compartment_flow_engine.py",
-        "src/interior/compartment_flow_builder.py",
-        "src/inspection/inspection_engine.py",
+        "interior/compartment_flow_engine.py",
+        "interior/compartment_flow_builder.py",
+        "inspection/inspection_engine.py",
         "tools/xstack/sessionx/observation.py",
         "tools/xstack/repox/check.py",
     }
@@ -23996,8 +23996,8 @@ def _append_mobility_invariant_findings(
     )
     adhoc_congestion_allowed = {
         process_runtime_rel,
-        "src/mobility/travel/travel_engine.py",
-        "src/mobility/traffic/traffic_engine.py",
+        "mobility/travel/travel_engine.py",
+        "mobility/traffic/traffic_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -24040,7 +24040,7 @@ def _append_mobility_invariant_findings(
         "tools/xstack/testx/tests/",
     )
     adhoc_routing_allow = {
-        "src/core/graph/routing_engine.py",
+        "core/graph/routing_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -24175,7 +24175,7 @@ def _append_safety_invariant_findings(
     severity = _strict_only_severity(profile)
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    safety_engine_rel = "src/safety/safety_engine.py"
+    safety_engine_rel = "safety/safety_engine.py"
     safety_registry_rel = "data/registries/safety_pattern_registry.json"
     runtime_text = _file_text(repo_root, runtime_rel)
     safety_engine_text = _file_text(repo_root, safety_engine_rel)
@@ -24260,7 +24260,7 @@ def _append_safety_invariant_findings(
     allowed_files = {
         runtime_rel,
         safety_engine_rel,
-        "src/mobility/signals/signal_engine.py",
+        "mobility/signals/signal_engine.py",
         "tools/xstack/sessionx/observation.py",
         "tools/xstack/repox/check.py",
     }
@@ -24301,7 +24301,7 @@ def _append_electric_invariant_findings(
     severity = "warn"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    power_engine_rel = "src/electric/power_network_engine.py"
+    power_engine_rel = "electric/power_network_engine.py"
     runtime_text = _file_text(repo_root, runtime_rel)
     power_engine_text = _file_text(repo_root, power_engine_rel)
 
@@ -24396,8 +24396,8 @@ def _append_electric_invariant_findings(
         )
 
     observation_rel = "tools/xstack/sessionx/observation.py"
-    inspection_rel = "src/inspection/inspection_engine.py"
-    overlay_rel = "src/client/interaction/inspection_overlays.py"
+    inspection_rel = "inspection/inspection_engine.py"
+    overlay_rel = "client/interaction/inspection_overlays.py"
     control_registry_rel = "data/registries/control_action_registry.json"
     action_template_rel = "data/registries/action_template_registry.json"
     observation_text = _file_text(repo_root, observation_rel)
@@ -24527,25 +24527,25 @@ def _append_electric_invariant_findings(
     allowed_power_loss_files = {
         runtime_rel,
         power_engine_rel,
-        "src/core/flow/flow_engine.py",
-        "src/models/model_engine.py",
+        "core/flow/flow_engine.py",
+        "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
     allowed_breaker_files = {
         runtime_rel,
-        "src/safety/safety_engine.py",
+        "safety/safety_engine.py",
         "tools/xstack/repox/check.py",
     }
     allowed_fault_trip_files = {
         runtime_rel,
-        "src/electric/fault/fault_engine.py",
-        "src/electric/protection/protection_engine.py",
-        "src/safety/safety_engine.py",
+        "electric/fault/fault_engine.py",
+        "electric/protection/protection_engine.py",
+        "safety/safety_engine.py",
         "tools/xstack/repox/check.py",
     }
     allowed_loto_files = {
         runtime_rel,
-        "src/safety/safety_engine.py",
+        "safety/safety_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -24689,9 +24689,9 @@ def _append_electric_invariant_findings(
     )
     velocity_allowed_files = {
         runtime_rel,
-        "src/mobility/micro/free_motion_solver.py",
-        "src/mobility/micro/constrained_motion_solver.py",
-        "src/physics/momentum_engine.py",
+        "mobility/micro/free_motion_solver.py",
+        "mobility/micro/constrained_motion_solver.py",
+        "physics/momentum_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -24803,7 +24803,7 @@ def _append_thermal_invariant_findings(
             )
             break
 
-    power_engine_rel = "src/electric/power_network_engine.py"
+    power_engine_rel = "electric/power_network_engine.py"
     power_engine_text = _file_text(repo_root, power_engine_rel)
     for token in ("quantity.thermal.heat_loss_stub", "effect.temperature_increase_local"):
         if token in power_engine_text:
@@ -24819,7 +24819,7 @@ def _append_thermal_invariant_findings(
             )
         )
 
-    thermal_engine_rel = "src/thermal/network/thermal_network_engine.py"
+    thermal_engine_rel = "thermal/network/thermal_network_engine.py"
     thermal_engine_text = _file_text(repo_root, thermal_engine_rel)
     for token in ("evaluate_model_bindings(", "solve_thermal_network_t1(", "solve_thermal_network_t0("):
         if token in thermal_engine_text:
@@ -24835,7 +24835,7 @@ def _append_thermal_invariant_findings(
             )
         )
 
-    model_engine_rel = "src/models/model_engine.py"
+    model_engine_rel = "models/model_engine.py"
     model_engine_text = _file_text(repo_root, model_engine_rel)
     for token in ("model_type.therm_ambient_exchange", "model_type.therm_radiator_exchange"):
         if token in model_engine_text:
@@ -24926,7 +24926,7 @@ def _append_thermal_invariant_findings(
                 rule_id="INV-THERM-DEGRADE-LOGGED",
             )
         )
-    proof_bundle_rel = "src/control/proof/control_proof_bundle.py"
+    proof_bundle_rel = "control/proof/control_proof_bundle.py"
     proof_bundle_text = _file_text(repo_root, proof_bundle_rel)
     for token in (
         "heat_input_hash_chain",
@@ -25051,8 +25051,8 @@ def _append_thermal_invariant_findings(
         re.IGNORECASE,
     )
     phase_cure_allowed_files = {
-        "src/models/model_engine.py",
-        "src/thermal/network/thermal_network_engine.py",
+        "models/model_engine.py",
+        "thermal/network/thermal_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -25097,10 +25097,10 @@ def _append_thermal_invariant_findings(
         re.IGNORECASE,
     )
     burn_allowed_files = {
-        "src/models/model_engine.py",
-        "src/thermal/network/thermal_network_engine.py",
+        "models/model_engine.py",
+        "thermal/network/thermal_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "src/inspection/inspection_engine.py",
+        "inspection/inspection_engine.py",
         "tools/xstack/repox/check.py",
     }
     burn_scan_prefixes = ("src/", "tools/xstack/sessionx/")
@@ -25156,7 +25156,7 @@ def _append_thermal_invariant_findings(
     )
     allowed_files = {
         thermal_engine_rel,
-        "src/fields/field_engine.py",
+        "fields/field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -25310,9 +25310,9 @@ def _append_fluid_constitution_invariant_findings(
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/interior/compartment_flow_engine.py",
-        "src/interior/compartment_flow_builder.py",
-        "src/models/model_engine.py",
+        "interior/compartment_flow_engine.py",
+        "interior/compartment_flow_builder.py",
+        "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -25418,14 +25418,14 @@ def _append_fluid_containment_invariant_findings(
         "tools/xstack/testx/tests/",
     )
     allowed_failure_files = {
-        "src/fluid/network/fluid_network_engine.py",
+        "fluid/network/fluid_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
     allowed_mass_files = {
-        "src/fluid/network/fluid_network_engine.py",
-        "src/interior/compartment_flow_engine.py",
-        "src/interior/compartment_flow_builder.py",
+        "fluid/network/fluid_network_engine.py",
+        "interior/compartment_flow_engine.py",
+        "interior/compartment_flow_builder.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -25485,7 +25485,7 @@ def _append_fluid_envelope_invariant_findings(
     degrade_rule_id = "INV-FLUID-DEGRADE-LOGGED"
     failures_rule_id = "INV-ALL-FAILURES-LOGGED"
 
-    engine_rel = "src/fluid/network/fluid_network_engine.py"
+    engine_rel = "fluid/network/fluid_network_engine.py"
     stress_tool_rel = "tools/fluid/tool_run_fluid_stress.py"
     replay_tool_rel = "tools/fluid/tool_replay_fluid_window.py"
     scenario_tool_rel = "tools/fluid/tool_generate_fluid_stress.py"
@@ -25703,10 +25703,10 @@ def _append_pollution_constitution_invariant_findings(
         "schema/pollution/health_risk_event.schema",
         "schema/pollution/pollution_measurement.schema",
         "schema/pollution/compliance_report.schema",
-        "src/pollution/pollution_engine.py",
-        "src/pollution/exposure_engine.py",
-        "src/pollution/measurement_engine.py",
-        "src/pollution/compliance_engine.py",
+        "pollution/pollution_engine.py",
+        "pollution/exposure_engine.py",
+        "pollution/measurement_engine.py",
+        "pollution/compliance_engine.py",
         "tools/pollution/tool_replay_exposure_window.py",
     )
     for rel_path in required_paths:
@@ -25888,7 +25888,7 @@ def _append_pollution_constitution_invariant_findings(
     )
     allowed_source_write_files = {
         runtime_rel,
-        "src/pollution/pollution_engine.py",
+        "pollution/pollution_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -25925,7 +25925,7 @@ def _append_pollution_constitution_invariant_findings(
     )
     allowed_field_write_files = {
         runtime_rel,
-        "src/pollution/pollution_engine.py",
+        "pollution/pollution_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -25966,8 +25966,8 @@ def _append_pollution_constitution_invariant_findings(
     )
     allowed_exposure_write_files = {
         runtime_rel,
-        "src/pollution/exposure_engine.py",
-        "src/pollution/dispersion_engine.py",
+        "pollution/exposure_engine.py",
+        "pollution/dispersion_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -26046,7 +26046,7 @@ def _append_pollution_constitution_invariant_findings(
     )
     allowed_compliance_artifact_files = {
         runtime_rel,
-        "src/pollution/compliance_engine.py",
+        "pollution/compliance_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -26369,8 +26369,8 @@ def _append_system_composition_invariant_findings(
     boundary_rule_id = "INV-SYSTEM-BOUNDARY-INVARIANTS-DECLARED"
     process_rule_id = "INV-COLLAPSE-ONLY-VIA-PROCESS"
 
-    collapse_engine_rel = "src/system/system_collapse_engine.py"
-    expand_engine_rel = "src/system/system_expand_engine.py"
+    collapse_engine_rel = "system/system_collapse_engine.py"
+    expand_engine_rel = "system/system_expand_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "data/registries/process_registry.json"
     boundary_registry_rel = "data/registries/system_boundary_invariant_registry.json"
@@ -26607,9 +26607,9 @@ def _append_system_validation_invariant_findings(
     invariant_schema_rel = "schema/system/boundary_invariant.schema"
     macro_capsule_schema_rel = "schema/system/macro_capsule.schema"
     macro_model_set_schema_rel = "schema/system/macro_model_set.schema"
-    validation_engine_rel = "src/system/system_validation_engine.py"
-    collapse_engine_rel = "src/system/system_collapse_engine.py"
-    expand_engine_rel = "src/system/system_expand_engine.py"
+    validation_engine_rel = "system/system_validation_engine.py"
+    collapse_engine_rel = "system/system_collapse_engine.py"
+    expand_engine_rel = "system/system_expand_engine.py"
     interface_registry_rel = "data/registries/interface_signature_template_registry.json"
     invariant_registry_rel = "data/registries/boundary_invariant_template_registry.json"
     macro_registry_rel = "data/registries/macro_model_set_registry.json"
@@ -26900,7 +26900,7 @@ def _append_system_macro_invariant_findings(
     output_rule_id = "INV-CAPSULE-OUTPUTS-THROUGH-PROCESSES"
     forced_rule_id = "INV-FORCED-EXPAND-LOGGED"
 
-    macro_engine_rel = "src/system/macro/macro_capsule_engine.py"
+    macro_engine_rel = "system/macro/macro_capsule_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "data/registries/process_registry.json"
     replay_tool_rel = "tools/system/tool_replay_capsule_window.py"
@@ -27040,7 +27040,7 @@ def _append_system_macro_invariant_findings(
     allowed_paths = {
         macro_engine_rel,
         runtime_rel,
-        "src/system/forensics/system_forensics_engine.py",
+        "system/forensics/system_forensics_engine.py",
         "tools/xstack/repox/check.py",
         "tools/xstack/testx/tests/",
     }
@@ -27092,7 +27092,7 @@ def _append_system_tier_invariant_findings(
     logged_rule_id = "INV-TIER-TRANSITION-LOGGED"
     silent_rule_id = "INV-NO-SILENT-COLLAPSE"
 
-    scheduler_rel = "src/system/roi/system_roi_scheduler.py"
+    scheduler_rel = "system/roi/system_roi_scheduler.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     schema_rel = "schema/system/system_tier_change_event.schema"
     process_registry_rel = "data/registries/process_registry.json"
@@ -27312,8 +27312,8 @@ def _append_system_tier_invariant_findings(
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/system/system_collapse_engine.py",
-        "src/system/system_expand_engine.py",
+        "system/system_collapse_engine.py",
+        "system/system_expand_engine.py",
         runtime_rel,
         "tools/xstack/repox/check.py",
     }
@@ -27359,7 +27359,7 @@ def _append_system_template_invariant_findings(
         "docs/system/SYSTEM_TEMPLATES.md",
         "schema/system/system_template.schema",
         "schema/system/template_instance_record.schema",
-        "src/system/templates/template_compiler.py",
+        "system/templates/template_compiler.py",
         "tools/xstack/sessionx/process_runtime.py",
         "data/registries/system_template_registry.json",
         "packs/system_templates/base/data/system_template_registry.json",
@@ -27474,7 +27474,7 @@ def _append_system_template_invariant_findings(
 
     compiler_pattern = re.compile(r"\bcompile_system_template\s*\(", re.IGNORECASE)
     allowed_compiler_paths = {
-        "src/system/templates/template_compiler.py",
+        "system/templates/template_compiler.py",
         runtime_rel,
         "tools/system/tool_verify_template_reproducible.py",
         "tools/system/tool_template_browser.py",
@@ -27523,7 +27523,7 @@ def _append_system_certification_invariant_findings(
         "schema/system/certification_result.schema",
         "schema/system/certificate_artifact.schema",
         "data/registries/certification_profile_registry.json",
-        "src/system/certification/system_cert_engine.py",
+        "system/certification/system_cert_engine.py",
         "tools/system/tool_replay_certification_window.py",
         "tools/xstack/sessionx/process_runtime.py",
     )
@@ -27643,7 +27643,7 @@ def _append_system_certification_invariant_findings(
     scan_prefixes = ("src/system/", "tools/xstack/sessionx/")
     skip_prefixes = ("docs/", "schema/", "schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
     allowed_spec_paths = {
-        "src/system/certification/system_cert_engine.py",
+        "system/certification/system_cert_engine.py",
         runtime_rel,
         "tools/xstack/repox/check.py",
     }
@@ -27708,8 +27708,8 @@ def _append_system_reliability_invariant_findings(
         "schema/system/system_health_state.schema",
         "schema/system/failure_event.schema",
         reliability_registry_rel,
-        "src/system/reliability/system_health_engine.py",
-        "src/system/reliability/reliability_engine.py",
+        "system/reliability/system_health_engine.py",
+        "system/reliability/reliability_engine.py",
         "tools/system/tool_replay_system_failure_window.py",
         runtime_rel,
     )
@@ -27901,7 +27901,7 @@ def _append_system_forensics_invariant_findings(
     derived_rule_id = "INV-FORENSICS-DERIVED-ONLY"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    forensics_engine_rel = "src/system/forensics/system_forensics_engine.py"
+    forensics_engine_rel = "system/forensics/system_forensics_engine.py"
     process_registry_rel = "data/registries/process_registry.json"
     explain_registry_rel = "data/registries/explain_contract_registry.json"
     provenance_registry_rel = "data/registries/provenance_classification_registry.json"
@@ -28109,9 +28109,9 @@ def _append_system_envelope_invariant_findings(
     silent_rule_id = "INV-NO-SILENT-TIER-TRANSITION"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    scheduler_rel = "src/system/roi/system_roi_scheduler.py"
-    collapse_rel = "src/system/system_collapse_engine.py"
-    expand_rel = "src/system/system_expand_engine.py"
+    scheduler_rel = "system/roi/system_roi_scheduler.py"
+    collapse_rel = "system/system_collapse_engine.py"
+    expand_rel = "system/system_expand_engine.py"
     scenario_tool_rel = "tools/system/tool_generate_sys_stress.py"
     stress_tool_rel = "tools/system/tool_run_sys_stress.py"
     replay_tool_rel = "tools/system/tool_replay_sys_window.py"
@@ -28315,7 +28315,7 @@ def _append_compiled_model_invariant_findings(
     bespoke_rule_id = "INV-NO-BESPOKE-COMPILER"
     proof_rule_id = "INV-COMPILED-MODEL-REQUIRES-PROOF"
 
-    compile_engine_rel = "src/meta/compile/compile_engine.py"
+    compile_engine_rel = "meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "data/registries/process_registry.json"
     verify_tool_rel = "tools/meta/tool_verify_compiled_model.py"
@@ -28420,7 +28420,7 @@ def _append_compiled_model_invariant_findings(
     allowed_compile_paths = {
         compile_engine_rel,
         runtime_rel,
-        "src/process/capsules/capsule_builder.py",
+        "process/capsules/capsule_builder.py",
         verify_tool_rel,
         "tools/xstack/repox/check.py",
     }
@@ -28460,10 +28460,10 @@ def _append_state_vector_invariant_findings(
     declared_rule_id = "INV-STATE-VECTOR-DECLARED-FOR-SYSTEM"
     mutation_rule_id = "INV-NO-UNDECLARED-STATE-MUTATION"
 
-    statevec_engine_rel = "src/system/statevec/statevec_engine.py"
-    collapse_engine_rel = "src/system/system_collapse_engine.py"
-    expand_engine_rel = "src/system/system_expand_engine.py"
-    compile_engine_rel = "src/meta/compile/compile_engine.py"
+    statevec_engine_rel = "system/statevec/statevec_engine.py"
+    collapse_engine_rel = "system/system_collapse_engine.py"
+    expand_engine_rel = "system/system_expand_engine.py"
+    compile_engine_rel = "meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     statevec_registry_rel = "data/registries/state_vector_registry.json"
     verify_tool_rel = "tools/system/tool_verify_statevec_roundtrip.py"
@@ -28678,8 +28678,8 @@ def _append_cross_domain_mutation_invariant_findings(
                 re.IGNORECASE,
             ),
             "allowed": {
-                "src/electric/power_network_engine.py",
-                "src/models/model_engine.py",
+                "electric/power_network_engine.py",
+                "models/model_engine.py",
                 "tools/xstack/repox/check.py",
             },
             "message": "ELEC must not directly mutate THERM state; use constitutive model outputs + effect/hazard/process pathways",
@@ -28691,8 +28691,8 @@ def _append_cross_domain_mutation_invariant_findings(
                 re.IGNORECASE,
             ),
             "allowed": {
-                "src/thermal/network/thermal_network_engine.py",
-                "src/models/model_engine.py",
+                "thermal/network/thermal_network_engine.py",
+                "models/model_engine.py",
                 "tools/xstack/repox/check.py",
             },
             "message": "THERM must not directly mutate MECH state; couple through constitutive model outputs and process/effect/hazard channels",
@@ -28704,7 +28704,7 @@ def _append_cross_domain_mutation_invariant_findings(
                 re.IGNORECASE,
             ),
             "allowed": {
-                "src/models/model_engine.py",
+                "models/model_engine.py",
                 "tools/xstack/repox/check.py",
             },
             "message": "FLUID cross-domain writes must be model-mediated; direct mutation of foreign-domain truth is forbidden",
@@ -28761,7 +28761,7 @@ def _append_loss_target_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    power_engine_rel = "src/electric/power_network_engine.py"
+    power_engine_rel = "electric/power_network_engine.py"
     power_engine_text = _file_text(repo_root, power_engine_rel)
     for token in ("quantity.thermal.heat_loss_stub", "effect.temperature_increase_local"):
         if token in power_engine_text:
@@ -28791,8 +28791,8 @@ def _append_loss_target_invariant_findings(
     )
     allowed_files = {
         power_engine_rel,
-        "src/thermal/network/thermal_network_engine.py",
-        "src/models/model_engine.py",
+        "thermal/network/thermal_network_engine.py",
+        "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -28834,7 +28834,7 @@ def _append_energy_ledger_invariant_findings(
     mutation_rule_id = "INV-NO-DIRECT-ENERGY-MUTATION"
     registry_rel = "data/registries/energy_transformation_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    engine_rel = "src/physics/energy/energy_ledger_engine.py"
+    engine_rel = "physics/energy/energy_ledger_engine.py"
 
     payload, payload_error = _load_json_object(repo_root, registry_rel)
     rows = list(payload.get("energy_transformations") or [])
@@ -29132,8 +29132,8 @@ def _append_chem_combustion_invariant_findings(
     )
     allowed_fuel_files = {
         runtime_rel,
-        "src/thermal/network/thermal_network_engine.py",
-        "src/models/model_engine.py",
+        "thermal/network/thermal_network_engine.py",
+        "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -29400,8 +29400,8 @@ def _append_chem_processing_invariant_findings(
     }
     allowed_yield_files = {
         runtime_rel,
-        "src/models/model_engine.py",
-        "src/chem/process_run_engine.py",
+        "models/model_engine.py",
+        "chem/process_run_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -29516,15 +29516,15 @@ def _append_process_constitution_invariant_findings(
     inspection_section_rel = "data/registries/inspection_section_registry.json"
     stabilization_policy_registry_v2_rel = "data/registries/stabilization_policy_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    validator_rel = "src/process/process_definition_validator.py"
-    run_engine_rel = "src/process/process_run_engine.py"
-    capsule_builder_rel = "src/process/capsules/capsule_builder.py"
-    capsule_executor_rel = "src/process/capsules/capsule_executor.py"
-    qc_engine_rel = "src/process/qc/qc_engine.py"
-    metrics_engine_rel = "src/process/maturity/metrics_engine.py"
-    maturity_engine_rel = "src/process/maturity/maturity_engine.py"
-    experiment_engine_rel = "src/process/research/experiment_engine.py"
-    inference_engine_rel = "src/process/research/inference_engine.py"
+    validator_rel = "process/process_definition_validator.py"
+    run_engine_rel = "process/process_run_engine.py"
+    capsule_builder_rel = "process/capsules/capsule_builder.py"
+    capsule_executor_rel = "process/capsules/capsule_executor.py"
+    qc_engine_rel = "process/qc/qc_engine.py"
+    metrics_engine_rel = "process/maturity/metrics_engine.py"
+    maturity_engine_rel = "process/maturity/maturity_engine.py"
+    experiment_engine_rel = "process/research/experiment_engine.py"
+    inference_engine_rel = "process/research/inference_engine.py"
     maturity_replay_tool_rel = "tools/process/tool_replay_maturity_window.py"
     capsule_replay_tool_rel = "tools/process/tool_replay_capsule_window.py"
     drift_replay_tool_rel = "tools/process/tool_replay_drift_window.py"
@@ -31015,7 +31015,7 @@ def _append_process_constitution_invariant_findings(
     )
     allowed_files = {
         runtime_rel,
-        "src/chem/process_run_engine.py",
+        "chem/process_run_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -31055,8 +31055,8 @@ def _append_process_constitution_invariant_findings(
         runtime_rel,
         run_engine_rel,
         capsule_executor_rel,
-        "src/models/model_engine.py",
-        "src/chem/process_run_engine.py",
+        "models/model_engine.py",
+        "chem/process_run_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -31194,8 +31194,8 @@ def _append_process_constitution_invariant_findings(
         validator_rel,
         qc_engine_rel,
         capsule_executor_rel,
-        "src/process/qc/__init__.py",
-        "src/process/capsules/__init__.py",
+        "process/qc/__init__.py",
+        "process/capsules/__init__.py",
         "tools/process/tool_replay_qc_window.py",
         "tools/xstack/repox/check.py",
     }
@@ -31280,7 +31280,7 @@ def _append_process_constitution_invariant_findings(
     maturity_transition_allowed_files = {
         run_engine_rel,
         maturity_engine_rel,
-        "src/process/maturity/__init__.py",
+        "process/maturity/__init__.py",
         "tools/process/tool_replay_maturity_window.py",
         "tools/xstack/repox/check.py",
     }
@@ -31328,7 +31328,7 @@ def _append_process_constitution_invariant_findings(
         runtime_rel,
         experiment_engine_rel,
         inference_engine_rel,
-        "src/process/research/__init__.py",
+        "process/research/__init__.py",
         experiment_replay_tool_rel,
         reverse_replay_tool_rel,
         "tools/xstack/repox/check.py",
@@ -31442,8 +31442,8 @@ def _append_process_constitution_invariant_findings(
     )
     software_allowed_files = {
         runtime_rel,
-        "src/process/software/pipeline_engine.py",
-        "src/process/software/__init__.py",
+        "process/software/pipeline_engine.py",
+        "process/software/__init__.py",
         pipeline_replay_tool_rel,
         "tools/xstack/repox/check.py",
     }
@@ -31483,8 +31483,8 @@ def _append_process_constitution_invariant_findings(
     )
     signing_allowed_files = {
         runtime_rel,
-        "src/process/software/pipeline_engine.py",
-        "src/process/software/__init__.py",
+        "process/software/pipeline_engine.py",
+        "process/software/__init__.py",
         pipeline_replay_tool_rel,
         "tools/xstack/repox/check.py",
     }
@@ -31534,8 +31534,8 @@ def _append_logic_fault_invariant_findings(
         ("data/registries/logic_fault_kind_registry.json", process_rule_id),
         ("data/registries/logic_noise_policy_registry.json", noise_rule_id),
         ("data/registries/logic_security_policy_registry.json", security_rule_id),
-        ("src/logic/fault/fault_engine.py", process_rule_id),
-        ("src/logic/noise/noise_engine.py", noise_rule_id),
+        ("logic/fault/fault_engine.py", process_rule_id),
+        ("logic/noise/noise_engine.py", noise_rule_id),
         ("tools/logic/tool_replay_fault_window.py", security_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -31639,7 +31639,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    fault_rel = "src/logic/fault/fault_engine.py"
+    fault_rel = "logic/fault/fault_engine.py"
     fault_text = _file_text(repo_root, fault_rel)
     for token, message in (
         ("PROCESS_LOGIC_FAULT_SET", "fault engine must declare the canonical fault-set process"),
@@ -31662,7 +31662,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    noise_rel = "src/logic/noise/noise_engine.py"
+    noise_rel = "logic/noise/noise_engine.py"
     noise_text = _file_text(repo_root, noise_rel)
     for token, message in (
         ("kind == \"quantize\"", "noise engine must implement deterministic quantization"),
@@ -31682,7 +31682,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    sense_rel = "src/logic/eval/sense_engine.py"
+    sense_rel = "logic/eval/sense_engine.py"
     sense_text = _file_text(repo_root, sense_rel)
     for token, rule_id, message in (
         ("apply_faults_to_signal_value(", process_rule_id, "LOGIC SENSE must apply fault overlays through the fault engine"),
@@ -31753,9 +31753,9 @@ def _append_logic_fault_invariant_findings(
         re.compile(r"\blogic_fault_state_hash_chain\b\s*=", re.IGNORECASE),
     )
     for rel_path in (
-        "src/logic/fault/fault_engine.py",
-        "src/logic/eval/sense_engine.py",
-        "src/logic/eval/logic_eval_engine.py",
+        "logic/fault/fault_engine.py",
+        "logic/eval/sense_engine.py",
+        "logic/eval/logic_eval_engine.py",
     ):
         text = _file_text(repo_root, rel_path)
         for pattern in forbidden_fault_patterns:
@@ -31787,8 +31787,8 @@ def _append_chem_degradation_invariant_findings(
 
     degradation_profile_registry_rel = "data/registries/degradation_profile_registry.json"
     coupling_registry_rel = "data/registries/coupling_contract_registry.json"
-    degradation_engine_rel = "src/chem/degradation/degradation_engine.py"
-    fluid_engine_rel = "src/fluid/network/fluid_network_engine.py"
+    degradation_engine_rel = "chem/degradation/degradation_engine.py"
+    fluid_engine_rel = "fluid/network/fluid_network_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
 
     profile_payload, profile_error = _load_json_object(repo_root, degradation_profile_registry_rel)
@@ -32195,7 +32195,7 @@ def _append_entropy_policy_invariant_findings(
     update_rule_id = "INV-ENTROPY-UPDATE-THROUGH-ENGINE"
     efficiency_rule_id = "INV-NO-SILENT-EFFICIENCY-DROP"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    engine_rel = "src/physics/entropy/entropy_engine.py"
+    engine_rel = "physics/entropy/entropy_engine.py"
     contribution_registry_rel = "data/registries/entropy_contribution_registry.json"
     effect_registry_rel = "data/registries/entropy_effect_policy_registry.json"
 
@@ -32338,7 +32338,7 @@ def _append_entropy_policy_invariant_findings(
     )
     allowed_files = {
         runtime_rel,
-        "src/physics/entropy/entropy_engine.py",
+        "physics/entropy/entropy_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -32413,7 +32413,7 @@ def _append_numeric_tolerance_invariant_findings(
     quantity_registry_rel = "data/registries/quantity_registry.json"
     tolerance_registry_rel = "data/registries/quantity_tolerance_registry.json"
     engine_tolerance_registry_rel = "data/registries/tolerance_registry.json"
-    numeric_helper_rel = "src/meta/numeric.py"
+    numeric_helper_rel = "meta/numeric.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
 
     quantity_payload, quantity_error = _load_json_object(repo_root, quantity_registry_rel)
@@ -32548,9 +32548,9 @@ def _append_numeric_tolerance_invariant_findings(
         )
 
     critical_numeric_files = (
-        "src/time/time_mapping_engine.py",
-        "src/physics/momentum_engine.py",
-        "src/mobility/micro/free_motion_solver.py",
+        "engine/time/time_mapping_engine.py",
+        "physics/momentum_engine.py",
+        "mobility/micro/free_motion_solver.py",
     )
     arithmetic_division_pattern = re.compile(r"\b[A-Za-z0-9_)\]]+\s+/\s+[A-Za-z0-9_(\[]+")
     for rel_path in critical_numeric_files:
@@ -32576,11 +32576,11 @@ def _append_numeric_tolerance_invariant_findings(
 
     float_constructor_pattern = re.compile(r"\bfloat\s*\(", re.IGNORECASE)
     for rel_path in (
-        "src/time/time_mapping_engine.py",
-        "src/physics/momentum_engine.py",
-        "src/physics/energy/energy_ledger_engine.py",
-        "src/mobility/micro/free_motion_solver.py",
-        "src/meta/numeric.py",
+        "engine/time/time_mapping_engine.py",
+        "physics/momentum_engine.py",
+        "physics/energy/energy_ledger_engine.py",
+        "mobility/micro/free_motion_solver.py",
+        "meta/numeric.py",
     ):
         for line_no, line in _iter_lines(repo_root, rel_path):
             snippet = str(line).strip()
@@ -32718,8 +32718,8 @@ def _append_store_gc_findings(
         ("schemas/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
         ("schemas/gc_report.schema.json", "compiled gc_report schema is required", policy_rule_id),
         ("data/registries/gc_policy_registry.json", "gc policy registry is required", policy_rule_id),
-        ("src/lib/store/reachability_engine.py", "reachability engine is required", graph_rule_id),
-        ("src/lib/store/gc_engine.py", "gc engine is required", graph_rule_id),
+        ("lib/store/reachability_engine.py", "reachability engine is required", graph_rule_id),
+        ("lib/store/gc_engine.py", "gc engine is required", graph_rule_id),
         ("tools/lib/store_gc_common.py", "STORE-GC helper is required", deterministic_rule_id),
         ("tools/lib/tool_store_verify.py", "store verification tool is required", deterministic_rule_id),
         ("tools/lib/tool_run_store_gc.py", "STORE-GC runner is required", deterministic_rule_id),
@@ -32939,7 +32939,7 @@ def _append_model_output_process_invariant_findings(
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/models/model_engine.py",
+        "models/model_engine.py",
         runtime_rel,
         "tools/xstack/repox/check.py",
     }
@@ -32980,7 +32980,7 @@ def _append_signal_transport_invariant_findings(
     del profile
     severity = "warn"
 
-    transport_rel = "src/signals/transport/transport_engine.py"
+    transport_rel = "signals/transport/transport_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     transport_text = _file_text(repo_root, transport_rel)
     runtime_text = _file_text(repo_root, runtime_rel)
@@ -33042,7 +33042,7 @@ def _append_signal_transport_invariant_findings(
                 rule_id="INV-LOSS-POLICY-REGISTERED",
             )
         )
-    channel_executor_rel = "src/signals/transport/channel_executor.py"
+    channel_executor_rel = "signals/transport/channel_executor.py"
     channel_executor_text = _file_text(repo_root, channel_executor_rel)
     if "loss_rows_by_id.get(loss_policy_id" not in channel_executor_text:
         findings.append(
@@ -33161,8 +33161,8 @@ def _append_signal_transport_invariant_findings(
         re.compile(r"\bpath_edge_ids\b", re.IGNORECASE),
     )
     adhoc_capacity_allow = {
-        "src/signals/transport/transport_engine.py",
-        "src/signals/transport/channel_executor.py",
+        "signals/transport/transport_engine.py",
+        "signals/transport/channel_executor.py",
         "tools/xstack/repox/check.py",
         "tools/xstack/testx/tests/",
         "tools/auditx/analyzers/",
@@ -33269,7 +33269,7 @@ def _append_signal_transport_invariant_findings(
             )
             break
 
-    trust_engine_rel = "src/signals/trust/trust_engine.py"
+    trust_engine_rel = "signals/trust/trust_engine.py"
     trust_engine_text = _file_text(repo_root, trust_engine_rel)
     if "def process_trust_update(" not in trust_engine_text:
         findings.append(
@@ -33489,7 +33489,7 @@ def _append_save_manifest_invariant_findings(
                 "save_format_version",
                 "migration_chain",
             ),
-            "src/lib/save/save_validator.py": (
+            "lib/save/save_validator.py": (
                 "REFUSAL_SAVE_MANIFEST_REQUIRED",
                 "validate_save_manifest(",
             ),
@@ -33509,7 +33509,7 @@ def _append_save_manifest_invariant_findings(
                 "pack_lock_hash",
                 "allow_read_only_open",
             ),
-            "src/lib/save/save_validator.py": (
+            "lib/save/save_validator.py": (
                 "load_save_contract_bundle(",
                 "REFUSAL_SAVE_CONTRACT_MISMATCH",
                 "REFUSAL_SAVE_PACK_LOCK_MISMATCH",
@@ -33529,7 +33529,7 @@ def _append_save_manifest_invariant_findings(
                 "migration application remains explicit invoke-only",
                 "tick_applied",
             ),
-            "src/lib/save/save_validator.py": (
+            "lib/save/save_validator.py": (
                 "migrate_save_manifest(",
                 "allow_save_migration",
                 "REFUSAL_SAVE_MIGRATION_REQUIRED",
@@ -33625,7 +33625,7 @@ def _append_artifact_manifest_invariant_findings(
                 "Artifact load pipeline",
                 "No silent migration is permitted.",
             ),
-            "src/lib/artifact/artifact_validator.py": (
+            "lib/artifact/artifact_validator.py": (
                 "validate_artifact_manifest(",
                 "evaluate_artifact_load(",
                 "REFUSAL_ARTIFACT_HASH_MISMATCH",
@@ -33692,7 +33692,7 @@ def _append_forking_provides_invariant_findings(
                 "fork.<origin_pack_id>.<fork_author>.<fork_name>",
                 "Legacy reverse-DNS pack ids remain loadable for compatibility.",
             ),
-            "src/lib/provides/provider_resolution.py": (
+            "lib/provides/provider_resolution.py": (
                 "classify_pack_namespace(",
                 "REFUSAL_PACK_NAMESPACE_INVALID",
             ),
@@ -33714,12 +33714,12 @@ def _append_forking_provides_invariant_findings(
                 "chosen_pack_id",
                 "deterministic_fingerprint",
             ),
-            "src/lib/provides/provider_resolution.py": (
+            "lib/provides/provider_resolution.py": (
                 "resolve_providers(",
                 "selection_logged",
                 "selection_mode",
             ),
-            "src/packs/compat/pack_verification_pipeline.py": (
+            "packs/compat/pack_verification_pipeline.py": (
                 "resolve_providers(",
                 "provides_resolutions",
                 "provider_selection_logged",
@@ -33731,7 +33731,7 @@ def _append_forking_provides_invariant_findings(
                 "resolve.strict_refuse_ambiguous",
                 "Strict servers must refuse ambiguous providers.",
             ),
-            "src/lib/provides/provider_resolution.py": (
+            "lib/provides/provider_resolution.py": (
                 "REFUSAL_PROVIDES_AMBIGUOUS",
                 "RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS",
             ),
@@ -33787,7 +33787,7 @@ def _append_component_graph_findings(
         ("data/registries/arch_registry.json", "architecture registry is required", install_rule_id),
         ("data/registries/os_registry.json", "operating-system registry is required", install_rule_id),
         ("data/registries/component_graph_registry.json", "component graph registry is required", install_rule_id),
-        ("src/release/component_graph_resolver.py", "component graph resolver is required", install_rule_id),
+        ("release/component_graph_resolver.py", "component graph resolver is required", install_rule_id),
         ("tools/release/component_graph_common.py", "component graph helper is required", install_rule_id),
         ("tools/release/tool_run_component_graph.py", "component graph runner is required", install_rule_id),
         ("docs/audit/COMPONENT_GRAPH_BASELINE.md", "component graph baseline report is required", install_rule_id),
@@ -33997,7 +33997,7 @@ def _append_update_model_findings(
         ("schema/release/update_plan.schema", "update_plan schema is required", graph_rule_id),
         ("schemas/release_index.schema.json", "compiled release_index schema is required", graph_rule_id),
         ("schemas/update_plan.schema.json", "compiled update_plan schema is required", graph_rule_id),
-        ("src/release/update_resolver.py", "update resolver is required", graph_rule_id),
+        ("release/update_resolver.py", "update resolver is required", graph_rule_id),
         ("tools/release/update_model_common.py", "update-model helper is required", graph_rule_id),
         ("tools/release/tool_run_update_model.py", "update-model runner is required", graph_rule_id),
         ("docs/audit/UPDATE_MODEL_BASELINE.md", "update-model baseline is required", graph_rule_id),
@@ -34144,7 +34144,7 @@ def _append_trust_model_findings(
         ("schemas/signature_record.schema.json", "compiled signature_record schema is required", policy_rule_id),
         ("data/registries/trust_root_registry.json", "trust root registry is required", policy_rule_id),
         ("data/registries/trust_policy_registry.json", "trust policy registry is required", policy_rule_id),
-        ("src/security/trust/trust_verifier.py", "trust verifier is required", hashes_rule_id),
+        ("security/trust/trust_verifier.py", "trust verifier is required", hashes_rule_id),
         ("tools/security/trust_model_common.py", "trust-model helper is required", policy_rule_id),
         ("tools/security/tool_run_trust_model.py", "trust-model runner is required", policy_rule_id),
         ("docs/audit/TRUST_MODEL_BASELINE.md", "trust-model baseline is required", policy_rule_id),
@@ -34516,7 +34516,7 @@ def _append_universal_identity_findings(
         ("schema/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
         ("schemas/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
         ("data/registries/identity_kind_registry.json", "identity kind registry is required", namespaced_rule_id),
-        ("src/meta/identity/identity_validator.py", "identity validator is required", canonical_rule_id),
+        ("meta/identity/identity_validator.py", "identity validator is required", canonical_rule_id),
         ("tools/meta/identity_common.py", "identity helper is required", canonical_rule_id),
         ("tools/meta/tool_print_identity.py", "identity print tool is required", warn_rule_id),
         ("tools/meta/tool_diff_identity.py", "identity diff tool is required", warn_rule_id),
@@ -34609,7 +34609,7 @@ def _append_migration_lifecycle_findings(
         ("schemas/migration_chain.schema.json", "compiled migration chain schema is required", policy_rule_id),
         ("schemas/migration_decision_record.schema.json", "compiled migration decision record schema is required", policy_rule_id),
         ("data/registries/migration_policy_registry.json", "migration policy registry is required", policy_rule_id),
-        ("src/compat/migration_lifecycle.py", "migration lifecycle helper is required", policy_rule_id),
+        ("compat/migration_lifecycle.py", "migration lifecycle helper is required", policy_rule_id),
         ("tools/compat/migration_lifecycle_common.py", "migration lifecycle helper/reporting tool is required", policy_rule_id),
         ("tools/compat/tool_plan_migration.py", "migration planning tool is required", silent_rule_id),
         ("tools/compat/tool_apply_migration.py", "migration apply tool is required", silent_rule_id),
@@ -34702,12 +34702,12 @@ def _append_bundle_invariant_findings(
                 "bundle_hash is computed from the canonical ordered item projection",
                 "deterministic_fingerprint",
             ),
-            "src/lib/bundle/bundle_manifest.py": (
+            "lib/bundle/bundle_manifest.py": (
                 "compute_bundle_hash(",
                 "stable_bundle_id(",
                 "verify_bundle_directory(",
             ),
-            "src/lib/export/export_engine.py": (
+            "lib/export/export_engine.py": (
                 "write_bundle_directory(",
                 "\"refusal.bundle.destination_exists\"",
                 "BUNDLE_KIND_INSTANCE_PORTABLE",
@@ -34718,7 +34718,7 @@ def _append_bundle_invariant_findings(
                 "zip` with fixed timestamp `2000-01-01T00:00:00Z`",
                 "No OS-specific metadata is permitted in archive entries.",
             ),
-            "src/lib/bundle/bundle_manifest.py": (
+            "lib/bundle/bundle_manifest.py": (
                 "bundle.manifest.json",
                 "hashes/content.sha256.json",
                 "bundle.manifest.json is missing",
@@ -34734,12 +34734,12 @@ def _append_bundle_invariant_findings(
                 "recompute `bundle_hash`",
                 "refuse if any mismatch occurs",
             ),
-            "src/lib/import/import_engine.py": (
+            "lib/import/import_engine.py": (
                 "verify_bundle_directory(",
                 "_insert_bundle_store_artifacts(",
                 "\"refusal.bundle.artifact_hash_mismatch\"",
             ),
-            "src/lib/bundle/bundle_manifest.py": (
+            "lib/bundle/bundle_manifest.py": (
                 "\"bundle_content_hash_mismatch\"",
                 "\"bundle_hash_mismatch\"",
                 "\"bundle_hash_index_mismatch\"",

@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    scheduler_rel = "src/system/roi/system_roi_scheduler.py"
+    scheduler_rel = "system/roi/system_roi_scheduler.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     stress_rel = "tools/system/tool_run_sys_stress.py"
 
@@ -131,7 +131,7 @@ def run(graph, repo_root, changed_files=None):
         scheduler_rel,
         runtime_rel,
         "tools/xstack/repox/check.py",
-        "src/system/system_expand_engine.py",
+        "system/system_expand_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

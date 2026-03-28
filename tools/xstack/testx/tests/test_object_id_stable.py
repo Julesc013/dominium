@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.geo import geo_cell_key_from_position, geo_object_id
+from geo import geo_cell_key_from_position, geo_object_id
 
 
 TEST_ID = "test_object_id_stable"

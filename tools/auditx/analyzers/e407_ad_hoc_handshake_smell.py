@@ -15,7 +15,7 @@ REQUIRED_TOKENS = {
         '"compatibility_mode_id"',
         '"endpoint_descriptor"',
     ),
-    "src/server/net/loopback_transport.py": (
+    "server/net/loopback_transport.py": (
         "negotiate_product_endpoints(",
         '"negotiation_record_hash"',
         '"compatibility_mode_id"',

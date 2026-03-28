@@ -16,7 +16,7 @@ WATCH_PREFIXES = (
     "schema/logic/debug_trace_artifact.schema",
     "schema/logic/debug_sampling_policy.schema",
     "data/registries/debug_sampling_policy_registry.json",
-    "src/logic/debug/debug_engine.py",
+    "logic/debug/debug_engine.py",
     "tools/logic/tool_replay_trace_window.py",
 )
 
@@ -105,7 +105,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    engine_rel = "src/logic/debug/debug_engine.py"
+    engine_rel = "logic/debug/debug_engine.py"
     engine_text = _read_text(repo_root, engine_rel)
     for token in ("max_points", "max_ticks", "max_samples", "throttle_strategy", "sample_count", "trace_compactable"):
         if token in engine_text:

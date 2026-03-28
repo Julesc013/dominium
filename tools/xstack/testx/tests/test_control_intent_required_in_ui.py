@@ -21,7 +21,7 @@ def run(repo_root: str):
     temp_root = tempfile.mkdtemp(prefix="xstack_repox_ctrl_intent_required_")
     try:
         fixture_files = {
-            os.path.join(temp_root, "src", "client", "interaction", "interaction_dispatch.py"): "\n".join(
+            os.path.join(temp_root, "client", "interaction", "interaction_dispatch.py"): "\n".join(
                 [
                     "def build_interaction_control_intent():",
                     "    build_control_intent()",

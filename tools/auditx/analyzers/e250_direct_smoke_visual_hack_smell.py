@@ -50,8 +50,8 @@ def run(graph, repo_root, changed_files=None):
     # Known transitional paths are explicitly allowlisted until POLL-1 visibility coupling migration.
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "src/interior/compartment_flow_engine.py",
-        "src/interior/compartment_flow_builder.py",
+        "interior/compartment_flow_engine.py",
+        "interior/compartment_flow_builder.py",
         "tools/xstack/repox/check.py",
     }
 

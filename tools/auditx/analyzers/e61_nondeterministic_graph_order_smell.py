@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E61_NONDETERMINISTIC_GRAPH_ORDER_SMELL"
-BLUEPRINT_ENGINE_PATH = "src/materials/blueprint_engine.py"
+BLUEPRINT_ENGINE_PATH = "materials/blueprint_engine.py"
 BLUEPRINT_TOOL_PATH = "tools/materials/tool_blueprint_compile.py"
 
 

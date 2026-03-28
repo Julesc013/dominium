@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system.system_collapse_engine import collapse_system_graph
+    from system.system_collapse_engine import collapse_system_graph
     from tools.xstack.testx.tests.sys0_testlib import cloned_state, validation_registry_payloads
 
     state_a = cloned_state()

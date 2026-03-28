@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.core.state.state_machine_engine import apply_transition
+    from core.state.state_machine_engine import apply_transition
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     machine = {

@@ -20,7 +20,7 @@ repo_root = sys.argv[1]
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from src.validation.validation_engine import _adapt_schema_suite, _suite_row_by_id
+from validation.validation_engine import _adapt_schema_suite, _suite_row_by_id
 from tools.time.time_anchor_common import verify_compaction_anchor_alignment, verify_longrun_ticks
 
 suites = _suite_row_by_id(repo_root)

@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "archive container metadata does not affect `bundle_hash`",
         "No OS-specific metadata is permitted in archive entries.",
     ),
-    "src/lib/bundle/bundle_manifest.py": (
+    "lib/bundle/bundle_manifest.py": (
         "compute_bundle_hash(",
         "verify_bundle_directory(",
         "\"bundle_hash_mismatch\"",
@@ -25,8 +25,8 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "src/lib/bundle/bundle_manifest.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "os.path.getmtime(", "random."),
-    "src/lib/export/export_engine.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "os.path.getmtime(", "random."),
+    "lib/bundle/bundle_manifest.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "os.path.getmtime(", "random."),
+    "lib/export/export_engine.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "os.path.getmtime(", "random."),
     "tools/lib/tool_verify_bundle.py": ("time.time(", "datetime.utcnow(", "uuid.uuid4(", "random."),
 }
 

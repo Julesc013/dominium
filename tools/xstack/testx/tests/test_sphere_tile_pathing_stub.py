@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.geo import build_path_request, geo_path_query
+from geo import build_path_request, geo_path_query
 
 
 TEST_ID = "test_sphere_tile_pathing_stub"

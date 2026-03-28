@@ -14,7 +14,7 @@ WATCH_PREFIXES = (
     "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
     "schema/logic/security_policy.schema",
     "data/registries/logic_security_policy_registry.json",
-    "src/logic/eval/sense_engine.py",
+    "logic/eval/sense_engine.py",
     "tools/logic/tool_replay_fault_window.py",
 )
 
@@ -103,7 +103,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    sense_rel = "src/logic/eval/sense_engine.py"
+    sense_rel = "logic/eval/sense_engine.py"
     sense_text = _read_text(repo_root, sense_rel)
     for token in ("_security_gate(", "requires_auth", "requires_encryption", "build_logic_security_fail_row(", "explain.logic_spoof_detected"):
         if token in sense_text:

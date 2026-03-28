@@ -31,7 +31,7 @@ def _law_profile() -> dict:
 
 
 def _seed_state() -> dict:
-    from src.mobility.geometry import build_geometry_metric_row, build_guide_geometry
+    from mobility.geometry import build_geometry_metric_row, build_guide_geometry
     from tools.xstack.testx.tests.construction_testlib import base_state
 
     state = base_state()

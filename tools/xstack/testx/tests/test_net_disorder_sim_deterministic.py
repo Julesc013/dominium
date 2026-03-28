@@ -19,7 +19,7 @@ def _messages():
 
 
 def _run_once():
-    from src.net.testing import DeterministicNetDisorderSim
+    from net.testing import DeterministicNetDisorderSim
 
     sim = DeterministicNetDisorderSim(disorder_profile_id="disorder.dup_reorder_delay")
     for tick in range(0, 3):

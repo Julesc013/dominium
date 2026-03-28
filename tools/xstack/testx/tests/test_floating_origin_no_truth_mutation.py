@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.geo import apply_floating_origin, frame_graph_hash, position_ref_hash
+    from geo import apply_floating_origin, frame_graph_hash, position_ref_hash
     from tools.xstack.testx.tests.geo2_testlib import baseline_frame_nodes, baseline_frame_transforms, poi_position, surface_position
 
     nodes = baseline_frame_nodes()

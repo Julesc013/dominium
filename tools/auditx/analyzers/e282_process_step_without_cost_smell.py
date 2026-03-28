@@ -96,7 +96,7 @@ def run(graph, repo_root, changed_files=None):
                         ],
                         related_paths=[
                             rel_path,
-                            "src/process/process_definition_validator.py",
+                            "process/process_definition_validator.py",
                         ],
                     )
                 )

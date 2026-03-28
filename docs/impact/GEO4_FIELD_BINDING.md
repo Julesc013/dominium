@@ -10,8 +10,8 @@ Replacement Target: legacy reference surface retained without current binding au
 GEO-4 binds FIELD storage, sampling, and boundary exchange to GEO cell keys so ambient, pollution, and automation fields remain portable across grid, atlas, and future stub partitions.
 
 Touched Paths:
-- src/fields/field_engine.py
-- src/field/field_boundary_exchange.py
+- fields/field_engine.py
+- field/field_boundary_exchange.py
 - tools/xstack/sessionx/process_runtime.py
 - tools/geo/tool_replay_field_geo_window.py
 

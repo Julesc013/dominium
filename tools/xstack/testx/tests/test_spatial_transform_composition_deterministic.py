@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.interior.interior_engine import resolve_volume_world_transform
+    from interior.interior_engine import resolve_volume_world_transform
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     spatial_nodes = [

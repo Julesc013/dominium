@@ -57,8 +57,8 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "src/mobility/micro/free_motion_solver.py",
-        "src/mobility/micro/constrained_motion_solver.py",
+        "mobility/micro/free_motion_solver.py",
+        "mobility/micro/constrained_motion_solver.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):
@@ -97,7 +97,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-NO-DIRECT-VELOCITY-MUTATION",
                                 "INV-FORCE-THROUGH-PROCESS",
                             ],
-                            related_paths=[rel_path, "tools/xstack/sessionx/process_runtime.py", "src/physics/momentum_engine.py"],
+                            related_paths=[rel_path, "tools/xstack/sessionx/process_runtime.py", "physics/momentum_engine.py"],
                         )
                     )
                     break

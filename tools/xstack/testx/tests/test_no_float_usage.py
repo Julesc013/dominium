@@ -11,11 +11,11 @@ TEST_TAGS = ["fast", "meta", "numeric", "governance"]
 
 _FLOAT_PATTERN = re.compile(r"\bfloat\s*\(", re.IGNORECASE)
 _TARGET_FILES = (
-    "src/time/time_mapping_engine.py",
-    "src/physics/momentum_engine.py",
-    "src/physics/energy/energy_ledger_engine.py",
-    "src/mobility/micro/free_motion_solver.py",
-    "src/meta/numeric.py",
+    "engine/time/time_mapping_engine.py",
+    "physics/momentum_engine.py",
+    "physics/energy/energy_ledger_engine.py",
+    "mobility/micro/free_motion_solver.py",
+    "meta/numeric.py",
 )
 
 

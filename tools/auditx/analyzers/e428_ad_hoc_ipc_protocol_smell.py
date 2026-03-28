@@ -14,19 +14,19 @@ REQUIRED_TOKENS = {
         "Connections must not succeed without negotiation.",
         "each channel has a monotonic `seq_no`",
     ),
-    "src/appshell/ipc/ipc_transport.py": (
+    "appshell/ipc/ipc_transport.py": (
         "build_ipc_frame(",
         "IPC_CHANNEL_IDS",
         "send_frame(",
         "recv_frame(",
     ),
-    "src/appshell/ipc/ipc_endpoint_server.py": (
+    "appshell/ipc/ipc_endpoint_server.py": (
         "build_handshake_message(",
         "build_compat_refusal(",
         "_next_seq(",
         "dispatch_registered_command(",
     ),
-    "src/appshell/ipc/ipc_client.py": (
+    "appshell/ipc/ipc_client.py": (
         "build_handshake_message(",
         "attach_ipc_endpoint(",
         "run_ipc_console_command(",

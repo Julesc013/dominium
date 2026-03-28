@@ -7,14 +7,14 @@ Replacement Target: Frozen offline update simulation baseline for v0.0.0-mock di
 
 - result: `complete`
 - platform_tag: `win64`
-- deterministic_fingerprint: `5bf2e75c4cf4dfb02b51e130a8576ab2bfff2b9b3937df0042d62bee1ba1354b`
+- deterministic_fingerprint: `ce80e21684ed3d7309fd6381b3e19d9c7f3d371eb341ed82d31d46c13c105d5e`
 - baseline_present: `True`
 - baseline_matches: `True`
 
 ## Scenario Results
 
-- baseline install: result=`complete`, plan=`49e343eb9f3e3361abb64927a7982a5c3c3e0573eafe2524741080c4542c6d32`, component_set_hash=`114a18fddbfdaf539b4ded185b7daa3dbd9bae7ada58715c5a98f2327656693c`
-- latest-compatible upgrade: result=`complete`, plan=`426094261cb20830fd54f0da9a94d74439c65abf3d2ffde37975d4d10f9e92fd`, client=`0.0.1`
+- baseline install: result=`complete`, plan=`687022fe92ef135f9fb25632ffc5d55c7bbb1459eb4f97eaf61ee19875a27643`, component_set_hash=`7cc6df93ec4119111602263c8f8ad6dfe5d6115a63abb10b15f5dfa773d83e76`
+- latest-compatible upgrade: result=`complete`, plan=`80888ede6c7659c925ec02f4fe1c57592ddc849b14a40e72f28f789c3d9b8af5`, client=`0.0.1`
 - yanked exclusion: result=`complete`, skipped_yanked_count=`1`, selected_yanked=`none`
 - strict trust: result=`complete`, refusal_code=`refusal.trust.signature_missing`
-- rollback: result=`complete`, restored_component_set_hash=`114a18fddbfdaf539b4ded185b7daa3dbd9bae7ada58715c5a98f2327656693c`
+- rollback: result=`complete`, restored_component_set_hash=`7cc6df93ec4119111602263c8f8ad6dfe5d6115a63abb10b15f5dfa773d83e76`

@@ -79,8 +79,8 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         runtime_rel,
-        "src/electric/protection/protection_engine.py",
-        "src/safety/safety_engine.py",
+        "electric/protection/protection_engine.py",
+        "safety/safety_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

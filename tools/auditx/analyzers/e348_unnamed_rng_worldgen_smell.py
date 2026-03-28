@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-WORLDGEN-RNG-NAMED-ONLY"],
-                    related_paths=[rel_path, "src/geo/worldgen/worldgen_engine.py"],
+                    related_paths=[rel_path, "geo/worldgen/worldgen_engine.py"],
                 )
             )
             break

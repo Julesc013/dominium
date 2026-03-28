@@ -18,11 +18,11 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E531_SECRETS_IN_LOG_SMELL"
 RULE_ID = "INV-NO-SECRETS-IN-LOGS"
 SCAN_FILES = (
-    "src/appshell/logging/log_engine.py",
-    "src/appshell/bootstrap.py",
-    "src/appshell/commands/command_engine.py",
+    "appshell/logging/log_engine.py",
+    "appshell/bootstrap.py",
+    "appshell/commands/command_engine.py",
     "tools/setup/setup_cli.py",
-    "src/appshell/supervisor/supervisor_engine.py",
+    "appshell/supervisor/supervisor_engine.py",
 )
 SECRET_RE = re.compile(r"(password|private_key|signing_key|auth_token|credential|secret)", re.IGNORECASE)
 
@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
         text = _file_text(repo_root, rel_path)
         if not text:
             continue
-        if rel_path == "src/appshell/logging/log_engine.py" and "redact_observability_mapping(" not in text:
+        if rel_path == "appshell/logging/log_engine.py" and "redact_observability_mapping(" not in text:
             findings.append(
                 make_finding(
                     analyzer_id=ANALYZER_ID,
@@ -59,7 +59,7 @@ def run(graph, repo_root, changed_files=None):
                 )
             )
             continue
-        if rel_path != "src/appshell/logging/log_engine.py" and SECRET_RE.search(text) and "appshell.refusal" not in text:
+        if rel_path != "appshell/logging/log_engine.py" and SECRET_RE.search(text) and "appshell.refusal" not in text:
             findings.append(
                 make_finding(
                     analyzer_id=ANALYZER_ID,
@@ -71,7 +71,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REDACT_OR_REMOVE_SECRET-LIKE_FIELDS_FROM_LOGGING_PAYLOADS",
                     related_invariants=[RULE_ID],
-                    related_paths=[rel_path, "src/appshell/logging/log_engine.py"],
+                    related_paths=[rel_path, "appshell/logging/log_engine.py"],
                 )
             )
     return findings

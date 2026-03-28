@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.geo import geo_cell_key_from_position, geo_refine_cell_key
+from geo import geo_cell_key_from_position, geo_refine_cell_key
 
 
 TEST_ID = "test_refinement_relation_stable"

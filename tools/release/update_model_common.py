@@ -6,18 +6,18 @@ import json
 import os
 from typing import Mapping
 
-from src.meta.identity import (
+from meta.identity import (
     IDENTITY_KIND_SUITE_RELEASE,
     attach_universal_identity_block,
 )
-from src.governance import (
+from governance import (
     DEFAULT_GOVERNANCE_PROFILE_REL,
     governance_profile_hash,
     load_governance_profile,
 )
-from src.lib.install import normalize_install_manifest
-from src.platform.target_matrix import select_target_matrix_row, target_matrix_registry_hash
-from src.release import (
+from lib.install import normalize_install_manifest
+from engine.platform.target_matrix import select_target_matrix_row, target_matrix_registry_hash
+from release import (
     DEFAULT_COMPONENT_GRAPH_ID,
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_RELEASE_INDEX_REL,
@@ -30,8 +30,9 @@ from src.release import (
     resolve_update_plan,
     write_release_index,
 )
-from src.release.component_graph_resolver import canonicalize_component_descriptor, canonicalize_component_graph
-from src.security.trust import load_trust_policy_registry, load_trust_root_registry, select_trust_policy
+from release.component_graph_resolver import canonicalize_component_descriptor, canonicalize_component_graph
+from security.trust import load_trust_policy_registry, load_trust_root_registry, select_trust_policy
+from tools.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -56,6 +57,14 @@ def _norm(path: str) -> str:
 
 def _norm_rel(path: str) -> str:
     return _token(path).replace("\\", "/")
+
+
+def _equivalent_rel(repo_root: str, rel_path: str) -> str:
+    return _norm_rel(resolve_repo_path_equivalent(_norm(repo_root), _norm_rel(rel_path)))
+
+
+def _equivalent_abs(repo_root: str, rel_path: str) -> str:
+    return os.path.join(_norm(repo_root), _equivalent_rel(repo_root, rel_path).replace("/", os.sep))
 
 
 def _as_map(value: object) -> dict:
@@ -470,16 +479,17 @@ def update_model_violations(repo_root: str) -> list[dict]:
         ("schema/release/update_plan.schema", "update_plan schema is required", RULE_USE_COMPONENT_GRAPH),
         ("schemas/release_index.schema.json", "compiled release_index schema is required", RULE_USE_COMPONENT_GRAPH),
         ("schemas/update_plan.schema.json", "compiled update_plan schema is required", RULE_USE_COMPONENT_GRAPH),
-        ("src/release/update_resolver.py", "update resolver is required", RULE_USE_COMPONENT_GRAPH),
+        ("release/update_resolver.py", "update resolver is required", RULE_USE_COMPONENT_GRAPH),
         ("tools/release/update_model_common.py", "update-model helper is required", RULE_USE_COMPONENT_GRAPH),
         ("tools/release/tool_run_update_model.py", "update-model runner is required", RULE_USE_COMPONENT_GRAPH),
         (BASELINE_DOC_REL, "update-model baseline is required", RULE_USE_COMPONENT_GRAPH),
         (REPORT_JSON_REL, "update-model machine report is required", RULE_USE_COMPONENT_GRAPH),
     )
     for rel_path, message, rule_id in required_paths:
-        if os.path.exists(os.path.join(root, rel_path.replace("/", os.sep))):
+        effective_rel = _equivalent_rel(root, rel_path)
+        if os.path.exists(_equivalent_abs(root, rel_path)):
             continue
-        violations.append({"code": "missing_required_file", "message": message, "file_path": rel_path, "rule_id": rule_id})
+        violations.append({"code": "missing_required_file", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
         ("tools/setup/setup_cli.py", "resolve_update_plan", "setup update surfaces must resolve update plans through the release component graph", RULE_USE_COMPONENT_GRAPH),
         ("tools/setup/setup_cli.py", "install_transaction_log", "rollback must use the deterministic transaction log", RULE_ROLLBACK_LOG),
@@ -489,13 +499,14 @@ def update_model_violations(repo_root: str) -> list[dict]:
     ):
         text = ""
         try:
-            with open(os.path.join(root, rel_path.replace("/", os.sep)), "r", encoding="utf-8") as handle:
+            effective_rel = _equivalent_rel(root, rel_path)
+            with open(_equivalent_abs(root, rel_path), "r", encoding="utf-8") as handle:
                 text = handle.read()
         except OSError:
             pass
         if token in text:
             continue
-        violations.append({"code": "missing_integration_hook", "message": message, "file_path": rel_path, "rule_id": rule_id})
+        violations.append({"code": "missing_integration_hook", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     try:
         report = build_update_model_report(root, dist_root=_existing_bundle_root(root, "win64"), platform_tag="win64", write_release_index_file=False)
     except Exception as exc:

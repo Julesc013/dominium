@@ -6,10 +6,10 @@ import json
 import os
 from typing import Dict, List, Tuple
 
-from src.lib.provides import classify_pack_namespace
-from src.modding import attach_pack_policy_descriptors
-from src.packs.compat import attach_pack_compat_manifest
-from src.meta_extensions_engine import normalize_extensions_tree
+from lib.provides import classify_pack_namespace
+from modding import attach_pack_policy_descriptors
+from packs.compat import attach_pack_compat_manifest
+from meta_extensions_engine import normalize_extensions_tree
 from tools.xstack.compatx.validator import validate_instance
 
 from .constants import (

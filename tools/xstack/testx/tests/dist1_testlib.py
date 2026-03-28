@@ -6,7 +6,7 @@ import os
 import tempfile
 from contextlib import contextmanager
 
-from src.release import verify_release_manifest
+from release import verify_release_manifest
 from tools.dist.dist_tree_common import (
     DEFAULT_OUTPUT_ROOT,
     DEFAULT_PLATFORM_TAG,

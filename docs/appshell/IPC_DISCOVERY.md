@@ -24,14 +24,14 @@ It guarantees:
 
 - Manifest: `VROOT_IPC/ipc_endpoints.json`
 - Descriptor files: `VROOT_IPC/endpoints/<endpoint_id>.json`
-- Address payloads: emitted by `src/appshell/ipc/ipc_transport.py`
+- Address payloads: emitted by `appshell/ipc/ipc_transport.py`
 
 ## Discovery Flow
 
 1. Initialize virtual paths and resolve `VROOT_IPC`.
 2. Read `ipc_endpoints.json` and sort rows by `endpoint_id`, `product_id`, and `session_id`.
 3. Read the endpoint descriptor file declared by `official.descriptor_rel_path`.
-4. Run CAP-NEG handshake via `src/compat/handshake/handshake_engine.py` before opening channels.
+4. Run CAP-NEG handshake via `compat/handshake/handshake_engine.py` before opening channels.
 5. Refuse the attach if negotiation is absent, mismatched, or unlogged.
 
 ## Canonical Channels

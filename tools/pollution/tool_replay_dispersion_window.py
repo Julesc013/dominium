@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.pollution.dispersion_engine import (  # noqa: E402
+from pollution.dispersion_engine import (  # noqa: E402
     normalize_pollution_deposition_rows,
     normalize_pollution_dispersion_step_rows,
     normalize_pollution_exposure_state_rows,

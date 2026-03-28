@@ -13,13 +13,13 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.compat import build_product_build_metadata, build_product_descriptor
-from src.lib.install import build_product_build_descriptor, deterministic_fingerprint
-from src.lib.instance import (
+from compat import build_product_build_metadata, build_product_descriptor
+from lib.install import build_product_build_descriptor, deterministic_fingerprint
+from lib.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
 )
-from src.lib.save import (
+from lib.save import (
     deterministic_fingerprint as save_deterministic_fingerprint,
     normalize_save_manifest,
 )

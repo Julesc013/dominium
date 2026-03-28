@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.meta.provenance import normalize_compaction_marker_rows, verify_replay_from_compaction_anchor  # noqa: E402
+from meta.provenance import normalize_compaction_marker_rows, verify_replay_from_compaction_anchor  # noqa: E402
 
 
 def _read_json(path: str) -> Tuple[dict, str]:

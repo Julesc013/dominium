@@ -59,8 +59,8 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         "tools/process/tool_run_proc_stress.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "src/process/capsules/capsule_executor.py",
-        "src/process/process_run_engine.py",
+        "process/capsules/capsule_executor.py",
+        "process/process_run_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:
@@ -102,7 +102,7 @@ def run(graph, repo_root, changed_files=None):
                         related_paths=[
                             rel_path,
                             "tools/process/tool_run_proc_stress.py",
-                            "src/process/process_run_engine.py",
+                            "process/process_run_engine.py",
                         ],
                     )
                 )

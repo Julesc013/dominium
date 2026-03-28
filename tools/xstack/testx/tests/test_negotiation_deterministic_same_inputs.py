@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.negotiation import negotiate_request
+    from control.negotiation import negotiate_request
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     negotiation_request = {

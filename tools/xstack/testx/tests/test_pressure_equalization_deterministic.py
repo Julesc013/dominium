@@ -54,7 +54,7 @@ def run(repo_root: str):
         portal_state_rows,
         volume_rows,
     )
-    from src.interior.compartment_flow_engine import tick_compartment_flows
+    from interior.compartment_flow_engine import tick_compartment_flows
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     common_kwargs = {

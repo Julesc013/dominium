@@ -120,7 +120,7 @@ def run(graph, repo_root, changed_files=None):
                 if rel_path.startswith(skip_prefixes):
                     continue
                 if rel_path not in {
-                    "src/models/model_engine.py",
+                    "models/model_engine.py",
                     "tools/xstack/sessionx/process_runtime.py",
                 } and not rel_path.startswith("src/fields/"):
                     continue

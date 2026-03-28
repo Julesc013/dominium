@@ -9,14 +9,14 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E352_NONDETERMINISTIC_DISTANCE_SMELL"
 REQUIRED_FILES = {
-    "src/geo/metric/metric_engine.py": (
+    "geo/metric/metric_engine.py": (
         "geo_distance(",
         "geo_geodesic(",
         "metric_query_proof_surface(",
         "metric_cache_lookup(",
         "metric_cache_store(",
     ),
-    "src/geo/metric/metric_cache.py": (
+    "geo/metric/metric_cache.py": (
         "metric_cache_enabled(",
         "metric_cache_key(",
         "_evict(",
@@ -96,7 +96,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-METRIC-PROFILE-DECLARED", "INV-GEO-BUDGETED"],
-                related_paths=[rel_path, "src/geo/metric/metric_engine.py"],
+                related_paths=[rel_path, "geo/metric/metric_engine.py"],
             )
         )
 
@@ -134,7 +134,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-METRIC-PROFILE-DECLARED", "INV-GEO-BUDGETED"],
-                    related_paths=[rel_path, "src/geo/metric/metric_engine.py"],
+                    related_paths=[rel_path, "geo/metric/metric_engine.py"],
                 )
             )
             break

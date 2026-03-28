@@ -17,18 +17,18 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.appshell.logging import create_log_engine, get_current_log_engine, set_current_log_engine  # noqa: E402
-from src.appshell.supervisor import (  # noqa: E402
+from appshell.logging import create_log_engine, get_current_log_engine, set_current_log_engine  # noqa: E402
+from appshell.supervisor import (  # noqa: E402
     discover_active_supervisor_endpoint,
     invoke_supervisor_service_command,
     load_supervisor_runtime_state,
     sanitize_supervisor_runtime,
 )
-from src.appshell.tui import build_tui_surface, run_tui_mode  # noqa: E402
-from src.compat import build_default_endpoint_descriptor, build_degrade_runtime_state, negotiate_endpoint_descriptors  # noqa: E402
-from src.diag.repro_bundle_builder import verify_repro_bundle, write_repro_bundle  # noqa: E402
-from src.embodiment import build_logic_probe_task, build_logic_trace_task  # noqa: E402
-from src.packs.compat.pack_verification_pipeline import verify_pack_set, write_pack_compatibility_outputs  # noqa: E402
+from appshell.tui import build_tui_surface, run_tui_mode  # noqa: E402
+from compat import build_default_endpoint_descriptor, build_degrade_runtime_state, negotiate_endpoint_descriptors  # noqa: E402
+from diag.repro_bundle_builder import verify_repro_bundle, write_repro_bundle  # noqa: E402
+from embodiment import build_logic_probe_task, build_logic_trace_task  # noqa: E402
+from packs.compat.pack_verification_pipeline import verify_pack_set, write_pack_compatibility_outputs  # noqa: E402
 from tools.earth.earth9_stress_common import (  # noqa: E402
     generate_earth_mvp_stress_scenario,
     verify_earth_mvp_stress_scenario,

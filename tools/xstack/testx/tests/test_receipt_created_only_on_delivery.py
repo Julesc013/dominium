@@ -29,7 +29,7 @@ def _loss_registry(policy_id: str, loss_permille: int) -> dict:
 
 
 def _tick_once(policy_id: str, loss_permille: int) -> dict:
-    from src.signals import build_signal_channel, process_signal_send, process_signal_transport_tick
+    from signals import build_signal_channel, process_signal_send, process_signal_transport_tick
 
     channels = [
         build_signal_channel(

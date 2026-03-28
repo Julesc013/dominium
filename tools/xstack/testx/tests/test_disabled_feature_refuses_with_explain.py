@@ -8,8 +8,8 @@ TEST_TAGS = ["fast", "compat", "cap_neg", "degrade", "embodiment"]
 
 
 def run(repo_root: str):
-    from src.embodiment import build_logic_trace_task
-    from src.compat import build_degrade_runtime_state
+    from embodiment import build_logic_trace_task
+    from compat import build_degrade_runtime_state
     from tools.xstack.testx.tests.emb1_testlib import authority_context
 
     runtime_state = build_degrade_runtime_state(

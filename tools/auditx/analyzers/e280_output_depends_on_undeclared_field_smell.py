@@ -38,8 +38,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    collapse_rel = "src/system/system_collapse_engine.py"
-    statevec_rel = "src/system/statevec/statevec_engine.py"
+    collapse_rel = "system/system_collapse_engine.py"
+    statevec_rel = "system/statevec/statevec_engine.py"
     collapse_text = _read_text(repo_root, collapse_rel)
     statevec_text = _read_text(repo_root, statevec_rel)
 

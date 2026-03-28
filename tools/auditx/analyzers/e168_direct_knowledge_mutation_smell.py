@@ -51,7 +51,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/auditx/analyzers/",
     )
     allowed_files = {
-        "src/signals/transport/transport_engine.py",
+        "signals/transport/transport_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
 
@@ -89,7 +89,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="INVALID",
                             recommended_action="REWRITE",
                             related_invariants=["INV-RECEIPT-REQUIRED-FOR-KNOWLEDGE"],
-                            related_paths=[rel_path, "src/signals/transport/transport_engine.py"],
+                            related_paths=[rel_path, "signals/transport/transport_engine.py"],
                         )
                     )
                     break

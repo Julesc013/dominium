@@ -15,7 +15,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control import build_control_intent, build_control_resolution
+    from control import build_control_intent, build_control_resolution
     from tools.xstack.compatx.validator import validate_instance
 
     intent = build_control_intent(

@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.interaction.preview_generator import generate_interaction_preview
+    from client.interaction.preview_generator import generate_interaction_preview
     from tools.xstack.testx.tests.interaction_testlib import perceived_model, policy_context
 
     perceived = perceived_model(include_truth_overlay=True)

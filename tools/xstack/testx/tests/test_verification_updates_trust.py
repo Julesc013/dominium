@@ -50,7 +50,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.signals import process_message_verify_claim
+    from signals import process_message_verify_claim
 
     initial_trust = 0.45
     out = process_message_verify_claim(

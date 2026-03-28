@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.compat import (  # noqa: E402
+from compat import (  # noqa: E402
     build_default_endpoint_descriptor,
     build_endpoint_descriptor,
     negotiate_endpoint_descriptors,

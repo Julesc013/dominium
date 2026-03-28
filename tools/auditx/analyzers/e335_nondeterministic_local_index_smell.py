@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-SPATIAL-OBJECTS-MUST-USE-GEO_IDS"],
-                    related_paths=[rel_path, "src/geo/index/object_id_engine.py"],
+                    related_paths=[rel_path, "geo/index/object_id_engine.py"],
                 )
             )
             break

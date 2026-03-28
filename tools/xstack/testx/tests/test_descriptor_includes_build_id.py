@@ -8,8 +8,8 @@ TEST_TAGS = ["fast", "release", "compat"]
 
 
 def run(repo_root: str):
-    from src.compat.descriptor import build_product_descriptor
-    from src.release import build_product_build_metadata
+    from compat.descriptor import build_product_descriptor
+    from release import build_product_build_metadata
 
     descriptor = build_product_descriptor(repo_root, product_id="client")
     build_meta = build_product_build_metadata(repo_root, "client")

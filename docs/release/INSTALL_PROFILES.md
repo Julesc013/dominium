@@ -83,7 +83,7 @@ Install profiles are deterministic selector sets resolved through the component 
 
 ## Resolution Rules
 
-- Setup and launcher resolve profiles through `src/release/component_graph_resolver.py`.
+- Setup and launcher resolve profiles through `release/component_graph_resolver.py`.
 - Required selectors are always expanded.
 - Optional selectors are reported as disabled by default unless a later policy enables them.
 - Provider selection remains delegated to the deterministic LIB provides resolver.

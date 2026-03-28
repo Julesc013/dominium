@@ -10,9 +10,9 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E48_PERFORMANCE_NONDETERMINISM_SMELL"
 TARGET_PATHS = (
-    "src/performance/cost_engine.py",
-    "src/performance/inspection_cache.py",
-    "src/reality/transitions/transition_controller.py",
+    "performance/cost_engine.py",
+    "performance/inspection_cache.py",
+    "reality/transitions/transition_controller.py",
     "tools/xstack/sessionx/process_runtime.py",
 )
 FORBIDDEN_PATTERNS = (
@@ -55,12 +55,12 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     required_tokens_by_path = {
-        "src/performance/cost_engine.py": (
+        "performance/cost_engine.py": (
             "compute_cost_snapshot(",
             "evaluate_envelope(",
             "reserve_inspection_budget(",
         ),
-        "src/performance/inspection_cache.py": (
+        "performance/inspection_cache.py": (
             "build_cache_key(",
             "build_inspection_snapshot(",
             "cache_lookup_or_store(",

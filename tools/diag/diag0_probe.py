@@ -12,8 +12,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.compat import emit_product_descriptor  # noqa: E402
-from src.diag import verify_repro_bundle, write_repro_bundle  # noqa: E402
+from compat import emit_product_descriptor  # noqa: E402
+from diag import verify_repro_bundle, write_repro_bundle  # noqa: E402
 from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL  # noqa: E402
 
 

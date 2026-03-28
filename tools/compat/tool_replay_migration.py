@@ -14,7 +14,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata  # noqa: E402
+from compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 

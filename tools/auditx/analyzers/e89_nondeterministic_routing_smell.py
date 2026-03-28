@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E89_NONDETERMINISTIC_ROUTING_SMELL"
-ROUTING_ENGINE_PATH = "src/core/graph/routing_engine.py"
-GRAPH_ENGINE_PATH = "src/core/graph/network_graph_engine.py"
+ROUTING_ENGINE_PATH = "core/graph/routing_engine.py"
+GRAPH_ENGINE_PATH = "core/graph/network_graph_engine.py"
 
 REQUIRED_ROUTING_TOKENS = (
     "build_route_cache_key(",

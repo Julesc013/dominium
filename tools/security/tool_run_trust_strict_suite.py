@@ -15,6 +15,9 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
+from tools.import_bridge import install_src_aliases  # noqa: E402
+install_src_aliases(REPO_ROOT_HINT)
+
 from tools.security.trust_strict_common import (
     build_trust_strict_baseline,
     run_trust_strict_suite,

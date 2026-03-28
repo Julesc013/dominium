@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.electric.power_network_engine import solve_power_network_e1
+    from electric.power_network_engine import solve_power_network_e1
     from tools.xstack.testx.tests.elec_testlib import build_power_graph, model_binding_rows
 
     graph_row = build_power_graph(capacity_rating=100, resistance_proxy=40)

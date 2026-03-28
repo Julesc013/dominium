@@ -295,7 +295,7 @@ def _infrastructure_overlay(center_cell_key: Mapping[str, object], goal_cell_key
 
 
 def _metric_cache_probe(query_fn) -> dict:
-    from src.geo import metric_cache_clear, metric_cache_snapshot
+    from geo import metric_cache_clear, metric_cache_snapshot
 
     metric_cache_clear()
     before = metric_cache_snapshot()
@@ -323,7 +323,7 @@ def _suite_worldgen_and_overlay(
     suite: Mapping[str, object],
     scenario: Mapping[str, object],
 ) -> dict:
-    from src.geo import (
+    from geo import (
         build_default_overlay_manifest,
         build_property_patch,
         explain_property_origin,
@@ -494,7 +494,7 @@ def _suite_geometry_and_compaction(
     suite: Mapping[str, object],
     scenario: Mapping[str, object],
 ) -> dict:
-    from src.geo import (
+    from geo import (
         aggregate_geometry_chunk_to_cell,
         build_micro_geometry_chunk_from_cell_state,
         geometry_add_volume,
@@ -505,7 +505,7 @@ def _suite_geometry_and_compaction(
         geometry_replace_material,
         geometry_state_hash_surface,
     )
-    from src.meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
+    from meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
 
     fixture = _as_map(scenario.get("geometry_edit_fixture"))
     target_cell_keys = [dict(row) for row in list(fixture.get("target_cell_keys") or [])]
@@ -627,7 +627,7 @@ def _suite_projection_and_views(
     resolution_spec_override: Mapping[str, object] | None = None,
     defer_derived_views: bool = False,
 ) -> dict:
-    from src.geo import (
+    from geo import (
         build_cctv_view_delivery,
         build_lens_request,
         build_projection_request,
@@ -802,7 +802,7 @@ def _suite_metrics_and_pathing(
     noncritical_neighbor_radius: int = 1,
     path_max_expansions: int | None = None,
 ) -> dict:
-    from src.geo import (
+    from geo import (
         apply_floating_origin,
         build_path_request,
         choose_floating_origin_offset,
@@ -815,8 +815,8 @@ def _suite_metrics_and_pathing(
         position_distance,
         traversal_policy_registry_hash,
     )
-    from src.fields import field_sample_neighborhood, field_sample_position_ref
-    from src.pollution.dispersion_engine import (
+    from fields import field_sample_neighborhood, field_sample_position_ref
+    from pollution.dispersion_engine import (
         evaluate_pollution_dispersion,
         pollution_deposition_hash_chain,
         pollution_field_hash_chain,
@@ -1008,7 +1008,7 @@ def _suite_report(
     scenario: Mapping[str, object],
     truth_hash_anchor: str,
 ) -> dict:
-    from src.geo import finalize_geo_degradation_report, plan_geo_degradation_actions
+    from geo import finalize_geo_degradation_report, plan_geo_degradation_actions
 
     requested_resolution_spec = _as_map(suite.get("resolution_spec"))
     degradation_plan = plan_geo_degradation_actions(

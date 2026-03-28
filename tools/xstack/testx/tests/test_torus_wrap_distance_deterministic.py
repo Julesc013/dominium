@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.geo import geo_distance
+from geo import geo_distance
 
 
 TEST_ID = "test_torus_wrap_distance_deterministic"

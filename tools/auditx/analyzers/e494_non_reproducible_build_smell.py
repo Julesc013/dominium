@@ -45,7 +45,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="RESTORE_REPRODUCIBLE_BUILD_SURFACE",
                 related_invariants=["INV-BUILD-ID-MATCHES-MANIFEST"],
-                related_paths=[rel_path, "src/release/release_manifest_engine.py", "tools/release/tool_verify_build_reproducibility.py"],
+                related_paths=[rel_path, "release/release_manifest_engine.py", "tools/release/tool_verify_build_reproducibility.py"],
             )
         )
     return findings

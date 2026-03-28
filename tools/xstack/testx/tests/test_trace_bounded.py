@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.embodiment import build_logic_trace_task
+    from embodiment import build_logic_trace_task
     from tools.xstack.testx.tests.emb1_testlib import authority_context
 
     payload = build_logic_trace_task(

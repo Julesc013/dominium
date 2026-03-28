@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E135_HIDDEN_AUTO_FORMALIZE_SMELL"
 RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-INFERENCE_REL = "src/infrastructure/formalization/inference_engine.py"
+INFERENCE_REL = "infrastructure/formalization/inference_engine.py"
 _AUTO_FORMALIZE_PATTERNS = (
     re.compile(r"\bauto[_\-]?formaliz", re.IGNORECASE),
     re.compile(r"\bformaliz(?:e|ation)[^\n]*\bauto\b", re.IGNORECASE),

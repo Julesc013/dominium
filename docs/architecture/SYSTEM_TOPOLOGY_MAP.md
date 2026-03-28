@@ -58,7 +58,7 @@ Version: 1.0.0
 
 ## Planned CTRL Nodes
 - `module:src/control`
-- `module:src/control/control_plane_engine.py`
+- `module:control/control_plane_engine.py`
 - `module:src/control/control_ir_validator.py`
 - `module:src/control/control_decision_log.py`
 

@@ -15,8 +15,11 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.identity import UNIVERSAL_IDENTITY_FIELD  # noqa: E402
-from src.release import (  # noqa: E402
+from tools.import_bridge import install_src_aliases  # noqa: E402
+install_src_aliases(REPO_ROOT_HINT)
+
+from meta.identity import UNIVERSAL_IDENTITY_FIELD  # noqa: E402
+from release import (  # noqa: E402
     DEFAULT_INSTALL_PROFILE_ID,
     RESOLUTION_POLICY_EXACT_SUITE,
     RESOLUTION_POLICY_LATEST_COMPATIBLE,
@@ -32,7 +35,7 @@ from src.release import (  # noqa: E402
     select_release_resolution_policy,
     select_rollback_transaction,
 )
-from src.security.trust import (  # noqa: E402
+from security.trust import (  # noqa: E402
     DEFAULT_TRUST_POLICY_ID,
     REFUSAL_TRUST_SIGNATURE_MISSING,
     TRUST_POLICY_STRICT,
@@ -441,13 +444,18 @@ def build_update_sim_baseline(report: Mapping[str, object]) -> dict:
     yanked = _as_map(payload.get("yanked_candidate_exclusion"))
     strict = _as_map(payload.get("strict_trust_refusal"))
     rollback = _as_map(payload.get("rollback_restore"))
+    baseline_result = "complete"
+    for row in (baseline, upgrade, yanked, strict, rollback):
+        if _token(_as_map(row).get("result")) != "complete":
+            baseline_result = "refused"
+            break
     out = {
         "schema_id": UPDATE_SIM_BASELINE_SCHEMA_ID,
         "schema_version": "1.0.0",
         "baseline_id": "update_sim.baseline.v0_0_0",
         "update_sim_version": UPDATE_SIM_VERSION,
         "stability_class": UPDATE_SIM_STABILITY_CLASS,
-        "result": "complete" if _token(payload.get("result")) == "complete" else "refused",
+        "result": baseline_result,
         "scenario_order": list(_as_list(payload.get("scenario_order"))),
         "plan_hashes": {
             "baseline_plan_fingerprint": _token(baseline.get("plan_fingerprint")),

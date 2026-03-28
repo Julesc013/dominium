@@ -19,7 +19,7 @@ def _run_pair(repo_root: str, shard_ids):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.provenance import compact_provenance_window
+    from meta.provenance import compact_provenance_window
 
     classifications = read_provenance_classification_rows(repo_root)
     rows = {}

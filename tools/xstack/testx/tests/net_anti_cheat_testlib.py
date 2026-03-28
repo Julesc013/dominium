@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Tuple
 
-from src.net.anti_cheat import ensure_runtime_channels
+from net.anti_cheat import ensure_runtime_channels
 
 
 def _registry_rows(payload: dict, record_key: str) -> list:

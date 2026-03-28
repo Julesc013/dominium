@@ -32,7 +32,7 @@ def run(repo_root: str):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/time/time_engine.py",
+        "engine/time/time_engine.py",
     }
     violations = []
 

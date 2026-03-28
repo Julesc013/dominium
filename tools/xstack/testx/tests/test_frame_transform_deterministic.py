@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.geo import frame_get_transform, frame_graph_hash
+    from geo import frame_get_transform, frame_graph_hash
     from tools.xstack.testx.tests.geo2_testlib import baseline_frame_nodes, baseline_frame_transforms
 
     nodes = baseline_frame_nodes()

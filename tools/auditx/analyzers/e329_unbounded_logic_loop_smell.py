@@ -27,7 +27,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    eval_rel = "src/logic/eval/logic_eval_engine.py"
+    eval_rel = "logic/eval/logic_eval_engine.py"
     eval_text = _read_text(repo_root, eval_rel)
     for token in ("_loop_policy_refusal(", "REFUSAL_LOGIC_EVAL_LOOP_POLICY", "loop_classifications"):
         if token in eval_text:

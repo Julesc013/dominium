@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.drift import build_process_drift_state_row, build_revalidation_run_row
+    from process.drift import build_process_drift_state_row, build_revalidation_run_row
     from tools.xstack.testx.tests.proc3_testlib import run_proc3_qc_case
 
     preloaded_drift = build_process_drift_state_row(

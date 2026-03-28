@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
                 category="security.trust_bypass_smell",
                 severity="BLOCKER",
                 confidence=0.99,
-                file_path=rel_path or "src/security/trust/trust_verifier.py",
+                file_path=rel_path or "security/trust/trust_verifier.py",
                 evidence=[
                     str(item.get("message", "")).strip() or "trust verification bypass detected",
                     str(item.get("snippet", "")).strip() or "trust bypass token",
@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ROUTE_ARTIFACT_ACCEPTANCE_THROUGH_TRUST_VERIFIER",
                 related_invariants=[RULE_ID],
-                related_paths=[rel_path or "src/security/trust/trust_verifier.py", "tools/security/trust_model_common.py"],
+                related_paths=[rel_path or "security/trust/trust_verifier.py", "tools/security/trust_model_common.py"],
             )
         )
     return findings

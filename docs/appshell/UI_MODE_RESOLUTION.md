@@ -13,7 +13,7 @@ AppShell owns deterministic product UI selection before product bootstrap, pack 
 ## Decision Tree
 
 1. Parse explicit `--mode` or supported legacy `--ui` migration.
-2. Probe presentation-only host capabilities through `src/platform/platform_probe.py`.
+2. Probe presentation-only host capabilities through `engine/platform/platform_probe.py`.
 3. If an explicit mode was requested, honor it when available; otherwise degrade through the CAP-NEG fallback map.
 4. Without an explicit mode, use the product policy order for the detected context:
    - `tty`: prefer interactive console surfaces.

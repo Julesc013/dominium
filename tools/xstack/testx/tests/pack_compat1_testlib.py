@@ -23,7 +23,7 @@ def _fingerprint(payload: dict) -> str:
 
 
 def _pack_compat_fingerprint(payload: dict) -> str:
-    from src.packs.compat.pack_compat_validator import _normalize_manifest
+    from packs.compat.pack_compat_validator import _normalize_manifest
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     body = dict(_normalize_manifest(payload))
@@ -91,7 +91,7 @@ def verify_fixture_pack_set(
     overlay_conflict_policy_id: str = "",
     universe_contract_bundle_path: str = "",
 ) -> dict:
-    from src.packs.compat import verify_pack_set
+    from packs.compat import verify_pack_set
 
     _normalize_fixture_manifest_hashes(temp_repo)
     return verify_pack_set(

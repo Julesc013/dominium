@@ -16,8 +16,8 @@ WATCH_PREFIXES = (
 )
 
 TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
-CONTROL_PLANE_REL = "src/control/control_plane_engine.py"
-CONTROL_PLANE_NODE_ID = "module:src/control/control_plane_engine.py"
+CONTROL_PLANE_REL = "control/control_plane_engine.py"
+CONTROL_PLANE_NODE_ID = "module:control/control_plane_engine.py"
 ALLOWED_UNLOGGED_MARKERS = (
     "control_intent_id is required",
     "requested_action_id is required",

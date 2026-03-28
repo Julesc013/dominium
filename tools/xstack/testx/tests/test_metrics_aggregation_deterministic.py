@@ -16,7 +16,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.maturity.metrics_engine import update_process_metrics_for_run
+    from process.maturity.metrics_engine import update_process_metrics_for_run
 
     kwargs = {
         "current_tick": 512,

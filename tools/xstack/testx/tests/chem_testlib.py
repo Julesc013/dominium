@@ -119,8 +119,8 @@ def seed_process_run_state(
     entropy_value: int = 0,
 ) -> dict:
     from tools.xstack.testx.tests.mobility_free_testlib import seed_free_state
-    from src.materials import create_material_batch
-    from src.chem import build_batch_quality_row
+    from materials import create_material_batch
+    from chem import build_batch_quality_row
 
     contamination = sorted(set(str(tag).strip() for tag in list(contamination_tags or ["contaminant.trace_sulfur"]) if str(tag).strip()))
     state = seed_free_state(initial_velocity_x=0)

@@ -14,7 +14,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.lib.save import evaluate_save_open
+from lib.save import evaluate_save_open
 from tools.lib.content_store import load_instance_json_artifact
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

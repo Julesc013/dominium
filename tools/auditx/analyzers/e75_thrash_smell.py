@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E75_THRASH_SMELL"
-MAT_SCALE_ENGINE_PATH = "src/materials/performance/mat_scale_engine.py"
+MAT_SCALE_ENGINE_PATH = "materials/performance/mat_scale_engine.py"
 STRESS_TOOL_PATH = "tools/materials/tool_run_stress.py"
 REQUIRED_ENGINE_TOKENS = (
     "_inspection_cache_key(",

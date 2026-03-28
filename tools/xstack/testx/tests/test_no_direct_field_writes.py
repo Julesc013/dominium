@@ -30,7 +30,7 @@ _SKIP_PREFIXES = (
 
 _ALLOWED_FILES = {
     "tools/xstack/sessionx/process_runtime.py",
-    "src/fields/field_engine.py",
+    "fields/field_engine.py",
 }
 
 

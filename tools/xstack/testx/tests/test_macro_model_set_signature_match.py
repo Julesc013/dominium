@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system import validate_macro_model_set
+    from system import validate_macro_model_set
     from tools.xstack.testx.tests.sys1_testlib import macro_validation_fixture
 
     fixture = macro_validation_fixture(repo_root=repo_root)

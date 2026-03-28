@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.core.constraints.constraint_engine import build_constraint_enforcement_hooks
+    from core.constraints.constraint_engine import build_constraint_enforcement_hooks
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     constraints = [

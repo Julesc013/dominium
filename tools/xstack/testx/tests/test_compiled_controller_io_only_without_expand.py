@@ -19,7 +19,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.debug import process_logic_probe
+    from logic.debug import process_logic_probe
     from tools.xstack.testx.tests._logic_eval_test_utils import compile_logic_network_fixture, make_chain_network
 
     _binding, logic_network_state = make_chain_network(network_id="net.logic.debug.compiled")

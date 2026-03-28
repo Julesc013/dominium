@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E119_UNLOGGED_REFUSAL_SMELL"
 WATCH_PREFIXES = (
-    "src/control/control_plane_engine.py",
+    "control/control_plane_engine.py",
 )
 
 _ALLOWED_UNLOGGED_MARKERS = (
@@ -36,7 +36,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    rel_path = "src/control/control_plane_engine.py"
+    rel_path = "control/control_plane_engine.py"
     lines = _read_lines(repo_root, rel_path)
     if not lines:
         findings.append(

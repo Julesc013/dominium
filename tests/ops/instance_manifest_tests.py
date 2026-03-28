@@ -10,7 +10,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.lib.instance import deterministic_fingerprint, validate_instance_manifest
+from lib.instance import deterministic_fingerprint, validate_instance_manifest
 
 
 OPS_CLI = os.path.join("tools", "ops", "ops_cli.py")

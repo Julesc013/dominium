@@ -24,7 +24,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    rel_path = "src/net/srz/shard_coordinator.py"
+    rel_path = "net/srz/shard_coordinator.py"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     if not os.path.isfile(abs_path):
         findings.append(

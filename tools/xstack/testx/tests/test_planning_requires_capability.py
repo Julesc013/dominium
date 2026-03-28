@@ -45,7 +45,7 @@ def _plan_intent():
 
 
 def _invoke_plan_create(repo_root: str, policy: dict):
-    from src.control.planning.plan_engine import create_plan_artifact
+    from control.planning.plan_engine import create_plan_artifact
     from tools.xstack.testx.tests.plan_testlib import authority_context, law_profile
 
     return create_plan_artifact(

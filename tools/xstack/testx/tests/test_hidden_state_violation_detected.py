@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system.statevec import detect_undeclared_output_state
+    from system.statevec import detect_undeclared_output_state
     from tools.xstack.testx.tests.sys0_testlib import cloned_state, execute_system_process
 
     state = cloned_state()

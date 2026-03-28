@@ -13,7 +13,7 @@ REQUIRED_TOKENS = {
         "bounded polling iterations",
         "The supervisor never uses wall-clock timeouts.",
     ),
-    "src/appshell/supervisor/supervisor_engine.py": (
+    "appshell/supervisor/supervisor_engine.py": (
         "STOP_POLL_ITERATIONS = 4",
         "for _ in range(STOP_POLL_ITERATIONS):",
         "poll_process(process)",
@@ -24,7 +24,7 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "src/appshell/supervisor/supervisor_engine.py": ("time.sleep(", "time.time(", "datetime.utcnow(", "perf_counter(", "sleep("),
+    "appshell/supervisor/supervisor_engine.py": ("time.sleep(", "time.time(", "datetime.utcnow(", "perf_counter(", "sleep("),
     "tools/appshell/appshell6_probe.py": ("time.sleep(", "time.time(", "datetime.utcnow(", "perf_counter(", "sleep("),
 }
 

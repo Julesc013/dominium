@@ -49,7 +49,7 @@ def base_save_payload() -> dict:
 
 
 def current_save_payload(repo_root: str, *, contract_hash: str = "b" * 64, engine_version_created: str = "0.0.0+build.test") -> dict:
-    from src.compat.data_format_loader import stamp_artifact_metadata
+    from compat.data_format_loader import stamp_artifact_metadata
 
     return stamp_artifact_metadata(
         repo_root=repo_root,
@@ -65,7 +65,7 @@ def legacy_save_payload() -> dict:
 
 
 def future_save_payload(repo_root: str, *, contract_hash: str = "b" * 64) -> dict:
-    from src.compat.data_format_loader import artifact_deterministic_fingerprint
+    from compat.data_format_loader import artifact_deterministic_fingerprint
 
     payload = current_save_payload(repo_root, contract_hash=contract_hash)
     payload["format_version"] = "9.0.0"
@@ -80,7 +80,7 @@ def write_fixture(path_root: str, file_name: str, payload: dict) -> str:
 
 
 def load_fixture(repo_root: str, artifact_kind: str, path: str, *, contract_hash: str = "", allow_read_only: bool = False) -> Tuple[dict, dict, dict]:
-    from src.compat.data_format_loader import load_versioned_artifact
+    from compat.data_format_loader import load_versioned_artifact
 
     return load_versioned_artifact(
         repo_root=repo_root,

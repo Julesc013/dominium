@@ -68,7 +68,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-FIELD-STORAGE-GEO-KEYED", "INV-NO-RAW-FIELD-GRID-ASSUMPTION"],
-                related_paths=[rel_path, "src/field/field_boundary_exchange.py"],
+                related_paths=[rel_path, "field/field_boundary_exchange.py"],
             )
         )
     return findings

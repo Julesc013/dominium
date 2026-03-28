@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.embodiment import (  # noqa: E402
+from embodiment import (  # noqa: E402
     build_cut_trench_task,
     build_fill_at_cursor_task,
     build_logic_probe_task,

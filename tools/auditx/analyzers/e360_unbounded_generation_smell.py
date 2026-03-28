@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E360_UNBOUNDED_GENERATION_SMELL"
-SYSTEM_REFINER_REL = "src/worldgen/mw/mw_system_refiner_l2.py"
+SYSTEM_REFINER_REL = "worldgen/mw/mw_system_refiner_l2.py"
 SYSTEM_PRIORS_REGISTRY_REL = "data/registries/system_priors_registry.json"
 REQUIRED_REFINER_TOKENS = (
     "max_planets",

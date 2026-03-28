@@ -2,8 +2,8 @@ import json
 import os
 import re
 
-from src.compat.shims import redirect_legacy_path
-from src.meta_extensions_engine import normalize_extensions_tree
+from compat.shims import redirect_legacy_path
+from meta_extensions_engine import normalize_extensions_tree
 
 
 REVERSE_DNS_RE = re.compile(r"^[a-z0-9]+(\.[a-z0-9][a-z0-9_-]*)+$")

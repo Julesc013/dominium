@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E92_FLOW_BYPASS_LEDGER_SMELL"
 WATCH_PREFIXES = ("src/logistics/", "tools/xstack/sessionx/")
 
-LOGISTICS_ENGINE_PATH = "src/logistics/logistics_engine.py"
+LOGISTICS_ENGINE_PATH = "logistics/logistics_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 
 

@@ -17,11 +17,11 @@ WATCH_PREFIXES = (
 )
 
 _ALLOWED_PATHS = {
-    "src/logic/network/logic_network_engine.py",
-    "src/logic/network/logic_network_validator.py",
-    "src/logic/network/instrumentation_binding.py",
-    "src/logic/network/__init__.py",
-    "src/logic/__init__.py",
+    "logic/network/logic_network_engine.py",
+    "logic/network/logic_network_validator.py",
+    "logic/network/instrumentation_binding.py",
+    "logic/network/__init__.py",
+    "logic/__init__.py",
     "tools/xstack/sessionx/process_runtime.py",
 }
 _PATTERNS = (
@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
                         suggested_classification="INVALID",
                         recommended_action="REWRITE",
                         related_invariants=["INV-LOGIC-WIRING-USES-NETWORKGRAPH"],
-                        related_paths=[rel_path, "src/logic/network/logic_network_engine.py"],
+                        related_paths=[rel_path, "logic/network/logic_network_engine.py"],
                     )
                 )
 

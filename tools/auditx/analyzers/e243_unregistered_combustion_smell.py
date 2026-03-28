@@ -128,8 +128,8 @@ def run(graph, repo_root, changed_files=None):
 
     scan_files = (
         "tools/xstack/sessionx/process_runtime.py",
-        "src/models/model_engine.py",
-        "src/thermal/network/thermal_network_engine.py",
+        "models/model_engine.py",
+        "thermal/network/thermal_network_engine.py",
     )
     for rel_path in scan_files:
         text = _read_text(repo_root, rel_path)

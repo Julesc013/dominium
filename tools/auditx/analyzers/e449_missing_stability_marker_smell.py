@@ -10,7 +10,7 @@ if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 from analyzers.base import make_finding
-from src.meta.stability import ALL_REGISTRY_PATHS, validate_all_registries
+from meta.stability import ALL_REGISTRY_PATHS, validate_all_registries
 
 
 ANALYZER_ID = "E449_MISSING_STABILITY_MARKER_SMELL"

@@ -5,13 +5,23 @@ from __future__ import annotations
 import json
 import os
 import shutil
+import sys
 import tarfile
 import tempfile
 from typing import Mapping, Sequence
 
-from src.compat.migration_lifecycle import load_migration_policy_registry
-from src.governance import governance_profile_hash, load_governance_profile
-from src.release import (
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+
+
+from tools.import_bridge import install_src_aliases
+install_src_aliases(REPO_ROOT_HINT)
+
+from compat.migration_lifecycle import load_migration_policy_registry
+from governance import governance_profile_hash, load_governance_profile
+from release import (
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_MANIFEST_REL,
     load_release_index,
@@ -19,8 +29,8 @@ from src.release import (
     release_index_hash,
     write_release_index,
 )
-from src.release.archive_policy import release_index_history_rel
-from src.security.trust import load_trust_root_registry
+from release.archive_policy import release_index_history_rel
+from security.trust import load_trust_root_registry
 from tools.compatx.core.semantic_contract_validator import (
     load_semantic_contract_registry,
     registry_hash as semantic_contract_registry_hash,
@@ -450,7 +460,7 @@ def _source_snapshot_rows(repo_root: str, staging_root: str, work_root: str) -> 
         _copy_path(source_abs, os.path.join(source_stage, rel_path.replace("/", os.sep)))
     snapshot_rel = "source_snapshot.tar.gz"
     snapshot_abs = os.path.join(staging_root, snapshot_rel.replace("/", os.sep))
-    from src.archive.deterministic_bundle import build_deterministic_archive_bundle
+    from archive.deterministic_bundle import build_deterministic_archive_bundle
 
     build_deterministic_archive_bundle(
         source_stage,
@@ -630,7 +640,7 @@ def build_offline_archive(
     record["deterministic_fingerprint"] = offline_archive_record_hash(record)
     _write_canonical_json(os.path.join(paths["staging_root_abs"], ARCHIVE_RECORD_FILENAME), record)
 
-    from src.archive.deterministic_bundle import build_deterministic_archive_bundle
+    from archive.deterministic_bundle import build_deterministic_archive_bundle
 
     bundle = build_deterministic_archive_bundle(
         paths["staging_root_abs"],

@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E358_NONDETERMINISTIC_QUERY_SMELL"
-QUERY_ENGINE_REL = "src/worldgen/mw/system_query_engine.py"
+QUERY_ENGINE_REL = "worldgen/mw/system_query_engine.py"
 REQUIRED_TOKENS = (
     "sorted(",
     "geo_cell_key_neighbors(",
@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-NO-EAGER-SYSTEM-GENERATION"],
-                related_paths=[QUERY_ENGINE_REL, "src/geo/worldgen/worldgen_engine.py"],
+                related_paths=[QUERY_ENGINE_REL, "geo/worldgen/worldgen_engine.py"],
             )
         )
 

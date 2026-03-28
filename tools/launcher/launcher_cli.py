@@ -23,17 +23,17 @@ from tools.lib.content_store import (
     resolve_instance_artifact_root,
     resolve_locator_path,
 )
-from src.lib.artifact import (
+from lib.artifact import (
     ARTIFACT_KIND_PROFILE_BUNDLE,
     evaluate_artifact_load,
 )
-from src.lib.install import (
+from lib.install import (
     compare_required_contract_ranges,
     compare_required_product_builds,
     normalize_contract_range,
     validate_install_manifest,
 )
-from src.lib.instance import (
+from lib.instance import (
     INSTANCE_KIND_CLIENT,
     INSTANCE_KIND_SERVER,
     INSTANCE_KIND_TOOLING,
@@ -49,7 +49,7 @@ from src.lib.instance import (
     instance_ui_mode_default,
     validate_instance_manifest,
 )
-from src.lib.provides import (
+from lib.provides import (
     REFUSAL_PROVIDES_AMBIGUOUS,
     REFUSAL_PROVIDES_EXPLICIT_REQUIRED,
     REFUSAL_PROVIDES_MISSING_PROVIDER,
@@ -57,11 +57,11 @@ from src.lib.provides import (
     normalize_provides_resolutions,
     resolve_providers,
 )
-from src.lib.save import (
+from lib.save import (
     evaluate_save_open,
     resolve_save_manifest_path,
 )
-from src.appshell.paths import (
+from appshell.paths import (
     VROOT_LOGS,
     VROOT_PACKS,
     VROOT_PROFILES,
@@ -69,7 +69,7 @@ from src.appshell.paths import (
     vpath_candidate_roots,
     vpath_resolve,
 )
-from src.packs.compat import verify_pack_set
+from packs.compat import verify_pack_set
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"

@@ -19,7 +19,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.materials.blueprint_engine import compile_blueprint_artifacts
+    from materials.blueprint_engine import compile_blueprint_artifacts
 
     blueprint_registry = _read_json(os.path.join(repo_root, "data", "registries", "blueprint_registry.json"))
     part_class_registry = _read_json(os.path.join(repo_root, "data", "registries", "part_class_registry.json"))

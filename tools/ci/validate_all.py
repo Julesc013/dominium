@@ -11,7 +11,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, os.pardir, os.pardir))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.compat.shims import run_legacy_validate_all  # noqa: E402
+from compat.shims import run_legacy_validate_all  # noqa: E402
 
 def repo_root_from_script():
     return os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))

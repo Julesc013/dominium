@@ -32,9 +32,9 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     schema_rel = "schema/system/interface_signature.schema"
-    validation_rel = "src/system/system_validation_engine.py"
-    collapse_rel = "src/system/system_collapse_engine.py"
-    expand_rel = "src/system/system_expand_engine.py"
+    validation_rel = "system/system_validation_engine.py"
+    collapse_rel = "system/system_collapse_engine.py"
+    expand_rel = "system/system_expand_engine.py"
 
     schema_text = _read_text(repo_root, schema_rel)
     for token in (

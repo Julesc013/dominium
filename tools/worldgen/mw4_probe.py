@@ -14,9 +14,9 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.client.ui.viewer_shell import build_viewer_shell_state  # noqa: E402
-from src.worldgen.refinement.refinement_cache import build_refinement_cache_key  # noqa: E402
-from src.worldgen.refinement.refinement_scheduler import build_refinement_request_record  # noqa: E402
+from client.ui.viewer_shell import build_viewer_shell_state  # noqa: E402
+from worldgen.refinement.refinement_cache import build_refinement_cache_key  # noqa: E402
+from worldgen.refinement.refinement_scheduler import build_refinement_request_record  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.sessionx.process_runtime import execute_intent  # noqa: E402
 from tools.xstack.testx.tests.geo8_testlib import reset_worldgen_cache, seed_worldgen_state, worldgen_cell_key  # noqa: E402

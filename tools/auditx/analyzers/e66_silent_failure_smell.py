@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E66_SILENT_FAILURE_SMELL"
-DECAY_ENGINE_PATH = "src/materials/maintenance/decay_engine.py"
+DECAY_ENGINE_PATH = "materials/maintenance/decay_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 ALLOWED_MUTATION_PREFIXES = (
     "tools/xstack/sessionx/process_runtime.py",

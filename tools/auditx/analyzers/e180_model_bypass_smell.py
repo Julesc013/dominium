@@ -55,7 +55,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/models/model_engine.py",
+        "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-MODEL-OUTPUTS-PROCESS-ONLY"],
                             related_paths=[
                                 rel_path,
-                                "src/models/model_engine.py",
+                                "models/model_engine.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

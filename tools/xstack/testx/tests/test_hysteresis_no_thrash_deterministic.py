@@ -36,7 +36,7 @@ def _budget_policy() -> dict:
 
 
 def _run_tick(tick: int) -> dict:
-    from src.reality.transitions.transition_controller import compute_transition_plan
+    from reality.transitions.transition_controller import compute_transition_plan
 
     return compute_transition_plan(
         tick=int(tick),

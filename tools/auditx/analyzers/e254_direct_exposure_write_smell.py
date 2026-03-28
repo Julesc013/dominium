@@ -62,8 +62,8 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "src/pollution/exposure_engine.py",
-        "src/pollution/dispersion_engine.py",
+        "pollution/exposure_engine.py",
+        "pollution/dispersion_engine.py",
         "tools/xstack/repox/check.py",
     }
 

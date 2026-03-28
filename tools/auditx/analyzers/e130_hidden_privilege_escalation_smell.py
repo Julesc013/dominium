@@ -17,7 +17,7 @@ WATCH_PREFIXES = (
 )
 
 TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
-CONTROL_PLANE_NODE_ID = "module:src/control/control_plane_engine.py"
+CONTROL_PLANE_NODE_ID = "module:control/control_plane_engine.py"
 
 PRIVILEGE_PATTERNS = (
     re.compile(r"\bprivilege_level\s*=\s*[\"']admin[\"']", re.IGNORECASE),

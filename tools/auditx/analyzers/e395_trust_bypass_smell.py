@@ -24,7 +24,7 @@ REQUIRED_TOKENS = {
         "overlay.conflict.refuse",
         "overlay.conflict.last_wins",
     ),
-    "src/modding/mod_policy_engine.py": (
+    "modding/mod_policy_engine.py": (
         "REFUSAL_MOD_TRUST_DENIED",
         "REFUSAL_MOD_NONDETERMINISM_FORBIDDEN",
         "allowed_trust_levels",

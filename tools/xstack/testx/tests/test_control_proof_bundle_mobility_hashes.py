@@ -15,7 +15,7 @@ _HASH64 = re.compile(r"^[0-9a-f]{64}$")
 def _build_once(repo_root: str) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.control.proof import build_control_proof_bundle_from_markers
+    from control.proof import build_control_proof_bundle_from_markers
 
     return build_control_proof_bundle_from_markers(
         tick_start=101,

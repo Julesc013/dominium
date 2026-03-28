@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control import REFUSAL_CTRL_IR_COST_EXCEEDED, verify_and_compile_control_ir
+    from control import REFUSAL_CTRL_IR_COST_EXCEEDED, verify_and_compile_control_ir
     from tools.xstack.testx.tests.control_ir_testlib import deep_copy_inputs
 
     fixture = deep_copy_inputs()

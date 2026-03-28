@@ -8,9 +8,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E369_UI_TRUTH_LEAK_SMELL"
-VIEWER_SHELL_REL = "src/client/ui/viewer_shell.py"
-MAP_VIEWS_REL = "src/client/ui/map_views.py"
-INSPECT_PANELS_REL = "src/client/ui/inspect_panels.py"
+VIEWER_SHELL_REL = "client/ui/viewer_shell.py"
+MAP_VIEWS_REL = "client/ui/map_views.py"
+INSPECT_PANELS_REL = "client/ui/inspect_panels.py"
 DOC_REL = "docs/ux/MVP_VIEWER_SHELL.md"
 REQUIRED_TOKENS = {
     VIEWER_SHELL_REL: (

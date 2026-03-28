@@ -19,30 +19,30 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.appshell import appshell_main
-from src.appshell.logging import log_emit
-from src.appshell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
-from src.appshell.paths import (
+from appshell import appshell_main
+from appshell.logging import log_emit
+from appshell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
+from appshell.paths import (
     VROOT_INSTANCES,
     VROOT_PACKS,
     vpath_candidate_roots,
     vpath_init,
 )
-from src.compat import (
+from compat import (
     build_product_build_metadata,
     build_product_descriptor,
     descriptor_json_text,
     emit_product_descriptor,
 )
-from src.governance import (
+from governance import (
     governance_profile_hash,
     governance_profile_path,
     load_governance_mode_registry,
     load_governance_profile,
     select_governance_mode_row,
 )
-from src.meta.identity import IDENTITY_KIND_INSTALL, attach_universal_identity_block
-from src.lib.install import (
+from meta.identity import IDENTITY_KIND_INSTALL, attach_universal_identity_block
+from lib.install import (
     build_product_build_descriptor,
     default_install_registry_path,
     discover_install,
@@ -57,12 +57,12 @@ from src.lib.install import (
     validate_install_manifest,
     verify_install_registry,
 )
-from src.lib.export import (
+from lib.export import (
     export_instance_bundle,
     export_pack_bundle,
     export_save_bundle,
 )
-from src.release import (
+from release import (
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
     DEFAULT_INSTALL_TRANSACTION_LOG_REL,
@@ -88,7 +88,7 @@ from src.release import (
     select_rollback_transaction,
     verify_release_manifest,
 )
-from src.security.trust import (
+from security.trust import (
     DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL,
     DEFAULT_TRUST_POLICY_ID,
     DEFAULT_TRUST_POLICY_REGISTRY_REL,
@@ -98,8 +98,8 @@ from src.security.trust import (
     select_trust_policy,
     write_trust_root_registry,
 )
-from src.lib.save import resolve_save_manifest_path
-from src.lib.store import DEFAULT_GC_POLICY_ID, resolve_store_root_from_install, run_store_gc
+from lib.save import resolve_save_manifest_path
+from lib.store import DEFAULT_GC_POLICY_ID, resolve_store_root_from_install, run_store_gc
 from tools.lib.content_store import initialize_store_root
 
 
@@ -316,7 +316,7 @@ def resolve_apply_migration_cli() -> str:
 
 
 def resolve_import_engine_module():
-    return importlib.import_module("src.lib.import")
+    return importlib.import_module("lib.import")
 
 
 def _setup_vpath_context(store_root: str = "", install_root: str = "") -> dict:
@@ -1041,7 +1041,7 @@ def _write_verification_outputs(
     report_path: Optional[str],
     lock_path: Optional[str],
 ) -> dict:
-    from src.packs.compat import write_pack_compatibility_outputs
+    from packs.compat import write_pack_compatibility_outputs
 
     report_target = normalize_path(report_path or os.path.join(root, DEFAULT_COMPAT_REPORT))
     lock_target = normalize_path(lock_path or os.path.join(root, "pack_lock.json"))

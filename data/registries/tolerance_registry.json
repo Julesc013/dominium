@@ -15,8 +15,8 @@
         "extensions": {
           "classification": "reviewed_float_bridge",
           "applies_to_paths": [
-            "src/geo/kernel/geo_kernel.py",
-            "src/geo/metric/metric_engine.py"
+            "geo/kernel/geo_kernel.py",
+            "geo/metric/metric_engine.py"
           ]
         },
         "stability": {
@@ -40,7 +40,7 @@
         "extensions": {
           "classification": "truth_fixed_point",
           "applies_to_paths": [
-            "src/astro/illumination/illumination_geometry_engine.py"
+            "astro/illumination/illumination_geometry_engine.py"
           ]
         },
         "stability": {
@@ -64,7 +64,7 @@
         "extensions": {
           "classification": "truth_fixed_point",
           "applies_to_paths": [
-            "src/astro/ephemeris/kepler_proxy_engine.py"
+            "astro/ephemeris/kepler_proxy_engine.py"
           ]
         },
         "stability": {
@@ -88,7 +88,7 @@
         "extensions": {
           "classification": "render_only",
           "applies_to_paths": [
-            "src/client/render/renderers/software_renderer.py"
+            "client/render/renderers/software_renderer.py"
           ]
         },
         "stability": {

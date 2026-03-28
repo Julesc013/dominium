@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control import build_control_intent, build_control_resolution
+    from control import build_control_intent, build_control_resolution
 
     intent = build_control_intent(
         requester_subject_id="agent.admin",

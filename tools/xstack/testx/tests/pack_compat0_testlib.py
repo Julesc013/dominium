@@ -38,7 +38,7 @@ def write_json(path: str, payload: dict) -> None:
 
 
 def _descriptor_hash(payload: dict) -> str:
-    from src.packs.compat.pack_compat_validator import pack_compat_manifest_fingerprint
+    from packs.compat.pack_compat_validator import pack_compat_manifest_fingerprint
 
     return pack_compat_manifest_fingerprint(payload)
 

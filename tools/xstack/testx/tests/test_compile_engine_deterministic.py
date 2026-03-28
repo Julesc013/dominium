@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.compile import evaluate_compile_request
+    from meta.compile import evaluate_compile_request
     from tools.xstack.testx.tests.compile0_testlib import compile_request_fixture, policy_context
 
     request = compile_request_fixture(request_id="compile_request.test.deterministic")

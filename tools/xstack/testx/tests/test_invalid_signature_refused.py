@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "security", "trust", "signature"]
 
 
 def run(repo_root: str):
-    from src.security.trust import REFUSAL_TRUST_SIGNATURE_INVALID
+    from security.trust import REFUSAL_TRUST_SIGNATURE_INVALID
     from tools.xstack.testx.tests.trust_model_testlib import invalid_signature
 
     result = invalid_signature(repo_root)

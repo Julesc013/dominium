@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E349_ADHOC_WORLDGEN_SMELL"
 
 REQUIRED_FILES = {
-    "src/geo/worldgen/worldgen_engine.py": (
+    "geo/worldgen/worldgen_engine.py": (
         "generate_worldgen_result(",
         "geo_object_id(",
         "worldgen_stream_seed(",
@@ -21,10 +21,10 @@ REQUIRED_FILES = {
         "generate_worldgen_result(",
         "build_worldgen_request(",
     ),
-    "src/geo/projection/projection_engine.py": (
+    "geo/projection/projection_engine.py": (
         "build_worldgen_requests_for_projection(",
     ),
-    "src/system/roi/system_roi_scheduler.py": (
+    "system/roi/system_roi_scheduler.py": (
         "build_worldgen_requests_for_roi(",
     ),
     "tools/geo/tool_replay_worldgen_cell.py": (
@@ -81,7 +81,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-WORLDGEN-ONLY-BY-CELL-KEY", "INV-GENERATOR-VERSION-LOCKED"],
-                related_paths=[rel_path, "src/geo/worldgen/worldgen_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                related_paths=[rel_path, "geo/worldgen/worldgen_engine.py", "tools/xstack/sessionx/process_runtime.py"],
             )
         )
     return findings

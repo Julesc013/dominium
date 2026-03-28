@@ -14,7 +14,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.compat.descriptor import descriptor_json_text, emit_product_descriptor  # noqa: E402
+from compat.descriptor import descriptor_json_text, emit_product_descriptor  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:

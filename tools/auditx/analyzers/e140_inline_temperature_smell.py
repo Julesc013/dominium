@@ -60,7 +60,7 @@ def run(graph, repo_root, changed_files=None):
                 rel_path = _norm(os.path.relpath(abs_path, repo_root))
                 if rel_path.startswith(skip_prefixes):
                     continue
-                if rel_path in ("src/fields/field_engine.py", "tools/xstack/sessionx/process_runtime.py"):
+                if rel_path in ("fields/field_engine.py", "tools/xstack/sessionx/process_runtime.py"):
                     continue
                 text = _read_text(repo_root, rel_path)
                 if not text:
@@ -83,7 +83,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
                             related_invariants=["INV-FIELD-QUERIES-ONLY"],
-                            related_paths=[rel_path, "src/fields/field_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "fields/field_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

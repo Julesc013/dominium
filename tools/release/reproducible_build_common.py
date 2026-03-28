@@ -7,7 +7,7 @@ import tempfile
 from typing import Mapping
 
 
-from src.release import (
+from release import (
     build_mock_signature_block,
     build_release_manifest,
     verify_release_manifest,
@@ -20,8 +20,8 @@ RELEASE2_RETRO_AUDIT_PATH = "docs/audit/RELEASE2_RETRO_AUDIT.md"
 REPRODUCIBLE_BUILD_RULES_PATH = "docs/release/REPRODUCIBLE_BUILD_RULES.md"
 SIGNING_POLICY_PATH = "docs/release/SIGNING_POLICY.md"
 REPRODUCIBLE_BUILD_BASELINE_PATH = "docs/audit/REPRODUCIBLE_BUILD_BASELINE.md"
-BUILD_ID_ENGINE_PATH = "src/release/build_id_engine.py"
-RELEASE_MANIFEST_ENGINE_PATH = "src/release/release_manifest_engine.py"
+BUILD_ID_ENGINE_PATH = "release/build_id_engine.py"
+RELEASE_MANIFEST_ENGINE_PATH = "release/release_manifest_engine.py"
 RELEASE_MANIFEST_GENERATOR_PATH = "tools/release/tool_generate_release_manifest.py"
 RELEASE_MANIFEST_VERIFIER_PATH = "tools/release/tool_verify_release_manifest.py"
 REPRODUCIBILITY_TOOL_PATH = "tools/release/tool_verify_build_reproducibility.py"

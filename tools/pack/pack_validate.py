@@ -12,7 +12,7 @@ if REPO_ROOT_HINT not in sys.path:
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "distribution")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "fab")))
 
-from src.compat.shims import emit_legacy_tool_warning, redirect_legacy_path
+from compat.shims import emit_legacy_tool_warning, redirect_legacy_path
 from distribution_lib import (  # noqa: E402
     discover_pack_manifests,
     extract_record,

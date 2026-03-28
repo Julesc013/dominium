@@ -92,8 +92,8 @@ DECISION_CLASSES = ("approved_for_xi5", "approved_to_attic", "deferred_to_xi5b")
 OPTION_C = "C"
 
 DEFERRED_PATHS = {
-    "src/client/interaction/__init__.py",
-    "src/lib/store/__init__.py",
+    "client/interaction/__init__.py",
+    "lib/store/__init__.py",
 }
 
 ESSENTIAL_UPSTREAM_RELS = (
@@ -315,7 +315,7 @@ def _decision_override(path: str) -> tuple[str, str, str]:
         return ("approved_for_xi5", "ui", "Shared DUI code is reusable UI infrastructure and should move under the approved UI domain.")
     if normalized.startswith("libs/ui_backends/win32/src/"):
         return ("approved_for_xi5", "platform", "Win32 UI backend stubs are platform adapters and are approved under the platform domain.")
-    if normalized == "src/appshell/commands/command_engine.py":
+    if normalized == "appshell/commands/command_engine.py":
         return ("approved_for_xi5", "apps", "Appshell command routing belongs with application shell runtime rather than generic tools.")
     if normalized.startswith("src/appshell/"):
         return ("approved_for_xi5", "apps", "Appshell surfaces are approved with the application runtime shell baseline.")
@@ -444,7 +444,7 @@ def _deferred_rows(decisions: Sequence[Mapping[str, object]]) -> list[dict[str, 
             continue
         file_path = _norm_rel(row.get("file_path"))
         blocker = "Current evidence remains tool-leaning but the file is not worth broadening XI-5a over."
-        if file_path == "src/client/interaction/__init__.py":
+        if file_path == "client/interaction/__init__.py":
             blocker = "Interaction init surface is isolated and does not justify blocking the approved XI-5a move set."
         rows.append(
             {

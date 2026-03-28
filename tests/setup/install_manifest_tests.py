@@ -11,7 +11,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.lib.install import deterministic_fingerprint, validate_install_manifest
+from lib.install import deterministic_fingerprint, validate_install_manifest
 
 
 def _ensure_dir(path: str) -> None:

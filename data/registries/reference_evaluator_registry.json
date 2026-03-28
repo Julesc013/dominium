@@ -41,7 +41,7 @@
         "extensions": {
           "status": "active",
           "source": "META-REF0",
-          "runtime_surface": "src.models.evaluate_model_bindings"
+          "runtime_surface": "models.evaluate_model_bindings"
         },
         "stability": {
           "schema_version": "1.0.0",

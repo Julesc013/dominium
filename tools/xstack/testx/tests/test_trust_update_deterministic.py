@@ -47,7 +47,7 @@ def _update_rule_registry() -> dict:
 
 
 def _run_once() -> dict:
-    from src.signals import build_verification_result, process_trust_update
+    from signals import build_verification_result, process_trust_update
 
     verification_row = build_verification_result(
         result_id="verification.test.det.001",

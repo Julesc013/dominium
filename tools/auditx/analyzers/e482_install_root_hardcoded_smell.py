@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ROUTE_THROUGH_INSTALL_DISCOVERY",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-INSTALL-DISCOVERY-REQUIRED"],
-                related_paths=[rel_path, "src/lib/install/install_discovery_engine.py"],
+                related_paths=[rel_path, "lib/install/install_discovery_engine.py"],
             )
         )
     return findings

@@ -17,9 +17,9 @@ WATCH_PREFIXES = (
 )
 
 _NON_COMMIT_PATHS = (
-    "src/logic/eval/sense_engine.py",
-    "src/logic/eval/compute_engine.py",
-    "src/logic/eval/propagate_engine.py",
+    "logic/eval/sense_engine.py",
+    "logic/eval/compute_engine.py",
+    "logic/eval/propagate_engine.py",
 )
 _COMMIT_ONLY_TOKENS = (
     "serialize_state(",
@@ -55,7 +55,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    commit_rel = "src/logic/eval/commit_engine.py"
+    commit_rel = "logic/eval/commit_engine.py"
     commit_text = _read_text(repo_root, commit_rel)
     for token in _COMMIT_ONLY_TOKENS:
         if _contains_call(commit_text, token):

@@ -14,8 +14,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.logic.fault import process_logic_fault_set
-from src.logic.signal import process_signal_set
+from logic.fault import process_logic_fault_set
+from logic.signal import process_signal_set
 from tools.logic.tool_replay_fault_window import replay_fault_window_from_payload
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, make_chain_network, make_scalar_comparator_network

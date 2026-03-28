@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.release import DEFAULT_RELEASE_CHANNEL, build_release_manifest, load_release_manifest  # noqa: E402
+from release import DEFAULT_RELEASE_CHANNEL, build_release_manifest, load_release_manifest  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text  # noqa: E402
 
 

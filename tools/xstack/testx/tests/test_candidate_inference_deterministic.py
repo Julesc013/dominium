@@ -57,7 +57,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.research import infer_candidate_artifacts
+    from process.research import infer_candidate_artifacts
 
     first = infer_candidate_artifacts(
         current_tick=10,

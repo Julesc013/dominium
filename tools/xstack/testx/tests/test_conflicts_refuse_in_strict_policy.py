@@ -9,7 +9,7 @@ TEST_TAGS = ["fast", "release", "dist", "component-graph"]
 
 def run(repo_root: str):
     del repo_root
-    from src.release.component_graph_resolver import (
+    from release.component_graph_resolver import (
         COMPONENT_KIND_BINARY,
         EDGE_KIND_CONFLICTS,
         REFUSAL_COMPONENT_GRAPH_CONFLICT,

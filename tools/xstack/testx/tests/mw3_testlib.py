@@ -49,7 +49,7 @@ def select_surface_fixture_planet(rows: object, *, require_atmosphere: bool = Tr
 
 
 def build_surface_request_from_fixture(fixture: dict, *, request_id: str, reason: str = "query") -> dict:
-    from src.geo import build_worldgen_request
+    from geo import build_worldgen_request
 
     return build_worldgen_request(
         request_id=request_id,
@@ -62,8 +62,8 @@ def build_surface_request_from_fixture(fixture: dict, *, request_id: str, reason
 
 def build_surface_fixture(repo_root: str, *, current_tick: int = FIXTURE_CURRENT_TICK, require_atmosphere: bool = True) -> dict:
     _ensure_repo_root(repo_root)
-    from src.geo import generate_worldgen_result
-    from src.worldgen.mw import build_planet_surface_cell_key
+    from geo import generate_worldgen_result
+    from worldgen.mw import build_planet_surface_cell_key
     from tools.xstack.testx.tests.geo8_testlib import (
         reset_worldgen_cache,
         seed_worldgen_state,
@@ -126,7 +126,7 @@ def build_surface_fixture(repo_root: str, *, current_tick: int = FIXTURE_CURRENT
 
 def generate_surface_fixture_result(repo_root: str, *, current_tick: int = FIXTURE_CURRENT_TICK) -> tuple[dict, dict]:
     _ensure_repo_root(repo_root)
-    from src.geo import generate_worldgen_result
+    from geo import generate_worldgen_result
 
     fixture = build_surface_fixture(repo_root, current_tick=current_tick, require_atmosphere=True)
     result = generate_worldgen_result(
@@ -140,7 +140,7 @@ def generate_surface_fixture_result(repo_root: str, *, current_tick: int = FIXTU
 
 def surface_result_hash(result: dict) -> str:
     from tools.xstack.compatx.canonical_json import canonical_sha256
-    from src.worldgen.mw import surface_tile_artifact_hash_chain
+    from worldgen.mw import surface_tile_artifact_hash_chain
 
     field_rows = sorted(
         (

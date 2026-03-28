@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "compat", "migration", "refusal"]
 
 
 def run(repo_root: str):
-    from src.compat.migration_lifecycle import DECISION_REFUSE
+    from compat.migration_lifecycle import DECISION_REFUSE
     from tools.xstack.testx.tests.migration_lifecycle_testlib import REFUSAL_MIGRATION_NO_PATH, no_policy_decision
 
     decision = no_policy_decision(repo_root)

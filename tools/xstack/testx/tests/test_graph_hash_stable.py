@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.network import canonical_logic_network_hash
+    from logic.network import canonical_logic_network_hash
     from tools.xstack.testx.tests._logic_network_test_utils import binding_row, graph_row, node_row
 
     binding_a = binding_row(network_id="net.logic.hash.a", graph_id="graph.logic.hash.a")

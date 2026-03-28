@@ -14,8 +14,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.control.proof.control_proof_bundle import build_control_proof_bundle_from_markers  # noqa: E402
-from src.thermal.network.thermal_network_engine import solve_thermal_network_t0, solve_thermal_network_t1  # noqa: E402
+from control.proof.control_proof_bundle import build_control_proof_bundle_from_markers  # noqa: E402
+from thermal.network.thermal_network_engine import solve_thermal_network_t0, solve_thermal_network_t1  # noqa: E402
 from tools.thermal.tool_generate_therm_stress_scenario import _as_int, _write_json, generate_therm_stress_scenario  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 

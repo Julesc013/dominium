@@ -52,7 +52,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/fluid/network/fluid_network_engine.py",
+        "fluid/network/fluid_network_engine.py",
         "tools/fluid/tool_run_fluid_stress.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                             "INV-ALL-FAILURES-LOGGED",
                             "INV-FLUID-FAILURE-THROUGH-SAFETY-OR-PROCESS",
                         ],
-                        related_paths=[rel_path, "src/fluid/network/fluid_network_engine.py"],
+                        related_paths=[rel_path, "fluid/network/fluid_network_engine.py"],
                     )
                 )
     return sorted(

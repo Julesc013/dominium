@@ -32,7 +32,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.signals import build_signal_channel, process_signal_send, process_signal_transport_tick
+    from signals import build_signal_channel, process_signal_send, process_signal_transport_tick
 
     channel_rows = [
         build_signal_channel(

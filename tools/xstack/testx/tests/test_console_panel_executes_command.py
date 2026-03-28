@@ -11,7 +11,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.appshell3_testlib import build_surface, ensure_repo_on_path
 
     ensure_repo_on_path(repo_root)
-    from src.appshell.tui import execute_console_session_command
+    from appshell.tui import execute_console_session_command
 
     surface = build_surface(repo_root, product_id="client", layout_id="layout.viewer", backend_override="lite")
     result = execute_console_session_command(

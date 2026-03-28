@@ -25,7 +25,7 @@ REQUIRED_TOKENS = {
         '"refusal_code": "refusal.debug.command_unknown"',
         '"refusal_code": "refusal.io.invalid_args"',
     ),
-    "src/appshell/commands/command_engine.py": (
+    "appshell/commands/command_engine.py": (
         '"refusal_code"',
         '"reason"',
         '"remediation_hint"',

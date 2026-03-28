@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E374_NONDETERMINISTIC_CLIMATE_SMELL"
-SEASON_ENGINE_REL = "src/worldgen/earth/season_phase_engine.py"
-CLIMATE_ENGINE_REL = "src/worldgen/earth/climate_field_engine.py"
+SEASON_ENGINE_REL = "worldgen/earth/season_phase_engine.py"
+CLIMATE_ENGINE_REL = "worldgen/earth/climate_field_engine.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
 CLIMATE_PROBE_REL = "tools/worldgen/earth2_probe.py"
 CLIMATE_REPLAY_REL = "tools/worldgen/tool_replay_climate_window.py"

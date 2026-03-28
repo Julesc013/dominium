@@ -8,7 +8,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.lib.provides import (
+from lib.provides import (
     REFUSAL_PROVIDES_AMBIGUOUS,
     REFUSAL_PROVIDES_EXPLICIT_REQUIRED,
     RESOLUTION_POLICY_DETERMINISTIC_LOWEST_PACK_ID,

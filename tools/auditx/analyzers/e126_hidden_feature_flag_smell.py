@@ -97,7 +97,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="NEEDS_REVIEW",
                     recommended_action="REWRITE",
                     related_invariants=["INV-CAPABILITY-REGISTRY-REQUIRED", "INV-NO-TYPE-BRANCHING"],
-                    related_paths=[rel_path, "src/control/capability/capability_engine.py"],
+                    related_paths=[rel_path, "control/capability/capability_engine.py"],
                 )
             )
 

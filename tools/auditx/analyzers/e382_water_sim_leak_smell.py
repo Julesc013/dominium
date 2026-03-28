@@ -8,10 +8,10 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E382_WATER_SIM_LEAK_SMELL"
-WATER_ENGINE_REL = "src/worldgen/earth/water/water_view_engine.py"
-VIEWER_SHELL_REL = "src/client/ui/viewer_shell.py"
-RENDER_ADAPTER_REL = "src/client/render/render_model_adapter.py"
-SOFTWARE_RENDERER_REL = "src/client/render/renderers/software_renderer.py"
+WATER_ENGINE_REL = "worldgen/earth/water/water_view_engine.py"
+VIEWER_SHELL_REL = "client/ui/viewer_shell.py"
+RENDER_ADAPTER_REL = "client/render/render_model_adapter.py"
+SOFTWARE_RENDERER_REL = "client/render/renderers/software_renderer.py"
 WATER_PROBE_REL = "tools/worldgen/earth8_probe.py"
 WATER_REPLAY_REL = "tools/worldgen/tool_replay_water_view.py"
 WATER_DOC_REL = "docs/worldgen/EARTH_WATER_VISUAL_MODEL.md"

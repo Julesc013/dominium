@@ -14,16 +14,16 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.client.net import read_loopback_handshake_response, send_loopback_client_ack  # noqa: E402
-from src.net.transport.loopback import reset_loopback_state  # noqa: E402
-from src.server.net.loopback_transport import (  # noqa: E402
+from client.net import read_loopback_handshake_response, send_loopback_client_ack  # noqa: E402
+from net.transport.loopback import reset_loopback_state  # noqa: E402
+from server.net.loopback_transport import (  # noqa: E402
     accept_loopback_connection,
     create_loopback_listener,
     send_client_hello,
     service_loopback_control_channel,
 )
-from src.server.runtime.tick_loop import run_server_ticks  # noqa: E402
-from src.server.server_boot import boot_server_runtime, materialize_server_session, submit_client_intent  # noqa: E402
+from server.runtime.tick_loop import run_server_ticks  # noqa: E402
+from server.server_boot import boot_server_runtime, materialize_server_session, submit_client_intent  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.sessionx.common import write_canonical_json  # noqa: E402
 from tools.xstack.sessionx.net_protocol import decode_proto_message  # noqa: E402

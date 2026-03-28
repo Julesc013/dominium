@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="release.yanked_build_selectable_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "src/release/update_resolver.py",
+                file_path=rel_path or "release/update_resolver.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "yanked_build_selectable",
                     str(item.get("message", "")).strip() or "latest-compatible selection still permits or hides yanked candidates",
@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="EXCLUDE_YANKED_COMPONENTS_FROM_LATEST_COMPATIBLE_SELECTION_AND_LOG_THE_SKIP_EXPLICITLY",
                 related_invariants=[RULE_YANKED_EXCLUDED],
                 related_paths=[
-                    rel_path or "src/release/update_resolver.py",
+                    rel_path or "release/update_resolver.py",
                     "tools/release/release_index_policy_common.py",
                     "docs/release/RELEASE_INDEX_RESOLUTION_POLICY.md",
                 ],

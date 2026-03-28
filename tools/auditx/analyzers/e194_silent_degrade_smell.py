@@ -76,7 +76,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         runtime_rel,
-        "src/electric/degradation_policy.py",
+        "electric/degradation_policy.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

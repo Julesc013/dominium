@@ -164,7 +164,7 @@ def load_sol_pack_fixture_payloads(repo_root: str) -> dict:
         build_pack_lock_payload,
         build_profile_bundle_payload,
     )
-    from src.worldgen.mw.sol_anchor import sol_anchor_object_ids
+    from worldgen.mw.sol_anchor import sol_anchor_object_ids
 
     profile_bundle = build_profile_bundle_payload()
     pack_lock = build_pack_lock_payload(repo_root=repo_root, profile_bundle_payload=profile_bundle)
@@ -192,7 +192,7 @@ def load_sol_pack_fixture_payloads(repo_root: str) -> dict:
 
 def build_sol_overlay_fixture(repo_root: str, *, refinement_level: int = 2) -> dict:
     _ensure_repo_root(repo_root)
-    from src.geo import (
+    from geo import (
         build_default_overlay_manifest,
         build_effective_object_view,
         generate_worldgen_result,
@@ -200,7 +200,7 @@ def build_sol_overlay_fixture(repo_root: str, *, refinement_level: int = 2) -> d
         overlay_cache_clear,
         worldgen_cache_clear,
     )
-    from src.worldgen.mw.sol_anchor import SOL_ANCHOR_CELL_INDEX_TUPLE
+    from worldgen.mw.sol_anchor import SOL_ANCHOR_CELL_INDEX_TUPLE
     from tools.xstack.testx.tests.geo8_testlib import worldgen_request_row
 
     payloads = load_sol_pack_fixture_payloads(repo_root)

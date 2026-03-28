@@ -28,7 +28,7 @@ REQUIRED_TOKENS = {
         "cap.add_contracts",
         "cap.allow_exception_profiles",
     ),
-    "src/modding/mod_policy_engine.py": (
+    "modding/mod_policy_engine.py": (
         "PACK_CAPABILITIES_NAME",
         "infer_required_capabilities(",
         "REFUSAL_MOD_CAPABILITY_DENIED",

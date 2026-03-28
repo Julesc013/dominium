@@ -31,7 +31,7 @@ REQUIRED_TOKENS = {
         '"feature_capabilities"',
         '"degrade_ladders"',
     ),
-    "src/compat/descriptor/descriptor_engine.py": (
+    "compat/descriptor/descriptor_engine.py": (
         "build_product_descriptor(",
         "build_product_build_metadata(",
         "product_descriptor_bin_names(",

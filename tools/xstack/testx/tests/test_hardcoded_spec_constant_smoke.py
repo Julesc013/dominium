@@ -21,7 +21,7 @@ def run(repo_root: str):
     temp_root = tempfile.mkdtemp(prefix="xstack_repox_spec_hardcode_")
     try:
         fixture_files = {
-            os.path.join(temp_root, "src", "specs", "spec_engine.py"): "SPEC_ENGINE_PRESENT = True\n",
+            os.path.join(temp_root, "specs", "spec_engine.py"): "SPEC_ENGINE_PRESENT = True\n",
             os.path.join(temp_root, "tools", "xstack", "sessionx", "process_runtime.py"): "\n".join(
                 [
                     "import os",

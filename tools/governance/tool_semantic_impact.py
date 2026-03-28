@@ -34,11 +34,11 @@ CONTROL_PLANE_PREFIXES = (
 CTRL_MODULE_PREFIXES = (
     "src/control/",
 )
-CONTROL_PLANE_MODULE_NODE_ID = "module:src/control/control_plane_engine.py"
+CONTROL_PLANE_MODULE_NODE_ID = "module:control/control_plane_engine.py"
 CONTROL_DEPENDENCY_SCAN_TOKENS = (
-    "from src.control",
-    "import src.control",
-    "src.control.",
+    "from control",
+    "import control",
+    "control.",
     "build_control_intent(",
     "build_control_resolution(",
 )

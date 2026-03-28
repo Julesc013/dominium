@@ -22,9 +22,9 @@ WATCH_PREFIXES = (
 )
 
 _TARGET_FILES = (
-    "src/time/time_mapping_engine.py",
-    "src/physics/momentum_engine.py",
-    "src/mobility/micro/free_motion_solver.py",
+    "engine/time/time_mapping_engine.py",
+    "physics/momentum_engine.py",
+    "mobility/micro/free_motion_solver.py",
 )
 
 _DIVISION_PATTERN = re.compile(r"\b[A-Za-z0-9_)\]]+\s+/\s+[A-Za-z0-9_(\[]+")
@@ -74,7 +74,7 @@ def run(graph, repo_root, changed_files=None):
                         "INV-DETERMINISTIC-ROUND-ONLY",
                         "INV-NO-IMPLICIT-FLOAT",
                     ],
-                    related_paths=[rel_path, "src/meta/numeric.py"],
+                    related_paths=[rel_path, "meta/numeric.py"],
                 )
             )
             break

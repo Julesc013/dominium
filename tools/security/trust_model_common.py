@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from src.security.trust import (
+from security.trust import (
     ARTIFACT_KIND_PACK,
     ARTIFACT_KIND_RELEASE_INDEX,
     ARTIFACT_KIND_RELEASE_MANIFEST,
@@ -23,6 +23,7 @@ from src.security.trust import (
     select_trust_policy,
     verify_artifact_trust,
 )
+from tools.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -50,6 +51,14 @@ def _norm(path: str) -> str:
 
 def _norm_rel(path: str) -> str:
     return _token(path).replace("\\", "/")
+
+
+def _equivalent_rel(repo_root: str, rel_path: str) -> str:
+    return _norm_rel(resolve_repo_path_equivalent(_norm(repo_root), _norm_rel(rel_path)))
+
+
+def _equivalent_abs(repo_root: str, rel_path: str) -> str:
+    return os.path.join(_norm(repo_root), _equivalent_rel(repo_root, rel_path).replace("/", os.sep))
 
 
 def _as_map(value: object) -> dict:
@@ -87,7 +96,7 @@ def _write_text(path: str, text: str) -> str:
 
 
 def _file_text(repo_root: str, rel_path: str) -> str:
-    abs_path = os.path.join(_norm(repo_root), rel_path.replace("/", os.sep))
+    abs_path = _equivalent_abs(repo_root, rel_path)
     try:
         with open(abs_path, "r", encoding="utf-8") as handle:
             return handle.read()
@@ -146,13 +155,14 @@ def _integration_checks(repo_root: str) -> list[dict]:
     for rel_path, token, rule_id, code, message in (
         ("tools/setup/setup_cli.py", "handle_trust(", RULE_POLICY, "setup_trust_cli_missing", "setup CLI must expose trust commands"),
         ("tools/setup/setup_cli.py", "trust_policy_id", RULE_POLICY, "setup_trust_policy_missing", "setup verification and update flows must accept trust_policy_id"),
-        ("src/release/update_resolver.py", "verify_artifact_trust(", RULE_STRICT, "update_resolver_trust_missing", "update resolver must verify release index trust"),
-        ("src/appshell/pack_verifier_adapter.py", "verify_artifact_trust(", RULE_HASHES, "pack_pipeline_trust_missing", "pack verification pipeline must route through trust verification"),
+        ("release/update_resolver.py", "verify_artifact_trust(", RULE_STRICT, "update_resolver_trust_missing", "update resolver must verify release index trust"),
+        ("appshell/pack_verifier_adapter.py", "verify_artifact_trust(", RULE_HASHES, "pack_pipeline_trust_missing", "pack verification pipeline must route through trust verification"),
         ("tools/dist/dist_verify_common.py", "verify_release_manifest(", RULE_HASHES, "dist_verify_trust_missing", "dist verification must route through release manifest verification"),
     ):
         if token in _file_text(repo_root, rel_path):
             continue
-        checks.append(_violation(rule_id, code, message, file_path=rel_path))
+        effective_rel = _equivalent_rel(repo_root, rel_path)
+        checks.append(_violation(rule_id, code, message, file_path=effective_rel if effective_rel != _norm_rel(rel_path) else rel_path))
     return checks
 
 
@@ -233,24 +243,24 @@ def build_trust_model_report(repo_root: str) -> dict:
 
     if _token(cases["hash_missing"].get("refusal_code")) != REFUSAL_TRUST_HASH_MISSING:
         violations.append(
-            _violation(RULE_HASHES, "hash_missing_not_refused", "artifacts must never be accepted without a canonical content hash", file_path="src/security/trust/trust_verifier.py")
+            _violation(RULE_HASHES, "hash_missing_not_refused", "artifacts must never be accepted without a canonical content hash", file_path="security/trust/trust_verifier.py")
         )
     if _token(cases["strict_unsigned"].get("refusal_code")) != REFUSAL_TRUST_SIGNATURE_MISSING:
         violations.append(
-            _violation(RULE_STRICT, "strict_unsigned_not_refused", "strict trust policy must refuse unsigned governed artifacts", file_path="src/security/trust/trust_verifier.py")
+            _violation(RULE_STRICT, "strict_unsigned_not_refused", "strict trust policy must refuse unsigned governed artifacts", file_path="security/trust/trust_verifier.py")
         )
     default_warnings = { _token(_as_map(row).get("code")) for row in _as_list(cases["default_unsigned"].get("warnings")) }
     if _token(cases["default_unsigned"].get("result")) not in {"complete", "warn"} or "warn.trust.signature_missing" not in default_warnings:
         violations.append(
-            _violation(RULE_POLICY, "default_unsigned_not_warning", "default mock trust policy must warn but not refuse unsigned artifacts", file_path="src/security/trust/trust_verifier.py")
+            _violation(RULE_POLICY, "default_unsigned_not_warning", "default mock trust policy must warn but not refuse unsigned artifacts", file_path="security/trust/trust_verifier.py")
         )
     if _token(cases["invalid_signature"].get("refusal_code")) != REFUSAL_TRUST_SIGNATURE_INVALID:
         violations.append(
-            _violation(RULE_STRICT, "invalid_signature_not_refused", "invalid signatures must be refused deterministically", file_path="src/security/trust/trust_verifier.py")
+            _violation(RULE_STRICT, "invalid_signature_not_refused", "invalid signatures must be refused deterministically", file_path="security/trust/trust_verifier.py")
         )
     if _token(cases["strict_signed"].get("result")) != "complete":
         violations.append(
-            _violation(RULE_STRICT, "strict_signed_not_accepted", "strict trust policy must accept valid signatures from trusted roots", file_path="src/security/trust/trust_verifier.py")
+            _violation(RULE_STRICT, "strict_signed_not_accepted", "strict trust policy must accept valid signatures from trusted roots", file_path="security/trust/trust_verifier.py")
         )
 
     server_rows = list(_as_map(server_registry.get("record")).get("server_configs") or [])
@@ -320,8 +330,8 @@ def render_trust_model_baseline(report: Mapping[str, object]) -> str:
         "",
         "## Integration Points",
         "",
-        "- `setup verify` and pack verification route through `src/security/trust/trust_verifier.py`.",
-        "- `setup update` passes the resolved trust policy into `src/release/update_resolver.py`.",
+        "- `setup verify` and pack verification route through `security/trust/trust_verifier.py`.",
+        "- `setup update` passes the resolved trust policy into `release/update_resolver.py`.",
         "- `tool_verify_release_manifest` and DIST-2 verification use trust-aware manifest verification.",
         "- Server policy binding is declared in `data/registries/server_config_registry.json`.",
         "",

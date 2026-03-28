@@ -11,7 +11,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.appshell3_testlib import ensure_repo_on_path
 
     ensure_repo_on_path(repo_root)
-    from src.appshell.tui import load_tui_layout_registry, load_tui_panel_registry
+    from appshell.tui import load_tui_layout_registry, load_tui_panel_registry
 
     panel_payload, panel_error = load_tui_panel_registry(repo_root)
     layout_payload, layout_error = load_tui_layout_registry(repo_root)

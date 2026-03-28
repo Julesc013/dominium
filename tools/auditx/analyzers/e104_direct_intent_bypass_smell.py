@@ -10,10 +10,10 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E104_DIRECT_INTENT_BYPASS_SMELL"
 
 ALLOWED_PATHS = {
-    "src/control/control_plane_engine.py",
-    "src/client/interaction/interaction_dispatch.py",
-    "src/net/srz/shard_coordinator.py",
-    "src/net/policies/policy_server_authoritative.py",
+    "control/control_plane_engine.py",
+    "client/interaction/interaction_dispatch.py",
+    "net/srz/shard_coordinator.py",
+    "net/policies/policy_server_authoritative.py",
 }
 
 

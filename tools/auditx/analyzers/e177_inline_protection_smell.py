@@ -52,7 +52,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/safety/safety_engine.py",
+        "safety/safety_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -89,7 +89,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
                             related_invariants=["INV-NO-ADHOC-SAFETY-LOGIC"],
-                            related_paths=[rel_path, "src/safety/safety_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "safety/safety_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

@@ -23,7 +23,7 @@ from tools.worldgen.earth0_probe import (  # noqa: E402
 )
 from tools.xstack.sessionx.process_runtime import execute_intent  # noqa: E402
 from tools.xstack.testx.tests.mobility_free_testlib import authority_context, law_profile, policy_context, seed_free_state  # noqa: E402
-from src.worldgen.earth import (  # noqa: E402
+from worldgen.earth import (  # noqa: E402
     DEFAULT_TIDE_PARAMS_ID,
     lunar_phase_from_params,
     tide_params_rows,

@@ -26,8 +26,8 @@ def _build_variant(repo_root: str, *, reverse_rows: bool) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.models import model_type_rows_by_id
-    from src.time import evaluate_time_mappings
+    from models import model_type_rows_by_id
+    from engine.time import evaluate_time_mappings
     from tools.time.tool_replay_time_window import verify_time_replay_window
 
     temporal_payload, temporal_error = _load_json(repo_root, "data/registries/temporal_domain_registry.json")

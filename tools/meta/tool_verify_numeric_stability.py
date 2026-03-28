@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.meta.numeric import deterministic_mul_div, normalize_rounding_mode, normalize_quantity_tolerance_rows  # noqa: E402
+from meta.numeric import deterministic_mul_div, normalize_rounding_mode, normalize_quantity_tolerance_rows  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 

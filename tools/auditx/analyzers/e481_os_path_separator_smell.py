@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="NORMALIZE_THROUGH_VPATH",
                 related_invariants=["INV-NO-HARDCODED-PATHS"],
-                related_paths=[rel_path, "src/appshell/paths/virtual_paths.py"],
+                related_paths=[rel_path, "appshell/paths/virtual_paths.py"],
             )
         )
     return findings

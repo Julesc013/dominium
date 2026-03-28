@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.geo import build_position_ref, build_projection_request, project_view_cells
+    from geo import build_position_ref, build_projection_request, project_view_cells
 
     origin = build_position_ref(
         object_id="object.camera.geo5.test",

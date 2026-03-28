@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.net.policies.policy_srz_hybrid import join_client_hybrid, prepare_hybrid_baseline
+    from net.policies.policy_srz_hybrid import join_client_hybrid, prepare_hybrid_baseline
     from tools.xstack.testx.tests.net_hybrid_testlib import clone_runtime, prepare_hybrid_runtime_fixture
 
     fixture = prepare_hybrid_runtime_fixture(

@@ -48,7 +48,7 @@ def validation_inputs(repo_root: str) -> dict:
 
 
 def binding_row(*, network_id: str, graph_id: str, policy_id: str = "logic.policy.default", extensions: dict | None = None) -> dict:
-    from src.logic.network import build_logic_network_binding_row
+    from logic.network import build_logic_network_binding_row
 
     return build_logic_network_binding_row(
         network_id=str(network_id),
@@ -70,7 +70,7 @@ def node_row(
     node_extensions: dict | None = None,
     tags: list[str] | None = None,
 ) -> dict:
-    from src.logic.network import build_logic_node_payload_row
+    from logic.network import build_logic_node_payload_row
 
     payload = build_logic_node_payload_row(
         node_kind=node_kind,
@@ -105,7 +105,7 @@ def edge_row(
     payload_extensions: dict | None = None,
     edge_extensions: dict | None = None,
 ) -> dict:
-    from src.logic.network import build_logic_edge_payload_row
+    from logic.network import build_logic_edge_payload_row
 
     payload = build_logic_edge_payload_row(
         edge_kind=edge_kind,
@@ -152,7 +152,7 @@ def graph_row(*, graph_id: str, nodes: list[dict], edges: list[dict], extensions
 
 
 def validate(repo_root: str, *, binding: dict, graph: dict) -> dict:
-    from src.logic.network import validate_logic_network
+    from logic.network import validate_logic_network
 
     return validate_logic_network(
         binding_row=dict(binding),

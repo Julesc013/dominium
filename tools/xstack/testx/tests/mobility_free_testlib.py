@@ -46,10 +46,10 @@ def seed_free_state(
     corridor_geometry_id: str | None = None,
     with_collision_obstacle: bool = False,
 ) -> dict:
-    from src.fields import build_field_cell, build_field_layer
-    from src.mobility.geometry import build_guide_geometry
-    from src.mobility.micro import build_free_motion_state
-    from src.mobility.vehicle.vehicle_engine import (
+    from fields import build_field_cell, build_field_layer
+    from mobility.geometry import build_guide_geometry
+    from mobility.micro import build_free_motion_state
+    from mobility.vehicle.vehicle_engine import (
         build_motion_state,
         build_vehicle,
         deterministic_motion_state_ref,

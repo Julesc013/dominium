@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.meta.provenance import (  # noqa: E402
+from meta.provenance import (  # noqa: E402
     compact_provenance_window,
     verify_replay_from_compaction_anchor,
 )

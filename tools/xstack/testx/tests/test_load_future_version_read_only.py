@@ -8,7 +8,7 @@ TEST_TAGS = ["fast", "compat", "pack_compat2", "readonly"]
 
 
 def run(repo_root: str):
-    from src.compat import READ_ONLY_LAW_PROFILE_ID
+    from compat import READ_ONLY_LAW_PROFILE_ID
     from tools.xstack.testx.tests.pack_compat2_testlib import (
         cleanup_temp_dir,
         ensure_repo_on_path,

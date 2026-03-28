@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E380_NONDETERMINISTIC_COLLISION_SMELL"
-COLLISION_PROVIDER_REL = "src/embodiment/collision/macro_heightfield_provider.py"
+COLLISION_PROVIDER_REL = "embodiment/collision/macro_heightfield_provider.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
 PROBE_REL = "tools/embodiment/earth6_probe.py"
 REPLAY_REL = "tools/embodiment/tool_replay_movement_window.py"

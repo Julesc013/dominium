@@ -28,7 +28,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    control_rel = "src/control/control_plane_engine.py"
+    control_rel = "control/control_plane_engine.py"
     runtime_text = _read_text(repo_root, runtime_rel)
     control_text = _read_text(repo_root, control_rel)
     if not runtime_text or not control_text:

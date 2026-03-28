@@ -10,7 +10,7 @@ Replacement Target: legacy reference surface retained without current binding au
 LIB-2 deterministic instance manifests, instance kinds, save associations, and portable/linked import-export flows
 
 Touched Paths:
-- src/lib/instance/instance_validator.py
+- lib/instance/instance_validator.py
 - tools/ops/ops_cli.py
 - tools/launcher/launcher_cli.py
 - tools/share/share_cli.py

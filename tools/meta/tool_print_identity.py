@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.identity import validate_identity_path  # noqa: E402
+from meta.identity import validate_identity_path  # noqa: E402
 
 
 def _print_text(report: dict) -> None:

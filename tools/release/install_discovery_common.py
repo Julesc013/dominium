@@ -15,11 +15,11 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.lib.install import discover_install, load_runtime_install_registry  # noqa: E402
+from lib.install import discover_install, load_runtime_install_registry  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-INSTALL_DISCOVERY_ENGINE_PATH = "src/lib/install/install_discovery_engine.py"
+INSTALL_DISCOVERY_ENGINE_PATH = "lib/install/install_discovery_engine.py"
 INSTALL_DISCOVERY_SCHEMA_PATH = "schema/lib/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
@@ -36,22 +36,22 @@ DISCOVERY_ORDER = (
 
 INTEGRATION_TARGETS = (
     {
-        "file_path": "src/lib/install/install_discovery_engine.py",
+        "file_path": "lib/install/install_discovery_engine.py",
         "surface": "install_discovery_engine",
         "markers": ("discover_install(", "REFUSAL_INSTALL_NOT_FOUND", "portable_manifest"),
     },
     {
-        "file_path": "src/appshell/paths/virtual_paths.py",
+        "file_path": "appshell/paths/virtual_paths.py",
         "surface": "virtual_paths",
         "markers": ("discover_install(", "\"install_discovery\": {", "REFUSAL_INSTALL_NOT_FOUND"),
     },
     {
-        "file_path": "src/appshell/bootstrap.py",
+        "file_path": "appshell/bootstrap.py",
         "surface": "appshell_bootstrap",
         "markers": ("compat.install_selected", "refusal.install.not_found", "_allow_install_refusal_cli"),
     },
     {
-        "file_path": "src/appshell/commands/command_engine.py",
+        "file_path": "appshell/commands/command_engine.py",
         "surface": "compat_status",
         "markers": ("status_payload[\"install_discovery\"]",),
     },

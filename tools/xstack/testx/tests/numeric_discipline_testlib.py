@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from src.astro.illumination.illumination_geometry_engine import (
+from astro.illumination.illumination_geometry_engine import (
     cos_permille_from_angle_mdeg,
     sin_permille_from_angle_mdeg,
 )
-from src.meta.numeric import (
+from meta.numeric import (
     ROUND_HALF_TO_EVEN,
     deterministic_divide,
     deterministic_mul_div,

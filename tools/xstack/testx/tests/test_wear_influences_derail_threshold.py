@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "mobility", "wear", "micro", "derailment"]
 
 
 def _run_case(*, high_wear: bool) -> dict:
-    from src.mobility.maintenance import build_wear_state
+    from mobility.maintenance import build_wear_state
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.mobility_micro_testlib import (
         authority_context,

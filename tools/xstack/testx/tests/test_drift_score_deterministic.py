@@ -24,7 +24,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.drift import drift_policy_rows_by_id, evaluate_process_drift
+    from process.drift import drift_policy_rows_by_id, evaluate_process_drift
 
     registry = _load_json(repo_root, "data/registries/process_drift_policy_registry.json")
     policy = dict(drift_policy_rows_by_id(registry).get("drift.default") or {})

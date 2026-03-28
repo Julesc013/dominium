@@ -29,7 +29,7 @@ def _loss_registry() -> dict:
 
 
 def _run_once() -> dict:
-    from src.signals import build_signal_channel, process_signal_send, process_signal_transport_tick
+    from signals import build_signal_channel, process_signal_send, process_signal_transport_tick
 
     channels = [
         build_signal_channel(

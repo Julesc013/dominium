@@ -40,7 +40,7 @@ def load_reference_registry(repo_root: str) -> dict:
 def active_evaluator_ids(repo_root: str) -> list[str]:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.meta.reference import reference_evaluator_rows_by_id
+    from meta.reference import reference_evaluator_rows_by_id
 
     by_id = reference_evaluator_rows_by_id(load_reference_registry(repo_root))
     out = []
@@ -394,7 +394,7 @@ def run_reference_suite_case(
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.meta.reference import evaluate_reference_suite
+    from meta.reference import evaluate_reference_suite
 
     selected = _sorted_tokens(evaluator_ids or active_evaluator_ids(repo_root))
     payload = dict(state_payload or fixture_state(seed=seed, tick_start=tick_start, tick_end=tick_end))
@@ -422,7 +422,7 @@ def run_reference_evaluator_case(
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.meta.reference import evaluate_reference_evaluator
+    from meta.reference import evaluate_reference_evaluator
 
     payload = dict(state_payload or fixture_state(seed=seed, tick_start=tick_start, tick_end=tick_end))
     if str(evaluator_id).strip() == "ref.logic_eval_small":

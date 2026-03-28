@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E375_NONDETERMINISTIC_TIDE_SMELL"
-TIDE_PHASE_ENGINE_REL = "src/worldgen/earth/tide_phase_engine.py"
-TIDE_FIELD_ENGINE_REL = "src/worldgen/earth/tide_field_engine.py"
+TIDE_PHASE_ENGINE_REL = "worldgen/earth/tide_phase_engine.py"
+TIDE_FIELD_ENGINE_REL = "worldgen/earth/tide_field_engine.py"
 PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
 TIDE_PROBE_REL = "tools/worldgen/earth3_probe.py"
 TIDE_REPLAY_REL = "tools/worldgen/tool_replay_tide_window.py"

@@ -15,12 +15,12 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.appshell import appshell_main  # noqa: E402
-from src.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
-from src.appshell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
-from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
-from src.lib.install import default_install_registry_path, discover_install  # noqa: E402
-from src.release import (  # noqa: E402
+from appshell import appshell_main  # noqa: E402
+from appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
+from appshell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
+from compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
+from lib.install import default_install_registry_path, discover_install  # noqa: E402
+from release import (  # noqa: E402
     DEFAULT_RELEASE_MANIFEST_REL,
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
@@ -33,7 +33,7 @@ from src.release import (  # noqa: E402
     select_install_profile,
     validate_instance_against_install_plan,
 )
-from src.ui.ui_model import discover_instance_menu_entries  # noqa: E402
+from ui.ui_model import discover_instance_menu_entries  # noqa: E402
 
 
 def _norm(path: str) -> str:

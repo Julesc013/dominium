@@ -16,7 +16,7 @@ Touched Paths:
 - `.github/workflows/xstack_lanes.yml`
 - `client/app/main_client.c`
 - `client/core/session_artifacts.h`
-- `src/validation/validation_engine.py`
+- `validation/validation_engine.py`
 - `tools/xstack/repox/check.py`
 
 Demand IDs:

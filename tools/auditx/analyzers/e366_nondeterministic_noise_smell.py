@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E366_NONDETERMINISTIC_NOISE_SMELL"
-EARTH_GENERATOR_REL = "src/worldgen/earth/earth_surface_generator.py"
-MW_SURFACE_REFINER_REL = "src/worldgen/mw/mw_surface_refiner_l3.py"
+EARTH_GENERATOR_REL = "worldgen/earth/earth_surface_generator.py"
+MW_SURFACE_REFINER_REL = "worldgen/mw/mw_surface_refiner_l3.py"
 EARTH_PROBE_REL = "tools/worldgen/earth0_probe.py"
 DOC_REL = "docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md"
 REQUIRED_GENERATOR_TOKENS = (

@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.materials.dimension_engine import DimensionError, dimension_add
+    from materials.dimension_engine import DimensionError, dimension_add
 
     try:
         dimension_add({"M": 1}, {"L": 1})

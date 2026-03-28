@@ -56,7 +56,7 @@ def run_measurement_case(
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.meta.instrumentation import generate_measurement_observation
+    from meta.instrumentation import generate_measurement_observation
 
     payloads = instrumentation_inputs(repo_root)
     return generate_measurement_observation(
@@ -88,7 +88,7 @@ def run_forensics_case(
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.meta.instrumentation import route_forensics_request
+    from meta.instrumentation import route_forensics_request
 
     payloads = instrumentation_inputs(repo_root)
     return route_forensics_request(

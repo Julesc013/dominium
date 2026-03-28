@@ -15,17 +15,17 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.appshell.compat_adapter import build_version_payload  # noqa: E402
-from src.appshell.ipc import AppShellIPCEndpointServer  # noqa: E402
-from src.appshell.logging import (  # noqa: E402
+from appshell.compat_adapter import build_version_payload  # noqa: E402
+from appshell.ipc import AppShellIPCEndpointServer  # noqa: E402
+from appshell.logging import (  # noqa: E402
     build_default_log_file_path,
     clear_current_log_engine,
     create_log_engine,
     log_emit,
     set_current_log_engine,
 )
-from src.appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init  # noqa: E402
-from src.appshell.supervisor import (  # noqa: E402
+from appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init  # noqa: E402
+from appshell.supervisor import (  # noqa: E402
     DEFAULT_SUPERVISOR_POLICY_ID,
     SupervisorEngine,
     build_supervisor_run_spec,

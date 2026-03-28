@@ -14,7 +14,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.interaction.task.task_engine import build_task_timeline  # noqa: E402
+from interaction.task.task_engine import build_task_timeline  # noqa: E402
 
 
 def _read_json(path: str) -> dict:

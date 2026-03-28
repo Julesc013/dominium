@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="NEEDS_REVIEW",
                             recommended_action="REWRITE",
                             related_invariants=["INV-NO-CARRIER-SEMANTIC-BIAS"],
-                            related_paths=[rel_path, "src/logic/signal/carrier_adapters.py"],
+                            related_paths=[rel_path, "logic/signal/carrier_adapters.py"],
                         )
                     )
                     break

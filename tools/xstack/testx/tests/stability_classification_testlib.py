@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Mapping
 
-from src.meta.stability import ALL_REGISTRY_PATHS, registry_entry_rows, validate_all_registries
+from meta.stability import ALL_REGISTRY_PATHS, registry_entry_rows, validate_all_registries
 
 
 def load_validation_report(repo_root: str) -> dict:

@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E337_RENDER_WRITES_TRUTH_SMELL"
-TARGET_FILES = ("src/geo/render/floating_origin_policy.py",)
+TARGET_FILES = ("geo/render/floating_origin_policy.py",)
 _TOKENS = (
     'position_ref["',
     "position_ref[",
@@ -56,7 +56,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-RENDER-REBASING-NO-TRUTH-MUTATION"],
-                    related_paths=[rel_path, "src/geo/render/floating_origin_policy.py"],
+                    related_paths=[rel_path, "geo/render/floating_origin_policy.py"],
                 )
             )
             break

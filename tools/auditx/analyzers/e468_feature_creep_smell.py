@@ -10,7 +10,7 @@ if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 from analyzers.base import make_finding
-from src.meta.stability import ALL_REGISTRY_PATHS
+from meta.stability import ALL_REGISTRY_PATHS
 from tools.release.scope_freeze_common import REQUIRED_SCOPE_FREEZE_DOCS, scope_freeze_violations
 
 

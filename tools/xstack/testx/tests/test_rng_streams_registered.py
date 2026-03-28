@@ -12,11 +12,11 @@ TEST_TAGS = ["fast", "worldgen", "lock", "rng"]
 
 STREAM_RE = re.compile(r"rng\.worldgen\.[a-z0-9_.]+")
 STREAM_SOURCE_RELS = (
-    os.path.join("src", "geo", "worldgen", "worldgen_engine.py"),
-    os.path.join("src", "worldgen", "galaxy", "galaxy_object_stub_generator.py"),
-    os.path.join("src", "worldgen", "mw", "mw_system_refiner_l2.py"),
-    os.path.join("src", "worldgen", "mw", "mw_surface_refiner_l3.py"),
-    os.path.join("src", "worldgen", "earth", "earth_surface_generator.py"),
+    os.path.join("geo", "worldgen", "worldgen_engine.py"),
+    os.path.join("worldgen", "galaxy", "galaxy_object_stub_generator.py"),
+    os.path.join("worldgen", "mw", "mw_system_refiner_l2.py"),
+    os.path.join("worldgen", "mw", "mw_surface_refiner_l3.py"),
+    os.path.join("worldgen", "earth", "earth_surface_generator.py"),
 )
 LOCK_REGISTRY_REL = os.path.join("data", "registries", "worldgen_lock_registry.json")
 

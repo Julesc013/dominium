@@ -16,11 +16,11 @@ WATCH_PREFIXES = (
     "tools/xstack/repox/check.py",
 )
 
-ANTI_CHEAT_ENGINE_PATH = "src/net/anti_cheat/anti_cheat_engine.py"
+ANTI_CHEAT_ENGINE_PATH = "net/anti_cheat/anti_cheat_engine.py"
 POLICY_PATHS = (
-    "src/net/policies/policy_server_authoritative.py",
-    "src/net/srz/shard_coordinator.py",
-    "src/net/policies/policy_lockstep.py",
+    "net/policies/policy_server_authoritative.py",
+    "net/srz/shard_coordinator.py",
+    "net/policies/policy_lockstep.py",
 )
 DIRECT_TERMINATION_TOKENS = (
     "terminate_session(",

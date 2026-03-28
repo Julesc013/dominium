@@ -9,7 +9,7 @@ TEST_TAGS = ["fast", "logic", "sig", "adapter"]
 
 def run(repo_root: str):
     del repo_root
-    from src.logic.signal import sig_receipt_to_signal_request
+    from logic.signal import sig_receipt_to_signal_request
 
     receipt = {
         "receipt_id": "receipt.knowledge.test",

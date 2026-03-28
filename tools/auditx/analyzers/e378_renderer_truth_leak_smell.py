@@ -8,11 +8,11 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E378_RENDERER_TRUTH_LEAK_SMELL"
-LIGHTING_VIEW_REL = "src/worldgen/earth/lighting/lighting_view_engine.py"
-VIEWER_SHELL_REL = "src/client/ui/viewer_shell.py"
-RENDER_MODEL_ADAPTER_REL = "src/client/render/render_model_adapter.py"
-SOFTWARE_RENDERER_REL = "src/client/render/renderers/software_renderer.py"
-NULL_RENDERER_REL = "src/client/render/renderers/null_renderer.py"
+LIGHTING_VIEW_REL = "worldgen/earth/lighting/lighting_view_engine.py"
+VIEWER_SHELL_REL = "client/ui/viewer_shell.py"
+RENDER_MODEL_ADAPTER_REL = "client/render/render_model_adapter.py"
+SOFTWARE_RENDERER_REL = "client/render/renderers/software_renderer.py"
+NULL_RENDERER_REL = "client/render/renderers/null_renderer.py"
 DOC_REL = "docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
 REQUIRED_TOKENS = {
     LIGHTING_VIEW_REL: (

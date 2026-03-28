@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
                 category="compat.silent_migration_smell",
                 severity="BLOCKER",
                 confidence=0.99,
-                file_path=rel_path or "src/compat/migration_lifecycle.py",
+                file_path=rel_path or "compat/migration_lifecycle.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "silent_migration_or_read_only_drift",
                     str(item.get("message", "")).strip() or "migration or read-only fallback path is not being logged and surfaced deterministically",
@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="ROUTE_ARTIFACT_LOADS_THROUGH_CANONICAL_DECISION_RECORDS_AND_EXPLICIT_READ_ONLY_LOGGING",
                 related_invariants=[rule_id],
                 related_paths=[
-                    rel_path or "src/compat/migration_lifecycle.py",
+                    rel_path or "compat/migration_lifecycle.py",
                     "tools/compat/migration_lifecycle_common.py",
                 ],
             )

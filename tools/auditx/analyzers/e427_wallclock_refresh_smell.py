@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E427_WALLCLOCK_REFRESH_SMELL"
 DOCTRINE_REL = "docs/appshell/TUI_FRAMEWORK.md"
-ENGINE_REL = "src/appshell/tui/tui_engine.py"
+ENGINE_REL = "appshell/tui/tui_engine.py"
 REQUIRED_DOCTRINE_TOKENS = (
     "render ordering must not depend on wall-clock timing",
     "refresh is event-driven or fixed-iteration driven",

@@ -13,10 +13,10 @@ WATCH_PREFIXES = (
 )
 
 IR_FILES = (
-    "src/control/ir/control_ir_verifier.py",
-    "src/control/ir/control_ir_compiler.py",
-    "src/control/ir/control_ir_programs.py",
-    "src/control/ir/control_ir_multiplayer.py",
+    "control/ir/control_ir_verifier.py",
+    "control/ir/control_ir_compiler.py",
+    "control/ir/control_ir_programs.py",
+    "control/ir/control_ir_multiplayer.py",
 )
 
 FORBIDDEN_TOKENS = (

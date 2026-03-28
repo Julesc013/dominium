@@ -9,10 +9,10 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E425_WALLCLOCK_IN_SIM_SMELL"
 GUARDED_PATHS = (
-    "src/server/net/loopback_transport.py",
-    "src/server/runtime/tick_loop.py",
-    "src/appshell/logging/log_engine.py",
-    "src/appshell/diag/diag_snapshot.py",
+    "server/net/loopback_transport.py",
+    "server/runtime/tick_loop.py",
+    "appshell/logging/log_engine.py",
+    "appshell/diag/diag_snapshot.py",
 )
 FORBIDDEN_TOKENS = (
     "datetime.utcnow(",

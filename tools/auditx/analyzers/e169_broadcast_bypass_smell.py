@@ -40,8 +40,8 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     allow_files = {
-        "src/signals/addressing/address_engine.py",
-        "src/signals/transport/transport_engine.py",
+        "signals/addressing/address_engine.py",
+        "signals/transport/transport_engine.py",
         "tools/auditx/analyzers/e169_broadcast_bypass_smell.py",
     }
     scan_root = os.path.join(repo_root, "src")
@@ -79,7 +79,7 @@ def run(graph, repo_root, changed_files=None):
                         suggested_classification="TODO-BLOCKED",
                         recommended_action="REWRITE",
                         related_invariants=["INV-NO-DIRECT-ARTIFACT-DELIVERY"],
-                        related_paths=[rel_path, "src/signals/addressing/address_engine.py"],
+                        related_paths=[rel_path, "signals/addressing/address_engine.py"],
                     )
                 )
                 break

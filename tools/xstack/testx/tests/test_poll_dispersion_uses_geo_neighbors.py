@@ -13,8 +13,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    import src.pollution.dispersion_engine as dispersion_engine
-    from src.fields import build_field_cell
+    import pollution.dispersion_engine as dispersion_engine
+    from fields import build_field_cell
 
     calls = []
     original = dispersion_engine.geo_neighbors

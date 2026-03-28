@@ -12,7 +12,7 @@ TEST_TAGS = ["strict", "interior", "diegetics", "epistemic"]
 
 
 FORBIDDEN_PATTERN = re.compile(r"\b(truth_model|truthmodel|universe_state|registry_payloads)\b", re.IGNORECASE)
-KERNEL_TARGET = "src/diegetics/instrument_kernel.py"
+KERNEL_TARGET = "diegetics/instrument_kernel.py"
 OBSERVATION_TARGET = "tools/xstack/sessionx/observation.py"
 OBS_FORBIDDEN_TOKENS = (
     "compartment_states",

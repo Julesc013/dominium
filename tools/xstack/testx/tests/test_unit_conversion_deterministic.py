@@ -21,7 +21,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.materials.dimension_engine import quantity_convert
+    from materials.dimension_engine import quantity_convert
 
     unit_registry = _read_registry(repo_root, "data/registries/unit_registry.json")
     dimension_registry = _read_registry(repo_root, "data/registries/dimension_registry.json")

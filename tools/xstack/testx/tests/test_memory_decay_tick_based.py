@@ -66,7 +66,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.epistemics.memory import update_memory_store
+    from epistemics.memory import update_memory_store
 
     retention, decay, eviction = _policies()
     first = update_memory_store(

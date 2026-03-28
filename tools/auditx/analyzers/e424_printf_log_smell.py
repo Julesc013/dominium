@@ -10,9 +10,9 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E424_PRINTF_LOG_SMELL"
 GUARDED_PATHS = (
-    "src/server/net/loopback_transport.py",
-    "src/server/runtime/tick_loop.py",
-    "src/appshell/diag/diag_snapshot.py",
+    "server/net/loopback_transport.py",
+    "server/runtime/tick_loop.py",
+    "appshell/diag/diag_snapshot.py",
 )
 PRINT_RE = re.compile(r"\bprint\s*\(")
 

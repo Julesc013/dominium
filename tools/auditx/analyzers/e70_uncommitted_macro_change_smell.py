@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E70_UNCOMMITTED_MACRO_CHANGE_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-COMMITMENT_ENGINE_PATH = "src/materials/commitments/commitment_engine.py"
+COMMITMENT_ENGINE_PATH = "materials/commitments/commitment_engine.py"
 REQUIRED_RUNTIME_TOKENS = (
     "_enforce_causality_commitment_requirement(",
     "resolve_causality_strictness_row(",

@@ -14,7 +14,7 @@ def _build_state(repo_root: str, *, reorder: bool) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system.statevec import (
+    from system.statevec import (
         normalize_state_vector_definition_rows,
         normalize_state_vector_snapshot_rows,
         serialize_state,

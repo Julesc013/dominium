@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E88_ROUTING_DUPLICATION_SMELL"
-CORE_ROUTING_PATH = "src/core/graph/routing_engine.py"
+CORE_ROUTING_PATH = "core/graph/routing_engine.py"
 
 
 def _norm(path: str) -> str:
@@ -66,9 +66,9 @@ def run(graph, repo_root, changed_files=None):
                 and "path_node_ids" in text
             )
             imports_core_graph = (
-                "from src.core.graph" in text
-                or "import src.core.graph" in text
-                or "src.core.graph." in text
+                "from core.graph" in text
+                or "import core.graph" in text
+                or "core.graph." in text
             )
             if has_custom_routing_tokens and (not imports_core_graph):
                 findings.append(

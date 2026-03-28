@@ -17,8 +17,8 @@ _PATTERNS = (
     re.compile(r'format\(\s*["\']atlas\.'),
 )
 _ALLOWLIST = {
-    "src/geo/kernel/geo_kernel.py",
-    "src/geo/index/geo_index_engine.py",
+    "geo/kernel/geo_kernel.py",
+    "geo/index/geo_index_engine.py",
 }
 
 
@@ -84,7 +84,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-ADHOC-SPATIAL-KEYS"],
-                    related_paths=[rel_path, "src/geo/index/geo_index_engine.py"],
+                    related_paths=[rel_path, "geo/index/geo_index_engine.py"],
                 )
             )
             break

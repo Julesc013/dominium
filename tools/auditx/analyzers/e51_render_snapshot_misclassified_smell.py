@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E51_RENDER_SNAPSHOT_MISCLASSIFIED_SMELL"
 DOC_PATH = "docs/render/RENDER_SNAPSHOT_ARTIFACTS.md"
 PIPELINE_PATHS = (
-    "src/client/render/snapshot_capture.py",
+    "client/render/snapshot_capture.py",
     "tools/render/tool_render_capture.py",
 )
 
@@ -113,13 +113,13 @@ def run(graph, repo_root, changed_files=None):
                 category="render.render_snapshot_misclassified_smell",
                 severity="RISK",
                 confidence=0.86,
-                file_path="src/client/render/snapshot_capture.py",
+                file_path="client/render/snapshot_capture.py",
                 line=1,
                 evidence=["No deterministic derived storage anchor found (run_meta/render_snapshots)."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RENDER_SNAPSHOTS_DERIVED_ONLY"],
-                related_paths=["src/client/render/snapshot_capture.py", "tools/render/tool_render_capture.py"],
+                related_paths=["client/render/snapshot_capture.py", "tools/render/tool_render_capture.py"],
             )
         )
 

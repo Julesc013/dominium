@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 
-from src.meta.stability import validate_all_registries
+from meta.stability import validate_all_registries
 from tools.release.scope_freeze_common import (
     FROZEN_SEMANTIC_CONTRACT_REGISTRY_HASH,
     PROVISIONAL_FEATURE_LIST_PATH,

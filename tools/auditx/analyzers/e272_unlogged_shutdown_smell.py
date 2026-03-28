@@ -65,7 +65,7 @@ def run(graph, repo_root, changed_files=None):
                     "INV-NO-SILENT-FAILURE",
                     "INV-FORCED-EXPAND-LOGGED",
                 ],
-                related_paths=[runtime_rel, "src/system/reliability/reliability_engine.py"],
+                related_paths=[runtime_rel, "system/reliability/reliability_engine.py"],
             )
         )
 
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         runtime_rel,
-        "src/system/reliability/reliability_engine.py",
+        "system/reliability/reliability_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

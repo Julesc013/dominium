@@ -14,7 +14,10 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.compat.capability_negotiation import (  # noqa: E402
+from tools.import_bridge import install_src_aliases  # noqa: E402
+install_src_aliases(REPO_ROOT_HINT)
+
+from compat.capability_negotiation import (  # noqa: E402
     build_endpoint_descriptor,
     load_product_registry,
     negotiate_endpoint_descriptors,
@@ -22,8 +25,8 @@ from src.compat.capability_negotiation import (  # noqa: E402
     semantic_contract_rows_by_category,
     verify_negotiation_record,
 )
-from src.packs.compat.pack_verification_pipeline import verify_pack_set  # noqa: E402
-from src.platform.platform_probe import (  # noqa: E402
+from packs.compat.pack_verification_pipeline import verify_pack_set  # noqa: E402
+from engine.platform.platform_probe import (  # noqa: E402
     MODE_TO_CAPABILITY_ID,
     PLATFORM_CAPABILITY_KEYS,
     endpoint_descriptor_platform_snapshot,
@@ -31,7 +34,7 @@ from src.platform.platform_probe import (  # noqa: E402
     platform_family_id,
     project_feature_capabilities_for_platform,
 )
-from src.release import (  # noqa: E402
+from release import (  # noqa: E402
     build_product_build_metadata,
     build_release_manifest,
     product_capability_default_rows_by_id,
@@ -1933,9 +1936,9 @@ def render_toolchain_matrix_retro_audit(repo_root: str) -> str:
         "## Scope",
         "",
         "- ARCH-MATRIX-0 target matrix source: `data/registries/target_matrix_registry.json` (`exists={}`)".format(target_matrix_exists),
-        "- PLATFORM-FORMALIZE capability source: `data/registries/platform_capability_registry.json` + `src/platform/platform_probe.py` (`exists={}`)".format(platform_registry_exists),
-        "- RELEASE build identity source: `src/release/build_id_engine.py` (`source_revision_id`, `build_product_build_metadata`, `build_id_identity_from_input_payload`)",
-        "- Release manifest generation/verification source: `src/release/release_manifest_engine.py`",
+        "- PLATFORM-FORMALIZE capability source: `data/registries/platform_capability_registry.json` + `engine/platform/platform_probe.py` (`exists={}`)".format(platform_registry_exists),
+        "- RELEASE build identity source: `release/build_id_engine.py` (`source_revision_id`, `build_product_build_metadata`, `build_id_identity_from_input_payload`)",
+        "- Release manifest generation/verification source: `release/release_manifest_engine.py`",
         "",
         "## Existing Gate Tooling",
         "",
@@ -1944,7 +1947,7 @@ def render_toolchain_matrix_retro_audit(repo_root: str) -> str:
         "- `BASELINE-UNIVERSE verify`: `tools/mvp/baseline_universe_common.py`",
         "- `GAMEPLAY verify`: `tools/mvp/gameplay_loop_common.py`",
         "- `DISASTER suite`: `tools/mvp/disaster_suite_common.py`",
-        "- `release manifest verify`: `src/release/release_manifest_engine.py`",
+        "- `release manifest verify`: `release/release_manifest_engine.py`",
         "",
         "## Audit Notes",
         "",

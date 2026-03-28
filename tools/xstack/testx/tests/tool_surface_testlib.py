@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from src.appshell.commands.command_engine import dispatch_registered_command
-from src.tools import DOM_PRODUCT_ID, build_tool_surface_report
+from appshell.commands.command_engine import dispatch_registered_command
+from tools import DOM_PRODUCT_ID, build_tool_surface_report
 
 
 def build_report(repo_root: str) -> dict:

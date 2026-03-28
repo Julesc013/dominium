@@ -12,7 +12,7 @@ if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.identity import (  # noqa: E402
+from meta.identity import (  # noqa: E402
     IDENTITY_KINDS,
     UNIVERSAL_IDENTITY_FIELD,
     validate_identity_repo,
@@ -163,7 +163,7 @@ def identity_violations(repo_root: str, *, strict_missing: bool = False) -> list
         (os.path.join("schema", "meta", "universal_identity_block.schema"), "universal identity schema is required", RULE_CANONICAL),
         (os.path.join("schemas", "universal_identity_block.schema.json"), "compiled universal identity schema is required", RULE_CANONICAL),
         (os.path.join("data", "registries", "identity_kind_registry.json"), "identity kind registry is required", RULE_NAMESPACED),
-        (os.path.join("src", "meta", "identity", "identity_validator.py"), "identity validator is required", RULE_CANONICAL),
+        (os.path.join("meta", "identity", "identity_validator.py"), "identity validator is required", RULE_CANONICAL),
         (os.path.join("tools", "meta", "identity_common.py"), "identity helper is required", RULE_CANONICAL),
         (os.path.join("tools", "meta", "tool_print_identity.py"), "identity print tool is required", RULE_WARN),
         (os.path.join("tools", "meta", "tool_diff_identity.py"), "identity diff tool is required", RULE_WARN),

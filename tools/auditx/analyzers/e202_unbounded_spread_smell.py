@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    thermal_engine_rel = "src/thermal/network/thermal_network_engine.py"
+    thermal_engine_rel = "thermal/network/thermal_network_engine.py"
     thermal_engine_text = _read_text(repo_root, thermal_engine_rel)
     required_tokens = (
         "max_fire_spread_per_tick",
@@ -116,7 +116,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-NO-ADHOC-BURN-LOGIC"],
                             related_paths=[
                                 rel_path,
-                                "src/thermal/network/thermal_network_engine.py",
+                                "thermal/network/thermal_network_engine.py",
                             ],
                         )
                     )

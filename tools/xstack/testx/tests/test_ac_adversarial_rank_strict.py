@@ -10,7 +10,7 @@ TEST_TAGS = ["strict", "net", "anti_cheat", "multiplayer", "security"]
 
 
 def _run_cases(repo_root: str, runtime: dict):
-    from src.net.anti_cheat import (
+    from net.anti_cheat import (
         check_authority_integrity,
         check_input_integrity,
         check_replay_protection,

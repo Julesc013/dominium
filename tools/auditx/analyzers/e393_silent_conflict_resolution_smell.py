@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E393_SILENT_CONFLICT_RESOLUTION_SMELL"
 REQUIRED_TOKENS = {
-    "src/geo/overlay/overlay_merge_engine.py": (
+    "geo/overlay/overlay_merge_engine.py": (
         "overlay_conflict_artifacts and overlay_conflict_mode in {\"refuse\", \"prompt_stub\"}",
         "refusal.overlay.conflict",
         "remedy.overlay.resolve_conflict_or_change_policy",

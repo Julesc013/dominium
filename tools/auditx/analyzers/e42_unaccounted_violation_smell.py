@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E42_UNACCOUNTED_VIOLATION_SMELL"
-LEDGER_ENGINE_PATH = "src/reality/ledger/ledger_engine.py"
+LEDGER_ENGINE_PATH = "reality/ledger/ledger_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 DOC_PATH = "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
 

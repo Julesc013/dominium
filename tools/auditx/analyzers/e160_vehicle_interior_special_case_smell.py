@@ -50,9 +50,9 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "src/interior/compartment_flow_engine.py",
-        "src/interior/compartment_flow_builder.py",
-        "src/inspection/inspection_engine.py",
+        "interior/compartment_flow_engine.py",
+        "interior/compartment_flow_builder.py",
+        "inspection/inspection_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

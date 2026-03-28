@@ -17,7 +17,7 @@ def _run_variant(repo_root: str, *, reverse_order: bool):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.fields import build_field_cell, build_field_layer
+    from fields import build_field_cell, build_field_layer
     from tools.physics.tool_replay_field_window import verify_field_replay_window
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.mobility_free_testlib import (

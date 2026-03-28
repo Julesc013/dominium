@@ -25,7 +25,7 @@ def run(repo_root: str):
         portal_state_rows,
         volume_rows,
     )
-    from src.interior.compartment_flow_builder import build_compartment_flow_channels
+    from interior.compartment_flow_builder import build_compartment_flow_channels
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     graph = interior_graph()

@@ -14,8 +14,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.embodiment import resolve_macro_heightfield_sample  # noqa: E402
-from src.geo import build_geometry_cell_state, geometry_cell_state_rows_by_key  # noqa: E402
+from embodiment import resolve_macro_heightfield_sample  # noqa: E402
+from geo import build_geometry_cell_state, geometry_cell_state_rows_by_key  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.sessionx.process_runtime import execute_intent, replay_intent_script  # noqa: E402
 from tools.xstack.testx.tests.emb0_testlib import authority_context, law_profile, policy_context, seed_embodied_state  # noqa: E402

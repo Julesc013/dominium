@@ -17,8 +17,8 @@ DISTANCE_PATTERNS = (
     re.compile(r"\bdist(?:ance)?_sq\b"),
 )
 ALLOWLIST = {
-    "src/geo/kernel/geo_kernel.py",
-    "src/geo/metric/metric_engine.py",
+    "geo/kernel/geo_kernel.py",
+    "geo/metric/metric_engine.py",
 }
 
 
@@ -84,7 +84,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-RAW-DISTANCE-CALCULATION", "INV-METRIC-PROFILE-DECLARED"],
-                    related_paths=[rel_path, "src/geo/metric/metric_engine.py"],
+                    related_paths=[rel_path, "geo/metric/metric_engine.py"],
                 )
             )
             break

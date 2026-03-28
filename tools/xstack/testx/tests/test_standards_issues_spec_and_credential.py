@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.signals import (
+    from signals import (
         build_signal_channel,
         build_spec_issue_request,
         process_standards_issue_and_report,

@@ -32,10 +32,10 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     required_files = (
-        "src/meta/compute/compute_budget_engine.py",
-        "src/system/macro/macro_capsule_engine.py",
-        "src/meta/compile/compile_engine.py",
-        "src/process/software/pipeline_engine.py",
+        "meta/compute/compute_budget_engine.py",
+        "system/macro/macro_capsule_engine.py",
+        "meta/compile/compile_engine.py",
+        "process/software/pipeline_engine.py",
     )
     for rel_path in required_files:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -59,15 +59,15 @@ def run(graph, repo_root, changed_files=None):
 
     hook_checks = (
         (
-            "src/system/macro/macro_capsule_engine.py",
+            "system/macro/macro_capsule_engine.py",
             ("evaluate_model_bindings(", "request_compute(", "compute_consumption_record_rows"),
         ),
         (
-            "src/meta/compile/compile_engine.py",
+            "meta/compile/compile_engine.py",
             ("compiled_model_execute(", "request_compute(", "compute_consumption_record_row"),
         ),
         (
-            "src/process/software/pipeline_engine.py",
+            "process/software/pipeline_engine.py",
             ("evaluate_software_pipeline_execution(", "request_compute(", "compute_consumption_record_rows"),
         ),
     )
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                 )
             )
 
-    compute_engine_rel = "src/meta/compute/compute_budget_engine.py"
+    compute_engine_rel = "meta/compute/compute_budget_engine.py"
     compute_engine_text = _read_text(repo_root, compute_engine_rel)
     for token in (
         "build_compute_consumption_record_row(",

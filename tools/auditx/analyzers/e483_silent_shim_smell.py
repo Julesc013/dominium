@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="WIRE_SHIM_WARNING",
                 related_invariants=["INV-SHIMS-MUST-LOG-DEPRECATION"],
-                related_paths=[rel_path, "src/compat/shims/common.py"],
+                related_paths=[rel_path, "compat/shims/common.py"],
             )
         )
     return findings

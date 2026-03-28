@@ -44,7 +44,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.protocol import arbitrate_logic_protocol_frames
+    from logic.protocol import arbitrate_logic_protocol_frames
 
     protocol_registry_payload = {
         "record": {

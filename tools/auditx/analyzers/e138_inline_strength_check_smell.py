@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E138_INLINE_STRENGTH_CHECK_SMELL"
-MECH_ENGINE_REL = "src/mechanics/structural_graph_engine.py"
+MECH_ENGINE_REL = "mechanics/structural_graph_engine.py"
 
 _INLINE_PATTERNS = (
     re.compile(r"\bif\b[^\n]*(?:load|stress_ratio|max_load)[^\n]*[><=]{1,2}[^\n]*(?:break|fracture|fail)", re.IGNORECASE),

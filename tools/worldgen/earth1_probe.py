@@ -23,9 +23,9 @@ from tools.worldgen.earth0_probe import (  # noqa: E402
 )
 from tools.xstack.sessionx.process_runtime import execute_intent  # noqa: E402
 from tools.xstack.testx.tests.mobility_free_testlib import authority_context, law_profile, policy_context, seed_free_state  # noqa: E402
-from src.geo.index.geo_index_engine import geo_cell_key_neighbors  # noqa: E402
-from src.worldgen.earth import compute_hydrology_window, hydrology_params_rows  # noqa: E402
-from src.worldgen.mw import build_planet_surface_cell_key  # noqa: E402
+from geo.index.geo_index_engine import geo_cell_key_neighbors  # noqa: E402
+from worldgen.earth import compute_hydrology_window, hydrology_params_rows  # noqa: E402
+from worldgen.mw import build_planet_surface_cell_key  # noqa: E402
 
 
 HYDROLOGY_FIXTURE_TICK = 4096

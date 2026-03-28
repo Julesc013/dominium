@@ -72,9 +72,9 @@ def run_proc5_capsule_case(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.capsules import execute_process_capsule, generate_process_capsule
-    from src.process.maturity import build_process_maturity_record_row, build_process_metrics_state_row
-    from src.system.statevec import build_state_vector_definition_row
+    from process.capsules import execute_process_capsule, generate_process_capsule
+    from process.maturity import build_process_maturity_record_row, build_process_metrics_state_row
+    from system.statevec import build_state_vector_definition_row
     from tools.process.tool_replay_capsule_window import verify_capsule_replay_window
 
     tolerance_registry = _load_json(repo_root, "data/registries/tolerance_policy_registry.json")

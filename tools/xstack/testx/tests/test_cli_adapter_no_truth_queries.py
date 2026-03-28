@@ -10,7 +10,7 @@ import sys
 TEST_ID = "test_cli_adapter_no_truth_queries"
 TEST_TAGS = ["strict", "geo", "projection", "ui"]
 
-TARGET_FILE = "src/geo/projection/view_adapters.py"
+TARGET_FILE = "geo/projection/view_adapters.py"
 FORBIDDEN = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)
 
 

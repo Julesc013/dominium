@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.identity import canonicalize_universal_identity_block, validate_identity_path  # noqa: E402
+from meta.identity import canonicalize_universal_identity_block, validate_identity_path  # noqa: E402
 
 
 FIELDS = (

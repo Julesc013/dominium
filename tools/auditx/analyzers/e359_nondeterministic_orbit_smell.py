@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E359_NONDETERMINISTIC_ORBIT_SMELL"
-SYSTEM_REFINER_REL = "src/worldgen/mw/mw_system_refiner_l2.py"
+SYSTEM_REFINER_REL = "worldgen/mw/mw_system_refiner_l2.py"
 REQUIRED_TOKENS = (
     "_named_substream_seed(",
     "rng.worldgen.system.planet.",

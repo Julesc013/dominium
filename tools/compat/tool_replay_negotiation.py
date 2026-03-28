@@ -14,7 +14,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.compat import (  # noqa: E402
+from compat import (  # noqa: E402
     build_default_endpoint_descriptor,
     negotiate_product_endpoints,
     verify_recorded_negotiation,

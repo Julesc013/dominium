@@ -11,8 +11,8 @@ TEST_ID = "testx.render.no_truth_access"
 TEST_TAGS = ["strict", "render", "representation", "repox"]
 
 TARGETS = (
-    "src/client/render/render_model_adapter.py",
-    "src/client/render/representation_resolver.py",
+    "client/render/render_model_adapter.py",
+    "client/render/representation_resolver.py",
     "tools/xstack/sessionx/render_model.py",
 )
 FORBIDDEN = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)

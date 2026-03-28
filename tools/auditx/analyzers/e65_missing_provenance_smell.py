@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E65_MISSING_PROVENANCE_SMELL"
-CONSTRUCTION_ENGINE_PATH = "src/materials/construction/construction_engine.py"
+CONSTRUCTION_ENGINE_PATH = "materials/construction/construction_engine.py"
 EVENT_TYPE_REGISTRY_PATH = "data/registries/provenance_event_type_registry.json"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 

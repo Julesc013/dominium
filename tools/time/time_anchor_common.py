@@ -18,8 +18,11 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.provenance.compaction_engine import compact_provenance_window  # noqa: E402
-from src.time import (  # noqa: E402
+from tools.import_bridge import install_src_aliases, resolve_repo_path_equivalent  # noqa: E402
+install_src_aliases(REPO_ROOT_HINT)
+
+from meta.provenance.compaction_engine import compact_provenance_window  # noqa: E402
+from engine.time import (  # noqa: E402
     ANCHOR_REASON_INTERVAL,
     TICK_REFUSAL_THRESHOLD,
     advance_tick_value,
@@ -31,7 +34,7 @@ from src.time import (  # noqa: E402
     load_time_anchor_policy,
     tick_advance_allowed,
 )
-from src.time.time_anchor_scope import (  # noqa: E402
+from engine.time.time_anchor_scope import (  # noqa: E402
     FORBIDDEN_TICK_WIDTH_TOKENS,
     REQUIRED_TIME_ANCHOR_FILES,
     SCOPED_TIME_ANCHOR_PATHS,
@@ -68,7 +71,8 @@ def _repo_abs(repo_root: str, rel_path: str) -> str:
         return ""
     if os.path.isabs(token):
         return os.path.normpath(os.path.abspath(token))
-    return os.path.normpath(os.path.abspath(os.path.join(repo_root, token.replace("/", os.sep))))
+    effective = resolve_repo_path_equivalent(repo_root, token)
+    return os.path.normpath(os.path.abspath(os.path.join(repo_root, effective.replace("/", os.sep))))
 
 
 def _ensure_dir(path: str) -> None:
@@ -395,7 +399,18 @@ def _build_interval_anchor_fixture(repo_root: str) -> dict:
 
 def _cleanup_save(repo_root: str, save_id: str) -> None:
     save_dir = _repo_abs(repo_root, os.path.join("saves", str(save_id)))
-    _safe_rmtree(save_dir)
+    if os.path.isdir(save_dir):
+        _safe_rmtree(save_dir)
+        return
+    if os.path.exists(save_dir):
+        try:
+            os.chmod(save_dir, 0o666)
+        except OSError:
+            pass
+        try:
+            os.remove(save_dir)
+        except FileNotFoundError:
+            return
 
 
 def _source_registry_rows(repo_root: str, registry_rel: str, key: str) -> list[dict]:
@@ -626,6 +641,7 @@ def _build_save_anchor_fixture(repo_root: str, *, suffix: str) -> dict:
     anchor_root = _repo_abs(repo_root_abs, os.path.join("saves", save_id, "anchors"))
     anchor_rows = load_epoch_anchor_rows(anchor_root)
     checkpoint_id = str((checkpoint_rows[0] if checkpoint_rows else {}).get("checkpoint_id", "")).strip()
+    _cleanup_save(repo_root_abs, child_save_id)
     branch_result = branch_from_checkpoint(
         repo_root=repo_root_abs,
         parent_checkpoint_id=checkpoint_id,

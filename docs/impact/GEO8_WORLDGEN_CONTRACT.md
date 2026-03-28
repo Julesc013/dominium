@@ -10,16 +10,16 @@ Replacement Target: legacy reference surface retained without current binding au
 GEO-8 worldgen contract for deterministic cell-key generation, generator version locking, proof surfaces, and ROI/view request integration.
 
 Touched Paths:
-- `src/geo/worldgen/worldgen_engine.py`
+- `geo/worldgen/worldgen_engine.py`
 - `tools/xstack/sessionx/process_runtime.py`
 - `tools/xstack/sessionx/creator.py`
 - `tools/xstack/sessionx/runner.py`
 - `tools/xstack/sessionx/script_runner.py`
-- `src/geo/projection/projection_engine.py`
-- `src/system/roi/system_roi_scheduler.py`
-- `src/control/proof/control_proof_bundle.py`
-- `src/net/policies/policy_server_authoritative.py`
-- `src/net/srz/shard_coordinator.py`
+- `geo/projection/projection_engine.py`
+- `system/roi/system_roi_scheduler.py`
+- `control/proof/control_proof_bundle.py`
+- `net/policies/policy_server_authoritative.py`
+- `net/srz/shard_coordinator.py`
 
 Demand IDs:
 - `space.interplanetary_supply_windows`

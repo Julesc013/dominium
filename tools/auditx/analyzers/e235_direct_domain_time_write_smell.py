@@ -45,7 +45,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/time/time_mapping_engine.py",
+        "engine/time/time_mapping_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/time/tool_verify_sync_consistency.py",
     }

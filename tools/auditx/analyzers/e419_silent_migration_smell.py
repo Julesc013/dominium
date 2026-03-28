@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E419_SILENT_MIGRATION_SMELL"
 REQUIRED_TOKENS = {
-    "src/compat/data_format_loader.py": (
+    "compat/data_format_loader.py": (
         "REFUSAL_FORMAT_MIGRATION_MISSING",
         "\"migration_events\"",
         "\"read_only_applied\"",
@@ -28,7 +28,7 @@ REQUIRED_TOKENS = {
         "stamp_artifact_metadata(",
         "artifact_kind=\"save_file\"",
     ),
-    "src/server/server_console.py": (
+    "server/server_console.py": (
         "stamp_artifact_metadata(",
         "artifact_kind=\"save_file\"",
     ),

@@ -30,9 +30,9 @@ _SKIP_PREFIXES = (
 
 _ALLOWED_FILES = {
     "tools/xstack/sessionx/process_runtime.py",
-    "src/mobility/micro/free_motion_solver.py",
-    "src/mobility/micro/constrained_motion_solver.py",
-    "src/physics/momentum_engine.py",
+    "mobility/micro/free_motion_solver.py",
+    "mobility/micro/constrained_motion_solver.py",
+    "physics/momentum_engine.py",
 }
 
 

@@ -27,7 +27,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.explain import generate_explain_artifact
+    from meta.explain import generate_explain_artifact
 
     rel_path = "data/registries/explain_contract_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))

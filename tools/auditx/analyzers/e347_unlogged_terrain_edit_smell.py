@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E347_UNLOGGED_TERRAIN_EDIT_SMELL"
 
 REQUIRED_FILES = {
-    "src/geo/edit/geometry_state_engine.py": (
+    "geo/edit/geometry_state_engine.py": (
         "build_geometry_edit_event(",
         "geometry_edit_event_hash_chain(",
         "geometry_state_hash_surface(",
@@ -27,17 +27,17 @@ REQUIRED_FILES = {
         "geometry_edit_event_hash_chain",
         "stable_across_repeated_runs",
     ),
-    "src/control/proof/control_proof_bundle.py": (
+    "control/proof/control_proof_bundle.py": (
         "geometry_edit_policy_registry_hash",
         "geometry_state_hash_chain",
         "geometry_edit_event_hash_chain",
     ),
-    "src/net/policies/policy_server_authoritative.py": (
+    "net/policies/policy_server_authoritative.py": (
         "geometry_edit_policy_registry_hash",
         "geometry_state_hash_chain",
         "geometry_edit_event_hash_chain",
     ),
-    "src/net/srz/shard_coordinator.py": (
+    "net/srz/shard_coordinator.py": (
         "geometry_edit_policy_registry_hash",
         "geometry_state_hash_chain",
         "geometry_edit_event_hash_chain",

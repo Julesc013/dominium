@@ -12,7 +12,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.mobility.traffic import apply_congestion_to_speed
+    from mobility.traffic import apply_congestion_to_speed
 
     policy = {
         "congestion_policy_id": "cong.default_linear",

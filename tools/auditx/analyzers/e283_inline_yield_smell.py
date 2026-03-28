@@ -50,10 +50,10 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/process/process_run_engine.py",
-        "src/process/capsules/capsule_executor.py",
-        "src/process/software/pipeline_engine.py",
-        "src/models/model_engine.py",
+        "process/process_run_engine.py",
+        "process/capsules/capsule_executor.py",
+        "process/software/pipeline_engine.py",
+        "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "src/process/process_run_engine.py",
+                                "process/process_run_engine.py",
                                 "data/registries/yield_model_registry.json",
                             ],
                         )

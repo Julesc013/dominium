@@ -15,7 +15,7 @@ REQUIRED_TOKENS = {
         "signing keys",
         "machine identifiers beyond coarse host meta",
     ),
-    "src/diag/repro_bundle_builder.py": (
+    "diag/repro_bundle_builder.py": (
         "_SECRET_KEY_FRAGMENTS",
         "_sanitize_tree(",
         '"account_secret"',

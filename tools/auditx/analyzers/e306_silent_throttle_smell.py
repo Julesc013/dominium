@@ -31,7 +31,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    compute_engine_rel = "src/meta/compute/compute_budget_engine.py"
+    compute_engine_rel = "meta/compute/compute_budget_engine.py"
     compute_engine_text = _read_text(repo_root, compute_engine_rel)
     required_compute_tokens = (
         "explain.compute_throttle",
@@ -82,15 +82,15 @@ def run(graph, repo_root, changed_files=None):
 
     integration_specs = (
         (
-            "src/system/macro/macro_capsule_engine.py",
+            "system/macro/macro_capsule_engine.py",
             ("compute_request.get(\"decision_log_row\")", "compute_request.get(\"explain_artifact_row\")"),
         ),
         (
-            "src/meta/compile/compile_engine.py",
+            "meta/compile/compile_engine.py",
             ("compute_decision_log_row", "compute_explain_artifact_row"),
         ),
         (
-            "src/process/software/pipeline_engine.py",
+            "process/software/pipeline_engine.py",
             ("compute_decision_log_rows", "compute_explain_artifact_rows"),
         ),
     )

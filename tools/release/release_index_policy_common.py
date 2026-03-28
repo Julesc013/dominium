@@ -8,7 +8,7 @@ import subprocess
 import tempfile
 from typing import Mapping
 
-from src.release import (
+from release import (
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
@@ -611,9 +611,9 @@ def release_index_policy_violations(repo_root: str) -> list[dict]:
             continue
         violations.append({"code": "missing_required_file", "message": message, "file_path": rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
-        ("src/release/update_resolver.py", "resolution_policy_id", "update resolver must accept an explicit resolution policy id", RULE_POLICY_DECLARED),
-        ("src/release/update_resolver.py", "explain.component_skipped_yanked", "latest-compatible resolution must log skipped yanked candidates", RULE_YANKED_EXCLUDED),
-        ("src/release/update_resolver.py", "selected_yanked_component_ids", "selected yanked components must remain machine-visible", RULE_YANKED_EXCLUDED),
+        ("release/update_resolver.py", "resolution_policy_id", "update resolver must accept an explicit resolution policy id", RULE_POLICY_DECLARED),
+        ("release/update_resolver.py", "explain.component_skipped_yanked", "latest-compatible resolution must log skipped yanked candidates", RULE_YANKED_EXCLUDED),
+        ("release/update_resolver.py", "selected_yanked_component_ids", "selected yanked components must remain machine-visible", RULE_YANKED_EXCLUDED),
         ("tools/setup/setup_cli.py", "--policy", "setup install/update surfaces must expose policy selection", RULE_POLICY_DECLARED),
         ("tools/setup/setup_cli.py", "install_plan_hash", "update transactions must record install_plan_hash", RULE_ROLLBACK_RECORDED),
         ("tools/setup/setup_cli.py", "prior_component_set_hash", "update transactions must record prior_component_set_hash", RULE_ROLLBACK_RECORDED),

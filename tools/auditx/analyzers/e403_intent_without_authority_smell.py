@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E403_INTENT_WITHOUT_AUTHORITY_SMELL"
 REQUIRED_TOKENS = {
-    "src/server/server_boot.py": (
+    "server/server_boot.py": (
         "REFUSAL_CLIENT_UNAUTHORIZED",
         "build_connection_authority_context(",
         "submit_client_intent(",
@@ -17,7 +17,7 @@ REQUIRED_TOKENS = {
         "queue_intent_envelope(",
         "incoming client intent must declare intent_id and target",
     ),
-    "src/server/net/loopback_transport.py": (
+    "server/net/loopback_transport.py": (
         "build_connection_authority_context(",
         '"authority_context": authority_context',
         "join_client_midstream(",

@@ -37,7 +37,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.proof import build_control_proof_bundle_from_markers
+    from control.proof import build_control_proof_bundle_from_markers
 
     a = build_control_proof_bundle_from_markers(
         tick_start=70,

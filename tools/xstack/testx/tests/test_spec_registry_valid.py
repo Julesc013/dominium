@@ -24,7 +24,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.specs import (
+    from specs import (
         compliance_check_rows_by_id,
         load_spec_sheet_rows,
         spec_sheet_rows_by_id,

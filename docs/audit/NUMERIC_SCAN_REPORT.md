@@ -11,7 +11,7 @@ Replacement Target: Numeric discipline baseline and release-pinned numeric polic
 - release_status: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `f09b1cd3abe7f3dc99c061224bdc3410a93f887171800efba7fde3960aac8400`
+- deterministic_fingerprint: `f047f98761d55282802b82025a6dafdf16dfed8ef40ae67531399c923990baa4`
 
 ## Numeric Checks
 
@@ -19,26 +19,26 @@ Replacement Target: Numeric discipline baseline and release-pinned numeric polic
 - result: `known_exception`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `527c0f8c27dd6e861a629ec4e1d3dc7dddac037f71fe3c73b43484add093e48a`
+- deterministic_fingerprint: `dc8f7ffda9a8fc357cee77403dd0e954442a42f01fcf721d539c312aa720a253`
 - known exceptions:
-  - `src/geo/kernel/geo_kernel.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/geo/metric/metric_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/logic/compile/logic_proof_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/logic/eval/common.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/logic/fault/fault_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/meta/instrumentation/instrumentation_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/mobility/geometry/geometry_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/mobility/micro/constrained_motion_solver.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/process/qc/qc_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `geo/kernel/geo_kernel.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `geo/metric/metric_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `logic/compile/logic_proof_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `logic/eval/common.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `logic/fault/fault_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `meta/instrumentation/instrumentation_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `mobility/geometry/geometry_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `mobility/micro/constrained_motion_solver.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `process/qc/qc_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
 
 ### noncanonical_serialization_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `87741016f4606271b91047a40b336bc257d71879f565ef6cca168b9ec7a2d19d`
+- deterministic_fingerprint: `d234cf3d22b0f7b9c93e838e23671708707c7e218c20dfb77411566a9b0769c0`
 
 ### compiler_flag_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `f1635a71df9a65a6a8f1c907c09c54d9220f01c064730d2887e03111f857be67`
+- deterministic_fingerprint: `9cf40fb86be290eddcd762ee4ba9c4125ee4a4cf9e18ca38360dd9916b5b1364`

@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="security.artifact_accepted_without_hash_smell",
                 severity="BLOCKER",
                 confidence=0.99,
-                file_path=rel_path or "src/security/trust/trust_verifier.py",
+                file_path=rel_path or "security/trust/trust_verifier.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "hash_missing_not_refused",
                     str(item.get("message", "")).strip() or "artifact trust verification accepted or could accept an artifact without a canonical hash",
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ROUTE_ARTIFACT_ACCEPTANCE_THROUGH_HASH_FIRST_VERIFICATION",
                 related_invariants=[RULE_HASHES],
-                related_paths=[rel_path or "src/security/trust/trust_verifier.py", "tools/security/trust_model_common.py"],
+                related_paths=[rel_path or "security/trust/trust_verifier.py", "tools/security/trust_model_common.py"],
             )
         )
     return findings

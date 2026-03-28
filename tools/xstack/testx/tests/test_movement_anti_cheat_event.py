@@ -99,7 +99,7 @@ def _movement_events(runtime: dict) -> list:
 
 
 def _run_once(repo_root: str):
-    from src.net.policies.policy_server_authoritative import (
+    from net.policies.policy_server_authoritative import (
         advance_authoritative_tick,
         build_client_intent_envelope,
         queue_intent_envelope,

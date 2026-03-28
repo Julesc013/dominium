@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.embodiment import resolve_authorized_lens_profile
+    from embodiment import resolve_authorized_lens_profile
     from tools.xstack.testx.tests.emb0_testlib import authority_context
 
     allowed = resolve_authorized_lens_profile(

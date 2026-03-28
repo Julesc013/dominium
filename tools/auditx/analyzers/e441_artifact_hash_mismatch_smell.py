@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "content_hash",
         "No silent migration is permitted.",
     ),
-    "src/lib/artifact/artifact_validator.py": (
+    "lib/artifact/artifact_validator.py": (
         "compute_artifact_content_hash(",
         "REFUSAL_ARTIFACT_HASH_MISMATCH",
         "evaluate_artifact_load(",

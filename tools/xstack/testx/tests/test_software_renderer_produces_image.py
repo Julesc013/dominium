@@ -35,7 +35,7 @@ def _perceived_model() -> dict:
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.client.render.snapshot_capture import capture_render_snapshot
+    from client.render.snapshot_capture import capture_render_snapshot
     from tools.xstack.sessionx.render_model import build_render_model
 
     render_model = dict(build_render_model(copy.deepcopy(_perceived_model()), registry_payloads={}).get("render_model") or {})

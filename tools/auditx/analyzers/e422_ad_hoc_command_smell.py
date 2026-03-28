@@ -21,12 +21,12 @@ REQUIRED_TOKENS = {
         '"command_path": "packs verify"',
         '"command_path": "profiles show"',
     ),
-    "src/appshell/bootstrap.py": (
+    "appshell/bootstrap.py": (
         "dispatch_registered_command(",
         "build_root_command_descriptors(",
         "format_help_text(",
     ),
-    "src/appshell/commands/command_engine.py": (
+    "appshell/commands/command_engine.py": (
         "find_command_descriptor(",
         'handler_id == "packs_verify"',
         'handler_id == "profiles_show"',

@@ -9,8 +9,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E73_UNBOUNDED_INSPECTION_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-INSPECTION_ENGINE_PATH = "src/inspection/inspection_engine.py"
-INSPECTION_CACHE_PATH = "src/performance/inspection_cache.py"
+INSPECTION_ENGINE_PATH = "inspection/inspection_engine.py"
+INSPECTION_CACHE_PATH = "performance/inspection_cache.py"
 REQUIRED_RUNTIME_TOKENS = (
     "reserve_inspection_budget(",
     "max_inspection_cost_units_per_tick",

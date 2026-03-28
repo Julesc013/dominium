@@ -50,8 +50,8 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "src/mobility/traffic/traffic_engine.py",
-        "src/mobility/travel/travel_engine.py",
+        "mobility/traffic/traffic_engine.py",
+        "mobility/travel/travel_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):
@@ -92,7 +92,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "src/mobility/traffic/traffic_engine.py",
+                                "mobility/traffic/traffic_engine.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

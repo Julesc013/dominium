@@ -37,7 +37,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.capability import (
+    from control.capability import (
         capability_binding_rows,
         get_capability_params,
         has_capability,

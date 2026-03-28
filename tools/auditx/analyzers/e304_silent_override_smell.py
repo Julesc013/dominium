@@ -31,8 +31,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    profile_engine_rel = "src/meta/profile/profile_engine.py"
-    collapse_rel = "src/system/system_collapse_engine.py"
+    profile_engine_rel = "meta/profile/profile_engine.py"
+    collapse_rel = "system/system_collapse_engine.py"
     required_profile_tokens = (
         "resolve_profile(",
         "apply_override(",

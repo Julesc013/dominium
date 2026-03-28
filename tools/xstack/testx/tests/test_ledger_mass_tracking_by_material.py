@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.reality.ledger import begin_process_accounting, finalize_process_accounting, record_unaccounted_delta
+    from reality.ledger import begin_process_accounting, finalize_process_accounting, record_unaccounted_delta
     from tools.xstack.testx.tests.reality_rs2_ledger_testlib import build_policy_context
 
     policy_context = build_policy_context(

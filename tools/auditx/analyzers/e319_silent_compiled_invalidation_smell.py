@@ -12,7 +12,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e319_silent_compiled_invalidation_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/LOGIC_COMPILATION_MODEL.md",
-    "src/logic/eval/logic_eval_engine.py",
+    "logic/eval/logic_eval_engine.py",
     "tools/logic/tool_replay_logic_window.py",
     "tools/logic/tool_replay_compiled_logic_window.py",
 )
@@ -60,7 +60,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    eval_rel = "src/logic/eval/logic_eval_engine.py"
+    eval_rel = "logic/eval/logic_eval_engine.py"
     eval_text = _read_text(repo_root, eval_rel)
     for token in (
         "compiled_fallback_logged",
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="REWRITE",
                 related_invariants=["INV-NO-SILENT-FALLBACK"],
-                related_paths=[eval_rel, "src/logic/compile/logic_compiler.py"],
+                related_paths=[eval_rel, "logic/compile/logic_compiler.py"],
             )
         )
 

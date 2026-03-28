@@ -12,8 +12,8 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e320_missing_logic_equivalence_proof_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/LOGIC_COMPILATION_MODEL.md",
-    "src/logic/compile/logic_compiler.py",
-    "src/logic/compile/logic_proof_engine.py",
+    "logic/compile/logic_compiler.py",
+    "logic/compile/logic_proof_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/logic/tool_replay_compiled_logic_window.py",
 )
@@ -61,7 +61,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    compiler_rel = "src/logic/compile/logic_compiler.py"
+    compiler_rel = "logic/compile/logic_compiler.py"
     compiler_text = _read_text(repo_root, compiler_rel)
     for token in (
         "build_logic_equivalence_proof_row(",
@@ -83,11 +83,11 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="REWRITE",
                 related_invariants=["INV-COMPILED-LOGIC-REQUIRES-PROOF"],
-                related_paths=[compiler_rel, "src/logic/compile/logic_proof_engine.py"],
+                related_paths=[compiler_rel, "logic/compile/logic_proof_engine.py"],
             )
         )
 
-    proof_rel = "src/logic/compile/logic_proof_engine.py"
+    proof_rel = "logic/compile/logic_proof_engine.py"
     proof_text = _read_text(repo_root, proof_rel)
     for token in ("build_logic_equivalence_proof_row(", "logic_equivalence_proof_hash(", "verify_logic_equivalence_proof("):
         if token in proof_text:

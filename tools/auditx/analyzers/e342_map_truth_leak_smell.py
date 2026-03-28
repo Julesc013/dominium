@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E342_MAP_TRUTH_LEAK_SMELL"
-TARGET_FILE = "src/geo/projection/view_adapters.py"
+TARGET_FILE = "geo/projection/view_adapters.py"
 FORBIDDEN = re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE)
 REQUIRED_TOKENS = ("render_projected_view_ascii(", "build_projected_view_layer_buffers(")
 
@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-NO-TRUTH-IN-UI", "INV-VIEWS-MUST-USE-LENS"],
-                related_paths=[TARGET_FILE, "src/geo/lens/lens_engine.py"],
+                related_paths=[TARGET_FILE, "geo/lens/lens_engine.py"],
             )
         )
     for line_no, line in enumerate(text.splitlines(), start=1):

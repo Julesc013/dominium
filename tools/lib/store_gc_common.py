@@ -6,23 +6,23 @@ import os
 import shutil
 from typing import Mapping, Sequence
 
-from src.lib.bundle.bundle_manifest import build_bundle_manifest, write_json as write_bundle_json
-from src.lib.install.install_validator import (
+from lib.bundle.bundle_manifest import build_bundle_manifest, write_json as write_bundle_json
+from lib.install.install_validator import (
     build_install_registry_entry,
     deterministic_fingerprint as install_deterministic_fingerprint,
     normalize_install_manifest,
     save_install_registry,
     write_json as write_install_json,
 )
-from src.lib.instance.instance_validator import (
+from lib.instance.instance_validator import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     write_json as write_instance_json,
 )
-from src.lib.save.save_validator import (
+from lib.save.save_validator import (
     deterministic_fingerprint as save_deterministic_fingerprint,
     write_json as write_save_json,
 )
-from src.lib.store import (
+from lib.store import (
     DEFAULT_GC_POLICY_ID,
     GC_MODE_AGGRESSIVE,
     GC_MODE_NONE,
@@ -577,7 +577,7 @@ def build_store_gc_report(repo_root: str) -> dict:
                 "rule_id": RULE_DETERMINISTIC,
                 "code": "gc_none_failed",
                 "message": "gc.none must compute a deterministic report without mutating the store",
-                "file_path": "src/lib/store/gc_engine.py",
+                "file_path": "lib/store/gc_engine.py",
             }
         )
     if list(_as_map(_as_map(none_result).get("gc_report")).get("deleted_hashes") or []) or list(_as_map(_as_map(none_result).get("gc_report")).get("quarantined_hashes") or []):
@@ -586,7 +586,7 @@ def build_store_gc_report(repo_root: str) -> dict:
                 "rule_id": RULE_POLICY,
                 "code": "gc_none_mutated",
                 "message": "gc.none must report only and may not delete or quarantine artifacts",
-                "file_path": "src/lib/store/gc_engine.py",
+                "file_path": "lib/store/gc_engine.py",
             }
         )
     if _token(safe_result.get("result")) != "complete":
@@ -595,7 +595,7 @@ def build_store_gc_report(repo_root: str) -> dict:
                 "rule_id": RULE_GRAPH,
                 "code": "gc_safe_failed",
                 "message": "gc.safe must succeed when unreachable artifacts are present",
-                "file_path": "src/lib/store/gc_engine.py",
+                "file_path": "lib/store/gc_engine.py",
             }
         )
     if not list(_as_map(_as_map(safe_result).get("gc_report")).get("quarantined_hashes") or []):
@@ -604,7 +604,7 @@ def build_store_gc_report(repo_root: str) -> dict:
                 "rule_id": RULE_POLICY,
                 "code": "gc_safe_no_quarantine",
                 "message": "gc.safe must move unreachable artifacts into quarantine",
-                "file_path": "src/lib/store/gc_engine.py",
+                "file_path": "lib/store/gc_engine.py",
             }
         )
     if list(_as_map(_as_map(safe_result).get("gc_report")).get("deleted_hashes") or []):
@@ -613,7 +613,7 @@ def build_store_gc_report(repo_root: str) -> dict:
                 "rule_id": RULE_POLICY,
                 "code": "gc_safe_deleted",
                 "message": "gc.safe must not delete artifacts directly",
-                "file_path": "src/lib/store/gc_engine.py",
+                "file_path": "lib/store/gc_engine.py",
             }
         )
     if _token(aggressive_refusal.get("refusal_code")) != REFUSAL_GC_EXPLICIT_FLAG:
@@ -622,17 +622,17 @@ def build_store_gc_report(repo_root: str) -> dict:
                 "rule_id": RULE_POLICY,
                 "code": "gc_aggressive_guard_missing",
                 "message": "gc.aggressive must refuse without an explicit destructive flag",
-                "file_path": "src/lib/store/gc_engine.py",
+                "file_path": "lib/store/gc_engine.py",
             }
         )
-    gc_engine_text = _read_text(root, "src/lib/store/gc_engine.py")
+    gc_engine_text = _read_text(root, "lib/store/gc_engine.py")
     if "build_store_reachability_report(" not in gc_engine_text:
         violations.append(
             {
                 "rule_id": RULE_GRAPH,
                 "code": "gc_reachability_hook_missing",
                 "message": "GC engine must route candidate selection through the reachability graph",
-                "file_path": "src/lib/store/gc_engine.py",
+                "file_path": "lib/store/gc_engine.py",
             }
         )
 
@@ -801,8 +801,8 @@ def store_gc_violations(repo_root: str) -> list[dict]:
         ("schemas/gc_policy.schema.json", "compiled gc_policy schema is required", RULE_POLICY),
         ("schemas/gc_report.schema.json", "compiled gc_report schema is required", RULE_POLICY),
         (GC_POLICY_REGISTRY_REL, "gc policy registry is required", RULE_POLICY),
-        ("src/lib/store/reachability_engine.py", "reachability engine is required", RULE_GRAPH),
-        ("src/lib/store/gc_engine.py", "gc engine is required", RULE_GRAPH),
+        ("lib/store/reachability_engine.py", "reachability engine is required", RULE_GRAPH),
+        ("lib/store/gc_engine.py", "gc engine is required", RULE_GRAPH),
         ("tools/lib/store_gc_common.py", "STORE-GC helper is required", RULE_DETERMINISTIC),
         ("tools/lib/tool_store_verify.py", "store verification tool is required", RULE_DETERMINISTIC),
         ("tools/lib/tool_run_store_gc.py", "STORE-GC runner is required", RULE_DETERMINISTIC),

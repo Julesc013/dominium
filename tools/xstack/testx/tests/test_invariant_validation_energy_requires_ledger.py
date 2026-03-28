@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system import validate_boundary_invariants
+    from system import validate_boundary_invariants
     from tools.xstack.testx.tests.sys1_testlib import cloned_state, validation_payloads
 
     state = cloned_state()

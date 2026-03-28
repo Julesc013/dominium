@@ -10,9 +10,9 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E123_UNBOUNDED_COST_SMELL"
 WATCH_PREFIXES = (
     "src/control/fidelity/",
-    "src/inspection/inspection_engine.py",
-    "src/materials/materialization/materialization_engine.py",
-    "src/materials/commitments/commitment_engine.py",
+    "inspection/inspection_engine.py",
+    "materials/materialization/materialization_engine.py",
+    "materials/commitments/commitment_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
 )
 
@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    fidelity_engine_rel = "src/control/fidelity/fidelity_engine.py"
+    fidelity_engine_rel = "control/fidelity/fidelity_engine.py"
     fidelity_engine_text = _read_text(repo_root, fidelity_engine_rel)
     required_engine_tokens = (
         "max_cost_units_per_tick",
@@ -125,9 +125,9 @@ def run(graph, repo_root, changed_files=None):
         )
 
     for rel_path in (
-        "src/inspection/inspection_engine.py",
-        "src/materials/materialization/materialization_engine.py",
-        "src/materials/commitments/commitment_engine.py",
+        "inspection/inspection_engine.py",
+        "materials/materialization/materialization_engine.py",
+        "materials/commitments/commitment_engine.py",
     ):
         text = _read_text(repo_root, rel_path)
         if not text:

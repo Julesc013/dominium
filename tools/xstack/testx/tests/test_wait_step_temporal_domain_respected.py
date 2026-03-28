@@ -24,7 +24,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.process_run_engine import process_run_start, process_run_tick
+    from process.process_run_engine import process_run_start, process_run_tick
 
     action_registry = _load_json(repo_root, "data/registries/action_template_registry.json")
     temporal_registry = _load_json(repo_root, "data/registries/temporal_domain_registry.json")

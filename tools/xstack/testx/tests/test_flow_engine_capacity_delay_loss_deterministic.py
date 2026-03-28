@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.core.flow.flow_engine import flow_transfer
+    from core.flow.flow_engine import flow_transfer
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     first = flow_transfer(

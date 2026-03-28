@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system import REFUSAL_TEMPLATE_FORBIDDEN_MODE
+    from system import REFUSAL_TEMPLATE_FORBIDDEN_MODE
     from tools.xstack.testx.tests.sys4_testlib import cloned_state, execute_template_instantiate
 
     denied_state = cloned_state()

@@ -13,7 +13,7 @@ TEST_TAGS = ["fast", "release", "update-model", "rollback"]
 
 def run(repo_root: str):
     del repo_root
-    from src.release import append_install_transaction
+    from release import append_install_transaction
     from tools.setup.setup_cli import rollback_from_plan, transaction_log_path, write_json
 
     with tempfile.TemporaryDirectory() as tmp:

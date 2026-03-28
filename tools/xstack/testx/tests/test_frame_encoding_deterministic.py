@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.protocol import build_protocol_frame_from_delivery
+    from logic.protocol import build_protocol_frame_from_delivery
 
     protocol_row = {
         "protocol_id": "protocol.bus_arbitration_stub",

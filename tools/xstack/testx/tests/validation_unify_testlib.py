@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.validation import build_validation_report, validation_surface_rows
+from validation import build_validation_report, validation_surface_rows
 from tools.xstack.compatx.canonical_json import canonical_json_text
 
 

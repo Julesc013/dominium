@@ -35,7 +35,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    scheduler_rel = "src/system/roi/system_roi_scheduler.py"
+    scheduler_rel = "system/roi/system_roi_scheduler.py"
     replay_rel = "tools/system/tool_replay_sys_window.py"
 
     runtime_text = _read_text(repo_root, runtime_rel)
@@ -102,8 +102,8 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         runtime_rel,
         scheduler_rel,
-        "src/system/system_collapse_engine.py",
-        "src/system/system_expand_engine.py",
+        "system/system_collapse_engine.py",
+        "system/system_expand_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

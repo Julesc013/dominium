@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E18_VIEW_MODE_BYPASS_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-HYBRID_COORDINATOR_PATH = "src/net/srz/shard_coordinator.py"
+HYBRID_COORDINATOR_PATH = "net/srz/shard_coordinator.py"
 
 
 def _norm(path: str) -> str:

@@ -13,7 +13,7 @@ REQUIRED_TOKENS = {
         "Pack order is canonicalized by `(pack_id, pack_version)`.",
         "All report and lock artifacts use canonical JSON serialization.",
     ),
-    "src/packs/compat/pack_verification_pipeline.py": (
+    "packs/compat/pack_verification_pipeline.py": (
         "sorted(out, key=lambda item: (item[\"pack_id\"], item[\"pack_version\"]))",
         "compute_pack_lock_hash(",
         "canonical_json_text(",

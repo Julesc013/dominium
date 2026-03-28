@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.fields import build_field_cell, build_field_layer, update_field_layers
+    from fields import build_field_cell, build_field_layer, update_field_layers
 
     layers = [
         build_field_layer(

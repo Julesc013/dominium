@@ -20,7 +20,7 @@ REQUIRED_EVALUATOR_IDS = (
     "ref.compiled_model_verify",
 )
 REQUIRED_PATHS = (
-    "src/meta/reference/reference_engine.py",
+    "meta/reference/reference_engine.py",
     "tools/meta/tool_run_reference_suite.py",
 )
 

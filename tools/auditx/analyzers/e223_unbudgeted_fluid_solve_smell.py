@@ -89,7 +89,7 @@ def run(graph, repo_root, changed_files=None):
                         related_invariants=[
                             "INV-FLUID-BUDGETED",
                         ],
-                        related_paths=[rel_path, "tools/fluid/tool_run_fluid_stress.py", "src/fluid/network/fluid_network_engine.py"],
+                        related_paths=[rel_path, "tools/fluid/tool_run_fluid_stress.py", "fluid/network/fluid_network_engine.py"],
                     )
                 )
     return sorted(

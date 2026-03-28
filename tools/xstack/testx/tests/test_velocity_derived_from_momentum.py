@@ -34,7 +34,7 @@ def _run_once(repo_root: str) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.physics import build_momentum_state
+    from physics import build_momentum_state
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.mobility_free_testlib import (
         authority_context,

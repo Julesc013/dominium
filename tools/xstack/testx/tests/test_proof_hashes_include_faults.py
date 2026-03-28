@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.proof.control_proof_bundle import build_control_proof_bundle_from_markers
+    from control.proof.control_proof_bundle import build_control_proof_bundle_from_markers
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.elec_testlib import (
         authority_context,

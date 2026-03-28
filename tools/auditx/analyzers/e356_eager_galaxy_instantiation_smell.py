@@ -10,13 +10,13 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E356_EAGER_GALAXY_INSTANTIATION_SMELL"
 
 REQUIRED_FILES = {
-    "src/worldgen/mw/mw_cell_generator.py": (
+    "worldgen/mw/mw_cell_generator.py": (
         "generate_mw_cell_payload(",
         "geo_cell_key",
         "max_systems_per_cell",
         "system_seed_rows",
     ),
-    "src/geo/worldgen/worldgen_engine.py": (
+    "geo/worldgen/worldgen_engine.py": (
         "generate_mw_cell_payload(",
         "worldgen_request",
         "generated_system_seed_rows",
@@ -60,7 +60,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="RESTORE",
                     related_invariants=["INV-MW-CELL-ON-DEMAND-ONLY"],
-                    related_paths=[rel_path, "src/worldgen/mw/mw_cell_generator.py"],
+                    related_paths=[rel_path, "worldgen/mw/mw_cell_generator.py"],
                 )
             )
             continue
@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-MW-CELL-ON-DEMAND-ONLY"],
-                    related_paths=[rel_path, "src/geo/worldgen/worldgen_engine.py"],
+                    related_paths=[rel_path, "geo/worldgen/worldgen_engine.py"],
                 )
             )
             continue
@@ -97,7 +97,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-MW-CELL-ON-DEMAND-ONLY"],
-                    related_paths=[rel_path, "src/worldgen/mw/mw_cell_generator.py"],
+                    related_paths=[rel_path, "worldgen/mw/mw_cell_generator.py"],
                 )
             )
             break

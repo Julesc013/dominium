@@ -38,11 +38,11 @@ def run(repo_root: str):
             ),
         )
         _write(
-            os.path.join(temp_root, "src", "client", "render", "renderers", "software_renderer.py"),
+            os.path.join(temp_root, "client", "render", "renderers", "software_renderer.py"),
             "def render_snapshot():\n    return truth_model\n",
         )
         _write(
-            os.path.join(temp_root, "src", "server", "server_boot.py"),
+            os.path.join(temp_root, "server", "server_boot.py"),
             "def boot():\n    return time.time()\n",
         )
         truth_report = scan_truth_purity(temp_root)

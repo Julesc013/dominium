@@ -15,7 +15,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
+from meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
+from tools.import_bridge import resolve_repo_path_equivalent  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
@@ -115,10 +116,10 @@ TRUTH_PURITY_TARGETS = (
     os.path.join("schema", "universe", "universe_identity.schema"),
     os.path.join("schemas", "universe_state.schema.json"),
     os.path.join("schemas", "universe_identity.schema.json"),
-    os.path.join("src", "server", "server_boot.py"),
-    os.path.join("src", "server", "server_console.py"),
-    os.path.join("src", "universe", "universe_identity_builder.py"),
-    os.path.join("src", "universe", "universe_contract_enforcer.py"),
+    os.path.join("server", "server_boot.py"),
+    os.path.join("server", "server_console.py"),
+    os.path.join("universe", "universe_identity_builder.py"),
+    os.path.join("universe", "universe_contract_enforcer.py"),
 )
 TRUTH_PURITY_FORBIDDEN = {
     "sky_gradient": "Truth state must not store derived sky gradients.",
@@ -145,53 +146,60 @@ SEMANTIC_SYMBOL_SPECS = (
     (
         "compat_negotiation",
         "negotiate_endpoint_descriptors",
-        os.path.join("src", "compat", "capability_negotiation.py"),
+        os.path.join("compat", "capability_negotiation.py"),
         "Compatibility negotiation must have a single authoritative semantic engine.",
     ),
     (
         "compat_negotiation",
         "verify_negotiation_record",
-        os.path.join("src", "compat", "capability_negotiation.py"),
+        os.path.join("compat", "capability_negotiation.py"),
         "Negotiation replay verification must resolve through the same authoritative semantic engine.",
     ),
     (
         "overlay_merge",
         "merge_overlay_view",
-        os.path.join("src", "geo", "overlay", "overlay_merge_engine.py"),
+        os.path.join("geo", "overlay", "overlay_merge_engine.py"),
         "Overlay merge must have a single authoritative semantic engine.",
     ),
     (
         "overlay_merge",
         "overlay_proof_surface",
-        os.path.join("src", "geo", "overlay", "overlay_merge_engine.py"),
+        os.path.join("geo", "overlay", "overlay_merge_engine.py"),
         "Overlay merge proof synthesis must remain in the authoritative overlay engine.",
     ),
     (
         "illumination",
         "build_illumination_view_artifact",
-        os.path.join("src", "astro", "illumination", "illumination_geometry_engine.py"),
+        os.path.join("astro", "illumination", "illumination_geometry_engine.py"),
         "Illumination artifact synthesis must have one authoritative model implementation.",
     ),
     (
         "illumination",
         "build_lighting_view_surface",
-        os.path.join("src", "worldgen", "earth", "lighting", "lighting_view_engine.py"),
+        os.path.join("worldgen", "earth", "lighting", "lighting_view_engine.py"),
         "Lighting view synthesis must stay in the authoritative illumination pipeline.",
     ),
     (
         "illumination",
         "evaluate_horizon_shadow",
-        os.path.join("src", "worldgen", "earth", "lighting", "horizon_shadow_engine.py"),
+        os.path.join("worldgen", "earth", "lighting", "horizon_shadow_engine.py"),
         "Horizon-shadow evaluation must stay in the authoritative illumination pipeline.",
     ),
     (
         "id_generation",
         "geo_object_id",
-        os.path.join("src", "geo", "index", "object_id_engine.py"),
+        os.path.join("geo", "index", "object_id_engine.py"),
         "Geo object identity generation must have one authoritative engine.",
     ),
 )
-SEMANTIC_SCAN_PREFIXES = ("src", "tools")
+SEMANTIC_SCAN_PREFIXES = (
+    "src",
+    "tools",
+    "astro",
+    "compat",
+    "geo",
+    "worldgen",
+)
 DETERMINISM_SCAN_PREFIXES = (
     os.path.join("src", "server"),
     os.path.join("src", "universe"),
@@ -219,9 +227,9 @@ UNNAMED_RNG_TOKENS = (
 )
 UNORDERED_LOOP_RE = re.compile(r"for\s+.+\s+in\s+.+\.(?:items|keys|values)\s*\(\)\s*:")
 APPROVED_FLOAT_PATHS = {
-    os.path.join("src", "geo", "kernel", "geo_kernel.py"),
-    os.path.join("src", "geo", "metric", "metric_engine.py"),
-    os.path.join("src", "process", "qc", "qc_engine.py"),
+    os.path.join("geo", "kernel", "geo_kernel.py"),
+    os.path.join("geo", "metric", "metric_engine.py"),
+    os.path.join("process", "qc", "qc_engine.py"),
 }
 NUMERIC_SCAN_CHECK_ORDER = [
     "float_in_truth_scan",
@@ -234,49 +242,49 @@ CONCURRENCY_SCAN_CHECK_ORDER = [
     "truth_atomic_scan",
 ]
 NUMERIC_TRUTH_TARGETS = (
-    os.path.join("src", "astro", "ephemeris", "kepler_proxy_engine.py"),
-    os.path.join("src", "astro", "illumination", "illumination_geometry_engine.py"),
-    os.path.join("src", "fields", "field_engine.py"),
-    os.path.join("src", "logic", "compile", "logic_proof_engine.py"),
-    os.path.join("src", "logic", "eval", "common.py"),
-    os.path.join("src", "logic", "fault", "fault_engine.py"),
-    os.path.join("src", "meta", "numeric.py"),
-    os.path.join("src", "mobility", "micro", "free_motion_solver.py"),
-    os.path.join("src", "physics", "energy", "energy_ledger_engine.py"),
-    os.path.join("src", "physics", "momentum_engine.py"),
-    os.path.join("src", "time", "time_mapping_engine.py"),
+    os.path.join("astro", "ephemeris", "kepler_proxy_engine.py"),
+    os.path.join("astro", "illumination", "illumination_geometry_engine.py"),
+    os.path.join("fields", "field_engine.py"),
+    os.path.join("logic", "compile", "logic_proof_engine.py"),
+    os.path.join("logic", "eval", "common.py"),
+    os.path.join("logic", "fault", "fault_engine.py"),
+    os.path.join("meta", "numeric.py"),
+    os.path.join("mobility", "micro", "free_motion_solver.py"),
+    os.path.join("physics", "energy", "energy_ledger_engine.py"),
+    os.path.join("physics", "momentum_engine.py"),
+    os.path.join("engine", "time", "time_mapping_engine.py"),
 )
 WORLDGEN_NUMERIC_TRUTH_TARGETS = (
-    os.path.join("src", "geo", "worldgen", "worldgen_engine.py"),
-    os.path.join("src", "worldgen", "galaxy", "galaxy_object_stub_generator.py"),
-    os.path.join("src", "worldgen", "mw", "mw_cell_generator.py"),
-    os.path.join("src", "worldgen", "mw", "mw_system_refiner_l2.py"),
-    os.path.join("src", "worldgen", "mw", "mw_surface_refiner_l3.py"),
-    os.path.join("src", "worldgen", "mw", "insolation_proxy.py"),
-    os.path.join("src", "worldgen", "mw", "sol_anchor.py"),
-    os.path.join("src", "worldgen", "earth", "earth_surface_generator.py"),
-    os.path.join("src", "worldgen", "earth", "climate_field_engine.py"),
-    os.path.join("src", "worldgen", "earth", "hydrology_engine.py"),
-    os.path.join("src", "worldgen", "earth", "tide_field_engine.py"),
-    os.path.join("src", "worldgen", "earth", "season_phase_engine.py"),
-    os.path.join("src", "worldgen", "earth", "tide_phase_engine.py"),
-    os.path.join("src", "worldgen", "earth", "material", "material_proxy_engine.py"),
+    os.path.join("geo", "worldgen", "worldgen_engine.py"),
+    os.path.join("worldgen", "galaxy", "galaxy_object_stub_generator.py"),
+    os.path.join("worldgen", "mw", "mw_cell_generator.py"),
+    os.path.join("worldgen", "mw", "mw_system_refiner_l2.py"),
+    os.path.join("worldgen", "mw", "mw_surface_refiner_l3.py"),
+    os.path.join("worldgen", "mw", "insolation_proxy.py"),
+    os.path.join("worldgen", "mw", "sol_anchor.py"),
+    os.path.join("worldgen", "earth", "earth_surface_generator.py"),
+    os.path.join("worldgen", "earth", "climate_field_engine.py"),
+    os.path.join("worldgen", "earth", "hydrology_engine.py"),
+    os.path.join("worldgen", "earth", "tide_field_engine.py"),
+    os.path.join("worldgen", "earth", "season_phase_engine.py"),
+    os.path.join("worldgen", "earth", "tide_phase_engine.py"),
+    os.path.join("worldgen", "earth", "material", "material_proxy_engine.py"),
 )
 REVIEWED_NUMERIC_BRIDGE_PATHS = {
-    os.path.join("src", "geo", "kernel", "geo_kernel.py"): "projection/query bridge with deterministic quantization",
-    os.path.join("src", "geo", "metric", "metric_engine.py"): "geodesic approximation bridge with bounded deterministic rounding",
-    os.path.join("src", "meta", "instrumentation", "instrumentation_engine.py"): "measurement quantization bridge that snaps back onto deterministic integer quanta",
-    os.path.join("src", "mobility", "geometry", "geometry_engine.py"): "geometry snap bridge that quantizes endpoints back to integer grid coordinates",
-    os.path.join("src", "mobility", "micro", "constrained_motion_solver.py"): "heading derivation bridge that emits integer milli-degree results only",
-    os.path.join("src", "process", "qc", "qc_engine.py"): "qc rate derivation bridge that quantizes report values back to integers",
+    os.path.join("geo", "kernel", "geo_kernel.py"): "projection/query bridge with deterministic quantization",
+    os.path.join("geo", "metric", "metric_engine.py"): "geodesic approximation bridge with bounded deterministic rounding",
+    os.path.join("meta", "instrumentation", "instrumentation_engine.py"): "measurement quantization bridge that snaps back onto deterministic integer quanta",
+    os.path.join("mobility", "geometry", "geometry_engine.py"): "geometry snap bridge that quantizes endpoints back to integer grid coordinates",
+    os.path.join("mobility", "micro", "constrained_motion_solver.py"): "heading derivation bridge that emits integer milli-degree results only",
+    os.path.join("process", "qc", "qc_engine.py"): "qc rate derivation bridge that quantizes report values back to integers",
 }
 NUMERIC_SERIALIZATION_TARGETS = (
-    os.path.join("src", "compat", "capability_negotiation.py"),
-    os.path.join("src", "meta", "identity", "identity_validator.py"),
-    os.path.join("src", "release", "build_id_engine.py"),
-    os.path.join("src", "release", "release_manifest_engine.py"),
-    os.path.join("src", "release", "update_resolver.py"),
-    os.path.join("src", "security", "trust", "trust_verifier.py"),
+    os.path.join("compat", "capability_negotiation.py"),
+    os.path.join("meta", "identity", "identity_validator.py"),
+    os.path.join("release", "build_id_engine.py"),
+    os.path.join("release", "release_manifest_engine.py"),
+    os.path.join("release", "update_resolver.py"),
+    os.path.join("security", "trust", "trust_verifier.py"),
 )
 PARALLEL_TRUTH_TARGETS = (
     os.path.join("src", "process"),
@@ -289,7 +297,7 @@ PARALLEL_TRUTH_TARGETS = (
     os.path.join("tools", "xstack", "sessionx", "scheduler.py"),
 )
 PARALLEL_OUTPUT_TARGETS = (
-    os.path.join("src", "appshell", "supervisor", "supervisor_engine.py"),
+    os.path.join("appshell", "supervisor", "supervisor_engine.py"),
     os.path.join("tools", "xstack", "core", "scheduler.py"),
 )
 TRUTH_ATOMIC_TARGETS = PARALLEL_TRUTH_TARGETS
@@ -313,7 +321,7 @@ TRUTH_ATOMIC_TOKENS = (
     "interlocked",
 )
 PARALLEL_OUTPUT_REQUIRED_TOKENS = {
-    os.path.join("src", "appshell", "supervisor", "supervisor_engine.py"): (
+    os.path.join("appshell", "supervisor", "supervisor_engine.py"): (
         "canonicalize_parallel_mapping_rows(",
         "build_field_sort_key(",
     ),
@@ -358,7 +366,7 @@ CONTRACT_PIN_TARGETS = {
     os.path.join("schemas", "session_spec.schema.json"): (
         "contract_bundle_hash",
     ),
-    os.path.join("src", "universe", "universe_contract_enforcer.py"): (
+    os.path.join("universe", "universe_contract_enforcer.py"): (
         "enforce_session_contract_bundle",
         "universe_contract_bundle_hash",
         "contract_bundle_hash",
@@ -371,21 +379,21 @@ DIST_COMPOSITION_TARGETS = (
     os.path.join("tools", "launcher", "launch.py"),
 )
 UPDATE_MODEL_TARGETS = (
-    os.path.join("src", "release", "update_resolver.py"),
+    os.path.join("release", "update_resolver.py"),
     os.path.join("tools", "setup", "setup_cli.py"),
     os.path.join("tools", "release", "update_model_common.py"),
 )
 TRUST_TARGETS = (
-    os.path.join("src", "security", "trust", "trust_verifier.py"),
-    os.path.join("src", "release", "update_resolver.py"),
-    os.path.join("src", "appshell", "pack_verifier_adapter.py"),
+    os.path.join("security", "trust", "trust_verifier.py"),
+    os.path.join("release", "update_resolver.py"),
+    os.path.join("appshell", "pack_verifier_adapter.py"),
     os.path.join("tools", "dist", "dist_verify_common.py"),
     os.path.join("tools", "release", "tool_verify_release_manifest.py"),
 )
 TARGET_MATRIX_TARGETS = (
     os.path.join("tools", "release", "update_model_common.py"),
     os.path.join("tools", "release", "arch_matrix_common.py"),
-    os.path.join("src", "compat", "capability_negotiation.py"),
+    os.path.join("compat", "capability_negotiation.py"),
     os.path.join("data", "registries", "target_matrix_registry.json"),
 )
 ARCHIVE_DETERMINISM_TARGETS = (
@@ -441,6 +449,14 @@ def _repo_abs(repo_root: str, rel_path: str) -> str:
     if os.path.isabs(token):
         return os.path.normpath(os.path.abspath(token))
     return os.path.normpath(os.path.abspath(os.path.join(repo_root, token.replace("/", os.sep))))
+
+
+def _equivalent_rel(repo_root: str, rel_path: str) -> str:
+    return _norm(resolve_repo_path_equivalent(repo_root, _norm(rel_path)))
+
+
+def _repo_abs_equivalent(repo_root: str, rel_path: str) -> str:
+    return _repo_abs(repo_root, _equivalent_rel(repo_root, rel_path))
 
 
 def _ensure_dir(path: str) -> None:
@@ -752,9 +768,11 @@ def scan_duplicate_semantics(repo_root: str) -> dict:
     inventory = {"symbols": {}}
     for topic, symbol, expected_path, message in SEMANTIC_SYMBOL_SPECS:
         occurrences = list(definitions.get(symbol) or [])
+        effective_expected_path = _equivalent_rel(repo_root_abs, expected_path)
         inventory["symbols"][symbol] = {
             "topic": topic,
             "expected_path": _norm(expected_path),
+            "effective_expected_path": effective_expected_path,
             "occurrences": [dict(row) for row in sorted(occurrences, key=lambda row: (_token(row.get("path")), int(row.get("line", 0) or 0)))],
         }
         if len(occurrences) != 1:
@@ -769,7 +787,7 @@ def scan_duplicate_semantics(repo_root: str) -> dict:
             )
             continue
         occurrence = dict(occurrences[0] or {})
-        if _norm(occurrence.get("path", "")) == _norm(expected_path):
+        if _norm(occurrence.get("path", "")) == effective_expected_path:
             continue
         findings.append(
             _finding_row(
@@ -777,7 +795,14 @@ def scan_duplicate_semantics(repo_root: str) -> dict:
                 path=_norm(occurrence.get("path", "")),
                 line=int(occurrence.get("line", 0) or 0),
                 message="{} '{}' moved away from its authoritative engine.".format(message, symbol),
-                snippet=str(occurrence.get("path", "")),
+                snippet=json.dumps(
+                    {
+                        "actual_path": _norm(occurrence.get("path", "")),
+                        "expected_path": _norm(expected_path),
+                        "effective_expected_path": effective_expected_path,
+                    },
+                    sort_keys=True,
+                ),
             )
         )
     return _check_result_payload(
@@ -2546,7 +2571,8 @@ def scan_contract_pins(repo_root: str) -> dict:
     findings: list[dict] = []
     scanned_paths: list[str] = []
     for rel_path, tokens in sorted(CONTRACT_PIN_TARGETS.items(), key=lambda item: item[0]):
-        abs_path = _repo_abs(repo_root_abs, rel_path)
+        effective_rel_path = _equivalent_rel(repo_root_abs, rel_path)
+        abs_path = _repo_abs(repo_root_abs, effective_rel_path)
         scanned_paths.append(_norm(rel_path))
         text = _read_text(abs_path)
         if not text:
@@ -2556,7 +2582,13 @@ def scan_contract_pins(repo_root: str) -> dict:
                     path=_norm(rel_path),
                     line=1,
                     message="Required contract-pin surface is missing or unreadable.",
-                    snippet=_norm(rel_path),
+                    snippet=json.dumps(
+                        {
+                            "expected_path": _norm(rel_path),
+                            "effective_path": effective_rel_path,
+                        },
+                        sort_keys=True,
+                    ),
                 )
             )
             continue

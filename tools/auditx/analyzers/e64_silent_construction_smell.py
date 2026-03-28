@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E64_SILENT_CONSTRUCTION_SMELL"
-CONSTRUCTION_ENGINE_PATH = "src/materials/construction/construction_engine.py"
+CONSTRUCTION_ENGINE_PATH = "materials/construction/construction_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 ALLOWED_MUTATION_PREFIXES = (
     "tools/xstack/sessionx/process_runtime.py",

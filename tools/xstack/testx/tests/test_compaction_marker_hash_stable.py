@@ -21,7 +21,7 @@ def _run_once(repo_root: str) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.provenance import compact_provenance_window
+    from meta.provenance import compact_provenance_window
 
     classifications = read_provenance_classification_rows(repo_root)
     state = build_compaction_fixture_state("marker_hash")

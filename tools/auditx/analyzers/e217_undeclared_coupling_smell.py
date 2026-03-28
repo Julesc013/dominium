@@ -61,7 +61,7 @@ _CROSS_DOMAIN_PATTERNS_BY_PREFIX = {
     ),
 }
 _ALLOWED_FILES = {
-    "src/models/model_engine.py",
+    "models/model_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/repox/check.py",
 }

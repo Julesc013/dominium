@@ -67,7 +67,7 @@ def run(graph, repo_root, changed_files=None):
                     "INV-NO-SILENT-EFFICIENCY-DROP",
                     "INV-ENTROPY-UPDATE-THROUGH-ENGINE",
                 ],
-                related_paths=[runtime_rel, "src/physics/entropy/entropy_engine.py"],
+                related_paths=[runtime_rel, "physics/entropy/entropy_engine.py"],
             )
         )
         break

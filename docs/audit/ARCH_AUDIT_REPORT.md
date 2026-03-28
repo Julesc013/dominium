@@ -6,11 +6,11 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 # ARCH Audit Report
 
 - report_id: `arch.audit.v1`
-- result: `violation`
-- release_status: `fail`
-- blocking_finding_count: `4`
+- result: `complete`
+- release_status: `pass`
+- blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `522aab40952b2b4b890fd21cff6c9c53fa31ebe20461a225bc95be7bcae6f25f`
+- deterministic_fingerprint: `365a9dace7e975f784330794276dffe85563b64e2f2c70a0dcc5405e277a1f1c`
 
 ## Checks
 
@@ -18,47 +18,47 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `d9955ba99c9b2c78cf763af8552faa9300e92e0e7c409d9a328256fe25564c36`
+- deterministic_fingerprint: `2b14a64ebdc3e1ecd7e1396ae5ed119b500059a1418ea351ccb37f44d5e4eb40`
 
 ### renderer_truth_access_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `988bab154d3c9918567835737b8597983a00cc95fc5790a31b072cc48f93573d`
+- deterministic_fingerprint: `53517c67595d900023b19f60ad6e2b4a51fb0e1363205896a9d2b7c62e45af9b`
 
 ### duplicate_semantics_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `d3bf7ea1a99df7cdb85307f715a3adb946107e0c3b195f774cccc6cc21a5f1ed`
+- deterministic_fingerprint: `054bb2520784833d244a5368230fa29bef845cffb73e5214f8ec9e670853e835`
 
 ### determinism_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `f6108ee1304de2d6d76f9d8bb6dec6bce8670e952d2b8133b965e0ab33a71f3d`
+- deterministic_fingerprint: `2939956c9c63a1f7be5c7b14a20c0aa5cd674134ed0c3b5e772fd0ecad96dfbc`
 
 ### float_in_truth_scan
 - result: `known_exception`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `527c0f8c27dd6e861a629ec4e1d3dc7dddac037f71fe3c73b43484add093e48a`
+- deterministic_fingerprint: `dc8f7ffda9a8fc357cee77403dd0e954442a42f01fcf721d539c312aa720a253`
 - known exceptions:
-  - `src/geo/kernel/geo_kernel.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/geo/metric/metric_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/logic/compile/logic_proof_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/logic/eval/common.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/logic/fault/fault_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/meta/instrumentation/instrumentation_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/mobility/geometry/geometry_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/mobility/micro/constrained_motion_solver.py`:1 reviewed numeric bridge: deterministic quantization bridge
-  - `src/process/qc/qc_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `geo/kernel/geo_kernel.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `geo/metric/metric_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `logic/compile/logic_proof_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `logic/eval/common.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `logic/fault/fault_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `meta/instrumentation/instrumentation_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `mobility/geometry/geometry_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `mobility/micro/constrained_motion_solver.py`:1 reviewed numeric bridge: deterministic quantization bridge
+  - `process/qc/qc_engine.py`:1 reviewed numeric bridge: deterministic quantization bridge
 
 ### worldgen_lock_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `907a5f66f846b736b6f187f5a3edc981b0d48fe6e8ba148605c0cb9010d34bb6`
+- deterministic_fingerprint: `a997aef6bc642704c80382c06446d252f0d92fd0d69593de8d973830b2f8b115`
 
 ### baseline_universe_scan
 - result: `pass`
@@ -82,25 +82,25 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `8324082700520c3acb7a168d1f3bd175eff42a56d6e2f35d64c9f4d889e1c176`
+- deterministic_fingerprint: `fe35eb331bc45803d8a0cbbbfb1ef56079f383565a419acdfafc2303d3486a4f`
 
 ### update_sim_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `059b2be6a3277b588a28645833f4eab66148268a047e0429e43d602310a4c267`
+- deterministic_fingerprint: `6608a6cfce9d60c591891a7a3ac072ee4cd421f2ae3aaf7ce8ab8de248ef9ca3`
 
 ### trust_strict_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `da19a9f1f375cbf1e30f89371b01d9e61282c372b95f7e9a998b45a043cf70f8`
+- deterministic_fingerprint: `30da31325dcca3f0c7c44beef14102594c86dfd1b48b4bffa2d69e83798549cb`
 
 ### offline_archive_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `6e1a79b8d4410d22e439847f9bdd6f7b509c6ecf9658c5f06ea53b46dfaef5d7`
+- deterministic_fingerprint: `2567c12dd3868b1ce929c9693f52ae21954c093e2040e219294045c0857d87ec`
 
 ### toolchain_matrix_scan
 - result: `pass`
@@ -118,54 +118,49 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `87741016f4606271b91047a40b336bc257d71879f565ef6cca168b9ec7a2d19d`
+- deterministic_fingerprint: `d234cf3d22b0f7b9c93e838e23671708707c7e218c20dfb77411566a9b0769c0`
 
 ### compiler_flag_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `f1635a71df9a65a6a8f1c907c09c54d9220f01c064730d2887e03111f857be67`
+- deterministic_fingerprint: `9cf40fb86be290eddcd762ee4ba9c4125ee4a4cf9e18ca38360dd9916b5b1364`
 
 ### parallel_truth_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `c82d32f624e432b63da9236786dfcee9c64718f1440beeeb158aa7b962ac91f6`
+- deterministic_fingerprint: `0fe26164bd7fecb7711c38e05aafdb5930d5cac456705905633c58e8363683c6`
 
 ### parallel_output_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `d93a6696ec19ca4bd9b91246b988d6deeb6f66aaca49b24bb42a10d05a204e1a`
+- deterministic_fingerprint: `079a16e4b94ae1ebc6d3f4e3bed9f128c01fa61e0992d12f08a9d180d049ebe5`
 
 ### truth_atomic_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `7af13f74d24a495e1846ca565cc17d88377987e080f79332e6022b81cac87196`
+- deterministic_fingerprint: `8517da365406599b2a5c1d7a6be3cac10d7227cf82dbef65b7507f001cfab76f`
 
 ### stability_marker_scan
-- result: `fail`
-- blocking_finding_count: `4`
+- result: `pass`
+- blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `0eb13c579e347d1eeddf0feff2df1a6b39d710adda28be8297464e1b11580123`
-- blocking findings:
-  - `data/registries/toolchain_test_profile_registry.json`:1 registry entries must declare stability
-  - `data/registries/toolchain_test_profile_registry.json`:1 registry entries must declare stability
-  - `data/registries/toolchain_test_profile_registry.json`:1 registry entries must declare stability
-  - `data/registries/toolchain_test_profile_registry.json`:1 registry entries must declare stability
+- deterministic_fingerprint: `8840751109571c243e3791c4a415c9d3fd19ff4668f59c258fcaf4bfb5b0fe2f`
 
 ### contract_pin_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `a7c536eb1111df1e8cdf915046b2f17f02fff8d6f89e7198abda93ef2e54a9c3`
+- deterministic_fingerprint: `2cb1da670c5dbee45932c5d7bbc22b6975cefaa82d72c5bcc967baea3e58b78b`
 
 ### pack_compat_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `bbefa5521bb743d8c6c47618803c3fc2fce4c745b0ec5ee064a0c6b25b91af65`
+- deterministic_fingerprint: `dc40f51647fb2ac2ff4fe9994a07d52ad10b5e4255a9a050f8d1e09acaa447b1`
 
 ### dist_bundle_composition_scan
 - result: `pass`
@@ -177,22 +172,22 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `5648849dd09ffe6efc8b88ac3185ec215091c242985546335740961e22625768`
+- deterministic_fingerprint: `5ee8a20f6c7a21bf2c68be84a7bce24fedb6d477c22f115ebad5de6e9668af69`
 
 ### trust_bypass_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `67e77c691770441af5e92931a1d5bab649bd70c32bc3dee0d82f22da5c6ef70b`
+- deterministic_fingerprint: `969d9249ae289c459be56cf51715933daa45203d142b40d2696b25e34de811c5`
 
 ### target_matrix_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `c41773a75675b689c709cf6b069e7c582d16afd11ad05ef0106f4a59a7ac8a97`
+- deterministic_fingerprint: `613106507a4bd90f802385a2bc9b54da52f5f0fcab79ed2e82f3bcc3801d8847`
 
 ### archive_determinism_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `00c58935c367094cb46559fb23459c268ea3b328e9f870e9f2a7435ec2062ffd`
+- deterministic_fingerprint: `007657a8b474f032efc1c42ac3fb2edcfdc31c145a57862519526b7f8a8da28a`

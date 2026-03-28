@@ -32,7 +32,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic import (
+    from logic import (
         build_logic_behavior_model_row,
         build_logic_element_definition_row,
         build_state_machine_definition_row,

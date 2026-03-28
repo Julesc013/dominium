@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "mobility", "wear", "inspection", "determinism"]
 
 
 def _run_once() -> dict:
-    from src.mobility.maintenance import build_wear_state
+    from mobility.maintenance import build_wear_state
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.mobility_wear_testlib import (
         authority_context,

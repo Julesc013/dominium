@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict, Tuple
 
-from src.meta_extensions_engine import normalize_extensions_tree
+from meta_extensions_engine import normalize_extensions_tree
 
 
 SCHEMA_DIR_REL = "schemas"

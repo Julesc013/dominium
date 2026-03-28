@@ -44,7 +44,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-PLANNED",
                 recommended_action="ADD_UNIVERSAL_IDENTITY_BLOCK_WITH_CANONICAL_FIELDS",
                 related_invariants=[RULE_WARN],
-                related_paths=[rel_path or "src/meta/identity/identity_validator.py", "tools/meta/identity_common.py"],
+                related_paths=[rel_path or "meta/identity/identity_validator.py", "tools/meta/identity_common.py"],
             )
         )
     return findings

@@ -16,7 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
+from meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
 from tools.audit.arch_audit_common import scan_duplicate_semantics  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
@@ -86,7 +86,7 @@ PRODUCT_HINTS = {
     "engine": ("tools/appshell/product_stub_cli.py",),
     "game": ("tools/appshell/product_stub_cli.py",),
     "launcher": ("tools/launcher/launch.py",),
-    "server": ("src/server/server_main.py", "tools/mvp/runtime_entry.py"),
+    "server": ("server/server_main.py", "tools/mvp/runtime_entry.py"),
     "setup": ("tools/setup/setup_cli.py",),
     "tool.attach_console_stub": ("tools/appshell/product_stub_cli.py",),
 }
@@ -514,7 +514,7 @@ def _platform_specific(rel_path: str, text: str) -> bool:
 
 def _build_target(rel_path: str, product: str, text: str, entrypoints: list[str]) -> str:
     rel_norm = _norm(rel_path)
-    if rel_norm == "src/server/server_main.py":
+    if rel_norm == "server/server_main.py":
         return "server"
     if rel_norm == "tools/launcher/launch.py":
         return "launcher"
@@ -582,9 +582,9 @@ def _summary_maps(entries: list[dict]) -> dict:
 def _renderer_surface(repo_root: str, entries: list[dict], product_rows: Mapping[str, object]) -> dict:
     del product_rows
     backend_map = {
-        "null": "src/client/render/renderers/null_renderer.py",
-        "software": "src/client/render/renderers/software_renderer.py",
-        "hardware_gl": "src/client/render/renderers/hw_renderer_gl.py",
+        "null": "client/render/renderers/null_renderer.py",
+        "software": "client/render/renderers/software_renderer.py",
+        "hardware_gl": "client/render/renderers/hw_renderer_gl.py",
     }
     python_files = [row for row in entries if str(row.get("path", "")).endswith(".py")]
     rows: list[dict] = []
@@ -717,7 +717,7 @@ def _scan_product_main_bypasses(repo_root: str, python_files: Iterable[str]) -> 
         if rel_norm.startswith("tools/") and not rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/mvp/", "tools/appshell/")):
             continue
         if rel_norm not in {
-            "src/server/server_main.py",
+            "server/server_main.py",
             "tools/launcher/launch.py",
             "tools/setup/setup_cli.py",
             "tools/mvp/runtime_entry.py",

@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/fluid/network/fluid_network_engine.py",
+        "fluid/network/fluid_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -91,7 +91,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=[
                                 "INV-FLUID-FAILURE-THROUGH-SAFETY-OR-PROCESS",
                             ],
-                            related_paths=[rel_path, "src/fluid/network/fluid_network_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "fluid/network/fluid_network_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

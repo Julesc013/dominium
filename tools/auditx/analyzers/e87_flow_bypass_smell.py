@@ -29,8 +29,8 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     required_tokens = {
-        "src/core/flow/flow_engine.py": ("flow_transfer(", "quantity_id"),
-        "src/logistics/logistics_engine.py": ("tick_flow_channels(", "_best_route(", "flow_channel_id"),
+        "core/flow/flow_engine.py": ("flow_transfer(", "quantity_id"),
+        "logistics/logistics_engine.py": ("tick_flow_channels(", "_best_route(", "flow_channel_id"),
         "tools/xstack/sessionx/process_runtime.py": ("_ledger_emit_exception(", "process.manifest_tick", "flow_transfer_events"),
     }
     for rel_path, tokens in required_tokens.items():

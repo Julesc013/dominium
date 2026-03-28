@@ -55,4 +55,4 @@ Define explicit anti-cheat action semantics. No hidden ban paths are permitted.
 - `docs/net/ANTI_CHEAT_MODULES.md`
 - `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`
 - `docs/contracts/refusal_contract.md`
-- `src/net/anti_cheat/anti_cheat_engine.py`
+- `net/anti_cheat/anti_cheat_engine.py`

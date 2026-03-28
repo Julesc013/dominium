@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="compat.artifact_loaded_without_policy_smell",
                 severity="BLOCKER",
                 confidence=0.99,
-                file_path=rel_path or "src/compat/migration_lifecycle.py",
+                file_path=rel_path or "compat/migration_lifecycle.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "artifact_without_policy",
                     str(item.get("message", "")).strip() or "artifact lifecycle handling drifted outside a declared migration policy",
@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="DECLARE_AND_ENFORCE_MIGRATION_POLICY_BEFORE_LOADING_OR_MUTATING_ARTIFACTS",
                 related_invariants=[RULE_POLICY],
                 related_paths=[
-                    rel_path or "src/compat/migration_lifecycle.py",
+                    rel_path or "compat/migration_lifecycle.py",
                     "tools/compat/migration_lifecycle_common.py",
                 ],
             )

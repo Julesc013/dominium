@@ -50,9 +50,9 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/fluid/network/fluid_network_engine.py",
-        "src/interior/compartment_flow_engine.py",
-        "src/interior/compartment_flow_builder.py",
+        "fluid/network/fluid_network_engine.py",
+        "interior/compartment_flow_engine.py",
+        "interior/compartment_flow_builder.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -93,7 +93,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=[
                                 "INV-NO-DIRECT-MASS-MUTATION",
                             ],
-                            related_paths=[rel_path, "src/fluid/network/fluid_network_engine.py", "src/interior/compartment_flow_engine.py"],
+                            related_paths=[rel_path, "fluid/network/fluid_network_engine.py", "interior/compartment_flow_engine.py"],
                         )
                     )
                     break

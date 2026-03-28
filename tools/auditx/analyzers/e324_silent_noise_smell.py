@@ -14,8 +14,8 @@ WATCH_PREFIXES = (
     "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
     "schema/logic/noise_policy.schema",
     "data/registries/logic_noise_policy_registry.json",
-    "src/logic/noise/noise_engine.py",
-    "src/logic/eval/sense_engine.py",
+    "logic/noise/noise_engine.py",
+    "logic/eval/sense_engine.py",
     "tools/logic/tool_replay_fault_window.py",
 )
 
@@ -104,7 +104,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    sense_rel = "src/logic/eval/sense_engine.py"
+    sense_rel = "logic/eval/sense_engine.py"
     sense_text = _read_text(repo_root, sense_rel)
     for token in ("apply_noise_policy_to_value(", "logic_noise_decision_rows", "explain.logic_noise_effect"):
         if token in sense_text:

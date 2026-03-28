@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E67_NONDETERMINISTIC_HAZARD_SMELL"
-DECAY_ENGINE_PATH = "src/materials/maintenance/decay_engine.py"
+DECAY_ENGINE_PATH = "materials/maintenance/decay_engine.py"
 REQUIRED_TOKENS = (
     "tick_decay(",
     "step_sizes",

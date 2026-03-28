@@ -76,7 +76,7 @@ def run(graph, repo_root, changed_files=None):
                         suggested_classification="TODO-BLOCKED",
                         recommended_action="REWRITE",
                         related_invariants=["INV-NO-ADHOC-CAPACITY-LOGIC"],
-                        related_paths=[rel_path, "src/signals/transport/channel_executor.py"],
+                        related_paths=[rel_path, "signals/transport/channel_executor.py"],
                     )
                 )
                 break

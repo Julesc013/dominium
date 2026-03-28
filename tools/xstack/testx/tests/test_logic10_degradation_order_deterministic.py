@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.eval import plan_logic_degradation_actions
+    from logic.eval import plan_logic_degradation_actions
 
     kwargs = {
         "compiled_available": True,

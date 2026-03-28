@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E400_WALLCLOCK_SMOOTHING_SMELL"
-SMOOTHING_REL = "src/embodiment/lens/camera_smoothing.py"
-VIEWER_SHELL_REL = "src/client/ui/viewer_shell.py"
+SMOOTHING_REL = "embodiment/lens/camera_smoothing.py"
+VIEWER_SHELL_REL = "client/ui/viewer_shell.py"
 DOC_REL = "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
 REQUIRED_TOKENS = {
     SMOOTHING_REL: (

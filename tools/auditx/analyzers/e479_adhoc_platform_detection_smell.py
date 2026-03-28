@@ -24,9 +24,9 @@ SCAN_ROOTS = (
     "tools/setup",
 )
 ALLOWED_PATHS = {
-    "src/platform/platform_probe.py",
-    "src/platform/platform_caps_probe.py",
-    "src/platform/platform_window.py",
+    "engine/platform/platform_probe.py",
+    "engine/platform/platform_caps_probe.py",
+    "engine/platform/platform_window.py",
 }
 TOKENS = (
     "sys.platform",
@@ -81,12 +81,12 @@ def run(graph, repo_root, changed_files=None):
                             file_path=rel_path,
                             evidence=[
                                 "token={}".format(token),
-                                "platform detection heuristics must be centralized in src/platform/platform_probe.py",
+                                "platform detection heuristics must be centralized in engine/platform/platform_probe.py",
                             ],
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="ROUTE_THROUGH_PLATFORM_PROBE",
                             related_invariants=["INV-UI-MODE-SELECTION-USES-PROBE"],
-                            related_paths=[rel_path, "src/platform/platform_probe.py"],
+                            related_paths=[rel_path, "engine/platform/platform_probe.py"],
                         )
                     )
     return findings

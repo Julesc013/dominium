@@ -80,7 +80,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.fluid.network.fluid_network_engine import solve_fluid_network_f1
+    from fluid.network.fluid_network_engine import solve_fluid_network_f1
     from tools.xstack.testx.tests.chem_degradation_testlib import (
         execute_process,
         load_registry_payload,

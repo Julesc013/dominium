@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.worldgen.galaxy import (  # noqa: E402
+from worldgen.galaxy import (  # noqa: E402
     MAX_GALAXY_OBJECT_STUBS_PER_CELL,
     build_galaxy_object_hazard_hooks,
     build_galaxy_object_layer_source_payloads,

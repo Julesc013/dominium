@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
         "docs/",
     )
     allowed_files = {
-        "src/fields/field_engine.py",
+        "fields/field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -87,7 +87,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
                             related_invariants=["INV-NO-ADHOC-WEATHER-FLAGS", "INV-FIELD-QUERIES-ONLY"],
-                            related_paths=[rel_path, "src/fields/field_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "fields/field_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

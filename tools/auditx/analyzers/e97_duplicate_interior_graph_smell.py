@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E97_DUPLICATE_INTERIOR_GRAPH_SMELL"
-INTERIOR_ENGINE_PATH = "src/interior/interior_engine.py"
+INTERIOR_ENGINE_PATH = "interior/interior_engine.py"
 
 
 def _norm(path: str) -> str:
@@ -67,7 +67,7 @@ def run(graph, repo_root, changed_files=None):
             )
             if not has_interior_graph_logic:
                 continue
-            if "from src.interior" in text or "import src.interior" in text or "src.interior." in text:
+            if "from interior" in text or "import interior" in text or "interior." in text:
                 continue
             findings.append(
                 make_finding(

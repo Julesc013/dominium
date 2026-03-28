@@ -24,7 +24,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic import normalize_logic_element_definition_rows
+    from logic import normalize_logic_element_definition_rows
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     payload = _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_element_registry.json")

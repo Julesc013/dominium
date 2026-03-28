@@ -11,12 +11,12 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.lib.export import export_instance_bundle, export_save_bundle
-from src.lib.instance import (
+from lib.export import export_instance_bundle, export_save_bundle
+from lib.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
 )
-from src.lib.save import (
+from lib.save import (
     deterministic_fingerprint as save_deterministic_fingerprint,
     normalize_save_manifest,
 )
@@ -30,7 +30,7 @@ from tools.lib.content_store import (
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
-IMPORT_MOD = importlib.import_module("src.lib.import")
+IMPORT_MOD = importlib.import_module("lib.import")
 import_instance_bundle = IMPORT_MOD.import_instance_bundle
 import_save_bundle = IMPORT_MOD.import_save_bundle
 

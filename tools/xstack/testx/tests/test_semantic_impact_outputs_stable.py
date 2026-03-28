@@ -21,7 +21,7 @@ def run(repo_root: str):
     changed_files = [
         "schema/governance/topology_map.schema",
         "data/registries/inspection_section_registry.json",
-        "src/core/graph/network_graph_engine.py",
+        "core/graph/network_graph_engine.py",
         "tools/xstack/sessionx/observation.py",
     ]
     first = compute_semantic_impact(

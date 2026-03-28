@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E79_TOOL_TRUTH_LEAK_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 OBSERVATION_PATH = "tools/xstack/sessionx/observation.py"
-DISPATCH_PATH = "src/client/interaction/interaction_dispatch.py"
+DISPATCH_PATH = "client/interaction/interaction_dispatch.py"
 
 REQUIRED_RUNTIME_TOKENS = (
     "inputs.get(\"perceived_now\")",

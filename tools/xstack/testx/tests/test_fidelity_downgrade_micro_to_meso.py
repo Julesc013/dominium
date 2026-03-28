@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.negotiation import negotiate_request
+    from control.negotiation import negotiate_request
 
     result = negotiate_request(
         negotiation_request={

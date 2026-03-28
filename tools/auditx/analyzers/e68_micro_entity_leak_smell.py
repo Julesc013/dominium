@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E68_MICRO_ENTITY_LEAK_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-INSPECTION_OVERLAY_PATH = "src/client/interaction/inspection_overlays.py"
+INSPECTION_OVERLAY_PATH = "client/interaction/inspection_overlays.py"
 REQUIRED_RUNTIME_TOKENS = (
     "process.materialize_structure_roi",
     "process.dematerialize_structure_roi",

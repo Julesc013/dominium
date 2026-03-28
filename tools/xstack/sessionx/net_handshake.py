@@ -5,8 +5,8 @@ from __future__ import annotations
 import os
 from typing import Dict, List, Tuple
 
-from src.compat import build_default_endpoint_descriptor, negotiate_endpoint_descriptors
-from src.net.transport.loopback import LoopbackTransport
+from compat import build_default_endpoint_descriptor, negotiate_endpoint_descriptors
+from net.transport.loopback import LoopbackTransport
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.schema_registry import load_version_registry
 from tools.xstack.compatx.validator import validate_instance

@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E47_NONDETERMINISTIC_ARBITRATION_SMELL"
-TRANSITION_CONTROLLER_PATH = "src/reality/transitions/transition_controller.py"
+TRANSITION_CONTROLLER_PATH = "reality/transitions/transition_controller.py"
 ARBITRATION_REGISTRY_PATH = "data/registries/arbitration_rule_registry.json"
 REQUIRED_ARBITRATION_RULE_IDS = (
     "arb.equal_share",

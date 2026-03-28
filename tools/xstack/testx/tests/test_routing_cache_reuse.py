@@ -38,7 +38,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.core.graph.routing_engine import query_route_result
+    from core.graph.routing_engine import query_route_result
 
     graph = _graph_payload()
     policy = {

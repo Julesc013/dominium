@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "signals", "institutions", "bulletin", "determinism"]
 
 
 def _run_once() -> dict:
-    from src.signals import build_institution_profile, build_signal_channel, process_institution_bulletin_tick
+    from signals import build_institution_profile, build_signal_channel, process_institution_bulletin_tick
 
     institution_profiles = [
         build_institution_profile(

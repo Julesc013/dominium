@@ -11,7 +11,7 @@
           "legacy_alias_for": "action_surfaces",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/interaction/action_surface_engine.py"
+            "interaction/action_surface_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -39,8 +39,8 @@
           "legacy_alias_for": "active_tool_effect_model_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/affordance_generator.py",
-            "src/client/interaction/interaction_dispatch.py"
+            "client/interaction/affordance_generator.py",
+            "client/interaction/interaction_dispatch.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -68,8 +68,8 @@
           "legacy_alias_for": "active_tool_effect_parameters",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/affordance_generator.py",
-            "src/client/interaction/interaction_dispatch.py"
+            "client/interaction/affordance_generator.py",
+            "client/interaction/interaction_dispatch.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -97,8 +97,8 @@
           "legacy_alias_for": "active_tool_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/affordance_generator.py",
-            "src/client/interaction/interaction_dispatch.py"
+            "client/interaction/affordance_generator.py",
+            "client/interaction/interaction_dispatch.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -126,9 +126,9 @@
           "legacy_alias_for": "active_tool_tags",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/affordance_generator.py",
-            "src/client/interaction/interaction_dispatch.py",
-            "src/control/control_plane_engine.py"
+            "client/interaction/affordance_generator.py",
+            "client/interaction/interaction_dispatch.py",
+            "control/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -156,8 +156,8 @@
           "legacy_alias_for": "active_tool_type_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/affordance_generator.py",
-            "src/client/interaction/interaction_dispatch.py"
+            "client/interaction/affordance_generator.py",
+            "client/interaction/interaction_dispatch.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -185,9 +185,9 @@
           "legacy_alias_for": "age_bucket",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/worldgen/worldgen_engine.py",
-            "src/worldgen/mw/mw_cell_generator.py",
-            "src/worldgen/mw/system_query_engine.py"
+            "geo/worldgen/worldgen_engine.py",
+            "worldgen/mw/mw_cell_generator.py",
+            "worldgen/mw/system_query_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -246,7 +246,7 @@
           "legacy_alias_for": "allow_cross_shard_collision",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/policies/policy_server_authoritative.py"
+            "net/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -274,7 +274,7 @@
           "legacy_alias_for": "allow_cross_shard_follow",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/policies/policy_server_authoritative.py"
+            "net/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -302,7 +302,7 @@
           "legacy_alias_for": "allow_cross_shard_possession",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/policies/policy_server_authoritative.py"
+            "net/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -330,7 +330,7 @@
           "legacy_alias_for": "allow_force_expand",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/debug/debug_engine.py"
+            "logic/debug/debug_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -358,7 +358,7 @@
           "legacy_alias_for": "allow_named_rng_noise",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/sense_engine.py"
+            "logic/eval/sense_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -386,7 +386,7 @@
           "legacy_alias_for": "allow_retrigger",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/core/hazards/hazard_engine.py"
+            "core/hazards/hazard_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -414,7 +414,7 @@
           "legacy_alias_for": "allow_roi_bounce",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/sense_engine.py"
+            "logic/eval/sense_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -442,7 +442,7 @@
           "legacy_alias_for": "allow_signed_bridge_trust_levels",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/security/trust/trust_verifier.py"
+            "security/trust/trust_verifier.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'allow_signed_bridge_trust_levels' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -471,7 +471,7 @@
           "legacy_alias_for": "allow_srz_transfer",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/policies/policy_server_authoritative.py"
+            "net/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -499,7 +499,7 @@
           "legacy_alias_for": "allowed_process_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/embodiment/tools/toolbelt_engine.py"
+            "embodiment/tools/toolbelt_engine.py"
           ],
           "source": "EMB1-2"
         },
@@ -527,7 +527,7 @@
           "legacy_alias_for": "allowed_signal_type_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/network/logic_network_validator.py"
+            "logic/network/logic_network_validator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -614,7 +614,7 @@
           "legacy_alias_for": "allowed_view_modes",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/policies/policy_server_authoritative.py"
+            "net/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -642,7 +642,7 @@
           "legacy_alias_for": "analysis_radius",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/hydrology_engine.py"
+            "worldgen/earth/hydrology_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -698,7 +698,7 @@
           "legacy_alias_for": "artifact_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/release/update_resolver.py",
+            "release/update_resolver.py",
             "tools/release/update_model_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'artifact_id' surfaced during Omega prep registry hardening.",
@@ -728,7 +728,7 @@
           "legacy_alias_for": "asset_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/provenance/event_stream_index.py"
+            "materials/provenance/event_stream_index.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -756,7 +756,7 @@
           "legacy_alias_for": "axial_tilt_deg",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -784,8 +784,8 @@
           "legacy_alias_for": "axial_tilt_mdeg",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/season_phase_engine.py",
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/season_phase_engine.py",
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -813,10 +813,10 @@
           "legacy_alias_for": "base_chart_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py",
-            "src/worldgen/earth/tide_field_engine.py",
-            "src/worldgen/earth/water/water_view_engine.py",
-            "src/worldgen/earth/wind/wind_field_engine.py",
+            "worldgen/earth/climate_field_engine.py",
+            "worldgen/earth/tide_field_engine.py",
+            "worldgen/earth/water/water_view_engine.py",
+            "worldgen/earth/wind/wind_field_engine.py",
             "tools/worldgen/earth1_probe.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -873,7 +873,7 @@
           "legacy_alias_for": "batches_consumed",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/construction/construction_engine.py"
+            "materials/construction/construction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -930,7 +930,7 @@
           "legacy_alias_for": "biome_overlay_tags",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/hydrology_engine.py"
+            "worldgen/earth/hydrology_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1070,7 +1070,7 @@
           "legacy_alias_for": "build_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/release/update_resolver.py"
+            "release/update_resolver.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'build_id' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -1099,7 +1099,7 @@
           "legacy_alias_for": "built_in_mock_release",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/platform/target_matrix.py",
+            "engine/platform/target_matrix.py",
             "tools/release/arch_matrix_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'built_in_mock_release' surfaced during Omega prep registry hardening.",
@@ -1129,7 +1129,7 @@
           "legacy_alias_for": "bundle_quantity_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/core/flow/flow_engine.py"
+            "core/flow/flow_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1157,8 +1157,8 @@
           "legacy_alias_for": "bus_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/debug/debug_engine.py",
-            "src/logic/protocol/protocol_engine.py"
+            "logic/debug/debug_engine.py",
+            "logic/protocol/protocol_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1186,7 +1186,7 @@
           "legacy_alias_for": "camera_viewpoint",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/render/renderers/software_renderer.py"
+            "client/render/renderers/software_renderer.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1214,7 +1214,7 @@
           "legacy_alias_for": "capacity_used_by_edge",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/inspection/inspection_engine.py"
+            "inspection/inspection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1242,8 +1242,8 @@
           "legacy_alias_for": "cell_key",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/mw/mw_cell_generator.py",
-            "src/worldgen/mw/system_query_engine.py"
+            "worldgen/mw/mw_cell_generator.py",
+            "worldgen/mw/system_query_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1271,7 +1271,7 @@
           "legacy_alias_for": "chart_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/projection/projection_engine.py"
+            "geo/projection/projection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1299,7 +1299,7 @@
           "legacy_alias_for": "climate_band_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/mw/mw_surface_refiner_l3.py"
+            "worldgen/mw/mw_surface_refiner_l3.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1327,8 +1327,8 @@
           "legacy_alias_for": "coastal_proximity_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py",
-            "src/worldgen/earth/tide_field_engine.py"
+            "worldgen/earth/climate_field_engine.py",
+            "worldgen/earth/tide_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1356,8 +1356,8 @@
           "legacy_alias_for": "commitment_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logistics/logistics_engine.py",
-            "src/materials/provenance/event_stream_index.py"
+            "logistics/logistics_engine.py",
+            "materials/provenance/event_stream_index.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1385,7 +1385,7 @@
           "legacy_alias_for": "compiled_model_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/logic_eval_engine.py"
+            "logic/eval/logic_eval_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1442,7 +1442,7 @@
           "legacy_alias_for": "component_quantity_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/models/model_engine.py"
+            "models/model_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1470,7 +1470,7 @@
           "legacy_alias_for": "component_weights",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/core/flow/flow_engine.py"
+            "core/flow/flow_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1498,7 +1498,7 @@
           "legacy_alias_for": "compute_profile_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/debug/debug_engine.py"
+            "logic/debug/debug_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1554,7 +1554,7 @@
           "legacy_alias_for": "construction_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/construction/construction_engine.py"
+            "materials/construction/construction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1582,7 +1582,7 @@
           "legacy_alias_for": "consumed_batch_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/construction/construction_engine.py"
+            "materials/construction/construction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1639,7 +1639,7 @@
           "legacy_alias_for": "continent_score_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py"
+            "worldgen/earth/climate_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1724,7 +1724,7 @@
           "legacy_alias_for": "cosmetic_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/policies/policy_server_authoritative.py"
+            "net/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1780,7 +1780,7 @@
           "legacy_alias_for": "day_length_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/tide_phase_engine.py"
+            "worldgen/earth/tide_phase_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1808,7 +1808,7 @@
           "legacy_alias_for": "debug_force_expand",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/logic_eval_engine.py"
+            "logic/eval/logic_eval_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1836,7 +1836,7 @@
           "legacy_alias_for": "debug_instrument_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/logic_eval_engine.py"
+            "logic/eval/logic_eval_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1864,7 +1864,7 @@
           "legacy_alias_for": "default_causality_strictness_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/commitments/commitment_engine.py"
+            "materials/commitments/commitment_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1921,8 +1921,8 @@
           "legacy_alias_for": "default_transition_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/policies/policy_server_authoritative.py",
-            "src/net/srz/shard_coordinator.py",
+            "net/policies/policy_server_authoritative.py",
+            "net/srz/shard_coordinator.py",
             "tools/xstack/registry_compile/compiler.py",
             "tools/xstack/sessionx/runner.py"
           ],
@@ -1952,7 +1952,7 @@
           "legacy_alias_for": "default_ui_hints",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/interaction_panel.py"
+            "client/interaction/interaction_panel.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1980,7 +1980,7 @@
           "legacy_alias_for": "delay_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/propagate_engine.py"
+            "logic/eval/propagate_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2092,7 +2092,7 @@
           "legacy_alias_for": "disabled_reason_code",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/interaction_panel.py",
+            "client/interaction/interaction_panel.py",
             "tools/xstack/testx/tests/test_tool_incompatibility_refusal.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -2121,7 +2121,7 @@
           "legacy_alias_for": "display_name",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/embodiment/tools/toolbelt_engine.py"
+            "embodiment/tools/toolbelt_engine.py"
           ],
           "source": "EMB1-2"
         },
@@ -2177,7 +2177,7 @@
           "legacy_alias_for": "distribution_rel",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/release/update_resolver.py"
+            "release/update_resolver.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'distribution_rel' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -2206,7 +2206,7 @@
           "legacy_alias_for": "doc_rel",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/release/update_resolver.py",
+            "release/update_resolver.py",
             "tools/release/update_model_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'doc_rel' surfaced during Omega prep registry hardening.",
@@ -2292,8 +2292,8 @@
           "legacy_alias_for": "element_definition_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/sense_engine.py",
-            "src/logic/network/logic_network_validator.py"
+            "logic/eval/sense_engine.py",
+            "logic/network/logic_network_validator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2321,8 +2321,8 @@
           "legacy_alias_for": "enabled",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/interaction_dispatch.py",
-            "src/client/interaction/interaction_panel.py",
+            "client/interaction/interaction_dispatch.py",
+            "client/interaction/interaction_panel.py",
             "tools/xstack/testx/tests/test_tool_incompatibility_refusal.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -2351,7 +2351,7 @@
           "legacy_alias_for": "end_commitment_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/construction/construction_engine.py"
+            "materials/construction/construction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2575,9 +2575,9 @@
           "legacy_alias_for": "epoch_offset_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/season_phase_engine.py",
-            "src/worldgen/earth/tide_phase_engine.py",
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/season_phase_engine.py",
+            "worldgen/earth/tide_phase_engine.py",
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2661,7 +2661,7 @@
           "legacy_alias_for": "escalation_rules",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/anti_cheat/anti_cheat_engine.py"
+            "net/anti_cheat/anti_cheat_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2746,7 +2746,7 @@
           "legacy_alias_for": "exception_event_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/meta/stability/stability_validator.py"
+            "meta/stability/stability_validator.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'exception_event_id' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -2803,7 +2803,7 @@
           "legacy_alias_for": "failure_risk_summary",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/inspection_overlays.py",
+            "client/interaction/inspection_overlays.py",
             "tools/xstack/testx/tests/test_epistemic_quantization_of_failure_risk.py",
             "tools/xstack/testx/tests/test_inspection_snapshot_cached.py"
           ],
@@ -2834,7 +2834,7 @@
           "legacy_alias_for": "fallback_capability_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/compat/capability_negotiation.py"
+            "compat/capability_negotiation.py"
           ],
           "official.description": "Ordered substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
           "official.source": "CAP-NEG-3"
@@ -2863,7 +2863,7 @@
           "legacy_alias_for": "far_lod_visual_class",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/mw/mw_surface_refiner_l3.py"
+            "worldgen/mw/mw_surface_refiner_l3.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2891,7 +2891,7 @@
           "legacy_alias_for": "ferrel_max_mdeg",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2919,7 +2919,7 @@
           "legacy_alias_for": "ferrel_meridional_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2947,7 +2947,7 @@
           "legacy_alias_for": "ferrel_zonal_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2975,7 +2975,7 @@
           "legacy_alias_for": "field_modifier_stubs",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/sense_engine.py"
+            "logic/eval/sense_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3031,7 +3031,7 @@
           "legacy_alias_for": "fixed_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/propagate_engine.py"
+            "logic/eval/propagate_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3059,7 +3059,7 @@
           "legacy_alias_for": "fov_deg",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/render/renderers/software_renderer.py"
+            "client/render/renderers/software_renderer.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3087,7 +3087,7 @@
           "legacy_alias_for": "from_edge_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/inspection/inspection_engine.py"
+            "inspection/inspection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3115,8 +3115,8 @@
           "legacy_alias_for": "galactic_region_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/ui/inspect_panels.py",
-            "src/worldgen/galaxy/galaxy_object_stub_generator.py"
+            "client/ui/inspect_panels.py",
+            "worldgen/galaxy/galaxy_object_stub_generator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3200,9 +3200,9 @@
           "legacy_alias_for": "habitable_filter_bias_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/worldgen/worldgen_engine.py",
-            "src/worldgen/mw/mw_cell_generator.py",
-            "src/worldgen/mw/system_query_engine.py",
+            "geo/worldgen/worldgen_engine.py",
+            "worldgen/mw/mw_cell_generator.py",
+            "worldgen/mw/system_query_engine.py",
             "tools/xstack/sessionx/process_runtime.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -3231,7 +3231,7 @@
           "legacy_alias_for": "habitable_likely",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/mw/system_query_engine.py"
+            "worldgen/mw/system_query_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3259,7 +3259,7 @@
           "legacy_alias_for": "hadley_max_mdeg",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3287,7 +3287,7 @@
           "legacy_alias_for": "hadley_meridional_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3315,7 +3315,7 @@
           "legacy_alias_for": "hadley_zonal_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3343,8 +3343,8 @@
           "legacy_alias_for": "hazard_effects",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/ui/inspect_panels.py",
-            "src/worldgen/galaxy/galaxy_object_stub_generator.py"
+            "client/ui/inspect_panels.py",
+            "worldgen/galaxy/galaxy_object_stub_generator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3372,9 +3372,9 @@
           "legacy_alias_for": "hydrology_effective_height_proxy",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/embodiment/collision/macro_heightfield_provider.py",
-            "src/worldgen/earth/climate_field_engine.py",
-            "src/worldgen/earth/hydrology_engine.py",
+            "embodiment/collision/macro_heightfield_provider.py",
+            "worldgen/earth/climate_field_engine.py",
+            "worldgen/earth/hydrology_engine.py",
             "tools/worldgen/earth1_probe.py",
             "tools/xstack/sessionx/process_runtime.py"
           ],
@@ -3432,7 +3432,7 @@
           "legacy_alias_for": "hydrology_structure_kind",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/water/water_view_engine.py"
+            "worldgen/earth/water/water_view_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3488,8 +3488,8 @@
           "legacy_alias_for": "illumination_view_artifact",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/render/renderers/null_renderer.py",
-            "src/client/render/renderers/software_renderer.py",
+            "client/render/renderers/null_renderer.py",
+            "client/render/renderers/software_renderer.py",
             "tools/auditx/analyzers/e378_renderer_truth_leak_smell.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -3518,9 +3518,9 @@
           "legacy_alias_for": "imf_bucket",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/worldgen/worldgen_engine.py",
-            "src/worldgen/mw/mw_cell_generator.py",
-            "src/worldgen/mw/system_query_engine.py"
+            "geo/worldgen/worldgen_engine.py",
+            "worldgen/mw/mw_cell_generator.py",
+            "worldgen/mw/system_query_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3576,7 +3576,7 @@
           "legacy_alias_for": "interface_system_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/network/logic_network_validator.py"
+            "logic/network/logic_network_validator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3689,7 +3689,7 @@
           "legacy_alias_for": "l1_timing_refused",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/logic_eval_engine.py"
+            "logic/eval/logic_eval_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3717,8 +3717,8 @@
           "legacy_alias_for": "lake_flag",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py",
-            "src/worldgen/earth/water/water_view_engine.py"
+            "worldgen/earth/climate_field_engine.py",
+            "worldgen/earth/water/water_view_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3746,7 +3746,7 @@
           "legacy_alias_for": "last_tick",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/epistemics/memory/memory_kernel.py"
+            "epistemics/memory/memory_kernel.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3774,7 +3774,7 @@
           "legacy_alias_for": "latitude_floor_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/tide_field_engine.py"
+            "worldgen/earth/tide_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3802,9 +3802,9 @@
           "legacy_alias_for": "latitude_mdeg",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py",
-            "src/worldgen/earth/tide_field_engine.py",
-            "src/worldgen/earth/wind/wind_field_engine.py",
+            "worldgen/earth/climate_field_engine.py",
+            "worldgen/earth/tide_field_engine.py",
+            "worldgen/earth/wind/wind_field_engine.py",
             "tools/worldgen/earth7_probe.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -3833,7 +3833,7 @@
           "legacy_alias_for": "latitude_peak_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/tide_field_engine.py"
+            "worldgen/earth/tide_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3861,7 +3861,7 @@
           "legacy_alias_for": "law_profile_id_override",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/compat/capability_negotiation.py"
+            "compat/capability_negotiation.py"
           ],
           "official.description": "LawProfile override applied when CAP-NEG negotiation forces read-only mode.",
           "official.source": "CAP-NEG-3"
@@ -3890,7 +3890,7 @@
           "legacy_alias_for": "legacy_alias_for",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/meta/extensions/extensions_engine.py"
+            "meta/extensions/extensions_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3918,10 +3918,10 @@
           "legacy_alias_for": "legacy_cell_alias",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py",
-            "src/worldgen/earth/tide_field_engine.py",
-            "src/worldgen/earth/water/water_view_engine.py",
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/climate_field_engine.py",
+            "worldgen/earth/tide_field_engine.py",
+            "worldgen/earth/water/water_view_engine.py",
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3977,9 +3977,9 @@
           "legacy_alias_for": "local_index",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/worldgen/worldgen_engine.py",
-            "src/worldgen/mw/mw_cell_generator.py",
-            "src/worldgen/mw/system_query_engine.py",
+            "geo/worldgen/worldgen_engine.py",
+            "worldgen/mw/mw_cell_generator.py",
+            "worldgen/mw/system_query_engine.py",
             "tools/xstack/sessionx/process_runtime.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -4008,9 +4008,9 @@
           "legacy_alias_for": "local_subkey",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/worldgen/worldgen_engine.py",
-            "src/worldgen/mw/mw_cell_generator.py",
-            "src/worldgen/mw/system_query_engine.py"
+            "geo/worldgen/worldgen_engine.py",
+            "worldgen/mw/mw_cell_generator.py",
+            "worldgen/mw/system_query_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4038,10 +4038,10 @@
           "legacy_alias_for": "longitude_mdeg",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py",
-            "src/worldgen/earth/tide_field_engine.py",
-            "src/worldgen/earth/wind/wind_field_engine.py",
-            "src/worldgen/mw/mw_surface_refiner_l3.py"
+            "worldgen/earth/climate_field_engine.py",
+            "worldgen/earth/tide_field_engine.py",
+            "worldgen/earth/wind/wind_field_engine.py",
+            "worldgen/mw/mw_surface_refiner_l3.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4069,7 +4069,7 @@
           "legacy_alias_for": "lunar_period_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/tide_phase_engine.py"
+            "worldgen/earth/tide_phase_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4125,7 +4125,7 @@
           "legacy_alias_for": "managed_paths",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/release/update_resolver.py",
+            "release/update_resolver.py",
             "tools/release/update_model_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'managed_paths' surfaced during Omega prep registry hardening.",
@@ -4155,7 +4155,7 @@
           "legacy_alias_for": "manifest_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/provenance/event_stream_index.py"
+            "materials/provenance/event_stream_index.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4239,7 +4239,7 @@
           "legacy_alias_for": "max_control_fidelity",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/control/control_plane_engine.py"
+            "control/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4267,7 +4267,7 @@
           "legacy_alias_for": "max_trace_duration_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/embodiment/tools/logic_tool.py"
+            "embodiment/tools/logic_tool.py"
           ],
           "source": "EMB1-2"
         },
@@ -4295,7 +4295,7 @@
           "legacy_alias_for": "max_window_tiles",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/hydrology_engine.py"
+            "worldgen/earth/hydrology_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4323,8 +4323,8 @@
           "legacy_alias_for": "metallicity_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/worldgen/worldgen_engine.py",
-            "src/worldgen/mw/mw_cell_generator.py"
+            "geo/worldgen/worldgen_engine.py",
+            "worldgen/mw/mw_cell_generator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4352,7 +4352,7 @@
           "legacy_alias_for": "metric_profile_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/projection/projection_engine.py"
+            "geo/projection/projection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4408,8 +4408,8 @@
           "legacy_alias_for": "missing_entitlements",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/interaction_dispatch.py",
-            "src/client/interaction/interaction_panel.py"
+            "client/interaction/interaction_dispatch.py",
+            "client/interaction/interaction_panel.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4437,7 +4437,7 @@
           "legacy_alias_for": "missing_lens_channels",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/interaction_dispatch.py"
+            "client/interaction/interaction_dispatch.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4465,7 +4465,7 @@
           "legacy_alias_for": "moon_stub_descriptors",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/sky/sky_view_engine.py"
+            "worldgen/earth/sky/sky_view_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'moon_stub_descriptors' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -4494,7 +4494,7 @@
           "legacy_alias_for": "network_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/debug/debug_engine.py"
+            "logic/debug/debug_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4522,7 +4522,7 @@
           "legacy_alias_for": "next_maintenance_commitment_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/inspection_overlays.py"
+            "client/interaction/inspection_overlays.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4578,7 +4578,7 @@
           "legacy_alias_for": "object_id_hash",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/mw/mw_cell_generator.py"
+            "worldgen/mw/mw_cell_generator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4606,7 +4606,7 @@
           "legacy_alias_for": "occupant_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/interaction/pose/pose_engine.py"
+            "interaction/pose/pose_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4662,7 +4662,7 @@
           "legacy_alias_for": "origin_geo_cell_key",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/projection/projection_engine.py"
+            "geo/projection/projection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4690,7 +4690,7 @@
           "legacy_alias_for": "oscillation_window_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/timing/oscillation_engine.py"
+            "logic/timing/oscillation_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4718,7 +4718,7 @@
           "legacy_alias_for": "output_batch_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/construction/construction_engine.py"
+            "materials/construction/construction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4804,7 +4804,7 @@
           "legacy_alias_for": "parent_system_object_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/mw/system_query_engine.py",
+            "worldgen/mw/system_query_engine.py",
             "tools/xstack/testx/tests/test_orbital_spacing_constraints.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -4833,7 +4833,7 @@
           "legacy_alias_for": "partition_profile_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/projection/projection_engine.py"
+            "geo/projection/projection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4861,7 +4861,7 @@
           "legacy_alias_for": "path_edge_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/inspection/inspection_engine.py"
+            "inspection/inspection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4946,7 +4946,7 @@
           "legacy_alias_for": "planet_tags",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py"
+            "worldgen/earth/climate_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4974,9 +4974,9 @@
           "legacy_alias_for": "platform_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/platform/target_matrix.py",
-            "src/release/component_graph_resolver.py",
-            "src/release/update_resolver.py",
+            "engine/platform/target_matrix.py",
+            "release/component_graph_resolver.py",
+            "release/update_resolver.py",
             "tools/release/arch_matrix_common.py",
             "tools/release/release_index_policy_common.py"
           ],
@@ -5007,7 +5007,7 @@
           "legacy_alias_for": "platform_tag",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/release/update_resolver.py",
+            "release/update_resolver.py",
             "tools/release/arch_matrix_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'platform_tag' surfaced during Omega prep registry hardening.",
@@ -5037,7 +5037,7 @@
           "legacy_alias_for": "platform_tags",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/platform/target_matrix.py"
+            "engine/platform/target_matrix.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'platform_tags' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -5066,7 +5066,7 @@
           "legacy_alias_for": "polar_meridional_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5094,7 +5094,7 @@
           "legacy_alias_for": "polar_zonal_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py"
+            "worldgen/earth/wind/wind_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5178,7 +5178,7 @@
           "legacy_alias_for": "product_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/release/update_resolver.py",
+            "release/update_resolver.py",
             "tools/release/release_manifest_common.py",
             "tools/release/update_model_common.py"
           ],
@@ -5238,7 +5238,7 @@
           "legacy_alias_for": "profile_gate_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/meta/stability/stability_validator.py"
+            "meta/stability/stability_validator.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'profile_gate_id' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -5267,7 +5267,7 @@
           "legacy_alias_for": "project_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/provenance/event_stream_index.py",
+            "materials/provenance/event_stream_index.py",
             "tools/xstack/sessionx/process_runtime.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -5296,7 +5296,7 @@
           "legacy_alias_for": "projection_profile_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/render/renderers/software_renderer.py"
+            "client/render/renderers/software_renderer.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5324,7 +5324,7 @@
           "legacy_alias_for": "protocol_frame_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/protocol/protocol_engine.py"
+            "logic/protocol/protocol_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5352,7 +5352,7 @@
           "legacy_alias_for": "protocol_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/protocol/protocol_engine.py"
+            "logic/protocol/protocol_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5380,7 +5380,7 @@
           "legacy_alias_for": "protocol_payload_ref",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/protocol/protocol_engine.py"
+            "logic/protocol/protocol_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5408,7 +5408,7 @@
           "legacy_alias_for": "quantity_bundle_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/models/model_engine.py"
+            "models/model_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5436,7 +5436,7 @@
           "legacy_alias_for": "quantity_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/models/model_engine.py"
+            "models/model_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5520,7 +5520,7 @@
           "legacy_alias_for": "reenactment_descriptor",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/construction/construction_engine.py"
+            "materials/construction/construction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5548,7 +5548,7 @@
           "legacy_alias_for": "refinement_level",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/projection/projection_engine.py"
+            "geo/projection/projection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5604,7 +5604,7 @@
           "legacy_alias_for": "release_index_default",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/platform/target_matrix.py",
+            "engine/platform/target_matrix.py",
             "tools/release/arch_matrix_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'release_index_default' surfaced during Omega prep registry hardening.",
@@ -5634,7 +5634,7 @@
           "legacy_alias_for": "remote_monitoring",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/debug/debug_engine.py"
+            "logic/debug/debug_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5662,7 +5662,7 @@
           "legacy_alias_for": "replay_hash_after",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/meta/provenance/compaction_engine.py"
+            "meta/provenance/compaction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5690,7 +5690,7 @@
           "legacy_alias_for": "replay_hash_before",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/meta/provenance/compaction_engine.py"
+            "meta/provenance/compaction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5718,7 +5718,7 @@
           "legacy_alias_for": "replay_only",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/control/control_plane_engine.py"
+            "control/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5746,8 +5746,8 @@
           "legacy_alias_for": "require_attestation",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/net/policies/policy_server_authoritative.py",
-            "src/net/srz/shard_coordinator.py"
+            "net/policies/policy_server_authoritative.py",
+            "net/srz/shard_coordinator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5775,7 +5775,7 @@
           "legacy_alias_for": "required_capabilities",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/lib/provides/provider_resolution.py"
+            "lib/provides/provider_resolution.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'required_capabilities' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -5804,7 +5804,7 @@
           "legacy_alias_for": "required_contract_ranges",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/lib/provides/provider_resolution.py"
+            "lib/provides/provider_resolution.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'required_contract_ranges' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -5833,7 +5833,7 @@
           "legacy_alias_for": "required_manifest_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/inspection_overlays.py"
+            "client/interaction/inspection_overlays.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5918,7 +5918,7 @@
           "legacy_alias_for": "requires_l2_timing",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/logic_eval_engine.py",
+            "logic/eval/logic_eval_engine.py",
             "tools/xstack/testx/tests/test_timing_violation_detected.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -5975,7 +5975,7 @@
           "legacy_alias_for": "rotation_epoch_offset_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/tide_phase_engine.py"
+            "worldgen/earth/tide_phase_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6031,7 +6031,7 @@
           "legacy_alias_for": "route_cache_max_entries",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/signals/transport/transport_engine.py"
+            "signals/transport/transport_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6059,7 +6059,7 @@
           "legacy_alias_for": "route_constraints",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/signals/transport/transport_engine.py"
+            "signals/transport/transport_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6087,7 +6087,7 @@
           "legacy_alias_for": "route_cost_units",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/signals/transport/transport_engine.py"
+            "signals/transport/transport_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6115,7 +6115,7 @@
           "legacy_alias_for": "route_edge_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logistics/logistics_engine.py"
+            "logistics/logistics_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6143,7 +6143,7 @@
           "legacy_alias_for": "route_result",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/inspection/inspection_engine.py"
+            "inspection/inspection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6171,7 +6171,7 @@
           "legacy_alias_for": "route_tags",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py"
+            "worldgen/earth/climate_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6199,7 +6199,7 @@
           "legacy_alias_for": "routing_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/signals/transport/transport_engine.py"
+            "signals/transport/transport_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6227,7 +6227,7 @@
           "legacy_alias_for": "schedule_component",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/maintenance/decay_engine.py"
+            "materials/maintenance/decay_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6283,7 +6283,7 @@
           "legacy_alias_for": "security_header",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/signals/transport/transport_engine.py"
+            "signals/transport/transport_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6311,7 +6311,7 @@
           "legacy_alias_for": "security_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/sense_engine.py"
+            "logic/eval/sense_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6339,8 +6339,8 @@
           "legacy_alias_for": "seed_subkey",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/worldgen/worldgen_engine.py",
-            "src/worldgen/mw/mw_cell_generator.py"
+            "geo/worldgen/worldgen_engine.py",
+            "worldgen/mw/mw_cell_generator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6368,7 +6368,7 @@
           "legacy_alias_for": "selected_generator_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py"
+            "worldgen/earth/climate_field_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6396,7 +6396,7 @@
           "legacy_alias_for": "sig_delivery_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/propagate_engine.py"
+            "logic/eval/propagate_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6452,7 +6452,7 @@
           "legacy_alias_for": "sky_view_artifact",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/render/renderers/software_renderer.py",
+            "client/render/renderers/software_renderer.py",
             "tools/auditx/analyzers/e376_truth_read_in_renderer_smell.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -6481,7 +6481,7 @@
           "legacy_alias_for": "sol_anchor_cell_key",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/mw/sol_anchor.py"
+            "worldgen/mw/sol_anchor.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6621,7 +6621,7 @@
           "legacy_alias_for": "stage_count",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/timing/pattern_engine.py"
+            "logic/timing/pattern_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6649,7 +6649,7 @@
           "legacy_alias_for": "start_commitment_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/construction/construction_engine.py"
+            "materials/construction/construction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6706,7 +6706,7 @@
           "legacy_alias_for": "substitute_capability_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/compat/capability_negotiation.py"
+            "compat/capability_negotiation.py"
           ],
           "official.description": "Explicit substitute capability id chosen by a CAP-NEG degrade rule.",
           "official.source": "CAP-NEG-3"
@@ -6736,7 +6736,7 @@
           "legacy_alias_for": "substitute_capability_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/compat/capability_negotiation.py"
+            "compat/capability_negotiation.py"
           ],
           "official.description": "Alternative substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
           "official.source": "CAP-NEG-3"
@@ -6765,11 +6765,11 @@
           "legacy_alias_for": "surface_class_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/climate_field_engine.py",
-            "src/worldgen/earth/hydrology_engine.py",
-            "src/worldgen/earth/tide_field_engine.py",
-            "src/worldgen/earth/water/water_view_engine.py",
-            "src/worldgen/mw/mw_surface_refiner_l3.py",
+            "worldgen/earth/climate_field_engine.py",
+            "worldgen/earth/hydrology_engine.py",
+            "worldgen/earth/tide_field_engine.py",
+            "worldgen/earth/water/water_view_engine.py",
+            "worldgen/mw/mw_surface_refiner_l3.py",
             "tools/xstack/sessionx/process_runtime.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -6798,7 +6798,7 @@
           "legacy_alias_for": "surface_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/interaction_dispatch.py"
+            "client/interaction/interaction_dispatch.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6826,8 +6826,8 @@
           "legacy_alias_for": "surface_type_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/interaction_dispatch.py",
-            "src/control/control_plane_engine.py"
+            "client/interaction/interaction_dispatch.py",
+            "control/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6911,7 +6911,7 @@
           "legacy_alias_for": "target_frame_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/geo/projection/projection_engine.py"
+            "geo/projection/projection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -6968,7 +6968,7 @@
           "legacy_alias_for": "target_semantic_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/provenance/event_stream_index.py",
+            "materials/provenance/event_stream_index.py",
             "tools/xstack/sessionx/process_runtime.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -6997,7 +6997,7 @@
           "legacy_alias_for": "target_slots",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/debug/debug_engine.py"
+            "logic/debug/debug_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7025,7 +7025,7 @@
           "legacy_alias_for": "targets",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/debug/debug_engine.py"
+            "logic/debug/debug_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7053,7 +7053,7 @@
           "legacy_alias_for": "task_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/provenance/event_stream_index.py"
+            "materials/provenance/event_stream_index.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7081,7 +7081,7 @@
           "legacy_alias_for": "task_priority",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/interaction/task/task_engine.py"
+            "interaction/task/task_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7109,7 +7109,7 @@
           "legacy_alias_for": "temporal_delay_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/propagate_engine.py"
+            "logic/eval/propagate_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7137,7 +7137,7 @@
           "legacy_alias_for": "temporal_domain_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/propagate_engine.py"
+            "logic/eval/propagate_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7165,7 +7165,7 @@
           "legacy_alias_for": "threshold_crossed",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/core/hazards/hazard_engine.py"
+            "core/hazards/hazard_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7278,7 +7278,7 @@
           "legacy_alias_for": "time_mapping_cost_units",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/propagate_engine.py"
+            "logic/eval/propagate_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7306,7 +7306,7 @@
           "legacy_alias_for": "time_mapping_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/propagate_engine.py"
+            "logic/eval/propagate_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7362,7 +7362,7 @@
           "legacy_alias_for": "timing_constraint",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/timing/constraint_engine.py"
+            "logic/timing/constraint_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7390,7 +7390,7 @@
           "legacy_alias_for": "timing_gate_reason",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/logic_eval_engine.py"
+            "logic/eval/logic_eval_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7418,7 +7418,7 @@
           "legacy_alias_for": "timing_hash_window",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/timing/oscillation_engine.py"
+            "logic/timing/oscillation_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7446,8 +7446,8 @@
           "legacy_alias_for": "timing_violation_action",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/logic_eval_engine.py",
-            "src/logic/timing/constraint_engine.py"
+            "logic/eval/logic_eval_engine.py",
+            "logic/timing/constraint_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7475,7 +7475,7 @@
           "legacy_alias_for": "tool_compatible",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/affordance_generator.py"
+            "client/interaction/affordance_generator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7503,7 +7503,7 @@
           "legacy_alias_for": "tool_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/materials/provenance/event_stream_index.py"
+            "materials/provenance/event_stream_index.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7531,7 +7531,7 @@
           "legacy_alias_for": "tool_process_allowed_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/affordance_generator.py"
+            "client/interaction/affordance_generator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7559,7 +7559,7 @@
           "legacy_alias_for": "tool_process_disallowed_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/interaction/affordance_generator.py"
+            "client/interaction/affordance_generator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7587,8 +7587,8 @@
           "legacy_alias_for": "topology_profile_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/render/renderers/software_renderer.py",
-            "src/geo/projection/projection_engine.py"
+            "client/render/renderers/software_renderer.py",
+            "geo/projection/projection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7672,7 +7672,7 @@
           "legacy_alias_for": "ui_command_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/embodiment/tools/toolbelt_engine.py"
+            "embodiment/tools/toolbelt_engine.py"
           ],
           "source": "EMB1-2"
         },
@@ -7700,7 +7700,7 @@
           "legacy_alias_for": "unstable_oscillation_action",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/logic/eval/logic_eval_engine.py"
+            "logic/eval/logic_eval_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7728,7 +7728,7 @@
           "legacy_alias_for": "untrusted_root_behavior",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/security/trust/trust_verifier.py"
+            "security/trust/trust_verifier.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'untrusted_root_behavior' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -7757,7 +7757,7 @@
           "legacy_alias_for": "update_history",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/inspection/inspection_engine.py"
+            "inspection/inspection_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7786,7 +7786,7 @@
           "legacy_alias_for": "user_message_key",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/compat/capability_negotiation.py"
+            "compat/capability_negotiation.py"
           ],
           "official.description": "Explain-key identifier surfaced when a capability is degraded or disabled.",
           "official.source": "CAP-NEG-3"
@@ -7815,7 +7815,7 @@
           "legacy_alias_for": "validation",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/control/control_plane_engine.py"
+            "control/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7843,7 +7843,7 @@
           "legacy_alias_for": "visible_fraction_permille",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/astro/illumination/illumination_geometry_engine.py"
+            "astro/illumination/illumination_geometry_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7871,7 +7871,7 @@
           "legacy_alias_for": "warn_unsigned_for",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/security/trust/trust_verifier.py"
+            "security/trust/trust_verifier.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'warn_unsigned_for' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -7900,8 +7900,8 @@
           "legacy_alias_for": "water_view_artifact",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/client/render/renderers/null_renderer.py",
-            "src/client/render/renderers/software_renderer.py",
+            "client/render/renderers/null_renderer.py",
+            "client/render/renderers/software_renderer.py",
             "tools/auditx/analyzers/e382_water_sim_leak_smell.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -7930,7 +7930,7 @@
           "legacy_alias_for": "year_length_ticks",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "src/worldgen/earth/wind/wind_field_engine.py",
+            "worldgen/earth/wind/wind_field_engine.py",
             "tools/worldgen/earth7_probe.py"
           ],
           "source": "COMPAT-SEM-2"
@@ -8035,7 +8035,7 @@
         "extension_key": "official.binary_ref",
         "extensions": {
           "observed_paths": [
-            "src/lib/install/install_validator.py",
+            "lib/install/install_validator.py",
             "tools/lib/lib_stress_common.py"
           ],
           "official.description": "Deterministic binary-relative path recorded in install and product build descriptors.",
@@ -8063,7 +8063,7 @@
         "extension_key": "official.build_configuration",
         "extensions": {
           "observed_paths": [
-            "src/release/release_manifest_engine.py"
+            "release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.build_configuration' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8411,7 +8411,7 @@
         "extension_key": "official.descriptor_command",
         "extensions": {
           "observed_paths": [
-            "src/lib/install/install_validator.py"
+            "lib/install/install_validator.py"
           ],
           "official.description": "Descriptor emission command surfaced for deterministic install verification.",
           "official.source": "OMEGA-PREP"
@@ -8438,7 +8438,7 @@
         "extension_key": "official.descriptor_ref",
         "extensions": {
           "observed_paths": [
-            "src/lib/install/install_validator.py",
+            "lib/install/install_validator.py",
             "tools/lib/lib_stress_common.py"
           ],
           "official.description": "Deterministic descriptor-relative path recorded in install and product build descriptors.",
@@ -8565,7 +8565,7 @@
         "extension_key": "official.explicit_build_number",
         "extensions": {
           "observed_paths": [
-            "src/release/release_manifest_engine.py"
+            "release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.explicit_build_number' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8694,7 +8694,7 @@
         "extension_key": "official.inputs_hash",
         "extensions": {
           "observed_paths": [
-            "src/release/release_manifest_engine.py"
+            "release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.inputs_hash' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8721,7 +8721,7 @@
         "extension_key": "official.install_profile_id",
         "extensions": {
           "observed_paths": [
-            "src/release/update_resolver.py",
+            "release/update_resolver.py",
             "tools/dist/dist_tree_common.py",
             "tools/launcher/launch.py",
             "tools/release/release_index_policy_common.py",
@@ -8783,7 +8783,7 @@
         "extension_key": "official.legacy_ref_hash",
         "extensions": {
           "observed_paths": [
-            "src/lib/save/save_validator.py"
+            "lib/save/save_validator.py"
           ],
           "official.description": "Legacy reference hash recorded when compat validators bridge older payload shapes.",
           "official.source": "OMEGA-PREP"
@@ -8966,7 +8966,7 @@
         "extension_key": "official.platform_tag",
         "extensions": {
           "observed_paths": [
-            "src/release/release_manifest_engine.py"
+            "release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.platform_tag' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8993,8 +8993,8 @@
         "extension_key": "official.product_version",
         "extensions": {
           "observed_paths": [
-            "src/lib/install/install_validator.py",
-            "src/release/update_resolver.py"
+            "lib/install/install_validator.py",
+            "release/update_resolver.py"
           ],
           "official.description": "Product version recorded in deterministic product build descriptors.",
           "official.source": "OMEGA-PREP"
@@ -9021,8 +9021,8 @@
         "extension_key": "official.rel_path",
         "extensions": {
           "observed_paths": [
-            "src/meta/identity/identity_validator.py",
-            "src/release/release_manifest_engine.py",
+            "meta/identity/identity_validator.py",
+            "release/release_manifest_engine.py",
             "tools/dist/dist_tree_common.py",
             "tools/mvp/runtime_bundle.py",
             "tools/release/update_model_common.py",
@@ -9054,7 +9054,7 @@
         "extension_key": "official.release_id",
         "extensions": {
           "observed_paths": [
-            "src/release/update_resolver.py",
+            "release/update_resolver.py",
             "tools/dist/dist_tree_common.py"
           ],
           "official.description": "Release identifier pinned into install metadata.",
@@ -9256,8 +9256,8 @@
         "extension_key": "official.selected_component_descriptors",
         "extensions": {
           "observed_paths": [
-            "src/lib/store/reachability_engine.py",
-            "src/release/update_resolver.py",
+            "lib/store/reachability_engine.py",
+            "release/update_resolver.py",
             "tools/dist/dist_tree_common.py",
             "tools/lib/store_gc_common.py",
             "tools/perf/performance_envelope_common.py",
@@ -9340,7 +9340,7 @@
         "extension_key": "official.semantic_contract_registry_ref",
         "extensions": {
           "observed_paths": [
-            "src/lib/install/install_validator.py",
+            "lib/install/install_validator.py",
             "tools/dist/dist_tree_common.py",
             "tools/lib/lib_stress_common.py",
             "tools/lib/store_gc_common.py",
@@ -9444,7 +9444,7 @@
         "extension_key": "official.source_revision_id",
         "extensions": {
           "observed_paths": [
-            "src/release/release_manifest_engine.py"
+            "release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.source_revision_id' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -9525,7 +9525,7 @@
         "extension_key": "official.tool_surface",
         "extensions": {
           "observed_paths": [
-            "src/tools/tool_surface_adapter.py"
+            "tools/tool_surface_adapter.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.tool_surface' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -9576,7 +9576,7 @@
         "extension_key": "official.trust_policy_id",
         "extensions": {
           "observed_paths": [
-            "src/security/trust/trust_verifier.py",
+            "security/trust/trust_verifier.py",
             "tools/release/update_model_common.py",
             "tools/security/trust_model_common.py",
             "tools/setup/setup_cli.py"

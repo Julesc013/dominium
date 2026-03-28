@@ -16,8 +16,8 @@ if REPO_ROOT_HINT not in sys.path:
 
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.testx.tests.geo8_testlib import run_worldgen_process, seed_worldgen_state, worldgen_request_row  # noqa: E402
-from src.geo import worldgen_cache_clear  # noqa: E402
-from src.worldgen.mw import star_system_artifact_hash_chain  # noqa: E402
+from geo import worldgen_cache_clear  # noqa: E402
+from worldgen.mw import star_system_artifact_hash_chain  # noqa: E402
 
 
 def _run_once() -> dict:

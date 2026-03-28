@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E23_MEMORY_NONDETERMINISM_SMELL"
-TARGET_PATH = "src/epistemics/memory/memory_kernel.py"
+TARGET_PATH = "epistemics/memory/memory_kernel.py"
 WALL_CLOCK_PATTERN = re.compile(
     r"(time\.time|time\.perf_counter|time\.monotonic|datetime\.|utcnow\(|now\(|random\.|uuid\.|os\.urandom)",
     re.IGNORECASE,

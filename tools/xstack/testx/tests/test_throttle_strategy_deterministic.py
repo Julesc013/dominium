@@ -20,7 +20,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.debug import process_logic_trace_start, process_logic_trace_tick
+    from logic.debug import process_logic_trace_start, process_logic_trace_tick
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, seed_signal_requests
 
     inputs = load_eval_inputs(repo_root)

@@ -15,6 +15,6 @@ def run(repo_root: str):
     if not rows:
         return {"status": "fail", "message": "repository inventory bypass detection missed a synthetic server main() bypass"}
     first = dict(rows[0] or {})
-    if str(first.get("path", "")).replace("\\", "/") != "src/server/server_main.py":
+    if str(first.get("path", "")).replace("\\", "/") != "server/server_main.py":
         return {"status": "fail", "message": "unexpected bypass path '{}'".format(str(first.get("path", "")).strip())}
     return {"status": "pass", "message": "repository inventory detects synthetic AppShell bypass entrypoints"}

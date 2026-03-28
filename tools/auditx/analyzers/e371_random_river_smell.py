@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E371_RANDOM_RIVER_SMELL"
-HYDROLOGY_ENGINE_REL = "src/worldgen/earth/hydrology_engine.py"
+HYDROLOGY_ENGINE_REL = "worldgen/earth/hydrology_engine.py"
 HYDROLOGY_PROBE_REL = "tools/worldgen/earth1_probe.py"
 HYDROLOGY_REPLAY_REL = "tools/worldgen/tool_replay_hydrology_window.py"
 HYDROLOGY_DOC_REL = "docs/worldgen/EARTH_HYDROLOGY_MODEL.md"

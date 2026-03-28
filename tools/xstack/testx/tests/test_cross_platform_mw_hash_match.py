@@ -14,7 +14,7 @@ EXPECTED_RESULT_HASH = "dbd5772e0aae37552f25c4bae55cdb932753e3eea7fdba1f9c641bdb
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.geo import generate_worldgen_result
+    from geo import generate_worldgen_result
     from tools.xstack.testx.tests.geo8_testlib import seed_worldgen_state, worldgen_request_row
 
     state = seed_worldgen_state()

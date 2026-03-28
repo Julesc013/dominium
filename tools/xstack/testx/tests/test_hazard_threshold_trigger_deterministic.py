@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.core.hazards.hazard_engine import tick_hazard_models
+    from core.hazards.hazard_engine import tick_hazard_models
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     hazards = [

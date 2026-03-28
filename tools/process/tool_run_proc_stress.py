@@ -155,7 +155,7 @@ def run_proc_stress(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.drift import drift_policy_rows_by_id, evaluate_process_drift
+    from process.drift import drift_policy_rows_by_id, evaluate_process_drift
     from tools.process.tool_replay_capsule_window import verify_capsule_replay_window
     from tools.process.tool_replay_drift_window import verify_drift_replay_window
     from tools.process.tool_replay_maturity_window import verify_maturity_replay_window

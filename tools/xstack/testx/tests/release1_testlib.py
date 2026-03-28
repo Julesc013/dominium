@@ -7,7 +7,7 @@ import os
 import tempfile
 from contextlib import contextmanager
 
-from src.release import build_release_manifest, verify_release_manifest, write_release_manifest
+from release import build_release_manifest, verify_release_manifest, write_release_manifest
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -101,7 +101,7 @@ def write_and_verify_manifest(dist_root: str, *, platform_tag: str = "platform.p
     payload = build_manifest_payload(dist_root, platform_tag=platform_tag)
     manifest_path = os.path.join(dist_root, "manifests", "release_manifest.json")
     write_release_manifest(dist_root, payload, manifest_path=manifest_path)
-    return verify_release_manifest(dist_root, manifest_path)
+    return verify_release_manifest(dist_root, manifest_path, repo_root=os.getcwd())
 
 
 def product_descriptor_hash(product_id: str) -> str:

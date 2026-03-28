@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.interaction.affordance_generator import build_affordance_list
+    from client.interaction.affordance_generator import build_affordance_list
     from tools.xstack.testx.tests.interaction_testlib import authority_context, policy_context
 
     perceived_model = {

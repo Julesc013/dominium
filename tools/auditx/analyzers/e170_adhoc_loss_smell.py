@@ -41,8 +41,8 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     allow_files = {
-        "src/signals/transport/transport_engine.py",
-        "src/signals/transport/channel_executor.py",
+        "signals/transport/transport_engine.py",
+        "signals/transport/channel_executor.py",
         "tools/auditx/analyzers/e170_adhoc_loss_smell.py",
     }
     scan_root = os.path.join(repo_root, "src")
@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
                         suggested_classification="TODO-BLOCKED",
                         recommended_action="REWRITE",
                         related_invariants=["INV-LOSS-POLICY-REGISTERED"],
-                        related_paths=[rel_path, "src/signals/transport/transport_engine.py"],
+                        related_paths=[rel_path, "signals/transport/transport_engine.py"],
                     )
                 )
                 break

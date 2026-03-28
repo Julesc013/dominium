@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    compiler_rel = "src/system/templates/template_compiler.py"
+    compiler_rel = "system/templates/template_compiler.py"
     process_registry_rel = "data/registries/process_registry.json"
     runtime_text = _read_text(repo_root, runtime_rel)
 

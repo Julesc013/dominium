@@ -55,7 +55,7 @@ def _solver_registry() -> dict:
 
 
 def _run_once():
-    from src.logistics.logistics_engine import (
+    from logistics.logistics_engine import (
         build_inventory_index,
         create_manifest_and_commitment,
         tick_manifests,

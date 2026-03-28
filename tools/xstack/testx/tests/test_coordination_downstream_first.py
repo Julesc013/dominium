@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.electric.protection.protection_engine import evaluate_protection_trip_plan
+    from electric.protection.protection_engine import evaluate_protection_trip_plan
 
     fault_rows = [
         {

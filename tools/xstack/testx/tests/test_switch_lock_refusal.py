@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.mobility.signals import build_switch_lock, deterministic_switch_lock_id
+    from mobility.signals import build_switch_lock, deterministic_switch_lock_id
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.mobility_micro_testlib import seed_switch_handoff_state
     from tools.xstack.testx.tests.mobility_signal_testlib import authority_context, law_profile, policy_context

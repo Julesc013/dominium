@@ -58,7 +58,7 @@ def _loss_registry() -> dict:
 
 
 def _run_once() -> dict:
-    from src.signals import build_signal_channel, process_signal_send, tick_signal_transport
+    from signals import build_signal_channel, process_signal_send, tick_signal_transport
 
     start_tick = 200
     channels = [

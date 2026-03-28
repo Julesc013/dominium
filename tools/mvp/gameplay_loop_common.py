@@ -14,9 +14,12 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.embodiment.tools.scanner_tool import build_scan_result  # noqa: E402
-from src.embodiment.tools.teleport_tool import build_teleport_tool_surface  # noqa: E402
-from src.embodiment.tools.terrain_edit_tool import build_mine_at_cursor_task  # noqa: E402
+from tools.import_bridge import install_src_aliases  # noqa: E402
+install_src_aliases(REPO_ROOT_HINT)
+
+from embodiment.tools.scanner_tool import build_scan_result  # noqa: E402
+from embodiment.tools.teleport_tool import build_teleport_tool_surface  # noqa: E402
+from embodiment.tools.terrain_edit_tool import build_mine_at_cursor_task  # noqa: E402
 from tools.mvp.baseline_universe_common import (  # noqa: E402
     ANCHOR_REASON_INTERVAL,
     ANCHOR_REASON_SAVE,

@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 from typing import Dict, List, Tuple
 
-from src.net.testing import DeterministicNetDisorderSim
+from net.testing import DeterministicNetDisorderSim
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.process_runtime import execute_intent
 from tools.xstack.sessionx.srz import DEFAULT_SHARD_ID, build_single_shard, composite_hash, per_tick_hash
@@ -61,7 +61,7 @@ def run_lockstep_full_stack(
     disorder_profile_id: str,
     induce_divergence_tick: int = 0,
 ) -> Dict[str, object]:
-    from src.net.policies.policy_lockstep import refusal_from_decision, validate_lockstep_envelope
+    from net.policies.policy_lockstep import refusal_from_decision, validate_lockstep_envelope
     from tools.xstack.testx.tests.net_authoritative_testlib import prepare_authoritative_runtime_fixture
 
     fixture = prepare_authoritative_runtime_fixture(
@@ -230,7 +230,7 @@ def run_authoritative_full_stack(
     ticks: int,
     disorder_profile_id: str,
 ) -> Dict[str, object]:
-    from src.net.policies.policy_server_authoritative import (
+    from net.policies.policy_server_authoritative import (
         POLICY_ID_SERVER_AUTHORITATIVE,
         advance_authoritative_tick,
         build_client_intent_envelope,
@@ -326,7 +326,7 @@ def run_hybrid_full_stack(
     ticks: int,
     disorder_profile_id: str,
 ) -> Dict[str, object]:
-    from src.net.policies.policy_srz_hybrid import (
+    from net.policies.policy_srz_hybrid import (
         advance_hybrid_tick,
         build_client_intent_envelope,
         prepare_hybrid_baseline,

@@ -55,7 +55,7 @@ def _focus_object_id(fixture: Mapping[str, object], slot_id: str) -> str:
 
 
 def _viewer_ref():
-    from src.geo import build_position_ref
+    from geo import build_position_ref
 
     return build_position_ref(
         object_id="object.viewer.sol2.fixture",
@@ -72,7 +72,7 @@ def build_orbit_surface(
     current_tick: int = FIXTURE_TICK,
 ) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from src.astro.views.orbit_view_engine import build_orbit_view_surface
+    from astro.views.orbit_view_engine import build_orbit_view_surface
 
     fixture = orbit_fixture(normalized)
     worldgen_result = _as_map(fixture.get("worldgen_result"))
@@ -123,8 +123,8 @@ def _sample_counts_by_slot(surface: Mapping[str, object], fixture: Mapping[str, 
 
 def orbit_replay_report(repo_root: str) -> dict:
     normalized = _ensure_repo_root(repo_root)
-    from src.astro.ephemeris.kepler_proxy_engine import DEFAULT_ORBIT_PATH_POLICY_ID, orbit_path_policy_rows
-    from src.astro.views.orbit_view_engine import orbit_view_artifact_hash
+    from astro.ephemeris.kepler_proxy_engine import DEFAULT_ORBIT_PATH_POLICY_ID, orbit_path_policy_rows
+    from astro.views.orbit_view_engine import orbit_view_artifact_hash
 
     fixture = orbit_fixture(normalized)
     system_surface_first = build_orbit_surface(normalized, focus_slot_id=SYSTEM_FOCUS_SLOT_ID)

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.geo import geo_neighbors
+from geo import geo_neighbors
 
 
 TEST_ID = "test_sphere_surface_stub_neighbors_deterministic"

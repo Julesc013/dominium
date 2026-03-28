@@ -39,7 +39,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    trust_engine_rel = "src/signals/trust/trust_engine.py"
+    trust_engine_rel = "signals/trust/trust_engine.py"
     trust_engine_text = _read_text(repo_root, trust_engine_rel)
     if "truth_verification_state" in trust_engine_text and "allow_truth_observer" not in trust_engine_text:
         findings.append(

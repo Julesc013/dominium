@@ -8,7 +8,7 @@ import os
 from typing import Dict, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
-from src.meta_extensions_engine import normalize_extensions_tree
+from meta_extensions_engine import normalize_extensions_tree
 
 
 DEFAULT_COMPATIBILITY_VERSION = "1.0.0"

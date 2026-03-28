@@ -3,7 +3,7 @@ Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `schemas/net_anti_cheat_event.schema.json`, anti-cheat policy registries, and `src/net/anti_cheat/anti_cheat_engine.py`.
+Compatibility: Bound to `schemas/net_anti_cheat_event.schema.json`, anti-cheat policy registries, and `net/anti_cheat/anti_cheat_engine.py`.
 Stability: provisional
 Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
@@ -77,4 +77,4 @@ Per session run-meta artifacts include:
 - `docs/contracts/refusal_contract.md`
 - `data/registries/anti_cheat_policy_registry.json`
 - `data/registries/anti_cheat_module_registry.json`
-- `src/net/anti_cheat/anti_cheat_engine.py`
+- `net/anti_cheat/anti_cheat_engine.py`

@@ -118,7 +118,7 @@ def geo10_projection_redaction_fixture(repo_root: str, suite_id: str = "geo10.su
 @lru_cache(maxsize=4)
 def _reference_suite_cached(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from src.meta.reference import evaluate_reference_suite
+    from meta.reference import evaluate_reference_suite
 
     return evaluate_reference_suite(
         evaluator_ids=list(GEO10_REFERENCE_EVALUATOR_IDS),

@@ -9,10 +9,10 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
-from src.compat.data_format_loader import stamp_artifact_metadata
-from src.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
-from src.time import ANCHOR_REASON_SAVE, emit_epoch_anchor
-from src.universe import enforce_session_contract_bundle
+from compat.data_format_loader import stamp_artifact_metadata
+from modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
+from engine.time import ANCHOR_REASON_SAVE, emit_epoch_anchor
+from universe import enforce_session_contract_bundle
 
 from .common import identity_hash_for_payload, norm, now_utc_iso, read_json_object, refusal, write_canonical_json
 from .observation import build_truth_model, observe_truth

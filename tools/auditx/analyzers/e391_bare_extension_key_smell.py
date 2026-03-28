@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E391_BARE_EXTENSION_KEY_SMELL"
 REGISTRY_REL = "data/registries/extension_interpretation_registry.json"
-ENGINE_REL = "src/meta_extensions_engine.py"
-WRAPPER_REL = "src/meta/extensions/extensions_engine.py"
+ENGINE_REL = "meta_extensions_engine.py"
+WRAPPER_REL = "meta/extensions/extensions_engine.py"
 DOC_REL = "docs/meta/EXTENSION_DISCIPLINE.md"
 MIGRATION_DOC_REL = "docs/meta/EXTENSION_MIGRATION_NOTES.md"
 REQUIRED_TOKENS = {
@@ -34,7 +34,7 @@ REQUIRED_TOKENS = {
         "extensions.strict",
     ),
     WRAPPER_REL: (
-        "from src.meta_extensions_engine import (",
+        "from meta_extensions_engine import (",
         "extensions_get",
         "normalize_extensions_tree",
     ),

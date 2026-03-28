@@ -25,7 +25,7 @@ def build_context(repo_root: str, product_id: str, raw_args: list[str], *, execu
 
 def redirect_legacy(repo_root: str, raw_path: str) -> dict:
     ensure_repo_root(repo_root)
-    from src.compat.shims import redirect_legacy_path
+    from compat.shims import redirect_legacy_path
 
     return redirect_legacy_path(
         raw_path,
@@ -37,7 +37,7 @@ def redirect_legacy(repo_root: str, raw_path: str) -> dict:
 
 def run_legacy_validator(repo_root: str, *, strict: bool = False) -> dict:
     ensure_repo_root(repo_root)
-    from src.compat.shims import run_legacy_validate_all
+    from compat.shims import run_legacy_validate_all
 
     return run_legacy_validate_all(
         repo_root=repo_root,
@@ -47,7 +47,7 @@ def run_legacy_validator(repo_root: str, *, strict: bool = False) -> dict:
 
 
 def warning_payload() -> dict:
-    from src.compat.shims.common import build_deprecation_warning
+    from compat.shims.common import build_deprecation_warning
 
     return build_deprecation_warning(
         shim_id="shim.test.warning",

@@ -36,7 +36,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    canonical_engine_rel = "src/pollution/dispersion_engine.py"
+    canonical_engine_rel = "pollution/dispersion_engine.py"
     canonical_text = _read_text(repo_root, canonical_engine_rel)
     for token in ("max_cell_updates_per_tick", "_split_cell_work(", "degrade.pollution.cell_budget"):
         if token in canonical_text:

@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E102_POSE_BYPASS_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-POSE_ENGINE_PATH = "src/interaction/pose/pose_engine.py"
+POSE_ENGINE_PATH = "interaction/pose/pose_engine.py"
 
 REQUIRED_RUNTIME_TOKENS = (
     "process.pose_enter",

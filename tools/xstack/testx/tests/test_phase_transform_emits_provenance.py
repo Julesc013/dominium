@@ -29,7 +29,7 @@ def _policy_context() -> dict:
 
 
 def _seed_state() -> dict:
-    from src.materials.composition_engine import create_material_batch
+    from materials.composition_engine import create_material_batch
     from tools.xstack.testx.tests.construction_testlib import base_state as construction_base_state
 
     state = copy.deepcopy(construction_base_state())

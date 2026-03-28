@@ -63,7 +63,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.interior.interior_engine import apply_portal_transition, path_exists
+    from interior.interior_engine import apply_portal_transition, path_exists
 
     graph = {
         "schema_version": "1.0.0",

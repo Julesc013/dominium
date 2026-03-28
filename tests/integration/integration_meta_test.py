@@ -138,7 +138,7 @@ def main():
             if key not in ext_versions:
                 errors.append("extension '{}' missing version macro".format(key))
 
-        app_runtime = os.path.join(repo_root, "app", "src", "app_runtime.c")
+        app_runtime = os.path.join(repo_root, "app", "app_runtime.c")
         cli_contracts = os.path.join(repo_root, "docs", "app", "CLI_CONTRACTS.md")
         if not os.path.isfile(app_runtime):
             errors.append("missing app runtime file: {}".format(app_runtime))

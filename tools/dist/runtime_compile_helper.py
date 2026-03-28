@@ -30,12 +30,46 @@ def _read_json_list(raw: str) -> list[str]:
     return [str(item).strip() for item in payload if str(item).strip()]
 
 
+def _fs_path(path: str) -> str:
+    token = os.path.normpath(os.path.abspath(str(path or "").strip()))
+    if os.name != "nt":
+        return token
+    if token.startswith("\\\\?\\"):
+        return token
+    if token.startswith("\\\\"):
+        return "\\\\?\\UNC\\" + token.lstrip("\\")
+    return "\\\\?\\" + token
+
+
 def _source_is_excluded(rel_path: str, *, excluded_prefixes: tuple[str, ...], excluded_basenames: set[str]) -> bool:
     token = _norm(rel_path)
     if any(token == prefix or token.startswith(prefix + "/") for prefix in excluded_prefixes):
         return True
     parts = [part for part in token.split("/") if part]
     return any(part in excluded_basenames for part in parts)
+
+
+def _clear_writable(path: str) -> None:
+    try:
+        os.chmod(path, 0o666)
+    except OSError:
+        pass
+
+
+def _safe_remove_file(path: str) -> None:
+    target = _fs_path(path)
+    for _attempt in range(0, 5):
+        try:
+            if os.path.exists(target):
+                _clear_writable(target)
+                os.remove(target)
+            return
+        except FileNotFoundError:
+            return
+        except PermissionError:
+            _clear_writable(target)
+    if os.path.exists(target):
+        os.remove(target)
 
 
 def _compile_runtime_tree(
@@ -49,12 +83,38 @@ def _compile_runtime_tree(
 ) -> dict:
     compiled: list[str] = []
     invalidation_mode = py_compile.PycInvalidationMode.UNCHECKED_HASH
+    source_root_abs = os.path.normpath(os.path.abspath(source_root))
+    target_root_abs = os.path.normpath(os.path.abspath(target_root))
     for root_rel in runtime_roots:
-        abs_root = os.path.join(source_root, root_rel.replace("/", os.sep))
+        rel_entry = _norm(root_rel)
+        abs_root = os.path.join(source_root_abs, rel_entry.replace("/", os.sep))
+        if os.path.isfile(abs_root):
+            if not rel_entry.endswith(".py"):
+                continue
+            if rel_entry in excluded_files:
+                continue
+            if _source_is_excluded(
+                rel_entry,
+                excluded_prefixes=excluded_prefixes,
+                excluded_basenames=excluded_basenames,
+            ):
+                continue
+            dest_path = os.path.join(target_root_abs, rel_entry.replace("/", os.sep) + "c")
+            os.makedirs(_fs_path(os.path.dirname(dest_path)), exist_ok=True)
+            _safe_remove_file(dest_path)
+            py_compile.compile(
+                _fs_path(abs_root),
+                cfile=_fs_path(dest_path),
+                dfile=rel_entry,
+                doraise=True,
+                invalidation_mode=invalidation_mode,
+            )
+            compiled.append(_norm(os.path.relpath(dest_path, target_root_abs)))
+            continue
         if not os.path.isdir(abs_root):
             continue
         for current_root, dirnames, filenames in os.walk(abs_root):
-            rel_root = _norm(os.path.relpath(current_root, source_root))
+            rel_root = _norm(os.path.relpath(current_root, source_root_abs))
             dirnames[:] = [
                 name
                 for name in sorted(dirnames)
@@ -76,17 +136,18 @@ def _compile_runtime_tree(
                     excluded_basenames=excluded_basenames,
                 ):
                     continue
-                src_path = os.path.join(source_root, rel_path.replace("/", os.sep))
-                dest_path = os.path.join(target_root, rel_path.replace("/", os.sep) + "c")
-                os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+                src_path = os.path.join(source_root_abs, rel_path.replace("/", os.sep))
+                dest_path = os.path.join(target_root_abs, rel_path.replace("/", os.sep) + "c")
+                os.makedirs(_fs_path(os.path.dirname(dest_path)), exist_ok=True)
+                _safe_remove_file(dest_path)
                 py_compile.compile(
-                    src_path,
-                    cfile=dest_path,
+                    _fs_path(src_path),
+                    cfile=_fs_path(dest_path),
                     dfile=rel_path,
                     doraise=True,
                     invalidation_mode=invalidation_mode,
                 )
-                compiled.append(_norm(os.path.relpath(dest_path, target_root)))
+                compiled.append(_norm(os.path.relpath(dest_path, target_root_abs)))
     compiled = sorted(compiled)
     return {
         "compiled_count": len(compiled),

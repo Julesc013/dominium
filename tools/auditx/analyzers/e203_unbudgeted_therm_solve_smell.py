@@ -77,7 +77,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         stress_tool_rel,
-        "src/thermal/network/thermal_network_engine.py",
+        "thermal/network/thermal_network_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

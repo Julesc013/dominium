@@ -75,7 +75,7 @@ def _attenuation_registry() -> dict:
 
 
 def _state_with_jam(*, jam: bool) -> str:
-    from src.signals import (
+    from signals import (
         build_signal_channel,
         process_signal_jam_start,
         process_signal_send,

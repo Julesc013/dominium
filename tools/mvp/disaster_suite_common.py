@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import gc
 import json
 import os
 import shutil
@@ -16,29 +17,32 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.compat.data_format_loader import load_versioned_artifact  # noqa: E402
-from src.geo import build_overlay_layer, build_property_patch  # noqa: E402
-from src.lib.install.install_validator import validate_install_manifest  # noqa: E402
-from src.lib.provides.provider_resolution import (  # noqa: E402
+from tools.import_bridge import install_src_aliases  # noqa: E402
+install_src_aliases(REPO_ROOT_HINT)
+
+from compat.data_format_loader import load_versioned_artifact  # noqa: E402
+from geo import build_overlay_layer, build_property_patch  # noqa: E402
+from lib.install.install_validator import validate_install_manifest  # noqa: E402
+from lib.provides.provider_resolution import (  # noqa: E402
     RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS,
     resolve_providers,
 )
-from src.meta.identity import IDENTITY_KIND_PACK, attach_universal_identity_block  # noqa: E402
-from src.packs.compat.pack_compat_validator import pack_compat_manifest_fingerprint  # noqa: E402
-from src.packs.compat.pack_verification_pipeline import verify_pack_set  # noqa: E402
-from src.release.release_manifest_engine import build_mock_signature_block, verify_release_manifest  # noqa: E402
-from src.release.update_resolver import (  # noqa: E402
+from meta.identity import IDENTITY_KIND_PACK, attach_universal_identity_block  # noqa: E402
+from packs.compat.pack_compat_validator import pack_compat_manifest_fingerprint  # noqa: E402
+from packs.compat.pack_verification_pipeline import verify_pack_set  # noqa: E402
+from release.release_manifest_engine import build_mock_signature_block, verify_release_manifest  # noqa: E402
+from release.update_resolver import (  # noqa: E402
     RESOLUTION_POLICY_LATEST_COMPATIBLE,
     append_install_transaction,
     resolve_update_plan,
     select_rollback_transaction,
 )
-from src.security.trust.trust_verifier import (  # noqa: E402
+from security.trust.trust_verifier import (  # noqa: E402
     ARTIFACT_KIND_RELEASE_MANIFEST,
     TRUST_POLICY_STRICT,
     verify_artifact_trust,
 )
-from src.universe import (  # noqa: E402
+from universe import (  # noqa: E402
     build_universe_contract_bundle_payload,
     enforce_session_contract_bundle,
     pin_contract_bundle_metadata,
@@ -181,15 +185,83 @@ def _prune_python_bytecode(path: str) -> None:
                 continue
 
 
+def _remove_tree_once(path: str) -> None:
+    token = _token(path)
+    for root, dir_names, file_names in os.walk(token, topdown=False):
+        for file_name in sorted(file_names):
+            candidate = os.path.join(root, file_name)
+            last_error: OSError | None = None
+            for _attempt in range(0, 4):
+                try:
+                    os.chmod(candidate, 0o666)
+                except OSError:
+                    pass
+                try:
+                    os.unlink(candidate)
+                    break
+                except FileNotFoundError:
+                    break
+                except OSError as exc:
+                    last_error = exc
+                    try:
+                        os.chmod(os.path.dirname(candidate), 0o777)
+                    except OSError:
+                        pass
+                    gc.collect()
+            else:
+                if last_error is not None:
+                    raise last_error
+                raise OSError("failed to remove file '{}'".format(candidate))
+        for dir_name in sorted(dir_names):
+            candidate = os.path.join(root, dir_name)
+            last_error = None
+            for _attempt in range(0, 4):
+                try:
+                    os.chmod(candidate, 0o777)
+                except OSError:
+                    pass
+                try:
+                    os.rmdir(candidate)
+                    break
+                except FileNotFoundError:
+                    break
+                except OSError as exc:
+                    last_error = exc
+                    gc.collect()
+            else:
+                if last_error is not None:
+                    raise last_error
+                raise OSError("failed to remove directory '{}'".format(candidate))
+    last_error = None
+    for _attempt in range(0, 4):
+        try:
+            os.chmod(token, 0o777)
+        except OSError:
+            pass
+        try:
+            os.rmdir(token)
+            break
+        except FileNotFoundError:
+            break
+        except OSError as exc:
+            last_error = exc
+            gc.collect()
+    else:
+        if last_error is not None:
+            raise last_error
+        raise OSError("failed to remove directory '{}'".format(token))
+
+
 def _safe_rmtree(path: str) -> None:
     token = _token(path)
     if not token or not os.path.isdir(token):
         return
     for attempt in range(0, 4):
+        gc.collect()
         _normalize_tree_permissions(token)
         _prune_python_bytecode(token)
         try:
-            shutil.rmtree(token, onerror=_remove_readonly)
+            _remove_tree_once(token)
             return
         except FileNotFoundError:
             return

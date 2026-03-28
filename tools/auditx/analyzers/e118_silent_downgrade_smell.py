@@ -9,10 +9,10 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E118_SILENT_DOWNGRADE_SMELL"
 WATCH_PREFIXES = (
-    "src/control/control_plane_engine.py",
-    "src/client/interaction/interaction_dispatch.py",
-    "src/inspection/inspection_engine.py",
-    "src/materials/materialization/materialization_engine.py",
+    "control/control_plane_engine.py",
+    "client/interaction/interaction_dispatch.py",
+    "inspection/inspection_engine.py",
+    "materials/materialization/materialization_engine.py",
 )
 
 
@@ -33,7 +33,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    control_plane_rel = "src/control/control_plane_engine.py"
+    control_plane_rel = "control/control_plane_engine.py"
     control_plane_text = _read_text(repo_root, control_plane_rel)
     if not control_plane_text:
         findings.append(
@@ -73,8 +73,8 @@ def run(graph, repo_root, changed_files=None):
         )
 
     for rel_path in (
-        "src/inspection/inspection_engine.py",
-        "src/materials/materialization/materialization_engine.py",
+        "inspection/inspection_engine.py",
+        "materials/materialization/materialization_engine.py",
     ):
         text = _read_text(repo_root, rel_path)
         if not text:
@@ -112,7 +112,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    ui_rel = "src/client/interaction/interaction_dispatch.py"
+    ui_rel = "client/interaction/interaction_dispatch.py"
     ui_text = _read_text(repo_root, ui_rel)
     if ui_text and ("_decision_log_ui_messages(" not in ui_text or "_read_decision_log_payload(" not in ui_text):
         findings.append(

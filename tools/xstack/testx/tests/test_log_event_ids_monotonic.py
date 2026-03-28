@@ -11,7 +11,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.appshell2_testlib import ensure_repo_on_path
 
     ensure_repo_on_path(repo_root)
-    from src.appshell.logging import create_log_engine
+    from appshell.logging import create_log_engine
 
     engine = create_log_engine(product_id="client", build_id="build.test", console_enabled=False)
     rows = [

@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E405_UNGATED_AUTHORITY_SPAWN_SMELL"
 REQUIRED_TOKENS = {
-    "src/client/local_server/local_server_controller.py": (
+    "client/local_server/local_server_controller.py": (
         "REFUSAL_LOCAL_AUTHORITY_FORBIDDEN",
         "LOCAL_SERVER_PROFILE_ALLOWLIST",
         "server.profile.private_relaxed",

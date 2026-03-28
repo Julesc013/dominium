@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.system.statevec import (  # noqa: E402
+from system.statevec import (  # noqa: E402
     deserialize_state,
     normalize_state_vector_definition_rows,
     normalize_state_vector_snapshot_rows,

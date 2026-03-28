@@ -34,9 +34,9 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    bulletin_rel = "src/signals/institutions/bulletin_engine.py"
-    dispatch_rel = "src/signals/institutions/dispatch_engine.py"
-    standards_rel = "src/signals/institutions/standards_engine.py"
+    bulletin_rel = "signals/institutions/bulletin_engine.py"
+    dispatch_rel = "signals/institutions/dispatch_engine.py"
+    standards_rel = "signals/institutions/standards_engine.py"
     required_anchor_sets = {
         bulletin_rel: ("process_signal_send(", "artifact.report.institution"),
         dispatch_rel: ("build_control_intent(", "process.travel_schedule_set"),

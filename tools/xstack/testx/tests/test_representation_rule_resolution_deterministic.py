@@ -92,7 +92,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.render import resolve_representation
+    from client.render import resolve_representation
 
     payloads = _registry_payloads()
     first = resolve_representation(copy.deepcopy(_entity_row()), copy.deepcopy(payloads), view_mode_id="")

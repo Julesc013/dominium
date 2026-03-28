@@ -27,7 +27,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    engine_rel = "src/logic/protocol/protocol_engine.py"
+    engine_rel = "logic/protocol/protocol_engine.py"
     engine_text = _read_text(repo_root, engine_rel)
     for token in ("process_signal_send(", "transport_logic_sig_receipts", "logic_protocol_target_slots", "process_signal_set_fn("):
         if token in engine_text:
@@ -48,7 +48,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    runtime_rel = "src/logic/eval/logic_eval_engine.py"
+    runtime_rel = "logic/eval/logic_eval_engine.py"
     runtime_text = _read_text(repo_root, runtime_rel)
     for token in ("transport_logic_sig_receipts(", "arbitrate_logic_protocol_frames("):
         if token in runtime_text:

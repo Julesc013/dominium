@@ -12,7 +12,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.appshell2_testlib import ensure_repo_on_path, load_jsonl
 
     ensure_repo_on_path(repo_root)
-    from src.appshell.logging import build_default_log_file_path
+    from appshell.logging import build_default_log_file_path
 
     report = run_wrapper(repo_root, "dominium_client", ["not-a-command"])
     if int(report.get("returncode", 0)) != 10:

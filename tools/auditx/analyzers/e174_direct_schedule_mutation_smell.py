@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     allow_files = {
-        "src/signals/institutions/dispatch_engine.py",
+        "signals/institutions/dispatch_engine.py",
         "tools/auditx/analyzers/e174_direct_schedule_mutation_smell.py",
     }
     scan_roots = (
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
                             related_invariants=["INV-INSTITUTIONAL-SCHEDULES-THROUGH-CTRL"],
-                            related_paths=[rel_path, "src/signals/institutions/dispatch_engine.py"],
+                            related_paths=[rel_path, "signals/institutions/dispatch_engine.py"],
                         )
                     )
                     break

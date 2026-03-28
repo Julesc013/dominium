@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.mechanics import evaluate_structural_graphs
+    from mechanics import evaluate_structural_graphs
     from tools.xstack.testx.tests.mechanics_testlib import base_state, policy_context
 
     state = base_state()

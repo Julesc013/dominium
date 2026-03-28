@@ -14,8 +14,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.logic.protocol import arbitrate_logic_protocol_frames, build_protocol_frame_row, transport_logic_sig_receipts
-from src.logic.signal import process_signal_set
+from logic.protocol import arbitrate_logic_protocol_frames, build_protocol_frame_row, transport_logic_sig_receipts
+from logic.signal import process_signal_set
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

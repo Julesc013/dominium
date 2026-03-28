@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E90_SILENT_FLOW_SMELL"
 WATCH_PREFIXES = ("src/core/flow/", "src/logistics/", "tools/xstack/sessionx/")
 
-FLOW_ENGINE_PATH = "src/core/flow/flow_engine.py"
-LOGISTICS_ENGINE_PATH = "src/logistics/logistics_engine.py"
+FLOW_ENGINE_PATH = "core/flow/flow_engine.py"
+LOGISTICS_ENGINE_PATH = "logistics/logistics_engine.py"
 
 
 def _norm(path: str) -> str:

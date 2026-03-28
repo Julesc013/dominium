@@ -10,12 +10,12 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E54_PLATFORM_LEAK_SMELL"
 PLATFORM_FILES = (
-    "src/platform/__init__.py",
-    "src/platform/platform_window.py",
-    "src/platform/platform_input.py",
-    "src/platform/platform_gfx.py",
-    "src/platform/platform_audio.py",
-    "src/platform/platform_input_routing.py",
+    "engine/platform/__init__.py",
+    "engine/platform/platform_window.py",
+    "engine/platform/platform_input.py",
+    "engine/platform/platform_gfx.py",
+    "engine/platform/platform_audio.py",
+    "engine/platform/platform_input_routing.py",
 )
 FORBIDDEN_PATTERNS = (
     re.compile(r"^\s*#\s*include\s*[<\"]windows\.h[\">]", re.IGNORECASE),

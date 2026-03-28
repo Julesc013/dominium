@@ -11,9 +11,9 @@ import tempfile
 import importlib
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from src.compat import build_product_descriptor
-from src.lib.export import export_instance_bundle, export_pack_bundle, export_save_bundle
-from src.lib.install import (
+from compat import build_product_descriptor
+from lib.export import export_instance_bundle, export_pack_bundle, export_save_bundle
+from lib.install import (
     build_product_build_descriptor,
     deterministic_fingerprint as install_deterministic_fingerprint,
     normalize_contract_range,
@@ -21,13 +21,13 @@ from src.lib.install import (
     normalize_protocol_range,
     validate_install_manifest,
 )
-from src.lib.instance import (
+from lib.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from src.lib.instance.instance_clone import clone_instance_local
-from src.lib.provides import (
+from lib.instance.instance_clone import clone_instance_local
+from lib.provides import (
     RESOLUTION_POLICY_DETERMINISTIC_LOWEST_PACK_ID,
     RESOLUTION_POLICY_EXPLICIT_REQUIRED,
     RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS,
@@ -35,7 +35,7 @@ from src.lib.provides import (
     canonicalize_provides_resolution,
     resolve_providers,
 )
-from src.lib.save import (
+from lib.save import (
     CURRENT_SAVE_FORMAT_VERSION,
     deterministic_fingerprint as save_deterministic_fingerprint,
     evaluate_save_open,
@@ -43,7 +43,7 @@ from src.lib.save import (
     validate_save_manifest,
     write_json as write_save_json,
 )
-from src.packs.compat import verify_pack_set
+from packs.compat import verify_pack_set
 from tools.launcher.launcher_cli import perform_preflight
 from tools.lib.content_store import (
     build_install_ref,
@@ -61,7 +61,7 @@ from tools.compatx.core.semantic_contract_validator import build_default_univers
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
-IMPORT_MOD = importlib.import_module("src.lib.import")
+IMPORT_MOD = importlib.import_module("lib.import")
 import_instance_bundle = IMPORT_MOD.import_instance_bundle
 import_pack_bundle = IMPORT_MOD.import_pack_bundle
 import_save_bundle = IMPORT_MOD.import_save_bundle

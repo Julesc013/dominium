@@ -7,7 +7,7 @@ import tempfile
 from typing import Mapping
 
 
-from src.release import build_release_manifest, verify_release_manifest, write_release_manifest
+from release import build_release_manifest, verify_release_manifest, write_release_manifest
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -16,7 +16,7 @@ RELEASE_MANIFEST_MODEL_PATH = "docs/release/RELEASE_MANIFEST_MODEL.md"
 RELEASE_MANIFEST_BASELINE_PATH = "docs/audit/RELEASE_MANIFEST_BASELINE.md"
 RELEASE_MANIFEST_GENERATOR_PATH = "tools/release/tool_generate_release_manifest.py"
 RELEASE_MANIFEST_VERIFIER_PATH = "tools/release/tool_verify_release_manifest.py"
-RELEASE_MANIFEST_ENGINE_PATH = "src/release/release_manifest_engine.py"
+RELEASE_MANIFEST_ENGINE_PATH = "release/release_manifest_engine.py"
 
 DEFAULT_DIST_ROOT = "dist"
 DEFAULT_PLATFORM_TAG = "platform.portable"

@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REMOVE_HOST_OR_TIME_METADATA_FROM_BUILD",
                 related_invariants=["INV-NO-WALLCLOCK-IN-BUILD"],
-                related_paths=[rel_path, "src/release/build_id_engine.py"],
+                related_paths=[rel_path, "release/build_id_engine.py"],
             )
         )
     return findings

@@ -13,7 +13,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.meta.stability import ALL_REGISTRY_PATHS, registry_entry_rows, validate_all_registries  # noqa: E402
+from meta.stability import ALL_REGISTRY_PATHS, registry_entry_rows, validate_all_registries  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 

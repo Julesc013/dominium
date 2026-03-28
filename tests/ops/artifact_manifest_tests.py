@@ -9,7 +9,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.lib.artifact import (
+from lib.artifact import (
     ARTIFACT_DEGRADE_BEST_EFFORT,
     ARTIFACT_DEGRADE_STRICT_REFUSE,
     ARTIFACT_KIND_BLUEPRINT,

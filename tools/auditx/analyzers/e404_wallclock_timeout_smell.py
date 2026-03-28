@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E404_WALLCLOCK_TIMEOUT_SMELL"
 REQUIRED_TOKENS = {
-    "src/client/local_server/local_server_controller.py": (
+    "client/local_server/local_server_controller.py": (
         "LOCAL_READY_POLL_ITERATIONS",
         '"strategy": "bounded_poll_iterations"',
         "for attempt in range(1, LOCAL_READY_POLL_ITERATIONS + 1):",
@@ -25,7 +25,7 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "src/client/local_server/local_server_controller.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
+    "client/local_server/local_server_controller.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
     "tools/server/server_mvp1_probe.py": ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep("),
 }
 

@@ -51,8 +51,8 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/thermal/network/thermal_network_engine.py",
-        "src/fields/field_engine.py",
+        "thermal/network/thermal_network_engine.py",
+        "fields/field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -93,8 +93,8 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-THERM-AMBIENT-THROUGH-MODEL", "INV-NO-DIRECT-TEMP-MUTATION"],
                             related_paths=[
                                 rel_path,
-                                "src/thermal/network/thermal_network_engine.py",
-                                "src/fields/field_engine.py",
+                                "thermal/network/thermal_network_engine.py",
+                                "fields/field_engine.py",
                             ],
                         )
                     )

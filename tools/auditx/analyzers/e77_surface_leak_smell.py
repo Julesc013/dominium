@@ -8,9 +8,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E77_SURFACE_LEAK_SMELL"
-ACTION_SURFACE_ENGINE_PATH = "src/interaction/action_surface_engine.py"
-AFFORDANCE_PATH = "src/client/interaction/affordance_generator.py"
-DISPATCH_PATH = "src/client/interaction/interaction_dispatch.py"
+ACTION_SURFACE_ENGINE_PATH = "interaction/action_surface_engine.py"
+AFFORDANCE_PATH = "client/interaction/affordance_generator.py"
+DISPATCH_PATH = "client/interaction/interaction_dispatch.py"
 REQUIRED_ENGINE_TOKENS = (
     "_visible_under_policy(",
     "visibility_policy_id",

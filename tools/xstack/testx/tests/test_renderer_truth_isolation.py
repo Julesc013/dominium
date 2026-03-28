@@ -11,12 +11,12 @@ TEST_ID = "testx.render.renderer_truth_isolation"
 TEST_TAGS = ["strict", "render", "repox"]
 
 TARGETS = (
-    "src/client/render/render_model_adapter.py",
-    "src/client/render/representation_resolver.py",
-    "src/client/render/snapshot_capture.py",
-    "src/client/render/renderers/null_renderer.py",
-    "src/client/render/renderers/software_renderer.py",
-    "src/client/render/renderers/hw_renderer_gl.py",
+    "client/render/render_model_adapter.py",
+    "client/render/representation_resolver.py",
+    "client/render/snapshot_capture.py",
+    "client/render/renderers/null_renderer.py",
+    "client/render/renderers/software_renderer.py",
+    "client/render/renderers/hw_renderer_gl.py",
     "tools/render/tool_render_capture.py",
     "tools/render/render_cli.py",
 )

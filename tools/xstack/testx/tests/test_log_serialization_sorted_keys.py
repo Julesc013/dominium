@@ -15,7 +15,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.appshell2_testlib import ensure_repo_on_path
 
     ensure_repo_on_path(repo_root)
-    from src.appshell.logging import append_jsonl, build_log_event
+    from appshell.logging import append_jsonl, build_log_event
 
     event = build_log_event(
         product_id="client",

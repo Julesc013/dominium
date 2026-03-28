@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ROUTE_DIST_COMPOSITION_THROUGH_COMPONENT_GRAPH_AND_INSTALL_PROFILE",
                 related_invariants=[RULE_ID],
-                related_paths=[rel_path or "tools/dist/dist_tree_common.py", "src/release/component_graph_resolver.py"],
+                related_paths=[rel_path or "tools/dist/dist_tree_common.py", "release/component_graph_resolver.py"],
             )
         )
     return findings

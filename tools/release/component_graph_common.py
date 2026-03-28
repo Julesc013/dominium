@@ -7,7 +7,7 @@ import json
 import os
 from typing import Mapping
 
-from src.release.component_graph_resolver import (
+from release.component_graph_resolver import (
     COMPONENT_KIND_BINARY,
     COMPONENT_KIND_DOCS,
     COMPONENT_KIND_LOCK,
@@ -27,6 +27,7 @@ from src.release.component_graph_resolver import (
     deterministic_fingerprint,
     platform_targets_for_tag,
 )
+from tools.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -53,6 +54,14 @@ def _norm(path: str) -> str:
 
 def _norm_rel(path: str) -> str:
     return _token(path).replace("\\", "/")
+
+
+def _equivalent_rel(repo_root: str, rel_path: str) -> str:
+    return _norm_rel(resolve_repo_path_equivalent(_norm(repo_root), _norm_rel(rel_path)))
+
+
+def _equivalent_abs(repo_root: str, rel_path: str) -> str:
+    return os.path.join(_norm(repo_root), _equivalent_rel(repo_root, rel_path).replace("/", os.sep))
 
 
 def _as_map(value: object) -> dict:
@@ -397,28 +406,30 @@ def component_graph_violations(repo_root: str) -> list[dict]:
         (CONSTITUTION_DOC_REL, "component graph constitution is required", RULE_INSTALL),
         (BASELINE_DOC_REL, "component graph baseline is required", RULE_INSTALL),
         (RELEASE_NOTES_DOC_REL, "release notes document is required", RULE_HARDCODED),
-        (os.path.join("src", "release", "component_graph_resolver.py"), "component graph resolver is required", RULE_INSTALL),
+        (os.path.join("release", "component_graph_resolver.py"), "component graph resolver is required", RULE_INSTALL),
         (os.path.join("tools", "release", "component_graph_common.py"), "component graph helper is required", RULE_INSTALL),
         (os.path.join("tools", "release", "tool_run_component_graph.py"), "component graph runner is required", RULE_INSTALL),
     ):
-        if os.path.exists(os.path.join(root, rel_path.replace("/", os.sep))):
+        effective_rel = _equivalent_rel(root, rel_path)
+        if os.path.exists(_equivalent_abs(root, rel_path)):
             continue
-        violations.append({"code": "missing_required_file", "message": message, "file_path": rel_path, "rule_id": rule_id})
+        violations.append({"code": "missing_required_file", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
         ("tools/dist/dist_tree_common.py", "build_default_component_install_plan", "dist assembly must resolve bundle composition through the component graph", RULE_HARDCODED),
         ("tools/setup/setup_cli.py", "build_default_component_install_plan", "setup must emit an install plan derived from the component graph", RULE_INSTALL),
         ("tools/launcher/launch.py", "validate_instance_against_install_plan", "launcher must validate instances against the component graph install plan", RULE_INSTALL),
-        ("src/release/release_manifest_engine.py", "component_graph_hash", "release manifest generation must include the component graph hash", RULE_INSTALL),
+        ("release/release_manifest_engine.py", "component_graph_hash", "release manifest generation must include the component graph hash", RULE_INSTALL),
     ):
         text = ""
         try:
-            with open(os.path.join(root, rel_path.replace("/", os.sep)), "r", encoding="utf-8") as handle:
+            effective_rel = _equivalent_rel(root, rel_path)
+            with open(_equivalent_abs(root, rel_path), "r", encoding="utf-8") as handle:
                 text = handle.read()
         except OSError:
             pass
         if token in text:
             continue
-        violations.append({"code": "missing_integration_hook", "message": message, "file_path": rel_path, "rule_id": rule_id})
+        violations.append({"code": "missing_integration_hook", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     if _token(report.get("result")) != "complete":
         violations.append({"code": "resolver_refused", "message": "component graph resolver must complete for the baseline target", "file_path": BASELINE_DOC_REL, "rule_id": RULE_INSTALL})
     return violations

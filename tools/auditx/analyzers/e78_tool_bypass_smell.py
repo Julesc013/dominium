@@ -9,9 +9,9 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E78_TOOL_BYPASS_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-DISPATCH_PATH = "src/client/interaction/interaction_dispatch.py"
-ACTION_SURFACE_PATH = "src/interaction/action_surface_engine.py"
-AFFORDANCE_PATH = "src/client/interaction/affordance_generator.py"
+DISPATCH_PATH = "client/interaction/interaction_dispatch.py"
+ACTION_SURFACE_PATH = "interaction/action_surface_engine.py"
+AFFORDANCE_PATH = "client/interaction/affordance_generator.py"
 
 REQUIRED_RUNTIME_TOKENS = (
     "process.tool_bind",

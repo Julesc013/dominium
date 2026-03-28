@@ -15,13 +15,13 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.mobility.travel import (  # noqa: E402
+from mobility.travel import (  # noqa: E402
     build_travel_event,
     compute_mobility_proof_hashes,
     deterministic_travel_event_id,
     normalize_travel_event_rows,
 )
-from src.mobility.traffic import build_edge_occupancy, normalize_edge_occupancy_rows  # noqa: E402
+from mobility.traffic import build_edge_occupancy, normalize_edge_occupancy_rows  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 

@@ -9,7 +9,7 @@ TEST_TAGS = ["fast", "compat", "descriptor"]
 
 def run(repo_root: str):
     from tools.xstack.testx.tests.cap_neg1_testlib import emit_descriptor
-    from src.compat import descriptor_json_text
+    from compat import descriptor_json_text
 
     first = emit_descriptor(repo_root, "client")
     second = emit_descriptor(repo_root, "client")

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.geo import geo_project
+from geo import geo_project
 
 
 TEST_ID = "test_projection_stub_deterministic"

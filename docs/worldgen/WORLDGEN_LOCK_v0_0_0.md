@@ -59,7 +59,7 @@ Identity boundary:
 Root stream derivation rule:
 
 - `global_seed + generator_version_id + realism_profile_id + geo_cell_key + stream_name -> stream_seed`
-- Implementation surface: `src/geo/worldgen/worldgen_engine.py::worldgen_stream_seed`
+- Implementation surface: `geo/worldgen/worldgen_engine.py::worldgen_stream_seed`
 - Hash primitive: `canonical_sha256(...)`
 
 Canonical ordered stream registry for the MVP lock:

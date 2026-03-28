@@ -54,7 +54,7 @@ def run(repo_root: str):
         portal_state_rows,
         volume_rows,
     )
-    from src.interior.compartment_flow_engine import tick_compartment_flows
+    from interior.compartment_flow_engine import tick_compartment_flows
 
     kwargs = {
         "interior_graph_row": interior_graph(),

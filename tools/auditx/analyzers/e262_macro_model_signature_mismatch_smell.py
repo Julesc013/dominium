@@ -44,7 +44,7 @@ def run(graph, repo_root, changed_files=None):
     macro_set_schema_rel = "schema/system/macro_model_set.schema"
     macro_capsule_schema_rel = "schema/system/macro_capsule.schema"
     macro_registry_rel = "data/registries/macro_model_set_registry.json"
-    validation_rel = "src/system/system_validation_engine.py"
+    validation_rel = "system/system_validation_engine.py"
 
     macro_set_schema_text = _read_text(repo_root, macro_set_schema_rel)
     for token in (

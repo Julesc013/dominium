@@ -59,7 +59,7 @@ def _loss_policy_registry() -> dict:
 def _run_once(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.core.flow.flow_engine import tick_flow_channels
+    from core.flow.flow_engine import tick_flow_channels
 
     return tick_flow_channels(
         channels=[

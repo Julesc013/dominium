@@ -15,9 +15,9 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.appshell.ui_mode_selector import policy_row_for_product
-from src.compat.capability_negotiation import fallback_map_rows_by_capability_id
-from src.platform.platform_probe import (
+from appshell.ui_mode_selector import policy_row_for_product
+from compat.capability_negotiation import fallback_map_rows_by_capability_id
+from engine.platform.platform_probe import (
     MODE_TO_CAPABILITY_ID,
     canonical_platform_id,
     load_platform_capability_registry,

@@ -9,12 +9,12 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E98_COMPARTMENT_FLOW_DUPLICATION_SMELL"
 REQUIRED_FILES = {
-    "src/interior/compartment_flow_builder.py": (
+    "interior/compartment_flow_builder.py": (
         "normalize_flow_channel(",
         "build_compartment_flow_channels(",
         "channel.interior.",
     ),
-    "src/interior/compartment_flow_engine.py": (
+    "interior/compartment_flow_engine.py": (
         "tick_flow_channels(",
         "build_compartment_flow_channels(",
         "_pressure_from_air_mass(",
@@ -106,8 +106,8 @@ def run(graph, repo_root, changed_files=None):
             and "portal" in text
             and "tick_flow_channels(" not in text
             and "build_compartment_flow_channels(" not in text
-            and "from src.interior" not in text
-            and "import src.interior" not in text
+            and "from interior" not in text
+            and "import interior" not in text
         )
         if not suspicious_tokens:
             continue

@@ -1,0 +1,51 @@
+"""LOGIC-6 compilation exports."""
+
+from logic.compile.logic_compiler import (
+    PROCESS_LOGIC_COMPILE_REQUEST,
+    REFUSAL_LOGIC_COMPILE_INELIGIBLE,
+    REFUSAL_LOGIC_COMPILE_NETWORK_NOT_FOUND,
+    REFUSAL_LOGIC_COMPILE_NETWORK_NOT_VALIDATED,
+    REFUSAL_LOGIC_COMPILE_POLICY_UNREGISTERED,
+    REFUSAL_LOGIC_COMPILED_INVALID,
+    build_logic_compile_policy_row,
+    build_logic_compiled_introspection_artifact,
+    build_logic_compiled_forced_expand_event,
+    build_logic_compiled_invalid_explain_artifact,
+    build_logic_controller_interface_signature_row,
+    build_logic_controller_macro_capsule,
+    build_logic_controller_system_bundle,
+    compile_logic_network,
+    execute_logic_compiled_model,
+    logic_compile_policy_rows_by_id,
+    normalize_logic_compile_policy_rows,
+    validate_logic_compiled_model,
+)
+from logic.compile.logic_proof_engine import (
+    build_logic_equivalence_proof_row,
+    logic_equivalence_proof_hash,
+    verify_logic_equivalence_proof,
+)
+
+__all__ = [
+    "PROCESS_LOGIC_COMPILE_REQUEST",
+    "REFUSAL_LOGIC_COMPILE_NETWORK_NOT_FOUND",
+    "REFUSAL_LOGIC_COMPILE_NETWORK_NOT_VALIDATED",
+    "REFUSAL_LOGIC_COMPILE_POLICY_UNREGISTERED",
+    "REFUSAL_LOGIC_COMPILE_INELIGIBLE",
+    "REFUSAL_LOGIC_COMPILED_INVALID",
+    "build_logic_compile_policy_row",
+    "normalize_logic_compile_policy_rows",
+    "logic_compile_policy_rows_by_id",
+    "compile_logic_network",
+    "validate_logic_compiled_model",
+    "execute_logic_compiled_model",
+    "build_logic_compiled_introspection_artifact",
+    "build_logic_controller_interface_signature_row",
+    "build_logic_equivalence_proof_row",
+    "logic_equivalence_proof_hash",
+    "verify_logic_equivalence_proof",
+    "build_logic_controller_macro_capsule",
+    "build_logic_controller_system_bundle",
+    "build_logic_compiled_forced_expand_event",
+    "build_logic_compiled_invalid_explain_artifact",
+]

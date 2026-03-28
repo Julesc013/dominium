@@ -10,7 +10,7 @@ TEST_TAGS = ["fast", "signals", "addressing", "determinism"]
 
 
 def _run_once() -> dict:
-    from src.signals import address_from_recipient_address, resolve_address_recipients
+    from signals import address_from_recipient_address, resolve_address_recipients
 
     group_address = address_from_recipient_address(
         {

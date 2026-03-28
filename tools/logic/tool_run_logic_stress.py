@@ -14,8 +14,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.logic.eval import logic_degradation_order_rows, plan_logic_degradation_actions
-from src.meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
+from logic.eval import logic_degradation_order_rows, plan_logic_degradation_actions
+from meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
 from tools.logic.logic10_stress_common import _as_int, _write_json, generate_logic_stress_scenario
 from tools.logic.tool_replay_compiled_logic_window import replay_compiled_logic_window_from_payload
 from tools.logic.tool_replay_fault_window import replay_fault_window_from_payload

@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-CATALOG-REQUIRED"],
-                    related_paths=[rel_path, "src/worldgen/mw/mw_cell_generator.py", "data/registries/galaxy_priors_registry.json"],
+                    related_paths=[rel_path, "worldgen/mw/mw_cell_generator.py", "data/registries/galaxy_priors_registry.json"],
                 )
             )
             break

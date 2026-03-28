@@ -23,9 +23,9 @@ from tools.worldgen.earth0_probe import (  # noqa: E402
 )
 from tools.xstack.sessionx.process_runtime import execute_intent  # noqa: E402
 from tools.xstack.testx.tests.mobility_free_testlib import authority_context, law_profile, policy_context, seed_free_state  # noqa: E402
-from src.fields import build_field_cell  # noqa: E402
-from src.pollution import evaluate_pollution_dispersion  # noqa: E402
-from src.worldgen.earth import (  # noqa: E402
+from fields import build_field_cell  # noqa: E402
+from pollution import evaluate_pollution_dispersion  # noqa: E402
+from worldgen.earth import (  # noqa: E402
     DEFAULT_WIND_PARAMS_ID,
     evaluate_earth_tile_wind,
     wind_params_rows,

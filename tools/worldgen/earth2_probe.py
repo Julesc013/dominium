@@ -23,7 +23,7 @@ from tools.worldgen.earth0_probe import (  # noqa: E402
 )
 from tools.xstack.sessionx.process_runtime import execute_intent  # noqa: E402
 from tools.xstack.testx.tests.mobility_free_testlib import authority_context, law_profile, policy_context, seed_free_state  # noqa: E402
-from src.worldgen.earth import (  # noqa: E402
+from worldgen.earth import (  # noqa: E402
     DEFAULT_EARTH_CLIMATE_PARAMS_ID,
     climate_window_hash,
     earth_climate_params_rows,
@@ -327,7 +327,7 @@ def polar_daylight_report(repo_root: str) -> dict:
     climate_row = _earth_climate_params_row(repo_root)
     artifact_a = _as_map(_as_list(tile_a.get("generated_surface_tile_artifact_rows"))[0])
     artifact_b = _as_map(_as_list(tile_b.get("generated_surface_tile_artifact_rows"))[0])
-    from src.worldgen.earth import evaluate_earth_tile_climate  # noqa: E402
+    from worldgen.earth import evaluate_earth_tile_climate  # noqa: E402
 
     eval_a = evaluate_earth_tile_climate(
         artifact_row=artifact_a,

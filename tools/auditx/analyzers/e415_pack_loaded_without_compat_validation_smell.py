@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E415_PACK_LOADED_WITHOUT_COMPAT_VALIDATION_SMELL"
 REQUIRED_TOKENS = {
-    "src/packs/compat/pack_compat_validator.py": (
+    "packs/compat/pack_compat_validator.py": (
         "validate_pack_compat_manifest(",
         "REFUSAL_PACK_CONTRACT_MISMATCH",
         "REFUSAL_PACK_MISSING_REGISTRY",

@@ -28,9 +28,9 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic.eval import process_logic_network_evaluate
-    from src.logic.signal import process_signal_emit_pulse, process_signal_set
-    from src.system import (
+    from logic.eval import process_logic_network_evaluate
+    from logic.signal import process_signal_emit_pulse, process_signal_set
+    from system import (
         build_state_vector_definition_row,
         deserialize_state,
         normalize_state_vector_definition_rows,

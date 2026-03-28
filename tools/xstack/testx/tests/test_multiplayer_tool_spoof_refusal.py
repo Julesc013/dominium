@@ -33,8 +33,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.interaction.interaction_dispatch import run_interaction_command
-    from src.net.anti_cheat.anti_cheat_engine import ensure_runtime_channels
+    from client.interaction.interaction_dispatch import run_interaction_command
+    from net.anti_cheat.anti_cheat_engine import ensure_runtime_channels
     from tools.xstack.testx.tests.interaction_testlib import authority_context, base_state, policy_context
 
     perceived_model = {

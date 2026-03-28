@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.signals import (  # noqa: E402
+from signals import (  # noqa: E402
     REFUSAL_SIG_NONESSENTIAL_SEND,
     apply_sig_budget_degradation,
     process_message_verify_claim,

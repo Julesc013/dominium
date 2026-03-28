@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
                 related_invariants=[RULE_POLICY_DECLARED],
                 related_paths=[
                     rel_path or "data/audit/release_index_policy_report.json",
-                    "src/release/update_resolver.py",
+                    "release/update_resolver.py",
                     "tools/release/release_index_policy_common.py",
                 ],
             )

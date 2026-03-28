@@ -16,7 +16,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.maturity.metrics_engine import build_process_metrics_state_row
+    from process.maturity.metrics_engine import build_process_metrics_state_row
     from tools.process.tool_replay_drift_window import verify_drift_replay_window
     from tools.xstack.testx.tests.proc3_testlib import run_proc3_qc_case
 

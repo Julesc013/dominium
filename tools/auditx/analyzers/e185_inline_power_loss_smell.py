@@ -53,8 +53,8 @@ def run(graph, repo_root, changed_files=None):
         "schemas/",
     )
     allowed_files = {
-        "src/electric/power_network_engine.py",
-        "src/models/model_engine.py",
+        "electric/power_network_engine.py",
+        "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -93,7 +93,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-POWER-FLOW-THROUGH-BUNDLE"],
                             related_paths=[
                                 rel_path,
-                                "src/electric/power_network_engine.py",
+                                "electric/power_network_engine.py",
                                 "docs/electric/ELECTRICAL_CONSTITUTION.md",
                             ],
                         )

@@ -23,7 +23,7 @@ from tools.worldgen.earth0_probe import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.sessionx.process_runtime import execute_intent  # noqa: E402
 from tools.xstack.testx.tests.mobility_free_testlib import authority_context, law_profile, policy_context, seed_free_state  # noqa: E402
-from src.worldgen.earth import material_proxy_window_hash  # noqa: E402
+from worldgen.earth import material_proxy_window_hash  # noqa: E402
 
 
 EARTH10_ALLOWED_PROCESSES = ["process.earth_material_proxy_tick"]

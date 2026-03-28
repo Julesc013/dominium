@@ -11,12 +11,12 @@ TEST_ID = "testx.render.platform_layer_compiles_on_targets"
 TEST_TAGS = ["strict", "render", "platform"]
 
 TARGET_FILES = (
-    "src/platform/__init__.py",
-    "src/platform/platform_window.py",
-    "src/platform/platform_input.py",
-    "src/platform/platform_gfx.py",
-    "src/platform/platform_audio.py",
-    "src/platform/platform_input_routing.py",
+    "engine/platform/__init__.py",
+    "engine/platform/platform_window.py",
+    "engine/platform/platform_input.py",
+    "engine/platform/platform_gfx.py",
+    "engine/platform/platform_audio.py",
+    "engine/platform/platform_input_routing.py",
 )
 
 
@@ -33,8 +33,8 @@ def run(repo_root: str):
         except py_compile.PyCompileError:
             return {"status": "fail", "message": "platform abstraction file does not compile: {}".format(rel_path)}
 
-    from src.platform.platform_gfx import list_available_backends
-    from src.platform.platform_window import detect_platform_id
+    from engine.platform.platform_gfx import list_available_backends
+    from engine.platform.platform_window import detect_platform_id
 
     for token in ("windows", "macos", "linux"):
         resolved = detect_platform_id(token)

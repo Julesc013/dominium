@@ -33,7 +33,7 @@ def run(graph, repo_root, changed_files=None):
                 category="meta.identity_kind_mismatch_smell",
                 severity="BLOCKER",
                 confidence=0.99,
-                file_path=rel_path or "src/meta/identity/identity_validator.py",
+                file_path=rel_path or "meta/identity/identity_validator.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "identity_validation_error",
                     str(item.get("message", "")).strip() or "universal identity block does not match canonical artifact expectations",
@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ALIGN_IDENTITY_KIND_ID_AND_REQUIRED_FIELDS_WITH_ARTIFACT_KIND",
                 related_invariants=[rule_id],
-                related_paths=[rel_path or "src/meta/identity/identity_validator.py", "docs/meta/UNIVERSAL_IDENTITY_MODEL.md"],
+                related_paths=[rel_path or "meta/identity/identity_validator.py", "docs/meta/UNIVERSAL_IDENTITY_MODEL.md"],
             )
         )
     return findings

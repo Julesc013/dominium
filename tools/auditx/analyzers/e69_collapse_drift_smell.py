@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E69_COLLAPSE_DRIFT_SMELL"
-MATERIALIZATION_ENGINE_PATH = "src/materials/materialization/materialization_engine.py"
+MATERIALIZATION_ENGINE_PATH = "materials/materialization/materialization_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 REQUIRED_ENGINE_TOKENS = (
     "invariant_delta",

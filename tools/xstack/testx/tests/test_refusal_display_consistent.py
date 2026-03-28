@@ -30,7 +30,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.interaction.interaction_dispatch import run_interaction_command
+    from client.interaction.interaction_dispatch import run_interaction_command
     from tools.xstack.testx.tests.interaction_testlib import (
         authority_context,
         interaction_action_registry,

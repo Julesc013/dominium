@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.electric.fault.fault_engine import detect_faults
+    from electric.fault.fault_engine import detect_faults
 
     edge_status_rows = [
         {

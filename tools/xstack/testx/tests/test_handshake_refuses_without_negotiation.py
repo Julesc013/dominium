@@ -12,7 +12,7 @@ def run(repo_root: str):
 
     ensure_repo_on_path(repo_root)
 
-    from src.server.server_boot import submit_client_intent
+    from server.server_boot import submit_client_intent
     from tools.server.server_mvp0_probe import connect_loopback_client
 
     fixture = boot_fixture(repo_root, suffix="cap_neg2_missing_negotiation")

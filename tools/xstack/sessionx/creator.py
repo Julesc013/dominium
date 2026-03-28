@@ -9,13 +9,13 @@ from typing import Dict, List, Tuple
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.compatx.schema_registry import load_version_registry
-from src.universe import (
+from universe import (
     DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
     build_universe_contract_bundle_payload,
     pin_contract_bundle_metadata,
     validate_pinned_contract_bundle_metadata,
 )
-from src.modding import DEFAULT_MOD_POLICY_ID, load_mod_policy_registry, mod_policy_registry_hash, mod_policy_rows_by_id
+from modding import DEFAULT_MOD_POLICY_ID, load_mod_policy_registry, mod_policy_registry_hash, mod_policy_rows_by_id
 from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
@@ -26,9 +26,9 @@ from tools.xstack.registry_compile.bundle_profile import resolve_bundle_selectio
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from worldgen.core.pipeline import run_worldgen_pipeline
 
-from src.geo import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
-from src.meta.profile import resolve_effective_profile_snapshot
-from src.compat.data_format_loader import stamp_artifact_metadata
+from geo import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
+from meta.profile import resolve_effective_profile_snapshot
+from compat.data_format_loader import stamp_artifact_metadata
 
 from .common import (
     DEFAULT_TIMESTAMP_UTC,

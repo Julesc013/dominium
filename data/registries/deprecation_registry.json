@@ -6,7 +6,7 @@
       {
         "schema_version": "1.0.0",
         "deprecated_id": "legacy.runtime.graph_substrate",
-        "replacement_id": "src/core/graph/network_graph_engine.py",
+        "replacement_id": "core/graph/network_graph_engine.py",
         "reason": "ABS core graph substrate is canonical",
         "removal_target_version": "2.0.0",
         "status": "active",
@@ -34,7 +34,7 @@
         "extensions": {
           "source": "REFACTOR-PATCH-1",
           "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
-          "source_path": "src/fields/field_engine.py",
+          "source_path": "fields/field_engine.py",
           "line_start": 720
         },
         "stability": {
@@ -58,7 +58,7 @@
         "extensions": {
           "source": "REFACTOR-PATCH-1",
           "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
-          "source_path": "src/mechanics/structural_graph_engine.py",
+          "source_path": "mechanics/structural_graph_engine.py",
           "line_start": 550
         },
         "stability": {
@@ -82,7 +82,7 @@
         "extensions": {
           "source": "REFACTOR-PATCH-1",
           "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
-          "source_path": "src/mobility/maintenance/wear_engine.py",
+          "source_path": "mobility/maintenance/wear_engine.py",
           "line_start": 165
         },
         "stability": {
@@ -106,7 +106,7 @@
         "extensions": {
           "source": "REFACTOR-PATCH-1",
           "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
-          "source_path": "src/mobility/micro/constrained_motion_solver.py",
+          "source_path": "mobility/micro/constrained_motion_solver.py",
           "line_start": 309
         },
         "stability": {
@@ -130,7 +130,7 @@
         "extensions": {
           "source": "REFACTOR-PATCH-1",
           "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
-          "source_path": "src/mobility/traffic/traffic_engine.py",
+          "source_path": "mobility/traffic/traffic_engine.py",
           "line_start": 125
         },
         "stability": {
@@ -154,7 +154,7 @@
         "extensions": {
           "source": "REFACTOR-PATCH-1",
           "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
-          "source_path": "src/mobility/travel/travel_engine.py",
+          "source_path": "mobility/travel/travel_engine.py",
           "line_start": 621
         },
         "stability": {
@@ -178,7 +178,7 @@
         "extensions": {
           "source": "REFACTOR-PATCH-1",
           "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
-          "source_path": "src/signals/trust/trust_engine.py",
+          "source_path": "signals/trust/trust_engine.py",
           "line_start": 346
         },
         "stability": {

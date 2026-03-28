@@ -16,7 +16,7 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 def launch_spec(repo_root: str, *, suffix: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from src.client.local_server import build_local_server_launch_spec
+    from client.local_server import build_local_server_launch_spec
     from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL, MVP_PROFILE_BUNDLE_REL
 
     return build_local_server_launch_spec(

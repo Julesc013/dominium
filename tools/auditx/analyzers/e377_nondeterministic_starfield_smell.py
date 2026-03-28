@@ -8,9 +8,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E377_NONDETERMINISTIC_STARFIELD_SMELL"
-ASTRONOMY_REL = "src/worldgen/earth/sky/astronomy_proxy_engine.py"
-STARFIELD_REL = "src/worldgen/earth/sky/starfield_generator.py"
-SKY_VIEW_REL = "src/worldgen/earth/sky/sky_view_engine.py"
+ASTRONOMY_REL = "worldgen/earth/sky/astronomy_proxy_engine.py"
+STARFIELD_REL = "worldgen/earth/sky/starfield_generator.py"
+SKY_VIEW_REL = "worldgen/earth/sky/sky_view_engine.py"
 PROBE_REL = "tools/worldgen/earth4_probe.py"
 REPLAY_REL = "tools/worldgen/tool_replay_sky_view.py"
 DOC_REL = "docs/worldgen/EARTH_SKY_STARFIELD_MODEL.md"

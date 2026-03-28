@@ -78,7 +78,7 @@ def _perceived_model():
 def _candidate_row(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.infrastructure.formalization import build_inference_candidate
+    from infrastructure.formalization import build_inference_candidate
 
     return build_inference_candidate(
         formalization_id="formalization.overlay.alpha",
@@ -100,7 +100,7 @@ def _snapshot(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.inspection.inspection_engine import build_inspection_snapshot_artifact
+    from inspection.inspection_engine import build_inspection_snapshot_artifact
 
     snapshot, _diag = build_inspection_snapshot_artifact(
         request_row=_request(),
@@ -127,7 +127,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.interaction.inspection_overlays import build_inspection_overlays
+    from client.interaction.inspection_overlays import build_inspection_overlays
 
     state = _state()
     state["formalization_inference_candidates"] = [_candidate_row(repo_root)]

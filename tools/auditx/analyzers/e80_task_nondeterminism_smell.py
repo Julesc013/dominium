@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E80_TASK_NONDETERMINISM_SMELL"
-TASK_ENGINE_PATH = "src/interaction/task/task_engine.py"
+TASK_ENGINE_PATH = "interaction/task/task_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 
 REQUIRED_TASK_TOKENS = (

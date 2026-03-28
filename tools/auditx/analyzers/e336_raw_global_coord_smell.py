@@ -83,7 +83,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-RAW-GLOBAL-COORDS"],
-                    related_paths=[rel_path, "src/geo/frame/frame_engine.py"],
+                    related_paths=[rel_path, "geo/frame/frame_engine.py"],
                 )
             )
             break

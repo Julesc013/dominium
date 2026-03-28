@@ -51,8 +51,8 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "src/mobility/signals/signal_engine.py",
-        "src/mobility/signals/__init__.py",
+        "mobility/signals/signal_engine.py",
+        "mobility/signals/__init__.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

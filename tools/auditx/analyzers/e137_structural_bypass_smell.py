@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E137_STRUCTURAL_BYPASS_SMELL"
 RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-MECH_ENGINE_REL = "src/mechanics/structural_graph_engine.py"
+MECH_ENGINE_REL = "mechanics/structural_graph_engine.py"
 
 _FAILURE_ASSIGN_RE = re.compile(r"failure_state[^\n=]*=\s*[\"']failed[\"']", re.IGNORECASE)
 

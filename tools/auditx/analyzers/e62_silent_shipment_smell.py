@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E62_SILENT_SHIPMENT_SMELL"
-LOGISTICS_ENGINE_PATH = "src/logistics/logistics_engine.py"
+LOGISTICS_ENGINE_PATH = "logistics/logistics_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 ALLOWED_MUTATION_PREFIXES = (
     "tools/xstack/sessionx/process_runtime.py",

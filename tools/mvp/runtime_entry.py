@@ -13,8 +13,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.appshell import appshell_main
-from src.compat import descriptor_json_text, emit_product_descriptor
+from appshell import appshell_main
+from compat import descriptor_json_text, emit_product_descriptor
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
@@ -156,7 +156,7 @@ def _legacy_main(entrypoint: str, argv: Sequence[str] | None = None) -> int:
         print(descriptor_json_text(dict(emitted.get("descriptor") or {})))
         return 0
     if resolved_entrypoint == "client" and bool(args.local_singleplayer):
-        from src.client.local_server import request_local_server_control, run_local_server_ticks, start_local_singleplayer
+        from client.local_server import request_local_server_control, run_local_server_ticks, start_local_singleplayer
 
         started = start_local_singleplayer(
             repo_root=repo_root,

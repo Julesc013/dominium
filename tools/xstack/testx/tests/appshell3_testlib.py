@@ -16,7 +16,7 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 def build_surface(repo_root: str, *, product_id: str = "client", layout_id: str = "", backend_override: str = "lite") -> dict:
     ensure_repo_on_path(repo_root)
-    from src.appshell.tui import build_tui_surface
+    from appshell.tui import build_tui_surface
 
     return build_tui_surface(
         repo_root,
@@ -27,5 +27,5 @@ def build_surface(repo_root: str, *, product_id: str = "client", layout_id: str 
 
 
 def tui_source_text(repo_root: str) -> str:
-    path = os.path.join(repo_root, "src", "appshell", "tui", "tui_engine.py")
+    path = os.path.join(repo_root, "appshell", "tui", "tui_engine.py")
     return open(path, "r", encoding="utf-8").read()

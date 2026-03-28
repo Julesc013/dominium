@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.time import (  # noqa: E402
+from engine.time import (  # noqa: E402
     normalize_proper_time_state_rows,
     normalize_time_adjust_event_rows,
     normalize_time_mapping_cache_rows,

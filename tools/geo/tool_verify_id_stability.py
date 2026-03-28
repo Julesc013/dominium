@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.geo import (  # noqa: E402
+from geo import (  # noqa: E402
     geo_cell_key_from_position,
     geo_object_id,
     geo_refine_cell_key,

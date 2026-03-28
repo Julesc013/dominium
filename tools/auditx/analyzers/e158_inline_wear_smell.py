@@ -49,7 +49,7 @@ def run(graph, repo_root, changed_files=None):
         "docs/",
     )
     allowed_files = {
-        "src/mobility/maintenance/wear_engine.py",
+        "mobility/maintenance/wear_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -91,7 +91,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "src/mobility/maintenance/wear_engine.py",
+                                "mobility/maintenance/wear_engine.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

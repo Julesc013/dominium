@@ -39,8 +39,8 @@ _SKIP_PREFIXES = (
 )
 
 _ALLOWED_FILES = {
-    "src/chem/degradation/degradation_engine.py",
-    "src/models/model_engine.py",
+    "chem/degradation/degradation_engine.py",
+    "models/model_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/repox/check.py",
 }
@@ -107,7 +107,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "src/chem/degradation/degradation_engine.py",
+                                "chem/degradation/degradation_engine.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

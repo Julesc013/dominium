@@ -39,7 +39,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    macro_engine_rel = "src/system/macro/macro_capsule_engine.py"
+    macro_engine_rel = "system/macro/macro_capsule_engine.py"
     runtime_text = _read_text(repo_root, runtime_rel)
 
     for token in (
@@ -81,8 +81,8 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         runtime_rel,
         macro_engine_rel,
-        "src/control/proof/control_proof_bundle.py",
-        "src/system/forensics/system_forensics_engine.py",
+        "control/proof/control_proof_bundle.py",
+        "system/forensics/system_forensics_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

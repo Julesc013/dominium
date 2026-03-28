@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E25_OMNISCIENT_MAP_SMELL"
-TARGET_PATH = "src/diegetics/instrument_kernel.py"
+TARGET_PATH = "diegetics/instrument_kernel.py"
 FORBIDDEN_PATTERN = re.compile(r"\b(truth_overlay|truth_model|universe_state)\b", re.IGNORECASE)
 REQUIRED_TOKENS = (
     "_map_entries_from_memory(",

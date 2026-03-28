@@ -33,7 +33,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    effect_engine_rel = "src/control/effects/effect_engine.py"
+    effect_engine_rel = "control/effects/effect_engine.py"
     if not _read_text(repo_root, effect_engine_rel):
         findings.append(
             make_finding(

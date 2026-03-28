@@ -144,7 +144,7 @@ def _viewer_layer_sources() -> dict:
 @lru_cache(maxsize=4)
 def _viewer_shell_fixture_cached(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from src.client.ui.viewer_shell import build_viewer_shell_state
+    from client.ui.viewer_shell import build_viewer_shell_state
     from tools.xstack.testx.tests.emb0_testlib import seed_embodied_state
     from tools.xstack.testx.tests.geo9_testlib import overlay_fixture_merge_result
 
@@ -190,7 +190,7 @@ def viewer_shell_fixture(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _redacted_map_fixture_cached(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from src.client.ui.map_views import build_map_view_set
+    from client.ui.map_views import build_map_view_set
 
     perceived_model = {
         "viewpoint_id": "viewpoint.ux0.redaction",
@@ -246,7 +246,7 @@ def redacted_map_fixture(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _candidate_system_rows_cached(repo_root: str) -> list[dict]:
     _ensure_repo_root(repo_root)
-    from src.worldgen.mw import list_systems_in_cell
+    from worldgen.mw import list_systems_in_cell
     from tools.xstack.testx.tests.geo8_testlib import seed_worldgen_state, worldgen_cell_key
 
     worldgen_state = seed_worldgen_state()

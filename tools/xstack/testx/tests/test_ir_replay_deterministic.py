@@ -18,7 +18,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control import reconstruct_ir_action_sequence, verify_and_compile_control_ir
+    from control import reconstruct_ir_action_sequence, verify_and_compile_control_ir
     from tools.xstack.compatx.canonical_json import canonical_sha256
     from tools.xstack.testx.tests.control_ir_testlib import deep_copy_inputs
 

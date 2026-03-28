@@ -11,7 +11,7 @@ import sys
 import time
 from typing import Mapping, Sequence
 
-from src.lib.install import (
+from lib.install import (
     build_product_build_descriptor,
     deterministic_fingerprint as install_deterministic_fingerprint,
     merge_contract_ranges,
@@ -21,18 +21,18 @@ from src.lib.install import (
     stable_install_id,
     validate_install_manifest,
 )
-from src.lib.instance import (
+from lib.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from src.meta.identity import IDENTITY_KIND_INSTALL, IDENTITY_KIND_INSTANCE, attach_universal_identity_block
-from src.governance import (
+from meta.identity import IDENTITY_KIND_INSTALL, IDENTITY_KIND_INSTANCE, attach_universal_identity_block
+from governance import (
     DEFAULT_GOVERNANCE_PROFILE_REL,
     governance_profile_hash,
     load_governance_profile,
 )
-from src.release import (
+from release import (
     DEFAULT_INSTALL_PROFILE_ID,
     build_default_component_install_plan,
     build_release_manifest,
@@ -68,6 +68,11 @@ DEFAULT_STORE_ROOT_ID = "store.default"
 DEFAULT_INSTANCE_ID = "instance.default"
 DEFAULT_INSTANCE_KIND = "instance.client"
 DEFAULT_SESSION_TEMPLATE_ID = "session.mvp_default"
+PREFERRED_RUNTIME_LOCKS = (
+    "data/restructure/src_domain_mapping_lock_approved_v4.json",
+    "data/restructure/src_domain_mapping_lock_approved_v3.json",
+    "data/restructure/src_domain_mapping_lock_approved_v2.json",
+)
 
 PRODUCT_SPECS = (
     {"product_id": "engine", "module": "tools.appshell.product_stub_cli", "callable": "main", "prefix": ["--product-id", "engine", "--"]},
@@ -79,7 +84,8 @@ PRODUCT_SPECS = (
 )
 PRODUCT_IDS = tuple(str(row["product_id"]) for row in PRODUCT_SPECS)
 
-RUNTIME_SOURCE_ROOTS = ("src", "tools")
+DEFAULT_RUNTIME_SOURCE_ROOTS = ("src", "tools")
+EXCLUDED_RUNTIME_TOP_LEVEL = {"app", "attic", "build", "data", "dist", "docs", "legacy", "libs", "schema", "schemas", "scripts", "tests", "tmp"}
 EXCLUDED_RUNTIME_PREFIXES = (
     "tools/auditx",
     "tools/convergence",
@@ -130,7 +136,7 @@ EXCLUDED_RUNTIME_FILES = {
 }
 EXCLUDED_DIST_MARKERS = (".git", ".pytest_cache", "__pycache__", "tests", "fixtures", "testdata", "tmp")
 EXCLUDED_FILE_SUFFIXES = (".py", ".pyi", ".pdb", ".log", ".tmp")
-ALLOWED_TOP_LEVEL = {
+BASE_ALLOWED_TOP_LEVEL = {
     "LICENSE",
     "README",
     "bin",
@@ -158,6 +164,60 @@ def _norm(path: str) -> str:
 
 def _repo_root(repo_root: str) -> str:
     return os.path.normpath(os.path.abspath(_token(repo_root) or "."))
+
+
+def _has_python_runtime_content(path: str) -> bool:
+    if os.path.isfile(path):
+        return path.endswith(".py") or path.endswith(".pyc")
+    if not os.path.isdir(path):
+        return False
+    for current_root, dirnames, filenames in os.walk(path):
+        dirnames[:] = sorted(name for name in dirnames if name not in EXCLUDED_RUNTIME_BASENAMES)
+        for name in sorted(filenames):
+            if name.endswith(".py") or name.endswith(".pyc"):
+                return True
+    return False
+
+
+def _runtime_source_roots(repo_root: str) -> tuple[str, ...]:
+    root = _repo_root(repo_root)
+    rows: list[str] = []
+    for rel_path in PREFERRED_RUNTIME_LOCKS:
+        abs_path = os.path.join(root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            continue
+        payload = _read_json(abs_path)
+        approved_rows = [dict(row) for row in list(payload.get("approved_for_xi5") or []) if isinstance(row, Mapping)]
+        for row in approved_rows:
+            source_path = _norm(row.get("source_path"))
+            target_path = _norm(row.get("target_path"))
+            if not target_path:
+                continue
+            target_entry = target_path.split("/", 1)[0] if "/" in target_path else target_path
+            if not target_entry:
+                continue
+            target_abs_path = os.path.join(root, target_entry.replace("/", os.sep))
+            if not _has_python_runtime_content(target_abs_path):
+                continue
+            rows.append(target_entry)
+        break
+    for fallback in DEFAULT_RUNTIME_SOURCE_ROOTS:
+        abs_path = os.path.join(root, fallback)
+        if _has_python_runtime_content(abs_path) and fallback not in rows:
+            rows.append(_norm(fallback))
+    return tuple(sorted(dict.fromkeys(rows)))
+
+
+def _allowed_top_level_names(repo_root: str) -> set[str]:
+    root = _repo_root(repo_root)
+    rows: list[str] = []
+    for name in sorted(os.listdir(root)):
+        if name.startswith(".") or name in EXCLUDED_RUNTIME_TOP_LEVEL:
+            continue
+        abs_path = os.path.join(root, name)
+        if _has_python_runtime_content(abs_path):
+            rows.append(_norm(name))
+    return set(BASE_ALLOWED_TOP_LEVEL) | set(rows)
 
 
 def _bundle_root(output_root: str, platform_tag: str, channel_id: str) -> str:
@@ -238,7 +298,7 @@ def _compile_runtime_tree(repo_root: str, bundle_root: str) -> dict:
             "--target-root",
             target_root,
             "--roots-json",
-            json.dumps(list(RUNTIME_SOURCE_ROOTS)),
+            json.dumps(list(_runtime_source_roots(source_root))),
             "--excluded-prefixes-json",
             json.dumps(list(EXCLUDED_RUNTIME_PREFIXES)),
             "--excluded-basenames-json",
@@ -437,6 +497,8 @@ def _wrapper_script_text(product_spec: Mapping[str, object]) -> str:
             "PRODUCT_ID = {!r}".format(product_id),
             "if BUNDLE_ROOT not in sys.path:",
             "    sys.path.insert(0, BUNDLE_ROOT)",
+            "from tools.import_bridge import install_src_aliases",
+            "install_src_aliases(BUNDLE_ROOT)",
             "sys.argv[0] = PORTABLE_EXECUTABLE_PATH",
             "BUILD_FILE = os.path.join(BUNDLE_ROOT, 'manifests', 'build_number.txt')",
             "if 'DOMINIUM_FIXED_BUILD_NUMBER' not in os.environ and os.path.isfile(BUILD_FILE):",
@@ -502,8 +564,8 @@ def _wrapper_script_text(product_spec: Mapping[str, object]) -> str:
             "    return prefix + values",
             "",
             "def _emit_descriptor(values: list[str]) -> int:",
-            "    from src.compat import descriptor_json_text, emit_product_descriptor",
-            "    from src.platform.platform_probe import probe_platform_descriptor",
+            "    from compat import descriptor_json_text, emit_product_descriptor",
+            "    from engine.platform.platform_probe import probe_platform_descriptor",
             "",
             "    descriptor_file = _value_after(values, '--descriptor-file')",
             "    platform_probe = probe_platform_descriptor(",
@@ -1111,7 +1173,7 @@ def build_dist_minimize_report(bundle_root: str) -> dict:
         for path in _iter_json_files(os.path.join(root, "store", "packs"))
         if os.path.basename(path) == "pack.alias.json"
     )
-    unexpected_top_level = sorted(name for name in os.listdir(root) if name not in ALLOWED_TOP_LEVEL)
+    unexpected_top_level = sorted(name for name in os.listdir(root) if name not in _allowed_top_level_names(root))
     dev_artifacts = sorted(
         rel_path
         for rel_path in _iter_bundle_files(root)

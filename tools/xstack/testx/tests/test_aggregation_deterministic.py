@@ -10,7 +10,7 @@ TEST_TAGS = ["fast", "signals", "aggregation", "determinism"]
 
 
 def _run_once() -> dict:
-    from src.signals import build_signal_channel, process_signal_aggregation_tick
+    from signals import build_signal_channel, process_signal_aggregation_tick
 
     channel_rows = [
         build_signal_channel(

@@ -24,7 +24,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.maturity.maturity_engine import (
+    from process.maturity.maturity_engine import (
         process_capsule_eligibility_status,
         process_lifecycle_policy_rows_by_id,
     )

@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
     "src/logic/fault/",
     "src/logic/noise/",
-    "src/logic/eval/sense_engine.py",
+    "logic/eval/sense_engine.py",
     "tools/logic/tool_replay_fault_window.py",
 )
 
@@ -84,7 +84,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    noise_rel = "src/logic/noise/noise_engine.py"
+    noise_rel = "logic/noise/noise_engine.py"
     noise_text = _read_text(repo_root, noise_rel)
     for token in ("kind == \"quantize\"", "kind == \"named_rng\"", "rng_stream_name", "build_logic_noise_decision_row("):
         if token in noise_text:

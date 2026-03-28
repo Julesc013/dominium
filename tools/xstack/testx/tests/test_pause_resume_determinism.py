@@ -10,7 +10,7 @@ TEST_TAGS = ["strict", "time", "determinism"]
 
 
 def _run_sequence() -> dict:
-    from src.time.time_engine import advance_time, ensure_simulation_time, ensure_time_control
+    from engine.time.time_engine import advance_time, ensure_simulation_time, ensure_time_control
     from tools.xstack.compatx.canonical_json import canonical_sha256
     from tools.xstack.testx.tests.time_rs3_testlib import default_variable_dt_policy_context
 

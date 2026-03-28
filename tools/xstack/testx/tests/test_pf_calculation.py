@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.electric.power_network_engine import compute_pf_permille
+    from electric.power_network_engine import compute_pf_permille
 
     if int(compute_pf_permille(active_p=80, apparent_s=100)) != 800:
         return {"status": "fail", "message": "expected PF=800 permille for P=80,S=100"}

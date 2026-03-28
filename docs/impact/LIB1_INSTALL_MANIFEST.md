@@ -10,9 +10,9 @@ Replacement Target: legacy reference surface retained without current binding au
 LIB-1 deterministic install manifests, build selection, and multi-install registration
 
 Touched Paths:
-- src/appshell/bootstrap.py
-- src/appshell/config_loader.py
-- src/lib/install/install_validator.py
+- appshell/bootstrap.py
+- appshell/config_loader.py
+- lib/install/install_validator.py
 - tools/launcher/launcher_cli.py
 - tools/ops/ops_cli.py
 - tools/setup/setup_cli.py

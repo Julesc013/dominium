@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping
 
-from src.compat.migration_lifecycle import (
+from compat.migration_lifecycle import (
     ARTIFACT_KIND_BLUEPRINT,
     ARTIFACT_KIND_COMPONENT_GRAPH,
     ARTIFACT_KIND_IDS,
@@ -29,9 +29,10 @@ from src.compat.migration_lifecycle import (
     load_migration_rows,
     plan_migration_path,
 )
-from src.lib.install import validate_install_manifest, write_json as write_install_json
-from src.lib.instance import validate_instance_manifest, write_json as write_instance_json
-from src.lib.save import migrate_save_manifest, validate_save_manifest, write_json as write_save_json
+from lib.install import validate_install_manifest, write_json as write_install_json
+from lib.instance import validate_instance_manifest, write_json as write_instance_json
+from lib.save import migrate_save_manifest, validate_save_manifest, write_json as write_save_json
+from tools.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -169,7 +170,7 @@ def apply_artifact_migration(
 
     output_payload: dict
     if _token(artifact_kind_id) in _PACK_COMPAT_KIND_MAP:
-        from src.compat.data_format_loader import load_versioned_artifact
+        from compat.data_format_loader import load_versioned_artifact
 
         migrated, meta, error = load_versioned_artifact(
             repo_root=root,
@@ -304,18 +305,19 @@ def build_migration_lifecycle_report(repo_root: str) -> dict:
             }
         )
     for rel_path, token, rule_id, code, message in (
-        ("src/compat/data_format_loader.py", "migration_decision_record", RULE_POLICY, "loader_policy_missing", "PACK-COMPAT loader must emit migration_decision_record"),
-        ("src/lib/save/save_validator.py", "migration_decision_record", RULE_POLICY, "save_policy_missing", "save loader/validator must emit migration_decision_record"),
-        ("src/lib/install/install_validator.py", "migration_decision_record", RULE_POLICY, "install_policy_missing", "install loader/validator must emit migration_decision_record"),
-        ("src/lib/instance/instance_validator.py", "migration_decision_record", RULE_POLICY, "instance_policy_missing", "instance loader/validator must emit migration_decision_record"),
+        ("compat/data_format_loader.py", "migration_decision_record", RULE_POLICY, "loader_policy_missing", "PACK-COMPAT loader must emit migration_decision_record"),
+        ("lib/save/save_validator.py", "migration_decision_record", RULE_POLICY, "save_policy_missing", "save loader/validator must emit migration_decision_record"),
+        ("lib/install/install_validator.py", "migration_decision_record", RULE_POLICY, "install_policy_missing", "install loader/validator must emit migration_decision_record"),
+        ("lib/instance/instance_validator.py", "migration_decision_record", RULE_POLICY, "instance_policy_missing", "instance loader/validator must emit migration_decision_record"),
         ("tools/compat/tool_plan_migration.py", "plan_artifact_migration(", RULE_SILENT, "plan_tool_missing_hook", "migration planning tool must route through canonical planning helper"),
         ("tools/compat/tool_apply_migration.py", "apply_artifact_migration(", RULE_SILENT, "apply_tool_missing_hook", "migration apply tool must route through canonical apply helper"),
         ("tools/setup/setup_cli.py", "migrate-save", RULE_SILENT, "setup_migrate_save_missing", "setup CLI must expose migrate-save"),
         ("tools/setup/setup_cli.py", "migrate-instance", RULE_SILENT, "setup_migrate_instance_missing", "setup CLI must expose migrate-instance"),
     ):
         text = ""
+        effective_rel = resolve_repo_path_equivalent(root, rel_path)
         try:
-            with open(os.path.join(root, rel_path.replace("/", os.sep)), "r", encoding="utf-8") as handle:
+            with open(os.path.join(root, effective_rel.replace("/", os.sep)), "r", encoding="utf-8") as handle:
                 text = handle.read()
         except OSError:
             pass
@@ -335,7 +337,7 @@ def build_migration_lifecycle_report(repo_root: str) -> dict:
                 "rule_id": RULE_SILENT,
                 "code": "blueprint_migrate_expected",
                 "message": "legacy blueprint versions must resolve to deterministic migration chains",
-                "file_path": "src/compat/migration_lifecycle.py",
+                "file_path": "compat/migration_lifecycle.py",
             }
         )
     if _token(sample_save_read_only.get("decision_action_id")) != DECISION_READ_ONLY:
@@ -344,7 +346,7 @@ def build_migration_lifecycle_report(repo_root: str) -> dict:
                 "rule_id": RULE_READ_ONLY,
                 "code": "future_save_read_only_expected",
                 "message": "future save manifests must resolve to explicit read-only mode when policy allows it",
-                "file_path": "src/lib/save/save_validator.py",
+                "file_path": "lib/save/save_validator.py",
             }
         )
     if _token(sample_no_policy.get("refusal_code")) != REFUSAL_MIGRATION_NO_PATH:
@@ -353,7 +355,7 @@ def build_migration_lifecycle_report(repo_root: str) -> dict:
                 "rule_id": RULE_POLICY,
                 "code": "missing_policy_not_refused",
                 "message": "artifacts without a declared migration policy must refuse deterministically",
-                "file_path": "src/compat/migration_lifecycle.py",
+                "file_path": "compat/migration_lifecycle.py",
             }
         )
     report = {
@@ -409,7 +411,7 @@ def render_migration_lifecycle_baseline(report: Mapping[str, object]) -> str:
             "",
             "## Readiness",
             "",
-            "- migrate vs read-only vs refuse decisions are centralized in `src/compat/migration_lifecycle.py`",
+            "- migrate vs read-only vs refuse decisions are centralized in `compat/migration_lifecycle.py`",
             "- save/install/instance validators emit `migration_decision_record`",
             "- setup migration commands and standalone tools can route through the same deterministic planner/apply helpers",
             "",
@@ -443,7 +445,7 @@ def migration_lifecycle_violations(repo_root: str) -> list[dict]:
         ("schemas/migration_chain.schema.json", "compiled migration chain schema is required", RULE_POLICY),
         ("schemas/migration_decision_record.schema.json", "compiled migration decision record schema is required", RULE_POLICY),
         ("data/registries/migration_policy_registry.json", "migration policy registry is required", RULE_POLICY),
-        ("src/compat/migration_lifecycle.py", "migration lifecycle helper is required", RULE_POLICY),
+        ("compat/migration_lifecycle.py", "migration lifecycle helper is required", RULE_POLICY),
         ("tools/compat/migration_lifecycle_common.py", "migration lifecycle common helper is required", RULE_POLICY),
         ("tools/compat/tool_plan_migration.py", "migration planning tool is required", RULE_SILENT),
         ("tools/compat/tool_apply_migration.py", "migration apply tool is required", RULE_SILENT),

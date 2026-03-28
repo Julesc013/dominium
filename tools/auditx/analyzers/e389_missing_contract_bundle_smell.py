@@ -17,7 +17,7 @@ REQUIRED_FILE_TOKENS = {
         '"universe_contract_bundle_ref"',
         '"universe_contract_bundle_hash"',
     ),
-    "src/universe/universe_identity_builder.py": (
+    "universe/universe_identity_builder.py": (
         "pin_contract_bundle_metadata(",
         "validate_pinned_contract_bundle_metadata(",
     ),

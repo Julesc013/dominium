@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.provenance import compact_provenance_window
+    from meta.provenance import compact_provenance_window
     from tools.xstack.testx.tests.compile0_testlib import (
         cloned_state,
         compile_request_fixture,

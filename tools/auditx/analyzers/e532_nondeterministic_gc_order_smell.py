@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="lib.nondeterministic_gc_order_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "src/lib/store/gc_engine.py",
+                file_path=rel_path or "lib/store/gc_engine.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "gc_determinism_drift",
                     str(item.get("message", "")).strip() or "store GC deterministic ordering drift detected",
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="CANONICALIZE_REACHABILITY_TRAVERSAL_AND_GC_ACTION_ORDERING_BEFORE_HASHING_OR_MUTATION",
                 related_invariants=[RULE_DETERMINISTIC],
-                related_paths=[rel_path or "src/lib/store/gc_engine.py", "src/lib/store/reachability_engine.py"],
+                related_paths=[rel_path or "lib/store/gc_engine.py", "lib/store/reachability_engine.py"],
             )
         )
     return findings

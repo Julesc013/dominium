@@ -15,8 +15,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
     from tools.xstack.compatx.canonical_json import canonical_sha256
-    from src.geo import generate_worldgen_result
-    from src.worldgen.mw import (
+    from geo import generate_worldgen_result
+    from worldgen.mw import (
         planet_basic_artifact_hash_chain,
         planet_orbit_artifact_hash_chain,
         star_artifact_hash_chain,

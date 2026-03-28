@@ -52,8 +52,8 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "src/fields/field_engine.py",
-        "src/signals/transport/channel_executor.py",
+        "fields/field_engine.py",
+        "signals/transport/channel_executor.py",
     }
 
     for root in scan_roots:
@@ -96,7 +96,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-FIELD-SAMPLE-API-ONLY",
                                 "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
                             ],
-                            related_paths=[rel_path, "src/fields/field_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "fields/field_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

@@ -80,7 +80,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.signals import build_signal_channel, process_signal_send, tick_signal_transport
+    from signals import build_signal_channel, process_signal_send, tick_signal_transport
 
     channels = [
         build_signal_channel(

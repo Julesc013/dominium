@@ -30,7 +30,7 @@ def run(repo_root: str):
         sys.path.insert(0, test_dir)
 
     from interior_testlib import interior_graph, portal_flow_template_registry, portal_rows, portal_state_rows, volume_rows
-    from src.interior.compartment_flow_builder import build_compartment_flow_channels
+    from interior.compartment_flow_builder import build_compartment_flow_channels
 
     open_build = build_compartment_flow_channels(
         interior_graph_row=interior_graph(),

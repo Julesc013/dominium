@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
                             "INV-FLUID-BUDGETED",
                             "INV-FLUID-DEGRADE-LOGGED",
                         ],
-                        related_paths=[rel_path, "src/fluid/network/fluid_network_engine.py"],
+                        related_paths=[rel_path, "fluid/network/fluid_network_engine.py"],
                     )
                 )
                 break

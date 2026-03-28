@@ -13,7 +13,7 @@ centralizes compatibility checks and read-only queries.
 
 ## Location
 - API: `app/include/dominium/app/readonly_adapter.h`
-- Implementation: `app/src/readonly_adapter.c`
+- Implementation: `app/readonly_adapter.c`
 
 ## Contract
 - `dom_app_ro_open` runs `dom_app_compat_check` and fails on build-info ABI/struct

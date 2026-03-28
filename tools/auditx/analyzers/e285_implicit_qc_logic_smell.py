@@ -51,13 +51,13 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/process/process_run_engine.py",
-        "src/process/process_definition_validator.py",
-        "src/process/qc/qc_engine.py",
-        "src/process/qc/__init__.py",
-        "src/process/capsules/capsule_executor.py",
-        "src/process/research/inference_engine.py",
-        "src/process/software/pipeline_engine.py",
+        "process/process_run_engine.py",
+        "process/process_definition_validator.py",
+        "process/qc/qc_engine.py",
+        "process/qc/__init__.py",
+        "process/capsules/capsule_executor.py",
+        "process/research/inference_engine.py",
+        "process/software/pipeline_engine.py",
         "tools/process/tool_replay_qc_window.py",
         "tools/process/tool_generate_proc_stress.py",
         "tools/process/tool_run_proc_stress.py",
@@ -104,8 +104,8 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "src/process/qc/qc_engine.py",
-                                "src/process/process_run_engine.py",
+                                "process/qc/qc_engine.py",
+                                "process/process_run_engine.py",
                             ],
                         )
                     )

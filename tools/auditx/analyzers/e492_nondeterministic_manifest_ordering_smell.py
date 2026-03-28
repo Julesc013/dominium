@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="CANONICALIZE_RELEASE_MANIFEST_ORDERING",
                 related_invariants=["INV-RELEASE-MANIFEST-DETERMINISTIC"],
-                related_paths=[rel_path, "src/release/release_manifest_engine.py"],
+                related_paths=[rel_path, "release/release_manifest_engine.py"],
             )
         )
     return findings

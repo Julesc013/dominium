@@ -10,11 +10,11 @@ Change:
 Omega-7 trust strict verification and offline license-capability hook
 
 Touched Paths:
-- src/meta/identity/__init__.py
-- src/meta/identity/identity_validator.py
-- src/security/trust/__init__.py
-- src/security/trust/license_capability.py
-- src/security/trust/trust_verifier.py
+- meta/identity/__init__.py
+- meta/identity/identity_validator.py
+- security/trust/__init__.py
+- security/trust/license_capability.py
+- security/trust/trust_verifier.py
 
 Demand IDs:
 - sci.open_data_trust_network

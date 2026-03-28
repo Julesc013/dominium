@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E136_INFERENCE_TRUTH_MUTATION_SMELL"
-INFERENCE_REL = "src/infrastructure/formalization/inference_engine.py"
+INFERENCE_REL = "infrastructure/formalization/inference_engine.py"
 FORMALIZATION_DIR = "src/infrastructure/formalization"
 _FORBIDDEN_PATTERNS = (
     re.compile(r"\bstate\s*\["),

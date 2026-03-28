@@ -55,7 +55,7 @@ def base_state(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.research import build_experiment_definition_row
+    from process.research import build_experiment_definition_row
 
     process_definition = _default_process_definition(process_id=process_id, version=version)
     experiment_definition = build_experiment_definition_row(
@@ -260,7 +260,7 @@ def seed_candidate_for_promotion(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.process.research import build_candidate_process_definition_row
+    from process.research import build_candidate_process_definition_row
 
     process_token = str(process_id).strip()
     version_token = str(version).strip() or "1.0.0"

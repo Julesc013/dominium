@@ -16,13 +16,13 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.geo import (  # noqa: E402
+from geo import (  # noqa: E402
     build_geometry_cell_state,
     geometry_edit_policy_registry_hash,
     geometry_state_hash_surface,
 )
-from src.meta.provenance import normalize_compaction_marker_rows  # noqa: E402
-from src.materials import create_material_batch  # noqa: E402
+from meta.provenance import normalize_compaction_marker_rows  # noqa: E402
+from materials import create_material_batch  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.sessionx.process_runtime import _geometry_edit_policy_registry_payload, execute_intent  # noqa: E402
 from tools.xstack.testx.tests.mobility_free_testlib import (  # noqa: E402

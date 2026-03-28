@@ -74,8 +74,8 @@ def seed_embodied_state(
     gravity_vector: dict | None = None,
     include_camera: bool = True,
 ) -> dict:
-    from src.embodiment import instantiate_body_system
-    from src.fields import build_field_cell, build_field_layer
+    from embodiment import instantiate_body_system
+    from fields import build_field_cell, build_field_layer
     from tools.xstack.testx.tests.construction_testlib import base_state
 
     state = copy.deepcopy(base_state())

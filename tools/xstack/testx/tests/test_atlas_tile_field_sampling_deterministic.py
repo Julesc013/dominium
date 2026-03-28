@@ -21,7 +21,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.fields import build_field_cell, build_field_layer, get_field_value
+    from fields import build_field_cell, build_field_layer, get_field_value
 
     topology_registry = _read_json(repo_root, "data/registries/space_topology_profile_registry.json")
     partition_registry = _read_json(repo_root, "data/registries/partition_profile_registry.json")

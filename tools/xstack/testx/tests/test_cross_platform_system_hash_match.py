@@ -14,8 +14,8 @@ EXPECTED_ARTIFACT_HASH = "d52412cd0bd3289ab46e53cdfc46c4fd4356751c8e670ba55eb67b
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.geo import generate_worldgen_result
-    from src.worldgen.mw import star_system_artifact_hash_chain
+    from geo import generate_worldgen_result
+    from worldgen.mw import star_system_artifact_hash_chain
     from tools.xstack.testx.tests.geo8_testlib import seed_worldgen_state, worldgen_request_row
 
     state = seed_worldgen_state()

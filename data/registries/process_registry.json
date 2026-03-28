@@ -7579,7 +7579,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/signal/signal_store.py::process_signal_set"
+        "implementation_ref": "logic/signal/signal_store.py::process_signal_set"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -7646,7 +7646,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/signal/signal_store.py::process_signal_emit_pulse"
+        "implementation_ref": "logic/signal/signal_store.py::process_signal_emit_pulse"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -7711,7 +7711,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_create"
+        "implementation_ref": "logic/network/logic_network_engine.py::process_logic_network_create"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -7770,7 +7770,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_add_node"
+        "implementation_ref": "logic/network/logic_network_engine.py::process_logic_network_add_node"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -7829,7 +7829,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_add_edge"
+        "implementation_ref": "logic/network/logic_network_engine.py::process_logic_network_add_edge"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -7888,7 +7888,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_remove_edge"
+        "implementation_ref": "logic/network/logic_network_engine.py::process_logic_network_remove_edge"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -7954,7 +7954,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_validate"
+        "implementation_ref": "logic/network/logic_network_engine.py::process_logic_network_validate"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -8100,7 +8100,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_probe"
+        "implementation_ref": "logic/debug/debug_engine.py::process_logic_probe"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -8161,7 +8161,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_start"
+        "implementation_ref": "logic/debug/debug_engine.py::process_logic_trace_start"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -8223,7 +8223,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_tick"
+        "implementation_ref": "logic/debug/debug_engine.py::process_logic_trace_tick"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -8280,7 +8280,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_end"
+        "implementation_ref": "logic/debug/debug_engine.py::process_logic_trace_end"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -8330,7 +8330,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/fault/fault_engine.py::process_logic_fault_set"
+        "implementation_ref": "logic/fault/fault_engine.py::process_logic_fault_set"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -8380,7 +8380,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/fault/fault_engine.py::process_logic_fault_clear"
+        "implementation_ref": "logic/fault/fault_engine.py::process_logic_fault_clear"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -8454,7 +8454,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/eval/logic_eval_engine.py::process_logic_network_evaluate"
+        "implementation_ref": "logic/eval/logic_eval_engine.py::process_logic_network_evaluate"
       },
       "stability": {
         "schema_version": "1.0.0",
@@ -8508,7 +8508,7 @@
       "rng_streams_used": [],
       "version_introduced": 1,
       "extensions": {
-        "implementation_ref": "src/logic/eval/commit_engine.py::process_statevec_update"
+        "implementation_ref": "logic/eval/commit_engine.py::process_statevec_update"
       },
       "stability": {
         "schema_version": "1.0.0",

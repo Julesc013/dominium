@@ -27,7 +27,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    compile_engine_rel = "src/meta/compile/compile_engine.py"
+    compile_engine_rel = "meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "data/registries/process_registry.json"
     schema_rel = "schema/meta/equivalence_proof.schema"

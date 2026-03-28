@@ -39,7 +39,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    engine_rel = "src/system/certification/system_cert_engine.py"
+    engine_rel = "system/certification/system_cert_engine.py"
     process_registry_rel = "data/registries/process_registry.json"
 
     runtime_text = _read_text(repo_root, runtime_rel)

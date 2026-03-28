@@ -153,7 +153,7 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | INV-NO-PATH-BASED-SEMANTICS | Paths may locate artifacts but never define identity or authority semantics. | docs/architecture/CONTENT_AND_STORAGE_MODEL.md | tools/xstack/repox/check.py |
 | INV-PORTABLE-MODE-SELF-CONTAINED | Portable instances and instance bundles must embed all required reusable artifacts. | docs/architecture/INSTANCE_MODEL.md | tests/ops/content_store_tests.py |
 | INV-INSTALL-MANIFEST-REQUIRED | Registered installs must carry a canonical install manifest with build, contract, and store metadata. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
-| INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY | Install identity and validation must not depend on absolute host paths. | docs/architecture/INSTALL_MODEL.md | src/lib/install/install_validator.py |
+| INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY | Install identity and validation must not depend on absolute host paths. | docs/architecture/INSTALL_MODEL.md | lib/install/install_validator.py |
 | INV-BINARY-HASH-MATCHES-MANIFEST | Installed binaries and endpoint descriptors must match the manifest-declared hashes. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
 | INV-INSTANCE-USES-PACK-LOCK | Runnable instances must bind a canonical `pack_lock_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
 | INV-INSTANCE-USES-PROFILE-BUNDLE | Runnable instances must bind a canonical `profile_bundle_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |

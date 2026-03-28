@@ -51,8 +51,8 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/interior/compartment_flow_builder.py",
-        "src/models/model_engine.py",
+        "interior/compartment_flow_builder.py",
+        "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:

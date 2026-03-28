@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.release import infer_dist_root_from_manifest_path, verify_release_manifest  # noqa: E402
+from release import infer_dist_root_from_manifest_path, verify_release_manifest  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:

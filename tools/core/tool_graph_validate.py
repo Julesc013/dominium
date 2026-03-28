@@ -14,8 +14,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.core.graph.network_graph_engine import NetworkGraphError, normalize_network_graph  # noqa: E402
-from src.core.graph.routing_engine import RoutingError, normalize_graph_partition_row  # noqa: E402
+from core.graph.network_graph_engine import NetworkGraphError, normalize_network_graph  # noqa: E402
+from core.graph.routing_engine import RoutingError, normalize_graph_partition_row  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 

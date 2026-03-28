@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.materials.construction.construction_engine import REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL
+    from materials.construction.construction_engine import REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.construction_testlib import (
         authority_context,

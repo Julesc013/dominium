@@ -28,7 +28,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    core_path = "src/core/graph/network_graph_engine.py"
+    core_path = "core/graph/network_graph_engine.py"
     core_text = _read_text(repo_root, core_path)
     if not core_text:
         findings.append(

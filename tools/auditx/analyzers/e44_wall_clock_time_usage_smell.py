@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E44_WALL_CLOCK_TIME_USAGE_SMELL"
 SCAN_PATHS = (
-    "src/time/time_engine.py",
+    "engine/time/time_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/sessionx/scheduler.py",
 )
@@ -79,22 +79,22 @@ def run(graph, repo_root, changed_files=None):
                     make_finding(
                         analyzer_id=ANALYZER_ID,
                         category="time.wall_clock_time_usage_smell",
-                        severity="VIOLATION" if rel_path == "src/time/time_engine.py" else "RISK",
-                        confidence=0.97 if rel_path == "src/time/time_engine.py" else 0.9,
+                        severity="VIOLATION" if rel_path == "engine/time/time_engine.py" else "RISK",
+                        confidence=0.97 if rel_path == "engine/time/time_engine.py" else 0.9,
                         file_path=rel_path,
                         line=line_no,
                         evidence=[
                             "wall-clock API usage detected in deterministic time path",
                             str(line).strip()[:140],
                         ],
-                        suggested_classification="INVALID" if rel_path == "src/time/time_engine.py" else "NEEDS_REVIEW",
+                        suggested_classification="INVALID" if rel_path == "engine/time/time_engine.py" else "NEEDS_REVIEW",
                         recommended_action="REWRITE",
                         related_invariants=["INV-NO-WALLCLOCK-IN-TIME-ENGINE"],
                         related_paths=[rel_path],
                     )
                 )
 
-    time_engine_text = _read_text(repo_root, "src/time/time_engine.py")
+    time_engine_text = _read_text(repo_root, "engine/time/time_engine.py")
     for token in ("advance_time(", "_tick_dt_permille(", "policy_context", "time_tick_log"):
         if token in time_engine_text:
             continue
@@ -104,13 +104,13 @@ def run(graph, repo_root, changed_files=None):
                 category="time.wall_clock_time_usage_smell",
                 severity="RISK",
                 confidence=0.85,
-                file_path="src/time/time_engine.py",
+                file_path="engine/time/time_engine.py",
                 line=1,
                 evidence=["time engine missing deterministic governance token", token],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-NO-WALLCLOCK-IN-TIME-ENGINE"],
-                related_paths=["src/time/time_engine.py"],
+                related_paths=["engine/time/time_engine.py"],
             )
         )
 

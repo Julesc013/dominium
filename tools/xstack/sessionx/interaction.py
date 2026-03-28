@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict
 
-from src.client.interaction import (
+from client.interaction import (
     build_affordance_list as _build_affordance_list,
     build_inspection_overlays as _build_inspection_overlays,
     execute_affordance as _execute_affordance,

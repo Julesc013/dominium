@@ -43,9 +43,9 @@ def run(graph, repo_root, changed_files=None):
         os.path.join(repo_root, "tools", "xstack", "sessionx"),
     )
     allowed_files = {
-        "src/core/flow/flow_engine.py",
+        "core/flow/flow_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "src/models/model_engine.py",
+        "models/model_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):
@@ -76,7 +76,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
                             related_invariants=["INV-NO-COUPLED-QUANTITY-HACKS"],
-                            related_paths=[rel_path, "src/core/flow/flow_engine.py", "docs/architecture/QUANTITY_BUNDLES.md"],
+                            related_paths=[rel_path, "core/flow/flow_engine.py", "docs/architecture/QUANTITY_BUNDLES.md"],
                         )
                     )
                     continue

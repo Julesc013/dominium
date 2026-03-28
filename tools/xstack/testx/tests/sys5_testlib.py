@@ -25,7 +25,7 @@ def _configured_system_rows(state: dict, *, spec_target_kind: str, spec_target_i
 def base_state(*, compliance_grade: str = "pass") -> dict:
     if "." not in sys.path:
         sys.path.insert(0, ".")
-    from src.specs import build_spec_binding
+    from specs import build_spec_binding
 
     state = copy.deepcopy(sys0_cloned_state())
     system_id = "system.engine.alpha"

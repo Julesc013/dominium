@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict
 
-from src.client.render import build_render_model as _build_render_model
+from client.render import build_render_model as _build_render_model
 
 
 def build_render_model(

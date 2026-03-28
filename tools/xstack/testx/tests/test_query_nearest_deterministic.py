@@ -12,8 +12,8 @@ TEST_TAGS = ["fast", "mw", "worldgen", "query", "determinism"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.geo.frame.frame_engine import build_position_ref
-    from src.worldgen.mw import list_systems_in_cell, query_nearest_system
+    from geo.frame.frame_engine import build_position_ref
+    from worldgen.mw import list_systems_in_cell, query_nearest_system
     from tools.xstack.testx.tests.geo8_testlib import seed_worldgen_state, worldgen_cell_key
 
     state = seed_worldgen_state()

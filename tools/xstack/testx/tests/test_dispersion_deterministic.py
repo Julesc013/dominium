@@ -13,7 +13,7 @@ TEST_TAGS = ["fast", "pollution", "determinism", "dispersion"]
 def _snapshot(state: dict, pollutant_id: str) -> dict:
     if "src" not in sys.modules:
         pass
-    from src.pollution.dispersion_engine import concentration_field_id_for_pollutant
+    from pollution.dispersion_engine import concentration_field_id_for_pollutant
 
     field_id = concentration_field_id_for_pollutant(pollutant_id)
     cells = sorted(

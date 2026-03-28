@@ -17,7 +17,7 @@ Replacement Target: Release-pinned engine numeric policy and compiler matrix doc
   - process outputs
   - law evaluation results
   - proof/replay hashes
-- Deterministic rounding must route through the governed helpers in `src/meta/numeric.py`.
+- Deterministic rounding must route through the governed helpers in `meta/numeric.py`.
 - Reviewed approximation bridges are allowed only when they quantize back to canonical integer outputs and are explicitly inventoried by the numeric scans.
 
 ## Render Numeric Rules

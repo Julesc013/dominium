@@ -17,8 +17,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.fields import build_field_cell, build_field_layer  # noqa: E402
-from src.pollution.dispersion_engine import concentration_field_id_for_pollutant  # noqa: E402
+from fields import build_field_cell, build_field_layer  # noqa: E402
+from pollution.dispersion_engine import concentration_field_id_for_pollutant  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 

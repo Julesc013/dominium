@@ -9,13 +9,13 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E343_UNINSTRUMENTED_MAP_ACCESS_SMELL"
 REQUIRED_FILES = {
-    "src/geo/lens/lens_engine.py": (
+    "geo/lens/lens_engine.py": (
         "build_lens_request(",
         "build_projected_view_artifact(",
         "map_instrument_required",
         "allow_omniscient_debug",
     ),
-    "src/geo/lens/cctv_engine.py": (
+    "geo/lens/cctv_engine.py": (
         "build_signal_message_envelope(",
         "build_knowledge_receipt(",
     ),
@@ -74,7 +74,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-VIEWS-MUST-USE-LENS", "INV-OMNISCIENCE-PROFILED"],
-                related_paths=[rel_path, "src/geo/projection/projection_engine.py"],
+                related_paths=[rel_path, "geo/projection/projection_engine.py"],
             )
         )
     return findings

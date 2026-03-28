@@ -29,7 +29,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.logic import validate_logic_element_definitions
+    from logic import validate_logic_element_definitions
 
     logic_element_rows = _record_rows(
         _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_element_registry.json"),

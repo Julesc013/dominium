@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.worldgen.refinement.refinement_scheduler import build_scheduler_plan
+    from worldgen.refinement.refinement_scheduler import build_scheduler_plan
     from tools.worldgen.mw4_probe import refinement_request_for
 
     rows = [

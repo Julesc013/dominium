@@ -16,17 +16,17 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 from tools.xstack.registry_compile.lockfile import compute_pack_lock_hash
 from tools.xstack.sessionx.common import deterministic_seed_hex, identity_hash_for_payload
-from src.modding import (
+from modding import (
     DEFAULT_MOD_POLICY_ID,
     load_mod_policy_registry,
     load_pack_policy_descriptors,
     mod_policy_registry_hash,
     mod_policy_rows_by_id,
 )
-from src.packs.compat import attach_pack_compat_manifest
-from src.compat.data_format_loader import artifact_deterministic_fingerprint, load_versioned_artifact, stamp_artifact_metadata
-from src.meta.identity import IDENTITY_KIND_BUNDLE, UNIVERSAL_IDENTITY_FIELD, attach_universal_identity_block
-from src.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
+from packs.compat import attach_pack_compat_manifest
+from compat.data_format_loader import artifact_deterministic_fingerprint, load_versioned_artifact, stamp_artifact_metadata
+from meta.identity import IDENTITY_KIND_BUNDLE, UNIVERSAL_IDENTITY_FIELD, attach_universal_identity_block
+from universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 
 MVP_RUNTIME_VERSION = "0.0.0"
@@ -1012,7 +1012,7 @@ def build_runtime_bootstrap(
 
 
 def build_star_system_teleport_runtime_contract(system_row: Dict[str, object]) -> Dict[str, object]:
-    from src.worldgen.mw import build_system_teleport_plan
+    from worldgen.mw import build_system_teleport_plan
 
     plan = build_system_teleport_plan(system_row)
     if str(plan.get("result", "")) != "complete":

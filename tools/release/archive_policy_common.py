@@ -6,8 +6,8 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from src.governance import governance_profile_hash, load_governance_profile
-from src.release import (
+from governance import governance_profile_hash, load_governance_profile
+from release import (
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_MANIFEST_REL,
     load_release_index,
@@ -15,7 +15,7 @@ from src.release import (
     release_index_hash,
     write_release_index,
 )
-from src.release.archive_policy import (
+from release.archive_policy import (
     DEFAULT_ARCHIVE_BUNDLE_PREFIX,
     DEFAULT_ARCHIVE_RECORD_REL,
     DEFAULT_MIRROR_LIST,
@@ -727,7 +727,7 @@ def archive_policy_violations(repo_root: str) -> list[dict]:
         (ARCHIVE_RECORD_SCHEMA_REL, "archive_record schema is required", RULE_ARCHIVE_RECORD),
         (ARCHIVE_RECORD_SCHEMA_JSON_REL, "compiled archive_record schema is required", RULE_ARCHIVE_RECORD),
         (ARCHIVE_POLICY_REGISTRY_REL, "archive policy registry is required", RULE_ARCHIVE_RECORD),
-        ("src/release/archive_policy.py", "archive-policy release helpers are required", RULE_ARCHIVE_RECORD),
+        ("release/archive_policy.py", "archive-policy release helpers are required", RULE_ARCHIVE_RECORD),
         ("tools/release/archive_policy_common.py", "archive-policy helper is required", RULE_ARCHIVE_RECORD),
         ("tools/release/tool_archive_release.py", "archive release tool is required", RULE_ARCHIVE_RECORD),
         ("tools/release/tool_verify_archive.py", "archive verification tool is required", RULE_ARCHIVE_RECORD),

@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E49_UNBOUNDED_MICRO_EXPANSION_SMELL"
 REGISTRY_PATH = "data/registries/budget_envelope_registry.json"
-TRANSITION_CONTROLLER_PATH = "src/reality/transitions/transition_controller.py"
+TRANSITION_CONTROLLER_PATH = "reality/transitions/transition_controller.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 
 

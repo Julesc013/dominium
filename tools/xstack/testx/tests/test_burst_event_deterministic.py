@@ -50,7 +50,7 @@ def _graph_payload() -> dict:
 def _run_once(repo_root: str) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.fluid import solve_fluid_network_f1
+    from fluid import solve_fluid_network_f1
 
     return solve_fluid_network_f1(
         graph_row=_graph_payload(),

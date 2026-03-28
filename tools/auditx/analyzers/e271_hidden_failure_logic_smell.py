@@ -39,8 +39,8 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    reliability_engine_rel = "src/system/reliability/reliability_engine.py"
-    health_engine_rel = "src/system/reliability/system_health_engine.py"
+    reliability_engine_rel = "system/reliability/reliability_engine.py"
+    health_engine_rel = "system/reliability/system_health_engine.py"
     runtime_text = _read_text(repo_root, runtime_rel)
     reliability_text = _read_text(repo_root, reliability_engine_rel)
 
@@ -114,7 +114,7 @@ def run(graph, repo_root, changed_files=None):
         reliability_engine_rel,
         health_engine_rel,
         "tools/xstack/repox/check.py",
-        "src/system/forensics/system_forensics_engine.py",
+        "system/forensics/system_forensics_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

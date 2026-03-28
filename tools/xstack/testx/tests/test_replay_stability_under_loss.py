@@ -89,7 +89,7 @@ def _attenuation_registry() -> dict:
 
 
 def _hash_once() -> str:
-    from src.signals import build_signal_channel, process_signal_send, tick_signal_transport
+    from signals import build_signal_channel, process_signal_send, tick_signal_transport
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     channels = [

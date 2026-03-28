@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 
-from src.geo import (
+from geo import (
     build_default_overlay_manifest,
     build_effective_object_view,
     build_property_patch,

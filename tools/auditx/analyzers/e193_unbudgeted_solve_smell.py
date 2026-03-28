@@ -71,7 +71,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         runtime_rel,
-        "src/electric/power_network_engine.py",
+        "electric/power_network_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

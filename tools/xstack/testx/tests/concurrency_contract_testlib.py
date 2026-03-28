@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 
-from src.engine.concurrency.canonical_merge import (
+from engine.concurrency.canonical_merge import (
     build_field_sort_key,
     canonical_merge_mapping_groups,
 )

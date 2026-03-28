@@ -26,7 +26,7 @@ def _load_json(path: str) -> dict:
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.meta.instrumentation import normalize_instrumentation_surface_rows
+    from meta.instrumentation import normalize_instrumentation_surface_rows
 
     schema_checks = (
         (

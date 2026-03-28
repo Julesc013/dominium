@@ -15,6 +15,9 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
+from tools.import_bridge import install_src_aliases  # noqa: E402
+install_src_aliases(REPO_ROOT_HINT)
+
 from tools.worldgen.worldgen_lock_common import (  # noqa: E402
     WORLDGEN_BASELINE_SNAPSHOT_REL,
     WORLDGEN_VERIFY_DOC_REL,

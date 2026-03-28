@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E103_MOUNT_BYPASS_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-MOUNT_ENGINE_PATH = "src/interaction/mount/mount_engine.py"
+MOUNT_ENGINE_PATH = "interaction/mount/mount_engine.py"
 
 REQUIRED_RUNTIME_TOKENS = (
     "process.mount_attach",

@@ -12,8 +12,8 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E8_PRECISION_LEAK_SMELL"
 OBSERVATION_PATH = "tools/xstack/sessionx/observation.py"
 NET_FILES = (
-    "src/net/policies/policy_server_authoritative.py",
-    "src/net/srz/shard_coordinator.py",
+    "net/policies/policy_server_authoritative.py",
+    "net/srz/shard_coordinator.py",
 )
 
 

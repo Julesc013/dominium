@@ -27,7 +27,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    engine_rel = "src/logic/protocol/protocol_engine.py"
+    engine_rel = "logic/protocol/protocol_engine.py"
     engine_text = _read_text(repo_root, engine_rel)
     for token in ("sorted(", "arb.fixed_priority", "arb.time_slice", "arb.token", "build_arbitration_state_row("):
         if token in engine_text:

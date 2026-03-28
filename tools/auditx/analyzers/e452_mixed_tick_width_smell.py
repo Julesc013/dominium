@@ -10,7 +10,7 @@ if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 from analyzers.base import make_finding
-from src.time.time_anchor_scope import SCOPED_TIME_ANCHOR_PATHS
+from engine.time.time_anchor_scope import SCOPED_TIME_ANCHOR_PATHS
 from tools.time.time_anchor_common import scan_tick_width_violations
 
 

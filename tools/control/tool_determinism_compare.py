@@ -16,8 +16,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from src.control import build_control_intent, build_control_resolution  # noqa: E402
-from src.control.fidelity import arbitrate_fidelity_requests, build_fidelity_request  # noqa: E402
+from control import build_control_intent, build_control_resolution  # noqa: E402
+from control.fidelity import arbitrate_fidelity_requests, build_fidelity_request  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 

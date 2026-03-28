@@ -94,7 +94,7 @@ def policy_context() -> dict:
 
 
 def seed_signal_state(*, signal_count: int = 1, initial_aspect: str = "clear", initial_velocity: int = 0) -> dict:
-    from src.mobility.signals import build_signal_state_machine
+    from mobility.signals import build_signal_state_machine
     from tools.xstack.testx.tests.mobility_micro_testlib import seed_micro_state
 
     state = seed_micro_state(initial_velocity=int(initial_velocity))

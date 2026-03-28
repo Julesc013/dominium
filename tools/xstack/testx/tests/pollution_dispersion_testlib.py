@@ -21,8 +21,8 @@ def build_pollution_field_inputs(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.fields import build_field_cell, build_field_layer
-    from src.pollution.dispersion_engine import concentration_field_id_for_pollutant
+    from fields import build_field_cell, build_field_layer
+    from pollution.dispersion_engine import concentration_field_id_for_pollutant
 
     pollutant_token = str(pollutant_id).strip()
     concentration_field_id = str(concentration_field_id_for_pollutant(pollutant_token))

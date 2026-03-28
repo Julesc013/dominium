@@ -7,8 +7,8 @@ import os
 import re
 from typing import Mapping
 
-from src.meta.stability import build_stability_marker
-from src.meta.observability import (
+from meta.stability import build_stability_marker
+from meta.observability import (
     load_log_category_registry,
     load_log_message_key_registry,
     load_observability_guarantee_registry,
@@ -89,18 +89,18 @@ REQUIRED_MESSAGE_KEYS = {
     ],
 }
 PRINTF_SCAN_FILES = (
-    "src/appshell/logging/log_engine.py",
-    "src/diag/repro_bundle_builder.py",
-    "src/server/net/loopback_transport.py",
-    "src/server/runtime/tick_loop.py",
-    "src/appshell/diag/diag_snapshot.py",
+    "appshell/logging/log_engine.py",
+    "diag/repro_bundle_builder.py",
+    "server/net/loopback_transport.py",
+    "server/runtime/tick_loop.py",
+    "appshell/diag/diag_snapshot.py",
 )
 INTEGRATION_TOKENS = (
-    ("src/appshell/logging/log_engine.py", "validate_observability_event(", "runtime log engine must validate guaranteed-category events", RULE_GUARANTEES),
-    ("src/appshell/logging/log_engine.py", "redact_observability_mapping(", "runtime log engine must redact secret-like fields", RULE_SECRETS),
-    ("src/diag/repro_bundle_builder.py", "pack_verification_report.json", "repro bundle must include the pack verification report surface", RULE_GUARANTEES),
-    ("src/diag/repro_bundle_builder.py", "install_plan.json", "repro bundle must include the install-plan surface", RULE_GUARANTEES),
-    ("src/diag/repro_bundle_builder.py", "update_plan.json", "repro bundle must include the update-plan surface", RULE_GUARANTEES),
+    ("appshell/logging/log_engine.py", "validate_observability_event(", "runtime log engine must validate guaranteed-category events", RULE_GUARANTEES),
+    ("appshell/logging/log_engine.py", "redact_observability_mapping(", "runtime log engine must redact secret-like fields", RULE_SECRETS),
+    ("diag/repro_bundle_builder.py", "pack_verification_report.json", "repro bundle must include the pack verification report surface", RULE_GUARANTEES),
+    ("diag/repro_bundle_builder.py", "install_plan.json", "repro bundle must include the install-plan surface", RULE_GUARANTEES),
+    ("diag/repro_bundle_builder.py", "update_plan.json", "repro bundle must include the update-plan surface", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "update.check.result", "setup update check must emit the guaranteed update category", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "update.plan.generated", "setup update plan must emit the guaranteed update category", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "update.apply.completed", "setup update apply must emit the guaranteed update category", RULE_GUARANTEES),
@@ -110,7 +110,7 @@ INTEGRATION_TOKENS = (
     ("tools/setup/setup_cli.py", "lib.install.apply", "setup install apply must emit the guaranteed lib category", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "lib.save.migrated", "setup save migration must emit the guaranteed lib category", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "lib.instance.migrated", "setup instance migration must emit the guaranteed lib category", RULE_GUARANTEES),
-    ("src/appshell/supervisor/supervisor_engine.py", "category=\"supervisor\"", "supervisor runtime events must emit under the supervisor category", RULE_GUARANTEES),
+    ("appshell/supervisor/supervisor_engine.py", "category=\"supervisor\"", "supervisor runtime events must emit under the supervisor category", RULE_GUARANTEES),
     ("tools/appshell/supervisor_service.py", "category=\"supervisor\"", "supervisor service readiness must emit under the supervisor category", RULE_GUARANTEES),
     ("tools/appshell/supervised_product_host.py", "category=\"supervisor\"", "supervised child lifecycle events must emit under the supervisor category", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "appshell.refusal", "setup refusal paths must emit the refusal category", RULE_GUARANTEES),

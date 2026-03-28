@@ -100,7 +100,7 @@ but the APPSHELL-3 TUI must already model sessions as attachable logical tabs.
 
 ### Menu panel
 
-- renders the shared `src/ui/ui_model.py` state machine
+- renders the shared `ui/ui_model.py` state machine
 - shows validated instance/save/profile selections and command actions
 - emits only AppShell command invocations or selection events
 

@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.system import REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE
+    from system import REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE
     from tools.xstack.testx.tests.sys3_testlib import (
         base_state_two_systems,
         execute_system_roi_tick,

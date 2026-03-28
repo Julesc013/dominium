@@ -39,7 +39,7 @@ def seed_install_root(install_root: str, install_id: str, root_path: str = ".") 
 
 def load_engine(repo_root: str):
     ensure_repo_root(repo_root)
-    from src.lib.install import discover_install, load_runtime_install_registry
+    from lib.install import discover_install, load_runtime_install_registry
 
     return discover_install, load_runtime_install_registry
 

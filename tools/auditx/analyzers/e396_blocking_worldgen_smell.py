@@ -9,12 +9,12 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E396_BLOCKING_WORLDGEN_SMELL"
 REQUIRED_TOKENS = {
-    "src/client/ui/viewer_shell.py": (
+    "client/ui/viewer_shell.py": (
         '"nonblocking": True',
         '"source_kind": "derived.refinement_status_view"',
         '"provenance_tool_id": "tool.geo.explain_property_origin"',
     ),
-    "src/client/ui/teleport_controller.py": (
+    "client/ui/teleport_controller.py": (
         "process.refinement_request_enqueue",
         "process.camera_teleport",
         "build_refinement_request_record(",
@@ -30,8 +30,8 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "src/client/ui/viewer_shell.py": ("process.worldgen_request", "generate_worldgen_result("),
-    "src/client/ui/teleport_controller.py": ("process.worldgen_request", "generate_worldgen_result("),
+    "client/ui/viewer_shell.py": ("process.worldgen_request", "generate_worldgen_result("),
+    "client/ui/teleport_controller.py": ("process.worldgen_request", "generate_worldgen_result("),
 }
 
 

@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    engine_rel = "src/logic/debug/debug_engine.py"
+    engine_rel = "logic/debug/debug_engine.py"
     engine_text = _read_text(repo_root, engine_rel)
     for token in ("generate_measurement_observation(", "REFUSAL_LOGIC_DEBUG_REQUIRES_EXPAND", "available_instrument_type_ids"):
         if token in engine_text:

@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID  # noqa: E402
-from src.modding import DEFAULT_MOD_POLICY_ID  # noqa: E402
+from modding import DEFAULT_MOD_POLICY_ID  # noqa: E402
 from tools.xstack.sessionx.creator import (  # noqa: E402
     DEFAULT_BUDGET_POLICY_ID,
     DEFAULT_EXPERIENCE_ID,

@@ -9,7 +9,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 Touched Paths:
 - data/registries/action_template_registry.json
-- src/meta/__init__.py
+- meta/__init__.py
 - tools/xstack/sessionx/process_runtime.py
 - tools/xstack/testx/tests/test_hidden_state_violation_detected.py
 - docs/audit/WORKTREE_LEFTOVERS.md
@@ -22,5 +22,5 @@ Demand IDs:
 Notes:
 - Adds missing `task.assay`, `task.disassemble`, and `task.scan` action-template family mappings required for deterministic process/task grammar coverage.
 - Removes a false-positive `field.get` token in runtime hashing code without changing behavior.
-- Breaks a strict import cycle by lazy-loading META-REF exports in `src/meta/__init__.py`.
+- Breaks a strict import cycle by lazy-loading META-REF exports in `meta/__init__.py`.
 - Aligns hidden-state guard test fixture with profile resolution path (no legacy debug toggle).

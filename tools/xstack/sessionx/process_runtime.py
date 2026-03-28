@@ -9,54 +9,54 @@ import math
 import os
 from typing import Dict, List, Mapping, Tuple
 
-from src.reality.ledger import (
+from reality.ledger import (
     begin_process_accounting,
     emit_exception as ledger_emit_exception,
     finalize_process_accounting,
     last_ledger_hash,
     record_unaccounted_delta,
 )
-from src.performance.cost_engine import (
+from performance.cost_engine import (
     compute_cost_snapshot,
     evaluate_envelope,
     normalize_budget_envelope,
 )
-from src.performance.inspection_cache import (
+from performance.inspection_cache import (
     build_cache_key as inspection_build_cache_key,
     cache_lookup_or_store as inspection_cache_lookup_or_store,
 )
-from src.inspection.inspection_engine import (
+from inspection.inspection_engine import (
     InspectionError,
     build_inspection_snapshot_artifact,
     normalize_inspection_request_row,
 )
-from src.core.graph.network_graph_engine import (
+from core.graph.network_graph_engine import (
     NetworkGraphError,
     REFUSAL_CORE_GRAPH_INVALID,
     normalize_network_graph,
 )
-from src.core.graph.routing_engine import (
+from core.graph.routing_engine import (
     RoutingError,
     query_route_result,
 )
-from src.core.schedule.schedule_engine import (
+from core.schedule.schedule_engine import (
     REFUSAL_CORE_SCHEDULE_INVALID,
     ScheduleError,
     normalize_schedule,
     normalize_schedule_time_binding_rows,
     tick_schedules,
 )
-from src.core.state.state_machine_engine import (
+from core.state.state_machine_engine import (
     StateMachineError,
     apply_transition,
     normalize_state_machine,
 )
-from src.core.constraints.constraint_engine import (
+from core.constraints.constraint_engine import (
     build_constraint_enforcement_hooks,
     constraint_type_rows_by_id,
 )
-from src.core.flow import normalize_flow_channel as normalize_core_flow_channel
-from src.logistics.logistics_engine import (
+from core.flow import normalize_flow_channel as normalize_core_flow_channel
+from logistics.logistics_engine import (
     LogisticsError,
     build_inventory_index,
     create_manifest_and_commitment,
@@ -66,7 +66,7 @@ from src.logistics.logistics_engine import (
     routing_rule_rows_by_id,
     tick_manifests,
 )
-from src.materials.construction.construction_engine import (
+from materials.construction.construction_engine import (
     ConstructionError,
     REFUSAL_CONSTRUCTION_BLUEPRINT_MISSING,
     REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL,
@@ -74,7 +74,7 @@ from src.materials.construction.construction_engine import (
     create_construction_project,
     tick_construction_projects,
 )
-from src.materials.maintenance.decay_engine import (
+from materials.maintenance.decay_engine import (
     MaintenanceError,
     REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
     normalize_asset_health_state,
@@ -84,7 +84,7 @@ from src.materials.maintenance.decay_engine import (
     schedule_maintenance_commitments,
     tick_decay,
 )
-from src.materials.materialization.materialization_engine import (
+from materials.materialization.materialization_engine import (
     MaterializationError,
     REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED,
     dematerialize_structure_roi,
@@ -94,7 +94,7 @@ from src.materials.materialization.materialization_engine import (
     normalize_micro_part_instance_row,
     normalize_reenactment_descriptor_row,
 )
-from src.materials.commitments.commitment_engine import (
+from materials.commitments.commitment_engine import (
     CommitmentError,
     REFUSAL_COMMITMENT_FORBIDDEN,
     REFUSAL_COMMITMENT_INVALID_SCHEDULE,
@@ -108,8 +108,8 @@ from src.materials.commitments.commitment_engine import (
     resolve_causality_strictness_row,
     strictness_requires_commitment,
 )
-from src.materials import create_material_batch
-from src.chem import (
+from materials import create_material_batch
+from chem import (
     batch_quality_rows_by_batch_id,
     build_degradation_state,
     build_batch_quality_row,
@@ -121,11 +121,11 @@ from src.chem import (
     normalize_process_run_state_rows,
     process_run_rows_by_id,
 )
-from src.materials.provenance.event_stream_index import (
+from materials.provenance.event_stream_index import (
     build_event_stream_index,
     normalize_event_stream_index_row,
 )
-from src.interaction.task.task_engine import (
+from interaction.task.task_engine import (
     REFUSAL_TASK_BUDGET_EXCEEDED,
     REFUSAL_TASK_FORBIDDEN_BY_LAW,
     REFUSAL_TASK_TOOL_REQUIRED,
@@ -136,7 +136,7 @@ from src.interaction.task.task_engine import (
     set_task_status,
     tick_tasks,
 )
-from src.interaction.pose import (
+from interaction.pose import (
     PoseError,
     REFUSAL_POSE_FORBIDDEN_BY_LAW,
     REFUSAL_POSE_INVALID_POSTURE,
@@ -148,7 +148,7 @@ from src.interaction.pose import (
     grants_for_subject,
     normalize_pose_slot_rows,
 )
-from src.interaction.mount import (
+from interaction.mount import (
     MountError,
     REFUSAL_MOUNT_ALREADY_ATTACHED,
     REFUSAL_MOUNT_FORBIDDEN_BY_LAW,
@@ -157,20 +157,20 @@ from src.interaction.mount import (
     detach_mount_point,
     normalize_mount_point_rows,
 )
-from src.interior.compartment_flow_builder import (
+from interior.compartment_flow_builder import (
     normalize_compartment_state,
     normalize_leak_hazard,
     normalize_portal_flow_params,
 )
-from src.interior.compartment_flow_engine import (
+from interior.compartment_flow_engine import (
     CompartmentFlowEngineError,
     REFUSAL_COMPARTMENT_FLOW_BUDGET_EXCEEDED,
     REFUSAL_COMPARTMENT_FLOW_INVALID,
     resolve_compartment_flow_policy_row,
     tick_compartment_flows,
 )
-from src.interior.interior_engine import InteriorError, apply_portal_transition, path_exists
-from src.machines.port_engine import (
+from interior.interior_engine import InteriorError, apply_portal_transition, path_exists
+from machines.port_engine import (
     PortError,
     REFUSAL_PORT_EMPTY,
     REFUSAL_PORT_FORBIDDEN_BY_LAW,
@@ -191,8 +191,8 @@ from src.machines.port_engine import (
     port_rows_for_machine,
     port_type_rows_by_id,
 )
-from src.reality.transitions import compute_transition_plan
-from src.time.time_engine import (
+from reality.transitions import compute_transition_plan
+from engine.time.time_engine import (
     advance_time as time_advance,
     clamp_rate_to_policy as time_clamp_rate_to_policy,
     ensure_simulation_time as time_ensure_simulation_time,
@@ -201,7 +201,7 @@ from src.time.time_engine import (
     policy_allows_rate_change as time_policy_allows_rate_change,
     policy_rate_bounds as time_policy_rate_bounds,
 )
-from src.time import (
+from engine.time import (
     build_time_adjust_event,
     evaluate_time_mappings,
     normalize_drift_policy_rows,
@@ -211,29 +211,29 @@ from src.time import (
     normalize_time_mapping_cache_rows,
     normalize_time_stamp_artifact_rows,
 )
-from src.control.ir.control_ir_programs import (
+from control.ir.control_ir_programs import (
     build_ai_controller_stub_ir,
     build_autopilot_stub_ir,
     build_blueprint_execution_ir,
     compile_ir_program,
 )
-from src.control.ir.control_ir_multiplayer import validate_control_ir_multiplayer
-from src.control.ir.control_ir_verifier import (
+from control.ir.control_ir_multiplayer import validate_control_ir_multiplayer
+from control.ir.control_ir_verifier import (
     REFUSAL_CTRL_IR_INVALID,
     verify_control_ir,
 )
-from src.control.control_plane_engine import (
+from control.control_plane_engine import (
     build_control_intent,
     build_control_resolution,
 )
-from src.control.fidelity import (
+from control.fidelity import (
     DEFAULT_FIDELITY_POLICY_ID,
     RANK_FAIR_POLICY_ID,
     REFUSAL_CTRL_FIDELITY_DENIED,
     arbitrate_fidelity_requests,
     build_fidelity_request,
 )
-from src.control.planning.plan_engine import (
+from control.planning.plan_engine import (
     REFUSAL_PLAN_INVALID,
     REFUSAL_PLAN_NOT_FOUND,
     REFUSAL_PLAN_POLICY_REFUSED,
@@ -243,12 +243,12 @@ from src.control.planning.plan_engine import (
     create_plan_artifact,
     update_plan_artifact_incremental,
 )
-from src.control.capability import (
+from control.capability import (
     capability_binding_rows,
     has_capability,
     normalize_capability_binding_rows,
 )
-from src.control.view import (
+from control.view import (
     REFUSAL_VIEW_ENTITLEMENT_MISSING as REFUSAL_VIEW_POLICY_ENTITLEMENT_MISSING,
     REFUSAL_VIEW_POLICY_FORBIDDEN as REFUSAL_VIEW_POLICY_FORBIDDEN,
     REFUSAL_VIEW_REQUIRES_EMBODIMENT as REFUSAL_VIEW_POLICY_REQUIRES_EMBODIMENT,
@@ -258,14 +258,14 @@ from src.control.view import (
     resolve_view_policy_id as resolve_view_policy_id_from_registry,
     view_policy_rows_by_id,
 )
-from src.embodiment.body import (
+from embodiment.body import (
     DEFAULT_BODY_TEMPLATE_ID,
     body_state_from_body_row,
     body_state_rows_by_subject_id,
     body_template_rows_by_id,
     normalize_body_state_rows,
 )
-from src.embodiment.collision import (
+from embodiment.collision import (
     DEFAULT_COLLISION_PROVIDER_ID,
     DEFAULT_MOVEMENT_SLOPE_PARAMS_ID,
     collision_provider_rows_by_id,
@@ -273,15 +273,15 @@ from src.embodiment.collision import (
     movement_slope_params_rows_by_id,
     resolve_macro_heightfield_sample,
 )
-from src.embodiment.lens import resolve_authorized_lens_profile, resolve_lens_camera_state
-from src.embodiment.movement import (
+from embodiment.lens import resolve_authorized_lens_profile, resolve_lens_camera_state
+from embodiment.movement import (
     DEFAULT_JUMP_PARAMS_ID,
     build_impact_event_row,
     normalize_impact_event_rows,
     resolve_horizontal_damping_state,
     resolve_jump_params_row,
 )
-from src.control.effects import (
+from control.effects import (
     REFUSAL_EFFECT_FORBIDDEN,
     REFUSAL_EFFECT_INVALID_TARGET,
     active_effect_rows_by_target,
@@ -291,7 +291,7 @@ from src.control.effects import (
     normalize_effect_rows,
     prune_expired_effect_rows,
 )
-from src.specs import (
+from specs import (
     REFUSAL_SPEC_NONCOMPLIANT,
     build_spec_binding,
     compliance_check_rows_by_id,
@@ -303,11 +303,11 @@ from src.specs import (
     spec_type_rows_by_id,
     tolerance_policy_rows_by_id,
 )
-from src.infrastructure.formalization import (
+from infrastructure.formalization import (
     infer_candidates,
     normalize_inference_candidate_rows,
 )
-from src.mobility.geometry import (
+from mobility.geometry import (
     build_geometry_candidate,
     build_geometry_metric_row,
     build_guide_geometry,
@@ -322,7 +322,7 @@ from src.mobility.geometry import (
     normalize_junction_rows,
     snap_geometry_parameters,
 )
-from src.mobility.network import (
+from mobility.network import (
     MobilityNetworkError,
     REFUSAL_MOBILITY_NETWORK_INVALID,
     REFUSAL_MOBILITY_NO_ROUTE,
@@ -335,7 +335,7 @@ from src.mobility.network import (
     normalize_mobility_network_binding_rows,
     select_switch_transition_id,
 )
-from src.mobility.vehicle import (
+from mobility.vehicle import (
     REFUSAL_MOBILITY_SPEC_NONCOMPLIANT,
     VehicleError,
     build_motion_state,
@@ -351,7 +351,7 @@ from src.mobility.vehicle import (
     normalize_vehicle_rows,
     vehicle_class_rows_by_id,
 )
-from src.mobility.travel import (
+from mobility.travel import (
     ItineraryError,
     TravelEngineError,
     build_travel_event,
@@ -364,7 +364,7 @@ from src.mobility.travel import (
     start_macro_travel,
     tick_macro_travel,
 )
-from src.mobility.traffic import (
+from mobility.traffic import (
     REFUSAL_MOBILITY_RESERVATION_CONFLICT,
     TrafficEngineError,
     congestion_policy_rows_by_id,
@@ -374,7 +374,7 @@ from src.mobility.traffic import (
     reserve_edge_capacity,
     resolve_congestion_policy,
 )
-from src.mobility.micro import (
+from mobility.micro import (
     FreeMotionError,
     apply_consist_offsets,
     build_coupling_constraint,
@@ -398,7 +398,7 @@ from src.mobility.micro import (
     traction_model_rows_by_id,
     wind_model_rows_by_id,
 )
-from src.mobility.signals.signal_engine import (
+from mobility.signals.signal_engine import (
     REFUSAL_MOBILITY_SIGNAL_INVALID,
     REFUSAL_MOBILITY_SIGNAL_VIOLATION,
     SignalEngineError,
@@ -418,7 +418,7 @@ from src.mobility.signals.signal_engine import (
     signal_type_rows_by_id,
     switch_lock_rows_by_machine_id,
 )
-from src.mobility.maintenance import (
+from mobility.maintenance import (
     apply_wear_updates,
     normalize_wear_state_rows,
     service_wear_rows,
@@ -428,7 +428,7 @@ from src.mobility.maintenance import (
     wear_summary_for_target,
     wear_type_rows_by_id,
 )
-from src.electric import (
+from electric import (
     ElectricFaultError,
     ElectricProtectionError,
     ElectricStorageError,
@@ -459,7 +459,7 @@ from src.electric import (
     solve_power_network_e0,
     solve_power_network_e1,
 )
-from src.mechanics import (
+from mechanics import (
     build_structural_edge,
     build_structural_node,
     evaluate_structural_graphs,
@@ -468,8 +468,8 @@ from src.mechanics import (
     normalize_structural_node_rows,
     summarize_stress_for_target,
 )
-from src.field import exchange_field_boundary_values
-from src.fields import (
+from field import exchange_field_boundary_values
+from fields import (
     build_field_cell,
     build_field_layer,
     build_field_sample,
@@ -483,7 +483,7 @@ from src.fields import (
     normalize_field_sample_rows,
     update_field_layers,
 )
-from src.signals import (
+from signals import (
     SignalTransportError,
     build_jamming_effect,
     build_knowledge_receipt,
@@ -506,33 +506,33 @@ from src.signals import (
     process_signal_send,
     tick_signal_transport,
 )
-from src.logic.signal import (
+from logic.signal import (
     normalize_signal_store_state,
     process_signal_emit_pulse,
     process_signal_set,
 )
-from src.logic.fault import (
+from logic.fault import (
     normalize_logic_fault_state_rows,
     process_logic_fault_clear,
     process_logic_fault_set,
 )
-from src.logic.eval import (
+from logic.eval import (
     normalize_logic_state_update_record_rows,
     normalize_logic_eval_state,
     process_logic_network_evaluate,
     process_statevec_update,
 )
-from src.logic.debug import (
+from logic.debug import (
     normalize_logic_debug_state,
     process_logic_probe,
     process_logic_trace_end,
     process_logic_trace_start,
     process_logic_trace_tick,
 )
-from src.logic.compile import (
+from logic.compile import (
     compile_logic_network,
 )
-from src.logic.network.logic_network_engine import (
+from logic.network.logic_network_engine import (
     normalize_logic_network_state,
     process_logic_network_add_edge,
     process_logic_network_add_node,
@@ -540,7 +540,7 @@ from src.logic.network.logic_network_engine import (
     process_logic_network_remove_edge,
     process_logic_network_validate,
 )
-from src.safety import (
+from safety import (
     REFUSAL_SAFETY_INSTANCE_INVALID,
     REFUSAL_SAFETY_PATTERN_INVALID,
     SafetyEngineError,
@@ -550,7 +550,7 @@ from src.safety import (
     normalize_safety_instance_rows,
     safety_pattern_rows_by_id,
 )
-from src.models import (
+from models import (
     ModelEngineError,
     cache_policy_rows_by_id,
     constitutive_model_rows_by_id,
@@ -559,7 +559,7 @@ from src.models import (
     normalize_model_binding_rows,
     normalize_model_evaluation_result_rows,
 )
-from src.physics import (
+from physics import (
     apply_entropy_reset,
     apply_force_to_momentum_state,
     apply_impulse_to_momentum_state,
@@ -590,7 +590,7 @@ from src.physics import (
     record_entropy_contribution,
     velocity_from_momentum_state,
 )
-from src.pollution import (
+from pollution import (
     concentration_field_id_for_pollutant,
     build_pollution_source_event,
     build_pollution_deposition_row,
@@ -620,7 +620,7 @@ from src.pollution import (
     pollution_field_hash_chain,
     pollution_totals_by_key,
 )
-from src.system import (
+from system import (
     REFUSAL_STATEVEC_UNDECLARED_OUTPUT_FIELD,
     REFUSAL_SYSTEM_COLLAPSE_INVALID,
     REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
@@ -690,11 +690,11 @@ from src.system import (
     deserialize_state,
     serialize_state,
 )
-from src.meta.explain import (
+from meta.explain import (
     generate_explain_artifact,
     normalize_explain_artifact_rows,
 )
-from src.geo.edit import (
+from geo.edit import (
     aggregate_geometry_chunk_to_cell,
     build_micro_geometry_chunk_from_cell_state,
     build_geometry_chunk_state,
@@ -715,8 +715,8 @@ from src.geo.edit import (
     normalize_geometry_edit_event,
     normalize_geometry_edit_event_rows,
 )
-from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key, geo_cell_key_neighbors
-from src.geo.worldgen import (
+from geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key, geo_cell_key_neighbors
+from geo.worldgen import (
     DEFAULT_GENERATOR_VERSION_ID,
     DEFAULT_REALISM_PROFILE_ID,
     build_worldgen_request,
@@ -730,7 +730,7 @@ from src.geo.worldgen import (
     worldgen_request_hash,
     worldgen_result_proof_surface,
 )
-from src.geo.overlay import (
+from geo.overlay import (
     build_default_overlay_manifest,
     build_property_patch,
     normalize_effective_object_view_rows,
@@ -741,13 +741,13 @@ from src.geo.overlay import (
     overlay_proof_surface,
     validate_overlay_manifest_trust,
 )
-from src.worldgen.refinement.refinement_cache import (
+from worldgen.refinement.refinement_cache import (
     DEFAULT_REFINEMENT_CACHE_LIMITS,
     normalize_refinement_cache_entry_rows,
     touch_refinement_cache_entries,
     evict_refinement_cache_entries,
 )
-from src.worldgen.refinement.refinement_scheduler import (
+from worldgen.refinement.refinement_scheduler import (
     DEFAULT_REFINEMENT_COST_UNITS,
     DEFAULT_REFINEMENT_QUEUE_CAPACITY,
     EXPLAIN_CONTRACT_MISMATCH_CACHE,
@@ -759,16 +759,16 @@ from src.worldgen.refinement.refinement_scheduler import (
     normalize_refinement_request_record_rows,
     refinement_record_to_worldgen_request,
 )
-from src.worldgen.mw.mw_cell_generator import normalize_star_system_artifact_rows
-from src.worldgen.mw.mw_system_refiner_l2 import (
+from worldgen.mw.mw_cell_generator import normalize_star_system_artifact_rows
+from worldgen.mw.mw_system_refiner_l2 import (
     normalize_planet_basic_artifact_rows,
     normalize_planet_orbit_artifact_rows,
     normalize_star_artifact_rows,
     normalize_system_l2_summary_rows,
 )
-from src.worldgen.mw.mw_surface_refiner_l3 import normalize_surface_tile_artifact_rows
-from src.worldgen.galaxy import normalize_galaxy_object_stub_rows
-from src.worldgen.earth import (
+from worldgen.mw.mw_surface_refiner_l3 import normalize_surface_tile_artifact_rows
+from worldgen.galaxy import normalize_galaxy_object_stub_rows
+from worldgen.earth import (
     DEFAULT_EARTH_CLIMATE_PARAMS_ID,
     DEFAULT_HYDROLOGY_PARAMS_ID,
     EARTH_MATERIAL_PROXY_DEFAULT_MAX_TILES_PER_UPDATE,
@@ -793,7 +793,7 @@ from src.worldgen.earth import (
     wind_params_rows,
     wind_window_hash,
 )
-from src.meta.compile import (
+from meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
     REFUSAL_COMPILE_SOURCE_MISSING,
@@ -810,7 +810,7 @@ from src.meta.compile import (
     normalize_validity_domain_rows,
     verification_procedure_rows_by_id,
 )
-from src.process.capsules import (
+from process.capsules import (
     REFUSAL_PROCESS_CAPSULE_INVALID,
     build_process_capsule_invalidation_row,
     build_capsule_execution_record_row,
@@ -819,7 +819,7 @@ from src.process.capsules import (
     normalize_capsule_execution_record_rows,
     normalize_process_capsule_rows,
 )
-from src.process.research import (
+from process.research import (
     REFUSAL_CANDIDATE_PROMOTION_DENIED,
     REFUSAL_EXPERIMENT_INVALID,
     REFUSAL_EXPERIMENT_PROCESS_UNKNOWN,
@@ -831,7 +831,7 @@ from src.process.research import (
     normalize_experiment_definition_rows,
     normalize_experiment_result_rows,
 )
-from src.process.software import (
+from process.software import (
     REFUSAL_SOFTWARE_PIPELINE_COMPILE_FAILED,
     REFUSAL_SOFTWARE_PIPELINE_INVALID,
     REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_INVALID,
@@ -845,8 +845,8 @@ from src.process.software import (
     normalize_software_artifact_rows,
     normalize_software_pipeline_profile_rows,
 )
-from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
-from src.meta.provenance import build_compaction_marker, normalize_compaction_marker_rows
+from meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
+from meta.provenance import build_compaction_marker, normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -47306,7 +47306,7 @@ def execute_intent(
             ),
         )
         try:
-            from src.appshell.logging import log_emit
+            from appshell.logging import log_emit
         except Exception:  # pragma: no cover - logging is optional in non-AppShell runtimes
             log_emit = None
         approved_rows = [dict(row) for row in list(scheduler_plan.get("approved_rows") or []) if isinstance(row, Mapping)]

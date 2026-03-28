@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E408_SILENT_DEGRADE_SMELL"
 REQUIRED_TOKENS = {
-    "src/compat/capability_negotiation.py": (
+    "compat/capability_negotiation.py": (
         "def _degrade_plan(",
         '"degrade.optional_capability_unavailable"',
         '"ignored.unknown_capability"',

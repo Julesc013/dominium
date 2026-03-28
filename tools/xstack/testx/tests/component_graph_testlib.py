@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from src.release import (
+from release import (
     DEFAULT_COMPONENT_GRAPH_ID,
     build_default_component_install_plan,
     platform_targets_for_tag,

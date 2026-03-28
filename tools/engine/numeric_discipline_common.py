@@ -23,26 +23,26 @@ TOLERANCE_REGISTRY_REL = os.path.join("data", "registries", "tolerance_registry.
 LAST_REVIEWED = "2026-03-14"
 
 TRUTH_PATH_NUMERIC = (
-    "src/meta/numeric.py",
-    "src/time/time_mapping_engine.py",
-    "src/physics/momentum_engine.py",
-    "src/physics/energy/energy_ledger_engine.py",
-    "src/mobility/micro/free_motion_solver.py",
-    "src/astro/illumination/illumination_geometry_engine.py",
-    "src/astro/ephemeris/kepler_proxy_engine.py",
+    "meta/numeric.py",
+    "engine/time/time_mapping_engine.py",
+    "physics/momentum_engine.py",
+    "physics/energy/energy_ledger_engine.py",
+    "mobility/micro/free_motion_solver.py",
+    "astro/illumination/illumination_geometry_engine.py",
+    "astro/ephemeris/kepler_proxy_engine.py",
 )
 REVIEWED_NUMERIC_BRIDGES = {
-    "src/geo/kernel/geo_kernel.py": "projection/query bridge with deterministic quantization",
-    "src/geo/metric/metric_engine.py": "bounded geodesic approximation bridge",
-    "src/process/qc/qc_engine.py": "qc/reporting quantization bridge",
-    "src/mobility/micro/constrained_motion_solver.py": "heading derivation bridge with integer output",
-    "src/mobility/geometry/geometry_engine.py": "grid snap bridge with integer output",
-    "src/meta/instrumentation/instrumentation_engine.py": "measurement quantization bridge",
+    "geo/kernel/geo_kernel.py": "projection/query bridge with deterministic quantization",
+    "geo/metric/metric_engine.py": "bounded geodesic approximation bridge",
+    "process/qc/qc_engine.py": "qc/reporting quantization bridge",
+    "mobility/micro/constrained_motion_solver.py": "heading derivation bridge with integer output",
+    "mobility/geometry/geometry_engine.py": "grid snap bridge with integer output",
+    "meta/instrumentation/instrumentation_engine.py": "measurement quantization bridge",
 }
 RENDER_ONLY_NUMERIC = (
-    "src/client/render/renderers/software_renderer.py",
-    "src/platform/platform_input_routing.py",
-    "src/platform/platform_window.py",
+    "client/render/renderers/software_renderer.py",
+    "engine/platform/platform_input_routing.py",
+    "engine/platform/platform_window.py",
 )
 TOOLING_ONLY_NUMERIC = (
     "tools/audit/",

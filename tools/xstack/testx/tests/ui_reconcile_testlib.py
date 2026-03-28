@@ -30,7 +30,7 @@ def violations(repo_root: str) -> list[dict]:
 
 def build_client_menu_surface(repo_root: str, *, current_state_id: str = "", seed_value: str = "") -> dict:
     ensure_repo_on_path(repo_root)
-    from src.client.ui.main_menu_surface import build_client_main_menu_surface
+    from client.ui.main_menu_surface import build_client_main_menu_surface
 
     return build_client_main_menu_surface(
         repo_root=repo_root,

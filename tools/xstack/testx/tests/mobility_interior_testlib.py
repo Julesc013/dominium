@@ -54,7 +54,7 @@ def seed_state(
     include_vehicle: bool = True,
     vehicle_position_x: int = 100,
 ) -> dict:
-    from src.mobility.vehicle.vehicle_engine import (
+    from mobility.vehicle.vehicle_engine import (
         build_motion_state,
         build_vehicle,
         deterministic_motion_state_ref,
@@ -279,7 +279,7 @@ def attach_field_layers(
     visibility: int = 1000,
     wind: dict | None = None,
 ) -> dict:
-    from src.fields import build_field_cell, build_field_layer
+    from fields import build_field_cell, build_field_layer
 
     wind_vector = dict(wind or {"x": 0, "y": 0, "z": 0})
     out = state

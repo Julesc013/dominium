@@ -11,7 +11,7 @@ TEST_TAGS = ["strict", "net", "repox"]
 
 
 def run(repo_root: str):
-    rel_path = "src/net/policies/policy_server_authoritative.py"
+    rel_path = "net/policies/policy_server_authoritative.py"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     try:
         text = open(abs_path, "r", encoding="utf-8").read()

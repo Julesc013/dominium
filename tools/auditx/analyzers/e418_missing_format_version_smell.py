@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "No silent fallback to reinterpretation.",
         "read-only mode",
     ),
-    "src/compat/data_format_loader.py": (
+    "compat/data_format_loader.py": (
         "CURRENT_ARTIFACT_FORMAT_VERSION",
         "stamp_artifact_metadata(",
         "load_versioned_artifact(",

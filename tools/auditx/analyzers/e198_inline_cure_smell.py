@@ -55,9 +55,9 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "src/models/model_engine.py",
+        "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "src/inspection/inspection_engine.py",
+        "inspection/inspection_engine.py",
         "tools/xstack/repox/check.py",
     }
 
@@ -100,7 +100,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-NO-ADHOC-CURE-LOGIC"],
                             related_paths=[
                                 rel_path,
-                                "src/models/model_engine.py",
+                                "models/model_engine.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

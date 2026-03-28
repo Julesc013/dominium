@@ -12,7 +12,7 @@ def run(repo_root: str):
 
     ensure_repo_on_path(repo_root)
 
-    from src.meta_extensions_engine import legacy_alias_for_key
+    from meta_extensions_engine import legacy_alias_for_key
 
     payload = load_extension_registry(repo_root)
     rows = list(((payload.get("record") or {}).get("extension_interpretations")) or [])

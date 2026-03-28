@@ -34,12 +34,12 @@ def run(graph, repo_root, changed_files=None):
                 file_path=rel_path,
                 evidence=[
                     "hardcoded repository-relative root remains in a governed runtime surface",
-                    "route store, pack, profile, save, export, log, and IPC access through src/appshell/paths/virtual_paths.py",
+                    "route store, pack, profile, save, export, log, and IPC access through appshell/paths/virtual_paths.py",
                 ],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-NO-HARDCODED-PATHS", "INV-VPATH-USED-FOR-STORE_ACCESS"],
-                related_paths=[rel_path, "src/appshell/paths/virtual_paths.py"],
+                related_paths=[rel_path, "appshell/paths/virtual_paths.py"],
             )
         )
     return findings

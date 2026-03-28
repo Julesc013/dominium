@@ -7,7 +7,7 @@ import os
 import subprocess
 import sys
 
-from src.meta.identity import (
+from meta.identity import (
     IDENTITY_KIND_INSTALL,
     IDENTITY_KIND_PACK,
     attach_universal_identity_block,

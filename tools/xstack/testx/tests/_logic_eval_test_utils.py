@@ -594,7 +594,7 @@ def make_protocol_network(
 
 
 def seed_signal_requests(*, signal_store_state: dict | None, signal_requests: list[dict], inputs: dict):
-    from src.logic.signal import process_signal_set
+    from logic.signal import process_signal_set
 
     state = dict(signal_store_state or {}) if isinstance(signal_store_state, dict) else None
     for request in list(signal_requests or []):
@@ -617,8 +617,8 @@ def seed_signal_requests(*, signal_store_state: dict | None, signal_requests: li
 
 
 def compile_logic_network_fixture(*, repo_root: str, network_id: str, logic_network_state: dict, compile_policy_id: str = "compile.logic.default") -> dict:
-    from src.logic.compile import compile_logic_network
-    from src.system import build_state_vector_definition_row, normalize_state_vector_definition_rows
+    from logic.compile import compile_logic_network
+    from system import build_state_vector_definition_row, normalize_state_vector_definition_rows
 
     inputs = load_eval_inputs(repo_root)
     compile_inputs = load_compile_inputs(repo_root)

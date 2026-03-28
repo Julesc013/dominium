@@ -13,8 +13,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.pollution.dispersion_engine import concentration_field_id_for_pollutant
-    from src.fields import build_field_cell
+    from pollution.dispersion_engine import concentration_field_id_for_pollutant
+    from fields import build_field_cell
     from tools.xstack.testx.tests.pollution_testlib import (
         execute_pollution_measure,
         seed_pollution_state,

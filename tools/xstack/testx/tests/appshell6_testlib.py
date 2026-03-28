@@ -16,7 +16,7 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 def build_run_spec(repo_root: str, *, seed: str = "seed.appshell6.test", policy_id: str = "supervisor.policy.default", topology: str = "singleplayer") -> dict:
     ensure_repo_on_path(repo_root)
-    from src.appshell.supervisor import build_supervisor_run_spec
+    from appshell.supervisor import build_supervisor_run_spec
 
     return build_supervisor_run_spec(
         repo_root=repo_root,
@@ -49,7 +49,7 @@ def build_hardening_report(repo_root: str) -> dict:
 
 def canonicalize_sample_args(repo_root: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from src.appshell.supervisor import canonicalize_args
+    from appshell.supervisor import canonicalize_args
 
     return canonicalize_args(
         positional=["tools/appshell/supervisor_service.py"],
@@ -64,7 +64,7 @@ def canonicalize_sample_args(repo_root: str) -> dict:
 
 def run_local_engine(repo_root: str, *, seed: str = "seed.appshell6.engine", policy_id: str = "supervisor.policy.default", topology: str = "singleplayer"):
     ensure_repo_on_path(repo_root)
-    from src.appshell.supervisor import SupervisorEngine
+    from appshell.supervisor import SupervisorEngine
 
     run_spec = build_run_spec(repo_root, seed=seed, policy_id=policy_id, topology=topology)
     engine = SupervisorEngine(repo_root=repo_root, run_spec=run_spec)

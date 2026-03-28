@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.core.graph.network_graph_engine import normalize_network_graph, route_query
+    from core.graph.network_graph_engine import normalize_network_graph, route_query
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     graph_input = {

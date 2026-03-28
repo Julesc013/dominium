@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.control.fidelity import arbitrate_fidelity_requests, build_fidelity_request
+    from control.fidelity import arbitrate_fidelity_requests, build_fidelity_request
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     requests = [

@@ -13,7 +13,7 @@ TEST_TAGS = ["strict", "diegetics", "repox", "observation"]
 
 FORBIDDEN_PATTERN = re.compile(r"\b(truth_model|truthmodel|universe_state|registry_payloads)\b", re.IGNORECASE)
 TARGETS = (
-    "src/diegetics/instrument_kernel.py",
+    "diegetics/instrument_kernel.py",
 )
 
 

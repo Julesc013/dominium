@@ -8,9 +8,9 @@ TEST_TAGS = ["fast", "security", "trust", "hash"]
 
 
 def run(repo_root: str):
-    from src.security.trust import REFUSAL_TRUST_HASH_MISSING
+    from security.trust import REFUSAL_TRUST_HASH_MISSING
     from tools.xstack.testx.tests.trust_model_testlib import trust_policy
-    from src.security.trust import verify_artifact_trust, ARTIFACT_KIND_RELEASE_MANIFEST, DEFAULT_TRUST_POLICY_ID
+    from security.trust import verify_artifact_trust, ARTIFACT_KIND_RELEASE_MANIFEST, DEFAULT_TRUST_POLICY_ID
 
     result = verify_artifact_trust(
         artifact_kind=ARTIFACT_KIND_RELEASE_MANIFEST,

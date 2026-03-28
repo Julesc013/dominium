@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E4_AUTHORITATIVE_TRUTH_LEAK"
 WATCH_PREFIXES = (
-    "src/net/policies/policy_server_authoritative.py",
+    "net/policies/policy_server_authoritative.py",
     "tools/xstack/sessionx/runner.py",
 )
 
@@ -23,7 +23,7 @@ def run(graph, repo_root, changed_files=None):
     del graph
     del changed_files
     findings = []
-    rel_path = "src/net/policies/policy_server_authoritative.py"
+    rel_path = "net/policies/policy_server_authoritative.py"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     if not os.path.isfile(abs_path):
         return findings

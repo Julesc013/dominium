@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.materials.composition_engine import create_material_batch
+    from materials.composition_engine import create_material_batch
 
     left = create_material_batch(
         material_id="material.iron",

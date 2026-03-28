@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E345_ADHOC_HEURISTIC_SMELL"
 REQUIRED_FILES = {
-    "src/geo/path/path_engine.py": (
+    "geo/path/path_engine.py": (
         "_heuristic_cost(",
         "heuristic_policy",
         "traversal_policy_id",
@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-PATHING-DETERMINISTIC", "INV-NO-ADHOC-NEIGHBOR-ENUMERATION"],
-                related_paths=[rel_path, "src/geo/path/path_engine.py"],
+                related_paths=[rel_path, "geo/path/path_engine.py"],
             )
         )
     return findings

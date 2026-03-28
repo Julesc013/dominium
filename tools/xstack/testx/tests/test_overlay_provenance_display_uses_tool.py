@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.ui.inspect_panels import build_inspection_panel_set
+    from client.ui.inspect_panels import build_inspection_panel_set
     from tools.xstack.testx.tests.geo9_testlib import OBJECT_ID_EARTH, overlay_fixture_merge_result
 
     merge_fixture = overlay_fixture_merge_result(include_mods=True, include_save=True)

@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.fluid import build_leak_state, build_tank_state, process_leak_tick
+    from fluid import build_leak_state, build_tank_state, process_leak_tick
 
     leak_rows = [
         build_leak_state(

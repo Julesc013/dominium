@@ -12,7 +12,7 @@ ANALYZER_ID = "E57_DIMENSION_DRIFT_SMELL"
 DIMENSION_REGISTRY_PATH = "data/registries/dimension_registry.json"
 UNIT_REGISTRY_PATH = "data/registries/unit_registry.json"
 QUANTITY_TYPE_REGISTRY_PATH = "data/registries/quantity_type_registry.json"
-LEDGER_ENGINE_PATH = "src/reality/ledger/ledger_engine.py"
+LEDGER_ENGINE_PATH = "reality/ledger/ledger_engine.py"
 
 
 def _norm(path: str) -> str:

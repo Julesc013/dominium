@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.security.trust import (
+from security.trust import (
     ARTIFACT_KIND_PACK,
     ARTIFACT_KIND_RELEASE_MANIFEST,
     DEFAULT_TRUST_POLICY_ID,

@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_library(dominium_app_runtime STATIC
-    src/app_runtime.c
-    src/compat_report.c
-    src/readonly_adapter.c
-    src/readonly_format.c
-    src/ui_event_log.c
-    src/ui_presentation.c
+    app_runtime.c
+    compat_report.c
+    readonly_adapter.c
+    readonly_format.c
+    ui_event_log.c
+    ui_presentation.c
 )
 target_include_directories(dominium_app_runtime PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include

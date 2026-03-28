@@ -250,8 +250,8 @@
       "scope_paths": [
         "schema/universe/universe_identity.schema",
         "schemas/universe_identity.schema.json",
-        "src/universe/universe_identity_builder.py",
-        "src/universe/universe_contract_enforcer.py",
+        "universe/universe_identity_builder.py",
+        "universe/universe_contract_enforcer.py",
         "tools/xstack/sessionx/creator.py",
         "docs/meta/UNIVERSE_CONTRACT_BUNDLE.md"
       ],
@@ -273,7 +273,7 @@
       "rule_id": "INV-REPLAY-REFUSES-CONTRACT-MISMATCH",
       "severity": "FAIL",
       "scope_paths": [
-        "src/universe/universe_contract_enforcer.py",
+        "universe/universe_contract_enforcer.py",
         "tools/xstack/sessionx/runner.py",
         "tools/xstack/sessionx/script_runner.py",
         "docs/meta/UNIVERSE_CONTRACT_BUNDLE.md"
@@ -288,8 +288,8 @@
         "docs/meta/EXTENSION_DISCIPLINE.md",
         "docs/meta/EXTENSION_MIGRATION_NOTES.md",
         "data/registries/extension_interpretation_registry.json",
-        "src/meta_extensions_engine.py",
-        "src/meta/extensions/extensions_engine.py"
+        "meta_extensions_engine.py",
+        "meta/extensions/extensions_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-extensions-namespaced",
       "exemption_policy": "deny"
@@ -301,8 +301,8 @@
         "src",
         "tools",
         "data/registries/extension_interpretation_registry.json",
-        "src/meta_extensions_engine.py",
-        "src/meta/extensions/extensions_engine.py"
+        "meta_extensions_engine.py",
+        "meta/extensions/extensions_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-extension-interpretation-without-registry",
       "exemption_policy": "deny"
@@ -317,8 +317,8 @@
         "tools/xstack/sessionx/common.py",
         "tools/distribution/distribution_lib.py",
         "tools/xstack/pack_loader/loader.py",
-        "src/geo/overlay/overlay_merge_engine.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "geo/overlay/overlay_merge_engine.py",
+        "geo/worldgen/worldgen_engine.py",
         "docs/meta/EXTENSION_DISCIPLINE.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-extensions-deterministic-serialization",
@@ -329,7 +329,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "data/registries/product_registry.json",
-        "src/compat/capability_negotiation.py",
+        "compat/capability_negotiation.py",
         "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-all-products-have-endpoint-descriptor",
@@ -341,7 +341,7 @@
       "scope_paths": [
         "docs/compat/ENDPOINT_DESCRIPTORS.md",
         "data/registries/product_capability_defaults.json",
-        "src/compat/descriptor/descriptor_engine.py",
+        "compat/descriptor/descriptor_engine.py",
         "tools/compat/tool_emit_descriptor.py",
         "tools/compat/tool_generate_descriptor_manifest.py",
         "dist/bin"
@@ -354,7 +354,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/compat/ENDPOINT_DESCRIPTORS.md",
-        "src/compat/descriptor/descriptor_engine.py",
+        "compat/descriptor/descriptor_engine.py",
         "tools/compat/tool_emit_descriptor.py",
         "tools/compat/tool_generate_descriptor_manifest.py"
       ],
@@ -365,7 +365,7 @@
       "rule_id": "INV-NO-WALLCLOCK-IN-DESCRIPTOR",
       "severity": "FAIL",
       "scope_paths": [
-        "src/compat/descriptor/descriptor_engine.py",
+        "compat/descriptor/descriptor_engine.py",
         "tools/compat/tool_emit_descriptor.py",
         "tools/compat/tool_generate_descriptor_manifest.py"
       ],
@@ -380,7 +380,7 @@
         "src/appshell",
         "tools/appshell/product_stub_cli.py",
         "tools/mvp/runtime_entry.py",
-        "src/server/server_main.py",
+        "server/server_main.py",
         "tools/setup/setup_cli.py",
         "tools/launcher/launch.py",
         "dist/bin"
@@ -393,7 +393,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "tools/mvp/runtime_entry.py",
-        "src/server/server_main.py",
+        "server/server_main.py",
         "tools/setup/setup_cli.py",
         "tools/launcher/launch.py",
         "dist/bin"
@@ -418,8 +418,8 @@
       "scope_paths": [
         "docs/appshell/COMMANDS_AND_REFUSALS.md",
         "data/registries/command_registry.json",
-        "src/appshell/command_registry.py",
-        "src/appshell/commands/command_engine.py",
+        "appshell/command_registry.py",
+        "appshell/commands/command_engine.py",
         "tools/appshell/tool_generate_command_docs.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-commands-registered",
@@ -430,9 +430,9 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/appshell/COMMANDS_AND_REFUSALS.md",
-        "src/appshell/args_parser.py",
-        "src/appshell/bootstrap.py",
-        "src/appshell/commands/command_engine.py"
+        "appshell/args_parser.py",
+        "appshell/bootstrap.py",
+        "appshell/commands/command_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-adhoc-arg-parsing",
       "exemption_policy": "deny"
@@ -444,7 +444,7 @@
         "docs/appshell/COMMANDS_AND_REFUSALS.md",
         "data/registries/refusal_code_registry.json",
         "data/registries/refusal_to_exit_registry.json",
-        "src/appshell/commands/command_engine.py"
+        "appshell/commands/command_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-refusal-codes-stable",
       "exemption_policy": "deny"
@@ -455,9 +455,9 @@
       "scope_paths": [
         "docs/appshell/LOGGING_AND_TRACING.md",
         "src/appshell/logging",
-        "src/appshell/logging_sink.py",
-        "src/server/net/loopback_transport.py",
-        "src/server/runtime/tick_loop.py"
+        "appshell/logging_sink.py",
+        "server/net/loopback_transport.py",
+        "server/runtime/tick_loop.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-printf-logging",
       "exemption_policy": "deny"
@@ -467,11 +467,11 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/appshell/LOGGING_AND_TRACING.md",
-        "src/appshell/bootstrap.py",
-        "src/appshell/commands/command_engine.py",
+        "appshell/bootstrap.py",
+        "appshell/commands/command_engine.py",
         "src/appshell/logging",
-        "src/server/net/loopback_transport.py",
-        "src/server/runtime/tick_loop.py"
+        "server/net/loopback_transport.py",
+        "server/runtime/tick_loop.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-log-engine-only",
       "exemption_policy": "deny"
@@ -483,8 +483,8 @@
         "docs/appshell/LOGGING_AND_TRACING.md",
         "src/appshell/logging",
         "src/appshell/diag",
-        "src/server/net/loopback_transport.py",
-        "src/server/runtime/tick_loop.py"
+        "server/net/loopback_transport.py",
+        "server/runtime/tick_loop.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-wallclock-in-sim",
       "exemption_policy": "deny"
@@ -495,8 +495,8 @@
       "scope_paths": [
         "docs/appshell/TUI_FRAMEWORK.md",
         "src/appshell/tui",
-        "src/client/ui/map_views.py",
-        "src/client/ui/inspect_panels.py"
+        "client/ui/map_views.py",
+        "client/ui/inspect_panels.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-tui-no-truth-read",
       "exemption_policy": "deny"
@@ -530,7 +530,7 @@
       "scope_paths": [
         "docs/appshell/IPC_ATTACH_CONSOLES.md",
         "src/appshell/ipc",
-        "src/appshell/commands/command_engine.py"
+        "appshell/commands/command_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-ipc-attach-negotiated",
       "exemption_policy": "deny"
@@ -553,7 +553,7 @@
       "scope_paths": [
         "docs/appshell/IPC_ATTACH_CONSOLES.md",
         "src/appshell/ipc",
-        "src/appshell/commands/command_engine.py"
+        "appshell/commands/command_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-privilege-escalation",
       "exemption_policy": "deny"
@@ -606,9 +606,9 @@
         "schemas/replay_result.schema.json",
         "src/diag",
         "tools/diag",
-        "src/appshell/commands/command_engine.py",
-        "src/appshell/supervisor/supervisor_engine.py",
-        "src/server/server_console.py"
+        "appshell/commands/command_engine.py",
+        "appshell/supervisor/supervisor_engine.py",
+        "server/server_console.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-repro-bundle-deterministic",
       "exemption_policy": "deny"
@@ -631,7 +631,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "tools/xstack/sessionx/net_handshake.py",
-        "src/server/net/loopback_transport.py",
+        "server/net/loopback_transport.py",
         "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-negotiation-required-for-connections",
@@ -642,8 +642,8 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/compat/NEGOTIATION_HANDSHAKES.md",
-        "src/server/net/loopback_transport.py",
-        "src/server/server_boot.py"
+        "server/net/loopback_transport.py",
+        "server/server_boot.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-connection-requires-negotiation",
       "exemption_policy": "deny"
@@ -653,8 +653,8 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/compat/NEGOTIATION_HANDSHAKES.md",
-        "src/server/net/loopback_transport.py",
-        "src/server/runtime/tick_loop.py",
+        "server/net/loopback_transport.py",
+        "server/runtime/tick_loop.py",
         "tools/compat/tool_replay_negotiation.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-negotiation-record-logged",
@@ -665,8 +665,8 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/compat/NEGOTIATION_HANDSHAKES.md",
-        "src/server/net/loopback_transport.py",
-        "src/server/server_boot.py"
+        "server/net/loopback_transport.py",
+        "server/server_boot.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-readonly-enforced-when-negotiated",
       "exemption_policy": "deny"
@@ -678,7 +678,7 @@
         "data/registries/degrade_ladder_registry.json",
         "data/registries/capability_fallback_registry.json",
         "data/registries/compat_mode_registry.json",
-        "src/compat/capability_negotiation.py",
+        "compat/capability_negotiation.py",
         "docs/compat/DEGRADE_LADDERS.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-degrade-plan-declared",
@@ -693,7 +693,7 @@
         "schema/compat/fallback_map.schema",
         "data/registries/degrade_ladder_registry.json",
         "data/registries/capability_fallback_registry.json",
-        "src/compat/negotiation/degrade_enforcer.py"
+        "compat/negotiation/degrade_enforcer.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-degrade-ladder-declared",
       "exemption_policy": "deny"
@@ -703,10 +703,10 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/compat/DEGRADE_LADDERS.md",
-        "src/compat/negotiation/degrade_enforcer.py",
-        "src/client/local_server/local_server_controller.py",
-        "src/server/server_console.py",
-        "src/embodiment/tools/logic_tool.py"
+        "compat/negotiation/degrade_enforcer.py",
+        "client/local_server/local_server_controller.py",
+        "server/server_console.py",
+        "embodiment/tools/logic_tool.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-silent-degrade",
       "exemption_policy": "deny"
@@ -715,7 +715,7 @@
       "rule_id": "INV-DEGRADE-RECORDED-IN-NEGOTIATION",
       "severity": "FAIL",
       "scope_paths": [
-        "src/compat/capability_negotiation.py",
+        "compat/capability_negotiation.py",
         "schema/compat/negotiation_record.schema",
         "docs/compat/NEGOTIATION_HANDSHAKES.md",
         "tools/compat/tool_replay_negotiation.py"
@@ -751,7 +751,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "data/registries/capability_registry.json",
-        "src/compat/capability_negotiation.py",
+        "compat/capability_negotiation.py",
         "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-unknown-cap-ignored-deterministically",
@@ -762,7 +762,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/compat/DATA_FORMAT_VERSIONING.md",
-        "src/compat/data_format_loader.py",
+        "compat/data_format_loader.py",
         "schemas/save_file.schema.json",
         "schemas/blueprint_file.schema.json",
         "schemas/profile_bundle.schema.json",
@@ -777,7 +777,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/compat/DATA_FORMAT_VERSIONING.md",
-        "src/compat/data_format_loader.py",
+        "compat/data_format_loader.py",
         "tools/compat/tool_replay_migration.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-silent-format-interpretation",
@@ -788,7 +788,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "data/registries/migration_registry.json",
-        "src/compat/data_format_loader.py",
+        "compat/data_format_loader.py",
         "tools/compat/tool_replay_migration.py",
         "docs/compat/DATA_FORMAT_VERSIONING.md"
       ],
@@ -801,7 +801,7 @@
       "scope_paths": [
         "packs",
         "tools/xstack/testdata/packs",
-        "src/modding/mod_policy_engine.py",
+        "modding/mod_policy_engine.py",
         "tools/xstack/pack_loader/loader.py",
         "tools/xstack/pack_loader/constants.py",
         "data/registries/capability_registry.json",
@@ -814,7 +814,7 @@
       "rule_id": "INV-MOD-POLICY-ENFORCED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/modding/mod_policy_engine.py",
+        "modding/mod_policy_engine.py",
         "tools/xstack/registry_compile/compiler.py",
         "tools/xstack/sessionx/creator.py",
         "tools/xstack/sessionx/runner.py",
@@ -837,7 +837,7 @@
         "packs/official",
         "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
         "schemas/pack_compat_manifest.schema.json",
-        "src/packs/compat/pack_compat_validator.py",
+        "packs/compat/pack_compat_validator.py",
         "data/registries/pack_degrade_mode_registry.json"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-official-packs-have-compat-manifest",
@@ -848,7 +848,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
-        "src/packs/compat/pack_compat_validator.py",
+        "packs/compat/pack_compat_validator.py",
         "tools/xstack/pack_loader/loader.py",
         "tools/xstack/testx/tests/test_missing_manifest_warns_or_refuses_by_policy.py"
       ],
@@ -859,7 +859,7 @@
       "rule_id": "INV-PACK-COMPAT-VALIDATED-BEFORE-LOAD",
       "severity": "FAIL",
       "scope_paths": [
-        "src/packs/compat/pack_compat_validator.py",
+        "packs/compat/pack_compat_validator.py",
         "tools/xstack/pack_loader/loader.py",
         "tools/xstack/registry_compile/compiler.py",
         "tools/xstack/registry_compile/lockfile.py",
@@ -877,7 +877,7 @@
         "docs/audit/PACK_VERIFICATION_BASELINE.md",
         "schema/packs/pack_compatibility_report.schema",
         "schemas/pack_compatibility_report.schema.json",
-        "src/packs/compat/pack_verification_pipeline.py",
+        "packs/compat/pack_verification_pipeline.py",
         "tools/setup/setup_cli.py",
         "tools/launcher/launch.py"
       ],
@@ -891,7 +891,7 @@
         "docs/packs/PACK_VERIFICATION_PIPELINE.md",
         "schema/packs/pack_lock.schema",
         "schemas/pack_lock.schema.json",
-        "src/packs/compat/pack_verification_pipeline.py",
+        "packs/compat/pack_verification_pipeline.py",
         "tools/xstack/testx/tests/test_deterministic_pack_lock_hash.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-pack-lock-deterministic",
@@ -902,7 +902,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/packs/PACK_VERIFICATION_PIPELINE.md",
-        "src/packs/compat/pack_verification_pipeline.py",
+        "packs/compat/pack_verification_pipeline.py",
         "tools/setup/setup_cli.py",
         "tools/launcher/launch.py",
         "tools/xstack/testx/tests/test_overlay_conflict_detected.py"
@@ -914,7 +914,7 @@
       "rule_id": "INV-SERVER-TICK-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [
-        "src/server/runtime/tick_loop.py",
+        "server/runtime/tick_loop.py",
         "tools/server/server_mvp0_probe.py",
         "tools/server/tool_replay_server_window.py",
         "docs/server/SERVER_MVP_BASELINE.md"
@@ -926,8 +926,8 @@
       "rule_id": "INV-CONTRACTS-VALIDATED-ON-BOOT",
       "severity": "FAIL",
       "scope_paths": [
-        "src/server/server_boot.py",
-        "src/server/server_main.py",
+        "server/server_boot.py",
+        "server/server_main.py",
         "schema/server/server_config.schema",
         "data/registries/server_config_registry.json",
         "docs/server/SERVER_MVP_BASELINE.md"
@@ -939,8 +939,8 @@
       "rule_id": "INV-AUTHORITY-REQUIRED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/server/server_boot.py",
-        "src/server/net/loopback_transport.py",
+        "server/server_boot.py",
+        "server/net/loopback_transport.py",
         "tools/server/server_mvp0_probe.py",
         "docs/server/SERVER_MVP_BASELINE.md"
       ],
@@ -951,7 +951,7 @@
       "rule_id": "INV-LOCAL-SPAWN-PROFILED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/client/local_server/local_server_controller.py",
+        "client/local_server/local_server_controller.py",
         "tools/mvp/runtime_entry.py",
         "docs/server/LOCAL_SINGLEPLAYER_MODEL.md"
       ],
@@ -962,7 +962,7 @@
       "rule_id": "INV-NO-WALLCLOCK-TIMEOUTS-IN-BOOT",
       "severity": "FAIL",
       "scope_paths": [
-        "src/client/local_server/local_server_controller.py",
+        "client/local_server/local_server_controller.py",
         "tools/mvp/runtime_entry.py",
         "tools/server/tool_replay_local_singleplayer.py",
         "docs/server/LOCAL_SINGLEPLAYER_MODEL.md"
@@ -1284,7 +1284,7 @@
       "scope_paths": [
         "packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
         "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
-        "src/geo/overlay/overlay_merge_engine.py"
+        "geo/overlay/overlay_merge_engine.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-identity-override",
       "exemption_policy": "deny"
@@ -1293,7 +1293,7 @@
       "rule_id": "INV-OVERLAY-CONFLICT-POLICY-DECLARED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/geo/overlay/overlay_merge_engine.py",
+        "geo/overlay/overlay_merge_engine.py",
         "data/registries/overlay_conflict_policy_registry.json",
         "data/registries/overlay_policy_registry.json",
         "data/registries/explain_contract_registry.json",
@@ -1308,7 +1308,7 @@
       "rule_id": "INV-CONFLICTS-NOT-SILENT-IN-STRICT",
       "severity": "FAIL",
       "scope_paths": [
-        "src/geo/overlay/overlay_merge_engine.py",
+        "geo/overlay/overlay_merge_engine.py",
         "tools/geo/tool_explain_property_origin.py",
         "tools/geo/tool_replay_overlay_merge.py",
         "tools/xstack/testx/tests/geo9_testlib.py",
@@ -1321,8 +1321,8 @@
       "rule_id": "INV-NO-CATALOG-REQUIRED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/mw_cell_generator.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/mw/mw_cell_generator.py",
+        "geo/worldgen/worldgen_engine.py",
         "data/registries/galaxy_priors_registry.json",
         "docs/worldgen/MILKY_WAY_CONSTITUTION.md"
       ],
@@ -1333,8 +1333,8 @@
       "rule_id": "INV-MW-CELL-ON-DEMAND-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/mw_cell_generator.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/mw/mw_cell_generator.py",
+        "geo/worldgen/worldgen_engine.py",
         "schema/geo/worldgen_request.schema",
         "docs/worldgen/MILKY_WAY_CONSTITUTION.md"
       ],
@@ -1345,8 +1345,8 @@
       "rule_id": "INV-NAMED-RNG-WORLDGEN-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/mw_cell_generator.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/mw/mw_cell_generator.py",
+        "geo/worldgen/worldgen_engine.py",
         "docs/worldgen/MILKY_WAY_CONSTITUTION.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-named-rng-worldgen-only",
@@ -1356,8 +1356,8 @@
       "rule_id": "INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/system_query_engine.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/mw/system_query_engine.py",
+        "geo/worldgen/worldgen_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/worldgen/tool_replay_system_instantiation.py",
         "docs/worldgen/STAR_SYSTEM_SEED_MODEL.md"
@@ -1369,8 +1369,8 @@
       "rule_id": "INV-NO-EAGER-SYSTEM-GENERATION",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/system_query_engine.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/mw/system_query_engine.py",
+        "geo/worldgen/worldgen_engine.py",
         "tools/worldgen/tool_replay_system_instantiation.py",
         "docs/worldgen/STAR_SYSTEM_SEED_MODEL.md"
       ],
@@ -1381,8 +1381,8 @@
       "rule_id": "INV-L2-OBJECTS-ID-STABLE",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/mw_system_refiner_l2.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/mw/mw_system_refiner_l2.py",
+        "geo/worldgen/worldgen_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/worldgen/tool_replay_system_l2.py",
         "docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md"
@@ -1394,7 +1394,7 @@
       "rule_id": "INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/mw_system_refiner_l2.py",
+        "worldgen/mw/mw_system_refiner_l2.py",
         "tools/worldgen/tool_replay_system_l2.py",
         "docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md"
       ],
@@ -1405,8 +1405,8 @@
       "rule_id": "INV-SURFACE-GEN-ROUTED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/mw_surface_refiner_l3.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/mw/mw_surface_refiner_l3.py",
+        "geo/worldgen/worldgen_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "data/registries/surface_generator_registry.json",
         "data/registries/surface_generator_routing_registry.json",
@@ -1419,9 +1419,9 @@
       "rule_id": "INV-TILES-ON-DEMAND-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/mw/mw_surface_refiner_l3.py",
-        "src/worldgen/mw/insolation_proxy.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/mw/mw_surface_refiner_l3.py",
+        "worldgen/mw/insolation_proxy.py",
+        "geo/worldgen/worldgen_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md"
       ],
@@ -1432,7 +1432,7 @@
       "rule_id": "INV-NO-REAL-DATA-IN-EARTH-STUB",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/earth_surface_generator.py",
+        "worldgen/earth/earth_surface_generator.py",
         "data/registries/earth_surface_params_registry.json",
         "data/registries/surface_generator_registry.json",
         "docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md",
@@ -1445,8 +1445,8 @@
       "rule_id": "INV-EARTH-GEN-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/earth_surface_generator.py",
-        "src/worldgen/mw/mw_surface_refiner_l3.py",
+        "worldgen/earth/earth_surface_generator.py",
+        "worldgen/mw/mw_surface_refiner_l3.py",
         "tools/worldgen/earth0_probe.py",
         "tools/worldgen/tool_verify_earth_surface.py",
         "docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md"
@@ -1458,8 +1458,8 @@
       "rule_id": "INV-HYDROLOGY-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/hydrology_engine.py",
-        "src/worldgen/mw/mw_surface_refiner_l3.py",
+        "worldgen/earth/hydrology_engine.py",
+        "worldgen/mw/mw_surface_refiner_l3.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/worldgen/earth1_probe.py",
         "tools/worldgen/tool_replay_hydrology_window.py",
@@ -1472,7 +1472,7 @@
       "rule_id": "INV-NO-RANDOM-FLOW",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/hydrology_engine.py",
+        "worldgen/earth/hydrology_engine.py",
         "tools/worldgen/earth1_probe.py",
         "tools/worldgen/tool_replay_hydrology_window.py",
         "docs/worldgen/EARTH_HYDROLOGY_MODEL.md"
@@ -1484,8 +1484,8 @@
       "rule_id": "INV-CLIMATE-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/season_phase_engine.py",
-        "src/worldgen/earth/climate_field_engine.py",
+        "worldgen/earth/season_phase_engine.py",
+        "worldgen/earth/climate_field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "data/registries/earth_climate_params_registry.json",
         "tools/worldgen/earth2_probe.py",
@@ -1499,8 +1499,8 @@
       "rule_id": "INV-NO-WALLCLOCK-CLIMATE",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/season_phase_engine.py",
-        "src/worldgen/earth/climate_field_engine.py",
+        "worldgen/earth/season_phase_engine.py",
+        "worldgen/earth/climate_field_engine.py",
         "tools/worldgen/earth2_probe.py",
         "tools/worldgen/tool_replay_climate_window.py",
         "docs/worldgen/EARTH_SEASONAL_CLIMATE_MODEL.md"
@@ -1512,8 +1512,8 @@
       "rule_id": "INV-TIDE-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/tide_phase_engine.py",
-        "src/worldgen/earth/tide_field_engine.py",
+        "worldgen/earth/tide_phase_engine.py",
+        "worldgen/earth/tide_field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "data/registries/tide_params_registry.json",
         "tools/worldgen/earth3_probe.py",
@@ -1527,7 +1527,7 @@
       "rule_id": "INV-WIND-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/wind/wind_field_engine.py",
+        "worldgen/earth/wind/wind_field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "data/registries/wind_params_registry.json",
         "tools/worldgen/earth7_probe.py",
@@ -1566,7 +1566,7 @@
       "rule_id": "INV-NO-WALLCLOCK-WIND",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/wind/wind_field_engine.py",
+        "worldgen/earth/wind/wind_field_engine.py",
         "tools/worldgen/earth7_probe.py",
         "tools/worldgen/tool_replay_wind_window.py",
         "docs/worldgen/EARTH_WIND_PROXY_MODEL.md"
@@ -1578,7 +1578,7 @@
       "rule_id": "INV-REFINEMENT-BUDGETED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/refinement/refinement_scheduler.py",
+        "worldgen/refinement/refinement_scheduler.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/worldgen/mw4_probe.py",
         "tools/worldgen/tool_run_refinement_stress.py",
@@ -1591,8 +1591,8 @@
       "rule_id": "INV-CACHE-KEY-INCLUDES-CONTRACTS",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/refinement/refinement_cache.py",
-        "src/geo/worldgen/worldgen_engine.py",
+        "worldgen/refinement/refinement_cache.py",
+        "geo/worldgen/worldgen_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/sessionx/runner.py",
         "tools/xstack/sessionx/script_runner.py",
@@ -1605,8 +1605,8 @@
       "rule_id": "INV-NO-OCEAN-PDE-IN-MVP",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/tide_phase_engine.py",
-        "src/worldgen/earth/tide_field_engine.py",
+        "worldgen/earth/tide_phase_engine.py",
+        "worldgen/earth/tide_field_engine.py",
         "tools/worldgen/earth3_probe.py",
         "tools/worldgen/tool_replay_tide_window.py",
         "docs/worldgen/EARTH_TIDE_PROXY_MODEL.md"
@@ -1618,9 +1618,9 @@
       "rule_id": "INV-NO-CATALOG-DEPENDENCY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/sky/astronomy_proxy_engine.py",
-        "src/worldgen/earth/sky/starfield_generator.py",
-        "src/worldgen/earth/sky/sky_view_engine.py",
+        "worldgen/earth/sky/astronomy_proxy_engine.py",
+        "worldgen/earth/sky/starfield_generator.py",
+        "worldgen/earth/sky/sky_view_engine.py",
         "data/registries/sky_model_registry.json",
         "data/registries/starfield_policy_registry.json",
         "data/registries/milkyway_band_policy_registry.json",
@@ -1635,10 +1635,10 @@
       "rule_id": "INV-NO-WALLCLOCK-SKY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/sky/astronomy_proxy_engine.py",
-        "src/worldgen/earth/sky/sky_gradient_model.py",
-        "src/worldgen/earth/sky/starfield_generator.py",
-        "src/worldgen/earth/sky/sky_view_engine.py",
+        "worldgen/earth/sky/astronomy_proxy_engine.py",
+        "worldgen/earth/sky/sky_gradient_model.py",
+        "worldgen/earth/sky/starfield_generator.py",
+        "worldgen/earth/sky/sky_view_engine.py",
         "tools/worldgen/earth4_probe.py",
         "tools/worldgen/tool_replay_sky_view.py",
         "docs/worldgen/EARTH_SKY_STARFIELD_MODEL.md"
@@ -1650,8 +1650,8 @@
       "rule_id": "INV-NO-ASSET-DEPENDENCY-FOR-EMB",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/body/body_system.py",
-        "src/embodiment/lens/lens_engine.py",
+        "embodiment/body/body_system.py",
+        "embodiment/lens/lens_engine.py",
         "data/registries/body_template_registry.json",
         "data/registries/system_template_registry.json",
         "docs/embodiment/EMBODIMENT_BASELINE.md"
@@ -1663,7 +1663,7 @@
       "rule_id": "INV-LENS-PROFILED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/lens/lens_engine.py",
+        "embodiment/lens/lens_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/mvp/runtime_bundle.py",
         "data/registries/lens_profile_registry.json",
@@ -1676,8 +1676,8 @@
       "rule_id": "INV-BODY-MOTION-PROCESS-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/body/body_system.py",
-        "src/embodiment/lens/lens_engine.py",
+        "embodiment/body/body_system.py",
+        "embodiment/lens/lens_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/mvp/runtime_bundle.py",
         "docs/embodiment/EMBODIMENT_BASELINE.md"
@@ -1689,7 +1689,7 @@
       "rule_id": "INV-COLLISION-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/collision/macro_heightfield_provider.py",
+        "embodiment/collision/macro_heightfield_provider.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/embodiment/earth6_probe.py",
         "tools/embodiment/tool_replay_movement_window.py",
@@ -1704,10 +1704,10 @@
       "rule_id": "INV-NO-POSITION-WRITE-BYPASS",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/collision/macro_heightfield_provider.py",
+        "embodiment/collision/macro_heightfield_provider.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "src/client/ui/viewer_shell.py",
-        "src/client/ui/inspect_panels.py",
+        "client/ui/viewer_shell.py",
+        "client/ui/inspect_panels.py",
         "docs/embodiment/TERRAIN_COLLISION_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-position-write-bypass",
@@ -1717,9 +1717,9 @@
       "rule_id": "INV-JUMP-PROFILE-GATED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/movement/jump_process.py",
+        "embodiment/movement/jump_process.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "src/client/ui/viewer_shell.py",
+        "client/ui/viewer_shell.py",
         "tools/embodiment/toolbelt_cli.py",
         "tools/mvp/runtime_bundle.py",
         "data/registries/jump_params_registry.json",
@@ -1733,9 +1733,9 @@
       "rule_id": "INV-CAMERA-SMOOTH-RENDER-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/lens/camera_smoothing.py",
-        "src/embodiment/lens/lens_engine.py",
-        "src/client/ui/viewer_shell.py",
+        "embodiment/lens/camera_smoothing.py",
+        "embodiment/lens/lens_engine.py",
+        "client/ui/viewer_shell.py",
         "tools/embodiment/tool_replay_locomotion_window.py",
         "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
       ],
@@ -1746,8 +1746,8 @@
       "rule_id": "INV-NO-FLOAT-SMOOTHING",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/lens/camera_smoothing.py",
-        "src/client/ui/viewer_shell.py",
+        "embodiment/lens/camera_smoothing.py",
+        "client/ui/viewer_shell.py",
         "data/registries/camera_smoothing_registry.json",
         "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
       ],
@@ -1758,11 +1758,11 @@
       "rule_id": "INV-TOOLS-REQUIRE-ENTITLEMENT",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/tools/toolbelt_engine.py",
-        "src/embodiment/tools/terrain_edit_tool.py",
-        "src/embodiment/tools/scanner_tool.py",
-        "src/embodiment/tools/logic_tool.py",
-        "src/embodiment/tools/teleport_tool.py",
+        "embodiment/tools/toolbelt_engine.py",
+        "embodiment/tools/terrain_edit_tool.py",
+        "embodiment/tools/scanner_tool.py",
+        "embodiment/tools/logic_tool.py",
+        "embodiment/tools/teleport_tool.py",
         "data/registries/tool_capability_registry.json",
         "data/registries/entitlement_registry.json",
         "docs/embodiment/MVP_TOOLBELT_MODEL.md"
@@ -1774,8 +1774,8 @@
       "rule_id": "INV-NO-TRUTH-LEAK-IN-SCANS",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/tools/scanner_tool.py",
-        "src/client/ui/inspect_panels.py",
+        "embodiment/tools/scanner_tool.py",
+        "client/ui/inspect_panels.py",
         "docs/embodiment/MVP_TOOLBELT_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-truth-leak-in-scans",
@@ -1785,7 +1785,7 @@
       "rule_id": "INV-TERRAIN-EDITS-PROCESS-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/embodiment/tools/terrain_edit_tool.py",
+        "embodiment/tools/terrain_edit_tool.py",
         "tools/embodiment/toolbelt_cli.py",
         "tools/xstack/sessionx/process_runtime.py",
         "docs/embodiment/MVP_TOOLBELT_MODEL.md"
@@ -1797,9 +1797,9 @@
       "rule_id": "INV-NO-TRUTH-IN-UI",
       "severity": "FAIL",
       "scope_paths": [
-        "src/client/ui/viewer_shell.py",
-        "src/client/ui/map_views.py",
-        "src/client/ui/inspect_panels.py",
+        "client/ui/viewer_shell.py",
+        "client/ui/map_views.py",
+        "client/ui/inspect_panels.py",
         "docs/ux/MVP_VIEWER_SHELL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-truth-in-ui",
@@ -1809,9 +1809,9 @@
       "rule_id": "INV-VIEW-ARTIFACT-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/client/ui/viewer_shell.py",
-        "src/client/ui/map_views.py",
-        "src/client/ui/inspect_panels.py",
+        "client/ui/viewer_shell.py",
+        "client/ui/map_views.py",
+        "client/ui/inspect_panels.py",
         "docs/ux/MVP_VIEWER_SHELL.md",
         "tools/geo/tool_explain_property_origin.py"
       ],
@@ -1822,8 +1822,8 @@
       "rule_id": "INV-NO-BLOCKING-WORLDGEN-IN-UI",
       "severity": "FAIL",
       "scope_paths": [
-        "src/client/ui/viewer_shell.py",
-        "src/client/ui/teleport_controller.py",
+        "client/ui/viewer_shell.py",
+        "client/ui/teleport_controller.py",
         "tools/worldgen/mw4_probe.py",
         "tools/worldgen/tool_run_refinement_stress.py",
         "docs/worldgen/REFINEMENT_PIPELINE_MODEL.md"
@@ -1835,10 +1835,10 @@
       "rule_id": "INV-SKYVIEW-DERIVED-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/sky/sky_view_engine.py",
-        "src/client/ui/viewer_shell.py",
-        "src/client/render/render_model_adapter.py",
-        "src/client/render/renderers/software_renderer.py",
+        "worldgen/earth/sky/sky_view_engine.py",
+        "client/ui/viewer_shell.py",
+        "client/render/render_model_adapter.py",
+        "client/render/renderers/software_renderer.py",
         "docs/worldgen/EARTH_SKY_STARFIELD_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-skyview-derived-only",
@@ -1848,9 +1848,9 @@
       "rule_id": "INV-LIGHTING-DERIVED-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/lighting/lighting_view_engine.py",
-        "src/client/ui/viewer_shell.py",
-        "src/client/render/render_model_adapter.py",
+        "worldgen/earth/lighting/lighting_view_engine.py",
+        "client/ui/viewer_shell.py",
+        "client/render/render_model_adapter.py",
         "docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-lighting-derived-only",
@@ -1860,10 +1860,10 @@
       "rule_id": "INV-WATER-VIEW-DERIVED-ONLY",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/water/water_view_engine.py",
-        "src/client/ui/viewer_shell.py",
-        "src/client/render/render_model_adapter.py",
-        "src/client/render/renderers/software_renderer.py",
+        "worldgen/earth/water/water_view_engine.py",
+        "client/ui/viewer_shell.py",
+        "client/render/render_model_adapter.py",
+        "client/render/renderers/software_renderer.py",
         "docs/worldgen/EARTH_WATER_VISUAL_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-water-view-derived-only",
@@ -1884,9 +1884,9 @@
       "rule_id": "INV-NO-TRUTH-READ-IN-RENDER",
       "severity": "FAIL",
       "scope_paths": [
-        "src/client/render/render_model_adapter.py",
-        "src/client/render/renderers/software_renderer.py",
-        "src/client/render/renderers/null_renderer.py",
+        "client/render/render_model_adapter.py",
+        "client/render/renderers/software_renderer.py",
+        "client/render/renderers/null_renderer.py",
         "docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-truth-read-in-render",
@@ -1896,7 +1896,7 @@
       "rule_id": "INV-SHADOW-BOUNDED",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/lighting/horizon_shadow_engine.py",
+        "worldgen/earth/lighting/horizon_shadow_engine.py",
         "data/registries/shadow_model_registry.json",
         "docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
       ],
@@ -1907,8 +1907,8 @@
       "rule_id": "INV-NO-FLUID-SIM-IN-MVP",
       "severity": "FAIL",
       "scope_paths": [
-        "src/worldgen/earth/water/water_view_engine.py",
-        "src/client/render/renderers/software_renderer.py",
+        "worldgen/earth/water/water_view_engine.py",
+        "client/render/renderers/software_renderer.py",
         "tools/worldgen/earth8_probe.py",
         "tools/worldgen/tool_replay_water_view.py",
         "data/registries/water_visual_policy_registry.json",
@@ -2070,7 +2070,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "tools/xstack/sessionx/process_runtime.py",
-        "src/models/model_engine.py",
+        "models/model_engine.py",
         "tools/xstack/repox/check.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-force-through-process",

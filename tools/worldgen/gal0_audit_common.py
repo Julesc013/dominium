@@ -15,7 +15,7 @@ GAL0_SCOPE_PATHS: Tuple[str, ...] = (
     "data/registries/field_binding_registry.json",
     "data/registries/galactic_region_registry.json",
     "src/worldgen/galaxy",
-    "src/worldgen/earth/sky/starfield_generator.py",
+    "worldgen/earth/sky/starfield_generator.py",
     "tools/worldgen/gal0_probe.py",
     "tools/worldgen/tool_replay_galaxy_proxies.py",
 )

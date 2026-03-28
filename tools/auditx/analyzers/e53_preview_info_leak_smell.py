@@ -10,10 +10,10 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E53_PREVIEW_INFO_LEAK_SMELL"
 WATCH_PREFIXES = (
-    "src/client/interaction/preview_generator.py",
-    "src/client/interaction/interaction_dispatch.py",
+    "client/interaction/preview_generator.py",
+    "client/interaction/interaction_dispatch.py",
 )
-PREVIEW_PATH = "src/client/interaction/preview_generator.py"
+PREVIEW_PATH = "client/interaction/preview_generator.py"
 FORBIDDEN_SYMBOL_PATTERNS = (
     re.compile(r"\b(truth_model|truthmodel|universe_state)\b", re.IGNORECASE),
     re.compile(r"predicted_effects.*target_payload", re.IGNORECASE),

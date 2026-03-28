@@ -15,7 +15,7 @@ _HASH64 = re.compile(r"^[0-9a-f]{64}$")
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from src.geo import RNG_WORLDGEN_GALAXY, RNG_WORLDGEN_PLANET, RNG_WORLDGEN_SURFACE, RNG_WORLDGEN_SYSTEM, worldgen_rng_stream_policy
+    from geo import RNG_WORLDGEN_GALAXY, RNG_WORLDGEN_PLANET, RNG_WORLDGEN_SURFACE, RNG_WORLDGEN_SYSTEM, worldgen_rng_stream_policy
     from tools.xstack.testx.tests.geo8_testlib import seed_worldgen_state, worldgen_cell_key
 
     state = seed_worldgen_state()

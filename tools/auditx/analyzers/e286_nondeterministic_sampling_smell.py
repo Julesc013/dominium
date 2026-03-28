@@ -95,7 +95,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "src/process/qc/qc_engine.py",
+                                "process/qc/qc_engine.py",
                                 "data/registries/sampling_strategy_registry.json",
                             ],
                         )

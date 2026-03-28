@@ -21,7 +21,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
+    from meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
 
     classifications = read_provenance_classification_rows(repo_root)
     state = build_compaction_fixture_state("replay")

@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.interaction.interaction_panel import build_selection_overlay
+    from client.interaction.interaction_panel import build_selection_overlay
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     action_surfaces = [

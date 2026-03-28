@@ -13,7 +13,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.worldgen.earth.lighting import build_lighting_view_surface  # noqa: E402
+from worldgen.earth.lighting import build_lighting_view_surface  # noqa: E402
 from tools.worldgen.earth4_probe import (  # noqa: E402
     SKY_DAY_TICK,
     SKY_NIGHT_TICK,

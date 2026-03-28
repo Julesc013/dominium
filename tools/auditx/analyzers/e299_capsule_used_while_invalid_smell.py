@@ -63,7 +63,7 @@ def run(graph, repo_root, changed_files=None):
             ],
             related_paths=[
                 rel_path,
-                "src/process/capsules/capsule_executor.py",
+                "process/capsules/capsule_executor.py",
             ],
         )
     )

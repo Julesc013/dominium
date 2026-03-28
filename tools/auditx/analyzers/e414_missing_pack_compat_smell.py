@@ -24,7 +24,7 @@ REQUIRED_FILES = {
         "\"pack.degrade.best_effort\"",
         "\"pack.degrade.read_only_only\"",
     ),
-    "src/packs/compat/pack_compat_validator.py": (
+    "packs/compat/pack_compat_validator.py": (
         "PACK_COMPAT_MANIFEST_NAME",
         "REFUSAL_PACK_COMPAT_MANIFEST_MISSING",
         "validate_pack_compat_manifest(",

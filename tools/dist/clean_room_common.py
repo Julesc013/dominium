@@ -312,7 +312,7 @@ def _inline_vpath_probe_script(mode_policy: str) -> str:
         [
             "import json",
             "import os",
-            "from src.appshell.paths import vpath_init",
+            "from appshell.paths import vpath_init",
             "payload = vpath_init({",
             "    'repo_root': '.',",
             "    'product_id': 'launcher',",
@@ -335,9 +335,9 @@ def _inline_teleport_script(seed: str) -> str:
     return "\n".join(
         [
             "import json",
-            "from src.client.ui.teleport_controller import build_teleport_plan",
-            "from src.worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key",
-            "from src.worldgen.mw.system_query_engine import list_systems_in_cell",
+            "from client.ui.teleport_controller import build_teleport_plan",
+            "from worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key",
+            "from worldgen.mw.system_query_engine import list_systems_in_cell",
             "from tools.mvp.runtime_bundle import build_default_universe_identity",
             "",
             "seed = {!r}".format(str(seed)),

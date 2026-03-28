@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from src.geo import resolve_geo_profile_set
+from geo import resolve_geo_profile_set
 
 
 TEST_ID = "test_profile_override_logged"

@@ -9,14 +9,14 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E344_NONDETERMINISTIC_PATH_SMELL"
 REQUIRED_FILES = {
-    "src/geo/path/path_engine.py": (
+    "geo/path/path_engine.py": (
         "geo_path_query(",
         "_best_open_candidate(",
         "max_expansions",
         "geo_neighbors(",
         "_policy_partial_result(",
     ),
-    "src/geo/path/shard_route_planner.py": (
+    "geo/path/shard_route_planner.py": (
         "build_shard_route_plan(",
         "resolve_cell_shard_id(",
         "boundary_hops",
@@ -75,7 +75,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-PATHING-DETERMINISTIC"],
-                related_paths=[rel_path, "src/geo/path/path_engine.py"],
+                related_paths=[rel_path, "geo/path/path_engine.py"],
             )
         )
     return findings

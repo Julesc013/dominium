@@ -55,7 +55,7 @@ def _candidate_rows() -> list:
 
 
 def _run_once(candidates: list) -> dict:
-    from src.reality.transitions.transition_controller import compute_transition_plan
+    from reality.transitions.transition_controller import compute_transition_plan
 
     return compute_transition_plan(
         tick=10,

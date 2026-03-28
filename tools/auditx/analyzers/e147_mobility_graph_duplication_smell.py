@@ -49,9 +49,9 @@ def run(graph, repo_root, changed_files=None):
         "docs/",
     )
     allowed_files = {
-        "src/core/graph/network_graph_engine.py",
-        "src/core/graph/routing_engine.py",
-        "src/mobility/network/mobility_network_engine.py",
+        "core/graph/network_graph_engine.py",
+        "core/graph/routing_engine.py",
+        "mobility/network/mobility_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -91,7 +91,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-MOB-NETWORK-USES-NETWORKGRAPH",
                                 "INV-NO-ADHOC-ROUTING",
                             ],
-                            related_paths=[rel_path, "src/core/graph/network_graph_engine.py"],
+                            related_paths=[rel_path, "core/graph/network_graph_engine.py"],
                         )
                     )
                     break

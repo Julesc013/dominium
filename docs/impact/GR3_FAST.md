@@ -11,9 +11,9 @@ Touched Paths:
 - data/meta/real_world_affordance_matrix.json
 - docs/audit/WORKTREE_LEFTOVERS.md
 - schema/meta/coupling_evaluation_record.schema
-- src/process/software/pipeline_engine.py
-- src/system/macro/macro_capsule_engine.py
-- src/system/reliability/reliability_engine.py
+- process/software/pipeline_engine.py
+- system/macro/macro_capsule_engine.py
+- system/reliability/reliability_engine.py
 - tools/xstack/sessionx/process_runtime.py
 
 Demand IDs:

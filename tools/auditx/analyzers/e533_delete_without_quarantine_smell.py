@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="lib.delete_without_quarantine_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "src/lib/store/gc_engine.py",
+                file_path=rel_path or "lib/store/gc_engine.py",
                 evidence=[
                     str(item.get("code", "")).strip() or "gc_policy_drift",
                     str(item.get("message", "")).strip() or "store GC policy drift detected",
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REQUIRE_QUARANTINE_FOR_SAFE_MODE_AND_EXPLICIT_FLAGS_FOR_AGGRESSIVE_DELETION",
                 related_invariants=[RULE_POLICY],
-                related_paths=[rel_path or "src/lib/store/gc_engine.py", "docs/lib/STORE_INTEGRITY_AND_GC.md"],
+                related_paths=[rel_path or "lib/store/gc_engine.py", "docs/lib/STORE_INTEGRITY_AND_GC.md"],
             )
         )
     return findings

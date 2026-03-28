@@ -19,8 +19,8 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 def product_bin_map(repo_root: str) -> dict[str, str]:
     ensure_repo_on_path(repo_root)
-    from src.compat.descriptor import product_capability_default_rows_by_id
-    from src.compat.capability_negotiation import load_product_registry
+    from compat.descriptor import product_capability_default_rows_by_id
+    from compat.capability_negotiation import load_product_registry
 
     payload, error = load_product_registry(repo_root)
     if error:
@@ -62,7 +62,7 @@ def emit_descriptor_via_wrapper(repo_root: str, bin_name: str) -> dict:
 
 def emit_descriptor(repo_root: str, product_id: str) -> dict:
     ensure_repo_on_path(repo_root)
-    from src.compat.descriptor import build_product_descriptor
+    from compat.descriptor import build_product_descriptor
 
     return build_product_descriptor(repo_root, product_id=str(product_id))
 

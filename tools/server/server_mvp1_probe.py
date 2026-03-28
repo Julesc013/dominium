@@ -12,14 +12,14 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.client.local_server import (  # noqa: E402
+from client.local_server import (  # noqa: E402
     build_local_server_launch_spec,
     collect_local_client_messages,
     request_local_server_control,
     start_local_singleplayer,
     supervise_spawned_server_process,
 )
-from src.server.runtime.tick_loop import advance_server_tick  # noqa: E402
+from server.runtime.tick_loop import advance_server_tick  # noqa: E402
 from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL, MVP_PROFILE_BUNDLE_REL  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 

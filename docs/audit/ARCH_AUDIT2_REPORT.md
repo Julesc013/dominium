@@ -10,7 +10,7 @@ Replacement Target: Final release/distribution audit baseline governed by ARCH-A
 - result: `complete`
 - release_status: `pass`
 - blocking_finding_count: `0`
-- deterministic_fingerprint: `28d042f111d76218557d3ef77f7a2e1ac2b5b5818bd51432734a6e96388983c4`
+- deterministic_fingerprint: `ba3bfb72ff12e288d70e650b176b8fe4facff08a322bd2e1a5ed635c188f79c9`
 
 ## Cross-Layer Checks
 
@@ -22,19 +22,19 @@ Replacement Target: Final release/distribution audit baseline governed by ARCH-A
 ### update_model_scan
 - result: `pass`
 - blocking_finding_count: `0`
-- deterministic_fingerprint: `5648849dd09ffe6efc8b88ac3185ec215091c242985546335740961e22625768`
+- deterministic_fingerprint: `5ee8a20f6c7a21bf2c68be84a7bce24fedb6d477c22f115ebad5de6e9668af69`
 
 ### trust_bypass_scan
 - result: `pass`
 - blocking_finding_count: `0`
-- deterministic_fingerprint: `67e77c691770441af5e92931a1d5bab649bd70c32bc3dee0d82f22da5c6ef70b`
+- deterministic_fingerprint: `969d9249ae289c459be56cf51715933daa45203d142b40d2696b25e34de811c5`
 
 ### target_matrix_scan
 - result: `pass`
 - blocking_finding_count: `0`
-- deterministic_fingerprint: `c41773a75675b689c709cf6b069e7c582d16afd11ad05ef0106f4a59a7ac8a97`
+- deterministic_fingerprint: `613106507a4bd90f802385a2bc9b54da52f5f0fcab79ed2e82f3bcc3801d8847`
 
 ### archive_determinism_scan
 - result: `pass`
 - blocking_finding_count: `0`
-- deterministic_fingerprint: `00c58935c367094cb46559fb23459c268ea3b328e9f870e9f2a7435ec2062ffd`
+- deterministic_fingerprint: `007657a8b474f032efc1c42ac3fb2edcfdc31c145a57862519526b7f8a8da28a`

@@ -12,7 +12,7 @@ TEST_TAGS = ["strict", "meta", "instrumentation", "epistemic", "diegetic"]
 
 
 FORBIDDEN_PATTERN = re.compile(r"\b(truth_model|truthmodel|universe_state|render_model)\b", re.IGNORECASE)
-ENGINE_TARGET = "src/meta/instrumentation/instrumentation_engine.py"
+ENGINE_TARGET = "meta/instrumentation/instrumentation_engine.py"
 
 
 def _read(repo_root: str, rel_path: str) -> str:

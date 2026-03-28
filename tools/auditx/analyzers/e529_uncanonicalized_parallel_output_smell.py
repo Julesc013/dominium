@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="engine.uncanonicalized_parallel_output_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "src/appshell/supervisor/supervisor_engine.py",
+                file_path=rel_path or "appshell/supervisor/supervisor_engine.py",
                 evidence=[
                     str(item.get("message", "")).strip() or "parallel output canonicalization violation detected",
                     str(item.get("snippet", "")).strip(),
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="CANONICALIZE_PARALLEL_OUTPUT_BEFORE_HASHING_OR_PERSISTENCE",
                 related_invariants=[RULE_ID],
-                related_paths=[rel_path or "src/appshell/supervisor/supervisor_engine.py", "src/engine/concurrency/canonical_merge.py"],
+                related_paths=[rel_path or "appshell/supervisor/supervisor_engine.py", "engine/concurrency/canonical_merge.py"],
             )
         )
     return findings

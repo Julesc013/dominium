@@ -19,8 +19,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.embodiment import build_logic_probe_task
-    from src.logic.debug import process_logic_probe
+    from embodiment import build_logic_probe_task
+    from logic.debug import process_logic_probe
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, seed_signal_requests
     from tools.xstack.testx.tests.emb1_testlib import authority_context
 

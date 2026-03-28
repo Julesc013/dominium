@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    transport_rel = "src/signals/transport/transport_engine.py"
+    transport_rel = "signals/transport/transport_engine.py"
     transport_text = _read_text(repo_root, transport_rel)
     if transport_text and "query_route_result(" not in transport_text:
         findings.append(
@@ -53,13 +53,13 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="REWRITE",
                 related_invariants=["INV-SIGNALS-USE-ABS-ROUTING"],
-                related_paths=[transport_rel, "src/core/graph/routing_engine.py"],
+                related_paths=[transport_rel, "core/graph/routing_engine.py"],
             )
         )
 
     allow_files = {
-        "src/signals/transport/transport_engine.py",
-        "src/signals/transport/channel_executor.py",
+        "signals/transport/transport_engine.py",
+        "signals/transport/channel_executor.py",
     }
     scan_root = os.path.join(repo_root, "src", "signals")
     if os.path.isdir(scan_root):
@@ -92,7 +92,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
                             related_invariants=["INV-SIGNALS-USE-ABS-ROUTING"],
-                            related_paths=[rel_path, "src/core/graph/routing_engine.py"],
+                            related_paths=[rel_path, "core/graph/routing_engine.py"],
                         )
                     )
                     break

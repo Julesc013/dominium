@@ -5,32 +5,42 @@ from __future__ import annotations
 import copy
 import json
 import os
+import sys
 from typing import List, Mapping
 
-from src.compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
-from src.geo import (
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+
+
+from tools.import_bridge import install_src_aliases
+install_src_aliases(REPO_ROOT_HINT)
+
+from compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
+from geo import (
     build_default_overlay_manifest,
     build_worldgen_request,
     overlay_proof_surface,
     validate_overlay_manifest_trust,
 )
-from src.lib.instance.instance_validator import (
+from lib.instance.instance_validator import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from src.meta.identity import IDENTITY_KIND_INSTANCE, attach_universal_identity_block
-from src.release.component_graph_resolver import DEFAULT_INSTALL_PROFILE_ID, load_install_profile_registry, select_install_profile
-from src.security.trust import DEFAULT_TRUST_POLICY_ID
-from src.time.epoch_anchor_engine import (
+from meta.identity import IDENTITY_KIND_INSTANCE, attach_universal_identity_block
+from release.component_graph_resolver import DEFAULT_INSTALL_PROFILE_ID, load_install_profile_registry, select_install_profile
+from security.trust import DEFAULT_TRUST_POLICY_ID
+from engine.time.epoch_anchor_engine import (
     ANCHOR_REASON_INTERVAL,
     ANCHOR_REASON_SAVE,
     anchor_interval_ticks,
     build_epoch_anchor_record,
     load_time_anchor_policy,
 )
-from src.universe import build_universe_contract_bundle_payload
-from src.worldgen.mw import build_planet_surface_cell_key, resolve_sol_anchor_cell_key, sol_anchor_object_ids, surface_tile_artifact_hash_chain
+from universe import build_universe_contract_bundle_payload
+from worldgen.mw import build_planet_surface_cell_key, resolve_sol_anchor_cell_key, sol_anchor_object_ids, surface_tile_artifact_hash_chain
 from tools.worldgen.worldgen_lock_common import (
     WORLDGEN_LOCK_ID,
     WORLDGEN_LOCK_VERSION,

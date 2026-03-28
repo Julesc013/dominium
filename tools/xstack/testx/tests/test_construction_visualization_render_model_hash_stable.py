@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "materials", "construction", "render", "determinism"]
 
 
 def _build_overlay_payload(repo_root: str) -> dict:
-    from src.client.interaction.inspection_overlays import build_inspection_overlays
+    from client.interaction.inspection_overlays import build_inspection_overlays
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.construction_testlib import (
         authority_context,
@@ -112,7 +112,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from src.client.render import build_render_model
+    from client.render import build_render_model
 
     overlay_payload = _build_overlay_payload(repo_root=repo_root)
     if not overlay_payload:

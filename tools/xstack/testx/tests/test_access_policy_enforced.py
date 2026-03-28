@@ -18,7 +18,7 @@ def run(repo_root: str):
         sys.path.insert(0, test_dir)
 
     from meta_instr0_testlib import authority_context, instrumentation_inputs
-    from src.meta.instrumentation import REFUSAL_INSTRUMENTATION_ACCESS_DENIED, validate_control_access
+    from meta.instrumentation import REFUSAL_INSTRUMENTATION_ACCESS_DENIED, validate_control_access
 
     payloads = instrumentation_inputs(repo_root)
     denied = validate_control_access(

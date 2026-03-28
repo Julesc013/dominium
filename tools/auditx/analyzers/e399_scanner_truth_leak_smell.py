@@ -9,13 +9,13 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E399_SCANNER_TRUTH_LEAK_SMELL"
 REQUIRED_TOKENS = {
-    "src/embodiment/tools/scanner_tool.py": (
+    "embodiment/tools/scanner_tool.py": (
         '"source_kind": "derived.scan_result"',
         "inspection_snapshot",
         "field_values",
         "property_origin_result",
     ),
-    "src/client/ui/inspect_panels.py": (
+    "client/ui/inspect_panels.py": (
         "build_scan_result_panel(",
         'panel.inspect.scan_result',
     ),
@@ -24,7 +24,7 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "src/embodiment/tools/scanner_tool.py": ("truth_model", "universe_state", "process_runtime"),
+    "embodiment/tools/scanner_tool.py": ("truth_model", "universe_state", "process_runtime"),
 }
 
 

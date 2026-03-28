@@ -17,11 +17,11 @@ Replacement Target: legacy reference surface retained without current binding au
 - `schema/packs/pack_lock.schema`
 - `schema/packs/pack_compat_manifest.schema`
 - `schema/pack_manifest.schema`
-- `src/lib/provides/__init__.py`
-- `src/lib/provides/provider_resolution.py`
-- `src/lib/instance/instance_validator.py`
-- `src/packs/compat/pack_compat_validator.py`
-- `src/packs/compat/pack_verification_pipeline.py`
+- `lib/provides/__init__.py`
+- `lib/provides/provider_resolution.py`
+- `lib/instance/instance_validator.py`
+- `packs/compat/pack_compat_validator.py`
+- `packs/compat/pack_verification_pipeline.py`
 - `tools/ops/ops_cli.py`
 - `tools/launcher/launcher_cli.py`
 - `tools/xstack/pack_loader/loader.py`

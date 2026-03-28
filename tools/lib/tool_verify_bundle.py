@@ -13,7 +13,7 @@ REPO_ROOT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
-from src.lib.bundle import verify_bundle_directory
+from lib.bundle import verify_bundle_directory
 
 
 def main(argv: list[str] | None = None) -> int:
