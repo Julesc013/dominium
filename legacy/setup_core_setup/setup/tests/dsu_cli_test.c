@@ -26,8 +26,8 @@ PURPOSE: Plan S-7 CLI contract tests (golden JSON + exit codes + E2E + rollback 
 #include "dsu/dsu_fs.h"
 #include "dsu/dsu_manifest.h"
 
-#include "../core/src/fs/dsu_platform_iface.h"
-#include "../core/src/txn/dsu_journal.h"
+#include "../core/fs/dsu_platform_iface.h"
+#include "../core/txn/dsu_journal.h"
 
 typedef struct buf_t {
     unsigned char *data;

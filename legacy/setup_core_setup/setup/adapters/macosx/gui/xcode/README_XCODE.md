@@ -5,7 +5,7 @@ This project is a convenience layer for Interface Builder editing. CMake remains
 ## Open + Edit
 - Open `source/dominium/setup/frontends/adapters/macos_pkg/xcode/DominiumSetupMac.xcodeproj`.
 - UI is in `source/dominium/setup/frontends/adapters/macos_pkg/xcode/DominiumSetupMacApp/Resources/Base.lproj/Main.storyboard`.
-- Sources are in `source/dominium/setup/frontends/adapters/macos_pkg/xcode/DominiumSetupMacApp/Sources`.
+- Sources are in `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp`.
 
 ## Debug Sandbox
 Set these scheme environment variables for safe runs:

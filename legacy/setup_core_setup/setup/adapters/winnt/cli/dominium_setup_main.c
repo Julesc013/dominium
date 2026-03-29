@@ -45,7 +45,7 @@ NOTE: Legacy setup entrypoint is frozen; see docs/setup/DEPRECATION_PLAN.md.
 #include "dsu/dsu_resolve.h"
 #include "dsu/dsu_state.h"
 #include "dsu/dsu_txn.h"
-#include "../core/src/fs/dsu_platform_iface.h"
+#include "../../../core/fs/dsu_platform_iface.h"
 #include "domino/system/dsys.h"
 
 #define DSU_CLI_NAME "dominium-setup-legacy"

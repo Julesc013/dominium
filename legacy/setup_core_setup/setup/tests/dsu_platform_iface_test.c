@@ -16,7 +16,7 @@ PURPOSE: Plan S-9 platform interface idempotency test.
 #include "dsu/dsu_resolve.h"
 #include "dsu/dsu_state.h"
 
-#include "../core/src/state/dsu_state_internal.h"
+#include "../core/state/dsu_state_internal.h"
 
 typedef struct buf_t {
     unsigned char *data;

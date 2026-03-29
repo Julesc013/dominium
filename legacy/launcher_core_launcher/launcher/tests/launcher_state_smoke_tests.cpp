@@ -31,7 +31,7 @@ extern "C" {
 
 /* Internal-only platform helpers for directory enumeration in tests. */
 extern "C" {
-#include "../../setup/core/src/fs/dsu_platform_iface.h"
+#include "../../../setup_core_setup/setup/core/fs/dsu_platform_iface.h"
 }
 
 static int expect(int cond, const char *msg) {

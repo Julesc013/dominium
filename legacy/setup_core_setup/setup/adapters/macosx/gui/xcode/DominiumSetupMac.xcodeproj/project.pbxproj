@@ -16,11 +16,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B10000000000000000000001 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DominiumSetupMacApp/Sources/AppDelegate.h; sourceTree = "<group>"; };
-		B10000000000000000000002 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DominiumSetupMacApp/Sources/AppDelegate.m; sourceTree = "<group>"; };
-		B10000000000000000000003 /* DominiumSetupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DominiumSetupMacApp/Sources/DominiumSetupViewController.h; sourceTree = "<group>"; };
-		B10000000000000000000004 /* DominiumSetupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DominiumSetupMacApp/Sources/DominiumSetupViewController.m; sourceTree = "<group>"; };
-		B10000000000000000000005 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DominiumSetupMacApp/Sources/main.m; sourceTree = "<group>"; };
+		B10000000000000000000001 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DominiumSetupMacApp/AppDelegate.h; sourceTree = "<group>"; };
+		B10000000000000000000002 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DominiumSetupMacApp/AppDelegate.m; sourceTree = "<group>"; };
+		B10000000000000000000003 /* DominiumSetupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DominiumSetupMacApp/DominiumSetupViewController.h; sourceTree = "<group>"; };
+		B10000000000000000000004 /* DominiumSetupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DominiumSetupMacApp/DominiumSetupViewController.m; sourceTree = "<group>"; };
+		B10000000000000000000005 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DominiumSetupMacApp/main.m; sourceTree = "<group>"; };
 		B10000000000000000000006 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DominiumSetupMacApp/Resources/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B10000000000000000000007 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DominiumSetupMacApp/Resources/Assets.xcassets; sourceTree = "<group>"; };
 		B10000000000000000000008 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = DominiumSetupMacApp/Resources/Info.plist; sourceTree = "<group>"; };

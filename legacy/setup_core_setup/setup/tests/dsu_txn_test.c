@@ -26,8 +26,8 @@ PURPOSE: Plan S-4 transaction engine + filesystem safety tests.
 #include "dsu/dsu_txn.h"
 
 /* Internal-only platform helpers for directory enumeration in tests. */
-#include "../core/src/fs/dsu_platform_iface.h"
-#include "../core/src/txn/dsu_journal.h"
+#include "../core/fs/dsu_platform_iface.h"
+#include "../core/txn/dsu_journal.h"
 
 static int expect(int cond, const char *msg) {
     if (!cond) {

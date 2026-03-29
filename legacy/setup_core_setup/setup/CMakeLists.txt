@@ -35,35 +35,35 @@ if(DOMINIUM_BUILD_SETUP)
 #   Layer 2: dominium-setup (frontend, links only kernel + services)
 
 add_library(dsk_kernel STATIC
-    kernel/src/api/dsk_api.cpp
-    kernel/src/tlv/dsk_tlv_schema_registry.cpp
-    kernel/src/tlv/dsk_tlv_bridge.cpp
-    kernel/src/digest/dsk_digest.cpp
-    kernel/src/errors/dsk_error.cpp
-    kernel/src/audit/dsk_audit.cpp
-    kernel/src/import/dsk_import_legacy.cpp
-    kernel/src/splat/dsk_splat_caps.cpp
-    kernel/src/splat/dsk_splat_registry.cpp
-    kernel/src/splat/dsk_splat_select.cpp
-    kernel/src/contracts/dsk_contract_manifest.cpp
-    kernel/src/contracts/dsk_contract_request.cpp
-    kernel/src/contracts/dsk_contract_state.cpp
-    kernel/src/contracts/dsk_contract_audit.cpp
-    kernel/src/plan/dsk_resolve.cpp
-    kernel/src/plan/dsk_plan_build.cpp
-    kernel/src/plan/dsk_plan_validate.cpp
-    kernel/src/plan/dsk_plan_digest.cpp
-    kernel/src/plan/dsk_plan_dump_json.cpp
-    kernel/src/jobs/dsk_jobs_build.cpp
-    kernel/src/jobs/dsk_jobs_checkpoint.cpp
-    kernel/src/jobs/dsk_jobs_common.cpp
-    kernel/src/jobs/dsk_jobs_execute.cpp
-    kernel/src/jobs/dsk_jobs_resume.cpp
-    kernel/src/jobs/dsk_jobs_rollback.cpp
+    core/api/dsk_api.cpp
+    core/tlv/dsk_tlv_schema_registry.cpp
+    core/tlv/dsk_tlv_bridge.cpp
+    core/digest/dsk_digest.cpp
+    core/errors/dsk_error.cpp
+    core/audit/dsk_audit.cpp
+    core/import/dsk_import_legacy.cpp
+    core/splat/dsk_splat_caps.cpp
+    core/splat/dsk_splat_registry.cpp
+    core/splat/dsk_splat_select.cpp
+    core/contracts/dsk_contract_manifest.cpp
+    core/contracts/dsk_contract_request.cpp
+    core/contracts/dsk_contract_state.cpp
+    core/contracts/dsk_contract_audit.cpp
+    core/plan/dsk_resolve.cpp
+    core/plan/dsk_plan_build.cpp
+    core/plan/dsk_plan_validate.cpp
+    core/plan/dsk_plan_digest.cpp
+    core/plan/dsk_plan_dump_json.cpp
+    core/jobs/dsk_jobs_build.cpp
+    core/jobs/dsk_jobs_checkpoint.cpp
+    core/jobs/dsk_jobs_common.cpp
+    core/jobs/dsk_jobs_execute.cpp
+    core/jobs/dsk_jobs_resume.cpp
+    core/jobs/dsk_jobs_rollback.cpp
 )
 
 target_include_directories(dsk_kernel PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/include
 )
 
 target_include_directories(dsk_kernel PUBLIC
@@ -72,7 +72,7 @@ target_include_directories(dsk_kernel PUBLIC
 
 target_include_directories(dsk_kernel PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/services/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/src/plan
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/plan
 )
 
 target_compile_definitions(dsk_kernel PRIVATE

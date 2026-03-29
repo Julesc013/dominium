@@ -26,7 +26,7 @@ PURPOSE: Verify resumable setup jobs across a forced interruption.
 #include "dsu/dsu_manifest.h"
 #include "dsu/dsu_plan.h"
 
-#include "../core/src/fs/dsu_platform_iface.h"
+#include "../core/fs/dsu_platform_iface.h"
 
 typedef struct buf_t {
     unsigned char *data;

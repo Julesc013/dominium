@@ -15,7 +15,7 @@ PURPOSE: Plan S-3 resolver tests (selection, closure, conflicts, platform, state
 #include "dsu/dsu_resolve.h"
 #include "dsu/dsu_state.h"
 
-#include "../core/src/fs/dsu_platform_iface.h"
+#include "../core/fs/dsu_platform_iface.h"
 
 typedef struct buf_t {
     unsigned char *data;
