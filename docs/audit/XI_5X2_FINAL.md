@@ -15,23 +15,25 @@ Replacement Target: XI-6 freeze report after residual convergence completes
 
 - Xi-5x1 residual rows re-intaken and classified: `204`
 - stale rows reclassified as `OBSOLETE_ALREADY_RESOLVED`: `109`
-- rows resolved in this pass: `109`
+- retained-by-policy rows newly justified in this pass: `95`
 - top-level src file count: `0`
 - runtime-critical src paths remaining: `0`
 - dangerous shadow roots remaining: `0`
 
 ## Current Residual Counts
 
-- `BLOCKED_BY_MISSING_PRECONDITION`: `13`
-- `LEGACY_KEEP_FOR_NOW`: `82`
+- `INTENTIONAL_RESIDUAL_ALLOWED`: `95`
+
+## Policy-Classified Source Pockets
+
+- `packs/source` -> `VALID_CONTENT_SOURCE`
+- `legacy/source/tests` -> `VALID_LEGACY_ARCHIVE_SOURCE`
 
 ## Xi-6 Readiness
 
-- Xi-6 readiness boolean: `false`
-- blocker `blocked_by_missing_precondition`: `13`
-- blocker `legacy_keep_for_now`: `82`
-- exact reason: Xi-6 remains blocked because packs/source still requires an explicit content-source policy and legacy/source/tests remains as a named legacy pocket that is not yet acceptable to freeze.
+- Xi-6 readiness boolean: `true`
+- reasoning: hard blockers are cleared, remaining source pockets are explicit allowlisted exceptions, and required validation gates passed.
 
 ## Next Step
 
-- recommended next phase: `Xi-5x3` focused on `packs/source` content-source policy and the remaining `legacy/source/tests` pocket.
+- recommended next phase: `Xi-6`

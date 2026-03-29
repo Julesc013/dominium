@@ -8,14 +8,22 @@ Replacement Target: XI-5 final convergence summary
 
 ## Current Classification Counts
 
-- `BLOCKED_BY_MISSING_PRECONDITION`: `13`
-- `LEGACY_KEEP_FOR_NOW`: `82`
+- `INTENTIONAL_RESIDUAL_ALLOWED`: `95`
 - `OBSOLETE_ALREADY_RESOLVED`: `109`
 
 ## Decision Class Counts
 
-- `KEEP_LEGACY_FOR_LATER`: `82`
-- `REQUIRES_CONTENT_SOURCE_POLICY`: `13`
-- `SAFE_BUILD_REHOME_NOW`: `94`
-- `SAFE_TOOLCHAIN_SUPPORT_MOVE_NOW`: `5`
-- `SAFE_TO_ATTIC_NOW`: `10`
+- `SAFE_CONTENT_SOURCE_RETAIN`: `13`
+- `SAFE_LEGACY_ARCHIVE_RETAIN`: `82`
+- `SAFE_LOCAL_REHOME`: `109`
+
+## Policy Class Counts
+
+- `MOVE_TO_DOMAIN`: `99`
+- `VALID_CONTENT_SOURCE`: `13`
+- `VALID_LEGACY_ARCHIVE_SOURCE`: `92`
+
+## Allowlisted Residual Roots
+
+- `packs/source` -> `VALID_CONTENT_SOURCE`
+- `legacy/source/tests` -> `VALID_LEGACY_ARCHIVE_SOURCE`

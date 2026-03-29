@@ -6,14 +6,14 @@ Replacement Target: XI-6 freeze report after residual convergence completes
 
 # XI-5X2 Xi-6 Readiness
 
-- Xi-6 ready: `false`
-- remaining residuals acceptable to freeze: `false`
+- Xi-6 ready: `true`
+- remaining residuals acceptable to freeze: `true`
 
 ## Hard Blockers
 
-- `blocked_by_missing_precondition`: `13`
-- `legacy_keep_for_now`: `82`
+- none
 
-## Reason
+## Allowed Residual Exceptions
 
-- Xi-6 remains blocked because packs/source still requires an explicit content-source policy and legacy/source/tests remains as a named legacy pocket that is not yet acceptable to freeze.
+- `packs/source` -> `VALID_CONTENT_SOURCE` (`13` files)
+- `legacy/source/tests` -> `VALID_LEGACY_ARCHIVE_SOURCE` (`82` files)
