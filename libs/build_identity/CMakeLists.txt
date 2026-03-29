@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_library(build_identity STATIC
-    src/build_identity.c
+    build_identity.c
 )
 
 target_include_directories(build_identity PUBLIC

@@ -8,7 +8,7 @@ add_executable(tool_ui_bind
 
 target_include_directories(tool_ui_bind PRIVATE
     ${CMAKE_SOURCE_DIR}/tools/ui_shared/include
-    ${CMAKE_SOURCE_DIR}/tools/ui_shared/src/ui_ir
+    ${CMAKE_SOURCE_DIR}/tools/ui_shared/ui_ir
     ${CMAKE_SOURCE_DIR}/libs/appcore
 )
 
@@ -33,7 +33,7 @@ add_executable(tool_ui_doc_annotate
 
 target_include_directories(tool_ui_doc_annotate PRIVATE
     ${CMAKE_SOURCE_DIR}/tools/ui_shared/include
-    ${CMAKE_SOURCE_DIR}/tools/ui_shared/src/ui_ir
+    ${CMAKE_SOURCE_DIR}/tools/ui_shared/ui_ir
     ${CMAKE_SOURCE_DIR}/libs/appcore
 )
 

@@ -10,7 +10,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - release_status: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `365a9dace7e975f784330794276dffe85563b64e2f2c70a0dcc5405e277a1f1c`
+- deterministic_fingerprint: `235dba6f922ed046d2abd288aafc71d3f1c02cdb58b7ca7ac785a73a775aaed7`
 
 ## Checks
 
@@ -30,13 +30,13 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `054bb2520784833d244a5368230fa29bef845cffb73e5214f8ec9e670853e835`
+- deterministic_fingerprint: `66318d32c353c65538a542bb4560aa1d2209360157200a55548878818588bcd6`
 
 ### determinism_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `2939956c9c63a1f7be5c7b14a20c0aa5cd674134ed0c3b5e772fd0ecad96dfbc`
+- deterministic_fingerprint: `f0930a345be7b80c2cdecc76bdb70fdd21a89d723e3e1efff237dd2f43158b7b`
 
 ### float_in_truth_scan
 - result: `known_exception`
@@ -124,7 +124,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `9cf40fb86be290eddcd762ee4ba9c4125ee4a4cf9e18ca38360dd9916b5b1364`
+- deterministic_fingerprint: `770b9daa7d89085beee780d08f10afea8a1b733d6cb2ff20cf7de62a40fb7fc0`
 
 ### parallel_truth_scan
 - result: `pass`

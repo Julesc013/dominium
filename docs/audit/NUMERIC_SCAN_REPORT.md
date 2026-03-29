@@ -11,7 +11,7 @@ Replacement Target: Numeric discipline baseline and release-pinned numeric polic
 - release_status: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `f047f98761d55282802b82025a6dafdf16dfed8ef40ae67531399c923990baa4`
+- deterministic_fingerprint: `6309635dead8b6c547091b1bd531c8a2b4ee013fd6bfe762ca4f59aa743d26dc`
 
 ## Numeric Checks
 
@@ -41,4 +41,4 @@ Replacement Target: Numeric discipline baseline and release-pinned numeric polic
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `9cf40fb86be290eddcd762ee4ba9c4125ee4a4cf9e18ca38360dd9916b5b1364`
+- deterministic_fingerprint: `770b9daa7d89085beee780d08f10afea8a1b733d6cb2ff20cf7de62a40fb7fc0`
