@@ -12,16 +12,20 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 
 - `apps.app` -> `app`
 - `apps.app.include.dominium.app` -> `app/include/dominium/app`
-- `apps.app.src` -> `app/src`
 - `apps.client` -> `client`
 - `apps.client.adapters` -> `client/adapters`
 - `apps.client.app` -> `client/app`
 - `apps.client.core` -> `client/core`
 - `apps.client.gui` -> `client/gui`
 - `apps.client.input` -> `client/input`
+- `apps.client.interaction` -> `client/interaction`
+- `apps.client.local_server` -> `client/local_server`
 - `apps.client.modes` -> `client/modes`
+- `apps.client.net` -> `client/net`
 - `apps.client.observability` -> `client/observability`
 - `apps.client.presentation` -> `client/presentation`
+- `apps.client.render` -> `client/render`
+- `apps.client.render.renderers` -> `client/render/renderers`
 - `apps.client.shell` -> `client/shell`
 - `apps.client.ui` -> `client/ui`
 - `apps.client.ui.workspaces.session_transition` -> `client/ui/workspaces/session_transition`
@@ -40,6 +44,7 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `apps.server.gui` -> `server/gui`
 - `apps.server.net` -> `server/net`
 - `apps.server.persistence` -> `server/persistence`
+- `apps.server.runtime` -> `server/runtime`
 - `apps.server.shard` -> `server/shard`
 - `apps.server.tests` -> `server/tests`
 - `apps.setup` -> `setup`
@@ -68,15 +73,56 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `apps.setup.packages.scripts.repro` -> `setup/packages/scripts/repro`
 - `apps.setup.packages.scripts.setup` -> `setup/packages/scripts/setup`
 - `apps.setup.tui` -> `setup/tui`
+- `appshell` -> `appshell`
+- `appshell.commands` -> `appshell/commands`
+- `appshell.diag` -> `appshell/diag`
+- `appshell.ipc` -> `appshell/ipc`
+- `appshell.logging` -> `appshell/logging`
+- `appshell.paths` -> `appshell/paths`
+- `appshell.supervisor` -> `appshell/supervisor`
+- `appshell.tui` -> `appshell/tui`
+- `archive` -> `archive`
 - `artifacts.toolchain_runs.winnt_msvc_x86_64_vs2026` -> `artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026`
 - `artifacts.toolchain_runs.winnt_msvc_x86_64_vs2026.run.5ea8970d1739f5c2` -> `artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2`
+- `astro` -> `astro`
+- `astro.ephemeris` -> `astro/ephemeris`
+- `astro.illumination` -> `astro/illumination`
+- `astro.views` -> `astro/views`
+- `attic.src_quarantine.legacy.source` -> `attic/src_quarantine/legacy/source`
+- `attic.src_quarantine.legacy.source.provider` -> `attic/src_quarantine/legacy/source/provider`
+- `attic.src_quarantine.src.worldgen` -> `attic/src_quarantine/src/worldgen`
+- `chem` -> `chem`
+- `chem.degradation` -> `chem/degradation`
 - `cmake` -> `cmake`
 - `cmake.ide` -> `cmake/ide`
 - `cmake.ide.templates.codewarrior` -> `cmake/ide/templates/codewarrior`
 - `cmake.ide.templates.vc6` -> `cmake/ide/templates/vc6`
 - `cmake.ide.templates.vc71` -> `cmake/ide/templates/vc71`
 - `cmake.toolchains` -> `cmake/toolchains`
+- `compat` -> `compat`
+- `compat.descriptor` -> `compat/descriptor`
+- `compat.handshake` -> `compat/handshake`
+- `compat.negotiation` -> `compat/negotiation`
+- `compat.shims` -> `compat/shims`
+- `control` -> `control`
+- `control.capability` -> `control/capability`
+- `control.effects` -> `control/effects`
+- `control.fidelity` -> `control/fidelity`
+- `control.ir` -> `control/ir`
+- `control.negotiation` -> `control/negotiation`
+- `control.planning` -> `control/planning`
+- `control.proof` -> `control/proof`
+- `control.view` -> `control/view`
+- `core` -> `core`
+- `core.constraints` -> `core/constraints`
+- `core.flow` -> `core/flow`
+- `core.graph` -> `core/graph`
+- `core.hazards` -> `core/hazards`
+- `core.schedule` -> `core/schedule`
+- `core.spatial` -> `core/spatial`
+- `core.state` -> `core/state`
 - `data` -> `data`
+- `data.analysis` -> `data/analysis`
 - `data.archive` -> `data/archive`
 - `data.archive.scenarios` -> `data/archive/scenarios`
 - `data.archive.world` -> `data/archive/world`
@@ -98,6 +144,7 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `data.baselines.universe` -> `data/baselines/universe`
 - `data.baselines.update_sim` -> `data/baselines/update_sim`
 - `data.baselines.worldgen` -> `data/baselines/worldgen`
+- `data.blueprint` -> `data/blueprint`
 - `data.capabilities` -> `data/capabilities`
 - `data.defaults` -> `data/defaults`
 - `data.defaults.profiles` -> `data/defaults/profiles`
@@ -270,9 +317,11 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `data.packs.org.dominium.worldgen.real.sol.content` -> `data/packs/org.dominium.worldgen.real.sol/content`
 - `data.perf` -> `data/perf`
 - `data.profiles` -> `data/profiles`
+- `data.refactor` -> `data/refactor`
 - `data.registries` -> `data/registries`
 - `data.regression` -> `data/regression`
 - `data.release` -> `data/release`
+- `data.restructure` -> `data/restructure`
 - `data.session_templates` -> `data/session_templates`
 - `data.standards` -> `data/standards`
 - `data.world.milky_way` -> `data/world/milky_way`
@@ -292,6 +341,8 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `data.worldgen.real.milky_way.content` -> `data/worldgen/real/milky_way/content`
 - `data.worldgen.real.sol_system` -> `data/worldgen/real/sol_system`
 - `data.worldgen.real.sol_system.content` -> `data/worldgen/real/sol_system/content`
+- `diag` -> `diag`
+- `diegetics` -> `diegetics`
 - `dist.bin` -> `dist/bin`
 - `dist.locks` -> `dist/locks`
 - `dist.logs` -> `dist/logs`
@@ -349,6 +400,7 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `docs.audit.system` -> `docs/audit/system`
 - `docs.audit.testx` -> `docs/audit/testx`
 - `docs.audit.xstack` -> `docs/audit/xstack`
+- `docs.blueprint` -> `docs/blueprint`
 - `docs.build` -> `docs/build`
 - `docs.canon` -> `docs/canon`
 - `docs.chemistry` -> `docs/chemistry`
@@ -422,6 +474,7 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `docs.prompts` -> `docs/prompts`
 - `docs.realities` -> `docs/realities`
 - `docs.reality` -> `docs/reality`
+- `docs.refactor` -> `docs/refactor`
 - `docs.release` -> `docs/release`
 - `docs.render` -> `docs/render`
 - `docs.repox` -> `docs/repox`
@@ -451,7 +504,18 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `docs.validation` -> `docs/validation`
 - `docs.visualization` -> `docs/visualization`
 - `docs.worldgen` -> `docs/worldgen`
+- `electric` -> `electric`
+- `electric.fault` -> `electric/fault`
+- `electric.protection` -> `electric/protection`
+- `electric.storage` -> `electric/storage`
+- `embodiment` -> `embodiment`
+- `embodiment.body` -> `embodiment/body`
+- `embodiment.collision` -> `embodiment/collision`
+- `embodiment.lens` -> `embodiment/lens`
+- `embodiment.movement` -> `embodiment/movement`
+- `embodiment.tools` -> `embodiment/tools`
 - `engine` -> `engine`
+- `engine.concurrency` -> `engine/concurrency`
 - `engine.include.domino` -> `engine/include/domino`
 - `engine.include.domino.app` -> `engine/include/domino/app`
 - `engine.include.domino.cli` -> `engine/include/domino/cli`
@@ -529,11 +593,19 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `engine.modules.view` -> `engine/modules/view`
 - `engine.modules.world` -> `engine/modules/world`
 - `engine.modules.world.frame` -> `engine/modules/world/frame`
+- `engine.platform` -> `engine/platform`
 - `engine.render` -> `engine/render`
 - `engine.render.null` -> `engine/render/null`
 - `engine.render.soft` -> `engine/render/soft`
 - `engine.render.stub` -> `engine/render/stub`
 - `engine.tests` -> `engine/tests`
+- `engine.time` -> `engine/time`
+- `epistemics` -> `epistemics`
+- `epistemics.memory` -> `epistemics/memory`
+- `field` -> `field`
+- `fields` -> `fields`
+- `fluid` -> `fluid`
+- `fluid.network` -> `fluid/network`
 - `game` -> `game`
 - `game.content.core` -> `game/content/core`
 - `game.content.core.astro` -> `game/content/core/astro`
@@ -656,6 +728,251 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `game.tests.tests.vectors.tlv.pack_manifest` -> `game/tests/tests/vectors/tlv/pack_manifest`
 - `game.tests.tests.vectors.tlv.selection_summary` -> `game/tests/tests/vectors/tlv/selection_summary`
 - `game.tests.tests.vectors.tlv.tools_registry` -> `game/tests/tests/vectors/tlv/tools_registry`
+- `geo` -> `geo`
+- `geo.edit` -> `geo/edit`
+- `geo.frame` -> `geo/frame`
+- `geo.index` -> `geo/index`
+- `geo.kernel` -> `geo/kernel`
+- `geo.lens` -> `geo/lens`
+- `geo.metric` -> `geo/metric`
+- `geo.overlay` -> `geo/overlay`
+- `geo.path` -> `geo/path`
+- `geo.projection` -> `geo/projection`
+- `geo.render` -> `geo/render`
+- `geo.worldgen` -> `geo/worldgen`
+- `governance` -> `governance`
+- `governance.github.workflows` -> `.github/workflows`
+- `ide` -> `ide`
+- `ide.manifests` -> `ide/manifests`
+- `ide.manifests.projection_manifest_examples` -> `ide/manifests/projection_manifest_examples`
+- `ide.vscode` -> `.vscode`
+- `infrastructure` -> `infrastructure`
+- `infrastructure.formalization` -> `infrastructure/formalization`
+- `inspection` -> `inspection`
+- `interaction` -> `interaction`
+- `interaction.mount` -> `interaction/mount`
+- `interaction.pose` -> `interaction/pose`
+- `interaction.task` -> `interaction/task`
+- `interior` -> `interior`
+- `labs` -> `labs`
+- `legacy` -> `legacy`
+- `legacy._orphaned.engine_has_launcher_module.launcher` -> `legacy/_orphaned/engine_has_launcher_module/launcher`
+- `legacy._orphaned.legacy_source_common.common` -> `legacy/_orphaned/legacy_source_common/common`
+- `legacy._orphaned.legacy_source_game.game` -> `legacy/_orphaned/legacy_source_game/game`
+- `legacy._orphaned.legacy_source_game.game._legacy.sdk` -> `legacy/_orphaned/legacy_source_game/game/_legacy/sdk`
+- `legacy._orphaned.legacy_source_game.game.cli` -> `legacy/_orphaned/legacy_source_game/game/cli`
+- `legacy._orphaned.legacy_source_game.game.cli.server` -> `legacy/_orphaned/legacy_source_game/game/cli/server`
+- `legacy._orphaned.legacy_source_game.game.content` -> `legacy/_orphaned/legacy_source_game/game/content`
+- `legacy._orphaned.legacy_source_game.game.core` -> `legacy/_orphaned/legacy_source_game/game/core`
+- `legacy._orphaned.legacy_source_game.game.core.app_mode` -> `legacy/_orphaned/legacy_source_game/game/core/app_mode`
+- `legacy._orphaned.legacy_source_game.game.core.client` -> `legacy/_orphaned/legacy_source_game/game/core/client`
+- `legacy._orphaned.legacy_source_game.game.core.client.input` -> `legacy/_orphaned/legacy_source_game/game/core/client/input`
+- `legacy._orphaned.legacy_source_game.game.frontends.gui` -> `legacy/_orphaned/legacy_source_game/game/frontends/gui`
+- `legacy._orphaned.legacy_source_game.game.frontends.headless` -> `legacy/_orphaned/legacy_source_game/game/frontends/headless`
+- `legacy._orphaned.legacy_source_game.game.frontends.tui` -> `legacy/_orphaned/legacy_source_game/game/frontends/tui`
+- `legacy._orphaned.legacy_source_game.game.gui` -> `legacy/_orphaned/legacy_source_game/game/gui`
+- `legacy._orphaned.legacy_source_game.game.gui.dom_sdl` -> `legacy/_orphaned/legacy_source_game/game/gui/dom_sdl`
+- `legacy._orphaned.legacy_source_game.game.rules` -> `legacy/_orphaned/legacy_source_game/game/rules`
+- `legacy._orphaned.legacy_source_game.game.runtime` -> `legacy/_orphaned/legacy_source_game/game/runtime`
+- `legacy._orphaned.legacy_source_game.game.ui` -> `legacy/_orphaned/legacy_source_game/game/ui`
+- `legacy._orphaned.temp_files` -> `legacy/_orphaned/temp_files`
+- `legacy._orphaned_stage2.tools_common` -> `legacy/_orphaned_stage2/tools_common`
+- `legacy._orphaned_stage2.tools_core` -> `legacy/_orphaned_stage2/tools_core`
+- `legacy.data` -> `legacy/data`
+- `legacy.data.tools_demo` -> `legacy/data/tools_demo`
+- `legacy.engine_core_dominium` -> `legacy/engine_core_dominium`
+- `legacy.engine_core_launcher` -> `legacy/engine_core_launcher`
+- `legacy.engine_modules_engine.engine` -> `legacy/engine_modules_engine/engine`
+- `legacy.engine_modules_engine.engine.agent.act` -> `legacy/engine_modules_engine/engine/agent/act`
+- `legacy.engine_modules_engine.engine.agent.group` -> `legacy/engine_modules_engine/engine/agent/group`
+- `legacy.engine_modules_engine.engine.agent.mind` -> `legacy/engine_modules_engine/engine/agent/mind`
+- `legacy.engine_modules_engine.engine.app` -> `legacy/engine_modules_engine/engine/app`
+- `legacy.engine_modules_engine.engine.cli` -> `legacy/engine_modules_engine/engine/cli`
+- `legacy.engine_modules_engine.engine.decor.compile` -> `legacy/engine_modules_engine/engine/decor/compile`
+- `legacy.engine_modules_engine.engine.decor.model` -> `legacy/engine_modules_engine/engine/decor/model`
+- `legacy.engine_modules_engine.engine.gui` -> `legacy/engine_modules_engine/engine/gui`
+- `legacy.engine_modules_engine.engine.io` -> `legacy/engine_modules_engine/engine/io`
+- `legacy.engine_modules_engine.engine.io.container` -> `legacy/engine_modules_engine/engine/io/container`
+- `legacy.engine_modules_engine.engine.mod.host` -> `legacy/engine_modules_engine/engine/mod/host`
+- `legacy.engine_modules_engine.engine.pkg` -> `legacy/engine_modules_engine/engine/pkg`
+- `legacy.engine_modules_engine.engine.render` -> `legacy/engine_modules_engine/engine/render`
+- `legacy.engine_modules_engine.engine.render.api` -> `legacy/engine_modules_engine/engine/render/api`
+- `legacy.engine_modules_engine.engine.render.api.core` -> `legacy/engine_modules_engine/engine/render/api/core`
+- `legacy.engine_modules_engine.engine.render.api.ui` -> `legacy/engine_modules_engine/engine/render/api/ui`
+- `legacy.engine_modules_engine.engine.render.cga` -> `legacy/engine_modules_engine/engine/render/cga`
+- `legacy.engine_modules_engine.engine.render.dx.dx9` -> `legacy/engine_modules_engine/engine/render/dx/dx9`
+- `legacy.engine_modules_engine.engine.render.dx11` -> `legacy/engine_modules_engine/engine/render/dx11`
+- `legacy.engine_modules_engine.engine.render.dx7` -> `legacy/engine_modules_engine/engine/render/dx7`
+- `legacy.engine_modules_engine.engine.render.dx9` -> `legacy/engine_modules_engine/engine/render/dx9`
+- `legacy.engine_modules_engine.engine.render.ega` -> `legacy/engine_modules_engine/engine/render/ega`
+- `legacy.engine_modules_engine.engine.render.gdi` -> `legacy/engine_modules_engine/engine/render/gdi`
+- `legacy.engine_modules_engine.engine.render.gl2` -> `legacy/engine_modules_engine/engine/render/gl2`
+- `legacy.engine_modules_engine.engine.render.herc` -> `legacy/engine_modules_engine/engine/render/herc`
+- `legacy.engine_modules_engine.engine.render.mda` -> `legacy/engine_modules_engine/engine/render/mda`
+- `legacy.engine_modules_engine.engine.render.metal` -> `legacy/engine_modules_engine/engine/render/metal`
+- `legacy.engine_modules_engine.engine.render.null` -> `legacy/engine_modules_engine/engine/render/null`
+- `legacy.engine_modules_engine.engine.render.quartz` -> `legacy/engine_modules_engine/engine/render/quartz`
+- `legacy.engine_modules_engine.engine.render.quickdraw` -> `legacy/engine_modules_engine/engine/render/quickdraw`
+- `legacy.engine_modules_engine.engine.render.soft` -> `legacy/engine_modules_engine/engine/render/soft`
+- `legacy.engine_modules_engine.engine.render.soft.core` -> `legacy/engine_modules_engine/engine/render/soft/core`
+- `legacy.engine_modules_engine.engine.render.soft.targets.null` -> `legacy/engine_modules_engine/engine/render/soft/targets/null`
+- `legacy.engine_modules_engine.engine.render.soft.targets.win32` -> `legacy/engine_modules_engine/engine/render/soft/targets/win32`
+- `legacy.engine_modules_engine.engine.render.vesa` -> `legacy/engine_modules_engine/engine/render/vesa`
+- `legacy.engine_modules_engine.engine.render.vga` -> `legacy/engine_modules_engine/engine/render/vga`
+- `legacy.engine_modules_engine.engine.render.vk1` -> `legacy/engine_modules_engine/engine/render/vk1`
+- `legacy.engine_modules_engine.engine.render.xga` -> `legacy/engine_modules_engine/engine/render/xga`
+- `legacy.engine_modules_engine.engine.sim._legacy.core_sim` -> `legacy/engine_modules_engine/engine/sim/_legacy/core_sim`
+- `legacy.engine_modules_engine.engine.sim.api` -> `legacy/engine_modules_engine/engine/sim/api`
+- `legacy.engine_modules_engine.engine.sim.bus` -> `legacy/engine_modules_engine/engine/sim/bus`
+- `legacy.engine_modules_engine.engine.sim.hash` -> `legacy/engine_modules_engine/engine/sim/hash`
+- `legacy.engine_modules_engine.engine.sim.know` -> `legacy/engine_modules_engine/engine/sim/know`
+- `legacy.engine_modules_engine.engine.sim.prop` -> `legacy/engine_modules_engine/engine/sim/prop`
+- `legacy.engine_modules_engine.engine.sim.replay` -> `legacy/engine_modules_engine/engine/sim/replay`
+- `legacy.engine_modules_engine.engine.sim.replay.serialize` -> `legacy/engine_modules_engine/engine/sim/replay/serialize`
+- `legacy.engine_modules_engine.engine.sim.sense` -> `legacy/engine_modules_engine/engine/sim/sense`
+- `legacy.engine_modules_engine.engine.sim.vis` -> `legacy/engine_modules_engine/engine/sim/vis`
+- `legacy.engine_modules_engine.engine.struct.compile` -> `legacy/engine_modules_engine/engine/struct/compile`
+- `legacy.engine_modules_engine.engine.struct.model` -> `legacy/engine_modules_engine/engine/struct/model`
+- `legacy.engine_modules_engine.engine.struct.phys` -> `legacy/engine_modules_engine/engine/struct/phys`
+- `legacy.engine_modules_engine.engine.system._legacy` -> `legacy/engine_modules_engine/engine/system/_legacy`
+- `legacy.engine_modules_engine.engine.system._legacy.scratch` -> `legacy/engine_modules_engine/engine/system/_legacy/scratch`
+- `legacy.engine_modules_engine.engine.system.core` -> `legacy/engine_modules_engine/engine/system/core`
+- `legacy.engine_modules_engine.engine.system.core.audio` -> `legacy/engine_modules_engine/engine/system/core/audio`
+- `legacy.engine_modules_engine.engine.system.core.base` -> `legacy/engine_modules_engine/engine/system/core/base`
+- `legacy.engine_modules_engine.engine.system.core.base.dom_core` -> `legacy/engine_modules_engine/engine/system/core/base/dom_core`
+- `legacy.engine_modules_engine.engine.system.core.base.shared` -> `legacy/engine_modules_engine/engine/system/core/base/shared`
+- `legacy.engine_modules_engine.engine.system.core.math` -> `legacy/engine_modules_engine/engine/system/core/math`
+- `legacy.engine_modules_engine.engine.system.plat` -> `legacy/engine_modules_engine/engine/system/plat`
+- `legacy.engine_modules_engine.engine.system.plat.carbon` -> `legacy/engine_modules_engine/engine/system/plat/carbon`
+- `legacy.engine_modules_engine.engine.system.plat.cocoa` -> `legacy/engine_modules_engine/engine/system/plat/cocoa`
+- `legacy.engine_modules_engine.engine.system.plat.cpm80` -> `legacy/engine_modules_engine/engine/system/plat/cpm80`
+- `legacy.engine_modules_engine.engine.system.plat.cpm86` -> `legacy/engine_modules_engine/engine/system/plat/cpm86`
+- `legacy.engine_modules_engine.engine.system.plat.dos16` -> `legacy/engine_modules_engine/engine/system/plat/dos16`
+- `legacy.engine_modules_engine.engine.system.plat.dos32` -> `legacy/engine_modules_engine/engine/system/plat/dos32`
+- `legacy.engine_modules_engine.engine.system.plat.mac.cocoa` -> `legacy/engine_modules_engine/engine/system/plat/mac/cocoa`
+- `legacy.engine_modules_engine.engine.system.plat.null` -> `legacy/engine_modules_engine/engine/system/plat/null`
+- `legacy.engine_modules_engine.engine.system.plat.posix` -> `legacy/engine_modules_engine/engine/system/plat/posix`
+- `legacy.engine_modules_engine.engine.system.plat.sdl.sdl1` -> `legacy/engine_modules_engine/engine/system/plat/sdl/sdl1`
+- `legacy.engine_modules_engine.engine.system.plat.sdl.sdl2` -> `legacy/engine_modules_engine/engine/system/plat/sdl/sdl2`
+- `legacy.engine_modules_engine.engine.system.plat.sdl1` -> `legacy/engine_modules_engine/engine/system/plat/sdl1`
+- `legacy.engine_modules_engine.engine.system.plat.sdl2` -> `legacy/engine_modules_engine/engine/system/plat/sdl2`
+- `legacy.engine_modules_engine.engine.system.plat.unix.posix` -> `legacy/engine_modules_engine/engine/system/plat/unix/posix`
+- `legacy.engine_modules_engine.engine.system.plat.unix.posix.posix_headless` -> `legacy/engine_modules_engine/engine/system/plat/unix/posix/posix_headless`
+- `legacy.engine_modules_engine.engine.system.plat.unix.wayland` -> `legacy/engine_modules_engine/engine/system/plat/unix/wayland`
+- `legacy.engine_modules_engine.engine.system.plat.unix.x11` -> `legacy/engine_modules_engine/engine/system/plat/unix/x11`
+- `legacy.engine_modules_engine.engine.system.plat.wayland` -> `legacy/engine_modules_engine/engine/system/plat/wayland`
+- `legacy.engine_modules_engine.engine.system.plat.win16` -> `legacy/engine_modules_engine/engine/system/plat/win16`
+- `legacy.engine_modules_engine.engine.system.plat.win32` -> `legacy/engine_modules_engine/engine/system/plat/win32`
+- `legacy.engine_modules_engine.engine.system.plat.windows.win32` -> `legacy/engine_modules_engine/engine/system/plat/windows/win32`
+- `legacy.engine_modules_engine.engine.system.plat.x11` -> `legacy/engine_modules_engine/engine/system/plat/x11`
+- `legacy.engine_modules_engine.engine.trans.compile` -> `legacy/engine_modules_engine/engine/trans/compile`
+- `legacy.engine_modules_engine.engine.trans.model` -> `legacy/engine_modules_engine/engine/trans/model`
+- `legacy.engine_modules_engine.engine.ui_codegen.tests` -> `legacy/engine_modules_engine/engine/ui_codegen/tests`
+- `legacy.engine_modules_engine.engine.ui_ir.tests` -> `legacy/engine_modules_engine/engine/ui_ir/tests`
+- `legacy.engine_modules_engine.engine.world.domain` -> `legacy/engine_modules_engine/engine/world/domain`
+- `legacy.external.xxhash` -> `legacy/external/xxhash`
+- `legacy.include.dsu` -> `legacy/include/dsu`
+- `legacy.launcher_core_launcher.launcher` -> `legacy/launcher_core_launcher/launcher`
+- `legacy.launcher_core_launcher.launcher.adapters.winnt.cli` -> `legacy/launcher_core_launcher/launcher/adapters/winnt/cli`
+- `legacy.launcher_core_launcher.launcher.adapters.winnt.gui` -> `legacy/launcher_core_launcher/launcher/adapters/winnt/gui`
+- `legacy.launcher_core_launcher.launcher.adapters.winnt.tui` -> `legacy/launcher_core_launcher/launcher/adapters/winnt/tui`
+- `legacy.launcher_core_launcher.launcher.core` -> `legacy/launcher_core_launcher/launcher/core`
+- `legacy.launcher_core_launcher.launcher.core.artifact` -> `legacy/launcher_core_launcher/launcher/core/artifact`
+- `legacy.launcher_core_launcher.launcher.core.audit` -> `legacy/launcher_core_launcher/launcher/core/audit`
+- `legacy.launcher_core_launcher.launcher.core.include` -> `legacy/launcher_core_launcher/launcher/core/include`
+- `legacy.launcher_core_launcher.launcher.core.installed_state` -> `legacy/launcher_core_launcher/launcher/core/installed_state`
+- `legacy.launcher_core_launcher.launcher.core.instance` -> `legacy/launcher_core_launcher/launcher/core/instance`
+- `legacy.launcher_core_launcher.launcher.core.job` -> `legacy/launcher_core_launcher/launcher/core/job`
+- `legacy.launcher_core_launcher.launcher.core.launch` -> `legacy/launcher_core_launcher/launcher/core/launch`
+- `legacy.launcher_core_launcher.launcher.core.log` -> `legacy/launcher_core_launcher/launcher/core/log`
+- `legacy.launcher_core_launcher.launcher.core.pack` -> `legacy/launcher_core_launcher/launcher/core/pack`
+- `legacy.launcher_core_launcher.launcher.core.profile` -> `legacy/launcher_core_launcher/launcher/core/profile`
+- `legacy.launcher_core_launcher.launcher.core.run` -> `legacy/launcher_core_launcher/launcher/core/run`
+- `legacy.launcher_core_launcher.launcher.core.safety` -> `legacy/launcher_core_launcher/launcher/core/safety`
+- `legacy.launcher_core_launcher.launcher.core.selection` -> `legacy/launcher_core_launcher/launcher/core/selection`
+- `legacy.launcher_core_launcher.launcher.core.task` -> `legacy/launcher_core_launcher/launcher/core/task`
+- `legacy.launcher_core_launcher.launcher.core.tests` -> `legacy/launcher_core_launcher/launcher/core/tests`
+- `legacy.launcher_core_launcher.launcher.core.tlv` -> `legacy/launcher_core_launcher/launcher/core/tlv`
+- `legacy.launcher_core_launcher.launcher.core.tool` -> `legacy/launcher_core_launcher/launcher/core/tool`
+- `legacy.launcher_core_launcher.launcher.schemas` -> `legacy/launcher_core_launcher/launcher/schemas`
+- `legacy.launcher_core_launcher.launcher.tests` -> `legacy/launcher_core_launcher/launcher/tests`
+- `legacy.setup_core_setup.setup` -> `legacy/setup_core_setup/setup`
+- `legacy.setup_core_setup.setup.adapters` -> `legacy/setup_core_setup/setup/adapters`
+- `legacy.setup_core_setup.setup.adapters.linux` -> `legacy/setup_core_setup/setup/adapters/linux`
+- `legacy.setup_core_setup.setup.adapters.linux.package` -> `legacy/setup_core_setup/setup/adapters/linux/package`
+- `legacy.setup_core_setup.setup.adapters.linux.package.deb` -> `legacy/setup_core_setup/setup/adapters/linux/package/deb`
+- `legacy.setup_core_setup.setup.adapters.linux.package.deb.debian` -> `legacy/setup_core_setup/setup/adapters/linux/package/deb/debian`
+- `legacy.setup_core_setup.setup.adapters.linux.package.deb.packaging` -> `legacy/setup_core_setup/setup/adapters/linux/package/deb/packaging`
+- `legacy.setup_core_setup.setup.adapters.linux.package.pacman` -> `legacy/setup_core_setup/setup/adapters/linux/package/pacman`
+- `legacy.setup_core_setup.setup.adapters.linux.package.rpm` -> `legacy/setup_core_setup/setup/adapters/linux/package/rpm`
+- `legacy.setup_core_setup.setup.adapters.linux.package.rpm.packaging` -> `legacy/setup_core_setup/setup/adapters/linux/package/rpm/packaging`
+- `legacy.setup_core_setup.setup.adapters.linux.package.tarball` -> `legacy/setup_core_setup/setup/adapters/linux/package/tarball`
+- `legacy.setup_core_setup.setup.adapters.macosx` -> `legacy/setup_core_setup/setup/adapters/macosx`
+- `legacy.setup_core_setup.setup.adapters.macosx.gui.xcode` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode`
+- `legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmac.xcodeproj` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMac.xcodeproj`
+- `legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp`
+- `legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.resources` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources`
+- `legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.resources.assets.xcassets` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Assets.xcassets`
+- `legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.resources.assets.xcassets.appicon.appiconset` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Assets.xcassets/AppIcon.appiconset`
+- `legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.resources.base.lproj` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Base.lproj`
+- `legacy.setup_core_setup.setup.adapters.macosx.package` -> `legacy/setup_core_setup/setup/adapters/macosx/package`
+- `legacy.setup_core_setup.setup.adapters.steam` -> `legacy/setup_core_setup/setup/adapters/steam`
+- `legacy.setup_core_setup.setup.adapters.steam.steamworks` -> `legacy/setup_core_setup/setup/adapters/steam/steamworks`
+- `legacy.setup_core_setup.setup.adapters.winnt` -> `legacy/setup_core_setup/setup/adapters/winnt`
+- `legacy.setup_core_setup.setup.adapters.winnt.cli` -> `legacy/setup_core_setup/setup/adapters/winnt/cli`
+- `legacy.setup_core_setup.setup.adapters.winnt.package.exe` -> `legacy/setup_core_setup/setup/adapters/winnt/package/exe`
+- `legacy.setup_core_setup.setup.adapters.winnt.package.exe.vs` -> `legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs`
+- `legacy.setup_core_setup.setup.adapters.winnt.package.msi` -> `legacy/setup_core_setup/setup/adapters/winnt/package/msi`
+- `legacy.setup_core_setup.setup.adapters.winnt.package.msi.vs` -> `legacy/setup_core_setup/setup/adapters/winnt/package/msi/vs`
+- `legacy.setup_core_setup.setup.adapters.winnt.package.msi.wix` -> `legacy/setup_core_setup/setup/adapters/winnt/package/msi/wix`
+- `legacy.setup_core_setup.setup.adapters.winnt.tui` -> `legacy/setup_core_setup/setup/adapters/winnt/tui`
+- `legacy.setup_core_setup.setup.adapters.winnt.wix` -> `legacy/setup_core_setup/setup/adapters/winnt/wix`
+- `legacy.setup_core_setup.setup.core` -> `legacy/setup_core_setup/setup/core`
+- `legacy.setup_core_setup.setup.core.api` -> `legacy/setup_core_setup/setup/core/api`
+- `legacy.setup_core_setup.setup.core.audit` -> `legacy/setup_core_setup/setup/core/audit`
+- `legacy.setup_core_setup.setup.core.contracts` -> `legacy/setup_core_setup/setup/core/contracts`
+- `legacy.setup_core_setup.setup.core.digest` -> `legacy/setup_core_setup/setup/core/digest`
+- `legacy.setup_core_setup.setup.core.errors` -> `legacy/setup_core_setup/setup/core/errors`
+- `legacy.setup_core_setup.setup.core.fs` -> `legacy/setup_core_setup/setup/core/fs`
+- `legacy.setup_core_setup.setup.core.import` -> `legacy/setup_core_setup/setup/core/import`
+- `legacy.setup_core_setup.setup.core.include.dsk` -> `legacy/setup_core_setup/setup/core/include/dsk`
+- `legacy.setup_core_setup.setup.core.include.dsu` -> `legacy/setup_core_setup/setup/core/include/dsu`
+- `legacy.setup_core_setup.setup.core.invocation` -> `legacy/setup_core_setup/setup/core/invocation`
+- `legacy.setup_core_setup.setup.core.job` -> `legacy/setup_core_setup/setup/core/job`
+- `legacy.setup_core_setup.setup.core.jobs` -> `legacy/setup_core_setup/setup/core/jobs`
+- `legacy.setup_core_setup.setup.core.log` -> `legacy/setup_core_setup/setup/core/log`
+- `legacy.setup_core_setup.setup.core.manifest` -> `legacy/setup_core_setup/setup/core/manifest`
+- `legacy.setup_core_setup.setup.core.plan` -> `legacy/setup_core_setup/setup/core/plan`
+- `legacy.setup_core_setup.setup.core.platform_iface` -> `legacy/setup_core_setup/setup/core/platform_iface`
+- `legacy.setup_core_setup.setup.core.report` -> `legacy/setup_core_setup/setup/core/report`
+- `legacy.setup_core_setup.setup.core.resolve` -> `legacy/setup_core_setup/setup/core/resolve`
+- `legacy.setup_core_setup.setup.core.splat` -> `legacy/setup_core_setup/setup/core/splat`
+- `legacy.setup_core_setup.setup.core.state` -> `legacy/setup_core_setup/setup/core/state`
+- `legacy.setup_core_setup.setup.core.tlv` -> `legacy/setup_core_setup/setup/core/tlv`
+- `legacy.setup_core_setup.setup.core.txn` -> `legacy/setup_core_setup/setup/core/txn`
+- `legacy.setup_core_setup.setup.core.util` -> `legacy/setup_core_setup/setup/core/util`
+- `legacy.setup_core_setup.setup.tests` -> `legacy/setup_core_setup/setup/tests`
+- `legacy.setup_core_setup.setup.tests.fixtures.manifests` -> `legacy/setup_core_setup/setup/tests/fixtures/manifests`
+- `legacy.setup_core_setup.setup.tests.fixtures.payloads.base.bin` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/base/bin`
+- `legacy.setup_core_setup.setup.tests.fixtures.payloads.base.packs` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/base/packs`
+- `legacy.setup_core_setup.setup.tests.fixtures.payloads.base.runtime` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/base/runtime`
+- `legacy.setup_core_setup.setup.tests.fixtures.payloads.base.tools` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/base/tools`
+- `legacy.setup_core_setup.setup.tests.fixtures.payloads.v1.bin` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/v1/bin`
+- `legacy.setup_core_setup.setup.tests.fixtures.payloads.v1.data` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/v1/data`
+- `legacy.setup_core_setup.setup.tests.fixtures.payloads.v2.bin` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/v2/bin`
+- `legacy.setup_core_setup.setup.tests.fixtures.payloads.v2.data` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/v2/data`
+- `legacy.setup_core_setup.setup.tests.fixtures.user_data` -> `legacy/setup_core_setup/setup/tests/fixtures/user_data`
+- `legacy.setup_core_setup.setup.tests.golden.cli` -> `legacy/setup_core_setup/setup/tests/golden/cli`
+- `legacy.source.tests` -> `legacy/source/tests`
+- `legacy.tools_cmake` -> `legacy/tools_cmake`
+- `legacy.tools_shared_legacy` -> `legacy/tools_shared_legacy`
+- `lib` -> `lib`
+- `lib.artifact` -> `lib/artifact`
+- `lib.bundle` -> `lib/bundle`
+- `lib.export` -> `lib/export`
+- `lib.import` -> `lib/import`
+- `lib.install` -> `lib/install`
+- `lib.instance` -> `lib/instance`
 - `lib.libs` -> `libs`
 - `lib.libs.appcore` -> `libs/appcore`
 - `lib.libs.appcore.command` -> `libs/appcore/command`
@@ -668,7 +985,6 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `lib.libs.appcore.validate` -> `libs/appcore/validate`
 - `lib.libs.build_identity` -> `libs/build_identity`
 - `lib.libs.build_identity.include.dom_build_identity` -> `libs/build_identity/include/dom_build_identity`
-- `lib.libs.build_identity.src` -> `libs/build_identity/src`
 - `lib.libs.contracts` -> `libs/contracts`
 - `lib.libs.contracts.include.dom_contracts` -> `libs/contracts/include/dom_contracts`
 - `lib.libs.contracts.include.dom_contracts._internal` -> `libs/contracts/include/dom_contracts/_internal`
@@ -676,12 +992,65 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `lib.libs.contracts.include.dom_contracts.dom_shared` -> `libs/contracts/include/dom_contracts/dom_shared`
 - `lib.libs.ui_backends.win32` -> `libs/ui_backends/win32`
 - `lib.libs.ui_backends.win32.include.dom_ui_win32` -> `libs/ui_backends/win32/include/dom_ui_win32`
-- `lib.libs.ui_backends.win32.src` -> `libs/ui_backends/win32/src`
+- `lib.provides` -> `lib/provides`
+- `lib.save` -> `lib/save`
+- `lib.store` -> `lib/store`
+- `locks` -> `locks`
+- `logic` -> `logic`
+- `logic.compile` -> `logic/compile`
+- `logic.debug` -> `logic/debug`
+- `logic.element` -> `logic/element`
+- `logic.eval` -> `logic/eval`
+- `logic.fault` -> `logic/fault`
+- `logic.network` -> `logic/network`
+- `logic.noise` -> `logic/noise`
+- `logic.protocol` -> `logic/protocol`
+- `logic.signal` -> `logic/signal`
+- `logic.timing` -> `logic/timing`
+- `logistics` -> `logistics`
+- `machines` -> `machines`
+- `materials` -> `materials`
+- `materials.commitments` -> `materials/commitments`
+- `materials.construction` -> `materials/construction`
+- `materials.maintenance` -> `materials/maintenance`
+- `materials.materialization` -> `materials/materialization`
+- `materials.performance` -> `materials/performance`
+- `materials.provenance` -> `materials/provenance`
+- `mechanics` -> `mechanics`
+- `meta` -> `meta`
+- `meta.compile` -> `meta/compile`
+- `meta.compute` -> `meta/compute`
+- `meta.explain` -> `meta/explain`
+- `meta.extensions` -> `meta/extensions`
+- `meta.identity` -> `meta/identity`
+- `meta.instrumentation` -> `meta/instrumentation`
+- `meta.profile` -> `meta/profile`
+- `meta.provenance` -> `meta/provenance`
+- `meta.reference` -> `meta/reference`
+- `meta.stability` -> `meta/stability`
+- `mobility` -> `mobility`
+- `mobility.geometry` -> `mobility/geometry`
+- `mobility.maintenance` -> `mobility/maintenance`
+- `mobility.micro` -> `mobility/micro`
+- `mobility.network` -> `mobility/network`
+- `mobility.signals` -> `mobility/signals`
+- `mobility.traffic` -> `mobility/traffic`
+- `mobility.travel` -> `mobility/travel`
+- `mobility.vehicle` -> `mobility/vehicle`
+- `modding` -> `modding`
+- `models` -> `models`
+- `net` -> `net`
+- `net.anti_cheat` -> `net/anti_cheat`
+- `net.policies` -> `net/policies`
+- `net.srz` -> `net/srz`
+- `net.testing` -> `net/testing`
+- `net.transport` -> `net/transport`
 - `packs` -> `packs`
 - `packs.blueprints.blueprints.default.m1.data` -> `packs/blueprints/blueprints.default.m1/data`
 - `packs.bundles` -> `bundles`
 - `packs.bundles.bundle.base.lab` -> `bundles/bundle.base.lab`
 - `packs.bundles.bundle.null` -> `bundles/bundle.null`
+- `packs.compat` -> `packs/compat`
 - `packs.core.constraints.worldgen.default_lab` -> `packs/core/constraints.worldgen.default_lab`
 - `packs.core.constraints.worldgen.default_lab.data` -> `packs/core/constraints.worldgen.default_lab/data`
 - `packs.core.pack.core.camera` -> `packs/core/pack.core.camera`
@@ -772,6 +1141,29 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `packs.tool.workspace.player.diegetic_default.ui` -> `packs/tool/workspace.player.diegetic_default/ui`
 - `packs.tool.workspace.spectator.limited` -> `packs/tool/workspace.spectator.limited`
 - `packs.tool.workspace.spectator.limited.ui` -> `packs/tool/workspace.spectator.limited/ui`
+- `performance` -> `performance`
+- `physics` -> `physics`
+- `physics.energy` -> `physics/energy`
+- `physics.entropy` -> `physics/entropy`
+- `pollution` -> `pollution`
+- `process` -> `process`
+- `process.capsules` -> `process/capsules`
+- `process.drift` -> `process/drift`
+- `process.maturity` -> `process/maturity`
+- `process.qc` -> `process/qc`
+- `process.research` -> `process/research`
+- `process.software` -> `process/software`
+- `profiles.bundles` -> `profiles/bundles`
+- `quarantine` -> `quarantine`
+- `reality` -> `reality`
+- `reality.ledger` -> `reality/ledger`
+- `reality.transitions` -> `reality/transitions`
+- `release` -> `release`
+- `repo` -> `repo`
+- `repo.repox` -> `repo/repox`
+- `repo.repox.rulesets` -> `repo/repox/rulesets`
+- `runtime` -> `runtime`
+- `safety` -> `safety`
 - `schemas` -> `schemas`
 - `schemas.examples` -> `schemas/examples`
 - `schemas.schema` -> `schema`
@@ -862,6 +1254,24 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `schemas.schema.war` -> `schema/war`
 - `schemas.schema.world` -> `schema/world`
 - `schemas.schema.worldgen` -> `schema/worldgen`
+- `security` -> `security`
+- `security.trust` -> `security/trust`
+- `signals` -> `signals`
+- `signals.addressing` -> `signals/addressing`
+- `signals.aggregation` -> `signals/aggregation`
+- `signals.institutions` -> `signals/institutions`
+- `signals.transport` -> `signals/transport`
+- `signals.trust` -> `signals/trust`
+- `specs` -> `specs`
+- `system` -> `system`
+- `system.certification` -> `system/certification`
+- `system.forensics` -> `system/forensics`
+- `system.macro` -> `system/macro`
+- `system.reliability` -> `system/reliability`
+- `system.roi` -> `system/roi`
+- `system.statevec` -> `system/statevec`
+- `system.templates` -> `system/templates`
+- `templates` -> `templates`
 - `tests` -> `tests`
 - `tests.ai` -> `tests/ai`
 - `tests.app` -> `tests/app`
@@ -1094,6 +1504,8 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `tests.tourist` -> `tests/tourist`
 - `tests.ui_parity` -> `tests/ui_parity`
 - `tests.ux` -> `tests/ux`
+- `thermal` -> `thermal`
+- `thermal.network` -> `thermal/network`
 - `tools` -> `tools`
 - `tools._shared` -> `tools/_shared`
 - `tools.ai` -> `tools/ai`
@@ -1211,6 +1623,11 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `tools.save_inspector` -> `tools/save_inspector`
 - `tools.scale` -> `tools/scale`
 - `tools.schema_migration` -> `tools/schema_migration`
+- `tools.scripts` -> `scripts`
+- `tools.scripts.audit` -> `scripts/audit`
+- `tools.scripts.ci` -> `scripts/ci`
+- `tools.scripts.dev` -> `scripts/dev`
+- `tools.scripts.repox` -> `scripts/repox`
 - `tools.securex` -> `tools/securex`
 - `tools.securex.core` -> `tools/securex/core`
 - `tools.security` -> `tools/security`
@@ -1252,10 +1669,10 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `tools.ui_preview_host.linux` -> `tools/ui_preview_host/linux`
 - `tools.ui_preview_host.macos` -> `tools/ui_preview_host/macos`
 - `tools.ui_preview_host.win32` -> `tools/ui_preview_host/win32`
+- `tools.ui_shared.dui` -> `tools/ui_shared/dui`
 - `tools.ui_shared.include.dui` -> `tools/ui_shared/include/dui`
-- `tools.ui_shared.src.dui` -> `tools/ui_shared/src/dui`
-- `tools.ui_shared.src.ui_codegen` -> `tools/ui_shared/src/ui_codegen`
-- `tools.ui_shared.src.ui_ir` -> `tools/ui_shared/src/ui_ir`
+- `tools.ui_shared.ui_codegen` -> `tools/ui_shared/ui_codegen`
+- `tools.ui_shared.ui_ir` -> `tools/ui_shared/ui_ir`
 - `tools.universe_editor` -> `tools/universe_editor`
 - `tools.validate` -> `tools/validate`
 - `tools.validation` -> `tools/validation`
@@ -1312,447 +1729,22 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `tools.xstack.testdata.ui` -> `tools/xstack/testdata/ui`
 - `tools.xstack.testx` -> `tools/xstack/testx`
 - `tools.xstack.testx.tests` -> `tools/xstack/testx/tests`
-- `unknown.github.workflows` -> `.github/workflows`
-- `unknown.ide` -> `ide`
-- `unknown.ide.manifests` -> `ide/manifests`
-- `unknown.ide.manifests.projection_manifest_examples` -> `ide/manifests/projection_manifest_examples`
-- `unknown.labs` -> `labs`
-- `unknown.legacy` -> `legacy`
-- `unknown.legacy._orphaned.engine_has_launcher_module.launcher` -> `legacy/_orphaned/engine_has_launcher_module/launcher`
-- `unknown.legacy._orphaned.legacy_source_common.common` -> `legacy/_orphaned/legacy_source_common/common`
-- `unknown.legacy._orphaned.legacy_source_game.game` -> `legacy/_orphaned/legacy_source_game/game`
-- `unknown.legacy._orphaned.legacy_source_game.game._legacy.sdk` -> `legacy/_orphaned/legacy_source_game/game/_legacy/sdk`
-- `unknown.legacy._orphaned.legacy_source_game.game.cli` -> `legacy/_orphaned/legacy_source_game/game/cli`
-- `unknown.legacy._orphaned.legacy_source_game.game.cli.server` -> `legacy/_orphaned/legacy_source_game/game/cli/server`
-- `unknown.legacy._orphaned.legacy_source_game.game.content` -> `legacy/_orphaned/legacy_source_game/game/content`
-- `unknown.legacy._orphaned.legacy_source_game.game.core` -> `legacy/_orphaned/legacy_source_game/game/core`
-- `unknown.legacy._orphaned.legacy_source_game.game.core.app_mode` -> `legacy/_orphaned/legacy_source_game/game/core/app_mode`
-- `unknown.legacy._orphaned.legacy_source_game.game.core.client` -> `legacy/_orphaned/legacy_source_game/game/core/client`
-- `unknown.legacy._orphaned.legacy_source_game.game.core.client.input` -> `legacy/_orphaned/legacy_source_game/game/core/client/input`
-- `unknown.legacy._orphaned.legacy_source_game.game.frontends.gui` -> `legacy/_orphaned/legacy_source_game/game/frontends/gui`
-- `unknown.legacy._orphaned.legacy_source_game.game.frontends.headless` -> `legacy/_orphaned/legacy_source_game/game/frontends/headless`
-- `unknown.legacy._orphaned.legacy_source_game.game.frontends.tui` -> `legacy/_orphaned/legacy_source_game/game/frontends/tui`
-- `unknown.legacy._orphaned.legacy_source_game.game.gui` -> `legacy/_orphaned/legacy_source_game/game/gui`
-- `unknown.legacy._orphaned.legacy_source_game.game.gui.dom_sdl` -> `legacy/_orphaned/legacy_source_game/game/gui/dom_sdl`
-- `unknown.legacy._orphaned.legacy_source_game.game.rules` -> `legacy/_orphaned/legacy_source_game/game/rules`
-- `unknown.legacy._orphaned.legacy_source_game.game.runtime` -> `legacy/_orphaned/legacy_source_game/game/runtime`
-- `unknown.legacy._orphaned.legacy_source_game.game.ui` -> `legacy/_orphaned/legacy_source_game/game/ui`
-- `unknown.legacy._orphaned.temp_files` -> `legacy/_orphaned/temp_files`
-- `unknown.legacy._orphaned_stage2.tools_common` -> `legacy/_orphaned_stage2/tools_common`
-- `unknown.legacy._orphaned_stage2.tools_core` -> `legacy/_orphaned_stage2/tools_core`
-- `unknown.legacy.data` -> `legacy/data`
-- `unknown.legacy.data.tools_demo` -> `legacy/data/tools_demo`
-- `unknown.legacy.engine_core_dominium` -> `legacy/engine_core_dominium`
-- `unknown.legacy.engine_core_launcher` -> `legacy/engine_core_launcher`
-- `unknown.legacy.engine_modules_engine.engine` -> `legacy/engine_modules_engine/engine`
-- `unknown.legacy.engine_modules_engine.engine.agent.act` -> `legacy/engine_modules_engine/engine/agent/act`
-- `unknown.legacy.engine_modules_engine.engine.agent.group` -> `legacy/engine_modules_engine/engine/agent/group`
-- `unknown.legacy.engine_modules_engine.engine.agent.mind` -> `legacy/engine_modules_engine/engine/agent/mind`
-- `unknown.legacy.engine_modules_engine.engine.app` -> `legacy/engine_modules_engine/engine/app`
-- `unknown.legacy.engine_modules_engine.engine.cli` -> `legacy/engine_modules_engine/engine/cli`
-- `unknown.legacy.engine_modules_engine.engine.decor.compile` -> `legacy/engine_modules_engine/engine/decor/compile`
-- `unknown.legacy.engine_modules_engine.engine.decor.model` -> `legacy/engine_modules_engine/engine/decor/model`
-- `unknown.legacy.engine_modules_engine.engine.gui` -> `legacy/engine_modules_engine/engine/gui`
-- `unknown.legacy.engine_modules_engine.engine.io` -> `legacy/engine_modules_engine/engine/io`
-- `unknown.legacy.engine_modules_engine.engine.io.container` -> `legacy/engine_modules_engine/engine/io/container`
-- `unknown.legacy.engine_modules_engine.engine.mod.host` -> `legacy/engine_modules_engine/engine/mod/host`
-- `unknown.legacy.engine_modules_engine.engine.pkg` -> `legacy/engine_modules_engine/engine/pkg`
-- `unknown.legacy.engine_modules_engine.engine.render` -> `legacy/engine_modules_engine/engine/render`
-- `unknown.legacy.engine_modules_engine.engine.render.api` -> `legacy/engine_modules_engine/engine/render/api`
-- `unknown.legacy.engine_modules_engine.engine.render.api.core` -> `legacy/engine_modules_engine/engine/render/api/core`
-- `unknown.legacy.engine_modules_engine.engine.render.api.ui` -> `legacy/engine_modules_engine/engine/render/api/ui`
-- `unknown.legacy.engine_modules_engine.engine.render.cga` -> `legacy/engine_modules_engine/engine/render/cga`
-- `unknown.legacy.engine_modules_engine.engine.render.dx.dx9` -> `legacy/engine_modules_engine/engine/render/dx/dx9`
-- `unknown.legacy.engine_modules_engine.engine.render.dx11` -> `legacy/engine_modules_engine/engine/render/dx11`
-- `unknown.legacy.engine_modules_engine.engine.render.dx7` -> `legacy/engine_modules_engine/engine/render/dx7`
-- `unknown.legacy.engine_modules_engine.engine.render.dx9` -> `legacy/engine_modules_engine/engine/render/dx9`
-- `unknown.legacy.engine_modules_engine.engine.render.ega` -> `legacy/engine_modules_engine/engine/render/ega`
-- `unknown.legacy.engine_modules_engine.engine.render.gdi` -> `legacy/engine_modules_engine/engine/render/gdi`
-- `unknown.legacy.engine_modules_engine.engine.render.gl2` -> `legacy/engine_modules_engine/engine/render/gl2`
-- `unknown.legacy.engine_modules_engine.engine.render.herc` -> `legacy/engine_modules_engine/engine/render/herc`
-- `unknown.legacy.engine_modules_engine.engine.render.mda` -> `legacy/engine_modules_engine/engine/render/mda`
-- `unknown.legacy.engine_modules_engine.engine.render.metal` -> `legacy/engine_modules_engine/engine/render/metal`
-- `unknown.legacy.engine_modules_engine.engine.render.null` -> `legacy/engine_modules_engine/engine/render/null`
-- `unknown.legacy.engine_modules_engine.engine.render.quartz` -> `legacy/engine_modules_engine/engine/render/quartz`
-- `unknown.legacy.engine_modules_engine.engine.render.quickdraw` -> `legacy/engine_modules_engine/engine/render/quickdraw`
-- `unknown.legacy.engine_modules_engine.engine.render.soft` -> `legacy/engine_modules_engine/engine/render/soft`
-- `unknown.legacy.engine_modules_engine.engine.render.soft.core` -> `legacy/engine_modules_engine/engine/render/soft/core`
-- `unknown.legacy.engine_modules_engine.engine.render.soft.targets.null` -> `legacy/engine_modules_engine/engine/render/soft/targets/null`
-- `unknown.legacy.engine_modules_engine.engine.render.soft.targets.win32` -> `legacy/engine_modules_engine/engine/render/soft/targets/win32`
-- `unknown.legacy.engine_modules_engine.engine.render.vesa` -> `legacy/engine_modules_engine/engine/render/vesa`
-- `unknown.legacy.engine_modules_engine.engine.render.vga` -> `legacy/engine_modules_engine/engine/render/vga`
-- `unknown.legacy.engine_modules_engine.engine.render.vk1` -> `legacy/engine_modules_engine/engine/render/vk1`
-- `unknown.legacy.engine_modules_engine.engine.render.xga` -> `legacy/engine_modules_engine/engine/render/xga`
-- `unknown.legacy.engine_modules_engine.engine.sim._legacy.core_sim` -> `legacy/engine_modules_engine/engine/sim/_legacy/core_sim`
-- `unknown.legacy.engine_modules_engine.engine.sim.api` -> `legacy/engine_modules_engine/engine/sim/api`
-- `unknown.legacy.engine_modules_engine.engine.sim.bus` -> `legacy/engine_modules_engine/engine/sim/bus`
-- `unknown.legacy.engine_modules_engine.engine.sim.hash` -> `legacy/engine_modules_engine/engine/sim/hash`
-- `unknown.legacy.engine_modules_engine.engine.sim.know` -> `legacy/engine_modules_engine/engine/sim/know`
-- `unknown.legacy.engine_modules_engine.engine.sim.prop` -> `legacy/engine_modules_engine/engine/sim/prop`
-- `unknown.legacy.engine_modules_engine.engine.sim.replay` -> `legacy/engine_modules_engine/engine/sim/replay`
-- `unknown.legacy.engine_modules_engine.engine.sim.replay.serialize` -> `legacy/engine_modules_engine/engine/sim/replay/serialize`
-- `unknown.legacy.engine_modules_engine.engine.sim.sense` -> `legacy/engine_modules_engine/engine/sim/sense`
-- `unknown.legacy.engine_modules_engine.engine.sim.vis` -> `legacy/engine_modules_engine/engine/sim/vis`
-- `unknown.legacy.engine_modules_engine.engine.struct.compile` -> `legacy/engine_modules_engine/engine/struct/compile`
-- `unknown.legacy.engine_modules_engine.engine.struct.model` -> `legacy/engine_modules_engine/engine/struct/model`
-- `unknown.legacy.engine_modules_engine.engine.struct.phys` -> `legacy/engine_modules_engine/engine/struct/phys`
-- `unknown.legacy.engine_modules_engine.engine.system._legacy` -> `legacy/engine_modules_engine/engine/system/_legacy`
-- `unknown.legacy.engine_modules_engine.engine.system._legacy.scratch` -> `legacy/engine_modules_engine/engine/system/_legacy/scratch`
-- `unknown.legacy.engine_modules_engine.engine.system.core` -> `legacy/engine_modules_engine/engine/system/core`
-- `unknown.legacy.engine_modules_engine.engine.system.core.audio` -> `legacy/engine_modules_engine/engine/system/core/audio`
-- `unknown.legacy.engine_modules_engine.engine.system.core.base` -> `legacy/engine_modules_engine/engine/system/core/base`
-- `unknown.legacy.engine_modules_engine.engine.system.core.base.dom_core` -> `legacy/engine_modules_engine/engine/system/core/base/dom_core`
-- `unknown.legacy.engine_modules_engine.engine.system.core.base.shared` -> `legacy/engine_modules_engine/engine/system/core/base/shared`
-- `unknown.legacy.engine_modules_engine.engine.system.core.math` -> `legacy/engine_modules_engine/engine/system/core/math`
-- `unknown.legacy.engine_modules_engine.engine.system.plat` -> `legacy/engine_modules_engine/engine/system/plat`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.carbon` -> `legacy/engine_modules_engine/engine/system/plat/carbon`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.cocoa` -> `legacy/engine_modules_engine/engine/system/plat/cocoa`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.cpm80` -> `legacy/engine_modules_engine/engine/system/plat/cpm80`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.cpm86` -> `legacy/engine_modules_engine/engine/system/plat/cpm86`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.dos16` -> `legacy/engine_modules_engine/engine/system/plat/dos16`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.dos32` -> `legacy/engine_modules_engine/engine/system/plat/dos32`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.mac.cocoa` -> `legacy/engine_modules_engine/engine/system/plat/mac/cocoa`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.null` -> `legacy/engine_modules_engine/engine/system/plat/null`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.posix` -> `legacy/engine_modules_engine/engine/system/plat/posix`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.sdl.sdl1` -> `legacy/engine_modules_engine/engine/system/plat/sdl/sdl1`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.sdl.sdl2` -> `legacy/engine_modules_engine/engine/system/plat/sdl/sdl2`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.sdl1` -> `legacy/engine_modules_engine/engine/system/plat/sdl1`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.sdl2` -> `legacy/engine_modules_engine/engine/system/plat/sdl2`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.unix.posix` -> `legacy/engine_modules_engine/engine/system/plat/unix/posix`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.unix.posix.posix_headless` -> `legacy/engine_modules_engine/engine/system/plat/unix/posix/posix_headless`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.unix.wayland` -> `legacy/engine_modules_engine/engine/system/plat/unix/wayland`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.unix.x11` -> `legacy/engine_modules_engine/engine/system/plat/unix/x11`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.wayland` -> `legacy/engine_modules_engine/engine/system/plat/wayland`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.win16` -> `legacy/engine_modules_engine/engine/system/plat/win16`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.win32` -> `legacy/engine_modules_engine/engine/system/plat/win32`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.windows.win32` -> `legacy/engine_modules_engine/engine/system/plat/windows/win32`
-- `unknown.legacy.engine_modules_engine.engine.system.plat.x11` -> `legacy/engine_modules_engine/engine/system/plat/x11`
-- `unknown.legacy.engine_modules_engine.engine.trans.compile` -> `legacy/engine_modules_engine/engine/trans/compile`
-- `unknown.legacy.engine_modules_engine.engine.trans.model` -> `legacy/engine_modules_engine/engine/trans/model`
-- `unknown.legacy.engine_modules_engine.engine.ui_codegen.tests` -> `legacy/engine_modules_engine/engine/ui_codegen/tests`
-- `unknown.legacy.engine_modules_engine.engine.ui_ir.tests` -> `legacy/engine_modules_engine/engine/ui_ir/tests`
-- `unknown.legacy.engine_modules_engine.engine.world.domain` -> `legacy/engine_modules_engine/engine/world/domain`
-- `unknown.legacy.external.xxhash` -> `legacy/external/xxhash`
-- `unknown.legacy.include.dsu` -> `legacy/include/dsu`
-- `unknown.legacy.launcher_core_launcher.launcher` -> `legacy/launcher_core_launcher/launcher`
-- `unknown.legacy.launcher_core_launcher.launcher.adapters.winnt.cli` -> `legacy/launcher_core_launcher/launcher/adapters/winnt/cli`
-- `unknown.legacy.launcher_core_launcher.launcher.adapters.winnt.gui` -> `legacy/launcher_core_launcher/launcher/adapters/winnt/gui`
-- `unknown.legacy.launcher_core_launcher.launcher.adapters.winnt.tui` -> `legacy/launcher_core_launcher/launcher/adapters/winnt/tui`
-- `unknown.legacy.launcher_core_launcher.launcher.core` -> `legacy/launcher_core_launcher/launcher/core`
-- `unknown.legacy.launcher_core_launcher.launcher.core.include` -> `legacy/launcher_core_launcher/launcher/core/include`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source` -> `legacy/launcher_core_launcher/launcher/core/source`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.artifact` -> `legacy/launcher_core_launcher/launcher/core/source/artifact`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.audit` -> `legacy/launcher_core_launcher/launcher/core/source/audit`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.installed_state` -> `legacy/launcher_core_launcher/launcher/core/source/installed_state`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.instance` -> `legacy/launcher_core_launcher/launcher/core/source/instance`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.job` -> `legacy/launcher_core_launcher/launcher/core/source/job`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.launch` -> `legacy/launcher_core_launcher/launcher/core/source/launch`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.log` -> `legacy/launcher_core_launcher/launcher/core/source/log`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.pack` -> `legacy/launcher_core_launcher/launcher/core/source/pack`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.profile` -> `legacy/launcher_core_launcher/launcher/core/source/profile`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.run` -> `legacy/launcher_core_launcher/launcher/core/source/run`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.safety` -> `legacy/launcher_core_launcher/launcher/core/source/safety`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.selection` -> `legacy/launcher_core_launcher/launcher/core/source/selection`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.task` -> `legacy/launcher_core_launcher/launcher/core/source/task`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.tlv` -> `legacy/launcher_core_launcher/launcher/core/source/tlv`
-- `unknown.legacy.launcher_core_launcher.launcher.core.source.tool` -> `legacy/launcher_core_launcher/launcher/core/source/tool`
-- `unknown.legacy.launcher_core_launcher.launcher.core.tests` -> `legacy/launcher_core_launcher/launcher/core/tests`
-- `unknown.legacy.launcher_core_launcher.launcher.schemas` -> `legacy/launcher_core_launcher/launcher/schemas`
-- `unknown.legacy.launcher_core_launcher.launcher.tests` -> `legacy/launcher_core_launcher/launcher/tests`
-- `unknown.legacy.setup_core_setup.setup` -> `legacy/setup_core_setup/setup`
-- `unknown.legacy.setup_core_setup.setup.adapters` -> `legacy/setup_core_setup/setup/adapters`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux` -> `legacy/setup_core_setup/setup/adapters/linux`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux.package` -> `legacy/setup_core_setup/setup/adapters/linux/package`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux.package.deb` -> `legacy/setup_core_setup/setup/adapters/linux/package/deb`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux.package.deb.debian` -> `legacy/setup_core_setup/setup/adapters/linux/package/deb/debian`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux.package.deb.packaging` -> `legacy/setup_core_setup/setup/adapters/linux/package/deb/packaging`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux.package.pacman` -> `legacy/setup_core_setup/setup/adapters/linux/package/pacman`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux.package.rpm` -> `legacy/setup_core_setup/setup/adapters/linux/package/rpm`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux.package.rpm.packaging` -> `legacy/setup_core_setup/setup/adapters/linux/package/rpm/packaging`
-- `unknown.legacy.setup_core_setup.setup.adapters.linux.package.tarball` -> `legacy/setup_core_setup/setup/adapters/linux/package/tarball`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx` -> `legacy/setup_core_setup/setup/adapters/macosx`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx.gui.xcode` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmac.xcodeproj` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMac.xcodeproj`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.resources` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.resources.assets.xcassets` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Assets.xcassets`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.resources.assets.xcassets.appicon.appiconset` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Assets.xcassets/AppIcon.appiconset`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.resources.base.lproj` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Base.lproj`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx.gui.xcode.dominiumsetupmacapp.sources` -> `legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Sources`
-- `unknown.legacy.setup_core_setup.setup.adapters.macosx.package` -> `legacy/setup_core_setup/setup/adapters/macosx/package`
-- `unknown.legacy.setup_core_setup.setup.adapters.steam` -> `legacy/setup_core_setup/setup/adapters/steam`
-- `unknown.legacy.setup_core_setup.setup.adapters.steam.steamworks` -> `legacy/setup_core_setup/setup/adapters/steam/steamworks`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt` -> `legacy/setup_core_setup/setup/adapters/winnt`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt.cli` -> `legacy/setup_core_setup/setup/adapters/winnt/cli`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt.package.exe` -> `legacy/setup_core_setup/setup/adapters/winnt/package/exe`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt.package.exe.vs` -> `legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt.package.msi` -> `legacy/setup_core_setup/setup/adapters/winnt/package/msi`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt.package.msi.vs` -> `legacy/setup_core_setup/setup/adapters/winnt/package/msi/vs`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt.package.msi.wix` -> `legacy/setup_core_setup/setup/adapters/winnt/package/msi/wix`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt.tui` -> `legacy/setup_core_setup/setup/adapters/winnt/tui`
-- `unknown.legacy.setup_core_setup.setup.adapters.winnt.wix` -> `legacy/setup_core_setup/setup/adapters/winnt/wix`
-- `unknown.legacy.setup_core_setup.setup.core` -> `legacy/setup_core_setup/setup/core`
-- `unknown.legacy.setup_core_setup.setup.core.include.dsk` -> `legacy/setup_core_setup/setup/core/include/dsk`
-- `unknown.legacy.setup_core_setup.setup.core.include.dsu` -> `legacy/setup_core_setup/setup/core/include/dsu`
-- `unknown.legacy.setup_core_setup.setup.core.source` -> `legacy/setup_core_setup/setup/core/source`
-- `unknown.legacy.setup_core_setup.setup.core.source.api` -> `legacy/setup_core_setup/setup/core/source/api`
-- `unknown.legacy.setup_core_setup.setup.core.source.audit` -> `legacy/setup_core_setup/setup/core/source/audit`
-- `unknown.legacy.setup_core_setup.setup.core.source.contracts` -> `legacy/setup_core_setup/setup/core/source/contracts`
-- `unknown.legacy.setup_core_setup.setup.core.source.digest` -> `legacy/setup_core_setup/setup/core/source/digest`
-- `unknown.legacy.setup_core_setup.setup.core.source.errors` -> `legacy/setup_core_setup/setup/core/source/errors`
-- `unknown.legacy.setup_core_setup.setup.core.source.fs` -> `legacy/setup_core_setup/setup/core/source/fs`
-- `unknown.legacy.setup_core_setup.setup.core.source.import` -> `legacy/setup_core_setup/setup/core/source/import`
-- `unknown.legacy.setup_core_setup.setup.core.source.invocation` -> `legacy/setup_core_setup/setup/core/source/invocation`
-- `unknown.legacy.setup_core_setup.setup.core.source.job` -> `legacy/setup_core_setup/setup/core/source/job`
-- `unknown.legacy.setup_core_setup.setup.core.source.jobs` -> `legacy/setup_core_setup/setup/core/source/jobs`
-- `unknown.legacy.setup_core_setup.setup.core.source.log` -> `legacy/setup_core_setup/setup/core/source/log`
-- `unknown.legacy.setup_core_setup.setup.core.source.manifest` -> `legacy/setup_core_setup/setup/core/source/manifest`
-- `unknown.legacy.setup_core_setup.setup.core.source.plan` -> `legacy/setup_core_setup/setup/core/source/plan`
-- `unknown.legacy.setup_core_setup.setup.core.source.platform_iface` -> `legacy/setup_core_setup/setup/core/source/platform_iface`
-- `unknown.legacy.setup_core_setup.setup.core.source.report` -> `legacy/setup_core_setup/setup/core/source/report`
-- `unknown.legacy.setup_core_setup.setup.core.source.resolve` -> `legacy/setup_core_setup/setup/core/source/resolve`
-- `unknown.legacy.setup_core_setup.setup.core.source.splat` -> `legacy/setup_core_setup/setup/core/source/splat`
-- `unknown.legacy.setup_core_setup.setup.core.source.state` -> `legacy/setup_core_setup/setup/core/source/state`
-- `unknown.legacy.setup_core_setup.setup.core.source.tlv` -> `legacy/setup_core_setup/setup/core/source/tlv`
-- `unknown.legacy.setup_core_setup.setup.core.source.txn` -> `legacy/setup_core_setup/setup/core/source/txn`
-- `unknown.legacy.setup_core_setup.setup.core.source.util` -> `legacy/setup_core_setup/setup/core/source/util`
-- `unknown.legacy.setup_core_setup.setup.tests` -> `legacy/setup_core_setup/setup/tests`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.manifests` -> `legacy/setup_core_setup/setup/tests/fixtures/manifests`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.payloads.base.bin` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/base/bin`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.payloads.base.packs` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/base/packs`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.payloads.base.runtime` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/base/runtime`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.payloads.base.tools` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/base/tools`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.payloads.v1.bin` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/v1/bin`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.payloads.v1.data` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/v1/data`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.payloads.v2.bin` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/v2/bin`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.payloads.v2.data` -> `legacy/setup_core_setup/setup/tests/fixtures/payloads/v2/data`
-- `unknown.legacy.setup_core_setup.setup.tests.fixtures.user_data` -> `legacy/setup_core_setup/setup/tests/fixtures/user_data`
-- `unknown.legacy.setup_core_setup.setup.tests.golden.cli` -> `legacy/setup_core_setup/setup/tests/golden/cli`
-- `unknown.legacy.source` -> `legacy/source`
-- `unknown.legacy.source.provider` -> `legacy/source/provider`
-- `unknown.legacy.source.tests` -> `legacy/source/tests`
-- `unknown.legacy.tools_cmake` -> `legacy/tools_cmake`
-- `unknown.legacy.tools_shared_legacy` -> `legacy/tools_shared_legacy`
-- `unknown.locks` -> `locks`
-- `unknown.profiles.bundles` -> `profiles/bundles`
-- `unknown.quarantine` -> `quarantine`
-- `unknown.repo` -> `repo`
-- `unknown.repo.repox` -> `repo/repox`
-- `unknown.repo.repox.rulesets` -> `repo/repox/rulesets`
+- `ui` -> `ui`
+- `universe` -> `universe`
 - `unknown.root` -> `.`
-- `unknown.scripts` -> `scripts`
-- `unknown.scripts.audit` -> `scripts/audit`
-- `unknown.scripts.ci` -> `scripts/ci`
-- `unknown.scripts.ci.__pycache__` -> `scripts/ci/__pycache__`
-- `unknown.scripts.dev` -> `scripts/dev`
-- `unknown.scripts.repox` -> `scripts/repox`
-- `unknown.src` -> `src`
-- `unknown.src.appshell` -> `src/appshell`
-- `unknown.src.appshell.commands` -> `src/appshell/commands`
-- `unknown.src.appshell.diag` -> `src/appshell/diag`
-- `unknown.src.appshell.ipc` -> `src/appshell/ipc`
-- `unknown.src.appshell.logging` -> `src/appshell/logging`
-- `unknown.src.appshell.paths` -> `src/appshell/paths`
-- `unknown.src.appshell.supervisor` -> `src/appshell/supervisor`
-- `unknown.src.appshell.tui` -> `src/appshell/tui`
-- `unknown.src.archive` -> `src/archive`
-- `unknown.src.astro` -> `src/astro`
-- `unknown.src.astro.ephemeris` -> `src/astro/ephemeris`
-- `unknown.src.astro.illumination` -> `src/astro/illumination`
-- `unknown.src.astro.views` -> `src/astro/views`
-- `unknown.src.chem` -> `src/chem`
-- `unknown.src.chem.degradation` -> `src/chem/degradation`
-- `unknown.src.client` -> `src/client`
-- `unknown.src.client.interaction` -> `src/client/interaction`
-- `unknown.src.client.local_server` -> `src/client/local_server`
-- `unknown.src.client.net` -> `src/client/net`
-- `unknown.src.client.render` -> `src/client/render`
-- `unknown.src.client.render.renderers` -> `src/client/render/renderers`
-- `unknown.src.client.ui` -> `src/client/ui`
-- `unknown.src.compat` -> `src/compat`
-- `unknown.src.compat.descriptor` -> `src/compat/descriptor`
-- `unknown.src.compat.handshake` -> `src/compat/handshake`
-- `unknown.src.compat.negotiation` -> `src/compat/negotiation`
-- `unknown.src.compat.shims` -> `src/compat/shims`
-- `unknown.src.control` -> `src/control`
-- `unknown.src.control.capability` -> `src/control/capability`
-- `unknown.src.control.effects` -> `src/control/effects`
-- `unknown.src.control.fidelity` -> `src/control/fidelity`
-- `unknown.src.control.ir` -> `src/control/ir`
-- `unknown.src.control.negotiation` -> `src/control/negotiation`
-- `unknown.src.control.planning` -> `src/control/planning`
-- `unknown.src.control.proof` -> `src/control/proof`
-- `unknown.src.control.view` -> `src/control/view`
-- `unknown.src.core` -> `src/core`
-- `unknown.src.core.constraints` -> `src/core/constraints`
-- `unknown.src.core.flow` -> `src/core/flow`
-- `unknown.src.core.graph` -> `src/core/graph`
-- `unknown.src.core.hazards` -> `src/core/hazards`
-- `unknown.src.core.schedule` -> `src/core/schedule`
-- `unknown.src.core.spatial` -> `src/core/spatial`
-- `unknown.src.core.state` -> `src/core/state`
-- `unknown.src.diag` -> `src/diag`
-- `unknown.src.diegetics` -> `src/diegetics`
-- `unknown.src.electric` -> `src/electric`
-- `unknown.src.electric.fault` -> `src/electric/fault`
-- `unknown.src.electric.protection` -> `src/electric/protection`
-- `unknown.src.electric.storage` -> `src/electric/storage`
-- `unknown.src.embodiment` -> `src/embodiment`
-- `unknown.src.embodiment.body` -> `src/embodiment/body`
-- `unknown.src.embodiment.collision` -> `src/embodiment/collision`
-- `unknown.src.embodiment.lens` -> `src/embodiment/lens`
-- `unknown.src.embodiment.movement` -> `src/embodiment/movement`
-- `unknown.src.embodiment.tools` -> `src/embodiment/tools`
-- `unknown.src.engine` -> `src/engine`
-- `unknown.src.engine.concurrency` -> `src/engine/concurrency`
-- `unknown.src.epistemics` -> `src/epistemics`
-- `unknown.src.epistemics.memory` -> `src/epistemics/memory`
-- `unknown.src.field` -> `src/field`
-- `unknown.src.fields` -> `src/fields`
-- `unknown.src.fluid` -> `src/fluid`
-- `unknown.src.fluid.network` -> `src/fluid/network`
-- `unknown.src.geo` -> `src/geo`
-- `unknown.src.geo.edit` -> `src/geo/edit`
-- `unknown.src.geo.frame` -> `src/geo/frame`
-- `unknown.src.geo.index` -> `src/geo/index`
-- `unknown.src.geo.kernel` -> `src/geo/kernel`
-- `unknown.src.geo.lens` -> `src/geo/lens`
-- `unknown.src.geo.metric` -> `src/geo/metric`
-- `unknown.src.geo.overlay` -> `src/geo/overlay`
-- `unknown.src.geo.path` -> `src/geo/path`
-- `unknown.src.geo.projection` -> `src/geo/projection`
-- `unknown.src.geo.render` -> `src/geo/render`
-- `unknown.src.geo.worldgen` -> `src/geo/worldgen`
-- `unknown.src.governance` -> `src/governance`
-- `unknown.src.infrastructure` -> `src/infrastructure`
-- `unknown.src.infrastructure.formalization` -> `src/infrastructure/formalization`
-- `unknown.src.inspection` -> `src/inspection`
-- `unknown.src.interaction` -> `src/interaction`
-- `unknown.src.interaction.mount` -> `src/interaction/mount`
-- `unknown.src.interaction.pose` -> `src/interaction/pose`
-- `unknown.src.interaction.task` -> `src/interaction/task`
-- `unknown.src.interior` -> `src/interior`
-- `unknown.src.lib` -> `src/lib`
-- `unknown.src.lib.artifact` -> `src/lib/artifact`
-- `unknown.src.lib.bundle` -> `src/lib/bundle`
-- `unknown.src.lib.export` -> `src/lib/export`
-- `unknown.src.lib.import` -> `src/lib/import`
-- `unknown.src.lib.install` -> `src/lib/install`
-- `unknown.src.lib.instance` -> `src/lib/instance`
-- `unknown.src.lib.provides` -> `src/lib/provides`
-- `unknown.src.lib.save` -> `src/lib/save`
-- `unknown.src.lib.store` -> `src/lib/store`
-- `unknown.src.logic` -> `src/logic`
-- `unknown.src.logic.compile` -> `src/logic/compile`
-- `unknown.src.logic.debug` -> `src/logic/debug`
-- `unknown.src.logic.element` -> `src/logic/element`
-- `unknown.src.logic.eval` -> `src/logic/eval`
-- `unknown.src.logic.fault` -> `src/logic/fault`
-- `unknown.src.logic.network` -> `src/logic/network`
-- `unknown.src.logic.noise` -> `src/logic/noise`
-- `unknown.src.logic.protocol` -> `src/logic/protocol`
-- `unknown.src.logic.signal` -> `src/logic/signal`
-- `unknown.src.logic.timing` -> `src/logic/timing`
-- `unknown.src.logistics` -> `src/logistics`
-- `unknown.src.machines` -> `src/machines`
-- `unknown.src.materials` -> `src/materials`
-- `unknown.src.materials.commitments` -> `src/materials/commitments`
-- `unknown.src.materials.construction` -> `src/materials/construction`
-- `unknown.src.materials.maintenance` -> `src/materials/maintenance`
-- `unknown.src.materials.materialization` -> `src/materials/materialization`
-- `unknown.src.materials.performance` -> `src/materials/performance`
-- `unknown.src.materials.provenance` -> `src/materials/provenance`
-- `unknown.src.mechanics` -> `src/mechanics`
-- `unknown.src.meta` -> `src/meta`
-- `unknown.src.meta.compile` -> `src/meta/compile`
-- `unknown.src.meta.compute` -> `src/meta/compute`
-- `unknown.src.meta.explain` -> `src/meta/explain`
-- `unknown.src.meta.extensions` -> `src/meta/extensions`
-- `unknown.src.meta.identity` -> `src/meta/identity`
-- `unknown.src.meta.instrumentation` -> `src/meta/instrumentation`
-- `unknown.src.meta.profile` -> `src/meta/profile`
-- `unknown.src.meta.provenance` -> `src/meta/provenance`
-- `unknown.src.meta.reference` -> `src/meta/reference`
-- `unknown.src.meta.stability` -> `src/meta/stability`
-- `unknown.src.mobility` -> `src/mobility`
-- `unknown.src.mobility.geometry` -> `src/mobility/geometry`
-- `unknown.src.mobility.maintenance` -> `src/mobility/maintenance`
-- `unknown.src.mobility.micro` -> `src/mobility/micro`
-- `unknown.src.mobility.network` -> `src/mobility/network`
-- `unknown.src.mobility.signals` -> `src/mobility/signals`
-- `unknown.src.mobility.traffic` -> `src/mobility/traffic`
-- `unknown.src.mobility.travel` -> `src/mobility/travel`
-- `unknown.src.mobility.vehicle` -> `src/mobility/vehicle`
-- `unknown.src.modding` -> `src/modding`
-- `unknown.src.models` -> `src/models`
-- `unknown.src.net` -> `src/net`
-- `unknown.src.net.anti_cheat` -> `src/net/anti_cheat`
-- `unknown.src.net.policies` -> `src/net/policies`
-- `unknown.src.net.srz` -> `src/net/srz`
-- `unknown.src.net.testing` -> `src/net/testing`
-- `unknown.src.net.transport` -> `src/net/transport`
-- `unknown.src.packs` -> `src/packs`
-- `unknown.src.packs.compat` -> `src/packs/compat`
-- `unknown.src.performance` -> `src/performance`
-- `unknown.src.physics` -> `src/physics`
-- `unknown.src.physics.energy` -> `src/physics/energy`
-- `unknown.src.physics.entropy` -> `src/physics/entropy`
-- `unknown.src.platform` -> `src/platform`
-- `unknown.src.pollution` -> `src/pollution`
-- `unknown.src.process` -> `src/process`
-- `unknown.src.process.capsules` -> `src/process/capsules`
-- `unknown.src.process.drift` -> `src/process/drift`
-- `unknown.src.process.maturity` -> `src/process/maturity`
-- `unknown.src.process.qc` -> `src/process/qc`
-- `unknown.src.process.research` -> `src/process/research`
-- `unknown.src.process.software` -> `src/process/software`
-- `unknown.src.reality` -> `src/reality`
-- `unknown.src.reality.ledger` -> `src/reality/ledger`
-- `unknown.src.reality.transitions` -> `src/reality/transitions`
-- `unknown.src.release` -> `src/release`
-- `unknown.src.runtime` -> `src/runtime`
-- `unknown.src.safety` -> `src/safety`
-- `unknown.src.security` -> `src/security`
-- `unknown.src.security.trust` -> `src/security/trust`
-- `unknown.src.server` -> `src/server`
-- `unknown.src.server.net` -> `src/server/net`
-- `unknown.src.server.runtime` -> `src/server/runtime`
-- `unknown.src.signals` -> `src/signals`
-- `unknown.src.signals.addressing` -> `src/signals/addressing`
-- `unknown.src.signals.aggregation` -> `src/signals/aggregation`
-- `unknown.src.signals.institutions` -> `src/signals/institutions`
-- `unknown.src.signals.transport` -> `src/signals/transport`
-- `unknown.src.signals.trust` -> `src/signals/trust`
-- `unknown.src.specs` -> `src/specs`
-- `unknown.src.system` -> `src/system`
-- `unknown.src.system.certification` -> `src/system/certification`
-- `unknown.src.system.forensics` -> `src/system/forensics`
-- `unknown.src.system.macro` -> `src/system/macro`
-- `unknown.src.system.reliability` -> `src/system/reliability`
-- `unknown.src.system.roi` -> `src/system/roi`
-- `unknown.src.system.statevec` -> `src/system/statevec`
-- `unknown.src.system.templates` -> `src/system/templates`
-- `unknown.src.thermal` -> `src/thermal`
-- `unknown.src.thermal.network` -> `src/thermal/network`
-- `unknown.src.time` -> `src/time`
-- `unknown.src.tools` -> `src/tools`
-- `unknown.src.ui` -> `src/ui`
-- `unknown.src.universe` -> `src/universe`
-- `unknown.src.validation` -> `src/validation`
-- `unknown.src.worldgen` -> `src/worldgen`
-- `unknown.src.worldgen.earth` -> `src/worldgen/earth`
-- `unknown.src.worldgen.earth.lighting` -> `src/worldgen/earth/lighting`
-- `unknown.src.worldgen.earth.material` -> `src/worldgen/earth/material`
-- `unknown.src.worldgen.earth.sky` -> `src/worldgen/earth/sky`
-- `unknown.src.worldgen.earth.water` -> `src/worldgen/earth/water`
-- `unknown.src.worldgen.earth.wind` -> `src/worldgen/earth/wind`
-- `unknown.src.worldgen.galaxy` -> `src/worldgen/galaxy`
-- `unknown.src.worldgen.mw` -> `src/worldgen/mw`
-- `unknown.src.worldgen.refinement` -> `src/worldgen/refinement`
-- `unknown.templates` -> `templates`
-- `unknown.updates` -> `updates`
-- `unknown.vscode` -> `.vscode`
+- `updates` -> `updates`
+- `validation` -> `validation`
 - `worldgen` -> `worldgen`
 - `worldgen.core` -> `worldgen/core`
+- `worldgen.earth` -> `worldgen/earth`
+- `worldgen.earth.lighting` -> `worldgen/earth/lighting`
+- `worldgen.earth.material` -> `worldgen/earth/material`
+- `worldgen.earth.sky` -> `worldgen/earth/sky`
+- `worldgen.earth.water` -> `worldgen/earth/water`
+- `worldgen.earth.wind` -> `worldgen/earth/wind`
+- `worldgen.galaxy` -> `worldgen/galaxy`
+- `worldgen.mw` -> `worldgen/mw`
+- `worldgen.refinement` -> `worldgen/refinement`
 
 ## Concept Candidates
 
@@ -1761,8 +1753,9 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `adapters` -> modules=`1`
 - `agents` -> modules=`2`
 - `ai` -> modules=`2`
+- `analysis` -> modules=`1`
 - `animal` -> modules=`1`
-- `app` -> modules=`7`
+- `app` -> modules=`6`
 - `appcore` -> modules=`9`
 - `appshell` -> modules=`11`
 - `architecture` -> modules=`1`
@@ -1771,15 +1764,16 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `artifactmeta` -> modules=`1`
 - `assetc` -> modules=`1`
 - `astro` -> modules=`6`
+- `attic` -> modules=`3`
 - `auditx` -> modules=`6`
 - `authority` -> modules=`3`
 - `autonomy` -> modules=`1`
 - `baselines` -> modules=`6`
 - `bin` -> modules=`1`
-- `blueprint` -> modules=`1`
+- `blueprint` -> modules=`3`
 - `blueprint_editor` -> modules=`1`
 - `bugreport` -> modules=`2`
-- `build_identity` -> modules=`3`
+- `build_identity` -> modules=`2`
 - `bundle` -> modules=`1`
 - `bundles` -> modules=`3`
 - `canon` -> modules=`1`
@@ -1794,74 +1788,43 @@ Replacement Target: XI-1 architecture drift and duplicate-convergence plan
 - `civ2` -> modules=`1`
 - `civ3` -> modules=`1`
 - `civ4` -> modules=`1`
-- `civilisation` -> modules=`2`
-- `cli` -> modules=`2`
 
 ## Duplicate Signals
 
-- `ALLOWED_CONTROL_IR_OP_TYPES` -> src/control/__init__.py, src/control/ir/__init__.py, src/control/ir/control_ir_verifier.py
-- `ALL_REGISTRY_PATHS` -> src/meta/stability/__init__.py, src/meta/stability/stability_scope.py, src/meta/stability/stability_validator.py
-- `ANCHOR_REASON_INTERVAL` -> src/time/__init__.py, src/time/epoch_anchor_engine.py
-- `ANCHOR_REASON_MIGRATION` -> src/time/__init__.py, src/time/epoch_anchor_engine.py
-- `ANCHOR_REASON_SAVE` -> src/time/__init__.py, src/time/epoch_anchor_engine.py
-- `ARCHIVE_POLICY_ID` -> src/governance/__init__.py, src/governance/governance_profile.py
-- `ARTIFACT_DEGRADE_BEST_EFFORT` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_DEGRADE_MODE_VALUES` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_DEGRADE_READ_ONLY_ONLY` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_DEGRADE_STRICT_REFUSE` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_KIND_BLUEPRINT` -> src/compat/migration_lifecycle.py, src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_KIND_IDS` -> src/compat/migration_lifecycle.py, tools/xstack/testx/tests/migration_lifecycle_testlib.py
-- `ARTIFACT_KIND_LOGIC_PROGRAM` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_KIND_PACK` -> src/release/release_manifest_engine.py, src/security/trust/__init__.py
-- `ARTIFACT_KIND_PROCESS_DEFINITION` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_KIND_PROFILE_BUNDLE` -> src/compat/migration_lifecycle.py, src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_KIND_RELEASE_INDEX` -> src/compat/migration_lifecycle.py, src/security/trust/__init__.py
-- `ARTIFACT_KIND_RELEASE_MANIFEST` -> src/compat/migration_lifecycle.py, src/security/trust/__init__.py
-- `ARTIFACT_KIND_RESOURCE_PACK_STUB` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_KIND_SYSTEM_TEMPLATE` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_KIND_VALUES` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
-- `ARTIFACT_KIND_VIEW_PRESET` -> src/lib/artifact/__init__.py, src/lib/artifact/artifact_validator.py
+- `ALLOWED_CONTROL_IR_OP_TYPES` -> control/__init__.py, control/ir/__init__.py, control/ir/control_ir_verifier.py
+- `ALL_REGISTRY_PATHS` -> meta/stability/__init__.py, meta/stability/stability_scope.py, meta/stability/stability_validator.py
+- `ANCHOR_REASON_INTERVAL` -> engine/time/__init__.py, engine/time/epoch_anchor_engine.py
+- `ANCHOR_REASON_MIGRATION` -> engine/time/__init__.py, engine/time/epoch_anchor_engine.py
+- `ANCHOR_REASON_SAVE` -> engine/time/__init__.py, engine/time/epoch_anchor_engine.py
+- `ARCHITECTURE_GRAPH_REL` -> tools/review/architecture_graph_bootstrap_common.py, tools/review/convergence_execution_common.py, tools/review/convergence_plan_common.py, tools/review/duplicate_impl_scan_common.py
+- `ARCHIVE_POLICY_ID` -> governance/__init__.py, governance/governance_profile.py
+- `ARTIFACT_DEGRADE_BEST_EFFORT` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_DEGRADE_MODE_VALUES` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_DEGRADE_READ_ONLY_ONLY` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_DEGRADE_STRICT_REFUSE` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_KIND_BLUEPRINT` -> compat/migration_lifecycle.py, lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_KIND_IDS` -> compat/migration_lifecycle.py, tools/xstack/testx/tests/migration_lifecycle_testlib.py
+- `ARTIFACT_KIND_LOGIC_PROGRAM` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_KIND_PACK` -> release/release_manifest_engine.py, security/trust/__init__.py
+- `ARTIFACT_KIND_PROCESS_DEFINITION` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_KIND_PROFILE_BUNDLE` -> compat/migration_lifecycle.py, lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_KIND_RELEASE_INDEX` -> compat/migration_lifecycle.py, security/trust/__init__.py
+- `ARTIFACT_KIND_RELEASE_MANIFEST` -> compat/migration_lifecycle.py, security/trust/__init__.py
+- `ARTIFACT_KIND_RESOURCE_PACK_STUB` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_KIND_SYSTEM_TEMPLATE` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_KIND_VALUES` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
+- `ARTIFACT_KIND_VIEW_PRESET` -> lib/artifact/__init__.py, lib/artifact/artifact_validator.py
 - `AnalysisGraph` -> tools/auditx/graph/__init__.py, tools/auditx/graph/analysis_graph.py
-- `AppShellIPCEndpointServer` -> src/appshell/ipc/__init__.py, src/appshell/ipc/ipc_endpoint_server.py
+- `AppShellIPCEndpointServer` -> appshell/ipc/__init__.py, appshell/ipc/ipc_endpoint_server.py
 - `BASELINE_DOC_REL` -> tools/compat/migration_lifecycle_common.py, tools/engine/concurrency_contract_common.py, tools/engine/numeric_discipline_common.py, tools/governance/governance_model_common.py
-- `BUNDLE_CONTENT_DIR` -> src/lib/bundle/__init__.py, src/lib/bundle/bundle_manifest.py
-- `BUNDLE_HASHES_DIR` -> src/lib/bundle/__init__.py, src/lib/bundle/bundle_manifest.py
-- `BUNDLE_HASH_INDEX_NAME` -> src/lib/bundle/__init__.py, src/lib/bundle/bundle_manifest.py
-- `BUNDLE_HASH_INDEX_REL` -> src/lib/bundle/__init__.py, src/lib/bundle/bundle_manifest.py
-- `BUNDLE_KIND_INSTANCE_LINKED` -> src/lib/export/__init__.py, src/lib/export/export_engine.py
+- `BUILD_GRAPH_REL` -> tools/review/architecture_graph_bootstrap_common.py, tools/review/convergence_execution_common.py, tools/review/convergence_plan_common.py, tools/review/duplicate_impl_scan_common.py
+- `BUNDLE_CONTENT_DIR` -> lib/bundle/__init__.py, lib/bundle/bundle_manifest.py
+- `BUNDLE_HASHES_DIR` -> lib/bundle/__init__.py, lib/bundle/bundle_manifest.py
+- `BUNDLE_HASH_INDEX_NAME` -> lib/bundle/__init__.py, lib/bundle/bundle_manifest.py
 
 ## Unknown Domains
 
-- `.github/workflows`
-- `ide`
-- `ide/manifests`
-- `ide/manifests/projection_manifest_examples`
-- `labs`
-- `legacy`
-- `legacy/_orphaned/engine_has_launcher_module/launcher`
-- `legacy/_orphaned/legacy_source_common/common`
-- `legacy/_orphaned/legacy_source_game/game`
-- `legacy/_orphaned/legacy_source_game/game/_legacy/sdk`
-- `legacy/_orphaned/legacy_source_game/game/cli`
-- `legacy/_orphaned/legacy_source_game/game/cli/server`
-- `legacy/_orphaned/legacy_source_game/game/content`
-- `legacy/_orphaned/legacy_source_game/game/core`
-- `legacy/_orphaned/legacy_source_game/game/core/app_mode`
-- `legacy/_orphaned/legacy_source_game/game/core/client`
-- `legacy/_orphaned/legacy_source_game/game/core/client/input`
-- `legacy/_orphaned/legacy_source_game/game/frontends/gui`
-- `legacy/_orphaned/legacy_source_game/game/frontends/headless`
-- `legacy/_orphaned/legacy_source_game/game/frontends/tui`
-- `legacy/_orphaned/legacy_source_game/game/gui`
-- `legacy/_orphaned/legacy_source_game/game/gui/dom_sdl`
-- `legacy/_orphaned/legacy_source_game/game/rules`
-- `legacy/_orphaned/legacy_source_game/game/runtime`
-- `legacy/_orphaned/legacy_source_game/game/ui`
-- `legacy/_orphaned/temp_files`
-- `legacy/_orphaned_stage2/tools_common`
-- `legacy/_orphaned_stage2/tools_core`
-- `legacy/data`
-- `legacy/data/tools_demo`
+- `.`
 
 ## Next-Step Recommendations
 

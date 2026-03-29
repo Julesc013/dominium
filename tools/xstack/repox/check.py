@@ -19,6 +19,12 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
+from tools.review.xi6_common import (
+    build_boundary_findings,
+    build_single_engine_findings,
+    evaluate_architecture_drift,
+)
+
 
 FORBIDDEN_IDENTIFIERS = (
     "survival_mode",
@@ -35082,6 +35088,138 @@ def _append_dist_final_plan_invariant_findings(
     )
 
 
+def _append_arch_graph_v1_present_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    for rel_path in (
+        "data/architecture/architecture_graph.v1.json",
+        "data/architecture/module_registry.v1.json",
+        "data/architecture/module_boundary_rules.v1.json",
+        "data/architecture/single_engine_registry.json",
+    ):
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message="Xi-6 frozen architecture artifact is missing",
+                rule_id="INV-ARCH-GRAPH-V1-PRESENT",
+            )
+        )
+
+
+def _append_architecture_drift_guard_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    try:
+        report = evaluate_architecture_drift(repo_root)
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/architecture/architecture_graph.v1.json",
+                line_number=1,
+                snippet="evaluate_architecture_drift",
+                message="failed to evaluate Xi-6 architecture drift guard: {}".format(type(exc).__name__),
+                rule_id="INV-ARCH-GRAPH-V1-PRESENT",
+            )
+        )
+        return
+    if str(report.get("status", "")).strip().lower() == "pass":
+        return
+    findings.append(
+        _finding(
+            severity=severity,
+            file_path="data/architecture/architecture_graph.v1.json",
+            line_number=1,
+            snippet=str(report.get("live_content_hash", ""))[:140],
+            message=str(report.get("reason", "")).strip() or "live architecture graph drifted from Xi-6 freeze",
+            rule_id="INV-ARCH-GRAPH-V1-PRESENT",
+        )
+    )
+
+
+def _append_module_boundaries_respected_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    try:
+        rows = build_boundary_findings(repo_root)
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/architecture/module_boundary_rules.v1.json",
+                line_number=1,
+                snippet="build_boundary_findings",
+                message="failed to evaluate Xi-6 module boundaries: {}".format(type(exc).__name__),
+                rule_id="INV-MODULE-BOUNDARIES-RESPECTED",
+            )
+        )
+        return
+    for row in rows:
+        item = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(item.get("file_path", "")),
+                line_number=int(item.get("line_number", 0) or 0),
+                snippet=str(item.get("dependency_module_id", ""))[:140],
+                message=str(item.get("message", "")).strip() or "Xi-6 module boundary violation detected",
+                rule_id="INV-MODULE-BOUNDARIES-RESPECTED",
+            )
+        )
+
+
+def _append_single_canonical_engines_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    try:
+        rows = build_single_engine_findings(repo_root)
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/architecture/single_engine_registry.json",
+                line_number=1,
+                snippet="build_single_engine_findings",
+                message="failed to evaluate Xi-6 single-engine registry: {}".format(type(exc).__name__),
+                rule_id="INV-SINGLE-CANONICAL-ENGINES",
+            )
+        )
+        return
+    for row in rows:
+        item = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(item.get("file_path", "")),
+                line_number=int(item.get("line_number", 0) or 0),
+                snippet=str(item.get("module_id", ""))[:140],
+                message=str(item.get("message", "")).strip() or "Xi-6 duplicate semantic engine detected",
+                rule_id="INV-SINGLE-CANONICAL-ENGINES",
+            )
+        )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -35803,6 +35941,10 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
 
     for append_fn in (
         _append_worktree_hygiene_findings,
+        _append_arch_graph_v1_present_findings,
+        _append_architecture_drift_guard_findings,
+        _append_module_boundaries_respected_findings,
+        _append_single_canonical_engines_findings,
         _append_release_identity_findings,
         _append_release_manifest_findings,
         _append_distribution_model_findings,

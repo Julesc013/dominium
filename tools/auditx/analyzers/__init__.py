@@ -509,6 +509,10 @@ from analyzers import e556_missing_archive_artifact_smell
 from analyzers import e557_non_deterministic_archive_smell
 from analyzers import e558_toolchain_report_missing_smell
 from analyzers import e559_missing_final_dist_plan_smell
+from analyzers import e560_architecture_drift_smell
+from analyzers import e561_forbidden_dependency_smell
+from analyzers import e562_duplicate_semantic_engine_registry_smell
+from analyzers import e563_ui_truth_leak_boundary_smell
 
 
 ANALYZERS = (
@@ -1019,6 +1023,10 @@ ANALYZERS = (
     e557_non_deterministic_archive_smell,
     e558_toolchain_report_missing_smell,
     e559_missing_final_dist_plan_smell,
+    e560_architecture_drift_smell,
+    e561_forbidden_dependency_smell,
+    e562_duplicate_semantic_engine_registry_smell,
+    e563_ui_truth_leak_boundary_smell,
 )
 
 

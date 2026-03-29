@@ -56,21 +56,6 @@ SKIP_DIR_NAMES = {
     "node_modules",
 }
 
-SOURCE_ROOT_PREFIXES = (
-    "app/",
-    "client/",
-    "engine/",
-    "game/",
-    "launcher/",
-    "libs/",
-    "server/",
-    "setup/",
-    "src/",
-    "tests/",
-    "tools/",
-    "worldgen/",
-)
-
 SOURCE_EXTENSIONS = {
     ".c",
     ".cc",
@@ -89,31 +74,98 @@ PYTHON_EXTENSIONS = {".py"}
 C_FAMILY_EXTENSIONS = SOURCE_EXTENSIONS - PYTHON_EXTENSIONS
 BUILD_FILE_NAMES = {"CMakeLists.txt", "CMakePresets.json"}
 BUILD_EXTENSIONS = {".cmake"}
+GENERATED_SOURCE_PREFIXES = (
+    "artifacts/toolchain_runs/",
+    "build/",
+    "dist/",
+    "out/",
+    "tmp/",
+)
 
 DOMAIN_ROOT_MAP = {
+    ".github": "governance",
+    ".vscode": "ide",
     "app": "apps",
+    "appshell": "appshell",
+    "archive": "archive",
     "artifacts": "artifacts",
+    "astro": "astro",
+    "attic": "attic",
     "build": "build",
     "bundles": "packs",
+    "chem": "chem",
     "client": "apps",
     "cmake": "cmake",
+    "compat": "compat",
+    "control": "control",
+    "core": "core",
     "data": "data",
+    "diag": "diag",
+    "diegetics": "diegetics",
     "dist": "dist",
     "docs": "docs",
+    "electric": "electric",
+    "embodiment": "embodiment",
     "engine": "engine",
+    "epistemics": "epistemics",
+    "field": "field",
+    "fields": "fields",
+    "fluid": "fluid",
     "game": "game",
+    "geo": "geo",
+    "governance": "governance",
+    "ide": "ide",
+    "infrastructure": "infrastructure",
+    "inspection": "inspection",
+    "interaction": "interaction",
+    "interior": "interior",
     "launcher": "apps",
+    "legacy": "legacy",
     "lib": "lib",
     "libs": "lib",
+    "locks": "locks",
+    "logic": "logic",
+    "logistics": "logistics",
+    "machines": "machines",
+    "materials": "materials",
+    "mechanics": "mechanics",
+    "meta": "meta",
+    "mobility": "mobility",
+    "modding": "modding",
+    "models": "models",
+    "net": "net",
     "out": "build",
     "packs": "packs",
+    "performance": "performance",
+    "physics": "physics",
+    "pollution": "pollution",
+    "process": "process",
+    "profiles": "profiles",
+    "quarantine": "quarantine",
+    "reality": "reality",
+    "release": "release",
+    "repo": "repo",
+    "runtime": "runtime",
+    "safety": "safety",
     "schema": "schemas",
     "schemas": "schemas",
+    "scripts": "tools",
+    "security": "security",
     "server": "apps",
     "setup": "apps",
+    "signals": "signals",
+    "specs": "specs",
+    "system": "system",
+    "templates": "templates",
     "tests": "tests",
+    "thermal": "thermal",
+    "time": "time",
     "tmp": "build",
     "tools": "tools",
+    "ui": "ui",
+    "universe": "universe",
+    "updates": "updates",
+    "validation": "validation",
     "worldgen": "engine",
 }
 
@@ -290,8 +342,20 @@ def _top_level(path: str) -> str:
     return rel_path.split("/", 1)[0]
 
 
+def _default_domain(path: str) -> str:
+    top_level = _top_level(path)
+    if not top_level:
+        return "unknown"
+    if top_level in DOMAIN_ROOT_MAP:
+        return DOMAIN_ROOT_MAP[top_level]
+    if "/" not in _norm_rel(path) and os.path.splitext(top_level)[1].lower():
+        return "repo"
+    token = _id_token(top_level)
+    return token or "unknown"
+
+
 def classify_domain(path: str) -> str:
-    return DOMAIN_ROOT_MAP.get(_top_level(path), "unknown")
+    return _default_domain(path)
 
 
 def _language_id(rel_path: str) -> str:
@@ -305,7 +369,7 @@ def _is_source_path(rel_path: str) -> bool:
     rel_norm = _norm_rel(rel_path)
     if rel_norm in OUTPUT_REL_PATHS:
         return False
-    if not any(rel_norm.startswith(prefix) for prefix in SOURCE_ROOT_PREFIXES):
+    if rel_norm.startswith(GENERATED_SOURCE_PREFIXES):
         return False
     return os.path.splitext(rel_norm)[1].lower() in SOURCE_EXTENSIONS
 
@@ -333,7 +397,7 @@ def _module_id(module_root: str, domain: str) -> str:
     normalized_parts = [_id_token(part) for part in parts if _id_token(part)]
     if domain == "unknown":
         return ".".join(["unknown"] + normalized_parts)
-    if parts and DOMAIN_ROOT_MAP.get(parts[0]) == domain:
+    if parts and _default_domain(parts[0]) == domain:
         if parts[0] == domain:
             return ".".join([domain] + [_id_token(part) for part in parts[1:] if _id_token(part)])
         if parts[0] == "worldgen" and domain == "engine":

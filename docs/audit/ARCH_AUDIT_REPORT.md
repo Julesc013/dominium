@@ -10,7 +10,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - release_status: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `5668145421925215ba9e8f0e8bbdd9845c7298e53ae9e7dfd551845fec10ee02`
+- deterministic_fingerprint: `9ed2f1b55c3607df173e63bbc14eb03a0a29504d9b6b8fef83b6fd949892e6cd`
 
 ## Checks
 
@@ -30,7 +30,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `69984418733a987b5a58577493bdffa56a660a84ec0ac2b4f3e5c8c1ea961a93`
+- deterministic_fingerprint: `77fcf4c821716bda31fda06132eb2d846cbc7d9bbd7dd9eab9f0831e20d7d678`
 
 ### determinism_scan
 - result: `pass`
