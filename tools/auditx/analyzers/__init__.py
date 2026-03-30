@@ -513,6 +513,7 @@ from analyzers import e560_architecture_drift_smell
 from analyzers import e561_forbidden_dependency_smell
 from analyzers import e562_duplicate_semantic_engine_registry_smell
 from analyzers import e563_ui_truth_leak_boundary_smell
+from analyzers import e564_missing_ci_guard_smell
 
 
 ANALYZERS = (
@@ -1027,6 +1028,7 @@ ANALYZERS = (
     e561_forbidden_dependency_smell,
     e562_duplicate_semantic_engine_registry_smell,
     e563_ui_truth_leak_boundary_smell,
+    e564_missing_ci_guard_smell,
 )
 
 

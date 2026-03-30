@@ -8,6 +8,7 @@ import json
 import os
 import shutil
 import sys
+import time
 from typing import Callable, Mapping, Sequence
 
 
@@ -279,10 +280,29 @@ def _copy_file(src: str, dst: str) -> str:
 
 
 def _copy_tree(src: str, dst: str) -> str:
-    _safe_rmtree(dst)
-    _ensure_dir(os.path.dirname(dst))
-    shutil.copytree(src, dst)
-    return dst
+    last_error: OSError | None = None
+    for attempt in range(0, 4):
+        _safe_rmtree(dst)
+        _ensure_dir(os.path.dirname(dst))
+        try:
+            shutil.copytree(src, dst)
+            return dst
+        except shutil.Error as exc:
+            rows = list(exc.args[0] or []) if exc.args else []
+            missing_rows = [row for row in rows if len(row) >= 3 and "[Errno 2]" in str(row[2])]
+            if rows and len(missing_rows) == len(rows):
+                last_error = exc
+                gc.collect()
+                time.sleep(0.1 * float(attempt + 1))
+                continue
+            raise
+        except FileNotFoundError as exc:
+            last_error = exc
+            gc.collect()
+            time.sleep(0.1 * float(attempt + 1))
+    if last_error is not None:
+        raise last_error
+    raise OSError("failed to copy tree '{}'".format(src))
 
 
 def _write_text(path: str, text: str) -> str:

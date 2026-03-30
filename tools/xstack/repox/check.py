@@ -35220,6 +35220,80 @@ def _append_single_canonical_engines_findings(
         )
 
 
+def _append_xstack_ci_must_run_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    try:
+        from tools.xstack.ci.ci_common import build_ci_guard_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/xstack/ci/ci_common.py",
+                line_number=1,
+                snippet="build_ci_guard_violations",
+                message="failed to import Xi-7 CI guard helper: {}".format(type(exc).__name__),
+                rule_id="INV-XSTACK-CI-MUST-RUN",
+            )
+        )
+        return
+    for row in build_ci_guard_violations(repo_root):
+        item = dict(row or {})
+        if _token(item.get("rule_id")) != "INV-XSTACK-CI-MUST-RUN":
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(item.get("file_path", "")),
+                line_number=1,
+                snippet=str(item.get("code", ""))[:140],
+                message=str(item.get("message", "")).strip() or "Xi-7 CI guard surface is incomplete",
+                rule_id="INV-XSTACK-CI-MUST-RUN",
+            )
+        )
+
+
+def _append_strict_must_pass_for_main_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    try:
+        from tools.xstack.ci.ci_common import build_ci_guard_violations
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="tools/xstack/ci/ci_common.py",
+                line_number=1,
+                snippet="build_ci_guard_violations",
+                message="failed to import Xi-7 STRICT main-guard helper: {}".format(type(exc).__name__),
+                rule_id="INV-STRICT-MUST-PASS-FOR-MAIN",
+            )
+        )
+        return
+    for row in build_ci_guard_violations(repo_root):
+        item = dict(row or {})
+        if _token(item.get("rule_id")) != "INV-STRICT-MUST-PASS-FOR-MAIN":
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(item.get("file_path", "")),
+                line_number=1,
+                snippet=str(item.get("code", ""))[:140],
+                message=str(item.get("message", "")).strip() or "Xi-7 STRICT main guard is incomplete",
+                rule_id="INV-STRICT-MUST-PASS-FOR-MAIN",
+            )
+        )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -35945,6 +36019,8 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         _append_architecture_drift_guard_findings,
         _append_module_boundaries_respected_findings,
         _append_single_canonical_engines_findings,
+        _append_xstack_ci_must_run_findings,
+        _append_strict_must_pass_for_main_findings,
         _append_release_identity_findings,
         _append_release_manifest_findings,
         _append_distribution_model_findings,

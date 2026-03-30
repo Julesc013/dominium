@@ -34,22 +34,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Strict build (dev lane)
-        run: python scripts/ci/run_strict_build_and_annotate.py --repo-root . --build-dir build/ci_dev --label "dev lane"
-      - name: Impact graph and impacted tests
-        run: |
-          python tools/dev/dev.py --repo-root . impact-graph
-          python tools/xstack/testx_all.py --repo-root . --profile FAST --cache on
-      - name: AuditX scan
-        run: python tools/auditx/auditx.py scan --repo-root . --changed-only --format both
+      - name: Xi-7 FAST profile
+        run: python -B tools/xstack/ci/xstack_ci_entrypoint.py --repo-root . --profile FAST
       - name: Upload dev artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ci-dev-artifacts
           path: |
-            build/impact_graph.json
-            docs/audit/auditx
+            data/audit/ci_run_report.json
+            docs/audit/CI_RUN_REPORT.md
             tools/xstack/out/fast/latest
 
   ci-verify:
@@ -60,53 +54,38 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Strict build (verify lane)
-        run: python scripts/ci/run_strict_build_and_annotate.py --repo-root . --build-dir build/ci_verify --label "verify lane"
-      - name: STRICT profile
-        run: python tools/xstack/run.py --repo-root . --cache on strict
-      - name: Packaging dry-run
-        run: python tools/setup/build.py --repo-root . --bundle bundle.base.lab --out build/ci_verify_dryrun --cache on
+      - name: Xi-7 STRICT profile
+        run: python -B tools/xstack/ci/xstack_ci_entrypoint.py --repo-root . --profile STRICT
       - name: Upload verify artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ci-verify-artifacts
           path: |
+            data/audit/ci_run_report.json
+            docs/audit/CI_RUN_REPORT.md
             tools/xstack/out/strict/latest
-            build/ci_verify_dryrun
-            docs/audit/auditx
 
   ci-dist:
     name: CI-dist
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Strict build (dist lane)
-        run: python scripts/ci/run_strict_build_and_annotate.py --repo-root . --build-dir build/ci_dist --label "dist lane"
-      - name: Full verify with deterministic packaging
-        run: |
-          python tools/xstack/run.py --repo-root . --cache on strict
-          python tools/setup/build.py --repo-root . --bundle bundle.base.lab --out build/ci_dist_a --cache on
-          python tools/setup/build.py --repo-root . --bundle bundle.base.lab --out build/ci_dist_b --cache on
-      - name: Assemble deterministic portable bundle
-        run: python tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock
-      - name: Verify assembled portable bundle
-        run: python tools/dist/tool_verify_distribution.py --repo-root . --platform-tag win64
-      - name: Compare deterministic dist hashes
-        run: |
-          python -c "import json; a=json.load(open('build/ci_dist_a/manifest.json','r',encoding='utf-8')); b=json.load(open('build/ci_dist_b/manifest.json','r',encoding='utf-8')); assert a.get('canonical_content_hash')==b.get('canonical_content_hash'); assert a.get('pack_lock_hash')==b.get('pack_lock_hash')"
+      - name: Xi-7 FULL profile
+        run: python -B tools/xstack/ci/xstack_ci_entrypoint.py --repo-root . --profile FULL
       - name: Upload dist artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ci-dist-artifacts
           path: |
-            build/ci_dist_a
-            build/ci_dist_b
-            tools/xstack/out/strict/latest
+            data/audit/ci_run_report.json
+            docs/audit/CI_RUN_REPORT.md
+            tools/xstack/out/full/latest
 
   projection-sanity:
     strategy:
