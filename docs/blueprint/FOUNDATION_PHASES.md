@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-26
+Last Reviewed: 2026-03-31
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -17,7 +17,7 @@ The work proceeds through phases A through E. Later phases may be designed early
 Objective: Stabilize the human and agent governance surface before any advanced runtime automation.
 
 Prerequisites:
-- XI architecture freeze refreshed against the fresh snapshot
+- XI architecture freeze, module boundaries, CI guardrails, and repository structure lock present
 - OMEGA baseline verification inventory confirmed current
 
 Completion criteria:
@@ -58,7 +58,8 @@ Objective: Freeze the control plane needed to ship, rehearse, roll forward, and 
 
 Prerequisites:
 - Phase A complete
-- fresh build graph and release surface re-audited
+- versioning, release index, rollback, and rollout policy surfaces designed
+- fresh build graph and release surface re-audited before exact lock and preset wiring
 - archive and publication policies aligned with OMEGA verification
 
 Completion criteria:

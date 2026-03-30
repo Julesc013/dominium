@@ -55,7 +55,7 @@ REQUIRED_INPUTS = {
     "series_dependency_graph": SERIES_DEP_GRAPH_REL,
 }
 
-DOC_REPORT_DATE = "2026-03-26"
+DOC_REPORT_DATE = "2026-03-31"
 PHASE_SEQUENCE = ("A", "B", "C", "D", "E")
 PHASE_ORDER = {value: index for index, value in enumerate(PHASE_SEQUENCE)}
 SERIES_ORDER = {"OMEGA": 0, "XI": 1, "SIGMA": 2, "PHI": 3, "UPSILON": 4, "ZETA": 5}
@@ -188,6 +188,37 @@ def _fingerprinted(payload: Mapping[str, object]) -> dict[str, object]:
     return row
 
 
+def _priority_item_snapshot_requirement(item_id: object) -> str:
+    token = _token(item_id)
+    explicit = {
+        "SIGMA.0_agent_governance": "pre_snapshot_safe",
+        "SIGMA.1_agent_mirrors": "pre_snapshot_safe",
+        "SIGMA.2_natural_language_task_bridge": "pre_snapshot_safe",
+        "PHI.0_runtime_kernel_model": "pre_snapshot_safe",
+        "PHI.1_component_model": "pre_snapshot_safe",
+        "PHI.2_module_loader": "post_snapshot_required",
+        "PHI.3_runtime_services": "post_snapshot_required",
+        "PHI.4_state_externalization": "pre_snapshot_safe",
+        "PHI.5_lifecycle_manager": "post_snapshot_required",
+        "PHI.6_framegraph": "post_snapshot_required",
+        "PHI.7_render_device_abstraction": "post_snapshot_required",
+        "PHI.8_hotswap_boundaries": "post_snapshot_required",
+        "PHI.9_asset_pipeline": "post_snapshot_required",
+        "PHI.10_sandboxing": "post_snapshot_required",
+        "PHI.11_multi_version_coexistence": "post_snapshot_required",
+        "UPSILON.0_build_graph_lock": "post_snapshot_required",
+        "UPSILON.1_preset_toolchain_consolidation": "post_snapshot_required",
+        "UPSILON.2_versioning_policy": "pre_snapshot_safe",
+        "UPSILON.3_release_index_policy_refinement": "pre_snapshot_safe",
+        "UPSILON.4_release_transaction_log": "pre_snapshot_safe",
+        "UPSILON.5_canary_blue_green_rollout_policy": "pre_snapshot_safe",
+        "UPSILON.6_disaster_downgrade_policy": "pre_snapshot_safe",
+    }
+    if token in explicit:
+        return explicit[token]
+    return "post_snapshot_required" if token.startswith("ZETA.") else "post_snapshot_required"
+
+
 def _priority_item_rows() -> list[dict[str, object]]:
     rows = [
         {"item_id": "SIGMA.0_agent_governance", "phase_id": "A", "priority_band": 0, "series_id": "SIGMA", "title": "Agent governance", "summary": "Mirror AGENTS governance into stable machine-readable workflows before automation expands."},
@@ -222,7 +253,7 @@ def _priority_item_rows() -> list[dict[str, object]]:
         {"item_id": "ZETA.7_cluster_of_clusters", "phase_id": "E", "priority_band": 3, "series_id": "ZETA", "title": "Cluster-of-clusters", "summary": "Consider cluster-of-clusters only after deterministic distributed simulation is already boring and proven."},
     ]
     for row in rows:
-        row["snapshot_requirement"] = "post_snapshot_required" if row["series_id"] in {"PHI", "ZETA"} else "pre_snapshot_safe"
+        row["snapshot_requirement"] = _priority_item_snapshot_requirement(row.get("item_id"))
     return sorted(rows, key=lambda row: (int(row.get("priority_band", 0)), PHASE_ORDER.get(_token(row.get("phase_id")), 99), _series_sort_key(row.get("series_id")), _token(row.get("item_id"))))
 
 
@@ -298,7 +329,17 @@ def _foundation_primitives() -> list[dict[str, object]]:
     ]
     payload = []
     for foundation_id, series_id, label, derived_from in rows:
-        payload.append({"foundation_id": foundation_id, "series_id": series_id, "label": label, "derived_from_priority_items": sorted(derived_from), "snapshot_requirement": "post_snapshot_required" if series_id in {"PHI", "ZETA"} else "pre_snapshot_safe"})
+        payload.append(
+            {
+                "foundation_id": foundation_id,
+                "series_id": series_id,
+                "label": label,
+                "derived_from_priority_items": sorted(derived_from),
+                "snapshot_requirement": "post_snapshot_required"
+                if any(_priority_item_snapshot_requirement(item_id) == "post_snapshot_required" for item_id in derived_from)
+                else "pre_snapshot_safe",
+            }
+        )
     return sorted(payload, key=lambda row: (_series_sort_key(row.get("series_id")), _token(row.get("foundation_id"))))
 
 
@@ -313,9 +354,9 @@ def _series_execution_sequence() -> list[dict[str, object]]:
 
 def _foundation_phase_rows() -> list[dict[str, object]]:
     rows = [
-        {"phase_id": "A", "title": "Governance & Interface Foundations", "objective": "Stabilize the human and agent governance surface before any advanced runtime automation.", "series_focus": ["SIGMA"], "priority_item_ids": ["SIGMA.0_agent_governance", "SIGMA.1_agent_mirrors", "SIGMA.2_natural_language_task_bridge"], "prerequisites": ["XI architecture freeze refreshed against the fresh snapshot", "OMEGA baseline verification inventory confirmed current"], "completion_criteria": ["AGENTS governance mirrored into XStack artifacts", "task types mapped to validation levels and refusal codes", "operator policy model and declarative cutover language reviewed", "manual review gate definitions frozen for high-risk areas"], "blocked_capabilities": ["agent-driven change execution at scale", "live feature flag cutovers", "runtime privilege revocation"]},
+        {"phase_id": "A", "title": "Governance & Interface Foundations", "objective": "Stabilize the human and agent governance surface before any advanced runtime automation.", "series_focus": ["SIGMA"], "priority_item_ids": ["SIGMA.0_agent_governance", "SIGMA.1_agent_mirrors", "SIGMA.2_natural_language_task_bridge"], "prerequisites": ["XI architecture freeze, module boundaries, CI guardrails, and repository structure lock present", "OMEGA baseline verification inventory confirmed current"], "completion_criteria": ["AGENTS governance mirrored into XStack artifacts", "task types mapped to validation levels and refusal codes", "operator policy model and declarative cutover language reviewed", "manual review gate definitions frozen for high-risk areas"], "blocked_capabilities": ["agent-driven change execution at scale", "live feature flag cutovers", "runtime privilege revocation"]},
         {"phase_id": "B", "title": "Runtime Component Foundations", "objective": "Define the kernel, service, module, and state boundaries required for lawful replaceability.", "series_focus": ["PHI"], "priority_item_ids": ["PHI.0_runtime_kernel_model", "PHI.1_component_model", "PHI.2_module_loader", "PHI.3_runtime_services", "PHI.4_state_externalization", "PHI.5_lifecycle_manager"], "prerequisites": ["Phase A complete", "fresh repository snapshot mapped to exact insertion points", "runtime boundary doctrine accepted in manual design review"], "completion_criteria": ["component ownership and service registry boundaries frozen", "module loader insertion points mapped and validated", "state externalization and lifecycle semantics have replay-safe contracts", "module ABI boundaries reviewed for compatibility and rollback"], "blocked_capabilities": ["hot-swappable renderers", "partial live module reload", "shadow service startup", "non-blocking save handoff"]},
-        {"phase_id": "C", "title": "Build / Release / Control Plane Foundations", "objective": "Freeze the control plane needed to ship, rehearse, roll forward, and roll back deterministically.", "series_focus": ["UPSILON"], "priority_item_ids": ["UPSILON.0_build_graph_lock", "UPSILON.1_preset_toolchain_consolidation", "UPSILON.2_versioning_policy", "UPSILON.3_release_index_policy_refinement", "UPSILON.4_release_transaction_log", "UPSILON.5_canary_blue_green_rollout_policy", "UPSILON.6_disaster_downgrade_policy"], "prerequisites": ["Phase A complete", "fresh build graph and release surface re-audited", "archive and publication policies aligned with OMEGA verification"], "completion_criteria": ["build graph lock is generated from the live repository state", "release transaction log and rollback policy exist as inspectable artifacts", "canary, blue-green, and downgrade policy pass governance review", "release rehearsal workflow defined with deterministic checkpoints"], "blocked_capabilities": ["automatic yanking with deterministic downgrade", "release rehearsal sandbox", "live trust-root rotation", "mod live mount and live cutover"]},
+        {"phase_id": "C", "title": "Build / Release / Control Plane Foundations", "objective": "Freeze the control plane needed to ship, rehearse, roll forward, and roll back deterministically.", "series_focus": ["UPSILON"], "priority_item_ids": ["UPSILON.0_build_graph_lock", "UPSILON.1_preset_toolchain_consolidation", "UPSILON.2_versioning_policy", "UPSILON.3_release_index_policy_refinement", "UPSILON.4_release_transaction_log", "UPSILON.5_canary_blue_green_rollout_policy", "UPSILON.6_disaster_downgrade_policy"], "prerequisites": ["Phase A complete", "versioning, release index, rollback, and rollout policy surfaces designed", "fresh build graph and release surface re-audited before exact lock and preset wiring", "archive and publication policies aligned with OMEGA verification"], "completion_criteria": ["build graph lock is generated from the live repository state", "release transaction log and rollback policy exist as inspectable artifacts", "canary, blue-green, and downgrade policy pass governance review", "release rehearsal workflow defined with deterministic checkpoints"], "blocked_capabilities": ["automatic yanking with deterministic downgrade", "release rehearsal sandbox", "live trust-root rotation", "mod live mount and live cutover"]},
         {"phase_id": "D", "title": "Advanced Replaceability", "objective": "Enable the earliest safe ZETA features once governance, componentization, and release control are complete.", "series_focus": ["PHI", "UPSILON", "ZETA"], "priority_item_ids": ["PHI.6_framegraph", "PHI.7_render_device_abstraction", "PHI.8_hotswap_boundaries", "PHI.9_asset_pipeline", "PHI.10_sandboxing", "PHI.11_multi_version_coexistence", "ZETA.0_early_replaceability_features", "ZETA.1_content_live_mount_unmount", "ZETA.2_mirrored_execution_sidecars"], "prerequisites": ["Phase A complete", "Phase B complete", "Phase C complete", "OMEGA worldgen, baseline, gameplay, disaster, ecosystem, and trust gates current"], "completion_criteria": ["renderer and service replacement boundaries are proven by smoke harnesses", "early shadow services and pack mount workflows have rollback receipts", "sidecars and offscreen validation paths do not leak truth mutation", "all replacement plans use declarative cutover artifacts and transaction logs"], "blocked_capabilities": ["distributed shard relocation", "deterministic replicated simulation", "restartless core engine replacement"]},
         {"phase_id": "E", "title": "Distributed Live Operations", "objective": "Pursue distributed runtime and extreme live operations only after earlier phases are complete and boring.", "series_focus": ["ZETA"], "priority_item_ids": ["ZETA.3_distributed_simulation", "ZETA.4_live_shard_relocation", "ZETA.5_protocol_schema_live_evolution", "ZETA.6_restartless_core_engine_replacement", "ZETA.7_cluster_of_clusters"], "prerequisites": ["Phase D complete", "event log and snapshot proofs validated under rehearsal", "authority handoff model and proof-anchor quorum semantics manually approved"], "completion_criteria": ["deterministic replication and authority handoff proven under controlled rehearsal", "cluster failover, downgrade, and replay verification remain within OMEGA tolerances", "protocol and schema live evolution guarded by multi-version coexistence and rollback policy", "extreme operations remain quarantined unless every lower-level invariant still passes"], "blocked_capabilities": ["cluster-of-clusters rollout", "restartless core replacement by default", "live schema evolution by default"]},
     ]
@@ -443,6 +484,7 @@ def _planning_bucket_from_readiness(readiness: str) -> str:
 
 
 def _capability_sources(readiness_index: Mapping[str, Mapping[str, object]], pipe_index: Mapping[str, Mapping[str, object]]) -> list[dict[str, object]]:
+    foundation_snapshot_requirements = { _token(row.get("foundation_id")): _token(row.get("snapshot_requirement")) for row in _foundation_primitives() }
     rows = []
     for capability_id in sorted(set(readiness_index) | set(pipe_index)):
         readiness_row = dict(readiness_index.get(capability_id) or {})
@@ -471,7 +513,7 @@ def _capability_sources(readiness_index: Mapping[str, Mapping[str, object]], pip
                 planning_bucket = "foundation_ready"
             elif feasibility in {"medium", "long", "speculative"}:
                 planning_bucket = "future_plausible"
-        rows.append({"capability_id": capability_id, "capability_label": label, "category": category, "execution_phase": _capability_execution_phase(capability_id, required_foundations), "manual_review_required": capability_id in {"distributed_shard_relocation", "deterministic_distributed_simulation", "deterministic_replicated_simulation", "hot_swappable_renderers", "live_protocol_upgrades", "partial_live_module_reload", "restartless_core_engine_replacement", "snapshot_isolation_all_mutable_state"}, "planning_bucket": planning_bucket, "readiness": readiness, "required_foundations": required_foundations, "required_series": required_series, "snapshot_requirement": "post_snapshot_required" if any(series_id in {"PHI", "ZETA"} for series_id in required_series) else "pre_snapshot_safe", "source_artifacts": sorted(source_artifacts)})
+        rows.append({"capability_id": capability_id, "capability_label": label, "category": category, "execution_phase": _capability_execution_phase(capability_id, required_foundations), "manual_review_required": capability_id in {"distributed_shard_relocation", "deterministic_distributed_simulation", "deterministic_replicated_simulation", "hot_swappable_renderers", "live_protocol_upgrades", "partial_live_module_reload", "restartless_core_engine_replacement", "snapshot_isolation_all_mutable_state"}, "planning_bucket": planning_bucket, "readiness": readiness, "required_foundations": required_foundations, "required_series": required_series, "snapshot_requirement": "post_snapshot_required" if any(foundation_snapshot_requirements.get(foundation_id) == "post_snapshot_required" for foundation_id in required_foundations) else "pre_snapshot_safe", "source_artifacts": sorted(source_artifacts)})
     return sorted(rows, key=lambda row: (PLANNING_BUCKET_ORDER.get(_token(row.get("planning_bucket")), 99), READINESS_ORDER.get(_token(row.get("readiness")), 99), PHASE_ORDER.get(_token(row.get("execution_phase")), 99), _token(row.get("capability_id"))))
 
 
@@ -525,12 +567,18 @@ def _current_snapshot_summary(payloads: Mapping[str, Mapping[str, object]]) -> d
     readiness = dict(payloads.get("readiness_matrix") or {})
     pipe = dict(payloads.get("pipe_dreams_matrix") or {})
     current = dict(series_graph.get("current_snapshot") or {})
+    omega_state = dict(current.get("omega_artifact_state") or {})
     xi_state = dict(current.get("xi_artifact_state") or {})
     return {
+        "ci_profile": _token(current.get("ci_profile")),
+        "ci_strict_result": _token(current.get("ci_strict_result")),
         "architecture_graph_fingerprint": _token(current.get("architecture_graph_fingerprint")),
+        "module_boundary_rules_fingerprint": _token(current.get("module_boundary_rules_fingerprint")),
+        "repository_structure_lock_fingerprint": _token(current.get("repository_structure_lock_fingerprint")),
         "build_target_count": int(current.get("build_target_count", 0) or 0),
         "module_count": int(current.get("module_count", 0) or 0),
-        "source_like_directory_count": int(current.get("source_like_directory_count", 0) or 0),
+        "sanctioned_source_like_root_count": int(current.get("sanctioned_source_like_root_count", 0) or current.get("source_like_directory_count", 0) or 0),
+        "omega_artifact_state": {key: bool(omega_state.get(key)) for key in sorted(omega_state)},
         "xi_artifact_state": {key: bool(xi_state.get(key)) for key in sorted(xi_state)},
         "pi_0_fingerprints": {"capability_dependency_graph": _token(payloads.get("capability_dependency_graph", {}).get("deterministic_fingerprint")), "pipe_dreams_matrix": _token(pipe.get("deterministic_fingerprint")), "readiness_matrix": _token(readiness.get("deterministic_fingerprint")), "series_dependency_graph": _token(series_graph.get("deterministic_fingerprint"))},
     }
@@ -583,9 +631,15 @@ def _manual_review_payload(gate_rows: Sequence[Mapping[str, object]]) -> dict[st
     return _fingerprinted({"report_id": "pi.1.manual_review_gates.v1", "gates": [dict(row) for row in gate_rows]})
 
 
+def _completed_artifact_labels(state: Mapping[str, object]) -> str:
+    labels = sorted(_token(key) for key, value in (state or {}).items() if value)
+    return ", ".join(labels) if labels else "none"
+
+
 def render_series_execution_strategy(snapshot: Mapping[str, object]) -> str:
     payload = dict(snapshot.get("series_execution_strategy") or {})
-    lines = [_doc_header("Series Execution Strategy", "snapshot-anchored execution strategy after final repository re-audit"), "## Current Boundary", "", "This document is the post-XI master sequencing plan for SIGMA, PHI, UPSILON, and ZETA.", "It is planning only and assumes the fresh repository snapshot will be re-mapped before PHI or ZETA implementation begins.", "", "## Series Order", "", "| Rank | Series | Why It Starts Here | Overlap |", "| --- | --- | --- | --- |"]
+    current_snapshot = dict(payload.get("current_snapshot") or {})
+    lines = [_doc_header("Series Execution Strategy", "snapshot-anchored execution strategy after final repository re-audit"), "## Current Boundary", "", "This document is the post-XI master sequencing plan for SIGMA, PHI, UPSILON, and ZETA.", "It is planning only and anchors itself to the live Xi-8 and OMEGA-frozen repository, while still requiring fresh snapshot remapping before any repo-specific PHI, UPSILON wiring, or ZETA implementation begins.", "", "## Current Grounding", "", f"- Architecture graph v1 fingerprint: `{_token(current_snapshot.get('architecture_graph_fingerprint'))}`", f"- Module boundary rules fingerprint: `{_token(current_snapshot.get('module_boundary_rules_fingerprint'))}`", f"- Repository structure lock fingerprint: `{_token(current_snapshot.get('repository_structure_lock_fingerprint'))}`", f"- Xi artifact state: {_completed_artifact_labels(current_snapshot.get('xi_artifact_state') or {})}", f"- OMEGA artifact state: {_completed_artifact_labels(current_snapshot.get('omega_artifact_state') or {})}", f"- CI STRICT result: `{_token(current_snapshot.get('ci_strict_result'))}` via profile `{_token(current_snapshot.get('ci_profile'))}`", f"- Sanctioned source-like roots carried by policy: `{int(current_snapshot.get('sanctioned_source_like_root_count') or 0)}`", "", "## Series Order", "", "| Rank | Series | Why It Starts Here | Overlap |", "| --- | --- | --- | --- |"]
     for row in payload.get("series_execution_order") or []:
         lines.append("| `{}` | `{}` | {} | {} |".format(int(row.get("execution_rank", 0)), _token(row.get("series_id")), _token(row.get("why_now")), ", ".join(_token(item) for item in row.get("may_overlap_with") or []) or "none"))
     lines.extend(["", "## Priority Bands", ""])
@@ -686,7 +740,8 @@ def render_pi_1_final(snapshot: Mapping[str, object]) -> str:
     phase_payload = dict(snapshot.get("foundation_phases") or {})
     stop_payload = dict(snapshot.get("stop_conditions") or {})
     review_payload = dict(snapshot.get("manual_review_gates") or {})
-    lines = [_doc_header("PI-1 Final", "snapshot-anchored PI-1 audit summary after strategy generation"), "## Outcome", "", "- SIGMA, PHI, UPSILON, and ZETA dependencies are coherent.", "- Pre-snapshot versus post-snapshot work is explicitly separated.", "- Stop conditions exist for every phase and for the high-risk hot-reload, distributed, and agent-automation cases.", "", "## Fingerprints", "", f"- Series execution strategy: `{_token(strategy.get('deterministic_fingerprint'))}`", f"- Foundation phases: `{_token(phase_payload.get('deterministic_fingerprint'))}`", f"- Stop conditions: `{_token(stop_payload.get('deterministic_fingerprint'))}`", f"- Manual review gates: `{_token(review_payload.get('deterministic_fingerprint'))}`", "", "## Readiness", "", f"- Capability mappings: {len(list(strategy.get('capability_foundations') or []))}", f"- Phases: {len(list(phase_payload.get('phases') or []))}", f"- Manual review gates: {len(list(review_payload.get('gates') or []))}", "- Ready for PI-2 after the fresh repository snapshot is available.", ""]
+    current_snapshot = dict(strategy.get("current_snapshot") or {})
+    lines = [_doc_header("PI-1 Final", "snapshot-anchored PI-1 audit summary after strategy generation"), "## Outcome", "", "- SIGMA, PHI, UPSILON, and ZETA dependencies are coherent.", "- Pre-snapshot versus post-snapshot work is explicitly separated.", "- Stop conditions exist for every phase and for the high-risk hot-reload, distributed, and agent-automation cases.", "- The strategy is grounded on the live Xi-8 freeze and current OMEGA verification state rather than a stale pre-freeze planning baseline.", "", "## Grounding", "", f"- Architecture graph v1 fingerprint: `{_token(current_snapshot.get('architecture_graph_fingerprint'))}`", f"- Module boundary rules fingerprint: `{_token(current_snapshot.get('module_boundary_rules_fingerprint'))}`", f"- Repository structure lock fingerprint: `{_token(current_snapshot.get('repository_structure_lock_fingerprint'))}`", f"- Xi artifact state: {_completed_artifact_labels(current_snapshot.get('xi_artifact_state') or {})}", f"- OMEGA artifact state: {_completed_artifact_labels(current_snapshot.get('omega_artifact_state') or {})}", f"- CI STRICT result: `{_token(current_snapshot.get('ci_strict_result'))}`", "", "## Fingerprints", "", f"- Series execution strategy: `{_token(strategy.get('deterministic_fingerprint'))}`", f"- Foundation phases: `{_token(phase_payload.get('deterministic_fingerprint'))}`", f"- Stop conditions: `{_token(stop_payload.get('deterministic_fingerprint'))}`", f"- Manual review gates: `{_token(review_payload.get('deterministic_fingerprint'))}`", "", "## Readiness", "", f"- Capability mappings: {len(list(strategy.get('capability_foundations') or []))}", f"- Phases: {len(list(phase_payload.get('phases') or []))}", f"- Manual review gates: {len(list(review_payload.get('gates') or []))}", "- Ready for PI-2 after the fresh repository snapshot is available.", ""]
     return "\n".join(lines)
 
 

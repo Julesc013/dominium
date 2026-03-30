@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-26
+Last Reviewed: 2026-03-31
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -11,7 +11,17 @@ Replacement Target: snapshot-anchored execution strategy after final repository 
 ## Current Boundary
 
 This document is the post-XI master sequencing plan for SIGMA, PHI, UPSILON, and ZETA.
-It is planning only and assumes the fresh repository snapshot will be re-mapped before PHI or ZETA implementation begins.
+It is planning only and anchors itself to the live Xi-8 and OMEGA-frozen repository, while still requiring fresh snapshot remapping before any repo-specific PHI, UPSILON wiring, or ZETA implementation begins.
+
+## Current Grounding
+
+- Architecture graph v1 fingerprint: `ff1c955301dd733e8269f2ec3c5052de98c705a6a1d487990fb6d6e45e2da5ea`
+- Module boundary rules fingerprint: `e7bdd052713a81dafbf5a0397794af6e70929cfdea49f3308e5507db58ee0ee8`
+- Repository structure lock fingerprint: `6207b3e71bd604ddee58bc2d95a840833fde33b046ceb1d640530530fa9dc231`
+- Xi artifact state: XI_0, XI_1, XI_2, XI_3, XI_4, XI_5, XI_6, XI_7, XI_8
+- OMEGA artifact state: OMEGA_0, OMEGA_10
+- CI STRICT result: `complete` via profile `STRICT`
+- Sanctioned source-like roots carried by policy: `4`
 
 ## Series Order
 
