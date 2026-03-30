@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-26
+Last Reviewed: 2026-03-31
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -371,6 +371,7 @@ Replacement Target: snapshot-anchored execution graph after live repository mapp
 | SNAPSHOT-MAP | Φ-8 | depends_on |
 | SNAPSHOT-MAP | Φ-9 | depends_on |
 | SNAPSHOT-MAP | Φ-10 | depends_on |
+| SNAPSHOT-MAP | Φ-11 | depends_on |
 | SNAPSHOT-MAP | Φ-12 | depends_on |
 | SNAPSHOT-MAP | Φ-13 | depends_on |
 | SNAPSHOT-MAP | Φ-14 | depends_on |
@@ -484,6 +485,7 @@ Replacement Target: snapshot-anchored execution graph after live repository mapp
 - `Φ-8`
 - `Φ-9`
 - `Φ-10`
+- `Φ-11`
 - `Φ-12`
 - `Φ-13`
 - `Φ-14`

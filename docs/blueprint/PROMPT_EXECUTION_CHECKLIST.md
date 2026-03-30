@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-26
+Last Reviewed: 2026-03-31
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -15,7 +15,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: OMEGA-FREEZE, XI-8
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX FAST, AuditX FAST, TestX impacted subset
-- Required Artifacts To Inspect: AGENTS.md, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, tools/xstack
+- Required Artifacts To Inspect: AGENTS.md, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, docs/xstack/CI_GUARDRAILS.md, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -24,7 +24,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-0
 - Gate Before Execution: blueprint consistency check
 - Gate After Execution: RepoX FAST, AuditX FAST, TestX impacted subset
-- Required Artifacts To Inspect: AGENTS.md, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, tools/xstack
+- Required Artifacts To Inspect: AGENTS.md, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, docs/xstack/CI_GUARDRAILS.md, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -33,7 +33,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-0, Σ-1
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: AGENTS.md, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, tools/xstack
+- Required Artifacts To Inspect: AGENTS.md, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, docs/xstack/CI_GUARDRAILS.md, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -42,7 +42,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-2
 - Gate Before Execution: blueprint consistency check
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: AGENTS.md, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, tools/xstack
+- Required Artifacts To Inspect: AGENTS.md, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, docs/xstack/CI_GUARDRAILS.md, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -51,7 +51,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-3
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: AGENTS.md, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, tools/xstack
+- Required Artifacts To Inspect: AGENTS.md, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, docs/xstack/CI_GUARDRAILS.md, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -60,7 +60,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-0, Σ-2, Σ-4
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: AGENTS.md, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, tools/xstack
+- Required Artifacts To Inspect: AGENTS.md, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, docs/xstack/CI_GUARDRAILS.md, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -69,7 +69,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-3, Σ-4, Σ-5, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: AGENTS.md, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, snapshot-mapping rows for the target prompt, tools/xstack
+- Required Artifacts To Inspect: AGENTS.md, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, docs/canon/constitution_v1.md, docs/xstack/CI_GUARDRAILS.md, snapshot-mapping rows for the target prompt, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -78,7 +78,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: OMEGA-FREEZE, XI-8
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -87,7 +87,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-0
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -96,7 +96,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-1, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -105,7 +105,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-1, Φ-2, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -114,7 +114,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-0, Φ-1
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -123,7 +123,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-3, Φ-4, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -132,7 +132,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-1, Φ-3, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -141,7 +141,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-1, Φ-6, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -150,7 +150,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-5, Φ-6, Φ-7, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -159,7 +159,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-1, Φ-6, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -168,16 +168,16 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-1, Φ-2, Φ-3, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
 ### `Φ-11` `MULTI-VERSION-COEXISTENCE-0`
 
-- Preconditions: Φ-1, Φ-4
-- Gate Before Execution: blueprint consistency check, manual review packet ready
+- Preconditions: Φ-1, Φ-4, SNAPSHOT-MAP
+- Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -186,7 +186,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-4, Φ-5, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -195,7 +195,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-4, Φ-5, Φ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -204,7 +204,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Φ-11, Φ-12, Φ-13, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: client/, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine/, server/, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: apps, compat, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, game, platform, snapshot-mapping rows for the target prompt, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -213,7 +213,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: OMEGA-FREEZE, SNAPSHOT-MAP, XI-8
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, snapshot-mapping rows for the target prompt, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -222,7 +222,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-0, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, snapshot-mapping rows for the target prompt, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -231,7 +231,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: OMEGA-FREEZE, XI-8
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -240,7 +240,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-2
 - Gate Before Execution: blueprint consistency check
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -249,7 +249,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-3, Υ-0, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, snapshot-mapping rows for the target prompt, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -258,7 +258,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-0, Υ-1, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, snapshot-mapping rows for the target prompt, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -267,7 +267,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-3, Υ-4, Υ-5, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, snapshot-mapping rows for the target prompt, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -276,7 +276,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-3, Υ-6, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, snapshot-mapping rows for the target prompt, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -285,7 +285,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-2, Υ-3
 - Gate Before Execution: blueprint consistency check
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, tools/xstack
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -294,7 +294,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-8
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -303,7 +303,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-6, Υ-7, Υ-8, Υ-11, Υ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, snapshot-mapping rows for the target prompt, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -312,7 +312,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-2, Υ-12, OMEGA-FREEZE
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -321,7 +321,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-0, Σ-3, Υ-2
 - Gate Before Execution: blueprint consistency check, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, dist/, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, tools/xstack/
+- Required Artifacts To Inspect: data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/audit/build_graph.json, data/blueprint/series_execution_strategy.json, data/xstack/gate_definitions.json, dist, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, release, tools/xstack
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -330,7 +330,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-5, Φ-6, Φ-7, Φ-8, Υ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -339,7 +339,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-3, Φ-5, Υ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -348,7 +348,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-2, Φ-5, Φ-8, Φ-11, Υ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -357,7 +357,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-3, Φ-5, Φ-8, Υ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -366,7 +366,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-2, Φ-5, Φ-8, Υ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -375,7 +375,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-4, Φ-13, Υ-11, Υ-12, OMEGA-FREEZE, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -384,7 +384,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Φ-11, Ζ-5, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -393,7 +393,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-4, Φ-5, Φ-13, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -402,7 +402,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-5, Ζ-7, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -411,7 +411,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-13, Υ-12, Ζ-7, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -420,7 +420,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-10, Υ-11, Υ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -429,7 +429,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-5, Υ-12, Ζ-10, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -438,7 +438,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-11, OMEGA-FREEZE, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -447,7 +447,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-12, Ζ-10, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -456,7 +456,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-2, Υ-12, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -465,7 +465,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-3, Υ-10, Ζ-14, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -474,7 +474,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-10, Υ-12, OMEGA-FREEZE, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -483,7 +483,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Ζ-16, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -492,7 +492,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-9, Υ-10, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -501,7 +501,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Ζ-17, Ζ-18, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -510,7 +510,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Φ-2, Φ-10, Υ-9, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -519,7 +519,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Ζ-1, Ζ-18, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -528,7 +528,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-9, Ζ-18, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -537,7 +537,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-10, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -546,7 +546,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-1, Φ-3, Υ-10, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -555,7 +555,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-3, Ζ-24, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -564,7 +564,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-14, Ζ-24, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -573,7 +573,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-3, Υ-10, OMEGA-FREEZE, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -582,7 +582,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-0, Υ-12, Ζ-27, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -591,7 +591,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-12, Φ-13, Ζ-27, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -600,7 +600,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-12, Υ-12, OMEGA-FREEZE, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -609,7 +609,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-1, Ζ-24, Ζ-27, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `no`
 
@@ -618,7 +618,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-10, Ζ-27, Ζ-28, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -627,7 +627,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-6, Φ-7, Ζ-0, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -636,7 +636,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-6, Φ-7, Φ-9, Υ-5, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -645,7 +645,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-1, Ζ-33, Ζ-34, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -654,7 +654,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-33, Ζ-34, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -663,7 +663,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-6, Φ-8, Ζ-0, Ζ-33, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -672,7 +672,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-7, Ζ-0, Ζ-37, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -681,7 +681,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-13, Ζ-37, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -690,7 +690,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-7, Φ-9, Ζ-0, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -699,7 +699,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-7, Φ-9, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -708,7 +708,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-3, Φ-7, Υ-10, Ζ-33, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -717,7 +717,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-11, Ζ-34, Ζ-42, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -726,7 +726,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Φ-2, Φ-11, Υ-10, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -735,7 +735,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-10, Υ-9, Ζ-44, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -744,7 +744,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-11, Υ-12, Ζ-45, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -753,7 +753,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-11, Ζ-44, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -762,7 +762,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-5, Φ-9, Ζ-44, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -771,7 +771,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-2, Φ-11, Ζ-45, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -780,7 +780,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Υ-10, Ζ-44, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -789,7 +789,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-9, Ζ-18, Ζ-45, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -798,7 +798,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-2, Φ-11, Ζ-45, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -807,7 +807,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-10, Ζ-44, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -816,7 +816,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-10, Ζ-44, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -825,7 +825,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-10, Ζ-50, Ζ-54, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -834,7 +834,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-11, Υ-12, Ζ-45, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST
 - Gate After Execution: RepoX STRICT, AuditX STRICT, validate --all STRICT, TestX extended subset
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, platform, snapshot-mapping rows for the target prompt, tools/xstack, ui
 - Human Review Mandatory: `no`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -843,7 +843,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-12, Φ-13, Φ-14, Υ-12, Ζ-27, OMEGA-FREEZE, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -852,7 +852,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-14, Ζ-24, Ζ-57, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -861,7 +861,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-13, Ζ-57, Ζ-58, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -870,7 +870,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-12, Φ-13, Ζ-57, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -879,7 +879,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-3, Ζ-57, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -888,7 +888,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-11, Ζ-57, Ζ-60, Ζ-63, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -897,7 +897,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-14, Ζ-57, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -906,7 +906,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-57, Ζ-63, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -915,7 +915,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Σ-5, Ζ-57, Ζ-63, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -924,7 +924,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-59, Ζ-64, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -933,7 +933,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-58, Ζ-61, Ζ-66, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -942,7 +942,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-30, Ζ-57, Ζ-60, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -951,7 +951,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-11, Ζ-57, Ζ-62, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -960,7 +960,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-11, Ζ-57, Ζ-63, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -969,7 +969,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-11, Ζ-62, Ζ-70, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -978,7 +978,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Ζ-57, Ζ-68, Ζ-70, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -987,7 +987,7 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Φ-14, Ζ-29, Ζ-57, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`
 
@@ -996,6 +996,6 @@ Replacement Target: prompt-by-prompt operational checklist after snapshot mappin
 - Preconditions: Υ-10, Υ-11, Υ-12, Ζ-57, SNAPSHOT-MAP
 - Gate Before Execution: blueprint consistency check, snapshot mapping review, RepoX FAST, manual review packet ready
 - Gate After Execution: XStack CI FULL, RepoX FULL, AuditX FULL, Omega verification suite, trust strict suite when relevant
-- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, proof-anchor health reports, snapshot-mapping rows for the target prompt
+- Required Artifacts To Inspect: OMEGA baseline artifacts, PHI runtime foundation outputs, UPSILON control-plane outputs, apps, data/architecture/architecture_graph.v1.json, data/architecture/module_boundary_rules.v1.json, data/architecture/repository_structure_lock.json, data/architecture/single_engine_registry.json, data/blueprint/series_execution_strategy.json, distributed replay verify reports, docs/architecture/REPOSITORY_STRUCTURE_v1.md, docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md, docs/blueprint/SERIES_EXECUTION_STRATEGY.md, engine, net, platform, proof-anchor health reports, runtime, snapshot-mapping rows for the target prompt, tools/xstack, ui, updates
 - Human Review Mandatory: `yes`
 - Rollback Plan Must Be Prepared First: `yes`

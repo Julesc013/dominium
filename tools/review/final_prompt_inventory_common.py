@@ -20,6 +20,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 SERIES_EXECUTION_STRATEGY_REL = "data/blueprint/series_execution_strategy.json"
 FOUNDATION_PHASES_REL = "data/blueprint/foundation_phases.json"
+MANUAL_REVIEW_GATES_REL = "data/blueprint/manual_review_gates.json"
 STOP_CONDITIONS_REL = "data/blueprint/stop_conditions.json"
 SERIES_DEP_GRAPH_REL = "data/blueprint/series_dependency_graph.json"
 
@@ -54,12 +55,13 @@ OUTPUT_REL_PATHS = {
 
 REQUIRED_INPUTS = {
     "foundation_phases": FOUNDATION_PHASES_REL,
+    "manual_review_gates": MANUAL_REVIEW_GATES_REL,
     "series_dependency_graph": SERIES_DEP_GRAPH_REL,
     "series_execution_strategy": SERIES_EXECUTION_STRATEGY_REL,
     "stop_conditions": STOP_CONDITIONS_REL,
 }
 
-DOC_REPORT_DATE = "2026-03-26"
+DOC_REPORT_DATE = "2026-03-31"
 SERIES_KEY_ORDER = {"SIGMA": 0, "PHI": 1, "UPSILON": 2, "ZETA": 3}
 SERIES_GLYPH = {"SIGMA": "Σ", "PHI": "Φ", "UPSILON": "Υ", "ZETA": "Ζ"}
 SERIES_NAME = {
@@ -254,7 +256,7 @@ PHI_PROMPT_SEEDS = [
     _make_prompt_seed("PHI", 8, "HOTSWAP-BOUNDARIES-0", "Freeze lawful replacement boundaries, state handoff points, and rollback obligations for hot-replaceable services.", "schema_registry", "post_snapshot_required", "high", "FULL", True, True, "replaceability", "replaceability", ["Φ-5", "Φ-6", "Φ-7", "SNAPSHOT-MAP"]),
     _make_prompt_seed("PHI", 9, "ASSET-PIPELINE-0", "Build the governed asset and shader pipeline that live mount, streaming, and validation features depend on.", "implementation", "post_snapshot_required", "high", "STRICT", True, False, "assets", "runtime", ["Φ-1", "Φ-6", "SNAPSHOT-MAP"]),
     _make_prompt_seed("PHI", 10, "SANDBOXING-0", "Add governed sandboxing and isolation boundaries for untrusted runtime extensions and mods.", "implementation", "post_snapshot_required", "high", "FULL", True, True, "security", "runtime", ["Φ-1", "Φ-2", "Φ-3", "SNAPSHOT-MAP"]),
-    _make_prompt_seed("PHI", 11, "MULTI-VERSION-COEXISTENCE-0", "Define how multiple runtime, protocol, and module versions coexist during controlled migration windows.", "schema_registry", "pre_snapshot_safe", "high", "STRICT", True, True, "compatibility", "foundation", ["Φ-1", "Φ-4"]),
+    _make_prompt_seed("PHI", 11, "MULTI-VERSION-COEXISTENCE-0", "Define how multiple runtime, protocol, and module versions coexist during controlled migration windows.", "schema_registry", "post_snapshot_required", "high", "STRICT", True, True, "compatibility", "foundation", ["Φ-1", "Φ-4", "SNAPSHOT-MAP"]),
     _make_prompt_seed("PHI", 12, "EVENT-LOG-0", "Create the deterministic event-log substrate required for replay, cutover, and distributed execution.", "implementation", "post_snapshot_required", "high", "FULL", True, True, "state", "distributed", ["Φ-4", "Φ-5", "SNAPSHOT-MAP"]),
     _make_prompt_seed("PHI", 13, "SNAPSHOT-SERVICE-0", "Create the snapshot service and handoff format required for save migration, rollback, and distributed recovery.", "implementation", "post_snapshot_required", "high", "FULL", True, True, "state", "distributed", ["Φ-4", "Φ-5", "Φ-12", "SNAPSHOT-MAP"]),
     _make_prompt_seed("PHI", 14, "DISTRIBUTED-AUTHORITY-0", "Define the lawful distributed authority model, handoff semantics, and proof obligations.", "schema_registry", "post_snapshot_required", "extreme", "FULL", True, True, "distributed", "distributed", ["Φ-11", "Φ-12", "Φ-13", "Σ-5", "SNAPSHOT-MAP"]),
@@ -400,22 +402,26 @@ def _prompt_inputs(seed: Mapping[str, object]) -> list[str]:
     series_key = _token(seed.get("series_key"))
     family = _token(seed.get("family"))
     inputs = [
+        "data/architecture/architecture_graph.v1.json",
+        "data/architecture/module_boundary_rules.v1.json",
+        "data/architecture/repository_structure_lock.json",
         "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
         "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md",
+        "docs/architecture/REPOSITORY_STRUCTURE_v1.md",
         "data/blueprint/series_execution_strategy.json",
     ]
     if _token(seed.get("snapshot_requirement")) == "post_snapshot_required":
         inputs.append("snapshot-mapping rows for the target prompt")
     if series_key == "SIGMA":
-        inputs.extend(["AGENTS.md", "docs/canon/constitution_v1.md", "tools/xstack"])
+        inputs.extend(["AGENTS.md", "docs/canon/constitution_v1.md", "docs/xstack/CI_GUARDRAILS.md", "tools/xstack"])
     elif series_key == "PHI":
-        inputs.extend(["docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md", "engine/", "server/", "client/"])
+        inputs.extend(["data/architecture/single_engine_registry.json", "docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md", "engine", "game", "apps", "ui", "platform", "compat"])
     elif series_key == "UPSILON":
-        inputs.extend(["data/audit/build_graph.json", "dist/", "tools/xstack/"])
+        inputs.extend(["data/audit/build_graph.json", "data/xstack/gate_definitions.json", "dist", "release", "tools/xstack"])
     elif series_key == "ZETA":
-        inputs.extend(["OMEGA baseline artifacts", "PHI runtime foundation outputs", "UPSILON control-plane outputs"])
+        inputs.extend(["OMEGA baseline artifacts", "PHI runtime foundation outputs", "UPSILON control-plane outputs", "data/architecture/single_engine_registry.json", "engine", "apps", "ui", "platform", "tools/xstack"])
         if family == "distributed":
-            inputs.extend(["distributed replay verify reports", "proof-anchor health reports"])
+            inputs.extend(["distributed replay verify reports", "proof-anchor health reports", "net", "runtime", "updates"])
     return sorted({_token(item) for item in inputs if _token(item)})
 
 
@@ -468,21 +474,25 @@ def _planned_module_targets(seed: Mapping[str, object]) -> list[str]:
     series_key = _token(seed.get("series_key"))
     category = _token(seed.get("category"))
     family = _token(seed.get("family"))
-    targets = ["docs/blueprint"]
+    targets = ["data", "docs"]
     if series_key == "SIGMA":
-        targets.extend(["AGENTS.md", "tools/xstack", "tools/controlx"])
+        targets.extend(["control", "governance", "tools"])
     elif series_key == "PHI":
-        targets.extend(["engine", "server", "client"])
+        targets.extend(["apps", "compat", "engine", "game", "platform", "runtime", "ui"])
         if category in {"rendering", "replaceability"}:
-            targets.append("client")
-    elif series_key == "UPSILON":
-        targets.extend(["tools/xstack", "cmake", "dist", "docs"])
-    elif series_key == "ZETA":
-        targets.extend(["engine", "server", "client", "tools/xstack"])
+            targets.extend(["platform", "ui"])
         if family == "distributed":
-            targets.extend(["server", "tools/xstack"])
+            targets.extend(["net", "runtime"])
+    elif series_key == "UPSILON":
+        targets.extend(["data", "dist", "release", "tools"])
+    elif series_key == "ZETA":
+        targets.extend(["apps", "data", "engine", "game", "platform", "tools", "ui"])
+        if family == "distributed":
+            targets.extend(["net", "runtime", "updates"])
         if category == "content_ops":
-            targets.extend(["packs", "data"])
+            targets.extend(["modding", "packs"])
+        if category == "trust_security":
+            targets.extend(["compat", "security"])
     return sorted({_token(item) for item in targets if _token(item)})
 
 
@@ -707,8 +717,9 @@ def _validate_prompt_graph(rows: Sequence[Mapping[str, object]]) -> None:
         raise ValueError("prompt dependency graph contains a cycle")
 
 
-def _build_final_prompt_inventory(rows: Sequence[Mapping[str, object]]) -> dict[str, object]:
+def _build_final_prompt_inventory(rows: Sequence[Mapping[str, object]], grounding: Mapping[str, object]) -> dict[str, object]:
     payload = {
+        "current_grounding": dict(grounding or {}),
         "execution_doctrine": list(GLOBAL_EXECUTION_DOCTRINE),
         "global_stop_conditions": [_fingerprinted(row) for row in GLOBAL_STOP_CONDITIONS],
         "prompts": list(rows),
@@ -865,6 +876,32 @@ def _build_reconciliation_rules() -> dict[str, object]:
     return _fingerprinted(payload)
 
 
+def _current_grounding(inputs: Mapping[str, Mapping[str, object]]) -> dict[str, object]:
+    series_graph = dict(inputs.get("series_dependency_graph") or {})
+    strategy = dict(inputs.get("series_execution_strategy") or {})
+    phases = dict(inputs.get("foundation_phases") or {})
+    manual_review = dict(inputs.get("manual_review_gates") or {})
+    stop_conditions = dict(inputs.get("stop_conditions") or {})
+    current = dict(series_graph.get("current_snapshot") or {})
+    xi_state = dict(current.get("xi_artifact_state") or {})
+    omega_state = dict(current.get("omega_artifact_state") or {})
+    return {
+        "architecture_graph_fingerprint": _token(current.get("architecture_graph_fingerprint")),
+        "ci_profile": _token(current.get("ci_profile")),
+        "ci_strict_result": _token(current.get("ci_strict_result")),
+        "module_boundary_rules_fingerprint": _token(current.get("module_boundary_rules_fingerprint")),
+        "pi_0_series_dependency_graph_fingerprint": _token(series_graph.get("deterministic_fingerprint")),
+        "pi_1_foundation_phases_fingerprint": _token(phases.get("deterministic_fingerprint")),
+        "pi_1_manual_review_gates_fingerprint": _token(manual_review.get("deterministic_fingerprint")),
+        "pi_1_series_execution_strategy_fingerprint": _token(strategy.get("deterministic_fingerprint")),
+        "pi_1_stop_conditions_fingerprint": _token(stop_conditions.get("deterministic_fingerprint")),
+        "repository_structure_lock_fingerprint": _token(current.get("repository_structure_lock_fingerprint")),
+        "sanctioned_source_like_root_count": int(current.get("sanctioned_source_like_root_count", 0) or 0),
+        "xi_artifact_state": {key: bool(xi_state.get(key)) for key in sorted(xi_state)},
+        "omega_artifact_state": {key: bool(omega_state.get(key)) for key in sorted(omega_state)},
+    }
+
+
 def _build_stop_conditions_payload(existing: Mapping[str, object]) -> dict[str, object]:
     payload = dict(existing)
     payload["execution_doctrine"] = list(GLOBAL_EXECUTION_DOCTRINE)
@@ -883,6 +920,11 @@ def _joined(values: Iterable[object]) -> str:
     return ", ".join(rendered) if rendered else "none"
 
 
+def _completed_artifact_labels(state: Mapping[str, object]) -> str:
+    labels = sorted(_token(key) for key, value in (state or {}).items() if value)
+    return ", ".join(labels) if labels else "none"
+
+
 def _markdown_table(headers: Sequence[str], rows: Sequence[Sequence[object]]) -> str:
     lines = [
         "| " + " | ".join(headers) + " |",
@@ -894,12 +936,27 @@ def _markdown_table(headers: Sequence[str], rows: Sequence[Sequence[object]]) ->
 
 
 def _render_inventory_doc(rows: Sequence[Mapping[str, object]], inventory: Mapping[str, object]) -> str:
+    grounding = dict(inventory.get("current_grounding") or {})
     lines = [
         _doc_header("Final Prompt Inventory", "snapshot-anchored prompt execution inventory after fresh repository mapping"),
         "## Current Boundary",
         "",
         "This is the canonical prompt catalog for all post-XI series work.",
-        "It is planning only and must be reconciled against a fresh repository snapshot before any post-snapshot prompt executes.",
+        "It is planning only and anchors itself to the live Xi-8 and OMEGA-frozen repository, while requiring fresh repository snapshot mapping before any post-snapshot prompt executes.",
+        "",
+        "## Current Grounding",
+        "",
+        f"- Architecture graph v1 fingerprint: `{_token(grounding.get('architecture_graph_fingerprint'))}`",
+        f"- Module boundary rules fingerprint: `{_token(grounding.get('module_boundary_rules_fingerprint'))}`",
+        f"- Repository structure lock fingerprint: `{_token(grounding.get('repository_structure_lock_fingerprint'))}`",
+        f"- Pi-0 series dependency graph fingerprint: `{_token(grounding.get('pi_0_series_dependency_graph_fingerprint'))}`",
+        f"- Pi-1 series execution strategy fingerprint: `{_token(grounding.get('pi_1_series_execution_strategy_fingerprint'))}`",
+        f"- Pi-1 foundation phases fingerprint: `{_token(grounding.get('pi_1_foundation_phases_fingerprint'))}`",
+        f"- Pi-1 manual review gates fingerprint: `{_token(grounding.get('pi_1_manual_review_gates_fingerprint'))}`",
+        f"- Xi artifact state: {_completed_artifact_labels(grounding.get('xi_artifact_state') or {})}",
+        f"- OMEGA artifact state: {_completed_artifact_labels(grounding.get('omega_artifact_state') or {})}",
+        f"- CI STRICT result: `{_token(grounding.get('ci_strict_result'))}` via profile `{_token(grounding.get('ci_profile'))}`",
+        f"- Sanctioned source-like roots carried by policy: `{int(grounding.get('sanctioned_source_like_root_count', 0) or 0)}`",
         "",
         "## Safest Execution Doctrine",
         "",
@@ -935,13 +992,13 @@ def _render_inventory_doc(rows: Sequence[Mapping[str, object]], inventory: Mappi
     grouped: dict[str, list[Mapping[str, object]]] = defaultdict(list)
     for row in rows:
         grouped[_token(row.get("series_key"))].append(row)
-    for series_key in ("SIGMA", "PHI", "UPSILON", "ZETA"):
-        lines.extend([f"## {_series_label(series_key)}", ""])
-        for row in grouped.get(series_key, []):
+
+    def _append_prompt_block(prompt_rows: Sequence[Mapping[str, object]], heading_level: str) -> None:
+        for row in prompt_rows:
             prompt_id = _token(row.get("prompt_id"))
             lines.extend(
                 [
-                    f"### `{prompt_id}` `{_token(row.get('title'))}`",
+                    f"{heading_level} `{prompt_id}` `{_token(row.get('title'))}`",
                     "",
                     f"- Purpose: {_token(row.get('purpose'))}",
                     f"- Inputs: {_joined(row.get('inputs') or [])}",
@@ -959,6 +1016,29 @@ def _render_inventory_doc(rows: Sequence[Mapping[str, object]], inventory: Mappi
                     "",
                 ]
             )
+
+    zeta_family_sections = [
+        ("replaceability", "### A) Replaceability"),
+        ("state_migration", "### B) State Migration / Save Evolution"),
+        ("rollout", "### C) Rollout / Cutover / Operations"),
+        ("trust_security", "### D) Trust / Security / Isolation"),
+        ("observability", "### E) Observability / Control / Health"),
+        ("render_sidecars", "### F) Rendering & Validation Sidecars"),
+        ("content_ops", "### G) Content / Mod Live Operations"),
+        ("distributed_runtime", "### H) Distributed Simulation / Cluster Runtime"),
+    ]
+
+    for series_key in ("SIGMA", "PHI", "UPSILON", "ZETA"):
+        lines.extend([f"## {_series_label(series_key)}", ""])
+        if series_key != "ZETA":
+            _append_prompt_block(grouped.get(series_key, []), "###")
+            continue
+        category_groups: dict[str, list[Mapping[str, object]]] = defaultdict(list)
+        for row in grouped.get(series_key, []):
+            category_groups[_token(row.get("category"))].append(row)
+        for category_id, title in zeta_family_sections:
+            lines.extend([title, ""])
+            _append_prompt_block(category_groups.get(category_id, []), "####")
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -1120,10 +1200,26 @@ def _render_pi_2_final_doc(
     tree: Mapping[str, object],
     template: Mapping[str, object],
     risk_matrix: Mapping[str, object],
+    reconciliation_rules: Mapping[str, object],
+    stop_conditions: Mapping[str, object],
 ) -> str:
     summary = dict(inventory.get("summary") or {})
+    grounding = dict(inventory.get("current_grounding") or {})
     lines = [
         _doc_header("PI 2 Final Report", "final snapshot-driven execution planning after live repository mapping"),
+        "## Grounding",
+        "",
+        f"- Architecture graph v1 fingerprint: `{_token(grounding.get('architecture_graph_fingerprint'))}`",
+        f"- Module boundary rules fingerprint: `{_token(grounding.get('module_boundary_rules_fingerprint'))}`",
+        f"- Repository structure lock fingerprint: `{_token(grounding.get('repository_structure_lock_fingerprint'))}`",
+        f"- Pi-0 series dependency graph fingerprint: `{_token(grounding.get('pi_0_series_dependency_graph_fingerprint'))}`",
+        f"- Pi-1 series execution strategy fingerprint: `{_token(grounding.get('pi_1_series_execution_strategy_fingerprint'))}`",
+        f"- Pi-1 foundation phases fingerprint: `{_token(grounding.get('pi_1_foundation_phases_fingerprint'))}`",
+        f"- Pi-1 stop conditions fingerprint: `{_token(grounding.get('pi_1_stop_conditions_fingerprint'))}`",
+        f"- Xi artifact state: {_completed_artifact_labels(grounding.get('xi_artifact_state') or {})}",
+        f"- OMEGA artifact state: {_completed_artifact_labels(grounding.get('omega_artifact_state') or {})}",
+        f"- CI STRICT result: `{_token(grounding.get('ci_strict_result'))}` via profile `{_token(grounding.get('ci_profile'))}`",
+        "",
         "## Generated Artifacts",
         "",
         "- `docs/blueprint/FINAL_PROMPT_INVENTORY.md`",
@@ -1138,6 +1234,15 @@ def _render_pi_2_final_doc(
         "- `data/blueprint/prompt_risk_matrix.json`",
         "- `data/blueprint/repo_reality_reconciliation_rules.json`",
         "",
+        "## Fingerprints",
+        "",
+        f"- Final prompt inventory: `{_token(inventory.get('deterministic_fingerprint'))}`",
+        f"- Snapshot mapping template: `{_token(template.get('deterministic_fingerprint'))}`",
+        f"- Prompt dependency tree: `{_token(tree.get('deterministic_fingerprint'))}`",
+        f"- Prompt risk matrix: `{_token(risk_matrix.get('deterministic_fingerprint'))}`",
+        f"- Reconciliation rules: `{_token(reconciliation_rules.get('deterministic_fingerprint'))}`",
+        f"- Stop conditions extension: `{_token(stop_conditions.get('deterministic_fingerprint'))}`",
+        "",
         "## Summary",
         "",
         f"- Prompt count: `{int(summary.get('prompt_count', 0) or 0)}`",
@@ -1147,10 +1252,11 @@ def _render_pi_2_final_doc(
         f"- Snapshot mapping rows: `{int(dict(template.get('summary') or {}).get('prompt_count', 0) or 0)}`",
         f"- Dependency edges: `{int(dict(tree.get('summary') or {}).get('edge_count', 0) or 0)}`",
         f"- Risk rows: `{int(dict(risk_matrix.get('summary') or {}).get('prompt_count', 0) or 0)}`",
+        f"- Inventory guardrails: `{len(list(stop_conditions.get('inventory_guardrails') or []))}`",
         "",
         "## Readiness",
         "",
-        "The prompt inventory is complete, the dependency graph is coherent, the snapshot mapping scaffold is ready, and the risk matrix plus stop conditions are explicit enough to drive the next fresh-repo-snapshot planning pass.",
+        "The prompt inventory is complete, the dependency graph is coherent, the snapshot mapping scaffold is ready, and the risk matrix plus stop conditions are explicit enough to drive the next fresh-repo-snapshot planning pass from the current Xi-8 and Pi-1 frozen baseline.",
         "",
     ]
     return "\n".join(lines).rstrip() + "\n"
@@ -1162,7 +1268,8 @@ def build_final_prompt_inventory_snapshot(repo_root: str) -> dict[str, object]:
     prompt_rows = _build_prompt_rows(PROMPT_SEEDS)
     _validate_prompt_graph(prompt_rows)
 
-    final_prompt_inventory = _build_final_prompt_inventory(prompt_rows)
+    grounding = _current_grounding(inputs)
+    final_prompt_inventory = _build_final_prompt_inventory(prompt_rows, grounding)
     snapshot_mapping_template = _build_snapshot_mapping_template(prompt_rows)
     prompt_dependency_tree = _build_prompt_dependency_tree(prompt_rows)
     prompt_risk_matrix = _build_prompt_risk_matrix(prompt_rows)
@@ -1178,7 +1285,7 @@ def build_final_prompt_inventory_snapshot(repo_root: str) -> dict[str, object]:
         "stop_conditions": stop_conditions,
         "docs": {
             FINAL_PROMPT_INVENTORY_DOC_REL: _render_inventory_doc(prompt_rows, final_prompt_inventory),
-            PI_2_FINAL_REL: _render_pi_2_final_doc(final_prompt_inventory, prompt_dependency_tree, snapshot_mapping_template, prompt_risk_matrix),
+            PI_2_FINAL_REL: _render_pi_2_final_doc(final_prompt_inventory, prompt_dependency_tree, snapshot_mapping_template, prompt_risk_matrix, reconciliation_rules, stop_conditions),
             PROMPT_DEPENDENCY_TREE_DOC_REL: _render_dependency_tree_doc(prompt_dependency_tree),
             PROMPT_EXECUTION_CHECKLIST_DOC_REL: _render_checklist_doc(prompt_rows),
             PROMPT_RISK_MATRIX_DOC_REL: _render_risk_matrix_doc(prompt_risk_matrix),
