@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-26
+Last Reviewed: 2026-03-31
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -22,10 +22,13 @@ It is not merely a game engine, not merely a tool suite, and not merely a game.
 
 ## What The System Is Now
 
-- Current audited architecture graph: `1f87dadf06ac3e5fcba0a143f087f1d78a5df97265e8de6d72b8f6f3f40a89ff`
-- Current architecture footprint: 1743 modules, 316 concepts, 471 build targets
-- Strongest present foundations: deterministic governance, compatibility and trust verification, archive and distribution artifacts, XStack enforcement tools, and Ω-series verification surfaces.
-- Current gap: the working tree still reflects pre-snapshot, pre-freeze convergence status rather than a finished post-Ξ frozen repository layout.
+- Current frozen architecture graph v1: `ff1c955301dd733e8269f2ec3c5052de98c705a6a1d487990fb6d6e45e2da5ea`
+- Current frozen module boundaries v1: `e7bdd052713a81dafbf5a0397794af6e70929cfdea49f3308e5507db58ee0ee8`
+- Current repository structure lock v1: `6207b3e71bd604ddee58bc2d95a840833fde33b046ceb1d640530530fa9dc231`
+- Current architecture footprint: 1735 modules, 319 concepts, 471 build targets
+- Current frozen repository shape: 81 top-level directories, 4 policy-approved source-like roots, and `STRICT` CI guardrails passing.
+- Strongest present foundations: Xi-frozen architecture governance, Omega verification baselines, archive and distribution evidence, trust verification, and XStack enforcement surfaces.
+- Current gap: Sigma, Phi, Upsilon, and Zeta remain planning targets; the repo is now structurally frozen, but the future runtime/service and live-operations surfaces are not yet implemented.
 
 ## What The System Is Intended To Become
 
@@ -72,5 +75,5 @@ It differs from cloud orchestrators by making determinism, replay equivalence, a
 ## Pre-Snapshot Note
 
 This Π-series output is pre-snapshot and architecture-driven.
-After a fresh repository snapshot is provided, a final mapping pass must compare these plans to the actual post-Ξ working tree, remove impossible assumptions, and emit the executable next-series plan.
+After a fresh repository snapshot is provided, a final mapping pass must compare these plans to the then-current frozen repository state, remove impossible assumptions, and emit the executable next-series plan.
 

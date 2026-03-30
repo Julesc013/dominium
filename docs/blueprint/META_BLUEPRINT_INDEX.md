@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-26
+Last Reviewed: 2026-03-31
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -15,21 +15,27 @@ It links the current audited repository evidence to the intended Σ, Φ, Υ, and
 
 ## Current Evidence Snapshot
 
-- Architecture modules: 1743
-- Architecture concepts: 316
-- Module dependency edges: 2319
+- Frozen architecture graph v1 fingerprint: `ff1c955301dd733e8269f2ec3c5052de98c705a6a1d487990fb6d6e45e2da5ea`
+- Module boundary rules v1 fingerprint: `e7bdd052713a81dafbf5a0397794af6e70929cfdea49f3308e5507db58ee0ee8`
+- Repository structure lock fingerprint: `6207b3e71bd604ddee58bc2d95a840833fde33b046ceb1d640530530fa9dc231`
+- Architecture modules: 1735
+- Architecture concepts: 319
+- Module dependency edges: 2902
 - Build targets: 471
-- Source-like directories still present in current working tree evidence: 258
+- Single canonical engines frozen: 9
+- Frozen top-level directories: 81
+- Sanctioned source-like roots: 4
+- XStack CI STRICT status: `complete`
 
 Dominant module domains:
-- `unknown`: 439 modules
 - `tests`: 232 modules
-- `tools`: 218 modules
-- `data`: 216 modules
-- `docs`: 151 modules
+- `tools`: 223 modules
+- `data`: 220 modules
+- `legacy`: 211 modules
+- `docs`: 153 modules
 - `game`: 122 modules
-- `packs`: 95 modules
-- `schemas`: 90 modules
+- `engine`: 97 modules
+- `packs`: 96 modules
 
 Available Ξ evidence in the current workspace:
 - `XI_0`: present
@@ -37,10 +43,20 @@ Available Ξ evidence in the current workspace:
 - `XI_2`: present
 - `XI_3`: present
 - `XI_4`: present
-- `XI_5`: not_present
-- `XI_6`: not_present
-- `XI_7`: not_present
-- `XI_8`: not_present
+- `XI_5`: present
+- `XI_6`: present
+- `XI_7`: present
+- `XI_8`: present
+
+Available Ω evidence in the current workspace:
+- `OMEGA_0`: present
+- `OMEGA_10`: present
+
+Sanctioned source-like roots in the frozen repository structure:
+- `attic/src_quarantine/legacy/source`
+- `attic/src_quarantine/src`
+- `legacy/source`
+- `packs/source`
 
 ## Artifact Index
 
@@ -80,6 +96,6 @@ Available Ξ evidence in the current workspace:
 
 ## Bridge Statement
 
-This blueprint is pre-snapshot and architecture-driven.
-It describes the safe bridge from the current audited repository surface to the intended post-Ξ, post-Ω implementation work, while explicitly preserving constitutional invariants.
+This blueprint is architecture-driven, post-Ξ in grounding, and pre-Σ/Φ/Υ/Ζ in execution.
+It describes the safe bridge from the current frozen repository surface to the intended future implementation work, while explicitly preserving constitutional invariants.
 

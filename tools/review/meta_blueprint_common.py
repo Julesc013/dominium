@@ -19,11 +19,15 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 ARCHITECTURE_GRAPH_REL = "data/architecture/architecture_graph.json"
+ARCHITECTURE_GRAPH_V1_REL = "data/architecture/architecture_graph.v1.json"
 MODULE_REGISTRY_REL = "data/architecture/module_registry.json"
+MODULE_REGISTRY_V1_REL = "data/architecture/module_registry.v1.json"
 MODULE_DEP_GRAPH_REL = "data/architecture/module_dependency_graph.json"
+MODULE_BOUNDARY_RULES_V1_REL = "data/architecture/module_boundary_rules.v1.json"
+SINGLE_ENGINE_REGISTRY_REL = "data/architecture/single_engine_registry.json"
+REPOSITORY_STRUCTURE_LOCK_REL = "data/architecture/repository_structure_lock.json"
 BUILD_GRAPH_REL = "data/audit/build_graph.json"
-SRC_DIRECTORY_REPORT_REL = "data/audit/src_directory_report.json"
-CONVERGENCE_PLAN_REL = "data/refactor/convergence_plan.json"
+CI_RUN_REPORT_REL = "data/audit/ci_run_report.json"
 
 SERIES_DEP_GRAPH_REL = "data/blueprint/series_dependency_graph.json"
 CAPABILITY_DEP_GRAPH_REL = "data/blueprint/capability_dependency_graph.json"
@@ -62,7 +66,7 @@ OUTPUT_REL_PATHS = {
     PI_0_FINAL_REL,
 }
 
-DOC_REPORT_DATE = "2026-03-26"
+DOC_REPORT_DATE = "2026-03-31"
 
 SERIES_ORDER = {"XI": 0, "OMEGA": 1, "SIGMA": 2, "PHI": 3, "UPSILON": 4, "ZETA": 5}
 READINESS_ORDER = {
@@ -145,48 +149,73 @@ def _bullet_lines(values: Iterable[str]) -> list[str]:
     return [f"- {value}" for value in values]
 
 
+def _path_present(repo_root: str, rel_path: str) -> bool:
+    return os.path.isfile(_repo_abs(repo_root, rel_path))
+
+
 def _discover_current_facts(repo_root: str) -> dict[str, object]:
     root = _repo_root(repo_root)
-    architecture_graph = _read_json(_repo_abs(root, ARCHITECTURE_GRAPH_REL))
-    module_registry = _read_json(_repo_abs(root, MODULE_REGISTRY_REL))
+    architecture_graph = _read_json(_repo_abs(root, ARCHITECTURE_GRAPH_V1_REL)) or _read_json(_repo_abs(root, ARCHITECTURE_GRAPH_REL))
+    module_registry = _read_json(_repo_abs(root, MODULE_REGISTRY_V1_REL)) or _read_json(_repo_abs(root, MODULE_REGISTRY_REL))
     module_dependency_graph = _read_json(_repo_abs(root, MODULE_DEP_GRAPH_REL))
+    module_boundary_rules = _read_json(_repo_abs(root, MODULE_BOUNDARY_RULES_V1_REL))
+    single_engine_registry = _read_json(_repo_abs(root, SINGLE_ENGINE_REGISTRY_REL))
+    repository_structure_lock = _read_json(_repo_abs(root, REPOSITORY_STRUCTURE_LOCK_REL))
     build_graph = _read_json(_repo_abs(root, BUILD_GRAPH_REL))
-    src_report = _read_json(_repo_abs(root, SRC_DIRECTORY_REPORT_REL))
-    convergence_plan = _read_json(_repo_abs(root, CONVERGENCE_PLAN_REL))
+    ci_run_report = _read_json(_repo_abs(root, CI_RUN_REPORT_REL))
 
     modules = list(architecture_graph.get("modules") or [])
     concepts = list(architecture_graph.get("concepts") or [])
     module_domains = Counter(_token(row.get("domain")) for row in modules if _token(row.get("domain")))
-    top_level_directories = sorted(
+    actual_top_level_directories = sorted(
         entry.name
         for entry in os.scandir(root)
         if entry.is_dir()
     )
+    frozen_top_level_directories = sorted(_token(row) for row in repository_structure_lock.get("allowed_top_level_directories") or [] if _token(row))
+    allowed_source_like_root_rows = sorted(
+        (dict(row) for row in repository_structure_lock.get("allowed_source_like_root_rows") or []),
+        key=lambda row: _token(row.get("root_path")),
+    )
+    allowed_source_like_roots = [_token(row.get("root_path")) for row in allowed_source_like_root_rows]
+    source_like_policy_counts = Counter(
+        _token(row.get("policy_class")) for row in allowed_source_like_root_rows if _token(row.get("policy_class"))
+    )
     xi_artifact_state = {
-        "XI_0": os.path.isfile(_repo_abs(root, "docs/audit/ARCH_GRAPH_BOOTSTRAP.md")),
-        "XI_1": os.path.isfile(_repo_abs(root, "docs/audit/XI_1_FINAL.md")),
-        "XI_2": os.path.isfile(_repo_abs(root, "docs/audit/XI_2_FINAL.md")),
-        "XI_3": os.path.isfile(_repo_abs(root, "docs/audit/XI_3_FINAL.md")),
-        "XI_4": os.path.isfile(_repo_abs(root, "docs/audit/XI_4_FINAL.md")),
-        "XI_5": os.path.isfile(_repo_abs(root, "docs/audit/XI_5_FINAL.md")),
-        "XI_6": os.path.isfile(_repo_abs(root, "docs/audit/XI_6_FINAL.md")),
-        "XI_7": os.path.isfile(_repo_abs(root, "docs/audit/XI_7_FINAL.md")),
-        "XI_8": os.path.isfile(_repo_abs(root, "docs/audit/XI_8_FINAL.md")),
+        "XI_0": _path_present(root, "docs/audit/ARCH_GRAPH_BOOTSTRAP.md"),
+        "XI_1": _path_present(root, "docs/audit/XI_1_FINAL.md"),
+        "XI_2": _path_present(root, "docs/audit/XI_2_FINAL.md"),
+        "XI_3": _path_present(root, "docs/audit/XI_3_FINAL.md"),
+        "XI_4": _path_present(root, "docs/audit/XI_4_FINAL.md"),
+        "XI_5": all(
+            _path_present(root, rel_path)
+            for rel_path in (
+                "docs/audit/XI_5A_FINAL.md",
+                "docs/audit/XI_5X1_FINAL.md",
+                "docs/audit/XI_5X2_FINAL.md",
+            )
+        ),
+        "XI_6": _path_present(root, "docs/audit/XI_6_FINAL.md"),
+        "XI_7": _path_present(root, "docs/audit/XI_7_FINAL.md"),
+        "XI_8": _path_present(root, "docs/audit/XI_8_FINAL.md"),
     }
-    src_directories = list(src_report.get("directories") or [])
-    src_severity_counts = Counter(_token(row.get("severity")) for row in src_directories if _token(row.get("severity")))
-    summary = dict(convergence_plan.get("summary") or {})
+    omega_artifact_state = {
+        "OMEGA_0": _path_present(root, "docs/audit/OMEGA_0_FINAL.md"),
+        "OMEGA_10": _path_present(root, "docs/audit/OMEGA10_FINAL.md"),
+    }
     return {
+        "architecture_graph_content_hash": _token(architecture_graph.get("content_hash")),
         "architecture_graph_fingerprint": _token(architecture_graph.get("deterministic_fingerprint")),
         "build_graph_fingerprint": _token(build_graph.get("deterministic_fingerprint")),
         "build_target_count": len(list(build_graph.get("targets") or [])),
+        "ci_profile": _token(ci_run_report.get("profile")),
+        "ci_strict_fingerprint": _token(ci_run_report.get("deterministic_fingerprint")),
+        "ci_strict_result": _token(ci_run_report.get("result")),
         "concept_count": len(concepts),
-        "current_convergence_summary": {
-            "cluster_resolution_counts": dict(summary.get("cluster_resolution_counts") or {}),
-            "risk_counts": dict(summary.get("risk_counts") or {}),
-            "source_like_cluster_count": int(summary.get("source_like_cluster_count", 0) or 0),
-        },
         "module_count": len(modules),
+        "module_boundary_rule_count": int(module_boundary_rules.get("module_rule_count", 0) or 0),
+        "module_boundary_rules_content_hash": _token(module_boundary_rules.get("content_hash")),
+        "module_boundary_rules_fingerprint": _token(module_boundary_rules.get("deterministic_fingerprint")),
         "module_dependency_edge_count": len(list(module_dependency_graph.get("edges") or [])),
         "module_dependency_graph_fingerprint": _token(module_dependency_graph.get("deterministic_fingerprint")),
         "module_domain_counts": [
@@ -194,9 +223,22 @@ def _discover_current_facts(repo_root: str) -> dict[str, object]:
             for domain, count in sorted(module_domains.items(), key=lambda item: (-item[1], item[0]))
         ],
         "module_registry_fingerprint": _token(module_registry.get("deterministic_fingerprint")),
-        "source_like_directory_count": int(src_report.get("directory_count", 0) or 0),
-        "source_like_severity_counts": {key: int(src_severity_counts.get(key, 0)) for key in sorted(src_severity_counts)},
-        "top_level_directories": top_level_directories,
+        "omega_artifact_state": omega_artifact_state,
+        "repository_structure_lock_content_hash": _token(repository_structure_lock.get("content_hash")),
+        "repository_structure_lock_fingerprint": _token(repository_structure_lock.get("deterministic_fingerprint")),
+        "sanctioned_source_like_root_count": len(allowed_source_like_roots),
+        "sanctioned_source_like_root_policy_counts": {
+            key: int(source_like_policy_counts.get(key, 0))
+            for key in sorted(source_like_policy_counts)
+        },
+        "sanctioned_source_like_roots": allowed_source_like_roots,
+        "single_engine_count": int(single_engine_registry.get("engine_count", 0) or 0),
+        "single_engine_registry_content_hash": _token(single_engine_registry.get("content_hash")),
+        "single_engine_registry_fingerprint": _token(single_engine_registry.get("deterministic_fingerprint")),
+        "source_like_directory_count": len(allowed_source_like_roots),
+        "top_level_directories": actual_top_level_directories,
+        "frozen_top_level_directories": frozen_top_level_directories,
+        "frozen_top_level_directory_count": len(frozen_top_level_directories),
         "xi_artifact_state": xi_artifact_state,
     }
 
@@ -207,20 +249,20 @@ def _series_rows() -> list[dict[str, object]]:
             "series_id": "XI",
             "series_label": "Ξ",
             "name": "Repository convergence and drift immunity",
-            "purpose": "Map the repository truth, rank duplicate implementations, converge structural drift, and harden architecture governance.",
+            "purpose": "Map repository truth, converge structural drift, eliminate forbidden source roots, freeze architecture governance, and lock repository structure.",
             "prerequisites": [],
             "outputs": [
                 "architecture graph",
                 "duplicate implementation scan",
-                "convergence plan",
-                "src elimination plan",
+                "source-pocket policy",
                 "architecture freeze",
                 "CI drift immunity",
+                "repository structure lock",
             ],
             "can_start_before_snapshot_mapping": True,
-            "start_window": "can start before snapshot mapping, but execution must be refreshed against the live repository state",
+            "start_window": "complete in the current repository; future structural updates require explicit freeze revisions rather than greenfield restart",
             "risk_level": "high",
-            "status_now": "planning_and_partial_artifacts_present",
+            "status_now": "complete_and_frozen",
         },
         {
             "series_id": "OMEGA",
@@ -239,9 +281,9 @@ def _series_rows() -> list[dict[str, object]]:
                 "distribution signoff",
             ],
             "can_start_before_snapshot_mapping": True,
-            "start_window": "can start before snapshot mapping where verification tooling already exists; final freeze assumes refreshed baselines",
+            "start_window": "foundations are present now; remaining release execution work should be refreshed against the next live snapshot before any new implementation series piggybacks on it",
             "risk_level": "high",
-            "status_now": "verification_foundations_present",
+            "status_now": "frozen_foundations_and_dist_readiness_present",
         },
         {
             "series_id": "SIGMA",
@@ -256,7 +298,7 @@ def _series_rows() -> list[dict[str, object]]:
                 "deterministic maintenance playbooks",
             ],
             "can_start_before_snapshot_mapping": True,
-            "start_window": "planning can start before snapshot mapping; implementation should follow architecture freeze and runtime lock",
+            "start_window": "planning can start now from the frozen Xi and Omega surfaces; exact implementation should still be checked against the next live snapshot",
             "risk_level": "medium",
             "status_now": "foundation_ready_for_planning",
         },
@@ -274,7 +316,7 @@ def _series_rows() -> list[dict[str, object]]:
                 "replaceable render and storage services",
             ],
             "can_start_before_snapshot_mapping": False,
-            "start_window": "implementation should begin after snapshot mapping confirms the converged repository shape",
+            "start_window": "implementation should begin only after snapshot mapping confirms the frozen repository shape and the real insertion points",
             "risk_level": "very_high",
             "status_now": "blocked_on_post_xi_snapshot",
         },
@@ -291,7 +333,7 @@ def _series_rows() -> list[dict[str, object]]:
                 "upgrade and rollback governance",
             ],
             "can_start_before_snapshot_mapping": True,
-            "start_window": "planning can start before snapshot mapping; implementation prefers the post-Ξ frozen repository shape",
+            "start_window": "planning can start now from the frozen Xi and Omega surfaces; implementation should still reconcile against the next live snapshot",
             "risk_level": "high",
             "status_now": "foundation_ready_for_planning",
         },
@@ -309,7 +351,7 @@ def _series_rows() -> list[dict[str, object]]:
                 "proof-backed rollback",
             ],
             "can_start_before_snapshot_mapping": False,
-            "start_window": "planning only before snapshot mapping; implementation requires a frozen architecture, locked runtime, and componentized services",
+            "start_window": "planning only before snapshot mapping; implementation requires frozen architecture, locked runtime, componentized services, and control-plane maturity",
             "risk_level": "very_high",
             "status_now": "blocked_on_foundation_series",
         },
@@ -747,9 +789,21 @@ def _available_xi_state_lines(current_facts: Mapping[str, object]) -> list[str]:
     ]
 
 
+def _available_omega_state_lines(current_facts: Mapping[str, object]) -> list[str]:
+    rows = dict(current_facts.get("omega_artifact_state") or {})
+    return [
+        f"`{series_id}`: {'present' if bool(rows.get(series_id)) else 'not_present'}"
+        for series_id in sorted(rows)
+    ]
+
+
 def _domain_count_lines(current_facts: Mapping[str, object], limit: int = 8) -> list[str]:
     rows = list(current_facts.get("module_domain_counts") or [])[:limit]
     return [f"`{_token(row.get('domain'))}`: {int(row.get('count', 0) or 0)} modules" for row in rows]
+
+
+def _sanctioned_source_like_root_lines(current_facts: Mapping[str, object]) -> list[str]:
+    return [f"`{row}`" for row in list(current_facts.get("sanctioned_source_like_roots") or [])]
 
 
 def _capability_level_rows(payload: Mapping[str, object]) -> dict[int, list[dict[str, object]]]:
@@ -773,17 +827,29 @@ def render_meta_blueprint_index(snapshot: Mapping[str, object]) -> str:
         "",
         "## Current Evidence Snapshot",
         "",
+        f"- Frozen architecture graph v1 fingerprint: `{_token(current_facts.get('architecture_graph_fingerprint'))}`",
+        f"- Module boundary rules v1 fingerprint: `{_token(current_facts.get('module_boundary_rules_fingerprint'))}`",
+        f"- Repository structure lock fingerprint: `{_token(current_facts.get('repository_structure_lock_fingerprint'))}`",
         f"- Architecture modules: {int(current_facts.get('module_count', 0) or 0)}",
         f"- Architecture concepts: {int(current_facts.get('concept_count', 0) or 0)}",
         f"- Module dependency edges: {int(current_facts.get('module_dependency_edge_count', 0) or 0)}",
         f"- Build targets: {int(current_facts.get('build_target_count', 0) or 0)}",
-        f"- Source-like directories still present in current working tree evidence: {int(current_facts.get('source_like_directory_count', 0) or 0)}",
+        f"- Single canonical engines frozen: {int(current_facts.get('single_engine_count', 0) or 0)}",
+        f"- Frozen top-level directories: {int(current_facts.get('frozen_top_level_directory_count', 0) or 0)}",
+        f"- Sanctioned source-like roots: {int(current_facts.get('sanctioned_source_like_root_count', 0) or 0)}",
+        f"- XStack CI STRICT status: `{_token(current_facts.get('ci_strict_result'))}`",
         "",
         "Dominant module domains:",
         *_bullet_lines(_domain_count_lines(current_facts)),
         "",
         "Available Ξ evidence in the current workspace:",
         *_bullet_lines(_available_xi_state_lines(current_facts)),
+        "",
+        "Available Ω evidence in the current workspace:",
+        *_bullet_lines(_available_omega_state_lines(current_facts)),
+        "",
+        "Sanctioned source-like roots in the frozen repository structure:",
+        *_bullet_lines(_sanctioned_source_like_root_lines(current_facts)),
         "",
         "## Artifact Index",
         "",
@@ -811,8 +877,8 @@ def render_meta_blueprint_index(snapshot: Mapping[str, object]) -> str:
             "",
             "## Bridge Statement",
             "",
-            "This blueprint is pre-snapshot and architecture-driven.",
-            "It describes the safe bridge from the current audited repository surface to the intended post-Ξ, post-Ω implementation work, while explicitly preserving constitutional invariants.",
+            "This blueprint is architecture-driven, post-Ξ in grounding, and pre-Σ/Φ/Υ/Ζ in execution.",
+            "It describes the safe bridge from the current frozen repository surface to the intended future implementation work, while explicitly preserving constitutional invariants.",
             "",
         ]
     )
@@ -838,10 +904,13 @@ def render_meta_blueprint_summary(snapshot: Mapping[str, object]) -> str:
         "",
         "## What The System Is Now",
         "",
-        f"- Current audited architecture graph: `{_token(current_facts.get('architecture_graph_fingerprint'))}`",
+        f"- Current frozen architecture graph v1: `{_token(current_facts.get('architecture_graph_fingerprint'))}`",
+        f"- Current frozen module boundaries v1: `{_token(current_facts.get('module_boundary_rules_fingerprint'))}`",
+        f"- Current repository structure lock v1: `{_token(current_facts.get('repository_structure_lock_fingerprint'))}`",
         f"- Current architecture footprint: {int(current_facts.get('module_count', 0) or 0)} modules, {int(current_facts.get('concept_count', 0) or 0)} concepts, {int(current_facts.get('build_target_count', 0) or 0)} build targets",
-        "- Strongest present foundations: deterministic governance, compatibility and trust verification, archive and distribution artifacts, XStack enforcement tools, and Ω-series verification surfaces.",
-        "- Current gap: the working tree still reflects pre-snapshot, pre-freeze convergence status rather than a finished post-Ξ frozen repository layout.",
+        f"- Current frozen repository shape: {int(current_facts.get('frozen_top_level_directory_count', 0) or 0)} top-level directories, {int(current_facts.get('sanctioned_source_like_root_count', 0) or 0)} policy-approved source-like roots, and `{_token(current_facts.get('ci_profile'))}` CI guardrails passing.",
+        "- Strongest present foundations: Xi-frozen architecture governance, Omega verification baselines, archive and distribution evidence, trust verification, and XStack enforcement surfaces.",
+        "- Current gap: Sigma, Phi, Upsilon, and Zeta remain planning targets; the repo is now structurally frozen, but the future runtime/service and live-operations surfaces are not yet implemented.",
         "",
         "## What The System Is Intended To Become",
         "",
@@ -878,7 +947,7 @@ def render_meta_blueprint_summary(snapshot: Mapping[str, object]) -> str:
         "## Pre-Snapshot Note",
         "",
         "This Π-series output is pre-snapshot and architecture-driven.",
-        "After a fresh repository snapshot is provided, a final mapping pass must compare these plans to the actual post-Ξ working tree, remove impossible assumptions, and emit the executable next-series plan.",
+        "After a fresh repository snapshot is provided, a final mapping pass must compare these plans to the then-current frozen repository state, remove impossible assumptions, and emit the executable next-series plan.",
         "",
     ]
     return "\n".join(lines)
@@ -1142,16 +1211,17 @@ def render_snapshot_mapping_notes(snapshot: Mapping[str, object]) -> str:
         "",
         "## Current Assumption Boundaries",
         "",
-        f"- Current architecture graph fingerprint: `{_token(current_facts.get('architecture_graph_fingerprint'))}`",
-        f"- Current source-like directory count in audit evidence: {int(current_facts.get('source_like_directory_count', 0) or 0)}",
-        "- Current workspace still shows convergence planning artifacts rather than finished post-Ξ execution and freeze artifacts.",
+        f"- Current frozen architecture graph fingerprint: `{_token(current_facts.get('architecture_graph_fingerprint'))}`",
+        f"- Current frozen repository structure lock: `{_token(current_facts.get('repository_structure_lock_fingerprint'))}`",
+        f"- Current sanctioned source-like root count: {int(current_facts.get('sanctioned_source_like_root_count', 0) or 0)}",
+        "- Current workspace is frozen through Xi-8; future snapshot mapping is still required because Sigma, Phi, Upsilon, and Zeta must be anchored to live insertion points rather than blueprint guesses.",
         "",
         "## Final Mapping Pass Requirements",
         "",
-        "- Compare the planned structure to the actual repository snapshot.",
-        "- Eliminate assumptions invalidated by the live code, build graph, or module graph.",
-        "- Reprioritize Σ, Φ, Υ, and Ζ work based on real implementation cost and blockers.",
-        "- Generate the exact executable plan and batch boundaries for the next series work.",
+        "- Compare the planned structure to the actual repository snapshot and the frozen Xi-6/Xi-7/Xi-8 baseline.",
+        "- Eliminate assumptions invalidated by the live code, build graph, module graph, or frozen boundary rules.",
+        "- Reprioritize Σ, Φ, Υ, and Ζ work based on real implementation cost, insertion points, and blockers.",
+        "- Generate the exact executable plan, batch boundaries, and validation gates for the next series work.",
         "",
     ]
     return "\n".join(lines)
@@ -1159,8 +1229,10 @@ def render_snapshot_mapping_notes(snapshot: Mapping[str, object]) -> str:
 
 def render_pi_0_final(snapshot: Mapping[str, object]) -> str:
     series = dict(snapshot.get("series_dependency_graph") or {})
+    capability = dict(snapshot.get("capability_dependency_graph") or {})
     readiness = dict(snapshot.get("readiness_matrix") or {})
     pipe_dreams = dict(snapshot.get("pipe_dreams_matrix") or {})
+    current_facts = dict(snapshot.get("current_facts") or {})
     lines = [
         _doc_header("PI-0 Final", "snapshot-anchored PI-0 audit summary after blueprint generation"),
         "## Generated Artifacts",
@@ -1172,8 +1244,15 @@ def render_pi_0_final(snapshot: Mapping[str, object]) -> str:
         "## Fingerprints",
         "",
         f"- Series dependency graph: `{_token(series.get('deterministic_fingerprint'))}`",
+        f"- Capability dependency graph: `{_token(capability.get('deterministic_fingerprint'))}`",
         f"- Readiness matrix: `{_token(readiness.get('deterministic_fingerprint'))}`",
         f"- Pipe dreams matrix: `{_token(pipe_dreams.get('deterministic_fingerprint'))}`",
+        "",
+        "## Grounding",
+        "",
+        f"- Xi frozen architecture graph v1: `{_token(current_facts.get('architecture_graph_fingerprint'))}`",
+        f"- Xi frozen repository structure lock: `{_token(current_facts.get('repository_structure_lock_fingerprint'))}`",
+        f"- XStack CI STRICT result: `{_token(current_facts.get('ci_strict_result'))}`",
         "",
         "## Readiness",
         "",

@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-26
+Last Reviewed: 2026-03-31
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -24,7 +24,7 @@ OMEGA ------> UPSILON ----+
 
 | Series | Purpose | Prerequisites | Outputs | Can start before snapshot mapping? | Risk |
 | --- | --- | --- | --- | --- | --- |
-| `Ξ` | Map the repository truth, rank duplicate implementations, converge structural drift, and harden architecture governance. | none | architecture graph, duplicate implementation scan, convergence plan, src elimination plan, architecture freeze, CI drift immunity | `yes` | `high` |
+| `Ξ` | Map repository truth, converge structural drift, eliminate forbidden source roots, freeze architecture governance, and lock repository structure. | none | architecture graph, duplicate implementation scan, source-pocket policy, architecture freeze, CI drift immunity, repository structure lock | `yes` | `high` |
 | `Ω` | Lock worldgen, baseline universe, gameplay, disaster behavior, ecosystem verification, update simulation, trust, and final distribution signoff. | none | worldgen lock baseline, baseline universe baseline, gameplay loop baseline, disaster suite baseline, ecosystem verify baseline, update simulation baseline, trust strict baseline, distribution signoff | `yes` | `high` |
 | `Σ` | Stabilize the unified human and Agent operating interface, including task catalogs, ControlX planning, prompt safety, and deterministic maintenance workflows. | XI, OMEGA | task catalogs, agent governance workflows, prompt safety policy, deterministic maintenance playbooks | `yes` | `medium` |
 | `Φ` | Evolve the runtime toward a service-oriented kernel with lifecycle management, service registry, module loading, and replaceable component surfaces. | XI, OMEGA | lifecycle manager, service registry, module loader, componentized runtime boundaries, replaceable render and storage services | `no` | `very_high` |

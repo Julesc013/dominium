@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-26
+Last Reviewed: 2026-03-31
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -15,14 +15,15 @@ It intentionally describes the target bridge from the current audited repository
 
 ## Current Assumption Boundaries
 
-- Current architecture graph fingerprint: `1f87dadf06ac3e5fcba0a143f087f1d78a5df97265e8de6d72b8f6f3f40a89ff`
-- Current source-like directory count in audit evidence: 258
-- Current workspace still shows convergence planning artifacts rather than finished post-Ξ execution and freeze artifacts.
+- Current frozen architecture graph fingerprint: `ff1c955301dd733e8269f2ec3c5052de98c705a6a1d487990fb6d6e45e2da5ea`
+- Current frozen repository structure lock: `6207b3e71bd604ddee58bc2d95a840833fde33b046ceb1d640530530fa9dc231`
+- Current sanctioned source-like root count: 4
+- Current workspace is frozen through Xi-8; future snapshot mapping is still required because Sigma, Phi, Upsilon, and Zeta must be anchored to live insertion points rather than blueprint guesses.
 
 ## Final Mapping Pass Requirements
 
-- Compare the planned structure to the actual repository snapshot.
-- Eliminate assumptions invalidated by the live code, build graph, or module graph.
-- Reprioritize Σ, Φ, Υ, and Ζ work based on real implementation cost and blockers.
-- Generate the exact executable plan and batch boundaries for the next series work.
+- Compare the planned structure to the actual repository snapshot and the frozen Xi-6/Xi-7/Xi-8 baseline.
+- Eliminate assumptions invalidated by the live code, build graph, module graph, or frozen boundary rules.
+- Reprioritize Σ, Φ, Υ, and Ζ work based on real implementation cost, insertion points, and blockers.
+- Generate the exact executable plan, batch boundaries, and validation gates for the next series work.
 
