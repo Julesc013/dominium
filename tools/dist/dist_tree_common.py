@@ -91,6 +91,7 @@ EXCLUDED_RUNTIME_PREFIXES = (
     "tools/convergence",
     "tools/dist",
     "tools/release",
+    "tools/xstack/ci",
     "tools/xstack/auditx",
     "tools/xstack/controlx",
     "tools/xstack/core",
@@ -346,13 +347,42 @@ def _copy_runtime_data(repo_root: str, bundle_root: str) -> dict:
         src_path = os.path.join(repo_root_abs, rel_path.replace("/", os.sep))
         dest_path = os.path.join(bundle_root, rel_path.replace("/", os.sep))
         if os.path.isdir(src_path):
-            if os.path.isdir(dest_path):
-                _safe_rmtree(dest_path)
-            shutil.copytree(
-                src_path,
-                dest_path,
-                ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo", ".gitkeep"),
-            )
+            last_error: OSError | None = None
+            for attempt in range(0, 4):
+                if os.path.isdir(dest_path):
+                    _safe_rmtree(dest_path)
+                try:
+                    shutil.copytree(
+                        src_path,
+                        dest_path,
+                        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo", ".gitkeep"),
+                    )
+                    break
+                except shutil.Error as exc:
+                    rows = list(exc.args[0] or []) if exc.args else []
+                    transient_rows = [
+                        row
+                        for row in rows
+                        if len(row) >= 3
+                        and (
+                            "[Errno 2]" in str(row[2])
+                            or "[Errno 13]" in str(row[2])
+                            or "[WinError 145]" in str(row[2])
+                        )
+                    ]
+                    if rows and len(transient_rows) == len(rows):
+                        last_error = exc
+                        time.sleep(0.1 * float(attempt + 1))
+                        continue
+                    raise
+                except FileNotFoundError as exc:
+                    last_error = exc
+                    time.sleep(0.1 * float(attempt + 1))
+                    continue
+            else:
+                if last_error is not None:
+                    raise last_error
+                raise OSError("failed to copy runtime data tree '{}'".format(src_path))
             for path in _iter_json_files(dest_path):
                 copied.append(_norm(os.path.relpath(path, bundle_root)))
             continue

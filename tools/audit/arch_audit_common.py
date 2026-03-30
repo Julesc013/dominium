@@ -1625,7 +1625,7 @@ def scan_disaster_suite(repo_root: str) -> dict:
             fresh_report = dict(
                 run_disaster_suite(
                     repo_root_abs,
-                    output_root_rel=os.path.join("build", "tmp", "omega4_disaster_arch_audit"),
+                    output_root_rel=os.path.join("build", "tmp", "o4_da"),
                     write_outputs=False,
                 )
                 or {}
@@ -2954,6 +2954,7 @@ def scan_offline_archive(repo_root: str) -> dict:
 
     try:
         from tools.release.offline_archive_common import (
+            DEFAULT_OUTPUT_ROOT_REL,
             OFFLINE_ARCHIVE_BASELINE_DOC_REL,
             OFFLINE_ARCHIVE_BASELINE_REL,
             OFFLINE_ARCHIVE_BASELINE_SCHEMA_ID,
@@ -3060,7 +3061,7 @@ def scan_offline_archive(repo_root: str) -> dict:
     try:
         fresh_build = build_offline_archive(
             repo_root_abs,
-            output_root_rel=os.path.join("build", "tmp", "omega8_archive_arch_audit"),
+            output_root_rel=DEFAULT_OUTPUT_ROOT_REL,
         )
         fresh_verify = verify_offline_archive(repo_root_abs, archive_path=_token(fresh_build.get("archive_bundle_path")), baseline_path="")
         fresh_baseline = build_archive_baseline(fresh_build, fresh_verify)

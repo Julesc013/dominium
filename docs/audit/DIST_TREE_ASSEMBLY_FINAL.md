@@ -1,7 +1,5 @@
 Status: DERIVED
 Last Reviewed: 2026-03-13
-Supersedes: none
-Superseded By: none
 Stability: provisional
 Future Series: DIST
 Replacement Target: DIST-2 artifact integrity verification and DIST-3 installer constitution
@@ -22,11 +20,11 @@ Replacement Target: DIST-2 artifact integrity verification and DIST-3 installer 
 
 ## File Counts and Hashes
 
-- Bundle file count: `2982`
-- Bundle hash: `c660ca7a0e4bb5380339b8e28a437085e6bc58dac202da20db83bff6aca83d32`
-- File list hash: `46d7c8204ca099d00217f047d6af715f46629a634bd09c663376524e3d7d1165`
-- Release manifest hash: `52b5638abe47d665833ca9241d3a7cbe63306918769758fffa8d6094f28c1841`
-- Smoke hash: `b834ee505f8059fe2517e321e4da28046377caf2088c26c54f5d709c8ebb27e6`
+- Bundle file count: `3055`
+- Bundle hash: `5b227a416465f23563900ab7f8cc6ec6f882cd4f6eef2be677f4386dcb998e43`
+- File list hash: `e381c743d9c2ae16420c94b96c7d3f7121782428230a71d11cd98d5a595e0a72`
+- Release manifest hash: `d5d2707f0a8911f4f24577f0b0a9cd4c5200ac9a6a637f4ba73d3edf56706ad5`
+- Smoke hash: `bc07e7a0f39b9ac3be141c6f72d8f8b70fe52102dc684041fadf5a2f5bd733c9`
 
 ## Included Docs
 
@@ -41,3 +39,4 @@ Replacement Target: DIST-2 artifact integrity verification and DIST-3 installer 
 - Unexpected top-level entries: `none`
 - Dev artifacts: `none`
 - Missing required packs: `none`
+

@@ -229,6 +229,7 @@ def _remove_tree_once(path: str) -> None:
                 except OSError as exc:
                     last_error = exc
                     gc.collect()
+                    time.sleep(0.05 * float(_attempt + 1))
             else:
                 if last_error is not None:
                     raise last_error
@@ -247,6 +248,7 @@ def _remove_tree_once(path: str) -> None:
         except OSError as exc:
             last_error = exc
             gc.collect()
+            time.sleep(0.05 * float(_attempt + 1))
     else:
         if last_error is not None:
             raise last_error

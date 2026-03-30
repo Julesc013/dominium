@@ -7,7 +7,7 @@ Replacement Target: Frozen ecosystem integrity baseline for v0.0.0-mock distribu
 
 - result: `complete`
 - platform_tag: `win64`
-- deterministic_fingerprint: `1ab763a2fcedd64cc492e77121ef04226d8b810a269f866c55c30409f513078c`
+- deterministic_fingerprint: `3bd48e95a562475f877050a2223ffacc5c363726cf3bcdea2e088ac02947e426`
 - baseline_present: `True`
 - baseline_matches: `True`
 
@@ -39,6 +39,6 @@ Replacement Target: Frozen ecosystem integrity baseline for v0.0.0-mock distribu
 ## Update Coverage
 
 - result: `complete`
-- latest_compatible_plan_fingerprint: `3d6af88496c666b55b4ccdfc45b54109e736f0d005b01853fa220f7848d1ab02`
+- latest_compatible_plan_fingerprint: `3abfe57f79b0e2c4d29eb59d3185820ac7d1ab51bc4d67a7dc2634b2c53848e3`
 - selected_yanked_component_ids: `none`
 - skipped_yanked_count: `1`

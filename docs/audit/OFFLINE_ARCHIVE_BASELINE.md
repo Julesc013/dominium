@@ -11,14 +11,14 @@ Replacement Target: signed release publication archives with retained historical
 ## Archive Hashes
 
 - release_id: `v0.0.0-mock`
-- archive_bundle_hash: `d02c020665010a014e723bac52ae802c6894539400aa4d812465ab121445900c`
-- archive_record_hash: `802afeb176b01d6d655d771f47b3948a9a3853a9ba87570a0bcf7c122125be26`
-- archive_projection_hash: `23cc7fcf4bcec4c8ede2f79a67f03c32655ed9f4d6b08b43036ee3107c40d025`
+- archive_bundle_hash: `a1f02ca39d3267f7da7748c0c3c9d2f60d2a50c4515c0245c614ce2db4e58d45`
+- archive_record_hash: `b9ce456e1d3b3fbc8c25e272fa6a4677335379f7430ccbb6fb445e9ec1278173`
+- archive_projection_hash: `2f919e066ebc06da3337cd05bc0fa7a2b800e76804b1aa295f22e5ccb1376fc8`
 
 ## Verification Summary
 
 - verification_result: `complete`
-- verification_fingerprint: `884187227a16ecfaa25440b579b91c1b40b2bd333a2ae178e8719d64db12abde`
+- verification_fingerprint: `79f62635c045fc8849f2bf139eac5112b0572befbef2045b39fbf5f0fd63da36`
 - required_update_tag: `ARCHIVE-REGRESSION-UPDATE`
 
 ## Rebuildability

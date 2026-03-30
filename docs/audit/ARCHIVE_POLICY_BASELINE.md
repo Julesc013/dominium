@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-14
+Supersedes: none
+Superseded By: none
 Stability: provisional
 Future Series: DIST-7/RELEASE
 Replacement Target: signed publication bundles and multi-mirror release automation
@@ -9,9 +11,9 @@ Replacement Target: signed publication bundles and multi-mirror release automati
 ## Retention Guarantees
 
 - Immutable release id: `v0.0.0-mock`
-- Release manifest hash retained: `3ebd3e248df5abbc937cee6ed6caa9e0177e7f3445cf25eed67ea6295cd6fbf4`
-- Release index hash retained: `d7bd143684eabbcb1d2bb5637fcbb280b7c4a58767f1ff8c6a27d099909abd92`
-- Component graph hash retained: `02c9ec2f257c3984935c329771a521044c9ca8733e51e8dec2fb0e66f878bf5f`
+- Release manifest hash retained: `d5d2707f0a8911f4f24577f0b0a9cd4c5200ac9a6a637f4ba73d3edf56706ad5`
+- Release index hash retained: `d04261cdc491a17dc3f6806ecf932a45b5c92146e811d6b5f41cab19de84eb73`
+- Component graph hash retained: `f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe`
 - Governance profile hash retained: `09273dc808ff2cf8edab36eb30ce4139212bcce8903a3ab5a3043a9fcfd08187`
 - Release index history snapshot: `manifests/release_index_history/mock/v0.0.0-mock.json`
 - Official release retention policy: no deletion of published mock release artifacts.
@@ -29,7 +31,7 @@ Replacement Target: signed publication bundles and multi-mirror release automati
 
 ## Readiness
 
-- Offline archive bundle hash: `085bda3301ae3b57a5952a720d695030111022a3d32387e3465944e19bb9b3a1`
+- Offline archive bundle hash: `ae098b3f824272964aa9e872dcdffbaab15b91d7a1d3fce95cfd6625e3f32de0`
 - Archive verification result: `complete`
 - Ready for DIST-7 packaging: yes, with immutable release record, no-overwrite history path, and deterministic offline archive bundle generation.
 

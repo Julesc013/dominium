@@ -1,49 +1,38 @@
 Status: DERIVED
 Last Reviewed: 2026-03-30
 Stability: stable
-Future Series: XI-7
-Replacement Target: superseded by a later explicit architecture-update governance revision only
+Future Series: XI-8
+Replacement Target: later explicit policy revision only
 
 # Architecture Drift Policy
 
-Xi-6 froze the architecture graph. Xi-7 makes intentional change explicit and accidental drift actionable.
+Intentional architecture and repository-structure change requires deliberate process rather than prompt drift.
 
-## Intentional Architecture Changes
+## Architecture Graph Updates
 
-To change the frozen architecture graph:
-
-1. prepare a ControlX plan with `python -B tools/controlx/tool_plan_arch_change.py --repo-root .`
-2. attach the required tag: `ARCH-GRAPH-UPDATE`
-3. update `data/architecture/architecture_graph.v1.json` and companion Xi-6 artifacts deliberately
-4. pass the `FULL` Xi-7 CI profile
+1. prepare a ControlX architecture plan with `python -B tools/controlx/tool_plan_arch_change.py --repo-root .`
+2. attach `ARCH-GRAPH-UPDATE`
+3. update the Xi-6 frozen architecture artifacts deliberately
+4. pass the `FULL` CI profile
 
 ## New Modules
 
-Adding a new module requires:
-
 1. update `data/architecture/module_registry.v1.json`
 2. update `data/architecture/architecture_graph.v1.json`
-3. pass `STRICT`
-4. pass `FULL`
+3. update `data/architecture/repository_structure_lock.json` if a new top-level root is involved
+4. pass `STRICT` and `FULL`
 
 ## New Dependencies
 
-Adding a new dependency requires:
-
 1. update `data/architecture/module_boundary_rules.v1.json`
-2. verify the dependency remains constitutionally valid
-3. pass `STRICT`
-4. pass `FULL`
+2. preserve constitutional architecture
+3. pass `STRICT` and `FULL`
 
-## Prompt Governance
+## Repository Structure Updates
 
-- prompts are untrusted
-- CI is authoritative
-- bad prompt output must be rejected by RepoX, AuditX, TestX, or validation gates before merge
+- top-level roots are frozen by Xi-8 lock hash `f419ce454578b60f2229d909e78e90cc1bb9dfd16d3ea721a8f7a185c13774b5`
+- sanctioned source-like roots may change only through explicit Xi-5/Xi-8 policy refresh
+- generic `src/` and `source/` dumping grounds remain forbidden
 
-## Review Standard
-
-- architecture drift without `ARCH-GRAPH-UPDATE` is invalid
-- boundary changes without updated rules are invalid
-- duplicate semantic engines are invalid
-- new module roots without registration are invalid
+Prompts are untrusted.
+CI and frozen artifacts are authoritative.

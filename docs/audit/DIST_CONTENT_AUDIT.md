@@ -1,7 +1,5 @@
 Status: DERIVED
 Last Reviewed: 2026-03-13
-Supersedes: none
-Superseded By: none
 Stability: provisional
 Future Series: DIST
 Replacement Target: DIST-2 artifact integrity verification and installer-free packaging hardening
@@ -23,4 +21,4 @@ Replacement Target: DIST-2 artifact integrity verification and installer-free pa
 
 ## Large Files
 
-- `tools/xstack/sessionx/process_runtime.pyc`: 4395380 bytes
+- `tools/xstack/sessionx/process_runtime.pyc`: 4395900 bytes

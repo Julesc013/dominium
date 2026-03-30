@@ -24,6 +24,10 @@ from tools.review.xi6_common import (  # noqa: E402
     build_single_engine_findings,
     build_ui_truth_leak_findings,
 )
+from tools.review.xi8_common import (  # noqa: E402
+    build_arch_graph_matches_repo_violations,
+    build_repository_structure_violations,
+)
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
@@ -43,6 +47,8 @@ ARCH_DRIFT_POLICY_DOC_REL = "docs/xstack/ARCH_DRIFT_POLICY.md"
 REPOX_RULE_IDS = (
     "INV-NO-SRC-DIRECTORY",
     "INV-ARCH-GRAPH-V1-PRESENT",
+    "INV-REPO-STRUCTURE-LOCKED",
+    "INV-ARCH-GRAPH-MATCHES-REPO",
     "INV-MODULE-BOUNDARIES-RESPECTED",
     "INV-SINGLE-CANONICAL-ENGINES",
 )
@@ -52,8 +58,9 @@ AUDITX_DETECTOR_IDS = (
     "E561_FORBIDDEN_DEPENDENCY_SMELL",
     "E562_DUPLICATE_SEMANTIC_ENGINE_REGISTRY_SMELL",
     "E563_UI_TRUTH_LEAK_BOUNDARY_SMELL",
-    "AUDITX_NUMERIC_DISCIPLINE_SCAN",
     "E564_MISSING_CI_GUARD_SMELL",
+    "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL",
+    "AUDITX_NUMERIC_DISCIPLINE_SCAN",
 )
 
 PROFILE_IDS = ("FAST", "STRICT", "FULL")
@@ -587,6 +594,38 @@ def _run_arch_graph_present_rule(repo_root: str) -> dict[str, object]:
     )
 
 
+def _run_repository_structure_lock_rule(repo_root: str) -> dict[str, object]:
+    findings = [
+        {
+            "file_path": _token(row.get("file_path")),
+            "message": _token(row.get("message")) or "Xi-8 repository structure drift detected",
+            "remediation": _token(row.get("remediation")) or "restore or deliberately refresh the Xi-8 repository structure lock",
+        }
+        for row in build_repository_structure_violations(repo_root)
+    ]
+    return _rule_result(
+        "INV-REPO-STRUCTURE-LOCKED",
+        "pass" if not findings else "fail",
+        findings,
+    )
+
+
+def _run_arch_graph_matches_repo_rule(repo_root: str) -> dict[str, object]:
+    findings = [
+        {
+            "file_path": _token(row.get("file_path")),
+            "message": _token(row.get("message")) or "Xi-8 architecture/repository mismatch detected",
+            "remediation": _token(row.get("remediation")) or "refresh the frozen architecture or remove the undeclared root",
+        }
+        for row in build_arch_graph_matches_repo_violations(repo_root)
+    ]
+    return _rule_result(
+        "INV-ARCH-GRAPH-MATCHES-REPO",
+        "pass" if not findings else "fail",
+        findings,
+    )
+
+
 def _run_module_boundaries_rule(repo_root: str) -> dict[str, object]:
     blocking_rows, allowed_rows = _filter_boundary_rows(repo_root, build_boundary_findings(repo_root))
     findings = [
@@ -638,6 +677,8 @@ def run_repox_stage(repo_root: str, rule_ids: Iterable[object]) -> dict[str, obj
     dispatch = {
         "INV-NO-SRC-DIRECTORY": _run_no_src_directory_rule,
         "INV-ARCH-GRAPH-V1-PRESENT": _run_arch_graph_present_rule,
+        "INV-REPO-STRUCTURE-LOCKED": _run_repository_structure_lock_rule,
+        "INV-ARCH-GRAPH-MATCHES-REPO": _run_arch_graph_matches_repo_rule,
         "INV-MODULE-BOUNDARIES-RESPECTED": _run_module_boundaries_rule,
         "INV-SINGLE-CANONICAL-ENGINES": _run_single_engine_rule,
         "INV-XSTACK-CI-MUST-RUN": lambda path: _run_ci_guard_rule(path, "INV-XSTACK-CI-MUST-RUN"),
@@ -844,6 +885,29 @@ def _run_missing_ci_guard_detector(repo_root: str) -> tuple[list[dict[str, objec
     return findings, gate
 
 
+def _run_repository_structure_drift_detector(repo_root: str) -> tuple[list[dict[str, object]], dict[str, object]]:
+    findings = [
+        _render_audit_finding(
+            "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL",
+            file_path=_token(row.get("file_path")),
+            message=_token(row.get("message")) or "Xi-8 repository structure drift detected",
+            remediation=_token(row.get("remediation")) or "restore or deliberately refresh the Xi-8 repository freeze surfaces",
+            evidence=[
+                "rule_id={}".format(_token(row.get("rule_id"))),
+                "code={}".format(_token(row.get("code"))),
+            ],
+        )
+        for row in list(build_repository_structure_violations(repo_root)) + list(build_arch_graph_matches_repo_violations(repo_root))
+    ]
+    gate = {
+        "detector_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL",
+        "finding_count": len(findings),
+        "status": "pass" if not findings else "fail",
+        "findings": findings,
+    }
+    return findings, gate
+
+
 def run_auditx_stage(repo_root: str, profile: str, detector_ids: Iterable[object]) -> dict[str, object]:
     del profile
     gate_runs: list[dict[str, object]] = []
@@ -861,6 +925,8 @@ def run_auditx_stage(repo_root: str, profile: str, detector_ids: Iterable[object
             findings, gate = _run_numeric_discipline_scan(repo_root)
         elif detector_id == "E564_MISSING_CI_GUARD_SMELL":
             findings, gate = _run_missing_ci_guard_detector(repo_root)
+        elif detector_id == "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL":
+            findings, gate = _run_repository_structure_drift_detector(repo_root)
         else:
             findings = [
                 _render_audit_finding(

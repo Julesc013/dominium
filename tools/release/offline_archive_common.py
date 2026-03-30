@@ -816,7 +816,7 @@ def _verify_gameplay_subcheck(repo_root: str, extracted_root: str) -> dict:
 def _verify_disaster_subcheck(repo_root: str) -> dict:
     from tools.mvp.disaster_suite_common import run_disaster_suite
 
-    report = run_disaster_suite(repo_root, output_root_rel=os.path.join("build", "tmp", "omega8_offline_archive_disaster_verify"), write_outputs=False)
+    report = run_disaster_suite(repo_root, output_root_rel=os.path.join("build", "tmp", "o8_oadv"), write_outputs=False)
     return {
         "result": "complete" if _token(report.get("result")) == "complete" else "refused",
         "fingerprint": _token(report.get("deterministic_fingerprint")),

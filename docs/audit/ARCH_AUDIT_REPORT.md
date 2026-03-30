@@ -10,7 +10,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - release_status: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `9`
-- deterministic_fingerprint: `3ed6c4b791269ccc4228c168cc29b673b3aaeedd9998e583a2929c6ba4ca31ce`
+- deterministic_fingerprint: `6e00e1c3f3084103703b16e65ad5eb99fd8992ff0c77cd1fdfa779cd64c09172`
 
 ## Checks
 
@@ -30,7 +30,7 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `6ec759a9e23ce4a7b11cff0835b6837e165aa240cd75ef2cfca789b24866b836`
+- deterministic_fingerprint: `265470d3f7b38e9e356d56049dcceb4faa9ff60e10fe8f125d654c0d460872ef`
 
 ### determinism_scan
 - result: `pass`
@@ -82,25 +82,25 @@ Replacement Target: Canon-aligned documentation set tracked by ARCH-AUDIT and RE
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `fe35eb331bc45803d8a0cbbbfb1ef56079f383565a419acdfafc2303d3486a4f`
+- deterministic_fingerprint: `c3bf1445a317f264223dae9c6fcd8fc636847e7b41c41a5e908f1470fe357301`
 
 ### update_sim_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `6608a6cfce9d60c591891a7a3ac072ee4cd421f2ae3aaf7ce8ab8de248ef9ca3`
+- deterministic_fingerprint: `27b043f9e59a8538e57c8cba0ba0b33aaed806aa5c2e590f2e33d66d177ada45`
 
 ### trust_strict_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `30da31325dcca3f0c7c44beef14102594c86dfd1b48b4bffa2d69e83798549cb`
+- deterministic_fingerprint: `26d08917f2a0e723350f32891b19db03b396d55586f95b087fdc4acaaaa30337`
 
 ### offline_archive_scan
 - result: `pass`
 - blocking_finding_count: `0`
 - known_exception_count: `0`
-- deterministic_fingerprint: `2567c12dd3868b1ce929c9693f52ae21954c093e2040e219294045c0857d87ec`
+- deterministic_fingerprint: `9c21727d7571134a8d565874c1440907123b157110a5366fb41e7aad7c04be99`
 
 ### toolchain_matrix_scan
 - result: `pass`

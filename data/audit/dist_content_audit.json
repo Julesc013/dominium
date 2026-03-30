@@ -5,7 +5,7 @@
     "store/packs/official/pack.sol.pin_minimal"
   ],
   "bundle_root": "D:/Projects/Dominium/dominium/dist/v0.0.0-mock/win64/dominium",
-  "deterministic_fingerprint": "6ce24fe657398685686329ec9f2ee381de3e9422935656092f296e3f53c2dcb9",
+  "deterministic_fingerprint": "c1477b3d8394cfb3277ef35bcfb2048ea6ebd6ce1437508f4b8e7dcf8cf032a6",
   "dev_artifacts": [],
   "expected_packs": [
     "store/packs/base/pack.base.procedural",
@@ -15,7 +15,7 @@
   "large_files": [
     {
       "path": "tools/xstack/sessionx/process_runtime.pyc",
-      "size_bytes": 4395380
+      "size_bytes": 4395900
     }
   ],
   "lock_paths": [

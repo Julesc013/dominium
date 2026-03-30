@@ -6,15 +6,15 @@ Replacement Target: Frozen offline update simulation baseline for v0.0.0-mock di
 # Update Simulation Baseline
 
 - result: `complete`
-- deterministic_fingerprint: `5d30b15101a675e9500c0ddea4b055104bbc059d4e8c8ff447ef0d4d559b5063`
+- deterministic_fingerprint: `990453a5810defdfc1f287a07a582ba015e642abe5d7e959688ad915b53cfe01`
 
 ## Scenario Results
 
-- baseline install component_set_hash: `7cc6df93ec4119111602263c8f8ad6dfe5d6115a63abb10b15f5dfa773d83e76`
-- upgrade plan fingerprint: `80888ede6c7659c925ec02f4fe1c57592ddc849b14a40e72f28f789c3d9b8af5`
+- baseline install component_set_hash: `dbed548b7f8de8e7e046783f78fef90c7c3e3da36f2ac837419f832d69e03223`
+- upgrade plan fingerprint: `3bbdd2dfbb2ceb8e4f996643453211061073702561182eb34bd7c62a6a73390a`
 - yanked exclusion selected_yanked_component_ids: `none`
 - strict trust refusal_code: `refusal.trust.signature_missing`
-- rollback restored_component_set_hash: `7cc6df93ec4119111602263c8f8ad6dfe5d6115a63abb10b15f5dfa773d83e76`
+- rollback restored_component_set_hash: `dbed548b7f8de8e7e046783f78fef90c7c3e3da36f2ac837419f832d69e03223`
 
 ## Readiness
 

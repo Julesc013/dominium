@@ -24,6 +24,10 @@ from tools.review.xi6_common import (
     build_single_engine_findings,
     evaluate_architecture_drift,
 )
+from tools.review.xi8_common import (
+    build_arch_graph_matches_repo_violations,
+    build_repository_structure_violations,
+)
 
 
 FORBIDDEN_IDENTIFIERS = (
@@ -35115,6 +35119,41 @@ def _append_arch_graph_v1_present_findings(
         )
 
 
+def _append_repository_structure_locked_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    try:
+        rows = build_repository_structure_violations(repo_root)
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/architecture/repository_structure_lock.json",
+                line_number=1,
+                snippet="build_repository_structure_violations",
+                message="failed to evaluate Xi-8 repository structure lock: {}".format(type(exc).__name__),
+                rule_id="INV-REPO-STRUCTURE-LOCKED",
+            )
+        )
+        return
+    for row in rows:
+        item = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(item.get("file_path", "")),
+                line_number=1,
+                snippet=str(item.get("code", ""))[:140],
+                message=str(item.get("message", "")).strip() or "Xi-8 repository structure drift detected",
+                rule_id="INV-REPO-STRUCTURE-LOCKED",
+            )
+        )
+
+
 def _append_architecture_drift_guard_findings(
     *,
     findings: List[Dict[str, object]],
@@ -35136,8 +35175,16 @@ def _append_architecture_drift_guard_findings(
             )
         )
         return
+    try:
+        from tools.xstack.ci.ci_common import _is_allowed_architecture_drift, _provisional_allowances
+    except Exception:
+        _is_allowed_architecture_drift = None
+        _provisional_allowances = None
     if str(report.get("status", "")).strip().lower() == "pass":
         return
+    if _is_allowed_architecture_drift is not None and _provisional_allowances is not None:
+        if _is_allowed_architecture_drift(report, _provisional_allowances(repo_root, "architecture_drift")):
+            return
     findings.append(
         _finding(
             severity=severity,
@@ -35147,7 +35194,42 @@ def _append_architecture_drift_guard_findings(
             message=str(report.get("reason", "")).strip() or "live architecture graph drifted from Xi-6 freeze",
             rule_id="INV-ARCH-GRAPH-V1-PRESENT",
         )
-    )
+        )
+
+
+def _append_arch_graph_matches_repo_findings(
+    *,
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    try:
+        rows = build_arch_graph_matches_repo_violations(repo_root)
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/architecture/repository_structure_lock.json",
+                line_number=1,
+                snippet="build_arch_graph_matches_repo_violations",
+                message="failed to evaluate Xi-8 architecture/repository alignment: {}".format(type(exc).__name__),
+                rule_id="INV-ARCH-GRAPH-MATCHES-REPO",
+            )
+        )
+        return
+    for row in rows:
+        item = dict(row or {})
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(item.get("file_path", "")),
+                line_number=1,
+                snippet=str(item.get("code", ""))[:140],
+                message=str(item.get("message", "")).strip() or "Xi-8 architecture/repository mismatch detected",
+                rule_id="INV-ARCH-GRAPH-MATCHES-REPO",
+            )
+        )
 
 
 def _append_module_boundaries_respected_findings(
@@ -35171,7 +35253,13 @@ def _append_module_boundaries_respected_findings(
             )
         )
         return
-    for row in rows:
+    try:
+        from tools.xstack.ci.ci_common import _filter_boundary_rows
+    except Exception:
+        blocking_rows = rows
+    else:
+        blocking_rows, _allowed_rows = _filter_boundary_rows(repo_root, rows)
+    for row in blocking_rows:
         item = dict(row or {})
         findings.append(
             _finding(
@@ -36016,7 +36104,9 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     for append_fn in (
         _append_worktree_hygiene_findings,
         _append_arch_graph_v1_present_findings,
+        _append_repository_structure_locked_findings,
         _append_architecture_drift_guard_findings,
+        _append_arch_graph_matches_repo_findings,
         _append_module_boundaries_respected_findings,
         _append_single_canonical_engines_findings,
         _append_xstack_ci_must_run_findings,
