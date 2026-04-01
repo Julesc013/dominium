@@ -1,0 +1,151 @@
+{
+  "artifact_id": "P-1.product_entrypoints",
+  "post_state": "post-\u03a9/\u039e/\u03a0",
+  "authority_basis": [
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json"
+  ],
+  "ordering_rules": [
+    "Entries are sorted by root_path ascending.",
+    "Entrypoint evidence comes from live tree plus build files.",
+    "Confidence reflects how directly the product is declared or wired."
+  ],
+  "entries": [
+    {
+      "name": "appshell",
+      "root_path": "appshell",
+      "product_kind": "operator_shell",
+      "likely_role": "python bootstrap, supervisor, ipc, and mode-dispatch shell",
+      "likely_entrypoint_paths": [
+        "appshell/bootstrap.py",
+        "appshell/product_bootstrap.py",
+        "appshell/mode_dispatcher.py",
+        "appshell/supervisor/supervisor_engine.py",
+        "appshell/tui/tui_engine.py"
+      ],
+      "build_targets": [],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Observed as a live orchestration surface rather than a CMake-registered compiled product."
+    },
+    {
+      "name": "client",
+      "root_path": "client",
+      "product_kind": "compiled_product",
+      "likely_role": "interactive client application",
+      "likely_entrypoint_paths": [
+        "client/app/main_client.c",
+        "client/gui/client_app_win32.cpp"
+      ],
+      "build_targets": [
+        "dominium_client",
+        "client_app_win32"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Registered through dom_register_product(client dominium_client)."
+    },
+    {
+      "name": "launcher",
+      "root_path": "launcher",
+      "product_kind": "compiled_product",
+      "likely_role": "launcher and shell-selection surface",
+      "likely_entrypoint_paths": [
+        "launcher/cli/launcher_cli_main.c",
+        "launcher/gui/launcher_gui_main.cpp",
+        "launcher/tui/launcher_tui_main.cpp",
+        "launcher/gui/launcher_app_win32.cpp"
+      ],
+      "build_targets": [
+        "launcher_cli",
+        "launcher_gui",
+        "launcher_tui",
+        "launcher_app_win32"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "launcher_cli is the registered product target; GUI and TUI variants coexist."
+    },
+    {
+      "name": "server",
+      "root_path": "server",
+      "product_kind": "compiled_product",
+      "likely_role": "authoritative server and shard/persistence host",
+      "likely_entrypoint_paths": [
+        "server/app/main_server.c",
+        "server/gui/server_app_win32.cpp"
+      ],
+      "build_targets": [
+        "dominium_server",
+        "server_app_win32"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Registered through dom_register_product(server dominium_server)."
+    },
+    {
+      "name": "setup",
+      "root_path": "setup",
+      "product_kind": "compiled_product",
+      "likely_role": "installer/setup and package orchestration surface",
+      "likely_entrypoint_paths": [
+        "setup/cli/setup_cli_main.c",
+        "setup/gui/setup_gui_main.cpp",
+        "setup/tui/setup_tui_main.cpp",
+        "setup/gui/setup_app_win32.cpp"
+      ],
+      "build_targets": [
+        "setup_cli",
+        "setup_gui",
+        "setup_tui",
+        "setup_app_win32"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "setup_cli is the registered product target; setup also owns packaging-related scripts."
+    },
+    {
+      "name": "tools",
+      "root_path": "tools",
+      "product_kind": "compiled_product_and_operator_suite",
+      "likely_role": "operator tools host plus specialized domain and validation executables",
+      "likely_entrypoint_paths": [
+        "tools/tools_host_main.c",
+        "tools/validation/validate_all_main.cpp",
+        "tools/data_validate/data_validate_main.c",
+        "tools/modpack/mod_pack_builder.cpp",
+        "tools/modpack/mod_pack_validator.cpp"
+      ],
+      "build_targets": [
+        "dominium-tools",
+        "validate_all",
+        "data_validate",
+        "coredata_compile",
+        "coredata_validate",
+        "dom_tool_terrain",
+        "dom_tool_geology",
+        "dom_tool_climate",
+        "dom_tool_weather",
+        "dom_tool_trust"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Registered through dom_register_product(tools dominium-tools) and surrounded by many specialized executables."
+    }
+  ],
+  "non_product_shared_support": [
+    {
+      "name": "app::runtime",
+      "path": "app",
+      "role": "shared runtime support library used by client, server, and tools",
+      "confidence": "high"
+    }
+  ]
+}

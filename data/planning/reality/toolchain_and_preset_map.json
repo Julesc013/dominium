@@ -1,0 +1,233 @@
+{
+  "artifact_id": "P-1.toolchain_and_preset_map",
+  "post_state": "post-\u03a9/\u039e/\u03a0",
+  "authority_basis": [
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json"
+  ],
+  "ordering_rules": [
+    "Sections are ordered build systems, preset families, automation surfaces, ci surfaces, then derived outputs.",
+    "Preset family members are sorted lexicographically within each family.",
+    "This is an extraction inventory, not an interpretation of preferred future toolchains."
+  ],
+  "build_systems": [
+    {
+      "path": "CMakeLists.txt",
+      "toolchain_kind": "root_build_orchestrator",
+      "status_class": "authoritative",
+      "confidence": "high",
+      "notes": "Defines suite build, product subdirectories, verify targets, and distribution targets."
+    },
+    {
+      "path": "CMakePresets.json",
+      "toolchain_kind": "preset_matrix",
+      "status_class": "authoritative",
+      "confidence": "high",
+      "notes": "Contains local, verify, release, platform-specific, and legacy preset families."
+    },
+    {
+      "path": "cmake",
+      "toolchain_kind": "cmake_module_and_toolchain_library",
+      "status_class": "authoritative",
+      "confidence": "high",
+      "notes": "Contains toolchains, ide projection helpers, reproducibility, distribution, and runtime dependency helpers."
+    },
+    {
+      "path": "setup/packages/scripts",
+      "toolchain_kind": "packaging_and_distribution_scripts",
+      "status_class": "authoritative",
+      "confidence": "high",
+      "notes": "Contains packaging, staging, schema freeze, layer checks, and launcher invariant scripts."
+    }
+  ],
+  "preset_families": [
+    {
+      "family_id": "local_verify_release",
+      "observed_presets": [
+        "linux-verify",
+        "linux-verify-full",
+        "local",
+        "macos-verify",
+        "macos-verify-full",
+        "release-check",
+        "verify",
+        "verify-linux-gcc",
+        "verify-macos-xcode",
+        "verify-win-vs2026"
+      ],
+      "notes": "Top-level operator-facing verification and release-check surfaces."
+    },
+    {
+      "family_id": "modern_dev_and_baseline",
+      "observed_presets": [
+        "baseline-debug",
+        "baseline-release",
+        "debug",
+        "deterministic",
+        "dev-linux-clang",
+        "dev-linux-gcc",
+        "dev-macos-xcode",
+        "dev-win-vs2026",
+        "modern-debug",
+        "modern-release"
+      ],
+      "notes": "General modern development and baseline presets."
+    },
+    {
+      "family_id": "windows_msvc",
+      "observed_presets": [
+        "dev-win-vs2026",
+        "msvc-base",
+        "msvc-debug",
+        "msvc-dev-debug",
+        "msvc-dev-release",
+        "msvc-release",
+        "msvc-verify",
+        "msvc-verify-full",
+        "release-win-vs2026",
+        "release-winnt-x86_64",
+        "vs2026-x64-debug",
+        "vs2026-x64-release",
+        "windows-msvc-vs2026",
+        "windows-msvc-x64-debug",
+        "windows-msvc-x86-debug"
+      ],
+      "notes": "Main Windows/MSVC preset family."
+    },
+    {
+      "family_id": "linux_gcc_and_clang",
+      "observed_presets": [
+        "dev-linux-clang",
+        "dev-linux-gcc",
+        "linux-clang-debug",
+        "linux-clang-dev",
+        "linux-debug",
+        "linux-dev",
+        "linux-gcc-dev",
+        "linux-musl-debug",
+        "release-linux-gcc",
+        "release-linux-x86_64"
+      ],
+      "notes": "Linux development and release preset family."
+    },
+    {
+      "family_id": "macos_and_xcode",
+      "observed_presets": [
+        "dev-macos-xcode",
+        "macos-dev",
+        "macos-verify",
+        "macos-verify-full",
+        "macos-xcode",
+        "macos-xcode-debug",
+        "release-macos-arm64",
+        "release-macos-xcode"
+      ],
+      "notes": "macOS and Xcode family."
+    },
+    {
+      "family_id": "legacy_and_projection",
+      "observed_presets": [
+        "dos-x86_16",
+        "ide-linux-clang-modern-client-gui",
+        "ide-linux-gcc295-legacy-client-gui",
+        "ide-mac-cw-classic-launcher-gui",
+        "ide-mac-xcode3-universal-setup-gui",
+        "ide-win-vc6-nt4-server-cli",
+        "ide-win-vc6-win9x-client-gui",
+        "ide-win-vc71-xp-launcher-gui",
+        "ide-win-vs2015-win10-1507-1607-setup-gui",
+        "ide-win-vs2026-win11-client-gui",
+        "legacy-win-vs2015",
+        "win16-x86_16",
+        "win9x-x86_32-legacy"
+      ],
+      "notes": "Legacy target and IDE projection family; actively referenced by projection-sanity CI."
+    },
+    {
+      "family_id": "alternate_toolchains",
+      "observed_presets": [
+        "base-msys2",
+        "msvc-win32-dx9",
+        "msys2-debug",
+        "msys2-release",
+        "windows-clangcl-debug",
+        "windows-mingw-debug"
+      ],
+      "notes": "Alternate Windows and cross-toolchain coverage."
+    }
+  ],
+  "automation_surfaces": [
+    {
+      "path": "scripts",
+      "surface_kind": "repo_verification_and_projection_scripts",
+      "status_class": "authoritative",
+      "notes": "Includes ABI, tree sanity, docs sanity, ui shell purity, IDE quarantine, and projection regeneration checks."
+    },
+    {
+      "path": "tools/ci",
+      "surface_kind": "content_and_ci_validation_scripts",
+      "status_class": "authoritative",
+      "notes": "Includes arch checks, perf budget checks, smoke-run apps, and content validation scripts."
+    },
+    {
+      "path": "tools/distribution",
+      "surface_kind": "packaging_and_distribution_automation",
+      "status_class": "authoritative",
+      "notes": "Contains packaging, verify, index, and smoke helpers."
+    },
+    {
+      "path": "tools/release",
+      "surface_kind": "release_automation",
+      "status_class": "authoritative",
+      "notes": "Contains release policy, archive, component graph, and update automation."
+    },
+    {
+      "path": "tools/xstack",
+      "surface_kind": "umbrella_automation_framework",
+      "status_class": "authoritative",
+      "notes": "Contains ci, repox, testx, packagingx, controlx, compatx, and securex."
+    }
+  ],
+  "ci_surfaces": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "jobs": [
+        "build-test",
+        "ci-dev",
+        "ci-dist",
+        "ci-verify",
+        "docs-sanity",
+        "projection-sanity",
+        "repo-sanity"
+      ],
+      "notes": "Active GitHub Actions workflow for repo, xstack, docs, projection, and build validation."
+    },
+    {
+      "path": "tools/xstack/ci",
+      "notes": "Referenced directly by ci-dev, ci-verify, and ci-dist workflow jobs."
+    }
+  ],
+  "derived_outputs": [
+    {
+      "path": ".xstack_cache",
+      "status_class": "derived",
+      "notes": "Cache surface."
+    },
+    {
+      "path": "artifacts/toolchain_runs",
+      "status_class": "derived",
+      "notes": "Emitted toolchain run metadata and results."
+    },
+    {
+      "path": "build",
+      "status_class": "derived",
+      "notes": "Generated build and validation trees."
+    },
+    {
+      "path": "tools/xstack/out",
+      "status_class": "derived",
+      "notes": "FAST, STRICT, and FULL lane outputs."
+    }
+  ]
+}

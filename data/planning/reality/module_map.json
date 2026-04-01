@@ -1,0 +1,703 @@
+{
+  "artifact_id": "P-1.module_map",
+  "post_state": "post-\u03a9/\u039e/\u03a0",
+  "authority_basis": [
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json"
+  ],
+  "ordering_rules": [
+    "Entries are sorted by normalized path ascending.",
+    "status_class uses the P-0 intake vocabulary.",
+    "canonicality_assessment uses the P-1 extraction vocabulary.",
+    "confidence values are high, medium, or low."
+  ],
+  "extraction_limits": "Top-level and major sub-root landscape only; this is not yet the final architecture graph.",
+  "entries": [
+    {
+      "name": ".github",
+      "path": ".github",
+      "apparent_domain": "ci and repository automation",
+      "ownership_class": "tooling",
+      "authority_domains": [
+        "structural",
+        "planning"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains active workflow automation, including ci and projection-sanity jobs."
+    },
+    {
+      "name": ".xstack_cache",
+      "path": ".xstack_cache",
+      "apparent_domain": "xstack cache and generated state",
+      "ownership_class": "generated",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "derived",
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Large cache surface; evidence of tooling activity but not a canonical planning source on its own."
+    },
+    {
+      "name": "app",
+      "path": "app",
+      "apparent_domain": "shared application runtime support",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Root CMake adds this before product roots and exposes app::runtime."
+    },
+    {
+      "name": "appshell",
+      "path": "appshell",
+      "apparent_domain": "python operator shell, bootstrap, ipc, supervisor, and tui support",
+      "ownership_class": "product",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Not registered through the same CMake path as compiled products, but clearly active and non-legacy."
+    },
+    {
+      "name": "archive",
+      "path": "archive",
+      "apparent_domain": "archive and deterministic bundle support",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Small live root with archive-related implementation, distinct from generated artifacts."
+    },
+    {
+      "name": "artifacts",
+      "path": "artifacts",
+      "apparent_domain": "generated reports and toolchain run outputs",
+      "ownership_class": "generated",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "derived",
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Evidence surface with emitted reports and run manifests; use only with provenance."
+    },
+    {
+      "name": "attic/src_quarantine",
+      "path": "attic/src_quarantine",
+      "apparent_domain": "explicitly quarantined source residue",
+      "ownership_class": "legacy",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "quarantined",
+      "canonicality_assessment": "quarantine-candidate",
+      "confidence": "high",
+      "notes": "Explicit quarantine marker; non-canonical until reviewed."
+    },
+    {
+      "name": "build",
+      "path": "build",
+      "apparent_domain": "generated build trees, validation bundles, and copied schemas",
+      "ownership_class": "generated",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "derived",
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Contains many generated subtrees and schema echoes; not a source-of-truth layer."
+    },
+    {
+      "name": "client",
+      "path": "client",
+      "apparent_domain": "compiled client product root",
+      "ownership_class": "product",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Defines dominium_client and registers the client product in CMake."
+    },
+    {
+      "name": "compat",
+      "path": "compat",
+      "apparent_domain": "compatibility negotiation, lifecycle, and shims",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "compatibility",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains negotiation, descriptor, and migration-related live code."
+    },
+    {
+      "name": "control",
+      "path": "control",
+      "apparent_domain": "control-plane engine, planning, proof, and capability surfaces",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "compatibility",
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Strong live root for control-plane concerns."
+    },
+    {
+      "name": "core",
+      "path": "core",
+      "apparent_domain": "graph, schedule, state, spatial, and hazard substrate",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Looks like shared runtime substrate rather than legacy scaffolding."
+    },
+    {
+      "name": "data",
+      "path": "data",
+      "apparent_domain": "registries, architecture graphs, baselines, planning data, and pack declarations",
+      "ownership_class": "data-contracts",
+      "authority_domains": [
+        "compatibility",
+        "planning",
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Mixed but central data root with many authoritative subfamilies."
+    },
+    {
+      "name": "data/architecture",
+      "path": "data/architecture",
+      "apparent_domain": "module graph, structure lock, and architecture registries",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains architecture graph and repository structure lock artifacts."
+    },
+    {
+      "name": "data/packs",
+      "path": "data/packs",
+      "apparent_domain": "pack declarations and content data in toml and manifest forms",
+      "ownership_class": "data-contracts",
+      "authority_domains": [
+        "compatibility",
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "transitional",
+      "confidence": "medium",
+      "notes": "Live machine-readable pack surface, but coexists with packs/** and needs later scope reconciliation."
+    },
+    {
+      "name": "data/registries",
+      "path": "data/registries",
+      "apparent_domain": "registry and policy declarations",
+      "ownership_class": "data-contracts",
+      "authority_domains": [
+        "compatibility",
+        "release",
+        "semantic",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "High-signal machine-readable control surface across component, compat, and policy domains."
+    },
+    {
+      "name": "docs",
+      "path": "docs",
+      "apparent_domain": "architecture, release, planning, governance, and collaborator prose",
+      "ownership_class": "governance",
+      "authority_domains": [
+        "planning",
+        "semantic"
+      ],
+      "status_class": "advisory",
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Contains both scoped doctrine and general notes; authority depends on document family."
+    },
+    {
+      "name": "engine",
+      "path": "engine",
+      "apparent_domain": "compiled engine/runtime core",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Major compiled runtime surface with modules, platform, render, time, and tests."
+    },
+    {
+      "name": "field",
+      "path": "field",
+      "apparent_domain": "field engine and boundary exchange logic",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "duplicate-shadow",
+      "confidence": "medium",
+      "notes": "Coexists with fields/** and shares field-engine naming."
+    },
+    {
+      "name": "fields",
+      "path": "fields",
+      "apparent_domain": "field engine surface",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "duplicate-shadow",
+      "confidence": "medium",
+      "notes": "Coexists with field/** and shares field-engine naming."
+    },
+    {
+      "name": "game",
+      "path": "game",
+      "apparent_domain": "compiled game/content/rules root",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Major compiled companion to engine with content, rules, mods, and tests."
+    },
+    {
+      "name": "geo",
+      "path": "geo",
+      "apparent_domain": "geometric, frame, path, and world-projection domain logic",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Large semantic root with multiple engine-like files and subdomains."
+    },
+    {
+      "name": "governance",
+      "path": "governance",
+      "apparent_domain": "runtime governance profile surface",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "semantic",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Small live code root distinct from docs/governance policy prose."
+    },
+    {
+      "name": "launcher",
+      "path": "launcher",
+      "apparent_domain": "compiled launcher product root",
+      "ownership_class": "product",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Defines launcher core plus CLI, GUI, TUI, and Win32 entrypoints."
+    },
+    {
+      "name": "legacy",
+      "path": "legacy",
+      "apparent_domain": "legacy mirrors, orphaned material, and previous product/core layouts",
+      "ownership_class": "legacy",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "transitional",
+      "canonicality_assessment": "legacy",
+      "confidence": "high",
+      "notes": "Explicit mixed-state archaeology root with multiple mirrored product families."
+    },
+    {
+      "name": "lib",
+      "path": "lib",
+      "apparent_domain": "python install, instance, save, bundle, and provider utilities",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Live utility root distinct from libs/** even though naming overlaps."
+    },
+    {
+      "name": "libs",
+      "path": "libs",
+      "apparent_domain": "compiled shared libraries and contracts",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "compatibility",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Root CMake adds libs early; contracts and appcore are used across products."
+    },
+    {
+      "name": "logic",
+      "path": "logic",
+      "apparent_domain": "logic elements, protocols, timing, and fault models",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Broad semantic root with clear live implementation files."
+    },
+    {
+      "name": "machines",
+      "path": "machines",
+      "apparent_domain": "machine and port domain logic",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Small but live domain root."
+    },
+    {
+      "name": "materials",
+      "path": "materials",
+      "apparent_domain": "material composition, construction, provenance, and performance",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Large domain root with multiple subdomains and engine-like files."
+    },
+    {
+      "name": "net",
+      "path": "net",
+      "apparent_domain": "network transport, anti-cheat, policies, and serialization-related logic",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "compatibility",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Live runtime/control surface for networking and integrity policies."
+    },
+    {
+      "name": "packs",
+      "path": "packs",
+      "apparent_domain": "pack-driven runtime and domain manifests",
+      "ownership_class": "data-contracts",
+      "authority_domains": [
+        "compatibility",
+        "release",
+        "semantic",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Strong live pack surface with pack.json, compat, capability, and trust descriptors."
+    },
+    {
+      "name": "process",
+      "path": "process",
+      "apparent_domain": "process maturity, qc, drift, and capsules",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Live process-related root that may later connect into constitutional Process doctrine."
+    },
+    {
+      "name": "quarantine",
+      "path": "quarantine",
+      "apparent_domain": "explicit quarantine marker surface",
+      "ownership_class": "legacy",
+      "authority_domains": [
+        "planning",
+        "structural"
+      ],
+      "status_class": "quarantined",
+      "canonicality_assessment": "quarantine-candidate",
+      "confidence": "high",
+      "notes": "Currently small, but the root itself is an explicit no-silent-canonicalization signal."
+    },
+    {
+      "name": "reality",
+      "path": "reality",
+      "apparent_domain": "reality ledger and transition logic",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "semantic",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "High-signal semantic root for later Λ-series reconciliation."
+    },
+    {
+      "name": "release",
+      "path": "release",
+      "apparent_domain": "release, archive, build-id, component-graph, and update resolution code",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Small but highly focused release-control root."
+    },
+    {
+      "name": "repo",
+      "path": "repo",
+      "apparent_domain": "repository policy, canon-state assertion, and repox rules",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "planning",
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains release policy, canon-state, and repository rulesets."
+    },
+    {
+      "name": "runtime",
+      "path": "runtime",
+      "apparent_domain": "small runtime root currently centered on process spawning",
+      "ownership_class": "runtime",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "unclear-low-confidence",
+      "confidence": "low",
+      "notes": "Live but thin; presence is real, canonical ownership scope is not yet obvious."
+    },
+    {
+      "name": "schema",
+      "path": "schema",
+      "apparent_domain": "schema law, semantic contracts, and specification prose",
+      "ownership_class": "data-contracts",
+      "authority_domains": [
+        "compatibility",
+        "semantic"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "P-0 authority order places semantic authority here over schemas/** when meaning conflicts."
+    },
+    {
+      "name": "schemas",
+      "path": "schemas",
+      "apparent_domain": "machine-readable schema projections and examples",
+      "ownership_class": "data-contracts",
+      "authority_domains": [
+        "compatibility",
+        "structural"
+      ],
+      "status_class": "derived",
+      "canonicality_assessment": "duplicate-shadow",
+      "confidence": "high",
+      "notes": "Validator-facing schema projection surface that coexists with schema/**."
+    },
+    {
+      "name": "scripts",
+      "path": "scripts",
+      "apparent_domain": "verification, ide generation, ci, audit, and repox support scripts",
+      "ownership_class": "tooling",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Active automation surface used by CI and local verification."
+    },
+    {
+      "name": "security",
+      "path": "security",
+      "apparent_domain": "security and trust verification support",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Currently centered on security/trust verification modules."
+    },
+    {
+      "name": "server",
+      "path": "server",
+      "apparent_domain": "compiled authoritative server product root",
+      "ownership_class": "product",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Defines dominium_server and registers the server product in CMake."
+    },
+    {
+      "name": "setup",
+      "path": "setup",
+      "apparent_domain": "compiled setup product root with packaging scripts",
+      "ownership_class": "product",
+      "authority_domains": [
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Defines setup product entrypoints and owns a packaging-script subtree."
+    },
+    {
+      "name": "signals",
+      "path": "signals",
+      "apparent_domain": "signal addressing, aggregation, institutions, and trust domain logic",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Strong semantic root with multiple live subdomains."
+    },
+    {
+      "name": "system",
+      "path": "system",
+      "apparent_domain": "system reliability, certification, forensics, statevec, and validation logic",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "semantic",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Another strong semantic root relevant to later Λ-series work."
+    },
+    {
+      "name": "tools",
+      "path": "tools",
+      "apparent_domain": "compiled tools product plus extensive operator, validation, and xstack surfaces",
+      "ownership_class": "tooling",
+      "authority_domains": [
+        "planning",
+        "release",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "CMake registers a tools product and the root also hosts release, distribution, validation, and xstack tooling."
+    },
+    {
+      "name": "universe",
+      "path": "universe",
+      "apparent_domain": "universe identity and contract enforcement",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "semantic",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Small but high-signal semantic root."
+    },
+    {
+      "name": "updates",
+      "path": "updates",
+      "apparent_domain": "channel manifests and changelog surfaces",
+      "ownership_class": "control-plane",
+      "authority_domains": [
+        "release"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Channel and changelog manifests are present directly under the root."
+    },
+    {
+      "name": "worldgen",
+      "path": "worldgen",
+      "apparent_domain": "world generation and astronomical/planetary derivation",
+      "ownership_class": "domain",
+      "authority_domains": [
+        "semantic",
+        "structural"
+      ],
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Large semantic root and strong extension candidate for future world/domain work."
+    }
+  ]
+}

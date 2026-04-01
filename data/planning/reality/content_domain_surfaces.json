@@ -1,0 +1,241 @@
+{
+  "artifact_id": "P-1.content_domain_surfaces",
+  "post_state": "post-\u03a9/\u039e/\u03a0",
+  "authority_basis": [
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json"
+  ],
+  "ordering_rules": [
+    "Entries are sorted by path ascending.",
+    "This inventory captures visible semantic/domain surfaces without resolving final semantic ownership.",
+    "Duplicate-shadow and low-confidence roots remain visible for later \u039b-series and \u03a1-2 work."
+  ],
+  "entries": [
+    {
+      "name": "astronomy domain",
+      "path": "astro",
+      "surface_kind": "astronomy_and_ephemeris_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains ephemeris, illumination, and orbit-view logic."
+    },
+    {
+      "name": "chemistry domain",
+      "path": "chem",
+      "surface_kind": "chemistry_and_degradation_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Contains process-run and degradation surfaces."
+    },
+    {
+      "name": "diegetics domain",
+      "path": "diegetics",
+      "surface_kind": "diegetic_instrument_and_presentation_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Observed as a small but live semantic root."
+    },
+    {
+      "name": "electric domain",
+      "path": "electric",
+      "surface_kind": "power_network_and_protection_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Contains power network, fault, protection, and storage logic."
+    },
+    {
+      "name": "embodiment domain",
+      "path": "embodiment",
+      "surface_kind": "body_movement_and_tool_interaction_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains body, collision, lens, movement, and tools-related logic."
+    },
+    {
+      "name": "epistemics domain",
+      "path": "epistemics",
+      "surface_kind": "memory_and_knowledge_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Observed through memory-kernel style implementation."
+    },
+    {
+      "name": "field root",
+      "path": "field",
+      "surface_kind": "field_logic_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "duplicate-shadow",
+      "confidence": "medium",
+      "notes": "Needs later reconciliation with fields/**."
+    },
+    {
+      "name": "fields root",
+      "path": "fields",
+      "surface_kind": "field_logic_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "duplicate-shadow",
+      "confidence": "medium",
+      "notes": "Needs later reconciliation with field/**."
+    },
+    {
+      "name": "game baseline content",
+      "path": "game/content/core",
+      "surface_kind": "baseline_game_content",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains astro, cosmo, and mechanics toml content for the live game root."
+    },
+    {
+      "name": "geometric world domain",
+      "path": "geo",
+      "surface_kind": "geometry_projection_path_and_world_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Large domain root spanning frames, metrics, overlays, pathing, render, and worldgen-related logic."
+    },
+    {
+      "name": "infrastructure domain",
+      "path": "infrastructure",
+      "surface_kind": "infrastructure_and_formalization_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Observed through formalization and inference-oriented files."
+    },
+    {
+      "name": "logic domain",
+      "path": "logic",
+      "surface_kind": "logic_network_and_protocol_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains compile, eval, network, noise, protocol, signal, and timing subdomains."
+    },
+    {
+      "name": "machine domain",
+      "path": "machines",
+      "surface_kind": "machine_and_port_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Small but live machine-domain root."
+    },
+    {
+      "name": "materials domain",
+      "path": "materials",
+      "surface_kind": "materials_provenance_and_construction_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Large semantic root with construction, composition, materialization, performance, and provenance subdomains."
+    },
+    {
+      "name": "mobility domain",
+      "path": "mobility",
+      "surface_kind": "traffic_vehicle_and_travel_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains geometry, network, signals, traffic, travel, and vehicle subdomains."
+    },
+    {
+      "name": "domain packs",
+      "path": "packs/domain",
+      "surface_kind": "domain_pack_surface",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains astronomy, earth, and navigation-related pack content."
+    },
+    {
+      "name": "experience packs",
+      "path": "packs/experience",
+      "surface_kind": "experience_profile_and_scenario_packs",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains experience profiles, scenarios, and UI window declarations."
+    },
+    {
+      "name": "law packs",
+      "path": "packs/law",
+      "surface_kind": "law_and_rule_pack_surface",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Semantic surface where law/profile content is expressed through packs rather than only code."
+    },
+    {
+      "name": "physics domain",
+      "path": "physics",
+      "surface_kind": "energy_momentum_entropy_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Observed through momentum, energy, and entropy surfaces."
+    },
+    {
+      "name": "pollution domain",
+      "path": "pollution",
+      "surface_kind": "pollution_and_compliance_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Contains compliance, dispersion, exposure, and measurement logic."
+    },
+    {
+      "name": "reality domain",
+      "path": "reality",
+      "surface_kind": "reality_ledger_and_transition_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "High-signal root directly relevant to later semantic/reality doctrine work."
+    },
+    {
+      "name": "signals domain",
+      "path": "signals",
+      "surface_kind": "signals_trust_and_transport_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains addressing, aggregation, institutions, transport, and trust subdomains."
+    },
+    {
+      "name": "system domain",
+      "path": "system",
+      "surface_kind": "system_reliability_and_certification_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains certification, forensics, reliability, statevec, templates, and validation surfaces."
+    },
+    {
+      "name": "universe domain",
+      "path": "universe",
+      "surface_kind": "universe_identity_and_contract_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Observed through universe identity builder and contract enforcer files."
+    },
+    {
+      "name": "world generation",
+      "path": "worldgen",
+      "surface_kind": "world_and_astronomical_generation_domain",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Large live root spanning core solvers, earth, galaxy, milky-way, and refinement surfaces."
+    }
+  ]
+}

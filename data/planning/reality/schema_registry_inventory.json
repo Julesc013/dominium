@@ -1,0 +1,169 @@
+{
+  "artifact_id": "P-1.schema_registry_inventory",
+  "post_state": "post-\u03a9/\u039e/\u03a0",
+  "authority_basis": [
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json"
+  ],
+  "ordering_rules": [
+    "Entries are sorted by path ascending.",
+    "schema/** and schemas/** are recorded separately because P-0 forbids silent flattening.",
+    "Derived copies and emitted echoes are separated from live inventories."
+  ],
+  "entries": [
+    {
+      "path": "data/architecture",
+      "inventory_kind": "architecture_graph_and_module_registry",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "observed_formats": [
+        "json"
+      ],
+      "notes": "Contains architecture_graph, module_dependency_graph, module_registry, repository_structure_lock, and single_engine_registry."
+    },
+    {
+      "path": "data/packs",
+      "inventory_kind": "pack_manifest_and_pack_data_root",
+      "status_class": "authoritative",
+      "canonicality_assessment": "transitional",
+      "confidence": "medium",
+      "observed_formats": [
+        "json",
+        "manifest",
+        "toml"
+      ],
+      "notes": "Observed pack.toml, pack.manifest, and pack_manifest.json under pack-specific directories."
+    },
+    {
+      "path": "data/registries",
+      "inventory_kind": "registry_and_policy_root",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "observed_formats": [
+        "json",
+        "registry"
+      ],
+      "notes": "Includes component_graph_registry, compat_matrix, process_registry, control policies, and many domain registries."
+    },
+    {
+      "path": "ide/manifests",
+      "inventory_kind": "ide_projection_manifests",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "observed_formats": [
+        "json"
+      ],
+      "notes": "IDE/manifests surface observed in the live repo and relevant to projection/toolchain planning."
+    },
+    {
+      "path": "packs",
+      "inventory_kind": "runtime_pack_manifest_root",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "observed_formats": [
+        "json"
+      ],
+      "notes": "Observed pack.json, pack.compat.json, pack.capabilities.json, and pack.trust.json families."
+    },
+    {
+      "path": "repo/canon_state.json",
+      "inventory_kind": "canon_state_assertion",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "observed_formats": [
+        "json"
+      ],
+      "notes": "Asserts canon level and evidence sources for repox, testx, determinism, and schema validation."
+    },
+    {
+      "path": "repo/release_policy.toml",
+      "inventory_kind": "release_policy_rules",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "observed_formats": [
+        "toml"
+      ],
+      "notes": "Declares branch, kind, and channel allow rules for release behavior."
+    },
+    {
+      "path": "schema",
+      "inventory_kind": "schema_law_and_contract_root",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "observed_formats": [
+        "md",
+        "json",
+        "yaml",
+        "domain-specific spec files"
+      ],
+      "notes": "Semantic and compatibility law root; stronger than schemas/** when meaning conflicts."
+    },
+    {
+      "path": "schemas",
+      "inventory_kind": "machine_schema_projection_root",
+      "status_class": "derived",
+      "canonicality_assessment": "duplicate-shadow",
+      "confidence": "high",
+      "observed_formats": [
+        "json"
+      ],
+      "notes": "Validator-facing schema projections and examples."
+    },
+    {
+      "path": "updates",
+      "inventory_kind": "release_channel_manifests",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "observed_formats": [
+        "json"
+      ],
+      "notes": "Contains stable, beta, nightly, pinned, and changelog manifests."
+    }
+  ],
+  "explicit_dual_structures": [
+    {
+      "pair": [
+        "schema",
+        "schemas"
+      ],
+      "classification": "duplicate-shadow",
+      "quarantine_trigger_if_conflict": "schema_projection_conflict",
+      "notes": "schema/** carries semantic law; schemas/** carries machine projections."
+    },
+    {
+      "pair": [
+        "packs",
+        "data/packs"
+      ],
+      "classification": "transitional",
+      "quarantine_trigger_if_conflict": "unsafe_ownership_resolution",
+      "notes": "Both carry pack declarations, but with different observed formats and likely scopes."
+    }
+  ],
+  "derived_or_non_authoritative_echoes": [
+    {
+      "path": "build/**/schemas",
+      "classification": "derived",
+      "notes": "Generated schema echoes inside build outputs."
+    },
+    {
+      "path": "artifacts/**",
+      "classification": "derived",
+      "notes": "Emitted audit or toolchain artifacts with no inherent canonical authority."
+    },
+    {
+      "path": ".xstack_cache/**",
+      "classification": "derived",
+      "notes": "Cache outputs, not schema law."
+    }
+  ]
+}

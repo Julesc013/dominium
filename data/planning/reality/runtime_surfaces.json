@@ -1,0 +1,272 @@
+{
+  "artifact_id": "P-1.runtime_surfaces",
+  "post_state": "post-\u03a9/\u039e/\u03a0",
+  "authority_basis": [
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json"
+  ],
+  "ordering_rules": [
+    "Entries are sorted by path ascending.",
+    "Evidence is structural and implementation-facing; semantics stay with stronger semantic sources.",
+    "Low-confidence roots remain visible instead of being flattened away."
+  ],
+  "entries": [
+    {
+      "name": "app runtime",
+      "path": "app",
+      "surface_kind": "shared_application_runtime",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "app/CMakeLists.txt exports app::runtime",
+        "linked by client, server, and tools targets"
+      ],
+      "notes": "Strong shared runtime support surface rather than a user-facing product."
+    },
+    {
+      "name": "appshell runtime shell",
+      "path": "appshell",
+      "surface_kind": "operator_runtime_shell",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "evidence": [
+        "bootstrap.py",
+        "mode_dispatcher.py",
+        "ipc and supervisor modules"
+      ],
+      "notes": "Python execution shell/orchestration layer around product and operator flows."
+    },
+    {
+      "name": "client runtime adapters",
+      "path": "client",
+      "surface_kind": "ui_and_local_runtime_adapter",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "client/app/main_client.c",
+        "client/adapters",
+        "client/core",
+        "client/input",
+        "client/modes"
+      ],
+      "notes": "Product-facing runtime surface that bridges app runtime, engine, game, and UI."
+    },
+    {
+      "name": "compatibility runtime",
+      "path": "compat",
+      "surface_kind": "compatibility_and_negotiation_layer",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "capability_negotiation.py",
+        "migration_lifecycle.py",
+        "compat/negotiation"
+      ],
+      "notes": "Strong live compat enforcement surface."
+    },
+    {
+      "name": "control runtime",
+      "path": "control",
+      "surface_kind": "control_plane_execution_and_view",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "control_plane_engine.py",
+        "control/capability",
+        "control/planning",
+        "control/proof"
+      ],
+      "notes": "Bridges execution control, proof, fidelity, and capability concerns."
+    },
+    {
+      "name": "core substrate",
+      "path": "core",
+      "surface_kind": "state_schedule_graph_substrate",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "core/state",
+        "core/schedule",
+        "core/graph",
+        "core/spatial"
+      ],
+      "notes": "Looks like shared execution substrate rather than legacy scaffolding."
+    },
+    {
+      "name": "engine",
+      "path": "engine",
+      "surface_kind": "compiled_engine_core",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "evidence": [
+        "engine/CMakeLists.txt",
+        "engine/modules",
+        "engine/platform",
+        "engine/render",
+        "engine/time"
+      ],
+      "notes": "Strongest compiled runtime anchor in the repo."
+    },
+    {
+      "name": "game runtime",
+      "path": "game",
+      "surface_kind": "compiled_game_content_runtime",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "game/CMakeLists.txt",
+        "game/content",
+        "game/rules",
+        "game/mods"
+      ],
+      "notes": "Paired with engine and linked into product roots."
+    },
+    {
+      "name": "appcore library",
+      "path": "libs/appcore",
+      "surface_kind": "shared_application_core_library",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "libs/appcore/CMakeLists.txt",
+        "command dispatch",
+        "discover",
+        "invoke",
+        "ui_bind"
+      ],
+      "notes": "Cross-product library for app invocation and UI binding support."
+    },
+    {
+      "name": "contracts library",
+      "path": "libs/contracts",
+      "surface_kind": "cross_product_contract_layer",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "evidence": [
+        "libs/contracts/CMakeLists.txt",
+        "include/dom_contracts"
+      ],
+      "notes": "Important contract surface for app, platform, and manifest interfaces."
+    },
+    {
+      "name": "network layer",
+      "path": "net",
+      "surface_kind": "network_transport_and_integrity_layer",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "net/transport",
+        "net/anti_cheat",
+        "net/policies",
+        "net/srz"
+      ],
+      "notes": "Shared network/runtime surface rather than server-only code."
+    },
+    {
+      "name": "process root",
+      "path": "process",
+      "surface_kind": "process_support_surface",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "evidence": [
+        "process/capsules",
+        "process/drift",
+        "process/maturity",
+        "process/qc"
+      ],
+      "notes": "Relevant to later constitutional Process reconciliation."
+    },
+    {
+      "name": "runtime root",
+      "path": "runtime",
+      "surface_kind": "thin_runtime_support_root",
+      "status_class": "authoritative",
+      "canonicality_assessment": "unclear-low-confidence",
+      "confidence": "low",
+      "evidence": [
+        "runtime/process_spawn.py"
+      ],
+      "notes": "Real but currently thin; should not be over-crowned based on naming."
+    },
+    {
+      "name": "server net",
+      "path": "server/net",
+      "surface_kind": "server_network_runtime",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "dom_server_protocol.cpp",
+        "dom_server_runtime.cpp"
+      ],
+      "notes": "Concrete server-side runtime surface for protocol and runtime flow."
+    },
+    {
+      "name": "server persistence",
+      "path": "server/persistence",
+      "surface_kind": "server_state_retention_and_checkpointing",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "dom_checkpointing.cpp",
+        "persistence subtree present in server root"
+      ],
+      "notes": "Important live runtime/state surface for later readiness analysis."
+    },
+    {
+      "name": "server runtime",
+      "path": "server/runtime",
+      "surface_kind": "server_orchestration_runtime",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "evidence": [
+        "server/runtime subtree present",
+        "server product root also includes authority and shard subtrees"
+      ],
+      "notes": "Observed as a dedicated runtime subtree inside the server product."
+    },
+    {
+      "name": "inspection tools",
+      "path": "tools/inspect",
+      "surface_kind": "inspection_and_replay_service_tools",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "replay_inspector.cpp",
+        "ledger_inspector.cpp",
+        "event_timeline_view.cpp"
+      ],
+      "notes": "Concrete live inspection surface useful for replay, observability, and audit flows."
+    },
+    {
+      "name": "observability tools",
+      "path": "tools/observability",
+      "surface_kind": "observability_and_world_inspection_tools",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "evidence": [
+        "observability_api.cpp",
+        "world_inspector.cpp",
+        "determinism_tools.cpp"
+      ],
+      "notes": "Strong evidence of existing observability support rather than a missing future feature."
+    }
+  ]
+}
