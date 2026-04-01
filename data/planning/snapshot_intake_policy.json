@@ -1,0 +1,690 @@
+{
+  "policy_id": "planning.snapshot_intake_policy",
+  "policy_version": "1.0.0",
+  "status": "derived",
+  "stability": "provisional",
+  "post_state": {
+    "omega_executed": true,
+    "xi_executed": true,
+    "pi_executed": true,
+    "label": "post-\u03a9/\u039e/\u03a0"
+  },
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md"
+  ],
+  "downstream_targets": [
+    "\u03a1-1",
+    "\u03a1-2",
+    "\u03a1-3",
+    "\u03a1-4",
+    "\u039b-series"
+  ],
+  "artifact_families": [
+    {
+      "family_id": "canon_and_root_governance",
+      "order": 1,
+      "roots": [
+        "docs/canon",
+        "AGENTS.md"
+      ],
+      "default_status_class": "authoritative",
+      "primary_authority_domains": [
+        "semantic",
+        "planning"
+      ],
+      "inventory_required_for_rho_1": true
+    },
+    {
+      "family_id": "contract_and_schema_law",
+      "order": 2,
+      "roots": [
+        "schema",
+        "docs/contracts",
+        "docs/architecture",
+        "docs/release"
+      ],
+      "default_status_class": "authoritative",
+      "primary_authority_domains": [
+        "semantic",
+        "compatibility",
+        "release"
+      ],
+      "inventory_required_for_rho_1": true
+    },
+    {
+      "family_id": "machine_schema_projections",
+      "order": 3,
+      "roots": [
+        "schemas"
+      ],
+      "default_status_class": "derived",
+      "primary_authority_domains": [
+        "compatibility",
+        "structural"
+      ],
+      "inventory_required_for_rho_1": true
+    },
+    {
+      "family_id": "registries_manifests_and_pack_metadata",
+      "order": 4,
+      "roots": [
+        "data/registries",
+        "data/packs",
+        "packs",
+        "repo",
+        "data/architecture",
+        "updates"
+      ],
+      "default_status_class": "authoritative",
+      "primary_authority_domains": [
+        "semantic",
+        "structural",
+        "compatibility",
+        "release"
+      ],
+      "inventory_required_for_rho_1": true
+    },
+    {
+      "family_id": "live_code_and_build_surface",
+      "order": 5,
+      "roots": [
+        "engine",
+        "game",
+        "client",
+        "server",
+        "runtime",
+        "app",
+        "appshell",
+        "launcher",
+        "setup",
+        "lib",
+        "libs"
+      ],
+      "default_status_class": "authoritative",
+      "primary_authority_domains": [
+        "structural"
+      ],
+      "inventory_required_for_rho_1": true
+    },
+    {
+      "family_id": "release_distribution_and_update_surface",
+      "order": 6,
+      "roots": [
+        "release",
+        "docs/release",
+        "repo/release_policy.toml",
+        "data/release",
+        "updates"
+      ],
+      "default_status_class": "authoritative",
+      "primary_authority_domains": [
+        "release",
+        "compatibility"
+      ],
+      "inventory_required_for_rho_1": true
+    },
+    {
+      "family_id": "planning_surfaces",
+      "order": 7,
+      "roots": [
+        "docs/planning",
+        "data/planning",
+        "docs/blueprint",
+        "data/blueprint",
+        "docs/omega",
+        "docs/restructure",
+        "data/restructure"
+      ],
+      "default_status_class": "advisory",
+      "primary_authority_domains": [
+        "planning"
+      ],
+      "inventory_required_for_rho_1": true
+    },
+    {
+      "family_id": "generated_evidence_and_baselines",
+      "order": 8,
+      "roots": [
+        "data/audit",
+        "data/baselines",
+        "artifacts",
+        "build",
+        "out",
+        "run_meta"
+      ],
+      "default_status_class": "derived",
+      "primary_authority_domains": [
+        "planning",
+        "structural"
+      ],
+      "inventory_required_for_rho_1": true
+    },
+    {
+      "family_id": "transitional_legacy_and_quarantine",
+      "order": 9,
+      "roots": [
+        "legacy",
+        "attic/src_quarantine",
+        "quarantine"
+      ],
+      "default_status_class": "transitional",
+      "primary_authority_domains": [
+        "planning"
+      ],
+      "inventory_required_for_rho_1": true
+    }
+  ],
+  "authority_tiers": {
+    "semantic": [
+      {
+        "tier_id": "SEM-1",
+        "authority_level": "absolute",
+        "sources": [
+          "docs/canon/constitution_v1.md",
+          "docs/canon/glossary_v1.md"
+        ]
+      },
+      {
+        "tier_id": "SEM-2",
+        "authority_level": "absolute_within_scope",
+        "sources": [
+          "AGENTS.md",
+          "schema/**",
+          "docs/contracts/**"
+        ]
+      },
+      {
+        "tier_id": "SEM-3",
+        "authority_level": "conditional",
+        "sources": [
+          "docs/architecture/**",
+          "docs/release/**",
+          "repo/release_policy.toml"
+        ]
+      },
+      {
+        "tier_id": "SEM-4",
+        "authority_level": "conditional",
+        "sources": [
+          "data/registries/**",
+          "packs/**/pack*.json",
+          "data/packs/**",
+          "data/architecture/**"
+        ]
+      },
+      {
+        "tier_id": "SEM-5",
+        "authority_level": "conditional",
+        "sources": [
+          "live repo code"
+        ]
+      },
+      {
+        "tier_id": "SEM-6",
+        "authority_level": "contextual",
+        "sources": [
+          "docs/planning/**",
+          "data/planning/**",
+          "docs/blueprint/**",
+          "data/blueprint/**"
+        ]
+      },
+      {
+        "tier_id": "SEM-7",
+        "authority_level": "insufficient_on_its_own",
+        "sources": [
+          "generated reports",
+          "legacy notes",
+          "attic material",
+          "chat history"
+        ]
+      }
+    ],
+    "structural": [
+      {
+        "tier_id": "STR-1",
+        "authority_level": "absolute",
+        "sources": [
+          "live repo tree",
+          "code",
+          "build files",
+          "active manifests"
+        ]
+      },
+      {
+        "tier_id": "STR-2",
+        "authority_level": "conditional",
+        "sources": [
+          "machine-readable registries",
+          "machine-readable manifests"
+        ]
+      },
+      {
+        "tier_id": "STR-3",
+        "authority_level": "conditional",
+        "sources": [
+          "docs/architecture/**",
+          "docs/release/**"
+        ]
+      },
+      {
+        "tier_id": "STR-4",
+        "authority_level": "contextual",
+        "sources": [
+          "docs/planning/**",
+          "docs/blueprint/**",
+          "data/blueprint/**"
+        ]
+      },
+      {
+        "tier_id": "STR-5",
+        "authority_level": "conditional",
+        "sources": [
+          "generated reports",
+          "inventories",
+          "baselines"
+        ]
+      },
+      {
+        "tier_id": "STR-6",
+        "authority_level": "insufficient_on_its_own",
+        "sources": [
+          "stale docs",
+          "legacy notes",
+          "attic material",
+          "chat history"
+        ]
+      }
+    ],
+    "compatibility": [
+      {
+        "tier_id": "COM-1",
+        "authority_level": "absolute",
+        "sources": [
+          "schema version declarations",
+          "schema/SCHEMA_VERSIONING.md",
+          "migration/refusal contracts",
+          "docs/contracts/**"
+        ]
+      },
+      {
+        "tier_id": "COM-2",
+        "authority_level": "absolute_within_artifact_scope",
+        "sources": [
+          "compat manifests",
+          "compat registries",
+          "pack compat descriptors",
+          "release resolution metadata"
+        ]
+      },
+      {
+        "tier_id": "COM-3",
+        "authority_level": "conditional",
+        "sources": [
+          "compat and validation code"
+        ]
+      },
+      {
+        "tier_id": "COM-4",
+        "authority_level": "contextual",
+        "sources": [
+          "planning docs",
+          "old reports"
+        ]
+      },
+      {
+        "tier_id": "COM-5",
+        "authority_level": "insufficient_on_its_own",
+        "sources": [
+          "stale docs",
+          "legacy notes",
+          "chat history"
+        ]
+      }
+    ],
+    "release": [
+      {
+        "tier_id": "REL-1",
+        "authority_level": "absolute_within_release_scope",
+        "sources": [
+          "repo/release_policy.toml",
+          "release/update schemas",
+          "release manifests and indexes",
+          "component graph doctrine",
+          "docs/release/**"
+        ]
+      },
+      {
+        "tier_id": "REL-2",
+        "authority_level": "conditional",
+        "sources": [
+          "release/update manifests",
+          "component graph data",
+          "release policy registries"
+        ]
+      },
+      {
+        "tier_id": "REL-3",
+        "authority_level": "conditional",
+        "sources": [
+          "release tooling code"
+        ]
+      },
+      {
+        "tier_id": "REL-4",
+        "authority_level": "contextual",
+        "sources": [
+          "planning docs"
+        ]
+      },
+      {
+        "tier_id": "REL-5",
+        "authority_level": "insufficient_on_its_own",
+        "sources": [
+          "generated reports",
+          "legacy notes",
+          "chat history"
+        ]
+      }
+    ],
+    "planning": [
+      {
+        "tier_id": "PLN-1",
+        "authority_level": "absolute_within_post_pi_intake_planning",
+        "sources": [
+          "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+          "docs/planning/AUTHORITY_ORDER.md",
+          "data/planning/snapshot_intake_policy.json"
+        ]
+      },
+      {
+        "tier_id": "PLN-2",
+        "authority_level": "conditional",
+        "sources": [
+          "docs/blueprint/**",
+          "data/blueprint/**",
+          "docs/omega/**",
+          "docs/restructure/**",
+          "data/restructure/**"
+        ]
+      },
+      {
+        "tier_id": "PLN-3",
+        "authority_level": "contextual",
+        "sources": [
+          "old series outputs",
+          "generated planning reports",
+          "archaeology notes"
+        ]
+      },
+      {
+        "tier_id": "PLN-4",
+        "authority_level": "insufficient_on_its_own",
+        "sources": [
+          "stale planning notes",
+          "attic notes",
+          "chat history"
+        ]
+      }
+    ]
+  },
+  "ambiguity_classes": [
+    {
+      "class_id": "semantically_authoritative",
+      "default_disposition": "use_within_semantic_scope"
+    },
+    {
+      "class_id": "structurally_authoritative",
+      "default_disposition": "use_within_structural_scope"
+    },
+    {
+      "class_id": "compatibility_authoritative",
+      "default_disposition": "use_within_compatibility_scope"
+    },
+    {
+      "class_id": "release_authoritative",
+      "default_disposition": "use_within_release_scope"
+    },
+    {
+      "class_id": "planning_authoritative",
+      "default_disposition": "use_within_planning_scope"
+    },
+    {
+      "class_id": "generated_authoritative",
+      "default_disposition": "use_only_when_explicitly_promoted"
+    },
+    {
+      "class_id": "advisory_only",
+      "default_disposition": "support_only"
+    },
+    {
+      "class_id": "stale_doc",
+      "default_disposition": "mark_stale"
+    },
+    {
+      "class_id": "transitional",
+      "default_disposition": "keep_visible_but_non_canonical"
+    },
+    {
+      "class_id": "duplicate_shadow",
+      "default_disposition": "quarantine"
+    },
+    {
+      "class_id": "insufficient_evidence",
+      "default_disposition": "quarantine"
+    },
+    {
+      "class_id": "quarantine_required",
+      "default_disposition": "stop_and_escalate"
+    }
+  ],
+  "quarantine_triggers": [
+    {
+      "trigger_id": "same_tier_material_conflict",
+      "condition": "Two same-tier authoritative sources make materially incompatible claims in the same authority domain.",
+      "default_action": "quarantine"
+    },
+    {
+      "trigger_id": "parallel_canonical_implementation",
+      "condition": "A transitional or legacy area appears to implement the same canonical concept as a live area.",
+      "default_action": "quarantine"
+    },
+    {
+      "trigger_id": "unsafe_ownership_resolution",
+      "condition": "Ownership of a concept, interface, registry, or manifest cannot be determined safely.",
+      "default_action": "quarantine"
+    },
+    {
+      "trigger_id": "schema_projection_conflict",
+      "condition": "schema/** and schemas/** disagree in a way that changes meaning or validator shape without an explicit projection rule.",
+      "default_action": "quarantine"
+    },
+    {
+      "trigger_id": "generated_artifact_without_provenance",
+      "condition": "A generated artifact is being used as authority without explicit provenance or emission contract.",
+      "default_action": "quarantine"
+    },
+    {
+      "trigger_id": "silent_inference_required",
+      "condition": "Continuing would require invented semantics, invented migration behavior, or invented structural ownership.",
+      "default_action": "quarantine"
+    }
+  ],
+  "deterministic_ordering": {
+    "artifact_family_order": [
+      "canon_and_root_governance",
+      "contract_and_schema_law",
+      "machine_schema_projections",
+      "registries_manifests_and_pack_metadata",
+      "live_code_and_build_surface",
+      "release_distribution_and_update_surface",
+      "planning_surfaces",
+      "generated_evidence_and_baselines",
+      "transitional_legacy_and_quarantine"
+    ],
+    "path_normalization": "repo-relative POSIX-style paths",
+    "path_compare": "case-folded lexical ascending; tie-break by original normalized path",
+    "conflict_record_field_order": [
+      "authority_domain",
+      "claim_subject",
+      "family_id",
+      "normalized_path",
+      "status_class",
+      "disposition"
+    ],
+    "inventory_record_minimum_fields": [
+      "normalized_path",
+      "family_id",
+      "authority_domain",
+      "status_class",
+      "provenance_class",
+      "claim_subject",
+      "conflict_state",
+      "quarantine_state",
+      "evidence_note"
+    ]
+  },
+  "required_inventories_for_rho_1": [
+    {
+      "inventory_id": "family_inventory",
+      "required_families": [
+        "canon_and_root_governance",
+        "contract_and_schema_law",
+        "machine_schema_projections",
+        "registries_manifests_and_pack_metadata",
+        "live_code_and_build_surface",
+        "release_distribution_and_update_surface",
+        "planning_surfaces",
+        "generated_evidence_and_baselines",
+        "transitional_legacy_and_quarantine"
+      ],
+      "minimum_fields": [
+        "normalized_path",
+        "family_id",
+        "status_class"
+      ]
+    },
+    {
+      "inventory_id": "claim_subject_inventory",
+      "required_families": [
+        "canon_and_root_governance",
+        "contract_and_schema_law",
+        "registries_manifests_and_pack_metadata",
+        "release_distribution_and_update_surface",
+        "planning_surfaces"
+      ],
+      "minimum_fields": [
+        "claim_subject",
+        "authority_domain",
+        "normalized_path",
+        "status_class"
+      ]
+    },
+    {
+      "inventory_id": "duplicate_shadow_inventory",
+      "required_families": [
+        "live_code_and_build_surface",
+        "registries_manifests_and_pack_metadata",
+        "transitional_legacy_and_quarantine"
+      ],
+      "minimum_fields": [
+        "claim_subject",
+        "candidate_paths",
+        "quarantine_state"
+      ]
+    },
+    {
+      "inventory_id": "quarantine_candidate_inventory",
+      "required_families": [
+        "machine_schema_projections",
+        "generated_evidence_and_baselines",
+        "transitional_legacy_and_quarantine"
+      ],
+      "minimum_fields": [
+        "claim_subject",
+        "reason",
+        "candidate_paths",
+        "required_review_packet"
+      ]
+    }
+  ],
+  "allowed_inference_classes": [
+    {
+      "inference_id": "structural_existence_from_live_tree",
+      "rule": "A path present in the live repo may be treated as structurally real for intake."
+    },
+    {
+      "inference_id": "family_assignment_from_path_and_file_role",
+      "rule": "A source may be assigned to an artifact family when path plus file role makes the classification explicit."
+    },
+    {
+      "inference_id": "derived_status_from_provenance",
+      "rule": "A report or emitted artifact may be classified as derived when provenance is inspectable."
+    },
+    {
+      "inference_id": "stale_or_transitional_from_explicit_markers",
+      "rule": "Supersession metadata, quarantine roots, or stronger contradictory sources may mark an artifact stale or transitional."
+    }
+  ],
+  "forbidden_inference_classes": [
+    {
+      "inference_id": "semantic_equivalence_from_name_similarity",
+      "rule": "Do not infer semantic equivalence from similar names, nearby paths, or overlapping topics."
+    },
+    {
+      "inference_id": "canonical_status_from_path_name_alone",
+      "rule": "Do not infer canonical or legacy status from directory naming alone."
+    },
+    {
+      "inference_id": "current_truth_from_historical_plan",
+      "rule": "Do not let earlier planning assumptions override the live repo without current evidence."
+    },
+    {
+      "inference_id": "silent_migration_or_defaulting",
+      "rule": "Do not invent migrations, coercions, or semantic defaults."
+    },
+    {
+      "inference_id": "generated_output_equals_current_state",
+      "rule": "Do not assume a generated artifact reflects the current source snapshot without explicit provenance."
+    }
+  ],
+  "review_escalation_conditions": [
+    {
+      "condition_id": "same_tier_conflict",
+      "action": "stop_and_request_human_review",
+      "manual_review_gate_ids": [
+        "semantic_contract_changes",
+        "architecture_graph_changes"
+      ]
+    },
+    {
+      "condition_id": "unclear_runtime_or_module_boundary",
+      "action": "stop_and_request_human_review",
+      "manual_review_gate_ids": [
+        "architecture_graph_changes",
+        "module_abi_boundaries"
+      ]
+    },
+    {
+      "condition_id": "trust_or_authority_model_impact",
+      "action": "stop_and_request_human_review",
+      "manual_review_gate_ids": [
+        "runtime_privilege_escalation_policies",
+        "distributed_authority_model_changes",
+        "trust_root_governance_changes"
+      ]
+    },
+    {
+      "condition_id": "lifecycle_or_restartless_replacement_impact",
+      "action": "stop_and_request_human_review",
+      "manual_review_gate_ids": [
+        "lifecycle_manager_semantics",
+        "restartless_core_replacement_mechanisms"
+      ]
+    }
+  ]
+}
