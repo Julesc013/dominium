@@ -1,0 +1,300 @@
+{
+  "generated_for": "P-2",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "ordering": "invalidations sorted by assumption_id",
+  "invalidations": [
+    {
+      "assumption_id": "control_plane_is_mostly_theoretical",
+      "assumption_description": "Release, update, trust, and control-plane structure are still mostly future work.",
+      "assumption_source_paths": [
+        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md"
+      ],
+      "repo_reality_evidence": [
+        "release",
+        "repo",
+        "updates",
+        "data/architecture",
+        "data/registries",
+        "tools/xstack",
+        "tools/release",
+        "tools/distribution",
+        "tools/compatx",
+        "tools/controlx",
+        "tools/securex",
+        "security/trust"
+      ],
+      "impact_level": "high",
+      "recommended_consequence": "weaken assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Σ",
+        "Υ"
+      ],
+      "notes": "Later work should consolidate existing control-plane surfaces instead of inventing them."
+    },
+    {
+      "assumption_id": "duplicate_risk_is_legacy_only",
+      "assumption_description": "Meaningful duplicate-shadow risk lives mainly in legacy or attic roots.",
+      "assumption_source_paths": [
+        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md"
+      ],
+      "repo_reality_evidence": [
+        "field",
+        "fields",
+        "schema",
+        "schemas",
+        "packs",
+        "data/packs",
+        "build",
+        "artifacts",
+        ".xstack_cache"
+      ],
+      "impact_level": "medium",
+      "recommended_consequence": "weaken assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Λ",
+        "Υ"
+      ],
+      "notes": "Duplicate-shadow risk also exists in live and transitional surfaces."
+    },
+    {
+      "assumption_id": "governance_mirroring_is_absent",
+      "assumption_description": "Agent and operator guidance layers still need to be introduced from near-zero.",
+      "assumption_source_paths": [
+        "docs/blueprint/REPOSITORY_GOVERNANCE_DIAGRAM.md",
+        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md"
+      ],
+      "repo_reality_evidence": [
+        "AGENTS.md",
+        "docs/planning",
+        "docs/agents",
+        "docs/governance",
+        "docs/xstack",
+        "DOMINIUM.md",
+        "GOVERNANCE.md",
+        "tools/xstack"
+      ],
+      "impact_level": "medium",
+      "recommended_consequence": "weaken assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Σ"
+      ],
+      "notes": "The problem is fragmentation, not absence."
+    },
+    {
+      "assumption_id": "pack_surface_is_single_root",
+      "assumption_description": "Pack manifests and pack ownership can be treated as one clear root.",
+      "assumption_source_paths": [
+        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
+      ],
+      "repo_reality_evidence": [
+        "packs",
+        "data/packs",
+        "packs/domain",
+        "packs/experience",
+        "packs/law"
+      ],
+      "impact_level": "high",
+      "recommended_consequence": "split assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Λ",
+        "Υ",
+        "Ζ"
+      ],
+      "notes": "Runtime-facing pack ownership and transitional data-pack projections must be handled separately until merged."
+    },
+    {
+      "assumption_id": "runtime_orchestrator_has_single_obvious_root",
+      "assumption_description": "There is already one obvious runtime-orchestrator root for later work to target directly.",
+      "assumption_source_paths": [
+        "docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md",
+        "docs/blueprint/CAPABILITY_LADDER.md"
+      ],
+      "repo_reality_evidence": [
+        "app",
+        "compat",
+        "control",
+        "core",
+        "net",
+        "process",
+        "server/runtime",
+        "runtime"
+      ],
+      "impact_level": "high",
+      "recommended_consequence": "split assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Φ"
+      ],
+      "notes": "The current substrate is distributed, and the thin runtime root is not a sufficient canonical anchor."
+    },
+    {
+      "assumption_id": "runtime_service_foundation_is_absent",
+      "assumption_description": "Runtime and service foundations mostly do not exist yet and must be invented from scratch.",
+      "assumption_source_paths": [
+        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/blueprint/FOUNDATION_PHASES.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "repo_reality_evidence": [
+        "app",
+        "compat",
+        "control",
+        "core",
+        "libs/appcore",
+        "libs/contracts",
+        "net",
+        "process",
+        "server/net",
+        "server/persistence",
+        "server/runtime",
+        "tools/inspect",
+        "tools/observability"
+      ],
+      "impact_level": "high",
+      "recommended_consequence": "weaken assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Φ"
+      ],
+      "notes": "Later Φ still has real work, but it should formalize live substrate rather than invent all foundations anew."
+    },
+    {
+      "assumption_id": "schema_surface_is_single_root",
+      "assumption_description": "Schema law and schema projections can be handled as one clear root without special reconciliation.",
+      "assumption_source_paths": [
+        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
+      ],
+      "repo_reality_evidence": [
+        "schema",
+        "schemas",
+        "build/**/schemas",
+        "artifacts/**"
+      ],
+      "impact_level": "high",
+      "recommended_consequence": "defer to quarantine",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Λ",
+        "Υ"
+      ],
+      "notes": "P-0 already makes this a special-case conflict zone."
+    },
+    {
+      "assumption_id": "semantic_domain_embodiment_is_absent",
+      "assumption_description": "The semantic and world-model direction is mostly doctrinal and does not yet have meaningful repo embodiment.",
+      "assumption_source_paths": [
+        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/blueprint/CAPABILITY_LADDER.md"
+      ],
+      "repo_reality_evidence": [
+        "worldgen",
+        "geo",
+        "reality",
+        "materials",
+        "logic",
+        "signals",
+        "system",
+        "universe",
+        "epistemics",
+        "diegetics",
+        "infrastructure",
+        "machines",
+        "packs/domain",
+        "packs/experience",
+        "packs/law"
+      ],
+      "impact_level": "high",
+      "recommended_consequence": "remove assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Λ"
+      ],
+      "notes": "Later Λ must be grounded in existing semantic roots, not a blank slate."
+    },
+    {
+      "assumption_id": "small_source_root_model_still_describes_repo",
+      "assumption_description": "The live repo can still be reasoned about through a very small number of source-like roots.",
+      "assumption_source_paths": [
+        "docs/blueprint/META_BLUEPRINT_SUMMARY.md",
+        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md"
+      ],
+      "repo_reality_evidence": [
+        "client",
+        "server",
+        "launcher",
+        "setup",
+        "tools",
+        "engine",
+        "game",
+        "app",
+        "compat",
+        "control",
+        "core",
+        "net",
+        "process",
+        "release",
+        "repo",
+        "updates",
+        "worldgen",
+        "geo",
+        "reality",
+        "materials"
+      ],
+      "impact_level": "high",
+      "recommended_consequence": "split assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Λ"
+      ],
+      "notes": "Planning now needs the extracted family map rather than a small-root simplification."
+    },
+    {
+      "assumption_id": "toolchain_surface_is_sparse",
+      "assumption_description": "Build graph, presets, toolchains, and CI are sparse enough that later work must largely invent the normalization surface.",
+      "assumption_source_paths": [
+        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
+        "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md"
+      ],
+      "repo_reality_evidence": [
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "cmake",
+        "cmake/toolchains",
+        "cmake/ide",
+        ".github/workflows/ci.yml",
+        "scripts",
+        "setup/packages/scripts",
+        "ide/manifests"
+      ],
+      "impact_level": "medium",
+      "recommended_consequence": "weaken assumption",
+      "affected_future_series_or_prompts": [
+        "P-3",
+        "P-4",
+        "Υ"
+      ],
+      "notes": "Later Υ should normalize a rich existing matrix rather than design one from nothing."
+    }
+  ]
+}

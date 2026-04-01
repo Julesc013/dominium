@@ -1,0 +1,439 @@
+{
+  "generated_for": "P-2",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "ordering": "decisions sorted by subsystem_family then surface_name",
+  "bucket_counts": {
+    "keep": 6,
+    "extend": 7,
+    "merge": 3,
+    "replace": 1,
+    "quarantine": 3
+  },
+  "decisions": [
+    {
+      "subsystem_family": "agent_governance_instruction",
+      "surface_name": "Authority planning stack",
+      "path_family": [
+        "AGENTS.md",
+        "docs/planning"
+      ],
+      "decision_bucket": "keep",
+      "next_action_implication": "Preserve as the binding planning and intake layer.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "agent_governance_instruction",
+      "surface_name": "Blueprint archive",
+      "path_family": [
+        "docs/blueprint"
+      ],
+      "decision_bucket": "extend",
+      "next_action_implication": "Consume through the P-2 reconciled lens rather than as raw truth.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "partial",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "conditional"
+      }
+    },
+    {
+      "subsystem_family": "agent_governance_instruction",
+      "surface_name": "Mirrored governance docs",
+      "path_family": [
+        "docs/agents",
+        "docs/governance",
+        "docs/xstack",
+        "DOMINIUM.md",
+        "GOVERNANCE.md",
+        "README.md",
+        "SECURITY.md"
+      ],
+      "decision_bucket": "merge",
+      "next_action_implication": "Harmonize narrative ownership instead of adding more parallel docs.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "conditional",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "control_plane_release",
+      "surface_name": "Control-plane backbone",
+      "path_family": [
+        "data/architecture",
+        "data/registries",
+        "release",
+        "repo",
+        "tools/xstack",
+        "updates"
+      ],
+      "decision_bucket": "keep",
+      "next_action_implication": "Use as the primary control-plane input for P-3, P-4, and Υ.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "control_plane_release",
+      "surface_name": "Generated release echoes",
+      "path_family": [
+        ".xstack_cache",
+        "artifacts",
+        "build",
+        "run_meta"
+      ],
+      "decision_bucket": "quarantine",
+      "next_action_implication": "Use only as derived evidence with provenance.",
+      "blocking_conditions": [
+        "No authority promotion without explicit source mapping."
+      ],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "conditional",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "control_plane_release",
+      "surface_name": "Operator and trust tooling",
+      "path_family": [
+        "governance",
+        "security/trust",
+        "tools/compatx",
+        "tools/controlx",
+        "tools/distribution",
+        "tools/release",
+        "tools/securex"
+      ],
+      "decision_bucket": "extend",
+      "next_action_implication": "Consolidate policy flow around this existing tooling cluster.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "legacy_quarantine_duplicate",
+      "surface_name": "Field ownership split",
+      "path_family": [
+        "field",
+        "fields"
+      ],
+      "decision_bucket": "merge",
+      "next_action_implication": "Map semantic ownership before later execution depends on either path.",
+      "blocking_conditions": [
+        "Human review is required.",
+        "Λ semantic mapping must precede canonicalization."
+      ],
+      "lambda_semantics_required": "yes",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "conditional",
+        "Υ": "yes",
+        "Ζ": "conditional"
+      }
+    },
+    {
+      "subsystem_family": "legacy_quarantine_duplicate",
+      "surface_name": "Legacy and quarantine roots",
+      "path_family": [
+        "attic/src_quarantine",
+        "legacy",
+        "quarantine"
+      ],
+      "decision_bucket": "quarantine",
+      "next_action_implication": "Exclude from canonical planning except as reviewed historical evidence.",
+      "blocking_conditions": [
+        "A stronger live source must justify any reuse."
+      ],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "products_applications",
+      "surface_name": "Compiled product roots",
+      "path_family": [
+        "client",
+        "launcher",
+        "server",
+        "setup"
+      ],
+      "decision_bucket": "keep",
+      "next_action_implication": "Preserve as stable product anchors and later consumers of runtime, release, and semantic work.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "products_applications",
+      "surface_name": "Tools and appshell surfaces",
+      "path_family": [
+        "appshell",
+        "tools"
+      ],
+      "decision_bucket": "extend",
+      "next_action_implication": "Mine these roots before inventing new operator-facing products.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "runtime_service_component",
+      "surface_name": "Engine and game spine",
+      "path_family": [
+        "engine",
+        "game",
+        "game/content/core"
+      ],
+      "decision_bucket": "keep",
+      "next_action_implication": "Preserve as the strongest live runtime foundation.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "partial",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "runtime_service_component",
+      "surface_name": "Runtime substrate cluster",
+      "path_family": [
+        "app",
+        "compat",
+        "control",
+        "core",
+        "libs/appcore",
+        "libs/contracts",
+        "net",
+        "process",
+        "server/net",
+        "server/persistence",
+        "server/runtime"
+      ],
+      "decision_bucket": "extend",
+      "next_action_implication": "Extract orchestrator, service, compat, and state boundaries from this existing substrate.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "partial",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "runtime_service_component",
+      "surface_name": "Thin runtime root",
+      "path_family": [
+        "runtime"
+      ],
+      "decision_bucket": "replace",
+      "next_action_implication": "Do not treat this path as the assumed canonical orchestrator home in later prompts.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "conditional",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "schema_registry_manifest",
+      "surface_name": "Pack and registry backbone",
+      "path_family": [
+        "data/architecture",
+        "data/registries",
+        "packs",
+        "repo/release_policy.toml",
+        "schema"
+      ],
+      "decision_bucket": "keep",
+      "next_action_implication": "Preserve as primary compatibility, policy, and pack authority.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "partial",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "schema_registry_manifest",
+      "surface_name": "Pack declaration split",
+      "path_family": [
+        "data/packs",
+        "packs"
+      ],
+      "decision_bucket": "merge",
+      "next_action_implication": "Create an explicit ownership map before later execution assumes one pack root is sole truth.",
+      "blocking_conditions": [
+        "Human review is required.",
+        "Pack-driven integration doctrine must stay explicit."
+      ],
+      "lambda_semantics_required": "partial",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "conditional",
+        "Ζ": "conditional"
+      }
+    },
+    {
+      "subsystem_family": "schema_registry_manifest",
+      "surface_name": "Schema projection shadow",
+      "path_family": [
+        "schemas"
+      ],
+      "decision_bucket": "quarantine",
+      "next_action_implication": "Do not treat as independently canonical until the law-versus-projection mapping is explicit.",
+      "blocking_conditions": [
+        "Human review is required if schema and schemas make incompatible claims."
+      ],
+      "lambda_semantics_required": "partial",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "conditional",
+        "Ζ": "conditional"
+      }
+    },
+    {
+      "subsystem_family": "semantic_domain_world",
+      "surface_name": "Core reality and world roots",
+      "path_family": [
+        "game/content/core",
+        "geo",
+        "logic",
+        "materials",
+        "reality",
+        "signals",
+        "system",
+        "universe",
+        "worldgen"
+      ],
+      "decision_bucket": "extend",
+      "next_action_implication": "Use as the main semantic and world-model substrate for later Λ work.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "yes",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "conditional"
+      }
+    },
+    {
+      "subsystem_family": "semantic_domain_world",
+      "surface_name": "Specialist domain roots",
+      "path_family": [
+        "astro",
+        "chem",
+        "diegetics",
+        "electric",
+        "embodiment",
+        "epistemics",
+        "infrastructure",
+        "machines",
+        "packs/domain",
+        "packs/experience",
+        "packs/law",
+        "physics",
+        "pollution"
+      ],
+      "decision_bucket": "extend",
+      "next_action_implication": "Survey and formalize as candidate first-class semantic families.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "yes",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "conditional"
+      }
+    },
+    {
+      "subsystem_family": "toolchain_presets_automation",
+      "surface_name": "Build and CI backbone",
+      "path_family": [
+        ".github/workflows/ci.yml",
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "cmake",
+        "scripts",
+        "setup/packages/scripts"
+      ],
+      "decision_bucket": "keep",
+      "next_action_implication": "Preserve as the main build and CI baseline for later Υ normalization.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    },
+    {
+      "subsystem_family": "toolchain_presets_automation",
+      "surface_name": "Preset and toolchain matrix",
+      "path_family": [
+        "cmake/ide",
+        "cmake/toolchains",
+        "ide/manifests"
+      ],
+      "decision_bucket": "extend",
+      "next_action_implication": "Normalize and document this matrix after preserving the build spine.",
+      "blocking_conditions": [],
+      "lambda_semantics_required": "no",
+      "later_series_may_proceed": {
+        "Σ": "yes",
+        "Φ": "yes",
+        "Υ": "yes",
+        "Ζ": "yes"
+      }
+    }
+  ]
+}

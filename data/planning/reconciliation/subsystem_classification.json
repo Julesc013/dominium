@@ -1,0 +1,486 @@
+{
+  "generated_for": "P-2",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "ordering": "entries sorted by subsystem_family then surface_name",
+  "entries": [
+    {
+      "surface_name": "Authority planning stack",
+      "path_family": [
+        "AGENTS.md",
+        "docs/planning"
+      ],
+      "subsystem_family": "agent_governance_instruction",
+      "blueprint_expectations": [
+        "Ξ anti-drift governance",
+        "Π deterministic planning"
+      ],
+      "observed_repo_reality": "Already governs live planning and intake.",
+      "classification": "keep",
+      "confidence": "high",
+      "rationale": "Matches the active governance model.",
+      "risks": [
+        "Bypass would reintroduce drift."
+      ],
+      "notes_for_later_series": "Preserve for P-3, P-4, and Σ.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Blueprint archive",
+      "path_family": [
+        "docs/blueprint"
+      ],
+      "subsystem_family": "agent_governance_instruction",
+      "blueprint_expectations": [
+        "Π blueprint remains useful",
+        "P-2 reconciles stale simplifications"
+      ],
+      "observed_repo_reality": "Still valuable, but several assumptions are weaker than live evidence.",
+      "classification": "extend",
+      "confidence": "high",
+      "rationale": "Should be consumed through P-0 and P-2, not raw.",
+      "risks": [
+        "Raw use would overstate absence."
+      ],
+      "notes_for_later_series": "P-4 should synthesize prompts from the reconciled view.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Mirrored governance docs",
+      "path_family": [
+        "docs/agents",
+        "docs/governance",
+        "docs/xstack",
+        "DOMINIUM.md",
+        "GOVERNANCE.md",
+        "README.md",
+        "SECURITY.md"
+      ],
+      "subsystem_family": "agent_governance_instruction",
+      "blueprint_expectations": [
+        "Σ governance surfaces stay coherent"
+      ],
+      "observed_repo_reality": "Useful advisory surfaces are split across multiple docs.",
+      "classification": "merge",
+      "confidence": "medium",
+      "rationale": "Value is real, but ownership is fragmented.",
+      "risks": [
+        "Narrative drift.",
+        "Advisory docs may be mistaken for canon."
+      ],
+      "notes_for_later_series": "Σ should harmonize these without weakening AGENTS or canon.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Control-plane backbone",
+      "path_family": [
+        "data/architecture",
+        "data/registries",
+        "release",
+        "repo",
+        "tools/xstack",
+        "updates"
+      ],
+      "subsystem_family": "control_plane_release",
+      "blueprint_expectations": [
+        "Ξ registry-backed anti-drift",
+        "Υ control-plane consolidation"
+      ],
+      "observed_repo_reality": "Already forms a substantial release, registry, update, and governance spine.",
+      "classification": "keep",
+      "confidence": "high",
+      "rationale": "Strongest blueprint-aligned control-plane family.",
+      "risks": [
+        "Later work could reinvent what already exists."
+      ],
+      "notes_for_later_series": "Primary preserved foundation for Υ and P-3.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Generated release echoes",
+      "path_family": [
+        ".xstack_cache",
+        "artifacts",
+        "build",
+        "run_meta"
+      ],
+      "subsystem_family": "control_plane_release",
+      "blueprint_expectations": [
+        "Derived evidence does not silently become source authority"
+      ],
+      "observed_repo_reality": "Contains caches, projections, and release evidence.",
+      "classification": "quarantine",
+      "confidence": "high",
+      "rationale": "Useful evidence, unsafe ownership surface.",
+      "risks": [
+        "Derived outputs may be mistaken for policy truth."
+      ],
+      "notes_for_later_series": "Use only with provenance.",
+      "human_review_needed": true
+    },
+    {
+      "surface_name": "Operator and trust tooling",
+      "path_family": [
+        "governance",
+        "security/trust",
+        "tools/compatx",
+        "tools/controlx",
+        "tools/distribution",
+        "tools/release",
+        "tools/securex"
+      ],
+      "subsystem_family": "control_plane_release",
+      "blueprint_expectations": [
+        "Σ and Υ operator and trust surfaces"
+      ],
+      "observed_repo_reality": "Operator and trust tooling already exists but is spread across roots.",
+      "classification": "extend",
+      "confidence": "high",
+      "rationale": "Formalize instead of replace.",
+      "risks": [
+        "Responsibility stays fragmented."
+      ],
+      "notes_for_later_series": "Reuse for Σ and Υ.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Field ownership split",
+      "path_family": [
+        "field",
+        "fields"
+      ],
+      "subsystem_family": "legacy_quarantine_duplicate",
+      "blueprint_expectations": [
+        "Field ownership stays explicit",
+        "Ξ reduces duplicate-shadow surfaces"
+      ],
+      "observed_repo_reality": "Singular and plural field roots coexist around a doctrinal concept.",
+      "classification": "merge",
+      "confidence": "medium",
+      "rationale": "Looks like split ownership, not disposable residue.",
+      "risks": [
+        "Semantic drift around a constitutional concept."
+      ],
+      "notes_for_later_series": "Λ should map ownership before execution depends on either path.",
+      "human_review_needed": true
+    },
+    {
+      "surface_name": "Legacy and quarantine roots",
+      "path_family": [
+        "attic/src_quarantine",
+        "legacy",
+        "quarantine"
+      ],
+      "subsystem_family": "legacy_quarantine_duplicate",
+      "blueprint_expectations": [
+        "Legacy visibility without silent authority"
+      ],
+      "observed_repo_reality": "Still present and potentially informative, but not canonical.",
+      "classification": "quarantine",
+      "confidence": "high",
+      "rationale": "P-0 forbids promoting these roots without stronger evidence.",
+      "risks": [
+        "Accidental revival of deprecated structure."
+      ],
+      "notes_for_later_series": "Treat as reviewed history only.",
+      "human_review_needed": true
+    },
+    {
+      "surface_name": "Compiled product roots",
+      "path_family": [
+        "client",
+        "launcher",
+        "server",
+        "setup"
+      ],
+      "subsystem_family": "products_applications",
+      "blueprint_expectations": [
+        "Stable product roots survive Ω and Ξ"
+      ],
+      "observed_repo_reality": "Concrete product surfaces already exist and align with the boundary model.",
+      "classification": "keep",
+      "confidence": "high",
+      "rationale": "These are live product anchors, not planning placeholders.",
+      "risks": [
+        "Later work could over-abstract around them."
+      ],
+      "notes_for_later_series": "Preserve as stable product consumers of later work.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Tools and appshell surfaces",
+      "path_family": [
+        "appshell",
+        "tools"
+      ],
+      "subsystem_family": "products_applications",
+      "blueprint_expectations": [
+        "Operator-facing application surfaces build from repo reality"
+      ],
+      "observed_repo_reality": "The repo already has operator and utility application surfaces.",
+      "classification": "extend",
+      "confidence": "high",
+      "rationale": "Useful live substrate for Σ rather than a blank slot.",
+      "risks": [
+        "Exact product boundaries remain underformalized."
+      ],
+      "notes_for_later_series": "Inspect before inventing new operator surfaces.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Engine and game spine",
+      "path_family": [
+        "engine",
+        "game",
+        "game/content/core"
+      ],
+      "subsystem_family": "runtime_service_component",
+      "blueprint_expectations": [
+        "Engine and game are current strongest runtime foundations"
+      ],
+      "observed_repo_reality": "Still the clearest kernel and game baseline in the repo.",
+      "classification": "keep",
+      "confidence": "high",
+      "rationale": "Preserve and build outward from this spine.",
+      "risks": [
+        "Future formalization could hide the existing baseline."
+      ],
+      "notes_for_later_series": "Primary preserved runtime foundation for Φ and Λ.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Runtime inspection surfaces",
+      "path_family": [
+        "tools/inspect",
+        "tools/observability"
+      ],
+      "subsystem_family": "runtime_service_component",
+      "blueprint_expectations": [
+        "Later runtime visibility should extend live observability"
+      ],
+      "observed_repo_reality": "Inspection and observability tooling already exists.",
+      "classification": "extend",
+      "confidence": "medium",
+      "rationale": "Reduces the amount of runtime visibility that must be invented.",
+      "risks": [
+        "Coupling to canonical runtime state is not fully formalized."
+      ],
+      "notes_for_later_series": "Φ should reuse these surfaces.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Runtime substrate cluster",
+      "path_family": [
+        "app",
+        "compat",
+        "control",
+        "core",
+        "libs/appcore",
+        "libs/contracts",
+        "net",
+        "process",
+        "server/net",
+        "server/persistence",
+        "server/runtime"
+      ],
+      "subsystem_family": "runtime_service_component",
+      "blueprint_expectations": [
+        "Φ formalizes orchestrator, service, compat, and state boundaries"
+      ],
+      "observed_repo_reality": "Distributed runtime, contract, compat, networking, persistence, and process substrate already exists.",
+      "classification": "extend",
+      "confidence": "high",
+      "rationale": "Main evidence that Φ is extraction and formalization, not greenfield invention.",
+      "risks": [
+        "Responsibility is spread across multiple roots."
+      ],
+      "notes_for_later_series": "Derive orchestrator and service boundaries from this cluster.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Thin runtime root",
+      "path_family": [
+        "runtime"
+      ],
+      "subsystem_family": "runtime_service_component",
+      "blueprint_expectations": [
+        "A runtime orchestration center may exist later"
+      ],
+      "observed_repo_reality": "The runtime root exists but is too thin to act as the obvious canonical center.",
+      "classification": "replace",
+      "confidence": "medium",
+      "rationale": "Centering later work here would misread the repo.",
+      "risks": [
+        "False centralization."
+      ],
+      "notes_for_later_series": "P-4 should not assume this is the future canonical home.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Pack and registry backbone",
+      "path_family": [
+        "data/architecture",
+        "data/registries",
+        "packs",
+        "repo/release_policy.toml",
+        "schema"
+      ],
+      "subsystem_family": "schema_registry_manifest",
+      "blueprint_expectations": [
+        "Compatibility and pack law stay explicit and machine-readable"
+      ],
+      "observed_repo_reality": "Core schema, registry, policy, and pack surfaces already form a strong law backbone.",
+      "classification": "keep",
+      "confidence": "high",
+      "rationale": "These are stronger than any projected or advisory alternatives.",
+      "risks": [
+        "Later prompts may duplicate law surfaces elsewhere."
+      ],
+      "notes_for_later_series": "Preserve as primary compatibility and pack authority.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Pack declaration split",
+      "path_family": [
+        "data/packs",
+        "packs"
+      ],
+      "subsystem_family": "schema_registry_manifest",
+      "blueprint_expectations": [
+        "Pack ownership stays explicit"
+      ],
+      "observed_repo_reality": "Canonical pack root and transitional data-side mirror coexist.",
+      "classification": "merge",
+      "confidence": "high",
+      "rationale": "Both surfaces appear useful, but the split should not stay implicit.",
+      "risks": [
+        "Pack ownership or compat may drift."
+      ],
+      "notes_for_later_series": "Υ and Λ should not assume single-root pack truth until mapped.",
+      "human_review_needed": true
+    },
+    {
+      "surface_name": "Schema projection shadow",
+      "path_family": [
+        "schemas"
+      ],
+      "subsystem_family": "schema_registry_manifest",
+      "blueprint_expectations": [
+        "Projected schemas do not outrank schema law without explicit promotion"
+      ],
+      "observed_repo_reality": "A sibling schemas root exists beside schema law.",
+      "classification": "quarantine",
+      "confidence": "high",
+      "rationale": "P-0 treats this as a special-case conflict zone.",
+      "risks": [
+        "Schema ownership could silently drift."
+      ],
+      "notes_for_later_series": "Do not treat as independently canonical until mapped.",
+      "human_review_needed": true
+    },
+    {
+      "surface_name": "Core reality and world roots",
+      "path_family": [
+        "game/content/core",
+        "geo",
+        "logic",
+        "materials",
+        "reality",
+        "signals",
+        "system",
+        "universe",
+        "worldgen"
+      ],
+      "subsystem_family": "semantic_domain_world",
+      "blueprint_expectations": [
+        "Λ formalizes truth ladders and world semantics from live roots"
+      ],
+      "observed_repo_reality": "Broad reality, world, material, logic, and signal roots already exist.",
+      "classification": "extend",
+      "confidence": "high",
+      "rationale": "Semantic substrate is already real and should be formalized, not replaced.",
+      "risks": [
+        "Λ could over-model doctrine without grounding it here."
+      ],
+      "notes_for_later_series": "Primary semantic extension surface for Λ.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Specialist domain roots",
+      "path_family": [
+        "astro",
+        "chem",
+        "diegetics",
+        "electric",
+        "embodiment",
+        "epistemics",
+        "infrastructure",
+        "machines",
+        "mobility",
+        "packs/domain",
+        "packs/experience",
+        "packs/law",
+        "physics",
+        "pollution"
+      ],
+      "subsystem_family": "semantic_domain_world",
+      "blueprint_expectations": [
+        "Civilization, diegetic, epistemic, and embodiment work extends live domain material"
+      ],
+      "observed_repo_reality": "Multiple specialist semantic roots already embody later Λ concerns.",
+      "classification": "extend",
+      "confidence": "medium",
+      "rationale": "Argues against a clean-room domain model.",
+      "risks": [
+        "Cross-root ownership is underformalized."
+      ],
+      "notes_for_later_series": "Survey as candidate first-class semantic families.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Build and CI backbone",
+      "path_family": [
+        ".github/workflows/ci.yml",
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "cmake",
+        "scripts",
+        "setup/packages/scripts"
+      ],
+      "subsystem_family": "toolchain_presets_automation",
+      "blueprint_expectations": [
+        "Υ starts from the live build and CI spine"
+      ],
+      "observed_repo_reality": "Broad build, preset, script, and CI baseline already exists.",
+      "classification": "keep",
+      "confidence": "high",
+      "rationale": "No evidence that a new build backbone must be invented.",
+      "risks": [
+        "Breadth may be mistaken for lack of structure."
+      ],
+      "notes_for_later_series": "Primary preserved toolchain foundation for Υ.",
+      "human_review_needed": false
+    },
+    {
+      "surface_name": "Preset and toolchain matrix",
+      "path_family": [
+        "cmake/ide",
+        "cmake/toolchains",
+        "ide/manifests"
+      ],
+      "subsystem_family": "toolchain_presets_automation",
+      "blueprint_expectations": [
+        "Υ later normalizes preset and toolchain variation"
+      ],
+      "observed_repo_reality": "Rich preset and toolchain matrix already exists, including projection-oriented surfaces.",
+      "classification": "extend",
+      "confidence": "high",
+      "rationale": "Needs cleanup and mapping, not invention.",
+      "risks": [
+        "Projection or legacy presets may be overread as canonical."
+      ],
+      "notes_for_later_series": "Normalize after preserving the build spine.",
+      "human_review_needed": false
+    }
+  ]
+}
