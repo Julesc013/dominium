@@ -1,0 +1,942 @@
+{
+  "generated_for": "P-3",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "ordering": "entries are sorted by series_order ascending, then prompt_family_id ascending",
+  "entries": [
+    {
+      "prompt_family_id": "lambda.capability_surfaces",
+      "series": "Λ",
+      "series_order": 1,
+      "family_name": "Capability surfaces",
+      "status": "partially_exists",
+      "rationale": "Capability vocabulary already appears in pack, control, and compatibility surfaces, but it is not yet frozen as one semantic framework.",
+      "evidence_refs": [
+        "control/capability",
+        "packs",
+        "data/planning/reconciliation/subsystem_classification.json"
+      ],
+      "next_action_implication": "Normalize and pin existing capability surfaces during Λ instead of inventing a parallel model.",
+      "depends_on": [],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "lambda.cross_domain_bridges",
+      "series": "Λ",
+      "series_order": 1,
+      "family_name": "Cross-domain bridges",
+      "status": "waits_for_quarantine_review",
+      "rationale": "Cross-domain bridge work is real and needed, but the field, schema, and pack split-ownership zones make final bridge semantics unsafe to freeze silently.",
+      "evidence_refs": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json",
+        "data/planning/reality/content_domain_surfaces.json"
+      ],
+      "next_action_implication": "Map bridge candidates first, then route any disputed ownership through explicit review.",
+      "depends_on": [],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "lambda.domain_contract_template",
+      "series": "Λ",
+      "series_order": 1,
+      "family_name": "Domain contract template",
+      "status": "foundation_ready",
+      "rationale": "The repo already has domain packs, law packs, experience packs, and schema-backed contract surfaces strong enough to support a formal template.",
+      "evidence_refs": [
+        "packs/domain",
+        "packs/experience",
+        "packs/law",
+        "schema"
+      ],
+      "next_action_implication": "Author the template as a consolidation of existing pack and schema law surfaces.",
+      "depends_on": [],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "lambda.formalization_chain",
+      "series": "Λ",
+      "series_order": 1,
+      "family_name": "Recognition / formalization / substitution chain",
+      "status": "partially_exists",
+      "rationale": "The repo already contains inference, proof, planning, and formalization-adjacent domain material, but not one frozen semantic chain.",
+      "evidence_refs": [
+        "infrastructure",
+        "control/proof",
+        "data/planning/reality/content_domain_surfaces.json"
+      ],
+      "next_action_implication": "Freeze the chain from live semantic and proof surfaces rather than from abstract theory alone.",
+      "depends_on": [],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "lambda.player_desire_acceptance_map",
+      "series": "Λ",
+      "series_order": 1,
+      "family_name": "Player desire acceptance map",
+      "status": "partially_exists",
+      "rationale": "Experience packs and profile surfaces already embody parts of the acceptance and refusal space, but the map itself is not formalized.",
+      "evidence_refs": [
+        "packs/experience",
+        "data/defaults/profiles",
+        "docs/canon/glossary_v1.md"
+      ],
+      "next_action_implication": "Formalize player-facing acceptance boundaries from existing experience and law surfaces.",
+      "depends_on": [],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "lambda.representation_ladders",
+      "series": "Λ",
+      "series_order": 1,
+      "family_name": "Representation ladders and semantic ascent/descent",
+      "status": "partially_exists",
+      "rationale": "Truth/perceived/render separation already exists constitutionally and in live control/view and presentation surfaces, but the ladder is not explicitly frozen.",
+      "evidence_refs": [
+        "docs/canon/constitution_v1.md",
+        "control/view/view_engine.py",
+        "app/ui_presentation.c"
+      ],
+      "next_action_implication": "Freeze the ladder by extending the existing observer, perception, and render surfaces.",
+      "depends_on": [],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "lambda.universal_reality_framework",
+      "series": "Λ",
+      "series_order": 1,
+      "family_name": "Universal reality framework",
+      "status": "foundation_ready",
+      "rationale": "The repo already has broad reality, world, universe, material, logic, and signal roots that make a blank-slate framework unnecessary.",
+      "evidence_refs": [
+        "worldgen",
+        "geo",
+        "reality",
+        "materials",
+        "logic",
+        "signals",
+        "system",
+        "universe"
+      ],
+      "next_action_implication": "Formalize the framework directly from the live semantic roots.",
+      "depends_on": [],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "sigma.agent_governance_baseline",
+      "series": "Σ",
+      "series_order": 2,
+      "family_name": "Agent governance baseline",
+      "status": "obsolete",
+      "rationale": "The baseline governance problem is already materially solved by AGENTS, canon, glossary, and the P-0 planning authority stack.",
+      "evidence_refs": [
+        "AGENTS.md",
+        "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+        "docs/planning/AUTHORITY_ORDER.md"
+      ],
+      "next_action_implication": "Do not create a new governance baseline; preserve and extend the one that already exists.",
+      "depends_on": [
+        "lambda.universal_reality_framework"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "sigma.agent_mirrors_vendor_neutral",
+      "series": "Σ",
+      "series_order": 2,
+      "family_name": "Agent mirrors and vendor-neutral instruction surfaces",
+      "status": "foundation_ready",
+      "rationale": "The repo already contains mirrored advisory instruction layers and XStack-related guidance, but they are fragmented rather than harmonized.",
+      "evidence_refs": [
+        "docs/agents",
+        "docs/governance",
+        "docs/xstack",
+        "data/planning/reconciliation/subsystem_classification.json"
+      ],
+      "next_action_implication": "Merge and normalize the existing mirror surfaces immediately after initial Λ framing.",
+      "depends_on": [
+        "lambda.universal_reality_framework"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "sigma.agent_safety_permissions_boundaries",
+      "series": "Σ",
+      "series_order": 2,
+      "family_name": "Agent safety, permissions, and boundaries",
+      "status": "already_exists",
+      "rationale": "Safety, refusal, manual review, and boundary rules already exist across AGENTS, governance docs, ControlX, and XStack surfaces.",
+      "evidence_refs": [
+        "AGENTS.md",
+        "docs/governance",
+        "tools/controlx/controlx.py",
+        "tools/xstack/ui_bind.py"
+      ],
+      "next_action_implication": "Preserve the existing safety baseline and only consolidate wording and routing.",
+      "depends_on": [
+        "lambda.universal_reality_framework"
+      ],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "sigma.mcp_interface_wrappers",
+      "series": "Σ",
+      "series_order": 2,
+      "family_name": "MCP and interface wrappers",
+      "status": "waits_for_lambda",
+      "rationale": "Wrapper infrastructure already exists, but canonical wrapper contracts should inherit stable capability and task semantics from Λ first.",
+      "evidence_refs": [
+        "tools/controlx/controlx.py",
+        "tools/xstack/ui_bind.py",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "next_action_implication": "Delay wrapper freezing until after Λ and the governed task vocabulary are in place.",
+      "depends_on": [
+        "lambda.capability_surfaces",
+        "lambda.universal_reality_framework"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "sigma.natural_language_task_bridge",
+      "series": "Σ",
+      "series_order": 2,
+      "family_name": "Natural-language task bridge",
+      "status": "waits_for_lambda",
+      "rationale": "Natural-language binding is high leverage, but it should not freeze before Λ stabilizes capability surfaces, semantic bridges, and acceptance boundaries.",
+      "evidence_refs": [
+        "tools/controlx/controlx.py",
+        "docs/agents/AGENT_PLANNING.md",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "next_action_implication": "Define the bridge only after Λ core vocabulary lands.",
+      "depends_on": [
+        "lambda.capability_surfaces",
+        "lambda.player_desire_acceptance_map",
+        "lambda.universal_reality_framework"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "sigma.xstack_task_catalog",
+      "series": "Σ",
+      "series_order": 2,
+      "family_name": "XStack task catalog",
+      "status": "waits_for_lambda",
+      "rationale": "The XStack substrate is strong, but a canonical task catalog should not lock task classes before Λ freezes the semantic and capability vocabulary they target.",
+      "evidence_refs": [
+        "tools/xstack",
+        "docs/blueprint/FINAL_PROMPT_INVENTORY.md",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "next_action_implication": "Reuse the live XStack tooling, but delay the final catalog until after Λ.",
+      "depends_on": [
+        "lambda.capability_surfaces",
+        "lambda.universal_reality_framework"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.asset_pipeline",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Asset pipeline",
+      "status": "partially_exists",
+      "rationale": "The repo already acknowledges tool and asset-pipeline surfaces, but there is not yet one frozen runtime-facing asset pipeline boundary.",
+      "evidence_refs": [
+        "docs/architecture/ARCH_ENFORCEMENT.md",
+        "docs/app/TESTX_COMPLIANCE.md",
+        "data/planning/reality/toolchain_and_preset_map.json"
+      ],
+      "next_action_implication": "Map the existing tooling and pipeline surfaces before any deeper render or live-ops work.",
+      "depends_on": [
+        "lambda.domain_contract_template",
+        "sigma.agent_safety_permissions_boundaries"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.component_model",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Component model",
+      "status": "waits_for_lambda",
+      "rationale": "The runtime substrate is real, but component ownership cannot be frozen safely before Λ resolves semantic and pack-law grounding.",
+      "evidence_refs": [
+        "data/planning/reconciliation/subsystem_classification.json",
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/blueprint/FOUNDATION_PHASES.md"
+      ],
+      "next_action_implication": "Derive the component model from the live runtime substrate only after Λ core semantics are pinned.",
+      "depends_on": [
+        "lambda.domain_contract_template",
+        "lambda.universal_reality_framework",
+        "sigma.xstack_task_catalog"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.distributed_authority_direction",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Distributed authority direction",
+      "status": "dangerous",
+      "rationale": "The repo has only precursor references for authority handoff and shard behavior; freezing distributed authority now would outrun both runtime and semantic grounding.",
+      "evidence_refs": [
+        "client/app/main_client.c",
+        "server/tests/shard_api_tests.cpp",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "next_action_implication": "Keep this at design-gate level only until lifecycle, snapshot, proof, and Λ semantics are frozen.",
+      "depends_on": [
+        "phi.lifecycle_manager",
+        "phi.snapshot_service",
+        "phi.state_externalization",
+        "sigma.agent_safety_permissions_boundaries"
+      ],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "phi.event_log",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Event log",
+      "status": "partially_exists",
+      "rationale": "Event-log, replay, checkpoint, and drift surfaces already exist, but there is not one frozen runtime event-log contract yet.",
+      "evidence_refs": [
+        "app/ui_event_log.c",
+        "process/drift",
+        "server/persistence/dispute_bundle.cpp"
+      ],
+      "next_action_implication": "Extend the existing event and replay surfaces rather than introducing a new logging universe.",
+      "depends_on": [
+        "lambda.domain_contract_template"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.framegraph_render_device_split",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Framegraph and render-device split",
+      "status": "blocked",
+      "rationale": "Render backends and client renderers exist, but the explicit framegraph and render-device foundations called for in the blueprint are not yet present.",
+      "evidence_refs": [
+        "client/render",
+        "docs/blueprint/FOUNDATION_PHASES.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "next_action_implication": "Do not execute render replacement work until the missing abstractions are mapped and introduced deliberately.",
+      "depends_on": [
+        "phi.component_model",
+        "phi.lifecycle_manager"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.hotswap_boundaries",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Hotswap boundaries",
+      "status": "dangerous",
+      "rationale": "Hotswap and replacement work would freeze the wrong boundaries before lifecycle, snapshot, component, and semantic contracts are stable.",
+      "evidence_refs": [
+        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
+      ],
+      "next_action_implication": "Treat hotswap only as a late boundary-design concern, not an early runtime task.",
+      "depends_on": [
+        "phi.component_model",
+        "phi.lifecycle_manager",
+        "phi.state_externalization"
+      ],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "phi.lifecycle_manager",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Lifecycle manager",
+      "status": "blocked",
+      "rationale": "No explicit lifecycle-manager surface is present in the live repo, and the blueprint treats it as a required new foundation.",
+      "evidence_refs": [
+        "docs/blueprint/FOUNDATION_PHASES.md",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+        "data/planning/reconciliation/subsystem_classification.json"
+      ],
+      "next_action_implication": "Map insertion points first; do not imply that lifecycle control already exists as a frozen subsystem.",
+      "depends_on": [
+        "lambda.universal_reality_framework",
+        "sigma.xstack_task_catalog"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.module_loader",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Module loader",
+      "status": "blocked",
+      "rationale": "The repo does not expose an explicit module-loader foundation yet, and the blueprint stop conditions still treat loader insertion points as unresolved.",
+      "evidence_refs": [
+        "docs/blueprint/FOUNDATION_PHASES.md",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+        "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
+      ],
+      "next_action_implication": "Leave this blocked until runtime boundaries are mapped against the live substrate.",
+      "depends_on": [
+        "phi.component_model",
+        "sigma.agent_safety_permissions_boundaries"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.multi_version_coexistence",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Multi-version coexistence",
+      "status": "waits_for_quarantine_review",
+      "rationale": "Compat and migration surfaces are strong, but final coexistence rules depend on the unresolved schema and pack ownership splits.",
+      "evidence_refs": [
+        "compat/capability_negotiation.py",
+        "compat/migration_lifecycle.py",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "next_action_implication": "Keep coexistence planning tied to quarantine resolution rather than freezing it early.",
+      "depends_on": [
+        "lambda.domain_contract_template"
+      ],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "phi.runtime_kernel_model",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Runtime kernel model",
+      "status": "partially_exists",
+      "rationale": "The engine/game spine and app/process/runtime substrate already embody a kernel direction, so a greenfield kernel prompt would be wasteful.",
+      "evidence_refs": [
+        "engine",
+        "game",
+        "app/app_runtime.c",
+        "data/planning/reconciliation/subsystem_classification.json"
+      ],
+      "next_action_implication": "Extract the model from the live spine instead of inventing a new kernel story.",
+      "depends_on": [
+        "lambda.universal_reality_framework"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.runtime_services",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Runtime services",
+      "status": "partially_exists",
+      "rationale": "Runtime, compatibility, control, persistence, and observability services already exist in distributed form across live roots.",
+      "evidence_refs": [
+        "control/control_plane_engine.py",
+        "server/runtime/tick_loop.py",
+        "tools/observability",
+        "data/planning/reality/runtime_surfaces.json"
+      ],
+      "next_action_implication": "Formalize service boundaries from existing surfaces instead of creating a fresh service layer.",
+      "depends_on": [
+        "lambda.universal_reality_framework",
+        "sigma.xstack_task_catalog"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.sandboxing",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Sandboxing",
+      "status": "partially_exists",
+      "rationale": "Sandbox tests and sandbox-like product surfaces exist, but a canonical runtime sandbox model is not yet frozen.",
+      "evidence_refs": [
+        "game/tests/tests/setup/test_services_fs_sandbox.cpp",
+        "client/core/client_command_bridge.c",
+        "schema/authority/README.md"
+      ],
+      "next_action_implication": "Extend the existing sandbox and refusal surfaces instead of assuming the repo has no sandbox model.",
+      "depends_on": [
+        "sigma.agent_safety_permissions_boundaries"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.snapshot_service",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "Snapshot service",
+      "status": "blocked",
+      "rationale": "Snapshot, checkpoint, and replay artifacts exist, but there is no unified snapshot service or handoff boundary yet.",
+      "evidence_refs": [
+        "server/persistence/dom_checkpointing.cpp",
+        "server/persistence/dispute_bundle.cpp",
+        "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
+      ],
+      "next_action_implication": "Do not treat schemas and checkpoint code as proof that the service boundary already exists.",
+      "depends_on": [
+        "phi.lifecycle_manager",
+        "phi.state_externalization"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "phi.state_externalization",
+      "series": "Φ",
+      "series_order": 3,
+      "family_name": "State externalization",
+      "status": "waits_for_lambda",
+      "rationale": "Export, import, migration, checkpoint, and replay surfaces already exist, but final state boundaries should inherit Λ semantics instead of guessing what counts as lawful externalized state.",
+      "evidence_refs": [
+        "docs/specs/launcher/CLI.md",
+        "compat/migration_lifecycle.py",
+        "server/persistence/dom_checkpointing.cpp"
+      ],
+      "next_action_implication": "Pin state classes only after Λ clarifies domain and truth ownership boundaries.",
+      "depends_on": [
+        "lambda.domain_contract_template",
+        "lambda.representation_ladders"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.archive_mirror_policy",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Archive and mirror policy",
+      "status": "partially_exists",
+      "rationale": "Archive support, archive policy code, and archive policy registries already exist, but the final publication constitution is not frozen.",
+      "evidence_refs": [
+        "archive",
+        "release/archive_policy.py",
+        "data/registries/archive_policy_registry.json"
+      ],
+      "next_action_implication": "Consolidate existing archive and mirror rules rather than inventing them from scratch.",
+      "depends_on": [
+        "phi.runtime_kernel_model"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.build_graph_lock",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Build graph lock",
+      "status": "foundation_ready",
+      "rationale": "The repo already has a governed build and structure spine strong enough to support a dedicated build-graph lock artifact.",
+      "evidence_refs": [
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "data/architecture/module_registry.v1.json",
+        ".github/workflows/ci.yml"
+      ],
+      "next_action_implication": "Freeze the lock from existing build and architecture surfaces.",
+      "depends_on": [
+        "phi.runtime_kernel_model"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.build_reproducibility_matrix",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Build reproducibility matrix",
+      "status": "foundation_ready",
+      "rationale": "The preset, toolchain, and CI matrix is already rich enough that reproducibility work is a normalization step, not a discovery step.",
+      "evidence_refs": [
+        "CMakePresets.json",
+        "cmake/toolchains",
+        "data/planning/reality/toolchain_and_preset_map.json"
+      ],
+      "next_action_implication": "Turn the existing matrix into a governed reproducibility artifact.",
+      "depends_on": [
+        "upsilon.build_graph_lock"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.disaster_downgrade_policy",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Disaster and downgrade policy",
+      "status": "partially_exists",
+      "rationale": "Rollback selection, yanked handling, and downgrade-related release behavior already exist, but the policy is not yet frozen under one explicit constitution.",
+      "evidence_refs": [
+        "release/update_resolver.py",
+        "updates/stable.json",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "next_action_implication": "Consolidate downgrade and rollback policy from existing release machinery.",
+      "depends_on": [
+        "upsilon.release_index_policy",
+        "upsilon.versioning_constitution"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.license_capability_policy",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "License and capability policy",
+      "status": "partially_exists",
+      "rationale": "Capability and trust surfaces already exist across pack metadata, schema law, and secure tooling, but they are not yet one consolidated release policy layer.",
+      "evidence_refs": [
+        "schema/packs/pack_compat_manifest.schema",
+        "security/trust",
+        "tools/securex"
+      ],
+      "next_action_implication": "Unify the existing capability and trust policy surfaces instead of inventing new ones.",
+      "depends_on": [
+        "lambda.capability_surfaces",
+        "upsilon.versioning_constitution"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.manual_automation_parity",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Manual-automation parity",
+      "status": "partially_exists",
+      "rationale": "The repo already contains parity tests, governed command wrappers, and UI binding surfaces, but not one frozen parity doctrine.",
+      "evidence_refs": [
+        "game/tests/tests/setup/parity_lock/setup_parity_lock_tests.cpp",
+        "tools/xstack/run.py",
+        "tools/xstack/ui_bind.py"
+      ],
+      "next_action_implication": "Codify parity around the existing test and tool surfaces.",
+      "depends_on": [
+        "sigma.agent_safety_permissions_boundaries"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.operator_transaction_log",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Operator transaction log",
+      "status": "partially_exists",
+      "rationale": "Install/update transaction log machinery already exists, but the broader operator-transaction contract is not yet generalized.",
+      "evidence_refs": [
+        "release/update_resolver.py",
+        "updates/changelog.json",
+        "tools/release"
+      ],
+      "next_action_implication": "Extend the live transaction-log substrate into a broader operator contract instead of creating one from zero.",
+      "depends_on": [
+        "upsilon.release_ops"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.preset_consolidation",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Preset consolidation",
+      "status": "foundation_ready",
+      "rationale": "The preset matrix is already present and mapped, so consolidation is ready to proceed once upstream sequencing is respected.",
+      "evidence_refs": [
+        "CMakePresets.json",
+        "cmake/ide",
+        "cmake/toolchains"
+      ],
+      "next_action_implication": "Normalize the existing preset families rather than rebuilding them.",
+      "depends_on": [
+        "upsilon.build_graph_lock"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.publication_models",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Publication models",
+      "status": "partially_exists",
+      "rationale": "Channel manifests, distribution tooling, and product distribution names already exist, but the final publication model is not frozen under one doctrine.",
+      "evidence_refs": [
+        "updates/stable.json",
+        "updates/beta.json",
+        "updates/nightly.json",
+        "tools/distribution"
+      ],
+      "next_action_implication": "Formalize publication models as a consolidation of existing channels and distribution surfaces.",
+      "depends_on": [
+        "upsilon.versioning_constitution"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.release_contract_profile",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Release contract profile and related artifacts",
+      "status": "foundation_ready",
+      "rationale": "The exact release contract profile artifacts do not exist under those names yet, but the repo already has build-ID, artifact-identity, release-channel, and policy substrate strong enough to define them.",
+      "evidence_refs": [
+        "repo/release_policy.toml",
+        "schema/release/build_id.schema",
+        "schema/identity/artifact_identity.schema",
+        "docs/audit/RELEASE0_RETRO_AUDIT.md"
+      ],
+      "next_action_implication": "Author the missing release contract profile artifacts as consolidation over existing identity and release surfaces.",
+      "depends_on": [
+        "upsilon.versioning_constitution"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.release_index_policy",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Release index policy",
+      "status": "partially_exists",
+      "rationale": "Release policy, update indices, yanked selection, and trust checks already exist, but the policy is still distributed across code, manifests, and audits.",
+      "evidence_refs": [
+        "repo/release_policy.toml",
+        "release/update_resolver.py",
+        "updates/stable.json"
+      ],
+      "next_action_implication": "Consolidate the existing release index logic into a clearer constitution.",
+      "depends_on": [
+        "upsilon.versioning_constitution"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.release_ops",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Release operations",
+      "status": "partially_exists",
+      "rationale": "The repo already has release tooling, operator tooling, and XStack control surfaces, but not one final governed ops model.",
+      "evidence_refs": [
+        "tools/release",
+        "tools/controlx",
+        "tools/xstack/session_control.py"
+      ],
+      "next_action_implication": "Freeze release ops by consolidating existing tools and policies.",
+      "depends_on": [
+        "sigma.agent_safety_permissions_boundaries"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.release_pipeline",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Release pipeline",
+      "status": "partially_exists",
+      "rationale": "Release, distribution, compatibility, and secure tooling already form a real pipeline substrate, but the pipeline is not yet frozen as one governed flow.",
+      "evidence_refs": [
+        "release",
+        "tools/release",
+        "tools/distribution",
+        "tools/xstack"
+      ],
+      "next_action_implication": "Define the pipeline as a consolidation of the existing tooling and policy stack.",
+      "depends_on": [
+        "upsilon.build_graph_lock",
+        "upsilon.release_index_policy"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "upsilon.versioning_constitution",
+      "series": "Υ",
+      "series_order": 4,
+      "family_name": "Versioning constitution",
+      "status": "foundation_ready",
+      "rationale": "The repo already distinguishes schema, protocol, pack, feature-epoch, product, and build identity truths; the missing work is to freeze them into one explicit constitution.",
+      "evidence_refs": [
+        "schema/release/build_id.schema",
+        "schema/identity/artifact_identity.schema",
+        "docs/specs/SPEC_IDENTITY.md",
+        "repo/release_policy.toml"
+      ],
+      "next_action_implication": "Write the constitution as a consolidation of existing explicit identity surfaces, not as a fresh invention.",
+      "depends_on": [
+        "phi.runtime_kernel_model"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "zeta.extreme_pipe_dream_live_operations",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Extreme pipe-dream live operations",
+      "status": "dangerous",
+      "rationale": "Cluster-of-clusters, live schema evolution by default, and restartless core replacement remain explicitly unrealistic or speculative in the current blueprint and repo state.",
+      "evidence_refs": [
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/PIPE_DREAMS_MATRIX.md"
+      ],
+      "next_action_implication": "Keep these out of near-term execution planning.",
+      "depends_on": [
+        "zeta.shard_relocation_distributed_live_ops"
+      ],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "zeta.live_save_migration",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Live save migration",
+      "status": "blocked",
+      "rationale": "Migration, checkpoint, and rollback precursors exist, but online save migration still depends on snapshot-service, lifecycle, and state-externalization foundations that are not frozen.",
+      "evidence_refs": [
+        "compat/migration_lifecycle.py",
+        "server/persistence/dom_checkpointing.cpp",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "next_action_implication": "Do not schedule live save migration before Φ and Υ foundations land.",
+      "depends_on": [
+        "phi.snapshot_service",
+        "phi.state_externalization",
+        "upsilon.disaster_downgrade_policy"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "zeta.non_blocking_save",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Non-blocking save",
+      "status": "blocked",
+      "rationale": "Save and snapshot primitives exist, but non-blocking capture still depends on lifecycle control and explicit snapshot-service boundaries.",
+      "evidence_refs": [
+        "server/persistence",
+        "docs/blueprint/FINAL_PROMPT_INVENTORY.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "next_action_implication": "Leave this blocked until the missing Φ foundations are real.",
+      "depends_on": [
+        "phi.lifecycle_manager",
+        "phi.snapshot_service"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "zeta.partial_live_module_reload",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Partial live module reload",
+      "status": "blocked",
+      "rationale": "The blueprint still classifies live module reload as requiring new foundation, and the repo still lacks the module loader and state-export boundaries it depends on.",
+      "evidence_refs": [
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+      ],
+      "next_action_implication": "Keep this behind Φ module-loader and state-externalization work.",
+      "depends_on": [
+        "phi.module_loader",
+        "phi.state_externalization"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "zeta.replaceability_hot_swappable_subsystems",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Replaceability and hot-swappable subsystems",
+      "status": "dangerous",
+      "rationale": "The repo has useful runtime and rollback precursors, but hot-swappable subsystem work would still outrun lifecycle, state-export, render, and cutover foundations.",
+      "evidence_refs": [
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
+      ],
+      "next_action_implication": "Treat replaceability as a late-stage governed outcome, not a near-term implementation target.",
+      "depends_on": [
+        "phi.hotswap_boundaries",
+        "phi.lifecycle_manager",
+        "upsilon.disaster_downgrade_policy"
+      ],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "zeta.rollout_canary_rollback_mechanisms",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Rollout, canary, and rollback mechanisms",
+      "status": "partially_exists",
+      "rationale": "Rollback, yanked-release, and transaction-log machinery already exist, but canary and live rollout orchestration are not yet fully frozen.",
+      "evidence_refs": [
+        "release/update_resolver.py",
+        "updates/stable.json",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "next_action_implication": "Treat early Ζ rollout work as an extension of existing rollback policy, not a blank-slate live-ops project.",
+      "depends_on": [
+        "upsilon.release_index_policy",
+        "upsilon.operator_transaction_log"
+      ],
+      "human_review_needed": false
+    },
+    {
+      "prompt_family_id": "zeta.service_restarts",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Service restarts",
+      "status": "dangerous",
+      "rationale": "Supervisor and shell surfaces exist, but runtime-safe service restart semantics would still be guessed without a frozen lifecycle manager and cutover policy.",
+      "evidence_refs": [
+        "appshell/supervisor",
+        "docs/blueprint/FOUNDATION_PHASES.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "next_action_implication": "Keep restart work downstream of explicit Φ lifecycle and Υ release control work.",
+      "depends_on": [
+        "phi.lifecycle_manager",
+        "upsilon.release_ops"
+      ],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "zeta.shard_relocation_distributed_live_ops",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Shard relocation and distributed live ops",
+      "status": "dangerous",
+      "rationale": "The repo has shard and replay precursors, but the blueprint still treats distributed relocation as unrealistic without deterministic replication and lawful authority handoff.",
+      "evidence_refs": [
+        "server/tests/shard_routing_tests.cpp",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md"
+      ],
+      "next_action_implication": "Do not plan this in detail yet; keep it behind Φ and Υ completion plus explicit human approval.",
+      "depends_on": [
+        "phi.distributed_authority_direction",
+        "phi.snapshot_service",
+        "upsilon.disaster_downgrade_policy"
+      ],
+      "human_review_needed": true
+    },
+    {
+      "prompt_family_id": "zeta.trust_root_rotation_live_changes",
+      "series": "Ζ",
+      "series_order": 5,
+      "family_name": "Trust-root rotation and live trust changes",
+      "status": "blocked",
+      "rationale": "Trust verification tooling is strong, but live trust rotation still depends on controlled distribution, operator transaction logging, and rollback choreography that are not yet frozen.",
+      "evidence_refs": [
+        "security/trust",
+        "tools/securex",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "next_action_implication": "Keep live trust changes behind later Υ control-plane work.",
+      "depends_on": [
+        "upsilon.operator_transaction_log",
+        "upsilon.release_ops"
+      ],
+      "human_review_needed": false
+    }
+  ]
+}

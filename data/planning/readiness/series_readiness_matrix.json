@@ -1,0 +1,344 @@
+{
+  "generated_for": "P-3",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "ordering": "series entries are sorted by recommended_order ascending",
+  "readiness_categories": {
+    "already_exists": "The repo already provides the family in a materially usable form; later work should preserve or consolidate it rather than create it from zero.",
+    "partially_exists": "The repo contains strong precursor surfaces, but the family is still incomplete or fragmented.",
+    "foundation_ready": "The needed groundwork is strong enough that the family can be formalized next without greenfield invention.",
+    "blocked": "One or more prerequisite foundations are still missing, so execution would stall or mis-shape the architecture.",
+    "dangerous": "Execution now would likely freeze the wrong boundaries or semantics even if precursor surfaces exist.",
+    "obsolete": "The family as originally imagined is wasteful because the repo already solved the baseline problem.",
+    "waits_for_lambda": "The family depends on Λ-series semantic grounding before it can be frozen safely.",
+    "waits_for_quarantine_review": "The family depends on explicit review of a known P-2 quarantine or split-ownership zone."
+  },
+  "series": [
+    {
+      "series_id": "Λ",
+      "series_name": "Semantic / Reality Framework",
+      "gating_state": "ready_to_begin_now",
+      "not_yet_safe_to_plan_in_detail": false,
+      "readiness_summary": "Λ is the most ready major series. The repo already embodies broad semantic and world roots, and the missing work is primarily formalization, vocabulary freezing, and cross-domain mapping rather than invention.",
+      "major_prerequisite_surfaces": [
+        "docs/canon/constitution_v1.md",
+        "docs/canon/glossary_v1.md",
+        "worldgen",
+        "geo",
+        "reality",
+        "materials",
+        "logic",
+        "signals",
+        "system",
+        "universe",
+        "packs/domain",
+        "packs/experience",
+        "packs/law"
+      ],
+      "existing_repo_support": [
+        "Broad domain and reality roots are already live.",
+        "Pack-backed law and experience surfaces already exist.",
+        "P-2 classified the semantic roots as extend, not replace."
+      ],
+      "blockers": [
+        "No hard blocker for initial Λ work.",
+        "Final bridge semantics must respect the field/fields, schema/schemas, and packs/data/packs conflicts."
+      ],
+      "dangerous_assumptions": [
+        "Assuming Λ needs a clean-room ontology.",
+        "Silently choosing winners in the field or pack ownership splits."
+      ],
+      "quarantine_dependencies": [
+        "field versus fields",
+        "schema versus schemas",
+        "packs versus data/packs"
+      ],
+      "recommended_order": 1,
+      "confidence": "high",
+      "status_breakdown": {
+        "already_exists": [],
+        "partially_exists": [
+          "lambda.capability_surfaces",
+          "lambda.formalization_chain",
+          "lambda.player_desire_acceptance_map",
+          "lambda.representation_ladders"
+        ],
+        "foundation_ready": [
+          "lambda.domain_contract_template",
+          "lambda.universal_reality_framework"
+        ],
+        "blocked": [],
+        "dangerous": [],
+        "obsolete": [],
+        "waits_for_lambda": [],
+        "waits_for_quarantine_review": [
+          "lambda.cross_domain_bridges"
+        ]
+      },
+      "notes": "P-4 should treat Λ as the first execution-grade series after Ρ."
+    },
+    {
+      "series_id": "Σ",
+      "series_name": "Human / Agent Governance and Interface",
+      "gating_state": "ready_only_after_Λ",
+      "not_yet_safe_to_plan_in_detail": false,
+      "readiness_summary": "Σ has a strong existing baseline, but the parts that bind natural language, task classes, and wrappers to governed semantics should inherit Λ rather than racing ahead of it.",
+      "major_prerequisite_surfaces": [
+        "AGENTS.md",
+        "docs/planning",
+        "docs/agents",
+        "docs/governance",
+        "docs/xstack",
+        "tools/controlx",
+        "tools/xstack"
+      ],
+      "existing_repo_support": [
+        "The agent governance baseline already exists in AGENTS and planning docs.",
+        "XStack and ControlX already expose routed execution, session, and refusal surfaces.",
+        "P-2 classified mirrored governance docs as merge and the authority stack as keep."
+      ],
+      "blockers": [
+        "Canonical task and wrapper vocabularies should not be frozen before Λ stabilizes capability and domain semantics."
+      ],
+      "dangerous_assumptions": [
+        "Treating AGENTS governance as absent.",
+        "Binding natural-language task classes before capability surfaces are frozen.",
+        "Creating vendor-specific wrappers before vendor-neutral mirrors exist."
+      ],
+      "quarantine_dependencies": [
+        "Any task catalog entry that hard-pins disputed field, schema, or pack semantics."
+      ],
+      "recommended_order": 2,
+      "confidence": "high",
+      "status_breakdown": {
+        "already_exists": [
+          "sigma.agent_safety_permissions_boundaries"
+        ],
+        "partially_exists": [],
+        "foundation_ready": [
+          "sigma.agent_mirrors_vendor_neutral"
+        ],
+        "blocked": [],
+        "dangerous": [],
+        "obsolete": [
+          "sigma.agent_governance_baseline"
+        ],
+        "waits_for_lambda": [
+          "sigma.mcp_interface_wrappers",
+          "sigma.natural_language_task_bridge",
+          "sigma.xstack_task_catalog"
+        ],
+        "waits_for_quarantine_review": []
+      },
+      "notes": "Low-risk governance consolidation can follow immediately after initial Λ framing, but not before."
+    },
+    {
+      "series_id": "Φ",
+      "series_name": "Runtime / Component / Service Foundations",
+      "gating_state": "ready_only_after_Σ",
+      "not_yet_safe_to_plan_in_detail": false,
+      "readiness_summary": "Φ has significant live substrate, but execution is still gated by Λ semantics and Σ governance. Early Φ should extract and formalize what exists, while explicit module-loader, lifecycle, snapshot-service, render-device, and distributed-authority work remains blocked or dangerous.",
+      "major_prerequisite_surfaces": [
+        "engine",
+        "game",
+        "app",
+        "compat",
+        "control",
+        "core",
+        "net",
+        "process",
+        "server/runtime",
+        "server/persistence",
+        "tools/inspect",
+        "tools/observability"
+      ],
+      "existing_repo_support": [
+        "Kernel and runtime substrate already exist across engine, game, app, compat, control, core, process, and server roots.",
+        "Event-log, replay, drift, checkpoint, migration, and sandbox precursors already exist.",
+        "P-2 classified the thin runtime root as replace and the substrate cluster as extend."
+      ],
+      "blockers": [
+        "No explicit module loader surface.",
+        "No explicit lifecycle manager surface.",
+        "No explicit framegraph or render-device abstraction.",
+        "No unified snapshot service."
+      ],
+      "dangerous_assumptions": [
+        "Assuming runtime/ is already the canonical orchestrator home.",
+        "Freezing component or state boundaries before Λ semantic grounding.",
+        "Treating shard or replay precursors as distributed-authority readiness."
+      ],
+      "quarantine_dependencies": [
+        "schema versus schemas",
+        "packs versus data/packs",
+        "field versus fields"
+      ],
+      "recommended_order": 3,
+      "confidence": "high",
+      "status_breakdown": {
+        "already_exists": [],
+        "partially_exists": [
+          "phi.asset_pipeline",
+          "phi.event_log",
+          "phi.runtime_kernel_model",
+          "phi.runtime_services",
+          "phi.sandboxing"
+        ],
+        "foundation_ready": [],
+        "blocked": [
+          "phi.framegraph_render_device_split",
+          "phi.lifecycle_manager",
+          "phi.module_loader",
+          "phi.snapshot_service"
+        ],
+        "dangerous": [
+          "phi.distributed_authority_direction",
+          "phi.hotswap_boundaries"
+        ],
+        "obsolete": [],
+        "waits_for_lambda": [
+          "phi.component_model",
+          "phi.state_externalization"
+        ],
+        "waits_for_quarantine_review": [
+          "phi.multi_version_coexistence"
+        ]
+      },
+      "notes": "The first safe Φ move is extraction and boundary freezing, not greenfield replacement."
+    },
+    {
+      "series_id": "Υ",
+      "series_name": "Build / Release / Versioning / Control-Plane Consolidation",
+      "gating_state": "ready_only_after_Φ",
+      "not_yet_safe_to_plan_in_detail": false,
+      "readiness_summary": "Υ is mostly a consolidation series. The repo already has a strong control-plane, build, and identity substrate, but execution should follow the earliest Φ boundary decisions so versioning, release contracts, and publication policy attach to the right runtime and product surfaces.",
+      "major_prerequisite_surfaces": [
+        "release",
+        "repo",
+        "updates",
+        "data/architecture",
+        "data/registries",
+        "tools/xstack",
+        "tools/release",
+        "tools/distribution",
+        "tools/compatx",
+        "tools/securex",
+        "repo/release_policy.toml",
+        "schema/release/build_id.schema",
+        "schema/identity/artifact_identity.schema"
+      ],
+      "existing_repo_support": [
+        "Build and CI backbone is already keep-classified.",
+        "Release/update/control-plane roots are already keep-classified.",
+        "Build identity, artifact identity, release channel, rollback, yanked, and archive-policy surfaces already exist."
+      ],
+      "blockers": [
+        "The named constitutions for versioning and release contract profiles are not yet frozen.",
+        "Full execution should inherit the Φ-facing runtime boundary map rather than guessing product/runtime attachment points."
+      ],
+      "dangerous_assumptions": [
+        "Treating version labels as machine truth.",
+        "Collapsing suite version, product version, protocol/schema versions, compatibility identity, and build identity into one field.",
+        "Promoting derived build or artifact echoes into canonical authority."
+      ],
+      "quarantine_dependencies": [
+        "schema versus schemas",
+        "packs versus data/packs",
+        "generated output roots such as build and artifacts"
+      ],
+      "recommended_order": 4,
+      "confidence": "high",
+      "status_breakdown": {
+        "already_exists": [],
+        "partially_exists": [
+          "upsilon.archive_mirror_policy",
+          "upsilon.disaster_downgrade_policy",
+          "upsilon.license_capability_policy",
+          "upsilon.manual_automation_parity",
+          "upsilon.operator_transaction_log",
+          "upsilon.publication_models",
+          "upsilon.release_index_policy",
+          "upsilon.release_ops",
+          "upsilon.release_pipeline"
+        ],
+        "foundation_ready": [
+          "upsilon.build_graph_lock",
+          "upsilon.build_reproducibility_matrix",
+          "upsilon.preset_consolidation",
+          "upsilon.release_contract_profile",
+          "upsilon.versioning_constitution"
+        ],
+        "blocked": [],
+        "dangerous": [],
+        "obsolete": [],
+        "waits_for_lambda": [],
+        "waits_for_quarantine_review": []
+      },
+      "notes": "The exact docs named in the latest versioning doctrine are absent under those names, but the underlying identity and release substrate already exists."
+    },
+    {
+      "series_id": "Ζ",
+      "series_name": "Live Operations / Replaceability / Distributed Execution",
+      "gating_state": "ready_only_after_Υ",
+      "not_yet_safe_to_plan_in_detail": true,
+      "readiness_summary": "Ζ remains heavily gated. The repo has rollback, yanked-release, replay, checkpoint, proof, and transaction precursors, but most live cutover, hot-reload, non-blocking save, trust-rotation, and distributed-authority capabilities are still blocked or dangerous.",
+      "major_prerequisite_surfaces": [
+        "release/update_resolver.py",
+        "updates/stable.json",
+        "updates/changelog.json",
+        "server/persistence",
+        "process/drift",
+        "control/proof",
+        "tools/xstack",
+        "tools/securex"
+      ],
+      "existing_repo_support": [
+        "Rollback transaction selection and yanked release handling already exist.",
+        "Replay, checkpoint, dispute-bundle, proof, and drift surfaces already exist.",
+        "Blueprint readiness docs still classify most advanced Ζ capabilities as requiring new foundation or unrealistic."
+      ],
+      "blockers": [
+        "Lifecycle manager is absent.",
+        "Module loader is absent.",
+        "Snapshot service is absent.",
+        "State externalization is not frozen.",
+        "Distributed authority semantics are not frozen."
+      ],
+      "dangerous_assumptions": [
+        "Treating rollback primitives as full live-ops readiness.",
+        "Treating shard tests or checkpoint bundles as distributed-authority proof.",
+        "Planning hot swap or live reload before Φ and Υ foundations land."
+      ],
+      "quarantine_dependencies": [
+        "schema versus schemas",
+        "packs versus data/packs",
+        "field versus fields"
+      ],
+      "recommended_order": 5,
+      "confidence": "high",
+      "status_breakdown": {
+        "already_exists": [],
+        "partially_exists": [
+          "zeta.rollout_canary_rollback_mechanisms"
+        ],
+        "foundation_ready": [],
+        "blocked": [
+          "zeta.live_save_migration",
+          "zeta.non_blocking_save",
+          "zeta.partial_live_module_reload",
+          "zeta.trust_root_rotation_live_changes"
+        ],
+        "dangerous": [
+          "zeta.extreme_pipe_dream_live_operations",
+          "zeta.replaceability_hot_swappable_subsystems",
+          "zeta.service_restarts",
+          "zeta.shard_relocation_distributed_live_ops"
+        ],
+        "obsolete": [],
+        "waits_for_lambda": [],
+        "waits_for_quarantine_review": []
+      },
+      "notes": "P-4 should keep Ζ narrow, heavily gated, and explicitly downstream of Φ and Υ."
+    }
+  ]
+}
