@@ -1,0 +1,1871 @@
+{
+  "generated_for": "P-4",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "rho_status": "complete_no_further_rho_prompts_required",
+  "ordering": "prompts sorted by suggested_execution_order ascending",
+  "macro_series_order": [
+    "Λ_core",
+    "semantic_ownership_review",
+    "Λ_bridge_closure_and_Σ",
+    "Φ_grounding",
+    "Υ_consolidation",
+    "Φ_advanced",
+    "Ζ_late_gates"
+  ],
+  "global_prerequisite_artifacts": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json",
+    "docs/planning/REALITY_EXTRACTION_REPORT.md",
+    "docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md",
+    "docs/planning/FOUNDATION_READINESS_REPORT.md",
+    "docs/planning/POST_PI_EXECUTION_PLAN.md",
+    "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md"
+  ],
+  "execution_phases": [
+    {
+      "phase_id": "phase_1_immediate_lambda_core",
+      "prompt_ids": [
+        "Λ-0",
+        "Λ-1",
+        "Λ-2",
+        "Λ-3",
+        "Λ-4",
+        "Λ-5"
+      ],
+      "human_review_gates": []
+    },
+    {
+      "phase_id": "phase_2_lambda_bridge_and_sigma",
+      "prompt_ids": [
+        "Λ-6",
+        "Σ-0",
+        "Σ-1",
+        "Σ-2",
+        "Σ-3",
+        "Σ-4",
+        "Σ-5"
+      ],
+      "human_review_gates": [
+        "semantic_ownership_review"
+      ]
+    },
+    {
+      "phase_id": "phase_3_phi_grounding",
+      "prompt_ids": [
+        "Φ-0",
+        "Φ-1",
+        "Φ-2",
+        "Φ-3",
+        "Φ-4",
+        "Φ-5",
+        "Φ-6"
+      ],
+      "human_review_gates": [
+        "phi_boundary_freeze_review"
+      ]
+    },
+    {
+      "phase_id": "phase_4_upsilon_consolidation",
+      "prompt_ids": [
+        "Υ-0",
+        "Υ-1",
+        "Υ-2",
+        "Υ-3",
+        "Υ-4",
+        "Υ-5",
+        "Υ-6",
+        "Υ-7",
+        "Υ-8",
+        "Υ-9",
+        "Υ-10",
+        "Υ-11",
+        "Υ-12",
+        "Υ-13",
+        "Υ-14",
+        "Υ-15",
+        "Υ-16"
+      ],
+      "human_review_gates": [
+        "publication_and_licensing_review"
+      ]
+    },
+    {
+      "phase_id": "phase_5_phi_advanced",
+      "prompt_ids": [
+        "Φ-7",
+        "Φ-8",
+        "Φ-9",
+        "Φ-10",
+        "Φ-11",
+        "Φ-12",
+        "Φ-13",
+        "Φ-14"
+      ],
+      "human_review_gates": [
+        "semantic_ownership_review",
+        "phi_boundary_freeze_review"
+      ]
+    },
+    {
+      "phase_id": "phase_6_zeta_late_gates",
+      "prompt_ids": [
+        "Ζ-0",
+        "Ζ-1",
+        "Ζ-2",
+        "Ζ-3",
+        "Ζ-4",
+        "Ζ-5",
+        "Ζ-6",
+        "Ζ-7",
+        "Ζ-8"
+      ],
+      "human_review_gates": [
+        "publication_and_licensing_review",
+        "zeta_explicit_human_review"
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "prompt_id": "Λ-0",
+      "series": "Λ",
+      "title": "UNIVERSAL_REALITY_FRAMEWORK-0",
+      "purpose": "Formalize the live semantic and world substrate into one universal reality framework grounded in repo reality.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_1_immediate_lambda_core",
+      "suggested_execution_order": 1,
+      "dependencies": [],
+      "blocks": [
+        "Λ-1",
+        "Λ-2",
+        "Λ-3",
+        "Σ-0",
+        "Φ-0"
+      ],
+      "prerequisite_artifacts": [
+        "docs/planning/REALITY_EXTRACTION_REPORT.md",
+        "data/planning/reality/content_domain_surfaces.json",
+        "docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md"
+      ],
+      "expected_outputs": [
+        "authoritative universal reality framework document",
+        "mapping from live semantic roots into framework terms"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": true,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Must extend existing semantic roots rather than invent a clean-room ontology."
+    },
+    {
+      "prompt_id": "Λ-1",
+      "series": "Λ",
+      "title": "DOMAIN_CONTRACT_TEMPLATE-0",
+      "purpose": "Turn live law, experience, domain pack, and schema law surfaces into one reusable domain contract template.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_1_immediate_lambda_core",
+      "suggested_execution_order": 2,
+      "dependencies": [
+        "Λ-0"
+      ],
+      "blocks": [
+        "Λ-2",
+        "Λ-3",
+        "Φ-1",
+        "Φ-3"
+      ],
+      "prerequisite_artifacts": [
+        "schema",
+        "packs/domain",
+        "packs/experience",
+        "packs/law"
+      ],
+      "expected_outputs": [
+        "domain contract template",
+        "template-boundary notes for packs and schema law"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": true,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should be treated as consolidation over existing contract surfaces."
+    },
+    {
+      "prompt_id": "Λ-2",
+      "series": "Λ",
+      "title": "CAPABILITY_SURFACES-0",
+      "purpose": "Freeze the capability vocabulary already spread across control, compatibility, and pack surfaces.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_1_immediate_lambda_core",
+      "suggested_execution_order": 3,
+      "dependencies": [
+        "Λ-0",
+        "Λ-1"
+      ],
+      "blocks": [
+        "Λ-4",
+        "Σ-3",
+        "Σ-4",
+        "Υ-9"
+      ],
+      "prerequisite_artifacts": [
+        "control/capability",
+        "packs",
+        "data/planning/reconciliation/subsystem_classification.json"
+      ],
+      "expected_outputs": [
+        "capability surface specification",
+        "capability-to-domain mapping"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": true,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "This is a formalization pass over live surfaces, not a new capability system."
+    },
+    {
+      "prompt_id": "Λ-3",
+      "series": "Λ",
+      "title": "REPRESENTATION_LADDERS_AND_SEMANTIC_ASCENT-0",
+      "purpose": "Turn truth, perceived, and render separation into an explicit representation ladder and semantic ascent/descent model.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_1_immediate_lambda_core",
+      "suggested_execution_order": 4,
+      "dependencies": [
+        "Λ-0",
+        "Λ-1"
+      ],
+      "blocks": [
+        "Λ-4",
+        "Φ-3"
+      ],
+      "prerequisite_artifacts": [
+        "docs/canon/constitution_v1.md",
+        "control/view/view_engine.py",
+        "app/ui_presentation.c"
+      ],
+      "expected_outputs": [
+        "representation ladder specification",
+        "projection boundary notes"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": true,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Must preserve observer/renderer/truth separation from canon."
+    },
+    {
+      "prompt_id": "Λ-4",
+      "series": "Λ",
+      "title": "FORMALIZATION_CHAIN-0",
+      "purpose": "Define the recognition, formalization, and substitution chain from live proof and semantic-domain evidence.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_1_immediate_lambda_core",
+      "suggested_execution_order": 5,
+      "dependencies": [
+        "Λ-0",
+        "Λ-2",
+        "Λ-3"
+      ],
+      "blocks": [
+        "Λ-6"
+      ],
+      "prerequisite_artifacts": [
+        "control/proof",
+        "infrastructure",
+        "data/planning/reality/content_domain_surfaces.json"
+      ],
+      "expected_outputs": [
+        "formalization chain specification",
+        "substitution and escalation criteria"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": true,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should stay grounded in live proof and planning surfaces."
+    },
+    {
+      "prompt_id": "Λ-5",
+      "series": "Λ",
+      "title": "PLAYER_DESIRE_ACCEPTANCE_MAP-0",
+      "purpose": "Formalize player-facing acceptance, refusal, and profile boundaries from existing experience and law surfaces.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_1_immediate_lambda_core",
+      "suggested_execution_order": 6,
+      "dependencies": [
+        "Λ-0",
+        "Λ-1",
+        "Λ-2"
+      ],
+      "blocks": [
+        "Σ-4",
+        "Λ-6"
+      ],
+      "prerequisite_artifacts": [
+        "packs/experience",
+        "data/defaults/profiles",
+        "docs/canon/glossary_v1.md"
+      ],
+      "expected_outputs": [
+        "player desire acceptance map",
+        "refusal taxonomy for later task and UI work"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": true,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Must derive from live profile and pack surfaces."
+    },
+    {
+      "prompt_id": "Λ-6",
+      "series": "Λ",
+      "title": "CROSS_DOMAIN_BRIDGES-0",
+      "purpose": "Define cross-domain bridges only after explicit review of the semantic ownership split zones.",
+      "category": "gating/review",
+      "execution_phase": "phase_2_lambda_bridge_and_sigma",
+      "suggested_execution_order": 7,
+      "dependencies": [
+        "Λ-0",
+        "Λ-1",
+        "Λ-2",
+        "Λ-3",
+        "Λ-4",
+        "Λ-5",
+        "gate.semantic_ownership_review"
+      ],
+      "blocks": [
+        "Φ-12",
+        "Φ-14"
+      ],
+      "prerequisite_artifacts": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json",
+        "data/planning/reality/content_domain_surfaces.json"
+      ],
+      "expected_outputs": [
+        "cross-domain bridge map",
+        "explicit unresolved ownership list"
+      ],
+      "readiness_status": "waits_for_quarantine_review",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Human review is mandatory because bridge semantics touch quarantine zones directly."
+    },
+    {
+      "prompt_id": "Σ-0",
+      "series": "Σ",
+      "title": "AGENT_GOVERNANCE-0",
+      "purpose": "Confirm and normalize the already-existing governance baseline rather than inventing a new one.",
+      "category": "gating/review",
+      "execution_phase": "phase_2_lambda_bridge_and_sigma",
+      "suggested_execution_order": 8,
+      "dependencies": [
+        "Λ-0",
+        "Λ-1",
+        "Λ-2",
+        "Λ-3",
+        "Λ-4",
+        "Λ-5"
+      ],
+      "blocks": [
+        "Σ-1",
+        "Σ-2",
+        "Σ-3"
+      ],
+      "prerequisite_artifacts": [
+        "AGENTS.md",
+        "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+        "docs/planning/AUTHORITY_ORDER.md"
+      ],
+      "expected_outputs": [
+        "delta-governance note",
+        "explicit confirmation that no greenfield baseline is needed"
+      ],
+      "readiness_status": "obsolete",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "This is a consolidation and refusal prompt, not a new governance baseline prompt."
+    },
+    {
+      "prompt_id": "Σ-1",
+      "series": "Σ",
+      "title": "AGENT_MIRRORS-0",
+      "purpose": "Harmonize fragmented instruction and guidance layers into vendor-neutral human and agent mirrors.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_2_lambda_bridge_and_sigma",
+      "suggested_execution_order": 9,
+      "dependencies": [
+        "Σ-0"
+      ],
+      "blocks": [
+        "Σ-2",
+        "Σ-3",
+        "Σ-5"
+      ],
+      "prerequisite_artifacts": [
+        "docs/agents",
+        "docs/governance",
+        "docs/xstack",
+        "tools/controlx",
+        "tools/xstack"
+      ],
+      "expected_outputs": [
+        "vendor-neutral mirror surface specification",
+        "narrative ownership merge notes"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should merge live guidance layers instead of adding more parallel docs."
+    },
+    {
+      "prompt_id": "Σ-2",
+      "series": "Σ",
+      "title": "AGENT_SAFETY_POLICY-0",
+      "purpose": "Consolidate the safety, refusal, permission, and escalation rules already present in repo governance.",
+      "category": "gating/review",
+      "execution_phase": "phase_2_lambda_bridge_and_sigma",
+      "suggested_execution_order": 10,
+      "dependencies": [
+        "Σ-0",
+        "Σ-1"
+      ],
+      "blocks": [
+        "Σ-3",
+        "Σ-4",
+        "Σ-5",
+        "Φ-6"
+      ],
+      "prerequisite_artifacts": [
+        "AGENTS.md",
+        "docs/governance",
+        "tools/controlx/controlx.py",
+        "tools/xstack/ui_bind.py"
+      ],
+      "expected_outputs": [
+        "consolidated agent safety policy",
+        "escalation and manual-review matrix"
+      ],
+      "readiness_status": "already_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "This preserves an existing baseline and tightens wording and routing."
+    },
+    {
+      "prompt_id": "Σ-3",
+      "series": "Σ",
+      "title": "XSTACK_TASK_CATALOG-0",
+      "purpose": "Publish the governed XStack task catalog after Λ capability vocabulary is frozen.",
+      "category": "planning-only",
+      "execution_phase": "phase_2_lambda_bridge_and_sigma",
+      "suggested_execution_order": 11,
+      "dependencies": [
+        "Λ-2",
+        "Σ-1",
+        "Σ-2"
+      ],
+      "blocks": [
+        "Σ-4",
+        "Σ-5",
+        "Φ-1",
+        "Φ-4"
+      ],
+      "prerequisite_artifacts": [
+        "tools/xstack",
+        "docs/planning/FOUNDATION_READINESS_REPORT.md",
+        "data/planning/readiness/prompt_status_registry.json"
+      ],
+      "expected_outputs": [
+        "canonical XStack task catalog",
+        "task-class compatibility notes"
+      ],
+      "readiness_status": "waits_for_lambda",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "The catalog must inherit Λ capability semantics and Σ safety rules."
+    },
+    {
+      "prompt_id": "Σ-4",
+      "series": "Σ",
+      "title": "NATURAL_LANGUAGE_TASK_BRIDGE-0",
+      "purpose": "Bind natural-language task requests to the governed task catalog, capability surfaces, and acceptance map.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_2_lambda_bridge_and_sigma",
+      "suggested_execution_order": 12,
+      "dependencies": [
+        "Σ-3",
+        "Λ-2",
+        "Λ-5"
+      ],
+      "blocks": [
+        "Σ-5"
+      ],
+      "prerequisite_artifacts": [
+        "docs/agents/AGENT_PLANNING.md",
+        "tools/controlx/controlx.py",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "expected_outputs": [
+        "natural-language task bridge specification",
+        "refusal and acceptance examples"
+      ],
+      "readiness_status": "waits_for_lambda",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Must remain vendor-neutral and capability-governed."
+    },
+    {
+      "prompt_id": "Σ-5",
+      "series": "Σ",
+      "title": "MCP_INTERFACE-0",
+      "purpose": "Define the governed MCP and wrapper surface after task, safety, and mirror layers already exist.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_2_lambda_bridge_and_sigma",
+      "suggested_execution_order": 13,
+      "dependencies": [
+        "Σ-1",
+        "Σ-2",
+        "Σ-3",
+        "Σ-4"
+      ],
+      "blocks": [
+        "Φ-0",
+        "Υ-10"
+      ],
+      "prerequisite_artifacts": [
+        "tools/controlx/controlx.py",
+        "tools/xstack/ui_bind.py",
+        "docs/planning/POST_PI_EXECUTION_PLAN.md"
+      ],
+      "expected_outputs": [
+        "MCP interface specification",
+        "wrapper boundary and refusal hooks"
+      ],
+      "readiness_status": "waits_for_lambda",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Do not freeze wrappers before task and capability vocabulary is stable."
+    },
+    {
+      "prompt_id": "Φ-0",
+      "series": "Φ",
+      "title": "RUNTIME_KERNEL_MODEL-0",
+      "purpose": "Extract the runtime kernel model from the live engine, game, app, and process spine.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_3_phi_grounding",
+      "suggested_execution_order": 14,
+      "dependencies": [
+        "Σ-5",
+        "Λ-0",
+        "Λ-1",
+        "Λ-2",
+        "Λ-3"
+      ],
+      "blocks": [
+        "Φ-1",
+        "Φ-2",
+        "Φ-4",
+        "Υ-0",
+        "Υ-2"
+      ],
+      "prerequisite_artifacts": [
+        "engine",
+        "game",
+        "app/app_runtime.c",
+        "data/planning/reconciliation/subsystem_classification.json"
+      ],
+      "expected_outputs": [
+        "runtime kernel model specification",
+        "runtime root and boundary map"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Must not crown the thin runtime root as the canonical orchestrator home."
+    },
+    {
+      "prompt_id": "Φ-1",
+      "series": "Φ",
+      "title": "COMPONENT_MODEL-0",
+      "purpose": "Define the component model from the live distributed substrate and Λ domain contract template.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_3_phi_grounding",
+      "suggested_execution_order": 15,
+      "dependencies": [
+        "Φ-0",
+        "Σ-3",
+        "Λ-1"
+      ],
+      "blocks": [
+        "Φ-3",
+        "Φ-4",
+        "Φ-7",
+        "Φ-10"
+      ],
+      "prerequisite_artifacts": [
+        "app",
+        "compat",
+        "control",
+        "core",
+        "process"
+      ],
+      "expected_outputs": [
+        "component model specification",
+        "ownership and attachment rules"
+      ],
+      "readiness_status": "waits_for_lambda",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should derive from the live substrate cluster and not from naming assumptions."
+    },
+    {
+      "prompt_id": "Φ-2",
+      "series": "Φ",
+      "title": "EVENT_LOG-0",
+      "purpose": "Consolidate event-log, replay, drift, and dispute-bundle surfaces into one runtime event-log contract.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_3_phi_grounding",
+      "suggested_execution_order": 16,
+      "dependencies": [
+        "Φ-0",
+        "Λ-1"
+      ],
+      "blocks": [
+        "Ζ-5"
+      ],
+      "prerequisite_artifacts": [
+        "app/ui_event_log.c",
+        "process/drift",
+        "server/persistence/dispute_bundle.cpp"
+      ],
+      "expected_outputs": [
+        "event-log contract",
+        "replay and proof integration notes"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Must extend live replay and drift surfaces rather than create a new logging universe."
+    },
+    {
+      "prompt_id": "Φ-3",
+      "series": "Φ",
+      "title": "STATE_EXTERNALIZATION-0",
+      "purpose": "Freeze lawful export, import, and ownership boundaries for authoritative state.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_3_phi_grounding",
+      "suggested_execution_order": 17,
+      "dependencies": [
+        "Φ-0",
+        "Φ-1",
+        "Λ-1",
+        "Λ-3"
+      ],
+      "blocks": [
+        "Φ-9",
+        "Φ-12",
+        "Ζ-3",
+        "Ζ-4"
+      ],
+      "prerequisite_artifacts": [
+        "compat/migration_lifecycle.py",
+        "server/persistence/dom_checkpointing.cpp",
+        "docs/specs/launcher/CLI.md"
+      ],
+      "expected_outputs": [
+        "state externalization specification",
+        "state-class and ownership map"
+      ],
+      "readiness_status": "waits_for_lambda",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "State classes must inherit Λ truth and representation semantics."
+    },
+    {
+      "prompt_id": "Φ-4",
+      "series": "Φ",
+      "title": "RUNTIME_SERVICES-0",
+      "purpose": "Formalize runtime and service boundaries from the already-existing distributed runtime substrate.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_3_phi_grounding",
+      "suggested_execution_order": 18,
+      "dependencies": [
+        "Φ-0",
+        "Φ-1",
+        "Σ-3"
+      ],
+      "blocks": [
+        "Φ-7",
+        "Φ-8",
+        "Υ-0"
+      ],
+      "prerequisite_artifacts": [
+        "control/control_plane_engine.py",
+        "server/runtime/tick_loop.py",
+        "data/planning/reality/runtime_surfaces.json"
+      ],
+      "expected_outputs": [
+        "runtime services specification",
+        "service-cluster map"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should mine the live service substrate before inventing new service layers."
+    },
+    {
+      "prompt_id": "Φ-5",
+      "series": "Φ",
+      "title": "ASSET_PIPELINE-0",
+      "purpose": "Map and freeze the runtime-facing asset pipeline over the tool and ingestion surfaces already visible in the repo.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_3_phi_grounding",
+      "suggested_execution_order": 19,
+      "dependencies": [
+        "Φ-0",
+        "Φ-1"
+      ],
+      "blocks": [
+        "Φ-10"
+      ],
+      "prerequisite_artifacts": [
+        "docs/architecture/ARCH_ENFORCEMENT.md",
+        "docs/app/TESTX_COMPLIANCE.md",
+        "data/planning/reality/toolchain_and_preset_map.json"
+      ],
+      "expected_outputs": [
+        "asset pipeline specification",
+        "ingestion and packaging boundary notes"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Needed before later render and live-mount work."
+    },
+    {
+      "prompt_id": "Φ-6",
+      "series": "Φ",
+      "title": "SANDBOXING-0",
+      "purpose": "Normalize the sandbox model over existing sandbox tests and command surfaces.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_3_phi_grounding",
+      "suggested_execution_order": 20,
+      "dependencies": [
+        "Σ-2",
+        "Σ-5",
+        "Φ-0"
+      ],
+      "blocks": [
+        "Ζ-2"
+      ],
+      "prerequisite_artifacts": [
+        "game/tests/tests/setup/test_services_fs_sandbox.cpp",
+        "client/core/client_command_bridge.c",
+        "schema/authority/README.md"
+      ],
+      "expected_outputs": [
+        "sandbox model",
+        "sandbox boundary notes"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should extend existing refusal and sandbox behavior rather than assume none exists."
+    },
+    {
+      "prompt_id": "Υ-0",
+      "series": "Υ",
+      "title": "BUILD_GRAPH_LOCK-0",
+      "purpose": "Freeze the build graph over the existing build, preset, CI, and architecture registry substrate.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 22,
+      "dependencies": [
+        "Φ-0",
+        "Φ-1",
+        "Φ-4"
+      ],
+      "blocks": [
+        "Υ-1",
+        "Υ-2",
+        "Υ-5",
+        "Φ-11"
+      ],
+      "prerequisite_artifacts": [
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "data/architecture/module_registry.v1.json",
+        ".github/workflows/ci.yml"
+      ],
+      "expected_outputs": [
+        "build graph lock artifact",
+        "product/runtime attachment map"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "This is normalization over the existing build and architecture spine."
+    },
+    {
+      "prompt_id": "Υ-1",
+      "series": "Υ",
+      "title": "PRESET_CONSOLIDATION-0",
+      "purpose": "Normalize the preset and toolchain matrix already present in the repo.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 23,
+      "dependencies": [
+        "Υ-0"
+      ],
+      "blocks": [
+        "Υ-5"
+      ],
+      "prerequisite_artifacts": [
+        "cmake/toolchains",
+        "cmake/ide",
+        "data/planning/reality/toolchain_and_preset_map.json"
+      ],
+      "expected_outputs": [
+        "preset consolidation specification",
+        "toolchain matrix notes"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should preserve the current matrix and remove ambiguity, not rebuild tooling."
+    },
+    {
+      "prompt_id": "Υ-2",
+      "series": "Υ",
+      "title": "VERSIONING_CONSTITUTION-0",
+      "purpose": "Write the explicit versioning constitution that separates human-facing version labels from machine-facing identity and compatibility truths.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 24,
+      "dependencies": [
+        "Φ-0",
+        "Υ-0"
+      ],
+      "blocks": [
+        "Υ-3",
+        "Υ-8",
+        "Υ-9",
+        "Υ-11",
+        "Υ-13",
+        "Υ-14",
+        "Υ-15",
+        "Υ-16",
+        "Φ-7",
+        "Φ-12"
+      ],
+      "prerequisite_artifacts": [
+        "schema/release/build_id.schema",
+        "schema/identity/artifact_identity.schema",
+        "docs/specs/SPEC_IDENTITY.md",
+        "repo/release_policy.toml"
+      ],
+      "expected_outputs": [
+        "VERSIONING_CONSTITUTION.md",
+        "identity and compatibility truth table"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Must explicitly keep suite, product, protocol, schema, format, contract, build, and release profile truths distinct."
+    },
+    {
+      "prompt_id": "Υ-3",
+      "series": "Υ",
+      "title": "RELEASE_INDEX_POLICY-0",
+      "purpose": "Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one policy surface.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 25,
+      "dependencies": [
+        "Υ-2"
+      ],
+      "blocks": [
+        "Υ-6",
+        "Υ-7",
+        "Υ-10",
+        "Υ-11",
+        "Υ-15",
+        "Ζ-5"
+      ],
+      "prerequisite_artifacts": [
+        "release/update_resolver.py",
+        "updates/stable.json",
+        "repo/release_policy.toml"
+      ],
+      "expected_outputs": [
+        "release index policy",
+        "channel resolution and trust notes"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should consolidate policy already visible in code and manifests."
+    },
+    {
+      "prompt_id": "Υ-4",
+      "series": "Υ",
+      "title": "MANUAL_AUTOMATION_PARITY-0",
+      "purpose": "Codify parity between governed manual and automated flows using existing parity tests and XStack tooling.",
+      "category": "validation",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 26,
+      "dependencies": [
+        "Σ-2",
+        "Σ-5"
+      ],
+      "blocks": [
+        "Υ-10"
+      ],
+      "prerequisite_artifacts": [
+        "game/tests/tests/setup/parity_lock/setup_parity_lock_tests.cpp",
+        "tools/xstack/run.py",
+        "tools/xstack/ui_bind.py"
+      ],
+      "expected_outputs": [
+        "manual-automation parity policy",
+        "parity verification map"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "This is validation and doctrine work over existing parity surfaces."
+    },
+    {
+      "prompt_id": "Υ-5",
+      "series": "Υ",
+      "title": "BUILD_REPRO_MATRIX-0",
+      "purpose": "Turn the live preset and toolchain matrix into an explicit reproducibility matrix.",
+      "category": "validation",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 27,
+      "dependencies": [
+        "Υ-0",
+        "Υ-1"
+      ],
+      "blocks": [
+        "Υ-6"
+      ],
+      "prerequisite_artifacts": [
+        "CMakePresets.json",
+        "cmake/toolchains",
+        "data/planning/reality/toolchain_and_preset_map.json"
+      ],
+      "expected_outputs": [
+        "build reproducibility matrix"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should normalize a rich existing matrix rather than invent one."
+    },
+    {
+      "prompt_id": "Υ-6",
+      "series": "Υ",
+      "title": "RELEASE_PIPELINE-0",
+      "purpose": "Freeze the release pipeline as a governed flow over existing release, distribution, compatibility, and XStack tooling.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 28,
+      "dependencies": [
+        "Υ-0",
+        "Υ-2",
+        "Υ-3"
+      ],
+      "blocks": [
+        "Υ-7",
+        "Υ-8",
+        "Υ-10",
+        "Φ-7"
+      ],
+      "prerequisite_artifacts": [
+        "release",
+        "tools/release",
+        "tools/distribution",
+        "tools/xstack"
+      ],
+      "expected_outputs": [
+        "release pipeline specification",
+        "pipeline stage map"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "This should consolidate the existing tooling stack into one governed flow."
+    },
+    {
+      "prompt_id": "Υ-7",
+      "series": "Υ",
+      "title": "ARCHIVE_MIRROR-0",
+      "purpose": "Consolidate archive and mirror behavior from existing archive policy code and registry surfaces.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 29,
+      "dependencies": [
+        "Υ-3",
+        "Υ-6"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "release/archive_policy.py",
+        "data/registries/archive_policy_registry.json",
+        "archive"
+      ],
+      "expected_outputs": [
+        "archive and mirror policy"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Archive policy already exists in live code and registry form."
+    },
+    {
+      "prompt_id": "Υ-8",
+      "series": "Υ",
+      "title": "PUBLICATION_MODELS-0",
+      "purpose": "Freeze publication models only after versioning and release-pipeline doctrine exist.",
+      "category": "gating/review",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 30,
+      "dependencies": [
+        "Υ-2",
+        "Υ-6"
+      ],
+      "blocks": [
+        "Ζ-6"
+      ],
+      "prerequisite_artifacts": [
+        "updates/stable.json",
+        "updates/beta.json",
+        "updates/nightly.json",
+        "tools/distribution"
+      ],
+      "expected_outputs": [
+        "publication models policy",
+        "explicit publication review outcomes"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Publication policy is a human-review zone and must not silently choose distribution truth."
+    },
+    {
+      "prompt_id": "Υ-9",
+      "series": "Υ",
+      "title": "LICENSE_CAPABILITY-0",
+      "purpose": "Consolidate licensing and capability policy from existing secure, trust, and pack-compat surfaces.",
+      "category": "gating/review",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 31,
+      "dependencies": [
+        "Λ-2",
+        "Υ-2"
+      ],
+      "blocks": [
+        "Ζ-6"
+      ],
+      "prerequisite_artifacts": [
+        "schema/packs/pack_compat_manifest.schema",
+        "security/trust",
+        "tools/securex"
+      ],
+      "expected_outputs": [
+        "license and capability policy",
+        "trust and entitlement escalation map"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Must remain explicitly tied to pack-driven integration and capability surfaces."
+    },
+    {
+      "prompt_id": "Υ-10",
+      "series": "Υ",
+      "title": "RELEASE_OPS-0",
+      "purpose": "Freeze release operations over the existing operator, release, control, and XStack tooling cluster.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 32,
+      "dependencies": [
+        "Σ-5",
+        "Υ-3",
+        "Υ-6"
+      ],
+      "blocks": [
+        "Υ-11",
+        "Υ-12",
+        "Φ-8",
+        "Ζ-1",
+        "Ζ-6"
+      ],
+      "prerequisite_artifacts": [
+        "tools/release",
+        "tools/controlx",
+        "tools/xstack/session_control.py"
+      ],
+      "expected_outputs": [
+        "release ops model",
+        "operator responsibility map"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "This is consolidation over strong existing operator surfaces."
+    },
+    {
+      "prompt_id": "Υ-11",
+      "series": "Υ",
+      "title": "DISASTER_DOWNGRADE_POLICY-0",
+      "purpose": "Turn rollback, yank, and degraded-boot behavior into one explicit downgrade and disaster doctrine.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 33,
+      "dependencies": [
+        "Υ-2",
+        "Υ-3",
+        "Υ-10"
+      ],
+      "blocks": [
+        "Υ-12",
+        "Φ-8",
+        "Φ-13",
+        "Ζ-0",
+        "Ζ-2",
+        "Ζ-4",
+        "Ζ-5",
+        "Ζ-6",
+        "Ζ-7"
+      ],
+      "prerequisite_artifacts": [
+        "release/update_resolver.py",
+        "updates/stable.json",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "disaster and downgrade policy",
+        "rollback criteria"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Should refine a live rollback substrate that already exists."
+    },
+    {
+      "prompt_id": "Υ-12",
+      "series": "Υ",
+      "title": "OPERATOR_TRANSACTION_LOG-0",
+      "purpose": "Extend install/update transaction logging into a broader operator transaction contract.",
+      "category": "implementation",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 34,
+      "dependencies": [
+        "Υ-10",
+        "Υ-11"
+      ],
+      "blocks": [
+        "Φ-9",
+        "Φ-14",
+        "Ζ-0",
+        "Ζ-4",
+        "Ζ-5",
+        "Ζ-6",
+        "Ζ-7"
+      ],
+      "prerequisite_artifacts": [
+        "release/update_resolver.py",
+        "updates/changelog.json",
+        "tools/release"
+      ],
+      "expected_outputs": [
+        "operator transaction log contract",
+        "implementation-facing integration plan"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "implementation_facing",
+      "notes": "Later runtime cutovers and trust changes depend on this operator discipline."
+    },
+    {
+      "prompt_id": "Υ-13",
+      "series": "Υ",
+      "title": "RELEASE_CONTRACT_PROFILE-0",
+      "purpose": "Author the missing release contract profile artifact family over the existing identity and release substrate.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 35,
+      "dependencies": [
+        "Υ-2",
+        "Υ-3"
+      ],
+      "blocks": [
+        "Υ-14",
+        "Υ-16",
+        "Φ-12"
+      ],
+      "prerequisite_artifacts": [
+        "repo/release_policy.toml",
+        "schema/release/build_id.schema",
+        "schema/identity/artifact_identity.schema",
+        "docs/audit/RELEASE0_RETRO_AUDIT.md"
+      ],
+      "expected_outputs": [
+        "release_contract_profile.schema",
+        "release contract profile notes"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "This is a consolidation prompt for already-existing identity and release signals."
+    },
+    {
+      "prompt_id": "Υ-14",
+      "series": "Υ",
+      "title": "ARTIFACT_NAMING_SPEC-0",
+      "purpose": "Freeze artifact naming rules as a refinement of versioning and release contract doctrine.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 36,
+      "dependencies": [
+        "Υ-2",
+        "Υ-13"
+      ],
+      "blocks": [
+        "Υ-16"
+      ],
+      "prerequisite_artifacts": [
+        "docs/audit/RELEASE0_RETRO_AUDIT.md",
+        "schema/identity/artifact_identity.schema",
+        "repo/release_policy.toml"
+      ],
+      "expected_outputs": [
+        "ARTIFACT_NAMING_SPEC.md"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Naming must follow explicit identity and release-profile doctrine, not ad hoc product strings."
+    },
+    {
+      "prompt_id": "Υ-15",
+      "series": "Υ",
+      "title": "CHANGELOG_POLICY-0",
+      "purpose": "Convert existing changelog-like update surfaces into one governed changelog policy aligned to release identity doctrine.",
+      "category": "planning-only",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 37,
+      "dependencies": [
+        "Υ-2",
+        "Υ-3"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "updates/changelog.json",
+        "repo/release_policy.toml"
+      ],
+      "expected_outputs": [
+        "CHANGELOG_POLICY.md"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "The repo already has changelog substrate; this prompt governs it."
+    },
+    {
+      "prompt_id": "Υ-16",
+      "series": "Υ",
+      "title": "TARGET_NAMING_POLICY-0",
+      "purpose": "Define target naming rules for products, bundles, and outputs so names align with versioning and release contract doctrine.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_4_upsilon_consolidation",
+      "suggested_execution_order": 38,
+      "dependencies": [
+        "Υ-2",
+        "Υ-13",
+        "Υ-14"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "data/architecture/module_registry.v1.json",
+        "CMakeLists.txt",
+        "repo/release_policy.toml"
+      ],
+      "expected_outputs": [
+        "TARGET_NAMING_POLICY.md"
+      ],
+      "readiness_status": "foundation_ready",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "Target names are governed output identity, not informal labels."
+    },
+    {
+      "prompt_id": "Φ-7",
+      "series": "Φ",
+      "title": "MODULE_LOADER-0",
+      "purpose": "Insert a governed module-loader foundation only after runtime grounding and Υ constitutions establish the right component and release boundaries.",
+      "category": "implementation",
+      "execution_phase": "phase_5_phi_advanced",
+      "suggested_execution_order": 39,
+      "dependencies": [
+        "Φ-1",
+        "Φ-4",
+        "Υ-2",
+        "Υ-6",
+        "gate.phi_boundary_freeze_review"
+      ],
+      "blocks": [
+        "Ζ-2"
+      ],
+      "prerequisite_artifacts": [
+        "docs/planning/FOUNDATION_READINESS_REPORT.md",
+        "data/planning/readiness/prompt_status_registry.json",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "expected_outputs": [
+        "module loader design or implementation package",
+        "rollback and insertion notes"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "implementation_facing",
+      "notes": "This stays blocked until runtime boundaries and release doctrine are grounded."
+    },
+    {
+      "prompt_id": "Φ-8",
+      "series": "Φ",
+      "title": "LIFECYCLE_MANAGER-0",
+      "purpose": "Introduce governed startup, shutdown, handoff, and rollback choreography after runtime service boundaries and release-control doctrine are explicit.",
+      "category": "implementation",
+      "execution_phase": "phase_5_phi_advanced",
+      "suggested_execution_order": 40,
+      "dependencies": [
+        "Φ-4",
+        "Υ-10",
+        "Υ-11",
+        "gate.phi_boundary_freeze_review"
+      ],
+      "blocks": [
+        "Φ-9",
+        "Φ-10",
+        "Φ-13",
+        "Ζ-0",
+        "Ζ-1",
+        "Ζ-3"
+      ],
+      "prerequisite_artifacts": [
+        "docs/blueprint/FOUNDATION_PHASES.md",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+        "data/planning/reconciliation/subsystem_classification.json"
+      ],
+      "expected_outputs": [
+        "lifecycle manager design or implementation package",
+        "transition and rollback choreography notes"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "implementation_facing",
+      "notes": "No explicit lifecycle-manager surface exists yet in the live repo."
+    },
+    {
+      "prompt_id": "Φ-9",
+      "series": "Φ",
+      "title": "SNAPSHOT_SERVICE-0",
+      "purpose": "Turn checkpoint and replay precursors into one explicit snapshot service only after lifecycle and state-externalization contracts are frozen.",
+      "category": "implementation",
+      "execution_phase": "phase_5_phi_advanced",
+      "suggested_execution_order": 41,
+      "dependencies": [
+        "Φ-3",
+        "Φ-8",
+        "Υ-12"
+      ],
+      "blocks": [
+        "Φ-13",
+        "Φ-14",
+        "Ζ-3",
+        "Ζ-4",
+        "Ζ-7"
+      ],
+      "prerequisite_artifacts": [
+        "server/persistence/dom_checkpointing.cpp",
+        "server/persistence/dispute_bundle.cpp",
+        "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
+      ],
+      "expected_outputs": [
+        "snapshot service design or implementation package",
+        "replay and proof integration notes"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "implementation_facing",
+      "notes": "Checkpoint code does not yet equal a unified snapshot service."
+    },
+    {
+      "prompt_id": "Φ-10",
+      "series": "Φ",
+      "title": "FRAMEGRAPH-0",
+      "purpose": "Create the missing framegraph foundation after asset-pipeline and lifecycle boundaries are stable.",
+      "category": "implementation",
+      "execution_phase": "phase_5_phi_advanced",
+      "suggested_execution_order": 42,
+      "dependencies": [
+        "Φ-1",
+        "Φ-5",
+        "Φ-8"
+      ],
+      "blocks": [
+        "Φ-11"
+      ],
+      "prerequisite_artifacts": [
+        "client/render",
+        "docs/blueprint/FOUNDATION_PHASES.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "framegraph design or implementation package"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "implementation_facing",
+      "notes": "The explicit framegraph foundation is still missing in the live repo."
+    },
+    {
+      "prompt_id": "Φ-11",
+      "series": "Φ",
+      "title": "RENDER_DEVICE-0",
+      "purpose": "Introduce a governed render-device abstraction only after the framegraph and build/runtime attachment points are explicit.",
+      "category": "implementation",
+      "execution_phase": "phase_5_phi_advanced",
+      "suggested_execution_order": 43,
+      "dependencies": [
+        "Φ-10",
+        "Υ-0"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "client/render",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "CMakeLists.txt"
+      ],
+      "expected_outputs": [
+        "render-device abstraction package"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "implementation_facing",
+      "notes": "This is paired with framegraph work and remains blocked by missing foundations."
+    },
+    {
+      "prompt_id": "Φ-12",
+      "series": "Φ",
+      "title": "MULTI_VERSION_COEXISTENCE-0",
+      "purpose": "Define coexistence rules only after semantic ownership review and versioning constitution work exist.",
+      "category": "gating/review",
+      "execution_phase": "phase_5_phi_advanced",
+      "suggested_execution_order": 44,
+      "dependencies": [
+        "Λ-6",
+        "Φ-3",
+        "Υ-2",
+        "Υ-13",
+        "gate.semantic_ownership_review"
+      ],
+      "blocks": [
+        "Φ-13",
+        "Φ-14"
+      ],
+      "prerequisite_artifacts": [
+        "compat/capability_negotiation.py",
+        "compat/migration_lifecycle.py",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "expected_outputs": [
+        "multi-version coexistence rules",
+        "explicit refusal and unresolved conflict list"
+      ],
+      "readiness_status": "waits_for_quarantine_review",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "This directly touches the schema and pack split zones."
+    },
+    {
+      "prompt_id": "Φ-13",
+      "series": "Φ",
+      "title": "HOTSWAP_BOUNDARIES-0",
+      "purpose": "Define hotswap boundaries only after lifecycle, snapshot, coexistence, and downgrade doctrine exist.",
+      "category": "gating/review",
+      "execution_phase": "phase_5_phi_advanced",
+      "suggested_execution_order": 45,
+      "dependencies": [
+        "Φ-8",
+        "Φ-9",
+        "Φ-12",
+        "Υ-11"
+      ],
+      "blocks": [
+        "Φ-14",
+        "Ζ-0",
+        "Ζ-2"
+      ],
+      "prerequisite_artifacts": [
+        "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
+      ],
+      "expected_outputs": [
+        "hotswap boundary review package",
+        "explicit go/no-go criteria"
+      ],
+      "readiness_status": "dangerous",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Hotswap is explicitly dangerous if frozen early."
+    },
+    {
+      "prompt_id": "Φ-14",
+      "series": "Φ",
+      "title": "DISTRIBUTED_AUTHORITY-0",
+      "purpose": "Keep distributed authority as a late design gate until lifecycle, snapshot, coexistence, bridge, and operator-transaction discipline are explicit.",
+      "category": "gating/review",
+      "execution_phase": "phase_5_phi_advanced",
+      "suggested_execution_order": 46,
+      "dependencies": [
+        "Φ-8",
+        "Φ-9",
+        "Φ-12",
+        "Φ-13",
+        "Λ-6",
+        "Υ-12"
+      ],
+      "blocks": [
+        "Ζ-7"
+      ],
+      "prerequisite_artifacts": [
+        "client/app/main_client.c",
+        "server/tests/shard_api_tests.cpp",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "distributed authority review package",
+        "go/no-go criteria for later distributed live ops"
+      ],
+      "readiness_status": "dangerous",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Current repo evidence is only precursor-level, not foundation-safe."
+    },
+    {
+      "prompt_id": "Ζ-0",
+      "series": "Ζ",
+      "title": "REPLACEABILITY-0",
+      "purpose": "Treat replaceability as a late governed outcome rather than an early feature.",
+      "category": "gating/review",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 47,
+      "dependencies": [
+        "Φ-13",
+        "Υ-11",
+        "Υ-12"
+      ],
+      "blocks": [
+        "Ζ-1",
+        "Ζ-2"
+      ],
+      "prerequisite_artifacts": [
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "replaceability criteria",
+        "explicit late-stage go/no-go rules"
+      ],
+      "readiness_status": "dangerous",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Rollback primitives do not equal general replaceability readiness."
+    },
+    {
+      "prompt_id": "Ζ-1",
+      "series": "Ζ",
+      "title": "SERVICE_RESTARTS-0",
+      "purpose": "Define service restart capability only after lifecycle and release-ops surfaces exist.",
+      "category": "gating/review",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 48,
+      "dependencies": [
+        "Ζ-0",
+        "Φ-8",
+        "Υ-10"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "appshell/supervisor",
+        "docs/blueprint/FOUNDATION_PHASES.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "service restart policy",
+        "restart stop conditions"
+      ],
+      "readiness_status": "dangerous",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Restart semantics remain dangerous without frozen lifecycle and cutover rules."
+    },
+    {
+      "prompt_id": "Ζ-2",
+      "series": "Ζ",
+      "title": "PARTIAL_LIVE_MODULE_RELOAD-0",
+      "purpose": "Keep partial live module reload behind module loader, hotswap boundaries, and downgrade discipline.",
+      "category": "implementation",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 49,
+      "dependencies": [
+        "Φ-7",
+        "Φ-13",
+        "Υ-11"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+      ],
+      "expected_outputs": [
+        "gated module reload implementation plan"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "implementation_facing",
+      "notes": "Still blocked by missing module-loader and hotswap foundations."
+    },
+    {
+      "prompt_id": "Ζ-3",
+      "series": "Ζ",
+      "title": "NON_BLOCKING_SAVE-0",
+      "purpose": "Plan non-blocking save only after lifecycle and snapshot service exist as explicit foundations.",
+      "category": "implementation",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 50,
+      "dependencies": [
+        "Φ-8",
+        "Φ-9"
+      ],
+      "blocks": [
+        "Ζ-4"
+      ],
+      "prerequisite_artifacts": [
+        "server/persistence",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "non-blocking save implementation plan",
+        "save consistency criteria"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "implementation_facing",
+      "notes": "Current save and checkpoint surfaces are insufficient on their own."
+    },
+    {
+      "prompt_id": "Ζ-4",
+      "series": "Ζ",
+      "title": "LIVE_SAVE_MIGRATION-0",
+      "purpose": "Keep live save migration behind non-blocking save, snapshot service, downgrade policy, and operator transaction discipline.",
+      "category": "implementation",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 51,
+      "dependencies": [
+        "Ζ-3",
+        "Φ-9",
+        "Υ-11",
+        "Υ-12"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "compat/migration_lifecycle.py",
+        "server/persistence/dom_checkpointing.cpp",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "gated live save migration plan",
+        "migration refusal criteria"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "implementation_facing",
+      "notes": "Migration precursors exist, but online save migration remains blocked."
+    },
+    {
+      "prompt_id": "Ζ-5",
+      "series": "Ζ",
+      "title": "CANARY_ROLLBACK_CUTOVER_OPERATIONS-0",
+      "purpose": "Treat canary, rollback, and cutover work as an extension of the existing rollback and release substrate.",
+      "category": "architecture/specification",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 52,
+      "dependencies": [
+        "Υ-3",
+        "Υ-11",
+        "Υ-12"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "release/update_resolver.py",
+        "updates/stable.json",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "canary, rollback, and cutover operations policy"
+      ],
+      "readiness_status": "partially_exists",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": false,
+      "delivery_mode": "planning_only",
+      "notes": "This is the narrowest late-stage Ζ prompt with real live substrate behind it."
+    },
+    {
+      "prompt_id": "Ζ-6",
+      "series": "Ζ",
+      "title": "TRUST_ROOT_LIVE_CHANGES-0",
+      "purpose": "Keep live trust-root and trust-change planning behind release ops, transaction logging, and publication/licensing review.",
+      "category": "gating/review",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 53,
+      "dependencies": [
+        "Υ-10",
+        "Υ-11",
+        "Υ-12",
+        "gate.publication_and_licensing_review"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "security/trust",
+        "tools/securex",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "trust-root live-change criteria",
+        "explicit human approval requirement"
+      ],
+      "readiness_status": "blocked",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Strong trust tooling exists, but live trust rotation remains blocked."
+    },
+    {
+      "prompt_id": "Ζ-7",
+      "series": "Ζ",
+      "title": "SHARD_RELOCATION_AND_DISTRIBUTED_LIVE_OPS-0",
+      "purpose": "Keep shard relocation and distributed live ops behind distributed authority, snapshot service, downgrade discipline, and explicit executive review.",
+      "category": "gating/review",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 54,
+      "dependencies": [
+        "Φ-14",
+        "Φ-9",
+        "Υ-11",
+        "Υ-12",
+        "gate.zeta_explicit_human_review"
+      ],
+      "blocks": [
+        "Ζ-8"
+      ],
+      "prerequisite_artifacts": [
+        "server/tests/shard_routing_tests.cpp",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md"
+      ],
+      "expected_outputs": [
+        "deferred distributed live-ops gate",
+        "explicit not-safe or safe ruling"
+      ],
+      "readiness_status": "dangerous",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "Current repo evidence is still precursor-level and the blueprint treats this as late or unrealistic."
+    },
+    {
+      "prompt_id": "Ζ-8",
+      "series": "Ζ",
+      "title": "EXTREME_LONG_HORIZON_LIVE_OPS-0",
+      "purpose": "Preserve extreme long-horizon live-ops work as a research placeholder only after distributed live ops cease to be speculative.",
+      "category": "planning-only",
+      "execution_phase": "phase_6_zeta_late_gates",
+      "suggested_execution_order": 55,
+      "dependencies": [
+        "Ζ-7",
+        "gate.zeta_explicit_human_review"
+      ],
+      "blocks": [],
+      "prerequisite_artifacts": [
+        "docs/blueprint/PIPE_DREAMS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+      ],
+      "expected_outputs": [
+        "placeholder research brief or explicit deferment"
+      ],
+      "readiness_status": "dangerous",
+      "safe_to_execute_now": false,
+      "requires_prior_human_review": true,
+      "delivery_mode": "planning_only",
+      "notes": "This is not near-term execution work and must remain explicitly late and gated."
+    }
+  ]
+}

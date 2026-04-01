@@ -1,0 +1,338 @@
+{
+  "generated_for": "P-4",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "graph_type": "directed_acyclic_dependency_graph",
+  "node_ordering": "P-4 artifact nodes, then gate nodes, then prompt nodes sorted by execution phase and prompt order",
+  "artifact_nodes": [
+    {
+      "id": "artifact.p4.post_pi_execution_plan",
+      "path": "docs/planning/POST_PI_EXECUTION_PLAN.md"
+    },
+    {
+      "id": "artifact.p4.mega_prompt_index",
+      "path": "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md"
+    },
+    {
+      "id": "artifact.p4.final_prompt_inventory",
+      "path": "data/planning/final_prompt_inventory.json"
+    },
+    {
+      "id": "artifact.p4.dependency_graph_post_pi",
+      "path": "data/planning/dependency_graph_post_pi.json"
+    }
+  ],
+  "gate_nodes": [
+    {
+      "id": "gate.rho_complete",
+      "status": "satisfied",
+      "depends_on": [],
+      "blocks": []
+    },
+    {
+      "id": "gate.p4_program_published",
+      "status": "satisfied",
+      "depends_on": [
+        "artifact.p4.post_pi_execution_plan",
+        "artifact.p4.mega_prompt_index",
+        "artifact.p4.final_prompt_inventory",
+        "artifact.p4.dependency_graph_post_pi"
+      ],
+      "blocks": []
+    },
+    {
+      "id": "gate.lambda_core_complete",
+      "status": "future",
+      "depends_on": [
+        "Λ-0",
+        "Λ-1",
+        "Λ-2",
+        "Λ-3",
+        "Λ-4",
+        "Λ-5"
+      ],
+      "blocks": [
+        "Σ-0",
+        "Σ-1",
+        "Σ-2",
+        "Σ-3",
+        "Σ-4",
+        "Σ-5"
+      ]
+    },
+    {
+      "id": "gate.semantic_ownership_review",
+      "status": "human_review_required",
+      "depends_on": [
+        "gate.lambda_core_complete"
+      ],
+      "blocks": [
+        "Λ-6",
+        "Φ-12",
+        "Φ-14"
+      ]
+    },
+    {
+      "id": "gate.sigma_contracts_complete",
+      "status": "future",
+      "depends_on": [
+        "Σ-1",
+        "Σ-2",
+        "Σ-3",
+        "Σ-4",
+        "Σ-5"
+      ],
+      "blocks": [
+        "Φ-0",
+        "Φ-1",
+        "Φ-4",
+        "Φ-6"
+      ]
+    },
+    {
+      "id": "gate.phi_grounding_complete",
+      "status": "future",
+      "depends_on": [
+        "Φ-0",
+        "Φ-1",
+        "Φ-2",
+        "Φ-3",
+        "Φ-4",
+        "Φ-5",
+        "Φ-6"
+      ],
+      "blocks": [
+        "Υ-0",
+        "Υ-1",
+        "Υ-2",
+        "Υ-3",
+        "Υ-4",
+        "Υ-5",
+        "Υ-6",
+        "Υ-7",
+        "Υ-8",
+        "Υ-9",
+        "Υ-10",
+        "Υ-11",
+        "Υ-12",
+        "Υ-13",
+        "Υ-14",
+        "Υ-15",
+        "Υ-16",
+        "gate.phi_boundary_freeze_review"
+      ]
+    },
+    {
+      "id": "gate.phi_boundary_freeze_review",
+      "status": "human_review_required",
+      "depends_on": [
+        "gate.phi_grounding_complete"
+      ],
+      "blocks": [
+        "Φ-7",
+        "Φ-8"
+      ]
+    },
+    {
+      "id": "gate.publication_and_licensing_review",
+      "status": "human_review_required",
+      "depends_on": [
+        "Υ-8",
+        "Υ-9"
+      ],
+      "blocks": [
+        "Ζ-6"
+      ]
+    },
+    {
+      "id": "gate.upsilon_constitution_complete",
+      "status": "future",
+      "depends_on": [
+        "Υ-0",
+        "Υ-1",
+        "Υ-2",
+        "Υ-3",
+        "Υ-4",
+        "Υ-5",
+        "Υ-6",
+        "Υ-7",
+        "Υ-8",
+        "Υ-9",
+        "Υ-10",
+        "Υ-11",
+        "Υ-12",
+        "Υ-13",
+        "Υ-14",
+        "Υ-15",
+        "Υ-16"
+      ],
+      "blocks": [
+        "Φ-7",
+        "Φ-8",
+        "Φ-9",
+        "Φ-10",
+        "Φ-11",
+        "Φ-12",
+        "Φ-13",
+        "Φ-14",
+        "Ζ-0",
+        "Ζ-1",
+        "Ζ-2",
+        "Ζ-3",
+        "Ζ-4",
+        "Ζ-5",
+        "Ζ-6",
+        "Ζ-7",
+        "Ζ-8"
+      ]
+    },
+    {
+      "id": "gate.zeta_explicit_human_review",
+      "status": "human_review_required",
+      "depends_on": [
+        "Φ-14",
+        "Υ-11",
+        "Υ-12"
+      ],
+      "blocks": [
+        "Ζ-7",
+        "Ζ-8"
+      ]
+    }
+  ],
+  "prompt_nodes": [
+    {"id": "Λ-0", "series": "Λ", "phase": "phase_1_immediate_lambda_core", "status": "foundation_ready", "safe_to_execute_now": true, "depends_on": ["gate.rho_complete", "gate.p4_program_published"]},
+    {"id": "Λ-1", "series": "Λ", "phase": "phase_1_immediate_lambda_core", "status": "foundation_ready", "safe_to_execute_now": true, "depends_on": ["Λ-0"]},
+    {"id": "Λ-2", "series": "Λ", "phase": "phase_1_immediate_lambda_core", "status": "partially_exists", "safe_to_execute_now": true, "depends_on": ["Λ-0", "Λ-1"]},
+    {"id": "Λ-3", "series": "Λ", "phase": "phase_1_immediate_lambda_core", "status": "partially_exists", "safe_to_execute_now": true, "depends_on": ["Λ-0", "Λ-1"]},
+    {"id": "Λ-4", "series": "Λ", "phase": "phase_1_immediate_lambda_core", "status": "partially_exists", "safe_to_execute_now": true, "depends_on": ["Λ-0", "Λ-2", "Λ-3"]},
+    {"id": "Λ-5", "series": "Λ", "phase": "phase_1_immediate_lambda_core", "status": "partially_exists", "safe_to_execute_now": true, "depends_on": ["Λ-0", "Λ-1", "Λ-2"]},
+    {"id": "Λ-6", "series": "Λ", "phase": "phase_2_lambda_bridge_and_sigma", "status": "waits_for_quarantine_review", "safe_to_execute_now": false, "depends_on": ["gate.lambda_core_complete", "gate.semantic_ownership_review"]},
+
+    {"id": "Σ-0", "series": "Σ", "phase": "phase_2_lambda_bridge_and_sigma", "status": "obsolete", "safe_to_execute_now": false, "depends_on": ["gate.lambda_core_complete"]},
+    {"id": "Σ-1", "series": "Σ", "phase": "phase_2_lambda_bridge_and_sigma", "status": "foundation_ready", "safe_to_execute_now": false, "depends_on": ["Σ-0"]},
+    {"id": "Σ-2", "series": "Σ", "phase": "phase_2_lambda_bridge_and_sigma", "status": "already_exists", "safe_to_execute_now": false, "depends_on": ["Σ-0", "Σ-1"]},
+    {"id": "Σ-3", "series": "Σ", "phase": "phase_2_lambda_bridge_and_sigma", "status": "waits_for_lambda", "safe_to_execute_now": false, "depends_on": ["Σ-1", "Σ-2", "Λ-2"]},
+    {"id": "Σ-4", "series": "Σ", "phase": "phase_2_lambda_bridge_and_sigma", "status": "waits_for_lambda", "safe_to_execute_now": false, "depends_on": ["Σ-3", "Λ-2", "Λ-5"]},
+    {"id": "Σ-5", "series": "Σ", "phase": "phase_2_lambda_bridge_and_sigma", "status": "waits_for_lambda", "safe_to_execute_now": false, "depends_on": ["Σ-1", "Σ-2", "Σ-3", "Σ-4"]},
+
+    {"id": "Φ-0", "series": "Φ", "phase": "phase_3_phi_grounding", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["gate.lambda_core_complete", "gate.sigma_contracts_complete"]},
+    {"id": "Φ-1", "series": "Φ", "phase": "phase_3_phi_grounding", "status": "waits_for_lambda", "safe_to_execute_now": false, "depends_on": ["Φ-0", "Σ-3", "Λ-1"]},
+    {"id": "Φ-2", "series": "Φ", "phase": "phase_3_phi_grounding", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Φ-0", "Λ-1"]},
+    {"id": "Φ-3", "series": "Φ", "phase": "phase_3_phi_grounding", "status": "waits_for_lambda", "safe_to_execute_now": false, "depends_on": ["Φ-0", "Φ-1", "Λ-1", "Λ-3"]},
+    {"id": "Φ-4", "series": "Φ", "phase": "phase_3_phi_grounding", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Φ-0", "Φ-1", "Σ-3"]},
+    {"id": "Φ-5", "series": "Φ", "phase": "phase_3_phi_grounding", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Φ-0", "Φ-1"]},
+    {"id": "Φ-6", "series": "Φ", "phase": "phase_3_phi_grounding", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Σ-2", "Σ-5", "Φ-0"]},
+
+    {"id": "Υ-0", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "foundation_ready", "safe_to_execute_now": false, "depends_on": ["gate.phi_grounding_complete"]},
+    {"id": "Υ-1", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "foundation_ready", "safe_to_execute_now": false, "depends_on": ["Υ-0"]},
+    {"id": "Υ-2", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "foundation_ready", "safe_to_execute_now": false, "depends_on": ["Υ-0"]},
+    {"id": "Υ-3", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Υ-2"]},
+    {"id": "Υ-4", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Σ-2", "Σ-5"]},
+    {"id": "Υ-5", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "foundation_ready", "safe_to_execute_now": false, "depends_on": ["Υ-0", "Υ-1"]},
+    {"id": "Υ-6", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Υ-0", "Υ-2", "Υ-3"]},
+    {"id": "Υ-7", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Υ-3", "Υ-6"]},
+    {"id": "Υ-8", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Υ-2", "Υ-6"]},
+    {"id": "Υ-9", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Λ-2", "Υ-2"]},
+    {"id": "Υ-10", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Σ-5", "Υ-3", "Υ-6"]},
+    {"id": "Υ-11", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Υ-2", "Υ-3", "Υ-10"]},
+    {"id": "Υ-12", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Υ-10", "Υ-11"]},
+    {"id": "Υ-13", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "foundation_ready", "safe_to_execute_now": false, "depends_on": ["Υ-2", "Υ-3"]},
+    {"id": "Υ-14", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "foundation_ready", "safe_to_execute_now": false, "depends_on": ["Υ-2", "Υ-13"]},
+    {"id": "Υ-15", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["Υ-2", "Υ-3"]},
+    {"id": "Υ-16", "series": "Υ", "phase": "phase_4_upsilon_consolidation", "status": "foundation_ready", "safe_to_execute_now": false, "depends_on": ["Υ-2", "Υ-13", "Υ-14"]},
+
+    {"id": "Φ-7", "series": "Φ", "phase": "phase_5_phi_advanced", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["gate.phi_boundary_freeze_review", "gate.upsilon_constitution_complete", "Φ-1", "Φ-4"]},
+    {"id": "Φ-8", "series": "Φ", "phase": "phase_5_phi_advanced", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["gate.phi_boundary_freeze_review", "gate.upsilon_constitution_complete", "Φ-4", "Υ-10", "Υ-11"]},
+    {"id": "Φ-9", "series": "Φ", "phase": "phase_5_phi_advanced", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["gate.upsilon_constitution_complete", "Φ-3", "Φ-8", "Υ-12"]},
+    {"id": "Φ-10", "series": "Φ", "phase": "phase_5_phi_advanced", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["gate.upsilon_constitution_complete", "Φ-1", "Φ-5", "Φ-8"]},
+    {"id": "Φ-11", "series": "Φ", "phase": "phase_5_phi_advanced", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["gate.upsilon_constitution_complete", "Φ-10", "Υ-0"]},
+    {"id": "Φ-12", "series": "Φ", "phase": "phase_5_phi_advanced", "status": "waits_for_quarantine_review", "safe_to_execute_now": false, "depends_on": ["gate.semantic_ownership_review", "Λ-6", "Φ-3", "Υ-2", "Υ-13"]},
+    {"id": "Φ-13", "series": "Φ", "phase": "phase_5_phi_advanced", "status": "dangerous", "safe_to_execute_now": false, "depends_on": ["gate.upsilon_constitution_complete", "Φ-8", "Φ-9", "Φ-12", "Υ-11"]},
+    {"id": "Φ-14", "series": "Φ", "phase": "phase_5_phi_advanced", "status": "dangerous", "safe_to_execute_now": false, "depends_on": ["gate.semantic_ownership_review", "gate.upsilon_constitution_complete", "Λ-6", "Φ-8", "Φ-9", "Φ-12", "Φ-13", "Υ-12"]},
+
+    {"id": "Ζ-0", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "dangerous", "safe_to_execute_now": false, "depends_on": ["gate.upsilon_constitution_complete", "Φ-13", "Υ-11", "Υ-12"]},
+    {"id": "Ζ-1", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "dangerous", "safe_to_execute_now": false, "depends_on": ["Ζ-0", "Φ-8", "Υ-10"]},
+    {"id": "Ζ-2", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["Ζ-0", "Φ-7", "Φ-13", "Υ-11"]},
+    {"id": "Ζ-3", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["gate.upsilon_constitution_complete", "Φ-8", "Φ-9"]},
+    {"id": "Ζ-4", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["Ζ-3", "Φ-9", "Υ-11", "Υ-12"]},
+    {"id": "Ζ-5", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "partially_exists", "safe_to_execute_now": false, "depends_on": ["gate.upsilon_constitution_complete", "Υ-3", "Υ-11", "Υ-12"]},
+    {"id": "Ζ-6", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "blocked", "safe_to_execute_now": false, "depends_on": ["gate.publication_and_licensing_review", "gate.upsilon_constitution_complete", "Υ-10", "Υ-11", "Υ-12"]},
+    {"id": "Ζ-7", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "dangerous", "safe_to_execute_now": false, "depends_on": ["gate.zeta_explicit_human_review", "gate.upsilon_constitution_complete", "Φ-14", "Φ-9", "Υ-11", "Υ-12"]},
+    {"id": "Ζ-8", "series": "Ζ", "phase": "phase_6_zeta_late_gates", "status": "dangerous", "safe_to_execute_now": false, "depends_on": ["gate.zeta_explicit_human_review", "Ζ-7"]}
+  ],
+  "critical_paths": [
+    {
+      "path_id": "lambda_core_path",
+      "nodes": [
+        "gate.p4_program_published",
+        "gate.rho_complete",
+        "Λ-0",
+        "Λ-1",
+        "Λ-2",
+        "Λ-3",
+        "Λ-4",
+        "Λ-5",
+        "gate.lambda_core_complete"
+      ]
+    },
+    {
+      "path_id": "sigma_to_phi_grounding_path",
+      "nodes": [
+        "gate.lambda_core_complete",
+        "Σ-0",
+        "Σ-1",
+        "Σ-2",
+        "Σ-3",
+        "Σ-4",
+        "Σ-5",
+        "gate.sigma_contracts_complete",
+        "Φ-0",
+        "Φ-1",
+        "Φ-2",
+        "Φ-3",
+        "Φ-4",
+        "Φ-5",
+        "Φ-6",
+        "gate.phi_grounding_complete"
+      ]
+    },
+    {
+      "path_id": "upsilon_constitution_path",
+      "nodes": [
+        "gate.phi_grounding_complete",
+        "Υ-0",
+        "Υ-1",
+        "Υ-2",
+        "Υ-3",
+        "Υ-4",
+        "Υ-5",
+        "Υ-6",
+        "Υ-8",
+        "Υ-9",
+        "gate.publication_and_licensing_review",
+        "Υ-10",
+        "Υ-11",
+        "Υ-12",
+        "Υ-13",
+        "Υ-14",
+        "Υ-15",
+        "Υ-16",
+        "gate.upsilon_constitution_complete"
+      ]
+    },
+    {
+      "path_id": "late_zeta_gate_path",
+      "nodes": [
+        "gate.semantic_ownership_review",
+        "Λ-6",
+        "Φ-12",
+        "Φ-13",
+        "Φ-14",
+        "gate.zeta_explicit_human_review",
+        "Ζ-7",
+        "Ζ-8"
+      ]
+    }
+  ]
+}
