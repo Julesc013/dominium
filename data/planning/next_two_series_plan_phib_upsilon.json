@@ -1,0 +1,358 @@
+{
+  "plan_id": "NEXT_TWO_SERIES_PLAN_PHIB_UPSILON",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-phi-a2 / pre-phi-b-and-upsilon",
+  "series_ordering": [
+    {
+      "band_id": "early_phi_b_foundation",
+      "series": "Φ-B",
+      "prompt_ids": [
+        "Φ-B0",
+        "Φ-B1"
+      ]
+    },
+    {
+      "band_id": "core_upsilon_constitution",
+      "series": "Υ",
+      "prompt_ids": [
+        "Υ-0",
+        "Υ-1",
+        "Υ-2",
+        "Υ-3",
+        "Υ-4",
+        "Υ-5",
+        "Υ-6",
+        "Υ-7",
+        "Υ-8",
+        "Υ-9"
+      ]
+    },
+    {
+      "band_id": "late_gated_phi_b_review",
+      "series": "Φ-B",
+      "prompt_ids": [
+        "Φ-B2",
+        "Φ-B3",
+        "Φ-B4",
+        "Φ-B5"
+      ]
+    },
+    {
+      "band_id": "late_gated_upsilon_review",
+      "series": "Υ",
+      "prompt_ids": [
+        "Υ-10"
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "prompt_id": "Φ-B0",
+      "title": "EVENT_LOG_AND_REPLAY_DOCTRINE-0",
+      "purpose": "Freeze constitutional event, replay, and operational-log doctrine without promoting convenience logs into semantic truth.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Φ-3",
+        "Φ-4",
+        "Φ-5",
+        "Σ-3",
+        "Σ-4",
+        "Σ-5"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "ready_with_cautions",
+      "human_review_required": false,
+      "stop_conditions": [
+        "event or replay law collapses truth/perceived/render separation",
+        "event or replay law bypasses ownership, bridge, or lifecycle doctrine"
+      ]
+    },
+    {
+      "prompt_id": "Φ-B1",
+      "title": "SNAPSHOT_SERVICE_MODEL-0",
+      "purpose": "Freeze lawful snapshot-service doctrine that consumes state externalization and lifecycle law rather than replacing them.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Φ-B0",
+        "Φ-4",
+        "Φ-5"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "ready_with_cautions",
+      "human_review_required": false,
+      "stop_conditions": [
+        "snapshot law traps authoritative truth in hidden runtime state",
+        "snapshot law blurs bridge-sensitive or ownership-sensitive state boundaries"
+      ]
+    },
+    {
+      "prompt_id": "Υ-0",
+      "title": "BUILD_GRAPH_LOCK-0",
+      "purpose": "Consolidate existing build-graph substrate into explicit constitutional lock doctrine.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [],
+      "blocking_conditions": [],
+      "readiness_status": "mostly_consolidation",
+      "human_review_required": false,
+      "stop_conditions": [
+        "build lock would silently rewrite release authority or replace existing substrate"
+      ]
+    },
+    {
+      "prompt_id": "Υ-1",
+      "title": "PRESET_CONSOLIDATION-0",
+      "purpose": "Converge existing preset and toolchain surfaces without inferring canon from convenience.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Υ-0"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "mostly_consolidation",
+      "human_review_required": false,
+      "stop_conditions": [
+        "preset consolidation would flatten platform distinctions or invent a second build canon"
+      ]
+    },
+    {
+      "prompt_id": "Υ-2",
+      "title": "VERSIONING_CONSTITUTION-0",
+      "purpose": "Freeze explicit version meaning, identity, and compatibility doctrine across release surfaces.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Υ-0",
+        "Υ-1"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "mostly_consolidation",
+      "human_review_required": false,
+      "stop_conditions": [
+        "version doctrine cannot align compatibility and identity without silent reinterpretation"
+      ]
+    },
+    {
+      "prompt_id": "Υ-3",
+      "title": "RELEASE_INDEX_AND_RESOLUTION_POLICY-0",
+      "purpose": "Align current release index and resolution surfaces into one constitutional model.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Υ-2"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "mostly_consolidation",
+      "human_review_required": false,
+      "stop_conditions": [
+        "index or resolution policy would smuggle in trust or publication authority"
+      ]
+    },
+    {
+      "prompt_id": "Υ-4",
+      "title": "RELEASE_CONTRACT_PROFILE-0",
+      "purpose": "Freeze an explicit release contract profile grounded in current release identity and update surfaces.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Υ-2",
+        "Υ-3"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "ready",
+      "human_review_required": false,
+      "stop_conditions": [
+        "release contract meaning conflicts with canon, compatibility law, or ownership cautions"
+      ]
+    },
+    {
+      "prompt_id": "Υ-5",
+      "title": "ARTIFACT_AND_TARGET_NAMING_POLICY-0",
+      "purpose": "Tighten artifact and target naming around release contract and version law.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Υ-2",
+        "Υ-4"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "mostly_consolidation",
+      "human_review_required": false,
+      "stop_conditions": [
+        "naming would silently become release authority rather than derived policy"
+      ]
+    },
+    {
+      "prompt_id": "Υ-6",
+      "title": "CHANGELOG_POLICY-0",
+      "purpose": "Define lawful change-record expectations across current changelog surfaces.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Υ-4",
+        "Υ-5"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "mostly_consolidation",
+      "human_review_required": false,
+      "stop_conditions": [
+        "change-record law drifts into compatibility or release identity reinterpretation"
+      ]
+    },
+    {
+      "prompt_id": "Υ-7",
+      "title": "RELEASE_PIPELINE_AND_ARCHIVE_MODEL-0",
+      "purpose": "Formalize existing archive, manifest, and pipeline substrate without granting autonomous publication authority.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Υ-2",
+        "Υ-4",
+        "Υ-5"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "mostly_consolidation",
+      "human_review_required": false,
+      "stop_conditions": [
+        "pipeline or archive law would grant publication or trust authority by convenience"
+      ]
+    },
+    {
+      "prompt_id": "Υ-8",
+      "title": "OPERATOR_TRANSACTION_LOG_MODEL-0",
+      "purpose": "Freeze constitutional operator transaction-log doctrine tied to replay, snapshot, and release resolution continuity.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Φ-B0",
+        "Φ-B1",
+        "Υ-3",
+        "Υ-7"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "ready",
+      "human_review_required": false,
+      "stop_conditions": [
+        "transaction continuity cannot be reconciled with replay, snapshot, or release resolution law"
+      ]
+    },
+    {
+      "prompt_id": "Υ-9",
+      "title": "DISASTER_DOWNGRADE_AND_YANK_POLICY-0",
+      "purpose": "Freeze downgrade and yank policy without normalizing live publication authority.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Υ-3",
+        "Υ-8"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "ready",
+      "human_review_required": false,
+      "stop_conditions": [
+        "downgrade or yank law assumes trust or live-ops powers not yet formalized"
+      ]
+    },
+    {
+      "prompt_id": "Φ-B2",
+      "title": "SANDBOXING_AND_ISOLATION_MODEL-0",
+      "purpose": "Freeze isolation doctrine for tool, runtime, and operational surfaces without overstating guarantees.",
+      "execution_mode": "doctrine_spec",
+      "dependencies": [
+        "Φ-B0",
+        "Φ-B1",
+        "Σ-5"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "ready_with_cautions",
+      "human_review_required": false,
+      "stop_conditions": [
+        "sandboxing claims exceed current safety, ownership, or runtime-boundary law"
+      ]
+    },
+    {
+      "prompt_id": "Φ-B3",
+      "title": "MULTI_VERSION_COEXISTENCE_REVIEW-0",
+      "purpose": "Review whether lawful multi-version coexistence is supportable after core Υ foundations land.",
+      "execution_mode": "gating_review",
+      "dependencies": [
+        "Υ-2",
+        "Υ-4",
+        "Υ-7",
+        "Υ-9",
+        "Φ-B2"
+      ],
+      "blocking_conditions": [
+        "versioning constitution incomplete",
+        "release contract profile incomplete",
+        "downgrade and archive law incomplete"
+      ],
+      "readiness_status": "blocked_until_upsilon_core",
+      "human_review_required": true,
+      "stop_conditions": [
+        "coexistence would normalize ambiguous package, schema, or runtime ownership",
+        "coexistence requires hidden compatibility reinterpretation"
+      ]
+    },
+    {
+      "prompt_id": "Υ-10",
+      "title": "PUBLICATION_TRUST_AND_LICENSING_REVIEW-0",
+      "purpose": "Review publication, trust, and licensing doctrine without operationalizing casual automation.",
+      "execution_mode": "gating_review",
+      "dependencies": [
+        "Υ-7",
+        "Υ-8",
+        "Υ-9",
+        "Σ-5"
+      ],
+      "blocking_conditions": [],
+      "readiness_status": "dangerous_to_operationalize_yet",
+      "human_review_required": true,
+      "stop_conditions": [
+        "review drifts into direct publication automation or trust-root mutation"
+      ]
+    },
+    {
+      "prompt_id": "Φ-B4",
+      "title": "HOTSWAP_BOUNDARY_REVIEW-0",
+      "purpose": "Review whether hotswap boundaries can be defined without violating lifecycle, state, and authority continuity.",
+      "execution_mode": "gating_review",
+      "dependencies": [
+        "Φ-B0",
+        "Φ-B1",
+        "Φ-B3",
+        "Υ-8",
+        "Υ-9"
+      ],
+      "blocking_conditions": [
+        "multi-version coexistence remains unresolved",
+        "transaction or downgrade law remains incomplete"
+      ],
+      "readiness_status": "dangerous_until_prereqs_land",
+      "human_review_required": true,
+      "stop_conditions": [
+        "hotswap would redefine lifecycle continuity or operator authority by convenience"
+      ]
+    },
+    {
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS_REVIEW-0",
+      "purpose": "Review whether stronger distributed-authority law is supportable after continuity, downgrade, trust, and coexistence prerequisites land.",
+      "execution_mode": "gating_review",
+      "dependencies": [
+        "Φ-B0",
+        "Φ-B1",
+        "Φ-B3",
+        "Φ-B4",
+        "Υ-8",
+        "Υ-9",
+        "Υ-10"
+      ],
+      "blocking_conditions": [
+        "authority-transfer semantics remain unresolved",
+        "trust and publication review remains incomplete",
+        "hotswap continuity remains unresolved"
+      ],
+      "readiness_status": "dangerous_until_prereqs_land",
+      "human_review_required": true,
+      "stop_conditions": [
+        "distributed authority would require live-ops assumptions or ownership transfer semantics not yet frozen"
+      ]
+    }
+  ],
+  "next_likely_prompt": "Φ-B0 — EVENT_LOG_AND_REPLAY_DOCTRINE-0",
+  "stability": {
+    "status": "derived",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-03"
+  }
+}

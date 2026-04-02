@@ -1,0 +1,181 @@
+{
+  "checkpoint_id": "C-POST_SIGMA_B_PRE_PHIB_UPSILON",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-phi-a2 / pre-phi-b-and-upsilon",
+  "reviewed_series": [
+    "Φ-B",
+    "Υ"
+  ],
+  "phi_b_readiness": [
+    {
+      "family_id": "event_log_and_replay_doctrine",
+      "judgment": "ready_with_cautions",
+      "summary": "Replay, event, and control-plane evidence already exists, but future doctrine must not promote convenience logs into semantic truth or bypass truth/perceived/render separation."
+    },
+    {
+      "family_id": "snapshot_service_doctrine",
+      "judgment": "ready_with_cautions",
+      "summary": "Checkpoint and snapshot substrate exists, but snapshots must remain lawful externalized support artifacts rather than hidden truth owners."
+    },
+    {
+      "family_id": "sandboxing_and_isolation_doctrine",
+      "judgment": "ready_with_cautions",
+      "summary": "Safety and control surfaces show isolation pressure, but future doctrine must not overclaim guarantees not yet formalized."
+    },
+    {
+      "family_id": "multi_version_coexistence_doctrine",
+      "judgment": "blocked",
+      "summary": "Meaningful coexistence law depends on stronger versioning, release contract, archive, downgrade, and artifact identity doctrine from Υ."
+    },
+    {
+      "family_id": "hotswap_boundary_doctrine",
+      "judgment": "dangerous",
+      "summary": "Hotswap before stronger replay, snapshot, coexistence, and transaction/downgrade law would freeze unsafe continuity assumptions."
+    },
+    {
+      "family_id": "distributed_authority_foundations",
+      "judgment": "dangerous",
+      "summary": "Authority-transfer and multi-node operational law remains high-risk until stronger replay, snapshot, provenance, and downgrade doctrine exists."
+    },
+    {
+      "family_id": "greenfield_runtime_substrate_replacement",
+      "judgment": "obsolete_or_redundant",
+      "summary": "Live repo runtime substrate already exists and must be extended rather than replaced."
+    }
+  ],
+  "upsilon_readiness": [
+    {
+      "family_id": "build_graph_lock",
+      "judgment": "mostly_consolidation",
+      "summary": "Preset, CI, and packaging surfaces already exist and should be frozen constitutionally."
+    },
+    {
+      "family_id": "preset_consolidation",
+      "judgment": "mostly_consolidation",
+      "summary": "Current preset and toolchain surfaces need convergence and authority clarity more than reinvention."
+    },
+    {
+      "family_id": "versioning_constitution",
+      "judgment": "mostly_consolidation",
+      "summary": "Release identity and policy substrate already exists and should be consolidated into explicit version doctrine."
+    },
+    {
+      "family_id": "release_index_and_resolution_policy",
+      "judgment": "mostly_consolidation",
+      "summary": "Index and resolver surfaces already exist and should be aligned into one constitutional model."
+    },
+    {
+      "family_id": "release_contract_profile",
+      "judgment": "ready",
+      "summary": "Current release identity, naming, update, and policy surfaces are strong enough to support an explicit contract profile."
+    },
+    {
+      "family_id": "artifact_and_target_naming_policy",
+      "judgment": "mostly_consolidation",
+      "summary": "Naming rules already exist, but they should be tightened around versioning and release contract law."
+    },
+    {
+      "family_id": "changelog_policy",
+      "judgment": "mostly_consolidation",
+      "summary": "Changelog surfaces exist and should be formalized instead of treated as self-justifying canon."
+    },
+    {
+      "family_id": "release_pipeline_and_archive_model",
+      "judgment": "mostly_consolidation",
+      "summary": "Archive and manifest engines already exist and should be formalized without becoming autonomous authority."
+    },
+    {
+      "family_id": "operator_transaction_log_model",
+      "judgment": "ready",
+      "summary": "Existing update and rollback substrate already implies transaction continuity and can now be constitutionalized."
+    },
+    {
+      "family_id": "disaster_downgrade_and_yank_policy",
+      "judgment": "ready",
+      "summary": "Current rollback and yanked-release surfaces are mature enough for doctrine, provided trust and publication remain gated."
+    },
+    {
+      "family_id": "publication_trust_and_licensing_operationalization",
+      "judgment": "dangerous_to_operationalize_yet",
+      "summary": "Trust and publication surfaces are real, but safety policy correctly keeps them review-gated and non-casual."
+    },
+    {
+      "family_id": "greenfield_release_control_plane_reinvention",
+      "judgment": "obsolete_or_redundant",
+      "summary": "The repo already contains release, update, trust, and control-plane substrate that should be consolidated rather than replaced."
+    }
+  ],
+  "zeta_blockers_or_prerequisites": [
+    "event/log and replay doctrine maturity",
+    "snapshot service doctrine maturity",
+    "sandboxing and isolation doctrine strong enough for privileged operational surfaces",
+    "multi-version coexistence law",
+    "hotswap boundary law",
+    "operator transaction and downgrade/yank law",
+    "stronger provenance and release-transaction continuity law",
+    "stronger distributed authority law",
+    "review-gated publication, trust, and licensing doctrine",
+    "stronger enforcement-oriented safety handling for privileged operational actions"
+  ],
+  "extension_over_replacement_directives": {
+    "phi_b_extend": [
+      "app/ui_event_log.c",
+      "app/include/dominium/app/ui_event_log.h",
+      "server/server_console.py",
+      "server/server_main.py",
+      "server/shard/shard_api.h",
+      "server/shard/shard_api.cpp",
+      "net/policies/policy_server_authoritative.py",
+      "net/srz/shard_coordinator.py",
+      "control/control_plane_engine.py",
+      "process/process_run_engine.py",
+      "process/capsules/capsule_executor.py",
+      "server/persistence/**",
+      "server/authority/**",
+      "engine/tests/player_embodiment_tests.cpp",
+      "docs/runtime/**"
+    ],
+    "upsilon_consolidate": [
+      "CMakePresets.json",
+      "cmake/toolchains/**",
+      "repo/release_policy.toml",
+      "docs/release/**",
+      "release/update_resolver.py",
+      "release/archive_policy.py",
+      "release/release_manifest_engine.py",
+      "release/component_graph_resolver.py",
+      "security/trust/**",
+      "updates/*.json",
+      "data/registries/trust_policy_registry.json",
+      "tools/controlx/README.md",
+      "tools/controlx/controlx.py",
+      "docs/xstack/CI_GUARDRAILS.md",
+      "tools/xstack/ci/xstack_ci_entrypoint.py",
+      "tools/dist/dist_tree_common.py"
+    ]
+  },
+  "ownership_projection_cautions": [
+    "fields/ remains canonical semantic field substrate while field/ remains transitional",
+    "schema/ remains canonical semantic contract law while schemas/ remains a projection or validator-facing mirror",
+    "packs/ remains canonical for runtime packaging and activation scope while data/packs/ remains scoped authored-pack authority",
+    "canonical prose and semantic specs outrank projected or generated mirrors",
+    "the thin runtime/ root is not canonical by name alone",
+    "older planning numbering drift remains evidence rather than authority"
+  ],
+  "final_verdict": {
+    "status": "proceed_with_modifications",
+    "reason": "Both Φ-B and Υ are now the correct next two series, but they must be interleaved and partially gated rather than treated as uniformly ready bands.",
+    "modifications": [
+      "Run early Φ-B continuity doctrine before late-gated runtime authority topics.",
+      "Run core Υ versioning, release-contract, archive, transaction, and downgrade work before multi-version coexistence and hotswap review.",
+      "Keep publication, trust, licensing, and other externally consequential work review-gated.",
+      "Keep Ζ dependency-shadowed until listed runtime and release/control-plane prerequisites are explicit."
+    ]
+  },
+  "required_human_review": false,
+  "next_likely_prompt": "Φ-B0 — EVENT_LOG_AND_REPLAY_DOCTRINE-0",
+  "stability": {
+    "status": "derived",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-03"
+  }
+}
