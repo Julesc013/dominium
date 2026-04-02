@@ -1,0 +1,384 @@
+{
+  "artifact_id": "reality.formalization_chain_registry",
+  "title": "Dominium Formalization Chain Registry",
+  "version": "1.0.0",
+  "generated_for": "Λ-4",
+  "repo_status": "post-Ω/Ξ/Π and post-P-0..P-4 and post-0-0 and post-Λ-0 and post-Λ-1 and post-Λ-2 and post-Λ-3",
+  "status": "derived_normative_operational",
+  "stability": "stable",
+  "execution_context_note": "Current execution context is post-Λ-3 with Λ-4 as the active prompt. Some earlier continuity docs still retain historical next-step references to Λ-0; this registry follows the explicit current checkpoint and does not treat those stale next-step pointers as semantic authority.",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "docs/planning/POST_PI_EXECUTION_PLAN.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/GATES_AND_PROOFS.md"
+  ],
+  "repo_embodiment_surfaces": [
+    "materials/blueprint_engine.py",
+    "materials/maintenance/decay_engine.py",
+    "infrastructure/formalization/inference_engine.py",
+    "docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
+    "docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md",
+    "docs/knowledge/EPISTEMICS_OVERVIEW.md",
+    "docs/audit/BOM_AG_BASELINE.md"
+  ],
+  "core_definition": {
+    "summary": "Formalization is the lawful process by which knowledge, design, practice, or structure becomes explicit, portable, reviewable, reusable, and lineage-bearing beyond its immediate local context.",
+    "not_equivalent_to": [
+      "recognition",
+      "semantic_ascent",
+      "substitution",
+      "crafting_recipe_system",
+      "mere_documentation"
+    ],
+    "why_needed": [
+      "support reusable machines, parts, and blueprints",
+      "support explicit process pipelines and inspection methods",
+      "support standards, protocols, and institutions",
+      "support revision, supersession, and provenance without silent drift",
+      "support believable industrial, legal, educational, and civilizational propagation"
+    ]
+  },
+  "chain_stages": [
+    {
+      "stage_id": "discovery",
+      "order_index": 1,
+      "summary": "New or newly useful phenomenon, design, practice, or structure becomes present to an actor or system.",
+      "typical_outputs": [
+        "local finding",
+        "experimental result",
+        "novel assembly",
+        "observed regularity"
+      ],
+      "does_not_automatically_imply": [
+        "reuse",
+        "public knowledge",
+        "formal specification",
+        "validation"
+      ]
+    },
+    {
+      "stage_id": "recognition",
+      "order_index": 2,
+      "summary": "Discovery or emergent pattern is identified as meaningful and potentially reusable.",
+      "typical_outputs": [
+        "recognized pattern",
+        "named machine family candidate",
+        "recognized route or institution candidate"
+      ],
+      "does_not_automatically_imply": [
+        "formalization",
+        "standardization",
+        "institutional trust"
+      ]
+    },
+    {
+      "stage_id": "explicit_capture",
+      "order_index": 3,
+      "summary": "Useful knowledge or practice is made durable enough for review, transfer, and refinement.",
+      "typical_outputs": [
+        "design sketch",
+        "process description",
+        "measurement protocol note",
+        "policy or workflow note"
+      ],
+      "does_not_automatically_imply": [
+        "formal completeness",
+        "validation",
+        "standard status"
+      ]
+    },
+    {
+      "stage_id": "specification_blueprinting",
+      "order_index": 4,
+      "summary": "Captured material becomes a stable declared form with defined scope, structure, and intended reuse.",
+      "typical_outputs": [
+        "blueprint",
+        "specification",
+        "protocol document",
+        "procedure definition",
+        "charter draft"
+      ],
+      "does_not_automatically_imply": [
+        "validation",
+        "compatibility guarantee",
+        "institutional adoption"
+      ]
+    },
+    {
+      "stage_id": "validation_testing",
+      "order_index": 5,
+      "summary": "A specified artifact or method is checked against relevant criteria for trust and reuse.",
+      "typical_outputs": [
+        "test result",
+        "inspection result",
+        "compliance result",
+        "reliability result",
+        "reproducibility result"
+      ],
+      "does_not_automatically_imply": [
+        "standardization",
+        "public acceptance",
+        "scaled deployment"
+      ]
+    },
+    {
+      "stage_id": "standardization",
+      "order_index": 6,
+      "summary": "A validated or otherwise sufficiently trusted form becomes an explicit reusable coordination device.",
+      "typical_outputs": [
+        "organizational standard",
+        "public standard",
+        "certification rule",
+        "inspection standard"
+      ],
+      "does_not_automatically_imply": [
+        "universal adoption",
+        "exclusive legitimacy",
+        "irreversible dominance"
+      ]
+    },
+    {
+      "stage_id": "institutional_adoption",
+      "order_index": 7,
+      "summary": "A standard or specification becomes embedded in organizations, traditions, legal structures, or social systems.",
+      "typical_outputs": [
+        "school curriculum",
+        "factory procedure",
+        "bureaucratic process",
+        "legal or doctrinal form"
+      ],
+      "does_not_automatically_imply": [
+        "global diffusion",
+        "civilization-scale dominance",
+        "absence_of_competing_institutions"
+      ]
+    },
+    {
+      "stage_id": "production_deployment_diffusion",
+      "order_index": 8,
+      "summary": "A formalized artifact or process spreads into repeated use, manufacture, deployment, or civilizational propagation.",
+      "typical_outputs": [
+        "repeated manufacture",
+        "scaled deployment",
+        "networked propagation",
+        "operational doctrine in use"
+      ],
+      "does_not_automatically_imply": [
+        "stability_forever",
+        "absence_of_revision",
+        "perfect_uniformity"
+      ]
+    },
+    {
+      "stage_id": "maintenance_revision",
+      "order_index": 9,
+      "summary": "Formalized artifacts and methods are maintained, corrected, extended, forked, or reconciled with explicit lineage.",
+      "typical_outputs": [
+        "revision line",
+        "maintenance release",
+        "compatibility note",
+        "fork or reconciliation record"
+      ],
+      "does_not_automatically_imply": [
+        "silent replacement",
+        "provenance reset",
+        "historical erasure"
+      ]
+    },
+    {
+      "stage_id": "deprecation_supersession_retirement",
+      "order_index": 10,
+      "summary": "Later status is assigned explicitly to older or replaced formalized artifacts and methods.",
+      "typical_outputs": [
+        "deprecated_but_supported",
+        "obsolete",
+        "superseded",
+        "forbidden",
+        "archival_historical"
+      ],
+      "does_not_automatically_imply": [
+        "deletion_from_history",
+        "loss_of_lineage",
+        "loss_of_auditability"
+      ]
+    }
+  ],
+  "stage_transition_rules": {
+    "progression_is_non_automatic": true,
+    "stage_transition_requires_explicit_evidence": true,
+    "recognition_does_not_equal_formalization": true,
+    "formalization_does_not_equal_standardization": true,
+    "standardization_does_not_equal_universal_adoption": true,
+    "revision_may_not_erase_provenance": true
+  },
+  "actor_classes": [
+    "player",
+    "npc",
+    "ai_agent",
+    "institution",
+    "organization",
+    "civilization",
+    "toolchain_or_automation_within_authority_limits"
+  ],
+  "formalization_target_classes": [
+    "physical_artifact",
+    "machine_assembly",
+    "process_pipeline",
+    "interface_signature",
+    "protocol",
+    "standard",
+    "institution",
+    "educational_program",
+    "law_or_governance_procedure",
+    "measurement_or_inspection_method",
+    "scientific_theory_or_model",
+    "logistical_or_administrative_procedure"
+  ],
+  "precondition_categories": [
+    {
+      "category_id": "knowledge_and_epistemic_access",
+      "summary": "Sufficient knowledge, records, observations, or measurements exist to advance the stage lawfully."
+    },
+    {
+      "category_id": "authority_and_legitimacy",
+      "summary": "Required authority, certification, or institutional legitimacy exists for the stage being attempted."
+    },
+    {
+      "category_id": "materials_tools_and_infrastructure",
+      "summary": "The necessary material, tooling, machine, or infrastructural support exists."
+    },
+    {
+      "category_id": "documentation_and_capture_quality",
+      "summary": "The artifact or method has been explicitly captured with enough clarity for review and reuse."
+    },
+    {
+      "category_id": "verification_capacity",
+      "summary": "The relevant validation methods, inspection methods, or test facilities exist."
+    },
+    {
+      "category_id": "institutional_support",
+      "summary": "Supporting schools, factories, bureaucracies, legal systems, or equivalent organizations exist where required."
+    },
+    {
+      "category_id": "compatibility_and_interoperability",
+      "summary": "Where reuse depends on compatibility, the relevant interfaces or protocol commitments exist."
+    }
+  ],
+  "validation_categories": [
+    "functional",
+    "dimensional",
+    "behavioral",
+    "compliance",
+    "safety_reliability",
+    "social_institutional",
+    "reproducibility",
+    "measurement_method",
+    "protocol_interoperability"
+  ],
+  "adoption_diffusion_categories": [
+    "local_private_use",
+    "organizational_use",
+    "public_common_standard",
+    "education_training_diffusion",
+    "repeated_manufacture",
+    "scaled_deployment",
+    "networked_diffusion",
+    "civilizational_propagation"
+  ],
+  "revision_supersession_categories": [
+    "maintenance_revision",
+    "compatibility_update",
+    "fork",
+    "reconciliation",
+    "deprecated_but_supported",
+    "obsolete",
+    "superseded",
+    "forbidden",
+    "archival_historical"
+  ],
+  "relationship_rules": {
+    "recognition": [
+      "recognition may precede formalization",
+      "recognition does not create portable standards by itself"
+    ],
+    "semantic_ascent": [
+      "ascent may happen before formalization",
+      "formalization stabilizes and propagates emergent meaning rather than replacing ascent"
+    ],
+    "capability_surfaces": [
+      "formalization may affect which capability surfaces exist or become reusable",
+      "capability surfaces still remain distinct from the formalization chain"
+    ],
+    "substitution_and_capsules": [
+      "formalization may define when substitution is allowed later",
+      "formalization alone does not authorize substitution"
+    ],
+    "later_upsilon": [
+      "later provenance, naming, compatibility, and release/versioning policy must preserve the semantic lineage floor defined here",
+      "later version identity policy may extend but may not erase formalization provenance"
+    ]
+  },
+  "prohibited_conflations_and_forbidden_shapes": [
+    "treating_recipes_as_the_entire_formalization_model",
+    "treating_blueprints_as_mere_crafting_recipes",
+    "conflating_recognition_with_formal_specification",
+    "conflating_documentation_with_constitutional_standard",
+    "allowing_blueprint_to_become_universal_standard_automatically",
+    "allowing_standard_to_imply_universal_adoption_automatically",
+    "skipping_validation_or_lineage_silently",
+    "allowing_revision_to_erase_provenance_or_historical_identity",
+    "allowing_production_or_diffusion_without_explicit_formalized_structure_where_required",
+    "letting_ui_or_runtime_convenience_grant_standard_or_institutional_status_by_fiat"
+  ],
+  "allowed_downstream_dependency_classes": [
+    "player_desire_and_acceptance_maps",
+    "cross_domain_bridge_specs",
+    "agent_governance_and_task_policies",
+    "runtime_materialization_and_planning_specs",
+    "provenance_versioning_and_release_lineage_specs",
+    "domain_specific_formalization_chains"
+  ],
+  "downstream_assumptions_enabled": {
+    "lambda_5": [
+      "desires may target discovery, trusted methods, standards, adoption, and long-term maintenance rather than only objects",
+      "acceptance and refusal can be mapped against stage progression and precondition gaps"
+    ],
+    "sigma": [
+      "tasks over blueprints, standards, protocols, and procedures must respect explicit stage boundaries and non-automatic promotion",
+      "governance may enforce lineage, validation, and adoption posture without redefining formalization itself"
+    ],
+    "phi": [
+      "runtime planning infrastructure may assume explicit design, validation, and propagation stages exist",
+      "runtime systems may not treat recipe-like shortcuts as a substitute for formalization lineage"
+    ],
+    "upsilon": [
+      "artifact naming, versioning, compatibility, provenance, and supersession policy must preserve explicit historical identity",
+      "release lineage may refine operational metadata without overriding semantic chain stages"
+    ]
+  },
+  "stability_notes": {
+    "artifact_stability": "stable",
+    "future_domains_may_refine": [
+      "domain_specific_chain_criteria",
+      "domain_specific_validation_classes",
+      "domain_specific_adoption_and_diffusion_mechanics",
+      "domain_specific_lineage_and_revision_rules"
+    ],
+    "future_domains_may_not_override": [
+      "non_automatic_stage_progression",
+      "distinction_between_recognition_and_formalization",
+      "distinction_between_formalization_and_standardization",
+      "provenance_and_revision_lineage_preservation",
+      "breadth_of_formalization_beyond_recipe_semantics"
+    ]
+  }
+}
