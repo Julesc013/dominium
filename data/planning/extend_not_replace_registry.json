@@ -1,0 +1,399 @@
+{
+  "generated_for": "0-0",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "ordering": "records sorted by category then surface_name",
+  "records": [
+    {
+      "surface_name": "compiled product roots",
+      "path_family": [
+        "client",
+        "launcher",
+        "server",
+        "setup"
+      ],
+      "category": "products_applications",
+      "status": "preserve",
+      "rationale": "These are already the stable product anchors and later consumers of runtime, semantic, and release work.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/planning/POST_PI_EXECUTION_PLAN.md"
+      ],
+      "later_series_impacted": [
+        "Λ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "tools and appshell surfaces",
+      "path_family": [
+        "appshell",
+        "tools"
+      ],
+      "category": "products_applications",
+      "status": "extend",
+      "rationale": "The repo already exposes operator- and product-adjacent tooling here, so later work should mine it before creating new operator-facing products.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/planning/FOUNDATION_READINESS_REPORT.md"
+      ],
+      "later_series_impacted": [
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "authority planning stack",
+      "path_family": [
+        "AGENTS.md",
+        "docs/planning"
+      ],
+      "category": "governance_instruction",
+      "status": "do-not-replace",
+      "rationale": "This is already the live governance and intake spine and must remain the binding planning layer.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+        "docs/planning/AUTHORITY_ORDER.md"
+      ],
+      "later_series_impacted": [
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "blueprint archive",
+      "path_family": [
+        "docs/blueprint"
+      ],
+      "category": "governance_instruction",
+      "status": "extend",
+      "rationale": "The blueprint archive remains useful, but only through the P-2 reconciled lens rather than as raw truth.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
+      ],
+      "later_series_impacted": [
+        "Λ",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "mirrored governance docs",
+      "path_family": [
+        "docs/agents",
+        "docs/governance",
+        "docs/xstack",
+        "DOMINIUM.md",
+        "GOVERNANCE.md",
+        "README.md",
+        "SECURITY.md"
+      ],
+      "category": "governance_instruction",
+      "status": "consolidate",
+      "rationale": "The problem is mirrored ownership and drift, not absence, so later Σ should normalize rather than duplicate.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "later_series_impacted": [
+        "Σ",
+        "Υ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "build and CI backbone",
+      "path_family": [
+        ".github/workflows/ci.yml",
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "cmake",
+        "scripts",
+        "setup/packages/scripts"
+      ],
+      "category": "build_automation",
+      "status": "do-not-replace",
+      "rationale": "The repo already has a substantial governed build substrate that later Υ should lock and normalize.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "later_series_impacted": [
+        "Υ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "preset and toolchain matrix",
+      "path_family": [
+        "cmake/ide",
+        "cmake/toolchains",
+        "ide/manifests"
+      ],
+      "category": "build_automation",
+      "status": "consolidate",
+      "rationale": "The matrix already exists and should be normalized into doctrine rather than redesigned from scratch.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json"
+      ],
+      "later_series_impacted": [
+        "Υ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "control-plane backbone",
+      "path_family": [
+        "data/architecture",
+        "data/registries",
+        "release",
+        "repo",
+        "tools/xstack",
+        "updates"
+      ],
+      "category": "control_plane_release",
+      "status": "do-not-replace",
+      "rationale": "Υ is consolidation over strong existing control-plane and release substrate, not a greenfield control-plane track.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json",
+        "docs/planning/FOUNDATION_READINESS_REPORT.md"
+      ],
+      "later_series_impacted": [
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "generated release echoes",
+      "path_family": [
+        ".xstack_cache",
+        "artifacts",
+        "build",
+        "run_meta"
+      ],
+      "category": "control_plane_release",
+      "status": "consolidate",
+      "rationale": "These are useful evidence surfaces but not primary release policy authority and must only be consumed with provenance.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/planning/AUTHORITY_ORDER.md"
+      ],
+      "later_series_impacted": [
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": true
+    },
+    {
+      "surface_name": "operator and trust tooling",
+      "path_family": [
+        "governance",
+        "security/trust",
+        "tools/compatx",
+        "tools/controlx",
+        "tools/distribution",
+        "tools/release",
+        "tools/securex"
+      ],
+      "category": "control_plane_release",
+      "status": "extend",
+      "rationale": "These tools already embody operator, trust, compat, and release flows that later work should unify rather than bypass.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/planning/FOUNDATION_READINESS_REPORT.md"
+      ],
+      "later_series_impacted": [
+        "Σ",
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "pack and registry backbone",
+      "path_family": [
+        "data/architecture",
+        "data/registries",
+        "packs",
+        "repo/release_policy.toml",
+        "schema"
+      ],
+      "category": "semantic_domain",
+      "status": "preserve",
+      "rationale": "Pack-driven integration, compatibility, and policy meaning already live here and should stay the primary authority backbone.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/canon/constitution_v1.md"
+      ],
+      "later_series_impacted": [
+        "Λ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "core reality and world roots",
+      "path_family": [
+        "game/content/core",
+        "geo",
+        "logic",
+        "materials",
+        "reality",
+        "signals",
+        "system",
+        "universe",
+        "worldgen"
+      ],
+      "category": "semantic_domain",
+      "status": "extend",
+      "rationale": "Λ is formalization over live semantic embodiment, not discovery from zero.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json",
+        "docs/planning/FOUNDATION_READINESS_REPORT.md"
+      ],
+      "later_series_impacted": [
+        "Λ",
+        "Φ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "specialist domain roots",
+      "path_family": [
+        "astro",
+        "chem",
+        "diegetics",
+        "electric",
+        "embodiment",
+        "epistemics",
+        "infrastructure",
+        "machines",
+        "packs/domain",
+        "packs/experience",
+        "packs/law",
+        "physics",
+        "pollution"
+      ],
+      "category": "semantic_domain",
+      "status": "extend",
+      "rationale": "These already represent candidate first-class semantic families and should be formalized rather than reinvented.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/planning/FOUNDATION_READINESS_REPORT.md"
+      ],
+      "later_series_impacted": [
+        "Λ",
+        "Σ",
+        "Φ",
+        "Υ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "engine and game spine",
+      "path_family": [
+        "engine",
+        "game",
+        "game/content/core"
+      ],
+      "category": "runtime_service_component",
+      "status": "preserve",
+      "rationale": "This is the strongest live runtime foundation and already embodies the lawful engine/game split.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "docs/canon/constitution_v1.md"
+      ],
+      "later_series_impacted": [
+        "Λ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "runtime substrate cluster",
+      "path_family": [
+        "app",
+        "compat",
+        "control",
+        "core",
+        "libs/appcore",
+        "libs/contracts",
+        "net",
+        "process",
+        "server/net",
+        "server/persistence",
+        "server/runtime"
+      ],
+      "category": "runtime_service_component",
+      "status": "extend",
+      "rationale": "The repo already contains distributed runtime, compat, persistence, and orchestration substrate here; later Φ should extract and freeze boundaries from it.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json",
+        "docs/planning/FOUNDATION_READINESS_REPORT.md"
+      ],
+      "later_series_impacted": [
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    },
+    {
+      "surface_name": "thin runtime root caution",
+      "path_family": [
+        "runtime"
+      ],
+      "category": "runtime_service_component",
+      "status": "do-not-replace",
+      "rationale": "This path is not the clear canonical orchestrator home and later prompts must not pivot the entire runtime plan around it as the single target.",
+      "evidence_sources": [
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "data/planning/reconciliation/assumption_invalidations.json",
+        "docs/planning/POST_PI_EXECUTION_PLAN.md"
+      ],
+      "later_series_impacted": [
+        "Φ"
+      ],
+      "confidence": "high",
+      "human_review_required": false
+    }
+  ]
+}

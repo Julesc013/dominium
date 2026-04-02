@@ -1,0 +1,184 @@
+{
+  "generated_for": "0-0",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "ordering": "entries sorted by execution order and then gate id",
+  "entries": [
+    {
+      "id": "0-0",
+      "type": "prompt",
+      "prerequisites": ["Ω", "Ξ", "Π", "P-0", "P-1", "P-2", "P-3", "P-4"],
+      "forbidden_assumptions": ["continuity can live in chat memory alone", "future prompts can infer gates ad hoc", "transcript summaries outrank repo artifacts"],
+      "required_outputs": ["docs/planning/MERGED_PROGRAM_STATE.md", "data/planning/merged_series_state.json", "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md", "data/planning/extend_not_replace_registry.json", "docs/planning/GATES_AND_PROOFS.md", "data/planning/gate_registry.json", "docs/planning/CHAT_HANDOFF_POLICY.md"],
+      "exit_proofs": ["all hardening artifacts exist", "markdown and JSON align", "Λ-0 remains the next executable prompt", "RG-SEM-0 remains the next review checkpoint"],
+      "downstream_enables": ["Λ-0", "Λ-1", "Λ-2", "Λ-3", "Λ-4", "Λ-5"],
+      "remaining_blockers": ["RG-SEM-0", "Λ-6", "CHK-ΛΣΦ-0", "Σ-A", "Σ-B", "CHK-ΣΦ-0"],
+      "human_review_required": false
+    },
+    {
+      "id": "Λ-0",
+      "type": "prompt",
+      "prerequisites": ["0-0"],
+      "forbidden_assumptions": ["Λ needs a clean-room ontology", "semantic embodiment is absent from the repo", "ownership splits can be silently chosen here"],
+      "required_outputs": ["universal reality framework document", "mapping from live semantic roots into framework terms"],
+      "exit_proofs": ["framework is grounded in live semantic roots", "canon and glossary remain controlling", "no quarantine winner was chosen silently"],
+      "downstream_enables": ["Λ-1", "Λ-2", "Λ-3"],
+      "remaining_blockers": ["RG-SEM-0", "Λ-6"],
+      "human_review_required": false
+    },
+    {
+      "id": "Λ-1",
+      "type": "prompt",
+      "prerequisites": ["Λ-0"],
+      "forbidden_assumptions": ["domain contract work can ignore schema law", "data/packs already replaces packs", "schemas is automatically canonical law"],
+      "required_outputs": ["domain contract template", "pack and schema boundary notes"],
+      "exit_proofs": ["template is grounded in schema and pack law", "pack-driven integration doctrine remains explicit"],
+      "downstream_enables": ["Λ-2", "Λ-3", "Φ-1", "Φ-3"],
+      "remaining_blockers": ["RG-SEM-0", "Λ-6"],
+      "human_review_required": false
+    },
+    {
+      "id": "Λ-2",
+      "type": "prompt",
+      "prerequisites": ["Λ-0", "Λ-1"],
+      "forbidden_assumptions": ["capability surfaces are absent", "optional content can be hardwired", "one local surface is enough to define global capability meaning"],
+      "required_outputs": ["capability surface specification", "capability-to-domain map"],
+      "exit_proofs": ["capability vocabulary maps to live pack, control, and compat surfaces", "law-gated authority remains explicit"],
+      "downstream_enables": ["Λ-4", "Σ-B", "Υ-9"],
+      "remaining_blockers": ["RG-SEM-0", "Λ-6"],
+      "human_review_required": false
+    },
+    {
+      "id": "Λ-3",
+      "type": "prompt",
+      "prerequisites": ["Λ-0", "Λ-1"],
+      "forbidden_assumptions": ["renderer can mutate truth", "perception and truth may collapse", "representation ladders can ignore live observer surfaces"],
+      "required_outputs": ["representation ladder specification", "projection boundary notes"],
+      "exit_proofs": ["truth, perceived, and render remain separated explicitly", "ladder is grounded in live observer and presentation surfaces"],
+      "downstream_enables": ["Λ-4", "Φ-3"],
+      "remaining_blockers": ["RG-SEM-0", "Λ-6"],
+      "human_review_required": false
+    },
+    {
+      "id": "Λ-4",
+      "type": "prompt",
+      "prerequisites": ["Λ-0", "Λ-2", "Λ-3"],
+      "forbidden_assumptions": ["formalization can stay abstract", "proof and semantic signals do not matter", "substitution may be implied without criteria"],
+      "required_outputs": ["recognition/formalization/substitution chain", "escalation criteria"],
+      "exit_proofs": ["chain is tied to live proof and semantic surfaces", "explicit refusal or escalation conditions exist"],
+      "downstream_enables": ["Λ-6"],
+      "remaining_blockers": ["RG-SEM-0"],
+      "human_review_required": false
+    },
+    {
+      "id": "Λ-5",
+      "type": "prompt",
+      "prerequisites": ["Λ-0", "Λ-1", "Λ-2"],
+      "forbidden_assumptions": ["player desire can be modeled outside law/profile boundaries", "acceptance can ignore refusal semantics", "experience surfaces are optional evidence"],
+      "required_outputs": ["player desire acceptance map", "refusal taxonomy"],
+      "exit_proofs": ["acceptance and refusal boundaries are tied to live experience, profile, and law surfaces"],
+      "downstream_enables": ["Λ-6", "Σ-B"],
+      "remaining_blockers": ["RG-SEM-0"],
+      "human_review_required": false
+    },
+    {
+      "id": "RG-SEM-0",
+      "type": "review_gate",
+      "prerequisites": ["Λ-0", "Λ-1", "Λ-2", "Λ-3", "Λ-4", "Λ-5"],
+      "forbidden_assumptions": ["review may silently choose winners", "unresolved ownership is acceptable if hidden", "schema and schemas are the same unless proven otherwise"],
+      "required_outputs": ["explicit reviewed status for field/fields", "explicit reviewed status for schema/schemas", "explicit reviewed status for packs/data-packs", "residual quarantine notes"],
+      "exit_proofs": ["every active split item is either explicitly mapped, explicitly retained as quarantine, or explicitly escalated", "no silent canonicalization remains"],
+      "downstream_enables": ["Λ-6", "CHK-ΛΣΦ-0"],
+      "remaining_blockers": ["Σ-A", "Σ-B", "CHK-ΣΦ-0"],
+      "human_review_required": true
+    },
+    {
+      "id": "Λ-6",
+      "type": "prompt",
+      "prerequisites": ["Λ-0", "Λ-1", "Λ-2", "Λ-3", "Λ-4", "Λ-5", "RG-SEM-0"],
+      "forbidden_assumptions": ["bridge work may settle ownership on its own", "bridge semantics can bypass pack/schema conflicts", "bridge closure means semantic work is globally complete"],
+      "required_outputs": ["cross-domain bridge map", "explicit unresolved ownership list if any remain"],
+      "exit_proofs": ["bridges are defined with explicit ownership assumptions", "residual disputes remain visible", "no hidden migration or coercion was introduced"],
+      "downstream_enables": ["CHK-ΛΣΦ-0"],
+      "remaining_blockers": ["Σ-A", "Σ-B", "CHK-ΣΦ-0"],
+      "human_review_required": true
+    },
+    {
+      "id": "CHK-ΛΣΦ-0",
+      "type": "checkpoint",
+      "prerequisites": ["Λ-6"],
+      "forbidden_assumptions": ["semantic completion implies runtime readiness", "Σ may skip preservation of the existing governance baseline", "Φ may begin before Σ contracts are frozen"],
+      "required_outputs": ["checkpoint note confirming stable semantic vocabulary", "unchanged quarantine map", "exact Σ-A start set"],
+      "exit_proofs": ["Σ-A is explicitly authorized", "next executable prompt family is unambiguous", "Φ remains gated behind CHK-ΣΦ-0"],
+      "downstream_enables": ["Σ-A"],
+      "remaining_blockers": ["Σ-B", "CHK-ΣΦ-0", "Φ grounding"],
+      "human_review_required": false
+    },
+    {
+      "id": "Σ-A",
+      "type": "checkpoint",
+      "prerequisites": ["CHK-ΛΣΦ-0"],
+      "forbidden_assumptions": ["a new governance baseline is needed", "mirrored docs can outrank AGENTS.md", "vendor-neutral mirrors may be skipped"],
+      "required_outputs": ["Σ-0 governance delta", "Σ-1 mirror surface specification", "Σ-2 safety and escalation policy delta"],
+      "exit_proofs": ["existing governance is preserved rather than replaced", "safety and refusal rules are explicit", "vendor-neutral mirror structure exists"],
+      "downstream_enables": ["Σ-B"],
+      "remaining_blockers": ["Σ-B", "CHK-ΣΦ-0"],
+      "human_review_required": true
+    },
+    {
+      "id": "Σ-B",
+      "type": "checkpoint",
+      "prerequisites": ["Σ-A"],
+      "forbidden_assumptions": ["task classes can outrun Λ capability surfaces", "wrapper contracts can hard-pin disputed semantics", "vendor-specific convenience beats governance clarity"],
+      "required_outputs": ["Σ-3 XStack task catalog", "Σ-4 natural-language task bridge", "Σ-5 MCP/interface wrapper specification"],
+      "exit_proofs": ["governed task classes exist", "wrapper boundaries and refusal paths are explicit", "no disputed semantic ownership was silently frozen"],
+      "downstream_enables": ["CHK-ΣΦ-0"],
+      "remaining_blockers": ["CHK-ΣΦ-0", "Φ grounding"],
+      "human_review_required": true
+    },
+    {
+      "id": "CHK-ΣΦ-0",
+      "type": "checkpoint",
+      "prerequisites": ["Σ-B"],
+      "forbidden_assumptions": ["Σ completion resolves runtime ownership by itself", "deep Φ is now automatically ready", "runtime may become canonical by convenience"],
+      "required_outputs": ["checkpoint note confirming the first safe Φ set", "preserved runtime substrate targets", "unchanged quarantine conditions relevant to Φ"],
+      "exit_proofs": ["Φ-0 through Φ-6 are explicitly authorized", "deep Φ remains blocked pending later gates"],
+      "downstream_enables": ["Φ-0", "Φ-1", "Φ-2", "Φ-3", "Φ-4", "Φ-5", "Φ-6"],
+      "remaining_blockers": ["RG-PHI-0", "Υ", "deep Φ", "Ζ"],
+      "human_review_required": false
+    },
+    {
+      "id": "RG-PHI-0",
+      "type": "review_gate",
+      "prerequisites": ["Φ-0", "Φ-1", "Φ-2", "Φ-3", "Φ-4", "Φ-5", "Φ-6"],
+      "forbidden_assumptions": ["deep Φ is ready because grounding exists", "runtime substrate extraction automatically resolves all ownership", "hotswap or distributed authority are now safe by default"],
+      "required_outputs": ["explicit approved runtime boundary map", "ruled list for Φ-7 through Φ-14"],
+      "exit_proofs": ["deep Φ prompts that remain blocked, dangerous, or review-sensitive are still explicitly marked", "nothing is promoted silently"],
+      "downstream_enables": ["Φ-7", "Φ-8"],
+      "remaining_blockers": ["Υ", "Φ-12", "Φ-13", "Φ-14", "Ζ"],
+      "human_review_required": true
+    },
+    {
+      "id": "RG-PUB-0",
+      "type": "review_gate",
+      "prerequisites": ["Υ-8", "Υ-9"],
+      "forbidden_assumptions": ["publication policy can be inferred from tooling alone", "licensing or capability policy can become binding without review", "generated echoes can define policy"],
+      "required_outputs": ["explicit publication review outcomes", "explicit licensing and capability review outcomes", "retained restrictions if any"],
+      "exit_proofs": ["publication-sensitive and trust-sensitive later work has explicit approved policy scope"],
+      "downstream_enables": ["Ζ-6"],
+      "remaining_blockers": ["RG-ZETA-0", "distributed live-ops gates"],
+      "human_review_required": true
+    },
+    {
+      "id": "RG-ZETA-0",
+      "type": "review_gate",
+      "prerequisites": ["Φ-14", "Υ-11", "Υ-12"],
+      "forbidden_assumptions": ["rollback primitives equal live-ops readiness", "distributed authority is proven because precursors exist", "extreme Ζ work can begin without executive review"],
+      "required_outputs": ["explicit go/no-go decision for distributed or extreme Ζ planning"],
+      "exit_proofs": ["late Ζ work is either explicitly authorized in bounded form or explicitly deferred as unsafe"],
+      "downstream_enables": ["Ζ-7", "Ζ-8"],
+      "remaining_blockers": ["any remaining deep Φ or release/trust proof gaps named by review"],
+      "human_review_required": true
+    }
+  ]
+}
