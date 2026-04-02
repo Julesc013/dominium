@@ -1,0 +1,496 @@
+{
+  "artifact_id": "dominium.runtime.lifecycle_manager_model",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-03",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_a_post_phi4_pre_phi5",
+    "enabling_prompt": "Φ-5 — LIFECYCLE_MANAGER-0",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0"
+    ],
+    "active_numbering_note": "Current checkpoint law advances LIFECYCLE_MANAGER-0 as Φ-5 after binding and state law even though older planning artifacts may still retain stale numbering drift."
+  },
+  "lifecycle_definition": {
+    "summary": "Lifecycle management is the constitutional discipline that governs how bounded runtime subjects are declared, initialized, made available, activated, quiesced, suspended, resumed, degraded, stopped, retired, recovered, or later replaced without redefining truth, ownership, bridge legality, representation continuity, or state obligations.",
+    "lifecycle_is_not": [
+      "os_process_management",
+      "runtime_execution_alone",
+      "persistence_alone",
+      "state_externalization_alone",
+      "product_or_session_flow",
+      "release_rollout_or_control_plane_policy",
+      "live_ops_or_hotswap_implementation"
+    ],
+    "why_needed": [
+      "runtime_subjects_change_posture_over_time",
+      "availability_is_not_truth_existence",
+      "lifecycle_transitions_affect_mutability_access_and_continuity",
+      "state_externalization_and_binding_rules_need_transition_awareness",
+      "later_restart_cutover_migration_and_live_ops_work_need_explicit_lifecycle_law"
+    ]
+  },
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY",
+    "NATURAL_LANGUAGE_TASK_BRIDGE",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "FOUNDATION_READINESS_REPORT",
+    "CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW"
+  ],
+  "lifecycle_subject_categories": [
+    {
+      "id": "kernel_adjacent_runtime_structure",
+      "description": "Execution-hosting or execution-coordinating runtime structures adjacent to kernel law."
+    },
+    {
+      "id": "bounded_component",
+      "description": "Bounded runtime-facing functional units frozen by the component model."
+    },
+    {
+      "id": "coordinated_service",
+      "description": "Bounded runtime coordination or mediation structures frozen by the service model."
+    },
+    {
+      "id": "domain_support_runtime_structure",
+      "description": "Runtime subjects that support lawful execution, validation, mediation, or observation over domain-grounded behavior."
+    },
+    {
+      "id": "observation_presentation_support_structure",
+      "description": "Runtime subjects that support observation, rendering, explanation, presentation, or diagnostics."
+    },
+    {
+      "id": "control_integration_structure",
+      "description": "Runtime subjects coordinating negotiation, transport, routing, handoff, compatibility, or control-adjacent mediation."
+    },
+    {
+      "id": "later_module_realization",
+      "description": "Later module realizations that embody lifecycle-managed subjects without defining lifecycle identity by layout alone."
+    }
+  ],
+  "lifecycle_states": [
+    {
+      "id": "declared",
+      "description": "The subject is recognized and identified, but not yet initialized."
+    },
+    {
+      "id": "initialized",
+      "description": "Prerequisites and setup have been satisfied enough for lawful runtime use to become possible."
+    },
+    {
+      "id": "available",
+      "description": "The subject is ready for lawful activation or bounded consumption."
+    },
+    {
+      "id": "active",
+      "description": "The subject is presently participating in lawful runtime work."
+    },
+    {
+      "id": "quiescent",
+      "description": "The subject is not actively advancing work and is in a transition-safe posture."
+    },
+    {
+      "id": "suspended",
+      "description": "The subject is temporarily halted while required continuity conditions remain preserved."
+    },
+    {
+      "id": "degraded",
+      "description": "The subject remains lawful only under reduced or narrowed behavior that must stay explicit."
+    },
+    {
+      "id": "blocked",
+      "description": "The subject cannot lawfully activate or continue because constraints forbid it."
+    },
+    {
+      "id": "stopped",
+      "description": "The subject is no longer running or available for active work, but is not yet retired."
+    },
+    {
+      "id": "retired",
+      "description": "The subject is intentionally withdrawn from future lawful activation within its current identity."
+    },
+    {
+      "id": "failed",
+      "description": "The subject has entered an invalid or failed posture requiring explicit refusal, recovery, or retirement handling."
+    }
+  ],
+  "transition_classes": [
+    {
+      "id": "declare",
+      "description": "Establish the subject as a recognized lifecycle participant with explicit identity and scope."
+    },
+    {
+      "id": "initialize",
+      "description": "Move from declared or stopped posture into a prepared runtime posture subject to prerequisites."
+    },
+    {
+      "id": "make_available",
+      "description": "Expose the initialized subject for lawful activation or bounded consumption."
+    },
+    {
+      "id": "activate",
+      "description": "Enter active runtime participation under current constraints."
+    },
+    {
+      "id": "quiesce",
+      "description": "Move from active or degraded posture into a pause-safe, transition-safe, or handoff-safe posture."
+    },
+    {
+      "id": "suspend",
+      "description": "Halt active progression temporarily while preserving required continuity and state obligations."
+    },
+    {
+      "id": "resume",
+      "description": "Return from suspended or quiescent posture into available or active posture only when legality is re-established."
+    },
+    {
+      "id": "degrade",
+      "description": "Narrow lawful operation explicitly under reduced capability, fidelity, throughput, or scope."
+    },
+    {
+      "id": "recover",
+      "description": "Restore a degraded, blocked, or failed subject into a lawful state only when invalidity causes are resolved."
+    },
+    {
+      "id": "block",
+      "description": "Prevent activation or continued operation because prerequisites, authority, dependencies, or legality conditions are absent."
+    },
+    {
+      "id": "stop",
+      "description": "End runtime participation without implying semantic erasure."
+    },
+    {
+      "id": "retire",
+      "description": "Explicitly end future lawful activation for the current subject identity."
+    },
+    {
+      "id": "replace_or_handoff",
+      "description": "A later refinement target for continuity-preserving transfer or substitution constrained by state, ownership, bridge, and provenance law."
+    }
+  ],
+  "transition_legality_constraints": [
+    "semantic_law_outranks_runtime_posture",
+    "availability_does_not_equal_truth_existence",
+    "state_externalization_rules_remain_binding",
+    "ownership_review_remains_binding",
+    "bridge_legality_remains_binding_where_scope_crosses_domains",
+    "representation_continuity_must_be_preserved",
+    "provenance_and_formalization_continuity_must_be_preserved_where_relevant",
+    "degraded_or_blocked_posture_must_remain_explicit",
+    "product_flow_must_not_define_lifecycle_law",
+    "replacement_and_handoff_are_not_authority_transfer_shortcuts"
+  ],
+  "authority_constraints": {
+    "semantic_law_outranks_lifecycle_convenience": true,
+    "runtime_availability_does_not_define_ontology": true,
+    "currently_active_runtime_subjects_do_not_gain_semantic_ownership": true,
+    "lifecycle_transitions_must_not_reassign_canonical_authority": true,
+    "canonical_vs_projection_discipline_remains_binding": true,
+    "lifecycle_must_not_hide_binding_or_bridge_violations": true
+  },
+  "state_constraints": {
+    "lifecycle_consumes_state_externalization_law": true,
+    "authoritative_truth_state_must_not_be_trapped_in_transient_runtime_state": true,
+    "continuity_relevant_state_must_be_externalizable_or_externalized_as_required": true,
+    "transient_execution_state_may_only_be_dropped_when_state_law_permits": true,
+    "degraded_failed_or_blocked_posture_does_not_suspend_state_obligations": true
+  },
+  "bridge_and_continuity_constraints": {
+    "cross_domain_lifecycle_effects_require_explicit_bridge_law": true,
+    "shared_runtime_hosting_is_not_bridge_authority": true,
+    "macro_micro_continuity_must_be_preserved_where_relevant": true,
+    "representation_local_runtime_posture_does_not_authorize_semantic_discontinuity": true,
+    "provenance_and_revision_lineage_must_not_be_lost_during_transition": true
+  },
+  "capability_surface_notes": {
+    "lifecycle_may_affect": [
+      "availability",
+      "degradation",
+      "blocked_posture",
+      "refusal_visibility",
+      "actor_access_posture"
+    ],
+    "lifecycle_must_not_affect": [
+      "capability_semantics",
+      "actor_class_definitions",
+      "upstream_preconditions",
+      "lawful_outcome_meaning"
+    ]
+  },
+  "distinction_notes": {
+    "lifecycle_state": "Lifecycle state describes runtime posture over time, not semantic ontology.",
+    "authoritative_truth_state": "Truth remains domain-owned whether runtime subjects are active, suspended, stopped, or failed.",
+    "externalized_state": "Externalized or externalizable state remains governed by state law rather than by lifecycle convenience.",
+    "transient_execution_state": "Temporary execution-local state may be dropped only when state law permits it.",
+    "product_session_flow": "User-visible session or shell flow is not lifecycle law.",
+    "future_live_ops_mechanics": "Hot-swap, cutover, restartless replacement, and live-ops systems are downstream consumers of lifecycle law."
+  },
+  "layer_interaction_rules": {
+    "kernel": {
+      "may_host": [
+        "activation_attach_points",
+        "refusal_and_degradation_visibility",
+        "checkpoint_replay_and_verification_hooks"
+      ],
+      "must_not_define": [
+        "semantic_truth",
+        "domain_ownership"
+      ]
+    },
+    "components": {
+      "must_remain": [
+        "lifecycle_addressable",
+        "state_aware",
+        "audit_friendly"
+      ]
+    },
+    "services": {
+      "must_remain": [
+        "binding_aware",
+        "state_externalization_aware",
+        "bridge_aware_where_scope_crosses_domains"
+      ]
+    },
+    "products": {
+      "may_observe": [
+        "available",
+        "degraded",
+        "blocked",
+        "suspended",
+        "failed"
+      ],
+      "must_not_define": [
+        "lifecycle_legality",
+        "truth_existence",
+        "ownership"
+      ]
+    }
+  },
+  "failure_invalidity_categories": [
+    {
+      "id": "lifecycle_unavailable",
+      "description": "The subject or transition surface does not currently exist for lawful use."
+    },
+    {
+      "id": "initialization_invalid",
+      "description": "Setup, identity, compatibility, authority, or prerequisites were not satisfied."
+    },
+    {
+      "id": "activation_blocked",
+      "description": "The subject cannot lawfully become active because dependencies, policy, or authority conditions are absent."
+    },
+    {
+      "id": "quiescence_incomplete",
+      "description": "The subject cannot lawfully quiesce because required continuity or state-preservation obligations remain unresolved."
+    },
+    {
+      "id": "suspension_illegal",
+      "description": "The subject cannot be suspended lawfully without violating truth, state, or bridge constraints."
+    },
+    {
+      "id": "resume_invalid",
+      "description": "The subject cannot lawfully resume because the prior suspension or current prerequisites are invalid."
+    },
+    {
+      "id": "degraded_only",
+      "description": "The subject may continue only in an explicitly degraded posture."
+    },
+    {
+      "id": "recovery_blocked",
+      "description": "Recovery is not presently lawful because failure causes or authority constraints remain unresolved."
+    },
+    {
+      "id": "state_externalization_violation",
+      "description": "The transition would trap or lose required authoritative or continuity-relevant state."
+    },
+    {
+      "id": "ownership_invalid",
+      "description": "The transition would rebind lifecycle meaning or authority to the wrong owner."
+    },
+    {
+      "id": "bridge_invalid",
+      "description": "The transition would violate cross-domain bridge law."
+    },
+    {
+      "id": "representation_continuity_break",
+      "description": "The transition would break representation or continuity invariants."
+    },
+    {
+      "id": "formalization_or_provenance_break",
+      "description": "The transition would lose required lineage, revision posture, or formalized continuity."
+    },
+    {
+      "id": "under_authorized_transition",
+      "description": "The requested lifecycle transition is not lawful under the present authority envelope."
+    },
+    {
+      "id": "contested_or_ambiguous_lifecycle",
+      "description": "Competing lifecycle interpretations remain explicit and cannot be normalized away silently."
+    }
+  ],
+  "verification_expectations": [
+    "subject_identity_and_subject_class_are_verifiable",
+    "current_lifecycle_state_and_transition_path_are_verifiable",
+    "state_class_preservation_during_transition_is_verifiable",
+    "ownership_consistency_during_transition_is_verifiable",
+    "bridge_legality_is_verifiable_where_lifecycle_effects_cross_domains",
+    "degraded_blocked_suspended_failed_and_active_postures_are_distinguishable",
+    "continuity_and_representation_constraints_are_verifiable",
+    "recovery_replace_and_handoff_claims_are_auditable"
+  ],
+  "grounding_roots": {
+    "runtime_extend_evidence": [
+      "app",
+      "compat",
+      "control",
+      "core",
+      "net",
+      "process",
+      "server/runtime",
+      "server/persistence",
+      "engine",
+      "game"
+    ],
+    "do_not_infer_canonicality_from": [
+      "runtime_root_name_alone",
+      "os_process_shape_alone",
+      "module_layout_alone",
+      "product_shell_flow_alone",
+      "generated_projection_convenience_alone"
+    ]
+  },
+  "ownership_cautions": [
+    {
+      "id": "ownership_sensitive_fields",
+      "paths": [
+        "field",
+        "fields"
+      ],
+      "rule": "fields_is_canonical_semantic_field_substrate_and_field_is_only_a_transitional_facade"
+    },
+    {
+      "id": "ownership_sensitive_schema",
+      "paths": [
+        "schema",
+        "schemas"
+      ],
+      "rule": "schema_law_is_canonical_and_validator_or_projection_surfaces_do_not_own_lifecycle_semantics"
+    },
+    {
+      "id": "ownership_sensitive_packs",
+      "paths": [
+        "packs",
+        "data/packs"
+      ],
+      "rule": "packaged_activation_scope_and_authored_pack_declaration_scope_are_not_interchangeable"
+    },
+    {
+      "id": "semantic_specs_vs_registries",
+      "paths": [
+        "specs/reality",
+        "data/reality"
+      ],
+      "rule": "specs_reality_outranks_data_reality_for_semantic_meaning_and_registries_remain_operational_mirrors"
+    },
+    {
+      "id": "planning_docs_vs_planning_json",
+      "paths": [
+        "docs/planning",
+        "data/planning"
+      ],
+      "rule": "planning_docs_outrank_planning_json_for_checkpoint_and_execution_interpretation"
+    },
+    {
+      "id": "generated_and_projected_surfaces",
+      "paths": [
+        "build",
+        "artifacts",
+        ".xstack_cache",
+        "run_meta"
+      ],
+      "rule": "generated_or_mirrored_outputs_are_evidence_only_and_not_lifecycle_authority"
+    },
+    {
+      "id": "thin_runtime_root",
+      "paths": [
+        "runtime"
+      ],
+      "rule": "runtime_root_name_does_not_establish_lifecycle_authority"
+    },
+    {
+      "id": "planning_order_drift",
+      "paths": [
+        "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
+        "data/planning/final_prompt_inventory.json",
+        "data/planning/dependency_graph_post_pi.json"
+      ],
+      "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
+    }
+  ],
+  "prohibited_lifecycle_shapes": [
+    "service_restart_treated_as_truth_reset",
+    "suspended_subject_treated_as_semantically_nonexistent",
+    "lifecycle_transition_trapping_authoritative_truth_in_transient_execution_state",
+    "ui_launcher_or_session_flow_used_as_lifecycle_law",
+    "replacement_or_handoff_bypassing_ownership_review_or_bridge_law",
+    "degraded_posture_silently_treated_as_full_lawful_operation",
+    "lifecycle_semantics_defined_purely_by_one_runtime_implementation_path",
+    "lifecycle_convenience_used_to_promote_projections_or_generated_artifacts_into_canonical_authority",
+    "active_runtime_posture_treated_as_permission_to_own_semantic_meaning",
+    "stop_suspend_quiesce_retire_and_replace_collapsed_into_one_generic_restart_label"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Σ-3",
+    "Σ-4",
+    "Σ-5",
+    "Υ-series",
+    "Ζ-series"
+  ],
+  "downstream_assumptions_enabled": {
+    "Σ-3": [
+      "task_catalog_entries_can_classify_lifecycle_sensitive_runtime_work_against_explicit_subject_state_and_transition_vocabularies"
+    ],
+    "Σ-4": [
+      "mcp_and_interface_exposure_work_can_reference_explicit_lifecycle_states_transitions_and_failure_categories"
+    ],
+    "Σ-5": [
+      "agent_safety_policy_can_reason_about_blocked_degraded_suspended_failed_replace_and_handoff_requests_against_explicit_lifecycle_law"
+    ],
+    "Υ_and_Ζ": [
+      "restart_cutover_migration_replay_canary_rollback_and_live_ops_work_can_consume_explicit_lifecycle_constraints_without_inventing_authority_or_continuity_rules"
+    ]
+  },
+  "prohibited_downstream_violations": [
+    "treat_runtime_availability_as_truth_existence",
+    "let_suspension_or_restart_silently_alter_truth_or_ownership",
+    "invent_live_ops_or_replacement_semantics_without_lifecycle_law",
+    "hide_cross_domain_lifecycle_effects_outside_bridge_law",
+    "let_product_flow_define_runtime_lifecycle_legality",
+    "silently_weaken_state_externalization_or_continuity_constraints"
+  ]
+}
