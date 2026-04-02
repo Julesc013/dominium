@@ -1,0 +1,231 @@
+{
+  "checkpoint_id": "C-Σ0ΦA1",
+  "checkpoint_state": "post-Λ / post-Σ-0 / pre-Φ-A1",
+  "reviewed_prompts": [
+    {
+      "active_prompt_id": "Φ-0",
+      "title": "RUNTIME_KERNEL_MODEL-0",
+      "legacy_inventory_prompt_id": "Φ-0"
+    },
+    {
+      "active_prompt_id": "Φ-1",
+      "title": "COMPONENT_MODEL-0",
+      "legacy_inventory_prompt_id": "Φ-1"
+    },
+    {
+      "active_prompt_id": "Φ-2",
+      "title": "RUNTIME_SERVICES-0",
+      "legacy_inventory_prompt_id": "Φ-4",
+      "continuity_warning": "Legacy planning inventory still labels Φ-2 as EVENT_LOG-0 and places RUNTIME_SERVICES-0 at Φ-4."
+    }
+  ],
+  "governance_sufficiency": {
+    "overall": "sufficient_for_early_phi_with_cautions",
+    "authority_model": "sufficient",
+    "anti_reinvention": "sufficient",
+    "ownership_sensitive_guidance": "sufficient_with_carry_forward_cautions",
+    "planning_vs_implementation_clarity": "sufficient",
+    "review_gate_clarity": "sufficient_with_sequence_drift_note",
+    "canonical_vs_projected_clarity": "sufficient",
+    "not_sufficient_by_itself_for": [
+      "Σ-1 governance mirrors",
+      "Σ-2 natural-language task mapping",
+      "Σ-3 task catalog",
+      "Σ-4 MCP exposure",
+      "Σ-5 hardened agent safety policy"
+    ]
+  },
+  "semantic_runtime_boundary": {
+    "overall": "clear_enough_for_early_phi",
+    "phi_may_assume": [
+      "The Λ semantic constitution is complete enough to serve as binding input.",
+      "AGENTS.md is the canonical governance source.",
+      "The runtime substrate already exists across engine, game, app, compat, control, core, net, process, server/runtime, and server/persistence.",
+      "runtime/ exists only as a thin helper root and is not the clear canonical orchestrator home.",
+      "Early Φ is extraction and consolidation over live substrate rather than clean-room invention."
+    ],
+    "phi_must_not_assume": [
+      "Runtime work may redefine semantic doctrine or domain ownership.",
+      "Shared code adjacency implies bridge law or semantic authority.",
+      "Governance mirrors, natural-language task bridge, or MCP surfaces already exist.",
+      "schemas/** may replace schema/** as semantic contract law.",
+      "packs/** and data/packs/** are a resolved single-root family.",
+      "Generated echoes are authoritative runtime law."
+    ],
+    "phi_must_inherit_from_lambda": [
+      "Truth / Perceived / Render separation",
+      "total truth and sparse materialization",
+      "domain contract structure",
+      "capability surface law",
+      "representation ladder law",
+      "semantic ascent and descent law",
+      "formalization chain law",
+      "player-desire acceptance constraints",
+      "semantic ownership review outcomes",
+      "cross-domain bridge law"
+    ],
+    "phi_must_treat_as_governance_inputs": [
+      "repo-artifact primacy",
+      "validation and reporting expectations",
+      "review-gated work classes",
+      "protected surfaces and .agentignore",
+      "commit discipline",
+      "extend-over-replace discipline"
+    ]
+  },
+  "extension_over_replacement": {
+    "preserve": [
+      "client",
+      "server",
+      "launcher",
+      "setup",
+      "engine",
+      "game",
+      "game/content/core"
+    ],
+    "extend": [
+      "app",
+      "compat",
+      "control",
+      "core",
+      "net",
+      "process",
+      "server/runtime",
+      "server/persistence"
+    ],
+    "consolidate": [
+      "build/** with provenance only",
+      "artifacts/** with provenance only",
+      ".xstack_cache/** with provenance only",
+      "run_meta/** with provenance only"
+    ],
+    "do_not_replace": [
+      "AGENTS.md",
+      "docs/planning/**",
+      "runtime/"
+    ],
+    "quarantine_aware": [
+      "field vs fields",
+      "schema vs schemas",
+      "packs vs data/packs"
+    ]
+  },
+  "ownership_projection_cautions": [
+    {
+      "family": "field_vs_fields",
+      "canonical_owner": "fields/**",
+      "non_canonical_surface": "field/**",
+      "rule": "Treat field/** only as a transitional compatibility facade."
+    },
+    {
+      "family": "schema_vs_schemas",
+      "canonical_owner": "schema/**",
+      "non_canonical_surface": "schemas/**",
+      "rule": "Use schemas/** operationally only; semantic boundary decisions must follow schema/**."
+    },
+    {
+      "family": "packs_vs_data_packs",
+      "canonical_owner": "packs/** within runtime packaging and activation scope",
+      "scoped_owner": "data/packs/** within authored content and declaration scope",
+      "rule": "Do not flatten the family into a single-root winner."
+    },
+    {
+      "family": "specs_reality_vs_data_reality",
+      "canonical_owner": "specs/reality/**",
+      "non_canonical_surface": "data/reality/**",
+      "rule": "Specs own normative semantic meaning; registries are operational mirrors."
+    },
+    {
+      "family": "docs_planning_vs_data_planning",
+      "canonical_owner": "docs/planning/**",
+      "non_canonical_surface": "data/planning/**",
+      "rule": "Planning JSON may not override the more specific checkpoint and planning review prose."
+    },
+    {
+      "family": "generated_echoes",
+      "non_canonical_surface": "build/**, artifacts/**, .xstack_cache/**, run_meta/**",
+      "rule": "Evidence only unless a stronger source explicitly promotes an emitted artifact."
+    }
+  ],
+  "prompt_readiness": {
+    "Φ-0": {
+      "status": "ready_with_cautions",
+      "rationale": [
+        "The engine/game/app spine and runtime substrate cluster clearly exist.",
+        "Σ-0 now provides enough authority, validation, and ownership discipline for kernel-boundary extraction.",
+        "The main caution is to extract from distributed substrate without promoting runtime/ or redefining semantic law."
+      ]
+    },
+    "Φ-1": {
+      "status": "ready_with_cautions",
+      "rationale": [
+        "A component model can follow Φ-0 if it stays narrowly structural.",
+        "The live repo contains enough component-adjacent substrate across app, compat, control, core, net, process, and server roots.",
+        "It must not smuggle in task catalog, mirror, or MCP concerns that belong to later Σ work."
+      ]
+    },
+    "Φ-2": {
+      "status": "ready_with_cautions",
+      "rationale": [
+        "Runtime-service-like substrate already exists across control, compat, core, net, process, server/runtime, and server/persistence.",
+        "Σ-0 is sufficient to keep service extraction from drifting into semantic or ownership law.",
+        "Legacy planning inventory still labels RUNTIME_SERVICES-0 as Φ-4 and therefore the numbering drift must be carried forward explicitly."
+      ]
+    }
+  },
+  "prohibited_moves": [
+    "redefine semantic ontology",
+    "redefine domain ownership",
+    "reinterpret capability surfaces as runtime-only constructs",
+    "bind runtime boundaries to non-canonical projected or transitional roots",
+    "flatten packs/** and data/packs/** into one ownership root",
+    "assume governance mirrors or natural-language task bridge already exist",
+    "treat runtime/ as the obvious canonical orchestrator home",
+    "overfit to code adjacency and mistake it for bridge law",
+    "use generated echoes or caches as canonical runtime policy"
+  ],
+  "downstream_implications": {
+    "Σ-1": {
+      "should_wait_for": [
+        "Φ-0 kernel/root-boundary map",
+        "Φ-1 component ownership and attach-point map",
+        "early runtime-service cluster or boundary map"
+      ],
+      "why": [
+        "Governance mirrors should reference the first stable runtime boundary vocabulary rather than stale pre-Φ assumptions."
+      ]
+    },
+    "Σ-2": {
+      "should_wait_for": [
+        "Φ-0 kernel/root-boundary map",
+        "Φ-1 component ownership and attach-point map",
+        "early runtime-service cluster or boundary map",
+        "explicit clarification of the Φ-2 versus Φ-4 runtime-services numbering drift"
+      ],
+      "why": [
+        "Natural-language task mapping should not promise runtime task surfaces before the first stable runtime boundary vocabulary exists."
+      ]
+    }
+  },
+  "final_verdict": {
+    "decision": "proceed_with_modifications",
+    "summary": "Σ-0 is sufficient for early Φ-A1. Early Φ may proceed as bounded runtime kernel, component, and service boundary extraction over live substrate, while carrying forward all ownership cautions and the legacy prompt-numbering drift explicitly.",
+    "required_corrections": [
+      "Treat early Φ-A1 as bounded extraction and consolidation rather than implementation or semantic reinterpretation.",
+      "Carry forward Λ-5.5 ownership cautions unchanged.",
+      "Record the legacy Φ-2 versus Φ-4 naming drift explicitly instead of hiding it."
+    ]
+  },
+  "required_human_review": false,
+  "stability": {
+    "class": "provisional",
+    "consumed_by": [
+      "Φ-0",
+      "Φ-1",
+      "the third early Φ-A1 runtime-service boundary prompt",
+      "Σ-1",
+      "Σ-2",
+      "C-ΣA1ΦA2"
+    ]
+  }
+}
