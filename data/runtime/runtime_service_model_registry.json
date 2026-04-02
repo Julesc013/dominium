@@ -1,0 +1,291 @@
+{
+  "artifact_id": "dominium.runtime.service_model",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-02",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma0_post_c_sigma0_phia1_post_phi1_pre_phi2",
+    "enabling_prompt": "Φ-2 — RUNTIME_SERVICES-0",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0"
+    ],
+    "active_numbering_note": "Current checkpoint law advances runtime services as Φ-2 even though older planning artifacts still place RUNTIME_SERVICES-0 at Φ-4."
+  },
+  "service_definition": {
+    "summary": "A runtime service is a bounded coordinated runtime-facing mediation or hosting structure that composes, coordinates, routes through, or exposes component behavior within kernel law.",
+    "service_is_not": [
+      "runtime_kernel",
+      "component",
+      "module",
+      "domain_contract_owner",
+      "product_shell",
+      "pack_or_content_identity",
+      "tool_by_default",
+      "control_plane_or_release_plane_owner"
+    ]
+  },
+  "service_classes": [
+    {
+      "id": "execution_coordination_service",
+      "description": "Coordinates bounded execution-facing runtime behavior such as scheduling, work routing, or deterministic progression.",
+      "representative_evidence_roots": [
+        "engine/modules/execution",
+        "server/runtime",
+        "app",
+        "core/schedule"
+      ]
+    },
+    {
+      "id": "observation_inspection_service",
+      "description": "Supports lawful observation, inspection, proof, or audit mediation without becoming a truth owner.",
+      "representative_evidence_roots": [
+        "control/view",
+        "control/proof",
+        "client/observability",
+        "engine/modules/replay",
+        "app"
+      ]
+    },
+    {
+      "id": "presentation_support_service",
+      "description": "Coordinates presentation-adjacent runtime support behavior while remaining subordinate to truth/perceived/render separation.",
+      "representative_evidence_roots": [
+        "app/ui_event_log.c",
+        "engine/modules/view",
+        "engine/modules/ui",
+        "client/presentation"
+      ]
+    },
+    {
+      "id": "control_integration_service",
+      "description": "Coordinates negotiation, transport, handoff, descriptor exchange, or integration behavior across runtime layers.",
+      "representative_evidence_roots": [
+        "compat",
+        "control",
+        "net",
+        "server/net"
+      ]
+    },
+    {
+      "id": "persistence_replay_support_service",
+      "description": "Supports persistence-facing, replay-facing, or checkpoint-facing runtime mediation without yet defining explicit state externalization or snapshot systems.",
+      "representative_evidence_roots": [
+        "server/persistence",
+        "engine/modules/replay",
+        "engine/modules/core/event.c",
+        "app/ui_event_log.c"
+      ]
+    },
+    {
+      "id": "compatibility_policy_support_service",
+      "description": "Coordinates runtime compatibility, refusal, degradation, handshake, negotiation, or runtime policy mediation.",
+      "representative_evidence_roots": [
+        "compat/descriptor",
+        "compat/handshake",
+        "compat/negotiation",
+        "net/policies"
+      ]
+    },
+    {
+      "id": "domain_support_service",
+      "description": "Supports lawful execution, observation, or coordination over domain-grounded behavior without redefining domain law.",
+      "representative_evidence_roots": [
+        "control/planning",
+        "process",
+        "core",
+        "game/core/execution"
+      ]
+    },
+    {
+      "id": "product_support_service",
+      "description": "Supports lawful runtime mediation required by products while remaining distinct from the products themselves.",
+      "representative_evidence_roots": [
+        "app",
+        "server/runtime",
+        "server/net",
+        "client/interaction"
+      ]
+    }
+  ],
+  "responsibility_categories": [
+    "coordinate_bounded_runtime_behavior",
+    "expose_declared_runtime_capabilities_within_lawful_boundaries",
+    "respect_kernel_and_component_boundaries",
+    "respect_domain_ownership_and_bridge_law",
+    "maintain_truth_perceived_render_separation",
+    "support_later_observability_validation_lifecycle_and_state_refinement",
+    "enable_lawful_product_consumption_without_redefining_semantics",
+    "support_explicit_refusal_degradation_capability_and_compatibility_behavior"
+  ],
+  "non_responsibility_categories": [
+    "semantic_ontology_definition",
+    "domain_ownership_definition",
+    "canonical_governance_definition",
+    "product_shell_semantics",
+    "release_publication_truth",
+    "implicit_cross_domain_bridge_authority",
+    "arbitrary_capability_surface_reinterpretation",
+    "canonical_projection_rebinding_authority"
+  ],
+  "boundary_rules": {
+    "allowed_dependencies": [
+      "runtime_kernel",
+      "bounded_components",
+      "canonical_semantic_contracts_and_specs",
+      "explicit_runtime_policies_and_registries",
+      "implementation_modules",
+      "lawful_pack_and_compatibility_inputs",
+      "explicit_service_dependencies"
+    ],
+    "allowed_exposures": [
+      "bounded_runtime_capabilities",
+      "coordination_and_mediation_surfaces",
+      "diagnostics_and_audit_hooks",
+      "compatibility_refusal_and_degradation_interfaces",
+      "product_consumable_runtime_surfaces",
+      "future_lifecycle_and_state_attach_points"
+    ],
+    "forbidden_boundary_violations": [
+      "hidden_semantic_ownership",
+      "product_shell_convenience_as_service_identity_authority",
+      "binding_to_ambiguous_or_projected_roots_as_canonical_owners",
+      "component_module_domain_product_collapse",
+      "silent_cross_domain_coupling",
+      "generic_orchestrator_swallowing_all_runtime_concerns",
+      "ui_or_command_colonization_of_capability_meaning"
+    ]
+  },
+  "dependency_constraints": {
+    "services_operate_downstream_of_kernel_and_component_law": true,
+    "services_may_coordinate_multiple_components_without_erasing_component_identity": true,
+    "services_must_not_infer_identity_from_code_adjacency": true,
+    "services_must_not_depend_upward_on_products_for_semantic_identity": true
+  },
+  "distinction_notes": {
+    "kernel": "The kernel is the constitutional execution host; services are coordinated runtime mediation structures operating within kernel law.",
+    "components": "Components are bounded functional units; services compose, coordinate, host, or expose components without replacing them.",
+    "modules": "Modules are implementation or discovery surfaces and do not automatically define service identity.",
+    "domains": "Domains remain semantic contract owners; services may support domain behavior without redefining domain law.",
+    "products": "Products consume or host services through lawful boundaries and do not own service law by default.",
+    "packs_content": "Packs and content remain declarative semantic expansion surfaces and are not runtime services.",
+    "tools": "Tools may consume or inspect services, but tools are not services by default.",
+    "control_release_plane": "Control-plane and release-plane surfaces govern build, packaging, publication, and trust rather than authoritative runtime mediation."
+  },
+  "future_compatibility_expectations": {
+    "state_and_lifecycle": [
+      "service_activation_and_quiescence_must_be_modelable",
+      "attach_detach_and_handoff_behavior_must_be_modelable",
+      "explicit_lifecycle_transitions_must_be_modelable",
+      "state_externalization_boundaries_must_be_modelable",
+      "replay_log_and_snapshot_attach_points_must_be_modelable"
+    ],
+    "observability_validation": [
+      "service_boundaries_support_targeted_validation",
+      "diagnostics_are_attributable_to_service_scope",
+      "compatibility_refusal_and_degradation_issues_are_traceable",
+      "service_behavior_is_auditable_against_kernel_component_and_semantic_inputs"
+    ]
+  },
+  "grounding_roots": {
+    "extend_evidence": [
+      "control",
+      "compat",
+      "core",
+      "net",
+      "process",
+      "server/runtime",
+      "server/persistence",
+      "app",
+      "engine",
+      "game"
+    ],
+    "do_not_infer_canonicality_from": [
+      "runtime_root_name_alone",
+      "directory_proximity_alone",
+      "build_target_name_alone",
+      "tool_consumption_patterns_alone"
+    ]
+  },
+  "ownership_cautions": [
+    {
+      "id": "ownership_sensitive_fields",
+      "paths": [
+        "field",
+        "fields"
+      ],
+      "rule": "fields_is_canonical_semantic_field_substrate_and_field_is_only_a_transitional_facade"
+    },
+    {
+      "id": "ownership_sensitive_schema",
+      "paths": [
+        "schema",
+        "schemas"
+      ],
+      "rule": "schema_law_is_canonical_and_schema_projections_do_not_own_service_semantics"
+    },
+    {
+      "id": "ownership_sensitive_packs",
+      "paths": [
+        "packs",
+        "data/packs"
+      ],
+      "rule": "packaged_activation_scope_and_authored_pack_declaration_scope_are_not_interchangeable"
+    },
+    {
+      "id": "generated_and_projected_surfaces",
+      "paths": [
+        "build",
+        "artifacts",
+        ".xstack_cache",
+        "run_meta"
+      ],
+      "rule": "generated_or_mirrored_outputs_are_evidence_only_and_not_service_authority"
+    },
+    {
+      "id": "thin_runtime_root",
+      "paths": [
+        "runtime"
+      ],
+      "rule": "runtime_root_name_does_not_establish_service_authority"
+    },
+    {
+      "id": "planning_order_drift",
+      "paths": [
+        "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
+        "data/planning/final_prompt_inventory.json",
+        "data/planning/dependency_graph_post_pi.json"
+      ],
+      "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
+    }
+  ],
+  "prohibited_service_shapes": [
+    "service_as_semantic_owner",
+    "service_as_component_module_domain_or_product_catch_all",
+    "service_defined_purely_by_product_ux",
+    "service_silently_owning_cross_domain_bridge_law",
+    "service_created_only_from_code_adjacency",
+    "service_bypassing_ownership_review_or_projection_distinctions",
+    "generic_orchestrator_swallowing_all_runtime_concerns",
+    "service_reinterpreting_capability_surfaces_into_shell_local_commands",
+    "service_deriving_identity_only_from_build_targets_or_directory_prominence"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Σ-1",
+    "Σ-2",
+    "Φ-3",
+    "Φ-4",
+    "Φ-5",
+    "Υ-series",
+    "Ζ-series"
+  ],
+  "prohibited_downstream_violations": [
+    "redefine_semantic_truth_in_service_law",
+    "treat_service_as_just_component",
+    "treat_service_as_just_module",
+    "let_products_define_service_identity",
+    "bypass_semantic_ownership_review_for_service_convenience",
+    "freeze_orchestration_loader_lifecycle_or_state_detail_as_if_defined_by_phi2"
+  ]
+}
