@@ -1,0 +1,53 @@
+# Dominium agent caution surface.
+# These patterns mark review-gated or casual-touch-avoid areas.
+# Explicit prompts may still authorize changes here, but agents should not treat
+# these roots as casual edit targets.
+
+# Canonical doctrine and governance
+/AGENTS.md
+/docs/canon/
+/docs/planning/AUTHORITY_ORDER.md
+/docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md
+/docs/planning/MERGED_PROGRAM_STATE.md
+/docs/planning/EXTEND_NOT_REPLACE_LEDGER.md
+/docs/planning/GATES_AND_PROOFS.md
+/docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md
+
+# Canonical semantic and contract law
+/specs/reality/
+/schema/
+/docs/contracts/
+
+# Ownership-sensitive and quarantine-sensitive roots
+/field/
+/fields/
+/schemas/
+/packs/
+/data/packs/
+
+# Governance mirrors and derived context
+/docs/agents/AGENT_*.md
+/data/agents/agent_context.json
+
+# Release, trust, and public-policy surfaces
+/docs/release/
+/release/
+/repo/
+/updates/
+/security/
+/governance/
+
+# Generated outputs, bundles, caches, and archaeology zones
+/.xstack_cache/
+/artifacts/
+/build/
+/run_meta/
+/dist/
+/out/
+/tmp/
+/archive/
+/bundles/
+/saves/
+/legacy/
+/attic/
+/quarantine/

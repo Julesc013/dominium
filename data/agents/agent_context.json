@@ -1,0 +1,321 @@
+{
+  "status": "derived",
+  "last_reviewed": "2026-04-02",
+  "stability": "stable",
+  "canonical_governance_source": "AGENTS.md",
+  "authority_sources": {
+    "primary": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md"
+    ],
+    "required_planning_inputs": [
+      "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/MERGED_PROGRAM_STATE.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/POST_PI_EXECUTION_PLAN.md",
+      "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "data/planning/final_prompt_inventory.json",
+      "data/planning/dependency_graph_post_pi.json"
+    ],
+    "semantic_constitution_inputs": [
+      "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md"
+    ],
+    "repo_artifact_primacy": true,
+    "mirrors_are_canonical": false,
+    "chat_memory_may_override_repo": false
+  },
+  "current_program_state": {
+    "completed": [
+      "Ω",
+      "Ξ",
+      "Π",
+      "P-0",
+      "P-1",
+      "P-2",
+      "P-3",
+      "P-4",
+      "0-0",
+      "Λ-0",
+      "Λ-1",
+      "Λ-2",
+      "Λ-3",
+      "Λ-4",
+      "Λ-5",
+      "Λ-5.5",
+      "Λ-6"
+    ],
+    "checkpoint_state": "post-Λ / pre-Σ-A",
+    "current_execution_block": "Σ-A",
+    "current_executable_prompt": "Σ-0",
+    "next_checkpoint": "C-Σ0ΦA1",
+    "governance_must_consume_completed_lambda_doctrine": true,
+    "continuity_warnings": [
+      "Some older planning artifacts still encode a pre-Σ or older Σ ordering; for governance work, use the active executable prompt and AGENTS.md as the current baseline until downstream mirrors are refreshed."
+    ]
+  },
+  "work_classes": [
+    {
+      "id": "planning",
+      "default_posture": "planning_only",
+      "typical_paths": [
+        "docs/planning/**",
+        "data/planning/**"
+      ]
+    },
+    {
+      "id": "doctrine_spec",
+      "default_posture": "planning_only",
+      "typical_paths": [
+        "specs/**",
+        "docs/contracts/**"
+      ]
+    },
+    {
+      "id": "governance",
+      "default_posture": "planning_only",
+      "typical_paths": [
+        "AGENTS.md",
+        ".agentignore",
+        "docs/agents/**",
+        "data/agents/**"
+      ]
+    },
+    {
+      "id": "semantic_domain",
+      "default_posture": "planning_first",
+      "typical_paths": [
+        "specs/reality/**",
+        "data/reality/**",
+        "worldgen/**",
+        "geo/**",
+        "reality/**",
+        "materials/**",
+        "logic/**",
+        "signals/**",
+        "system/**",
+        "universe/**",
+        "epistemics/**",
+        "diegetics/**",
+        "infrastructure/**",
+        "machines/**"
+      ]
+    },
+    {
+      "id": "runtime_platform",
+      "default_posture": "implementation_heavy",
+      "typical_paths": [
+        "engine/**",
+        "game/**",
+        "app/**",
+        "compat/**",
+        "control/**",
+        "core/**",
+        "net/**",
+        "process/**",
+        "server/runtime/**",
+        "server/persistence/**"
+      ]
+    },
+    {
+      "id": "release_control_plane",
+      "default_posture": "implementation_adjacent",
+      "typical_paths": [
+        "release/**",
+        "repo/**",
+        "updates/**",
+        "data/architecture/**",
+        "data/registries/**",
+        "tools/xstack/**",
+        "security/**"
+      ]
+    },
+    {
+      "id": "packaging_checkpointing",
+      "default_posture": "packaging_only",
+      "typical_paths": [
+        "tmp/**"
+      ]
+    },
+    {
+      "id": "validation_audit",
+      "default_posture": "mixed",
+      "typical_paths": [
+        "tests/**",
+        "schema/**",
+        "schemas/**",
+        "docs/planning/**",
+        "data/**"
+      ]
+    },
+    {
+      "id": "refactor_convergence",
+      "default_posture": "implementation_heavy_review_gated",
+      "typical_paths": [
+        "field/**",
+        "fields/**",
+        "schema/**",
+        "schemas/**",
+        "packs/**",
+        "data/packs/**",
+        "legacy/**",
+        "attic/**",
+        "quarantine/**"
+      ]
+    }
+  ],
+  "required_doctrine_inputs": {
+    "always_read_first": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md"
+    ],
+    "normally_required_for_substantive_work": [
+      "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/MERGED_PROGRAM_STATE.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/POST_PI_EXECUTION_PLAN.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md"
+    ]
+  },
+  "protected_review_gated_areas": [
+    {
+      "path_family": "docs/canon/**",
+      "reason": "constitutional doctrine"
+    },
+    {
+      "path_family": "AGENTS.md",
+      "reason": "canonical governance source"
+    },
+    {
+      "path_family": "docs/planning/AUTHORITY_ORDER.md",
+      "reason": "authority precedence law"
+    },
+    {
+      "path_family": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "reason": "intake and classification law"
+    },
+    {
+      "path_family": "specs/reality/**",
+      "reason": "normative semantic constitution"
+    },
+    {
+      "path_family": "schema/**",
+      "reason": "semantic contract law"
+    },
+    {
+      "path_family": "release/**, repo/**, updates/**, security/**",
+      "reason": "release, publication, trust, and policy surfaces"
+    }
+  ],
+  "ownership_sensitive_areas": [
+    {
+      "family_id": "field_vs_fields",
+      "canonical_path": "fields/**",
+      "other_paths": [
+        "field/**"
+      ],
+      "rule": "Bind semantic field work to fields/**; treat field/** as a transitional compatibility facade."
+    },
+    {
+      "family_id": "schema_vs_schemas",
+      "canonical_path": "schema/**",
+      "other_paths": [
+        "schemas/**"
+      ],
+      "rule": "Bind semantic schema law to schema/**; treat schemas/** as validator-facing projection and quarantine any material drift."
+    },
+    {
+      "family_id": "packs_vs_data_packs",
+      "canonical_path": "packs/** within runtime packaging and activation scope",
+      "other_paths": [
+        "data/packs/** within authored content and declaration scope"
+      ],
+      "rule": "Do not assume a single-root winner; preserve scoped ownership and residual quarantine for any convergence attempt."
+    },
+    {
+      "family_id": "specs_reality_vs_data_reality",
+      "canonical_path": "specs/reality/**",
+      "other_paths": [
+        "data/reality/**"
+      ],
+      "rule": "Specs are normative owners; data registries are operational mirrors."
+    },
+    {
+      "family_id": "docs_planning_vs_data_planning",
+      "canonical_path": "docs/planning/**",
+      "other_paths": [
+        "data/planning/**"
+      ],
+      "rule": "Docs own planning meaning; JSON roots are operational mirrors."
+    }
+  ],
+  "validation_expectations": {
+    "minimum_level": "FAST",
+    "always": [
+      "state relevant invariants or governing docs",
+      "state contract or schema impact",
+      "verify required artifacts exist",
+      "parse touched JSON or schema artifacts where relevant",
+      "check prose and machine-readable outputs for alignment when both are produced",
+      "run git diff --check",
+      "report run and unrun checks",
+      "do not claim implementation progress on planning-only prompts"
+    ]
+  },
+  "review_gates": [
+    "canon or glossary changes",
+    "authority-order reinterpretation",
+    "replace-classified or do-not-replace surface changes",
+    "quarantined or ownership-ambiguous root rebinding",
+    "release, publication, licensing, or trust policy changes",
+    "live-ops or Ζ-class work",
+    "foundational semantic reinterpretation without explicit doctrine-update procedure"
+  ],
+  "later_sigma_refinements": [
+    {
+      "prompt_id": "Σ-1",
+      "refines": "generated governance mirrors",
+      "may_create_competing_canon": false
+    },
+    {
+      "prompt_id": "Σ-2",
+      "refines": "high-level task intent and natural-language mapping",
+      "may_create_competing_canon": false
+    },
+    {
+      "prompt_id": "Σ-3",
+      "refines": "XStack task catalog",
+      "may_create_competing_canon": false
+    },
+    {
+      "prompt_id": "Σ-4",
+      "refines": "MCP and related interface exposure",
+      "may_create_competing_canon": false
+    },
+    {
+      "prompt_id": "Σ-5",
+      "refines": "hardened agent safety policy",
+      "may_create_competing_canon": false
+    }
+  ],
+  "forbidden_assumptions": [
+    "mirrors are canonical",
+    "chat summaries can override repo artifacts",
+    "planning-only prompts authorize implementation work",
+    "shared code or convenience implies semantic ownership",
+    "ownership-sensitive roots can be rebound silently"
+  ]
+}
