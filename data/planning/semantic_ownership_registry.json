@@ -1,0 +1,438 @@
+{
+  "artifact_id": "semantic_ownership_review",
+  "artifact_version": "1.0.0",
+  "prompt_id": "Λ-5.5",
+  "repo_state": "post-omega-xi-pi_post-p0-p4_post-0-0_post-lambda-0-through-lambda-5",
+  "status": "derived",
+  "stability": "provisional",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/REALITY_EXTRACTION_REPORT.md",
+    "docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md",
+    "docs/planning/POST_PI_EXECUTION_PLAN.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md"
+  ],
+  "ownership_classes": {
+    "canonical": "Semantic source of truth inside the reviewed scope.",
+    "projection": "Machine-readable, packaged, or validator-facing surface that is semantically subordinate to a canonical root.",
+    "generated_derivative": "Compiled, emitted, cached, or run-produced surface that may be evidence but is not semantically authoritative.",
+    "advisory_mirror": "Human-readable or machine-readable mirror that restates stronger authority without owning the semantics.",
+    "transitional": "Still-live compatibility or coexistence surface retained for staged convergence.",
+    "legacy": "Historical surface retained without current semantic binding authority.",
+    "merge_later": "Control flag indicating expected future convergence without current physical reorganization.",
+    "quarantined": "Control flag indicating unresolved ambiguity that later prompts must treat conservatively.",
+    "human_decision_required": "Control flag indicating later work must not invent a single winner without explicit human review."
+  },
+  "decision_principles": [
+    "Canon, glossary, and explicit planning authority order outrank weaker local README claims.",
+    "Semantic authority is distinct from runtime packaging, validator, registry, or cache convenience.",
+    "Generated or emitted artifacts do not become canonical because tooling consumes them.",
+    "Scoped canonicality is preferred over a false single-root collapse when evidence shows different declared roles.",
+    "Where evidence is insufficient for a safe winner, quarantine is required.",
+    "This registry classifies ownership semantics only and does not authorize physical convergence."
+  ],
+  "families": [
+    {
+      "ownership_family_id": "field_vs_fields",
+      "reviewed_paths": [
+        "field",
+        "fields"
+      ],
+      "semantic_area": "field substrate and field-layer implementation",
+      "candidate_roles": {
+        "field": [
+          "compatibility wrapper",
+          "transitional facade"
+        ],
+        "fields": [
+          "implementation root",
+          "semantic field substrate owner"
+        ]
+      },
+      "path_decisions": [
+        {
+          "path": "fields",
+          "final_classification": "canonical",
+          "canonical_path": "fields",
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Authoritative field substrate implementation and primary import target.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        },
+        {
+          "path": "field",
+          "final_classification": "transitional",
+          "canonical_path": "fields",
+          "projection_of": null,
+          "advisory_mirror_of": "fields",
+          "role_scope": "Singular compatibility facade retained for compatibility import paths.",
+          "quarantine_flag": false,
+          "merge_later": true,
+          "human_review_required": false
+        }
+      ],
+      "family_outcome": "Resolved semantically: fields is canonical and field is a transitional compatibility surface.",
+      "quarantine_flag": false,
+      "merge_later": true,
+      "human_review_required": false,
+      "rationale_summary": "Implementation weight, docstrings, and live imports all point to fields as the semantic owner while field explicitly re-exports or wraps it.",
+      "later_series_impacts": {
+        "lambda_6": "Bind cross-domain field semantics to fields rather than field.",
+        "sigma_b": "Do not expose field as the authoritative semantic task surface.",
+        "phi": "Treat field as an adapter layer rather than the service-owning substrate.",
+        "upsilon": "Preserve wrapper lineage if later retired, but do not treat it as authoritative design law."
+      },
+      "stability_metadata": {
+        "stability": "provisional",
+        "confidence": "high"
+      }
+    },
+    {
+      "ownership_family_id": "schema_vs_schemas",
+      "reviewed_paths": [
+        "schema",
+        "schemas"
+      ],
+      "semantic_area": "semantic contract law and validator projections",
+      "candidate_roles": {
+        "schema": [
+          "semantic contract law root"
+        ],
+        "schemas": [
+          "machine schema projection root",
+          "validator-facing mirror"
+        ]
+      },
+      "path_decisions": [
+        {
+          "path": "schema",
+          "final_classification": "canonical",
+          "canonical_path": "schema",
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Semantic, compatibility, and contract-law authority.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        },
+        {
+          "path": "schemas",
+          "final_classification": "projection",
+          "canonical_path": "schema",
+          "projection_of": "schema",
+          "advisory_mirror_of": "schema",
+          "role_scope": "Validator-facing and tool-facing machine-readable schema projection surface.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        }
+      ],
+      "family_outcome": "Resolved semantically: schema owns meaning and schemas is a subordinate projection/mirror.",
+      "quarantine_flag": false,
+      "merge_later": false,
+      "human_review_required": false,
+      "rationale_summary": "P-0 and P-1 authority artifacts explicitly separate contract-and-schema law from machine schema projections.",
+      "later_series_impacts": {
+        "lambda_6": "Bridge from schema meaning, not from validator convenience exports.",
+        "sigma_b": "Governance and MCP/task surfaces must not treat schemas as owning law.",
+        "phi": "Runtime assumptions must follow semantic schema law rather than projection structure alone.",
+        "upsilon": "Later provenance and migration work must preserve schema-to-schemas projection lineage."
+      },
+      "stability_metadata": {
+        "stability": "provisional",
+        "confidence": "high",
+        "conflict_rule": "Any material disagreement between schema and schemas without an explicit migration or projection rule must be quarantined immediately."
+      }
+    },
+    {
+      "ownership_family_id": "packs_vs_data_packs",
+      "reviewed_paths": [
+        "packs",
+        "data/packs"
+      ],
+      "semantic_area": "pack authoring and packaged runtime descriptors",
+      "candidate_roles": {
+        "packs": [
+          "runtime pack manifest root",
+          "distribution and activation descriptor root"
+        ],
+        "data/packs": [
+          "authored pack declaration root",
+          "content and pack-data root",
+          "possible transitional coexistence surface"
+        ]
+      },
+      "path_decisions": [
+        {
+          "path": "packs",
+          "final_classification": "canonical",
+          "canonical_path": "packs",
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Canonical runtime-packaging, activation, compatibility, trust, and distribution descriptor root.",
+          "quarantine_flag": true,
+          "merge_later": true,
+          "human_review_required": true
+        },
+        {
+          "path": "data/packs",
+          "final_classification": "transitional",
+          "canonical_path": null,
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Authoritative within authored pack content and declaration scope, but transitional with respect to future single-root convergence.",
+          "quarantine_flag": true,
+          "merge_later": true,
+          "human_review_required": true
+        }
+      ],
+      "family_outcome": "Scoped ownership only: packs owns packaged runtime/distribution descriptors, while data/packs remains authoritative for authored content/declaration scope but is still transitional for future unification.",
+      "quarantine_flag": true,
+      "merge_later": true,
+      "human_review_required": true,
+      "rationale_summary": "Planning law and live file shapes show different pack roles rather than equal peers or a clean single winner.",
+      "later_series_impacts": {
+        "lambda_6": "Cross-domain bridges must distinguish authored pack meaning from packaged runtime descriptors.",
+        "sigma_b": "Task and MCP surfaces must expose the correct pack layer for the job instead of a fake global root.",
+        "phi": "Runtime extraction must preserve authored-versus-packaged boundaries.",
+        "upsilon": "Provenance, naming, compatibility, and release policy must preserve pack lineage rather than flattening both roots together."
+      },
+      "stability_metadata": {
+        "stability": "provisional",
+        "confidence": "medium",
+        "review_note": "No future single-root convergence is authorized by this review. Human review remains mandatory for any such decision."
+      }
+    },
+    {
+      "ownership_family_id": "reality_specs_vs_reality_registries",
+      "reviewed_paths": [
+        "specs/reality",
+        "data/reality"
+      ],
+      "semantic_area": "normative reality constitution versus machine-readable operational mirror",
+      "candidate_roles": {
+        "specs/reality": [
+          "normative semantic spec root"
+        ],
+        "data/reality": [
+          "operational registry root",
+          "machine-readable mirror"
+        ]
+      },
+      "path_decisions": [
+        {
+          "path": "specs/reality",
+          "final_classification": "canonical",
+          "canonical_path": "specs/reality",
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Normative Λ-series semantic law and framework specification root.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        },
+        {
+          "path": "data/reality",
+          "final_classification": "projection",
+          "canonical_path": "specs/reality",
+          "projection_of": "specs/reality",
+          "advisory_mirror_of": null,
+          "role_scope": "Operational machine-readable registry mirror for tools and later prompt consumption.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        }
+      ],
+      "family_outcome": "Resolved semantically: specs own meaning and data/reality operationalizes it.",
+      "quarantine_flag": false,
+      "merge_later": false,
+      "human_review_required": false,
+      "rationale_summary": "The completed Λ artifact pattern consistently pairs a normative spec in specs/reality with a machine-readable registry in data/reality.",
+      "later_series_impacts": {
+        "lambda_6": "Bridge from normative specs while consuming registries operationally.",
+        "sigma_b": "Governance tooling may use data/reality but must cite specs/reality for meaning.",
+        "phi": "Runtime assumptions should derive from spec-defined semantics, not registry shape alone.",
+        "upsilon": "Later provenance and release lineage can package registries but must preserve the spec-to-registry relationship."
+      },
+      "stability_metadata": {
+        "stability": "provisional",
+        "confidence": "high"
+      }
+    },
+    {
+      "ownership_family_id": "planning_docs_vs_planning_registries",
+      "reviewed_paths": [
+        "docs/planning",
+        "data/planning"
+      ],
+      "semantic_area": "human-readable planning law versus machine-readable operational mirrors",
+      "candidate_roles": {
+        "docs/planning": [
+          "planning law root",
+          "review and execution constitution root"
+        ],
+        "data/planning": [
+          "operational registry root",
+          "planning graph and matrix mirror"
+        ]
+      },
+      "path_decisions": [
+        {
+          "path": "docs/planning",
+          "final_classification": "canonical",
+          "canonical_path": "docs/planning",
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Human-readable planning law, review conclusions, and execution constitutions.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        },
+        {
+          "path": "data/planning",
+          "final_classification": "projection",
+          "canonical_path": "docs/planning",
+          "projection_of": "docs/planning",
+          "advisory_mirror_of": "docs/planning",
+          "role_scope": "Machine-readable matrices, graphs, inventories, and gate registries that operationalize planning law.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        }
+      ],
+      "family_outcome": "Resolved semantically: docs/planning owns review meaning and data/planning operationalizes it.",
+      "quarantine_flag": false,
+      "merge_later": false,
+      "human_review_required": false,
+      "rationale_summary": "The post-P planning stack consistently pairs narrative review artifacts with JSON registries and graphs used for tooling.",
+      "later_series_impacts": {
+        "lambda_6": "Use docs/planning for bridge meaning and data/planning for operational lookups.",
+        "sigma_b": "Task and governance automation must not treat registry structure as self-justifying law.",
+        "phi": "Later architectural extraction should use docs/planning as semantic owner for planning meaning.",
+        "upsilon": "Release or archival packaging of planning data must preserve document-to-registry lineage."
+      },
+      "stability_metadata": {
+        "stability": "provisional",
+        "confidence": "high"
+      }
+    },
+    {
+      "ownership_family_id": "generated_evidence_echoes",
+      "reviewed_paths": [
+        "build",
+        "artifacts",
+        ".xstack_cache",
+        "run_meta"
+      ],
+      "semantic_area": "generated build, cache, and run-evidence surfaces",
+      "candidate_roles": {
+        "build": [
+          "compiled or emitted echo root"
+        ],
+        "artifacts": [
+          "derived artifact root"
+        ],
+        ".xstack_cache": [
+          "cache root"
+        ],
+        "run_meta": [
+          "run evidence and emitted metadata root"
+        ]
+      },
+      "path_decisions": [
+        {
+          "path": "build",
+          "final_classification": "generated_derivative",
+          "canonical_path": null,
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Emitted build and validation output surface.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        },
+        {
+          "path": "artifacts",
+          "final_classification": "generated_derivative",
+          "canonical_path": null,
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Derived artifact bundle surface.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        },
+        {
+          "path": ".xstack_cache",
+          "final_classification": "generated_derivative",
+          "canonical_path": null,
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Cache and workspace emission surface.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        },
+        {
+          "path": "run_meta",
+          "final_classification": "generated_derivative",
+          "canonical_path": null,
+          "projection_of": null,
+          "advisory_mirror_of": null,
+          "role_scope": "Run metadata and emitted evidence surface.",
+          "quarantine_flag": false,
+          "merge_later": false,
+          "human_review_required": false
+        }
+      ],
+      "family_outcome": "Resolved semantically: all reviewed roots are evidence-only generated derivatives unless a stronger artifact explicitly promotes a specific emitted contract.",
+      "quarantine_flag": false,
+      "merge_later": false,
+      "human_review_required": false,
+      "rationale_summary": "Planning intake law and reconciliation already treat generated and build-output echoes as evidence surfaces rather than canonical semantic ownership roots.",
+      "later_series_impacts": {
+        "lambda_6": "Cross-domain bridge work may cite generated outputs only with provenance and never as semantic source.",
+        "sigma_b": "MCP, task, and governance surfaces must not expose emitted trees as the authoritative semantic root.",
+        "phi": "Later service extraction should treat these trees as evidence or build byproducts only.",
+        "upsilon": "Release provenance may package or record emitted outputs, but ownership remains upstream."
+      },
+      "stability_metadata": {
+        "stability": "provisional",
+        "confidence": "high"
+      }
+    }
+  ],
+  "global_implications": {
+    "canonical_usage_rule": "Later prompts must derive semantic meaning from canonical roots within declared scope.",
+    "projection_usage_rule": "Later prompts may consume projections operationally but must not let them redefine canonical meaning.",
+    "generated_usage_rule": "Generated derivatives may be evidence with provenance and never default semantic authority.",
+    "residual_blockers": [
+      "Any single-root convergence attempt for packs versus data/packs requires human review.",
+      "Any material drift between schema and schemas requires quarantine rather than convenience-based normalization."
+    ]
+  },
+  "quarantine_items": [
+    {
+      "item": "packs_vs_data_packs_single_root_convergence",
+      "reason": "Scoped ownership is clear enough for current work, but a future single-root winner is not yet authorized.",
+      "blocks": [
+        "future physical convergence that assumes a sole pack authority root",
+        "later tooling that treats both roots as semantically interchangeable"
+      ]
+    },
+    {
+      "item": "schema_projection_material_drift",
+      "reason": "Role separation is resolved, but any material semantic mismatch between schema and schemas remains a quarantine trigger.",
+      "blocks": [
+        "silent compatibility-law edits through validator-facing projection roots"
+      ]
+    }
+  ]
+}
