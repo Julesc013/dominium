@@ -1,0 +1,1406 @@
+{
+  "artifact_id": "reality.player_desire_acceptance_map",
+  "title": "Dominium Player Desire Acceptance Map",
+  "version": "1.0.0",
+  "generated_for": "Λ-5",
+  "repo_status": "post-Ω/Ξ/Π and post-P-0..P-4 and post-0-0 and post-Λ-0 and post-Λ-1 and post-Λ-2 and post-Λ-3 and post-Λ-4",
+  "status": "derived_normative_operational",
+  "stability": "stable",
+  "execution_context_note": "Current execution context is post-Λ-4 with Λ-5 as the active prompt. Some earlier continuity docs still retain historical next-step references to Λ-0; this registry follows the explicit current checkpoint and does not treat stale next-step pointers as acceptance authority.",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "docs/planning/POST_PI_EXECUTION_PLAN.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md"
+  ],
+  "repo_embodiment_surfaces": [
+    "docs/architecture/AUTHORITY_MODEL.md",
+    "docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md",
+    "docs/ui/OBSERVATION_AND_INSPECTION.md",
+    "docs/ui/CLI_CANON.md",
+    "docs/modding/MOD_ECOSYSTEM.md",
+    "docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
+    "docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md",
+    "materials/blueprint_engine.py",
+    "materials/maintenance/decay_engine.py",
+    "infrastructure/formalization/inference_engine.py",
+    "packs/tool/workspace.player.diegetic_default",
+    "packs/tool/workspace.spectator.limited",
+    "packs/tool/workspace.observer.truth"
+  ],
+  "core_doctrine": {
+    "summary": "Dominium must be judged by the lawful desires its substrate can support, refuse, degrade, or defer without semantic drift.",
+    "rules": [
+      "desires_map_to_substrate_not_magic_features",
+      "acceptance_must_remain_compatible_with_truth_totality_and_sparse_materialization",
+      "capability_surfaces_expose_action_without_redefining_truth",
+      "representation_ladders_and_semantic_transitions_preserve_invariants_and_lineage",
+      "formalization_chain_governs_when_designs_standards_and_institutions_become_portable_and_scalable",
+      "ordinary_life_is_first_class",
+      "engineering_industry_institutions_and_civilization_are_first_class",
+      "ai_and_future_interfaces_are_alternate_lawful_access_modes_not_separate_ontologies"
+    ]
+  },
+  "actor_classes": [
+    {
+      "actor_class": "embodied_player",
+      "summary": "A player acting through embodied, local, diegetic, and law-governed pathways.",
+      "capability_taxonomy_links": [
+        "embodied_player"
+      ]
+    },
+    {
+      "actor_class": "abstract_planner_player",
+      "summary": "A player acting through abstract planning, reservation, delegation, or command pathways.",
+      "capability_taxonomy_links": [
+        "abstract_planner"
+      ]
+    },
+    {
+      "actor_class": "npc_labor_actor",
+      "summary": "A non-player actor performing labor, service, logistics, or institutional roles under lawful authority.",
+      "capability_taxonomy_links": [
+        "embodied_npc"
+      ]
+    },
+    {
+      "actor_class": "ai_agent",
+      "summary": "An AI actor using lawful machine-readable surfaces and governed authority.",
+      "capability_taxonomy_links": [
+        "ai_agent"
+      ]
+    },
+    {
+      "actor_class": "institution_organization",
+      "summary": "A guild, school, bureaucracy, factory, polity, or other organized actor acting through formal authority.",
+      "capability_taxonomy_links": [
+        "organization_institution"
+      ]
+    },
+    {
+      "actor_class": "operator_auditor",
+      "summary": "An observer, inspector, moderator, administrator, analyst, or remote operator acting through lawful observation and control surfaces.",
+      "capability_taxonomy_links": [
+        "remote_operator"
+      ]
+    },
+    {
+      "actor_class": "future_interface_user",
+      "summary": "A user or system acting through future adapters or new interface modes over the same substrate.",
+      "capability_taxonomy_links": [
+        "future_interface_adapter"
+      ]
+    },
+    {
+      "actor_class": "machine_automation",
+      "summary": "A machine or automation system operating within explicit protocol, authority, and verification limits.",
+      "capability_taxonomy_links": [
+        "machine_automation"
+      ]
+    }
+  ],
+  "shared_domain_families": [
+    "embodiment_health_and_life_support",
+    "shelter_habitation_and_household",
+    "materials_resources_and_energy",
+    "tools_parts_and_fabrication",
+    "machines_processes_and_control",
+    "maintenance_repair_and_reliability",
+    "labor_roles_automation_and_delegation",
+    "agriculture_ecology_breeding_and_food",
+    "transport_mobility_and_vehicle_systems",
+    "infrastructure_utilities_and_networks",
+    "trade_logistics_exchange_and_accounting",
+    "settlements_urban_form_and_civic_space",
+    "institutions_law_governance_and_membership",
+    "research_measurement_knowledge_and_education",
+    "conflict_security_and_force_projection",
+    "offworld_expansion_and_multiscale_civilization",
+    "observation_audit_operations_and_inspection",
+    "modding_pack_contracts_and_alternative_realities"
+  ],
+  "failure_constraint_categories": [
+    "law_and_authority_refusal",
+    "epistemic_limits_and_uncertainty",
+    "material_energy_and_resource_shortage",
+    "skill_knowledge_and_training_gap",
+    "maintenance_wear_and_reliability",
+    "safety_and_hazard_exposure",
+    "topology_access_and_proximity_constraints",
+    "institutional_legitimacy_and_jurisdiction_conflict",
+    "logistics_capacity_and_infrastructure_limit",
+    "representation_scale_and_continuity_failure",
+    "formalization_insufficiency_or_contestation",
+    "compatibility_standard_and_protocol_conflict",
+    "audit_provenance_and_operator_disclosure_requirement"
+  ],
+  "representation_scaling_assumptions": [
+    "micro_detail_representation",
+    "macro_summary_representation",
+    "expansion",
+    "collapse",
+    "ascent",
+    "descent",
+    "identity_and_provenance",
+    "capability_and_access_relationships",
+    "historical_lineage",
+    "institutional_continuity",
+    "epistemic_traceability",
+    "behavioral_equivalence_classes"
+  ],
+  "ambiguity_eliminations": [
+    {
+      "ambiguity": "architecture_can_be_judged_by_elegance_alone",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "ordinary_life_is_second_class",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "engineering_industry_and_civilization_are_optional_extras",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "ai_and_future_interfaces_require_a_separate_ontology",
+      "resolution": "false"
+    }
+  ],
+  "desire_families": [
+    {
+      "desire_family_id": "survival_and_persistence",
+      "summary": "Actors want to remain alive, viable, supplied, recoverable, and causally continuous.",
+      "actor_classes": [
+        "embodied_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "institution_organization",
+        "operator_auditor"
+      ],
+      "required_domain_families": [
+        "embodiment_health_and_life_support",
+        "materials_resources_and_energy",
+        "shelter_habitation_and_household",
+        "observation_audit_operations_and_inspection"
+      ],
+      "required_capability_surface_classes": [
+        "embodied_manipulation",
+        "occupancy_use_point",
+        "inspection_instrumentation",
+        "maintenance_repair",
+        "planning_command"
+      ],
+      "required_formalization_chain_stages": [
+        "recognition",
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "expansion",
+        "collapse",
+        "identity_and_provenance",
+        "historical_lineage"
+      ],
+      "failure_constraint_categories": [
+        "material_energy_and_resource_shortage",
+        "maintenance_wear_and_reliability",
+        "safety_and_hazard_exposure",
+        "law_and_authority_refusal",
+        "epistemic_limits_and_uncertainty"
+      ],
+      "minimum_believable_support": "Actors can detect survival risk, secure life-supporting inputs, preserve continuity of body and critical goods, and encounter explicit lawful deprivation instead of hidden invulnerability.",
+      "later_series_impacts": [
+        "Λ-5½",
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "partial",
+        "notes": "Authority, observation, maintenance, and civilization baselines ground the family, while detailed life-support and continuity systems remain later work."
+      }
+    },
+    {
+      "desire_family_id": "exploration_and_observation",
+      "summary": "Actors want to move through the world, inspect it, measure it, discover hidden structure, and turn uncertainty into grounded knowledge.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "operator_auditor",
+        "future_interface_user"
+      ],
+      "required_domain_families": [
+        "observation_audit_operations_and_inspection",
+        "transport_mobility_and_vehicle_systems",
+        "research_measurement_knowledge_and_education",
+        "institutions_law_governance_and_membership"
+      ],
+      "required_capability_surface_classes": [
+        "embodied_manipulation",
+        "transport_control",
+        "inspection_instrumentation",
+        "planning_command",
+        "interface_adapter"
+      ],
+      "required_formalization_chain_stages": [
+        "discovery",
+        "recognition",
+        "explicit_capture",
+        "validation_testing"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "ascent",
+        "descent",
+        "epistemic_traceability",
+        "identity_and_provenance"
+      ],
+      "failure_constraint_categories": [
+        "epistemic_limits_and_uncertainty",
+        "topology_access_and_proximity_constraints",
+        "law_and_authority_refusal",
+        "representation_scale_and_continuity_failure"
+      ],
+      "minimum_believable_support": "Exploration changes what can be known, not just what is rendered; actors can inspect, measure, and lawfully fail to know or reach things.",
+      "later_series_impacts": [
+        "Λ-5½",
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_planning_grounding",
+        "notes": "Observation, inspection, truth/perceived separation, and authority/epistemic docs already ground this family."
+      }
+    },
+    {
+      "desire_family_id": "shelter_habitation_and_ordinary_life",
+      "summary": "Actors want to live somewhere, eat, sleep, store, work, gather, travel locally, learn, belong, and maintain routine life as a first-class part of the world.",
+      "actor_classes": [
+        "embodied_player",
+        "npc_labor_actor",
+        "institution_organization",
+        "ai_agent",
+        "future_interface_user"
+      ],
+      "required_domain_families": [
+        "shelter_habitation_and_household",
+        "embodiment_health_and_life_support",
+        "trade_logistics_exchange_and_accounting",
+        "institutions_law_governance_and_membership",
+        "settlements_urban_form_and_civic_space"
+      ],
+      "required_capability_surface_classes": [
+        "embodied_manipulation",
+        "occupancy_use_point",
+        "institutional_organizational",
+        "planning_command",
+        "inspection_instrumentation"
+      ],
+      "required_formalization_chain_stages": [
+        "recognition",
+        "explicit_capture",
+        "standardization",
+        "institutional_adoption",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "collapse",
+        "expansion",
+        "institutional_continuity",
+        "historical_lineage",
+        "capability_and_access_relationships"
+      ],
+      "failure_constraint_categories": [
+        "material_energy_and_resource_shortage",
+        "institutional_legitimacy_and_jurisdiction_conflict",
+        "logistics_capacity_and_infrastructure_limit",
+        "representation_scale_and_continuity_failure"
+      ],
+      "minimum_believable_support": "Homes, work, food, storage, routine travel, membership, and everyday obligations exist as lawful structures rather than decorative props.",
+      "later_series_impacts": [
+        "Λ-5½",
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "planning_grounded_but_uneven",
+        "notes": "Civilization, governance, and authority baselines support the family, while full ordinary-life substrate is still to be realized."
+      }
+    },
+    {
+      "desire_family_id": "tools_crafting_and_fabrication",
+      "summary": "Actors want to make, adapt, repair, and combine tools, parts, and materials using lawful processes rather than recipe-only magic.",
+      "actor_classes": [
+        "embodied_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "machine_automation"
+      ],
+      "required_domain_families": [
+        "tools_parts_and_fabrication",
+        "materials_resources_and_energy",
+        "machines_processes_and_control",
+        "maintenance_repair_and_reliability"
+      ],
+      "required_capability_surface_classes": [
+        "embodied_manipulation",
+        "machine_process_io",
+        "maintenance_repair",
+        "inspection_instrumentation"
+      ],
+      "required_formalization_chain_stages": [
+        "discovery",
+        "recognition",
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "formalized_representation",
+        "identity_and_provenance",
+        "behavioral_equivalence_classes"
+      ],
+      "failure_constraint_categories": [
+        "material_energy_and_resource_shortage",
+        "skill_knowledge_and_training_gap",
+        "maintenance_wear_and_reliability",
+        "compatibility_standard_and_protocol_conflict"
+      ],
+      "minimum_believable_support": "Fabrication depends on materials, tools, tolerances, and process law; parts and tools carry provenance and compatibility rather than existing as isolated recipe outputs.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_semantic_grounding",
+        "notes": "Blueprint, material, and maintenance surfaces already give this family a strong substrate footing."
+      }
+    },
+    {
+      "desire_family_id": "machine_invention_and_engineering",
+      "summary": "Actors want to invent machines, refine assemblies, define repeatable mechanisms, and move from local cleverness to engineering practice.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "institution_organization"
+      ],
+      "required_domain_families": [
+        "machines_processes_and_control",
+        "tools_parts_and_fabrication",
+        "research_measurement_knowledge_and_education",
+        "institutions_law_governance_and_membership"
+      ],
+      "required_capability_surface_classes": [
+        "machine_process_io",
+        "planning_command",
+        "inspection_instrumentation",
+        "institutional_organizational",
+        "automation_integration"
+      ],
+      "required_formalization_chain_stages": [
+        "discovery",
+        "recognition",
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "recognized_representation",
+        "formalized_representation",
+        "ascent",
+        "descent",
+        "identity_and_provenance",
+        "capability_and_access_relationships"
+      ],
+      "failure_constraint_categories": [
+        "skill_knowledge_and_training_gap",
+        "formalization_insufficiency_or_contestation",
+        "compatibility_standard_and_protocol_conflict",
+        "safety_and_hazard_exposure"
+      ],
+      "minimum_believable_support": "Engineering can produce novel assemblies, tested designs, and reusable machine families rather than only one-off craft outcomes.",
+      "later_series_impacts": [
+        "Λ-5½",
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_planning_and_code_grounding",
+        "notes": "Machine, blueprint, formalization, and authority surfaces already point toward this family."
+      }
+    },
+    {
+      "desire_family_id": "maintenance_repair_and_failure_handling",
+      "summary": "Actors want systems to wear, fail, degrade, be diagnosed, serviced, repaired, and restored without hidden immortality.",
+      "actor_classes": [
+        "embodied_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "machine_automation",
+        "operator_auditor"
+      ],
+      "required_domain_families": [
+        "maintenance_repair_and_reliability",
+        "machines_processes_and_control",
+        "infrastructure_utilities_and_networks",
+        "observation_audit_operations_and_inspection"
+      ],
+      "required_capability_surface_classes": [
+        "maintenance_repair",
+        "inspection_instrumentation",
+        "machine_process_io",
+        "planning_command"
+      ],
+      "required_formalization_chain_stages": [
+        "recognition",
+        "explicit_capture",
+        "validation_testing",
+        "standardization",
+        "maintenance_revision",
+        "deprecation_supersession_retirement"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "collapse",
+        "expansion",
+        "historical_lineage",
+        "behavioral_equivalence_classes"
+      ],
+      "failure_constraint_categories": [
+        "maintenance_wear_and_reliability",
+        "material_energy_and_resource_shortage",
+        "skill_knowledge_and_training_gap",
+        "audit_provenance_and_operator_disclosure_requirement"
+      ],
+      "minimum_believable_support": "Failures are inspectable, repair paths are explicit, degraded operation is lawful, and maintenance history matters.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_grounding",
+        "notes": "Maintenance, decay, inspection, and operator doctrine already support this family strongly."
+      }
+    },
+    {
+      "desire_family_id": "labor_delegation_and_automation",
+      "summary": "Actors want to delegate work to people, NPCs, institutions, and machines without collapsing agency, authority, or verification.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "institution_organization",
+        "machine_automation"
+      ],
+      "required_domain_families": [
+        "labor_roles_automation_and_delegation",
+        "institutions_law_governance_and_membership",
+        "machines_processes_and_control",
+        "trade_logistics_exchange_and_accounting"
+      ],
+      "required_capability_surface_classes": [
+        "planning_command",
+        "institutional_organizational",
+        "automation_integration",
+        "machine_process_io",
+        "inspection_instrumentation"
+      ],
+      "required_formalization_chain_stages": [
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "institutional_adoption",
+        "production_deployment_diffusion",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "macro_summary_representation",
+        "micro_detail_representation",
+        "collapse",
+        "expansion",
+        "capability_and_access_relationships",
+        "institutional_continuity"
+      ],
+      "failure_constraint_categories": [
+        "law_and_authority_refusal",
+        "formalization_insufficiency_or_contestation",
+        "compatibility_standard_and_protocol_conflict",
+        "institutional_legitimacy_and_jurisdiction_conflict"
+      ],
+      "minimum_believable_support": "Delegated work preserves lawful authority, accountability, refusal, and inspection rather than granting invisible omnipotence.",
+      "later_series_impacts": [
+        "Λ-5½",
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_grounding",
+        "notes": "Authority, AI/delegation, and planning/control docs already make this family materially present."
+      }
+    },
+    {
+      "desire_family_id": "workshops_factories_and_industrialization",
+      "summary": "Actors want repeated production, specialized labor, throughput, quality control, and industrial coordination rather than perpetual artisanal one-offs.",
+      "actor_classes": [
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "institution_organization",
+        "machine_automation"
+      ],
+      "required_domain_families": [
+        "tools_parts_and_fabrication",
+        "machines_processes_and_control",
+        "labor_roles_automation_and_delegation",
+        "trade_logistics_exchange_and_accounting",
+        "infrastructure_utilities_and_networks"
+      ],
+      "required_capability_surface_classes": [
+        "machine_process_io",
+        "planning_command",
+        "automation_integration",
+        "maintenance_repair",
+        "institutional_organizational"
+      ],
+      "required_formalization_chain_stages": [
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption",
+        "production_deployment_diffusion",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "collapse",
+        "expansion",
+        "behavioral_equivalence_classes",
+        "institutional_continuity"
+      ],
+      "failure_constraint_categories": [
+        "material_energy_and_resource_shortage",
+        "logistics_capacity_and_infrastructure_limit",
+        "compatibility_standard_and_protocol_conflict",
+        "safety_and_hazard_exposure"
+      ],
+      "minimum_believable_support": "Repeatable production depends on standards, infrastructure, labor, maintenance, and throughput constraints rather than menu magic.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "planning_grounded",
+        "notes": "Engineering and formalization roots exist, but detailed industrial systems are still later work."
+      }
+    },
+    {
+      "desire_family_id": "agriculture_breeding_ecology_and_food_systems",
+      "summary": "Actors want to cultivate landscapes, manage populations, produce food, breed organisms, and shape ecology as lived substrate rather than background scenery.",
+      "actor_classes": [
+        "embodied_player",
+        "npc_labor_actor",
+        "abstract_planner_player",
+        "institution_organization",
+        "ai_agent"
+      ],
+      "required_domain_families": [
+        "agriculture_ecology_breeding_and_food",
+        "embodiment_health_and_life_support",
+        "trade_logistics_exchange_and_accounting",
+        "research_measurement_knowledge_and_education"
+      ],
+      "required_capability_surface_classes": [
+        "embodied_manipulation",
+        "inspection_instrumentation",
+        "planning_command",
+        "institutional_organizational",
+        "maintenance_repair"
+      ],
+      "required_formalization_chain_stages": [
+        "discovery",
+        "recognition",
+        "explicit_capture",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "ascent",
+        "descent",
+        "historical_lineage",
+        "behavioral_equivalence_classes"
+      ],
+      "failure_constraint_categories": [
+        "material_energy_and_resource_shortage",
+        "epistemic_limits_and_uncertainty",
+        "safety_and_hazard_exposure",
+        "representation_scale_and_continuity_failure"
+      ],
+      "minimum_believable_support": "Ecology and food systems affect survival, work, settlement, and trade across both local and large-scale horizons.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "moderate_planning_grounding",
+        "notes": "World and civilization baselines support the family, but detailed domain constitutions remain later work."
+      }
+    },
+    {
+      "desire_family_id": "transport_mobility_and_vehicles",
+      "summary": "Actors want to move bodies, goods, information, and authority across space using routes, vehicles, docking, and dispatch structures.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "operator_auditor",
+        "machine_automation"
+      ],
+      "required_domain_families": [
+        "transport_mobility_and_vehicle_systems",
+        "infrastructure_utilities_and_networks",
+        "trade_logistics_exchange_and_accounting",
+        "observation_audit_operations_and_inspection"
+      ],
+      "required_capability_surface_classes": [
+        "transport_control",
+        "route_network_access",
+        "occupancy_use_point",
+        "planning_command",
+        "inspection_instrumentation"
+      ],
+      "required_formalization_chain_stages": [
+        "recognition",
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "collapse",
+        "expansion",
+        "topology_and_connectivity",
+        "capability_and_access_relationships"
+      ],
+      "failure_constraint_categories": [
+        "topology_access_and_proximity_constraints",
+        "logistics_capacity_and_infrastructure_limit",
+        "maintenance_wear_and_reliability",
+        "law_and_authority_refusal"
+      ],
+      "minimum_believable_support": "Movement depends on lawful topology, occupancy, route state, infrastructure, and vehicle condition rather than free teleport semantics.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_planning_grounding",
+        "notes": "Route, network, transport, and authority materials already make this family concrete."
+      }
+    },
+    {
+      "desire_family_id": "infrastructure_utilities_and_networks",
+      "summary": "Actors want durable support systems such as power, water, signals, roads, pipes, grids, and service networks that make society work.",
+      "actor_classes": [
+        "embodied_player",
+        "npc_labor_actor",
+        "abstract_planner_player",
+        "institution_organization",
+        "ai_agent",
+        "machine_automation"
+      ],
+      "required_domain_families": [
+        "infrastructure_utilities_and_networks",
+        "machines_processes_and_control",
+        "maintenance_repair_and_reliability",
+        "institutions_law_governance_and_membership"
+      ],
+      "required_capability_surface_classes": [
+        "route_network_access",
+        "machine_process_io",
+        "maintenance_repair",
+        "planning_command",
+        "institutional_organizational"
+      ],
+      "required_formalization_chain_stages": [
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption",
+        "production_deployment_diffusion",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "macro_summary_representation",
+        "micro_detail_representation",
+        "collapse",
+        "expansion",
+        "topology_and_connectivity",
+        "institutional_continuity"
+      ],
+      "failure_constraint_categories": [
+        "logistics_capacity_and_infrastructure_limit",
+        "maintenance_wear_and_reliability",
+        "compatibility_standard_and_protocol_conflict",
+        "institutional_legitimacy_and_jurisdiction_conflict"
+      ],
+      "minimum_believable_support": "Utilities and networks have topology, maintenance burden, throughput limits, and public consequences instead of acting as invisible buffs.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "meaningful_repo_grounding",
+        "notes": "Network, infrastructure, and authority docs already support this family, with detailed constitutions still pending."
+      }
+    },
+    {
+      "desire_family_id": "trade_logistics_and_economy",
+      "summary": "Actors want to move goods, settle obligations, compare value, allocate labor, and run exchange systems across distance and scale.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "institution_organization",
+        "ai_agent",
+        "machine_automation"
+      ],
+      "required_domain_families": [
+        "trade_logistics_exchange_and_accounting",
+        "transport_mobility_and_vehicle_systems",
+        "institutions_law_governance_and_membership",
+        "research_measurement_knowledge_and_education"
+      ],
+      "required_capability_surface_classes": [
+        "planning_command",
+        "transport_control",
+        "route_network_access",
+        "institutional_organizational",
+        "automation_integration"
+      ],
+      "required_formalization_chain_stages": [
+        "recognition",
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption",
+        "production_deployment_diffusion"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "macro_summary_representation",
+        "micro_detail_representation",
+        "collapse",
+        "expansion",
+        "historical_lineage",
+        "institutional_continuity",
+        "behavioral_equivalence_classes"
+      ],
+      "failure_constraint_categories": [
+        "logistics_capacity_and_infrastructure_limit",
+        "formalization_insufficiency_or_contestation",
+        "compatibility_standard_and_protocol_conflict",
+        "institutional_legitimacy_and_jurisdiction_conflict"
+      ],
+      "minimum_believable_support": "Exchange depends on transport, contracts, accounting, standards, trust, and logistics rather than abstract currency-only convenience.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_civilization_scale_grounding",
+        "notes": "Planning doctrine strongly grounds the family, but concrete economic constitutions and systems remain later work."
+      }
+    },
+    {
+      "desire_family_id": "settlements_cities_and_urban_systems",
+      "summary": "Actors want places that grow from camps to towns to cities with civic function, neighborhoods, services, production, and political structure.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "institution_organization",
+        "ai_agent",
+        "operator_auditor"
+      ],
+      "required_domain_families": [
+        "settlements_urban_form_and_civic_space",
+        "infrastructure_utilities_and_networks",
+        "trade_logistics_exchange_and_accounting",
+        "institutions_law_governance_and_membership",
+        "shelter_habitation_and_household"
+      ],
+      "required_capability_surface_classes": [
+        "occupancy_use_point",
+        "planning_command",
+        "institutional_organizational",
+        "route_network_access",
+        "inspection_instrumentation"
+      ],
+      "required_formalization_chain_stages": [
+        "recognition",
+        "explicit_capture",
+        "specification_blueprinting",
+        "standardization",
+        "institutional_adoption",
+        "production_deployment_diffusion",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "ascent",
+        "descent",
+        "institutional_continuity",
+        "historical_lineage",
+        "topology_and_connectivity"
+      ],
+      "failure_constraint_categories": [
+        "logistics_capacity_and_infrastructure_limit",
+        "representation_scale_and_continuity_failure",
+        "institutional_legitimacy_and_jurisdiction_conflict",
+        "material_energy_and_resource_shortage"
+      ],
+      "minimum_believable_support": "Settlements accumulate durable structure, governance, logistics, and everyday life rather than being static decoration clusters.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_civilization_baseline_grounding",
+        "notes": "Civilization baselines already support this family with partial domain specificity."
+      }
+    },
+    {
+      "desire_family_id": "institutions_law_and_governance",
+      "summary": "Actors want jurisdiction, membership, procedure, obligation, enforcement, adjudication, and legitimate collective decision-making.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "institution_organization",
+        "operator_auditor"
+      ],
+      "required_domain_families": [
+        "institutions_law_governance_and_membership",
+        "observation_audit_operations_and_inspection",
+        "research_measurement_knowledge_and_education",
+        "trade_logistics_exchange_and_accounting"
+      ],
+      "required_capability_surface_classes": [
+        "institutional_organizational",
+        "planning_command",
+        "inspection_instrumentation",
+        "interface_adapter"
+      ],
+      "required_formalization_chain_stages": [
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption",
+        "maintenance_revision",
+        "deprecation_supersession_retirement"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "formalized_representation",
+        "macro_summary_representation",
+        "micro_detail_representation",
+        "institutional_continuity",
+        "historical_lineage",
+        "epistemic_traceability"
+      ],
+      "failure_constraint_categories": [
+        "law_and_authority_refusal",
+        "institutional_legitimacy_and_jurisdiction_conflict",
+        "audit_provenance_and_operator_disclosure_requirement",
+        "formalization_insufficiency_or_contestation"
+      ],
+      "minimum_believable_support": "Law and governance exist as explicit institutions and procedures with inspection, refusal, jurisdiction, and lineage rather than hidden developer override.",
+      "later_series_impacts": [
+        "Λ-5½",
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "very_strong_grounding",
+        "notes": "Authority, governance, law, and audit materials already make this family core to the repo's doctrine."
+      }
+    },
+    {
+      "desire_family_id": "research_standards_and_knowledge_propagation",
+      "summary": "Actors want to discover, test, teach, standardize, preserve, and propagate knowledge beyond local memory.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "institution_organization",
+        "operator_auditor"
+      ],
+      "required_domain_families": [
+        "research_measurement_knowledge_and_education",
+        "institutions_law_governance_and_membership",
+        "tools_parts_and_fabrication",
+        "observation_audit_operations_and_inspection"
+      ],
+      "required_capability_surface_classes": [
+        "inspection_instrumentation",
+        "planning_command",
+        "institutional_organizational",
+        "machine_process_io",
+        "interface_adapter"
+      ],
+      "required_formalization_chain_stages": [
+        "discovery",
+        "recognition",
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "recognized_representation",
+        "formalized_representation",
+        "ascent",
+        "descent",
+        "epistemic_traceability",
+        "historical_lineage",
+        "institutional_continuity"
+      ],
+      "failure_constraint_categories": [
+        "skill_knowledge_and_training_gap",
+        "formalization_insufficiency_or_contestation",
+        "audit_provenance_and_operator_disclosure_requirement",
+        "compatibility_standard_and_protocol_conflict"
+      ],
+      "minimum_believable_support": "Knowledge can become explicit, testable, transferable, and institutionally propagated without losing provenance or being trapped in private intuition.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "exceptionally_strong",
+        "notes": "Λ-4, epistemics docs, and repo-wide concern for standards and lineage already strongly ground this family."
+      }
+    },
+    {
+      "desire_family_id": "conflict_security_and_war",
+      "summary": "Actors want to defend, deter, threaten, contest territory, manage force, and survive organized conflict without magic combat abstractions severed from world law.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "institution_organization",
+        "operator_auditor"
+      ],
+      "required_domain_families": [
+        "conflict_security_and_force_projection",
+        "institutions_law_governance_and_membership",
+        "transport_mobility_and_vehicle_systems",
+        "infrastructure_utilities_and_networks",
+        "embodiment_health_and_life_support"
+      ],
+      "required_capability_surface_classes": [
+        "embodied_manipulation",
+        "transport_control",
+        "planning_command",
+        "institutional_organizational",
+        "inspection_instrumentation"
+      ],
+      "required_formalization_chain_stages": [
+        "recognition",
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "micro_detail_representation",
+        "macro_summary_representation",
+        "collapse",
+        "expansion",
+        "institutional_continuity",
+        "historical_lineage",
+        "behavioral_equivalence_classes"
+      ],
+      "failure_constraint_categories": [
+        "law_and_authority_refusal",
+        "material_energy_and_resource_shortage",
+        "logistics_capacity_and_infrastructure_limit",
+        "representation_scale_and_continuity_failure",
+        "safety_and_hazard_exposure"
+      ],
+      "minimum_believable_support": "Conflict depends on logistics, authority, organization, material state, and continuity across local and strategic scales.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "meaningful_planning_grounding",
+        "notes": "Law, authority, and civilization materials already touch this family, while detailed conflict work remains later."
+      }
+    },
+    {
+      "desire_family_id": "space_offworld_and_multiscale_civilization",
+      "summary": "Actors want expansion beyond one locale or planet, with lawful continuity across immense scale, infrastructure, institutions, and history.",
+      "actor_classes": [
+        "abstract_planner_player",
+        "npc_labor_actor",
+        "ai_agent",
+        "institution_organization",
+        "operator_auditor",
+        "future_interface_user"
+      ],
+      "required_domain_families": [
+        "offworld_expansion_and_multiscale_civilization",
+        "transport_mobility_and_vehicle_systems",
+        "infrastructure_utilities_and_networks",
+        "institutions_law_governance_and_membership",
+        "research_measurement_knowledge_and_education"
+      ],
+      "required_capability_surface_classes": [
+        "planning_command",
+        "transport_control",
+        "route_network_access",
+        "institutional_organizational",
+        "inspection_instrumentation",
+        "interface_adapter"
+      ],
+      "required_formalization_chain_stages": [
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption",
+        "production_deployment_diffusion",
+        "maintenance_revision",
+        "deprecation_supersession_retirement"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "macro_summary_representation",
+        "micro_detail_representation",
+        "collapse",
+        "expansion",
+        "ascent",
+        "descent",
+        "historical_lineage",
+        "institutional_continuity"
+      ],
+      "failure_constraint_categories": [
+        "representation_scale_and_continuity_failure",
+        "logistics_capacity_and_infrastructure_limit",
+        "formalization_insufficiency_or_contestation",
+        "compatibility_standard_and_protocol_conflict"
+      ],
+      "minimum_believable_support": "Far-scale expansion remains one lawful world with recoverable lineage, infrastructure demands, and civilizational continuity rather than separate disconnected game layers.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "strong_planning_doctrine",
+        "notes": "Universe-scale and macro-capability materials already ground this family, though implementation depth remains future-facing."
+      }
+    },
+    {
+      "desire_family_id": "spectator_audit_and_operator_modes",
+      "summary": "Actors want to inspect truth lawfully, observe systems, troubleshoot, audit history, and operate mediated tools without becoming hidden authors of truth.",
+      "actor_classes": [
+        "operator_auditor",
+        "abstract_planner_player",
+        "ai_agent",
+        "institution_organization",
+        "future_interface_user"
+      ],
+      "required_domain_families": [
+        "observation_audit_operations_and_inspection",
+        "institutions_law_governance_and_membership",
+        "research_measurement_knowledge_and_education"
+      ],
+      "required_capability_surface_classes": [
+        "inspection_instrumentation",
+        "interface_adapter",
+        "planning_command",
+        "institutional_organizational",
+        "automation_integration"
+      ],
+      "required_formalization_chain_stages": [
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "macro_summary_representation",
+        "micro_detail_representation",
+        "epistemic_traceability",
+        "identity_and_provenance",
+        "historical_lineage"
+      ],
+      "failure_constraint_categories": [
+        "audit_provenance_and_operator_disclosure_requirement",
+        "law_and_authority_refusal",
+        "epistemic_limits_and_uncertainty",
+        "compatibility_standard_and_protocol_conflict"
+      ],
+      "minimum_believable_support": "Observation, auditing, and operator tooling remain lawful projections over truth with explicit disclosure, refusal, and provenance.",
+      "later_series_impacts": [
+        "Λ-5½",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "very_strong_grounding",
+        "notes": "Authority, observation, inspection, CLI, workspace, and spectator surfaces already make this family robustly present."
+      }
+    },
+    {
+      "desire_family_id": "modding_custom_worlds_and_alternative_reality_design",
+      "summary": "Actors want to extend the world, define alternate lawful experiences, and create new content without breaking the constitutional substrate.",
+      "actor_classes": [
+        "embodied_player",
+        "abstract_planner_player",
+        "institution_organization",
+        "operator_auditor",
+        "future_interface_user",
+        "ai_agent"
+      ],
+      "required_domain_families": [
+        "modding_pack_contracts_and_alternative_realities",
+        "institutions_law_governance_and_membership",
+        "research_measurement_knowledge_and_education",
+        "observation_audit_operations_and_inspection"
+      ],
+      "required_capability_surface_classes": [
+        "interface_adapter",
+        "planning_command",
+        "institutional_organizational",
+        "inspection_instrumentation",
+        "automation_integration"
+      ],
+      "required_formalization_chain_stages": [
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "maintenance_revision",
+        "deprecation_supersession_retirement"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "formalized_representation",
+        "substituted_capsuled_representation",
+        "identity_and_provenance",
+        "capability_and_access_relationships",
+        "historical_lineage"
+      ],
+      "failure_constraint_categories": [
+        "compatibility_standard_and_protocol_conflict",
+        "formalization_insufficiency_or_contestation",
+        "audit_provenance_and_operator_disclosure_requirement",
+        "law_and_authority_refusal"
+      ],
+      "minimum_believable_support": "Custom worlds and packs extend the lawful substrate through explicit contracts and refusal paths rather than arbitrary code-side branching.",
+      "later_series_impacts": [
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "very_strong_grounding",
+        "notes": "Pack-driven integration and modding docs already give this family a strong constitutional footing."
+      }
+    },
+    {
+      "desire_family_id": "ai_automation_and_future_interface_participation",
+      "summary": "Actors want delegated reasoning, machine orchestration, future tools, and new interfaces that still obey the same lawful reality.",
+      "actor_classes": [
+        "ai_agent",
+        "machine_automation",
+        "future_interface_user",
+        "operator_auditor",
+        "institution_organization",
+        "abstract_planner_player"
+      ],
+      "required_domain_families": [
+        "labor_roles_automation_and_delegation",
+        "observation_audit_operations_and_inspection",
+        "institutions_law_governance_and_membership",
+        "machines_processes_and_control",
+        "modding_pack_contracts_and_alternative_realities"
+      ],
+      "required_capability_surface_classes": [
+        "automation_integration",
+        "planning_command",
+        "interface_adapter",
+        "institutional_organizational",
+        "inspection_instrumentation",
+        "machine_process_io"
+      ],
+      "required_formalization_chain_stages": [
+        "explicit_capture",
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "institutional_adoption",
+        "maintenance_revision"
+      ],
+      "required_ladder_scaling_assumptions": [
+        "macro_summary_representation",
+        "micro_detail_representation",
+        "collapse",
+        "expansion",
+        "capability_and_access_relationships",
+        "epistemic_traceability",
+        "identity_and_provenance"
+      ],
+      "failure_constraint_categories": [
+        "law_and_authority_refusal",
+        "compatibility_standard_and_protocol_conflict",
+        "audit_provenance_and_operator_disclosure_requirement",
+        "formalization_insufficiency_or_contestation"
+      ],
+      "minimum_believable_support": "AI and future interfaces use the same domain contracts, capability surfaces, and law envelopes as everyone else, with no hidden parallel ontology.",
+      "later_series_impacts": [
+        "Λ-5½",
+        "Λ-6",
+        "Σ",
+        "Φ",
+        "Υ",
+        "Ζ"
+      ],
+      "current_repo_planning_embodiment": {
+        "status": "very_strong_grounding",
+        "notes": "AI/autonomy, authority, observation, interface, and pack-driven surfaces already make this family materially present."
+      }
+    }
+  ],
+  "downstream_assumptions_enabled": {
+    "lambda_5_half": [
+      "semantic ownership review can judge domains against concrete actor-purpose demand instead of abstract completeness"
+    ],
+    "lambda_6": [
+      "cross-domain bridge relevance can be tested against desire families that actually require shared substrate and scale transitions"
+    ],
+    "sigma": [
+      "governance, task, and agent-policy work can map actions and refusals to accepted actor-purpose families"
+    ],
+    "phi": [
+      "runtime priorities can be judged against believable support for ordinary life, engineering, institutions, logistics, and macro-micro continuity"
+    ],
+    "upsilon": [
+      "release and provenance work must preserve the acceptance floor for standards, operator audit, modding, and institutional lineage"
+    ],
+    "zeta": [
+      "late live-ops work must preserve continuity, auditability, and acceptance support rather than optimizing around a narrow combat or crafting loop"
+    ]
+  },
+  "stability_notes": {
+    "artifact_stability": "stable",
+    "later_prompts_may_refine": [
+      "domain_specific_acceptance_tests",
+      "future_desire_family_extensions",
+      "experience_profile_specific_support_criteria",
+      "runtime_and_governance_bindings"
+    ],
+    "later_prompts_may_not_override": [
+      "ordinary_life_is_first_class",
+      "engineering_industry_institutions_and_civilization_are_first_class",
+      "ai_and_future_interfaces_share_the_same_ontology",
+      "acceptance_must_remain_substrate_grounded",
+      "architecture_elegance_alone_is_not_success"
+    ]
+  }
+}
