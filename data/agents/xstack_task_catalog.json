@@ -1,0 +1,844 @@
+{
+  "artifact_id": "dominium.agents.xstack_task_catalog",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-03",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_a_post_phi5_pre_sigma3",
+    "enabling_prompt": "Σ-3 — XSTACK_TASK_CATALOG-0",
+    "upstream_governance_floor": [
+      "Σ-0 — AGENTS_GOVERNANCE_BASELINE-0",
+      "Σ-1 — AGENT_MIRROR_POLICY-0",
+      "Σ-2 — NATURAL_LANGUAGE_TASK_BRIDGE-0"
+    ],
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0",
+      "Φ-5 — LIFECYCLE_MANAGER-0"
+    ],
+    "active_numbering_note": "Current checkpoint law advances XSTACK_TASK_CATALOG-0 as Σ-3 after the completed Φ-A2 runtime doctrine even though older planning artifacts may still retain stale Σ numbering or titles."
+  },
+  "task_catalog_definition": {
+    "summary": "An XStack task is a cataloged, repo-native, authority-aware task surface class that binds a normalized task family to bounded authoritative inputs, allowed output classes, execution posture, review expectations, cautions, and later MCP and safety expectations.",
+    "task_is_not": [
+      "raw_prompt_text",
+      "mirror_instruction_by_itself",
+      "script_or_command_name_by_itself",
+      "runtime_service",
+      "product_shell",
+      "release_artifact",
+      "mcp_interface_contract",
+      "safety_policy_permission"
+    ],
+    "why_needed": [
+      "natural_language_normalization_needs_stable_repo_native_task_surfaces_after_classification",
+      "scripts_and_wrapper_names_must_not_become_hidden_canon",
+      "runtime_semantic_release_and_governance_work_must_not_be_flattened_into_generic_tasks",
+      "later_mcp_and_safety_layers_need_a_stable_task_universe",
+      "catalog_inclusion_must_not_be_confused_with_automation_permission"
+    ]
+  },
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY.md",
+    "NATURAL_LANGUAGE_TASK_BRIDGE.md",
+    "task_intent_map.json",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW"
+  ],
+  "required_semantic_inputs": [
+    "constitution_v1.md",
+    "glossary_v1.md",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES",
+    "completed_lambda_semantic_doctrine"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION",
+    "LIFECYCLE_MANAGER"
+  ],
+  "task_catalog_role": {
+    "downstream_of": [
+      "canonical_governance",
+      "mirror_policy",
+      "natural_language_task_bridge",
+      "semantic_doctrine",
+      "runtime_doctrine"
+    ],
+    "upstream_of": [
+      "Σ-4_mcp_exposure",
+      "Σ-5_safety_policy",
+      "later_upsilon_and_zeta_task_surface_consumers"
+    ],
+    "must_not_become": [
+      "parallel_governance_canon",
+      "hidden_script_registry",
+      "runtime_or_semantic_override_layer",
+      "automatic_autonomy_permission_surface"
+    ]
+  },
+  "execution_posture_categories": [
+    {
+      "id": "planning_only",
+      "description": "The family is doctrinal, sequencing, or policy work and does not authorize runtime or code implementation by default."
+    },
+    {
+      "id": "planning_first",
+      "description": "The family defaults to doctrine or planning treatment first, but later prompts may explicitly authorize implementation."
+    },
+    {
+      "id": "implementation_capable",
+      "description": "The family may include bounded implementation work when prompt scope and authority allow it."
+    },
+    {
+      "id": "mixed",
+      "description": "The family may contain a blend of documentation, analysis, support edits, or implementation depending on scoped prompt authority."
+    },
+    {
+      "id": "read_only",
+      "description": "The family is non-mutating by default and primarily emits classification, analysis, or findings."
+    },
+    {
+      "id": "packaging_only",
+      "description": "The family emits support packages or manifests without implying release distribution semantics."
+    },
+    {
+      "id": "docs_only",
+      "description": "The family edits or emits explanatory documentation without changing canonical doctrine meaning by default."
+    }
+  ],
+  "mcp_eligibility_categories": [
+    {
+      "id": "strong_candidate",
+      "description": "Likely suitable for later bounded MCP exposure, especially for read or evidence-emitting operations."
+    },
+    {
+      "id": "selective_candidate",
+      "description": "Potential MCP surface, but only for narrowed and well-governed operations."
+    },
+    {
+      "id": "bounded_candidate_only",
+      "description": "Only limited, checkpoint-aware, or read-dominant exposure should be considered later."
+    },
+    {
+      "id": "review_gated_candidate",
+      "description": "Any later exposure would require explicit review and tighter policy than default task consumption."
+    },
+    {
+      "id": "not_eligible_by_default",
+      "description": "The family should not be exposed by default because risk or ambiguity remains too high."
+    }
+  ],
+  "safety_hardening_requirement_categories": [
+    {
+      "id": "medium",
+      "description": "Later safety policy must add bounded refusal and permission handling, but the family is comparatively tractable."
+    },
+    {
+      "id": "medium_high",
+      "description": "Later safety policy must apply explicit escalation and autonomy limits because evidence or packaging actions can still cross important boundaries."
+    },
+    {
+      "id": "high",
+      "description": "Later safety policy must heavily constrain autonomy, refusal, and review expectations."
+    },
+    {
+      "id": "very_high",
+      "description": "Later safety policy must treat the family as high-risk or tightly review-gated due to authority, trust, ownership, or cross-layer risk."
+    }
+  ],
+  "task_families": [
+    {
+      "id": "planning_checkpointing",
+      "description": "Sequence, checkpoint, dependency, continuity, and gate work.",
+      "purpose": "Stabilize execution position, checkpoint state, dependency understanding, and gate interpretation.",
+      "typical_authoritative_inputs": [
+        "AGENTS.md",
+        "docs/planning/**",
+        "data/planning/**",
+        "active checkpoint artifacts",
+        "prompt inventories",
+        "dependency graphs"
+      ],
+      "representative_evidence_surfaces": [
+        "docs/planning/CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW.md",
+        "docs/planning/MERGED_PROGRAM_STATE.md",
+        "data/planning/dependency_graph_post_pi.json"
+      ],
+      "allowed_output_classes": [
+        "checkpoint_docs",
+        "dependency_maps",
+        "plan_registries",
+        "continuity_notes",
+        "gate_reviews",
+        "sequencing_summaries"
+      ],
+      "default_execution_posture": "planning_only",
+      "planning_only_default": true,
+      "implementation_capable": false,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "review_aware_when_authority_order_gates_or_sequence_change",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "bounded_candidate_only",
+      "later_safety_hardening_requirement": "medium",
+      "prohibited_conflations": [
+        "runtime_platform",
+        "release_distribution_control_plane",
+        "prompt_driven_checkpoint_advancement"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must not promise kernel, service, state, or lifecycle outcomes that doctrine has not frozen."
+      ]
+    },
+    {
+      "id": "doctrine_specification",
+      "description": "Normative semantic, runtime, contract, governance, or policy specification work.",
+      "purpose": "Freeze or refine canonical meaning and boundary law.",
+      "typical_authoritative_inputs": [
+        "scope_specific_canonical_doctrine",
+        "AGENTS.md",
+        "current_checkpoint_law",
+        "semantic_or_runtime_specs"
+      ],
+      "representative_evidence_surfaces": [
+        "docs/runtime/**",
+        "docs/agents/**",
+        "specs/reality/**"
+      ],
+      "allowed_output_classes": [
+        "canonical_docs",
+        "paired_machine_readable_mirrors",
+        "doctrine_registries",
+        "normative_reports"
+      ],
+      "default_execution_posture": "planning_only",
+      "planning_only_default": true,
+      "implementation_capable": false,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "high",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "review_gated_candidate",
+      "later_safety_hardening_requirement": "high",
+      "prohibited_conflations": [
+        "runtime_platform",
+        "refactor_convergence",
+        "tool_specific_command_contract"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must preserve post_phi kernel component service binding state and lifecycle distinctions."
+      ]
+    },
+    {
+      "id": "governance_policy",
+      "description": "Governance, mirror, instruction, refusal, review, and operator or agent policy work.",
+      "purpose": "Govern agent behavior, task surfaces, mirrors, permissions posture, and review expectations.",
+      "typical_authoritative_inputs": [
+        "AGENTS.md",
+        ".agentignore",
+        "docs/agents/**",
+        "data/agents/**",
+        "AUTHORITY_ORDER",
+        "mirror_policy",
+        "task_bridge"
+      ],
+      "representative_evidence_surfaces": [
+        "AGENTS.md",
+        "docs/agents/AGENT_MIRROR_POLICY.md",
+        "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md"
+      ],
+      "allowed_output_classes": [
+        "governance_docs",
+        "derived_registries",
+        "mirror_alignment_updates",
+        "policy_summaries"
+      ],
+      "default_execution_posture": "planning_only",
+      "planning_only_default": true,
+      "implementation_capable": false,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "high",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "bounded_candidate_only",
+      "later_safety_hardening_requirement": "high",
+      "prohibited_conflations": [
+        "documentation_explanation",
+        "release_distribution_control_plane",
+        "vendor_specific_shadow_policy"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must reflect post_phi runtime nouns accurately without becoming runtime implementation doctrine."
+      ]
+    },
+    {
+      "id": "semantic_domain",
+      "description": "Domain, capability, bridge, representation, formalization, and semantic-law work.",
+      "purpose": "Define or refine semantic units, bridges, capabilities, formalization, and ladders.",
+      "typical_authoritative_inputs": [
+        "specs/reality/**",
+        "SEMANTIC_OWNERSHIP_REVIEW",
+        "PLAYER_DESIRE_ACCEPTANCE_MAP",
+        "SPEC_CROSS_DOMAIN_BRIDGES",
+        "SPEC_FORMALIZATION_CHAIN"
+      ],
+      "representative_evidence_surfaces": [
+        "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+        "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
+      ],
+      "allowed_output_classes": [
+        "semantic_specs",
+        "bridge_specs",
+        "semantic_registries",
+        "semantic_evidence_docs"
+      ],
+      "default_execution_posture": "planning_first",
+      "planning_only_default": true,
+      "implementation_capable": true,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "high",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "review_gated_candidate",
+      "later_safety_hardening_requirement": "high",
+      "prohibited_conflations": [
+        "product_app_shell",
+        "runtime_platform",
+        "runtime_convenience_rebinding"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Semantic tasks may inform runtime surfaces later but may not let runtime convenience redefine domain law."
+      ]
+    },
+    {
+      "id": "runtime_platform",
+      "description": "Kernel, component, service, binding, state, lifecycle, persistence-boundary, and runtime-architecture work.",
+      "purpose": "Define, inspect, or implement bounded runtime surfaces while preserving post-phi vocabulary.",
+      "typical_authoritative_inputs": [
+        "docs/runtime/**",
+        "relevant_runtime_roots",
+        "semantic_inputs_consumed_by_runtime",
+        "checkpoint_law",
+        "ownership_review",
+        "bridge_law"
+      ],
+      "representative_evidence_surfaces": [
+        "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+        "docs/runtime/LIFECYCLE_MANAGER.md",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/session_create.py",
+        "tools/xstack/session_control.py"
+      ],
+      "allowed_output_classes": [
+        "runtime_doctrine_docs",
+        "runtime_registries",
+        "bounded_runtime_code",
+        "validation_hooks",
+        "runtime_reports"
+      ],
+      "default_execution_posture": "implementation_capable",
+      "planning_only_default": false,
+      "implementation_capable": true,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "medium_to_high",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "selective_candidate",
+      "later_safety_hardening_requirement": "high",
+      "prohibited_conflations": [
+        "semantic_domain",
+        "product_app_shell",
+        "generic_runtime_blob"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must preserve kernel component service binding state externalization and lifecycle distinctions."
+      ]
+    },
+    {
+      "id": "product_app_shell",
+      "description": "Client, server, launcher, setup, appshell, and product-shell work.",
+      "purpose": "Change or inspect product-shell behavior without letting shell flow redefine runtime or semantic law.",
+      "typical_authoritative_inputs": [
+        "product_shell_roots",
+        "scoped_runtime_doctrine",
+        "semantic_doctrine_where_user_visible_behavior_depends_on_it",
+        "governance_doctrine_for_instruction_surfaces"
+      ],
+      "representative_evidence_surfaces": [
+        "client/**",
+        "server/**",
+        "launcher/**",
+        "setup/**",
+        "tools/xstack/session_surface.py",
+        "tools/xstack/ui_bind.py"
+      ],
+      "allowed_output_classes": [
+        "product_shell_code",
+        "product_shell_docs",
+        "adapters",
+        "session_flow_support_assets",
+        "shell_diagnostics"
+      ],
+      "default_execution_posture": "mixed",
+      "planning_only_default": false,
+      "implementation_capable": true,
+      "read_only_default": false,
+      "artifact_emitting_default": false,
+      "human_review_expectation": "medium_to_high_when_runtime_or_semantic_meaning_is_at_risk",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "selective_candidate",
+      "later_safety_hardening_requirement": "high",
+      "prohibited_conflations": [
+        "runtime_platform",
+        "semantic_domain",
+        "product_flow_as_runtime_law"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Products may consume runtime surfaces but may not define kernel service or domain meaning by convenience."
+      ]
+    },
+    {
+      "id": "release_distribution_control_plane",
+      "description": "Release, publication, archive, trust, identity, update, and control-plane work.",
+      "purpose": "Govern release and distribution surfaces without redefining semantic or runtime truth.",
+      "typical_authoritative_inputs": [
+        "docs/release/**",
+        "release/**",
+        "repo/**",
+        "updates/**",
+        "security/**",
+        "trust_policy",
+        "provenance_rules",
+        "compatibility_doctrine"
+      ],
+      "representative_evidence_surfaces": [
+        "tools/xstack/packagingx/dist_build.py",
+        "tools/xstack/securex/check.py",
+        "docs/xstack/CI_GUARDRAILS.md",
+        "data/xstack/gate_definitions.json"
+      ],
+      "allowed_output_classes": [
+        "release_docs",
+        "manifests",
+        "trust_registries",
+        "update_metadata",
+        "archive_records",
+        "controlled_release_tooling_updates"
+      ],
+      "default_execution_posture": "implementation_capable",
+      "planning_only_default": false,
+      "implementation_capable": true,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "high",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "review_gated_candidate",
+      "later_safety_hardening_requirement": "very_high",
+      "prohibited_conflations": [
+        "packaging_bundling",
+        "runtime_platform",
+        "automatic_distribution_authority"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must not let release or control-plane tasks redefine runtime or semantic truth."
+      ]
+    },
+    {
+      "id": "validation_audit",
+      "description": "Validation, proof, diagnostics, audit, and evidence-emission work.",
+      "purpose": "Run or summarize deterministic validation and audit surfaces.",
+      "typical_authoritative_inputs": [
+        "canonical_doctrine",
+        "schema_contracts",
+        "audit_registries",
+        "CI_guard_definitions",
+        "test_registries",
+        "scoped_runtime_or_semantic_artifacts"
+      ],
+      "representative_evidence_surfaces": [
+        "tools/xstack/ci/xstack_ci_entrypoint.py",
+        "tools/xstack/repox/check.py",
+        "tools/xstack/testx/runner.py",
+        "tools/xstack/auditx/check.py",
+        "tools/xstack/compatx/check.py",
+        "tools/xstack/securex/check.py",
+        "data/xstack/gate_definitions.json"
+      ],
+      "allowed_output_classes": [
+        "reports",
+        "audit_findings",
+        "validation_summaries",
+        "evidence_registries",
+        "deterministic_logs",
+        "proof_bundles"
+      ],
+      "default_execution_posture": "read_only",
+      "planning_only_default": false,
+      "implementation_capable": false,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "conditional_when_findings_imply_drift_or_hidden_risk",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "strong_candidate",
+      "later_safety_hardening_requirement": "medium_high",
+      "prohibited_conflations": [
+        "release_distribution_control_plane",
+        "doctrine_specification",
+        "generated_evidence_as_canon"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must report against post_phi runtime distinctions rather than flattening runtime layers."
+      ]
+    },
+    {
+      "id": "refactor_convergence",
+      "description": "Structural convergence, replacement, merge-later execution, and physical normalization work.",
+      "purpose": "Plan or execute structural cleanup only under explicit review and ownership discipline.",
+      "typical_authoritative_inputs": [
+        "EXTEND_NOT_REPLACE_LEDGER",
+        "SEMANTIC_OWNERSHIP_REVIEW",
+        "AUTHORITY_ORDER",
+        "current_checkpoints",
+        "convergence_plans"
+      ],
+      "representative_evidence_surfaces": [
+        "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+        "tools/convergence/**",
+        "repo/repox/rulesets/**"
+      ],
+      "allowed_output_classes": [
+        "convergence_plans",
+        "reviewed_structural_changes",
+        "merge_reports",
+        "replacement_safe_refactor_patches"
+      ],
+      "default_execution_posture": "implementation_capable",
+      "planning_only_default": false,
+      "implementation_capable": true,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "explicit_human_review_normal",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "not_eligible_by_default",
+      "later_safety_hardening_requirement": "very_high",
+      "prohibited_conflations": [
+        "greenfield_rearchitecture",
+        "analysis_inspection",
+        "silent_root_rebinding"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must preserve post_phi runtime and semantic distinctions while converging physical structure."
+      ]
+    },
+    {
+      "id": "packaging_bundling",
+      "description": "Checkpoint bundles, support packages, bundle manifests, registry-compile support outputs, and packaging curation work.",
+      "purpose": "Create or validate non-distribution packaging artifacts without implying release semantics.",
+      "typical_authoritative_inputs": [
+        "bundle_profiles",
+        "pack_manifests",
+        "packaging_policy_docs",
+        "registry_compile_inputs",
+        "checkpoint_instructions",
+        "packaging_support_scripts"
+      ],
+      "representative_evidence_surfaces": [
+        "tools/xstack/bundle_list.py",
+        "tools/xstack/bundle_validate.py",
+        "tools/xstack/registry_compile/compiler.py",
+        "tools/xstack/pack_loader/pack_list.py"
+      ],
+      "allowed_output_classes": [
+        "support_bundles",
+        "bundle_manifests",
+        "bundle_validation_reports",
+        "compiled_support_registries",
+        "checkpoint_zips",
+        "packaging_summaries"
+      ],
+      "default_execution_posture": "packaging_only",
+      "planning_only_default": false,
+      "implementation_capable": false,
+      "read_only_default": false,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "moderate_to_high_when_policy_trust_or_ownership_sensitive_surfaces_are_touched",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "selective_candidate",
+      "later_safety_hardening_requirement": "medium_high",
+      "prohibited_conflations": [
+        "release_distribution_control_plane",
+        "pack_content_authority",
+        "runtime_activation_equals_packaging"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must not flatten pack_content runtime activation and release distribution into one task meaning."
+      ]
+    },
+    {
+      "id": "documentation_explanation",
+      "description": "Explanatory docs, walkthroughs, summaries, and non-canonical-meaning text updates.",
+      "purpose": "Explain or summarize repository state without silently rewriting canonical meaning.",
+      "typical_authoritative_inputs": [
+        "canonical_docs_for_scoped_layer",
+        "active_checkpoints",
+        "current_registries",
+        "validated_runtime_or_semantic_artifacts"
+      ],
+      "representative_evidence_surfaces": [
+        "docs/**",
+        "README_surfaces",
+        "docs/XSTACK.md",
+        "docs/xstack/CI_GUARDRAILS.md"
+      ],
+      "allowed_output_classes": [
+        "explanatory_docs",
+        "summaries",
+        "walkthroughs",
+        "support_docs",
+        "answer_oriented_notes"
+      ],
+      "default_execution_posture": "docs_only",
+      "planning_only_default": false,
+      "implementation_capable": true,
+      "read_only_default": false,
+      "artifact_emitting_default": false,
+      "human_review_expectation": "low_to_medium_when_shadow_doctrine_risk_exists",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "strong_candidate",
+      "later_safety_hardening_requirement": "medium",
+      "prohibited_conflations": [
+        "governance_policy",
+        "doctrine_specification",
+        "mirror_as_canon"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must preserve post_phi vocabulary and avoid flattening runtime layers into generic system language."
+      ]
+    },
+    {
+      "id": "analysis_inspection",
+      "description": "Investigation, classification, inventorying, and read-only repo inspection work.",
+      "purpose": "Inspect or classify repo state without mutating tracked implementation or doctrine by default.",
+      "typical_authoritative_inputs": [
+        "repo_artifacts_across_scoped_layer",
+        "checkpoints",
+        "inventories",
+        "runtime_or_semantic_evidence_roots",
+        "audit_outputs"
+      ],
+      "representative_evidence_surfaces": [
+        "repo_wide_inspection",
+        "docs/audit/**",
+        "docs/planning/**",
+        "docs/runtime/**",
+        "tools/xstack/**"
+      ],
+      "allowed_output_classes": [
+        "analyses",
+        "inventories",
+        "classifications",
+        "evidence_summaries",
+        "inspection_reports",
+        "architectural_notes"
+      ],
+      "default_execution_posture": "read_only",
+      "planning_only_default": false,
+      "implementation_capable": false,
+      "read_only_default": true,
+      "artifact_emitting_default": true,
+      "human_review_expectation": "findings_may_trigger_review_but_family_is_non_mutating_by_default",
+      "ownership_cautions_apply": true,
+      "runtime_semantic_coupling_cautions_apply": true,
+      "later_mcp_eligibility": "strong_candidate",
+      "later_safety_hardening_requirement": "medium",
+      "prohibited_conflations": [
+        "implementation_capable_runtime_change",
+        "prompt_based_autonomous_execution",
+        "generated_evidence_as_canonical_truth"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Must preserve post_phi distinctions in analysis and reporting vocabulary."
+      ]
+    }
+  ],
+  "authority_constraints": {
+    "task_surfaces_must_not_bypass_authority_order": true,
+    "task_surfaces_must_not_bind_to_ownership_ambiguous_roots": true,
+    "task_surfaces_must_distinguish_canonical_vs_projected_generated_artifacts": true,
+    "task_surfaces_must_not_infer_semantic_or_runtime_canon_from_convenience": true,
+    "scripts_are_evidence_not_task_canon": true,
+    "mirror_wording_is_not_task_authority": true,
+    "catalog_inclusion_does_not_imply_safety_or_autonomy": true,
+    "packaging_does_not_imply_release_distribution": true
+  },
+  "runtime_vocabulary_alignment": {
+    "flattening_forbidden": true,
+    "terms": [
+      {
+        "term": "kernel",
+        "required_meaning": "constitutional host for lawful deterministic runtime execution"
+      },
+      {
+        "term": "component",
+        "required_meaning": "bounded runtime_facing functional unit"
+      },
+      {
+        "term": "service",
+        "required_meaning": "bounded coordinated runtime_facing mediation or hosting structure"
+      },
+      {
+        "term": "domain_service_binding",
+        "required_meaning": "lawful service_domain attachment grammar"
+      },
+      {
+        "term": "state_externalization",
+        "required_meaning": "law governing authoritative versus derived, transient, projected, and continuity_relevant state"
+      },
+      {
+        "term": "lifecycle",
+        "required_meaning": "law governing runtime posture changes without semantic drift"
+      },
+      {
+        "term": "domain",
+        "required_meaning": "semantic unit governed by domain contracts"
+      },
+      {
+        "term": "product",
+        "required_meaning": "client, server, launcher, setup, appshell, or other shell surface"
+      },
+      {
+        "term": "pack_content",
+        "required_meaning": "declarative or authored expansion surface"
+      },
+      {
+        "term": "mirror",
+        "required_meaning": "derived projection rather than canonical owner"
+      },
+      {
+        "term": "canonical_vs_projected_generated_artifact",
+        "required_meaning": "explicit authority distinction rather than convenience choice"
+      }
+    ]
+  },
+  "ownership_cautions": [
+    {
+      "id": "field_vs_fields",
+      "summary": "fields/ remains canonical semantic field substrate and field/ remains transitional."
+    },
+    {
+      "id": "schema_vs_schemas",
+      "summary": "schema/ remains canonical contract law and schemas/ remains validator or projection facing."
+    },
+    {
+      "id": "packs_vs_data_packs",
+      "summary": "packs/ and data/packs/ remain scoped ownership surfaces and are not interchangeable."
+    },
+    {
+      "id": "canonical_vs_generated",
+      "summary": "Canonical artifacts outrank projected, mirrored, cached, and generated evidence."
+    },
+    {
+      "id": "runtime_root_name_bias",
+      "summary": "runtime/ naming does not establish canonical runtime or task authority."
+    },
+    {
+      "id": "stale_planning_sequence",
+      "summary": "Older planning numbering or order drift does not override the active checkpoint."
+    }
+  ],
+  "non_catalogable_or_review_gated_work": [
+    {
+      "id": "fundamental_canon_rewrite",
+      "default_handling": "non_cataloged_or_explicit_review_gate",
+      "reason": "Foundational canon rewrites must not be normalized into routine task automation."
+    },
+    {
+      "id": "unresolved_ownership_rebinding",
+      "default_handling": "review_gated",
+      "reason": "Ownership-sensitive rebinding remains protected by review and doctrine."
+    },
+    {
+      "id": "release_publication_trust_policy_change",
+      "default_handling": "review_gated",
+      "reason": "Release, publication, licensing, trust, and policy changes carry high external risk."
+    },
+    {
+      "id": "late_zeta_live_ops_work",
+      "default_handling": "review_gated_or_deferred",
+      "reason": "Late live-ops and distributed operational work requires later doctrine and safety surfaces."
+    },
+    {
+      "id": "broad_multi_layer_refactor_without_explicit_review",
+      "default_handling": "not_cataloged_by_default",
+      "reason": "Broad convergence work should not be normalized into default automation."
+    },
+    {
+      "id": "one_off_emergency_shell_procedure",
+      "default_handling": "not_cataloged_by_default",
+      "reason": "Ad hoc emergency procedures are not stable repo-native task surfaces."
+    }
+  ],
+  "prohibited_catalog_shapes": [
+    "raw_prompt_text_treated_as_true_interface",
+    "script_names_used_as_hidden_canon",
+    "planning_and_implementation_flattened_into_one_generic_task",
+    "catalog_entry_silently_crossing_ownership_boundaries",
+    "packaging_treated_as_release_distribution_by_default",
+    "catalog_entry_encoding_stale_pre_phi_runtime_vocabulary",
+    "catalog_entry_implying_automatic_unsafe_autonomy",
+    "mirror_defined_task_families_competing_with_canonical_governance",
+    "task_surface_silently_treating_generated_or_projected_artifacts_as_canonical_inputs"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Σ-4",
+    "Σ-5",
+    "Υ-series",
+    "Ζ-series"
+  ],
+  "downstream_assumptions_enabled": {
+    "Σ-4": [
+      "mcp_exposure_categories_can_be_built_from_stable_task_family_ids_postures_and_mcp_eligibility_classes",
+      "bounded_remote_surfaces_can_distinguish_read_only_evidence_emitting_packaging_only_and_review_heavy_mutation_families"
+    ],
+    "Σ-5": [
+      "safety_policy_can_harden_refusal_escalation_and_autonomy_rules_against_explicit_task_family_boundaries",
+      "ownership_cautions_and_runtime_vocabulary_alignment_can_be_reused_as_safety_constraints"
+    ],
+    "Υ_and_Ζ": [
+      "later_operational_and_release_work_can_reference_stable_task_surface_distinctions_without_reverting_to_raw_prompt_or_script_name_interfaces"
+    ]
+  },
+  "prohibited_downstream_violations": [
+    "treat_cataloged_as_automatically_safe_or_autonomous",
+    "let_mcp_exposure_invent_a_new_task_universe",
+    "let_safety_policy_ignore_catalog_family_boundaries",
+    "treat_script_names_as_canonical_task_ids",
+    "ignore_canonical_vs_projected_generated_distinctions",
+    "flatten_runtime_vocabulary_into_generic_system_language"
+  ]
+}
