@@ -1,0 +1,627 @@
+{
+  "status": "canonical",
+  "last_reviewed": "2026-04-02",
+  "stability": "provisional",
+  "canonical_governance_source": "AGENTS.md",
+  "mirror_policy_source": "docs/agents/AGENT_MIRROR_POLICY.md",
+  "task_bridge_source": "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md",
+  "checkpoint_state": "post-Λ / post-Σ-1 / post-Φ-A1 / pre-C-ΣA1ΦA2",
+  "natural_language_is_authoritative": false,
+  "continuity_cautions": [
+    "Older planning artifacts still contain stale Σ numbering and place NATURAL_LANGUAGE_TASK_BRIDGE later in the series.",
+    "The active prompt, completed Σ-1 mirror layer, and completed Φ-0 through Φ-2 runtime doctrine establish this bridge now as the current local checkpoint law.",
+    "Stale planning sequence text must not override active checkpoint law during task-intent normalization."
+  ],
+  "authority_order": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "scope-specific canonical planning, semantic, runtime, schema, contract, release, and policy artifacts",
+    "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md and data/agents/task_intent_map.json",
+    "derived mirrors and generated operational artifacts",
+    "chat summaries and uncommitted notes"
+  ],
+  "normalization_rules": [
+    {
+      "rule_id": "authority_first",
+      "summary": "Treat natural language as input to classify, not project law."
+    },
+    {
+      "rule_id": "lexical_cues_are_suggestive",
+      "summary": "Words such as runtime, package, service, release, fix, and bridge are hints only."
+    },
+    {
+      "rule_id": "checkpoint_state_matters",
+      "summary": "The same request may normalize differently depending on the current checkpoint and completed doctrine."
+    },
+    {
+      "rule_id": "scope_beats_tone",
+      "summary": "Affected roots, artifact families, and governing doctrine outrank urgency or broad wording."
+    },
+    {
+      "rule_id": "compound_requests_split",
+      "summary": "Classify one primary family plus secondary families and review-gate flags when a request contains multiple intents."
+    },
+    {
+      "rule_id": "conservative_ambiguity_handling",
+      "summary": "Prefer narrower, review-aware, or planning-first classification when uncertainty remains."
+    },
+    {
+      "rule_id": "ownership_review_persists",
+      "summary": "Natural-language phrasing may not override ownership-sensitive root distinctions."
+    }
+  ],
+  "runtime_vocabulary_alignment": {
+    "required": true,
+    "terms": [
+      {
+        "term": "kernel",
+        "required_meaning": "constitutional host for lawful deterministic runtime execution",
+        "forbidden_collapse": "generic engine or runtime blob"
+      },
+      {
+        "term": "component",
+        "required_meaning": "bounded runtime-facing functional unit",
+        "forbidden_collapse": "service, module, or product feature"
+      },
+      {
+        "term": "service",
+        "required_meaning": "bounded coordinated runtime-facing mediation or hosting structure",
+        "forbidden_collapse": "component, generic orchestrator, or control-plane service"
+      },
+      {
+        "term": "module",
+        "required_meaning": "implementation, packaging, or discovery surface",
+        "forbidden_collapse": "component or service meaning"
+      },
+      {
+        "term": "domain",
+        "required_meaning": "semantic unit governed by domain contracts",
+        "forbidden_collapse": "runtime grouping abstraction"
+      },
+      {
+        "term": "product",
+        "required_meaning": "client, server, launcher, setup, tools, appshell, or shell surface",
+        "forbidden_collapse": "runtime law owner"
+      },
+      {
+        "term": "pack_content",
+        "required_meaning": "declarative or authored content and capability expansion surface",
+        "forbidden_collapse": "runtime component or service"
+      },
+      {
+        "term": "mirror",
+        "required_meaning": "derived instruction or registry projection",
+        "forbidden_collapse": "canonical governance"
+      }
+    ]
+  },
+  "ownership_cautions": [
+    {
+      "caution_id": "field_vs_fields",
+      "must_preserve": true,
+      "summary": "fields/ is canonical semantic field substrate; field/ remains transitional."
+    },
+    {
+      "caution_id": "schema_vs_schemas",
+      "must_preserve": true,
+      "summary": "schema/ is canonical semantic contract law; schemas/ remains projection or advisory mirror."
+    },
+    {
+      "caution_id": "packs_vs_data_packs",
+      "must_preserve": true,
+      "summary": "packs/ and data/packs/ remain scoped ownership surfaces and are not interchangeable."
+    },
+    {
+      "caution_id": "canonical_vs_generated",
+      "must_preserve": true,
+      "summary": "Canonical artifacts outrank projections, mirrors, caches, and generated evidence."
+    },
+    {
+      "caution_id": "runtime_root_name_bias",
+      "must_preserve": true,
+      "summary": "Natural-language runtime wording does not crown runtime/ as canonical."
+    },
+    {
+      "caution_id": "stale_planning_sequence",
+      "must_preserve": true,
+      "summary": "Older planning numbering or order drift does not override active checkpoint law."
+    }
+  ],
+  "task_families": [
+    {
+      "task_family_id": "planning_checkpointing",
+      "description": "Sequence, checkpoint, dependency, continuity, and gate work.",
+      "default_posture": "planning_only",
+      "indicative_intent_cues": [
+        "checkpoint",
+        "plan",
+        "sequence",
+        "review",
+        "gate",
+        "inventory",
+        "next prompt"
+      ],
+      "prohibited_conflations": [
+        "runtime_platform",
+        "release_distribution_control_plane"
+      ],
+      "authority_requirements": [
+        "AGENTS.md",
+        "docs/planning/**",
+        "data/planning/**",
+        "active checkpoint artifacts"
+      ],
+      "ownership_caution_flags": [
+        "stale_planning_sequence",
+        "docs_planning_canonicality"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Do not promise runtime kernel, component, or service outcomes unless those surfaces already exist canonically."
+      ],
+      "review_escalation_rules": [
+        "Escalate if sequence, authority ordering, or gates would be changed rather than described."
+      ]
+    },
+    {
+      "task_family_id": "doctrine_specification",
+      "description": "Normative semantic, runtime, contract, governance, or policy specification work.",
+      "default_posture": "planning_only_unless_explicitly_implementation_facing",
+      "indicative_intent_cues": [
+        "define",
+        "formalize",
+        "specify",
+        "freeze",
+        "constitution",
+        "policy",
+        "model"
+      ],
+      "prohibited_conflations": [
+        "runtime_platform",
+        "refactor_convergence"
+      ],
+      "authority_requirements": [
+        "AGENTS.md",
+        "task-relevant canonical doctrine",
+        "scope-specific runtime or semantic specs"
+      ],
+      "ownership_caution_flags": [
+        "field_vs_fields",
+        "schema_vs_schemas",
+        "packs_vs_data_packs",
+        "canonical_vs_generated"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Use post-Φ-A1 kernel/component/service distinctions precisely.",
+        "Do not let runtime or product wording redefine doctrine scope."
+      ],
+      "review_escalation_rules": [
+        "Escalate if canon, glossary, or foundational ownership meaning would change."
+      ]
+    },
+    {
+      "task_family_id": "governance_policy",
+      "description": "Governance, mirror, instruction, refusal, review, and operator or agent policy work.",
+      "default_posture": "planning_only",
+      "indicative_intent_cues": [
+        "agents",
+        "mirror",
+        "policy",
+        "instruction",
+        "governance",
+        "refusal",
+        "permissions"
+      ],
+      "prohibited_conflations": [
+        "documentation_explanation",
+        "release_distribution_control_plane"
+      ],
+      "authority_requirements": [
+        "AGENTS.md",
+        "docs/agents/AGENT_MIRROR_POLICY.md",
+        "data/agents/**"
+      ],
+      "ownership_caution_flags": [
+        "field_vs_fields",
+        "schema_vs_schemas",
+        "packs_vs_data_packs",
+        "canonical_vs_generated"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Mirror and task-governance wording must reflect post-Φ-A1 kernel/component/service distinctions."
+      ],
+      "review_escalation_rules": [
+        "Escalate if canonical governance or authority order would be reinterpreted."
+      ]
+    },
+    {
+      "task_family_id": "semantic_domain",
+      "description": "Reality, domain, capability, bridge, formalization, representation, and semantic-law work.",
+      "default_posture": "planning_first",
+      "indicative_intent_cues": [
+        "domain",
+        "capability",
+        "bridge",
+        "formalization",
+        "representation",
+        "semantic",
+        "law"
+      ],
+      "prohibited_conflations": [
+        "product_app_shell",
+        "runtime_platform"
+      ],
+      "authority_requirements": [
+        "specs/reality/**",
+        "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
+      ],
+      "ownership_caution_flags": [
+        "field_vs_fields",
+        "schema_vs_schemas",
+        "packs_vs_data_packs"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Runtime-layer terms may appear, but semantic doctrine remains upstream of runtime classification."
+      ],
+      "review_escalation_rules": [
+        "Escalate if bridge law, ownership law, or foundational semantic meaning would move."
+      ]
+    },
+    {
+      "task_family_id": "runtime_platform",
+      "description": "Kernel, component, service, persistence, replay, sandbox, and runtime-boundary work.",
+      "default_posture": "implementation_adjacent_or_implementation_heavy",
+      "indicative_intent_cues": [
+        "kernel",
+        "component",
+        "service",
+        "runtime",
+        "persistence",
+        "replay",
+        "sandbox"
+      ],
+      "prohibited_conflations": [
+        "release_distribution_control_plane",
+        "product_app_shell"
+      ],
+      "authority_requirements": [
+        "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+        "docs/runtime/COMPONENT_MODEL.md",
+        "docs/runtime/RUNTIME_SERVICES.md",
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
+      ],
+      "ownership_caution_flags": [
+        "runtime_root_name_bias",
+        "field_vs_fields",
+        "schema_vs_schemas",
+        "packs_vs_data_packs",
+        "canonical_vs_generated"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Kernel, component, service, module, domain, product, and pack/content must remain distinct.",
+        "Natural-language runtime wording does not imply runtime/ is canonical."
+      ],
+      "review_escalation_rules": [
+        "Escalate if runtime work would redefine semantic doctrine, governance law, or ownership review outcomes."
+      ]
+    },
+    {
+      "task_family_id": "product_app_shell",
+      "description": "Client, server, launcher, setup, tools, and app-shell work.",
+      "default_posture": "mixed",
+      "indicative_intent_cues": [
+        "client",
+        "server",
+        "launcher",
+        "setup",
+        "tool",
+        "ui",
+        "shell"
+      ],
+      "prohibited_conflations": [
+        "runtime_platform",
+        "semantic_domain"
+      ],
+      "authority_requirements": [
+        "AGENTS.md",
+        "task-relevant product roots",
+        "runtime doctrine when runtime boundaries are implicated"
+      ],
+      "ownership_caution_flags": [
+        "runtime_root_name_bias",
+        "canonical_vs_generated"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Products consume kernel/components/services through lawful boundaries and do not own those meanings by default."
+      ],
+      "review_escalation_rules": [
+        "Escalate if product wording tries to redefine runtime law or semantic law."
+      ]
+    },
+    {
+      "task_family_id": "release_distribution_control_plane",
+      "description": "Release, publication, identity, trust, archive, update, and distribution work.",
+      "default_posture": "implementation_adjacent_doctrine_or_tooling",
+      "indicative_intent_cues": [
+        "release",
+        "publish",
+        "ship",
+        "channel",
+        "update",
+        "artifact",
+        "trust"
+      ],
+      "prohibited_conflations": [
+        "packaging_bundling",
+        "runtime_platform"
+      ],
+      "authority_requirements": [
+        "docs/release/**",
+        "release/**",
+        "repo/**",
+        "updates/**",
+        "security/**"
+      ],
+      "ownership_caution_flags": [
+        "schema_vs_schemas",
+        "packs_vs_data_packs",
+        "canonical_vs_generated"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "A runtime service is not automatically a release or control-plane service."
+      ],
+      "review_escalation_rules": [
+        "Escalate for publication, licensing, trust, public policy, or live distribution meaning."
+      ]
+    },
+    {
+      "task_family_id": "validation_audit",
+      "description": "Verification, proof, consistency, diagnostics, and audit work.",
+      "default_posture": "mixed",
+      "indicative_intent_cues": [
+        "validate",
+        "verify",
+        "audit",
+        "proof",
+        "consistency",
+        "test",
+        "diagnose"
+      ],
+      "prohibited_conflations": [
+        "analysis_inspection",
+        "runtime_platform"
+      ],
+      "authority_requirements": [
+        "AGENTS.md validation expectations",
+        "task-relevant tests, proofs, and canonical doctrine"
+      ],
+      "ownership_caution_flags": [
+        "canonical_vs_generated",
+        "stale_planning_sequence"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Validation may inspect kernel/component/service boundaries without redefining them."
+      ],
+      "review_escalation_rules": [
+        "Escalate when findings imply doctrine drift, ownership conflict, or hidden risk."
+      ]
+    },
+    {
+      "task_family_id": "refactor_convergence",
+      "description": "Physical convergence, merge-later execution, replacement, and structural normalization work.",
+      "default_posture": "implementation_heavy_review_gated",
+      "indicative_intent_cues": [
+        "refactor",
+        "merge",
+        "converge",
+        "clean up architecture",
+        "deduplicate",
+        "replace",
+        "normalize repo"
+      ],
+      "prohibited_conflations": [
+        "analysis_inspection",
+        "doctrine_specification"
+      ],
+      "authority_requirements": [
+        "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+        "explicit review authorization"
+      ],
+      "ownership_caution_flags": [
+        "field_vs_fields",
+        "schema_vs_schemas",
+        "packs_vs_data_packs",
+        "canonical_vs_generated"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Do not let runtime or product wording hide structural replacement risk."
+      ],
+      "review_escalation_rules": [
+        "Always review-gated when it crosses split roots, replace-classified subsystems, or multiple authority layers."
+      ]
+    },
+    {
+      "task_family_id": "packaging_bundling",
+      "description": "Checkpoint bundles, reports, manifests, upload packages, and temporary support artifacts.",
+      "default_posture": "packaging_only",
+      "indicative_intent_cues": [
+        "zip",
+        "bundle",
+        "manifest",
+        "report",
+        "checkpoint pack",
+        "tmp package"
+      ],
+      "prohibited_conflations": [
+        "release_distribution_control_plane",
+        "runtime_platform"
+      ],
+      "authority_requirements": [
+        "AGENTS.md",
+        "task-specific checkpoint instructions",
+        "tmp/** policy"
+      ],
+      "ownership_caution_flags": [
+        "canonical_vs_generated",
+        "stale_planning_sequence"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Packaging support artifacts do not define runtime architecture or release identity."
+      ],
+      "review_escalation_rules": [
+        "Escalate only if bundling would touch canonical doctrine, release policy, or protected roots beyond support-artifact scope."
+      ]
+    },
+    {
+      "task_family_id": "documentation_explanation",
+      "description": "Explanation, walkthrough, summarization, and docs that do not change doctrine meaning.",
+      "default_posture": "docs_only",
+      "indicative_intent_cues": [
+        "explain",
+        "document",
+        "summarize",
+        "walk me through",
+        "write docs",
+        "clarify"
+      ],
+      "prohibited_conflations": [
+        "doctrine_specification",
+        "analysis_inspection"
+      ],
+      "authority_requirements": [
+        "AGENTS.md",
+        "scope-specific canonical sources being explained"
+      ],
+      "ownership_caution_flags": [
+        "canonical_vs_generated",
+        "stale_planning_sequence"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Explanations must preserve kernel/component/service distinctions rather than flattening them."
+      ],
+      "review_escalation_rules": [
+        "Escalate if the requested documentation would actually change governance, semantic, runtime, or release meaning."
+      ]
+    },
+    {
+      "task_family_id": "analysis_inspection",
+      "description": "Investigation, codebase reading, classification, and non-mutating inspection work.",
+      "default_posture": "read_only_by_default",
+      "indicative_intent_cues": [
+        "analyze",
+        "inspect",
+        "map",
+        "find",
+        "review",
+        "look into",
+        "assess"
+      ],
+      "prohibited_conflations": [
+        "refactor_convergence",
+        "runtime_platform"
+      ],
+      "authority_requirements": [
+        "AGENTS.md",
+        "task-relevant canonical doctrine",
+        "repo evidence surfaces"
+      ],
+      "ownership_caution_flags": [
+        "field_vs_fields",
+        "schema_vs_schemas",
+        "packs_vs_data_packs",
+        "canonical_vs_generated"
+      ],
+      "runtime_vocabulary_alignment_notes": [
+        "Inspection may analyze kernel/component/service distinctions but does not edit them by default."
+      ],
+      "review_escalation_rules": [
+        "Escalate if analysis findings imply protected-root changes, doctrine reinterpretation, or replacement work."
+      ]
+    }
+  ],
+  "global_review_escalation_rules": [
+    "changes touching canon doctrine or glossary meaning",
+    "authority-order reinterpretation",
+    "ownership-sensitive rebinding",
+    "replace-classified subsystem changes",
+    "release, publication, licensing, trust, or public policy meaning",
+    "late Ζ or live-ops style work",
+    "broad refactors crossing multiple authority layers",
+    "foundational semantic or runtime boundary reinterpretation outside the active doctrine prompt"
+  ],
+  "representative_examples": [
+    {
+      "request": "Create a checkpoint review for the current post-Φ state.",
+      "normalized_primary_family": "planning_checkpointing",
+      "secondary_families": [
+        "documentation_explanation"
+      ],
+      "handling": "checkpoint_gating_artifact"
+    },
+    {
+      "request": "Formalize a new bridge doctrine between ecology and logistics.",
+      "normalized_primary_family": "semantic_domain",
+      "secondary_families": [
+        "doctrine_specification"
+      ],
+      "handling": "semantic_doctrine_with_bridge_awareness"
+    },
+    {
+      "request": "Define the next runtime persistence service boundary.",
+      "normalized_primary_family": "doctrine_specification",
+      "secondary_families": [
+        "runtime_platform"
+      ],
+      "handling": "runtime_boundary_specification"
+    },
+    {
+      "request": "Update the Copilot mirror to reflect the new service model.",
+      "normalized_primary_family": "governance_policy",
+      "secondary_families": [
+        "documentation_explanation"
+      ],
+      "handling": "derived_mirror_update"
+    },
+    {
+      "request": "Make me a tmp zip for this checkpoint.",
+      "normalized_primary_family": "packaging_bundling",
+      "secondary_families": [
+        "planning_checkpointing"
+      ],
+      "handling": "support_bundle_not_release_distribution"
+    },
+    {
+      "request": "Freeze release-index rules for update channels.",
+      "normalized_primary_family": "release_distribution_control_plane",
+      "secondary_families": [
+        "doctrine_specification"
+      ],
+      "handling": "release_policy_work"
+    },
+    {
+      "request": "Merge schema and schemas and clean up the repo.",
+      "normalized_primary_family": "refactor_convergence",
+      "secondary_families": [
+        "analysis_inspection"
+      ],
+      "handling": "review_gated_due_to_ownership"
+    }
+  ],
+  "prohibited_bridge_shapes": [
+    "raw_chat_wording_becomes_project_law",
+    "vague_fix_architecture_maps_directly_to_refactor_execution",
+    "runtime_wording_silently_binds_to_runtime_root",
+    "packaging_wording_silently_becomes_release_distribution",
+    "mirror_or_tool_wording_overrides_canonical_governance",
+    "natural_language_overrides_ownership_review",
+    "runtime_vocabulary_is_flattened_into_generic_system_language"
+  ],
+  "downstream_refinement_prompts": [
+    "C-ΣA1ΦA2",
+    "Σ-3",
+    "Σ-4",
+    "Σ-5"
+  ]
+}
