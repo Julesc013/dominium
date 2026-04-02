@@ -1,0 +1,633 @@
+{
+  "artifact_id": "reality.cross_domain_bridge_registry",
+  "title": "Dominium Cross-Domain Bridge Registry",
+  "version": "1.0.0",
+  "generated_for": "Λ-6",
+  "repo_status": "post-Ω/Ξ/Π_post-P-0..P-4_post-0-0_post-Λ-0..Λ-5.5",
+  "status": "derived_normative_operational",
+  "stability": "stable",
+  "execution_context_note": "Current checkpoint is post-Λ-5.5 with Λ-6 active. This registry follows the live checkpoint and explicit gate order rather than stale historical next-step text.",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
+    "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+    "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md"
+  ],
+  "repo_embodiment_surfaces": [
+    "materials/construction/construction_engine.py",
+    "materials/blueprint_engine.py",
+    "materials/provenance/event_stream_index.py",
+    "worldgen/earth/hydrology_engine.py",
+    "signals/institutions/standards_engine.py",
+    "signals/institutions/dispatch_engine.py",
+    "logic/protocol/protocol_engine.py",
+    "geo/lens/lens_engine.py",
+    "system/system_expand_engine.py",
+    "system/system_collapse_engine.py",
+    "pollution/compliance_engine.py",
+    "geo/path/shard_route_planner.py"
+  ],
+  "core_definition": {
+    "summary": "A cross-domain bridge is a declared lawful coupling by which one domain family may affect, constrain, inform, formalize, or mediate another while preserving ownership, invariants, Process legality, representation continuity, and provenance.",
+    "not_equivalent_to": [
+      "domain_ownership",
+      "capability_surface",
+      "semantic_ascent_or_descent",
+      "formalization_chain",
+      "runtime_service_boundary",
+      "module_import_or_shared_code_path"
+    ],
+    "resolved_ambiguities": [
+      "domain_interaction_cannot_be_left_implicit",
+      "shared_code_or_convenience_does_not_create_bridge_authority",
+      "bridges_do_not_erase_domain_ownership",
+      "canonical_vs_projected_distinctions_remain_active_across_bridges"
+    ]
+  },
+  "bridge_elements": [
+    "source_domain_family",
+    "target_domain_family",
+    "bridge_subject",
+    "directionality",
+    "preserved_invariants",
+    "ownership_requirements",
+    "capability_surface_implications",
+    "representation_and_scaling_notes",
+    "formalization_dependencies",
+    "failure_and_invalidity_conditions",
+    "verification_hooks"
+  ],
+  "directionality_categories": [
+    "symmetric",
+    "directional",
+    "bidirectional_asymmetric",
+    "mediated",
+    "anchor_to_many"
+  ],
+  "preserved_invariant_categories": [
+    "identity_and_provenance",
+    "conservation_relevant_quantities",
+    "topology_and_connectivity",
+    "authority_and_jurisdiction",
+    "historical_lineage",
+    "institutional_continuity",
+    "capability_legality",
+    "safety_and_compliance",
+    "epistemic_traceability"
+  ],
+  "ownership_authority_requirements": [
+    "bind_to_canonical_semantic_owners",
+    "projections_may_not_become_bridge_owners",
+    "bridges_may_not_silently_transfer_domain_authority",
+    "quarantined_families_must_keep_lambda_5_5_caution",
+    "convenience_wrappers_and_generated_echoes_are_not_authority_shortcuts"
+  ],
+  "bridge_classes": [
+    {
+      "class_id": "causal_physical",
+      "summary": "Material, energetic, environmental, or process-level coupling."
+    },
+    {
+      "class_id": "observational_epistemic",
+      "summary": "Knowledge, measurement, and audit coupling."
+    },
+    {
+      "class_id": "economic_logistical",
+      "summary": "Resource, goods, route, labor, exchange, and throughput coupling."
+    },
+    {
+      "class_id": "institutional_governance",
+      "summary": "Law, jurisdiction, legitimacy, and office coupling."
+    },
+    {
+      "class_id": "infrastructure_network",
+      "summary": "Connectivity, service, utility, and routing coupling."
+    },
+    {
+      "class_id": "interface_embodiment",
+      "summary": "Lawful adapter coupling between access modes and domain truth."
+    },
+    {
+      "class_id": "persistence_provenance",
+      "summary": "Save, replay, audit, sync, and lineage-preserving coupling."
+    },
+    {
+      "class_id": "formalization_standards",
+      "summary": "Knowledge, standards, blueprints, and training coupling."
+    },
+    {
+      "class_id": "safety_compliance",
+      "summary": "Hazard, refusal, containment, inspection, and compliance coupling."
+    }
+  ],
+  "domain_family_catalog": [
+    "matter",
+    "biology",
+    "geology",
+    "economy",
+    "culture",
+    "agents",
+    "knowledge",
+    "industry",
+    "governance",
+    "infrastructure",
+    "interface_embodiment",
+    "persistence_networking",
+    "any_domain_family"
+  ],
+  "required_bridge_families": [
+    {
+      "family_id": "matter_biology",
+      "source_domain_family": "matter",
+      "target_domain_family": "biology",
+      "bridge_class_ids": [
+        "causal_physical",
+        "safety_compliance",
+        "observational_epistemic"
+      ],
+      "directionality_category": "bidirectional_asymmetric",
+      "invariant_categories": [
+        "identity_and_provenance",
+        "conservation_relevant_quantities",
+        "safety_and_compliance",
+        "epistemic_traceability"
+      ],
+      "ownership_requirements": [
+        "biology_may_not_be_reduced_to_material_tags",
+        "material_projections_may_not_redefine_biological_truth"
+      ],
+      "capability_surface_implications": [
+        "embodied_manipulation",
+        "inspection_instrumentation",
+        "maintenance_repair"
+      ],
+      "representation_scaling_notes": [
+        "macro_ecology_must_preserve_material_constraints",
+        "micro_expansion_must_honor_conserved_history"
+      ],
+      "formalization_dependencies": [
+        "recognition",
+        "explicit_capture",
+        "validation_testing"
+      ],
+      "failure_invalidity_categories": [
+        "invariant_violation",
+        "unsafe_bridge_state",
+        "representation_scale_mismatch"
+      ],
+      "notes": "Covers metabolism, exposure, nutrition, growth, decay, and similar couplings."
+    },
+    {
+      "family_id": "matter_economy",
+      "source_domain_family": "matter",
+      "target_domain_family": "economy",
+      "bridge_class_ids": [
+        "economic_logistical",
+        "formalization_standards",
+        "observational_epistemic"
+      ],
+      "directionality_category": "bidirectional_asymmetric",
+      "invariant_categories": [
+        "identity_and_provenance",
+        "conservation_relevant_quantities",
+        "authority_and_jurisdiction",
+        "capability_legality"
+      ],
+      "ownership_requirements": [
+        "economic_projection_may_not_replace_material_existence",
+        "valuation_must_preserve_stock_and_flow_provenance"
+      ],
+      "capability_surface_implications": [
+        "planning_command",
+        "institutional_organizational",
+        "inspection_instrumentation"
+      ],
+      "representation_scaling_notes": [
+        "macro_stock_ledgers_must_expand_to_material_detail",
+        "summary_pricing_must_not_imply_impossible_abundance"
+      ],
+      "formalization_dependencies": [
+        "explicit_capture",
+        "validation_testing",
+        "standardization"
+      ],
+      "failure_invalidity_categories": [
+        "ownership_misbinding",
+        "invariant_violation",
+        "capability_surface_illegality"
+      ],
+      "notes": "Covers resource valuation, storage, ownership, and exchange."
+    },
+    {
+      "family_id": "geology_economy",
+      "source_domain_family": "geology",
+      "target_domain_family": "economy",
+      "bridge_class_ids": [
+        "causal_physical",
+        "economic_logistical",
+        "institutional_governance"
+      ],
+      "directionality_category": "mediated",
+      "invariant_categories": [
+        "topology_and_connectivity",
+        "conservation_relevant_quantities",
+        "authority_and_jurisdiction",
+        "historical_lineage"
+      ],
+      "ownership_requirements": [
+        "economic_abstractions_may_not_erase_geological_constraints",
+        "claims_layers_may_not_become_substitute_geology_owners"
+      ],
+      "capability_surface_implications": [
+        "transport_control",
+        "planning_command",
+        "inspection_instrumentation",
+        "institutional_organizational"
+      ],
+      "representation_scaling_notes": [
+        "resource_maps_must_expand_to_extraction_context",
+        "collapsed_cost_models_must_preserve_access_and_depletion"
+      ],
+      "formalization_dependencies": [
+        "explicit_capture",
+        "specification_blueprinting",
+        "institutional_adoption"
+      ],
+      "failure_invalidity_categories": [
+        "authority_or_jurisdiction_refusal",
+        "representation_scale_mismatch",
+        "contested_or_conflicting_bridge_law"
+      ],
+      "notes": "Covers extraction, terrain cost, hydrology, access, and depletion."
+    },
+    {
+      "family_id": "biology_culture",
+      "source_domain_family": "biology",
+      "target_domain_family": "culture",
+      "bridge_class_ids": [
+        "observational_epistemic",
+        "institutional_governance",
+        "safety_compliance"
+      ],
+      "directionality_category": "bidirectional_asymmetric",
+      "invariant_categories": [
+        "identity_and_provenance",
+        "institutional_continuity",
+        "epistemic_traceability",
+        "safety_and_compliance"
+      ],
+      "ownership_requirements": [
+        "culture_may_not_silently_redefine_biological_truth",
+        "biology_may_not_totalize_cultural_identity_or_meaning"
+      ],
+      "capability_surface_implications": [
+        "embodied_manipulation",
+        "institutional_organizational",
+        "planning_command"
+      ],
+      "representation_scaling_notes": [
+        "demographic_summaries_must_keep_lineage",
+        "micro_expansion_must_not_invent_incompatible_histories"
+      ],
+      "formalization_dependencies": [
+        "recognition",
+        "explicit_capture",
+        "institutional_adoption"
+      ],
+      "failure_invalidity_categories": [
+        "contested_or_conflicting_bridge_law",
+        "unsafe_bridge_state",
+        "representation_scale_mismatch"
+      ],
+      "notes": "Covers kinship, care, diet, ritualized life practice, and similar couplings."
+    },
+    {
+      "family_id": "agents_knowledge",
+      "source_domain_family": "agents",
+      "target_domain_family": "knowledge",
+      "bridge_class_ids": [
+        "observational_epistemic",
+        "formalization_standards",
+        "interface_embodiment"
+      ],
+      "directionality_category": "bidirectional_asymmetric",
+      "invariant_categories": [
+        "identity_and_provenance",
+        "epistemic_traceability",
+        "historical_lineage",
+        "capability_legality"
+      ],
+      "ownership_requirements": [
+        "observation_receipts_do_not_replace_domain_truth",
+        "interface_paths_do_not_own_knowledge_meaning"
+      ],
+      "capability_surface_implications": [
+        "inspection_instrumentation",
+        "planning_command",
+        "interface_adapter"
+      ],
+      "representation_scaling_notes": [
+        "knowledge_summaries_must_record_inference_vs_observation",
+        "micro_detail_must_preserve_epistemic_lineage"
+      ],
+      "formalization_dependencies": [
+        "discovery",
+        "recognition",
+        "explicit_capture",
+        "validation_testing"
+      ],
+      "failure_invalidity_categories": [
+        "capability_surface_illegality",
+        "provenance_or_persistence_break",
+        "ownership_misbinding"
+      ],
+      "notes": "Covers observation, recording, education, and inference."
+    },
+    {
+      "family_id": "agents_economy",
+      "source_domain_family": "agents",
+      "target_domain_family": "economy",
+      "bridge_class_ids": [
+        "economic_logistical",
+        "institutional_governance",
+        "interface_embodiment"
+      ],
+      "directionality_category": "mediated",
+      "invariant_categories": [
+        "authority_and_jurisdiction",
+        "identity_and_provenance",
+        "capability_legality",
+        "institutional_continuity"
+      ],
+      "ownership_requirements": [
+        "agent_authority_does_not_bypass_economic_law",
+        "planning_and_ai_surfaces_may_not_grant_impossible_economic_powers"
+      ],
+      "capability_surface_implications": [
+        "planning_command",
+        "institutional_organizational",
+        "automation_integration",
+        "inspection_instrumentation"
+      ],
+      "representation_scaling_notes": [
+        "labor_or_contract_summaries_must_expand_to_accountable_actors",
+        "delegated_execution_must_preserve_refusal_and_authority_lineage"
+      ],
+      "formalization_dependencies": [
+        "explicit_capture",
+        "standardization",
+        "institutional_adoption"
+      ],
+      "failure_invalidity_categories": [
+        "authority_or_jurisdiction_refusal",
+        "capability_surface_illegality",
+        "contested_or_conflicting_bridge_law"
+      ],
+      "notes": "Covers labor, exchange, contracts, ownership, and delegation."
+    },
+    {
+      "family_id": "knowledge_industry",
+      "source_domain_family": "knowledge",
+      "target_domain_family": "industry",
+      "bridge_class_ids": [
+        "formalization_standards",
+        "economic_logistical",
+        "safety_compliance"
+      ],
+      "directionality_category": "mediated",
+      "invariant_categories": [
+        "identity_and_provenance",
+        "historical_lineage",
+        "institutional_continuity",
+        "safety_and_compliance"
+      ],
+      "ownership_requirements": [
+        "blueprint_or_standard_projections_may_not_replace_canonical_knowledge",
+        "industrial_repetition_does_not_erase_design_provenance"
+      ],
+      "capability_surface_implications": [
+        "machine_process_io",
+        "maintenance_repair",
+        "planning_command",
+        "inspection_instrumentation"
+      ],
+      "representation_scaling_notes": [
+        "throughput_summaries_must_keep_standard_and_revision_lineage",
+        "micro_expansion_must_stay_compatible_with_methods_and_tolerances"
+      ],
+      "formalization_dependencies": [
+        "specification_blueprinting",
+        "validation_testing",
+        "standardization",
+        "production_deployment_diffusion"
+      ],
+      "failure_invalidity_categories": [
+        "missing_formalization_prerequisite",
+        "invariant_violation",
+        "unsafe_bridge_state"
+      ],
+      "notes": "Covers blueprint transfer, standards adoption, measurement methods, and training."
+    },
+    {
+      "family_id": "knowledge_governance",
+      "source_domain_family": "knowledge",
+      "target_domain_family": "governance",
+      "bridge_class_ids": [
+        "observational_epistemic",
+        "institutional_governance",
+        "formalization_standards",
+        "safety_compliance"
+      ],
+      "directionality_category": "mediated",
+      "invariant_categories": [
+        "authority_and_jurisdiction",
+        "identity_and_provenance",
+        "institutional_continuity",
+        "epistemic_traceability"
+      ],
+      "ownership_requirements": [
+        "knowledge_artifacts_retain_provenance_and_contestability",
+        "governance_projections_may_not_backfill_knowledge_truth_by_fiat"
+      ],
+      "capability_surface_implications": [
+        "inspection_instrumentation",
+        "institutional_organizational",
+        "planning_command",
+        "interface_adapter"
+      ],
+      "representation_scaling_notes": [
+        "policy_summaries_must_keep_evidence_lineage",
+        "micro_detail_may_refine_action_but_not_rewrite_prior_evidence"
+      ],
+      "formalization_dependencies": [
+        "explicit_capture",
+        "specification_blueprinting",
+        "institutional_adoption",
+        "maintenance_revision"
+      ],
+      "failure_invalidity_categories": [
+        "ownership_misbinding",
+        "authority_or_jurisdiction_refusal",
+        "contested_or_conflicting_bridge_law"
+      ],
+      "notes": "Covers evidence, doctrine, compliance, inspection, and policy basis."
+    },
+    {
+      "family_id": "infrastructure_politics",
+      "source_domain_family": "infrastructure",
+      "target_domain_family": "governance",
+      "bridge_class_ids": [
+        "infrastructure_network",
+        "institutional_governance",
+        "safety_compliance"
+      ],
+      "directionality_category": "bidirectional_asymmetric",
+      "invariant_categories": [
+        "topology_and_connectivity",
+        "authority_and_jurisdiction",
+        "institutional_continuity",
+        "historical_lineage"
+      ],
+      "ownership_requirements": [
+        "political_declarations_may_not_invent_infrastructure_state",
+        "infrastructure_ownership_does_not_erase_legitimacy_constraints"
+      ],
+      "capability_surface_implications": [
+        "route_network_access",
+        "institutional_organizational",
+        "planning_command",
+        "maintenance_repair"
+      ],
+      "representation_scaling_notes": [
+        "control_summaries_must_keep_route_service_and_jurisdiction_commitments",
+        "micro_expansion_must_preserve_outage_and_maintenance_lineage"
+      ],
+      "formalization_dependencies": [
+        "explicit_capture",
+        "standardization",
+        "institutional_adoption",
+        "maintenance_revision"
+      ],
+      "failure_invalidity_categories": [
+        "authority_or_jurisdiction_refusal",
+        "unsafe_bridge_state",
+        "representation_scale_mismatch"
+      ],
+      "notes": "Covers jurisdiction, service obligation, network control, and strategic leverage."
+    },
+    {
+      "family_id": "interface_all_domains",
+      "source_domain_family": "interface_embodiment",
+      "target_domain_family": "any_domain_family",
+      "bridge_class_ids": [
+        "interface_embodiment",
+        "observational_epistemic"
+      ],
+      "directionality_category": "anchor_to_many",
+      "invariant_categories": [
+        "identity_and_provenance",
+        "capability_legality",
+        "epistemic_traceability"
+      ],
+      "ownership_requirements": [
+        "interface_layers_may_not_replace_canonical_domain_ownership",
+        "rendered_or_ui_surfaces_may_not_become_bridge_law"
+      ],
+      "capability_surface_implications": [
+        "interface_adapter",
+        "inspection_instrumentation",
+        "planning_command",
+        "embodied_manipulation"
+      ],
+      "representation_scaling_notes": [
+        "bridge_legality_survives_interface_mode_and_viewpoint_change",
+        "perceived_and_rendered_forms_remain_subordinate_to_truth"
+      ],
+      "formalization_dependencies": [],
+      "failure_invalidity_categories": [
+        "capability_surface_illegality",
+        "ownership_misbinding",
+        "representation_scale_mismatch"
+      ],
+      "notes": "Covers embodied, abstract, operator, AI, and future-interface access modes."
+    },
+    {
+      "family_id": "persistence_all_domains",
+      "source_domain_family": "persistence_networking",
+      "target_domain_family": "any_domain_family",
+      "bridge_class_ids": [
+        "persistence_provenance",
+        "observational_epistemic",
+        "safety_compliance"
+      ],
+      "directionality_category": "anchor_to_many",
+      "invariant_categories": [
+        "identity_and_provenance",
+        "historical_lineage",
+        "authority_and_jurisdiction",
+        "epistemic_traceability"
+      ],
+      "ownership_requirements": [
+        "save_replay_event_and_network_payloads_do_not_own_domain_meaning",
+        "generated_persistence_artifacts_may_not_replace_canonical_semantic_roots"
+      ],
+      "capability_surface_implications": [
+        "inspection_instrumentation",
+        "automation_integration",
+        "interface_adapter"
+      ],
+      "representation_scaling_notes": [
+        "collapsed_state_must_preserve_replayable_bridge_lineage_where_required",
+        "expansion_may_refine_detail_but_not_rewrite_persisted_ownership"
+      ],
+      "formalization_dependencies": [
+        "explicit_capture",
+        "validation_testing",
+        "maintenance_revision"
+      ],
+      "failure_invalidity_categories": [
+        "provenance_or_persistence_break",
+        "ownership_misbinding",
+        "invariant_violation"
+      ],
+      "notes": "Covers save, replay, audit, synchronization, and provenance anchoring across domains."
+    }
+  ],
+  "prohibited_bridge_shapes": [
+    "implicit_coupling_through_convenience_or_shared_code_path",
+    "god_bridge_that_erases_domain_boundaries",
+    "runtime_logic_as_the_only_place_bridge_rules_exist",
+    "bridge_that_silently_redefines_ownership_or_ontology",
+    "bridge_that_treats_projected_or_generated_artifacts_as_canonical_owners",
+    "bridge_that_allows_impossible_actions_absent_lawful_substrate",
+    "bridge_that_ignores_directionality",
+    "bridge_that_ignores_representation_or_scaling_constraints",
+    "bridge_that_bypasses_standards_or_authority_where_required",
+    "bridge_that_flattens_quarantined_ownership_families_into_certainty"
+  ],
+  "verification_requirements": [
+    "domain_ownership_consistency",
+    "canonical_vs_projection_adherence",
+    "declared_invariant_preservation",
+    "directionality_legality",
+    "bridge_class_compatibility",
+    "capability_surface_legality",
+    "macro_micro_continuity",
+    "formalization_prerequisite_satisfaction_where_relevant",
+    "explicit_failure_refusal_or_degradation_path"
+  ],
+  "later_refinement_notes": [
+    "Later domain constitutions should define specific bridge instances without changing the framework grammar.",
+    "Later governance and task constitutions should cite bridge classes and ownership requirements directly.",
+    "Later runtime and service extraction must consume bridge law rather than infer domain coupling from code adjacency.",
+    "Later release, provenance, and live-ops work must preserve bridge semantics and canonical ownership distinctions."
+  ]
+}
