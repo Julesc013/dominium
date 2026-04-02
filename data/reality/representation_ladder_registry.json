@@ -1,0 +1,341 @@
+{
+  "artifact_id": "reality.representation_ladder_registry",
+  "title": "Dominium Representation Ladder Registry",
+  "version": "1.0.0",
+  "generated_for": "Λ-3",
+  "repo_status": "post-Ω/Ξ/Π and post-P-0..P-4 and post-0-0 and post-Λ-0 and post-Λ-1 and post-Λ-2",
+  "status": "derived_normative_operational",
+  "stability": "stable",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+    "docs/architecture/macro_capsules.md",
+    "docs/worldgen/REFINEMENT_CONTRACT.md",
+    "docs/worldgen/REFINEMENT_LATTICE.md",
+    "docs/worldgen/UNIVERSE_SCALE_STRATEGY.md",
+    "docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md",
+    "docs/specs/SPEC_LOD.md",
+    "docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md"
+  ],
+  "repo_embodiment_surfaces": [
+    "docs/architecture/macro_capsules.md",
+    "docs/architecture/truth_perceived_render.md",
+    "docs/worldgen/REFINEMENT_CONTRACT.md",
+    "docs/worldgen/REFINEMENT_LATTICE.md",
+    "docs/worldgen/UNIVERSE_SCALE_STRATEGY.md",
+    "docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md",
+    "docs/specs/SPEC_LOD.md",
+    "docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
+    "docs/worldgen/WEATHER_BASELINE.md",
+    "docs/worldgen/NETWORKS_AND_DATA_BASELINE.md",
+    "docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md"
+  ],
+  "broader_than_graphics_lod": true,
+  "core_definition": {
+    "summary": "A representation ladder is a lawful family of representations of the same underlying reality, organized so movement between them can occur without semantic drift.",
+    "not_limited_to": [
+      "rendering_detail_bands",
+      "camera_distance_rules",
+      "mesh_or_texture_quality",
+      "graphics_only_lod"
+    ],
+    "depends_on": [
+      "truth_totality",
+      "sparse_materialization",
+      "minimal_causal_closure",
+      "lawful_substitution",
+      "experiential_continuity",
+      "macro_micro_consistency"
+    ]
+  },
+  "ladder_families": [
+    {
+      "level_id": "primitive_representation",
+      "family_kind": "semantic_level",
+      "summary": "Lowest-level truth-bearing representation for a domain's declared scope.",
+      "lawful_role": [
+        "carries direct substrate commitments",
+        "anchors primitive identity and provenance",
+        "grounds Process mutation"
+      ],
+      "preservation_focus": [
+        "identity_and_provenance",
+        "conservation_relevant_quantities",
+        "topology_and_connectivity"
+      ]
+    },
+    {
+      "level_id": "recognized_representation",
+      "family_kind": "semantic_level",
+      "summary": "Representation in which meaningful patterns or structures are recognized over primitive substrate.",
+      "lawful_role": [
+        "captures structured pattern meaning",
+        "remains traceable to primitive substrate",
+        "supports later ascent"
+      ],
+      "preservation_focus": [
+        "identity_and_provenance",
+        "topology_and_connectivity",
+        "epistemic_traceability"
+      ]
+    },
+    {
+      "level_id": "formalized_representation",
+      "family_kind": "semantic_level",
+      "summary": "Representation in which recognized meaning is stabilized into explicit standards, contracts, institutions, or structured reusable forms.",
+      "lawful_role": [
+        "stabilizes and propagates meaning",
+        "supports explicit reuse and governance",
+        "binds higher-order semantics to declared artifacts"
+      ],
+      "preservation_focus": [
+        "identity_and_provenance",
+        "compatibility_relationships",
+        "institutional_continuity",
+        "historical_lineage"
+      ]
+    },
+    {
+      "level_id": "substituted_capsuled_representation",
+      "family_kind": "substitution_mode",
+      "summary": "Lawful stand-in representation used for a declared horizon in place of a more detailed or differently structured representation.",
+      "lawful_role": [
+        "supports sparse materialization and bounded computation",
+        "preserves declared invariants for the active horizon",
+        "requires explicit expansion and refusal conditions"
+      ],
+      "preservation_focus": [
+        "identity_and_provenance",
+        "behavioral_equivalence_classes",
+        "capability_and_access_relationships",
+        "historical_lineage"
+      ]
+    },
+    {
+      "level_id": "macro_summary_representation",
+      "family_kind": "scale_mode",
+      "summary": "Large-scale summarized representation that preserves what the broader horizon needs while remaining expandable later.",
+      "lawful_role": [
+        "supports broad-scale world and civilization reasoning",
+        "retains summary commitments for later lawful descent",
+        "supports bounded large-scale simulation"
+      ],
+      "preservation_focus": [
+        "conservation_relevant_quantities",
+        "topology_and_connectivity",
+        "historical_lineage",
+        "institutional_continuity"
+      ]
+    },
+    {
+      "level_id": "micro_detail_representation",
+      "family_kind": "scale_mode",
+      "summary": "Locally expanded detailed representation used when the active horizon requires finer detail.",
+      "lawful_role": [
+        "supports embodied or narrow-horizon interaction",
+        "supports detailed Process reasoning",
+        "makes fine-grained commitments explicit"
+      ],
+      "preservation_focus": [
+        "identity_and_provenance",
+        "topology_and_connectivity",
+        "conservation_relevant_quantities",
+        "capability_and_access_relationships"
+      ]
+    }
+  ],
+  "preserved_invariant_categories": [
+    {
+      "invariant_id": "identity_and_provenance",
+      "summary": "Stable identity anchors and deterministic lineage across representation change."
+    },
+    {
+      "invariant_id": "topology_and_connectivity",
+      "summary": "Adjacency, route, network, and structural attachment relations that must not silently break."
+    },
+    {
+      "invariant_id": "conservation_relevant_quantities",
+      "summary": "Mass, stock, flow, energy, counts, and other domain-relevant conserved or bounded quantities."
+    },
+    {
+      "invariant_id": "behavioral_equivalence_classes",
+      "summary": "Lawful outcome classes that remain equivalent for the active causal horizon."
+    },
+    {
+      "invariant_id": "capability_and_access_relationships",
+      "summary": "Lawful action, permission, and constraint relationships that remain true across the transition."
+    },
+    {
+      "invariant_id": "compatibility_relationships",
+      "summary": "Explicit compatibility and incompatibility commitments downstream systems rely on."
+    },
+    {
+      "invariant_id": "historical_lineage",
+      "summary": "Committed event and state lineage preserved across summary and expansion."
+    },
+    {
+      "invariant_id": "institutional_continuity",
+      "summary": "Continuity of organizations, standards, legal identities, and governance-relevant structures."
+    },
+    {
+      "invariant_id": "epistemic_traceability",
+      "summary": "Ability to explain what is known, latent, summarized, or uncertain."
+    }
+  ],
+  "transition_families": [
+    {
+      "transition_id": "ascent",
+      "summary": "Lawful emergence of higher-order meaning from lower-order substrate, Process history, and recognized structure.",
+      "legality_requirements": [
+        "grounded_in_substrate_and_process_history",
+        "domain_declared_criteria_exist",
+        "lineage_is_preserved",
+        "higher_order_meaning_is_not_presentation_only"
+      ],
+      "prohibited_shapes": [
+        "arbitrary_labeling",
+        "ui_or_render_only_naming",
+        "meaning_without_evidence_basis"
+      ]
+    },
+    {
+      "transition_id": "descent",
+      "summary": "Lawful recovery, expansion, or projection of higher-order meaning back into lower-order detail.",
+      "legality_requirements": [
+        "preserved_invariants_are_explicit",
+        "lineage_is_preserved",
+        "detail_is_recovered_or_lawfully_derived",
+        "uncertainty_is_explicit_when_unique_recovery_is_impossible"
+      ],
+      "prohibited_shapes": [
+        "free_detail_invention",
+        "history_contradiction",
+        "silent_overclaim"
+      ]
+    },
+    {
+      "transition_id": "substitution",
+      "summary": "Movement in which one lawful representation stands in for another for a declared horizon.",
+      "legality_requirements": [
+        "source_and_target_representations_declared",
+        "preserved_invariants_declared",
+        "causal_horizon_declared",
+        "activation_and_refusal_conditions_declared",
+        "continuity_requirements_preserved"
+      ],
+      "prohibited_shapes": [
+        "silent_semantic_change",
+        "identity_or_provenance_loss",
+        "implicit_substitution"
+      ]
+    },
+    {
+      "transition_id": "collapse",
+      "summary": "Deterministic reduction to a coarser representation while preserving declared commitments for the active horizon.",
+      "legality_requirements": [
+        "preserved_summary_commitments_exist",
+        "future_lawful_expansion_remains_possible",
+        "auditability_is_preserved",
+        "collapse_does_not_change_objective_truth"
+      ],
+      "prohibited_shapes": [
+        "dropping_required_history",
+        "dropping_required_capability_commitments",
+        "graphics_only_collapse_presented_as_semantic_equivalent"
+      ]
+    },
+    {
+      "transition_id": "expansion",
+      "summary": "Lawful movement to a finer or more detailed representation when the horizon requires it.",
+      "legality_requirements": [
+        "authoritative_substrate_or_declared_generative_rules_exist",
+        "preserved_invariants_hold",
+        "continuity_and_lineage_hold",
+        "under_determination_is_explicitly_handled"
+      ],
+      "prohibited_shapes": [
+        "inventing_missing_detail_freely",
+        "contradicting_preserved_macro_commitments",
+        "unlawful_capability_creation"
+      ]
+    }
+  ],
+  "global_legality_requirements": [
+    "representation change must be broader than graphics-only LOD",
+    "preserved invariants must be explicit",
+    "causal horizon must be explicit",
+    "identity and provenance continuity must be preserved",
+    "lawful Process and authority boundaries remain binding",
+    "activation, expansion, escalation, and refusal conditions must be explicit",
+    "semantic drift through optimization is forbidden"
+  ],
+  "continuity_requirements": [
+    "prior lawful observation must not be contradicted without lawful cause",
+    "representation change must not create arbitrary teleportation or retcon behavior",
+    "macro summaries must remain consistent with later detailed re-entry",
+    "legal, cultural, industrial, and institutional continuity must be preserved when still relevant",
+    "scale changes may change detail, not the committed meaning of the world"
+  ],
+  "concept_distinctions": {
+    "recognition_vs_ascent": "Recognition identifies a meaningful pattern. Ascent establishes a higher-order semantic level with lawful implications.",
+    "ascent_vs_formalization": "Ascent may precede formalization. Formalization stabilizes and propagates meaning for reuse through explicit artifacts or structures.",
+    "substitution_vs_ascent_descent": "Substitution changes which lawful representation stands in for another. Ascent and descent describe semantic relation across levels and do not automatically authorize substitution."
+  },
+  "prohibited_transition_shapes": [
+    "graphics_only_lod_treated_as_full_semantic_substitution",
+    "rich_truth_collapsed_without_declared_invariants",
+    "summary_expanded_into_detail_that_contradicts_preserved_history",
+    "representation_change_that_erases_legal_or_institutional_identity",
+    "runtime_convenience_redefining_ladder_semantics",
+    "camera_distance_as_semantic_authority",
+    "using_capsules_to_hide_unresolved_ownership",
+    "silent_guessing_under_ascent_or_descent"
+  ],
+  "ambiguity_eliminations": [
+    {
+      "ambiguity": "ladder_change_is_just_graphical_lod",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "substitution_may_silently_change_meaning",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "semantic_ascent_is_arbitrary_labeling",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "semantic_descent_may_invent_details_freely",
+      "resolution": "false"
+    }
+  ],
+  "later_domain_refinement_notes": [
+    "Each domain must declare which ladder families it instantiates and which invariant categories each representation preserves.",
+    "Each domain must declare lawful ascent, descent, substitution, collapse, and expansion criteria or explicitly state that none are declared.",
+    "Cross-domain ladder movement remains explicit bridge work and must not be hidden inside one domain's convenience layer."
+  ],
+  "downstream_assumptions_enabled": {
+    "lambda_4": [
+      "formalization-chain work may now distinguish recognition, ascent, formalization, substitution, collapse, and expansion explicitly",
+      "substitution proof criteria may assume invariant categories and transition families already exist"
+    ],
+    "lambda_5": [
+      "player desire and refusal mapping may now cite lawful visibility, continuity, and ladder movement constraints"
+    ],
+    "lambda_6": [
+      "cross-domain bridge work may now rely on explicit ladder families and transition legality rather than ad hoc summary semantics"
+    ],
+    "sigma": [
+      "governance, task, and interface policies may now assume representation changes are lawful only under explicit invariant-preserving rules"
+    ],
+    "phi": [
+      "runtime materialization, substitution, event-log, snapshot, and state externalization work may now assume ladder transitions require explicit invariants, continuity, and refusal conditions"
+    ]
+  }
+}
