@@ -1,0 +1,676 @@
+{
+  "artifact_id": "dominium.agents.agent_safety_policy",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-03",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_a_post_phi5_post_sigma4_pre_sigma5",
+    "enabling_prompt": "Σ-5 — AGENT_SAFETY_POLICY-0",
+    "upstream_governance_floor": [
+      "Σ-0 — AGENTS_GOVERNANCE_BASELINE-0",
+      "Σ-1 — AGENT_MIRROR_POLICY-0",
+      "Σ-2 — NATURAL_LANGUAGE_TASK_BRIDGE-0",
+      "Σ-3 — XSTACK_TASK_CATALOG-0",
+      "Σ-4 — MCP_INTERFACE-0"
+    ],
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0",
+      "Φ-5 — LIFECYCLE_MANAGER-0"
+    ],
+    "active_numbering_note": "Current checkpoint law advances AGENT_SAFETY_POLICY-0 as Σ-5 after the MCP interface model even though older planning artifacts may still retain stale Σ numbering or titles."
+  },
+  "safety_policy_definition": {
+    "summary": "Agent safety in Dominium is the policy layer that decides whether a proposed action is safe, validation-gated, review-gated, strongly gated, or prohibited by evaluating authority, ownership, semantic, runtime, release, ambiguity, and auditability constraints after task classification and MCP exposure have already been resolved.",
+    "safety_is_not": [
+      "canonical_governance",
+      "mirror_instruction",
+      "natural_language_classification",
+      "task_catalog_membership",
+      "mcp_exposure_by_itself",
+      "runtime_lifecycle_law_by_itself",
+      "release_publication_policy_by_itself",
+      "enforcement_middleware"
+    ],
+    "why_needed": [
+      "classification_does_not_authorize_execution",
+      "catalog_inclusion_does_not_create_permission",
+      "mcp_exposure_does_not_create_autonomy_or_permission",
+      "runtime_and_release_surfaces_have_different_risk_profiles_that_need_explicit_escalation_rules",
+      "later_upsilon_zeta_and_enforcement_layers_need_a_stable_permission_and_refusal_model"
+    ]
+  },
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY.md",
+    "NATURAL_LANGUAGE_TASK_BRIDGE.md",
+    "XSTACK_TASK_CATALOG.md",
+    "MCP_INTERFACE_MODEL.md",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW"
+  ],
+  "required_semantic_inputs": [
+    "constitution_v1.md",
+    "glossary_v1.md",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES",
+    "completed_lambda_semantic_doctrine"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION",
+    "LIFECYCLE_MANAGER"
+  ],
+  "required_release_inputs": [
+    "repo/release_policy.toml",
+    "docs/release/SIGNING_POLICY.md",
+    "release_and_trust_surfaces"
+  ],
+  "safety_policy_role": {
+    "downstream_of": [
+      "canonical_governance",
+      "mirror_policy",
+      "natural_language_task_bridge",
+      "xstack_task_catalog",
+      "mcp_interface_model",
+      "semantic_doctrine",
+      "runtime_doctrine"
+    ],
+    "upstream_of": [
+      "later_upsilon_release_and_control_plane_work",
+      "later_zeta_live_ops_and_continuity_work",
+      "future_enforcement_and_execution_layers"
+    ],
+    "must_not_become": [
+      "parallel_governance_canon",
+      "task_catalog_replacement",
+      "shadow_mcp_permission_engine",
+      "vendor_specific_policy_surface",
+      "flattened_allowed_or_not_boolean"
+    ]
+  },
+  "action_classes": [
+    {
+      "rank": 1,
+      "id": "allowed_bounded",
+      "description": "Safe to perform within explicit scope without extra human review beyond the normal task request, provided no higher-risk dimension is triggered.",
+      "default_posture": "bounded_auditable_low_blast_radius"
+    },
+    {
+      "rank": 2,
+      "id": "allowed_with_required_validation",
+      "description": "Permitted only if the validation floor is run and the action remains within explicit scope, authority, and auditability constraints.",
+      "default_posture": "bounded_but_validation_gated"
+    },
+    {
+      "rank": 3,
+      "id": "allowed_with_explicit_human_review",
+      "description": "May proceed only with explicit human review or approval because the action can alter important canonical, runtime, or policy surfaces.",
+      "default_posture": "review_gated"
+    },
+    {
+      "rank": 4,
+      "id": "strongly_gated_privileged",
+      "description": "Requires explicit human control, privileged review posture, or later doctrine before execution and is not part of default autonomous or routine tool-mediated scope.",
+      "default_posture": "privileged_tightly_constrained"
+    },
+    {
+      "rank": 5,
+      "id": "prohibited_or_out_of_scope",
+      "description": "Must be refused, deferred, or kept non-automated at the current doctrine level.",
+      "default_posture": "not_executable_under_current_policy"
+    }
+  ],
+  "safety_dimensions": [
+    {
+      "id": "semantic_doctrine_risk",
+      "description": "Risk that the action alters or contradicts canonical semantic law, capability meaning, representation law, or formalization law."
+    },
+    {
+      "id": "ownership_risk",
+      "description": "Risk that the action touches ownership-sensitive roots, unresolved ownership splits, or canonical-versus-derived authority boundaries."
+    },
+    {
+      "id": "runtime_state_lifecycle_risk",
+      "description": "Risk that the action flattens kernel, component, service, binding, state, or lifecycle distinctions or traps authoritative state."
+    },
+    {
+      "id": "release_publication_trust_risk",
+      "description": "Risk that the action affects release channels, trust roots, signing, publication, archive identity, updater behavior, or external commitments."
+    },
+    {
+      "id": "scope_blast_radius_risk",
+      "description": "Risk associated with how many subsystems, roots, or authority layers the action can affect."
+    },
+    {
+      "id": "irreversibility_risk",
+      "description": "Risk that the action is difficult to reverse, hard to audit, or likely to outlive a normal local rollback."
+    },
+    {
+      "id": "ambiguity_risk",
+      "description": "Risk caused by ambiguous prompts, targets, authority sources, or expected outcomes."
+    },
+    {
+      "id": "projection_confusion_risk",
+      "description": "Risk that projected, mirrored, cached, generated, or transitional artifacts are mistaken for canonical authority."
+    },
+    {
+      "id": "cross_domain_bridge_risk",
+      "description": "Risk that the action touches bridge-mediated domain interaction or creates hidden cross-domain coupling."
+    },
+    {
+      "id": "auditability_traceability_risk",
+      "description": "Risk that the action cannot be validated, traced, reviewed, or explained after the fact."
+    }
+  ],
+  "review_escalation_categories": [
+    {
+      "id": "proceed_with_validation",
+      "description": "Proceed only after the validation floor is satisfied."
+    },
+    {
+      "id": "require_explicit_human_review",
+      "description": "Pause for explicit human review or approval before mutation."
+    },
+    {
+      "id": "preserve_quarantine",
+      "description": "Keep ownership-sensitive or unresolved roots quarantined rather than auto-resolving them."
+    },
+    {
+      "id": "downgrade_to_planning_only",
+      "description": "Convert the request into planning, analysis, proposal, or evidence output rather than direct execution."
+    },
+    {
+      "id": "require_privileged_human_control",
+      "description": "Treat the action as strongly gated and keep it outside routine autonomous or interface-driven execution."
+    },
+    {
+      "id": "refuse_and_defer",
+      "description": "Refuse current execution and defer until later doctrine, explicit review, or infrastructure exists."
+    }
+  ],
+  "validation_expectation_categories": [
+    {
+      "id": "artifact_existence_check",
+      "description": "Verify that the required target artifacts actually exist."
+    },
+    {
+      "id": "authoritative_input_check",
+      "description": "Confirm that the authoritative inputs used are the correct governing sources."
+    },
+    {
+      "id": "machine_readable_parse_check",
+      "description": "Parse touched JSON, schema, or other machine-readable artifacts where relevant."
+    },
+    {
+      "id": "doc_registry_consistency_check",
+      "description": "Check consistency between normative and machine-readable outputs when both are produced."
+    },
+    {
+      "id": "git_diff_check",
+      "description": "Run git diff integrity checks such as git diff --check."
+    },
+    {
+      "id": "scope_accounting_check",
+      "description": "Account clearly for what changed."
+    },
+    {
+      "id": "non_change_accounting_check",
+      "description": "State what was intentionally not changed."
+    },
+    {
+      "id": "validation_reporting_check",
+      "description": "Report what validations were run and what was not run."
+    }
+  ],
+  "mcp_exposure_class_default_safety": [
+    {
+      "exposure_class_id": "read_inspect_surface",
+      "default_action_class": "allowed_bounded",
+      "notes": "Read-only exposure can remain bounded when no higher-risk dimension is triggered."
+    },
+    {
+      "exposure_class_id": "planning_analysis_surface",
+      "default_action_class": "allowed_with_required_validation",
+      "notes": "Planning and proposal surfaces remain safe only when their outputs stay bounded and auditable."
+    },
+    {
+      "exposure_class_id": "validation_audit_surface",
+      "default_action_class": "allowed_with_required_validation",
+      "notes": "Evidence and audit surfaces require validation discipline and must not promote evidence into canon."
+    },
+    {
+      "exposure_class_id": "packaging_checkpoint_surface",
+      "default_action_class": "allowed_with_required_validation",
+      "notes": "Packaging stays distinct from release distribution and must remain support-artifact scoped."
+    },
+    {
+      "exposure_class_id": "controlled_mutation_surface",
+      "default_action_class": "allowed_with_explicit_human_review",
+      "notes": "Controlled mutation is not routine autonomy and requires explicit review posture."
+    },
+    {
+      "exposure_class_id": "strongly_review_gated_surface",
+      "default_action_class": "strongly_gated_privileged",
+      "notes": "Review-gated exposure never becomes routine allowed automation."
+    },
+    {
+      "exposure_class_id": "non_exposable_or_excluded_surface",
+      "default_action_class": "prohibited_or_out_of_scope",
+      "notes": "Non-exposed surfaces remain outside current execution scope."
+    }
+  ],
+  "default_task_family_classifications": [
+    {
+      "task_family_id": "planning_checkpointing",
+      "default_action_class": "allowed_with_required_validation",
+      "required_conditions": [
+        "checkpoint_law_remains_active",
+        "outputs_remain_artifact_or_report_scoped",
+        "no_hidden_sequence_rewrite"
+      ],
+      "escalation_triggers": [
+        "authority_order_change",
+        "gate_logic_change",
+        "checkpoint_advancement_by_convenience"
+      ],
+      "notes": "Planning and checkpoint work remains safe only when it does not silently change authority or sequence law."
+    },
+    {
+      "task_family_id": "doctrine_specification",
+      "default_action_class": "allowed_with_explicit_human_review",
+      "required_conditions": [
+        "scope_specific_doctrine_is_explicit",
+        "changes_are_auditable",
+        "normative_and_machine_readable_outputs_align"
+      ],
+      "escalation_triggers": [
+        "canon_or_glossary_meaning_change",
+        "authority_order_reinterpretation",
+        "foundational_runtime_or_semantic_boundary_change"
+      ],
+      "notes": "Doctrine work may be lawful with review, but canon or foundational meaning changes escalate further."
+    },
+    {
+      "task_family_id": "governance_policy",
+      "default_action_class": "allowed_with_explicit_human_review",
+      "required_conditions": [
+        "governance_scope_is_explicit",
+        "mirrors_remain_derived",
+        "policy_outputs_do_not_override_canon"
+      ],
+      "escalation_triggers": [
+        "authority_order_change",
+        "permission_model_change",
+        "shadow_policy_creation"
+      ],
+      "notes": "Governance mutation is review-gated even when bounded."
+    },
+    {
+      "task_family_id": "semantic_domain",
+      "default_action_class": "allowed_with_explicit_human_review",
+      "required_conditions": [
+        "semantic_scope_is_explicit",
+        "ownership_review_is_respected",
+        "bridge_and_formalization_inputs_are_explicit"
+      ],
+      "escalation_triggers": [
+        "ownership_rebinding",
+        "cross_domain_bridge_law_change",
+        "capability_surface_redefinition"
+      ],
+      "notes": "Bounded semantic work may proceed only with review and escalates immediately when ownership or bridge law moves."
+    },
+    {
+      "task_family_id": "runtime_platform",
+      "default_action_class": "allowed_with_explicit_human_review",
+      "required_conditions": [
+        "runtime_boundaries_remain_explicit",
+        "semantic_law_is_not_redefined",
+        "state_and_lifecycle_law_are_preserved"
+      ],
+      "escalation_triggers": [
+        "authoritative_state_semantics_change",
+        "lifecycle_continuity_change",
+        "cross_domain_runtime_convenience_bypass"
+      ],
+      "notes": "Runtime work can be implemented, but not as review-free authority."
+    },
+    {
+      "task_family_id": "product_app_shell",
+      "default_action_class": "allowed_with_required_validation",
+      "required_conditions": [
+        "product_scope_is_bounded",
+        "shell_changes_do_not_redefine_runtime_or_semantic_law",
+        "validation_floor_is_run"
+      ],
+      "escalation_triggers": [
+        "instruction_surface_change",
+        "remote_control_implication",
+        "runtime_boundary_redefinition"
+      ],
+      "notes": "Shell work can remain validation-gated when bounded, but it escalates when it begins to reshape runtime or governance meaning."
+    },
+    {
+      "task_family_id": "release_distribution_control_plane",
+      "default_action_class": "strongly_gated_privileged",
+      "required_conditions": [
+        "release_and_trust_surfaces_are_explicit",
+        "human_control_is_explicit",
+        "external_commitment_scope_is_known"
+      ],
+      "escalation_triggers": [
+        "publication_change",
+        "trust_root_change",
+        "channel_advancement",
+        "archive_identity_change"
+      ],
+      "notes": "Release, trust, and publication work is never a routine autonomous class."
+    },
+    {
+      "task_family_id": "validation_audit",
+      "default_action_class": "allowed_with_required_validation",
+      "required_conditions": [
+        "evidence_outputs_are_clearly_non_authoritative",
+        "deterministic_entrypoints_are_used_where_relevant",
+        "reports_are_traceable"
+      ],
+      "escalation_triggers": [
+        "finding_requires_policy_or_doctrine_rewrite",
+        "evidence_is_treated_as_canon"
+      ],
+      "notes": "Audit work is a strong automation candidate, but its outputs do not become authority by themselves."
+    },
+    {
+      "task_family_id": "refactor_convergence",
+      "default_action_class": "strongly_gated_privileged",
+      "required_conditions": [
+        "explicit_human_control",
+        "clear_scope",
+        "replacement_and_ownership_rules_are_known"
+      ],
+      "escalation_triggers": [
+        "broad_multi_layer_change",
+        "destructive_structural_change",
+        "replace_classified_subsystem"
+      ],
+      "notes": "Structural convergence remains a privileged class, not default automation."
+    },
+    {
+      "task_family_id": "packaging_bundling",
+      "default_action_class": "allowed_with_required_validation",
+      "required_conditions": [
+        "packaging_scope_is_support_artifact_only",
+        "no_release_distribution_side_effects",
+        "manifest_or_bundle_outputs_are_auditable"
+      ],
+      "escalation_triggers": [
+        "release_semantics_enter_scope",
+        "publication_channel_change",
+        "trust_bearing_artifact_change"
+      ],
+      "notes": "Packaging remains distinct from release and is safe only while that distinction holds."
+    },
+    {
+      "task_family_id": "documentation_explanation",
+      "default_action_class": "allowed_bounded",
+      "required_conditions": [
+        "canonical_meaning_is_not_changed",
+        "scope_is_explanatory_or_non_foundational",
+        "authority_sources_are_cited_correctly"
+      ],
+      "escalation_triggers": [
+        "normative_meaning_change",
+        "shadow_doctrine_creation"
+      ],
+      "notes": "Explanatory work is the safest mutation class when it does not alter canonical meaning."
+    },
+    {
+      "task_family_id": "analysis_inspection",
+      "default_action_class": "allowed_bounded",
+      "required_conditions": [
+        "work_remains_read_only",
+        "findings_remain_non_authoritative",
+        "scope_is_traceable"
+      ],
+      "escalation_triggers": [
+        "proposal_becomes_mutation",
+        "inspection_is_used_to_claim_authority"
+      ],
+      "notes": "Inspection remains safe while it stays read-only and scoped."
+    }
+  ],
+  "classification_floor_rules": [
+    {
+      "trigger": "canon_or_glossary_meaning_change",
+      "minimum_action_class": "strongly_gated_privileged",
+      "preferred_escalation": "require_privileged_human_control",
+      "notes": "Foundational canon rewrites are not routine review-gated tasks."
+    },
+    {
+      "trigger": "unresolved_ownership_or_root_ambiguity",
+      "minimum_action_class": "strongly_gated_privileged",
+      "preferred_escalation": "preserve_quarantine",
+      "notes": "Ambiguous ownership areas escalate rather than auto-resolve."
+    },
+    {
+      "trigger": "convenience_selected_canonical_root",
+      "minimum_action_class": "prohibited_or_out_of_scope",
+      "preferred_escalation": "refuse_and_defer",
+      "notes": "Convenience cannot decide canonical ownership."
+    },
+    {
+      "trigger": "cross_domain_bridge_law_change",
+      "minimum_action_class": "strongly_gated_privileged",
+      "preferred_escalation": "require_privileged_human_control",
+      "notes": "Bridge-mediated domain interaction remains highly sensitive."
+    },
+    {
+      "trigger": "authoritative_state_semantics_or_lifecycle_continuity_change",
+      "minimum_action_class": "strongly_gated_privileged",
+      "preferred_escalation": "require_privileged_human_control",
+      "notes": "State and continuity law may not be changed as routine runtime maintenance."
+    },
+    {
+      "trigger": "release_publication_or_trust_surface_change",
+      "minimum_action_class": "strongly_gated_privileged",
+      "preferred_escalation": "require_privileged_human_control",
+      "notes": "Release and trust work remains strongly gated."
+    },
+    {
+      "trigger": "late_zeta_live_ops_or_distributed_authority_action",
+      "minimum_action_class": "prohibited_or_out_of_scope",
+      "preferred_escalation": "refuse_and_defer",
+      "notes": "Late live-ops classes wait for later doctrine."
+    },
+    {
+      "trigger": "missing_auditability_for_mutation",
+      "minimum_action_class": "prohibited_or_out_of_scope",
+      "preferred_escalation": "downgrade_to_planning_only",
+      "notes": "If effects cannot be traced, mutation is not safe."
+    },
+    {
+      "trigger": "bounded_read_only_or_explanatory_scope_with_explicit_authority",
+      "minimum_action_class": "allowed_bounded",
+      "preferred_escalation": "proceed_with_validation",
+      "notes": "Low-risk read and explanation work can remain bounded."
+    },
+    {
+      "trigger": "deterministic_validation_or_support_packaging_without_release_semantics",
+      "minimum_action_class": "allowed_with_required_validation",
+      "preferred_escalation": "proceed_with_validation",
+      "notes": "Evidence and support-artifact work remains safe with validation discipline."
+    }
+  ],
+  "non_exposable_or_prohibited_categories": [
+    {
+      "id": "silent_canon_rewrite",
+      "description": "Canonical law may not be rewritten silently or by convenience."
+    },
+    {
+      "id": "ownership_review_bypass",
+      "description": "Ownership review may not be bypassed or silently collapsed."
+    },
+    {
+      "id": "convenience_root_selection",
+      "description": "An actor may not choose the canonical root in an ambiguous split by convenience."
+    },
+    {
+      "id": "automatic_publication_or_trust_change",
+      "description": "Publication, trust-root, signing, or release-channel changes are not normal autonomous action classes."
+    },
+    {
+      "id": "late_zeta_live_ops_without_doctrine",
+      "description": "Live-ops, canary, rollback, distributed handoff, or similar actions remain out of scope without later doctrine."
+    },
+    {
+      "id": "destructive_broad_refactor_without_human_control",
+      "description": "Destructive broad refactors remain prohibited without explicit human control."
+    },
+    {
+      "id": "unformalized_infrastructure_dependency",
+      "description": "Actions whose safety depends on infrastructure or guarantees not yet formalized remain out of scope."
+    },
+    {
+      "id": "runtime_convenience_overriding_state_or_lifecycle_law",
+      "description": "Runtime convenience may not override bridge, state, or lifecycle law."
+    },
+    {
+      "id": "projection_promoted_to_truth",
+      "description": "Projected, mirrored, cached, or generated artifacts may not be promoted to truth or authority by convenience."
+    }
+  ],
+  "authority_constraints": {
+    "safety_policy_must_not_bypass_authority_order": true,
+    "task_catalog_membership_does_not_create_permission": true,
+    "mcp_exposure_does_not_create_permission": true,
+    "mcp_exposure_does_not_create_autonomy": true,
+    "mirrors_do_not_define_permission": true,
+    "remote_access_does_not_create_authority": true,
+    "ambiguous_ownership_requires_escalation": true,
+    "generated_or_projected_artifacts_do_not_gain_authority_by_convenience": true
+  },
+  "ownership_caution_flags": [
+    {
+      "id": "field_vs_fields",
+      "summary": "fields/ remains canonical semantic field substrate and field/ remains transitional."
+    },
+    {
+      "id": "schema_vs_schemas",
+      "summary": "schema/ remains canonical contract law and schemas/ remains validator or projection facing."
+    },
+    {
+      "id": "packs_vs_data_packs",
+      "summary": "packs/ and data/packs/ remain scoped ownership surfaces and are not interchangeable."
+    },
+    {
+      "id": "canonical_vs_generated",
+      "summary": "Canonical artifacts outrank projected, mirrored, cached, and generated evidence."
+    },
+    {
+      "id": "runtime_root_name_bias",
+      "summary": "A runtime root name does not establish canonical runtime or safety authority."
+    },
+    {
+      "id": "stale_planning_sequence",
+      "summary": "Older planning numbering or order drift does not override the active checkpoint."
+    }
+  ],
+  "runtime_state_lifecycle_caution_flags": [
+    {
+      "id": "no_flattened_runtime_vocabulary",
+      "summary": "Safety policy must preserve kernel, component, service, binding, state, and lifecycle distinctions."
+    },
+    {
+      "id": "service_does_not_own_domain_truth",
+      "summary": "No action may let service convenience redefine semantic ownership."
+    },
+    {
+      "id": "availability_not_truth",
+      "summary": "Runtime availability or suspension does not define truth existence."
+    },
+    {
+      "id": "authoritative_state_not_trapped",
+      "summary": "Authoritative truth may not be trapped in transient, projected, or product-local state."
+    },
+    {
+      "id": "lifecycle_preserves_continuity",
+      "summary": "Lifecycle transitions may not silently alter ownership, truth, or continuity guarantees."
+    },
+    {
+      "id": "bridge_and_binding_law_remain_upstream",
+      "summary": "Runtime actions remain subordinate to cross-domain bridge law and domain-service binding law."
+    }
+  ],
+  "release_publication_trust_caution_flags": [
+    {
+      "id": "no_automatic_publication",
+      "summary": "Publishing or advancing release channels is not a routine autonomous action."
+    },
+    {
+      "id": "no_trust_root_or_signing_mutation_without_review",
+      "summary": "Trust roots, signing posture, and signing material changes remain strongly gated."
+    },
+    {
+      "id": "packaging_not_release_distribution",
+      "summary": "Support bundles and checkpoint packaging do not imply release distribution semantics."
+    },
+    {
+      "id": "no_archive_or_manifest_identity_drift_by_convenience",
+      "summary": "Archive, release-manifest, and release-identity surfaces remain trust-bearing and review-heavy."
+    },
+    {
+      "id": "external_commitments_are_privileged",
+      "summary": "Work that affects public commitments, updater behavior, or trust-facing release policy is privileged."
+    }
+  ],
+  "prohibited_conflations": [
+    "cataloged_means_permitted",
+    "exposed_means_permitted",
+    "exposed_means_autonomous",
+    "mirror_means_policy",
+    "prompt_wording_overrides_policy",
+    "ambiguous_root_can_be_resolved_by_convenience",
+    "runtime_refactor_disguised_as_planning",
+    "packaging_equals_release_distribution",
+    "generated_or_projected_equals_canonical",
+    "runtime_convenience_can_override_bridge_state_or_lifecycle_law"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Υ-series",
+    "Ζ-series",
+    "future_enforcement_layers"
+  ],
+  "downstream_assumptions_enabled": {
+    "Υ_series": [
+      "release_and_control_plane_work_must_inherit_the_strongly_gated_and_privileged_classification_for_publication_signing_trust_and_channel_changes",
+      "release_tooling_may_consume_explicit_validation_review_and_refusal_categories_without_inventing_new_permission_semantics"
+    ],
+    "Ζ_series": [
+      "live_ops_handoff_replacement_and_continuity_sensitive_work_must_inherit_the_defer_or_refuse_until_doctrine_rules",
+      "zeta_work_may_reuse_runtime_state_and_lifecycle_caution_flags_as_safety floors"
+    ],
+    "future_enforcement_layers": [
+      "can_map_action_classes_review_escalations_and_floor_rules_into_enforcement_without_reinventing_the_policy_model",
+      "can_distinguish_classification_cataloging_exposure_and_permission_as_separate pipeline stages"
+    ]
+  },
+  "prohibited_downstream_violations": [
+    "treat_cataloged_tasks_as_automatically_safe_or_autonomous",
+    "treat_mcp_exposure_as_permission",
+    "let_remote_access_bypass_ownership_or_release_caution",
+    "invent_a_new_safety_universe_outside_governance_task_and_mcp_doctrine",
+    "flatten_runtime_vocabulary_into_generic_system_or_service_permission_language"
+  ]
+}
