@@ -1,0 +1,297 @@
+{
+  "artifact_id": "spec.dominium.universal_reality_framework",
+  "title": "Dominium Universal Reality Framework",
+  "version": "1.0.0",
+  "generated_for": "Λ-0",
+  "repo_status": "post-Ω/Ξ/Π and post-P-0..P-4 and post-0-0",
+  "status": "derived_normative",
+  "stability": "stable",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "docs/planning/POST_PI_EXECUTION_PLAN.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md"
+  ],
+  "repo_embodiment_roots": [
+    "worldgen",
+    "geo",
+    "reality",
+    "materials",
+    "logic",
+    "signals",
+    "system",
+    "universe",
+    "epistemics",
+    "diegetics",
+    "infrastructure",
+    "machines",
+    "packs/domain",
+    "packs/experience",
+    "packs/law"
+  ],
+  "framework_principles": [
+    {
+      "id": "URF-1",
+      "name": "truth_perceived_render_boundary",
+      "summary": "Truth is authoritative, Perceived is derived observer-scoped state, and Rendered is presentation-only state.",
+      "norms": [
+        "Perceived state must not redefine or mutate Truth.",
+        "Rendered state must not mutate Truth or decide ontology, law, or authority."
+      ]
+    },
+    {
+      "id": "URF-2",
+      "name": "truth_totality",
+      "summary": "Truth is total and authoritative within declared world scope and lawful horizons.",
+      "norms": [
+        "Unmaterialized truth is not undefined.",
+        "Undefined state is lawful only when explicitly declared out of scope or absent by framework or domain contract."
+      ]
+    },
+    {
+      "id": "URF-3",
+      "name": "sparse_materialization",
+      "summary": "Computation and detail realization may be deferred, but authoritative commitments required for the current horizon may not be deferred.",
+      "norms": [
+        "Performance-oriented deferral must not alter semantic meaning.",
+        "Law, identity, provenance, conservation, and replay-critical commitments remain authoritative even when detail is latent."
+      ]
+    },
+    {
+      "id": "URF-4",
+      "name": "minimal_causal_closure",
+      "summary": "Resolved state must be causally sufficient for the relevant interaction and observation horizon.",
+      "norms": [
+        "If a representation cannot answer the lawful question set without guesswork, it must be expanded, refused, or escalated.",
+        "Causal closure is the minimum resolved state sufficient to preserve lawful outcomes and observation at the active horizon."
+      ]
+    },
+    {
+      "id": "URF-5",
+      "name": "epistemic_and_diegetic_refinement",
+      "summary": "Observation and refinement may depend on authority, law, epistemic artifacts, and deterministic policies, but not on silent privilege or convenience.",
+      "norms": [
+        "Camera zoom, renderer privilege, wall-clock time, and thread timing are not lawful refinement authorities.",
+        "Ignorance and secrecy are epistemic conditions, not edits to objective truth."
+      ]
+    },
+    {
+      "id": "URF-6",
+      "name": "representation_integrity",
+      "summary": "Multiple representations are lawful only when they preserve declared invariants and do not silently redefine meaning.",
+      "norms": [
+        "Optimization may change representation but not semantics silently.",
+        "Every downstream representation must declare preserved invariants, summarized commitments, and required expansion conditions."
+      ]
+    },
+    {
+      "id": "URF-7",
+      "name": "ladder_families",
+      "summary": "Primitive, recognized, formalized, substituted, and macro/micro ladder families are lawful views over one substrate rather than separate realities.",
+      "norms": [
+        "Ladder transitions must remain traceable and semantically aligned.",
+        "Later Λ prompts may refine ladder detail but may not reopen the ladder family floor."
+      ]
+    },
+    {
+      "id": "URF-8",
+      "name": "semantic_ascent_and_descent",
+      "summary": "Higher-order meaning must emerge from lawful substrate and be expandable or auditable back into operational detail.",
+      "norms": [
+        "Ascent must be grounded in lawful recognition and provenance.",
+        "Descent must preserve committed meaning or explicit uncertainty; it must not invent detail."
+      ]
+    },
+    {
+      "id": "URF-9",
+      "name": "lawful_substitution_and_capsules",
+      "summary": "Substitution and capsules are lawful condensed forms only when invariants, continuity, and causal closure are preserved.",
+      "norms": [
+        "Capsules are canonical condensed truth forms, not fake worlds.",
+        "Substitution is invalid if it changes meaning silently, loses identity/provenance anchors, or breaks conservation/topology commitments."
+      ]
+    },
+    {
+      "id": "URF-10",
+      "name": "experiential_continuity",
+      "summary": "Expansion, collapse, substitution, migration, and projection changes must preserve lawful player-observable continuity.",
+      "norms": [
+        "Optimization must not create arbitrary teleportation, hidden retcons, or unexplained contradictions.",
+        "Continuity is semantic and causal, not pixel-identity."
+      ]
+    },
+    {
+      "id": "URF-11",
+      "name": "macro_micro_consistency",
+      "summary": "Macro and micro are different lawful granularities over one truth substrate and must preserve committed invariants across expansion and collapse.",
+      "norms": [
+        "Macro must summarize enough to keep future expansion lawful.",
+        "Micro expansion must preserve conserved quantities, topology, identity, provenance, and already-committed lawful constraints."
+      ]
+    },
+    {
+      "id": "URF-12",
+      "name": "interface_agnostic_reality",
+      "summary": "Reality is not tied to one interface mode and must support embodied players, planners, AI agents, NPC labor, and future interfaces.",
+      "norms": [
+        "Interfaces may change access path, observation, and presentation, but not core world semantics.",
+        "Capability surfaces later formalize interface access without allowing interface-specific ontology."
+      ]
+    },
+    {
+      "id": "URF-13",
+      "name": "domain_inheritance",
+      "summary": "All later domain constitutions inherit this framework and may specialize it without silently overriding core reality semantics.",
+      "norms": [
+        "Domains may define specific conserved quantities, refinement triggers, and refusal conditions.",
+        "Domains may not locally redefine Truth, sparse materialization, causal closure, substitution validity, continuity, or interface-agnostic reality."
+      ]
+    }
+  ],
+  "preserved_invariants": [
+    "constitution:A1",
+    "constitution:A2",
+    "constitution:A3",
+    "constitution:A7",
+    "constitution:A8",
+    "constitution:A9",
+    "constitution:A10",
+    "constitution:E2",
+    "constitution:E4",
+    "constitution:E6",
+    "constitution:C1",
+    "constitution:C2",
+    "constitution:C3",
+    "constitution:C4",
+    "glossary:Truth",
+    "glossary:PerceivedModel",
+    "glossary:RenderModel",
+    "glossary:Capability",
+    "glossary:Collapse",
+    "glossary:Expand",
+    "glossary:Domain"
+  ],
+  "allowed_downstream_dependency_classes": [
+    "domain_constitutions",
+    "capability_surface_specs",
+    "representation_ladder_specs",
+    "formalization_chain_specs",
+    "player_desire_and_refusal_maps",
+    "cross_domain_bridge_specs",
+    "agent_governance_policies",
+    "task_and_interface_policies",
+    "runtime_kernel_and_component_specs",
+    "state_externalization_and_snapshot_specs",
+    "release_and_live_ops_constitutions"
+  ],
+  "prohibited_downstream_violations": [
+    "treating_unmaterialized_truth_as_undefined",
+    "allowing_perception_or_render_to_redefine_truth",
+    "silent_semantic_drift_through_optimization",
+    "arbitrary_macro_micro_replacement_without_invariant_preservation",
+    "capsule_or_substitution_use_without_declared_invariants_and_expansion_conditions",
+    "interface_specific_world_ontology",
+    "domain_local_redefinition_of_core_reality_semantics",
+    "migration_or_live_ops_behavior_that_breaks_experiential_continuity",
+    "wallclock_or_thread_timing_dependent_refinement",
+    "lawless_or_provenance_free_refinement"
+  ],
+  "conceptual_ladder_families": [
+    "primitive",
+    "recognized",
+    "formalized",
+    "substituted",
+    "macro_micro"
+  ],
+  "continuity_requirements": [
+    "identity anchors remain stable across expansion, collapse, substitution, migration, and projection changes",
+    "observable cause and effect remain consistent with world law",
+    "changes in fidelity or access must be explainable by lawful refinement or observation conditions",
+    "macro and micro transitions preserve committed invariants and enough summary state for lawful future expansion",
+    "optimization may change representation but must not create unexplained world jumps or retcons"
+  ],
+  "inheritance_rule": {
+    "all_later_domain_constitutions_must_inherit": true,
+    "domains_may_specialize": [
+      "conserved quantities",
+      "refinement triggers",
+      "formalization rules",
+      "capability contracts",
+      "lawful refusal conditions"
+    ],
+    "domains_may_not_redefine": [
+      "truth_perceived_render_boundary",
+      "truth_totality",
+      "sparse_materialization",
+      "minimal_causal_closure",
+      "lawful_representation_and_substitution",
+      "experiential_continuity",
+      "macro_micro_consistency",
+      "interface_agnostic_reality"
+    ]
+  },
+  "downstream_assumptions_enabled": {
+    "sigma": [
+      "governance and task systems must preserve truth/perceived/render separation",
+      "agent and wrapper systems may not redefine ontology",
+      "refusal, redaction, and capability gating are lawful semantic outcomes"
+    ],
+    "phi": [
+      "optimization is lawful only through representation and substitution that preserve invariants",
+      "runtime services must treat latent truth as authoritative substrate rather than undefined empty space",
+      "snapshot, replay, and state externalization work must preserve identity, provenance, and continuity"
+    ],
+    "upsilon_and_zeta": [
+      "release, migration, rollback, and live operations may not silently alter semantic meaning",
+      "deployment and coexistence logic must preserve continuity and explicit identity",
+      "cutover or downgrade flows must not violate the invariant-preserving substitution rule"
+    ]
+  },
+  "ambiguity_eliminations": [
+    {
+      "ambiguity": "unmaterialized_truth_is_undefined",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "optimization_may_change_meaning_silently",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "perception_or_refinement_can_redefine_truth",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "macro_micro_collapse_is_arbitrary_replacement",
+      "resolution": "false"
+    }
+  ],
+  "later_lambda_refinements": [
+    {
+      "prompt_id": "Λ-1",
+      "role": "define reusable domain contract template under the inheritance rule"
+    },
+    {
+      "prompt_id": "Λ-2",
+      "role": "formalize capability surfaces over the universal framework"
+    },
+    {
+      "prompt_id": "Λ-3",
+      "role": "refine representation ladders and semantic ascent/descent detail"
+    },
+    {
+      "prompt_id": "Λ-4",
+      "role": "define formalization chain and substitution proof criteria"
+    },
+    {
+      "prompt_id": "Λ-5",
+      "role": "define player desire acceptance and refusal mapping"
+    },
+    {
+      "prompt_id": "Λ-6",
+      "role": "define cross-domain bridges after semantic ownership review"
+    }
+  ]
+}
