@@ -1,0 +1,303 @@
+{
+  "artifact_id": "dominium.runtime.component_model",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-02",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma0_post_c_sigma0_phia1_post_phi0_pre_phi1",
+    "enabling_prompt": "Φ-1 — COMPONENT_MODEL-0",
+    "upstream_runtime_floor": "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+    "next_refinement_prompts": [
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Σ-1",
+      "Σ-2"
+    ]
+  },
+  "component_definition": {
+    "summary": "A component is a bounded runtime-facing functional unit with explicit identity, boundary, responsibilities, and upstream inputs operating within kernel law.",
+    "component_is_not": [
+      "runtime_kernel",
+      "service",
+      "module",
+      "domain_contract_owner",
+      "product_shell",
+      "pack_or_content_identity",
+      "tool_by_default",
+      "mirror_or_projection_owner"
+    ]
+  },
+  "component_classes": [
+    {
+      "id": "platform_component",
+      "description": "Provides bounded platform, host, or environment adaptation within kernel law.",
+      "representative_evidence_roots": [
+        "engine/modules/system",
+        "engine/modules/sys",
+        "client/adapters"
+      ]
+    },
+    {
+      "id": "execution_runtime_substrate_component",
+      "description": "Provides execution-facing runtime capabilities such as scheduling, state coordination, process hosting, or deterministic execution support.",
+      "representative_evidence_roots": [
+        "engine/modules/execution",
+        "engine/modules/core",
+        "app",
+        "core",
+        "process",
+        "server/runtime"
+      ]
+    },
+    {
+      "id": "observation_presentation_support_component",
+      "description": "Supports lawful projection, observation, diagnostics, or presentation-adjacent runtime behavior without owning truth.",
+      "representative_evidence_roots": [
+        "engine/modules/view",
+        "engine/modules/ui",
+        "client/presentation",
+        "client/observability",
+        "control/view"
+      ]
+    },
+    {
+      "id": "control_integration_component",
+      "description": "Supports negotiation, routing, orchestration, transport, or integration across lawful runtime layers.",
+      "representative_evidence_roots": [
+        "compat",
+        "control",
+        "net",
+        "libs/contracts"
+      ]
+    },
+    {
+      "id": "domain_support_component",
+      "description": "Supports runtime execution over specific semantic domain families without redefining domain contracts.",
+      "representative_evidence_roots": [
+        "engine/modules/world",
+        "game/core/execution",
+        "core/spatial",
+        "core/hazards",
+        "process/research"
+      ]
+    },
+    {
+      "id": "tooling_diagnostic_component",
+      "description": "Supports inspection, diagnostics, replay, proof, or operator-facing technical observability without becoming identical to a tool product.",
+      "representative_evidence_roots": [
+        "tools",
+        "control/proof",
+        "server/persistence",
+        "engine/modules/replay",
+        "app"
+      ]
+    },
+    {
+      "id": "policy_compatibility_support_component",
+      "description": "Supports compatibility, negotiation, refusal, or runtime policy enforcement without redefining semantic or release law.",
+      "representative_evidence_roots": [
+        "compat/descriptor",
+        "compat/handshake",
+        "compat/negotiation",
+        "data/registries"
+      ]
+    }
+  ],
+  "responsibility_categories": [
+    "expose_declared_functionality_within_kernel_law",
+    "consume_required_semantic_and_governance_inputs",
+    "preserve_declared_invariants",
+    "maintain_truth_perceived_render_compatibility",
+    "maintain_bounded_dependency_and_exposure_surfaces",
+    "support_explicit_identity_and_compatibility_declaration",
+    "support_later_observability_validation_and_lifecycle_refinement",
+    "participate_in_explicit_refusal_degradation_and_compatibility_behavior"
+  ],
+  "non_responsibility_categories": [
+    "semantic_ontology_definition",
+    "domain_ownership_definition",
+    "canonical_governance_definition",
+    "product_shell_semantics",
+    "release_publication_truth",
+    "cross_domain_bridge_redefinition",
+    "ownership_reclassification",
+    "convenience_based_authority_rebinding"
+  ],
+  "boundary_rules": {
+    "allowed_dependencies": [
+      "runtime_kernel",
+      "canonical_semantic_contracts_and_specs",
+      "explicit_runtime_policies_and_registries",
+      "explicit_component_dependencies",
+      "implementation_modules",
+      "lawful_pack_and_compatibility_inputs"
+    ],
+    "allowed_exposures": [
+      "bounded_runtime_functionality",
+      "diagnostics_and_observability_hooks",
+      "integration_or_attach_points",
+      "compatibility_and_refusal_surfaces",
+      "service_composition_inputs"
+    ],
+    "forbidden_boundary_violations": [
+      "hidden_semantic_ownership",
+      "upward_dependency_on_product_convenience_as_authority",
+      "binding_to_projected_or_generated_roots_as_canonical_owners",
+      "domain_service_product_collapse",
+      "silent_cross_domain_coupling",
+      "ui_or_presentation_colonization_of_runtime_truth"
+    ]
+  },
+  "dependency_constraints": {
+    "components_depend_downward_or_sideways_on_runtime_and_canonical_inputs": true,
+    "components_do_not_depend_upward_on_products_for_semantic_identity": true,
+    "components_must_not_infer_identity_from_code_adjacency": true
+  },
+  "identity_compatibility_expectations": {
+    "required_identity_fields_later": [
+      "component_id",
+      "component_class",
+      "stability",
+      "declared_boundary_scope",
+      "declared_upstream_dependencies",
+      "compatibility_profile_or_contract_refs"
+    ],
+    "explicit_non_equivalences": [
+      "component_identity_is_not_build_identity",
+      "component_identity_is_not_product_identity",
+      "component_identity_is_not_pack_identity",
+      "component_identity_is_not_module_filename"
+    ],
+    "compatibility_rule": "Compatibility must be explicit and later machine-readable; it may not be guessed from naming alone."
+  },
+  "relationship_rules": {
+    "kernel": "Components operate downstream of the runtime kernel and within kernel law.",
+    "services": "Services later compose, host, coordinate, or expose components; services are not identical to components.",
+    "modules": "Modules are concrete implementation or discovery surfaces; they do not automatically define component identity.",
+    "domains": "Domains remain semantic contract owners; components may support domain execution without redefining domain law.",
+    "products": "Products consume or host components through lawful boundaries and do not own component law by default.",
+    "packs_content": "Packs and content remain declarative semantic expansion surfaces and are not runtime components.",
+    "tools": "Tools may consume or inspect components, but tools are not components by default.",
+    "mirrors_adapters": "Mirrors and adapters may describe or route into components without becoming canonical component owners."
+  },
+  "lifecycle_expectations": [
+    "activation_preconditions_must_be_modelable",
+    "attach_detach_expectations_must_be_modelable",
+    "refusal_and_degradation_behavior_must_be_modelable",
+    "quiescence_and_shutdown_expectations_must_be_modelable",
+    "compatibility_and_migration_expectations_must_be_modelable"
+  ],
+  "observability_validation_expectations": [
+    "component_boundaries_support_targeted_validation",
+    "diagnostics_are_attributable_to_component_scope",
+    "compatibility_and_refusal_issues_are_traceable",
+    "component_level_invariants_are_auditable"
+  ],
+  "grounding_roots": {
+    "extend_evidence": [
+      "engine",
+      "game",
+      "app",
+      "compat",
+      "control",
+      "core",
+      "net",
+      "process",
+      "server/runtime",
+      "server/persistence",
+      "libs"
+    ],
+    "architecture_evidence_surfaces": [
+      "data/architecture/module_registry.v1.json",
+      "data/architecture/module_boundary_rules.v1.json",
+      "data/registries/component_graph_registry.json",
+      "data/registries/xstack_components.json"
+    ],
+    "do_not_infer_canonicality_from": [
+      "runtime_root_name_alone",
+      "module_registry_presence_alone",
+      "code_adjacency_alone",
+      "build_target_name_alone"
+    ]
+  },
+  "ownership_cautions": [
+    {
+      "id": "ownership_sensitive_fields",
+      "paths": [
+        "field",
+        "fields"
+      ],
+      "rule": "fields_is_canonical_semantic_field_substrate_and_field_is_only_a_transitional_facade"
+    },
+    {
+      "id": "ownership_sensitive_schema",
+      "paths": [
+        "schema",
+        "schemas"
+      ],
+      "rule": "schema_law_is_canonical_and_schema_projections_do_not_own_component_semantics"
+    },
+    {
+      "id": "ownership_sensitive_packs",
+      "paths": [
+        "packs",
+        "data/packs"
+      ],
+      "rule": "packaged_activation_scope_and_authored_pack_declaration_scope_are_not_interchangeable"
+    },
+    {
+      "id": "generated_and_projected_surfaces",
+      "paths": [
+        "build",
+        "artifacts",
+        ".xstack_cache",
+        "run_meta"
+      ],
+      "rule": "generated_or_mirrored_outputs_are_evidence_only_and_not_component_authority"
+    },
+    {
+      "id": "thin_runtime_root",
+      "paths": [
+        "runtime"
+      ],
+      "rule": "runtime_root_name_does_not_establish_component_authority"
+    },
+    {
+      "id": "planning_order_drift",
+      "paths": [
+        "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
+        "data/planning/final_prompt_inventory.json",
+        "data/planning/dependency_graph_post_pi.json"
+      ],
+      "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
+    }
+  ],
+  "prohibited_component_shapes": [
+    "component_as_hidden_semantic_owner",
+    "component_as_service_module_domain_or_product_catch_all",
+    "components_defined_purely_by_code_adjacency",
+    "components_bypassing_cross_domain_bridge_law",
+    "components_binding_to_ownership_ambiguous_roots",
+    "components_collapsing_runtime_execution_with_presentation_semantics",
+    "components_deriving_identity_only_from_build_targets_or_shells",
+    "components_treating_pack_content_as_component_identity"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Φ-2 — RUNTIME_SERVICES-0",
+    "Σ-1",
+    "Σ-2",
+    "Φ-3",
+    "Φ-4",
+    "Φ-5",
+    "Υ-series",
+    "Ζ-series"
+  ],
+  "prohibited_downstream_violations": [
+    "redefine_semantic_truth_in_component_law",
+    "treat_component_as_just_module",
+    "treat_component_as_just_service",
+    "let_products_define_component_identity",
+    "bypass_semantic_ownership_review_for_component_convenience",
+    "freeze_loader_or_service_detail_as_if_defined_by_phi1"
+  ]
+}
