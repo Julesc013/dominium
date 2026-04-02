@@ -1,0 +1,418 @@
+{
+  "artifact_id": "reality.capability_surface_taxonomy",
+  "title": "Dominium Capability Surface Taxonomy",
+  "version": "1.0.0",
+  "generated_for": "Λ-2",
+  "repo_status": "post-Ω/Ξ/Π and post-P-0..P-4 and post-0-0 and post-Λ-0 and post-Λ-1",
+  "status": "derived_normative_operational",
+  "stability": "stable",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "docs/interaction/INTERACTION_MODEL.md",
+    "schemas/capability.schema.json",
+    "schemas/affordance.schema.json",
+    "schemas/authority_context.schema.json"
+  ],
+  "repo_embodiment_surfaces": [
+    "control.capability",
+    "control.planning",
+    "control.proof",
+    "control.view",
+    "interaction.task",
+    "inspection",
+    "tools/controlx",
+    "tools/xstack",
+    "docs/interaction/INTERACTION_MODEL.md",
+    "schemas/capability.schema.json",
+    "schemas/affordance.schema.json",
+    "schemas/authority_context.schema.json"
+  ],
+  "core_definition": {
+    "summary": "A capability surface is a lawful, machine-readable interaction surface exposed over domain-grounded substrate and affordances. It describes who may attempt what, under which conditions, and through which lawful Process routes, without becoming truth, observation, or UI.",
+    "not_equivalent_to": [
+      "primitive_truth",
+      "recognition",
+      "affordance",
+      "observation_binding",
+      "ui_binding"
+    ]
+  },
+  "capability_surface_classes": [
+    {
+      "class_id": "embodied_manipulation",
+      "summary": "Direct embodied interaction with tools, bodies, materials, and nearby environmental features.",
+      "typical_hosts": [
+        "assemblies",
+        "materials",
+        "embodiment structures",
+        "local environment features"
+      ],
+      "common_action_categories": [
+        "use",
+        "occupy",
+        "request_action",
+        "maintain"
+      ],
+      "common_preconditions": [
+        "proximity",
+        "reachability",
+        "body or tool compatibility",
+        "authority to attempt"
+      ]
+    },
+    {
+      "class_id": "occupancy_use_point",
+      "summary": "Position-bound or slot-bound access surfaces such as entry, docking, mounting, seating, or operating stations.",
+      "typical_hosts": [
+        "assemblies",
+        "vehicles",
+        "buildings",
+        "machines"
+      ],
+      "common_action_categories": [
+        "occupy",
+        "reserve",
+        "use"
+      ],
+      "common_preconditions": [
+        "slot availability",
+        "compatibility",
+        "access right",
+        "safe state"
+      ]
+    },
+    {
+      "class_id": "transport_control",
+      "summary": "Control and routing surfaces for movement, piloting, dispatch, loading, and transport coordination.",
+      "typical_hosts": [
+        "vehicles",
+        "transport networks",
+        "route systems"
+      ],
+      "common_action_categories": [
+        "command",
+        "route",
+        "transfer",
+        "plan"
+      ],
+      "common_preconditions": [
+        "network access",
+        "authority",
+        "vehicle or route availability",
+        "state validity"
+      ]
+    },
+    {
+      "class_id": "machine_process_io",
+      "summary": "Input, output, and control surfaces over machines, instruments, and process hosts.",
+      "typical_hosts": [
+        "machines",
+        "instruments",
+        "process-capable assemblies"
+      ],
+      "common_action_categories": [
+        "configure",
+        "request_action",
+        "inspect",
+        "command"
+      ],
+      "common_preconditions": [
+        "powered or connected state",
+        "host readiness",
+        "operator compatibility"
+      ]
+    },
+    {
+      "class_id": "route_network_access",
+      "summary": "Access, switching, linking, or traversal surfaces over graph, route, and signal structures.",
+      "typical_hosts": [
+        "route graphs",
+        "signal networks",
+        "infrastructure nodes"
+      ],
+      "common_action_categories": [
+        "route",
+        "reserve",
+        "inspect",
+        "configure"
+      ],
+      "common_preconditions": [
+        "network membership",
+        "topology validity",
+        "authorization",
+        "compatible endpoint state"
+      ]
+    },
+    {
+      "class_id": "institutional_organizational",
+      "summary": "Authority, policy, jurisdiction, assignment, governance, and coordination surfaces over organizations and institutions.",
+      "typical_hosts": [
+        "institutions",
+        "jurisdictional structures",
+        "organizational roles",
+        "formalizations"
+      ],
+      "common_action_categories": [
+        "command",
+        "coordinate",
+        "plan",
+        "inspect"
+      ],
+      "common_preconditions": [
+        "organizational authority",
+        "recognized role",
+        "formal authorization",
+        "epistemic legitimacy"
+      ]
+    },
+    {
+      "class_id": "planning_command",
+      "summary": "Abstract planning, delegation, reservation, and command surfaces over lawful substrate.",
+      "typical_hosts": [
+        "planning systems",
+        "institutions",
+        "task structures",
+        "route or logistics structures"
+      ],
+      "common_action_categories": [
+        "plan",
+        "command",
+        "coordinate",
+        "reserve"
+      ],
+      "common_preconditions": [
+        "capability availability",
+        "authority",
+        "planner scope",
+        "host visibility"
+      ]
+    },
+    {
+      "class_id": "inspection_instrumentation",
+      "summary": "Inspection, measurement, audit, probe, and diagnostic surfaces for lawful observation actions.",
+      "typical_hosts": [
+        "instruments",
+        "inspection tools",
+        "hosts with inspectable state"
+      ],
+      "common_action_categories": [
+        "inspect",
+        "request_action"
+      ],
+      "common_preconditions": [
+        "lawful observation path",
+        "instrumentation",
+        "epistemic access",
+        "state visibility"
+      ]
+    },
+    {
+      "class_id": "maintenance_repair",
+      "summary": "Service, repair, calibration, upkeep, and restoration surfaces.",
+      "typical_hosts": [
+        "machines",
+        "infrastructure",
+        "assemblies",
+        "networks"
+      ],
+      "common_action_categories": [
+        "maintain",
+        "repair",
+        "inspect",
+        "configure"
+      ],
+      "common_preconditions": [
+        "failure or wear state",
+        "service compatibility",
+        "material availability",
+        "authority"
+      ]
+    },
+    {
+      "class_id": "automation_integration",
+      "summary": "Machine-readable orchestration, protocol, and automation surfaces over lawful capabilities.",
+      "typical_hosts": [
+        "machine systems",
+        "control systems",
+        "integration endpoints"
+      ],
+      "common_action_categories": [
+        "automate",
+        "configure",
+        "command",
+        "inspect"
+      ],
+      "common_preconditions": [
+        "protocol compatibility",
+        "authority",
+        "verification readiness",
+        "host integration state"
+      ]
+    },
+    {
+      "class_id": "interface_adapter",
+      "summary": "Adapter surfaces that map lawful capability surfaces into specific interface modes without changing capability meaning.",
+      "typical_hosts": [
+        "client projections",
+        "tool adapters",
+        "remote interfaces",
+        "future interface layers"
+      ],
+      "common_action_categories": [
+        "inspect",
+        "submit_intent",
+        "command",
+        "plan"
+      ],
+      "common_preconditions": [
+        "adapter integrity",
+        "surface linkage",
+        "authority propagation",
+        "no semantic widening"
+      ]
+    }
+  ],
+  "actor_classes": [
+    {
+      "actor_class": "embodied_player",
+      "summary": "A player acting through embodied, local, diegetic, or otherwise physically constrained pathways.",
+      "lawful_access_notes": [
+        "Embodied access may require proximity, occupancy, tooling, or bodily compatibility.",
+        "Embodied access is not the only valid access form, but it remains law-governed."
+      ]
+    },
+    {
+      "actor_class": "embodied_npc",
+      "summary": "A non-player embodied actor acting through lawful local pathways.",
+      "lawful_access_notes": [
+        "NPC access remains grounded in the same substrate and does not receive silent special powers."
+      ]
+    },
+    {
+      "actor_class": "abstract_planner",
+      "summary": "A planning actor using abstract, command, reservation, or delegation surfaces.",
+      "lawful_access_notes": [
+        "Abstract planning must not grant impossible powers absent from lawful substrate.",
+        "Planning surfaces still depend on authority, scope, and host validity."
+      ]
+    },
+    {
+      "actor_class": "ai_agent",
+      "summary": "An AI agent operating through governed, machine-readable capability surfaces.",
+      "lawful_access_notes": [
+        "AI interaction remains capability- and authority-bound.",
+        "AI access must not bypass Law, refusal, or epistemic limits."
+      ]
+    },
+    {
+      "actor_class": "organization_institution",
+      "summary": "An organizational or institutional actor acting through formal authority structures.",
+      "lawful_access_notes": [
+        "Institutional action requires recognized role, jurisdiction, or formal authority."
+      ]
+    },
+    {
+      "actor_class": "machine_automation",
+      "summary": "A machine or automation system using explicit integration and automation surfaces.",
+      "lawful_access_notes": [
+        "Automation is not implicit permission. It must remain verified, compatible, and authority-bound."
+      ]
+    },
+    {
+      "actor_class": "remote_operator",
+      "summary": "A remote operator acting through lawful remote or mediated surfaces.",
+      "lawful_access_notes": [
+        "Remote access changes path, not ontology.",
+        "Remote access must not erase physical or institutional limits that still matter."
+      ]
+    },
+    {
+      "actor_class": "future_interface_adapter",
+      "summary": "A future interface or adapter layer that maps onto existing lawful capability surfaces.",
+      "lawful_access_notes": [
+        "Adapters may translate surfaces into new modalities but may not redefine capability meaning."
+      ]
+    }
+  ],
+  "relationship_notes": {
+    "capability_surface_vs_affordance": "Affordances are domain-level actionable relationships. Capability surfaces expose those affordances as explicit interaction surfaces for actor classes and interface paths.",
+    "capability_surface_vs_recognition": "Recognitions identify or classify structure. Capability surfaces may attach to recognized structures but do not replace recognition or substrate meaning.",
+    "capability_surface_vs_observation_binding": "Observation bindings expose what can be perceived or inspected. Capability surfaces expose what can be attempted. Detectability and usability are distinct.",
+    "capability_surface_vs_ui_binding": "UI and control bindings are presentation and input mappings over capability surfaces. They are not the capability surfaces themselves.",
+    "capability_surface_vs_truth": "Capability surfaces do not create or mutate truth by fiat. They route lawful attempts into Processes under Law and AuthorityContext."
+  },
+  "visibility_states": [
+    "exists",
+    "detectable",
+    "usable",
+    "authorized"
+  ],
+  "failure_states": [
+    "available",
+    "blocked",
+    "degraded",
+    "unavailable",
+    "unsafe",
+    "invalid"
+  ],
+  "extensibility_rules": [
+    "Later domains may specialize capability-surface classes, but only as explicit refinements of the constitutional classes listed here.",
+    "Later domains must link capability surfaces back to domain contracts, affordances, host structures, and lawful Process families.",
+    "New actor classes require explicit artifact updates rather than ad hoc local invention.",
+    "Interface adapters may extend presentation and invocation pathways, but must not widen capability meaning silently."
+  ],
+  "forbidden_conflations": [
+    "capability_surface_is_ui_binding",
+    "capability_surface_is_control_binding",
+    "capability_surface_is_affordance",
+    "capability_surface_is_observation_channel",
+    "capability_surface_redefines_truth",
+    "surface_invocation_bypasses_process",
+    "abstract_access_grants_impossible_power",
+    "ad_hoc_object_tags_define_capability"
+  ],
+  "linkage_expectations": [
+    "Each instantiated capability surface must reference at least one domain contract.",
+    "Each instantiated capability surface should reference linked affordances or host structures explicitly.",
+    "AuthorityContext remains the canonical authority envelope for admission and observation scope.",
+    "Observation channels and detectability rules remain distinct from capability existence and authorization.",
+    "Interface adapters map to existing lawful surfaces instead of becoming new ontology."
+  ],
+  "ambiguity_eliminations": [
+    {
+      "ambiguity": "ui_bindings_are_capability_surfaces",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "capability_surfaces_can_redefine_truth",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "abstract_access_can_grant_impossible_powers",
+      "resolution": "false"
+    },
+    {
+      "ambiguity": "capability_surface_invocation_can_bypass_processes",
+      "resolution": "false"
+    }
+  ],
+  "downstream_consumers": {
+    "later_lambda": [
+      "Λ-3 representation ladders can refine how capability surfaces project across representations.",
+      "Λ-4 formalization chain can attach proof and substitution criteria to capability surfaces.",
+      "Λ-5 can map player desire and refusal onto lawful capability classes.",
+      "Λ-6 can bridge domain capability surfaces without collapsing ownership."
+    ],
+    "sigma": [
+      "Σ can govern human, agent, tool, and MCP interaction against one shared capability vocabulary."
+    ],
+    "phi": [
+      "Φ can map input, runtime service, planner, automation, and interface abstractions onto lawful capability surfaces instead of ad hoc tags."
+    ]
+  }
+}

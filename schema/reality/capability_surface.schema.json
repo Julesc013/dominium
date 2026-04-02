@@ -1,0 +1,979 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Capability Surface Schema",
+  "version": "1.0.0",
+  "x-schema-id": "dominium.schema.reality.capability_surface",
+  "x-stability": "stable",
+  "description": "Canonical Dominium capability-surface structure. Capability surfaces expose lawful interaction surfaces over domain-grounded substrate and affordances without redefining truth, observation, or UI semantics.",
+  "x-doc-ref": [
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md"
+  ],
+  "type": "object",
+  "required": [
+    "contract_kind",
+    "schema_version",
+    "inherits_from_framework",
+    "identity",
+    "host_relationship",
+    "actor_compatibility",
+    "preconditions",
+    "invocation_model",
+    "visibility_and_discoverability",
+    "failure_and_degradation",
+    "composition",
+    "verification",
+    "compatibility_and_stability",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "capabilitySurfaceClass": {
+      "type": "string",
+      "enum": [
+        "embodied_manipulation",
+        "occupancy_use_point",
+        "transport_control",
+        "machine_process_io",
+        "route_network_access",
+        "institutional_organizational",
+        "planning_command",
+        "inspection_instrumentation",
+        "maintenance_repair",
+        "automation_integration",
+        "interface_adapter"
+      ]
+    },
+    "actorClass": {
+      "type": "string",
+      "enum": [
+        "embodied_player",
+        "embodied_npc",
+        "abstract_planner",
+        "ai_agent",
+        "organization_institution",
+        "machine_automation",
+        "remote_operator",
+        "future_interface_adapter"
+      ]
+    },
+    "supportState": {
+      "type": "string",
+      "enum": [
+        "supported",
+        "conditional",
+        "not_supported"
+      ]
+    },
+    "invocationCategory": {
+      "type": "string",
+      "enum": [
+        "inspect",
+        "request_action",
+        "submit_intent",
+        "command",
+        "plan",
+        "coordinate",
+        "maintain",
+        "repair",
+        "configure",
+        "automate",
+        "route",
+        "reserve",
+        "transfer",
+        "use",
+        "occupy"
+      ]
+    }
+  },
+  "properties": {
+    "contract_kind": {
+      "type": "string",
+      "const": "capability_surface"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "inherits_from_framework": {
+      "type": "object",
+      "required": [
+        "framework_artifact_id",
+        "domain_template_artifact",
+        "minimum_framework_version",
+        "minimum_domain_template_version",
+        "prohibited_conflations",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "framework_artifact_id": {
+          "type": "string",
+          "const": "spec.dominium.universal_reality_framework"
+        },
+        "domain_template_artifact": {
+          "type": "string",
+          "const": "spec.dominium.domain_contract_template"
+        },
+        "minimum_framework_version": {
+          "$ref": "#/$defs/semver"
+        },
+        "minimum_domain_template_version": {
+          "$ref": "#/$defs/semver"
+        },
+        "prohibited_conflations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "capability_surface_id",
+        "label",
+        "summary",
+        "capability_surface_class",
+        "action_categories",
+        "semantic_scope_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "capability_surface_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "summary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "capability_surface_class": {
+          "$ref": "#/$defs/capabilitySurfaceClass"
+        },
+        "action_categories": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/invocationCategory"
+          }
+        },
+        "semantic_scope_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "host_relationship": {
+      "type": "object",
+      "required": [
+        "linked_domain_contract_refs",
+        "linked_affordance_refs",
+        "host_structure_refs",
+        "recognized_host_refs",
+        "primitive_host_refs",
+        "truth_classes_touched",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "linked_domain_contract_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "linked_affordance_refs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "host_structure_refs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "recognized_host_refs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "primitive_host_refs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "truth_classes_touched": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "actor_compatibility": {
+      "type": "object",
+      "required": [
+        "supported_actor_classes",
+        "actor_bindings",
+        "abstract_access_does_not_expand_law",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "supported_actor_classes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/actorClass"
+          }
+        },
+        "actor_bindings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "actor_class",
+              "support_state",
+              "access_modes",
+              "authority_requirements",
+              "epistemic_requirements",
+              "impossible_power_escalation_forbidden",
+              "notes"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "actor_class": {
+                "$ref": "#/$defs/actorClass"
+              },
+              "support_state": {
+                "$ref": "#/$defs/supportState"
+              },
+              "access_modes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/invocationCategory"
+                }
+              },
+              "authority_requirements": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "epistemic_requirements": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "impossible_power_escalation_forbidden": {
+                "type": "boolean",
+                "const": true
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "abstract_access_does_not_expand_law": {
+          "type": "boolean",
+          "const": true
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "preconditions": {
+      "type": "object",
+      "required": [
+        "validity_conditions",
+        "activation_conditions",
+        "authorization_requirements",
+        "epistemic_requirements",
+        "material_or_connection_requirements",
+        "environmental_or_state_requirements",
+        "organizational_requirements",
+        "degradation_triggers",
+        "not_universally_active",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "validity_conditions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "activation_conditions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "authorization_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "epistemic_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "material_or_connection_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "environmental_or_state_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "organizational_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "degradation_triggers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "not_universally_active": {
+          "type": "boolean",
+          "const": true
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "invocation_model": {
+      "type": "object",
+      "required": [
+        "invocation_categories",
+        "process_refs",
+        "authority_context_requirements",
+        "result_categories",
+        "truth_mutation_rule",
+        "ui_binding_is_not_surface",
+        "direct_truth_mutation_forbidden",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "invocation_categories": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/invocationCategory"
+          }
+        },
+        "process_refs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "authority_context_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "result_categories": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "truth_mutation_rule": {
+          "type": "string",
+          "const": "surfaces_route_to_lawful_processes_only"
+        },
+        "ui_binding_is_not_surface": {
+          "type": "boolean",
+          "const": true
+        },
+        "direct_truth_mutation_forbidden": {
+          "type": "boolean",
+          "const": true
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "visibility_and_discoverability": {
+      "type": "object",
+      "required": [
+        "surface_may_exist_without_detection",
+        "detectability_rules",
+        "usability_rules",
+        "authorization_rules",
+        "observation_channel_refs",
+        "presentation_binding_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "surface_may_exist_without_detection": {
+          "type": "boolean",
+          "const": true
+        },
+        "detectability_rules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "usability_rules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "authorization_rules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "observation_channel_refs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "presentation_binding_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "failure_and_degradation": {
+      "type": "object",
+      "required": [
+        "possible_states",
+        "failure_modes",
+        "capability_surface_does_not_imply_success",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "possible_states": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "available",
+              "blocked",
+              "degraded",
+              "unavailable",
+              "unsafe",
+              "invalid"
+            ]
+          }
+        },
+        "failure_modes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "failure_id",
+              "state",
+              "trigger_conditions",
+              "consequence_summary",
+              "refusal_or_degrade_response",
+              "recoverability"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "failure_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "blocked",
+                  "degraded",
+                  "unavailable",
+                  "unsafe",
+                  "invalid"
+                ]
+              },
+              "trigger_conditions": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "consequence_summary": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "refusal_or_degrade_response": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "recoverability": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "capability_surface_does_not_imply_success": {
+          "type": "boolean",
+          "const": true
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "required": [
+        "composition_mode",
+        "child_surface_refs",
+        "aggregated_affordance_refs",
+        "preserves_underlying_meaning",
+        "opaque_monolith_forbidden",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "composition_mode": {
+          "type": "string",
+          "enum": [
+            "atomic",
+            "composite",
+            "adapter",
+            "mixed"
+          ]
+        },
+        "child_surface_refs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "aggregated_affordance_refs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "preserves_underlying_meaning": {
+          "type": "boolean",
+          "const": true
+        },
+        "opaque_monolith_forbidden": {
+          "type": "boolean",
+          "const": true
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "invariant_checks",
+        "actor_compatibility_checks",
+        "condition_satisfaction_checks",
+        "process_boundary_checks",
+        "refusal_checks",
+        "audit_hooks",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "invariant_checks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "actor_compatibility_checks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "condition_satisfaction_checks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "process_boundary_checks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "refusal_checks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "audit_hooks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "compatibility_and_stability": {
+      "type": "object",
+      "required": [
+        "contract_version",
+        "stability",
+        "replacement_target",
+        "future_series_note",
+        "compatibility_considerations",
+        "semantic_contract_pin",
+        "ownership_sensitivity_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/semver"
+        },
+        "stability": {
+          "type": "string",
+          "enum": [
+            "experimental",
+            "provisional",
+            "stable",
+            "core"
+          ]
+        },
+        "replacement_target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "future_series_note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "compatibility_considerations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "semantic_contract_pin": {
+          "type": "object",
+          "required": [
+            "framework_artifact_id",
+            "framework_version_minimum",
+            "domain_template_artifact",
+            "domain_template_version_minimum",
+            "prohibited_conflations"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "framework_artifact_id": {
+              "type": "string",
+              "const": "spec.dominium.universal_reality_framework"
+            },
+            "framework_version_minimum": {
+              "$ref": "#/$defs/semver"
+            },
+            "domain_template_artifact": {
+              "type": "string",
+              "const": "spec.dominium.domain_contract_template"
+            },
+            "domain_template_version_minimum": {
+              "$ref": "#/$defs/semver"
+            },
+            "prohibited_conflations": {
+              "$ref": "#/$defs/stringArray"
+            },
+            "extensions": {
+              "$ref": "#/$defs/extensions"
+            }
+          }
+        },
+        "ownership_sensitivity_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "extensions": {
+      "$ref": "#/$defs/extensions"
+    }
+  },
+  "examples": [
+    {
+      "contract_kind": "capability_surface",
+      "schema_version": "1.0.0",
+      "inherits_from_framework": {
+        "framework_artifact_id": "spec.dominium.universal_reality_framework",
+        "domain_template_artifact": "spec.dominium.domain_contract_template",
+        "minimum_framework_version": "1.0.0",
+        "minimum_domain_template_version": "1.0.0",
+        "prohibited_conflations": [
+          "capability_surface_is_ui_binding",
+          "capability_surface_is_affordance",
+          "capability_surface_redefines_truth",
+          "surface_invocation_bypasses_process"
+        ],
+        "notes": [
+          "Capability surfaces inherit the universal reality and domain-contract floor."
+        ]
+      },
+      "identity": {
+        "capability_surface_id": "capability_surface.example.inspect_console",
+        "label": "Inspect Console",
+        "summary": "Illustrative inspection surface exposed over a lawful console host.",
+        "capability_surface_class": "inspection_instrumentation",
+        "action_categories": [
+          "inspect",
+          "request_action"
+        ],
+        "semantic_scope_notes": [
+          "Example only. Real instances must bind to real domain contracts and affordances."
+        ]
+      },
+      "host_relationship": {
+        "linked_domain_contract_refs": [
+          "domain.example.placeholder"
+        ],
+        "linked_affordance_refs": [
+          "affordance.example.inspect"
+        ],
+        "host_structure_refs": [
+          "assembly.console.alpha"
+        ],
+        "recognized_host_refs": [
+          "recognition.console.instrument"
+        ],
+        "primitive_host_refs": [
+          "primitive.console.body"
+        ],
+        "truth_classes_touched": [
+          "example.truth.placeholder"
+        ],
+        "notes": [
+          "Capability surfaces expose lawful action over host structures without becoming truth."
+        ]
+      },
+      "actor_compatibility": {
+        "supported_actor_classes": [
+          "embodied_player",
+          "remote_operator",
+          "ai_agent"
+        ],
+        "actor_bindings": [
+          {
+            "actor_class": "embodied_player",
+            "support_state": "conditional",
+            "access_modes": [
+              "inspect",
+              "use"
+            ],
+            "authority_requirements": [
+              "entitlement.inspect"
+            ],
+            "epistemic_requirements": [
+              "line_of_sight",
+              "instrument_present"
+            ],
+            "impossible_power_escalation_forbidden": true,
+            "notes": [
+              "Embodied access still requires lawful proximity and authority."
+            ]
+          },
+          {
+            "actor_class": "remote_operator",
+            "support_state": "conditional",
+            "access_modes": [
+              "inspect",
+              "command"
+            ],
+            "authority_requirements": [
+              "operator_authority"
+            ],
+            "epistemic_requirements": [
+              "live_link"
+            ],
+            "impossible_power_escalation_forbidden": true,
+            "notes": [
+              "Remote access does not grant powers beyond lawful host capability."
+            ]
+          }
+        ],
+        "abstract_access_does_not_expand_law": true,
+        "notes": [
+          "Actor support remains explicit."
+        ]
+      },
+      "preconditions": {
+        "validity_conditions": [
+          "host console exists and is not invalid"
+        ],
+        "activation_conditions": [
+          "console is powered and responsive"
+        ],
+        "authorization_requirements": [
+          "authority context grants inspection or command"
+        ],
+        "epistemic_requirements": [
+          "actor can lawfully detect the console"
+        ],
+        "material_or_connection_requirements": [
+          "console has required signal path"
+        ],
+        "environmental_or_state_requirements": [
+          "console not destroyed or sealed"
+        ],
+        "organizational_requirements": [
+          "organization permits access"
+        ],
+        "degradation_triggers": [
+          "sensor interference",
+          "partial power loss"
+        ],
+        "not_universally_active": true,
+        "notes": [
+          "Capability surface existence does not mean unconditional usability."
+        ]
+      },
+      "invocation_model": {
+        "invocation_categories": [
+          "inspect",
+          "command"
+        ],
+        "process_refs": [
+          "process.console.inspect",
+          "process.console.route_command"
+        ],
+        "authority_context_requirements": [
+          "law_profile",
+          "entitlements",
+          "epistemic_scope"
+        ],
+        "result_categories": [
+          "inspection_requested",
+          "truth_mutation_requested",
+          "refusal_possible",
+          "degradation_possible"
+        ],
+        "truth_mutation_rule": "surfaces_route_to_lawful_processes_only",
+        "ui_binding_is_not_surface": true,
+        "direct_truth_mutation_forbidden": true,
+        "notes": [
+          "The surface packages a lawful attempt and routes it to Processes."
+        ]
+      },
+      "visibility_and_discoverability": {
+        "surface_may_exist_without_detection": true,
+        "detectability_rules": [
+          "hidden from actors without lawful observation"
+        ],
+        "usability_rules": [
+          "usable only when host is reachable and actor is compatible"
+        ],
+        "authorization_rules": [
+          "authorization remains distinct from detectability"
+        ],
+        "observation_channel_refs": [
+          "obs.console.status"
+        ],
+        "presentation_binding_notes": [
+          "HUD or console UI may present the surface but are not the surface itself."
+        ]
+      },
+      "failure_and_degradation": {
+        "possible_states": [
+          "available",
+          "blocked",
+          "degraded",
+          "unavailable",
+          "unsafe",
+          "invalid"
+        ],
+        "failure_modes": [
+          {
+            "failure_id": "failure.console.depowered",
+            "state": "blocked",
+            "trigger_conditions": [
+              "console unpowered"
+            ],
+            "consequence_summary": [
+              "command pathway refused"
+            ],
+            "refusal_or_degrade_response": [
+              "emit explicit refusal"
+            ],
+            "recoverability": "recoverable when power is restored"
+          }
+        ],
+        "capability_surface_does_not_imply_success": true,
+        "notes": [
+          "Lawful attempt does not guarantee action success."
+        ]
+      },
+      "composition": {
+        "composition_mode": "composite",
+        "child_surface_refs": [
+          "capability_surface.example.inspect_console.read_only",
+          "capability_surface.example.inspect_console.command_lane"
+        ],
+        "aggregated_affordance_refs": [
+          "affordance.example.inspect",
+          "affordance.example.command"
+        ],
+        "preserves_underlying_meaning": true,
+        "opaque_monolith_forbidden": true,
+        "notes": [
+          "Composite surfaces must preserve the structure beneath them."
+        ]
+      },
+      "verification": {
+        "invariant_checks": [
+          "surface does not redefine truth or affordance meaning"
+        ],
+        "actor_compatibility_checks": [
+          "supported actors match declared bindings"
+        ],
+        "condition_satisfaction_checks": [
+          "power, reachability, and authority gates are explicit"
+        ],
+        "process_boundary_checks": [
+          "all truth mutation routes through lawful processes"
+        ],
+        "refusal_checks": [
+          "blocked and degraded states refuse or degrade explicitly"
+        ],
+        "audit_hooks": [
+          "contract review",
+          "authority-context cross-check"
+        ],
+        "notes": [
+          "Replace example checks with real test and audit hooks."
+        ]
+      },
+      "compatibility_and_stability": {
+        "contract_version": "1.0.0",
+        "stability": "provisional",
+        "replacement_target": null,
+        "future_series_note": "Later prompts may instantiate domain-specific capability surfaces without weakening this floor.",
+        "compatibility_considerations": [
+          "semantic contract pin remains explicit",
+          "surface meaning may not drift behind adapter or UI changes"
+        ],
+        "semantic_contract_pin": {
+          "framework_artifact_id": "spec.dominium.universal_reality_framework",
+          "framework_version_minimum": "1.0.0",
+          "domain_template_artifact": "spec.dominium.domain_contract_template",
+          "domain_template_version_minimum": "1.0.0",
+          "prohibited_conflations": [
+            "capability_surface_is_ui_binding",
+            "capability_surface_redefines_truth"
+          ]
+        },
+        "ownership_sensitivity_notes": [
+          "Live split zones still require explicit review where relevant."
+        ]
+      },
+      "extensions": {}
+    }
+  ]
+}
