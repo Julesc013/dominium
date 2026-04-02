@@ -1,0 +1,537 @@
+{
+  "artifact_id": "dominium.runtime.domain_service_binding_model",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-03",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_a_post_phi_a1_post_c_sigmaa1_phia2_pre_phi3",
+    "enabling_prompt": "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0"
+    ],
+    "active_numbering_note": "Current checkpoint law advances DOMAIN_SERVICE_BINDING_MODEL-0 as Φ-3 even though older planning artifacts still label Φ-3 as STATE_EXTERNALIZATION-0."
+  },
+  "binding_definition": {
+    "summary": "A domain-service binding is a declared runtime/semantic boundary contract by which a bounded runtime service lawfully supports, mediates, observes, validates, provides externalization support for, or coordinates one or more domains while remaining subordinate to domain contracts, bridge law, capability law, representation law, and formalization lineage.",
+    "binding_is_not": [
+      "domain_ownership",
+      "cross_domain_bridge_law",
+      "runtime_service_model",
+      "component_model",
+      "module_loader_or_layout",
+      "product_integration_rule",
+      "ui_or_control_binding"
+    ],
+    "why_needed": [
+      "domains_are_semantic_units_and_services_are_runtime_units",
+      "services_must_not_silently_become_domain_owners",
+      "cross_domain_effects_must_not_hide_inside_runtime_convenience",
+      "code_adjacency_and_directory_proximity_are_not_binding_authority",
+      "canonical_vs_projected_distinctions_must_survive_runtime_attachment",
+      "later_phi_sigma_upsilon_and_zeta_work_need_explicit_binding_law"
+    ],
+    "lawful_binding_targets": [
+      "canonical_domain_contracts",
+      "domain_declared_observation_bindings",
+      "domain_grounded_capability_surfaces",
+      "domain_declared_verification_hooks",
+      "domain_declared_representation_and_substitution_rules",
+      "domain_relevant_formalization_artifacts_where_required",
+      "explicit_cross_domain_bridge_declarations_when_scope_crosses_domains",
+      "operational_registries_or_mirrors_only_when_canonical_ownership_remains_explicit_and_upstream"
+    ],
+    "default_non_targets": [
+      "generated_evidence_roots",
+      "projection_only_or_validator_only_mirrors_as_semantic_owners",
+      "directory_name_prominence_alone",
+      "shared_code_path_or_import_graph_alone",
+      "product_shell_locality_alone",
+      "stale_planning_numbering_alone"
+    ]
+  },
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_CAPABILITY_SURFACES",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "PLAYER_DESIRE_ACCEPTANCE_MAP",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY",
+    "NATURAL_LANGUAGE_TASK_BRIDGE",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW"
+  ],
+  "binding_classes": [
+    {
+      "id": "observation_binding",
+      "description": "Supports lawful observation, inspection, measurement, or audit mediation over a domain without converting observation into truth."
+    },
+    {
+      "id": "execution_coordination_binding",
+      "description": "Routes or coordinates lawful Process execution over a domain without redefining what the domain's Processes mean."
+    },
+    {
+      "id": "mediation_binding",
+      "description": "Mediates bounded access, synchronization, routing, or runtime-domain interaction while preserving domain ownership."
+    },
+    {
+      "id": "transformation_process_support_binding",
+      "description": "Supports lawful representation transitions, substitution support, expansion, collapse, or process envelopes under domain and ladder law."
+    },
+    {
+      "id": "inspection_validation_binding",
+      "description": "Supports proof, validation, invariant checking, or compliance mediation anchored to domain verification obligations."
+    },
+    {
+      "id": "persistence_replay_support_binding",
+      "description": "Supports provenance-preserving replay, audit, save, synchronization, or externalization-support behavior without making persistence surfaces semantic owners."
+    },
+    {
+      "id": "policy_compatibility_binding",
+      "description": "Supports refusal, degradation, compatibility, negotiation, or authority-envelope mediation over domain-facing operations."
+    },
+    {
+      "id": "bridge_mediated_binding",
+      "description": "Coordinates service behavior that touches multiple domains only through explicit cross-domain bridge law."
+    }
+  ],
+  "binding_element_categories": [
+    {
+      "id": "binding_identity",
+      "description": "Stable identifier, summary, and scope declaration for the binding."
+    },
+    {
+      "id": "service_side",
+      "description": "The service boundary, service class, and runtime responsibility participating in the binding."
+    },
+    {
+      "id": "domain_side",
+      "description": "The domain or domain family and the canonical semantic artifacts that govern it."
+    },
+    {
+      "id": "binding_class",
+      "description": "The class of runtime/semantic relationship the binding expresses."
+    },
+    {
+      "id": "binding_scope",
+      "description": "Whether the binding is local, multi-representation, bridge-mediated, or anchor-to-many."
+    },
+    {
+      "id": "operation_or_coordination_classes",
+      "description": "The runtime behaviors the service may lawfully support under the binding."
+    },
+    {
+      "id": "required_semantic_inputs",
+      "description": "Upstream semantic contracts, capability surfaces, observation bindings, ladder rules, bridge declarations, or formalization artifacts required by the binding."
+    },
+    {
+      "id": "authority_and_ownership_checks",
+      "description": "Ownership review, canonical-vs-projection, and authority-envelope checks that must hold for legality."
+    },
+    {
+      "id": "bridge_dependencies",
+      "description": "Whether explicit bridge law is required and what bridge families or directionality constrain the binding."
+    },
+    {
+      "id": "capability_surface_linkage",
+      "description": "How capability surfaces are supported, constrained, or routed through without semantic reinterpretation."
+    },
+    {
+      "id": "representation_and_scaling_notes",
+      "description": "Representation horizon, substitution, expansion, refusal, and macro/micro continuity implications."
+    },
+    {
+      "id": "formalization_and_provenance_notes",
+      "description": "Required standards, blueprints, protocols, institutions, lineage, or revision posture."
+    },
+    {
+      "id": "canonical_vs_projected_artifact_expectations",
+      "description": "Which roots are semantic owners and which are operational mirrors or evidence only."
+    },
+    {
+      "id": "failure_invalidity_conditions",
+      "description": "Unavailable, degraded, blocked, unsafe, unauthorized, or invalid states."
+    },
+    {
+      "id": "verification_observability_hooks",
+      "description": "What later systems must be able to test, audit, or inspect."
+    }
+  ],
+  "authority_constraints": {
+    "services_remain_subordinate_to_semantic_law": true,
+    "bindings_do_not_reassign_domain_ownership": true,
+    "bindings_must_target_lawful_semantic_authority": true,
+    "ownership_review_remains_binding": true,
+    "canonical_vs_projection_discipline_remains_binding": true,
+    "code_adjacency_is_not_binding_authority": true,
+    "product_shells_do_not_define_binding_law": true,
+    "natural_language_or_mirror_wording_is_not_binding_authority": true,
+    "projections_and_generated_artifacts_are_operational_only_unless_explicitly_promoted": true
+  },
+  "distinction_notes": {
+    "domains": "Domains remain semantic contract owners and define truth, Process, affordances, observation bindings, verification, and scaling expectations.",
+    "services": "Services remain bounded runtime-facing mediation or hosting structures operating within kernel and component law.",
+    "bindings": "Bindings define the lawful attachment grammar between service scope and domain law.",
+    "bridges": "Bridges govern domain-to-domain legality; bindings consume bridge law when a service scope crosses domains.",
+    "components": "Components are bounded runtime-facing functional units that may realize service internals but do not define binding law by themselves.",
+    "modules": "Modules are implementation, packaging, or discovery surfaces and do not automatically define service-domain legality.",
+    "products": "Products consume or host services through lawful boundaries and do not own binding law.",
+    "ui_control_bindings": "UI and control bindings map inputs or presentation onto lawful surfaces without defining the underlying runtime/semantic attachment."
+  },
+  "scope_categories": [
+    {
+      "id": "single_domain_local",
+      "summary": "The service binds to one domain contract family only."
+    },
+    {
+      "id": "single_domain_multi_representation",
+      "summary": "The service binds across multiple lawful representations of one domain while remaining within that domain's ownership."
+    },
+    {
+      "id": "bridge_mediated_cross_domain",
+      "summary": "The service scope touches multiple domains and therefore requires explicit bridge law."
+    },
+    {
+      "id": "anchor_to_many_support",
+      "summary": "The service attaches to multiple domains through a common support grammar such as observation, persistence, or interface mediation without owning any of them."
+    }
+  ],
+  "directionality_categories": [
+    {
+      "id": "service_to_domain_support",
+      "summary": "The service depends on domain law to decide what runtime coordination is lawful."
+    },
+    {
+      "id": "domain_to_service_constraint",
+      "summary": "Domain state, law, or representation horizon constrains what the service may expose or do."
+    },
+    {
+      "id": "bidirectional_asymmetric",
+      "summary": "Both runtime directions exist, but semantic authority remains upstream and asymmetric."
+    },
+    {
+      "id": "bridge_mediated",
+      "summary": "Cross-domain directionality follows explicit bridge law rather than service-local convenience."
+    }
+  ],
+  "bridge_dependency_categories": [
+    {
+      "id": "none_local_domain_only",
+      "summary": "No cross-domain effect exists; one domain contract family is sufficient."
+    },
+    {
+      "id": "explicit_bridge_required",
+      "summary": "A cross-domain effect exists and requires explicit bridge law before the binding is lawful."
+    },
+    {
+      "id": "bridge_class_constrained",
+      "summary": "The binding depends on one or more explicit bridge classes, preserved invariants, and directionality rules."
+    },
+    {
+      "id": "formalization_mediated_bridge_dependency",
+      "summary": "The cross-domain effect is lawful only through standards, protocols, institutions, or other formalization structures."
+    },
+    {
+      "id": "persistence_or_interface_anchor_dependency",
+      "summary": "The binding touches many domains through persistence or interface bridge families without transferring semantic ownership."
+    }
+  ],
+  "capability_surface_linkage_notes": {
+    "bindings_may": [
+      "support_capability_surface_invocation_paths",
+      "route_attempts_into_lawful_process_families",
+      "propagate_actor_class_preconditions_and_refusal_visibility",
+      "support_automation_planning_or_diagnostic_mediation_without_semantic_redefinition"
+    ],
+    "bindings_must_not": [
+      "reinterpret_capability_surfaces_into_ui_only_or_shell_only_commands",
+      "collapse_existence_detectability_usability_and_authorization",
+      "grant_hidden_superpowers_by_runtime_convenience",
+      "bypass_process_only_mutation_or_law_gated_authority"
+    ]
+  },
+  "representation_scaling_cautions": {
+    "bindings_may_attach_to": [
+      "primitive_representations",
+      "recognized_representations",
+      "formalized_representations",
+      "substituted_capsuled_representations",
+      "macro_summary_representations",
+      "micro_detailed_representations"
+    ],
+    "required_rules": [
+      "one_materialized_representation_is_not_the_only_real_domain_state",
+      "macro_micro_continuity_must_hold",
+      "substitution_legality_must_hold",
+      "expansion_refusal_or_uncertainty_must_be_explicit_when_active_representation_is_insufficient",
+      "services_may_consume_summaries_but_may_not_improvise_latent_truth"
+    ],
+    "forbidden_shortcuts": [
+      "representation_convenience_becoming_semantic_authority",
+      "summary_forms_treated_as_permission_for_hidden_meaning_change",
+      "scale_change_erasing_binding_lineage_or_ownership"
+    ]
+  },
+  "formalization_provenance_dependency_notes": {
+    "bindings_may_depend_on": [
+      "recognition_status",
+      "explicit_capture",
+      "specification_blueprinting",
+      "validation_testing",
+      "standardization",
+      "institutional_adoption",
+      "revision_supersession_or_retirement_lineage"
+    ],
+    "must_preserve": [
+      "artifact_identity",
+      "provenance",
+      "compatibility_posture",
+      "institutional_continuity_where_relevant",
+      "revision_and_supersession_lineage"
+    ],
+    "must_not_assume": [
+      "informal_guesswork_equals_formalized_structure_where_the_domain_requires_formality",
+      "runtime_convenience_grants_standard_or_institutional_status",
+      "revision_erases_history_or_lineage"
+    ]
+  },
+  "verification_expectations": [
+    "service_to_domain_attachment_references_are_explicit",
+    "ownership_legality_is_verifiable",
+    "canonical_vs_projection_adherence_is_verifiable",
+    "bridge_legality_is_verifiable_where_scope_crosses_domains",
+    "capability_surface_alignment_is_verifiable",
+    "representation_and_scaling_consistency_is_verifiable",
+    "formalization_and_provenance_prerequisites_are_verifiable_where_relevant",
+    "refusal_degradation_block_and_invalidity_paths_are_verifiable",
+    "diagnostics_can_distinguish_runtime_hosting_errors_from_semantic_owner_errors"
+  ],
+  "failure_invalidity_categories": [
+    {
+      "id": "binding_unavailable",
+      "description": "The required binding is absent for the service or domain scope."
+    },
+    {
+      "id": "binding_degraded",
+      "description": "The binding remains lawful only in an explicitly degraded form."
+    },
+    {
+      "id": "binding_blocked",
+      "description": "The binding is presently blocked by state, authority, compatibility, or activation conditions."
+    },
+    {
+      "id": "binding_unsafe",
+      "description": "The binding would violate safety, compliance, or hazard constraints."
+    },
+    {
+      "id": "under_authorized",
+      "description": "The required authority, legitimacy, entitlement, or actor envelope is absent."
+    },
+    {
+      "id": "ownership_invalid",
+      "description": "The binding targets the wrong semantic owner or ignores ownership review outcomes."
+    },
+    {
+      "id": "canonical_target_invalid",
+      "description": "The binding treats a projection, mirror, generated artifact, or transitional facade as the semantic owner without explicit higher doctrine."
+    },
+    {
+      "id": "bridge_invalid",
+      "description": "A cross-domain effect is attempted without lawful bridge support or with the wrong bridge directionality or class."
+    },
+    {
+      "id": "capability_surface_misalignment",
+      "description": "The binding would reinterpret or bypass capability semantics, preconditions, actor classes, or Process routing."
+    },
+    {
+      "id": "representation_scale_mismatch",
+      "description": "The active representation horizon is insufficient for lawful service behavior."
+    },
+    {
+      "id": "formalization_prerequisite_missing",
+      "description": "The binding depends on a required formalized artifact, protocol, standard, or institution that is absent or not in the required stage."
+    },
+    {
+      "id": "provenance_or_lineage_break",
+      "description": "The binding would lose required history, identity, revision lineage, or auditability."
+    },
+    {
+      "id": "determinism_or_process_violation",
+      "description": "The binding would require mutation, ordering, or routing behavior that violates deterministic Process law."
+    },
+    {
+      "id": "contested_or_ambiguous_binding",
+      "description": "Competing interpretations remain explicit and cannot be silently normalized away."
+    }
+  ],
+  "grounding_roots": {
+    "runtime_extend_evidence": [
+      "app",
+      "compat",
+      "control",
+      "core",
+      "net",
+      "process",
+      "server/runtime",
+      "server/persistence",
+      "engine",
+      "game"
+    ],
+    "semantic_upstream_inputs": [
+      "reality",
+      "worldgen",
+      "geo",
+      "materials",
+      "logic",
+      "signals",
+      "system",
+      "universe",
+      "epistemics",
+      "diegetics",
+      "infrastructure",
+      "machines"
+    ],
+    "do_not_infer_canonicality_from": [
+      "runtime_root_name_alone",
+      "directory_proximity_alone",
+      "shared_module_or_import_path_alone",
+      "product_shell_consumption_alone",
+      "generated_projection_convenience_alone"
+    ]
+  },
+  "ownership_cautions": [
+    {
+      "id": "ownership_sensitive_fields",
+      "paths": [
+        "field",
+        "fields"
+      ],
+      "rule": "fields_is_canonical_semantic_field_substrate_and_field_is_only_a_transitional_facade"
+    },
+    {
+      "id": "ownership_sensitive_schema",
+      "paths": [
+        "schema",
+        "schemas"
+      ],
+      "rule": "schema_law_is_canonical_and_validator_or_projection_surfaces_do_not_own_binding_semantics"
+    },
+    {
+      "id": "ownership_sensitive_packs",
+      "paths": [
+        "packs",
+        "data/packs"
+      ],
+      "rule": "packaged_activation_scope_and_authored_pack_declaration_scope_are_not_interchangeable"
+    },
+    {
+      "id": "semantic_specs_vs_registries",
+      "paths": [
+        "specs/reality",
+        "data/reality"
+      ],
+      "rule": "specs_reality_outranks_data_reality_for_semantic_meaning_and_registries_remain_operational_mirrors"
+    },
+    {
+      "id": "planning_docs_vs_planning_json",
+      "paths": [
+        "docs/planning",
+        "data/planning"
+      ],
+      "rule": "planning_docs_outrank_planning_json_for_checkpoint_and_execution_interpretation"
+    },
+    {
+      "id": "generated_and_projected_surfaces",
+      "paths": [
+        "build",
+        "artifacts",
+        ".xstack_cache",
+        "run_meta"
+      ],
+      "rule": "generated_or_mirrored_outputs_are_evidence_only_and_not_binding_authority"
+    },
+    {
+      "id": "thin_runtime_root",
+      "paths": [
+        "runtime"
+      ],
+      "rule": "runtime_root_name_does_not_establish_binding_authority"
+    },
+    {
+      "id": "planning_order_drift",
+      "paths": [
+        "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
+        "data/planning/final_prompt_inventory.json",
+        "data/planning/dependency_graph_post_pi.json"
+      ],
+      "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
+    }
+  ],
+  "prohibited_binding_shapes": [
+    "service_binding_to_convenient_mirror_instead_of_canonical_semantic_owner",
+    "service_silently_owning_domain_meaning_through_runtime_mediation",
+    "binding_crossing_domain_boundaries_without_explicit_bridge_law",
+    "binding_inferred_from_code_adjacency_alone",
+    "binding_defined_by_product_ux_or_shell_semantics",
+    "bridge_mediated_binding_treated_as_local_direct_authority",
+    "projected_or_generated_artifacts_treated_as_primary_binding_targets_by_default",
+    "hidden_super_service_swallowing_multiple_domains_without_declared_ownership_and_bridge_discipline",
+    "binding_reinterpreting_capability_surfaces_into_shell_local_commands_or_ui_only_toggles",
+    "binding_assuming_one_representation_is_the_only_real_domain_state",
+    "binding_granting_standard_protocol_or_institutional_status_by_runtime_convenience",
+    "binding_silently_normalizing_split_ownership_roots_into_one_certainty"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Φ-4",
+    "Φ-5",
+    "Σ-3",
+    "Σ-4",
+    "Σ-5",
+    "Υ-series",
+    "Ζ-series"
+  ],
+  "downstream_assumptions_enabled": {
+    "Φ-4": [
+      "state_externalization_can_distinguish_domain_truth_ownership_from_service_supported_externalization_surfaces",
+      "persistence_and_replay_support_can_consume_binding_classes_and_invalidity_categories_without_redefining_semantic_ownership"
+    ],
+    "Φ-5": [
+      "lifecycle_transitions_can_reason_about_bound_service_scope_without_hiding_domain_or_bridge_obligations",
+      "activation_quiescence_and_handoff_can_be_modeled_against_explicit_binding_scope_and_directionality"
+    ],
+    "Σ-3": [
+      "task_catalog_entries_can_classify_real_domain_service_binding_surfaces_instead_of_placeholder_runtime_terms"
+    ],
+    "Σ-4": [
+      "mcp_and_interface_exposure_work_can_reference_explicit_binding_classes_authority_constraints_and_failure_categories"
+    ],
+    "Σ-5": [
+      "agent_safety_policy_can_reason_about_binding_hazards_bridge_requirements_and_canonical_vs_projection_refusal_cases"
+    ],
+    "Υ_and_Ζ": [
+      "release_restart_cutover_replay_and_live_ops_work_can_preserve_provenance_and_semantic_ownership_boundaries_while_consuming_runtime_binding_law"
+    ]
+  },
+  "prohibited_downstream_violations": [
+    "redefine_domain_ownership_through_binding",
+    "treat_service_as_semantic_owner",
+    "invent_bridge_authority_from_runtime_convenience",
+    "promote_projections_or_generated_artifacts_into_binding_authority",
+    "let_products_or_ui_define_binding_law",
+    "ignore_representation_or_formalization_constraints",
+    "hide_cross_domain_coupling_inside_service_implementation",
+    "silently_rewrite_binding_law_via_code_drift"
+  ]
+}
