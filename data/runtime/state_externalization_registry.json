@@ -1,0 +1,472 @@
+{
+  "artifact_id": "dominium.runtime.state_externalization_model",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-03",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_a_post_phi3_pre_phi4",
+    "enabling_prompt": "Φ-4 — STATE_EXTERNALIZATION-0",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0"
+    ],
+    "active_numbering_note": "Current checkpoint law advances STATE_EXTERNALIZATION-0 as Φ-4 after the domain-service binding model even though older planning artifacts may still retain stale numbering drift."
+  },
+  "state_externalization_definition": {
+    "summary": "State externalization is the constitutional discipline that determines which runtime-relevant state must remain externalized or externalizable and how state may be exposed, transferred, persisted, replayed, reconstructed, audited, or handed off without reassigning semantic ownership or silently changing meaning.",
+    "state_externalization_is_not": [
+      "truth_itself",
+      "runtime_execution_context",
+      "cache_policy_alone",
+      "projection_or_generated_artifact_authority",
+      "storage_technology_choice",
+      "save_file_format",
+      "snapshot_mechanism",
+      "replay_log_mechanism",
+      "product_or_ui_state_authority"
+    ],
+    "why_needed": [
+      "truth_must_not_become_trapped_in_transient_runtime_containers",
+      "services_components_and_products_must_not_become_hidden_truth_owners",
+      "lawful_replay_snapshot_migration_and_handoff_depend_on_explicit_state_boundaries",
+      "sparse_materialization_must_not_be_misread_as_partial_truth_ownership",
+      "auditability_replaceability_and_correctness_require_explicit_state_classes",
+      "later_phi_sigma_upsilon_and_zeta_work_need_explicit_state_law"
+    ]
+  },
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY",
+    "NATURAL_LANGUAGE_TASK_BRIDGE",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "FOUNDATION_READINESS_REPORT",
+    "CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW"
+  ],
+  "state_classes": [
+    {
+      "id": "authoritative_truth_state",
+      "description": "Domain-owned semantic state that participates directly in authoritative truth and Process-relevant commitments.",
+      "authority_posture": "domain_owned_authoritative",
+      "minimum_requirement": "must_be_externalizable"
+    },
+    {
+      "id": "lawful_derived_runtime_managed_state",
+      "description": "Runtime-managed state derived from authoritative truth, lawful inputs, or deterministic Process progression and needed for execution or coordination support.",
+      "authority_posture": "runtime_managed_non_owning",
+      "minimum_requirement": "must_be_deterministically_reconstructable"
+    },
+    {
+      "id": "transient_execution_state",
+      "description": "In-flight, activation-local, or scratch execution state used for bounded runtime work.",
+      "authority_posture": "explicitly_transient_non_authoritative",
+      "minimum_requirement": "explicitly_transient_only"
+    },
+    {
+      "id": "cache_projection_state",
+      "description": "Memoized, indexed, mirrored, generated, compatibility-facing, or projection-facing state used for acceleration or adaptation.",
+      "authority_posture": "explicitly_non_authoritative",
+      "minimum_requirement": "must_be_reconstructable"
+    },
+    {
+      "id": "observation_presentation_state",
+      "description": "Perceived, observed, rendered, UI-facing, or operator-facing state derived for display, explanation, or interaction.",
+      "authority_posture": "explicitly_non_authoritative",
+      "minimum_requirement": "evidence_only_when_externalized"
+    },
+    {
+      "id": "control_plane_operator_visible_state",
+      "description": "Health, refusal, compatibility, activation, negotiation, or diagnostics state visible to operators or control surfaces.",
+      "authority_posture": "operational_non_owning",
+      "minimum_requirement": "must_be_externalizable"
+    },
+    {
+      "id": "provenance_lineage_support_state",
+      "description": "Identity, revision, deterministic hash, audit, refusal-evidence, and lineage-preserving support state.",
+      "authority_posture": "supporting_non_substitute_but_required_when_claimed",
+      "minimum_requirement": "must_preserve_identity_and_lineage_when_externalized"
+    },
+    {
+      "id": "binding_lifecycle_support_state",
+      "description": "State supporting activation, quiescence, attach, detach, handoff, replay anchors, or binding continuity.",
+      "authority_posture": "runtime_support_non_owning",
+      "minimum_requirement": "must_be_externalizable"
+    }
+  ],
+  "externalization_requirement_categories": [
+    {
+      "id": "must_be_externalizable",
+      "description": "The state must be expressible outside one transient runtime container without semantic loss beyond declared lawful limits."
+    },
+    {
+      "id": "must_be_externalized_when_crossing_boundary",
+      "description": "The state must be emitted lawfully when persistence, replay, snapshot, migration, handoff, audit, or proof depends on it."
+    },
+    {
+      "id": "must_be_deterministically_reconstructable",
+      "description": "If not directly externalized, the state must be reconstructable from authoritative state and declared laws."
+    },
+    {
+      "id": "explicitly_transient_only",
+      "description": "The state may remain local only when its temporary and non-authoritative nature is explicit."
+    },
+    {
+      "id": "explicitly_non_authoritative",
+      "description": "The state may inform runtime behavior or operators but may not redefine semantic truth."
+    },
+    {
+      "id": "evidence_only_when_externalized",
+      "description": "When externalized, the state remains evidence, view, or presentation output rather than truth ownership."
+    },
+    {
+      "id": "must_preserve_identity_and_lineage_when_externalized",
+      "description": "Externalized forms must preserve identity, revision posture, provenance, and supersession lineage where relevant."
+    }
+  ],
+  "class_requirement_matrix": {
+    "authoritative_truth_state": [
+      "must_be_externalizable",
+      "must_be_externalized_when_crossing_boundary"
+    ],
+    "lawful_derived_runtime_managed_state": [
+      "must_be_externalizable",
+      "must_be_deterministically_reconstructable"
+    ],
+    "transient_execution_state": [
+      "explicitly_transient_only",
+      "explicitly_non_authoritative"
+    ],
+    "cache_projection_state": [
+      "must_be_deterministically_reconstructable",
+      "explicitly_non_authoritative"
+    ],
+    "observation_presentation_state": [
+      "explicitly_non_authoritative",
+      "evidence_only_when_externalized"
+    ],
+    "control_plane_operator_visible_state": [
+      "must_be_externalizable",
+      "explicitly_non_authoritative"
+    ],
+    "provenance_lineage_support_state": [
+      "must_be_externalizable",
+      "must_preserve_identity_and_lineage_when_externalized"
+    ],
+    "binding_lifecycle_support_state": [
+      "must_be_externalizable",
+      "must_be_deterministically_reconstructable"
+    ]
+  },
+  "authority_constraints": {
+    "semantic_law_outranks_runtime_containers": true,
+    "domains_remain_truth_owners": true,
+    "services_must_not_own_hidden_authoritative_truth": true,
+    "components_must_not_own_hidden_authoritative_truth": true,
+    "products_and_ui_must_not_define_truth": true,
+    "ownership_review_remains_binding": true,
+    "canonical_vs_projection_discipline_remains_binding": true,
+    "bindings_must_not_hide_state_ownership_transfers": true,
+    "projections_and_generated_artifacts_are_operational_only_unless_explicitly_promoted": true
+  },
+  "layer_interaction_rules": {
+    "kernel": {
+      "may_host": [
+        "authoritative_execution_state_under_domain_law",
+        "deterministic_progression_state",
+        "externalization_attach_points",
+        "replay_and_observability_hooks"
+      ],
+      "must_not_own": [
+        "semantic_domain_truth_by_runtime_convenience"
+      ]
+    },
+    "components": {
+      "may_host": [
+        "bounded_functional_state",
+        "transient_execution_state",
+        "lawful_derived_runtime_managed_state"
+      ],
+      "must_not_own": [
+        "private_hidden_authoritative_truth"
+      ]
+    },
+    "services": {
+      "may_host": [
+        "coordination_state",
+        "mediation_state",
+        "compatibility_and_refusal_state",
+        "lawful_derived_runtime_managed_state"
+      ],
+      "must_not_own": [
+        "hidden_authoritative_truth",
+        "silent_cross_domain_state_authority"
+      ]
+    },
+    "bindings": {
+      "must_preserve": [
+        "domain_ownership",
+        "bridge_awareness",
+        "canonical_target_clarity",
+        "representation_awareness"
+      ]
+    },
+    "products": {
+      "may_host": [
+        "input_state",
+        "view_state",
+        "session_state",
+        "presentation_state"
+      ],
+      "must_not_own": [
+        "authoritative_truth",
+        "binding_or_bridge_authority"
+      ]
+    }
+  },
+  "distinction_notes": {
+    "authoritative_truth_state": "Semantic truth owned by domains and governed by domain contracts.",
+    "lawful_derived_runtime_managed_state": "Runtime-managed but non-owning state that supports lawful execution or mediation.",
+    "transient_execution_state": "Temporary local runtime state that may be dropped without erasing authoritative commitments.",
+    "cache_projection_state": "Reconstructable, discardable, and explicitly non-authoritative state used for acceleration or adaptation.",
+    "observation_presentation_state": "Perceived, rendered, or displayed state that remains downstream of truth.",
+    "state_externalization": "The law governing what cannot be trapped inside transient hosting convenience."
+  },
+  "representation_scaling_cautions": {
+    "must_preserve": [
+      "representation_ladder_invariants",
+      "macro_micro_continuity",
+      "substitution_legality",
+      "sparse_materialization_without_partial_truth_drift",
+      "uncertainty_or_refusal_when_active_representation_is_insufficient"
+    ],
+    "must_not_assume": [
+      "one_materialized_representation_is_the_whole_reality",
+      "summary_forms_authorize_invented_latent_detail",
+      "scale_change_erases_meaning_or_lineage"
+    ]
+  },
+  "formalization_provenance_dependency_notes": {
+    "must_preserve": [
+      "artifact_identity",
+      "revision_posture",
+      "provenance",
+      "compatibility_posture",
+      "supersession_lineage"
+    ],
+    "must_not_assume": [
+      "informal_guesswork_equals_formalized_structure_where_the_domain_requires_formality",
+      "migration_or_revision_erases_history",
+      "runtime_convenience_grants_institutional_or_standard_status"
+    ]
+  },
+  "bridge_cautions": {
+    "cross_domain_state_requires_explicit_bridge_law": true,
+    "shared_storage_or_shared_code_is_not_bridge_authority": true,
+    "externalization_must_not_hide_cross_domain_coupling": true,
+    "bridge_mediated_state_must_preserve_participating_domain_identity": true
+  },
+  "failure_invalidity_categories": [
+    {
+      "id": "state_unavailable",
+      "description": "Required state is absent for the current lawful scope."
+    },
+    {
+      "id": "state_stale",
+      "description": "The state exists but no longer satisfies freshness, continuity, or revision requirements."
+    },
+    {
+      "id": "state_incomplete",
+      "description": "Required portions of lawful state are missing."
+    },
+    {
+      "id": "projected_only_state",
+      "description": "Only a projection, mirror, or generated derivative is present and canonical authoritative use is therefore invalid."
+    },
+    {
+      "id": "transient_only_state",
+      "description": "The state exists only inside a transient runtime container when externalization or reconstructability is required."
+    },
+    {
+      "id": "ownership_invalid",
+      "description": "The state targets or reflects the wrong semantic owner or ignores ownership review outcomes."
+    },
+    {
+      "id": "bridge_invalid",
+      "description": "The state crosses domain boundaries without lawful bridge support."
+    },
+    {
+      "id": "representation_invalid",
+      "description": "The active representation horizon cannot lawfully support the required use."
+    },
+    {
+      "id": "formalization_or_provenance_invalid",
+      "description": "Identity, lineage, standard, protocol, or revision posture requirements are not satisfied."
+    },
+    {
+      "id": "determinism_or_process_invalid",
+      "description": "The state cannot be used lawfully without violating Process-only mutation, replay equivalence, or deterministic ordering."
+    },
+    {
+      "id": "unsafe_or_under_authorized",
+      "description": "The state may exist but may not be used under the present authority or safety envelope."
+    }
+  ],
+  "verification_expectations": [
+    "authoritative_vs_derived_vs_transient_vs_projection_vs_presentation_state_classification_is_verifiable",
+    "ownership_consistency_is_verifiable",
+    "bridge_legality_is_verifiable_where_cross_domain_state_exists",
+    "representation_and_scaling_consistency_is_verifiable",
+    "provenance_and_formalization_requirements_are_verifiable_where_relevant",
+    "reconstructability_claims_are_verifiable",
+    "hidden_truth_ownership_by_services_products_or_caches_is_detectable"
+  ],
+  "grounding_roots": {
+    "runtime_extend_evidence": [
+      "app",
+      "compat",
+      "control",
+      "core",
+      "net",
+      "process",
+      "server/runtime",
+      "server/persistence",
+      "engine",
+      "game"
+    ],
+    "do_not_infer_canonicality_from": [
+      "runtime_root_name_alone",
+      "directory_proximity_alone",
+      "shared_module_or_import_path_alone",
+      "product_shell_materialization_alone",
+      "generated_projection_convenience_alone"
+    ]
+  },
+  "ownership_cautions": [
+    {
+      "id": "ownership_sensitive_fields",
+      "paths": [
+        "field",
+        "fields"
+      ],
+      "rule": "fields_is_canonical_semantic_field_substrate_and_field_is_only_a_transitional_facade"
+    },
+    {
+      "id": "ownership_sensitive_schema",
+      "paths": [
+        "schema",
+        "schemas"
+      ],
+      "rule": "schema_law_is_canonical_and_validator_or_projection_surfaces_do_not_own_state_semantics"
+    },
+    {
+      "id": "ownership_sensitive_packs",
+      "paths": [
+        "packs",
+        "data/packs"
+      ],
+      "rule": "packaged_activation_scope_and_authored_pack_declaration_scope_are_not_interchangeable"
+    },
+    {
+      "id": "semantic_specs_vs_registries",
+      "paths": [
+        "specs/reality",
+        "data/reality"
+      ],
+      "rule": "specs_reality_outranks_data_reality_for_semantic_meaning_and_registries_remain_operational_mirrors"
+    },
+    {
+      "id": "planning_docs_vs_planning_json",
+      "paths": [
+        "docs/planning",
+        "data/planning"
+      ],
+      "rule": "planning_docs_outrank_planning_json_for_checkpoint_and_execution_interpretation"
+    },
+    {
+      "id": "generated_and_projected_surfaces",
+      "paths": [
+        "build",
+        "artifacts",
+        ".xstack_cache",
+        "run_meta"
+      ],
+      "rule": "generated_or_mirrored_outputs_are_evidence_only_and_not_state_authority"
+    },
+    {
+      "id": "thin_runtime_root",
+      "paths": [
+        "runtime"
+      ],
+      "rule": "runtime_root_name_does_not_establish_state_authority"
+    },
+    {
+      "id": "planning_order_drift",
+      "paths": [
+        "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
+        "data/planning/final_prompt_inventory.json",
+        "data/planning/dependency_graph_post_pi.json"
+      ],
+      "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
+    }
+  ],
+  "prohibited_state_shapes": [
+    "service_local_hidden_authoritative_truth",
+    "product_or_ui_state_treated_as_authoritative_truth",
+    "cache_projection_or_generated_state_silently_promoted_to_canonical_authority",
+    "replay_snapshot_migration_or_save_semantics_invented_without_explicit_state_law",
+    "cross_domain_state_coupling_hidden_inside_convenience_runtime_code",
+    "state_externalization_defined_by_storage_technology_instead_of_law",
+    "continuity_depending_on_undocumented_transient_memory",
+    "binding_or_lifecycle_support_state_used_to_transfer_domain_ownership_into_services",
+    "sparse_materialization_misread_as_permission_to_keep_only_the_current_rendered_slice"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Φ-5",
+    "Σ-3",
+    "Σ-4",
+    "Σ-5",
+    "Υ-series",
+    "Ζ-series"
+  ],
+  "downstream_assumptions_enabled": {
+    "Φ-5": [
+      "lifecycle_transitions_can_distinguish_drop_safe_transient_state_from_continuity_relevant_state",
+      "quiescence_handoff_and_resume_can_consume_explicit_externalization_requirements"
+    ],
+    "Σ-3": [
+      "task_catalog_entries_can_classify_state_sensitive_runtime_work_against_explicit_state_classes_and_failure_categories"
+    ],
+    "Σ-4": [
+      "mcp_and_interface_exposure_work_can_reference_authoritative_vs_projection_vs_presentation_state_boundaries"
+    ],
+    "Σ-5": [
+      "agent_safety_policy_can_refuse_hidden_truth_ownership_projection_promotion_and_bridge_invalid_state_requests"
+    ],
+    "Υ_and_Ζ": [
+      "replay_restart_cutover_publication_provenance_archive_and_live_ops_work_can_preserve_state_ownership_lineage_and_externalization_requirements"
+    ]
+  },
+  "prohibited_downstream_violations": [
+    "treat_runtime_containers_as_truth_owners",
+    "promote_projection_or_generated_state_into_canonical_authority",
+    "invent_replay_snapshot_or_migration_scope_without_state_law",
+    "let_product_or_ui_state_redefine_truth",
+    "hide_cross_domain_state_transfers_outside_bridge_law",
+    "silently_weaken_provenance_or_representation_constraints"
+  ]
+}
