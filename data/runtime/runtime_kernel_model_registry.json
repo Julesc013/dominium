@@ -1,0 +1,230 @@
+{
+  "artifact_id": "dominium.runtime.kernel_model",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-02",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma0_post_c_sigma0_phia1_pre_phi0",
+    "enabling_checkpoint": "C-Σ0ΦA1",
+    "next_refinement_prompts": [
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0"
+    ]
+  },
+  "kernel_definition": {
+    "summary": "The runtime kernel is the constitutional host for lawful deterministic execution of authoritative Processes over truth without owning semantic law.",
+    "kernel_is_not": [
+      "semantic_ontology",
+      "domain_contract_substitute",
+      "cross_domain_bridge_substitute",
+      "component_catalog",
+      "service_catalog",
+      "module_registry",
+      "product_shell",
+      "presentation_authority",
+      "release_or_control_plane"
+    ]
+  },
+  "responsibility_categories": [
+    {
+      "id": "host_lawful_process_execution",
+      "description": "Host authoritative Process execution under deterministic ordering, law, and authority constraints."
+    },
+    {
+      "id": "enforce_determinism_discipline",
+      "description": "Preserve deterministic ordering, replay integrity, provenance visibility, and refusal legality."
+    },
+    {
+      "id": "coordinate_runtime_boundaries",
+      "description": "Coordinate runtime-side boundaries between domains, components, services, products, and presentation without semantic collapse."
+    },
+    {
+      "id": "preserve_truth_perceived_render_separation",
+      "description": "Maintain runtime-side integrity between authoritative truth, projection, and presentation."
+    },
+    {
+      "id": "support_observability_persistence_replay_hooks",
+      "description": "Provide lawful audit, persistence, replay, and verification integration points."
+    },
+    {
+      "id": "preserve_pack_driven_integration_boundaries",
+      "description": "Preserve registry- and manifest-governed pack integration boundaries instead of hardwiring optional content into kernel law."
+    },
+    {
+      "id": "provide_component_service_substrate",
+      "description": "Provide the execution substrate on which later component and service models can be layered."
+    }
+  ],
+  "non_responsibility_categories": [
+    "semantic_ontology_definition",
+    "domain_ownership_definition",
+    "governance_authority_definition",
+    "release_versioning_publication_doctrine",
+    "product_shell_semantics",
+    "ui_ux_semantics",
+    "institutional_social_semantics",
+    "ownership_reclassification"
+  ],
+  "boundary_layers": [
+    {
+      "id": "semantic_domain_law",
+      "relation_to_kernel": "upstream_authority",
+      "kernel_rule": "consume_do_not_redefine"
+    },
+    {
+      "id": "runtime_kernel",
+      "relation_to_kernel": "self",
+      "kernel_rule": "host_and_constrain_execution"
+    },
+    {
+      "id": "components_and_services",
+      "relation_to_kernel": "downstream_runtime_layer",
+      "kernel_rule": "must_remain_within_kernel_law"
+    },
+    {
+      "id": "module_implementations",
+      "relation_to_kernel": "concrete_realization_layer",
+      "kernel_rule": "implementation_is_not_constitutional_authority"
+    },
+    {
+      "id": "products_and_shells",
+      "relation_to_kernel": "external_consumers_or_authoritative_hosts",
+      "kernel_rule": "must_not_redefine_truth_or_ownership"
+    },
+    {
+      "id": "presentation_and_interface_adapters",
+      "relation_to_kernel": "projection_and_access_layer",
+      "kernel_rule": "must_not_mutate_truth_outside_process_paths"
+    },
+    {
+      "id": "control_and_release_plane",
+      "relation_to_kernel": "adjacent_governance_and_distribution_layer",
+      "kernel_rule": "must_not_become_runtime_truth_authority"
+    }
+  ],
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_CAPABILITY_SURFACES",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "PLAYER_DESIRE_ACCEPTANCE_MAP",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "agent_context.json",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_C_SIGMA0_PHIA1_REVIEW"
+  ],
+  "grounding_roots": {
+    "extend_evidence": [
+      "engine",
+      "game",
+      "app",
+      "compat",
+      "control",
+      "core",
+      "net",
+      "process",
+      "server/runtime",
+      "server/persistence",
+      "libs",
+      "client",
+      "server"
+    ],
+    "adjacent_non_kernel_surfaces": [
+      "release",
+      "repo",
+      "updates",
+      "tools",
+      "setup",
+      "launcher",
+      "appshell"
+    ],
+    "explicit_non_authority_signal": [
+      "runtime_root_name_alone_is_not_canonical"
+    ]
+  },
+  "runtime_caution_flags": [
+    {
+      "id": "ownership_sensitive_fields",
+      "paths": [
+        "field",
+        "fields"
+      ],
+      "rule": "do_not_assume_equivalence_or_rebind_for_convenience"
+    },
+    {
+      "id": "ownership_sensitive_schema",
+      "paths": [
+        "schema",
+        "schemas"
+      ],
+      "rule": "schema_law_is_canonical_projections_are_non_authoritative"
+    },
+    {
+      "id": "ownership_sensitive_packs",
+      "paths": [
+        "packs",
+        "data/packs"
+      ],
+      "rule": "packaged_activation_scope_and_authored_pack_declaration_scope_are_not_interchangeable"
+    },
+    {
+      "id": "generated_and_projected_surfaces",
+      "paths": [
+        "build",
+        "artifacts",
+        ".xstack_cache",
+        "run_meta"
+      ],
+      "rule": "do_not_promote_generated_or_mirrored_outputs_to_runtime_truth"
+    },
+    {
+      "id": "planning_order_drift",
+      "paths": [
+        "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
+        "data/planning/final_prompt_inventory.json",
+        "data/planning/dependency_graph_post_pi.json"
+      ],
+      "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
+    }
+  ],
+  "anti_pattern_categories": [
+    "kernel_as_semantic_god_object",
+    "services_invent_domain_law",
+    "products_or_shells_redefine_truth",
+    "presentation_driven_kernel_design",
+    "code_adjacency_as_semantic_authority",
+    "automatic_runtime_root_canonicalization",
+    "ownership_convenience_rebinding",
+    "unmaterialized_truth_treated_as_nonexistent"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Φ-1 — COMPONENT_MODEL-0",
+    "Φ-2 — RUNTIME_SERVICES-0",
+    "Φ-3",
+    "Φ-4",
+    "Φ-5",
+    "Σ-1",
+    "Σ-2",
+    "Υ-series",
+    "Ζ-series"
+  ],
+  "prohibited_downstream_violations": [
+    "redefine_semantic_truth_in_runtime",
+    "redefine_domain_ownership_in_runtime",
+    "treat_runtime_root_as_automatically_canonical",
+    "allow_ui_or_product_shells_to_become_truth_authority",
+    "bypass_semantic_ownership_review_for_runtime_convenience",
+    "freeze_component_or_service_detail_as_if_defined_by_phi0",
+    "let_stale_planning_drift_override_checkpoint_law"
+  ]
+}
