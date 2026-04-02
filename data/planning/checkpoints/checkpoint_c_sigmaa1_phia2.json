@@ -1,0 +1,255 @@
+{
+  "checkpoint_id": "C-ΣA1ΦA2",
+  "checkpoint_state": "post-Σ-A / post-Φ-A1 / pre-Φ-A2",
+  "reviewed_prompts": [
+    {
+      "active_prompt_id": "Φ-3",
+      "title": "DOMAIN_SERVICE_BINDING_MODEL-0",
+      "legacy_inventory_prompt_id": "Φ-3",
+      "continuity_warning": "Legacy planning inventory still labels Φ-3 as STATE_EXTERNALIZATION-0."
+    },
+    {
+      "active_prompt_id": "Φ-4",
+      "title": "STATE_EXTERNALIZATION-0",
+      "legacy_inventory_prompt_id": "Φ-4",
+      "continuity_warning": "Legacy planning inventory still labels Φ-4 as RUNTIME_SERVICES-0."
+    },
+    {
+      "active_prompt_id": "Φ-5",
+      "title": "LIFECYCLE_MANAGER-0",
+      "legacy_inventory_prompt_id": "Φ-5",
+      "continuity_warning": "Legacy planning inventory still labels Φ-5 as ASSET_PIPELINE-0."
+    },
+    {
+      "active_prompt_id": "Σ-3",
+      "title": "XSTACK_TASK_CATALOG-0",
+      "legacy_inventory_prompt_id": "Σ-3"
+    },
+    {
+      "active_prompt_id": "Σ-4",
+      "title": "MCP_INTERFACE-0",
+      "legacy_inventory_prompt_id": "Σ-5",
+      "continuity_warning": "Legacy planning inventory still labels Σ-4 as NATURAL_LANGUAGE_TASK_BRIDGE-0 and places MCP_INTERFACE-0 at Σ-5."
+    },
+    {
+      "active_prompt_id": "Σ-5",
+      "title": "AGENT_SAFETY_POLICY-0",
+      "legacy_inventory_prompt_id": "Σ-2",
+      "continuity_warning": "Legacy planning inventory still labels Σ-2 as AGENT_SAFETY_POLICY-0."
+    }
+  ],
+  "governance_task_sufficiency": {
+    "overall": "sufficient_for_phi_a2_with_cautions",
+    "authority_model": "sufficient",
+    "anti_reinvention": "sufficient",
+    "ownership_sensitive_guidance": "sufficient_with_carry_forward_cautions",
+    "task_family_sufficiency": "sufficient_for_classification_not_execution",
+    "runtime_vocabulary_sufficiency": "sufficient",
+    "review_gate_clarity": "sufficient_with_sequence_drift_note",
+    "mirror_vs_canonical_clarity": "sufficient",
+    "not_sufficient_by_itself_for": [
+      "Σ-3 XStack task catalog freeze",
+      "Σ-4 MCP interface exposure modeling",
+      "Σ-5 hardened agent safety policy"
+    ]
+  },
+  "runtime_task_boundary": {
+    "overall": "clear_enough_for_deeper_phi",
+    "phi_a2_may_assume": [
+      "The Λ semantic constitution remains binding upstream input.",
+      "Canonical governance, mirror law, and task normalization law are explicit enough to constrain deeper runtime work.",
+      "Kernel, component, and service layers are explicit and distinct.",
+      "Service doctrine intentionally leaves domain-service binding, state externalization, and lifecycle law for later refinement.",
+      "Natural-language requests must be normalized into task classes before execution planning, but task classes do not replace runtime doctrine.",
+      "The active sequence is Φ-3 through Φ-5 followed by Σ-3 through Σ-5, despite stale legacy inventory numbering."
+    ],
+    "phi_a2_must_not_assume": [
+      "Deeper runtime doctrine may redefine domain ownership, bridge law, capability meaning, or semantic ontology.",
+      "Natural-language task families are sufficient as execution surfaces.",
+      "Mirrors or vendor-facing instructions may override canonical governance.",
+      "runtime/ is canonical by name alone.",
+      "Code adjacency proves semantic unity, bridge authority, or service ownership.",
+      "packs/** and data/packs/** are a resolved single-root family.",
+      "Stale planning sequence artifacts silently outrank current checkpoint law."
+    ],
+    "sigma_b_may_assume_after_phi_a2": [
+      "Deeper runtime vocabulary for domain-support services, externalized state boundaries, and lifecycle transitions is explicit.",
+      "Task catalog work can bind to actual runtime surfaces rather than early placeholders.",
+      "MCP/interface planning can expose bounded surfaces rather than unstable runtime guesses.",
+      "Safety policy can reason over real domain-binding, state, and lifecycle hazards rather than incomplete early-Φ abstractions."
+    ],
+    "sigma_b_must_wait_for": [
+      "Explicit doctrine for how services bind to domains without redefining domain ownership or cross-domain bridge law.",
+      "Explicit doctrine for what state is externalized, what remains truth-hosted, and how replay or persistence boundaries are represented.",
+      "Explicit doctrine for lifecycle transitions, startup, shutdown, handoff, rollback, and service-bound coordination."
+    ]
+  },
+  "extension_over_replacement": {
+    "preserve": [
+      "client",
+      "server",
+      "launcher",
+      "setup",
+      "appshell",
+      "engine",
+      "game",
+      "game/content/core"
+    ],
+    "extend": [
+      "app",
+      "compat",
+      "control",
+      "core",
+      "net",
+      "process",
+      "server/runtime",
+      "server/persistence",
+      "semantic roots consumed as upstream inputs"
+    ],
+    "consolidate": [
+      "build/** with provenance only",
+      "artifacts/** with provenance only",
+      ".xstack_cache/** with provenance only",
+      "run_meta/** with provenance only"
+    ],
+    "do_not_replace": [
+      "AGENTS.md",
+      "docs/agents/**",
+      "docs/planning/**",
+      "docs/runtime/**",
+      "runtime/"
+    ],
+    "quarantine_aware": [
+      "field vs fields",
+      "schema vs schemas",
+      "packs vs data/packs"
+    ]
+  },
+  "ownership_projection_cautions": [
+    {
+      "family": "field_vs_fields",
+      "canonical_owner": "fields/**",
+      "non_canonical_surface": "field/**",
+      "rule": "Treat field/** only as a transitional compatibility facade when designing domain-binding or lifecycle boundaries."
+    },
+    {
+      "family": "schema_vs_schemas",
+      "canonical_owner": "schema/**",
+      "non_canonical_surface": "schemas/**",
+      "rule": "State externalization and lifecycle semantics must follow schema/** rather than schemas/**."
+    },
+    {
+      "family": "packs_vs_data_packs",
+      "canonical_owner": "packs/** within runtime packaging and activation scope",
+      "scoped_owner": "data/packs/** within authored content and declaration scope",
+      "rule": "Do not flatten content identity, runtime activation, and release semantics into one root."
+    },
+    {
+      "family": "canonical_vs_projected_or_generated",
+      "canonical_owner": "specs/reality/** and docs/planning/**",
+      "non_canonical_surface": "data/reality/**, data/planning/**, build/**, artifacts/**, .xstack_cache/**, run_meta/**",
+      "rule": "Normative meaning and checkpoint interpretation must follow canonical prose and specs."
+    },
+    {
+      "family": "bridges_and_domain_ownership",
+      "canonical_owner": "cross-domain bridge law and domain contracts",
+      "rule": "Neither service binding, state externalization, nor lifecycle doctrine may create new bridge authority or domain ownership semantics."
+    },
+    {
+      "family": "planning_numbering_drift",
+      "non_canonical_surface": "older prompt inventory and prompt index numbering",
+      "rule": "Use the active executed checkpoint path when mapping prompt identity and sequence."
+    }
+  ],
+  "prompt_readiness": {
+    "Φ-3": {
+      "status": "ready_with_cautions",
+      "rationale": [
+        "Service doctrine explicitly defers detailed domain-service binding to later Φ-3.",
+        "Semantic ownership review and cross-domain bridge law now exist and can constrain the binding model.",
+        "The main caution is to avoid inventing bridge authority or collapsing domains into a hidden service-owned super-domain."
+      ]
+    },
+    "Φ-4": {
+      "status": "ready_with_cautions",
+      "rationale": [
+        "Kernel and service doctrine already establish persistence, replay, and audit hooks as first-class later concerns.",
+        "Governance and task law are strong enough to keep state work from being mistaken for release or control-plane doctrine.",
+        "The main caution is to preserve truth/perceived/render separation, total truth versus sparse materialization, and compatibility/provenance law."
+      ]
+    },
+    "Φ-5": {
+      "status": "ready_with_cautions",
+      "rationale": [
+        "Component and service doctrine already require lifecycle compatibility even though lifecycle law was deferred.",
+        "Deeper lifecycle work can now be grounded in explicit kernel, component, and service boundaries rather than vague system language.",
+        "The main caution is to keep lifecycle doctrine downstream of domain-binding and state-boundary law and to avoid overfitting one current implementation path."
+      ]
+    }
+  },
+  "downstream_implications": {
+    "Σ-3": {
+      "should_wait_for": [
+        "domain-service binding vocabulary from Φ-3",
+        "deeper runtime boundary terms for state externalization from Φ-4",
+        "lifecycle transition and control vocabulary from Φ-5"
+      ],
+      "why": [
+        "The task catalog should classify real runtime work surfaces rather than early-Φ placeholders."
+      ]
+    },
+    "Σ-4": {
+      "should_wait_for": [
+        "stable runtime task surfaces from Σ-3",
+        "stable domain-binding, state, and lifecycle boundaries from Φ-3 through Φ-5"
+      ],
+      "why": [
+        "MCP exposure must not bind tool affordances to ambiguous runtime, service, or state surfaces."
+      ]
+    },
+    "Σ-5": {
+      "should_wait_for": [
+        "the deeper runtime hazard model from Φ-3 through Φ-5",
+        "the stabilized task catalog and interface categories from Σ-3 and Σ-4"
+      ],
+      "why": [
+        "Safety policy must understand domain binding, state externalization, lifecycle transitions, and exposure boundaries before hardening permissions and refusal rules."
+      ]
+    }
+  },
+  "prohibited_moves": [
+    "redefine semantic doctrine, semantic ownership, or cross-domain bridge law",
+    "treat natural-language task normalization as executable authority",
+    "let mirrors, tool wording, or chat phrasing override canonical governance",
+    "bind deeper runtime work to ownership-ambiguous roots by convenience",
+    "treat runtime/ as canonical merely because of its name",
+    "let state externalization rewrite truth/perceived/render separation",
+    "let lifecycle doctrine rewrite release or control-plane law",
+    "let task catalog, MCP exposure, or safety policy bind to unstable pre-Φ-A2 runtime assumptions",
+    "overfit domain binding, state semantics, or lifecycle semantics to one current implementation path without explicit doctrine"
+  ],
+  "final_verdict": {
+    "decision": "proceed_with_modifications",
+    "summary": "Σ-0 through Σ-2 are sufficient for deeper Φ-A2, and Φ-0 through Φ-2 are sufficient to begin deeper runtime doctrine. Σ-B is not ready by itself and must still wait for Φ-3 through Φ-5. Carry forward ownership, bridge, canonical-versus-projected, and numbering-drift cautions explicitly.",
+    "required_corrections": [
+      "Treat Φ-A2 as bounded doctrine extraction and refinement rather than implementation or semantic reinterpretation.",
+      "Carry forward Λ-5.5 ownership outcomes unchanged.",
+      "Carry forward cross-domain bridge law unchanged.",
+      "Treat task classes as normalization aids rather than execution contracts.",
+      "Record stale Σ and Φ numbering drift explicitly whenever deeper runtime outputs reference older planning artifacts."
+    ]
+  },
+  "required_human_review": false,
+  "stability": {
+    "class": "provisional",
+    "consumed_by": [
+      "Φ-3",
+      "Φ-4",
+      "Φ-5",
+      "Σ-3",
+      "Σ-4",
+      "Σ-5",
+      "later planning and checkpoint reviews"
+    ]
+  }
+}
