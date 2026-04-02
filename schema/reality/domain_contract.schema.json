@@ -1,0 +1,1549 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Domain Contract Schema",
+  "version": "1.0.0",
+  "x-schema-id": "dominium.schema.reality.domain_contract",
+  "x-stability": "stable",
+  "description": "Canonical Dominium domain contract structure. Domain contracts inherit the universal reality framework and define lawful domain shape without redefining core reality semantics locally.",
+  "x-doc-ref": [
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md"
+  ],
+  "type": "object",
+  "required": [
+    "contract_kind",
+    "schema_version",
+    "inherits_from_framework",
+    "identity",
+    "scope",
+    "primitive_substrate",
+    "process_model",
+    "recognition_model",
+    "affordance_model",
+    "formalization_model",
+    "representation_model",
+    "failure_model",
+    "verification",
+    "observation_bindings",
+    "interface_bindings",
+    "compatibility_and_stability",
+    "civilization_scaling_path",
+    "mod_extension_path",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "interactionBinding": {
+      "type": "object",
+      "required": [
+        "support_state",
+        "interaction_modes",
+        "observation_dependencies",
+        "refusal_conditions",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "support_state": {
+          "type": "string",
+          "enum": [
+            "supported",
+            "conditional",
+            "not_supported"
+          ]
+        },
+        "interaction_modes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "observation_dependencies": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "refusal_conditions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    }
+  },
+  "properties": {
+    "contract_kind": {
+      "type": "string",
+      "const": "domain_contract"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "inherits_from_framework": {
+      "type": "object",
+      "required": [
+        "artifact_id",
+        "minimum_version",
+        "prohibited_local_redefinitions",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "const": "spec.dominium.universal_reality_framework"
+        },
+        "minimum_version": {
+          "$ref": "#/$defs/semver"
+        },
+        "prohibited_local_redefinitions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "domain_id",
+        "domain_name",
+        "domain_summary",
+        "domain_classes",
+        "phenomenon_scope",
+        "authority_roots",
+        "owned_truth_classes",
+        "declared_related_roots"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "domain_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "domain_name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "domain_summary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "domain_classes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "phenomenon_scope": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "authority_roots": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "owned_truth_classes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "declared_related_roots": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "governs",
+        "boundary_claims",
+        "explicit_non_goals",
+        "overlap_statement",
+        "known_overlap_zones",
+        "ownership_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "governs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "boundary_claims": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "explicit_non_goals": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "overlap_statement": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "known_overlap_zones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "surface",
+              "status",
+              "notes"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "surface": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "declared_overlap",
+                  "quarantine_sensitive",
+                  "none_declared"
+                ]
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "ownership_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "primitive_substrate": {
+      "type": "object",
+      "required": [
+        "primitive_units",
+        "truth_bearing_entities",
+        "primitive_invariants",
+        "primitive_refusal_conditions",
+        "higher_order_semantics_not_implicit",
+        "source_roots",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "primitive_units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "primitive_id",
+              "summary",
+              "truth_role",
+              "preserved_properties",
+              "notes"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "primitive_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "summary": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "truth_role": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "preserved_properties": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "truth_bearing_entities": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "primitive_invariants": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "primitive_refusal_conditions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "higher_order_semantics_not_implicit": {
+          "type": "boolean",
+          "const": true
+        },
+        "source_roots": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "process_model": {
+      "type": "object",
+      "required": [
+        "truth_mutation_rule",
+        "processes",
+        "process_invariants",
+        "process_scope_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "truth_mutation_rule": {
+          "type": "string",
+          "const": "truth_mutation_only_through_processes"
+        },
+        "processes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "process_id",
+              "summary",
+              "inputs",
+              "outputs",
+              "invariants",
+              "refusal_conditions",
+              "deterministic_notes"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "process_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "summary": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "inputs": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "outputs": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "invariants": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "refusal_conditions": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "deterministic_notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "process_invariants": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "process_scope_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "recognition_model": {
+      "type": "object",
+      "required": [
+        "recognitions",
+        "recognitions_cannot_replace_primitives",
+        "recognition_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "recognitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "recognition_id",
+              "summary",
+              "derives_from",
+              "validity_conditions",
+              "observer_dependence"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "recognition_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "summary": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "derives_from": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "validity_conditions": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "observer_dependence": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "epistemic_filtered",
+                  "contextual"
+                ]
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "recognitions_cannot_replace_primitives": {
+          "type": "boolean",
+          "const": true
+        },
+        "recognition_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "affordance_model": {
+      "type": "object",
+      "required": [
+        "affordances",
+        "law_gated_affordances_only",
+        "affordance_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "affordances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "affordance_id",
+              "summary",
+              "actors",
+              "authority_conditions",
+              "process_refs",
+              "capability_refs",
+              "failure_or_refusal_conditions"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "affordance_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "summary": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "actors": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "authority_conditions": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "process_refs": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "capability_refs": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "failure_or_refusal_conditions": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "law_gated_affordances_only": {
+          "type": "boolean",
+          "const": true
+        },
+        "affordance_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "formalization_model": {
+      "type": "object",
+      "required": [
+        "formalization_policy",
+        "formalizations",
+        "formalization_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "formalization_policy": {
+          "type": "string",
+          "enum": [
+            "none_declared",
+            "defined"
+          ]
+        },
+        "formalizations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "formalization_id",
+              "artifact_kind",
+              "summary",
+              "activation_conditions",
+              "normative_refs"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "formalization_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "artifact_kind": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "summary": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "activation_conditions": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "normative_refs": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "formalization_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "formalization_policy": {
+                "const": "defined"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "formalizations": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "representation_model": {
+      "type": "object",
+      "required": [
+        "representations",
+        "representation_invariants",
+        "substitution_policy",
+        "representation_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "representations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "representation_id",
+              "representation_class",
+              "summary",
+              "preserved_invariants",
+              "causal_horizon",
+              "expansion_triggers"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "representation_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "representation_class": {
+                "type": "string",
+                "enum": [
+                  "primitive",
+                  "recognized",
+                  "formalized",
+                  "substituted",
+                  "macro",
+                  "micro",
+                  "other"
+                ]
+              },
+              "summary": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "preserved_invariants": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "causal_horizon": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "observation_scope": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "expansion_triggers": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "representation_invariants": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "substitution_policy": {
+          "type": "object",
+          "required": [
+            "mode",
+            "implicit_substitution_forbidden",
+            "substitutions"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "none_declared",
+                "lawful_substitutions_defined"
+              ]
+            },
+            "implicit_substitution_forbidden": {
+              "type": "boolean",
+              "const": true
+            },
+            "substitutions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "substitution_id",
+                  "from_representation",
+                  "to_representation",
+                  "preserved_invariants",
+                  "continuity_conditions",
+                  "causal_closure_horizon",
+                  "activation_conditions",
+                  "refusal_conditions"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "substitution_id": {
+                    "$ref": "#/$defs/nonEmptyString"
+                  },
+                  "from_representation": {
+                    "$ref": "#/$defs/nonEmptyString"
+                  },
+                  "to_representation": {
+                    "$ref": "#/$defs/nonEmptyString"
+                  },
+                  "preserved_invariants": {
+                    "$ref": "#/$defs/stringArray"
+                  },
+                  "continuity_conditions": {
+                    "$ref": "#/$defs/stringArray"
+                  },
+                  "causal_closure_horizon": {
+                    "$ref": "#/$defs/nonEmptyString"
+                  },
+                  "activation_conditions": {
+                    "$ref": "#/$defs/stringArray"
+                  },
+                  "refusal_conditions": {
+                    "$ref": "#/$defs/stringArray"
+                  },
+                  "notes": {
+                    "$ref": "#/$defs/stringArray"
+                  },
+                  "extensions": {
+                    "$ref": "#/$defs/extensions"
+                  }
+                }
+              }
+            },
+            "extensions": {
+              "$ref": "#/$defs/extensions"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "mode": {
+                    "const": "lawful_substitutions_defined"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "substitutions": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "representation_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "failure_model": {
+      "type": "object",
+      "required": [
+        "ordinary_vs_failure_boundary",
+        "failure_modes",
+        "degradation_rules",
+        "failure_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ordinary_vs_failure_boundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "failure_modes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "failure_id",
+              "failure_class",
+              "trigger_conditions",
+              "effect_on_truth",
+              "effect_on_observation",
+              "refusal_or_degradation_response",
+              "recoverability"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "failure_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "failure_class": {
+                "type": "string",
+                "enum": [
+                  "degraded",
+                  "invalid",
+                  "unsafe",
+                  "unknown",
+                  "external_absence",
+                  "other"
+                ]
+              },
+              "trigger_conditions": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "effect_on_truth": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "effect_on_observation": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "refusal_or_degradation_response": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "recoverability": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "degradation_rules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "failure_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "invariants",
+        "audit_surfaces",
+        "replay_requirements",
+        "determinism_requirements",
+        "proof_artifacts",
+        "verification_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "invariants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "invariant_id",
+              "statement",
+              "checkability"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "invariant_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "statement": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "checkability": {
+                "type": "string",
+                "enum": [
+                  "manual",
+                  "static",
+                  "runtime",
+                  "schema",
+                  "replay",
+                  "hybrid"
+                ]
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "audit_surfaces": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "replay_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "determinism_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "proof_artifacts": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "verification_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "observation_bindings": {
+      "type": "object",
+      "required": [
+        "truth_is_not_observation",
+        "bindings",
+        "observation_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "truth_is_not_observation": {
+          "type": "boolean",
+          "const": true
+        },
+        "bindings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "binding_id",
+              "observer_kind",
+              "derived_from_truth_classes",
+              "epistemic_artifacts",
+              "channels",
+              "redaction_or_quantization_rules"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "binding_id": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "observer_kind": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "derived_from_truth_classes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "epistemic_artifacts": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "channels": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "redaction_or_quantization_rules": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "notes": {
+                "$ref": "#/$defs/stringArray"
+              },
+              "extensions": {
+                "$ref": "#/$defs/extensions"
+              }
+            }
+          }
+        },
+        "observation_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "interface_bindings": {
+      "type": "object",
+      "required": [
+        "reality_is_interface_agnostic",
+        "embodied_user",
+        "abstract_planner",
+        "ai_agent",
+        "npc_actor",
+        "system_actor",
+        "interface_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "reality_is_interface_agnostic": {
+          "type": "boolean",
+          "const": true
+        },
+        "embodied_user": {
+          "$ref": "#/$defs/interactionBinding"
+        },
+        "abstract_planner": {
+          "$ref": "#/$defs/interactionBinding"
+        },
+        "ai_agent": {
+          "$ref": "#/$defs/interactionBinding"
+        },
+        "npc_actor": {
+          "$ref": "#/$defs/interactionBinding"
+        },
+        "system_actor": {
+          "$ref": "#/$defs/interactionBinding"
+        },
+        "interface_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "compatibility_and_stability": {
+      "type": "object",
+      "required": [
+        "contract_version",
+        "stability",
+        "replacement_target",
+        "future_series_note",
+        "compatibility_considerations",
+        "semantic_contract_pin",
+        "ownership_sensitivity_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/semver"
+        },
+        "stability": {
+          "type": "string",
+          "enum": [
+            "experimental",
+            "provisional",
+            "stable",
+            "core"
+          ]
+        },
+        "replacement_target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "future_series_note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "compatibility_considerations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "semantic_contract_pin": {
+          "type": "object",
+          "required": [
+            "framework_artifact_id",
+            "framework_version_minimum",
+            "prohibited_local_redefinitions"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "framework_artifact_id": {
+              "type": "string",
+              "const": "spec.dominium.universal_reality_framework"
+            },
+            "framework_version_minimum": {
+              "$ref": "#/$defs/semver"
+            },
+            "prohibited_local_redefinitions": {
+              "$ref": "#/$defs/stringArray"
+            },
+            "extensions": {
+              "$ref": "#/$defs/extensions"
+            }
+          }
+        },
+        "ownership_sensitivity_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "civilization_scaling_path": {
+      "type": "object",
+      "required": [
+        "scale_model",
+        "macro_summary_rules",
+        "micro_detail_triggers",
+        "continuity_requirements",
+        "scale_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "scale_model": {
+          "type": "object",
+          "required": [
+            "supports_macro",
+            "supports_micro",
+            "intermediate_bands"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "supports_macro": {
+              "type": "boolean"
+            },
+            "supports_micro": {
+              "type": "boolean"
+            },
+            "intermediate_bands": {
+              "$ref": "#/$defs/stringArray"
+            },
+            "extensions": {
+              "$ref": "#/$defs/extensions"
+            }
+          }
+        },
+        "macro_summary_rules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "micro_detail_triggers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "continuity_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "scale_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "mod_extension_path": {
+      "type": "object",
+      "required": [
+        "pack_extension_points",
+        "specializable_elements",
+        "non_overridable_elements",
+        "compatibility_requirements",
+        "refusal_rules",
+        "extension_notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "pack_extension_points": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "specializable_elements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "non_overridable_elements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "compatibility_requirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "refusal_rules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extension_notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "extensions": {
+      "$ref": "#/$defs/extensions"
+    }
+  },
+  "examples": [
+    {
+      "contract_kind": "domain_contract",
+      "schema_version": "1.0.0",
+      "inherits_from_framework": {
+        "artifact_id": "spec.dominium.universal_reality_framework",
+        "minimum_version": "1.0.0",
+        "prohibited_local_redefinitions": [
+          "truth_perceived_render_boundary",
+          "truth_totality",
+          "sparse_materialization",
+          "minimal_causal_closure"
+        ],
+        "notes": [
+          "This domain inherits the universal framework and may only specialize it."
+        ]
+      },
+      "identity": {
+        "domain_id": "domain.example.placeholder",
+        "domain_name": "Example Placeholder Domain",
+        "domain_summary": "Illustrative placeholder showing the required contract structure.",
+        "domain_classes": [
+          "example"
+        ],
+        "phenomenon_scope": [
+          "placeholder coherent phenomenon"
+        ],
+        "authority_roots": [
+          "Law",
+          "Process"
+        ],
+        "owned_truth_classes": [
+          "example.truth.placeholder"
+        ],
+        "declared_related_roots": [
+          "packs/domain"
+        ]
+      },
+      "scope": {
+        "governs": [
+          "placeholder governed state"
+        ],
+        "boundary_claims": [
+          "covers only declared placeholder structures"
+        ],
+        "explicit_non_goals": [
+          "does not redefine universal reality semantics"
+        ],
+        "overlap_statement": "No production overlap declared in this placeholder example.",
+        "known_overlap_zones": [],
+        "ownership_notes": [
+          "Real instances must expose pack and schema sensitivity explicitly when relevant."
+        ]
+      },
+      "primitive_substrate": {
+        "primitive_units": [
+          {
+            "primitive_id": "primitive.placeholder_seed",
+            "summary": "Lowest-level placeholder truth token.",
+            "truth_role": "truth-bearing example primitive",
+            "preserved_properties": [
+              "identity"
+            ],
+            "notes": [
+              "Placeholder only."
+            ]
+          }
+        ],
+        "truth_bearing_entities": [
+          "placeholder_seed"
+        ],
+        "primitive_invariants": [
+          "placeholder primitive identity remains stable"
+        ],
+        "primitive_refusal_conditions": [
+          "refuse if required primitive seed is absent"
+        ],
+        "higher_order_semantics_not_implicit": true,
+        "source_roots": [
+          "packs/domain"
+        ],
+        "notes": [
+          "Replace with real domain substrate."
+        ]
+      },
+      "process_model": {
+        "truth_mutation_rule": "truth_mutation_only_through_processes",
+        "processes": [
+          {
+            "process_id": "process.placeholder_update",
+            "summary": "Example lawful mutation path.",
+            "inputs": [
+              "primitive.placeholder_seed"
+            ],
+            "outputs": [
+              "example.truth.placeholder"
+            ],
+            "invariants": [
+              "identity remains stable"
+            ],
+            "refusal_conditions": [
+              "refuse if required authority is missing"
+            ],
+            "deterministic_notes": [
+              "No wall-clock or implicit randomness."
+            ]
+          }
+        ],
+        "process_invariants": [
+          "all placeholder truth mutation occurs through the declared process"
+        ],
+        "process_scope_notes": [
+          "Real instances should list every authoritative mutation family or state none explicitly."
+        ]
+      },
+      "recognition_model": {
+        "recognitions": [],
+        "recognitions_cannot_replace_primitives": true,
+        "recognition_notes": [
+          "No recognitions declared in placeholder example."
+        ]
+      },
+      "affordance_model": {
+        "affordances": [],
+        "law_gated_affordances_only": true,
+        "affordance_notes": [
+          "No affordances declared in placeholder example."
+        ]
+      },
+      "formalization_model": {
+        "formalization_policy": "none_declared",
+        "formalizations": [],
+        "formalization_notes": [
+          "Placeholder example does not define standards or institutions."
+        ]
+      },
+      "representation_model": {
+        "representations": [
+          {
+            "representation_id": "repr.placeholder.primitive",
+            "representation_class": "primitive",
+            "summary": "Example primitive representation.",
+            "preserved_invariants": [
+              "identity"
+            ],
+            "causal_horizon": "placeholder local horizon",
+            "observation_scope": [
+              "none"
+            ],
+            "expansion_triggers": [
+              "none"
+            ],
+            "notes": [
+              "Real instances should declare lawful representation layers explicitly."
+            ]
+          }
+        ],
+        "representation_invariants": [
+          "representation may not change meaning silently"
+        ],
+        "substitution_policy": {
+          "mode": "none_declared",
+          "implicit_substitution_forbidden": true,
+          "substitutions": []
+        },
+        "representation_notes": [
+          "No substitutions declared in placeholder example."
+        ]
+      },
+      "failure_model": {
+        "ordinary_vs_failure_boundary": "ordinary state is any state meeting placeholder invariants; failure begins when required seed or authority is missing.",
+        "failure_modes": [
+          {
+            "failure_id": "failure.placeholder.absent_seed",
+            "failure_class": "external_absence",
+            "trigger_conditions": [
+              "required placeholder seed missing"
+            ],
+            "effect_on_truth": [
+              "truth mutation refused"
+            ],
+            "effect_on_observation": [
+              "explicit unknown or unavailable signal"
+            ],
+            "refusal_or_degradation_response": [
+              "emit explicit refusal"
+            ],
+            "recoverability": "recoverable once required seed exists again"
+          }
+        ],
+        "degradation_rules": [
+          "silent fallback is forbidden"
+        ],
+        "failure_notes": [
+          "Replace with domain-specific failure semantics."
+        ]
+      },
+      "verification": {
+        "invariants": [
+          {
+            "invariant_id": "INV.placeholder.process_only",
+            "statement": "placeholder truth mutates only through the declared Process",
+            "checkability": "manual",
+            "notes": [
+              "Replace with schema, static, replay, or runtime checks as available."
+            ]
+          }
+        ],
+        "audit_surfaces": [
+          "domain contract review"
+        ],
+        "replay_requirements": [
+          "deterministic replay remains unchanged for identical inputs"
+        ],
+        "determinism_requirements": [
+          "no hidden wall-clock or thread timing dependence"
+        ],
+        "proof_artifacts": [
+          "contract diff review"
+        ],
+        "verification_notes": [
+          "Replace placeholder checks with real audit surfaces."
+        ]
+      },
+      "observation_bindings": {
+        "truth_is_not_observation": true,
+        "bindings": [
+          {
+            "binding_id": "obs.placeholder.summary",
+            "observer_kind": "example_observer",
+            "derived_from_truth_classes": [
+              "example.truth.placeholder"
+            ],
+            "epistemic_artifacts": [
+              "observation.example"
+            ],
+            "channels": [
+              "ch.example.summary"
+            ],
+            "redaction_or_quantization_rules": [
+              "placeholder redaction rule"
+            ],
+            "notes": [
+              "Observation remains derived."
+            ]
+          }
+        ],
+        "observation_notes": [
+          "Replace with real observation bindings."
+        ]
+      },
+      "interface_bindings": {
+        "reality_is_interface_agnostic": true,
+        "embodied_user": {
+          "support_state": "conditional",
+          "interaction_modes": [
+            "inspect"
+          ],
+          "observation_dependencies": [
+            "obs.placeholder.summary"
+          ],
+          "refusal_conditions": [
+            "missing lawful observation"
+          ],
+          "notes": [
+            "Placeholder only."
+          ]
+        },
+        "abstract_planner": {
+          "support_state": "supported",
+          "interaction_modes": [
+            "plan"
+          ],
+          "observation_dependencies": [
+            "obs.placeholder.summary"
+          ],
+          "refusal_conditions": [
+            "unsupported request beyond declared scope"
+          ],
+          "notes": [
+            "Placeholder only."
+          ]
+        },
+        "ai_agent": {
+          "support_state": "conditional",
+          "interaction_modes": [
+            "inspect",
+            "plan"
+          ],
+          "observation_dependencies": [
+            "obs.placeholder.summary"
+          ],
+          "refusal_conditions": [
+            "authority missing"
+          ],
+          "notes": [
+            "Placeholder only."
+          ]
+        },
+        "npc_actor": {
+          "support_state": "not_supported",
+          "interaction_modes": [],
+          "observation_dependencies": [],
+          "refusal_conditions": [
+            "no NPC pathway defined"
+          ],
+          "notes": [
+            "Explicit non-support is still valid if stated."
+          ]
+        },
+        "system_actor": {
+          "support_state": "conditional",
+          "interaction_modes": [
+            "audit"
+          ],
+          "observation_dependencies": [
+            "obs.placeholder.summary"
+          ],
+          "refusal_conditions": [
+            "outside declared audit scope"
+          ],
+          "notes": [
+            "Placeholder only."
+          ]
+        },
+        "interface_notes": [
+          "Every actor class must be addressed explicitly."
+        ]
+      },
+      "compatibility_and_stability": {
+        "contract_version": "1.0.0",
+        "stability": "provisional",
+        "replacement_target": null,
+        "future_series_note": "Later prompts may refine this example but may not bypass the template.",
+        "compatibility_considerations": [
+          "semantic contract pin must remain explicit"
+        ],
+        "semantic_contract_pin": {
+          "framework_artifact_id": "spec.dominium.universal_reality_framework",
+          "framework_version_minimum": "1.0.0",
+          "prohibited_local_redefinitions": [
+            "truth_totality",
+            "sparse_materialization"
+          ]
+        },
+        "ownership_sensitivity_notes": [
+          "Placeholder example has no live overlap claims."
+        ]
+      },
+      "civilization_scaling_path": {
+        "scale_model": {
+          "supports_macro": true,
+          "supports_micro": true,
+          "intermediate_bands": [
+            "meso"
+          ]
+        },
+        "macro_summary_rules": [
+          "macro summary must preserve committed placeholder identity"
+        ],
+        "micro_detail_triggers": [
+          "expand when local interaction requires finer detail"
+        ],
+        "continuity_requirements": [
+          "expansion and collapse must preserve continuity"
+        ],
+        "scale_notes": [
+          "Replace with real domain scale rules."
+        ]
+      },
+      "mod_extension_path": {
+        "pack_extension_points": [
+          "none declared"
+        ],
+        "specializable_elements": [
+          "recognized patterns may later be specialized"
+        ],
+        "non_overridable_elements": [
+          "inherited universal reality semantics"
+        ],
+        "compatibility_requirements": [
+          "extensions must preserve declared invariants"
+        ],
+        "refusal_rules": [
+          "invalid extensions must refuse explicitly"
+        ],
+        "extension_notes": [
+          "Replace with real pack and mod rules."
+        ]
+      },
+      "extensions": {}
+    }
+  ]
+}
