@@ -1,0 +1,190 @@
+{
+  "status": "canonical",
+  "last_reviewed": "2026-04-02",
+  "stability": "provisional",
+  "canonical_governance_source": "AGENTS.md",
+  "mirror_policy_source": "docs/agents/AGENT_MIRROR_POLICY.md",
+  "checkpoint_state": "post-Λ / post-Σ-0 / post-C-Σ0ΦA1 / post-Φ-2 / pre-Σ-1",
+  "canonical_vs_derived_rule": {
+    "single_canonical_governance_source": true,
+    "mirrors_are_canonical": false,
+    "chat_may_override_repo_artifacts": false
+  },
+  "precedence_order": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "scope-specific canonical planning, semantic, runtime, schema, contract, release, and policy artifacts",
+    "docs/agents/AGENT_MIRROR_POLICY.md and other scope-specific canonical mirror-governance artifacts",
+    "derived mirror files",
+    "chat summaries and uncommitted notes"
+  ],
+  "runtime_vocabulary_alignment": {
+    "required": true,
+    "terms": [
+      {
+        "term": "kernel",
+        "required_meaning": "constitutional host for lawful deterministic runtime execution"
+      },
+      {
+        "term": "component",
+        "required_meaning": "bounded runtime-facing functional unit"
+      },
+      {
+        "term": "service",
+        "required_meaning": "bounded coordinated runtime-facing mediation or hosting structure"
+      }
+    ],
+    "forbidden_collapses": [
+      "collapse kernel, component, and service into one generic runtime term",
+      "use stale pre-Φ vocabulary that hides current runtime distinctions"
+    ]
+  },
+  "ownership_caution_requirements": [
+    {
+      "family_id": "field_vs_fields",
+      "must_preserve": true,
+      "summary": "fields/ is canonical semantic field substrate; field/ remains transitional."
+    },
+    {
+      "family_id": "schema_vs_schemas",
+      "must_preserve": true,
+      "summary": "schema/ is canonical semantic contract law; schemas/ remains a projection or advisory mirror."
+    },
+    {
+      "family_id": "packs_vs_data_packs",
+      "must_preserve": true,
+      "summary": "packs/ and data/packs/ have scoped ownership and are not interchangeable."
+    },
+    {
+      "family_id": "canonical_vs_generated_roots",
+      "must_preserve": true,
+      "summary": "generated roots under build/, artifacts/, .xstack_cache/, and run_meta/ remain evidence only."
+    },
+    {
+      "family_id": "runtime_root_name_bias",
+      "must_preserve": true,
+      "summary": "thin runtime/ naming does not imply canonical architectural authority."
+    }
+  ],
+  "mirror_families": [
+    {
+      "mirror_family_id": "github_copilot_root_mirror",
+      "target_ecosystem": "GitHub Copilot and GitHub repository instruction entry surfaces",
+      "enabled": true,
+      "created": true,
+      "created_paths": [
+        ".github/copilot-instructions.md"
+      ],
+      "path_scopes": [
+        "repo_root"
+      ],
+      "canonical_source_refs": [
+        "AGENTS.md",
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+        "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+        "docs/runtime/COMPONENT_MODEL.md",
+        "docs/runtime/RUNTIME_SERVICES.md",
+        "docs/agents/AGENT_MIRROR_POLICY.md"
+      ],
+      "maintenance_rule": "Update when AGENTS.md, ownership review, or early-Φ runtime vocabulary changes materially.",
+      "conflict_rule": "Canonical sources win; stale mirror must be updated or removed.",
+      "runtime_vocabulary_alignment_required": true,
+      "ownership_cautions_required": true
+    },
+    {
+      "mirror_family_id": "github_path_specific_instructions",
+      "target_ecosystem": "GitHub path-scoped instruction files",
+      "enabled": false,
+      "created": false,
+      "created_paths": [],
+      "path_scopes": [],
+      "canonical_source_refs": [
+        "AGENTS.md",
+        "docs/agents/AGENT_MIRROR_POLICY.md"
+      ],
+      "maintenance_rule": "Create only when stable path-local instruction differences are justified by real repo divergence.",
+      "conflict_rule": "Any future path-specific file must remain subordinate to root mirrors and canonical governance.",
+      "runtime_vocabulary_alignment_required": true,
+      "ownership_cautions_required": true,
+      "omission_reason": "Deferred in Σ-1 to avoid path-local shadow canon before Σ-2 and later mirror/tooling refinements."
+    },
+    {
+      "mirror_family_id": "claude_root_mirror",
+      "target_ecosystem": "Claude-style repository instruction entry surfaces",
+      "enabled": true,
+      "created": true,
+      "created_paths": [
+        "CLAUDE.md"
+      ],
+      "path_scopes": [
+        "repo_root"
+      ],
+      "canonical_source_refs": [
+        "AGENTS.md",
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+        "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+        "docs/runtime/COMPONENT_MODEL.md",
+        "docs/runtime/RUNTIME_SERVICES.md",
+        "docs/agents/AGENT_MIRROR_POLICY.md"
+      ],
+      "maintenance_rule": "Update when canonical governance, ownership cautions, or runtime vocabulary changes materially.",
+      "conflict_rule": "Canonical sources win; stale mirror must be updated or removed.",
+      "runtime_vocabulary_alignment_required": true,
+      "ownership_cautions_required": true
+    },
+    {
+      "mirror_family_id": "claude_agent_profiles",
+      "target_ecosystem": "Claude bounded sub-agent profile surfaces",
+      "enabled": false,
+      "created": false,
+      "created_paths": [],
+      "path_scopes": [],
+      "canonical_source_refs": [
+        "AGENTS.md",
+        "docs/agents/AGENT_MIRROR_POLICY.md"
+      ],
+      "maintenance_rule": "Create only when a bounded profile need is justified and later Σ safety/task prompts provide sufficient guardrails.",
+      "conflict_rule": "Any future profile must remain derived, bounded, and non-privileged.",
+      "runtime_vocabulary_alignment_required": true,
+      "ownership_cautions_required": true,
+      "omission_reason": "Deferred in Σ-1 to avoid hidden privileged agent classes before Σ-2 task mapping and Σ-5 safety hardening."
+    }
+  ],
+  "content_constraints": {
+    "allowed": [
+      "concise authority reminders",
+      "current execution-context notes",
+      "ownership-sensitive caution summaries",
+      "post-Φ-2 runtime vocabulary reminders",
+      "minimum validation reminders",
+      "links back to canonical governance and scoped canonical doctrine"
+    ],
+    "forbidden": [
+      "new governance law",
+      "vendor-specific doctrine that contradicts canon",
+      "hidden exceptions to ownership review",
+      "replacement task taxonomies",
+      "new semantic, runtime, or release policy invented for one ecosystem only"
+    ]
+  },
+  "stale_mirror_handling": {
+    "stale_mirror_is_authority": false,
+    "required_action": "update_or_remove",
+    "notes": "Stale mirrors are maintenance bugs and must not be followed over canonical artifacts."
+  },
+  "downstream_refinement_prompts": [
+    "Σ-2",
+    "Σ-3",
+    "Σ-4",
+    "Σ-5"
+  ],
+  "prohibited_mirror_shapes": [
+    "mirror_becomes_shadow_canon",
+    "vendor_specific_instruction_contradicts_repo_law",
+    "path_specific_mirror_silently_overrides_canonical_doctrine",
+    "mirror_hides_ownership_cautions_for_convenience",
+    "mirror_bakes_in_stale_runtime_vocabulary",
+    "mirror_creates_hidden_privileged_agent_classes"
+  ]
+}
