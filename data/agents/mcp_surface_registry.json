@@ -1,0 +1,560 @@
+{
+  "artifact_id": "dominium.agents.mcp_interface_model",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-03",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_a_post_phi5_post_sigma3_pre_sigma4",
+    "enabling_prompt": "Σ-4 — MCP_INTERFACE-0",
+    "upstream_governance_floor": [
+      "Σ-0 — AGENTS_GOVERNANCE_BASELINE-0",
+      "Σ-1 — AGENT_MIRROR_POLICY-0",
+      "Σ-2 — NATURAL_LANGUAGE_TASK_BRIDGE-0",
+      "Σ-3 — XSTACK_TASK_CATALOG-0"
+    ],
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0",
+      "Φ-5 — LIFECYCLE_MANAGER-0"
+    ],
+    "active_numbering_note": "Current checkpoint law advances MCP_INTERFACE-0 as Σ-4 after the XStack task catalog even though older planning artifacts may still retain stale Σ numbering or titles."
+  },
+  "mcp_interface_definition": {
+    "summary": "An MCP-facing interface surface is a bounded, tool-mediated exposure envelope that presents a cataloged task surface through an explicit exposure class, explicit authoritative inputs, explicit output expectations, explicit review posture, and explicit ownership and runtime cautions.",
+    "interface_is_not": [
+      "canonical_governance",
+      "mirror_policy",
+      "natural_language_normalization",
+      "task_catalog_entry_by_itself",
+      "runtime_service",
+      "script_or_command_name_by_itself",
+      "product_ui",
+      "safety_policy_permission"
+    ],
+    "why_needed": [
+      "task_catalog_inclusion_is_broader_than_lawful_interface_exposure",
+      "remote_or_tool_mediated_access_increases_bypass_risk",
+      "scripts_and_wrappers_do_not_encode_full_legal_boundaries",
+      "later_safety_policy_needs_a_stable_exposure_universe",
+      "interface_presence_must_not_be_mistaken_for_authority"
+    ]
+  },
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY.md",
+    "NATURAL_LANGUAGE_TASK_BRIDGE.md",
+    "XSTACK_TASK_CATALOG.md",
+    "xstack_task_catalog.json",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW"
+  ],
+  "required_semantic_inputs": [
+    "constitution_v1.md",
+    "glossary_v1.md",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES",
+    "completed_lambda_semantic_doctrine"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION",
+    "LIFECYCLE_MANAGER"
+  ],
+  "mcp_interface_role": {
+    "downstream_of": [
+      "canonical_governance",
+      "mirror_policy",
+      "natural_language_task_bridge",
+      "xstack_task_catalog",
+      "semantic_doctrine",
+      "runtime_doctrine"
+    ],
+    "upstream_of": [
+      "Σ-5_safety_policy",
+      "concrete_remote_and_automation_integrations",
+      "later_upsilon_and_zeta_interface_consumers"
+    ],
+    "must_not_become": [
+      "parallel_governance_canon",
+      "hidden_policy_engine",
+      "replacement_task_universe",
+      "vendor_specific_interface_canon",
+      "shadow_runtime_authority_layer"
+    ]
+  },
+  "exposure_classes": [
+    {
+      "id": "read_inspect_surface",
+      "description": "Stable read-only inspection of canonical or derived state without tracked mutation.",
+      "default_mutation_posture": "read_only",
+      "typical_task_families": [
+        "planning_checkpointing",
+        "documentation_explanation",
+        "analysis_inspection"
+      ],
+      "auditability_expectation": "high"
+    },
+    {
+      "id": "planning_analysis_surface",
+      "description": "Classification, proposal, planning, inventory, or analysis behavior that may emit candidate artifacts, summaries, or reports without direct review-free mutation.",
+      "default_mutation_posture": "proposal_or_report_only",
+      "typical_task_families": [
+        "planning_checkpointing",
+        "analysis_inspection",
+        "documentation_explanation"
+      ],
+      "auditability_expectation": "high"
+    },
+    {
+      "id": "validation_audit_surface",
+      "description": "Deterministic validation, proof, diagnostics, and audit execution emitting findings, refusal payloads, or evidence.",
+      "default_mutation_posture": "evidence_emitting_only",
+      "typical_task_families": [
+        "validation_audit"
+      ],
+      "auditability_expectation": "high"
+    },
+    {
+      "id": "packaging_checkpoint_surface",
+      "description": "Support-artifact packaging such as checkpoint bundles, bundle validation, and manifest generation without release-distribution semantics.",
+      "default_mutation_posture": "artifact_emitting_only",
+      "typical_task_families": [
+        "packaging_bundling"
+      ],
+      "auditability_expectation": "high"
+    },
+    {
+      "id": "controlled_mutation_surface",
+      "description": "Bounded mutation-capable exposure only where scope, authoritative inputs, auditability, review posture, and runtime or semantic boundaries are already explicit enough to support later safety hardening.",
+      "default_mutation_posture": "bounded_mutation",
+      "typical_task_families": [
+        "runtime_platform",
+        "product_app_shell"
+      ],
+      "auditability_expectation": "very_high"
+    },
+    {
+      "id": "strongly_review_gated_surface",
+      "description": "Exposure that must remain proposal-oriented, delayed, escalated, or explicitly review-gated rather than directly mutable.",
+      "default_mutation_posture": "review_gated_or_proposal_only",
+      "typical_task_families": [
+        "doctrine_specification",
+        "governance_policy",
+        "semantic_domain",
+        "release_distribution_control_plane"
+      ],
+      "auditability_expectation": "very_high"
+    },
+    {
+      "id": "non_exposable_or_excluded_surface",
+      "description": "Surface excluded from current MCP exposure because the authority, ownership, safety, or continuity model is not yet strong enough.",
+      "default_mutation_posture": "not_exposed",
+      "typical_task_families": [
+        "refactor_convergence",
+        "late_zeta_live_ops_equivalents"
+      ],
+      "auditability_expectation": "n_a"
+    }
+  ],
+  "eligibility_requirements": [
+    {
+      "id": "stable_cataloged_task_family_exists",
+      "description": "A stable XStack task family already exists upstream."
+    },
+    {
+      "id": "authoritative_inputs_explicit",
+      "description": "Canonical governing inputs are explicit."
+    },
+    {
+      "id": "output_class_explicit",
+      "description": "Allowed outputs are explicit."
+    },
+    {
+      "id": "execution_posture_known",
+      "description": "Planning-only versus implementation-capable posture is known."
+    },
+    {
+      "id": "review_expectation_known",
+      "description": "Review posture is known."
+    },
+    {
+      "id": "ownership_cautions_preserved",
+      "description": "Ownership-sensitive cautions remain explicit and binding."
+    },
+    {
+      "id": "runtime_vocabulary_preserved",
+      "description": "Kernel, component, service, binding, state, and lifecycle distinctions remain explicit."
+    },
+    {
+      "id": "auditable_action_model",
+      "description": "Inputs, outputs, and effects are auditable in principle."
+    },
+    {
+      "id": "canonical_vs_projected_generated_preserved",
+      "description": "Canonical versus derived artifacts remain distinguished."
+    },
+    {
+      "id": "no_hidden_authority_grant",
+      "description": "Exposure does not invent authority or permission."
+    }
+  ],
+  "non_eligibility_or_delayed_categories": [
+    {
+      "id": "canon_rewrite",
+      "description": "Foundational canon rewrite work should not be exposed."
+    },
+    {
+      "id": "ownership_rebinding",
+      "description": "Protected ownership rebinding should remain delayed or review-gated."
+    },
+    {
+      "id": "broad_multi_layer_refactor",
+      "description": "Broad cross-authority refactors remain excluded."
+    },
+    {
+      "id": "release_publication_trust_change",
+      "description": "Release, signing, trust, or publication changes remain delayed or strongly gated."
+    },
+    {
+      "id": "late_zeta_live_ops",
+      "description": "Late live-ops and distributed-authority operations remain excluded at this layer."
+    },
+    {
+      "id": "safety_model_not_formalized",
+      "description": "Actions whose safety model is not yet formalized remain excluded."
+    },
+    {
+      "id": "deeper_runtime_semantics_not_stabilized",
+      "description": "Actions requiring deeper runtime semantics than currently stabilized remain delayed."
+    },
+    {
+      "id": "direct_prompt_execution_wrapper",
+      "description": "Prompt-facing wrappers are not automatically lawful MCP contracts."
+    }
+  ],
+  "authority_constraints": {
+    "mcp_surfaces_must_not_bypass_authority_order": true,
+    "remote_access_does_not_create_authority": true,
+    "mcp_surfaces_must_not_bind_to_ownership_ambiguous_roots": true,
+    "mcp_surfaces_must_distinguish_canonical_vs_projected_generated_artifacts": true,
+    "mirrors_do_not_define_exposure_law": true,
+    "scripts_are_evidence_not_exposure_canon": true,
+    "catalog_inclusion_does_not_imply_exposure": true,
+    "exposure_does_not_imply_permission": true,
+    "exposure_does_not_imply_autonomy": true
+  },
+  "runtime_vocabulary_alignment": {
+    "flattening_forbidden": true,
+    "terms": [
+      {
+        "term": "kernel",
+        "required_meaning": "constitutional host for lawful deterministic runtime execution"
+      },
+      {
+        "term": "component",
+        "required_meaning": "bounded runtime-facing functional unit"
+      },
+      {
+        "term": "service",
+        "required_meaning": "bounded coordinated runtime-facing mediation or hosting structure"
+      },
+      {
+        "term": "domain_service_binding",
+        "required_meaning": "lawful service-domain attachment grammar"
+      },
+      {
+        "term": "state_externalization",
+        "required_meaning": "law governing authoritative versus derived, transient, projected, and continuity-relevant state"
+      },
+      {
+        "term": "lifecycle",
+        "required_meaning": "law governing runtime posture changes without semantic drift"
+      },
+      {
+        "term": "domain",
+        "required_meaning": "semantic unit governed by domain contracts"
+      },
+      {
+        "term": "product",
+        "required_meaning": "client, server, launcher, setup, appshell, or other shell surface"
+      },
+      {
+        "term": "pack_content",
+        "required_meaning": "declarative or authored expansion surface"
+      },
+      {
+        "term": "mirror",
+        "required_meaning": "derived projection rather than canonical owner"
+      },
+      {
+        "term": "canonical_vs_projected_generated_artifact",
+        "required_meaning": "explicit authority distinction rather than convenience choice"
+      }
+    ]
+  },
+  "autonomy_vs_exposure_notes": {
+    "exposed_does_not_mean_autonomous": true,
+    "exposed_does_not_mean_allowed_to_mutate": true,
+    "exposed_does_not_mean_safety_approved": true,
+    "exposed_does_not_mean_review_free": true,
+    "later_sigma5_hardens_permissions_and_refusal": true
+  },
+  "ownership_caution_flags": [
+    {
+      "id": "field_vs_fields",
+      "summary": "fields/ remains canonical semantic field substrate and field/ remains transitional."
+    },
+    {
+      "id": "schema_vs_schemas",
+      "summary": "schema/ remains canonical contract law and schemas/ remains validator or projection facing."
+    },
+    {
+      "id": "packs_vs_data_packs",
+      "summary": "packs/ and data/packs/ remain scoped ownership surfaces and are not interchangeable."
+    },
+    {
+      "id": "canonical_vs_generated",
+      "summary": "Canonical artifacts outrank projected, mirrored, cached, and generated evidence."
+    },
+    {
+      "id": "runtime_root_name_bias",
+      "summary": "A runtime root name does not establish canonical runtime or interface authority."
+    },
+    {
+      "id": "stale_planning_sequence",
+      "summary": "Older planning numbering or order drift does not override the active checkpoint."
+    }
+  ],
+  "task_family_exposure_guidance": [
+    {
+      "task_family_id": "planning_checkpointing",
+      "default_exposure_class": "planning_analysis_surface",
+      "exposure_status": "selective_candidate",
+      "allowed_interface_modes": [
+        "inspect_state",
+        "generate_plans_or_reports",
+        "emit_checkpoint_artifacts"
+      ],
+      "disallowed_interface_modes": [
+        "advance_checkpoint_authority_by_remote_convenience"
+      ],
+      "notes": "Checkpoint advancement remains governed and review-aware.",
+      "likely_safety_hardening_requirement": "medium"
+    },
+    {
+      "task_family_id": "doctrine_specification",
+      "default_exposure_class": "strongly_review_gated_surface",
+      "exposure_status": "delayed_or_review_gated",
+      "allowed_interface_modes": [
+        "read_doctrine",
+        "propose_changes"
+      ],
+      "disallowed_interface_modes": [
+        "direct_canonical_rewrite"
+      ],
+      "notes": "Doctrine mutation remains strongly review-gated.",
+      "likely_safety_hardening_requirement": "very_high"
+    },
+    {
+      "task_family_id": "governance_policy",
+      "default_exposure_class": "strongly_review_gated_surface",
+      "exposure_status": "delayed_or_review_gated",
+      "allowed_interface_modes": [
+        "inspect_policy",
+        "propose_policy_updates"
+      ],
+      "disallowed_interface_modes": [
+        "direct_governance_override"
+      ],
+      "notes": "Policy mutation remains gated.",
+      "likely_safety_hardening_requirement": "very_high"
+    },
+    {
+      "task_family_id": "semantic_domain",
+      "default_exposure_class": "strongly_review_gated_surface",
+      "exposure_status": "delayed_or_review_gated",
+      "allowed_interface_modes": [
+        "inspect_semantic_state",
+        "propose_semantic_changes"
+      ],
+      "disallowed_interface_modes": [
+        "direct_semantic_rebinding"
+      ],
+      "notes": "Semantic ownership and bridge law remain upstream.",
+      "likely_safety_hardening_requirement": "very_high"
+    },
+    {
+      "task_family_id": "runtime_platform",
+      "default_exposure_class": "controlled_mutation_surface",
+      "exposure_status": "selective_candidate",
+      "allowed_interface_modes": [
+        "inspect_runtime_boundaries",
+        "run_bounded_runtime_support_tasks",
+        "emit_runtime_reports"
+      ],
+      "disallowed_interface_modes": [
+        "flatten_runtime_layers",
+        "imply_truth_ownership"
+      ],
+      "notes": "Runtime exposure must preserve post-phi vocabulary and state and lifecycle law.",
+      "likely_safety_hardening_requirement": "high"
+    },
+    {
+      "task_family_id": "product_app_shell",
+      "default_exposure_class": "controlled_mutation_surface",
+      "exposure_status": "selective_candidate",
+      "allowed_interface_modes": [
+        "inspect_shell_state",
+        "perform_bounded_shell_updates"
+      ],
+      "disallowed_interface_modes": [
+        "redefine_runtime_law",
+        "silent_remote_control"
+      ],
+      "notes": "Product surfaces remain downstream of runtime law.",
+      "likely_safety_hardening_requirement": "high"
+    },
+    {
+      "task_family_id": "release_distribution_control_plane",
+      "default_exposure_class": "strongly_review_gated_surface",
+      "exposure_status": "excluded_by_default",
+      "allowed_interface_modes": [
+        "none_by_default"
+      ],
+      "disallowed_interface_modes": [
+        "release_publication_trust_mutation"
+      ],
+      "notes": "Trust-bearing release work remains excluded here.",
+      "likely_safety_hardening_requirement": "very_high"
+    },
+    {
+      "task_family_id": "validation_audit",
+      "default_exposure_class": "validation_audit_surface",
+      "exposure_status": "eligible_candidate",
+      "allowed_interface_modes": [
+        "run_validators",
+        "emit_findings",
+        "emit_reports"
+      ],
+      "disallowed_interface_modes": [
+        "promote_evidence_to_canon"
+      ],
+      "notes": "Strong candidate for bounded read and evidence exposure.",
+      "likely_safety_hardening_requirement": "medium_high"
+    },
+    {
+      "task_family_id": "refactor_convergence",
+      "default_exposure_class": "non_exposable_or_excluded_surface",
+      "exposure_status": "excluded_by_default",
+      "allowed_interface_modes": [
+        "none_by_default"
+      ],
+      "disallowed_interface_modes": [
+        "direct_structural_convergence"
+      ],
+      "notes": "Broad structural mutation remains excluded.",
+      "likely_safety_hardening_requirement": "very_high"
+    },
+    {
+      "task_family_id": "packaging_bundling",
+      "default_exposure_class": "packaging_checkpoint_surface",
+      "exposure_status": "selective_candidate",
+      "allowed_interface_modes": [
+        "list_bundles",
+        "validate_bundle_profiles",
+        "build_support_bundles"
+      ],
+      "disallowed_interface_modes": [
+        "ship_trust_bearing_release_artifacts"
+      ],
+      "notes": "Packaging remains distinct from release distribution.",
+      "likely_safety_hardening_requirement": "medium_high"
+    },
+    {
+      "task_family_id": "documentation_explanation",
+      "default_exposure_class": "read_inspect_surface",
+      "exposure_status": "eligible_candidate",
+      "allowed_interface_modes": [
+        "read_docs",
+        "summarize",
+        "explain"
+      ],
+      "disallowed_interface_modes": [
+        "silent_shadow_doctrine_rewrite"
+      ],
+      "notes": "Explanation surfaces are strong read candidates; mutation remains separate.",
+      "likely_safety_hardening_requirement": "medium"
+    },
+    {
+      "task_family_id": "analysis_inspection",
+      "default_exposure_class": "read_inspect_surface",
+      "exposure_status": "eligible_candidate",
+      "allowed_interface_modes": [
+        "inspect",
+        "inventory",
+        "classify",
+        "compare"
+      ],
+      "disallowed_interface_modes": [
+        "tracked_mutation"
+      ],
+      "notes": "Strong candidate for bounded read-only exposure.",
+      "likely_safety_hardening_requirement": "medium"
+    }
+  ],
+  "representative_repo_evidence": [
+    "tools/xstack/run.py",
+    "tools/xstack/ci/xstack_ci_entrypoint.py",
+    "tools/xstack/bundle_list.py",
+    "tools/xstack/bundle_validate.py",
+    "tools/xstack/session_create.py",
+    "tools/xstack/session_control.py",
+    "tools/xstack/session_surface.py",
+    "tools/xstack/srz_status.py",
+    "tools/controlx/controlx.py",
+    "docs/xstack/CI_GUARDRAILS.md"
+  ],
+  "prohibited_exposure_shapes": [
+    "if_it_exists_in_tools_expose_it",
+    "remote_interface_as_hidden_governance_override",
+    "mcp_surface_treating_projected_or_generated_artifacts_as_canonical",
+    "exposure_silently_granting_unsafe_mutation",
+    "mcp_layer_flattening_runtime_vocabulary",
+    "vendor_or_tool_assumptions_overriding_repo_law",
+    "task_catalog_and_mcp_exposure_collapsed_into_one_concept",
+    "exposure_inferred_from_script_names_alone",
+    "interface_reachability_treated_as_authority"
+  ],
+  "allowed_downstream_refinement_prompts": [
+    "Σ-5",
+    "Υ-series",
+    "Ζ-series"
+  ],
+  "downstream_assumptions_enabled": {
+    "Σ-5": [
+      "safety_policy_can_harden_refusal_escalation_autonomy_and_permission_rules_against_explicit_exposure_classes",
+      "task_family_exposure_guidance_can_be_reused_as_safety_policy_input"
+    ],
+    "Υ_and_Ζ": [
+      "later_operational_and_release_work_can_reference_stable_exposure_distinctions_without_reverting_to_ad_hoc_interface_assumptions"
+    ]
+  },
+  "prohibited_downstream_violations": [
+    "treat_exposed_as_automatically_allowed_or_autonomous",
+    "invent_a_new_exposure_universe_outside_the_task_catalog",
+    "let_remote_access_bypass_ownership_or_runtime_cautions",
+    "treat_tools_or_wrappers_as_exposure_canon",
+    "flatten_runtime_vocabulary_into_generic_remote_system_language"
+  ]
+}
