@@ -1,0 +1,290 @@
+{
+  "artifact_id": "dominium.runtime.sandboxing_and_isolation_model",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-03",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_b_post_phi_a2_post_phi_b1_pre_phi_b2",
+    "enabling_prompt": "Φ-B2 — SANDBOXING_AND_ISOLATION_MODEL-0",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICE_MODEL-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0",
+      "Φ-5 — LIFECYCLE_MANAGER-0",
+      "Φ-B0 — EVENT_LOG_AND_REPLAY_DOCTRINE-0",
+      "Φ-B1 — SNAPSHOT_SERVICE_DOCTRINE-0"
+    ],
+    "active_numbering_note": "The active checkpoint path advances SANDBOXING_AND_ISOLATION_MODEL-0 as Φ-B2 after replay and snapshot doctrine even where older planning text may still drift."
+  },
+  "isolation_definition": {
+    "sandboxing_summary": "Sandboxing is a constrained operational posture inside an explicit isolation boundary that narrows what a subject, interface, or execution context may observe, mutate, invoke, emit, import, or claim.",
+    "isolation_summary": "Isolation is the law-governed separation of authority posture, state posture, execution posture, visibility posture, tool posture, or continuity posture between runtime subjects or surfaces.",
+    "related_but_not_identical": [
+      "all_sandboxes_are_isolation_boundaries",
+      "not_all_isolation_boundaries_are_sandboxes"
+    ],
+    "is_not": [
+      "mere_debugging_or_test_environments",
+      "access_control_alone",
+      "lifecycle_alone",
+      "state_externalization_alone",
+      "remote_execution_alone",
+      "release_or_control_plane_gating",
+      "future_live_ops_implementations"
+    ],
+    "why_needed": [
+      "Bounded execution and bounded exposure require lawful separation rather than convenience labels.",
+      "Isolation preserves ownership, bridge legality, replay integrity, snapshot legality, and state-class discipline.",
+      "Later multi-version, hotswap, distributed-authority, operator, and live-ops work must inherit explicit containment law rather than inventing it ad hoc."
+    ]
+  },
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_CAPABILITY_SURFACES",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY",
+    "NATURAL_LANGUAGE_TASK_BRIDGE",
+    "XSTACK_TASK_CATALOG",
+    "MCP_INTERFACE_MODEL",
+    "AGENT_SAFETY_POLICY",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_POST_SIGMA_B_PRE_PHIB_UPSILON",
+    "NEXT_TWO_SERIES_PLAN_PHIB_UPSILON"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION",
+    "LIFECYCLE_MANAGER",
+    "EVENT_LOG_AND_REPLAY_DOCTRINE",
+    "SNAPSHOT_SERVICE_DOCTRINE"
+  ],
+  "repo_evidence_roots": [
+    "app/readonly_adapter.c",
+    "app/readonly_format.c",
+    "process/capsules/capsule_executor.py",
+    "control/control_plane_engine.py",
+    "client/local_server/local_server_controller.py",
+    "net/policies/policy_server_authoritative.py",
+    "tools/xstack/testx/tests/test_renderer_truth_isolation.py",
+    "tools/xstack/testx/tests/test_platform_isolation.py",
+    "tools/xstack/testx/tests/test_no_production_import_from_quarantine.py",
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "isolation_subject_classes": [
+    {
+      "id": "kernel_adjacent_runtime_structures",
+      "description": "Execution-hosting or execution-coordinating structures whose runtime locality does not imply unrestricted access or mutation."
+    },
+    {
+      "id": "runtime_services",
+      "description": "Mediation, routing, replay-support, snapshot-support, or compatibility services whose reach must remain subordinate to ownership and bridge law."
+    },
+    {
+      "id": "component_groups",
+      "description": "Grouped bounded components whose shared hosting could otherwise hide coupling, truth ownership, or bridge bypass."
+    },
+    {
+      "id": "domain_support_structures",
+      "description": "Runtime structures supporting observation, validation, persistence support, or replay support without becoming semantic owners."
+    },
+    {
+      "id": "control_and_integration_structures",
+      "description": "Control-plane, negotiation, routing, policy, and integration surfaces close to authority envelopes without being semantic authority."
+    },
+    {
+      "id": "observation_and_presentation_support_structures",
+      "description": "Read-only adapters, render pipelines, inspection tools, and presentation surfaces that must remain downstream of truth."
+    },
+    {
+      "id": "tool_mediated_mutation_surfaces",
+      "description": "CLI, MCP, automation, and operator-mediated paths whose reachability does not imply permission or boundary bypass."
+    },
+    {
+      "id": "experimental_or_provisional_runtime_structures",
+      "description": "Playtest, research, diagnostic, or provisional structures that must remain explicitly quarantined from default canonical authority."
+    },
+    {
+      "id": "later_module_realizations",
+      "description": "Future module or packaging realizations that may embody isolated subjects without defining constitutional boundary law by layout alone."
+    }
+  ],
+  "isolation_boundary_classes": [
+    {
+      "id": "authority_ownership_isolation",
+      "description": "Preserves semantic ownership and authority posture so shared hosting, convenience roots, or tool reachability do not become ownership reassignment."
+    },
+    {
+      "id": "state_isolation",
+      "description": "Preserves authoritative, derived, transient, projected, and presentation state distinctions across boundaries."
+    },
+    {
+      "id": "execution_isolation",
+      "description": "Constrains what execution contexts may run, mutate, schedule, or import so runtime adjacency does not create uncontrolled side effects."
+    },
+    {
+      "id": "bridge_mediated_isolation",
+      "description": "Preserves explicit separation for cross-domain or cross-shard effects whose legality depends on bridge law."
+    },
+    {
+      "id": "replay_snapshot_isolation",
+      "description": "Preserves lawful reenactment, lawful continuity capture, and lawful replay or snapshot interpretation without creating mutation authority."
+    },
+    {
+      "id": "observation_presentation_isolation",
+      "description": "Preserves the distinction between visibility and authority so render, UI, observability, and inspection remain downstream of truth."
+    },
+    {
+      "id": "control_plane_tool_isolation",
+      "description": "Constrains control, CLI, automation, MCP, and operator surfaces so exposure does not become hidden execution authority."
+    },
+    {
+      "id": "provisional_experimental_isolation",
+      "description": "Keeps experimental, diagnostic, or playtest work explicitly quarantined so provisional behavior does not silently become default authority."
+    }
+  ],
+  "authority_constraints": {
+    "semantic_law_outranks_isolation_handling": true,
+    "isolation_does_not_define_truth": true,
+    "ownership_review_remains_binding": true,
+    "bridge_law_remains_binding": true,
+    "canonical_vs_projection_discipline_remains_binding": true,
+    "product_or_session_boundaries_do_not_define_isolation_law": true,
+    "tool_reachability_does_not_create_authority": true
+  },
+  "state_replay_snapshot_lifecycle_constraints": {
+    "state_externalization_law_remains_upstream": true,
+    "authoritative_vs_derived_vs_transient_vs_projected_distinctions_remain_binding": true,
+    "isolated_execution_must_not_trap_authoritative_truth": true,
+    "lifecycle_posture_may_change_visibility_without_changing_ownership_or_truth": true,
+    "replay_and_snapshot_doctrine_remain_upstream_constraints": true,
+    "isolation_must_not_make_authoritative_history_unreconstructable_without_declared_reason": true,
+    "isolation_must_not_make_lawful_snapshots_uninterpretable_or_falsely_authoritative": true
+  },
+  "product_mcp_mirror_constraints": {
+    "mirror_files_do_not_define_isolation_law": true,
+    "mcp_exposure_must_remain_subordinate_to_isolation_rules": true,
+    "exposed_tasks_do_not_imply_boundary_bypass": true,
+    "product_ux_language_does_not_define_runtime_containment": true,
+    "tool_mediated_mutation_requires_boundary_visibility_and_review": true
+  },
+  "representation_and_provenance_cautions": {
+    "must_preserve": [
+      "total_truth_sparse_materialization_discipline",
+      "representation_ladder_invariants",
+      "macro_micro_continuity",
+      "lawful_substitution_boundaries",
+      "lineage_and_revision_context_where_required",
+      "visibility_vs_authority_distinction"
+    ],
+    "must_not_assume": [
+      "lack_of_visibility_implies_nonexistence",
+      "isolation_enclosure_promotes_projection_to_canonical_truth",
+      "tool_or_product_boundary_is_sufficient_runtime_isolation",
+      "one_technical_mechanism_defines_all_isolation_law"
+    ]
+  },
+  "distinction_notes": {
+    "isolation_boundary": "A declared separation of authority, state, execution, visibility, tool, or continuity posture.",
+    "authority_ownership_boundary": "A narrower boundary preserving semantic ownership and canonical-root discipline.",
+    "lifecycle_state": "An operational posture that may interact with isolation without defining containment by itself.",
+    "replay_snapshot_constraints": "Upstream continuity rules that isolation must preserve rather than override.",
+    "task_or_mcp_surface": "An exposed interface envelope that does not by itself define isolation law or permission.",
+    "product_session_boundary": "A UX shell boundary that is not sufficient as runtime isolation law.",
+    "test_environment": "A development or validation context that may exist without lawful authority, state, or bridge separation."
+  },
+  "invalidity_degradation_categories": [
+    {
+      "id": "complete",
+      "description": "The declared isolation class, scope, and constraints are satisfied for the intended bounded purpose."
+    },
+    {
+      "id": "partial",
+      "description": "The boundary exists but some declared separation remains incomplete and must stay explicit."
+    },
+    {
+      "id": "degraded",
+      "description": "The boundary remains partially lawful under reduced guarantees, visibility, or allowed actions."
+    },
+    {
+      "id": "misconfigured",
+      "description": "The boundary claims a posture it does not actually satisfy because configuration or wiring is unsound."
+    },
+    {
+      "id": "under_authorized",
+      "description": "The boundary cannot lawfully expose or mutate the requested surfaces because authority posture is insufficient."
+    },
+    {
+      "id": "ownership_invalid",
+      "description": "The boundary conflicts with ownership law or unresolved ownership review."
+    },
+    {
+      "id": "bridge_invalid",
+      "description": "The boundary erases or violates required cross-domain bridge mediation."
+    },
+    {
+      "id": "state_trapping",
+      "description": "The boundary traps authoritative or continuity-relevant state in an illicit local form."
+    },
+    {
+      "id": "replay_snapshot_incompatible",
+      "description": "The boundary makes lawful replay or lawful snapshot interpretation unavailable without declared basis."
+    },
+    {
+      "id": "projection_leaking",
+      "description": "Projected, generated, or presentation state escapes its lawful containment and is treated as canonical."
+    },
+    {
+      "id": "visibility_authority_confused",
+      "description": "The boundary confuses read visibility or exposure with authority to mutate or define truth."
+    },
+    {
+      "id": "unsafe_for_privileged_or_cross_boundary_use",
+      "description": "The boundary may exist as evidence or a low-risk enclosure but is not fit for privileged, bridge-sensitive, or continuity-sensitive work."
+    }
+  ],
+  "ownership_projection_cautions": [
+    "fields_over_field",
+    "schema_over_schemas",
+    "packs_and_data_packs_are_not_freely_collapsible",
+    "canonical_vs_projected_generated_distinctions_remain_binding",
+    "thin_runtime_root_not_automatically_canonical",
+    "older_planning_numbering_drift_must_not_override_active_checkpoint_law"
+  ],
+  "prohibited_isolation_shapes": [
+    "using_sandbox_as_a_vague_synonym_for_test_mode_or_developer_convenience",
+    "hidden_authority_reassignment_through_isolation_boundaries",
+    "isolated_projected_or_generated_state_treated_as_canonical_truth",
+    "boundaries_that_ignore_replay_or_snapshot_law",
+    "mcp_cli_or_tool_exposure_bypassing_isolation",
+    "product_or_session_shells_treated_as_sufficient_isolation_law",
+    "bridge_mediated_operations_treated_as_local_safe_operations_by_default",
+    "isolation_defined_solely_by_one_implementation_technology",
+    "isolation_that_traps_authoritative_truth_or_erases_state_class_distinctions",
+    "isolation_that_hides_degraded_or_unsafe_posture_behind_reassuring_labels"
+  ],
+  "downstream_refinement_prompts": [
+    "future checkpoint reconsideration of Φ-B3 — MULTI_VERSION_COEXISTENCE_REVIEW-0",
+    "future checkpoint reconsideration of Φ-B4 — HOTSWAP_BOUNDARY_REVIEW-0",
+    "future checkpoint reconsideration of Φ-B5 — DISTRIBUTED_AUTHORITY_FOUNDATIONS_REVIEW-0",
+    "Υ control-plane, operator transaction, archive, and downgrade boundary work",
+    "later Ζ multi-version, restartless, recovery, and live-ops gating"
+  ]
+}
