@@ -1,0 +1,210 @@
+{
+  "checkpoint_id": "C-YA_SAFE_REVIEW",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / post-upsilon-a / pre-risky-phi-b-tail-and-or-upsilon-b",
+  "reviewed_series": [
+    "Φ-B",
+    "Υ-B",
+    "Ζ"
+  ],
+  "upsilon_a_sufficiency": {
+    "risky_phi_b_tail_reconsideration": {
+      "judgment": "partially_yes",
+      "summary": "Completed Υ-A closes the earlier release-control doctrine gaps and makes Φ-B3 reviewable, but does not automatically clear Φ-B4 or Φ-B5."
+    },
+    "selected_upsilon_b_operationalization": {
+      "judgment": "yes_for_selected_families",
+      "summary": "A narrow Υ-B band is now supportable because release, update, trust, and operator substrate already exists in repo code and tools."
+    },
+    "zeta_blocker_reduction": {
+      "judgment": "material_but_incomplete",
+      "summary": "Υ-A materially reduces control-plane ambiguity, but Ζ remains blocked by coexistence, hotswap, distributed authority, publication/trust execution maturity, and stronger continuity receipts."
+    }
+  },
+  "ambiguities_eliminated": [
+    "completed upsilon-a does not automatically clear the whole risky phi-b tail",
+    "more release or control-plane work is not automatically better than reopening runtime review",
+    "zeta is not now ready for full planning just because upsilon-a completed"
+  ],
+  "risky_phi_b_tail_readiness": [
+    {
+      "prompt_id": "Φ-B3",
+      "title": "MULTI_VERSION_COEXISTENCE-0",
+      "judgment": "ready_with_cautions",
+      "summary": "Versioning, release contract, release-index, operator transaction, archive, and publication/trust doctrine now exist, but ownership-sensitive roots and compatibility-boundary cautions remain active."
+    },
+    {
+      "prompt_id": "Φ-B4",
+      "title": "HOTSWAP_BOUNDARIES-0",
+      "judgment": "dangerous",
+      "summary": "Hotswap still needs coexistence findings plus stronger operational receipts around lifecycle, rollback, parity, and operator authority."
+    },
+    {
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+      "judgment": "premature",
+      "summary": "Distributed authority still lacks authority handoff, proof-anchor quorum, distributed replay verification, and trust-sensitive operational maturity."
+    }
+  ],
+  "upsilon_b_readiness": [
+    {
+      "family_id": "upsilon.release_ops",
+      "proposed_prompt_id": "Υ-B0",
+      "title": "RELEASE_OPS_ALIGNMENT-0",
+      "judgment": "ready",
+      "summary": "Existing operator, release, and control-plane surfaces already form a real substrate that can now be aligned without reinvention."
+    },
+    {
+      "family_id": "upsilon.manual_automation_parity",
+      "proposed_prompt_id": "Υ-B1",
+      "title": "MANUAL_AUTOMATION_PARITY_AND_REHEARSAL-0",
+      "judgment": "mostly_consolidation",
+      "summary": "Parity adapters, tests, and rehearsal expectations already exist and should be formalized before later cutover-sensitive runtime review."
+    },
+    {
+      "family_id": "upsilon.operator_transaction_log",
+      "proposed_prompt_id": "Υ-B2",
+      "title": "OPERATOR_TRANSACTION_IMPLEMENTATION_ALIGNMENT-0",
+      "judgment": "ready_with_cautions",
+      "summary": "Install and update transaction logs exist, but broader operator-ledger alignment remains only partially embodied and review-aware."
+    },
+    {
+      "family_id": "upsilon.release_pipeline",
+      "proposed_prompt_id": "Υ-B3",
+      "title": "RELEASE_PIPELINE_IMPLEMENTATION_ALIGNMENT-0",
+      "judgment": "already_substantially_embodied",
+      "summary": "Manifest, index, archive, and dist substrate already exists; this is real but not the immediate next blocker after Υ-A."
+    },
+    {
+      "family_id": "upsilon.archive_mirror_policy",
+      "proposed_prompt_id": "Υ-B4",
+      "title": "ARCHIVE_MIRROR_OPERATIONAL_ALIGNMENT-0",
+      "judgment": "already_substantially_embodied",
+      "summary": "Archive and mirror doctrine is frozen and the repo already has archive policy substrate."
+    },
+    {
+      "family_id": "upsilon.disaster_downgrade_policy",
+      "proposed_prompt_id": "Υ-B5",
+      "title": "DOWNGRADE_AND_YANK_EXECUTION_ALIGNMENT-0",
+      "judgment": "already_substantially_embodied",
+      "summary": "Downgrade, rollback, and yanked-selection behavior already exists and has been constitutionalized in Υ-A."
+    },
+    {
+      "family_id": "upsilon.license_capability_policy",
+      "proposed_prompt_id": "Υ-B6",
+      "title": "LICENSE_CAPABILITY_AND_TRUST_DISTRIBUTION_ALIGNMENT-0",
+      "judgment": "blocked",
+      "summary": "Trust policies are provisional and trust roots are still empty, so this family remains dangerous to operationalize."
+    },
+    {
+      "family_id": "upsilon.publication_models",
+      "proposed_prompt_id": "Υ-B7",
+      "title": "PUBLICATION_MODEL_OPERATIONAL_ALIGNMENT-0",
+      "judgment": "dangerous_to_operationalize_yet",
+      "summary": "Publication and exposure remain gated and must not be operationalized casually from feeds, mirrors, or existing release outputs."
+    }
+  ],
+  "zeta_blockers_or_prerequisites": [
+    {
+      "blocker_id": "phi_b3_multi_version_coexistence",
+      "status": "open",
+      "summary": "Ζ still needs lawful coexistence semantics before live protocol, schema, or module evolution can be treated as safe."
+    },
+    {
+      "blocker_id": "phi_b4_hotswap_boundaries",
+      "status": "open",
+      "summary": "Replaceability, partial reload, and restartless continuity still need explicit safe boundaries."
+    },
+    {
+      "blocker_id": "phi_b5_distributed_authority",
+      "status": "open",
+      "summary": "Authority handoff, distributed replay verification, and quorum semantics remain unresolved."
+    },
+    {
+      "blocker_id": "upsilon_b_release_ops_maturity",
+      "status": "open",
+      "summary": "Later rollout and rehearsal work still needs stronger operational alignment over existing control-plane tooling."
+    },
+    {
+      "blocker_id": "upsilon_b_operator_transaction_generalization",
+      "status": "open_with_cautions",
+      "summary": "General operator transaction receipts remain narrower than the later live-cutover and disaster-control needs."
+    },
+    {
+      "blocker_id": "manual_automation_parity_and_rehearsal",
+      "status": "open",
+      "summary": "Later cutover-sensitive work still needs deterministic parity and rehearsal discipline across operator surfaces."
+    },
+    {
+      "blocker_id": "publication_and_trust_execution_maturity",
+      "status": "open",
+      "summary": "Publication remains gated, trust policies are provisional, and trust roots are empty."
+    },
+    {
+      "blocker_id": "replay_snapshot_isolation_live_cutover_proof",
+      "status": "open_with_cautions",
+      "summary": "Replay, snapshot, and isolation are explicit doctrine, but not yet proven live-cutover or distributed machinery."
+    },
+    {
+      "blocker_id": "provenance_and_release_continuity_receipts",
+      "status": "open_with_cautions",
+      "summary": "Index, archive, and rollback substrate exists, but broader operator and publication receipts are not yet generalized."
+    }
+  ],
+  "extension_over_replacement_directives": {
+    "risky_phi_b_tail_must_extend": [
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/STATE_EXTERNALIZATION.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md"
+    ],
+    "upsilon_b_must_extend": [
+      "release/update_resolver.py",
+      "release/release_manifest_engine.py",
+      "release/archive_policy.py",
+      "security/trust/trust_verifier.py",
+      "security/trust/license_capability.py",
+      "tools/controlx/README.md",
+      "tools/controlx/controlx.py",
+      "tools/xstack/run.py",
+      "updates/stable.json",
+      "updates/beta.json",
+      "updates/pinned.json",
+      "updates/nightly.json",
+      "updates/changelog.json",
+      "tools/xstack/testx/tests"
+    ],
+    "must_avoid_replacing": [
+      "canonical release identity and release contract profile semantics",
+      "canonical operator transaction and downgrade doctrine",
+      "archive and mirror constitutional distinctions",
+      "publication, trust, and licensing gate semantics",
+      "ownership-sensitive canonical roots"
+    ]
+  },
+  "ownership_projection_cautions": [
+    "fields/ remains canonical semantic field substrate while field/ remains transitional",
+    "schema/ remains canonical semantic contract law while schemas/ remains a projection or validator-facing mirror",
+    "packs/ remains canonical for runtime packaging and activation scope while data/packs/ remains scoped authored-pack authority",
+    "canonical prose and semantic specs outrank projected or generated mirrors",
+    "the thin runtime/ root is not canonical by name alone",
+    "release/control-plane convenience must not infer canon or permission",
+    "older planning numbering drift remains evidence rather than authority"
+  ],
+  "final_verdict": {
+    "status": "interleave_selected_upsilon_b_and_risky_phi_b",
+    "reason": "Υ-A is sufficient to reopen Φ-B3, but not sufficient to clear Φ-B4 or Φ-B5. A narrow Υ-B band should follow Φ-B3 before any move deeper into the risky runtime tail.",
+    "selected_ordering_mode": "interleaved"
+  },
+  "recommended_next_prompt": "Φ-B3 — MULTI_VERSION_COEXISTENCE-0",
+  "notes_on_planning_drift": [
+    "Older planning mirrors still use pre-refresh Υ numbering and Φ-12..Φ-14 titles.",
+    "This checkpoint treats stable family identifiers and the active prompt chain as authoritative over that stale numbering."
+  ],
+  "stability": {
+    "status": "canonical",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-04"
+  }
+}

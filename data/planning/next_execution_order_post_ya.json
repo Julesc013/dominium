@@ -1,0 +1,141 @@
+{
+  "plan_id": "NEXT_EXECUTION_ORDER_POST_YA",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / post-upsilon-a",
+  "ordering_mode": "interleaved",
+  "recommended_next_prompt": "Φ-B3 — MULTI_VERSION_COEXISTENCE-0",
+  "notes_on_identifier_policy": [
+    "Stable family identifiers are preferred over stale older Υ numbering in legacy planning mirrors.",
+    "Proposed Υ-B prompt seeds below are local checkpoint labels anchored to existing family identifiers."
+  ],
+  "execution_order": [
+    {
+      "order": 1,
+      "prompt_id": "Φ-B3",
+      "title": "MULTI_VERSION_COEXISTENCE-0",
+      "family_id": "phi.multi_version_coexistence",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "completed Υ-A",
+        "Λ-6 semantic ownership review",
+        "Φ-B2 isolation doctrine"
+      ],
+      "human_review_requirement": "required",
+      "stop_conditions": [
+        "coexistence law normalizes schema or pack ownership drift",
+        "coexistence law treats build or target grouping as semantic truth",
+        "coexistence review attempts implementation rather than bounded readiness work"
+      ],
+      "notes": "This is the only risky Φ-B prompt materially reopened by completed Υ-A."
+    },
+    {
+      "order": 2,
+      "prompt_id": "Υ-B0",
+      "title": "RELEASE_OPS_ALIGNMENT-0",
+      "family_id": "upsilon.release_ops",
+      "readiness_status": "ready",
+      "dependencies": [
+        "completed Υ-A",
+        "Φ-B3 findings",
+        "existing release/control tooling cluster"
+      ],
+      "human_review_requirement": "conditional_if_scope_escapes_consolidation",
+      "stop_conditions": [
+        "release ops alignment drifts into publication authority",
+        "release ops alignment attempts greenfield replacement of current tooling"
+      ],
+      "notes": "ControlX, XStack, release policy, and resolver tooling already provide the substrate."
+    },
+    {
+      "order": 3,
+      "prompt_id": "Υ-B1",
+      "title": "MANUAL_AUTOMATION_PARITY_AND_REHEARSAL-0",
+      "family_id": "upsilon.manual_automation_parity",
+      "readiness_status": "mostly_consolidation",
+      "dependencies": [
+        "Υ-B0",
+        "existing parity tests and stage-parity adapters"
+      ],
+      "human_review_requirement": "conditional_if_rehearsal_or_cutover_claims_expand",
+      "stop_conditions": [
+        "parity work claims live publication or cutover proof without substrate",
+        "rehearsal policy bypasses gate law or operator attribution"
+      ],
+      "notes": "This is meant to reduce later hotswap and live-ops ambiguity, not to operationalize publication."
+    },
+    {
+      "order": 4,
+      "prompt_id": "Υ-B2",
+      "title": "OPERATOR_TRANSACTION_IMPLEMENTATION_ALIGNMENT-0",
+      "family_id": "upsilon.operator_transaction_log",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "Υ-B0",
+        "Υ-B1",
+        "existing install and update transaction logs"
+      ],
+      "human_review_requirement": "required",
+      "stop_conditions": [
+        "broader operator ledger bypasses safety or release-contract law",
+        "transaction alignment operationalizes trust or publication changes"
+      ],
+      "notes": "Implementation-adjacent, but still a control-plane alignment prompt rather than a live-ops rollout prompt."
+    },
+    {
+      "order": 5,
+      "prompt_id": "checkpoint.after_phi_b3_and_upsilon_b0_b2",
+      "title": "NEW CHECKPOINT BEFORE Φ-B4",
+      "family_id": "checkpoint",
+      "readiness_status": "required_gate",
+      "dependencies": [
+        "Φ-B3",
+        "Υ-B0",
+        "Υ-B1",
+        "Υ-B2"
+      ],
+      "human_review_requirement": "required",
+      "stop_conditions": [
+        "preceding block does not converge cleanly",
+        "hotswap or distributed-authority assumptions appear prematurely"
+      ],
+      "notes": "Required before any reconsideration of Φ-B4 or Φ-B5."
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "prompt_id": "Φ-B4",
+      "title": "HOTSWAP_BOUNDARIES-0",
+      "status": "dangerous",
+      "notes": "Still requires coexistence findings plus a narrow operational Υ-B band."
+    },
+    {
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+      "status": "premature",
+      "notes": "Still lacks authority-handoff, quorum, distributed replay, and trust-sensitive continuity maturity."
+    },
+    {
+      "prompt_id": "Υ-B6",
+      "title": "LICENSE_CAPABILITY_AND_TRUST_DISTRIBUTION_ALIGNMENT-0",
+      "family_id": "upsilon.license_capability_policy",
+      "status": "blocked",
+      "notes": "Trust policies are provisional and trust roots are empty."
+    },
+    {
+      "prompt_id": "Υ-B7",
+      "title": "PUBLICATION_MODEL_OPERATIONAL_ALIGNMENT-0",
+      "family_id": "upsilon.publication_models",
+      "status": "dangerous_to_operationalize_yet",
+      "notes": "Publication remains gated and must not be inferred from feeds, mirrors, or archive presence."
+    }
+  ],
+  "why_better_than_alternatives": [
+    "Running the whole risky Φ-B tail next would outrun current runtime and operational maturity.",
+    "Running a broad Υ-B band first would defer the main newly opened runtime blocker without resolving the right uncertainty.",
+    "The interleaved plan uses completed Υ-A immediately while still respecting the remaining danger boundaries."
+  ],
+  "stability": {
+    "status": "canonical",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-04"
+  }
+}
