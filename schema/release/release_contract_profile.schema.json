@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Release Contract Profile Schema",
+  "version": "1.0.0",
+  "x-schema-id": "dominium.schema.release.release_contract_profile",
+  "x-stability": "provisional",
+  "description": "Canonical Dominium release contract profile structure. Release contract profiles are the explicit machine-readable compatibility envelopes that compose semantic, protocol, schema, format, governance, trust, release-anchor, and target-specificity truths without collapsing them into one overloaded version string or filename.",
+  "x-doc-ref": [
+    "docs/release/RELEASE_CONTRACT_PROFILE.md",
+    "docs/release/VERSIONING_CONSTITUTION.md",
+    "docs/release/BUILD_GRAPH_LOCK.md",
+    "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md"
+  ],
+  "type": "object",
+  "required": [
+    "profile_kind",
+    "schema_version",
+    "profile_id",
+    "stability_class_id",
+    "semantic_contract_binding",
+    "protocol_compatibility",
+    "schema_compatibility",
+    "format_compatibility",
+    "governance_and_trust",
+    "release_anchors",
+    "target_compatibility",
+    "lane_context",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "uniqueItems": true
+    },
+    "stabilityClass": {
+      "type": "string",
+      "enum": [
+        "stable",
+        "provisional",
+        "experimental"
+      ]
+    },
+    "compatibilityRange": {
+      "type": "object",
+      "required": [
+        "minimum_inclusive",
+        "maximum_inclusive",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "minimum_inclusive": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "maximum_inclusive": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "allowed_versions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "compatibilityRangeMap": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/compatibilityRange"
+      }
+    },
+    "exactTargetDescriptor": {
+      "type": "object",
+      "required": [
+        "target_id",
+        "platform_tag",
+        "os_id",
+        "abi_id",
+        "arch_id",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "platform_tag": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "os_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "abi_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "arch_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "platform_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "target_matrix_reference_mode": {
+          "type": "string",
+          "enum": [
+            "canonical_match",
+            "family_projection",
+            "explicit_override"
+          ]
+        },
+        "toolchain_env_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "supported_product_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    }
+  },
+  "properties": {
+    "profile_kind": {
+      "type": "string",
+      "const": "release_contract_profile"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "profile_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "stability_class_id": {
+      "$ref": "#/$defs/stabilityClass"
+    },
+    "semantic_contract_binding": {
+      "type": "object",
+      "required": [
+        "contract_bundle_hash",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contract_bundle_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "protocol_compatibility": {
+      "type": "object",
+      "required": [
+        "supported_ranges",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "supported_ranges": {
+          "$ref": "#/$defs/compatibilityRangeMap"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "schema_compatibility": {
+      "type": "object",
+      "required": [
+        "supported_ranges",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "supported_ranges": {
+          "$ref": "#/$defs/compatibilityRangeMap"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "format_compatibility": {
+      "type": "object",
+      "required": [
+        "supported_ranges",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "supported_ranges": {
+          "$ref": "#/$defs/compatibilityRangeMap"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "governance_and_trust": {
+      "type": "object",
+      "required": [
+        "governance_mode_id",
+        "governance_profile_hash",
+        "trust_policy_id",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "governance_mode_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "governance_profile_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "trust_policy_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "official_signer_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "archive_policy_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "redistribution_policy_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "release_anchors": {
+      "type": "object",
+      "required": [
+        "build_graph_model_id",
+        "component_graph_hash",
+        "release_series",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "build_graph_model_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "preset_toolchain_model_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "component_graph_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "release_series": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "release_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "install_profile_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "build_identity_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "target_compatibility": {
+      "type": "object",
+      "required": [
+        "target_family_ids",
+        "exact_target_descriptors",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "target_family_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "exact_target_descriptors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/exactTargetDescriptor"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "lane_context": {
+      "type": "object",
+      "required": [
+        "channel_ids",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "channel_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "lane_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "extensions": {
+          "$ref": "#/$defs/extensions"
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "$ref": "#/$defs/sha256"
+    },
+    "extensions": {
+      "$ref": "#/$defs/extensions"
+    }
+  }
+}
