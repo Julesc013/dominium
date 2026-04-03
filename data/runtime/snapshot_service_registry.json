@@ -1,0 +1,272 @@
+{
+  "artifact_id": "dominium.runtime.snapshot_service_doctrine",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-03",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_b_post_phi_a2_post_phi_b0_pre_phi_b1",
+    "enabling_prompt": "Φ-B1 — SNAPSHOT_SERVICE_DOCTRINE-0",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICE_MODEL-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0",
+      "Φ-5 — LIFECYCLE_MANAGER-0",
+      "Φ-B0 — EVENT_LOG_AND_REPLAY_DOCTRINE-0"
+    ],
+    "active_numbering_note": "The active checkpoint path advances SNAPSHOT_SERVICE_DOCTRINE-0 as Φ-B1 after EVENT_LOG_AND_REPLAY_DOCTRINE-0 even where older planning text may still drift."
+  },
+  "snapshot_definition": {
+    "summary": "A snapshot is a declared, bounded, law-governed capture of runtime-relevant state at an identified continuity point, together with the metadata required to interpret authority posture, scope, representation posture, lifecycle posture, and provenance posture.",
+    "snapshot_is_not": [
+      "event_logs",
+      "replay",
+      "save_files",
+      "planning_checkpoints",
+      "caches",
+      "product_or_session_save_points",
+      "projected_or_generated_artifacts",
+      "release_or_control_plane_state_captures"
+    ],
+    "why_needed": [
+      "Lawful persistence, recovery, continuity analysis, rollback analysis, migration planning, and later live-ops caution require explicit bounded capture semantics.",
+      "Snapshot convenience must not redefine truth, ownership, replay lineage, or bridge legality.",
+      "Snapshots must remain compatible with replay doctrine rather than replacing replay lineage by convenience."
+    ]
+  },
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_CAPABILITY_SURFACES",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY",
+    "NATURAL_LANGUAGE_TASK_BRIDGE",
+    "XSTACK_TASK_CATALOG",
+    "MCP_INTERFACE_MODEL",
+    "AGENT_SAFETY_POLICY",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_POST_SIGMA_B_PRE_PHIB_UPSILON",
+    "NEXT_TWO_SERIES_PLAN_PHIB_UPSILON"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION",
+    "LIFECYCLE_MANAGER",
+    "EVENT_LOG_AND_REPLAY_DOCTRINE"
+  ],
+  "repo_evidence_roots": [
+    "engine/include/domino/snapshot.h",
+    "server/persistence/dom_checkpointing.h",
+    "server/persistence/dom_checkpointing.cpp",
+    "server/persistence/dom_checkpoint_policy.h",
+    "server/server_console.py",
+    "engine/modules/net/d_net_proto.h",
+    "engine/tests/player_embodiment_tests.cpp",
+    "app/readonly_format.c",
+    "app/readonly_adapter.c"
+  ],
+  "snapshot_classes": [
+    {
+      "id": "authoritative_truth_snapshot",
+      "description": "A bounded capture of authoritative or authoritative-for-scope state under explicit semantic authority.",
+      "authority_posture": "highest_discipline"
+    },
+    {
+      "id": "runtime_support_snapshot",
+      "description": "A capture of runtime-managed state needed for lawful continuity, restart analysis, or bounded execution support without redefining semantic ownership.",
+      "authority_posture": "runtime_subordinate"
+    },
+    {
+      "id": "replay_assist_snapshot",
+      "description": "A continuity anchor that may accelerate or delimit replay work without replacing replay lineage where replay remains required.",
+      "authority_posture": "replay_support"
+    },
+    {
+      "id": "operator_control_plane_visible_snapshot",
+      "description": "A snapshot surfaced for operator or control-plane visibility, audit, or operational reasoning.",
+      "authority_posture": "visibility_not_truth_by_default"
+    },
+    {
+      "id": "projected_presentation_snapshot",
+      "description": "A bounded capture intended for reporting, presentation, or other derived surfaces and explicitly non-canonical unless stronger law promotes it.",
+      "authority_posture": "derived_non_canonical_by_default"
+    },
+    {
+      "id": "provisional_diagnostic_snapshot",
+      "description": "A bounded capture useful for diagnostics, debugging, or temporary validation support without automatic authoritative restoration fitness.",
+      "authority_posture": "evidence_only_unless_promoted"
+    }
+  ],
+  "scope_boundary_rules": {
+    "may_lawfully_contain": [
+      "authoritative_truth_state_when_snapshot_class_and_authority_posture_allow_it",
+      "lawful_derived_runtime_managed_state_needed_for_continuity_or_interpretation",
+      "lifecycle_posture",
+      "binding_bridge_or_ownership_metadata",
+      "representation_horizon_metadata",
+      "provenance_lineage_contract_or_policy_metadata"
+    ],
+    "must_not_silently_contain_as_authoritative_truth": [
+      "projected_only_state",
+      "generated_only_state",
+      "cache_state_by_convenience",
+      "ui_or_presentation_state_by_convenience",
+      "hidden_service_local_truth",
+      "bridge_crossing_state_with_erased_bridge_mediation",
+      "cross_domain_capture_with_erased_ownership_boundaries"
+    ],
+    "boundary_metadata_must_make_explicit": [
+      "included_state_classes",
+      "excluded_state_classes",
+      "representation_horizon",
+      "authority_posture",
+      "lifecycle_posture",
+      "required_provenance_or_contract_context"
+    ]
+  },
+  "authority_constraints": {
+    "semantic_law_outranks_snapshot_handling": true,
+    "snapshots_do_not_define_truth": true,
+    "ownership_review_remains_binding": true,
+    "bridge_law_remains_binding": true,
+    "canonical_vs_projection_discipline_remains_binding": true,
+    "hidden_service_local_state_must_not_become_snapshot_authority": true,
+    "product_or_session_wording_does_not_define_snapshot_law": true
+  },
+  "replay_compatibility_constraints": {
+    "snapshots_and_replay_are_distinct": true,
+    "snapshots_may_assist_replay_without_replacing_replay": true,
+    "snapshots_must_not_replace_replay_lineage_where_replay_is_required": true,
+    "replay_may_be_needed_to_interpret_snapshot_legality_or_fitness": true
+  },
+  "state_lifecycle_binding_constraints": {
+    "snapshot_doctrine_consumes_state_externalization_law": true,
+    "authoritative_vs_derived_vs_transient_vs_projected_distinctions_remain_binding": true,
+    "snapshot_legality_depends_on_lifecycle_posture": true,
+    "bindings_and_bridges_must_remain_visible_in_snapshot_interpretation": true,
+    "active_quiescent_suspended_degraded_failed_and_recovery_postures_must_remain_distinguishable": true
+  },
+  "representation_and_provenance_cautions": {
+    "must_preserve": [
+      "representation_ladder_invariants",
+      "macro_micro_continuity",
+      "objective_subjective_distinction",
+      "lawful_substitution_boundaries",
+      "lineage_and_revision_context",
+      "formalization_relevance_where_required"
+    ],
+    "must_not_assume": [
+      "micro_detail_is_automatically_more_authoritative_than_macro_summary",
+      "subjective_snapshot_is_objective_truth_by_serialization",
+      "projected_or_presentation_capture_may_stand_in_for_canonical_truth_by_convenience",
+      "supersession_or_revision_may_be_erased_silently"
+    ]
+  },
+  "distinction_notes": {
+    "snapshot": "A bounded continuity capture interpreted under explicit scope, authority, lifecycle, representation, and provenance metadata.",
+    "replay": "Lawful ordered history semantics used to reconstruct or validate evolution through time.",
+    "save_artifact": "One possible implementation or packaging form that does not itself define snapshot law.",
+    "cache": "Convenience state whose existence does not make it authoritative or snapshot-worthy by default.",
+    "projected_generated_state": "Derived or transformed state that remains non-canonical unless stronger law explicitly promotes it.",
+    "authoritative_truth_capture": "A snapshot class posture, not a blanket property of all captured data.",
+    "operator_control_plane_visible_capture": "Visibility-oriented capture that remains distinct from truth ownership.",
+    "planning_checkpoint": "A planning continuity artifact that is not runtime snapshot law."
+  },
+  "snapshot_invalidity_degradation_categories": [
+    {
+      "id": "complete",
+      "description": "A snapshot whose declared scope and lawful interpretation requirements are satisfied for its intended bounded purpose."
+    },
+    {
+      "id": "partial",
+      "description": "A snapshot whose declared scope is incomplete but still explicit enough to remain usable for limited purposes."
+    },
+    {
+      "id": "degraded",
+      "description": "A snapshot captured under degraded runtime or lifecycle posture with limitations that remain explicit."
+    },
+    {
+      "id": "provisional",
+      "description": "A tentative snapshot useful for bounded reasoning but not yet fit for stronger authoritative claims."
+    },
+    {
+      "id": "projected_only",
+      "description": "A snapshot that reflects only projected or presentation state and is therefore not a canonical truth source."
+    },
+    {
+      "id": "stale",
+      "description": "A snapshot whose temporal or contract posture is no longer sufficiently current for the claimed use."
+    },
+    {
+      "id": "ownership_invalid",
+      "description": "A snapshot whose claimed authority conflicts with ownership law or unresolved ownership review."
+    },
+    {
+      "id": "bridge_invalid",
+      "description": "A snapshot whose cross-domain meaning erases or violates required bridge mediation."
+    },
+    {
+      "id": "lifecycle_invalid",
+      "description": "A snapshot whose capture posture conflicts with lifecycle legality for the claimed purpose."
+    },
+    {
+      "id": "representation_lossy_for_claimed_purpose",
+      "description": "A snapshot whose representation posture is too lossy or mismatched for the claim being made."
+    },
+    {
+      "id": "provenance_incomplete",
+      "description": "A snapshot lacking the provenance, revision, or compatibility anchors required for lawful interpretation."
+    },
+    {
+      "id": "unsafe_for_authoritative_restore",
+      "description": "A snapshot that may still exist as evidence but is not fit for authoritative restoration claims."
+    }
+  ],
+  "ownership_projection_cautions": [
+    "fields_over_field",
+    "schema_over_schemas",
+    "packs_and_data_packs_are_not_freely_collapsible",
+    "canonical_vs_projected_generated_distinctions_remain_binding",
+    "thin_runtime_root_not_automatically_canonical",
+    "older_planning_numbering_drift_must_not_override_active_checkpoint_law"
+  ],
+  "prohibited_snapshot_shapes": [
+    "treating_save_file_format_as_snapshot_doctrine",
+    "treating_snapshots_as_the_same_thing_as_replay",
+    "snapshot_silently_capturing_projected_or_generated_state_as_canonical_truth",
+    "snapshot_replacing_replay_lineage_by_convenience",
+    "service_local_hidden_state_treated_as_snapshot_authority",
+    "product_or_session_save_point_treated_as_universal_snapshot_law",
+    "planning_checkpoint_treated_as_runtime_snapshot_law",
+    "snapshots_that_ignore_ownership_bridge_lifecycle_representation_or_provenance_law",
+    "snapshots_that_hide_scope_assumptions",
+    "snapshots_claiming_authoritative_restore_fitness_without_lawful_basis"
+  ],
+  "downstream_refinement_prompts": [
+    "Φ-B2 — SANDBOXING_AND_ISOLATION_MODEL-0",
+    "Φ-B3 — MULTI_VERSION_COEXISTENCE_REVIEW-0",
+    "Φ-B4 — HOTSWAP_BOUNDARY_REVIEW-0",
+    "Φ-B5 — DISTRIBUTED_AUTHORITY_FOUNDATIONS_REVIEW-0",
+    "Υ-3 — RELEASE_INDEX_AND_RESOLUTION_POLICY-0",
+    "Υ-7 — RELEASE_PIPELINE_AND_ARCHIVE_MODEL-0",
+    "Υ-8 — OPERATOR_TRANSACTION_LOG_MODEL-0",
+    "Υ-9 — DISASTER_DOWNGRADE_AND_YANK_POLICY-0",
+    "later Ζ migration, restartless, recovery, and live-ops gating"
+  ]
+}
