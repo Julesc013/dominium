@@ -1,0 +1,224 @@
+{
+  "model": {
+    "model_id": "dominium.release.publication_trust_and_licensing_gates",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-04",
+    "prompt_series_id": "upsilon-8",
+    "prompt_title": "PUBLICATION_TRUST_AND_LICENSING_GATES-0",
+    "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / in-upsilon-a"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_TASKS.md",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/agents/MCP_INTERFACE_MODEL.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+      "docs/runtime/COMPONENT_MODEL.md",
+      "docs/runtime/RUNTIME_SERVICES.md",
+      "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
+      "docs/runtime/STATE_EXTERNALIZATION.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md"
+    ],
+    "release_preconditions": [
+      "docs/release/BUILD_GRAPH_LOCK.md",
+      "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md",
+      "docs/release/VERSIONING_CONSTITUTION.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md"
+    ]
+  },
+  "publication_trust_licensing_action_class_identifiers": [
+    {
+      "id": "publication_preparation",
+      "summary": "Stages, verifies, or inspects release-facing artifacts without crossing a publication boundary."
+    },
+    {
+      "id": "publication_approval",
+      "summary": "Approves or denies change into governed public or externally committed release posture."
+    },
+    {
+      "id": "channel_or_visibility",
+      "summary": "Changes channel placement or visibility posture without redefining release identity."
+    },
+    {
+      "id": "trust_signer_or_trust_root_posture",
+      "summary": "Changes signing requirements, trust policy, signer acceptance posture, or trust-root posture."
+    },
+    {
+      "id": "licensing_or_rights_posture",
+      "summary": "Changes release-facing licensing, entitlement, or rights-bearing posture."
+    },
+    {
+      "id": "mirror_exposure",
+      "summary": "Changes mirror visibility or filtering without authoring release truth."
+    },
+    {
+      "id": "archive_only",
+      "summary": "Preserves artifacts under archive law without granting publication approval."
+    },
+    {
+      "id": "review_gated_metadata",
+      "summary": "Looks metadata-shaped but carries publication, trust, licensing, or external-commitment consequences."
+    }
+  ],
+  "gate_class_identifiers": [
+    {
+      "id": "informational_or_non_publishing",
+      "summary": "Read-only or support-only action with no publication, trust, or licensing posture change."
+    },
+    {
+      "id": "validation_required",
+      "summary": "Requires structural or policy validation before proceeding but does not itself imply public release approval."
+    },
+    {
+      "id": "review_required",
+      "summary": "Requires explicit human review because the action affects release-facing posture."
+    },
+    {
+      "id": "privileged_operator_only",
+      "summary": "Requires privileged operator or strongly gated control because authenticity, rights, or external commitment posture changes."
+    },
+    {
+      "id": "prohibited_or_out_of_scope",
+      "summary": "Forbidden for routine or autonomous execution under the current doctrine and checkpoint posture."
+    }
+  ],
+  "review_privilege_posture_categories": {
+    "safety_policy_reference_classes": [
+      "allowed_bounded",
+      "allowed_with_required_validation",
+      "allowed_with_explicit_human_review",
+      "strongly_gated_privileged",
+      "prohibited_or_out_of_scope"
+    ],
+    "specialized_gate_rules": [
+      "task_or_mcp_exposure_never_implies_gate_passage",
+      "publication_change_defaults_to_strong_gate_or_review_gate",
+      "trust_root_or_signing_posture_change_defaults_to_privileged",
+      "licensing_posture_change_defaults_to_review_heavy_or_privileged",
+      "archive_only_or_mirror_only_actions_do_not_imply_public_release_approval"
+    ],
+    "rule": "This doctrine consumes and specializes upstream safety posture; it does not create permission independently."
+  },
+  "archive_vs_mirror_vs_publication_distinctions": [
+    "Archive presence preserves retained history and recovery posture but does not authorize publication.",
+    "Mirror exposure provides derived availability and may be filtered, private, delayed, or partial.",
+    "Publication is an external visibility or commitment decision and must remain distinct from archive or mirror state.",
+    "Release identity may exist before publication and remain valid without public exposure."
+  ],
+  "trust_licensing_caution_categories": [
+    {
+      "id": "trust_posture_not_ordinary_metadata",
+      "summary": "Trust policy, signer acceptance, signing posture, and trust roots are authenticity-bearing control-plane surfaces."
+    },
+    {
+      "id": "licensing_posture_not_ordinary_metadata",
+      "summary": "Licensing, entitlement, and rights-bearing posture changes alter obligations or allowed capability posture and remain review-heavy."
+    },
+    {
+      "id": "external_commitment_is_privileged",
+      "summary": "Actions that change public commitment, supported distribution, or externally relied-on release posture remain privileged."
+    },
+    {
+      "id": "derived_views_do_not_define_gate_truth",
+      "summary": "Host layout, dashboards, filenames, mirror listings, and convenience reports remain subordinate to canonical gate records."
+    }
+  ],
+  "invalidity_failure_categories": [
+    "invalid",
+    "under_authorized",
+    "incomplete",
+    "policy_blocked",
+    "trust_inconsistent",
+    "licensing_inconsistent",
+    "resolution_inconsistent",
+    "archive_or_mirror_misclassified",
+    "external_commitment_not_approved",
+    "derived_surface_misrepresented_as_gate_truth"
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical_surfaces": [
+      "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "data/release/publication_trust_licensing_gates_registry.json",
+      "canonical release identity records",
+      "release contract profile artifacts",
+      "canonical operator transaction records where later doctrine defines them",
+      "governed publication or trust or licensing gate decisions when later operational doctrine records them"
+    ],
+    "derived_or_projection_surfaces": [
+      "filenames",
+      "hosting layout",
+      "mirror listings",
+      "archive carrier paths",
+      "ui summaries",
+      "dashboard views",
+      "support reports",
+      "mcp exposure surfaces",
+      "task catalog listings"
+    ],
+    "rule": "Publication, trust, and licensing posture must be governed by canonical gate law and records rather than by derived projections or exposed tools."
+  },
+  "prohibited_gate_shapes": [
+    "build_succeeded_therefore_publish",
+    "archive_exists_therefore_released",
+    "mirror_exists_therefore_publication_approved",
+    "task_catalog_inclusion_equals_publication_authority",
+    "mcp_exposure_equals_publication_authority",
+    "trust_root_or_signing_posture_changed_like_normal_metadata",
+    "licensing_posture_changed_like_changelog_edit",
+    "release_identity_exists_therefore_public_commitment_exists",
+    "derived_dashboard_or_host_layout_as_gate_truth",
+    "publication_trust_and_licensing_collapsed_into_generic_review_flag"
+  ],
+  "repo_evidence_surfaces": [
+    "docs/release/SIGNING_POLICY.md",
+    "docs/release/ARCHIVE_AND_RETENTION_POLICY.md",
+    "docs/release/RELEASE_IDENTITY_CONSTITUTION.md",
+    "docs/release/RELEASE_INDEX_MODEL.md",
+    "docs/release/RELEASE_MANIFEST_MODEL.md",
+    "repo/release_policy.toml",
+    "release/update_resolver.py",
+    "release/release_manifest_engine.py",
+    "security/trust/trust_verifier.py",
+    "security/trust/license_capability.py",
+    "updates/stable.json",
+    "updates/beta.json",
+    "updates/pinned.json",
+    "updates/nightly.json",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/trust_root_registry.json",
+    "data/registries/entitlement_registry.json",
+    "data/registries/release_channel_registry.json",
+    "docs/agents/XSTACK_TASK_CATALOG.md",
+    "docs/agents/AGENT_SAFETY_POLICY.md"
+  ],
+  "ambiguities_eliminated": [
+    "archive does not mean published",
+    "mirror does not mean approved for publication",
+    "mcp or task catalog exposure does not imply publication authority",
+    "trust and licensing changes are not ordinary metadata edits"
+  ],
+  "downstream_refinement_prompts": [
+    "later checkpoints",
+    "future zeta blocker-reduction planning",
+    "later publication, trust, and licensing operational doctrine"
+  ]
+}
