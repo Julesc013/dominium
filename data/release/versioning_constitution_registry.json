@@ -1,0 +1,304 @@
+{
+  "model": {
+    "model_id": "dominium.release.versioning_constitution",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-04",
+    "prompt_series_id": "upsilon-2",
+    "prompt_title": "VERSIONING_CONSTITUTION-0",
+    "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / in-upsilon-a"
+  },
+  "upstream_constraints": {
+    "governance": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+      "docs/runtime/COMPONENT_MODEL.md",
+      "docs/runtime/RUNTIME_SERVICES.md",
+      "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
+      "docs/runtime/STATE_EXTERNALIZATION.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md"
+    ],
+    "upsilon_preconditions": [
+      "docs/release/BUILD_GRAPH_LOCK.md",
+      "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md"
+    ]
+  },
+  "field_classes": [
+    {
+      "id": "suite_version",
+      "class_kind": "version",
+      "summary": "Human-facing curated suite snapshot identifier.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "product_version",
+      "class_kind": "version",
+      "summary": "Product-scoped evolution label used within one product lineage.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "protocol_version_or_range",
+      "class_kind": "compatibility",
+      "summary": "Machine-readable negotiated interoperability surface.",
+      "compatibility_oracle": true,
+      "semantic_precedence_participant": true,
+      "projection_only": false
+    },
+    {
+      "id": "schema_version",
+      "class_kind": "compatibility",
+      "summary": "Machine-readable contract-shape version governed by migration or refusal law.",
+      "compatibility_oracle": true,
+      "semantic_precedence_participant": true,
+      "projection_only": false
+    },
+    {
+      "id": "format_version",
+      "class_kind": "compatibility",
+      "summary": "Machine-readable persisted-layout or payload-layout version.",
+      "compatibility_oracle": true,
+      "semantic_precedence_participant": true,
+      "projection_only": false
+    },
+    {
+      "id": "semantic_contract_bundle_hash",
+      "class_kind": "semantic_pin",
+      "summary": "Machine-readable pin for semantic meaning compatibility.",
+      "compatibility_oracle": true,
+      "semantic_precedence_participant": true,
+      "projection_only": false
+    },
+    {
+      "id": "build_identity",
+      "class_kind": "identity",
+      "summary": "Deterministic build instance identity such as build_id.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "artifact_identity",
+      "class_kind": "identity",
+      "summary": "Stable artifact-level identifier distinct from version labels.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "content_hash",
+      "class_kind": "identity",
+      "summary": "Immutable payload identity for exact content.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "release_contract_profile",
+      "class_kind": "compatibility_envelope",
+      "summary": "Later explicit machine-readable release compatibility envelope.",
+      "compatibility_oracle": true,
+      "semantic_precedence_participant": true,
+      "projection_only": false
+    },
+    {
+      "id": "release_id",
+      "class_kind": "release_identity",
+      "summary": "Curated release-control-plane identity for one release snapshot.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "release_series",
+      "class_kind": "release_identity",
+      "summary": "Release lineage grouping field.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "channel_id",
+      "class_kind": "release_identity",
+      "summary": "Distribution or operator-facing channel field.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "target_family",
+      "class_kind": "target_grouping",
+      "summary": "Broad compatibility grouping for families of targets.",
+      "compatibility_oracle": false,
+      "semantic_precedence_participant": false,
+      "projection_only": false
+    },
+    {
+      "id": "exact_target_descriptor",
+      "class_kind": "target_specificity",
+      "summary": "Machine-readable exact target statement for concrete binary meaning.",
+      "compatibility_oracle": true,
+      "semantic_precedence_participant": true,
+      "projection_only": false
+    }
+  ],
+  "field_semantics_summaries": {
+    "suite_version": "Useful for release notes, archive references, and suite snapshots, but not compatibility admission.",
+    "product_version": "Useful for product-line progression and deterministic candidate ordering after explicit compatibility gates pass.",
+    "protocol_version_or_range": "Governs negotiated wire compatibility and must remain explicit.",
+    "schema_version": "Governs structure and migration or refusal obligations.",
+    "format_version": "Governs save, manifest, bundle, feed, or archive layout compatibility.",
+    "semantic_contract_bundle_hash": "Pins semantic meaning compatibility and CAP-NEG-relevant meaning.",
+    "build_identity": "Tracks deterministic build provenance and exact build instance identity without becoming semantic precedence.",
+    "artifact_identity": "Tracks stable artifact identity distinct from build and version labels.",
+    "content_hash": "Tracks exact payload identity and verification state.",
+    "release_contract_profile": "Will later bind the relevant compatibility truths into one explicit release envelope.",
+    "release_id": "Names one release snapshot without replacing product, protocol, schema, or build identity fields.",
+    "release_series": "Groups release lineage without becoming compatibility truth.",
+    "channel_id": "Classifies operator-facing release channels without becoming artifact identity.",
+    "target_family": "Supports broad matrix grouping but is insufficient for exact binary compatibility.",
+    "exact_target_descriptor": "Carries the specificity required for precise target admission and binary meaning."
+  },
+  "precedence_participation_rules": {
+    "semantic_precedence_inputs": [
+      "semantic_contract_bundle_hash",
+      "protocol_version_or_range",
+      "schema_version",
+      "format_version",
+      "release_contract_profile",
+      "exact_target_descriptor"
+    ],
+    "candidate_ranking_inputs": [
+      "product_version",
+      "build_identity",
+      "artifact_identity",
+      "content_hash"
+    ],
+    "human_curation_inputs": [
+      "suite_version",
+      "release_id",
+      "release_series",
+      "channel_id"
+    ],
+    "non_precedence_inputs": [
+      "filename_projection",
+      "host_local_paths",
+      "generated_bundle_names",
+      "tool_specific_aliases",
+      "target_family"
+    ],
+    "notes": [
+      "Compatibility must be evaluated before product-version ranking or build-identity tie-breaks.",
+      "Build identity may participate in deterministic tie-breaks only after compatibility gates pass.",
+      "Suite version remains useful for curation but is not the compatibility oracle."
+    ]
+  },
+  "identity_vs_version_distinctions": [
+    "Version labels describe evolution or compatibility semantics for a defined layer.",
+    "Identity fields describe immutable build, artifact, content, or release instance identity.",
+    "Build identity and content hash do not replace semantic contract pinning, protocol ranges, schema versions, or format versions.",
+    "Artifact identity and release identity are not interchangeable with product version."
+  ],
+  "target_family_vs_exact_target_distinctions": [
+    "Target family is a broad grouping for matrix navigation and policy grouping.",
+    "Exact target descriptor carries the specificity needed for concrete binary meaning.",
+    "Family labels alone are insufficient for exact admission, resolution, or binary compatibility claims."
+  ],
+  "filename_projection_rules": {
+    "source_of_truth": false,
+    "allowed_roles": [
+      "human recognition",
+      "deterministic packaging projections",
+      "archive ergonomics",
+      "transport-friendly naming"
+    ],
+    "forbidden_roles": [
+      "compatibility oracle",
+      "artifact identity owner",
+      "semantic precedence source",
+      "target-specificity replacement"
+    ]
+  },
+  "canonical_vs_derived_surface_rules": {
+    "canonical_sources": [
+      "authored doctrine under docs/release",
+      "authored schemas under schema/",
+      "authored release engines and resolver code",
+      "authored version files",
+      "authored machine-readable registries"
+    ],
+    "derived_or_projection_surfaces": [
+      "filenames",
+      "archive names",
+      "generated manifests",
+      "generated feed projections",
+      "dist bundle layouts"
+    ],
+    "rule": "Derived or projection surfaces may expose metadata but may not redefine field semantics."
+  },
+  "repo_evidence_surfaces": [
+    "docs/release/RELEASE_IDENTITY_CONSTITUTION.md",
+    "docs/release/RELEASE_INDEX_MODEL.md",
+    "docs/release/RELEASE_INDEX_RESOLUTION_POLICY.md",
+    "docs/release/RELEASE_MANIFEST_MODEL.md",
+    "docs/release/ARTIFACT_NAMING_RULES.md",
+    "docs/release/UPDATE_SIM_MODEL_v0_0_0.md",
+    "repo/release_policy.toml",
+    "schema/SCHEMA_VERSIONING.md",
+    "schema/release/build_id.schema",
+    "schema/identity/artifact_identity.schema",
+    "schema/release/artifact_identity.schema",
+    "release/build_id_engine.py",
+    "release/release_manifest_engine.py",
+    "release/update_resolver.py",
+    "data/registries/component_graph_registry.json",
+    "data/registries/toolchain_matrix_registry.json",
+    "VERSION_SUITE",
+    "VERSION_CLIENT",
+    "VERSION_SERVER",
+    "VERSION_GAME",
+    "VERSION_TOOLS",
+    "VERSION_LAUNCHER",
+    "VERSION_SETUP",
+    "VERSION_ENGINE"
+  ],
+  "prohibited_versioning_shapes": [
+    "suite_version_as_compatibility_oracle",
+    "build_identity_affecting_semantic_precedence",
+    "filenames_as_source_of_truth",
+    "product_protocol_schema_format_contract_fields_collapsed_into_one_string",
+    "target_family_used_as_exact_target_descriptor",
+    "artifact_identity_conflated_with_artifact_version",
+    "generated_surfaces_redefining_field_meaning",
+    "local_tool_specific_field_reinterpretation"
+  ],
+  "ambiguities_eliminated": [
+    "suite version is useful but is not the compatibility oracle",
+    "build identity does not control semantic precedence",
+    "filenames are projections and do not define truth",
+    "target family does not equal exact target identity"
+  ],
+  "downstream_refinement_prompts": [
+    "Υ-3",
+    "Υ-4",
+    "Υ-5",
+    "Υ-6",
+    "Υ-7",
+    "Υ-8"
+  ]
+}
