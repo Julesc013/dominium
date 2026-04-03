@@ -1,0 +1,216 @@
+{
+  "model": {
+    "model_id": "dominium.release.archive_and_mirror_constitution",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-04",
+    "prompt_series_id": "upsilon-7",
+    "prompt_title": "ARCHIVE_AND_MIRROR_CONSTITUTION-0",
+    "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / in-upsilon-a"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_MIRROR_POLICY.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+      "docs/runtime/COMPONENT_MODEL.md",
+      "docs/runtime/RUNTIME_SERVICES.md",
+      "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
+      "docs/runtime/STATE_EXTERNALIZATION.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md"
+    ],
+    "release_preconditions": [
+      "docs/release/BUILD_GRAPH_LOCK.md",
+      "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md",
+      "docs/release/VERSIONING_CONSTITUTION.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md"
+    ]
+  },
+  "artifact_archival_class_identifiers": [
+    {
+      "id": "canonical_release_identity",
+      "archive_duty": "required_exact",
+      "mirror_duty": "selective_reference_or_carrier",
+      "summary": "Canonical release identity anchors and governed release-facing identifiers."
+    },
+    {
+      "id": "release_manifest_and_index",
+      "archive_duty": "required_exact_with_history",
+      "mirror_duty": "current_and_policy_filtered_history",
+      "summary": "Release manifests, current release indices, and retained historical release-index snapshots."
+    },
+    {
+      "id": "contract_and_compatibility",
+      "archive_duty": "required_when_release_referenced",
+      "mirror_duty": "selective_exposure",
+      "summary": "Release contract profile, semantic contract pins, governance anchors, and related compatibility-envelope artifacts."
+    },
+    {
+      "id": "distributable_release_payload",
+      "archive_duty": "required_for_published_or_governed_release",
+      "mirror_duty": "policy_governed_distribution",
+      "summary": "Bundle roots, payload artifacts, profiles, packs, locks, and related shipped release payloads."
+    },
+    {
+      "id": "historical_control_plane_record",
+      "archive_duty": "required_for_reconstructable_history",
+      "mirror_duty": "selective_or_summary_exposure",
+      "summary": "Changelog layers, operator transaction records, and deprecation or yank or supersession history."
+    },
+    {
+      "id": "continuity_support_and_offline_reconstruction",
+      "archive_duty": "required_when_frozen_for_recovery",
+      "mirror_duty": "cold_storage_or_selective_distribution",
+      "summary": "Offline archive bundles, archive records, retained history trees, and explicit recovery baselines."
+    },
+    {
+      "id": "checkpoint_and_support_bundle",
+      "archive_duty": "separate_support_retention_only",
+      "mirror_duty": "not_release_mirrored_by_default",
+      "summary": "Planning checkpoints and support bundles kept distinct from release canon."
+    },
+    {
+      "id": "ephemeral_local_or_staging_output",
+      "archive_duty": "none_by_default",
+      "mirror_duty": "none_by_default",
+      "summary": "Scratch, cache, staging, and temporary local outputs without release archival duty."
+    }
+  ],
+  "mirror_class_identifiers": [
+    {
+      "id": "primary_distribution_mirror",
+      "summary": "Primary availability surface for governed release distribution."
+    },
+    {
+      "id": "secondary_distribution_mirror",
+      "summary": "Secondary availability surface for redundancy without canonical authorship."
+    },
+    {
+      "id": "policy_filtered_channel_mirror",
+      "summary": "Channel-scoped or policy-filtered availability surface exposing only an allowed subset."
+    },
+    {
+      "id": "cold_storage_survivability_copy",
+      "summary": "Mirror or seed surface optimized for offline survivability and reconstruction rather than routine distribution."
+    },
+    {
+      "id": "support_reference_mirror",
+      "summary": "Derived reference surface that exposes summaries or selected support artifacts without becoming release canon."
+    },
+    {
+      "id": "non_mirrorable_local_output",
+      "summary": "Artifact class intentionally excluded from release mirroring."
+    }
+  ],
+  "archive_duty_vs_mirror_duty_distinctions": [
+    "Archive duty preserves exact historical recoverability and identity continuity.",
+    "Mirror duty provides policy-governed availability or discoverability through derived surfaces.",
+    "Archive presence does not imply preference, latest status, or universal visibility.",
+    "Mirror visibility does not imply canonical authorship or complete historical retention."
+  ],
+  "retention_survivability_categories": [
+    {
+      "id": "historical_exact_retention",
+      "summary": "Exact retained history required for reconstructability and audit."
+    },
+    {
+      "id": "active_distribution_availability",
+      "summary": "Availability duty for current or policy-governed release exposure."
+    },
+    {
+      "id": "cold_storage_offline_survivability",
+      "summary": "Retention or mirroring class supporting extinction prevention and offline reconstruction."
+    },
+    {
+      "id": "support_artifact_separate_retention",
+      "summary": "Retention posture for planning and support bundles that remain distinct from release canon."
+    },
+    {
+      "id": "ephemeral_non_retained",
+      "summary": "No archival or mirroring duty by default."
+    }
+  ],
+  "yanked_deprecated_superseded_archival_continuity_notes": [
+    "Yanked artifacts may become non-preferred or filtered from mirrors without ceasing to exist historically.",
+    "Deprecated artifacts remain visible or recoverable according to explicit policy and are not silently erased.",
+    "Superseded artifacts retain exact archival continuity even when successors become preferred in mirrors or selection policy."
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical_surfaces": [
+      "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "data/release/archive_and_mirror_registry.json",
+      "canonical release identity records",
+      "release contract profile artifacts",
+      "canonical release index and retained historical release-index snapshots",
+      "operator transaction records where later doctrine explicitly defines them"
+    ],
+    "derived_or_carrier_surfaces": [
+      "mirrors",
+      "hosting layout",
+      "bundle roots",
+      "filenames",
+      "archive carrier paths",
+      "generated summaries",
+      "checkpoint support bundles",
+      "local caches"
+    ],
+    "rule": "Archive copies preserve artifacts and mirrors expose them, but neither storage layout nor derived carrier surfaces create canonical release truth."
+  },
+  "prohibited_archive_mirror_shapes": [
+    "mirror_as_source_of_truth",
+    "archive_as_preferred_or_latest",
+    "yanked_artifact_deleted_from_history",
+    "superseded_artifact_silently_removed_from_exact_recovery",
+    "bundle_path_or_hosting_layout_as_identity_truth",
+    "cache_or_tmp_output_as_archive_canon",
+    "checkpoint_bundle_as_release_identity",
+    "archive_and_mirror_collapsed_into_generic_storage"
+  ],
+  "repo_evidence_surfaces": [
+    "docs/release/ARCHIVE_AND_RETENTION_POLICY.md",
+    "docs/release/OFFLINE_ARCHIVE_MODEL_v0_0_0.md",
+    "docs/release/DIST_FINAL_PLAN_v0_0_0_mock.md",
+    "docs/release/RELEASE_INDEX_MODEL.md",
+    "docs/release/RELEASE_MANIFEST_MODEL.md",
+    "repo/release_policy.toml",
+    "release/archive_policy.py",
+    "release/update_resolver.py",
+    "updates/stable.json",
+    "updates/pinned.json",
+    "updates/nightly.json",
+    "data/registries/archive_policy_registry.json",
+    "data/registries/retention_policy_registry.json",
+    "data/registries/release_channel_registry.json",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/install_profile_registry.json",
+    "data/release/dist_final_expected_artifacts.json",
+    "data/registries/derived_artifacts.json"
+  ],
+  "ambiguities_eliminated": [
+    "mirror does not mean canonical source",
+    "archive does not mean preferred or latest",
+    "yanked does not mean historically erased",
+    "checkpoint bundles are not release canon"
+  ],
+  "downstream_refinement_prompts": [
+    "Υ-8",
+    "later checkpoints",
+    "future zeta continuity and disaster-recovery planning"
+  ]
+}
