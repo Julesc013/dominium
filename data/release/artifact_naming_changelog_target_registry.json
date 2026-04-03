@@ -1,0 +1,208 @@
+{
+  "model": {
+    "model_id": "dominium.release.artifact_naming_changelog_target_policy",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-04",
+    "prompt_series_id": "upsilon-4",
+    "prompt_title": "ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY-0",
+    "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / in-upsilon-a"
+  },
+  "upstream_constraints": {
+    "governance": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+      "docs/runtime/COMPONENT_MODEL.md",
+      "docs/runtime/RUNTIME_SERVICES.md",
+      "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
+      "docs/runtime/STATE_EXTERNALIZATION.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md"
+    ],
+    "upsilon_preconditions": [
+      "docs/release/BUILD_GRAPH_LOCK.md",
+      "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md",
+      "docs/release/VERSIONING_CONSTITUTION.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md"
+    ]
+  },
+  "artifact_naming_classes": [
+    {
+      "id": "suite_distributable_artifact",
+      "summary": "Suite-facing distribution or archive artifact that may project suite-facing release context."
+    },
+    {
+      "id": "product_level_artifact",
+      "summary": "Artifact realizing one product lineage and its selected human-facing projections."
+    },
+    {
+      "id": "machine_readable_manifest_or_registry",
+      "summary": "Manifest, index, registry, lock, or profile artifact primarily for machine consumption."
+    },
+    {
+      "id": "checkpoint_or_support_bundle",
+      "summary": "Planning or continuity bundle whose name reflects checkpoint context but not release identity truth."
+    },
+    {
+      "id": "generated_projection_artifact",
+      "summary": "Generated descriptor, helper, or distribution projection derived from stronger metadata surfaces."
+    },
+    {
+      "id": "archived_artifact",
+      "summary": "Archive-oriented artifact projecting recovery or retention context."
+    },
+    {
+      "id": "local_dev_or_build_only_artifact",
+      "summary": "Ephemeral local or build-only artifact that must not be mistaken for governed release truth."
+    }
+  ],
+  "filename_projection_rule_summaries": {
+    "allowed_metadata_classes": [
+      "artifact_kind_or_class",
+      "product_id",
+      "suite_version",
+      "product_version",
+      "release_channel_or_lane",
+      "build_identity_projection",
+      "content_hash_prefix",
+      "target_family_or_platform_tag",
+      "archive_or_checkpoint_label"
+    ],
+    "forbidden_truth_claims": [
+      "full_release_contract_profile",
+      "full_exact_target_descriptor",
+      "semantic_contract_compatibility_by_implication",
+      "governance_or_trust_truth_by_filename_alone",
+      "complete_precedence_or_resolution_semantics",
+      "all_identity_and_compatibility_facts_in_one_name"
+    ],
+    "rules": [
+      "Filenames are projections of metadata and do not define metadata truth.",
+      "Different artifact classes may project different lawful subsets of metadata.",
+      "Human readability is required, but not at the cost of deceptive overloading."
+    ]
+  },
+  "metadata_classes_allowed_vs_forbidden_in_filenames": {
+    "allowed_as_projection": {
+      "suite_version": "allowed_for_suite_facing_context",
+      "product_version": "allowed_for_product_facing_context",
+      "build_identity": "allowed_for_provenance_projection_only",
+      "target_family": "allowed_as_broad_shorthand",
+      "release_channel_or_lane": "allowed_as_context_projection",
+      "content_hash_prefix": "allowed_as_immutable_identity_shorthand",
+      "release_contract_profile_id": "allowed_only_for_machine_or_profile_oriented_artifacts_when_explicitly_needed"
+    },
+    "must_remain_machine_truth": {
+      "full_release_contract_profile": "structured_metadata_only",
+      "exact_target_descriptor": "structured_metadata_only",
+      "semantic_contract_bundle_hash": "structured_metadata_only",
+      "governance_profile_hash": "structured_metadata_only",
+      "trust_policy_id": "structured_metadata_only",
+      "precedence_and_selection_semantics": "structured_metadata_only"
+    }
+  },
+  "changelog_layers": [
+    {
+      "id": "suite_level_changelog",
+      "summary": "Human-facing curated summary of a coordinated suite snapshot."
+    },
+    {
+      "id": "product_level_changelog",
+      "summary": "Human-facing summary for one product lineage where relevant."
+    },
+    {
+      "id": "machine_readable_release_change_metadata",
+      "summary": "Structured release and change state for tools and automation."
+    },
+    {
+      "id": "checkpoint_and_planning_history",
+      "summary": "Governance and continuity history that is not itself release changelog truth."
+    },
+    {
+      "id": "deprecation_yank_and_supersession_notes",
+      "summary": "Layered record of deprecation, yank, rollback, downgrade, and supersession context."
+    }
+  ],
+  "change_record_rules": [
+    "Change records must be attributable and layered.",
+    "Changelog prose may summarize release state but does not replace structured release state.",
+    "Machine-readable change metadata must remain available for exact reconstruction.",
+    "Checkpoint and planning history are continuity records and not release compatibility truth."
+  ],
+  "target_family_vs_exact_target_rules": {
+    "target_family": "Broad grouping for matrix navigation and policy grouping.",
+    "exact_target": "Machine-readable concrete descriptor for binary and compatibility meaning.",
+    "distinction_rules": [
+      "Family shorthand may appear in filenames and prose.",
+      "Exact target descriptors must remain explicit structured metadata for exact compatibility.",
+      "Target family alone is insufficient for precise binary or runtime compatibility claims."
+    ]
+  },
+  "canonical_vs_derived_distinctions": {
+    "canonical_surfaces": [
+      "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md",
+      "docs/release/VERSIONING_CONSTITUTION.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "data/release/artifact_naming_changelog_target_registry.json",
+      "target and product registries",
+      "release contract profiles and later release-state artifacts that explicitly own machine truth"
+    ],
+    "derived_surfaces": [
+      "filenames",
+      "release notes prose",
+      "updates/changelog.json summaries",
+      "checkpoint zip names",
+      "generated bundle labels",
+      "dist layout labels"
+    ],
+    "rule": "Derived surfaces may project metadata or summarize change, but they may not replace structured truth owners."
+  },
+  "prohibited_naming_changelog_target_shapes": [
+    "filename_as_compatibility_oracle",
+    "filename_as_exact_target_truth",
+    "changelog_prose_as_machine_authoritative_state",
+    "build_identity_forcing_semantic_precedence_via_filename",
+    "single_filename_grammar_for_every_artifact_class",
+    "checkpoint_bundle_name_as_release_identity_truth",
+    "target_family_as_exact_target_descriptor",
+    "generated_bundle_labels_redefining_profile_or_version_meaning"
+  ],
+  "repo_evidence_surfaces": [
+    "docs/release/ARTIFACT_NAMING_RULES.md",
+    "docs/release/RELEASE_NOTES_v0_0_0_mock.md",
+    "docs/release/RELEASE_IDENTITY_CONSTITUTION.md",
+    "docs/release/RELEASE_INDEX_MODEL.md",
+    "updates/changelog.json",
+    "data/registries/target_matrix_registry.json",
+    "data/registries/os_registry.json",
+    "data/registries/arch_registry.json",
+    "data/registries/platform_registry.json",
+    "data/registries/product_registry.json",
+    "data/registries/release_channel_registry.json",
+    "repo/release_policy.toml"
+  ],
+  "ambiguities_eliminated": [
+    "filenames do not define truth",
+    "changelog prose is not machine-authoritative state",
+    "target family does not equal exact target",
+    "one filename grammar should not encode every truth for every artifact class"
+  ],
+  "downstream_refinement_prompts": [
+    "Υ-5",
+    "Υ-6",
+    "Υ-7",
+    "Υ-8",
+    "later checkpoints"
+  ]
+}
