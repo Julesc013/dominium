@@ -1,0 +1,188 @@
+{
+  "plan_id": "NEXT_EXECUTION_ORDER_POST_PHIB1",
+  "checkpoint_basis": "C-ΦB1Υ0",
+  "execution_mode": "upsilon_a_first_then_recheck",
+  "recommended_next_prompt": {
+    "prompt_id": "Υ-0",
+    "title": "BUILD_GRAPH_LOCK-0"
+  },
+  "ordered_block": [
+    {
+      "order": 1,
+      "prompt_id": "Υ-0",
+      "title": "BUILD_GRAPH_LOCK-0",
+      "readiness_status": "mostly_consolidation",
+      "dependencies": [],
+      "human_review_required": false,
+      "stop_conditions": [
+        "build lock would silently rewrite release authority or replace current substrate"
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "Υ-1",
+      "title": "PRESET_CONSOLIDATION-0",
+      "readiness_status": "mostly_consolidation",
+      "dependencies": [
+        "Υ-0"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "preset consolidation infers canon from convenience or flattens platform distinctions"
+      ]
+    },
+    {
+      "order": 3,
+      "prompt_id": "Υ-2",
+      "title": "VERSIONING_CONSTITUTION-0",
+      "readiness_status": "mostly_consolidation",
+      "dependencies": [
+        "Υ-0",
+        "Υ-1"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "version law cannot align identity and compatibility without silent reinterpretation"
+      ]
+    },
+    {
+      "order": 4,
+      "prompt_id": "Υ-3",
+      "title": "RELEASE_INDEX_AND_RESOLUTION_POLICY-0",
+      "readiness_status": "mostly_consolidation",
+      "dependencies": [
+        "Υ-2"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "index or resolution law smuggles in trust or publication authority"
+      ]
+    },
+    {
+      "order": 5,
+      "prompt_id": "Υ-4",
+      "title": "RELEASE_CONTRACT_PROFILE-0",
+      "readiness_status": "ready",
+      "dependencies": [
+        "Υ-2",
+        "Υ-3"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "release contract meaning conflicts with canon, compatibility law, or ownership cautions"
+      ]
+    },
+    {
+      "order": 6,
+      "prompt_id": "Υ-5",
+      "title": "ARTIFACT_AND_TARGET_NAMING_POLICY-0",
+      "readiness_status": "mostly_consolidation",
+      "dependencies": [
+        "Υ-2",
+        "Υ-4"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "naming becomes release authority instead of derived policy"
+      ]
+    },
+    {
+      "order": 7,
+      "prompt_id": "Υ-6",
+      "title": "CHANGELOG_POLICY-0",
+      "readiness_status": "mostly_consolidation",
+      "dependencies": [
+        "Υ-4",
+        "Υ-5"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "changelog meaning drifts into compatibility or release identity reinterpretation"
+      ]
+    },
+    {
+      "order": 8,
+      "prompt_id": "Υ-7",
+      "title": "RELEASE_PIPELINE_AND_ARCHIVE_MODEL-0",
+      "readiness_status": "mostly_consolidation",
+      "dependencies": [
+        "Υ-2",
+        "Υ-4",
+        "Υ-5"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "pipeline or archive law grants publication or trust authority by convenience"
+      ]
+    },
+    {
+      "order": 9,
+      "prompt_id": "Υ-8",
+      "title": "OPERATOR_TRANSACTION_LOG_MODEL-0",
+      "readiness_status": "ready",
+      "dependencies": [
+        "Φ-B0",
+        "Φ-B1",
+        "Υ-3",
+        "Υ-7"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "operator transaction continuity cannot reconcile replay, snapshot, and release-resolution law"
+      ]
+    },
+    {
+      "order": 10,
+      "prompt_id": "Υ-9",
+      "title": "DISASTER_DOWNGRADE_AND_YANK_POLICY-0",
+      "readiness_status": "ready",
+      "dependencies": [
+        "Υ-3",
+        "Υ-8"
+      ],
+      "human_review_required": false,
+      "stop_conditions": [
+        "downgrade or yank law assumes live publication powers not yet formalized"
+      ]
+    }
+  ],
+  "checkpoint_after_block": {
+    "required": true,
+    "reason": "The risky Φ-B tail remains blocked or dangerous even after safe Φ-B and should be reconsidered only after the Υ continuity band lands."
+  },
+  "blocked_or_dangerous_items": [
+    {
+      "prompt_id": "Φ-B3",
+      "title": "MULTI_VERSION_COEXISTENCE_REVIEW-0",
+      "readiness_status": "blocked",
+      "notes": "Still waits on Υ-2, Υ-4, Υ-7, Υ-9, and current isolation law."
+    },
+    {
+      "prompt_id": "Φ-B4",
+      "title": "HOTSWAP_BOUNDARY_REVIEW-0",
+      "readiness_status": "dangerous",
+      "notes": "Still waits on Φ-B3, Υ-8, and Υ-9 and remains continuity-sensitive."
+    },
+    {
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS_REVIEW-0",
+      "readiness_status": "premature",
+      "notes": "Still waits on Φ-B4 and Υ-10 in addition to coexistence and continuity prerequisites."
+    },
+    {
+      "prompt_id": "Υ-10",
+      "title": "PUBLICATION_TRUST_AND_LICENSING_REVIEW-0",
+      "readiness_status": "later_gated_review",
+      "notes": "Remains explicitly review-gated and should not be pulled forward casually."
+    }
+  ],
+  "human_review_requirements": [
+    "Trigger human review if any Υ prompt attempts to reinterpret canonical version, contract, or compatibility meaning.",
+    "Trigger human review if release or pipeline doctrine drifts toward publication or trust automation.",
+    "Require a new checkpoint before any move into Φ-B3, Φ-B4, or Φ-B5."
+  ],
+  "stability": {
+    "classification": "provisional_forward_plan",
+    "updates_must_be_explicit": true
+  }
+}

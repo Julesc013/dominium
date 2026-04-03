@@ -1,0 +1,193 @@
+{
+  "checkpoint_id": "C-ΦB1Υ0",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-phi-b2 / pre-risky-phi-b-tail-and-or-upsilon-a",
+  "safe_phi_b_sufficiency": {
+    "risky_phi_b_tail_reconsideration": {
+      "judgment": "partially_yes",
+      "summary": "Replay, snapshot, and isolation doctrine now provide explicit continuity and containment law, but they do not clear the risky Φ-B tail by themselves."
+    },
+    "upsilon_a_start": {
+      "judgment": "yes",
+      "summary": "Υ-A can now begin on top of explicit replay, snapshot, and isolation doctrine rather than inventing continuity assumptions ad hoc."
+    },
+    "zeta_blocker_reduction": {
+      "judgment": "partially_yes",
+      "summary": "The safe trio removes replay, snapshot, and isolation ambiguity, but Ζ still depends on multi-version, hotswap, distributed authority, operator transaction, downgrade, provenance, and trust maturity."
+    }
+  },
+  "risky_phi_b_tail_readiness": [
+    {
+      "prompt_id": "Φ-B3",
+      "title": "MULTI_VERSION_COEXISTENCE_REVIEW-0",
+      "judgment": "blocked",
+      "remaining_dependencies": [
+        "Υ-2",
+        "Υ-4",
+        "Υ-7",
+        "Υ-9",
+        "Φ-B2"
+      ],
+      "summary": "Safe Φ-B is necessary but not sufficient; coexistence still waits on versioning, release contract, pipeline/archive continuity, and downgrade law."
+    },
+    {
+      "prompt_id": "Φ-B4",
+      "title": "HOTSWAP_BOUNDARY_REVIEW-0",
+      "judgment": "dangerous",
+      "remaining_dependencies": [
+        "Φ-B3",
+        "Υ-8",
+        "Υ-9"
+      ],
+      "summary": "Hotswap still risks lifecycle, state, and operator-authority shortcuts even as a review prompt."
+    },
+    {
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS_REVIEW-0",
+      "judgment": "premature",
+      "remaining_dependencies": [
+        "Φ-B3",
+        "Φ-B4",
+        "Υ-8",
+        "Υ-9",
+        "Υ-10"
+      ],
+      "summary": "Distributed authority remains downstream of coexistence, hotswap, operator transaction, downgrade, and publication/trust review."
+    }
+  ],
+  "upsilon_a_readiness": [
+    {
+      "family_id": "build_graph_consolidation",
+      "prompt_ids": [
+        "Υ-0"
+      ],
+      "judgment": "mostly_consolidation",
+      "summary": "Existing build graph and preset substrate should be frozen constitutionally rather than reinvented."
+    },
+    {
+      "family_id": "preset_and_toolchain_consolidation",
+      "prompt_ids": [
+        "Υ-1"
+      ],
+      "judgment": "mostly_consolidation",
+      "summary": "Current preset and toolchain surfaces already exist and need authority clarification more than replacement."
+    },
+    {
+      "family_id": "versioning_constitution",
+      "prompt_ids": [
+        "Υ-2"
+      ],
+      "judgment": "mostly_consolidation",
+      "summary": "Release identity and version substrate already exists in canonical docs and release policy surfaces."
+    },
+    {
+      "family_id": "release_identity_and_index_alignment",
+      "prompt_ids": [
+        "Υ-2",
+        "Υ-3"
+      ],
+      "judgment": "mostly_consolidation",
+      "summary": "Release identity, index, and resolver surfaces already exist and should be aligned into one law-governed band."
+    },
+    {
+      "family_id": "release_contract_profile",
+      "prompt_ids": [
+        "Υ-4"
+      ],
+      "judgment": "ready",
+      "summary": "Current release identity and update substrate is strong enough to support an explicit contract profile."
+    },
+    {
+      "family_id": "artifact_and_target_naming",
+      "prompt_ids": [
+        "Υ-5"
+      ],
+      "judgment": "mostly_consolidation",
+      "summary": "The active post-Σ-B plan combines artifact naming and target naming into one prompt; older split references are numbering drift."
+    },
+    {
+      "family_id": "changelog_policy",
+      "prompt_ids": [
+        "Υ-6"
+      ],
+      "judgment": "mostly_consolidation",
+      "summary": "The repo already has changelog substrate and now needs explicit governed meaning."
+    },
+    {
+      "family_id": "release_pipeline_and_archive_continuity",
+      "prompt_ids": [
+        "Υ-7"
+      ],
+      "judgment": "mostly_consolidation",
+      "summary": "Existing archive, manifest, and pipeline substrate is real and should be formalized without granting publication authority."
+    },
+    {
+      "family_id": "operator_transaction_and_downgrade_follow_on",
+      "prompt_ids": [
+        "Υ-8",
+        "Υ-9"
+      ],
+      "judgment": "ready",
+      "summary": "These prompts sit just beyond the narrow Υ-A list, but the risky Φ-B tail still depends on them."
+    }
+  ],
+  "zeta_blockers_or_prerequisites": [
+    "multi-version coexistence maturity",
+    "hotswap boundary maturity",
+    "distributed authority maturity",
+    "operator transaction law maturity",
+    "downgrade and yank law maturity",
+    "stronger provenance and release continuity",
+    "publication and trust discipline",
+    "preserved replay/snapshot/isolation caution in later operational work"
+  ],
+  "extension_over_replacement_directives": {
+    "risky_phi_b_tail_must_extend": [
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/STATE_EXTERNALIZATION.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md"
+    ],
+    "upsilon_must_consolidate": [
+      "CMakePresets.json",
+      "tools/xstack/ci/xstack_ci_entrypoint.py",
+      "repo/release_policy.toml",
+      "docs/release/RELEASE_IDENTITY_CONSTITUTION.md",
+      "docs/release/RELEASE_INDEX_MODEL.md",
+      "docs/release/ARTIFACT_NAMING_RULES.md",
+      "release/update_resolver.py",
+      "release/archive_policy.py",
+      "release/release_manifest_engine.py",
+      "release/component_graph_resolver.py",
+      "updates/changelog.json"
+    ]
+  },
+  "ownership_projection_cautions": [
+    "field/ is not equivalent to canonical fields/",
+    "schemas/ is not equivalent to canonical schema/",
+    "data/packs/ is not equivalent to canonical packs/",
+    "canonical versus projected/generated artifacts remains binding",
+    "the thin runtime/ root is not automatically canonical",
+    "release/control-plane convenience does not create canon or permission",
+    "stale numbering or title drift does not override current checkpoint law",
+    "the active post-sigma-b checkpoint and next-two-series plan outrank stale upsilon numbering in final_prompt_inventory.json"
+  ],
+  "final_verdict": {
+    "decision": "proceed_to_upsilon_a_first",
+    "summary": "The repo should continue into Υ-A and its immediate continuity follow-on before reconsidering the risky Φ-B tail.",
+    "alternatives_rejected": [
+      "proceed_to_risky_phi_b_tail_first",
+      "interleave_selected_upsilon_a_and_risky_phi_b",
+      "hold_and_require_correction_first"
+    ]
+  },
+  "recommended_next_prompt": {
+    "prompt_id": "Υ-0",
+    "title": "BUILD_GRAPH_LOCK-0"
+  },
+  "stability": {
+    "classification": "provisional_checkpoint",
+    "updates_must_be_explicit": true
+  }
+}
