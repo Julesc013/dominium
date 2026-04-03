@@ -1,0 +1,478 @@
+{
+  "model_id": "dominium.release.preset_and_toolchain_consolidation",
+  "model_version": "1.0.0",
+  "prompt_id": "Υ-1",
+  "checkpoint_basis": "post-safe-Φ-B / in-Υ-A",
+  "stability": {
+    "status": "canonical",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-04",
+    "downstream_refinement_prompts": [
+      "Υ-2",
+      "Υ-3",
+      "Υ-4",
+      "Υ-5",
+      "Υ-6",
+      "Υ-7",
+      "Υ-8"
+    ]
+  },
+  "upstream_constraints": {
+    "authoritative_governance_surfaces": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/CHECKPOINT_C_PHIB1_Y0_REVIEW.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB1.md"
+    ],
+    "upstream_build_graph_lock_surfaces": [
+      "docs/release/BUILD_GRAPH_LOCK.md",
+      "data/release/build_graph_lock_registry.json"
+    ],
+    "upstream_runtime_vocabulary_surfaces": [
+      "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+      "docs/runtime/COMPONENT_MODEL.md",
+      "docs/runtime/RUNTIME_SERVICES.md",
+      "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
+      "docs/runtime/STATE_EXTERNALIZATION.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md"
+    ]
+  },
+  "surface_class_identifiers": [
+    {
+      "id": "configure_preset_surface",
+      "description": "An authored configure preset that defines or inherits invocation configuration for a build lane."
+    },
+    {
+      "id": "build_preset_surface",
+      "description": "An authored build preset that realizes a configure preset through target selection and config-aware invocation."
+    },
+    {
+      "id": "test_preset_surface",
+      "description": "An authored test preset that realizes a configure preset through governed test invocation."
+    },
+    {
+      "id": "toolchain_module_surface",
+      "description": "An authored toolchain file under cmake/toolchains that constrains architecture or system assumptions for a lane."
+    },
+    {
+      "id": "ide_projection_support_surface",
+      "description": "An authored helper surface under cmake/ide that governs projection generation or toolchain-family mapping."
+    },
+    {
+      "id": "ci_invocation_surface",
+      "description": "An authored CI or automation consumer that invokes named preset lanes without creating new lane meaning."
+    },
+    {
+      "id": "developer_task_surface",
+      "description": "An authored developer-facing task or editor entrypoint that consumes visible preset lanes."
+    },
+    {
+      "id": "derived_projection_output_surface",
+      "description": "A generated IDE output, manifest, descriptor, or other downstream projection surface."
+    }
+  ],
+  "status_categories": [
+    {
+      "id": "canonical",
+      "description": "An authored surface that is authoritative within the preset/toolchain layer while remaining downstream of build graph lock."
+    },
+    {
+      "id": "derived",
+      "description": "A generated or downstream surface that may mirror the matrix but may not author it."
+    },
+    {
+      "id": "transitional",
+      "description": "A retained compatibility or bridge surface whose relationship to a more stable lane must stay explicit."
+    },
+    {
+      "id": "deprecated",
+      "description": "A retained but frozen surface that is not the default lane and must not silently expand in authority."
+    },
+    {
+      "id": "review_gated",
+      "description": "A surface whose use or interpretation carries support-policy, release-policy, or externally consequential meaning that later prompts must govern explicitly."
+    }
+  ],
+  "platform_arch_toolchain_linkage_categories": [
+    {
+      "id": "direct_cache_variable_binding",
+      "description": "Lane meaning is expressed directly through authored cache-variable bindings in configure presets."
+    },
+    {
+      "id": "explicit_toolchain_file_binding",
+      "description": "Lane meaning is anchored to an explicit CMAKE_TOOLCHAIN_FILE reference."
+    },
+    {
+      "id": "projection_manifest_binding",
+      "description": "Lane meaning is tied to DOM_PROJECTION_ID and authored projection helper rules rather than to product runtime shipping status."
+    },
+    {
+      "id": "target_matrix_canonical_match",
+      "description": "Lane meaning aligns directly with a canonical target-matrix row or release-support row."
+    },
+    {
+      "id": "target_matrix_family_projection",
+      "description": "Lane meaning aligns only as a family projection or provisional environment lane and must not be overread as a shipped release commitment."
+    },
+    {
+      "id": "consumer_invocation_binding",
+      "description": "A CI, editor, or script surface consumes preset meaning through explicit preset selection rather than creating new platform or product taxonomy."
+    }
+  ],
+  "observed_surface_families": [
+    {
+      "family_id": "canonical_operator_lanes",
+      "surface_class_ids": [
+        "configure_preset_surface",
+        "build_preset_surface",
+        "test_preset_surface"
+      ],
+      "status_tags": [
+        "canonical"
+      ],
+      "linkage_categories": [
+        "direct_cache_variable_binding",
+        "target_matrix_canonical_match"
+      ],
+      "representative_surfaces": [
+        "local",
+        "verify",
+        "release-check",
+        "linux-verify",
+        "linux-verify-full",
+        "macos-verify",
+        "macos-verify-full",
+        "linux-gcc-dev",
+        "linux-clang-dev",
+        "macos-dev",
+        "release-winnt-x86_64",
+        "release-linux-x86_64",
+        "release-macos-arm64"
+      ],
+      "notes": "Visible operator-facing lanes used by humans, CI, and editor tasks."
+    },
+    {
+      "family_id": "canonical_hidden_scaffold_lanes",
+      "surface_class_ids": [
+        "configure_preset_surface"
+      ],
+      "status_tags": [
+        "canonical"
+      ],
+      "linkage_categories": [
+        "direct_cache_variable_binding"
+      ],
+      "representative_surfaces": [
+        "msvc-base",
+        "dev-win-vs2026",
+        "verify-win-vs2026",
+        "release-win-vs2026",
+        "linux-debug",
+        "linux-clang-debug",
+        "macos-xcode-debug"
+      ],
+      "notes": "Authored scaffold presets that support inheritance and de-duplication without becoming the full operator contract."
+    },
+    {
+      "family_id": "explicit_toolchain_modules",
+      "surface_class_ids": [
+        "toolchain_module_surface"
+      ],
+      "status_tags": [
+        "canonical"
+      ],
+      "linkage_categories": [
+        "explicit_toolchain_file_binding"
+      ],
+      "representative_surfaces": [
+        "cmake/toolchains/toolchain_x86_16.cmake",
+        "cmake/toolchains/toolchain_x86_32.cmake",
+        "cmake/toolchains/toolchain_x86_64.cmake",
+        "cmake/toolchains/toolchain_arm32.cmake",
+        "cmake/toolchains/toolchain_arm64.cmake",
+        "cmake/toolchains/toolchain_ppc.cmake",
+        "cmake/toolchains/toolchain_ppc64.cmake"
+      ],
+      "notes": "Authored toolchain modules constrain architecture-family lanes without defining target taxonomy."
+    },
+    {
+      "family_id": "ide_projection_support",
+      "surface_class_ids": [
+        "ide_projection_support_surface"
+      ],
+      "status_tags": [
+        "canonical"
+      ],
+      "linkage_categories": [
+        "projection_manifest_binding"
+      ],
+      "representative_surfaces": [
+        "cmake/ide/IdeToolchainMatrix.cmake",
+        "cmake/ide/IdeProjectionManifest.cmake",
+        "cmake/ide/IdeGenerateVs.cmake",
+        "cmake/ide/IdeGenerateXcode.cmake",
+        "cmake/ide/IdeGenerateLegacyVc6.cmake",
+        "cmake/ide/IdeGenerateLegacyVc71.cmake",
+        "cmake/ide/IdeGenerateCodeWarrior.cmake"
+      ],
+      "notes": "Authored projection helpers govern how projection presets and manifests are generated."
+    },
+    {
+      "family_id": "ide_projection_presets",
+      "surface_class_ids": [
+        "configure_preset_surface"
+      ],
+      "status_tags": [
+        "canonical",
+        "transitional"
+      ],
+      "linkage_categories": [
+        "projection_manifest_binding"
+      ],
+      "representative_surfaces": [
+        "ide-win-vc6-win9x-client-gui",
+        "ide-win-vc6-nt4-server-cli",
+        "ide-win-vc71-xp-launcher-gui",
+        "ide-win-vs2015-win10-1507-1607-setup-gui",
+        "ide-win-vs2026-win11-client-gui",
+        "ide-mac-cw-classic-launcher-gui",
+        "ide-mac-xcode3-universal-setup-gui",
+        "ide-linux-gcc295-legacy-client-gui",
+        "ide-linux-clang-modern-client-gui"
+      ],
+      "notes": "Projection-oriented configure presets are authored and valid, but they remain projection lanes rather than universal operator or shipping canon."
+    },
+    {
+      "family_id": "legacy_compatibility_lanes",
+      "surface_class_ids": [
+        "configure_preset_surface",
+        "build_preset_surface",
+        "test_preset_surface"
+      ],
+      "status_tags": [
+        "transitional",
+        "deprecated"
+      ],
+      "linkage_categories": [
+        "explicit_toolchain_file_binding",
+        "target_matrix_family_projection"
+      ],
+      "representative_surfaces": [
+        "base-msys2",
+        "msys2-debug",
+        "msys2-release",
+        "win9x-x86_32-legacy",
+        "win16-x86_16",
+        "dos-x86_16",
+        "legacy-win-vs2015"
+      ],
+      "notes": "Compatibility and nostalgia lanes are retained with explicit legacy posture and must not silently become default support commitments."
+    },
+    {
+      "family_id": "alternate_toolchain_lanes",
+      "surface_class_ids": [
+        "configure_preset_surface",
+        "build_preset_surface"
+      ],
+      "status_tags": [
+        "canonical",
+        "review_gated"
+      ],
+      "linkage_categories": [
+        "direct_cache_variable_binding",
+        "target_matrix_family_projection"
+      ],
+      "representative_surfaces": [
+        "windows-clangcl-debug",
+        "windows-mingw-debug",
+        "msvc-win32-dx9"
+      ],
+      "notes": "Alternate toolchain or backend lanes are authored and real, but later support-policy and release-policy prompts must decide how far they count as official release realizations."
+    },
+    {
+      "family_id": "ci_and_editor_consumers",
+      "surface_class_ids": [
+        "ci_invocation_surface",
+        "developer_task_surface"
+      ],
+      "status_tags": [
+        "canonical"
+      ],
+      "linkage_categories": [
+        "consumer_invocation_binding"
+      ],
+      "representative_surfaces": [
+        "tools/xstack/ci/profiles/FAST.json",
+        "tools/xstack/ci/profiles/STRICT.json",
+        "tools/xstack/ci/profiles/FULL.json",
+        "tools/xstack/ci/xstack_ci_entrypoint.py",
+        ".vscode/tasks.json",
+        "scripts/ci/check_repox_rules.py",
+        "scripts/verify_projection_regen_clean.py",
+        "scripts/repox/repox_release.py"
+      ],
+      "notes": "These surfaces consume the consolidated matrix and verify alignment, but they do not author preset canon."
+    },
+    {
+      "family_id": "generated_projection_and_descriptor_outputs",
+      "surface_class_ids": [
+        "derived_projection_output_surface"
+      ],
+      "status_tags": [
+        "derived"
+      ],
+      "linkage_categories": [
+        "projection_manifest_binding"
+      ],
+      "representative_surfaces": [
+        "build/**/generated/toolchain_descriptor.json",
+        "ide/manifests/*.projection.json",
+        "ide/** generated project files"
+      ],
+      "notes": "Derived projection outputs may mirror preset-toolchain state but may not replace authored law."
+    },
+    {
+      "family_id": "release_candidate_consumers",
+      "surface_class_ids": [
+        "configure_preset_surface",
+        "build_preset_surface",
+        "ci_invocation_surface"
+      ],
+      "status_tags": [
+        "canonical",
+        "review_gated"
+      ],
+      "linkage_categories": [
+        "target_matrix_canonical_match",
+        "consumer_invocation_binding"
+      ],
+      "representative_surfaces": [
+        "release-winnt-x86_64",
+        "release-linux-x86_64",
+        "release-macos-arm64",
+        "release-check",
+        "repo/release_policy.toml",
+        "scripts/repox/repox_release.py"
+      ],
+      "notes": "These surfaces are real and authored, but their full release and publication meaning belongs to later Υ prompts."
+    }
+  ],
+  "canonical_vs_derived_status_rules": {
+    "authoritative_within_layer": [
+      "CMakePresets.json",
+      "cmake/toolchains/*.cmake",
+      "cmake/ide/*.cmake",
+      ".vscode/tasks.json",
+      "tools/xstack/ci/profiles/*.json",
+      "scripts/ci/check_repox_rules.py"
+    ],
+    "derived_only": [
+      "build/**/generated/toolchain_descriptor.json",
+      "ide/manifests/*.projection.json",
+      "generated IDE project trees under ide/"
+    ],
+    "rule_note": "Canonical within this layer does not mean upstream of build graph lock. Generated or projected surfaces may mirror preset law but may not author it."
+  },
+  "runtime_vocabulary_alignment_notes": [
+    "Kernel meaning is not defined by any preset family or compiler lane.",
+    "Component meaning is not defined by any single toolchain or IDE projection lane.",
+    "Service meaning is not defined by any build invocation path.",
+    "Product identity is not identical to a preset, platform lane, or toolchain file."
+  ],
+  "consolidation_rules": [
+    "Visible operator lanes remain the default human-facing contract and must stay aligned with CI and editor consumers.",
+    "Hidden scaffold presets may remain canonical support surfaces without becoming the full operator contract.",
+    "Projection presets remain projection-oriented even when authored and validated.",
+    "Legacy or best-effort lanes must carry explicit transitional or deprecated status rather than silent parity with primary lanes.",
+    "Release-labeled lanes may exist before full release doctrine is frozen, but they remain review-gated for later prompts.",
+    "Preset or toolchain names may not redefine product identity, target class, or semantic ontology.",
+    "Generated descriptors and generated projection outputs may not stand in for authored preset/toolchain law."
+  ],
+  "validation_audit_categories": [
+    {
+      "id": "configure_build_test_alignment",
+      "description": "Verify that configure, build, and test preset surfaces remain aligned where contract lanes require symmetry."
+    },
+    {
+      "id": "consumer_alignment",
+      "description": "Verify that CI, editor tasks, and release dry-run entrypoints consume the same visible preset meanings."
+    },
+    {
+      "id": "projection_boundary_integrity",
+      "description": "Verify that projection regeneration remains confined to projection outputs and does not mutate authoritative surfaces silently."
+    },
+    {
+      "id": "release_lane_marker_integrity",
+      "description": "Verify that release-labeled lanes carry explicit release markers such as DOM_BUILD_KIND where later prompts require them."
+    },
+    {
+      "id": "target_matrix_toolchain_matrix_linkage",
+      "description": "Verify that preset families and toolchain families map explicitly to target-matrix and toolchain-matrix expectations."
+    },
+    {
+      "id": "canonical_vs_derived_boundary",
+      "description": "Verify that generated descriptors, build trees, and IDE outputs do not replace authored law."
+    }
+  ],
+  "prohibited_consolidation_shapes": [
+    "preset_files_as_hidden_build_canon",
+    "toolchain_file_names_as_target_taxonomy",
+    "ci_scripts_redefining_platform_or_product_meaning",
+    "generated_ide_or_descriptor_outputs_as_canonical_configuration_law",
+    "immediate_deletion_of_transitional_surfaces_without_classification",
+    "flattening_modern_projection_legacy_and_alternate_lanes_into_one_undifferentiated_matrix",
+    "preset_or_toolchain_convenience_flattening_kernel_component_service_product_distinctions"
+  ],
+  "ownership_and_projection_cautions": {
+    "carry_forward": [
+      "field_vs_fields",
+      "schema_vs_schemas",
+      "packs_vs_data_packs",
+      "canonical_vs_projected_generated",
+      "thin_runtime_root_not_automatically_canonical",
+      "stale_planning_numbering_does_not_override_active_checkpoint"
+    ],
+    "preset_toolchain_specific": [
+      "Consolidation must be extracted from repo reality and Υ-0 build graph lock rather than invented as greenfield cleanup.",
+      "Visible invocation convenience does not create authority.",
+      "Projection outputs and configured descriptors remain derived even when they are easier for tools to parse.",
+      "CI and editor consumers may consume preset meaning but may not redefine release or support policy."
+    ]
+  },
+  "downstream_refinement_prompts": [
+    {
+      "prompt_id": "Υ-2",
+      "reason": "Versioning constitution needs stable lane and environment meaning."
+    },
+    {
+      "prompt_id": "Υ-3",
+      "reason": "Release-index and resolution work needs one interpretation of release-facing preset families."
+    },
+    {
+      "prompt_id": "Υ-4",
+      "reason": "Release contract profile needs stable product-platform-toolchain realization semantics."
+    },
+    {
+      "prompt_id": "Υ-5",
+      "reason": "Build reproducibility work consumes the consolidated matrix and its deterministic linkage surfaces."
+    },
+    {
+      "prompt_id": "Υ-6",
+      "reason": "Archive and distribution work must consume rather than reinvent lane meaning."
+    },
+    {
+      "prompt_id": "Υ-7",
+      "reason": "Artifact and target naming work must share the same consolidated lane model."
+    },
+    {
+      "prompt_id": "Υ-8",
+      "reason": "Later operator-control-plane prompts must rely on stable preset-toolchain interpretation during checkpoint reassessment."
+    }
+  ]
+}
