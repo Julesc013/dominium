@@ -1,0 +1,295 @@
+{
+  "model_id": "dominium.release.build_graph_lock",
+  "model_version": "1.0.0",
+  "checkpoint_basis": "C-ΦB1Υ0",
+  "stability": {
+    "classification": "provisional",
+    "updates_must_be_explicit": true,
+    "downstream_refinement_prompts": [
+      "Υ-1",
+      "Υ-2",
+      "Υ-3",
+      "Υ-4",
+      "Υ-5",
+      "Υ-6",
+      "Υ-7",
+      "Υ-8"
+    ]
+  },
+  "authoritative_build_graph_surfaces": {
+    "primary_target_definition_surfaces": [
+      "CMakeLists.txt",
+      "app/CMakeLists.txt",
+      "client/CMakeLists.txt",
+      "engine/CMakeLists.txt",
+      "game/CMakeLists.txt",
+      "launcher/CMakeLists.txt",
+      "libs/CMakeLists.txt",
+      "libs/build_identity/CMakeLists.txt",
+      "server/CMakeLists.txt",
+      "setup/CMakeLists.txt",
+      "setup/packages/scripts/packaging/CMakeLists.txt",
+      "tools/CMakeLists.txt"
+    ],
+    "supporting_build_law_surfaces": [
+      "cmake/DomIntegration.cmake",
+      "cmake/DominiumBundleRuntime.cmake",
+      "cmake/DominiumReproducible.cmake",
+      "cmake/dist_output.cmake",
+      "cmake/dominium_dist.cmake",
+      "cmake/check_release_lane.cmake"
+    ],
+    "boundary_and_audit_surfaces": [
+      "scripts/verify_build_target_boundaries.py",
+      "scripts/verify_cmake_no_global_includes.py"
+    ],
+    "derived_configuration_surfaces": [
+      "CMakePresets.json",
+      "cmake/toolchain_descriptor.json.in",
+      "tools/xstack/ci/profiles/FAST.json",
+      "tools/xstack/ci/profiles/STRICT.json",
+      "tools/xstack/ci/profiles/FULL.json"
+    ],
+    "downstream_release_consumers": [
+      "repo/release_policy.toml",
+      "data/registries/target_matrix_registry.json",
+      "data/registries/component_graph_registry.json",
+      "data/registries/install_profile_registry.json",
+      "release/component_graph_resolver.py",
+      "release/release_manifest_engine.py"
+    ]
+  },
+  "build_graph_element_classes": [
+    {
+      "id": "source_root",
+      "description": "An authored root that contributes build declarations or compilable source membership."
+    },
+    {
+      "id": "target_definition",
+      "description": "An explicit target declaration creating a library, executable, interface target, or custom target."
+    },
+    {
+      "id": "target_family",
+      "description": "A broad structural class of related targets such as products, tooling, validation, or packaging."
+    },
+    {
+      "id": "product_registration",
+      "description": "A binding from product identity to a target realization."
+    },
+    {
+      "id": "preset_surface",
+      "description": "A configuration consumer surface that selects or constrains how the graph is configured."
+    },
+    {
+      "id": "toolchain_surface",
+      "description": "A configuration consumer surface that records compiler, runtime, linker, and generator facts."
+    },
+    {
+      "id": "validation_gate",
+      "description": "A build-time or configure-time verification surface that constrains graph legality."
+    },
+    {
+      "id": "downstream_release_consumer",
+      "description": "A release or control-plane surface that consumes the graph but does not own it."
+    },
+    {
+      "id": "generated_output_surface",
+      "description": "A downstream emitted build or distribution result that reflects the graph without becoming canonical build law."
+    }
+  ],
+  "target_classes": [
+    {
+      "id": "product_target",
+      "description": "A target that realizes a registered product identity.",
+      "observed_examples": [
+        "dominium_client",
+        "dominium_server",
+        "launcher_cli",
+        "setup_cli",
+        "dominium-tools"
+      ]
+    },
+    {
+      "id": "runtime_support_target",
+      "description": "A library or support target that realizes runtime structure without being product identity.",
+      "observed_examples": [
+        "domino_engine",
+        "dominium_game",
+        "dominium_app_runtime",
+        "launcher_core",
+        "setup_core",
+        "tools_shared",
+        "build_identity"
+      ]
+    },
+    {
+      "id": "tooling_target",
+      "description": "A target for inspection, generation, validation, authoring, or operator support.",
+      "observed_examples": [
+        "dom_tool_artifactmeta",
+        "coredata_compile",
+        "coredata_validate",
+        "data_validate",
+        "tool_ui_bind",
+        "dominium-ui-editor"
+      ]
+    },
+    {
+      "id": "validation_test_target",
+      "description": "A test or audit target that validates behavior or structure.",
+      "observed_examples": [
+        "check_all",
+        "verify_fast",
+        "verify_full",
+        "testx_fast",
+        "dominium_server_shard_tests",
+        "engine_smoke_test"
+      ]
+    },
+    {
+      "id": "packaging_distribution_target",
+      "description": "A target that stages, packages, indexes, or verifies build outputs for distribution.",
+      "observed_examples": [
+        "dominium_stage_dist",
+        "dominium_portable_zip",
+        "dist_pack",
+        "dist_index",
+        "dist_verify",
+        "dist_all"
+      ]
+    },
+    {
+      "id": "projection_generation_target",
+      "description": "A target or helper flow that emits generated metadata, IDE projections, or configured descriptors."
+    },
+    {
+      "id": "alias_aggregation_target",
+      "description": "An alias or aggregate target that provides stable handles or grouped invocation without creating new ownership.",
+      "observed_examples": [
+        "dom_client",
+        "dom_server",
+        "dom_setup",
+        "dom_launcher",
+        "all_libs",
+        "all_apps",
+        "all_tools",
+        "all_runtime"
+      ]
+    }
+  ],
+  "source_build_ownership_rule_categories": [
+    {
+      "id": "explicit_target_membership",
+      "rule": "Source membership is defined by authored target declarations or authoritative helper modules, not by adjacency."
+    },
+    {
+      "id": "product_registration_non_equivalence",
+      "rule": "Product registration records a product-to-target mapping but does not replace source membership."
+    },
+    {
+      "id": "alias_non_ownership",
+      "rule": "Alias targets point to ownership and realization; they do not create independent target ownership."
+    },
+    {
+      "id": "generated_output_non_ownership",
+      "rule": "Generated outputs, manifests, and dist trees may reflect ownership but do not become the owning surface."
+    },
+    {
+      "id": "semantic_non_equivalence",
+      "rule": "Build ownership is structural and must not be mistaken for semantic, domain, or runtime ownership."
+    },
+    {
+      "id": "downstream_release_subordination",
+      "rule": "Target matrix, component graph, install profiles, and release manifests consume the graph and may not redefine it."
+    }
+  ],
+  "canonical_vs_derived_build_surfaces": {
+    "canonical_build_surfaces": [
+      "authored top-level and subordinate CMakeLists files",
+      "authored cmake helper modules that define graph structure, product registration, reproducibility, and dist support",
+      "authored build-boundary verification scripts"
+    ],
+    "derived_configuration_surfaces": [
+      "presets",
+      "toolchain descriptors",
+      "ci profile descriptors"
+    ],
+    "generated_or_distribution_surfaces": [
+      "configured toolchain metadata",
+      "build output trees",
+      "dist staging trees",
+      "archives",
+      "generated manifests"
+    ],
+    "downstream_machine_readable_release_surfaces": [
+      "target matrix registry",
+      "component graph registry",
+      "install profile registry",
+      "release manifest payloads"
+    ]
+  },
+  "product_platform_preset_toolchain_relationship_notes": {
+    "registered_products_observed": [
+      {
+        "product_id": "client",
+        "target": "dominium_client"
+      },
+      {
+        "product_id": "server",
+        "target": "dominium_server"
+      },
+      {
+        "product_id": "launcher",
+        "target": "launcher_cli"
+      },
+      {
+        "product_id": "setup",
+        "target": "setup_cli"
+      },
+      {
+        "product_id": "tools",
+        "target": "dominium-tools"
+      }
+    ],
+    "platform_matrix_note": "Target matrix rows describe supported products and platform constraints, but they are downstream release-control-plane consumers rather than build canon.",
+    "preset_note": "Presets select configured lanes over the locked graph and must not silently define the graph.",
+    "toolchain_note": "Toolchain descriptors record compiler and target facts and remain subordinate to authored build law.",
+    "runtime_alignment_note": "Build grouping may realize kernel, component, service, product, and tooling layers, but must not flatten those runtime distinctions into build ontology."
+  },
+  "validation_audit_categories": [
+    {
+      "id": "target_existence_and_class",
+      "description": "Verify target existence and assigned target class."
+    },
+    {
+      "id": "product_target_mapping",
+      "description": "Verify explicit product registration and product-to-target realization."
+    },
+    {
+      "id": "source_membership_and_boundary",
+      "description": "Verify authored source membership and boundary constraints."
+    },
+    {
+      "id": "canonical_vs_derived_surface_separation",
+      "description": "Verify that generated, dist, and manifest surfaces are not treated as canonical build law."
+    },
+    {
+      "id": "target_matrix_consistency",
+      "description": "Verify product and platform-matrix consistency against the locked graph."
+    },
+    {
+      "id": "preset_toolchain_linkage_consistency",
+      "description": "Verify preset and toolchain linkage stays subordinate to the locked graph."
+    }
+  ],
+  "prohibited_build_graph_shapes": [
+    "preset files treated as hidden build canon",
+    "generated manifests treated as authoritative build truth",
+    "target names used as semantic ontology",
+    "product identity silently equated with one build realization",
+    "ownership guessed from convenience or adjacency",
+    "dist or archive outputs treated as source-of-truth build structure",
+    "downstream release registries redefining authored build law by convenience",
+    "runtime product, support, tooling, validation, and packaging targets flattened into one undifferentiated target vocabulary"
+  ]
+}
