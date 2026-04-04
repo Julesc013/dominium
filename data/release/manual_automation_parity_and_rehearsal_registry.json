@@ -1,0 +1,268 @@
+{
+  "model": {
+    "model_id": "dominium.release.manual_automation_parity_and_rehearsal",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-04",
+    "prompt_series_id": "upsilon-b0",
+    "prompt_title": "MANUAL_AUTOMATION_PARITY_AND_REHEARSAL-0",
+    "checkpoint_state": "post-upsilon-a / post-phi-b3 / pre-risky-phi-b4-and-phi-b5"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_TASKS.md",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/agents/MCP_INTERFACE_MODEL.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md"
+    ],
+    "release_doctrine": [
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md"
+    ]
+  },
+  "action_class_identifiers": [
+    {
+      "id": "read_inspect",
+      "parity_expectation": "required",
+      "summary": "Manual and automated inspection paths must preserve the same facts and refusal semantics."
+    },
+    {
+      "id": "planning_checkpoint",
+      "parity_expectation": "desirable",
+      "summary": "Planning paths should preserve the same checkpoint and authority interpretation even if UX differs."
+    },
+    {
+      "id": "bounded_mutation",
+      "parity_expectation": "required_when_both_paths_exist",
+      "summary": "Bounded mutation paths must align on inputs, typed intent, mutation scope, validation, and refusal."
+    },
+    {
+      "id": "operator_transaction",
+      "parity_expectation": "required_with_review_posture_preserved",
+      "summary": "Manual and automated operator paths must preserve transaction typing, review, traceability, and reversibility semantics."
+    },
+    {
+      "id": "release_control",
+      "parity_expectation": "required_or_limited_by_gate",
+      "summary": "Release-control inspection and selection semantics require parity, but privileged publication-adjacent mutation may remain limited."
+    },
+    {
+      "id": "publication_trust_licensing",
+      "parity_expectation": "limited_and_strongly_review_gated",
+      "summary": "A human-understandable path must exist, but automation may remain constrained or prohibited."
+    },
+    {
+      "id": "risky_runtime_affecting",
+      "parity_expectation": "limited_or_prohibited_in_automation",
+      "summary": "Runtime-affecting action classes may preserve comparable semantics where present while remaining blocked for automation."
+    },
+    {
+      "id": "intrinsically_manual_review",
+      "parity_expectation": "not_applicable_or_prohibited_in_automation",
+      "summary": "Some review and authority boundaries intentionally remain human-only."
+    }
+  ],
+  "parity_expectation_categories": [
+    {
+      "id": "required",
+      "summary": "If both manual and automated paths exist, they must preserve the same governed meaning."
+    },
+    {
+      "id": "desirable",
+      "summary": "Parity should be pursued, but exact path symmetry is not always required."
+    },
+    {
+      "id": "required_when_both_paths_exist",
+      "summary": "Once both paths are offered, semantic divergence is forbidden."
+    },
+    {
+      "id": "required_with_review_posture_preserved",
+      "summary": "Parity is mandatory without erasing review, privilege, or traceability requirements."
+    },
+    {
+      "id": "required_or_limited_by_gate",
+      "summary": "Parity applies to lawful comparable semantics while gate law may keep some mutation paths narrower."
+    },
+    {
+      "id": "limited_and_strongly_review_gated",
+      "summary": "Manual understanding and comparability are required, but automation may remain sharply constrained."
+    },
+    {
+      "id": "limited_or_prohibited_in_automation",
+      "summary": "Comparable meaning may be defined while automation remains incomplete, blocked, or intentionally absent."
+    },
+    {
+      "id": "not_applicable_or_prohibited_in_automation",
+      "summary": "The action class intentionally preserves a human-only or non-automated boundary."
+    }
+  ],
+  "rehearsal_class_identifiers": [
+    {
+      "id": "no_op_inspection",
+      "summary": "Read-only rehearsal of current state, inputs, and expected action envelope."
+    },
+    {
+      "id": "dry_run_planning",
+      "summary": "Non-mutating exercise of routing, sequencing, and gate structure."
+    },
+    {
+      "id": "structural_validation_rehearsal",
+      "summary": "Validation of required artifacts, typing, and readiness without claiming live success."
+    },
+    {
+      "id": "compatibility_rehearsal",
+      "summary": "Exercise of compatibility, admissibility, or refusal logic for release and coexistence envelopes."
+    },
+    {
+      "id": "release_selection_rehearsal",
+      "summary": "Exercise of release-index and resolution policy without silently performing publication or cutover."
+    },
+    {
+      "id": "operator_transaction_rehearsal",
+      "summary": "Typed rehearsal of rollback, downgrade, yank, remediation, or selection-affecting transaction envelopes."
+    },
+    {
+      "id": "bounded_sandbox_rehearsal",
+      "summary": "Governed rehearsal inside a separate or non-authoritative sandbox with explicit limits."
+    },
+    {
+      "id": "non_rehearsable_or_intrinsically_privileged",
+      "summary": "Action classes whose nature or privilege posture prevents meaningful rehearsal."
+    }
+  ],
+  "non_rehearsable_or_prohibited_categories": [
+    "trust_root_posture_change",
+    "public_release_approval_as_live_commitment",
+    "licensing_posture_mutation_without_review",
+    "live_hotswap_claim",
+    "distributed_authority_handoff_claim",
+    "dry_run_that_mutates_authoritative_state"
+  ],
+  "parity_exposure_permission_rehearsal_distinctions": {
+    "parity": "Alignment of governed meaning between manual and automated paths.",
+    "exposure": "Availability of a task through a tool or interface surface.",
+    "permission": "Whether safety and gate law allow the action to proceed.",
+    "rehearsal": "A typed pre-execution exercise whose limits are declared and which does not itself prove live production success.",
+    "rules": [
+      "automation_exists_does_not_mean_parity_achieved",
+      "task_exposed_does_not_mean_parity_achieved",
+      "parity_achieved_does_not_mean_permission_granted",
+      "rehearsal_does_not_mean_live_execution_proven"
+    ]
+  },
+  "operator_release_runtime_caution_categories": {
+    "operator": [
+      "transaction_typing_must_match_across_paths",
+      "review_posture_must_not_be_lost_in_automation",
+      "traceability_and_reversibility_must_remain_explicit"
+    ],
+    "release": [
+      "release_contract_profile_remains_upstream",
+      "release_index_and_resolution_remain_upstream",
+      "archive_or_feed_presence_does_not_equal_publication",
+      "publication_gates_may_limit_automation_even_where_parity_exists"
+    ],
+    "runtime": [
+      "lifecycle_posture_must_remain_explicit",
+      "replay_and_snapshot_boundaries_must_remain_explicit",
+      "isolation_claims_must_not_be_overstated",
+      "coexistence_law_must_be_consumed_not_reinvented",
+      "rehearsal_must_not_claim_live_cutover_proof"
+    ]
+  },
+  "invalidity_limit_categories": [
+    "parity_unproven",
+    "manual_path_missing",
+    "automation_path_missing",
+    "semantic_mismatch_between_paths",
+    "refusal_mismatch_between_paths",
+    "validation_floor_mismatch",
+    "audit_anchor_mismatch",
+    "permission_confused_with_exposure",
+    "permission_confused_with_parity",
+    "rehearsal_claims_live_proof",
+    "rehearsal_mutates_authoritative_state",
+    "runtime_boundary_overclaim",
+    "publication_or_trust_overreach"
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical_surfaces": [
+      "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
+      "data/release/manual_automation_parity_and_rehearsal_registry.json",
+      "upstream safety, runtime, release, and checkpoint doctrine",
+      "typed operator and release-control records where later doctrine explicitly defines them"
+    ],
+    "derived_or_projection_surfaces": [
+      "ui flows",
+      "cli wrappers",
+      "ci wrappers",
+      "dashboards",
+      "convenience logs",
+      "status screens",
+      "generated feed summaries"
+    ],
+    "rule": "Derived surfaces may realize or summarize parity and rehearsal but may not redefine their semantics."
+  },
+  "prohibited_parity_rehearsal_shapes": [
+    "automation_only_control_path_for_required_high_impact_action",
+    "manual_path_with_different_semantics_than_automated_path",
+    "automation_exists_therefore_parity",
+    "task_exposed_therefore_parity",
+    "parity_achieved_therefore_permission",
+    "dry_run_that_silently_mutates_authoritative_state",
+    "rehearsal_treated_as_production_success_proof",
+    "ui_or_ci_wrapper_treated_as_parity_law",
+    "release_control_path_becoming_unrehearsable_by_convenience",
+    "automation_bypassing_transaction_typing_or_release_contract_profile"
+  ],
+  "repo_evidence_surfaces": [
+    "tools/controlx/README.md",
+    "tools/controlx/controlx.py",
+    "tools/controlx/core/execution_router.py",
+    "tools/xstack/run.py",
+    "tools/xstack/controlx/README.md",
+    "tools/xstack/sessionx/README.md",
+    "tools/xstack/sessionx/stage_parity.py",
+    "tools/xstack/testx/tests/test_stage_parity_status_surfaces.py",
+    "tools/xstack/testx/tests/test_stage_parity_transitions_surfaces.py",
+    "tools/xstack/testx/tests/test_dryrun_tool_runs.py",
+    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+    "docs/blueprint/FOUNDATION_PHASES.md",
+    "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
+    "release/update_resolver.py",
+    "repo/release_policy.toml",
+    "updates/README.md"
+  ],
+  "ambiguities_eliminated": [
+    "automation exists does not mean parity achieved",
+    "task exposed does not mean parity achieved",
+    "parity achieved does not mean permission granted",
+    "rehearsal does not mean live execution proof"
+  ],
+  "downstream_refinement_prompts": [
+    "Υ-B1",
+    "Υ-B2",
+    "next checkpoint before Φ-B4",
+    "later guarded reassessment of Φ-B4 and Φ-B5",
+    "future zeta blocker reduction"
+  ]
+}
