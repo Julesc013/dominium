@@ -1,0 +1,111 @@
+{
+  "plan_id": "NEXT_EXECUTION_ORDER_POST_PHIB3_YB",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / post-upsilon-a / post-phi-b3 / post-upsilon-b",
+  "ordering_mode": "upsilon_first_narrow_block",
+  "recommended_next_prompt": "Υ-C0 — RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT-0",
+  "notes_on_identifier_policy": [
+    "Stable family identifiers are preferred over stale older Υ numbering in legacy planning mirrors.",
+    "Υ-C seed labels in this plan are local checkpoint labels anchored to repo-grounded family identifiers."
+  ],
+  "execution_order": [
+    {
+      "order": 1,
+      "prompt_id": "Υ-C0",
+      "title": "RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT-0",
+      "family_id": "upsilon.release_rehearsal_and_rollback",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "completed Φ-B3",
+        "completed Υ-B0",
+        "completed Υ-B1",
+        "completed Υ-B2",
+        "proof-backed rollback readiness evidence",
+        "release rehearsal sandbox foundation-ready evidence"
+      ],
+      "human_review_requirement": "required",
+      "stop_conditions": [
+        "rehearsal is treated as live permission or live-cutover proof",
+        "the prompt drifts into publication approval or trust execution",
+        "tool wrappers are used to redefine execution authority"
+      ],
+      "notes": "This is the smallest next blocker-reduction step that meaningfully improves honesty around later hotswap review."
+    },
+    {
+      "order": 2,
+      "prompt_id": "Υ-C1",
+      "title": "CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION_ALIGNMENT-0",
+      "family_id": "upsilon.canary_and_deterministic_downgrade_execution",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "Υ-C0",
+        "existing update simulation substrate",
+        "deterministic downgrade and canary readiness evidence",
+        "continued receipt and execution-envelope discipline"
+      ],
+      "human_review_requirement": "required",
+      "stop_conditions": [
+        "downgrade or canary work bypasses release contract profile or receipt continuity",
+        "the prompt claims publication authority from archive or mirror presence",
+        "runtime revocation choreography is treated as already implemented"
+      ],
+      "notes": "This stays in the release-ops maturity band and must not become a proxy for live trust or publication execution."
+    },
+    {
+      "order": 3,
+      "prompt_id": "checkpoint.after_upsilon_c0_c1_pre_phi_b4",
+      "title": "NEW CHECKPOINT BEFORE Φ-B4",
+      "family_id": "checkpoint",
+      "readiness_status": "required_gate",
+      "dependencies": [
+        "Υ-C0",
+        "Υ-C1"
+      ],
+      "human_review_requirement": "required",
+      "stop_conditions": [
+        "preceding work drifts into live-cutover claims",
+        "publication or trust execution posture expands",
+        "hotswap assumptions appear without new runtime evidence"
+      ],
+      "notes": "Required before any reconsideration of Φ-B4."
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "prompt_id": "Φ-B4",
+      "title": "HOTSWAP_BOUNDARIES-0",
+      "status": "dangerous",
+      "notes": "Still requires the additional rehearsal and rollback maturity band plus a fresh checkpoint."
+    },
+    {
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+      "status": "premature",
+      "notes": "Still lacks authority-handoff, quorum, distributed replay, and trust-bearing execution maturity."
+    },
+    {
+      "prompt_id": "Υ-C2",
+      "title": "PUBLICATION_TRUST_EXECUTION_PREREQUISITE_ALIGNMENT-0",
+      "family_id": "upsilon.publication_trust_execution_prereqs",
+      "status": "dangerous_to_operationalize_yet",
+      "notes": "Publication remains gated, trust policy remains provisional, and trust roots remain empty."
+    },
+    {
+      "prompt_id": "Υ-C3",
+      "title": "LIVE_TRUST_ROOT_ROTATION_PREREQUISITES-0",
+      "family_id": "upsilon.live_trust_root_rotation_prereqs",
+      "status": "blocked",
+      "notes": "Trust-root rotation remains explicitly under-founded for live execution."
+    }
+  ],
+  "why_better_than_alternatives": [
+    "Running Φ-B4 next would still outrun the repo’s rehearsal and rollback maturity.",
+    "Running Φ-B5 next would outrun distributed and trust-bearing maturity by an even larger margin.",
+    "Running publication or trust execution work next would ignore that those areas remain strongly gated, provisional, or blocked.",
+    "A narrow Υ-first block directly reduces the remaining release-ops maturity blocker without smuggling in risky runtime execution."
+  ],
+  "stability": {
+    "status": "canonical",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-04"
+  }
+}
