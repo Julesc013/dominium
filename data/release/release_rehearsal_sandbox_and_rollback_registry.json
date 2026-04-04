@@ -1,0 +1,226 @@
+{
+  "model": {
+    "model_id": "dominium.release.release_rehearsal_sandbox_and_proof_backed_rollback_alignment",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-05",
+    "prompt_series_id": "upsilon-c0",
+    "prompt_title": "RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT-0",
+    "checkpoint_state": "post-upsilon-a / post-phi-b3 / post-upsilon-b / pre-phi-b4"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_TASKS.md",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/agents/MCP_INTERFACE_MODEL.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md"
+    ],
+    "release_doctrine": [
+      "docs/release/BUILD_GRAPH_LOCK.md",
+      "docs/release/VERSIONING_CONSTITUTION.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
+      "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md"
+    ]
+  },
+  "rehearsal_class_identifiers": [
+    {
+      "id": "structural_rehearsal",
+      "summary": "Exercises artifact shape, presence, identifiers, and admissibility without claiming rollback completeness."
+    },
+    {
+      "id": "compatibility_rehearsal",
+      "summary": "Exercises release contract profile, target family, platform, capability, and refusal semantics."
+    },
+    {
+      "id": "selection_release_index_rehearsal",
+      "summary": "Exercises lawful release selection and downgrade candidate reasoning under release-index semantics."
+    },
+    {
+      "id": "operator_transaction_rehearsal",
+      "summary": "Exercises typed transaction framing, review posture, refusal posture, and receipt posture without performing the live transaction."
+    },
+    {
+      "id": "rollback_alignment_rehearsal",
+      "summary": "Exercises whether a rollback path appears lawfully alignable across identity, compatibility, continuity, and bounded reversibility constraints."
+    },
+    {
+      "id": "publication_trust_adjacent_rehearsal",
+      "summary": "Exercises publication, trust, or licensing preconditions without claiming live public commitment or trust mutation readiness."
+    },
+    {
+      "id": "non_rehearsable_or_partially_rehearsable",
+      "summary": "Marks actions whose live risk or unsolved runtime boundary prevents complete rehearsal under current maturity."
+    }
+  ],
+  "sandbox_class_identifiers": [
+    {
+      "id": "analysis_only_sandbox",
+      "summary": "Non-mutating analysis envelope for inspection, planning, and structural reasoning."
+    },
+    {
+      "id": "resolution_sandbox",
+      "summary": "Sandbox for release-index, compatibility, selection, and refusal semantics without authoritative mutation."
+    },
+    {
+      "id": "operator_transaction_rehearsal_sandbox",
+      "summary": "Sandbox preserving typed transaction, review, refusal, and receipt expectations in non-live form."
+    },
+    {
+      "id": "bounded_rollback_sandbox",
+      "summary": "Sandbox exercising rollback-alignment reasoning against bounded targets and continuity evidence without proving live rollback success."
+    },
+    {
+      "id": "privileged_or_review_gated_sandbox",
+      "summary": "Sandbox class usable only under explicit review or privileged posture because the action touches trust, publication, licensing, or equivalent external commitment consequences."
+    }
+  ],
+  "rollback_proof_class_identifiers": [
+    {
+      "id": "structural_consistency_proof",
+      "summary": "Evidence that required artifacts, metadata, and deterministic identifiers exist in coherent shape for the proposed rollback path."
+    },
+    {
+      "id": "compatibility_envelope_proof",
+      "summary": "Evidence that the rollback target remains lawful under contract-profile, target, platform, capability, and refusal semantics."
+    },
+    {
+      "id": "target_and_release_identity_continuity_proof",
+      "summary": "Evidence that rollback preserves the actual release identity and target semantics being reversed or restored."
+    },
+    {
+      "id": "receipt_and_provenance_continuity_proof",
+      "summary": "Evidence that operator transaction, review, refusal, rehearsal, and result continuity remain reconstructable."
+    },
+    {
+      "id": "archive_and_mirror_availability_proof",
+      "summary": "Evidence that required artifacts remain retrievable from archive and, where relevant, mirror surfaces."
+    },
+    {
+      "id": "bounded_reversibility_proof",
+      "summary": "Evidence that the rollback path has explicit resulting-state expectations and known reversal limits rather than assuming perfect inversion."
+    }
+  ],
+  "rollback_alignment_constraints": [
+    "Rollback alignment must preserve release identity rather than substituting version strings, channel labels, filenames, or feed shorthand.",
+    "Rollback alignment must preserve release contract profile and resolution semantics rather than using convenience selection.",
+    "Rehearsal and live execution must produce distinguishable but compatible receipt classes.",
+    "Archive presence may be necessary for rollback alignment but is never sufficient by itself.",
+    "Mirror presence does not imply rollback readiness, publication readiness, or compatibility proof.",
+    "Runtime-facing rollback claims must not exceed what lifecycle, replay, snapshot, isolation, and coexistence doctrine currently permits."
+  ],
+  "invalidity_failure_categories": [
+    {
+      "id": "rehearsal_incomplete",
+      "summary": "The rehearsal exercised only part of the required path."
+    },
+    {
+      "id": "structural_valid_but_semantically_insufficient",
+      "summary": "Shape or routing checks passed without proving lawful compatibility or rollback alignment."
+    },
+    {
+      "id": "rollback_target_not_lawful",
+      "summary": "The proposed target exists but is not lawful under release, transaction, or gate doctrine."
+    },
+    {
+      "id": "archive_present_but_alignment_unproven",
+      "summary": "Artifacts exist but continuity, compatibility, or reversibility proof remains incomplete."
+    },
+    {
+      "id": "receipt_chain_incomplete",
+      "summary": "Receipt or provenance continuity is missing, partial, contradictory, or non-canonical."
+    },
+    {
+      "id": "sandbox_non_representative",
+      "summary": "The sandbox omitted constraints material to the live path."
+    },
+    {
+      "id": "review_or_privilege_blocked",
+      "summary": "The action remains gated regardless of rehearsal strength."
+    },
+    {
+      "id": "non_reversible_or_partially_reversible",
+      "summary": "The path cannot lawfully be claimed as fully reversible."
+    },
+    {
+      "id": "runtime_boundary_overclaim",
+      "summary": "The proof or readiness claim exceeds current lifecycle, replay, snapshot, isolation, or coexistence maturity."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "doctrine frozen in this artifact",
+      "upstream governance, runtime, and release doctrine",
+      "canonical operator transaction receipts and provenance continuity records",
+      "lawful release identity, contract-profile, and resolution artifacts"
+    ],
+    "derived": [
+      "dashboards",
+      "CI summaries",
+      "local tool output",
+      "filenames",
+      "mirror listings",
+      "human summaries"
+    ]
+  },
+  "prohibited_rehearsal_rollback_shapes": [
+    "dry-run treated as rollback proof",
+    "archive presence treated as rollback proof",
+    "previous version exists treated as proof of lawful rollback",
+    "downgrade semantics alone treated as rollback alignment",
+    "rehearsal output treated as production success proof",
+    "sandbox defined solely by one tool implementation",
+    "mirror visibility treated as rollback readiness",
+    "release-control convenience silently bypassing runtime, provenance, or review doctrine"
+  ],
+  "repo_evidence_surfaces": [
+    "tools/controlx/core/execution_router.py",
+    "tools/controlx/README.md",
+    "tools/xstack/testx/tests/test_dryrun_tool_runs.py",
+    "release/update_resolver.py",
+    "updates/README.md",
+    "updates/stable.json",
+    "data/registries/refusal_code_registry.json",
+    "data/registries/remediation_playbooks.json",
+    "data/registries/trust_root_registry.json",
+    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+  ],
+  "ambiguities_eliminated": [
+    "dry_run_is_not_rollback_proof",
+    "archive_presence_is_not_rollback_readiness",
+    "downgrade_semantics_are_not_rollback_alignment",
+    "rehearsal_is_not_live_success_proof"
+  ],
+  "downstream_refinement_prompts": [
+    "Υ-C1 - CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION_ALIGNMENT-0",
+    "Υ-C2 - PUBLICATION_AND_TRUST_EXECUTION_MATURITY-0",
+    "next checkpoint before Φ-B4",
+    "Φ-B4 - HOTSWAP_BOUNDARIES-0",
+    "Φ-B5 - DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "future Ζ planning"
+  ]
+}
