@@ -1,0 +1,382 @@
+{
+  "artifact_id": "dominium.runtime.multi_version_coexistence_doctrine",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-04",
+  "checkpoint_context": {
+    "state": "post_lambda_post_sigma_b_post_safe_phi_b_post_upsilon_a_pre_risky_phi_b_tail_and_or_upsilon_b",
+    "enabling_prompt": "Φ-B3 — MULTI_VERSION_COEXISTENCE-0",
+    "checkpoint_judgment": "ready_with_cautions",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0",
+      "Φ-5 — LIFECYCLE_MANAGER-0",
+      "Φ-B0 — EVENT_LOG_AND_REPLAY_DOCTRINE-0",
+      "Φ-B1 — SNAPSHOT_SERVICE_DOCTRINE-0",
+      "Φ-B2 — SANDBOXING_AND_ISOLATION_MODEL-0"
+    ],
+    "upstream_release_floor": [
+      "Υ-0 — BUILD_GRAPH_LOCK-0",
+      "Υ-1 — PRESET_AND_TOOLCHAIN_CONSOLIDATION-0",
+      "Υ-2 — VERSIONING_CONSTITUTION-0",
+      "Υ-3 — RELEASE_CONTRACT_PROFILE-0",
+      "Υ-4 — ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY-0",
+      "Υ-5 — RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT-0",
+      "Υ-6 — OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE-0",
+      "Υ-7 — ARCHIVE_AND_MIRROR_CONSTITUTION-0",
+      "Υ-8 — PUBLICATION_TRUST_AND_LICENSING_GATES-0"
+    ],
+    "active_numbering_note": "The active checkpoint path reopens MULTI_VERSION_COEXISTENCE-0 as Φ-B3 after completed Υ-A even where older planning mirrors still drift."
+  },
+  "coexistence_definition": {
+    "summary": "Multi-version coexistence is the declared, bounded, law-governed simultaneous presence, availability, interpretability, or resolvability of more than one version-distinguished runtime or release-control subject without allowing version multiplicity to redefine semantic truth, ownership, compatibility, lifecycle legality, or control-plane authority.",
+    "coexistence_is_not": [
+      "migration",
+      "rollback",
+      "hotswap",
+      "archive_retention",
+      "mirror_availability",
+      "simple_file_side_by_side_storage"
+    ],
+    "why_needed": [
+      "The repo already contains replay, snapshot, lifecycle, release-resolution, manifest, trust, and operator-transaction substrate that can be misread as ad hoc coexistence permission.",
+      "Coexistence needs explicit law so side-by-side presence does not become semantic drift, authority drift, or control-plane folklore.",
+      "Later hotswap, distributed-authority, and Zeta continuity work need a bounded coexistence floor rather than implementation-specific hacks."
+    ]
+  },
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_CAPABILITY_SURFACES",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY",
+    "NATURAL_LANGUAGE_TASK_BRIDGE",
+    "XSTACK_TASK_CATALOG",
+    "MCP_INTERFACE_MODEL",
+    "AGENT_SAFETY_POLICY",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_C_PHIB1_Y0_REVIEW",
+    "CHECKPOINT_C_YA_SAFE_REVIEW",
+    "NEXT_EXECUTION_ORDER_POST_YA"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION",
+    "LIFECYCLE_MANAGER",
+    "EVENT_LOG_AND_REPLAY_DOCTRINE",
+    "SNAPSHOT_SERVICE_DOCTRINE",
+    "SANDBOXING_AND_ISOLATION_MODEL"
+  ],
+  "required_release_inputs": [
+    "VERSIONING_CONSTITUTION",
+    "RELEASE_CONTRACT_PROFILE",
+    "RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT",
+    "OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE",
+    "ARCHIVE_AND_MIRROR_CONSTITUTION",
+    "PUBLICATION_TRUST_AND_LICENSING_GATES"
+  ],
+  "repo_evidence_roots": [
+    "runtime/process_spawn.py",
+    "engine/modules/replay/d_replay.c",
+    "engine/modules/replay/d_replay.h",
+    "server/app/main_server.c",
+    "release/update_resolver.py",
+    "release/component_graph_resolver.py",
+    "release/release_manifest_engine.py",
+    "security/trust/trust_verifier.py",
+    "repo/release_policy.toml",
+    "updates/README.md",
+    "data/registries/component_graph_registry.json",
+    "data/registries/release_channel_registry.json",
+    "data/registries/target_matrix_registry.json",
+    "data/registries/trust_root_registry.json"
+  ],
+  "coexistence_subject_classes": [
+    {
+      "id": "runtime_component_realization",
+      "description": "Version-distinguished bounded component realizations that remain subordinate to component, state, lifecycle, and isolation law."
+    },
+    {
+      "id": "runtime_service_realization",
+      "description": "Version-distinguished runtime services whose mediation or routing role must not become semantic ownership."
+    },
+    {
+      "id": "kernel_adjacent_runtime_structure",
+      "description": "Execution-hosting or continuity-support structures whose implementation version may differ while the semantic and lifecycle floors remain explicit."
+    },
+    {
+      "id": "release_control_plane_artifact",
+      "description": "Release identities, manifests, component graphs, install plans, indices, and archive records that may coexist as governed artifacts."
+    },
+    {
+      "id": "compatibility_envelope",
+      "description": "Semantic contract pins, release contract profiles, protocol ranges, schema ranges, format ranges, and target descriptors."
+    },
+    {
+      "id": "operator_visible_release_state",
+      "description": "Selected, pinned, deprecated, yanked, superseded, or rollback-eligible control-plane states."
+    },
+    {
+      "id": "schema_or_format_family_line",
+      "description": "Schema or format families that may coexist only under explicit compatibility, refusal, or migration law."
+    },
+    {
+      "id": "exact_target_distribution_lane",
+      "description": "Target-distinguished distribution or archive lanes whose exact target identity remains explicit."
+    }
+  ],
+  "allowed_coexistence_classes": [
+    {
+      "id": "historical_release_record_coexistence",
+      "description": "Multiple release identities, manifests, archive entries, and superseded or yanked records may coexist as governed historical facts.",
+      "conditions": [
+        "explicit_release_identity",
+        "explicit_release_contract_profile_or_equivalent_compatibility_meaning",
+        "typed_deprecation_yank_supersession_and_rollback_posture",
+        "archive_and_mirror_law_remain_upstream"
+      ]
+    },
+    {
+      "id": "candidate_set_coexistence_in_resolution",
+      "description": "Multiple versioned component or release candidates may coexist in release-index and resolver surfaces.",
+      "conditions": [
+        "explicit_candidate_identity",
+        "explicit_compatibility_envelope",
+        "target_family_and_exact_target_distinction_preserved",
+        "selection_policy_downstream_of_compatibility",
+        "yanked_or_blocked_candidates_remain_typed_history"
+      ]
+    },
+    {
+      "id": "operator_state_coexistence",
+      "description": "Current, prior, rollback-target, pinned, deprecated, yanked, and superseded states may coexist as control-plane facts.",
+      "conditions": [
+        "typed_operator_transaction_context",
+        "traceability_and_reversibility_posture_explicit",
+        "record_coexistence_not_confused_with_simultaneous_live_authority"
+      ]
+    },
+    {
+      "id": "schema_or_format_family_coexistence",
+      "description": "Multiple schema or format families may coexist under explicit schema, refusal, and migration law.",
+      "conditions": [
+        "canonical_schema_authority_preserved",
+        "explicit_compatibility_refusal_or_migration_rules",
+        "parsing_or_storage_convenience_does_not_collapse_meaning"
+      ]
+    },
+    {
+      "id": "bounded_runtime_realization_coexistence",
+      "description": "Version-distinguished runtime realizations may coexist only inside bounded identity, lifecycle, state, replay, snapshot, and isolation envelopes.",
+      "conditions": [
+        "explicit_subject_identity",
+        "explicit_lifecycle_posture",
+        "no_duplicate_hidden_truth_ownership",
+        "state_externalization_obligations_satisfied",
+        "replay_and_snapshot_interpretation_preserved",
+        "explicit_isolation_boundary",
+        "no_hidden_hotswap_or_distributed_authority_claim"
+      ]
+    },
+    {
+      "id": "target_lane_artifact_coexistence",
+      "description": "Different exact-target artifacts may coexist across release, archive, and mirror surfaces.",
+      "conditions": [
+        "target_family_not_used_as_exact_target_substitute",
+        "release_contract_profile_or_equivalent_compatibility_envelope_preserved",
+        "build_identity_retained_as_provenance_only"
+      ]
+    }
+  ],
+  "gated_or_prohibited_coexistence_classes": [
+    {
+      "id": "dual_writer_shared_truth",
+      "status": "prohibited",
+      "description": "Two version-distinguished runtime subjects simultaneously mutating the same authoritative truth scope by convenience."
+    },
+    {
+      "id": "semantic_conflict_coexistence",
+      "status": "prohibited",
+      "description": "Different semantic meanings treated as interchangeable because product versions, files, or packaging look similar."
+    },
+    {
+      "id": "hotswap_by_stealth",
+      "status": "prohibited",
+      "description": "Coexistence used to smuggle restartless replacement, partial hot reload, or live cutover semantics."
+    },
+    {
+      "id": "distributed_split_authority",
+      "status": "prohibited",
+      "description": "Multiple versions sharing or racing authority envelopes without later distributed-authority law."
+    },
+    {
+      "id": "projection_led_coexistence",
+      "status": "prohibited",
+      "description": "Treating field/, schemas/, generated feeds, or other projected surfaces as lawful peer coexistence lanes against canonical owners."
+    },
+    {
+      "id": "publication_or_archive_shortcut",
+      "status": "prohibited",
+      "description": "Treating archive presence, mirror presence, or generated feed presence as permission for live coexistence."
+    },
+    {
+      "id": "shared_hidden_state",
+      "status": "review_gated",
+      "description": "Version-distinguished runtime realizations coexist while relying on hidden service-local or component-local truth."
+    },
+    {
+      "id": "trust_or_publication_sensitive_live_coexistence",
+      "status": "review_gated",
+      "description": "A coexistence claim whose legality depends on publication approval, trust-root posture, or licensing posture."
+    }
+  ],
+  "semantic_constraints": {
+    "semantic_law_outranks_coexistence": true,
+    "domains_remain_semantic_owners": true,
+    "ownership_review_remains_binding": true,
+    "bridge_law_remains_binding": true,
+    "representation_ladders_remain_binding": true,
+    "formalization_and_provenance_continuity_remain_binding": true,
+    "coexistence_must_not_convert_semantic_drift_into_tolerated_plurality": true
+  },
+  "replay_snapshot_isolation_lifecycle_dependencies": {
+    "state_externalization_law_remains_upstream": true,
+    "replay_law_remains_upstream": true,
+    "snapshot_law_remains_upstream": true,
+    "lifecycle_law_remains_upstream": true,
+    "isolation_law_remains_upstream": true,
+    "replay_must_distinguish_versioned_subjects": true,
+    "snapshots_spanning_version_horizons_require_explicit_version_and_authority_metadata": true,
+    "coexistence_does_not_imply_all_versions_may_be_simultaneously_active": true,
+    "hidden_state_or_erased_causality_invalidates_stronger_coexistence_claims": true
+  },
+  "versioning_release_contract_constraints": {
+    "raw_version_equality_is_insufficient": true,
+    "raw_version_inequality_is_insufficient": true,
+    "semantic_contract_bundle_hash_remains_explicit_meaning_compatibility": true,
+    "protocol_schema_and_format_compatibility_must_remain_explicit": true,
+    "release_contract_profile_governs_release_surface_admission": true,
+    "target_family_does_not_replace_exact_target": true,
+    "build_identity_is_not_semantic_compatibility": true
+  },
+  "operator_archive_publication_constraints": {
+    "downgrade_and_rollback_remain_distinct_from_coexistence": true,
+    "yanked_deprecated_superseded_and_rollback_states_may_coexist_as_records": true,
+    "archive_presence_does_not_authorize_live_coexistence": true,
+    "mirror_presence_does_not_create_canonical_coexistence_truth": true,
+    "publication_trust_and_licensing_gates_remain_upstream": true,
+    "operator_transactions_must_remain_typed_attributable_and_traceable": true
+  },
+  "distinction_notes": {
+    "coexistence": "Bounded simultaneous presence, availability, interpretability, or resolvability under explicit law.",
+    "migration": "A state, schema, or representation change process that may occur without lawful side-by-side presence.",
+    "rollback": "A governed restoration or reselection transaction against prior recorded state.",
+    "hotswap": "A later cutover and replacement problem, not generic coexistence law.",
+    "archive_retention": "Historical preservation without automatic live admissibility.",
+    "mirror_availability": "Distribution or availability exposure without canonical authority.",
+    "simple_storage_colocation": "A file-layout fact that does not itself prove lawful coexistence."
+  },
+  "invalidity_failure_categories": [
+    {
+      "id": "bounded_lawful",
+      "description": "The coexistence scope is explicit and satisfies the declared constraints."
+    },
+    {
+      "id": "review_gated",
+      "description": "Coexistence may be discussable but requires explicit human review before stronger claims."
+    },
+    {
+      "id": "provisional",
+      "description": "Evidence of coexistence exists, but compatibility or continuity proof is incomplete."
+    },
+    {
+      "id": "compatibility_unproven",
+      "description": "The explicit compatibility envelope is missing, incomplete, or contradictory."
+    },
+    {
+      "id": "semantic_conflict",
+      "description": "The versions imply incompatible semantic meaning or erased bridge semantics."
+    },
+    {
+      "id": "ownership_invalid",
+      "description": "The coexistence claim conflicts with ownership review or canonical-root discipline."
+    },
+    {
+      "id": "state_entangled",
+      "description": "Authoritative or continuity-relevant state is trapped or intertwined across versions unsafely."
+    },
+    {
+      "id": "replay_snapshot_incompatible",
+      "description": "Lawful replay or lawful snapshot interpretation would be broken or ambiguous."
+    },
+    {
+      "id": "lifecycle_invalid",
+      "description": "The coexistence posture conflicts with lifecycle legality for the claim being made."
+    },
+    {
+      "id": "isolation_invalid",
+      "description": "Containment boundaries are missing or insufficient."
+    },
+    {
+      "id": "release_contract_invalid",
+      "description": "Release-control coexistence bypasses release contract profile, target specificity, or trust posture."
+    },
+    {
+      "id": "hotswap_by_stealth",
+      "description": "A coexistence claim is being used to smuggle restartless replacement or live cutover semantics."
+    },
+    {
+      "id": "distributed_authority_leak",
+      "description": "A coexistence claim silently introduces split authority or handoff assumptions."
+    }
+  ],
+  "ownership_projection_cautions": [
+    "fields_over_field",
+    "schema_over_schemas",
+    "packs_and_data_packs_are_not_freely_collapsible",
+    "canonical_vs_projected_generated_distinctions_remain_binding",
+    "thin_runtime_root_not_automatically_canonical",
+    "release_control_plane_convenience_must_not_infer_coexistence_permission",
+    "older_planning_numbering_drift_must_not_override_active_checkpoint_law"
+  ],
+  "prohibited_coexistence_shapes": [
+    "arbitrary_side_by_side_binaries_treated_as_architectural_canon",
+    "coexistence_that_bypasses_explicit_compatibility_envelopes",
+    "coexistence_that_silently_changes_truth_or_state_semantics",
+    "coexistence_used_as_hotswap_by_stealth",
+    "archive_retention_treated_as_runtime_legality",
+    "mirror_availability_treated_as_source_of_truth_authority",
+    "schemas_treated_as_peer_semantic_owner_to_schema",
+    "packs_and_data_packs_normalized_into_free_substitution",
+    "build_ids_or_filenames_treated_as_sufficient_compatibility_proof",
+    "lifecycle_replay_or_isolation_boundaries_hidden_by_convenience",
+    "distributed_split_authority_hidden_under_local_coexistence_language"
+  ],
+  "downstream_refinement_prompts": [
+    "Υ-B0 — RELEASE_OPS_ALIGNMENT-0",
+    "Υ-B1 — MANUAL_AUTOMATION_PARITY_AND_REHEARSAL-0",
+    "Υ-B2 — OPERATOR_TRANSACTION_IMPLEMENTATION_ALIGNMENT-0",
+    "checkpoint.before_phi_b4",
+    "Φ-B4 — HOTSWAP_BOUNDARIES-0",
+    "Φ-B5 — DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "later_zeta_blocker_reassessment"
+  ]
+}
