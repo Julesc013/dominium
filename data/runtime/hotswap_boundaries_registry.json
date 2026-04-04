@@ -1,0 +1,299 @@
+{
+  "artifact_id": "dominium.runtime.hotswap_boundaries_doctrine",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-05",
+  "checkpoint_context": {
+    "state": "post_phi_b3_post_upsilon_b_and_upsilon_c_pre_phi_b4_or_other_next_block",
+    "enabling_prompt": "Φ-B4 — HOTSWAP_BOUNDARIES-0",
+    "checkpoint_judgment": "ready_with_cautions",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0",
+      "Φ-5 — LIFECYCLE_MANAGER-0",
+      "Φ-B0 — EVENT_LOG_AND_REPLAY_DOCTRINE-0",
+      "Φ-B1 — SNAPSHOT_SERVICE_DOCTRINE-0",
+      "Φ-B2 — SANDBOXING_AND_ISOLATION_MODEL-0",
+      "Φ-B3 — MULTI_VERSION_COEXISTENCE-0"
+    ],
+    "upstream_release_floor": [
+      "Υ-0 — BUILD_GRAPH_LOCK-0",
+      "Υ-1 — PRESET_AND_TOOLCHAIN_CONSOLIDATION-0",
+      "Υ-2 — VERSIONING_CONSTITUTION-0",
+      "Υ-3 — RELEASE_CONTRACT_PROFILE-0",
+      "Υ-4 — ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY-0",
+      "Υ-5 — RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT-0",
+      "Υ-6 — OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE-0",
+      "Υ-7 — ARCHIVE_AND_MIRROR_CONSTITUTION-0",
+      "Υ-8 — PUBLICATION_TRUST_AND_LICENSING_GATES-0",
+      "Υ-B0 — MANUAL_AUTOMATION_PARITY_AND_REHEARSAL-0",
+      "Υ-B1 — OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY-0",
+      "Υ-B2 — RELEASE_OPS_EXECUTION_ENVELOPE-0",
+      "Υ-C0 — RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT-0",
+      "Υ-C1 — CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION-0",
+      "Υ-C2 — TRUST_EXECUTION_AND_REVOCATION_CONTINUITY-0"
+    ],
+    "active_numbering_note": "The active checkpoint path authorizes HOTSWAP_BOUNDARIES-0 after the post-Υ-C review while Φ-B5 remains later and premature."
+  },
+  "hotswap_definition": {
+    "summary": "Hotswap is the live replacement or live handoff of a bounded runtime or control-plane realization across an explicit boundary while preserving declared identity, lifecycle legality, state continuity, replay intelligibility, snapshot legality, isolation posture, coexistence legality, and any required release-control, receipt, and trust continuity.",
+    "hotswap_is_not": [
+      "restart",
+      "rollback",
+      "downgrade",
+      "multi_version_coexistence",
+      "archive_retention",
+      "publication_visibility_change",
+      "implementation_level_hot_reload"
+    ],
+    "why_needed": [
+      "The repo already contains explicit lifecycle, replay, snapshot, isolation, coexistence, release-control, rehearsal, canary, downgrade, and trust doctrine that could otherwise be misread as implicit hotswap permission.",
+      "Live replacement changes continuity and authority assumptions in ways that cannot be derived from coexistence or release convenience alone.",
+      "Later distributed-authority and Zeta planning need one explicit boundary model instead of implementation-specific reload folklore."
+    ]
+  },
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_CAPABILITY_SURFACES",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY",
+    "NATURAL_LANGUAGE_TASK_BRIDGE",
+    "XSTACK_TASK_CATALOG",
+    "MCP_INTERFACE_MODEL",
+    "AGENT_SAFETY_POLICY",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW",
+    "CHECKPOINT_C_YC_SAFE_REVIEW",
+    "NEXT_EXECUTION_ORDER_POST_YC"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION",
+    "LIFECYCLE_MANAGER",
+    "EVENT_LOG_AND_REPLAY_DOCTRINE",
+    "SNAPSHOT_SERVICE_DOCTRINE",
+    "SANDBOXING_AND_ISOLATION_MODEL",
+    "MULTI_VERSION_COEXISTENCE"
+  ],
+  "required_release_inputs": [
+    "RELEASE_CONTRACT_PROFILE",
+    "RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT",
+    "OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE",
+    "OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY",
+    "RELEASE_OPS_EXECUTION_ENVELOPE",
+    "RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT",
+    "CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION",
+    "TRUST_EXECUTION_AND_REVOCATION_CONTINUITY"
+  ],
+  "repo_evidence_roots": [
+    "runtime/process_spawn.py",
+    "server/app/main_server.c",
+    "release/update_resolver.py",
+    "security/trust/trust_verifier.py",
+    "tools/controlx/core/execution_router.py",
+    "tools/review/series_execution_strategy_common.py",
+    "repo/release_policy.toml",
+    "data/registries/release_channel_registry.json",
+    "data/registries/target_matrix_registry.json",
+    "data/registries/trust_root_registry.json",
+    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+    "docs/blueprint/MANUAL_REVIEW_GATES.md"
+  ],
+  "hotswap_subject_classes": [
+    {
+      "id": "semantic_or_authority_bearing_subject",
+      "description": "Semantic truth owners, authority-bearing domain structures, bridge-legality owners, and semantic contract meaning owners.",
+      "default_boundary_class": "no_swap_boundary",
+      "swappability": "never_hot_swappable"
+    },
+    {
+      "id": "foundational_continuity_anchor",
+      "description": "Kernel-adjacent and continuity-defining runtime subjects whose live replacement would alter lifecycle, replay, or snapshot meaning.",
+      "default_boundary_class": "restart_required_boundary",
+      "swappability": "restart_required"
+    },
+    {
+      "id": "state_externalized_service_realization",
+      "description": "Service-facing realizations whose authoritative truth is externalized and whose lifecycle, replay, snapshot, and isolation posture remain explicit.",
+      "default_boundary_class": "review_gated_hotswap_boundary",
+      "swappability": "conditionally_hot_swappable"
+    },
+    {
+      "id": "observation_or_projection_realization",
+      "description": "Observation-facing, representation-facing, or projection-facing realizations that own no authoritative truth and do not redefine semantic meaning.",
+      "default_boundary_class": "bounded_local_swap_boundary",
+      "swappability": "bounded_hot_swappable"
+    },
+    {
+      "id": "bounded_control_plane_runtime_adjunct",
+      "description": "Runtime-adjacent control-plane helpers whose local replacement must not alter release truth, receipt continuity, or trust posture.",
+      "default_boundary_class": "bounded_local_swap_boundary",
+      "swappability": "bounded_or_review_gated"
+    },
+    {
+      "id": "trust_or_distributed_authority_sensitive_subject",
+      "description": "Trust-root, revocation-sensitive, or distributed-authority subjects whose live transition legality depends on later doctrine.",
+      "default_boundary_class": "future_only_or_prohibited_boundary",
+      "swappability": "future_only_or_prohibited"
+    }
+  ],
+  "boundary_classes": [
+    {
+      "id": "no_swap_boundary",
+      "description": "Live replacement is unlawful because semantic truth, authority, or bridge legality would be altered.",
+      "posture": "never_hot_swappable"
+    },
+    {
+      "id": "restart_required_boundary",
+      "description": "Replacement may occur only through stop, suspend, retire, or restart semantics rather than live cutover.",
+      "posture": "restart_required"
+    },
+    {
+      "id": "bounded_local_swap_boundary",
+      "description": "Narrow local replacement may be discussable for bounded non-truth-owning subjects without claiming full runtime continuity.",
+      "posture": "bounded_hot_swappable"
+    },
+    {
+      "id": "review_gated_hotswap_boundary",
+      "description": "Live replacement is discussable only with explicit lifecycle, state, replay, snapshot, isolation, coexistence, receipt, and trust review.",
+      "posture": "conditionally_hot_swappable"
+    },
+    {
+      "id": "future_only_or_prohibited_boundary",
+      "description": "The subject depends on unsolved live-cutover, trust-rotation, or distributed-authority work and remains outside the current maturity floor.",
+      "posture": "future_only_or_prohibited"
+    }
+  ],
+  "lifecycle_state_replay_snapshot_isolation_coexistence_dependencies": {
+    "state_externalization_law_remains_upstream": true,
+    "lifecycle_legality_remains_upstream": true,
+    "replay_law_remains_upstream": true,
+    "snapshot_law_remains_upstream": true,
+    "isolation_law_remains_upstream": true,
+    "coexistence_may_be_necessary_but_is_not_sufficient": true,
+    "active_suspended_degraded_and_retiring_postures_must_remain_distinguishable": true,
+    "hidden_state_invalidates_live_swap_claims": true,
+    "non_reconstructable_transitions_invalidates_live_swap_claims": true
+  },
+  "release_control_and_trust_dependencies": {
+    "release_contract_profile_remains_upstream": true,
+    "release_index_and_resolution_semantics_remain_upstream": true,
+    "operator_transactions_must_remain_typed": true,
+    "receipt_and_provenance_continuity_remain_required_where_operator_control_exists": true,
+    "archive_and_mirror_continuity_do_not_create_runtime_swap_permission": true,
+    "canary_downgrade_and_rehearsal_support_review_but_do_not_prove_hotswap": true,
+    "trust_execution_and_revocation_continuity_remain_upstream": true,
+    "live_trust_change_maturity_is_not_assumed": true
+  },
+  "distinction_notes": {
+    "hotswap": "Live replacement or live handoff across an explicit continuity boundary.",
+    "restart": "A non-live continuity break or restart posture rather than a live swap.",
+    "rollback": "A governed restoration or reselection transaction, not automatically a runtime live replacement.",
+    "downgrade": "A downward release-control move that remains distinct from live runtime cutover.",
+    "multi_version_coexistence": "Bounded simultaneous presence or resolvability under explicit law, not live replacement.",
+    "archive_retention": "Historical preservation without runtime swappability authority.",
+    "publication_visibility_change": "Feed or mirror exposure change without runtime cutover meaning.",
+    "implementation_level_hot_reload": "A tool-local reload mechanism that does not define canonical hotswap law."
+  },
+  "invalidity_failure_categories": [
+    {
+      "id": "bounded_lawful",
+      "description": "The boundary is explicit and the declared continuity envelope is satisfied."
+    },
+    {
+      "id": "review_gated",
+      "description": "Stronger hotswap claims require explicit human review."
+    },
+    {
+      "id": "restart_required",
+      "description": "Replacement may be legal only through non-live restart-class semantics."
+    },
+    {
+      "id": "provisional",
+      "description": "Some evidence exists, but proof of continuity remains incomplete."
+    },
+    {
+      "id": "semantic_authority_non_swappable",
+      "description": "The subject is too authority-bearing or semantically binding to be hot-swapped lawfully."
+    },
+    {
+      "id": "lifecycle_invalid",
+      "description": "Lifecycle posture is incompatible with the claimed live replacement."
+    },
+    {
+      "id": "state_entangled",
+      "description": "Required state is trapped, hidden, or unlawfully intertwined."
+    },
+    {
+      "id": "replay_snapshot_incompatible",
+      "description": "Replay intelligibility or snapshot legality would be broken."
+    },
+    {
+      "id": "isolation_invalid",
+      "description": "Isolation or containment boundaries are insufficient."
+    },
+    {
+      "id": "coexistence_insufficient",
+      "description": "Coexistence exists, but it does not satisfy live replacement constraints."
+    },
+    {
+      "id": "release_control_continuity_missing",
+      "description": "Release-profile, operator, receipt, or provenance continuity is incomplete."
+    },
+    {
+      "id": "trust_or_revocation_blocked",
+      "description": "Trust posture or revocation continuity blocks the live claim."
+    },
+    {
+      "id": "future_only_or_policy_prohibited",
+      "description": "The boundary depends on later doctrine or remains prohibited by current policy."
+    }
+  ],
+  "ownership_projection_cautions": [
+    "fields_over_field",
+    "schema_over_schemas",
+    "packs_and_data_packs_are_not_freely_collapsible",
+    "canonical_vs_projected_generated_distinctions_remain_binding",
+    "thin_runtime_root_not_automatically_canonical",
+    "tool_local_reload_behavior_does_not_define_architectural_truth",
+    "older_planning_numbering_drift_must_not_override_active_checkpoint_law"
+  ],
+  "prohibited_hotswap_shapes": [
+    "coexistence_treated_as_automatic_hotswap_permission",
+    "canary_success_treated_as_hotswap_readiness",
+    "restart_semantics_presented_as_live_swap_semantics",
+    "rollback_downgrade_or_publication_actions_presented_as_hotswap",
+    "tool_local_reload_trick_treated_as_architectural_canon",
+    "hotswap_that_bypasses_lifecycle_replay_snapshot_or_isolation_law",
+    "hotswap_that_silently_changes_truth_ownership_or_bridge_legality",
+    "hotswap_that_ignores_release_profile_receipt_or_trust_continuity",
+    "distributed_split_authority_hidden_under_local_replacement_language",
+    "doctrine_existence_treated_as_implementation_maturity"
+  ],
+  "downstream_refinement_prompts": [
+    "checkpoint.after_phi_b4",
+    "Φ-B5 — DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "later_live_cutover_receipt_generalization",
+    "later_trust_rotation_operationalization",
+    "later_zeta_blocker_reassessment"
+  ]
+}
