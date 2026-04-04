@@ -1,0 +1,227 @@
+{
+  "model": {
+    "model_id": "dominium.release.trust_execution_and_revocation_continuity",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-05",
+    "prompt_series_id": "upsilon-c2",
+    "prompt_title": "TRUST_EXECUTION_AND_REVOCATION_CONTINUITY-0",
+    "checkpoint_state": "post-phi-b3 / post-upsilon-b / in-upsilon-c / pre-phi-b4"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_TASKS.md",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/agents/MCP_INTERFACE_MODEL.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md"
+    ],
+    "release_doctrine": [
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+      "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md"
+    ]
+  },
+  "trust_action_class_identifiers": [
+    {
+      "id": "trust_posture_activation",
+      "summary": "Governed activation of a trust-bearing acceptance envelope or trust-policy selection."
+    },
+    {
+      "id": "trust_posture_reduction",
+      "summary": "Governed narrowing of acceptance posture, including stricter signature or root behavior."
+    },
+    {
+      "id": "signer_or_verifier_posture_change",
+      "summary": "Governed change to signer acceptance, verifier strictness, or accepted trust-level posture."
+    },
+    {
+      "id": "revocation_declaration",
+      "summary": "Governed declaration that a signer, artifact, trust path, or related acceptance route is revoked."
+    },
+    {
+      "id": "revocation_propagation_posture",
+      "summary": "Governed definition of how revocation-bearing meaning must be carried across release-control and consumer-facing surfaces."
+    },
+    {
+      "id": "trust_gated_publication_action",
+      "summary": "Publication-adjacent action whose visibility or eligibility is explicitly constrained by trust posture."
+    },
+    {
+      "id": "trust_emergency_containment",
+      "summary": "Bounded high-urgency trust action used to reduce exposure or acceptance posture under explicit review or privilege conditions."
+    },
+    {
+      "id": "trust_restoration_or_supersession",
+      "summary": "Governed restoration or superseding trust posture that preserves prior revoked or reduced history."
+    }
+  ],
+  "revocation_continuity_class_identifiers": [
+    {
+      "id": "declaration_continuity",
+      "summary": "The revocation declaration itself remains reconstructable as a typed, attributable control-plane act."
+    },
+    {
+      "id": "receipt_continuity",
+      "summary": "Revocation-bearing actions preserve canonical receipt continuity including gate posture and affected scope."
+    },
+    {
+      "id": "archive_continuity",
+      "summary": "Historical artifacts remain recoverable without implying current trust acceptance."
+    },
+    {
+      "id": "mirror_visibility_continuity",
+      "summary": "Mirror visibility changes remain distinguishable from revocation truth while still preserving how visibility moved."
+    },
+    {
+      "id": "consumer_facing_continuity",
+      "summary": "Consumer-facing summaries and refusal posture remain coherent enough to distinguish warned, revoked, hidden, and historical states."
+    },
+    {
+      "id": "local_validation_continuity",
+      "summary": "Local verifier behavior and local trust-root overlays remain explainable without becoming canonical trust truth."
+    },
+    {
+      "id": "non_continuous_or_prohibited_revocation",
+      "summary": "Any revocation shape whose declaration, receipts, archive linkage, or interpretation cannot be reconstructed canonically."
+    }
+  ],
+  "gate_receipt_archive_index_relation_notes": [
+    "Trust execution remains downstream of publication, trust, and licensing gate posture and does not create permission by itself.",
+    "Trust-affecting actions are operator-transaction-bearing and must emit continuity-compatible receipts.",
+    "Trust posture changes must not silently redefine release contract profile or release-index compatibility meaning.",
+    "Release-index visibility and trust acceptance remain distinct concepts.",
+    "Archive presence preserves history but does not imply current trust acceptance.",
+    "Mirror visibility preserves availability posture but does not define trust truth.",
+    "Canary and downgrade execution may be trust-gated without becoming identical to trust execution."
+  ],
+  "runtime_caution_notes": [
+    "This doctrine does not prove live trust-root rotation maturity.",
+    "This doctrine does not prove live runtime cutover safety.",
+    "Any later runtime-affecting trust action remains subordinate to lifecycle, replay, snapshot, isolation, and coexistence doctrine.",
+    "Trust continuity law may reduce ambiguity for later work without authorizing hotswap or distributed authority transitions."
+  ],
+  "invalidity_failure_categories": [
+    {
+      "id": "trust_action_under_authorized",
+      "summary": "The action was attempted without the required review or privilege posture."
+    },
+    {
+      "id": "trust_policy_missing_or_undeclared",
+      "summary": "The requested trust posture is not canonically declared."
+    },
+    {
+      "id": "trust_root_state_non_governed",
+      "summary": "Signer or root behavior depends on undeclared or non-canonical root state."
+    },
+    {
+      "id": "revocation_declaration_missing",
+      "summary": "The supposed revocation has no reconstructable canonical declaration."
+    },
+    {
+      "id": "revocation_non_propagating",
+      "summary": "The revocation exists in one local surface but not in the continuity-bearing record."
+    },
+    {
+      "id": "revocation_local_only",
+      "summary": "The effect exists only in one local verifier state with no canonical continuity record."
+    },
+    {
+      "id": "trust_visibility_conflation",
+      "summary": "Publication or mirror state was treated as trust truth."
+    },
+    {
+      "id": "archive_or_mirror_inference_error",
+      "summary": "Archive or mirror state was treated as sufficient trust evidence."
+    },
+    {
+      "id": "receipt_chain_incomplete",
+      "summary": "Trust-bearing action history cannot be reconstructed canonically."
+    },
+    {
+      "id": "restoration_without_supersession_or_receipt",
+      "summary": "Trust posture was widened again without explicit continuity."
+    },
+    {
+      "id": "runtime_boundary_overclaim",
+      "summary": "A trust-bearing claim exceeds current runtime maturity."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "doctrine frozen in this artifact",
+      "upstream governance, safety, runtime, and release doctrine",
+      "canonical operator transaction and receipt continuity records",
+      "canonical trust policies, governed trust-root records, and governed release-control records"
+    ],
+    "derived": [
+      "dashboards",
+      "CI summaries",
+      "mirror listings",
+      "changelog notes",
+      "local tool output",
+      "local verifier readouts",
+      "human summaries"
+    ]
+  },
+  "prohibited_trust_revocation_shapes": [
+    "trust_root_change treated as metadata edit",
+    "revocation treated as disappearance",
+    "mirror removal treated as revocation proof",
+    "archive absence treated as revocation",
+    "publication visibility treated as trust truth",
+    "local verifier behavior treated as canonical trust truth",
+    "trust execution assumed safe for live runtime cutover because doctrine exists",
+    "signer or verifier posture changes recorded with no continuity-bearing receipt"
+  ],
+  "repo_evidence_surfaces": [
+    "security/trust/trust_verifier.py",
+    "security/trust/license_capability.py",
+    "release/update_resolver.py",
+    "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+    "docs/release/SIGNING_POLICY.md",
+    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+    "docs/blueprint/MANUAL_REVIEW_GATES.md",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/trust_root_registry.json",
+    "data/registries/entitlement_registry.json",
+    "data/registries/provenance_classification_registry.json",
+    "data/registries/explain_contract_registry.json",
+    "data/registries/refusal_code_registry.json",
+    "data/registries/remediation_playbooks.json"
+  ],
+  "ambiguities_eliminated": [
+    "trust_execution_is_not_publication_visibility",
+    "mirror_state_is_not_trust_truth",
+    "archive_presence_is_not_trust_acceptance",
+    "revocation_continuity_is_not_disappearance_from_view"
+  ],
+  "downstream_refinement_prompts": [
+    "next checkpoint before Φ-B4",
+    "Φ-B4 - HOTSWAP_BOUNDARIES-0",
+    "Φ-B5 - DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "later trust-root rotation operational doctrine",
+    "future Ζ planning"
+  ]
+}
