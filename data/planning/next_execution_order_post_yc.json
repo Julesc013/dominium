@@ -1,0 +1,131 @@
+{
+  "plan_id": "next_execution_order_post_yc",
+  "checkpoint_basis": "C-YC_SAFE_REVIEW",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / post-upsilon-a / post-phi-b3 / post-upsilon-b / post-upsilon-c / pre-phi-b4-or-other-next-block",
+  "recommended_next_prompt": "Φ-B4 — HOTSWAP_BOUNDARIES-0",
+  "selected_ordering_mode": "phi_b4_first",
+  "order": [
+    {
+      "sequence": 1,
+      "prompt_id": "Φ-B4",
+      "title": "HOTSWAP_BOUNDARIES-0",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "docs/runtime/LIFECYCLE_MANAGER.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+        "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+        "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+        "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md"
+      ],
+      "human_review_requirements": [
+        "doctrine-only scope",
+        "no live cutover claims",
+        "preserve replay, snapshot, lifecycle, isolation, coexistence, and trust floors",
+        "respect ownership-sensitive roots and checkpoint law"
+      ],
+      "stop_conditions": [
+        "required Φ-B4 doctrine artifacts exist",
+        "no implementation work was performed",
+        "new checkpoint required before any move toward Φ-B5"
+      ],
+      "notes": [
+        "This is now the best next blocker reducer because the remaining gap is runtime cutover boundary law rather than another release-only doctrine family."
+      ]
+    },
+    {
+      "sequence": 2,
+      "prompt_id": "C-ΦB4_SAFE_REVIEW",
+      "title": "POST_HOTSWAP_BOUNDARY_REASSESSMENT-0",
+      "readiness_status": "required_after_phi_b4",
+      "dependencies": [
+        "completed Φ-B4",
+        "current checkpoint chain through C-YC_SAFE_REVIEW"
+      ],
+      "human_review_requirements": [
+        "explicit reassessment before Φ-B5",
+        "explicit reassessment of any Υ-D follow-on need"
+      ],
+      "stop_conditions": [
+        "readiness of Φ-B5 and any Υ-D work is restated explicitly"
+      ],
+      "notes": [
+        "No movement toward Φ-B5 should occur without this checkpoint."
+      ]
+    },
+    {
+      "sequence": 3,
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+      "readiness_status": "premature",
+      "dependencies": [
+        "completed Φ-B4",
+        "favorable post-Φ-B4 checkpoint",
+        "distributed trust and authority continuity reassessment"
+      ],
+      "human_review_requirements": [
+        "retain strong checkpoint gating",
+        "do not reopen without explicit positive verdict"
+      ],
+      "stop_conditions": [
+        "stay blocked until explicitly reopened by later checkpoint"
+      ],
+      "notes": [
+        "Distributed authority remains out of order from the current state."
+      ]
+    },
+    {
+      "sequence": 4,
+      "prompt_id": "Υ-D0",
+      "title": "LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES-0",
+      "readiness_status": "blocked",
+      "dependencies": [
+        "completed Φ-B4",
+        "post-Φ-B4 checkpoint if selected"
+      ],
+      "human_review_requirements": [
+        "full review for trust-root governance changes"
+      ],
+      "stop_conditions": [
+        "remain blocked until trust-root and revocation propagation prerequisites are explicitly reopened"
+      ],
+      "notes": [
+        "This family is conditionally deferred, not selected as the next block."
+      ]
+    }
+  ],
+  "why_better_than_alternatives": [
+    "The completed Υ-C band removed the specific control-plane ambiguity that previously kept Φ-B4 dangerous.",
+    "Moving to Φ-B4 now resolves the next real missing foundation instead of continuing to layer release doctrine ahead of runtime boundary law.",
+    "Jumping directly to Φ-B5 would still outrun distributed trust and authority maturity."
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "prompt_id": "Φ-B5",
+      "status": "premature",
+      "summary": "Distributed authority remains blocked by missing authority handoff, replication proof, and trust convergence maturity."
+    },
+    {
+      "prompt_id": "Υ-D0",
+      "status": "blocked",
+      "summary": "Live trust rotation and revocation propagation are not the selected next block and remain under stronger gates."
+    },
+    {
+      "prompt_id": "Υ-D1",
+      "status": "blocked",
+      "summary": "Live-cutover receipt and runtime continuity generalization still depends on the output of Φ-B4."
+    },
+    {
+      "prompt_id": "Υ-D2",
+      "status": "dangerous_to_operationalize_yet",
+      "summary": "Publication and trust operationalization remain too immature to schedule ahead of Φ-B4."
+    }
+  ],
+  "stability": {
+    "status": "canonical",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-05"
+  }
+}
