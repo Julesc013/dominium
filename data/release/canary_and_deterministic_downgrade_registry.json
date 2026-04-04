@@ -1,0 +1,242 @@
+{
+  "model": {
+    "model_id": "dominium.release.canary_and_deterministic_downgrade_execution",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-05",
+    "prompt_series_id": "upsilon-c1",
+    "prompt_title": "CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION-0",
+    "checkpoint_state": "post-phi-b3 / post-upsilon-b / in-upsilon-c / pre-phi-b4"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_TASKS.md",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/agents/MCP_INTERFACE_MODEL.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md"
+    ],
+    "release_doctrine": [
+      "docs/release/BUILD_GRAPH_LOCK.md",
+      "docs/release/VERSIONING_CONSTITUTION.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
+      "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+      "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md"
+    ]
+  },
+  "canary_class_identifiers": [
+    {
+      "id": "observation_only_canary",
+      "summary": "Bounded visibility or evidence posture without changing default live selection."
+    },
+    {
+      "id": "bounded_availability_canary",
+      "summary": "Bounded exposure posture that changes availability for a constrained scope while preserving identity and continuity."
+    },
+    {
+      "id": "bounded_selection_canary",
+      "summary": "Bounded selection posture under explicit resolution policy and compatibility law."
+    },
+    {
+      "id": "target_scoped_canary",
+      "summary": "Canary constrained by exact target semantics rather than broad family shorthand."
+    },
+    {
+      "id": "channel_scoped_canary",
+      "summary": "Canary constrained by channel or lane policy without letting channel labels replace identity and compatibility reasoning."
+    },
+    {
+      "id": "privileged_or_review_gated_canary",
+      "summary": "Canary whose blast radius, publication consequence, trust implication, or runtime sensitivity keeps it behind explicit review or privilege posture."
+    }
+  ],
+  "downgrade_class_identifiers": [
+    {
+      "id": "policy_driven_downgrade",
+      "summary": "Downgrade governed by a frozen explicit resolution policy and explicit compatibility envelope."
+    },
+    {
+      "id": "operator_directed_downgrade",
+      "summary": "Operator-initiated downgrade still constrained by identity, compatibility, safety, and receipt continuity."
+    },
+    {
+      "id": "bounded_target_downgrade",
+      "summary": "Downgrade constrained by exact target, install profile, and scoped component set."
+    },
+    {
+      "id": "channel_or_selection_downgrade",
+      "summary": "Downgrade driven through selection or lane posture under explicit policy and continuity rules."
+    },
+    {
+      "id": "recovery_downgrade",
+      "summary": "Downgrade used as a recovery move while remaining distinct from rollback restoration."
+    },
+    {
+      "id": "non_deterministic_or_prohibited_downgrade",
+      "summary": "Any downgrade based on convenience, mutable ungoverned heuristics, or incomplete continuity evidence."
+    }
+  ],
+  "release_profile_index_dependence_notes": [
+    "Canary and downgrade execution must preserve release identity rather than substituting version strings, filenames, channel labels, or feed shorthand.",
+    "Older or smaller version numbers are insufficient to justify downgrade legality.",
+    "Target family may help prefilter scope but exact target reasoning remains required for concrete execution semantics.",
+    "Install profile, resolution policy id, trust posture, and compatibility envelope remain part of lawful canary and downgrade reasoning.",
+    "The same canonical inputs under the same deterministic policy must resolve the same downgrade target."
+  ],
+  "receipt_provenance_continuity_notes": [
+    "Canary and downgrade execution must produce continuity-compatible receipts rather than only dashboard or feed changes.",
+    "Partial exposure and bounded selection movement must remain reconstructable.",
+    "Downgrade intent, policy, scope, refusal posture, and resulting state must remain reconstructable.",
+    "Canary and downgrade execution must extend existing rollback and transaction continuity fields rather than bypassing them."
+  ],
+  "execution_review_posture_categories": [
+    {
+      "id": "inspect_or_observe_only",
+      "summary": "Observation without authoritative selection mutation."
+    },
+    {
+      "id": "rehearsal_or_validation_required",
+      "summary": "Execution depends on prior rehearsal or validation but rehearsal alone does not authorize live action."
+    },
+    {
+      "id": "bounded_mutation",
+      "summary": "Scoped control-plane change with explicit scope, deterministic policy, and continuity requirements."
+    },
+    {
+      "id": "review_gated_execution",
+      "summary": "Execution requires explicit human review because continuity, visibility, or runtime sensitivity is too high for routine mutation."
+    },
+    {
+      "id": "privileged_execution",
+      "summary": "Execution touches publication, trust, licensing, or comparable external commitment meaning and remains privileged."
+    },
+    {
+      "id": "prohibited_or_premature",
+      "summary": "Execution remains blocked because maturity or evidence is insufficient."
+    }
+  ],
+  "invalidity_failure_categories": [
+    {
+      "id": "canary_non_representative",
+      "summary": "The canary scope is too narrow or distorted to support the claim being made."
+    },
+    {
+      "id": "canary_overbroad_scope",
+      "summary": "The supposed canary is too broad to count as bounded exposure."
+    },
+    {
+      "id": "canary_missing_exact_target_reasoning",
+      "summary": "Target family or channel shorthand was used where exact target semantics were required."
+    },
+    {
+      "id": "downgrade_non_deterministic",
+      "summary": "The downgrade target depends on convenience, guesswork, or mutable ungoverned heuristics."
+    },
+    {
+      "id": "downgrade_target_not_lawful",
+      "summary": "The target exists but is incompatible, unsafe, blocked, or otherwise not lawful."
+    },
+    {
+      "id": "rollback_downgrade_conflation",
+      "summary": "Rollback and downgrade were treated as interchangeable."
+    },
+    {
+      "id": "yanked_or_deprecated_semantics_flattened",
+      "summary": "Yanked, deprecated, superseded, rollback, and downgrade meanings were collapsed together."
+    },
+    {
+      "id": "receipt_continuity_missing",
+      "summary": "Canary or downgrade movement cannot be reconstructed canonically."
+    },
+    {
+      "id": "review_or_privilege_blocked",
+      "summary": "The action remains gated regardless of technical feasibility."
+    },
+    {
+      "id": "runtime_boundary_overclaim",
+      "summary": "The rollout or downgrade claim exceeds current lifecycle, replay, snapshot, isolation, or coexistence maturity."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "doctrine frozen in this artifact",
+      "upstream governance, runtime, and release doctrine",
+      "canonical release identity, contract-profile, resolution, and transaction receipts",
+      "lawful review and safety posture"
+    ],
+    "derived": [
+      "dashboards",
+      "CI summaries",
+      "local tool output",
+      "generated update feeds",
+      "filenames",
+      "human summaries"
+    ]
+  },
+  "prohibited_canary_downgrade_shapes": [
+    "canary treated as vague small rollout folklore",
+    "downgrade treated as prior version by convenience",
+    "target family alone treated as sufficient downgrade compatibility",
+    "channel membership alone treated as sufficient canary legality",
+    "canary success treated as proof of hotswap readiness",
+    "dashboards or CI wrappers treated as canary doctrine",
+    "rollback downgrade yank and deprecation treated as interchangeable",
+    "staged exposure with no continuity-compatible receipt trail",
+    "tool convenience silently redefining deterministic downgrade semantics"
+  ],
+  "repo_evidence_surfaces": [
+    "release/update_resolver.py",
+    "release/component_graph_resolver.py",
+    "repo/release_policy.toml",
+    "updates/stable.json",
+    "updates/beta.json",
+    "updates/pinned.json",
+    "updates/README.md",
+    "data/registries/release_channel_registry.json",
+    "data/registries/release_resolution_policy_registry.json",
+    "data/registries/install_profile_registry.json",
+    "data/registries/target_matrix_registry.json",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/trust_root_registry.json",
+    "data/registries/refusal_code_registry.json",
+    "data/registries/remediation_playbooks.json",
+    "tools/controlx/README.md",
+    "tools/xstack/testx/tests/test_rollback_restores_previous_component_set.py",
+    "tools/xstack/testx/tests/test_update_plan_excludes_yanked.py",
+    "tools/xstack/testx/tests/test_yanked_excluded_from_latest.py",
+    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
+  ],
+  "ambiguities_eliminated": [
+    "canary_is_not_generic_rollout_folklore",
+    "downgrade_is_not_prior_version_by_convenience",
+    "rehearsal_is_not_live_permission",
+    "canary_success_is_not_hotswap_readiness"
+  ],
+  "downstream_refinement_prompts": [
+    "Υ-C2 - PUBLICATION_AND_TRUST_EXECUTION_MATURITY-0",
+    "next checkpoint before Φ-B4",
+    "Φ-B4 - HOTSWAP_BOUNDARIES-0",
+    "Φ-B5 - DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "future Ζ planning"
+  ]
+}
