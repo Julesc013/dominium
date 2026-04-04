@@ -1,0 +1,231 @@
+{
+  "model": {
+    "model_id": "dominium.release.operator_transaction_receipts_and_provenance_continuity",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-04",
+    "prompt_series_id": "upsilon-b1",
+    "prompt_title": "OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY-0",
+    "checkpoint_state": "post-upsilon-a / post-phi-b3 / in-narrow-upsilon-b-band / pre-risky-phi-b4-and-phi-b5"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_TASKS.md",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/agents/MCP_INTERFACE_MODEL.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md"
+    ],
+    "release_doctrine": [
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
+      "docs/release/ARCHIVE_AND_RETENTION_POLICY.md"
+    ]
+  },
+  "receipt_class_identifiers": [
+    {
+      "id": "selection_receipt",
+      "summary": "Captures selection-affecting actions with release identity, compatibility, and resolution context."
+    },
+    {
+      "id": "downgrade_or_rollback_receipt",
+      "summary": "Captures governed backward moves or recorded state restoration with reversibility anchors."
+    },
+    {
+      "id": "yank_deprecation_supersession_receipt",
+      "summary": "Captures visibility, preference, warning, or preferred-successor changes without erasing history."
+    },
+    {
+      "id": "recovery_or_remediation_receipt",
+      "summary": "Captures bounded corrective action after failed, partial, blocked, or unsafe outcomes."
+    },
+    {
+      "id": "publication_or_trust_adjacent_receipt",
+      "summary": "Captures publication, trust, licensing, or visibility transitions where later doctrine permits them."
+    },
+    {
+      "id": "rehearsal_receipt",
+      "summary": "Captures explicitly non-live rehearsal, dry-run, preflight, or structural validation outcomes."
+    },
+    {
+      "id": "non_mutating_inspection_receipt",
+      "summary": "Captures attributable inspection or readiness evaluation where later doctrine requires formal evidence."
+    }
+  ],
+  "receipt_element_categories": [
+    "actor_or_authority_class",
+    "transaction_class_and_intent",
+    "target_release_or_artifact_scope",
+    "release_identity_facts",
+    "release_contract_profile_facts",
+    "release_index_and_resolution_facts",
+    "target_family_and_exact_target_facts",
+    "channel_or_lane_facts",
+    "upstream_doctrine_inputs_relied_on",
+    "preconditions_and_validations",
+    "rehearsal_status_and_rehearsal_class",
+    "review_or_privilege_posture",
+    "result_state_or_explicit_no_change",
+    "reversibility_or_downgrade_posture",
+    "archive_and_mirror_consequences",
+    "refusal_or_blocked_outcome",
+    "timestamps_sequence_anchors_and_identifiers",
+    "prior_receipt_or_history_linkage"
+  ],
+  "provenance_continuity_categories": [
+    {
+      "id": "release_identity_linkage",
+      "summary": "Continuity must preserve linkage back to the exact release identity affected."
+    },
+    {
+      "id": "compatibility_and_selection_context",
+      "summary": "Continuity must preserve the real contract-profile and resolution envelope used."
+    },
+    {
+      "id": "operator_action_reconstructability",
+      "summary": "Continuity must preserve what action happened, why, and under what review posture."
+    },
+    {
+      "id": "archive_history_linkage",
+      "summary": "Continuity must preserve how retained archive records and history snapshots connect to operator actions."
+    },
+    {
+      "id": "mirror_visibility_distinguished_from_existence",
+      "summary": "Continuity must preserve that mirror visibility is not equivalent to release existence or action completeness."
+    },
+    {
+      "id": "downgrade_rollback_yank_supersession_traceability",
+      "summary": "Continuity must preserve how state changed over time without collapsing into version-string folklore."
+    },
+    {
+      "id": "blocked_or_refused_outcome_traceability",
+      "summary": "Continuity must preserve why a governed action did not proceed, not only why one did."
+    }
+  ],
+  "rehearsal_live_distinction_notes": {
+    "rule": "Rehearsal receipts are canonical evidence of non-live execution posture and must never be silently promoted into live completion receipts.",
+    "examples": [
+      "dry_run_planning_result",
+      "structural_validation_result",
+      "compatibility_rehearsal_result",
+      "operator_transaction_rehearsal_result"
+    ]
+  },
+  "safety_release_parity_runtime_caution_categories": {
+    "safety_and_review": [
+      "receipt_does_not_create_permission",
+      "review_posture_must_remain_visible",
+      "refusal_and_blocked_outcomes_require_structured_evidence"
+    ],
+    "release_control": [
+      "release_contract_profile_remains_upstream",
+      "release_index_and_resolution_remain_upstream",
+      "raw_version_strings_are_insufficient",
+      "channel_or_lane_labels_are_insufficient",
+      "archive_presence_does_not_equal_continuity"
+    ],
+    "parity_and_rehearsal": [
+      "manual_and_automated_paths_should_produce_compatible_receipt_classes_where_parity_is_required",
+      "rehearsal_receipts_must_remain_distinct_from_live_receipts"
+    ],
+    "runtime": [
+      "runtime_cutover_maturity_must_not_be_overclaimed",
+      "lifecycle_replay_snapshot_and_isolation_boundaries_must_remain_explicit",
+      "coexistence_does_not_by_itself_prove_hotswap_or_distributed_authority_readiness"
+    ]
+  },
+  "invalidity_failure_categories": [
+    "missing_receipt",
+    "partial_receipt",
+    "noncanonical_receipt_only",
+    "ambiguous_target_or_scope",
+    "profile_context_missing",
+    "resolution_context_missing",
+    "review_or_authority_posture_missing",
+    "rehearsal_live_confusion",
+    "archive_presence_without_receipt_continuity",
+    "mirror_visibility_without_receipt_continuity",
+    "contradictory_receipt_chain",
+    "non_reconstructable_history",
+    "runtime_boundary_overclaim"
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical_surfaces": [
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "data/release/operator_transaction_receipts_and_provenance_registry.json",
+      "governed operator transaction records where later doctrine explicitly defines them",
+      "canonical release identity, release contract profile, release index, and archive-history linkage where referenced by a governed receipt"
+    ],
+    "derived_or_projection_surfaces": [
+      "generic logs",
+      "dashboards",
+      "ui summaries",
+      "cli summaries",
+      "filenames",
+      "mirror layout",
+      "updates/changelog.json",
+      "checkpoint bundles",
+      "convenience reports"
+    ],
+    "rule": "Derived surfaces may summarize continuity evidence but may not redefine canonical receipt truth or replace missing receipts."
+  },
+  "prohibited_receipt_shapes": [
+    "operator_action_with_no_receipt_where_receipt_is_required",
+    "logs_treated_as_receipts",
+    "archive_presence_treated_as_full_provenance_continuity",
+    "mirror_existence_treated_as_receipt",
+    "changelog_prose_treated_as_full_control_plane_history",
+    "dashboard_or_ui_summary_treated_as_canonical_receipt",
+    "rehearsal_receipt_treated_as_live_completion_receipt",
+    "downgrade_or_rollback_recorded_only_as_new_version_string",
+    "receipt_omits_review_or_compatibility_context_for_governed_action",
+    "receipt_chain_silently_rewrites_history"
+  ],
+  "repo_evidence_surfaces": [
+    "release/update_resolver.py",
+    "release/archive_policy.py",
+    "repo/release_policy.toml",
+    "updates/README.md",
+    "updates/changelog.json",
+    "docs/release/ARCHIVE_AND_RETENTION_POLICY.md",
+    "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+    "data/registries/provenance_classification_registry.json",
+    "data/registries/provenance_event_type_registry.json",
+    "data/registries/deprecation_registry.json",
+    "data/registries/remediation_playbooks.json",
+    "data/registries/refusal_code_registry.json",
+    "data/registries/refusal_to_exit_registry.json"
+  ],
+  "ambiguities_eliminated": [
+    "logs do not equal receipts",
+    "archive presence does not equal provenance continuity",
+    "changelog prose does not equal full receipt continuity",
+    "rehearsal receipt does not equal live execution receipt"
+  ],
+  "downstream_refinement_prompts": [
+    "Υ-B2",
+    "next checkpoint before Φ-B4",
+    "later guarded reassessment of Φ-B4 and Φ-B5",
+    "future zeta blocker reduction"
+  ]
+}
