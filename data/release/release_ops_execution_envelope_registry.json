@@ -1,0 +1,269 @@
+{
+  "model": {
+    "model_id": "dominium.release.release_ops_execution_envelope",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-04",
+    "prompt_series_id": "upsilon-b2",
+    "prompt_title": "RELEASE_OPS_EXECUTION_ENVELOPE-0",
+    "checkpoint_state": "post-upsilon-a / post-phi-b3 / post-upsilon-b1 / pre-next-checkpoint-before-phi-b4"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_TASKS.md",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/agents/MCP_INTERFACE_MODEL.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md"
+    ],
+    "release_doctrine": [
+      "docs/release/BUILD_GRAPH_LOCK.md",
+      "docs/release/VERSIONING_CONSTITUTION.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md"
+    ]
+  },
+  "action_class_identifiers": [
+    {
+      "id": "inspect_only",
+      "summary": "Read or surface current release, operator, archive, trust, or receipt state without authoritative mutation."
+    },
+    {
+      "id": "planning_only",
+      "summary": "Describe intended work, readiness, or review posture without authoritative mutation."
+    },
+    {
+      "id": "rehearseable",
+      "summary": "Exercise dry-run, preflight, or simulation semantics without claiming live completion."
+    },
+    {
+      "id": "validateable",
+      "summary": "Check admissibility, completeness, or compatibility without necessarily performing live mutation."
+    },
+    {
+      "id": "bounded_mutation",
+      "summary": "Perform scoped control-plane or support mutation without crossing public-commitment, trust-root, or live-runtime cutover boundaries."
+    },
+    {
+      "id": "review_gated_execution",
+      "summary": "Execute only under explicit human review because continuity, visibility, or rollback consequences are too high for routine mutation."
+    },
+    {
+      "id": "privileged_execution",
+      "summary": "Execute only under privileged operator posture because the action changes publication, trust, licensing, or comparable external commitment meaning."
+    },
+    {
+      "id": "non_executable_or_prohibited",
+      "summary": "Remain blocked or forbidden under current maturity even if a tool can describe the action."
+    }
+  ],
+  "evaluation_dimension_identifiers": [
+    {
+      "id": "blast_radius",
+      "summary": "How much release, operator, archive, trust, or user-visible state can be affected."
+    },
+    {
+      "id": "reversibility",
+      "summary": "Whether the action is reversible, partially reversible, or effectively irreversible."
+    },
+    {
+      "id": "receipt_and_provenance_requirement",
+      "summary": "What canonical receipt and continuity evidence must exist before and after the action."
+    },
+    {
+      "id": "release_identity_impact",
+      "summary": "Whether the action changes identity, visibility, selection, or only inspection posture."
+    },
+    {
+      "id": "compatibility_envelope_impact",
+      "summary": "Whether the action depends on or changes admissibility relative to release contract profile and resolution law."
+    },
+    {
+      "id": "archive_and_mirror_impact",
+      "summary": "Whether the action changes retention, visibility, availability, or continuity interpretation."
+    },
+    {
+      "id": "publication_and_trust_impact",
+      "summary": "Whether the action changes external commitment, authenticity posture, or rights posture."
+    },
+    {
+      "id": "runtime_sensitivity_impact",
+      "summary": "Whether lifecycle, replay, snapshot, isolation, or coexistence assumptions are implicated."
+    },
+    {
+      "id": "parity_and_rehearsal_availability",
+      "summary": "Whether lawful manual/automation parity and meaningful rehearsal exist."
+    },
+    {
+      "id": "human_review_requirement",
+      "summary": "Whether execution requires review, privileged approval, or remains blocked."
+    }
+  ],
+  "receipt_provenance_requirement_categories": [
+    {
+      "id": "inspection_trace_optional_or_local",
+      "summary": "Inspection may emit support evidence without implying full operator transaction continuity."
+    },
+    {
+      "id": "rehearsal_receipt_required",
+      "summary": "Rehearsal or dry-run must remain explicitly non-live in its evidence shape."
+    },
+    {
+      "id": "validation_evidence_required",
+      "summary": "Validation posture must preserve what was checked and under which policy surface."
+    },
+    {
+      "id": "transaction_receipt_required",
+      "summary": "Live governed operator or release-control mutation must emit canonical receipt-bearing evidence."
+    },
+    {
+      "id": "continuity_chain_required",
+      "summary": "High-impact actions must preserve linkage into later archive, rollback, visibility, and review history."
+    },
+    {
+      "id": "blocked_if_receipt_continuity_unavailable",
+      "summary": "Some actions cannot lawfully proceed if the required continuity evidence cannot be preserved."
+    }
+  ],
+  "runtime_sensitivity_categories": [
+    {
+      "id": "runtime_neutral",
+      "summary": "No meaningful lifecycle, replay, snapshot, isolation, or coexistence consequence."
+    },
+    {
+      "id": "release_resolution_sensitive",
+      "summary": "Touches release selection and compatibility without directly asserting live runtime replacement."
+    },
+    {
+      "id": "archive_visibility_sensitive",
+      "summary": "Touches retention, visibility, or continuity interpretation while remaining primarily control-plane scoped."
+    },
+    {
+      "id": "runtime_boundary_adjacent",
+      "summary": "Interacts with lifecycle, replay, snapshot, isolation, or coexistence assumptions and requires caution."
+    },
+    {
+      "id": "runtime_cutover_sensitive",
+      "summary": "Would imply live cutover or restartless runtime replacement and therefore remains heavily gated."
+    },
+    {
+      "id": "distributed_authority_sensitive",
+      "summary": "Would imply authority handoff or distributed state transition and therefore remains beyond the current safe execution envelope."
+    }
+  ],
+  "blocked_or_prohibited_class_identifiers": [
+    "task_or_mcp_exposed_but_not_executable",
+    "publication_without_gate_passage",
+    "trust_root_or_signing_posture_mutation_without_privilege",
+    "licensing_posture_mutation_without_review",
+    "live_cutover_claim_without_runtime_foundation",
+    "hotswap_by_stealth",
+    "distributed_authority_handoff_claim",
+    "receipt_continuity_missing_for_live_mutation",
+    "parity_or_rehearsal_claim_without_evidence",
+    "runtime_sensitive_action_flattened_to_metadata_edit"
+  ],
+  "relationship_rules": {
+    "task_catalog_and_mcp": [
+      "Cataloged does not mean executable.",
+      "Exposed does not mean executable.",
+      "Exposed does not mean permitted."
+    ],
+    "safety_policy": [
+      "The execution envelope refines release/control-plane posture without creating new permission.",
+      "Prohibited safety posture remains prohibited even if a tool can technically express the action."
+    ],
+    "operator_and_receipts": [
+      "Execution posture must preserve typed operator transaction meaning.",
+      "Receipt class and continuity expectations must remain visible across rehearsed, blocked, and live outcomes."
+    ],
+    "release_doctrine": [
+      "Execution posture cannot replace release identity, compatibility truth, or selection truth.",
+      "Publication, trust, and licensing gates remain upstream on external commitment posture."
+    ],
+    "runtime_doctrine": [
+      "Rehearsal does not imply live cutover approval.",
+      "Release-control execution does not prove hotswap or distributed authority readiness."
+    ]
+  },
+  "canonical_vs_derived_distinctions": {
+    "canonical_surfaces": [
+      "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+      "data/release/release_ops_execution_envelope_registry.json",
+      "upstream safety, operator, receipt, release, runtime, and checkpoint doctrine",
+      "governed execution decisions where later doctrine explicitly defines them"
+    ],
+    "derived_or_projection_surfaces": [
+      "ui flows",
+      "cli wrappers",
+      "dashboards",
+      "queue summaries",
+      "dry-run output text",
+      "generated feed summaries",
+      "helper scripts",
+      "convenience reports"
+    ],
+    "rule": "Derived surfaces may expose or summarize execution posture but may not redefine it."
+  },
+  "prohibited_execution_envelope_shapes": [
+    "cataloged_therefore_executable",
+    "exposed_therefore_executable",
+    "rehearsal_therefore_live_approved",
+    "validation_pass_therefore_privileged_execution_allowed",
+    "privileged_action_treated_like_bounded_mutation",
+    "release_control_action_treated_like_ordinary_metadata_edit",
+    "tool_wrapper_defines_execution_posture_by_convenience",
+    "dry_run_output_treated_as_live_completion",
+    "runtime_sensitive_release_action_flattened_below_runtime_doctrine",
+    "provisional_or_empty_trust_surfaces_treated_as_execution_maturity"
+  ],
+  "repo_evidence_surfaces": [
+    "tools/controlx/README.md",
+    "tools/controlx/controlx.py",
+    "tools/controlx/core/execution_router.py",
+    "tools/controlx/core/queue_runner.py",
+    "tools/xstack/sessionx/stage_parity.py",
+    "tools/xstack/testx/tests/test_dryrun_tool_runs.py",
+    "release/update_resolver.py",
+    "repo/release_policy.toml",
+    "updates/README.md",
+    "data/registries/release_resolution_policy_registry.json",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/trust_root_registry.json",
+    "data/registries/refusal_code_registry.json",
+    "data/registries/remediation_playbooks.json"
+  ],
+  "ambiguities_eliminated": [
+    "task or exposure does not equal execution authorization",
+    "rehearsal does not equal live permission",
+    "release-control actions are not all equal in risk",
+    "tool convenience does not define execution posture"
+  ],
+  "downstream_refinement_prompts": [
+    "next checkpoint before Phi-B4",
+    "later guarded reassessment of Phi-B4 and Phi-B5",
+    "later publication and trust operational doctrine",
+    "future zeta blocker reduction"
+  ]
+}
