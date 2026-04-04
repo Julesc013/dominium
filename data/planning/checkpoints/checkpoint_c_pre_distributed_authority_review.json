@@ -1,0 +1,162 @@
+{
+  "checkpoint_id": "C-PRE_DISTRIBUTED_AUTHORITY_REVIEW",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / post-upsilon-a / post-phi-b3 / post-upsilon-b / post-upsilon-c / post-phi-b4 / pre-phi-b5-or-other-next-block",
+  "reviewed_series": [
+    "Φ-B",
+    "Υ-B",
+    "Υ-C",
+    "Υ-D",
+    "Ζ"
+  ],
+  "completed_band_sufficiency": {
+    "distributed_authority_reconsideration": {
+      "judgment": "yes_for_reassessment_only",
+      "summary": "The repo now has enough runtime and control-plane law to judge distributed authority honestly, but not enough maturity to reopen Φ-B5 directly."
+    },
+    "final_control_plane_maturity_before_phi_b5": {
+      "judgment": "still_required",
+      "summary": "A final narrow Υ-D band is still the safer next block because live trust execution, revocation propagation, live-cutover receipt continuity, and publication/trust operationalization remain unfinished."
+    },
+    "zeta_blocker_reduction": {
+      "judgment": "material_but_still_incomplete",
+      "summary": "Φ-B4 closes the hotswap-boundary ambiguity, but Ζ still remains blocked by distributed authority, replication proof, live trust rotation, live revocation continuity, and live-cutover continuity gaps."
+    }
+  },
+  "ambiguities_eliminated": [
+    "finishing hotswap doctrine does not automatically make distributed authority ready",
+    "replication policy substrate does not equal lawful authority handoff",
+    "trust verification tooling does not equal live trust-rotation maturity"
+  ],
+  "phi_b5_readiness": {
+    "prompt_id": "Φ-B5",
+    "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "judgment": "blocked",
+    "summary": "Distributed authority is now reconsiderable in theory, but remains blocked on live trust execution maturity, revocation propagation continuity, live-cutover receipt generalization, publication/trust operationalization, and still-missing authority handoff, quorum, and deterministic replication proof."
+  },
+  "further_upsilon_readiness": [
+    {
+      "family_id": "upsilon.live_trust_rotation_and_revocation_propagation",
+      "proposed_prompt_id": "Υ-D0",
+      "title": "LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES-0",
+      "judgment": "ready",
+      "summary": "Trust execution and revocation continuity are explicit, and Φ-B4 now cleanly marks trust-sensitive live transitions as outside current runtime-safe boundaries."
+    },
+    {
+      "family_id": "upsilon.live_cutover_receipts_and_runtime_continuity",
+      "proposed_prompt_id": "Υ-D1",
+      "title": "LIVE_CUTOVER_RECEIPTS_AND_RUNTIME_CONTINUITY-0",
+      "judgment": "ready_with_cautions",
+      "summary": "Receipt and provenance law can now be generalized for live-cutover-adjacent continuity without letting release-control convenience redefine runtime meaning."
+    },
+    {
+      "family_id": "upsilon.publication_and_trust_operationalization",
+      "proposed_prompt_id": "Υ-D2",
+      "title": "PUBLICATION_AND_TRUST_OPERATIONALIZATION_ALIGNMENT-0",
+      "judgment": "ready_with_cautions",
+      "summary": "Publication/trust gates and trust continuity doctrine are explicit enough to align operational maturity, but the work must remain doctrinal and review-aware."
+    },
+    {
+      "family_id": "upsilon.release_controller_follow_on",
+      "proposed_prompt_id": "Υ-D3",
+      "title": "LIVE_RELEASE_CONTROLLER_AND_AUTOMATION_ALIGNMENT-0",
+      "judgment": "mostly_consolidation",
+      "summary": "Release-controller execution posture is already materially embodied and is no longer the main blocker reducer before Φ-B5."
+    }
+  ],
+  "zeta_blockers_or_prerequisites": [
+    {
+      "blocker_id": "phi_b5_distributed_authority_foundations",
+      "status": "open",
+      "summary": "Authority handoff, distributed replay verification, proof-anchor quorum, and shard relocation semantics remain unresolved."
+    },
+    {
+      "blocker_id": "deterministic_replication_and_state_partition_transfer_proofs",
+      "status": "open",
+      "summary": "Replication policy substrate exists, but deterministic replication proof and state-partition transfer proof do not."
+    },
+    {
+      "blocker_id": "live_trust_root_rotation_prerequisites",
+      "status": "open",
+      "summary": "Trust roots remain empty and trust policies remain provisional."
+    },
+    {
+      "blocker_id": "live_revocation_propagation_and_continuity",
+      "status": "open_with_cautions",
+      "summary": "Revocation continuity is explicit, but live propagation and runtime-facing trust transition choreography remain unproven."
+    },
+    {
+      "blocker_id": "live_cutover_receipt_and_provenance_generalization",
+      "status": "open",
+      "summary": "Receipts are explicit for release/control transactions, but not yet generalized across live-cutover runtime continuity."
+    },
+    {
+      "blocker_id": "publication_and_trust_execution_operationalization",
+      "status": "open_with_cautions",
+      "summary": "Gates and trust doctrine exist, but live publication/trust execution posture remains review-heavy and unimplemented."
+    },
+    {
+      "blocker_id": "runtime_cutover_proof_under_lawful_hotswap_boundaries",
+      "status": "open",
+      "summary": "Hotswap law is explicit now, but runtime cutover proof still remains unproven in operation."
+    },
+    {
+      "blocker_id": "distributed_trust_and_authority_convergence",
+      "status": "open",
+      "summary": "Nothing yet proves distributed trust acceptance, revocation behavior, and authority convergence under handoff."
+    }
+  ],
+  "extension_over_replacement_directives": {
+    "phi_b5_must_extend": [
+      "docs/runtime/HOTSWAP_BOUNDARIES.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+      "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md"
+    ],
+    "further_upsilon_must_extend": [
+      "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+      "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+      "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+      "security/trust/trust_verifier.py",
+      "release/update_resolver.py",
+      "repo/release_policy.toml"
+    ],
+    "must_avoid_replacing": [
+      "canonical ownership-sensitive roots",
+      "runtime boundary law with control-plane folklore",
+      "trust truth with mirror or archive visibility",
+      "checkpoint authority with stale planning drift"
+    ]
+  },
+  "ownership_projection_cautions": [
+    "fields/ remains canonical semantic field substrate while field/ remains transitional",
+    "schema/ remains canonical semantic contract law while schemas/ remains projection-facing",
+    "packs/ remains canonical for runtime packaging and activation scope while data/packs/ remains scoped authored-pack authority",
+    "canonical prose and semantic specs outrank projected or generated mirrors",
+    "the thin runtime/ root is not canonical by name alone",
+    "release, archive, mirror, publication, trust, and tooling convenience must not infer canon or permission",
+    "older planning numbering drift remains evidence rather than authority"
+  ],
+  "final_verdict": {
+    "status": "proceed_to_further_upsilon_work_first",
+    "reason": "Φ-B4 closes the runtime boundary ambiguity that previously kept distributed authority premature, but the repo still needs one final live trust and live-cutover continuity maturity band before Φ-B5 becomes a safe next move.",
+    "selected_ordering_mode": "further_upsilon_work_first"
+  },
+  "recommended_next_prompt": "Υ-D0 — LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES-0",
+  "notes_on_identifier_policy": [
+    "Stable family identifiers remain preferred over stale older Υ numbering in legacy planning mirrors.",
+    "Υ-D labels are now intentionally carried forward as the active names for the final narrow maturity band before any reconsideration of Φ-B5."
+  ],
+  "stability": {
+    "status": "canonical",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-05"
+  }
+}

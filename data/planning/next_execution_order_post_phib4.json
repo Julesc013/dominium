@@ -1,0 +1,154 @@
+{
+  "plan_id": "next_execution_order_post_phib4",
+  "checkpoint_basis": "C-PRE_DISTRIBUTED_AUTHORITY_REVIEW",
+  "checkpoint_state": "post-lambda / post-sigma-b / post-safe-phi-b / post-upsilon-a / post-phi-b3 / post-upsilon-b / post-upsilon-c / post-phi-b4 / pre-phi-b5-or-other-next-block",
+  "recommended_next_prompt": "Υ-D0 — LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES-0",
+  "selected_ordering_mode": "further_upsilon_work_first",
+  "order": [
+    {
+      "sequence": 1,
+      "prompt_id": "Υ-D0",
+      "title": "LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES-0",
+      "readiness_status": "ready",
+      "dependencies": [
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "data/registries/trust_root_registry.json",
+        "data/registries/trust_policy_registry.json"
+      ],
+      "human_review_requirements": [
+        "doctrine-only scope",
+        "preserve trust truth versus visibility distinctions",
+        "retain FULL review posture for trust-root governance changes"
+      ],
+      "stop_conditions": [
+        "required Υ-D0 doctrine artifacts exist",
+        "no live trust-rotation or revocation systems were implemented"
+      ],
+      "notes": [
+        "This is the best next blocker reducer because live trust execution maturity is now the narrowest unresolved prerequisite before distributed authority can be reconsidered."
+      ]
+    },
+    {
+      "sequence": 2,
+      "prompt_id": "Υ-D1",
+      "title": "LIVE_CUTOVER_RECEIPTS_AND_RUNTIME_CONTINUITY-0",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+        "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+        "docs/runtime/LIFECYCLE_MANAGER.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md"
+      ],
+      "human_review_requirements": [
+        "doctrine-only scope",
+        "do not let control-plane continuity redefine runtime meaning",
+        "preserve replay, snapshot, isolation, coexistence, and trust floors"
+      ],
+      "stop_conditions": [
+        "required Υ-D1 doctrine artifacts exist",
+        "no live-cutover or runtime implementation work was performed"
+      ],
+      "notes": [
+        "This prompt becomes safe enough only after Φ-B4 froze the runtime boundary grammar."
+      ]
+    },
+    {
+      "sequence": 3,
+      "prompt_id": "Υ-D2",
+      "title": "PUBLICATION_AND_TRUST_OPERATIONALIZATION_ALIGNMENT-0",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+        "release/update_resolver.py",
+        "repo/release_policy.toml"
+      ],
+      "human_review_requirements": [
+        "doctrine-only scope",
+        "do not treat visibility or archive presence as trust truth",
+        "preserve review-heavy posture for live publication or trust execution"
+      ],
+      "stop_conditions": [
+        "required Υ-D2 doctrine artifacts exist",
+        "no publication or trust execution systems were implemented"
+      ],
+      "notes": [
+        "This is the last selected Υ-D step before a new checkpoint."
+      ]
+    },
+    {
+      "sequence": 4,
+      "prompt_id": "C-ΥD_SAFE_REVIEW",
+      "title": "POST_LIVE_TRUST_AND_CUTOVER_REASSESSMENT-0",
+      "readiness_status": "required_after_selected_upsilon_d_band",
+      "dependencies": [
+        "completed Υ-D0",
+        "completed Υ-D1",
+        "completed Υ-D2"
+      ],
+      "human_review_requirements": [
+        "explicit reassessment before Φ-B5",
+        "explicit reassessment of whether Υ-D3 remains needed"
+      ],
+      "stop_conditions": [
+        "Φ-B5 readiness is restated explicitly",
+        "remaining Ζ blockers are narrowed again"
+      ],
+      "notes": [
+        "No movement toward Φ-B5 should occur without this checkpoint."
+      ]
+    },
+    {
+      "sequence": 5,
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+      "readiness_status": "blocked",
+      "dependencies": [
+        "completed selected Υ-D band",
+        "favorable post-Υ-D checkpoint",
+        "distributed trust and authority continuity reassessment"
+      ],
+      "human_review_requirements": [
+        "retain strong checkpoint gating",
+        "do not reopen without explicit positive verdict"
+      ],
+      "stop_conditions": [
+        "stay blocked until explicitly reopened by later checkpoint"
+      ],
+      "notes": [
+        "Distributed authority remains out of order from the current state."
+      ]
+    }
+  ],
+  "why_better_than_alternatives": [
+    "Φ-B4 closed the runtime cutover-boundary ambiguity, so the remaining blocker concentration is now trust and live-cutover continuity maturity.",
+    "A final narrow Υ-D band is smaller and safer than reopening Φ-B5 directly.",
+    "Jumping straight to Φ-B5 would still outrun live trust rotation, revocation propagation, and live-cutover receipt maturity."
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "prompt_id": "Φ-B5",
+      "status": "blocked",
+      "summary": "Distributed authority remains blocked by missing authority handoff, proof-anchor quorum semantics, replication proof, and live trust convergence maturity."
+    },
+    {
+      "prompt_id": "Υ-D3",
+      "status": "mostly_consolidation",
+      "summary": "Live release-controller alignment is not the selected next step and should remain conditional on the post-Υ-D checkpoint."
+    },
+    {
+      "prompt_id": "Ζ-7",
+      "status": "dangerous",
+      "summary": "Shard relocation and distributed live-ops work remain well beyond the current maturity floor."
+    }
+  ],
+  "stability": {
+    "status": "canonical",
+    "stability_class": "provisional",
+    "last_reviewed": "2026-04-05"
+  }
+}
