@@ -1,0 +1,253 @@
+{
+  "artifact_id": "dominium.runtime.distributed_replay_and_proof_anchor_verification_doctrine",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-05",
+  "checkpoint_context": {
+    "state": "post_zeta_p_bounded_zeta_a_first_wave",
+    "enabling_prompt": "Ζ-A1 — DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION-0",
+    "checkpoint_judgment": "ready_with_cautions",
+    "upstream_gate_class_id": "admitted_with_cautions",
+    "active_first_wave_perimeter": [
+      "zeta.family.rollback_bearing_staged_transition_validation",
+      "zeta.family.distributed_replay_and_proof_anchor_verification",
+      "zeta.family.bounded_runtime_cutover_proof_rehearsal"
+    ],
+    "active_guardrail_note": "This family is admitted only with tighter proof-only guardrails and may not widen itself into deterministic replication, authority transfer, trust convergence, or live cutover realization."
+  },
+  "required_planning_inputs": [
+    "CHECKPOINT_C_PRE_ZETA_ADMISSION",
+    "CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW",
+    "NEXT_EXECUTION_ORDER_POST_ZP",
+    "ZETA_BLOCKER_RECONCILIATION",
+    "LIVE_OPERATIONS_PREREQUISITE_MATRIX",
+    "ZETA_EXECUTION_GATES",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "SEMANTIC_OWNERSHIP_REVIEW"
+  ],
+  "required_runtime_inputs": [
+    "DISTRIBUTED_AUTHORITY_FOUNDATIONS",
+    "ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION",
+    "EVENT_LOG_AND_REPLAY_DOCTRINE",
+    "SNAPSHOT_SERVICE_DOCTRINE",
+    "HOTSWAP_BOUNDARIES",
+    "LIFECYCLE_MANAGER",
+    "STATE_EXTERNALIZATION",
+    "SANDBOXING_AND_ISOLATION_MODEL",
+    "MULTI_VERSION_COEXISTENCE"
+  ],
+  "required_release_inputs": [
+    "LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION",
+    "LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES",
+    "PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES",
+    "TRUST_EXECUTION_AND_REVOCATION_CONTINUITY",
+    "OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY",
+    "RELEASE_CONTRACT_PROFILE",
+    "RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT"
+  ],
+  "repo_evidence_roots": [
+    "server/shard/shard_api.h",
+    "server/shard/dom_cross_shard_log.h",
+    "server/net/dom_server_protocol.h",
+    "server/net/dom_server_runtime.h",
+    "data/registries/net_replication_policy_registry.json",
+    "data/registries/provenance_classification_registry.json",
+    "data/registries/provenance_event_type_registry.json"
+  ],
+  "proof_only_guardrails": [
+    "verification_only_and_no_live_authority_movement",
+    "no_state_partition_transfer_or_live_shard_relocation_semantics",
+    "no_claim_that_cross_shard_logs_or_replication_policies_alone_prove_continuity",
+    "no_claim_that_proof_anchor_continuity_or_quorum_semantics_are_realized",
+    "no_claim_that_deterministic_replication_is_realized",
+    "outputs_remain_blocker_reduction_evidence_not_gate_passage_or_realization_evidence"
+  ],
+  "verification_class_identifiers": [
+    {
+      "id": "replay_continuity_verification",
+      "description": "Verify whether replay-relevant history remains reconstructable across a bounded distributed horizon."
+    },
+    {
+      "id": "proof_anchor_chain_verification",
+      "description": "Verify whether declared proof-anchor chains remain attributable, coherent, and non-contradictory."
+    },
+    {
+      "id": "cross_partition_continuity_verification",
+      "description": "Verify bounded continuity claims across more than one shard, partition, or authority-region-adjacent horizon without claiming live handoff."
+    },
+    {
+      "id": "replay_window_equivalence_verification",
+      "description": "Verify whether replay windows are lawfully equivalent, superseding, or continuity-linked under explicit criteria."
+    },
+    {
+      "id": "bounded_continuity_refusal_verification",
+      "description": "Verify explicit refusal, blocked, or out-of-scope outcomes when continuity criteria are missing or contradictory."
+    },
+    {
+      "id": "proof_only_non_realization_verification",
+      "description": "Verify that proof packets preserve explicit non-realization posture and do not drift into operational claims."
+    }
+  ],
+  "evidence_proof_class_identifiers": [
+    {
+      "id": "replay_window_evidence",
+      "description": "Evidence identifying replay horizon, sequencing posture, lifecycle posture, and replay boundary markers."
+    },
+    {
+      "id": "checkpoint_and_snapshot_anchor_evidence",
+      "description": "Evidence linking replay claims to lawful checkpoints, snapshots, or continuity anchors without collapsing their meanings."
+    },
+    {
+      "id": "proof_anchor_lineage_evidence",
+      "description": "Evidence showing declared lineage posture among proof anchors, replay windows, receipts, and authority-region identity."
+    },
+    {
+      "id": "continuity_mismatch_evidence",
+      "description": "Evidence that continuity claims are contradictory, incomplete, non-equivalent, or non-reconstructable."
+    },
+    {
+      "id": "receipt_and_provenance_linkage_evidence",
+      "description": "Evidence that canonical operator or generalized live-cutover receipt lineage remains reconstructable where required."
+    },
+    {
+      "id": "refusal_evidence",
+      "description": "Evidence that the lawful result is refusal, blocked status, partial status, or out-of-scope classification."
+    },
+    {
+      "id": "non_convergence_or_out_of_scope_evidence",
+      "description": "Evidence that a claim drifted into replication, transfer, convergence, or other later-wave realization territory."
+    }
+  ],
+  "blocker_baseline_dependence": {
+    "may_operate_while_open": [
+      "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "zeta.blocker.live_cutover_receipt_pipeline_realization"
+    ],
+    "may_contribute_bounded_evidence_toward": [
+      "distributed_replay_continuity_verification_criteria",
+      "proof_anchor_lineage_and_refusal_criteria",
+      "bounded_replay_window_equivalence_rules",
+      "later_cutover_proof_and_continuity_packet_expectations"
+    ],
+    "must_not_claim_to_resolve": [
+      "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "zeta.blocker.live_trust_revocation_publication_execution_realization",
+      "zeta.blocker.live_cutover_receipt_pipeline_realization"
+    ],
+    "gate_freeze_dependency": "This family remains subordinate to the Z-P2 admitted_with_cautions gate and the tighter proof-only guardrails frozen by C-ZETA_A_ADMISSION_REVIEW."
+  },
+  "runtime_release_trust_dependence_notes": {
+    "runtime": [
+      "Lifecycle legality remains binding.",
+      "State externalization remains binding.",
+      "Replay intelligibility remains binding.",
+      "Snapshot legality remains binding.",
+      "Isolation, coexistence, hotswap boundaries, and distributed-authority foundations remain binding.",
+      "No verification packet may hide truth in undocumented local state.",
+      "No continuity proof may present checkpoint or cross-shard substrate as if authority handoff were already lawful."
+    ],
+    "release_control": [
+      "Operator transaction doctrine remains upstream where relevant.",
+      "Generalized live-cutover receipts and provenance remain upstream.",
+      "Release contract profile, release-index semantics, and exact bounded scope remain reconstructable where required.",
+      "Archive presence, mirror visibility, ordinary logs, and CI output are insufficient as canonical distributed continuity proof."
+    ],
+    "trust": [
+      "Trust-relevant conditions may be checked only within bounded proof-only posture.",
+      "Distributed trust convergence, live revocation propagation, live trust execution, and publication execution remain unrealized.",
+      "Trust-aware verification is not trust realization."
+    ]
+  },
+  "doctrine_admission_verification_realization_distinctions": {
+    "doctrine": "Defines what distributed replay and proof-anchor verification constitutionally means.",
+    "admission": "The family is admitted only with cautions inside the bounded first-wave perimeter.",
+    "verification": "The family may produce replay, anchor-chain, continuity, equivalence, refusal, and explicit non-realization verification outcomes.",
+    "realization": "Deterministic replication, state-partition transfer, distributed trust convergence, live cutover pipeline realization, and broader distributed live operations remain outside this family."
+  },
+  "invalidity_failure_categories": [
+    {
+      "id": "proof_only_scope_expanded",
+      "description": "The work drifted into replication, transfer, convergence, or live cutover claims."
+    },
+    {
+      "id": "local_or_partial_evidence_only",
+      "description": "Only local traces, partial replay windows, or non-canonical evidence were provided."
+    },
+    {
+      "id": "proof_anchor_chain_missing_or_incoherent",
+      "description": "Declared proof-anchor linkage is absent, contradictory, or non-reconstructable."
+    },
+    {
+      "id": "replay_window_non_equivalent",
+      "description": "Replay windows claimed as equivalent are not lawfully comparable."
+    },
+    {
+      "id": "continuity_mismatch_detected",
+      "description": "Continuity claim conflicts with event, message, checkpoint, snapshot, or receipt posture."
+    },
+    {
+      "id": "receipt_or_provenance_link_missing",
+      "description": "Canonical linkage to operator or generalized receipt/provenance posture is absent where required."
+    },
+    {
+      "id": "trust_or_revocation_overclaim",
+      "description": "Verification packet silently turned into trust realization or revocation realization."
+    },
+    {
+      "id": "out_of_scope_for_first_wave",
+      "description": "The candidate belongs to later-wave, blocked, or future-only families instead of this one."
+    },
+    {
+      "id": "inconclusive_or_blocked",
+      "description": "The proof packet is insufficient to support either affirmative continuity or a narrower lawful conclusion."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "this doctrine",
+      "upstream checkpoint, blocker, matrix, gate, and Z-A0 doctrine",
+      "canonical verification packets, refusal packets, and bounded proof packets later defined under this doctrine",
+      "canonical operator transaction and generalized receipt records where relevant"
+    ],
+    "derived": [
+      "dashboards",
+      "local traces",
+      "ad hoc harness output",
+      "logs",
+      "mirror or publication views",
+      "filenames",
+      "convenience summaries"
+    ]
+  },
+  "prohibited_scope_expansion_shapes": [
+    "verification_treated_as_realization",
+    "proof_anchor_existence_treated_as_convergence_realization",
+    "replay_continuity_proof_treated_as_deterministic_replication_realization",
+    "cross_shard_log_presence_treated_as_lawful_distributed_continuity_proof",
+    "bounded_first_wave_used_to_smuggle_in_state_transfer_or_live_shard_relocation",
+    "unresolved_blockers_silently_treated_as_solved",
+    "local_traces_or_one_harness_format_treated_as_architectural_canon",
+    "first_wave_admission_rewritten_as_broader_zeta_readiness"
+  ],
+  "ambiguities_eliminated": [
+    "replay_verification_is_not_distributed_replay_realization",
+    "proof_anchor_verification_is_not_authority_convergence_realization",
+    "first_wave_admission_is_not_broader_zeta_readiness",
+    "evidence_exists_is_not_blocker_resolved"
+  ],
+  "downstream_refinement_prompts": [
+    "Ζ-A2 — BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL-0",
+    "C-POST_ZETA_A_FIRST_WAVE_REVIEW",
+    "later bounded Ζ-A family doctrine prompts",
+    "later broader Ζ planning that must preserve proof-only versus realization distinctions"
+  ]
+}
