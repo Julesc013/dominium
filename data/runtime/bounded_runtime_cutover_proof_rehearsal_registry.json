@@ -1,0 +1,258 @@
+{
+  "artifact_id": "dominium.runtime.bounded_runtime_cutover_proof_rehearsal_doctrine",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-05",
+  "checkpoint_context": {
+    "state": "post_zeta_p_bounded_zeta_a_first_wave",
+    "enabling_prompt": "Ζ-A2 — BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL-0",
+    "checkpoint_judgment": "ready_with_cautions",
+    "upstream_gate_class_id": "admitted_with_cautions",
+    "active_first_wave_perimeter": [
+      "zeta.family.rollback_bearing_staged_transition_validation",
+      "zeta.family.distributed_replay_and_proof_anchor_verification",
+      "zeta.family.bounded_runtime_cutover_proof_rehearsal"
+    ],
+    "active_guardrail_note": "This family is admitted only with tighter proof-only guardrails and may not widen itself into live cutover realization, authority handoff, state transfer, trust convergence, or live receipt-pipeline realization."
+  },
+  "required_planning_inputs": [
+    "CHECKPOINT_C_PRE_ZETA_ADMISSION",
+    "CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW",
+    "NEXT_EXECUTION_ORDER_POST_ZP",
+    "ZETA_BLOCKER_RECONCILIATION",
+    "LIVE_OPERATIONS_PREREQUISITE_MATRIX",
+    "ZETA_EXECUTION_GATES",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "SEMANTIC_OWNERSHIP_REVIEW"
+  ],
+  "required_runtime_inputs": [
+    "DISTRIBUTED_AUTHORITY_FOUNDATIONS",
+    "HOTSWAP_BOUNDARIES",
+    "ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION",
+    "DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION",
+    "EVENT_LOG_AND_REPLAY_DOCTRINE",
+    "SNAPSHOT_SERVICE_DOCTRINE",
+    "LIFECYCLE_MANAGER",
+    "STATE_EXTERNALIZATION",
+    "SANDBOXING_AND_ISOLATION_MODEL",
+    "MULTI_VERSION_COEXISTENCE"
+  ],
+  "required_release_inputs": [
+    "LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION",
+    "LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES",
+    "PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES",
+    "TRUST_EXECUTION_AND_REVOCATION_CONTINUITY",
+    "OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY",
+    "RELEASE_CONTRACT_PROFILE",
+    "RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT"
+  ],
+  "repo_evidence_roots": [
+    "server/net/dom_server_runtime.h",
+    "server/net/dom_server_protocol.h",
+    "server/shard/dom_shard_lifecycle.h",
+    "server/shard/dom_cross_shard_log.h",
+    "data/registries/net_replication_policy_registry.json",
+    "data/registries/provenance_classification_registry.json",
+    "data/registries/provenance_event_type_registry.json"
+  ],
+  "proof_only_guardrails": [
+    "rehearsal_only_or_proof_only_unless_later_checkpoint_changes_it",
+    "no_live_runtime_swap_claims",
+    "no_authority_handoff_or_state_transfer",
+    "explicit_proof_packet_obligations_before_cutover_legality_language",
+    "no_inference_of_admissibility_from_runtime_protocol_or_shard_substrate_alone",
+    "lifecycle_sensitive_reinterpretation_requires_full_review",
+    "outputs_remain_rehearsal_evidence_not_operational_readiness_or_realization_evidence"
+  ],
+  "rehearsal_class_identifiers": [
+    {
+      "id": "bounded_cutover_proof_rehearsal",
+      "description": "Rehearse whether a bounded cutover candidate preserves the declared proof obligations needed for a later lawful cutover claim while remaining non-live."
+    },
+    {
+      "id": "hotswap_boundary_aware_rehearsal",
+      "description": "Rehearse whether a candidate respects declared hotswap-boundary legality, including lifecycle posture, state externalization, replay continuity, and refusal posture."
+    },
+    {
+      "id": "distributed_authority_boundary_aware_rehearsal",
+      "description": "Rehearse whether a candidate stays inside distributed-authority boundary law without claiming authority handoff, transfer, or convergence realization."
+    },
+    {
+      "id": "rollback_bearing_cutover_rehearsal",
+      "description": "Rehearse whether a cutover-shaped candidate remains rollback-aware, refusal-aware, and reconstructable under first-wave bounds."
+    },
+    {
+      "id": "blocked_or_refusal_rehearsal_outcome",
+      "description": "Record that the rehearsal result is blocked, partial, insufficient, or out of scope."
+    },
+    {
+      "id": "proof_only_non_realization_rehearsal",
+      "description": "Rehearse whether the packet preserves explicit non-realization markers so the family cannot widen into live cutover or broader distributed live-ops realization."
+    }
+  ],
+  "evidence_proof_class_identifiers": [
+    {
+      "id": "cutover_proof_evidence",
+      "description": "Evidence showing the bounded cutover claim, its declared horizon, its proof packet, and the exact scope of what was or was not rehearsed."
+    },
+    {
+      "id": "lifecycle_legality_evidence",
+      "description": "Evidence showing whether lifecycle posture across the rehearsal horizon remains explicit, legal, and non-contradictory."
+    },
+    {
+      "id": "replay_and_snapshot_compatibility_evidence",
+      "description": "Evidence showing whether the candidate preserves replay intelligibility, checkpoint intelligibility, and snapshot legality across the rehearsal boundary."
+    },
+    {
+      "id": "continuity_mismatch_evidence",
+      "description": "Evidence showing incompatible continuity claims, ambiguous restarts, hidden state, or non-reconstructable runtime posture."
+    },
+    {
+      "id": "receipt_and_provenance_linkage_evidence",
+      "description": "Evidence showing whether operator-transaction, generalized live-cutover receipt, and provenance posture remain reconstructable where required."
+    },
+    {
+      "id": "refusal_evidence",
+      "description": "Evidence that the correct outcome is refusal, blocked posture, partial posture, or insufficiency rather than affirmative cutover-legality language."
+    },
+    {
+      "id": "out_of_scope_evidence",
+      "description": "Evidence that a rehearsal packet drifted into live runtime swap claims, authority handoff, transfer, trust execution, publication execution, or other later-wave territory."
+    }
+  ],
+  "blocker_baseline_dependence": {
+    "may_operate_while_open": [
+      "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "zeta.blocker.live_cutover_receipt_pipeline_realization",
+      "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "zeta.blocker.live_trust_revocation_publication_execution_realization"
+    ],
+    "may_contribute_bounded_evidence_toward": [
+      "cutover_legality_criteria",
+      "lifecycle_sensitive_cutover_refusal_criteria",
+      "proof_packet_requirements_for_later_cutover_work",
+      "stronger_receipt_and_provenance_expectations_for_later_cutover_families"
+    ],
+    "must_not_claim_to_resolve": [
+      "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "zeta.blocker.live_trust_revocation_publication_execution_realization",
+      "zeta.blocker.live_cutover_receipt_pipeline_realization"
+    ],
+    "gate_freeze_dependency": "This family remains subordinate to the Z-P2 admitted_with_cautions gate and the tighter proof-only guardrails frozen by C-ZETA_A_ADMISSION_REVIEW."
+  },
+  "runtime_release_trust_dependence_notes": {
+    "runtime": [
+      "Lifecycle legality remains binding.",
+      "State externalization remains binding.",
+      "Replay intelligibility remains binding.",
+      "Snapshot legality remains binding.",
+      "Isolation, coexistence, hotswap boundaries, and distributed-authority foundations remain binding.",
+      "No rehearsal packet may hide truth in undocumented local state.",
+      "No rehearsal packet may present checkpoint, recover, shard lifecycle, rolling-update, or shard-version substrate as if lawful live cutover were already solved."
+    ],
+    "release_control": [
+      "Operator transaction doctrine remains upstream where relevant.",
+      "Generalized live-cutover receipts and provenance remain upstream.",
+      "Release contract profile, release-index semantics, and exact bounded scope remain reconstructable where required.",
+      "Archive presence, mirror visibility, ordinary logs, local traces, and CI output are insufficient as canonical cutover-proof evidence."
+    ],
+    "trust": [
+      "Trust-relevant conditions may be rehearsed only within bounded proof-only posture.",
+      "Live trust realization, live revocation realization, distributed trust convergence, and publication execution remain unrealized.",
+      "Trust-aware rehearsal is not trust realization."
+    ]
+  },
+  "doctrine_admission_rehearsal_realization_distinctions": {
+    "doctrine": "Defines what bounded runtime cutover proof rehearsal constitutionally means.",
+    "admission": "The family is admitted only with cautions inside the bounded first-wave perimeter.",
+    "rehearsal": "The family may produce bounded cutover-proof, lifecycle-legality, replay/snapshot-compatibility, refusal, and explicit non-realization rehearsal outcomes.",
+    "realization": "Live runtime cutover, deterministic replication, state-partition transfer, distributed trust convergence, live trust/revocation/publication execution, and live cutover receipt-pipeline realization remain outside this family."
+  },
+  "invalidity_failure_categories": [
+    {
+      "id": "proof_only_scope_expanded",
+      "description": "The work drifted into live cutover, transfer, convergence, or execution claims."
+    },
+    {
+      "id": "lifecycle_incoherent",
+      "description": "Lifecycle posture across the rehearsal horizon is contradictory, hidden, or non-legal."
+    },
+    {
+      "id": "replay_or_snapshot_incoherent",
+      "description": "Replay or snapshot posture is insufficient to support the rehearsal claim."
+    },
+    {
+      "id": "continuity_mismatch_detected",
+      "description": "Continuity expectations conflict with declared runtime, receipt, or boundary posture."
+    },
+    {
+      "id": "proof_insufficient",
+      "description": "The rehearsal packet is too weak to support a lawful cutover-proof claim."
+    },
+    {
+      "id": "receipt_or_provenance_link_missing",
+      "description": "Canonical operator or generalized receipt/provenance linkage is absent where required."
+    },
+    {
+      "id": "trust_or_revocation_overclaim",
+      "description": "The rehearsal packet silently turned into trust or revocation realization language."
+    },
+    {
+      "id": "non_canonical_or_local_only_evidence",
+      "description": "Only local traces, dashboards, or harness-local evidence were provided."
+    },
+    {
+      "id": "out_of_scope_for_first_wave",
+      "description": "The candidate belongs to later-wave, blocked, or future-only families instead of this one."
+    },
+    {
+      "id": "inconclusive_or_blocked",
+      "description": "The rehearsal packet is insufficient to support either affirmative bounded rehearsal conclusions or a narrower lawful conclusion."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "this doctrine",
+      "upstream checkpoint, blocker, matrix, gate, Z-A0, and Z-A1 doctrine",
+      "canonical rehearsal packets, refusal packets, and bounded proof packets later defined under this doctrine",
+      "canonical operator transaction and generalized receipt records where relevant"
+    ],
+    "derived": [
+      "dashboards",
+      "local traces",
+      "ad hoc harness output",
+      "logs",
+      "mirror or publication views",
+      "filenames",
+      "convenience summaries"
+    ]
+  },
+  "prohibited_scope_expansion_shapes": [
+    "rehearsal_treated_as_realization",
+    "proof_bearing_rehearsal_treated_as_operational_readiness",
+    "runtime_substrate_presence_treated_as_cutover_legality_proof",
+    "bounded_first_wave_used_to_smuggle_in_authority_handoff_state_transfer_or_live_shard_relocation",
+    "unresolved_blockers_silently_treated_as_solved",
+    "local_traces_or_one_rehearsal_harness_treated_as_architectural_canon",
+    "first_wave_admission_rewritten_as_broader_zeta_readiness"
+  ],
+  "ambiguities_eliminated": [
+    "cutover_rehearsal_is_not_live_cutover_realization",
+    "proof_bearing_rehearsal_is_not_operational_readiness",
+    "first_wave_admission_is_not_broader_zeta_readiness",
+    "evidence_exists_is_not_blocker_resolved"
+  ],
+  "downstream_refinement_prompts": [
+    "C-POST_ZETA_A_FIRST_WAVE_REVIEW",
+    "later bounded Ζ-A family doctrine prompts",
+    "later broader Ζ planning that must preserve rehearsal versus realization distinctions"
+  ]
+}
