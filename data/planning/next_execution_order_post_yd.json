@@ -1,0 +1,115 @@
+{
+  "ordering_id": "NEXT_EXECUTION_ORDER_POST_YD",
+  "checkpoint_state": "post-phi-b4 / post-upsilon-d / pre-phi-b5-or-other-next-block",
+  "recommended_next_prompt": {
+    "prompt_id": "Φ-B5",
+    "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "readiness_status": "ready_with_cautions"
+  },
+  "ordering_mode": "phi_b5_first",
+  "prompt_order": [
+    {
+      "order": 1,
+      "prompt_id": "Φ-B5",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+        "docs/runtime/LIFECYCLE_MANAGER.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+        "server/shard/shard_api.h",
+        "server/shard/dom_shard_lifecycle.h",
+        "server/shard/dom_cross_shard_log.h",
+        "server/net/dom_server_runtime.h",
+        "server/net/dom_server_protocol.h",
+        "data/registries/net_replication_policy_registry.json"
+      ],
+      "human_review_requirements": [
+        "distributed_authority_model_changes FULL review",
+        "trust_root_governance_changes FULL review when trust convergence is implicated",
+        "lifecycle_manager_semantics FULL review when state handoff legality is implicated"
+      ],
+      "stop_conditions": [
+        "stop if authority handoff semantics assume live execution instead of doctrine-level foundations",
+        "stop if proof-anchor quorum or deterministic replication proof is silently treated as solved",
+        "stop if distributed authority outruns trust admission, receipt continuity, or hotswap boundaries"
+      ],
+      "notes": [
+        "Ready status is doctrine-only and does not admit distributed implementation or Ζ live ops.",
+        "Φ-B5 must extend live shard/net precursor substrate rather than replace it."
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "C-POST_PHIB5_SAFE_REVIEW",
+      "title": "DISTRIBUTED_AUTHORITY_FOUNDATIONS_REASSESSMENT-0",
+      "readiness_status": "required_after_phi_b5",
+      "dependencies": [
+        "completed Φ-B5 doctrine and registry artifacts"
+      ],
+      "human_review_requirements": [
+        "checkpoint must verify no distributed implementation work was performed",
+        "checkpoint must verify Φ-B5 stayed subordinate to trust admission, receipt continuity, release semantics, and hotswap boundaries"
+      ],
+      "stop_conditions": [
+        "stop before any Ζ planning or distributed implementation until the post-Φ-B5 checkpoint exists"
+      ],
+      "notes": [
+        "This checkpoint decides whether a residual Υ-D3 consolidation tail is still needed."
+      ]
+    },
+    {
+      "order": 3,
+      "prompt_id": "Υ-D3",
+      "title": "LIVE_RELEASE_CONTROLLER_AND_AUTOMATION_ALIGNMENT-0",
+      "readiness_status": "conditional_mostly_consolidation",
+      "dependencies": [
+        "post-Φ-B5 checkpoint explicitly finds controller-specific or operationalization-specific residue"
+      ],
+      "human_review_requirements": [
+        "do not schedule unless the post-Φ-B5 checkpoint identifies a distinct residue rather than restating closed admission law"
+      ],
+      "stop_conditions": [
+        "skip if the post-Φ-B5 checkpoint finds no distinct controller-specific residue"
+      ],
+      "notes": [
+        "Not required before Φ-B5 from the current checkpoint state."
+      ]
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "item": "Ζ distributed live operations",
+      "status": "blocked"
+    },
+    {
+      "item": "distributed shard relocation implementation",
+      "status": "dangerous"
+    },
+    {
+      "item": "proof-anchor quorum execution claims",
+      "status": "dangerous"
+    },
+    {
+      "item": "live trust-root rotation execution",
+      "status": "blocked"
+    },
+    {
+      "item": "live revocation propagation execution",
+      "status": "blocked"
+    }
+  ],
+  "stability": {
+    "status": "provisional",
+    "last_reviewed": "2026-04-05",
+    "replacement_target": "later post-Φ-B5 next-order artifact may refine sequence without replacing the ordering law frozen here"
+  }
+}
