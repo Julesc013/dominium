@@ -1,0 +1,254 @@
+{
+  "artifact_id": "dominium.runtime.rollback_bearing_staged_transition_validation_doctrine",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-05",
+  "checkpoint_context": {
+    "state": "post_zeta_p_pre_bounded_zeta_a_or_other_next_block",
+    "enabling_prompt": "Ζ-A0 — ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION-0",
+    "checkpoint_judgment": "ready_with_cautions",
+    "active_first_wave_perimeter": [
+      "zeta.family.rollback_bearing_staged_transition_validation",
+      "zeta.family.distributed_replay_and_proof_anchor_verification",
+      "zeta.family.bounded_runtime_cutover_proof_rehearsal"
+    ],
+    "active_numbering_note": "The active checkpoint path authorizes a bounded first-wave Ζ-A entry after Ζ-P0..Ζ-P2 while broader Ζ remains blocked."
+  },
+  "required_planning_inputs": [
+    "CHECKPOINT_C_PRE_ZETA_ADMISSION",
+    "CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW",
+    "NEXT_EXECUTION_ORDER_POST_PHIB5",
+    "NEXT_EXECUTION_ORDER_POST_ZP",
+    "ZETA_BLOCKER_RECONCILIATION",
+    "LIVE_OPERATIONS_PREREQUISITE_MATRIX",
+    "ZETA_EXECUTION_GATES",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "SEMANTIC_OWNERSHIP_REVIEW"
+  ],
+  "required_runtime_inputs": [
+    "DISTRIBUTED_AUTHORITY_FOUNDATIONS",
+    "HOTSWAP_BOUNDARIES",
+    "EVENT_LOG_AND_REPLAY_DOCTRINE",
+    "SNAPSHOT_SERVICE_DOCTRINE",
+    "LIFECYCLE_MANAGER",
+    "STATE_EXTERNALIZATION",
+    "SANDBOXING_AND_ISOLATION_MODEL",
+    "MULTI_VERSION_COEXISTENCE"
+  ],
+  "required_release_inputs": [
+    "LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION",
+    "LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES",
+    "PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES",
+    "RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT",
+    "CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION",
+    "OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE",
+    "OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY",
+    "RELEASE_CONTRACT_PROFILE",
+    "RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT",
+    "TRUST_EXECUTION_AND_REVOCATION_CONTINUITY"
+  ],
+  "repo_evidence_roots": [
+    "server/shard/shard_api.h",
+    "server/shard/dom_cross_shard_log.h",
+    "server/net/dom_server_protocol.h",
+    "server/net/dom_server_runtime.h",
+    "release/update_resolver.py",
+    "security/trust/trust_verifier.py",
+    "data/registries/net_replication_policy_registry.json",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/trust_root_registry.json",
+    "data/registries/provenance_classification_registry.json"
+  ],
+  "transition_class_identifiers": [
+    {
+      "id": "bounded_staged_control_plane_transition",
+      "description": "A staged release or control-plane transition candidate whose meaning stays within explicit target, release, receipt, rollback, and refusal posture without claiming live runtime realization.",
+      "scope_class": "in_scope_first_wave",
+      "realization_posture": "validation_only_or_bounded_non_live"
+    },
+    {
+      "id": "bounded_rollback_bearing_cutover_candidate",
+      "description": "A bounded candidate whose validation posture depends on rollback-bearing continuity, cutover-sensitive evidence, or bounded runtime-adjacent change while still remaining non-live and proof-bearing.",
+      "scope_class": "in_scope_first_wave",
+      "realization_posture": "validation_only_or_bounded_non_live"
+    },
+    {
+      "id": "trust_aware_but_non_realized_staged_transition",
+      "description": "A staged transition candidate that must remain compatible with trust posture, trust prerequisites, or revocation continuity without claiming live trust realization, revocation propagation realization, or publication execution.",
+      "scope_class": "in_scope_first_wave",
+      "realization_posture": "trust_aware_but_not_trust_realized"
+    },
+    {
+      "id": "validation_only_staged_transition",
+      "description": "A transition candidate that exists only to produce structural, compatibility, continuity, provenance, or proof-bearing validation outputs.",
+      "scope_class": "in_scope_first_wave",
+      "realization_posture": "explicitly_non_realized"
+    },
+    {
+      "id": "out_of_scope_transfer_or_live_execution_transition",
+      "description": "A candidate that crosses into authority handoff, state transfer, deterministic replication realization, proof-anchor continuity realization, live trust execution, publication execution, or shard relocation.",
+      "scope_class": "out_of_scope",
+      "realization_posture": "later_wave_blocked_or_future_only"
+    }
+  ],
+  "validation_class_identifiers": [
+    {
+      "id": "structural_validation",
+      "description": "Validate subject, scope, intent, lifecycle posture, target context, and boundedness markers."
+    },
+    {
+      "id": "compatibility_validation",
+      "description": "Validate release contract profile, release-index and resolution semantics, target applicability, and refusal law."
+    },
+    {
+      "id": "rollback_bearing_continuity_validation",
+      "description": "Validate reversible boundaries, bounded resulting state, refusal-aware restoration posture, and explicit non-reversible edges."
+    },
+    {
+      "id": "receipt_and_provenance_validation",
+      "description": "Validate operator transaction meaning, generalized receipt posture, and reconstructable evidence anchors rather than ordinary logs alone."
+    },
+    {
+      "id": "trust_continuity_validation",
+      "description": "Validate compatibility with trust and revocation continuity doctrine without claiming live trust realization."
+    },
+    {
+      "id": "proof_only_validation",
+      "description": "Validate bounded proof, continuity, refusal, or rollback-alignment packets that remain explicitly non-live."
+    },
+    {
+      "id": "blocked_or_refusal_validation_outcome",
+      "description": "Record that the candidate is blocked, partial, out-of-scope, trust-incoherent, proof-insufficient, or otherwise not lawfully valid for this family."
+    }
+  ],
+  "blocker_baseline_dependence": {
+    "may_operate_while_open": [
+      "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "zeta.blocker.live_cutover_receipt_pipeline_realization",
+      "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "zeta.blocker.live_trust_revocation_publication_execution_realization"
+    ],
+    "may_contribute_bounded_evidence_toward": [
+      "rollback_bearing_continuity_under_first_wave_bounds",
+      "runtime_cutover_proof_scoping",
+      "refusal_aware_staged_transition_legality",
+      "stronger_receipt_and_provenance_expectations_for_later_families"
+    ],
+    "must_not_claim_to_resolve": [
+      "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "zeta.blocker.live_trust_revocation_publication_execution_realization",
+      "zeta.blocker.live_cutover_receipt_pipeline_realization"
+    ],
+    "gate_freeze_dependency": "This family remains subordinate to the Z-P2 first-wave perimeter and may not widen itself by convenience."
+  },
+  "runtime_release_trust_dependence_notes": {
+    "runtime": [
+      "Lifecycle legality remains binding.",
+      "State externalization remains binding.",
+      "Replay intelligibility remains binding.",
+      "Snapshot legality remains binding.",
+      "Isolation, coexistence, hotswap, and distributed-authority boundaries remain binding.",
+      "No candidate may hide truth in undocumented local state.",
+      "No validation packet may present replay, checkpoint, or cross-shard substrate as if broader distributed continuity were already solved."
+    ],
+    "release_control": [
+      "Operator transaction doctrine remains upstream where relevant.",
+      "Generalized live-cutover receipts remain upstream.",
+      "Release contract profile, release-index semantics, exact target context, and refusal law remain upstream.",
+      "Archive or mirror presence does not prove validation success.",
+      "Ordinary logs, CI traces, and filenames are insufficient as canonical validation evidence."
+    ],
+    "trust": [
+      "Trust-aware posture may be validated only within non-realized first-wave bounds.",
+      "Live trust execution, live revocation propagation, distributed trust convergence, and publication execution remain out of scope.",
+      "Trust-aware is not trust-realized."
+    ]
+  },
+  "doctrine_admission_validation_realization_distinctions": {
+    "doctrine": "Defines what rollback-bearing staged transition validation constitutionally means.",
+    "admission": "The family is admitted as the first bounded Ζ-A family under ready_with_cautions posture.",
+    "validation": "The family may produce structural, compatibility, continuity, receipt, trust-aware, proof-only, or blocked/refusal validation outcomes.",
+    "realization": "Live cutover, distributed transfer, trust execution, publication execution, deterministic replication realization, and proof-anchor continuity realization remain outside this family."
+  },
+  "invalidity_failure_categories": [
+    {
+      "id": "scope_expanded_beyond_first_wave",
+      "description": "The candidate crossed into transfer, trust execution, publication execution, or other later-wave territory."
+    },
+    {
+      "id": "non_rollback_bearing_candidate",
+      "description": "Rollback-bearing posture is absent, ambiguous, or asserted without continuity support."
+    },
+    {
+      "id": "proof_insufficient",
+      "description": "Proof, continuity, or refusal packets are too weak to support bounded validation claims."
+    },
+    {
+      "id": "receipt_or_provenance_missing",
+      "description": "Operator transaction or generalized receipt continuity is absent where required."
+    },
+    {
+      "id": "trust_incoherent",
+      "description": "Trust-aware posture is contradictory, absent, or exceeds admitted first-wave bounds."
+    },
+    {
+      "id": "runtime_boundary_overclaim",
+      "description": "The candidate claims lawful runtime cutover, handoff, or distributed continuity beyond current doctrine."
+    },
+    {
+      "id": "partial_or_non_reconstructable",
+      "description": "The candidate or result cannot be reconstructed canonically across intent, review, proof, refusal, and outcome."
+    },
+    {
+      "id": "out_of_scope_transition",
+      "description": "The candidate belongs to later-wave, blocked, or future-only families instead of this one."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "this doctrine",
+      "upstream checkpoint, blocker, matrix, and gate doctrine",
+      "canonical validation packets, refusal packets, and proof packets later defined under this doctrine",
+      "canonical operator transaction, receipt, and provenance records where relevant"
+    ],
+    "derived": [
+      "dashboards",
+      "CI output",
+      "local traces",
+      "mirror or publication views",
+      "changelog prose",
+      "filenames",
+      "tool-local reports"
+    ]
+  },
+  "prohibited_scope_expansion_shapes": [
+    "validation treated as realization",
+    "rollback-bearing claim with no continuity proof",
+    "bounded first-wave used to smuggle in distributed transfer",
+    "trust-aware validation treated as trust execution realization",
+    "unresolved blockers silently treated as solved",
+    "ordinary rehearsal or dry-run presented as rollback-bearing validation",
+    "code substrate local traces or dashboards treated as gate passage",
+    "first-wave admission rewritten as broader zeta readiness"
+  ],
+  "ambiguities_eliminated": [
+    "validation_is_not_realization",
+    "rollback_bearing_is_not_full_rollback_pipeline_realization",
+    "trust_aware_is_not_trust_execution_realization",
+    "first_wave_admission_is_not_broader_zeta_readiness"
+  ],
+  "downstream_refinement_prompts": [
+    "Ζ-A1 — DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION-0",
+    "Ζ-A2 — BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL-0",
+    "C-POST_ZETA_A_FIRST_WAVE_REVIEW",
+    "later bounded Ζ-A family doctrine prompts"
+  ]
+}
