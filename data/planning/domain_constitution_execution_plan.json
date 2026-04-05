@@ -1,0 +1,154 @@
+{
+  "artifact_id": "planning.domain_constitution_execution_plan",
+  "title": "Domain Constitution Execution Plan",
+  "status": "canonical_operational_mirror",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "binding_sources": [
+    "docs/planning/POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF.md",
+    "docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md",
+    "docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md",
+    "docs/planning/CROSS_DOMAIN_BRIDGE_TEMPLATE.md",
+    "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MATRIX.md",
+    "docs/planning/VERIFICATION_AND_EQUIVALENCE_DOCTRINE_RECONCILIATION.md",
+    "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+    "docs/planning/REALITY_EXTRACTION_REPORT.md"
+  ],
+  "recommended_next_prompt": {
+    "prompt_id": "DOMAIN-0",
+    "title": "MATTER_PHYSICS_MATERIALS_CONSTRUCTION_CONSTITUTION-0",
+    "readiness_status": "ready"
+  },
+  "ordering_mode": "domain_constitution_drafting_first",
+  "prompt_order": [
+    {
+      "order": 1,
+      "prompt_id": "DOMAIN-0",
+      "title": "MATTER_PHYSICS_MATERIALS_CONSTRUCTION_CONSTITUTION-0",
+      "dependencies": [
+        "POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF",
+        "UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE",
+        "VERIFICATION_AND_EQUIVALENCE_DOCTRINE_RECONCILIATION"
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "DOMAIN-1",
+      "title": "GEOLOGY_HYDROLOGY_CLIMATE_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-0"
+      ]
+    },
+    {
+      "order": 3,
+      "prompt_id": "DOMAIN-2",
+      "title": "TRANSPORT_INFRASTRUCTURE_NETWORKS_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-0",
+        "DOMAIN-1",
+        "CROSS_DOMAIN_BRIDGE_TEMPLATE"
+      ]
+    },
+    {
+      "order": 4,
+      "prompt_id": "DOMAIN-3",
+      "title": "BIOLOGY_ECOLOGY_MEDICINE_EVOLUTION_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-0",
+        "DOMAIN-1"
+      ]
+    },
+    {
+      "order": 5,
+      "prompt_id": "DOMAIN-4",
+      "title": "AGENTS_MINDS_LABOR_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-3",
+        "UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE"
+      ]
+    },
+    {
+      "order": 6,
+      "prompt_id": "DOMAIN-5",
+      "title": "KNOWLEDGE_LANGUAGE_CULTURE_INSTITUTIONS_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-4",
+        "CROSS_DOMAIN_BRIDGE_TEMPLATE",
+        "PLAYER_DESIRE_ACCEPTANCE_MATRIX"
+      ]
+    },
+    {
+      "order": 7,
+      "prompt_id": "DOMAIN-6",
+      "title": "ECONOMY_LOGISTICS_INDUSTRY_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-0",
+        "DOMAIN-2",
+        "DOMAIN-4",
+        "DOMAIN-5"
+      ]
+    },
+    {
+      "order": 8,
+      "prompt_id": "DOMAIN-7",
+      "title": "POLITICS_LAW_GOVERNANCE_WAR_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-2",
+        "DOMAIN-5",
+        "DOMAIN-6"
+      ]
+    },
+    {
+      "order": 9,
+      "prompt_id": "DOMAIN-8",
+      "title": "SPACE_ASTRONOMY_OFFWORLD_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-2",
+        "DOMAIN-3",
+        "DOMAIN-7"
+      ]
+    },
+    {
+      "order": 10,
+      "prompt_id": "DOMAIN-9",
+      "title": "INTERFACE_EMBODIMENT_PERCEPTION_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-0",
+        "DOMAIN-3",
+        "DOMAIN-4",
+        "DOMAIN-5"
+      ]
+    },
+    {
+      "order": 11,
+      "prompt_id": "DOMAIN-10",
+      "title": "PERSISTENCE_NETWORKING_REPLAY_MODULARITY_CONSTITUTION-0",
+      "dependencies": [
+        "DOMAIN-0",
+        "DOMAIN-2",
+        "DOMAIN-5",
+        "DOMAIN-9",
+        "VERIFICATION_AND_EQUIVALENCE_DOCTRINE_RECONCILIATION"
+      ]
+    }
+  ],
+  "review_gates": [
+    "human_review_if_domain_ownership_is_absorbed_silently",
+    "human_review_if_doctrine_admission_realization_distinctions_weaken",
+    "human_review_if_frontier_live_ops_items_are_treated_as_closed",
+    "human_review_if_interface_or_persistence_redefine_domain_truth"
+  ],
+  "stop_conditions": [
+    "stop_if_domain_constitution_lacks_primitive_substrate_process_failure_verification_or_scale_path",
+    "stop_if_bridge_legality_is_claimed_without_using_bridge_template",
+    "stop_if_desire_support_is_claimed_without_acceptance_evidence_expectations",
+    "stop_if_frontier_live_ops_realization_is_smuggled_into_domain_law"
+  ],
+  "do_not_start_early": [
+    "economy_logistics_industry_before_material_terrain_transport_agents_and_knowledge",
+    "politics_law_governance_war_before_institutions_economy_and_infrastructure",
+    "space_astronomy_offworld_before_transport_biology_and_governance",
+    "interface_embodiment_perception_before_earlier_domains_exist_to_be_perceived",
+    "persistence_networking_replay_modularity_before_prior_domains_exist_to_be_preserved"
+  ]
+}

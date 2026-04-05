@@ -1,0 +1,362 @@
+{
+  "artifact_id": "planning.player_desire_acceptance_matrix",
+  "title": "Player Desire Acceptance Matrix",
+  "status": "canonical_operational_mirror",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "binding_sources": [
+    "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
+    "docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md",
+    "docs/planning/CROSS_DOMAIN_BRIDGE_TEMPLATE.md",
+    "docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md"
+  ],
+  "matrix_entries": [
+    {
+      "desire": "build_a_train",
+      "required_domain_constitutions": [
+        "matter_physics_materials_construction",
+        "transport_infrastructure_networks",
+        "economy_logistics_industry",
+        "persistence_networking_replay_modularity"
+      ],
+      "required_bridge_types": [
+        "causal_physical",
+        "knowledge_industry",
+        "infrastructure_network",
+        "persistence_provenance"
+      ],
+      "required_verification_equivalence": [
+        "part_compatibility_over_time",
+        "substitution_safety",
+        "macro_micro_route_equivalence",
+        "provenance_continuity"
+      ],
+      "required_interface_affordance_layers": [
+        "embodied_manipulation",
+        "machine_process_io",
+        "planning_command",
+        "inspection_instrumentation"
+      ],
+      "acceptance_evidence": [
+        "blueprint_lineage",
+        "compatible_parts",
+        "lawful_assembly",
+        "routable_network_use",
+        "inspectable_maintenance_history"
+      ]
+    },
+    {
+      "desire": "found_a_city",
+      "required_domain_constitutions": [
+        "matter_physics_materials_construction",
+        "geology_hydrology_climate",
+        "transport_infrastructure_networks",
+        "economy_logistics_industry",
+        "politics_law_governance_war",
+        "interface_embodiment_perception"
+      ],
+      "required_bridge_types": [
+        "geology_economy",
+        "infrastructure_politics",
+        "persistence_provenance",
+        "observational_epistemic"
+      ],
+      "required_verification_equivalence": [
+        "topology_continuity",
+        "settlement_macro_micro_equivalence",
+        "jurisdiction_continuity",
+        "explainable_summaries"
+      ],
+      "required_interface_affordance_layers": [
+        "occupancy_use_point",
+        "planning_command",
+        "institutional_organizational",
+        "route_network_access"
+      ],
+      "acceptance_evidence": [
+        "lawful_land_and_utility_substrate",
+        "civic_continuity",
+        "inspectable_services",
+        "household_and_governance_viability"
+      ]
+    },
+    {
+      "desire": "invent_a_crop",
+      "required_domain_constitutions": [
+        "biology_ecology_medicine_evolution",
+        "geology_hydrology_climate",
+        "knowledge_language_culture_institutions",
+        "economy_logistics_industry"
+      ],
+      "required_bridge_types": [
+        "matter_biology",
+        "biology_culture",
+        "formalization_standards",
+        "safety_compliance"
+      ],
+      "required_verification_equivalence": [
+        "reproducibility_evidence",
+        "ecological_equivalence_bounds",
+        "provenance_lineage",
+        "compatibility_over_time"
+      ],
+      "required_interface_affordance_layers": [
+        "embodied_manipulation",
+        "inspection_instrumentation",
+        "planning_command",
+        "institutional_organizational"
+      ],
+      "acceptance_evidence": [
+        "reproducible_crop_line",
+        "regional_viability_evidence",
+        "cultivation_method_lineage",
+        "explicit_failure_states"
+      ]
+    },
+    {
+      "desire": "run_a_factory",
+      "required_domain_constitutions": [
+        "matter_physics_materials_construction",
+        "economy_logistics_industry",
+        "transport_infrastructure_networks",
+        "agents_minds_labor",
+        "knowledge_language_culture_institutions",
+        "persistence_networking_replay_modularity"
+      ],
+      "required_bridge_types": [
+        "knowledge_industry",
+        "agents_economy",
+        "infrastructure_network",
+        "persistence_provenance",
+        "safety_compliance"
+      ],
+      "required_verification_equivalence": [
+        "throughput_equivalence_classes",
+        "maintenance_and_failure_evidence",
+        "compatibility_and_standards_evidence",
+        "replayable_production_lineage"
+      ],
+      "required_interface_affordance_layers": [
+        "machine_process_io",
+        "planning_command",
+        "automation_integration",
+        "maintenance_repair",
+        "institutional_organizational"
+      ],
+      "acceptance_evidence": [
+        "repeatable_production",
+        "labor_allocation",
+        "standards_compliance",
+        "inspectable_downtime",
+        "supply_chain_continuity"
+      ]
+    },
+    {
+      "desire": "govern_a_nation",
+      "required_domain_constitutions": [
+        "politics_law_governance_war",
+        "knowledge_language_culture_institutions",
+        "economy_logistics_industry",
+        "transport_infrastructure_networks",
+        "persistence_networking_replay_modularity"
+      ],
+      "required_bridge_types": [
+        "knowledge_governance",
+        "infrastructure_politics",
+        "agents_economy",
+        "persistence_provenance"
+      ],
+      "required_verification_equivalence": [
+        "authority_continuity",
+        "auditability",
+        "compatibility_over_time",
+        "policy_outcome_explainability"
+      ],
+      "required_interface_affordance_layers": [
+        "institutional_organizational",
+        "planning_command",
+        "inspection_instrumentation",
+        "interface_adapter"
+      ],
+      "acceptance_evidence": [
+        "explicit_jurisdiction",
+        "traceable_policy_lineage",
+        "auditable_decisions",
+        "lawful_refusal_and_enforcement_surfaces"
+      ]
+    },
+    {
+      "desire": "colonize_a_moon",
+      "required_domain_constitutions": [
+        "space_astronomy_offworld",
+        "matter_physics_materials_construction",
+        "geology_hydrology_climate",
+        "transport_infrastructure_networks",
+        "biology_ecology_medicine_evolution",
+        "politics_law_governance_war"
+      ],
+      "required_bridge_types": [
+        "causal_physical",
+        "infrastructure_network",
+        "institutional_governance",
+        "persistence_provenance",
+        "safety_compliance"
+      ],
+      "required_verification_equivalence": [
+        "life_support_boundedness",
+        "macro_micro_continuity_across_worlds",
+        "compatibility_over_time",
+        "provenance_and_authority_continuity"
+      ],
+      "required_interface_affordance_layers": [
+        "planning_command",
+        "route_network_access",
+        "institutional_organizational",
+        "inspection_instrumentation"
+      ],
+      "acceptance_evidence": [
+        "viable_habitat_chain",
+        "transport_continuity",
+        "jurisdiction_continuity",
+        "recoverable_offworld_history"
+      ]
+    },
+    {
+      "desire": "automate_with_agents",
+      "required_domain_constitutions": [
+        "agents_minds_labor",
+        "persistence_networking_replay_modularity",
+        "knowledge_language_culture_institutions",
+        "economy_logistics_industry",
+        "interface_embodiment_perception"
+      ],
+      "required_bridge_types": [
+        "agents_economy",
+        "observational_epistemic",
+        "persistence_provenance",
+        "interface_embodiment"
+      ],
+      "required_verification_equivalence": [
+        "delegation_legality",
+        "explainability_evidence",
+        "replay_continuity",
+        "substitution_safety",
+        "bounded_refusal_behavior"
+      ],
+      "required_interface_affordance_layers": [
+        "automation_integration",
+        "planning_command",
+        "interface_adapter",
+        "inspection_instrumentation"
+      ],
+      "acceptance_evidence": [
+        "explicit_delegation_envelope",
+        "inspectable_agent_actions",
+        "lawful_refusal_path",
+        "replayable_and_auditable_outcomes"
+      ]
+    },
+    {
+      "desire": "live_an_ordinary_life",
+      "required_domain_constitutions": [
+        "biology_ecology_medicine_evolution",
+        "matter_physics_materials_construction",
+        "economy_logistics_industry",
+        "politics_law_governance_war",
+        "agents_minds_labor",
+        "interface_embodiment_perception"
+      ],
+      "required_bridge_types": [
+        "biology_culture",
+        "agents_economy",
+        "infrastructure_politics",
+        "observational_epistemic"
+      ],
+      "required_verification_equivalence": [
+        "experiential_continuity",
+        "macro_micro_ordinary_life_equivalence",
+        "compatibility_over_time"
+      ],
+      "required_interface_affordance_layers": [
+        "embodied_manipulation",
+        "occupancy_use_point",
+        "institutional_organizational",
+        "planning_command"
+      ],
+      "acceptance_evidence": [
+        "habitation",
+        "provisioning",
+        "routine_work",
+        "care",
+        "membership",
+        "routine_movement"
+      ]
+    },
+    {
+      "desire": "play_fully_embodied",
+      "required_domain_constitutions": [
+        "interface_embodiment_perception",
+        "matter_physics_materials_construction",
+        "biology_ecology_medicine_evolution",
+        "transport_infrastructure_networks",
+        "agents_minds_labor"
+      ],
+      "required_bridge_types": [
+        "interface_embodiment",
+        "causal_physical",
+        "observational_epistemic"
+      ],
+      "required_verification_equivalence": [
+        "experiential_continuity",
+        "micro_detail_adequacy",
+        "observation_truth_separation",
+        "bounded_substitution_safety"
+      ],
+      "required_interface_affordance_layers": [
+        "embodied_manipulation",
+        "occupancy_use_point",
+        "transport_control",
+        "inspection_instrumentation"
+      ],
+      "acceptance_evidence": [
+        "lawful_local_action",
+        "explicit_perception_limits",
+        "no_ui_shortcut_rewrites_ontology"
+      ]
+    },
+    {
+      "desire": "play_mostly_abstractly",
+      "required_domain_constitutions": [
+        "interface_embodiment_perception",
+        "persistence_networking_replay_modularity",
+        "economy_logistics_industry",
+        "politics_law_governance_war",
+        "transport_infrastructure_networks",
+        "agents_minds_labor"
+      ],
+      "required_bridge_types": [
+        "interface_embodiment",
+        "persistence_provenance",
+        "infrastructure_network",
+        "institutional_governance"
+      ],
+      "required_verification_equivalence": [
+        "macro_micro_equivalence",
+        "explainability",
+        "replay_continuity",
+        "compatibility_over_time"
+      ],
+      "required_interface_affordance_layers": [
+        "planning_command",
+        "interface_adapter",
+        "institutional_organizational",
+        "route_network_access"
+      ],
+      "acceptance_evidence": [
+        "abstract_planning_grounded_in_same_substrate",
+        "traceable_summaries",
+        "lawful_reentry_into_embodied_detail"
+      ]
+    }
+  ]
+}

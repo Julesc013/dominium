@@ -1,0 +1,41 @@
+{
+  "artifact_id": "planning.cross_domain_bridge_template",
+  "title": "Cross-Domain Bridge Template",
+  "status": "canonical_operational_mirror",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "binding_sources": [
+    "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+    "docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md"
+  ],
+  "required_sections": [
+    "bridge_identity",
+    "domain_ownership_and_boundary",
+    "allowed_dependency_direction",
+    "data_control_and_authority_surface",
+    "preserved_invariants",
+    "semantic_leakage_risks",
+    "failure_and_refusal_modes",
+    "verification_hooks",
+    "compatibility_and_stability_notes"
+  ],
+  "drafting_rules": [
+    "preserve_canonical_domain_ownership",
+    "refuse_projection_promotion_by_convenience",
+    "distinguish_data_flow_from_authority_transfer",
+    "distinguish_observational_coupling_from_mutation_authority",
+    "record_scale_continuity_expectations_where_relevant"
+  ],
+  "forbidden_shapes": [
+    "shared_code_as_bridge_law",
+    "authority_transfer_inferred_from_data_flow",
+    "silent_domain_ownership_absorption",
+    "runtime_or_ui_boundary_as_bridge_law",
+    "implementation_presence_as_bridge_validity",
+    "missing_failure_or_refusal_semantics"
+  ]
+}

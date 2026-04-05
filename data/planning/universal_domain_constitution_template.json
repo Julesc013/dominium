@@ -1,0 +1,62 @@
+{
+  "artifact_id": "planning.universal_domain_constitution_template",
+  "title": "Universal Domain Constitution Template",
+  "status": "canonical_operational_mirror",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "binding_sources": [
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+    "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
+    "docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md"
+  ],
+  "required_sections": [
+    "identity_and_scope",
+    "primitive_substrate",
+    "processes",
+    "recognitions",
+    "affordances_and_capability_hooks",
+    "formalizations",
+    "representations_substitutions_and_capsules",
+    "failures_and_refusals",
+    "verification",
+    "observation_bindings",
+    "interface_bindings",
+    "player_desires_served",
+    "civilization_scaling_path",
+    "mod_and_extension_path",
+    "stability_and_compatibility_metadata"
+  ],
+  "drafting_rules": [
+    "inherit_lambda_zero_reality_law",
+    "use_cross_domain_bridge_template",
+    "use_player_desire_matrix_for_acceptance_reasoning",
+    "distinguish_doctrine_admission_and_realization",
+    "record_overlap_and_ownership_sensitivity_explicitly"
+  ],
+  "minimum_completeness_test": [
+    "identity_and_scope_explicit",
+    "primitive_substrate_explicit",
+    "process_model_explicit",
+    "recognition_model_explicit",
+    "failure_and_refusal_model_explicit",
+    "verification_posture_explicit",
+    "observation_vs_truth_distinction_explicit",
+    "scale_path_explicit",
+    "extension_path_explicit",
+    "compatibility_and_stability_metadata_explicit"
+  ],
+  "forbidden_shapes": [
+    "local_redefinition_of_truth_materialization_or_continuity",
+    "observation_or_ui_as_ontology",
+    "implicit_substitution_rules",
+    "missing_failure_semantics",
+    "missing_verification_posture",
+    "directory_name_scope_inference",
+    "player_desire_claims_without_acceptance_evidence"
+  ]
+}

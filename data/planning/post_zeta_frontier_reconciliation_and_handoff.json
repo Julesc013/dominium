@@ -1,0 +1,111 @@
+{
+  "artifact_id": "planning.post_zeta_frontier_reconciliation_and_handoff",
+  "title": "Post-Zeta Frontier Reconciliation And Handoff",
+  "status": "canonical_operational_mirror",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "docs/planning/TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION.md",
+    "docs/planning/ZETA_REMAINING_FRONTIER_AND_CLOSURE_BASELINE.md",
+    "docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md"
+  ],
+  "admissible_zeta_closed": true,
+  "frontier_ledger": [
+    {
+      "item_id": "zeta.family.trust_aware_refusal_and_containment",
+      "scope_note": "execution family",
+      "doctrine_status": "complete_reconciliation_only",
+      "admission_status": "not_admitted",
+      "realization_status": "absent",
+      "post_zeta_class": "near_term_research_program_candidate"
+    },
+    {
+      "item_id": "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "doctrine_status": "partial",
+      "admission_status": "not_admitted",
+      "realization_status": "absent",
+      "post_zeta_class": "near_term_research_program_candidate"
+    },
+    {
+      "item_id": "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "doctrine_status": "proof_only_upstream_doctrine_exists",
+      "admission_status": "not_admitted",
+      "realization_status": "absent",
+      "post_zeta_class": "near_term_research_program_candidate"
+    },
+    {
+      "item_id": "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "doctrine_status": "rehearsal_only_upstream_doctrine_exists",
+      "admission_status": "not_admitted",
+      "realization_status": "absent",
+      "post_zeta_class": "near_term_research_program_candidate"
+    },
+    {
+      "item_id": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "doctrine_status": "partial_boundary_and_blocker_doctrine",
+      "admission_status": "deferred",
+      "realization_status": "absent",
+      "post_zeta_class": "medium_term_architecture_work"
+    },
+    {
+      "item_id": "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "doctrine_status": "partial",
+      "admission_status": "blocked",
+      "realization_status": "absent",
+      "post_zeta_class": "medium_term_architecture_work"
+    },
+    {
+      "item_id": "zeta.family.live_trust_revocation_and_publication_execution",
+      "doctrine_status": "upstream_release_trust_doctrine_exists",
+      "admission_status": "blocked",
+      "realization_status": "absent",
+      "post_zeta_class": "medium_term_architecture_work"
+    },
+    {
+      "item_id": "zeta.blocker.live_cutover_receipt_pipeline_realization",
+      "doctrine_status": "anchorization_only_upstream_doctrine_exists",
+      "admission_status": "blocked",
+      "realization_status": "absent",
+      "post_zeta_class": "medium_term_architecture_work"
+    },
+    {
+      "item_id": "zeta.family.live_shard_relocation",
+      "doctrine_status": "perimeter_boundary_only",
+      "admission_status": "future_only_prohibited",
+      "realization_status": "absent",
+      "post_zeta_class": "long_term_perimeter_future_only"
+    },
+    {
+      "item_id": "zeta.blocker.extreme_pipe_dream_live_operations",
+      "doctrine_status": "perimeter_boundary_only",
+      "admission_status": "future_only",
+      "realization_status": "absent",
+      "post_zeta_class": "long_term_perimeter_future_only"
+    }
+  ],
+  "handoff_rules": [
+    "do_not_reopen_internal_zeta_work",
+    "preserve_zeta_a0_bounded_only",
+    "preserve_zeta_a1_and_zeta_a2_proof_only",
+    "preserve_zeta_b3_shadow_parallel_evidence_posture_only",
+    "preserve_full_review_for_any_evidence_reclassification",
+    "keep_doctrine_admission_and_realization_distinct",
+    "treat_frontier_items_as_planning_candidates_not_implicit_admissions"
+  ],
+  "prohibited_shapes": [
+    "reopening_zeta_implicitly",
+    "treating_frontier_as_admitted",
+    "treating_doctrine_completion_as_realization_completion",
+    "promoting_shadow_or_parallel_receipt_evidence_into_canonical_truth_without_review",
+    "using_code_surface_presence_as_blocker_closure"
+  ],
+  "recommended_handoff": {
+    "mode": "post_zeta_template_freeze_and_domain_constitution_run",
+    "internal_zeta_reopened": false
+  }
+}

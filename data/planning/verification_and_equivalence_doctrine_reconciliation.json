@@ -1,0 +1,71 @@
+{
+  "artifact_id": "planning.verification_and_equivalence_doctrine_reconciliation",
+  "title": "Verification And Equivalence Doctrine Reconciliation",
+  "status": "canonical_operational_mirror",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "binding_sources": [
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+    "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+    "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",
+    "docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md",
+    "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
+    "docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md",
+    "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+    "docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md"
+  ],
+  "verification_dimensions": [
+    "determinism",
+    "replay",
+    "substitution_and_capsule_safety",
+    "macro_micro_equivalence",
+    "experiential_continuity",
+    "compatibility_over_time",
+    "boundedness_and_refusal",
+    "explainability_and_evidence"
+  ],
+  "evidence_classes": [
+    "doctrinal_conformance_evidence",
+    "schema_or_structure_evidence",
+    "determinism_and_replay_evidence",
+    "substitution_invariance_evidence",
+    "macro_micro_equivalence_evidence",
+    "continuity_and_provenance_evidence",
+    "operator_receipt_and_anchorization_evidence",
+    "refusal_or_block_evidence",
+    "realization_evidence"
+  ],
+  "proof_distinctions": [
+    "proof_of_doctrine",
+    "proof_of_admission",
+    "proof_of_realization",
+    "equivalence_class_expectation"
+  ],
+  "equivalence_classes": [
+    "exact_identity_equivalence",
+    "deterministic_replay_equivalence",
+    "behavioral_equivalence_with_preserved_invariants",
+    "macro_micro_lineage_preserving_equivalence",
+    "substitution_safe_bounded_equivalence",
+    "compatibility_preserving_non_identical_equivalence",
+    "non_equivalent_but_explainably_refused"
+  ],
+  "zeta_boundaries_preserved": [
+    "zeta_a0_bounded_validation_not_realization",
+    "zeta_a1_proof_only_not_distributed_replay_realization",
+    "zeta_a2_proof_only_not_live_cutover_realization",
+    "zeta_b3_guarded_anchorization_not_live_receipt_pipeline_realization",
+    "zeta_b4_reconciliation_not_execution_family_admission"
+  ],
+  "forbidden_shapes": [
+    "proof_of_doctrine_presented_as_proof_of_realization",
+    "admission_evidence_presented_as_runtime_legality_proof",
+    "local_replay_success_presented_as_universal_equivalence",
+    "shadow_or_parallel_evidence_presented_as_canonical_receipt_truth",
+    "compatibility_over_time_inferred_from_naming_convenience",
+    "macro_summaries_treated_as_lawful_without_micro_reentry_obligations"
+  ]
+}

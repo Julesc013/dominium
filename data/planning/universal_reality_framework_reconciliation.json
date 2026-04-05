@@ -1,0 +1,106 @@
+{
+  "artifact_id": "planning.universal_reality_framework_reconciliation",
+  "title": "Universal Reality Framework Reconciliation",
+  "status": "canonical_operational_mirror",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "binding_sources": [
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+    "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
+    "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+    "docs/planning/POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF.md"
+  ],
+  "mapping_layers": [
+    {
+      "older_ambition": "one_lawful_world_substrate",
+      "current_layer": "Λ-0"
+    },
+    {
+      "older_ambition": "reusable_domain_grammar",
+      "current_layer": "Λ-1"
+    },
+    {
+      "older_ambition": "lawful_action_over_substrate",
+      "current_layer": "Λ-2"
+    },
+    {
+      "older_ambition": "lawful_detail_and_scale_transitions",
+      "current_layer": "Λ-3"
+    },
+    {
+      "older_ambition": "formalization_and_institutional_lineage",
+      "current_layer": "Λ-4"
+    },
+    {
+      "older_ambition": "player_civilization_acceptance_grounding",
+      "current_layer": "Λ-5"
+    },
+    {
+      "older_ambition": "lawful_inter_domain_coupling",
+      "current_layer": "Λ-6"
+    },
+    {
+      "older_ambition": "governed_human_agent_tool_interaction",
+      "current_layer": "Σ"
+    },
+    {
+      "older_ambition": "lawful_runtime_embodiment",
+      "current_layer": "Φ"
+    },
+    {
+      "older_ambition": "lawful_release_trust_provenance_control_plane",
+      "current_layer": "Υ"
+    },
+    {
+      "older_ambition": "bounded_late_stage_live_ops_admission",
+      "current_layer": "Ζ"
+    }
+  ],
+  "already_realized_doctrinal_components": [
+    "truth_perceived_render_boundary",
+    "domain_inheritance",
+    "capability_surface_floor",
+    "representation_ladder_and_substitution_floor",
+    "formalization_chain",
+    "player_desire_grounding",
+    "cross_domain_bridge_grammar",
+    "governance_singularity",
+    "runtime_legality_boundaries",
+    "release_provenance_and_trust_prerequisites",
+    "doctrine_vs_admission_vs_realization_distinction"
+  ],
+  "partially_realized_components": [
+    "domain_specific_constitutions",
+    "domain_specific_bridge_instances",
+    "domain_level_acceptance_matrix",
+    "project_wide_verification_and_equivalence_reconciliation_layer",
+    "post_zeta_frontier_program"
+  ],
+  "still_implicit_components": [
+    "domain_constitution_execution_order",
+    "bridge_template_reuse_discipline",
+    "compatibility_and_stability_metadata_per_domain",
+    "acceptance_evidence_per_concrete_desire",
+    "equivalence_class_expectations_across_macro_micro_substitution_replay_time"
+  ],
+  "outside_current_repo_grounded_doctrine": [
+    "deterministic_replication_and_state_partition_transfer_realization",
+    "distributed_replay_and_proof_anchor_continuity_realization",
+    "lawful_live_runtime_cutover_proof",
+    "distributed_trust_and_authority_convergence_realization",
+    "live_trust_revocation_and_publication_execution_realization",
+    "live_receipt_pipeline_realization",
+    "live_shard_relocation_and_perimeter_live_ops"
+  ],
+  "reconciliation_outcome": {
+    "needs_new_universal_framework_invention_pass": false,
+    "ready_for_domain_constitution_run": true,
+    "frontier_live_ops_still_unresolved": true
+  }
+}
