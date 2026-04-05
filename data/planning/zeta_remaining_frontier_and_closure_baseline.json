@@ -1,0 +1,222 @@
+{
+  "artifact_id": "dominium.planning.zeta_remaining_frontier_and_closure_baseline",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "closure_context": {
+    "state": "post-zeta-omega / pre-mega-zeta-validation-checkpoint",
+    "concluding_prompt": "Ζ-Ω — REMAINING_ZETA_CONSOLIDATED_CLOSURE-0",
+    "next_major_prompt": {
+      "prompt_id": "C-ZETA_MEGA_VALIDATION_REVIEW",
+      "title": "FINAL_CONSOLIDATED_ZETA_VALIDATION-0"
+    }
+  },
+  "status_class_identifiers": [
+    {
+      "status_class": "completed",
+      "meaning": "Planning or doctrine work is complete and has no special bounded/proof-only sub-envelope beyond its own prompt intent."
+    },
+    {
+      "status_class": "completed_bounded_only",
+      "meaning": "Doctrine work is complete, but the family remains bounded-only and may not widen."
+    },
+    {
+      "status_class": "completed_proof_only",
+      "meaning": "Doctrine work is complete, but the family remains proof-only and non-realizing."
+    },
+    {
+      "status_class": "admitted_later_wave",
+      "meaning": "A later-wave family was admitted only inside its frozen caution envelope."
+    },
+    {
+      "status_class": "still_blocked",
+      "meaning": "The family or blocker remains outside completed Ζ execution scope."
+    },
+    {
+      "status_class": "future_only_perimeter",
+      "meaning": "The family or blocker remains outside current Ζ completion and must stay frontier-only."
+    }
+  ],
+  "zeta_item_ledger": [
+    {
+      "item_id": "Ζ-P0",
+      "title": "ZETA_BLOCKER_RECONCILIATION-0",
+      "closure_class": "completed",
+      "doctrine_status": "complete",
+      "admission_status": "canonical_blocker_baseline_complete",
+      "realization_status": "not_applicable_planning_work"
+    },
+    {
+      "item_id": "Ζ-P1",
+      "title": "LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+      "closure_class": "completed",
+      "doctrine_status": "complete",
+      "admission_status": "canonical_prerequisite_matrix_complete",
+      "realization_status": "not_applicable_planning_work"
+    },
+    {
+      "item_id": "Ζ-P2",
+      "title": "ZETA_EXECUTION_GATES-0",
+      "closure_class": "completed",
+      "doctrine_status": "complete",
+      "admission_status": "canonical_pre_zeta_execution_gate_baseline_complete",
+      "realization_status": "not_applicable_planning_work"
+    },
+    {
+      "item_id": "Ζ-A0",
+      "title": "ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION-0",
+      "family_id": "zeta.family.rollback_bearing_staged_transition_validation",
+      "closure_class": "completed_bounded_only",
+      "doctrine_status": "complete",
+      "admission_status": "bounded_only",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "Ζ-A1",
+      "title": "DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION-0",
+      "family_id": "zeta.family.distributed_replay_and_proof_anchor_verification",
+      "closure_class": "completed_proof_only",
+      "doctrine_status": "complete",
+      "admission_status": "proof_only",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "Ζ-A2",
+      "title": "BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL-0",
+      "family_id": "zeta.family.bounded_runtime_cutover_proof_rehearsal",
+      "closure_class": "completed_proof_only",
+      "doctrine_status": "complete",
+      "admission_status": "proof_only",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "Ζ-B0",
+      "title": "LATER_WAVE_BOUNDARY_RECONCILIATION-0",
+      "closure_class": "completed",
+      "doctrine_status": "complete",
+      "admission_status": "later_wave_boundary_baseline_complete",
+      "realization_status": "not_applicable_planning_work"
+    },
+    {
+      "item_id": "Ζ-B1",
+      "title": "LATER_WAVE_PREREQUISITE_MATRIX-0",
+      "closure_class": "completed",
+      "doctrine_status": "complete",
+      "admission_status": "later_wave_family_matrix_complete",
+      "realization_status": "not_applicable_planning_work"
+    },
+    {
+      "item_id": "Ζ-B2",
+      "title": "LATER_WAVE_EXECUTION_GATES-0",
+      "closure_class": "completed",
+      "doctrine_status": "complete",
+      "admission_status": "later_wave_gate_baseline_complete",
+      "realization_status": "not_applicable_planning_work"
+    },
+    {
+      "item_id": "Ζ-B3",
+      "title": "LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION-0",
+      "family_id": "zeta.family.live_cutover_receipt_pipeline_anchorization",
+      "closure_class": "admitted_later_wave",
+      "doctrine_status": "complete",
+      "admission_status": "admitted_with_cautions_shadow_parallel_only",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "Ζ-B4",
+      "title": "TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION-0",
+      "family_id": "zeta.family.trust_aware_refusal_and_containment",
+      "closure_class": "completed",
+      "doctrine_status": "complete_as_reconciliation_only",
+      "admission_status": "review_gated_family_not_admitted",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "zeta.family.trust_aware_refusal_and_containment",
+      "title": "Trust-aware refusal and containment as execution family",
+      "closure_class": "still_blocked",
+      "doctrine_status": "reconciliation_complete_but_non_admitted",
+      "admission_status": "review_gated_not_admitted",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "title": "Bounded authority handoff and state transfer",
+      "closure_class": "still_blocked",
+      "doctrine_status": "partial_via_upstream_doctrine",
+      "admission_status": "deferred_to_broader_zeta",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "zeta.family.live_trust_revocation_and_publication_execution",
+      "title": "Live trust revocation and publication execution",
+      "closure_class": "still_blocked",
+      "doctrine_status": "upstream_doctrine_explicit",
+      "admission_status": "blocked",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "zeta.family.live_shard_relocation",
+      "title": "Live shard relocation",
+      "closure_class": "future_only_perimeter",
+      "doctrine_status": "boundary_only_and_blocker_defined",
+      "admission_status": "future_only_prohibited",
+      "realization_status": "absent"
+    },
+    {
+      "item_id": "zeta.blocker.extreme_pipe_dream_live_operations",
+      "title": "Extreme pipe-dream live operations",
+      "closure_class": "future_only_perimeter",
+      "doctrine_status": "boundary_only_and_blueprint_defined",
+      "admission_status": "future_only",
+      "realization_status": "absent"
+    }
+  ],
+  "doctrine_vs_admission_vs_realization_markers": [
+    {
+      "marker": "doctrine_complete_not_equal_admission_complete",
+      "meaning": "A family may have finished doctrine work without becoming admitted."
+    },
+    {
+      "marker": "admission_complete_not_equal_realization_present",
+      "meaning": "A family may be bounded-only, proof-only, or admitted-with-cautions while realization remains absent."
+    },
+    {
+      "marker": "completed_reconciliation_not_equal_execution_family_admission",
+      "meaning": "Ζ-B4 completed the reconciliation doctrine but did not admit trust-aware refusal and containment as a second later-wave family."
+    },
+    {
+      "marker": "admitted_later_wave_not_equal_live_realization",
+      "meaning": "Ζ-B3 remains admitted only inside shadow or parallel evidence posture and does not realize the live receipt pipeline."
+    }
+  ],
+  "remaining_frontier": {
+    "still_blocked": [
+      "zeta.family.trust_aware_refusal_and_containment as execution family",
+      "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "zeta.family.live_trust_revocation_and_publication_execution",
+      "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "zeta.blocker.live_cutover_receipt_pipeline_realization"
+    ],
+    "future_only_perimeter": [
+      "zeta.family.live_shard_relocation",
+      "zeta.blocker.extreme_pipe_dream_live_operations"
+    ]
+  },
+  "mega_checkpoint_must_verify": [
+    "all Ζ-Ω closure artifacts exist and parse",
+    "Ζ-B4 remained doctrine and registry work only",
+    "no blocked realization-heavy family was silently admitted",
+    "Ζ-A0 remained bounded-only",
+    "Ζ-A1 and Ζ-A2 remained proof-only",
+    "Ζ-B3 remained shadow or parallel evidence posture only",
+    "FULL review remains mandatory for any evidence reclassification",
+    "zeta.family.trust_aware_refusal_and_containment remained review-gated and not admitted",
+    "remaining frontier set is explicit and aligned across the closure baseline and final admissible scope",
+    "handoff to post-zeta planning preserves unresolved realization territory honestly"
+  ]
+}
