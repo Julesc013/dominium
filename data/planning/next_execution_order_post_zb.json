@@ -1,0 +1,93 @@
+{
+  "ordering_id": "NEXT_EXECUTION_ORDER_POST_ZB",
+  "checkpoint_state": "post-later-wave-refresh / pre-later-wave-bounded-zeta-or-other-next-block",
+  "recommended_next_prompt": {
+    "prompt_id": "Ζ-B3",
+    "title": "LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION-0",
+    "readiness_status": "ready_with_cautions"
+  },
+  "ordering_mode": "later_wave_bounded_zeta_first",
+  "prompt_order": [
+    {
+      "order": 1,
+      "prompt_id": "Ζ-B3",
+      "title": "LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION-0",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "docs/planning/CHECKPOINT_C_LATER_WAVE_ZETA_ADMISSION_REVIEW.md",
+        "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
+        "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md",
+        "docs/planning/LATER_WAVE_EXECUTION_GATES.md",
+        "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
+        "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "data/registries/provenance_classification_registry.json",
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "server/net/dom_server_protocol.h",
+        "server/net/dom_server_runtime.h",
+        "security/trust/trust_verifier.py"
+      ],
+      "human_review_requirements": [
+        "receipt_and_provenance_reclassification FULL review if shadow evidence is promoted toward canonical receipt truth",
+        "distributed_authority_model_changes FULL review if any work implies authority movement or cutover legality beyond the frozen scope",
+        "trust_root_governance_changes FULL review if any work implies trust-root promotion rotation revocation execution or publication execution"
+      ],
+      "stop_conditions": [
+        "stop if local logs traces mirrors or CI outputs are reframed as canonical receipts",
+        "stop if Ζ-B3 drifts into live trust revocation or publication execution",
+        "stop if Ζ-B3 reinterprets rehearsal or verification doctrine as authority-transfer proof"
+      ],
+      "notes": [
+        "This prompt is the only later-wave family currently admitted, and only with cautions.",
+        "Outputs must remain inside a shadow or parallel evidence posture rather than claim live receipt-pipeline realization."
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "C-POST_ZETA_B3_RECEIPT_ANCHORIZATION_REVIEW",
+      "title": "POST_RECEIPT_PIPELINE_ANCHORIZATION_REASSESSMENT-0",
+      "readiness_status": "required_after_zeta_b3",
+      "dependencies": [
+        "completed Ζ-B3 artifacts",
+        "docs/planning/CHECKPOINT_C_LATER_WAVE_ZETA_ADMISSION_REVIEW.md",
+        "docs/planning/LATER_WAVE_EXECUTION_GATES.md"
+      ],
+      "human_review_requirements": [
+        "checkpoint must verify the admitted family stayed inside a shadow or parallel evidence posture",
+        "checkpoint must verify no first-wave family widened and no trust-sensitive later-wave family was smuggled in"
+      ],
+      "stop_conditions": [
+        "stop before any second later-wave family prompt until this checkpoint exists"
+      ],
+      "notes": [
+        "This checkpoint decides whether any follow-on later-wave reconsideration is honest after Ζ-B3."
+      ]
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "item": "zeta.family.trust_aware_refusal_and_containment",
+      "status": "review_gated_only"
+    },
+    {
+      "item": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "status": "deferred_to_broader_zeta"
+    },
+    {
+      "item": "zeta.family.live_trust_revocation_and_publication_execution",
+      "status": "blocked"
+    },
+    {
+      "item": "zeta.family.live_shard_relocation",
+      "status": "future_only_prohibited"
+    }
+  ],
+  "stability": {
+    "status": "provisional",
+    "last_reviewed": "2026-04-05",
+    "replacement_target": "later post-Ζ-B3 next-order artifact may refine sequence without replacing the ordering law frozen here"
+  }
+}
