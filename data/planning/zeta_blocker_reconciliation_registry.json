@@ -1,0 +1,596 @@
+{
+  "artifact_id": "dominium.planning.zeta_blocker_reconciliation",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-05",
+  "checkpoint_context": {
+    "state": "post_phi_b5_pre_zeta_p",
+    "enabling_prompt": "Ζ-P0 — ZETA_BLOCKER_RECONCILIATION-0",
+    "active_authoritative_checkpoint": "C-PRE_ZETA_ADMISSION",
+    "checkpoint_judgment": "zeta_p_ready_with_cautions",
+    "active_numbering_note": "Ζ-P is ready with cautions while Ζ remains blocked by reconciliation, proof, convergence, and realization gaps."
+  },
+  "source_of_truth_inputs": {
+    "latest_checkpoints": [
+      "docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md",
+      "data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
+      "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
+      "data/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
+      "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
+      "data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
+      "data/planning/next_execution_order_post_phib5.json"
+    ],
+    "runtime_and_release_doctrine": [
+      "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+      "docs/runtime/HOTSWAP_BOUNDARIES.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+      "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+      "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md"
+    ],
+    "evidence_roots": [
+      "data/runtime/distributed_authority_foundations_registry.json",
+      "data/registries/net_replication_policy_registry.json",
+      "data/registries/trust_policy_registry.json",
+      "data/registries/trust_root_registry.json",
+      "data/registries/provenance_classification_registry.json",
+      "server/shard/shard_api.h",
+      "server/shard/dom_cross_shard_log.h",
+      "server/net/dom_server_protocol.h",
+      "server/net/dom_server_runtime.h",
+      "release/update_resolver.py",
+      "security/trust/trust_verifier.py",
+      "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+      "docs/blueprint/CAPABILITY_LADDER.md",
+      "docs/blueprint/MANUAL_REVIEW_GATES.md",
+      "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+    ]
+  },
+  "blocker_categories": [
+    {
+      "category_id": "historical_doctrine_gap_reductions",
+      "description": "Earlier blocker names that are no longer active because the missing doctrine layer has now landed."
+    },
+    {
+      "category_id": "admission_and_governance_blockers",
+      "description": "Blockers tied to missing reconciliation, prerequisite-matrix, or execution-gate artifacts."
+    },
+    {
+      "category_id": "distributed_continuity_blockers",
+      "description": "Blockers tied to deterministic replication, partition-transfer proof, distributed replay, and proof-anchor continuity."
+    },
+    {
+      "category_id": "cutover_proof_blockers",
+      "description": "Blockers tied to runtime cutover proof under the now-explicit hotswap and distributed-authority boundaries."
+    },
+    {
+      "category_id": "trust_revocation_and_publication_realization_blockers",
+      "description": "Blockers whose governing doctrine exists but whose live trust, revocation, publication, or distributed convergence realization remains absent."
+    },
+    {
+      "category_id": "receipt_and_provenance_realization_blockers",
+      "description": "Blockers whose evidence model is explicit but whose live receipt pipeline does not yet exist."
+    },
+    {
+      "category_id": "future_only_perimeter_blockers",
+      "description": "Dangerous or future-only capability families that bounded Ζ-A work must not silently absorb."
+    }
+  ],
+  "status_normalization": [
+    {
+      "status": "resolved",
+      "meaning": "The blocker as previously phrased is no longer active because the missing doctrine layer is now frozen."
+    },
+    {
+      "status": "partially_resolved",
+      "meaning": "The blocker has been narrowed by new doctrine, but proof or realization is still absent."
+    },
+    {
+      "status": "doctrinally_established_but_not_operationalized",
+      "meaning": "The governing doctrine exists, but no live operational realization exists yet."
+    },
+    {
+      "status": "still_blocked",
+      "meaning": "The blocker remains a direct prerequisite before bounded Ζ execution planning can advance."
+    },
+    {
+      "status": "still_dangerous",
+      "meaning": "The family is still unsafe to operationalize and remains outside bounded near-term execution."
+    },
+    {
+      "status": "still_future_only",
+      "meaning": "The family remains beyond the bounded Ζ-A horizon entirely."
+    }
+  ],
+  "current_active_blocker_ids": [
+    "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+    "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+    "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+    "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+    "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+    "zeta.blocker.live_trust_revocation_publication_execution_realization",
+    "zeta.blocker.live_cutover_receipt_pipeline_realization"
+  ],
+  "historical_reduced_blocker_ids": [
+    "zeta.blocker.distributed_authority_foundation_gap",
+    "zeta.blocker.live_trust_transition_prerequisite_gap",
+    "zeta.blocker.live_cutover_receipt_generalization_gap",
+    "zeta.blocker.publication_trust_operationalization_gate_gap"
+  ],
+  "perimeter_blocker_ids": [
+    "zeta.blocker.distributed_shard_relocation_live_execution",
+    "zeta.blocker.extreme_pipe_dream_live_operations"
+  ],
+  "blocker_entries": [
+    {
+      "blocker_id": "zeta.blocker.distributed_authority_foundation_gap",
+      "title": "Missing distributed authority foundations",
+      "category_id": "historical_doctrine_gap_reductions",
+      "status": "resolved",
+      "baseline_class": "historical_reduction",
+      "reconciles_older_wording": [
+        "phi_b5_distributed_authority_foundations",
+        "distributed_authority_handoff_and_quorum_semantics"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "data/runtime/distributed_authority_foundations_registry.json"
+      ],
+      "missing_realization_or_admission": [
+        "descendant blockers now survive under replication proof, distributed replay/proof-anchor continuity, runtime cutover proof, and distributed trust convergence"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.live_trust_transition_prerequisite_gap",
+      "title": "Missing live trust rotation and revocation propagation prerequisites",
+      "category_id": "historical_doctrine_gap_reductions",
+      "status": "resolved",
+      "baseline_class": "historical_reduction",
+      "reconciles_older_wording": [
+        "live_trust_root_rotation_prerequisites"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json"
+      ],
+      "missing_realization_or_admission": [
+        "live trust, revocation, and publication execution realization still remains active"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.live_cutover_receipt_generalization_gap",
+      "title": "Missing live-cutover receipt and provenance generalization",
+      "category_id": "historical_doctrine_gap_reductions",
+      "status": "resolved",
+      "baseline_class": "historical_reduction",
+      "reconciles_older_wording": [
+        "live_cutover_receipt_and_provenance_generalization",
+        "live_cutover_receipts_and_runtime_continuity"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "data/registries/provenance_classification_registry.json",
+        "release/update_resolver.py"
+      ],
+      "missing_realization_or_admission": [
+        "a live cutover receipt pipeline remains unrealized"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.publication_trust_operationalization_gate_gap",
+      "title": "Missing publication and trust execution operationalization gates",
+      "category_id": "historical_doctrine_gap_reductions",
+      "status": "resolved",
+      "baseline_class": "historical_reduction",
+      "reconciles_older_wording": [
+        "publication_and_trust_execution_operationalization",
+        "publication_and_trust_operationalization_alignment"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "data/registries/trust_policy_registry.json",
+        "release/update_resolver.py"
+      ],
+      "missing_realization_or_admission": [
+        "live trust, revocation, and publication execution realization remains active"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+      "title": "Pre-Ζ blocker reconciliation and gate freeze",
+      "category_id": "admission_and_governance_blockers",
+      "status": "still_blocked",
+      "baseline_class": "active",
+      "reconciles_older_wording": [
+        "pre-zeta blocker reconciliation and gate freeze"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
+        "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
+        "docs/planning/GATES_AND_PROOFS.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [],
+      "missing_realization_or_admission": [
+        "Ζ-P0, Ζ-P1, and Ζ-P2 outputs do not yet exist as a frozen admission packet"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P0 — ZETA_BLOCKER_RECONCILIATION-0",
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "title": "Deterministic replication and lawful state-partition transfer proof",
+      "category_id": "distributed_continuity_blockers",
+      "status": "still_blocked",
+      "baseline_class": "active",
+      "reconciles_older_wording": [
+        "deterministic_replication_and_state_partition_transfer_proofs",
+        "deterministic_replication_and_state_partition_transfer_proof"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/STATE_EXTERNALIZATION.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "data/registries/net_replication_policy_registry.json",
+        "server/net/dom_server_runtime.h",
+        "server/net/dom_server_runtime.cpp"
+      ],
+      "missing_realization_or_admission": [
+        "proof-backed replication model",
+        "lawful partition-transfer proof",
+        "verification criteria",
+        "execution-gate posture"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+        "later bounded Ζ-A distributed continuity proof work"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "title": "Distributed replay and proof-anchor continuity realization",
+      "category_id": "distributed_continuity_blockers",
+      "status": "partially_resolved",
+      "baseline_class": "active",
+      "reconciles_older_wording": [
+        "distributed_replay_and_proof_anchor_continuity",
+        "distributed replay verification and cutover-proof continuity"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "server/shard/dom_cross_shard_log.h",
+        "server/shard/shard_api.h",
+        "server/net/dom_server_protocol.h",
+        "server/net/dom_server_runtime.h"
+      ],
+      "missing_realization_or_admission": [
+        "distributed replay verification criteria",
+        "proof-anchor continuity records across handoff",
+        "execution-gate posture"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+        "later bounded Ζ-A distributed replay and proof work"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "title": "Runtime cutover proof under lawful hotswap and distributed-authority boundaries",
+      "category_id": "cutover_proof_blockers",
+      "status": "partially_resolved",
+      "baseline_class": "active",
+      "reconciles_older_wording": [
+        "runtime_cutover_proof_under_lawful_hotswap_boundaries",
+        "runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/LIFECYCLE_MANAGER.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "server/net/dom_server_runtime.cpp",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+      ],
+      "missing_realization_or_admission": [
+        "runtime cutover proof obligations",
+        "admissible proof packet structure",
+        "execution-gate posture"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+        "later bounded Ζ-A runtime cutover proof work"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "title": "Distributed trust and authority convergence realization",
+      "category_id": "trust_revocation_and_publication_realization_blockers",
+      "status": "doctrinally_established_but_not_operationalized",
+      "baseline_class": "active",
+      "reconciles_older_wording": [
+        "distributed_trust_and_authority_convergence",
+        "distributed trust and authority convergence"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "security/trust/trust_verifier.py"
+      ],
+      "missing_realization_or_admission": [
+        "converged distributed trust posture",
+        "cross-region revocation behavior",
+        "execution-gate posture"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+        "later bounded Ζ-A distributed trust-convergence work"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.live_trust_revocation_publication_execution_realization",
+      "title": "Live trust, revocation, and publication execution realization",
+      "category_id": "trust_revocation_and_publication_realization_blockers",
+      "status": "doctrinally_established_but_not_operationalized",
+      "baseline_class": "active",
+      "reconciles_older_wording": [
+        "live_revocation_propagation_and_continuity",
+        "live_trust_revocation_publication_execution_realization",
+        "publication_and_trust_execution_operationalization"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "data/registries/trust_root_registry.json",
+        "data/registries/trust_policy_registry.json",
+        "release/update_resolver.py",
+        "security/trust/trust_verifier.py"
+      ],
+      "missing_realization_or_admission": [
+        "live trust-root rotation realization",
+        "live revocation propagation realization",
+        "publication execution realization",
+        "execution-gate posture"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+        "later bounded Ζ-A trust/publication execution work"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.live_cutover_receipt_pipeline_realization",
+      "title": "Live-cutover receipt pipeline realization",
+      "category_id": "receipt_and_provenance_realization_blockers",
+      "status": "doctrinally_established_but_not_operationalized",
+      "baseline_class": "active",
+      "reconciles_older_wording": [
+        "live_cutover_receipt_pipeline_realization",
+        "live_cutover_receipt_and_provenance_generalization"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "data/registries/provenance_classification_registry.json",
+        "release/update_resolver.py"
+      ],
+      "missing_realization_or_admission": [
+        "canonical boundary-sensitive receipt emission",
+        "stronger proof anchors in live pathways",
+        "execution-gate posture"
+      ],
+      "downstream_prompt_families": [
+        "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+        "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+        "later bounded Ζ-A receipt-pipeline realization work"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.distributed_shard_relocation_live_execution",
+      "title": "Distributed shard relocation live execution",
+      "category_id": "future_only_perimeter_blockers",
+      "status": "still_dangerous",
+      "baseline_class": "perimeter",
+      "reconciles_older_wording": [
+        "zeta.shard_relocation_distributed_live_ops",
+        "distributed shard relocation"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md"
+      ],
+      "missing_realization_or_admission": [
+        "deterministic replication proof",
+        "authority handoff proof",
+        "state-partition transfer proof",
+        "later explicit admission"
+      ],
+      "downstream_prompt_families": [
+        "much later bounded Ζ-A or later Ζ distributed live-ops work only"
+      ]
+    },
+    {
+      "blocker_id": "zeta.blocker.extreme_pipe_dream_live_operations",
+      "title": "Extreme pipe-dream live operations",
+      "category_id": "future_only_perimeter_blockers",
+      "status": "still_future_only",
+      "baseline_class": "perimeter",
+      "reconciles_older_wording": [
+        "zeta.extreme_pipe_dream_live_operations",
+        "deterministic cluster-of-clusters",
+        "restartless core engine replacement"
+      ],
+      "upstream_doctrine_refs": [
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/blueprint/PIPE_DREAMS_MATRIX.md",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+      ],
+      "checkpoint_refs": [
+        "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+      ],
+      "evidence_refs": [
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/blueprint/PIPE_DREAMS_MATRIX.md"
+      ],
+      "missing_realization_or_admission": [
+        "multiple earlier runtime, trust, receipt, and live-ops proof layers",
+        "later explicit admission far beyond current bounded Ζ-A"
+      ],
+      "downstream_prompt_families": [
+        "not part of current bounded Ζ-P or bounded Ζ-A planning"
+      ]
+    }
+  ],
+  "doctrine_admission_realization_distinctions": {
+    "doctrine": "A constitutional layer or gate model is frozen and authoritative.",
+    "admission": "The active checkpoint allows bounded planning or gate work to continue.",
+    "realization": "Actual live systems, proof packets, and execution posture exist.",
+    "governing_rules": [
+      "doctrine_exists_does_not_mean_blocker_resolved",
+      "checkpoint_admission_does_not_mean_live_readiness",
+      "code_surface_exists_does_not_mean_realization_complete",
+      "zeta_p_ready_with_cautions_does_not_mean_zeta_ready"
+    ]
+  },
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "this reconciliation artifact",
+      "its paired machine-readable registry",
+      "the active checkpoint chain through C-PRE_ZETA_ADMISSION",
+      "runtime and release doctrine through Φ-B5 and Υ-D2"
+    ],
+    "derived": [
+      "older checkpoint wording when not reconciled",
+      "dashboards",
+      "bundle manifests",
+      "local notes",
+      "filenames",
+      "implementation layout summaries"
+    ]
+  },
+  "prohibited_blocker_reconciliation_shapes": [
+    "deleting_blockers_because_doctrine_exists",
+    "inventing_new_blocker_names_for_already_covered_issues",
+    "using_implementation_filenames_as_blocker_truth",
+    "treating_code_surface_presence_as_live_ops_readiness",
+    "mixing_stale_checkpoint_wording_with_current_law_without_reconciliation",
+    "treating_zeta_p_readiness_as_zeta_readiness",
+    "flattening_doctrine_admission_and_realization_into_one_status"
+  ],
+  "downstream_refinement_prompts": [
+    "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+    "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+    "post-Ζ-P checkpoint",
+    "later bounded Ζ-A planning"
+  ]
+}
