@@ -1,0 +1,569 @@
+{
+  "artifact_id": "dominium.planning.live_operations_prerequisite_matrix",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-05",
+  "checkpoint_context": {
+    "state": "post_phi_b5_in_zeta_p_pre_gate_freeze",
+    "enabling_prompt": "Ζ-P1 — LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+    "active_authoritative_checkpoint": "C-PRE_ZETA_ADMISSION",
+    "upstream_blocker_baseline": "Ζ-P0 — ZETA_BLOCKER_RECONCILIATION-0",
+    "checkpoint_judgment": "zeta_p_ready_with_cautions"
+  },
+  "source_of_truth_inputs": {
+    "latest_checkpoints": [
+      "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
+      "data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
+      "data/planning/next_execution_order_post_phib5.json",
+      "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
+      "data/planning/zeta_blocker_reconciliation_registry.json"
+    ],
+    "runtime_and_release_doctrine": [
+      "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+      "docs/runtime/HOTSWAP_BOUNDARIES.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "docs/runtime/STATE_EXTERNALIZATION.md",
+      "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+      "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+      "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+      "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md"
+    ],
+    "evidence_roots": [
+      "server/shard/shard_api.h",
+      "server/shard/dom_cross_shard_log.h",
+      "server/net/dom_server_protocol.h",
+      "server/net/dom_server_runtime.h",
+      "data/registries/net_replication_policy_registry.json",
+      "data/registries/trust_policy_registry.json",
+      "data/registries/trust_root_registry.json",
+      "data/registries/provenance_classification_registry.json",
+      "release/update_resolver.py",
+      "security/trust/trust_verifier.py",
+      "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+      "docs/blueprint/CAPABILITY_LADDER.md",
+      "docs/blueprint/MANUAL_REVIEW_GATES.md",
+      "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+    ]
+  },
+  "family_categories": [
+    {
+      "category_id": "bounded_transition_families",
+      "description": "Bounded runtime-adjacent transition families that focus on proof and rehearsal rather than live authority transfer."
+    },
+    {
+      "category_id": "rollback_recovery_families",
+      "description": "Families whose boundedness is justified by rollback, downgrade, and staged transition posture."
+    },
+    {
+      "category_id": "distributed_continuity_families",
+      "description": "Families focused on replay, proof-anchor, and distributed continuity verification."
+    },
+    {
+      "category_id": "distributed_handoff_families",
+      "description": "Families that would move authority or state across explicit authority regions."
+    },
+    {
+      "category_id": "trust_and_remediation_families",
+      "description": "Families that contain, refuse, or remediate live-operation candidates where trust posture is not converged."
+    },
+    {
+      "category_id": "publication_and_trust_execution_families",
+      "description": "Families that would realize live trust, revocation, or publication execution."
+    },
+    {
+      "category_id": "receipt_pipeline_families",
+      "description": "Families that would realize canonical live cutover receipt emission and stronger provenance anchors."
+    },
+    {
+      "category_id": "future_only_perimeter_families",
+      "description": "Perimeter families that remain outside bounded near-term Ζ-A entry."
+    }
+  ],
+  "prerequisite_categories": [
+    {
+      "prerequisite_category_id": "admission_and_governance_freeze",
+      "description": "Requires the reconciled blocker ledger and final execution gates to stay authoritative."
+    },
+    {
+      "prerequisite_category_id": "release_and_rollback_envelope",
+      "description": "Requires release identity, staged rollback, downgrade, and rehearsal posture to remain explicit."
+    },
+    {
+      "prerequisite_category_id": "distributed_continuity_proof",
+      "description": "Requires deterministic replication, lawful partition transfer, and distributed continuity proof posture."
+    },
+    {
+      "prerequisite_category_id": "replay_snapshot_and_proof_anchor_continuity",
+      "description": "Requires replay intelligibility, snapshot legality, state externalization, and proof-anchor continuity."
+    },
+    {
+      "prerequisite_category_id": "runtime_cutover_legality",
+      "description": "Requires lawful hotswap, lifecycle, isolation, and distributed-authority cutover posture."
+    },
+    {
+      "prerequisite_category_id": "trust_prerequisites_and_convergence",
+      "description": "Requires live trust-transition prerequisites, revocation continuity, and distributed trust convergence posture."
+    },
+    {
+      "prerequisite_category_id": "receipt_and_provenance_anchorization",
+      "description": "Requires generalized live-cutover receipts and stronger provenance anchors."
+    },
+    {
+      "prerequisite_category_id": "review_and_privilege_posture",
+      "description": "Requires explicit human review, privileged posture, or refusal-aware governance."
+    },
+    {
+      "prerequisite_category_id": "operational_realization_substrate",
+      "description": "Requires live machinery that does not yet exist merely because doctrine or precursor code exists."
+    }
+  ],
+  "matrix_dimensions": [
+    {
+      "dimension_id": "doctrinal_availability",
+      "description": "Whether governing law for the family already exists."
+    },
+    {
+      "dimension_id": "blocker_dependency",
+      "description": "Which unresolved blocker entries remain visible for the family."
+    },
+    {
+      "dimension_id": "proof_requirement",
+      "description": "Whether replication, replay, cutover, or proof-anchor proof remains upstream."
+    },
+    {
+      "dimension_id": "trust_convergence_requirement",
+      "description": "Whether distributed trust, revocation continuity, or publication/trust operationalization remains upstream."
+    },
+    {
+      "dimension_id": "replay_snapshot_continuity_requirement",
+      "description": "Whether replay, snapshot, and state continuity must be explicit."
+    },
+    {
+      "dimension_id": "cutover_legality_requirement",
+      "description": "Whether hotswap, lifecycle, and distributed-authority boundaries constrain the family."
+    },
+    {
+      "dimension_id": "receipt_provenance_requirement",
+      "description": "Whether stronger receipt and provenance anchors are mandatory."
+    },
+    {
+      "dimension_id": "operational_realization_requirement",
+      "description": "Whether the family still depends on missing live machinery."
+    },
+    {
+      "dimension_id": "review_privilege_posture",
+      "description": "Whether explicit review or privileged posture remains mandatory."
+    },
+    {
+      "dimension_id": "bounded_entry_suitability",
+      "description": "Whether the family is a plausible first-wave candidate, later-wave candidate, or not admissible."
+    }
+  ],
+  "readiness_classification": [
+    {
+      "readiness_class": "admissible_first_wave_candidate",
+      "meaning": "The family is a plausible bounded first-wave candidate once Ζ-P2 freezes gates, but it is not automatically executable."
+    },
+    {
+      "readiness_class": "admissible_only_with_cautions",
+      "meaning": "The family may become gateable only under strong constraints, rehearsal posture, and explicit blocker visibility."
+    },
+    {
+      "readiness_class": "review_gated",
+      "meaning": "The family touches sensitive trust, evidence, or governance posture and can only be considered under explicit human review."
+    },
+    {
+      "readiness_class": "blocked",
+      "meaning": "The family cannot honestly enter a bounded first wave because active prerequisite blockers remain too central."
+    },
+    {
+      "readiness_class": "future_only_prohibited_for_now",
+      "meaning": "The family remains outside bounded near-term Ζ-A scope."
+    }
+  ],
+  "family_entries": [
+    {
+      "family_id": "zeta.family.rollback_bearing_staged_transition_validation",
+      "title": "Rollback-bearing staged transition validation",
+      "category_id": "rollback_recovery_families",
+      "current_readiness_class": "admissible_first_wave_candidate",
+      "doctrinal_availability": "explicit",
+      "admission_readiness": "gateable_only_after_zeta_p2",
+      "realization_status": "not_realized",
+      "execution_admissibility": "bounded_staged_validation_only_after_review",
+      "required_prerequisite_categories": [
+        "admission_and_governance_freeze",
+        "release_and_rollback_envelope",
+        "runtime_cutover_legality",
+        "receipt_and_provenance_anchorization",
+        "review_and_privilege_posture"
+      ],
+      "governing_doctrine_refs": [
+        "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+        "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+        "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "evidence_refs": [
+        "release/update_resolver.py",
+        "data/registries/provenance_classification_registry.json"
+      ],
+      "bounded_entry_suitability": "first_wave_candidate",
+      "rationale": "Rollback, downgrade, and staged transition law are already stronger than most remaining live-operation families, so this family is the most honest bounded starting point."
+    },
+    {
+      "family_id": "zeta.family.bounded_runtime_cutover_proof_rehearsal",
+      "title": "Bounded runtime cutover proof and rehearsal",
+      "category_id": "bounded_transition_families",
+      "current_readiness_class": "admissible_only_with_cautions",
+      "doctrinal_availability": "explicit",
+      "admission_readiness": "gateable_only_after_zeta_p2",
+      "realization_status": "not_realized",
+      "execution_admissibility": "bounded_rehearsal_or_proof_only_after_review",
+      "required_prerequisite_categories": [
+        "admission_and_governance_freeze",
+        "replay_snapshot_and_proof_anchor_continuity",
+        "runtime_cutover_legality",
+        "receipt_and_provenance_anchorization",
+        "release_and_rollback_envelope",
+        "review_and_privilege_posture"
+      ],
+      "governing_doctrine_refs": [
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/LIFECYCLE_MANAGER.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+        "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+        "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "evidence_refs": [
+        "server/net/dom_server_runtime.h",
+        "server/net/dom_server_protocol.h",
+        "release/update_resolver.py"
+      ],
+      "bounded_entry_suitability": "first_wave_candidate",
+      "rationale": "This family can remain proof-bearing and bounded, but it stays caution-heavy because cutover legality and stronger receipt anchors are still unresolved."
+    },
+    {
+      "family_id": "zeta.family.distributed_replay_and_proof_anchor_verification",
+      "title": "Distributed replay and proof-anchor verification",
+      "category_id": "distributed_continuity_families",
+      "current_readiness_class": "admissible_only_with_cautions",
+      "doctrinal_availability": "explicit",
+      "admission_readiness": "gateable_only_after_zeta_p2",
+      "realization_status": "substrate_present_but_not_realized",
+      "execution_admissibility": "verification_only_no_live_transfer",
+      "required_prerequisite_categories": [
+        "admission_and_governance_freeze",
+        "distributed_continuity_proof",
+        "replay_snapshot_and_proof_anchor_continuity",
+        "receipt_and_provenance_anchorization",
+        "review_and_privilege_posture"
+      ],
+      "governing_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/runtime/STATE_EXTERNALIZATION.md"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+        "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+        "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization"
+      ],
+      "evidence_refs": [
+        "server/shard/dom_cross_shard_log.h",
+        "server/shard/shard_api.h",
+        "server/net/dom_server_protocol.h"
+      ],
+      "bounded_entry_suitability": "first_wave_candidate",
+      "rationale": "This family directly reduces a core blocker through verification work rather than through premature authority movement."
+    },
+    {
+      "family_id": "zeta.family.trust_aware_refusal_and_containment",
+      "title": "Trust-aware refusal and containment",
+      "category_id": "trust_and_remediation_families",
+      "current_readiness_class": "review_gated",
+      "doctrinal_availability": "explicit",
+      "admission_readiness": "possible_only_under_explicit_review",
+      "realization_status": "not_realized",
+      "execution_admissibility": "bounded_refusal_and_containment_only",
+      "required_prerequisite_categories": [
+        "admission_and_governance_freeze",
+        "trust_prerequisites_and_convergence",
+        "receipt_and_provenance_anchorization",
+        "review_and_privilege_posture",
+        "operational_realization_substrate"
+      ],
+      "governing_doctrine_refs": [
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+        "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+        "zeta.blocker.live_trust_revocation_publication_execution_realization",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "evidence_refs": [
+        "data/registries/trust_policy_registry.json",
+        "security/trust/trust_verifier.py"
+      ],
+      "bounded_entry_suitability": "later_wave_candidate",
+      "rationale": "Containment is safer than live trust execution, but the family still touches sensitive trust posture and cannot be first-wave while trust convergence remains open."
+    },
+    {
+      "family_id": "zeta.family.live_cutover_receipt_pipeline_anchorization",
+      "title": "Live cutover receipt pipeline and anchorization",
+      "category_id": "receipt_pipeline_families",
+      "current_readiness_class": "review_gated",
+      "doctrinal_availability": "explicit",
+      "admission_readiness": "possible_only_after_gate_freeze",
+      "realization_status": "not_realized",
+      "execution_admissibility": "shadow_or_parallel_pipeline_only_after_review",
+      "required_prerequisite_categories": [
+        "admission_and_governance_freeze",
+        "receipt_and_provenance_anchorization",
+        "release_and_rollback_envelope",
+        "runtime_cutover_legality",
+        "review_and_privilege_posture",
+        "operational_realization_substrate"
+      ],
+      "governing_doctrine_refs": [
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+        "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+        "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "evidence_refs": [
+        "data/registries/provenance_classification_registry.json",
+        "release/update_resolver.py"
+      ],
+      "bounded_entry_suitability": "later_wave_candidate",
+      "rationale": "This family is an enabling layer, but it changes canonical evidence posture and therefore must not outrun the final gate freeze."
+    },
+    {
+      "family_id": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "title": "Bounded authority handoff and state transfer",
+      "category_id": "distributed_handoff_families",
+      "current_readiness_class": "blocked",
+      "doctrinal_availability": "explicit",
+      "admission_readiness": "not_yet_admissible",
+      "realization_status": "not_realized",
+      "execution_admissibility": "not_admissible_before_proof_and_convergence",
+      "required_prerequisite_categories": [
+        "admission_and_governance_freeze",
+        "distributed_continuity_proof",
+        "replay_snapshot_and_proof_anchor_continuity",
+        "runtime_cutover_legality",
+        "trust_prerequisites_and_convergence",
+        "receipt_and_provenance_anchorization",
+        "review_and_privilege_posture",
+        "operational_realization_substrate"
+      ],
+      "governing_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/STATE_EXTERNALIZATION.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+        "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+        "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+        "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+        "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "evidence_refs": [
+        "server/shard/shard_api.h",
+        "server/net/dom_server_protocol.h",
+        "server/net/dom_server_runtime.h"
+      ],
+      "bounded_entry_suitability": "later_wave_candidate",
+      "rationale": "Authority handoff meaning now exists, but the proof stack that would make transfer honest is still missing."
+    },
+    {
+      "family_id": "zeta.family.live_trust_revocation_and_publication_execution",
+      "title": "Live trust, revocation, and publication execution",
+      "category_id": "publication_and_trust_execution_families",
+      "current_readiness_class": "blocked",
+      "doctrinal_availability": "explicit",
+      "admission_readiness": "not_yet_admissible",
+      "realization_status": "not_realized",
+      "execution_admissibility": "not_admissible_for_first_wave",
+      "required_prerequisite_categories": [
+        "admission_and_governance_freeze",
+        "trust_prerequisites_and_convergence",
+        "release_and_rollback_envelope",
+        "receipt_and_provenance_anchorization",
+        "review_and_privilege_posture",
+        "operational_realization_substrate"
+      ],
+      "governing_doctrine_refs": [
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+        "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.pre_zeta_blocker_reconciliation_and_gate_freeze",
+        "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+        "zeta.blocker.live_trust_revocation_publication_execution_realization",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "evidence_refs": [
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "security/trust/trust_verifier.py",
+        "release/update_resolver.py"
+      ],
+      "bounded_entry_suitability": "not_admissible",
+      "rationale": "Trust policy and admission doctrine exist, but live execution remains blocked while trust roots are empty and convergence is unrealized."
+    },
+    {
+      "family_id": "zeta.family.live_shard_relocation",
+      "title": "Live shard relocation",
+      "category_id": "future_only_perimeter_families",
+      "current_readiness_class": "future_only_prohibited_for_now",
+      "doctrinal_availability": "perimeter_only",
+      "admission_readiness": "not_admissible",
+      "realization_status": "not_realized",
+      "execution_admissibility": "prohibited_for_bounded_near_term_entry",
+      "required_prerequisite_categories": [
+        "admission_and_governance_freeze",
+        "distributed_continuity_proof",
+        "replay_snapshot_and_proof_anchor_continuity",
+        "runtime_cutover_legality",
+        "trust_prerequisites_and_convergence",
+        "receipt_and_provenance_anchorization",
+        "review_and_privilege_posture",
+        "operational_realization_substrate"
+      ],
+      "governing_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+        "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+        "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+        "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+        "zeta.blocker.live_trust_revocation_publication_execution_realization",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization",
+        "zeta.blocker.distributed_shard_relocation_live_execution"
+      ],
+      "evidence_refs": [
+        "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+        "docs/blueprint/CAPABILITY_LADDER.md",
+        "server/shard/shard_api.h"
+      ],
+      "bounded_entry_suitability": "not_admissible",
+      "rationale": "The readiness ladder still marks shard relocation as unrealistic currently, so it remains perimeter-only rather than a bounded Ζ-A candidate."
+    }
+  ],
+  "first_wave_candidate_ids": [
+    "zeta.family.rollback_bearing_staged_transition_validation",
+    "zeta.family.bounded_runtime_cutover_proof_rehearsal",
+    "zeta.family.distributed_replay_and_proof_anchor_verification"
+  ],
+  "later_wave_candidate_ids": [
+    "zeta.family.trust_aware_refusal_and_containment",
+    "zeta.family.live_cutover_receipt_pipeline_anchorization",
+    "zeta.family.bounded_authority_handoff_and_state_transfer"
+  ],
+  "non_admissible_family_ids": [
+    "zeta.family.live_trust_revocation_and_publication_execution",
+    "zeta.family.live_shard_relocation"
+  ],
+  "doctrine_admission_realization_distinctions": [
+    {
+      "marker_id": "doctrine_exists_not_family_admissible",
+      "meaning": "A family may have explicit doctrine while still remaining blocked or review-gated."
+    },
+    {
+      "marker_id": "blocker_reduced_not_blocker_gone",
+      "meaning": "A narrowed blocker may still govern the family until proof or realization exists."
+    },
+    {
+      "marker_id": "code_surface_exists_not_realization_complete",
+      "meaning": "Shard, net, release, or trust substrate does not by itself establish live-operation realization."
+    },
+    {
+      "marker_id": "zeta_p_readiness_not_family_uniform_readiness",
+      "meaning": "The repo may be ready for the Ζ-P admission band without every live-operation family being equally ready."
+    },
+    {
+      "marker_id": "matrix_admission_not_execution_permission",
+      "meaning": "Matrix-level admissibility still requires Ζ-P2 gate freezing and later checkpoint confirmation."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
+      "data/planning/live_operations_prerequisite_matrix.json",
+      "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
+      "data/planning/zeta_blocker_reconciliation_registry.json",
+      "active checkpoint law",
+      "upstream runtime and release-control doctrine"
+    ],
+    "derived": [
+      "dashboards",
+      "local shard maps",
+      "CI summaries",
+      "mirror views",
+      "archive presence",
+      "tool-local traces"
+    ]
+  },
+  "prohibited_matrix_evaluation_shapes": [
+    "treating every family as equally ready because zeta_p is ready with cautions",
+    "treating doctrine existence as bounded-entry admission",
+    "ignoring unresolved blockers because code evidence exists",
+    "choosing convenience families instead of matrix-driven families",
+    "admitting live trust or authority-transfer families into first-wave scope without missing prerequisites",
+    "flattening doctrine admission realization and bounded-entry suitability into one readiness concept",
+    "silently promoting perimeter families into bounded near-term zeta entry"
+  ],
+  "downstream_refinement_prompts": [
+    "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+    "immediate post-Ζ-P checkpoint",
+    "later bounded Ζ-A planning and admission work"
+  ]
+}
