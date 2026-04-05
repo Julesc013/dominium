@@ -1,0 +1,102 @@
+{
+  "ordering_id": "NEXT_EXECUTION_ORDER_POST_ZB3",
+  "checkpoint_state": "post-admitted-later-wave-family / pre-further-later-wave-or-other-next-block",
+  "recommended_next_prompt": {
+    "prompt_id": "Ζ-B4",
+    "title": "TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION-0",
+    "readiness_status": "ready_with_cautions"
+  },
+  "ordering_mode": "final_narrow_work_first",
+  "prompt_order": [
+    {
+      "order": 1,
+      "prompt_id": "Ζ-B4",
+      "title": "TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION-0",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "docs/planning/CHECKPOINT_C_POST_ZETA_B3_REVIEW.md",
+        "docs/planning/CHECKPOINT_C_LATER_WAVE_ZETA_ADMISSION_REVIEW.md",
+        "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
+        "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md",
+        "docs/planning/LATER_WAVE_EXECUTION_GATES.md",
+        "docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+        "data/registries/provenance_classification_registry.json",
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "server/net/dom_server_protocol.h",
+        "server/net/dom_server_runtime.h",
+        "security/trust/trust_verifier.py"
+      ],
+      "human_review_requirements": [
+        "receipt_and_provenance_reclassification FULL review if any shadow or parallel evidence is promoted toward canonical receipt truth",
+        "trust_root_governance_changes FULL review if any work implies trust-root promotion rotation revocation execution or publication execution",
+        "review_gated_refusal_or_containment_semantic_changes FULL review if refusal or containment drift into live trust convergence or operational authority",
+        "distributed_authority_model_changes FULL review if any work implies authority movement or cutover legality beyond the frozen scope"
+      ],
+      "stop_conditions": [
+        "stop if Ζ-B4 drifts into live trust revocation or publication execution",
+        "stop if Ζ-B4 reclassifies shadow or parallel receipt evidence without FULL review",
+        "stop if Ζ-B4 loosens first-wave freeze or later-wave single-family posture without checkpoint law"
+      ],
+      "notes": [
+        "This prompt is a final narrow reconciliation step, not a second later-wave family admission.",
+        "Outputs must remain review-gated and non-realizing while trust-sensitive blocker posture is narrowed."
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "C-POST_ZETA_B4_REVIEW",
+      "title": "POST_TRUST_AWARE_REFUSAL_AND_CONTAINMENT_REASSESSMENT-0",
+      "readiness_status": "required_after_zeta_b4",
+      "dependencies": [
+        "completed Ζ-B4 artifacts",
+        "docs/planning/CHECKPOINT_C_POST_ZETA_B3_REVIEW.md",
+        "docs/planning/LATER_WAVE_EXECUTION_GATES.md",
+        "docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md"
+      ],
+      "human_review_requirements": [
+        "checkpoint must verify Ζ-B3 shadow or parallel evidence posture remained intact",
+        "checkpoint must verify no evidence reclassification toward canonical receipt truth occurred without FULL review",
+        "checkpoint must verify Ζ-B4 did not widen into trust execution, publication execution, or authority transfer"
+      ],
+      "stop_conditions": [
+        "stop before any second later-wave family prompt until this checkpoint exists"
+      ],
+      "notes": [
+        "This checkpoint decides whether any second later-wave family can be reconsidered honestly after trust-sensitive narrowing."
+      ]
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "item": "zeta.family.live_cutover_receipt_pipeline_anchorization",
+      "status": "single_completed_admitted_family_shadow_parallel_only"
+    },
+    {
+      "item": "zeta.family.trust_aware_refusal_and_containment",
+      "status": "review_gated_only_until_zeta_b4_and_checkpoint"
+    },
+    {
+      "item": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "status": "deferred_to_broader_zeta"
+    },
+    {
+      "item": "zeta.family.live_trust_revocation_and_publication_execution",
+      "status": "blocked"
+    },
+    {
+      "item": "zeta.family.live_shard_relocation",
+      "status": "future_only_prohibited"
+    }
+  ],
+  "stability": {
+    "status": "provisional",
+    "last_reviewed": "2026-04-06",
+    "replacement_target": "later post-Ζ-B4 next-order artifact may refine sequence without replacing the ordering law frozen here"
+  }
+}
