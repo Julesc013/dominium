@@ -1,0 +1,169 @@
+{
+  "ordering_id": "NEXT_EXECUTION_ORDER_POST_PHIB5",
+  "checkpoint_state": "post-phi-b5 / pre-zeta-p-or-other-next-block",
+  "recommended_next_prompt": {
+    "prompt_id": "Ζ-P0",
+    "title": "ZETA_BLOCKER_RECONCILIATION-0",
+    "readiness_status": "ready_with_cautions"
+  },
+  "ordering_mode": "zeta_p0_first",
+  "prompt_order": [
+    {
+      "order": 1,
+      "prompt_id": "Ζ-P0",
+      "title": "ZETA_BLOCKER_RECONCILIATION-0",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+        "docs/runtime/LIFECYCLE_MANAGER.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+        "server/shard/shard_api.h",
+        "server/shard/dom_cross_shard_log.h",
+        "server/net/dom_server_protocol.h",
+        "server/net/dom_server_runtime.h",
+        "data/registries/net_replication_policy_registry.json",
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "data/registries/provenance_classification_registry.json"
+      ],
+      "human_review_requirements": [
+        "distributed_authority_model_changes FULL review when blocker reconciliation reinterprets handoff or quorum semantics",
+        "trust_root_governance_changes FULL review when trust admission or revocation posture is narrowed",
+        "lifecycle_manager_semantics FULL review when cutover, drain, frozen, or transfer legality is reclassified"
+      ],
+      "stop_conditions": [
+        "stop if blocker reconciliation starts to treat shard or net precursor substrate as proof-backed distributed readiness",
+        "stop if Ζ-P0 begins to implement live operations or distributed machinery",
+        "stop if blocker reconciliation silently downgrades open Ζ risks into solved capabilities"
+      ],
+      "notes": [
+        "Ready status is admission-planning only and does not admit Ζ live operations.",
+        "Ζ-P0 must preserve the distinction between doctrinal possibility, operational admission, and actual execution."
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "Ζ-P1",
+      "title": "LIVE_OPERATIONS_PREREQUISITE_MATRIX-0",
+      "readiness_status": "ready_after_zeta_p0",
+      "dependencies": [
+        "completed Ζ-P0 blocker reconciliation artifact",
+        "the same runtime, trust, receipt, and release-control doctrine packet consumed by Ζ-P0"
+      ],
+      "human_review_requirements": [
+        "distributed_authority_model_changes FULL review if the matrix reclassifies transfer or convergence prerequisites",
+        "trust_root_governance_changes FULL review if the matrix narrows live trust-transition admission posture"
+      ],
+      "stop_conditions": [
+        "stop if the matrix claims that replication proof, trust convergence, or runtime cutover proof already exist",
+        "stop if the matrix treats mirror, archive, task, or MCP exposure as execution readiness"
+      ],
+      "notes": [
+        "Ζ-P1 is still admission work and must remain subordinate to active checkpoint law."
+      ]
+    },
+    {
+      "order": 3,
+      "prompt_id": "Ζ-P2",
+      "title": "ZETA_EXECUTION_GATES-0",
+      "readiness_status": "ready_after_zeta_p0_and_zeta_p1",
+      "dependencies": [
+        "completed Ζ-P0 blocker reconciliation artifact",
+        "completed Ζ-P1 live operations prerequisite matrix"
+      ],
+      "human_review_requirements": [
+        "distributed_authority_model_changes FULL review when execution gates imply authority-transfer posture",
+        "trust_root_governance_changes FULL review when execution gates imply live trust-execution posture",
+        "licensing_commercialization_policy FULL review when execution gates reinterpret publication or trust execution posture with external policy impact"
+      ],
+      "stop_conditions": [
+        "stop if execution gates infer permission from doctrine alone",
+        "stop if execution gates imply live trust execution, distributed handoff, replication proof, or receipt-pipeline realization"
+      ],
+      "notes": [
+        "Ζ-P2 freezes admission gates for later bounded Ζ entry; it does not authorize Ζ execution by itself."
+      ]
+    },
+    {
+      "order": 4,
+      "prompt_id": "C-POST_ZETA_P_ADMISSION_REVIEW",
+      "title": "PRE_ZETA_ADMISSION_REASSESSMENT-0",
+      "readiness_status": "required_after_zeta_p",
+      "dependencies": [
+        "completed Ζ-P0..Ζ-P2 artifacts"
+      ],
+      "human_review_requirements": [
+        "checkpoint must verify no live-ops, distributed, release, or trust implementation work was performed",
+        "checkpoint must verify Ζ-P kept Ζ blockers explicit rather than flattening them into optimistic gating"
+      ],
+      "stop_conditions": [
+        "stop before any bounded Ζ execution-planning move until the post-Ζ-P checkpoint exists"
+      ],
+      "notes": [
+        "This checkpoint decides whether any residual Υ-D3 consolidation tail is still needed."
+      ]
+    },
+    {
+      "order": 5,
+      "prompt_id": "Υ-D3",
+      "title": "LIVE_RELEASE_CONTROLLER_AND_AUTOMATION_ALIGNMENT-0",
+      "readiness_status": "conditional_mostly_consolidation",
+      "dependencies": [
+        "post-Ζ-P checkpoint explicitly finds controller-specific or automation-specific residue"
+      ],
+      "human_review_requirements": [
+        "do not schedule unless the post-Ζ-P checkpoint identifies a distinct residue rather than restating already-closed doctrine"
+      ],
+      "stop_conditions": [
+        "skip if the post-Ζ-P checkpoint finds no distinct controller or automation residue"
+      ],
+      "notes": [
+        "Not required before Ζ-P from the current checkpoint state."
+      ]
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "item": "Ζ live operations",
+      "status": "blocked"
+    },
+    {
+      "item": "distributed shard relocation implementation",
+      "status": "dangerous"
+    },
+    {
+      "item": "proof-anchor quorum execution claims",
+      "status": "dangerous"
+    },
+    {
+      "item": "deterministic replication proof as an implementation claim",
+      "status": "dangerous"
+    },
+    {
+      "item": "live trust-root rotation execution",
+      "status": "blocked"
+    },
+    {
+      "item": "live revocation propagation execution",
+      "status": "blocked"
+    },
+    {
+      "item": "live publication execution automation without explicit post-Ζ-P admission",
+      "status": "blocked"
+    }
+  ],
+  "stability": {
+    "status": "provisional",
+    "last_reviewed": "2026-04-05",
+    "replacement_target": "later post-Ζ-P next-order artifact may refine sequence without replacing the ordering law frozen here"
+  }
+}
