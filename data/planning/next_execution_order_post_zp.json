@@ -1,0 +1,148 @@
+{
+  "ordering_id": "NEXT_EXECUTION_ORDER_POST_ZP",
+  "checkpoint_state": "post-zeta-p / pre-bounded-zeta-a-or-other-next-block",
+  "recommended_next_prompt": {
+    "prompt_id": "Ζ-A0",
+    "title": "ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION-0",
+    "readiness_status": "ready_with_cautions"
+  },
+  "ordering_mode": "bounded_zeta_a_first",
+  "prompt_order": [
+    {
+      "order": 1,
+      "prompt_id": "Ζ-A0",
+      "title": "ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION-0",
+      "readiness_status": "ready_with_cautions",
+      "dependencies": [
+        "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
+        "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
+        "docs/planning/ZETA_EXECUTION_GATES.md",
+        "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+        "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+        "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "server/net/dom_server_runtime.h",
+        "release/update_resolver.py"
+      ],
+      "human_review_requirements": [
+        "distributed_authority_model_changes FULL review if staged validation tries to reinterpret authority movement or transfer posture",
+        "lifecycle_manager_semantics FULL review if staged validation tries to reclassify drain freeze suspend or recover legality"
+      ],
+      "stop_conditions": [
+        "stop if rollback-bearing validation begins claiming lawful runtime cutover proof",
+        "stop if Ζ-A0 attempts live authority transfer trust execution revocation execution or publication execution",
+        "stop if receipt-pipeline limitations are hidden rather than kept explicit"
+      ],
+      "notes": [
+        "This is the narrowest and most reversible first-wave family.",
+        "Outputs must remain staged validation rollback downgrade and refusal-aware evidence only."
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "Ζ-A1",
+      "title": "DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION-0",
+      "readiness_status": "ready_with_cautions_after_zeta_a0",
+      "dependencies": [
+        "completed Ζ-A0 bounded staged-validation outputs",
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "server/shard/shard_api.h",
+        "server/shard/dom_cross_shard_log.h",
+        "server/net/dom_server_runtime.h",
+        "data/registries/net_replication_policy_registry.json",
+        "data/registries/provenance_classification_registry.json"
+      ],
+      "human_review_requirements": [
+        "distributed_authority_model_changes FULL review if replay verification tries to reinterpret proof-anchor semantics quorum semantics or transfer posture"
+      ],
+      "stop_conditions": [
+        "stop if Ζ-A1 claims that cross-shard logs or replication policies already prove lawful distributed continuity",
+        "stop if Ζ-A1 claims proof-anchor continuity or deterministic replication realization",
+        "stop if verification work drifts into live authority movement or state transfer"
+      ],
+      "notes": [
+        "This family must stay verification-only and blocker-reduction-oriented.",
+        "Outputs must not be treated as gate passage or realization evidence."
+      ]
+    },
+    {
+      "order": 3,
+      "prompt_id": "Ζ-A2",
+      "title": "BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL-0",
+      "readiness_status": "ready_with_cautions_after_zeta_a0_and_zeta_a1",
+      "dependencies": [
+        "completed Ζ-A0 bounded staged-validation outputs",
+        "completed Ζ-A1 replay and proof-anchor verification outputs",
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/LIFECYCLE_MANAGER.md",
+        "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+        "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "server/net/dom_server_runtime.h"
+      ],
+      "human_review_requirements": [
+        "lifecycle_manager_semantics FULL review when cutover rehearsal touches drain freeze suspend recover or swap legality",
+        "distributed_authority_model_changes FULL review if cutover rehearsal implies authority handoff or state transfer"
+      ],
+      "stop_conditions": [
+        "stop if Ζ-A2 implies live runtime swap legality or real authority handoff",
+        "stop if Ζ-A2 infers admissibility from runtime protocol or shard substrate alone",
+        "stop if cutover rehearsal tries to absorb trust-execution or receipt-pipeline realization work"
+      ],
+      "notes": [
+        "This family remains rehearsal-only and proof-only.",
+        "It should follow replay and proof-anchor verification rather than outrunning it."
+      ]
+    },
+    {
+      "order": 4,
+      "prompt_id": "C-POST_ZETA_A_FIRST_WAVE_REVIEW",
+      "title": "POST_BOUNDED_ZETA_A_FIRST_WAVE_REASSESSMENT-0",
+      "readiness_status": "required_after_zeta_a0_a1_a2",
+      "dependencies": [
+        "completed Ζ-A0..Ζ-A2 artifacts"
+      ],
+      "human_review_requirements": [
+        "checkpoint must verify the first-wave perimeter was not widened by convenience",
+        "checkpoint must verify no live authority transfer trust execution publication execution or receipt-pipeline realization work was performed"
+      ],
+      "stop_conditions": [
+        "stop before any review-gated later-wave or broader Ζ move until this checkpoint exists"
+      ],
+      "notes": [
+        "This checkpoint decides whether any later-wave family can even be reconsidered."
+      ]
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "item": "zeta.family.trust_aware_refusal_and_containment",
+      "status": "review_gated_later_wave"
+    },
+    {
+      "item": "zeta.family.live_cutover_receipt_pipeline_anchorization",
+      "status": "review_gated_later_wave"
+    },
+    {
+      "item": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "status": "later_wave_only"
+    },
+    {
+      "item": "zeta.family.live_trust_revocation_and_publication_execution",
+      "status": "blocked"
+    },
+    {
+      "item": "zeta.family.live_shard_relocation",
+      "status": "future_only_prohibited"
+    }
+  ],
+  "stability": {
+    "status": "provisional",
+    "last_reviewed": "2026-04-05",
+    "replacement_target": "later post-Ζ-A next-order artifact may refine sequence without replacing the ordering law frozen here"
+  }
+}
