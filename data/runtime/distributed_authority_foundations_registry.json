@@ -1,0 +1,330 @@
+{
+  "artifact_id": "dominium.runtime.distributed_authority_foundations_doctrine",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-05",
+  "checkpoint_context": {
+    "state": "post_phi_b4_post_upsilon_d_pre_phi_b5_or_other_next_block",
+    "enabling_prompt": "Φ-B5 — DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "checkpoint_judgment": "ready_with_cautions",
+    "upstream_runtime_floor": [
+      "Φ-0 — RUNTIME_KERNEL_MODEL-0",
+      "Φ-1 — COMPONENT_MODEL-0",
+      "Φ-2 — RUNTIME_SERVICES-0",
+      "Φ-3 — DOMAIN_SERVICE_BINDING_MODEL-0",
+      "Φ-4 — STATE_EXTERNALIZATION-0",
+      "Φ-5 — LIFECYCLE_MANAGER-0",
+      "Φ-B0 — EVENT_LOG_AND_REPLAY_DOCTRINE-0",
+      "Φ-B1 — SNAPSHOT_SERVICE_DOCTRINE-0",
+      "Φ-B2 — SANDBOXING_AND_ISOLATION_MODEL-0",
+      "Φ-B3 — MULTI_VERSION_COEXISTENCE-0",
+      "Φ-B4 — HOTSWAP_BOUNDARIES-0"
+    ],
+    "upstream_release_floor": [
+      "Υ-0 — BUILD_GRAPH_LOCK-0",
+      "Υ-1 — PRESET_AND_TOOLCHAIN_CONSOLIDATION-0",
+      "Υ-2 — VERSIONING_CONSTITUTION-0",
+      "Υ-3 — RELEASE_CONTRACT_PROFILE-0",
+      "Υ-4 — ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY-0",
+      "Υ-5 — RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT-0",
+      "Υ-6 — OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE-0",
+      "Υ-7 — ARCHIVE_AND_MIRROR_CONSTITUTION-0",
+      "Υ-8 — PUBLICATION_TRUST_AND_LICENSING_GATES-0",
+      "Υ-B0 — MANUAL_AUTOMATION_PARITY_AND_REHEARSAL-0",
+      "Υ-B1 — OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY-0",
+      "Υ-B2 — RELEASE_OPS_EXECUTION_ENVELOPE-0",
+      "Υ-C0 — RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT-0",
+      "Υ-C1 — CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION-0",
+      "Υ-C2 — TRUST_EXECUTION_AND_REVOCATION_CONTINUITY-0",
+      "Υ-D0 — LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES-0",
+      "Υ-D1 — LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION-0",
+      "Υ-D2 — PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES-0"
+    ],
+    "active_numbering_note": "The active checkpoint path authorizes DISTRIBUTED_AUTHORITY_FOUNDATIONS-0 after post-Υ-D review while Ζ live operations remain blocked."
+  },
+  "distributed_authority_definition": {
+    "summary": "Distributed authority is the declared, bounded, proof-bearing partitioning, holding, or transfer of authoritative runtime responsibility across more than one authority region while preserving one lawful truth owner for each governed scope at every relevant horizon.",
+    "distributed_authority_is_not": [
+      "generic_sharding",
+      "simple_replication",
+      "hotswap",
+      "rollback",
+      "publication_or_control_plane_action",
+      "implementation_level_clustering"
+    ],
+    "why_needed": [
+      "The repo already has shard placement, lifecycle, cross-shard message, checkpoint, version, baseline-hash, and ownership-transfer precursor surfaces that would otherwise be misread as implicit authority law.",
+      "Authority partition and handoff change truth-bearing execution assumptions and therefore require explicit proof, continuity, and convergence semantics.",
+      "Later Ζ planning needs one constitutional model instead of shard folklore or implementation-specific cluster behavior."
+    ]
+  },
+  "required_semantic_inputs": [
+    "SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK",
+    "SPEC_DOMAIN_CONTRACT_TEMPLATE",
+    "SPEC_CAPABILITY_SURFACES",
+    "SPEC_REPRESENTATION_LADDERS",
+    "SPEC_SEMANTIC_ASCENT_DESCENT",
+    "SPEC_FORMALIZATION_CHAIN",
+    "SEMANTIC_OWNERSHIP_REVIEW",
+    "SPEC_CROSS_DOMAIN_BRIDGES"
+  ],
+  "required_governance_inputs": [
+    "AGENTS.md",
+    ".agentignore",
+    "AGENT_TASKS.md",
+    "AGENT_MIRROR_POLICY",
+    "NATURAL_LANGUAGE_TASK_BRIDGE",
+    "XSTACK_TASK_CATALOG",
+    "MCP_INTERFACE_MODEL",
+    "AGENT_SAFETY_POLICY",
+    "AUTHORITY_ORDER",
+    "EXTEND_NOT_REPLACE_LEDGER",
+    "GATES_AND_PROOFS",
+    "CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW",
+    "CHECKPOINT_C_PHIB5_ADMISSION_REVIEW",
+    "NEXT_EXECUTION_ORDER_POST_YD"
+  ],
+  "required_runtime_inputs": [
+    "RUNTIME_KERNEL_MODEL",
+    "COMPONENT_MODEL",
+    "RUNTIME_SERVICES",
+    "DOMAIN_SERVICE_BINDING_MODEL",
+    "STATE_EXTERNALIZATION",
+    "LIFECYCLE_MANAGER",
+    "EVENT_LOG_AND_REPLAY_DOCTRINE",
+    "SNAPSHOT_SERVICE_DOCTRINE",
+    "SANDBOXING_AND_ISOLATION_MODEL",
+    "MULTI_VERSION_COEXISTENCE",
+    "HOTSWAP_BOUNDARIES"
+  ],
+  "required_release_inputs": [
+    "RELEASE_CONTRACT_PROFILE",
+    "RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT",
+    "OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY",
+    "LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES",
+    "LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION",
+    "PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES",
+    "TRUST_EXECUTION_AND_REVOCATION_CONTINUITY"
+  ],
+  "repo_evidence_roots": [
+    "server/shard/shard_api.h",
+    "server/shard/dom_shard_lifecycle.h",
+    "server/shard/dom_cross_shard_log.h",
+    "server/net/dom_server_types.h",
+    "server/net/dom_server_protocol.h",
+    "server/net/dom_server_runtime.h",
+    "data/registries/net_replication_policy_registry.json",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/trust_root_registry.json",
+    "data/registries/provenance_classification_registry.json",
+    "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
+    "docs/blueprint/MANUAL_REVIEW_GATES.md",
+    "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md"
+  ],
+  "distributed_authority_subject_classes": [
+    {
+      "id": "authority_bearing_domain_subject",
+      "description": "Truth-bearing runtime scopes whose lawful owner must remain explicit across all relevant horizons.",
+      "default_boundary_class": "single_authority_only_boundary",
+      "distributability": "conditionally_partitionable"
+    },
+    {
+      "id": "partition_or_shard_authority_subject",
+      "description": "Bounded shard or partition scopes that may host authority-bearing work under explicit ownership, lifecycle, and replay law.",
+      "default_boundary_class": "partitionable_non_transferable_boundary",
+      "distributability": "partitionable_but_not_automatically_transferable"
+    },
+    {
+      "id": "handoff_boundary_subject",
+      "description": "Subjects whose meaning changes when authority moves from one lawful region to another.",
+      "default_boundary_class": "review_gated_distributed_boundary",
+      "distributability": "bounded_transferable_only_with_review"
+    },
+    {
+      "id": "state_transfer_subject",
+      "description": "State-bearing scopes whose lawful movement requires explicit externalization, snapshot legality, and transfer legality.",
+      "default_boundary_class": "review_gated_distributed_boundary",
+      "distributability": "conditionally_transferable"
+    },
+    {
+      "id": "proof_anchor_or_quorum_subject",
+      "description": "Continuity-bearing structures used to prove distributed handoff, replay integrity, or converged authority posture.",
+      "default_boundary_class": "future_only_or_prohibited_distributed_boundary",
+      "distributability": "future_only_until_proof_semantics_are_frozen"
+    },
+    {
+      "id": "replay_and_continuity_subject",
+      "description": "Event, message, checkpoint, snapshot, baseline-hash, and other reconstructability-bearing surfaces whose continuity remains upstream of any distributed claim.",
+      "default_boundary_class": "review_gated_distributed_boundary",
+      "distributability": "required_for_any_lawful_distributed_claim"
+    },
+    {
+      "id": "trust_convergence_subject",
+      "description": "Distributed-authority subjects whose lawful meaning depends on trust posture, trust prerequisites, revocation continuity, or publication/trust operationalization.",
+      "default_boundary_class": "future_only_or_prohibited_distributed_boundary",
+      "distributability": "future_only_or_review_gated"
+    },
+    {
+      "id": "explicitly_non_distributable_subject",
+      "description": "Semantic or authority-bearing subjects that must remain single-authority because distribution would erase truth ownership, bridge legality, or lawful continuity.",
+      "default_boundary_class": "single_authority_only_boundary",
+      "distributability": "not_distributable"
+    }
+  ],
+  "boundary_classes": [
+    {
+      "id": "single_authority_only_boundary",
+      "description": "Exactly one authority region is lawful and no partition or handoff is currently admitted.",
+      "posture": "not_distributable"
+    },
+    {
+      "id": "partitionable_non_transferable_boundary",
+      "description": "Work or visibility may be partitioned, but authority may not move once declared.",
+      "posture": "partitionable_but_non_transferable"
+    },
+    {
+      "id": "bounded_transferable_boundary",
+      "description": "Later work may discuss explicit handoff under declared lifecycle, state, replay, snapshot, proof-anchor, trust, and receipt conditions.",
+      "posture": "conditionally_transferable"
+    },
+    {
+      "id": "review_gated_distributed_boundary",
+      "description": "Partition or transfer is discussable only under explicit human review because blast radius or continuity burden remains high.",
+      "posture": "review_gated"
+    },
+    {
+      "id": "future_only_or_prohibited_distributed_boundary",
+      "description": "The subject depends on unsolved replication proof, quorum proof, runtime cutover proof, or trust convergence behavior.",
+      "posture": "future_only_or_prohibited"
+    }
+  ],
+  "lifecycle_state_replay_snapshot_proof_anchor_dependencies": {
+    "state_externalization_law_remains_upstream": true,
+    "lifecycle_legality_remains_upstream": true,
+    "replay_continuity_remains_upstream": true,
+    "snapshot_legality_remains_upstream": true,
+    "proof_anchor_continuity_must_be_explicit": true,
+    "quorum_semantics_must_be_defined_constitutionally": true,
+    "active_draining_frozen_offline_or_equivalent_states_must_remain_distinguishable": true,
+    "hidden_local_state_invalidates_transfer_claims": true,
+    "non_reconstructable_handoff_history_invalidates_distributed_claims": true
+  },
+  "trust_cutover_release_control_dependencies": {
+    "hotswap_boundaries_remain_upstream": true,
+    "coexistence_may_be_necessary_but_is_not_sufficient": true,
+    "isolation_law_remains_binding": true,
+    "live_trust_transition_prerequisites_remain_upstream": true,
+    "revocation_continuity_remains_upstream": true,
+    "generalized_live_cutover_receipts_remain_upstream": true,
+    "release_contract_profile_remains_upstream": true,
+    "release_index_and_resolution_semantics_remain_upstream": true,
+    "operator_transactions_and_receipts_remain_required_where_relevant": true,
+    "publication_and_trust_operationalization_gates_remain_upstream": true,
+    "release_control_convenience_does_not_create_distributed_authority": true
+  },
+  "distinction_notes": {
+    "distributed_authority": "Declared, bounded, proof-bearing partitioning, holding, or transfer of authoritative runtime responsibility across more than one authority region.",
+    "generic_sharding": "A partitioning or layout technique that does not by itself define lawful authority.",
+    "simple_replication": "Replication or mirroring substrate that does not by itself prove convergence or handoff legality.",
+    "hotswap": "A live replacement or handoff boundary problem distinct from distributed authority.",
+    "rollback": "A governed restoration or reselection transaction rather than distributed authority law.",
+    "publication_or_control_plane_action": "A release, visibility, or trust-bearing action that remains downstream and distinct from runtime authority.",
+    "implementation_level_clustering": "A host, process, or cluster arrangement that does not define constitutional authority truth."
+  },
+  "invalidity_failure_categories": [
+    {
+      "id": "single_authority_only",
+      "description": "The subject remains constitutionally non-distributable."
+    },
+    {
+      "id": "partitionable_non_transferable",
+      "description": "Partition is discussable, but handoff is not lawful."
+    },
+    {
+      "id": "bounded_transfer_requires_review",
+      "description": "Transfer may be discussable only under explicit human review."
+    },
+    {
+      "id": "proof_anchor_or_quorum_missing",
+      "description": "Continuity anchors or quorum semantics are absent."
+    },
+    {
+      "id": "replication_not_proven",
+      "description": "Replication substrate exists, but proof-backed convergence does not."
+    },
+    {
+      "id": "state_transfer_incoherent",
+      "description": "State externalization or transfer legality is missing or ambiguous."
+    },
+    {
+      "id": "replay_snapshot_incompatible",
+      "description": "Replay or snapshot continuity would become non-reconstructable."
+    },
+    {
+      "id": "lifecycle_invalid",
+      "description": "Lifecycle posture is incompatible with the authority claim."
+    },
+    {
+      "id": "isolation_invalid",
+      "description": "Isolation boundaries are insufficient."
+    },
+    {
+      "id": "trust_convergence_unadmitted",
+      "description": "Trust prerequisites or revocation continuity do not admit the distributed claim."
+    },
+    {
+      "id": "release_control_overclaim",
+      "description": "Release or control-plane signals are being mistaken for distributed authority proof."
+    },
+    {
+      "id": "future_only_or_policy_prohibited",
+      "description": "The claim depends on later doctrine or remains outside current policy."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "this doctrine",
+      "its paired machine-readable registry",
+      "upstream runtime, trust, receipt, and release doctrine",
+      "later explicitly promoted authority, handoff, or proof records where doctrine names them"
+    ],
+    "derived": [
+      "dashboards",
+      "shard maps",
+      "local cluster views",
+      "routing tables",
+      "logs",
+      "profiling output",
+      "convenience topology diagrams"
+    ]
+  },
+  "ownership_projection_cautions": [
+    "fields_over_field",
+    "schema_over_schemas",
+    "packs_and_data_packs_are_not_freely_collapsible",
+    "canonical_vs_projected_generated_distinctions_remain_binding",
+    "thin_runtime_root_not_automatically_canonical",
+    "stale_numbering_or_titles_do_not_override_active_checkpoint_law",
+    "precursor_shard_and_net_code_does_not_define_canonical_truth_by_familiarity"
+  ],
+  "prohibited_distributed_authority_shapes": [
+    "shard_layout_treated_as_lawful_authority_partition",
+    "replication_treated_as_authority_convergence",
+    "hotswap_treated_as_distributed_handoff",
+    "local_cluster_behavior_treated_as_architectural_truth",
+    "distributed_authority_that_bypasses_replay_snapshot_proof_anchor_or_trust_continuity",
+    "publication_or_rolling_update_signals_treated_as_authority_proof",
+    "authority_handoff_without_explicit_proof_anchor_or_quorum_semantics",
+    "partition_transfer_with_undocumented_local_state",
+    "coexistence_or_isolation_shortcuts_treated_as_distributed_legality",
+    "doctrine_existence_treated_as_operational_realization"
+  ],
+  "downstream_refinement_prompts": [
+    "checkpoint.after_phi_b5",
+    "later_authority_handoff_semantics_refinement",
+    "later_deterministic_replication_and_state_partition_transfer_proof",
+    "later_distributed_replay_and_proof_anchor_continuity_refinement",
+    "later_zeta_blocker_reassessment"
+  ]
+}
