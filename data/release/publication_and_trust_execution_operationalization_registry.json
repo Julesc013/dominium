@@ -1,0 +1,222 @@
+{
+  "model": {
+    "model_id": "dominium.release.publication_and_trust_execution_operationalization_gates",
+    "registry_version": "1.0.0",
+    "status": "canonical",
+    "stability": "provisional",
+    "last_reviewed": "2026-04-05",
+    "prompt_series_id": "upsilon-d2",
+    "prompt_title": "PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES-0",
+    "checkpoint_state": "post-phi-b4 / pre-phi-b5-or-other-next-block"
+  },
+  "upstream_constraints": {
+    "governance_and_safety": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      "docs/agents/AGENT_TASKS.md",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/agents/MCP_INTERFACE_MODEL.md",
+      "docs/agents/AGENT_SAFETY_POLICY.md",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_YC_SAFE_REVIEW.md",
+      "docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_YC.md",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB4.md"
+    ],
+    "runtime_doctrine": [
+      "docs/runtime/LIFECYCLE_MANAGER.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "docs/runtime/HOTSWAP_BOUNDARIES.md"
+    ],
+    "release_doctrine": [
+      "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+      "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+      "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+      "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md"
+    ]
+  },
+  "action_class_identifiers": [
+    {
+      "id": "doctrine_only_publication_action",
+      "summary": "Publication-bearing action whose meaning is explicit in doctrine but whose execution posture remains non-admitted."
+    },
+    {
+      "id": "rehearsal_admissible_publication_action",
+      "summary": "Publication-bearing action whose readiness may be inspected, rehearsed, or structurally validated without becoming live or externally committed."
+    },
+    {
+      "id": "doctrine_only_trust_action",
+      "summary": "Trust-bearing action whose meaning is explicit in doctrine but whose execution posture remains non-admitted."
+    },
+    {
+      "id": "rehearsal_admissible_trust_action",
+      "summary": "Trust-bearing action whose prerequisites, refusal posture, or continuity expectations may be rehearsed or validated without becoming live trust mutation."
+    },
+    {
+      "id": "operator_executable_bounded_action",
+      "summary": "Bounded publication- or trust-adjacent action that may later be admitted for explicit operator execution without implying public operational maturity."
+    },
+    {
+      "id": "review_gated_or_privileged_action",
+      "summary": "Action whose blast radius, external commitment posture, or trust-bearing meaning requires privileged review or privileged operator execution."
+    },
+    {
+      "id": "non_operationalizable_or_prohibited_action",
+      "summary": "Action that remains constitutionally non-admitted because current trust, cutover, runtime, or distributed-authority maturity is insufficient."
+    }
+  ],
+  "gate_class_identifiers": [
+    {
+      "id": "not_admitted",
+      "summary": "The action is described in doctrine but not admitted into any execution posture."
+    },
+    {
+      "id": "admitted_for_analysis_only",
+      "summary": "The action may be analyzed or inspected for readiness without rehearsal or execution."
+    },
+    {
+      "id": "admitted_for_rehearsal_only",
+      "summary": "The action may be simulated, dry-run, or rehearsed under explicit non-live evidence posture."
+    },
+    {
+      "id": "admitted_for_bounded_operator_execution",
+      "summary": "The action may be admitted for narrow operator execution under preserved gate, receipt, and continuity constraints."
+    },
+    {
+      "id": "admitted_only_with_privileged_review",
+      "summary": "The action remains executable only under explicit privileged review or privileged operator posture."
+    },
+    {
+      "id": "still_prohibited_or_future_only",
+      "summary": "The action remains outside current operational admission because it depends on future trust, cutover, or distributed-authority maturity."
+    }
+  ],
+  "task_mcp_safety_dependence_notes": [
+    "Task catalog presence does not make a publication or trust action executable.",
+    "MCP exposure does not make a publication or trust action executable.",
+    "Interface reachability does not create permission or operational admission.",
+    "Safety policy remains upstream and operationalization gates do not create permission where safety posture does not already allow bounded handling.",
+    "Operationalization gates refine doctrine into admission posture rather than replacing gate or safety law."
+  ],
+  "trust_receipt_archive_index_runtime_dependence_notes": [
+    "Publication and trust gate doctrine remains upstream and gate passage does not by itself imply operational admission.",
+    "Any admitted action must remain compatible with typed operator transactions, ordinary receipt law, and live-cutover receipt generalization where relevant.",
+    "Live trust-transition prerequisites remain upstream and no action may be operationalized past those prerequisites.",
+    "Release identity, release contract profile, release-index and resolution semantics, exact target context, and channel posture remain upstream truth.",
+    "Archive presence alone does not satisfy operationalization gates.",
+    "Mirror visibility alone does not satisfy operationalization gates.",
+    "Any runtime-sensitive operationalization claim remains subordinate to lifecycle, replay, snapshot, isolation, coexistence, and hotswap-boundary doctrine.",
+    "This doctrine does not prove distributed-authority readiness or live-cutover maturity."
+  ],
+  "invalidity_failure_categories": [
+    {
+      "id": "doctrine_only_presented_as_executable",
+      "summary": "A doctrinally described publication or trust action was misrepresented as operationally admitted."
+    },
+    {
+      "id": "task_or_mcp_exposure_conflated_with_admission",
+      "summary": "Task or MCP exposure was treated as evidence of operational admission."
+    },
+    {
+      "id": "archive_or_mirror_inference_error",
+      "summary": "Archive or mirror state was treated as sufficient evidence of publication or trust execution readiness."
+    },
+    {
+      "id": "trust_policy_exists_but_operational_maturity_missing",
+      "summary": "A trust policy exists, but live trust execution maturity remains unadmitted or incomplete."
+    },
+    {
+      "id": "trust_root_readiness_missing",
+      "summary": "Trust-root readiness remains insufficient for the proposed operational posture."
+    },
+    {
+      "id": "live_cutover_receipt_continuity_missing",
+      "summary": "Boundary-sensitive receipt or provenance continuity required for the action is missing or incomplete."
+    },
+    {
+      "id": "review_or_privilege_posture_missing",
+      "summary": "Required review, approval, or privileged operator posture is missing."
+    },
+    {
+      "id": "rehearsal_only_but_presented_as_live_executable",
+      "summary": "A rehearsal-admissible posture was misrepresented as live executable admission."
+    },
+    {
+      "id": "runtime_cutover_overclaim",
+      "summary": "The operationalization claim exceeds current lifecycle, replay, snapshot, isolation, coexistence, or hotswap maturity."
+    },
+    {
+      "id": "future_only_or_policy_prohibited",
+      "summary": "The action remains outside current operational admission because it is future-only or policy-prohibited."
+    }
+  ],
+  "canonical_vs_derived_distinctions": {
+    "canonical": [
+      "doctrine frozen in this artifact",
+      "upstream gate, trust, receipt, release, archive, runtime, and hotswap doctrine",
+      "canonical operationalization decisions where later doctrine explicitly defines them",
+      "canonical release identity, release-index, trust policy, and trust-root records with intact provenance"
+    ],
+    "derived": [
+      "dashboards",
+      "summaries",
+      "filenames",
+      "mirror views",
+      "CI status",
+      "local tool output",
+      "task listings",
+      "MCP exposure views"
+    ]
+  },
+  "prohibited_operationalization_shapes": [
+    "archive exists therefore executable",
+    "mirror visible therefore executable",
+    "task exposed therefore executable",
+    "MCP exposed therefore executable",
+    "trust policy exists therefore live trust execution is mature",
+    "CI success treated as operational admission",
+    "doctrine existence treated as distributed authority readiness",
+    "publication and trust execution posture defined by tooling convenience",
+    "empty trust-root or provisional trust-policy surfaces treated as if live trust execution were admitted"
+  ],
+  "repo_evidence_surfaces": [
+    "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+    "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+    "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+    "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+    "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+    "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+    "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+    "security/trust/trust_verifier.py",
+    "release/update_resolver.py",
+    "repo/release_policy.toml",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/trust_root_registry.json",
+    "data/registries/entitlement_registry.json"
+  ],
+  "ambiguities_eliminated": [
+    "doctrine_existence_is_not_executable",
+    "task_exposure_is_not_executable",
+    "mirror_or_archive_state_is_not_operational_admission",
+    "trust_policy_existence_is_not_live_trust_execution_maturity"
+  ],
+  "downstream_refinement_prompts": [
+    "C-ΥD_SAFE_REVIEW - POST_LIVE_TRUST_AND_CUTOVER_REASSESSMENT-0",
+    "Φ-B5 - DISTRIBUTED_AUTHORITY_FOUNDATIONS-0",
+    "future Ζ planning"
+  ]
+}
