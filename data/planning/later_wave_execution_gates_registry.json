@@ -1,0 +1,336 @@
+{
+  "artifact_id": "dominium.planning.later_wave_execution_gates",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-05",
+  "checkpoint_context": {
+    "state": "post_bounded_zeta_a_first_wave_pre_later_wave_gate_refresh_complete",
+    "enabling_prompt": "Ζ-B2 — LATER_WAVE_EXECUTION_GATES-0",
+    "active_authoritative_checkpoint": "C-POST_ZETA_A_FIRST_WAVE_REVIEW",
+    "upstream_boundary_baseline": "Ζ-B0 — LATER_WAVE_BOUNDARY_RECONCILIATION-0",
+    "upstream_family_matrix": "Ζ-B1 — LATER_WAVE_PREREQUISITE_MATRIX-0",
+    "upstream_gate_model": "Ζ-P2 — ZETA_EXECUTION_GATES-0",
+    "checkpoint_judgment": "later_wave_bounded_zeta_premature_prior_to_gate_refresh"
+  },
+  "source_of_truth_inputs": {
+    "latest_checkpoints": [
+      "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md",
+      "data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md",
+      "data/planning/next_execution_order_post_za_first_wave.json"
+    ],
+    "later_wave_inputs": [
+      "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
+      "data/planning/later_wave_boundary_reconciliation_registry.json",
+      "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md",
+      "data/planning/later_wave_prerequisite_matrix.json"
+    ],
+    "earlier_gate_and_blocker_inputs": [
+      "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
+      "data/planning/zeta_blocker_reconciliation_registry.json",
+      "docs/planning/ZETA_EXECUTION_GATES.md",
+      "data/planning/zeta_execution_gates_registry.json"
+    ],
+    "runtime_and_release_doctrine": [
+      "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+      "docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md",
+      "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
+      "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",
+      "docs/runtime/HOTSWAP_BOUNDARIES.md",
+      "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+      "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+      "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+      "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md"
+    ]
+  },
+  "gate_class_identifiers": [
+    {
+      "gate_class_id": "admitted_later_wave",
+      "meaning": "Family may enter later-wave bounded Ζ without the extra caution envelope."
+    },
+    {
+      "gate_class_id": "admitted_with_cautions",
+      "meaning": "Family may enter later-wave bounded Ζ only under stronger guardrails, explicit review posture, and visible unresolved blockers."
+    },
+    {
+      "gate_class_id": "review_gated",
+      "meaning": "Family is not ordinary later-wave scope and may only be considered under explicit FULL review."
+    },
+    {
+      "gate_class_id": "deferred_to_broader_zeta",
+      "meaning": "Family is not admissible in the current later-wave bounded band and belongs to a later broader Ζ horizon."
+    },
+    {
+      "gate_class_id": "blocked",
+      "meaning": "Family is not admitted because the unresolved realization stack remains too central."
+    },
+    {
+      "gate_class_id": "future_only_prohibited",
+      "meaning": "Family remains outside bounded near-term planning entirely."
+    }
+  ],
+  "gate_criteria_identifiers": [
+    {
+      "criterion_id": "blocker_status",
+      "meaning": "Unresolved blocker entries from Ζ-P0 remain binding."
+    },
+    {
+      "criterion_id": "doctrinal_sufficiency",
+      "meaning": "The family must already have governing law before any gate can exist."
+    },
+    {
+      "criterion_id": "prerequisite_sufficiency",
+      "meaning": "The prerequisite stack from Ζ-B1 must be satisfiable for the bounded scope being considered."
+    },
+    {
+      "criterion_id": "realization_dependency",
+      "meaning": "Missing live machinery narrows or blocks gate passage."
+    },
+    {
+      "criterion_id": "proof_completeness",
+      "meaning": "Unresolved replication, replay, proof-anchor, or cutover proof narrows or blocks gate passage."
+    },
+    {
+      "criterion_id": "trust_convergence_requirements",
+      "meaning": "Unresolved trust roots, trust policy posture, trust convergence, and live execution posture narrow or block trust-bearing families."
+    },
+    {
+      "criterion_id": "receipt_provenance_requirements",
+      "meaning": "Unresolved live receipt-pipeline realization constrains evidence-bearing families."
+    },
+    {
+      "criterion_id": "cutover_legality",
+      "meaning": "Unresolved hotswap and distributed-authority cutover proof constrains runtime-adjacent families."
+    },
+    {
+      "criterion_id": "later_wave_suitability",
+      "meaning": "Candidate-only, review-gated, blocked, and future-only posture from Ζ-B1 remains binding unless explicitly narrowed."
+    },
+    {
+      "criterion_id": "review_privilege_posture",
+      "meaning": "Trust-sensitive, evidence-reclassifying, and authority-moving families remain review-heavy."
+    }
+  ],
+  "family_gate_entries": [
+    {
+      "family_id": "zeta.family.trust_aware_refusal_and_containment",
+      "title": "Trust-aware refusal and containment",
+      "gate_class_id": "review_gated",
+      "wave_designation": "later_wave_review_gated_only",
+      "governing_doctrine_refs": [
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md"
+      ],
+      "rationale": [
+        "The family is narrower than live trust execution and can remain in refusal, containment, and remediation posture.",
+        "Trust roots remain empty and trust policy posture remains provisional.",
+        "Distributed trust convergence and live trust/publication realization remain open blockers."
+      ],
+      "required_guardrails": [
+        "FULL review for trust, governance, and receipt-lineage implications",
+        "refusal, containment, and remediation only",
+        "no trust-root promotion, rotation, or live revocation execution",
+        "no publication execution",
+        "no claim that distributed trust convergence is already realized"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+        "zeta.blocker.live_trust_revocation_publication_execution_realization",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "later_wave_placement": "later_wave_bounded_only_under_explicit_review"
+    },
+    {
+      "family_id": "zeta.family.live_cutover_receipt_pipeline_anchorization",
+      "title": "Live cutover receipt pipeline and anchorization",
+      "gate_class_id": "admitted_with_cautions",
+      "wave_designation": "later_wave_bounded_conditionally_admissible",
+      "governing_doctrine_refs": [
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+        "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
+        "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md"
+      ],
+      "rationale": [
+        "First-wave doctrine clarified receipt posture and cutover evidence boundaries enough for a bounded shadow path.",
+        "The family can remain inside shadow or parallel anchorization without claiming canonical live receipt-pipeline realization.",
+        "Lawful cutover proof and canonical receipt-pipeline realization still remain open blockers."
+      ],
+      "required_guardrails": [
+        "shadow or parallel evidence posture only",
+        "no promotion of local logs, traces, or CI output into canonical receipts",
+        "no claim that live receipt-pipeline realization is complete",
+        "no live trust, revocation, or publication execution",
+        "any evidence reclassification remains FULL review"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "later_wave_placement": "later_wave_bounded_entry_only_with_cautions"
+    },
+    {
+      "family_id": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "title": "Bounded authority handoff and state transfer",
+      "gate_class_id": "deferred_to_broader_zeta",
+      "wave_designation": "broader_zeta_only_after_future_narrowing",
+      "governing_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md",
+        "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
+        "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md"
+      ],
+      "rationale": [
+        "The family is doctrinally meaningful, but still sits directly on unresolved replication proof, replay continuity realization, cutover legality, trust convergence, and receipt-pipeline blockers.",
+        "First-wave verification and rehearsal doctrine must not be reinterpreted as lawful transfer proof.",
+        "The family belongs to a later broader Ζ horizon rather than the current later-wave bounded band."
+      ],
+      "required_guardrails": [
+        "not admitted in the current later-wave bounded band",
+        "no transport success treated as lawful handoff",
+        "no replay verification or cutover rehearsal treated as authority-transfer proof",
+        "no state transfer or authority convergence claims",
+        "broader Ζ only after future blocker narrowing and checkpoint approval"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+        "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+        "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+        "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "later_wave_placement": "broader_zeta_only"
+    },
+    {
+      "family_id": "zeta.family.live_trust_revocation_and_publication_execution",
+      "title": "Live trust, revocation, and publication execution",
+      "gate_class_id": "blocked",
+      "wave_designation": "not_admitted",
+      "governing_doctrine_refs": [
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md"
+      ],
+      "rationale": [
+        "Doctrine exists, but trust roots remain empty and trust policy posture remains provisional.",
+        "Live trust, revocation, and publication execution machinery remains unrealized.",
+        "This family is too realization-heavy for honest later-wave bounded admission."
+      ],
+      "required_guardrails": [
+        "not admitted",
+        "no live trust execution",
+        "no live revocation propagation execution",
+        "no live publication execution",
+        "no trust-root promotion from empty registry posture"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+        "zeta.blocker.live_trust_revocation_publication_execution_realization",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization"
+      ],
+      "later_wave_placement": "blocked_from_later_wave_bounded_zeta"
+    },
+    {
+      "family_id": "zeta.family.live_shard_relocation",
+      "title": "Live shard relocation",
+      "gate_class_id": "future_only_prohibited",
+      "wave_designation": "future_only_prohibited",
+      "governing_doctrine_refs": [
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
+        "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md"
+      ],
+      "rationale": [
+        "Relocation depends on nearly the entire unresolved realization stack.",
+        "The post-first-wave checkpoint explicitly kept relocation future-only.",
+        "No shard, transport, or replication substrate narrows it enough for later-wave candidacy."
+      ],
+      "required_guardrails": [
+        "prohibited for the current later-wave band",
+        "no shrink-wrapping relocation into later-wave terminology",
+        "no claim that shard substrate proves relocation readiness",
+        "no transport success treated as lawful relocation"
+      ],
+      "unresolved_blocker_ids": [
+        "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+        "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+        "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+        "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+        "zeta.blocker.live_trust_revocation_publication_execution_realization",
+        "zeta.blocker.live_cutover_receipt_pipeline_realization",
+        "zeta.blocker.distributed_shard_relocation_live_execution"
+      ],
+      "later_wave_placement": "future_only_and_prohibited"
+    }
+  ],
+  "later_wave_freeze_summary": {
+    "admitted_later_wave_family_ids": [],
+    "admitted_with_cautions_family_ids": [
+      "zeta.family.live_cutover_receipt_pipeline_anchorization"
+    ],
+    "review_gated_family_ids": [
+      "zeta.family.trust_aware_refusal_and_containment"
+    ],
+    "deferred_to_broader_zeta_family_ids": [
+      "zeta.family.bounded_authority_handoff_and_state_transfer"
+    ],
+    "blocked_family_ids": [
+      "zeta.family.live_trust_revocation_and_publication_execution"
+    ],
+    "future_only_prohibited_family_ids": [
+      "zeta.family.live_shard_relocation"
+    ]
+  },
+  "doctrine_vs_candidacy_vs_realization_markers": [
+    {
+      "marker": "first_wave_completion_not_equal_later_wave_admission",
+      "meaning": "Completing Ζ-A0..Ζ-A2 does not itself create later-wave gate passage."
+    },
+    {
+      "marker": "doctrine_exists_not_equal_later_wave_eligible",
+      "meaning": "A family can be doctrinally explicit and still remain review-gated, deferred, blocked, or prohibited."
+    },
+    {
+      "marker": "candidate_not_equal_admitted",
+      "meaning": "Later-wave candidacy or matrix presence does not create admission by itself."
+    },
+    {
+      "marker": "gate_passage_not_equal_realization",
+      "meaning": "Even admitted-with-cautions posture does not mean live machinery is realized."
+    }
+  ],
+  "canonical_vs_derived_distinctions": [
+    "docs/planning/LATER_WAVE_EXECUTION_GATES.md and this registry are canonical for later-wave gate truth.",
+    "Checkpoint summaries, dashboards, bundle reports, and local planning notes are derived and must not redefine gate classes.",
+    "Runtime, trust, shard, provenance, and registry surfaces remain evidence only unless a stronger planning or doctrine source explicitly promotes them."
+  ],
+  "prohibited_gate_setting_shapes": [
+    "admitting all later-wave candidates because first-wave finished",
+    "admitting realization-heavy items because doctrine exists",
+    "letting perimeter families drift inward by convenience",
+    "treating code surfaces as gate passage",
+    "assuming realization from candidacy or gate presence",
+    "treating receipt-pipeline shadow work as canonical live pipeline realization"
+  ],
+  "downstream_refinement_prompts": [
+    {
+      "prompt_id": "C-ZETA_B_ADMISSION_REVIEW",
+      "title": "POST_LATER_WAVE_GATE_FREEZE_REASSESSMENT-0",
+      "status": "enabled_by_this_artifact"
+    }
+  ],
+  "stability_notes": {
+    "status": "provisional",
+    "last_reviewed": "2026-04-05",
+    "replacement_target": "the later-wave admission checkpoint may refine readiness and next-order posture without replacing the gate law frozen here"
+  }
+}
