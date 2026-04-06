@@ -1,0 +1,467 @@
+{
+  "artifact_id": "CODEX_REPO_OPERATING_CONTRACT",
+  "artifact_class": "repo_operating_contract",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "XStack-to-AIDE extraction mapping",
+    "playable-baseline assembly follow-ups"
+  ],
+  "replacement_target": "later explicit repo-operating-contract checkpoint or replacement artifact only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "data/planning/next_execution_order_post_zeta.json",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+    "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+    "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "data/xstack/xstack_scope_freeze.json",
+    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "data/xstack/xstack_inventory_and_classification.json",
+    "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "data/xstack/aide_portable_task_contract.json",
+    "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "data/xstack/aide_evidence_and_review_contract.json",
+    "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+    "data/xstack/aide_policy_and_permission_shape.json",
+    "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
+    "data/xstack/aide_capability_profile_shape.json",
+    "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
+    "data/xstack/aide_adapter_contract.json",
+    "CMakePresets.json",
+    "tools/launcher/launch.py",
+    "tools/setup/setup_cli.py",
+    "tools/xstack/session_create.py",
+    "tools/xstack/session_boot.py",
+    "tools/xstack/sessionx/creator.py",
+    "tools/xstack/sessionx/runner.py",
+    "tools/xstack/testx_all.py",
+    "tools/validation/tool_run_validation.py",
+    "tools/mvp/runtime_entry.py",
+    "server/server_main.py",
+    "client/local_server/local_server_controller.py",
+    "server/net/loopback_transport.py",
+    "runtime/process_spawn.py",
+    "profiles/bundles/bundle.mvp_default.json",
+    "locks/pack_lock.mvp_default.json",
+    "data/session_templates/session.mvp_default.json"
+  ],
+  "current_program_context": {
+    "admissible_zeta_doctrine_program_complete": true,
+    "further_zeta_prompt_required": false,
+    "current_product_priority": "canonical repo-local playable baseline",
+    "series_role": "workflow hardening and repo guidance that must not compete with playable-baseline work",
+    "highest_value_immediate_move": "harden one canonical repo-local playtest path around session creation plus local loopback authority, then rerun FAST validation and a selected playtest smoke slice"
+  },
+  "canonical_build_path": {
+    "configure_preset": {
+      "command": "cmake --preset verify",
+      "status": "canonical"
+    },
+    "build_preset": {
+      "command": "cmake --build --preset verify",
+      "status": "canonical"
+    },
+    "ctest_preset": {
+      "command": "ctest --preset verify",
+      "status": "canonical_when_compiled_tests_are_needed"
+    },
+    "binary_tree": "out/build/vs2026/verify/",
+    "why_canonical_now": [
+      "CMakePresets.json defines aligned verify configure, build, and test presets",
+      "the ultra audit identifies the verify lane as the strongest current build baseline for playable-baseline work",
+      "the verify lane keeps tools, setup, launcher, game, and tests enabled inside the repo verification posture"
+    ],
+    "required_when": [
+      "compiled runtime, launcher, setup, server, client, or networking behavior is touched",
+      "canonical playtest-path wiring changes",
+      "the task needs fresh verified binaries under out/build/vs2026/verify/"
+    ],
+    "verified_enough": [
+      "docs-only or mirror-only work can stop at parsing, prose/mirror consistency, and git diff checks",
+      "Python or shell-path work should normally reach FAST validation plus directly relevant script-level checks",
+      "compiled or playtest-path work should reach verify configure/build plus the relevant runtime or test surface"
+    ],
+    "must_not_assume": [
+      "a successful configure alone is not a verified build",
+      "an existing out/build/vs2026/verify tree is not proof that current changes were rebuilt",
+      "local and release-check are valid presets but not the canonical default lane for current baseline assembly work"
+    ]
+  },
+  "canonical_validation_path": {
+    "primary_fast_path": {
+      "command": "python tools/validation/tool_run_validation.py --profile FAST",
+      "status": "canonical_minimum"
+    },
+    "testx_companion": {
+      "command": "python tools/xstack/testx_all.py --profile FAST",
+      "role": "canonical XStack/TestX smoke companion when XStack tooling or validation surfaces are touched"
+    },
+    "ctest_companion": {
+      "command": "ctest --preset verify",
+      "role": "canonical compiled-test companion when the verify binary lane is implicated"
+    },
+    "role_split": {
+      "FAST": "repo-wide first pass and minimum honest default for non-trivial work",
+      "TestX": "higher-signal Python/XStack harness for tooling, control, compat, session, and validation-adjacent changes",
+      "CTest": "compiled/runtime harness for verify-built binaries and related smoke coverage"
+    },
+    "smoke_is_enough_when": [
+      "the task is small and localized",
+      "the touched surface has a narrow validation target",
+      "no broader runtime or compiled behavior changed"
+    ],
+    "stronger_validation_needed_when": [
+      "the task changes build wiring, launcher/setup entrypoints, server or client runtime behavior, or session boot flow",
+      "the task changes control, compat, validation, or trust semantics across more than one narrow surface",
+      "the prompt explicitly requires STRICT, FULL, or broader execution"
+    ],
+    "honest_status_language": {
+      "verified": "use only when the relevant command completed successfully",
+      "partially_verified": "use when only a subset completed",
+      "attempted_but_blocked": "use when a command failed or timed out due to a real blocker",
+      "not_run": "use when a command was not executed"
+    }
+  },
+  "canonical_local_playtest_path": {
+    "mode": [
+      "repo-local",
+      "loopback-authoritative",
+      "single-machine"
+    ],
+    "default_posture": [
+      "default MVP bundle and pack lock",
+      "canonical saves/<save_id>/ session materialization",
+      "Python/AppShell operator shells instead of native-wrapper-first assumptions"
+    ],
+    "current_strongest_public_or_semi_public_path": [
+      {
+        "step": 1,
+        "action": "prepare the verify lane when compiled artifacts are implicated",
+        "commands": [
+          "cmake --preset verify",
+          "cmake --build --preset verify"
+        ]
+      },
+      {
+        "step": 2,
+        "action": "prefer Python/AppShell shells as operator-facing surfaces",
+        "commands": [
+          "python tools/setup/setup_cli.py ...",
+          "python tools/launcher/launch.py ..."
+        ]
+      },
+      {
+        "step": 3,
+        "action": "materialize the session under the canonical repo-local save tree",
+        "commands": [
+          "python tools/xstack/session_create.py --save-id <save_id>"
+        ]
+      },
+      {
+        "step": 4,
+        "action": "treat local loopback authority as the canonical runtime direction",
+        "implementation_anchor": "client/local_server/local_server_controller.py",
+        "runtime_support": [
+          "runtime/process_spawn.py",
+          "server/net/loopback_transport.py"
+        ]
+      }
+    ],
+    "default_assumptions": {
+      "bundle": "profile.bundle.mvp_default",
+      "pack_lock": "pack_lock.mvp_default",
+      "session_template": "session.mvp_default",
+      "server_ui_default": "headless",
+      "authority_context": "repo-local loopback, not external multiplayer"
+    },
+    "current_truthfulness_rules": [
+      "there is not yet one finished, stable, single public playtest command",
+      "the canonical path today is a target recipe, not a completed one-command operator flow",
+      "Codex must not invent a second official path because another wrapper exists"
+    ],
+    "blocked_or_fragile": [
+      {
+        "gap_id": "GAP-001",
+        "surface": "server/server_main.py",
+        "reason": "repo-root resolution remains a blocker"
+      },
+      {
+        "gap_id": "GAP-002",
+        "surface": "tools/xstack/session_boot.py and tools/xstack/sessionx/runner.py",
+        "reason": "boot flow remains coupled to canonical repo_root/saves/<save_id> layout"
+      },
+      {
+        "gap_id": "GAP-004",
+        "surface": "launcher supervision",
+        "reason": "audit-noted instability remains"
+      },
+      {
+        "gap_id": "GAP-005/GAP-006/GAP-007",
+        "surface": "non-loopback and native-shell-first surfaces",
+        "reason": "stub-heavy or incomplete"
+      }
+    ],
+    "must_not_assume_yet": [
+      "raw python server/server_main.py is not the canonical public playtest path",
+      "python -m server.server_main is not a safe canonical substitute",
+      "python tools/mvp/runtime_entry.py --local-singleplayer is transitional and not the canonical operator path",
+      "alternate save roots are not end-to-end supported just because session_create.py accepts --saves-root",
+      "non-loopback multiplayer, installed-mode assumptions, and native launcher/setup parity are not baseline-ready"
+    ]
+  },
+  "session_profile_save_rules": {
+    "canonical_session_create_entrypoint": "tools/xstack/session_create.py",
+    "canonical_session_boot_entrypoint": "tools/xstack/session_boot.py",
+    "default_bundle": "profile.bundle.mvp_default",
+    "default_pack_lock": "pack_lock.mvp_default",
+    "default_session_template": "session.mvp_default",
+    "canonical_save_layout": "saves/<save_id>/",
+    "rules": [
+      "use session_create.py as the canonical session materialization entrypoint",
+      "start from the default bundle and pack lock unless the task explicitly requires a different profile family",
+      "do not silently change save-root expectations in docs, scripts, or prompts",
+      "if session_boot is used, point it at the canonical saves/<save_id>/session_spec.json layout and state the save-root coupling clearly"
+    ],
+    "current_save_root_truth": {
+      "session_create_supports_alternate_relative_saves_root": true,
+      "boot_flow_honestly_supports_alternate_save_root": false,
+      "why": "sessionx.runner resolves the active save directory back through repo_root/saves/<save_id>",
+      "codex_reporting_rule": "describe alternate save-root support as blocked, not partially working"
+    }
+  },
+  "authoritative_directories": [
+    {
+      "category": "canon_governance_and_task_law",
+      "paths": [
+        "docs/canon/**",
+        "AGENTS.md",
+        "docs/planning/**",
+        "docs/xstack/**"
+      ],
+      "notes": "canonical constitutional, planning, and XStack operating-law surfaces; for docs/planning use the task-named authoritative artifacts"
+    },
+    {
+      "category": "semantic_and_contract_roots",
+      "paths": [
+        "specs/reality/**",
+        "schema/**",
+        "fields/**"
+      ],
+      "notes": "authoritative semantic and contract law when touched"
+    },
+    {
+      "category": "runtime_and_baseline_assembly_roots",
+      "paths": [
+        "appshell/**",
+        "tools/launcher/**",
+        "tools/setup/**",
+        "tools/xstack/**",
+        "server/**",
+        "client/local_server/**",
+        "runtime/**"
+      ],
+      "notes": "authoritative runtime, launcher, setup, loopback, and XStack assembly roots for the playable-baseline path"
+    },
+    {
+      "category": "profile_lock_pack_and_session_authoring",
+      "paths": [
+        "profiles/bundles/**",
+        "locks/**",
+        "data/session_templates/**",
+        "packs/**",
+        "data/packs/**"
+      ],
+      "notes": "authoritative profile, lock, pack, and session authoring roots; data/packs remains ownership-sensitive and is not silently interchangeable with packs"
+    },
+    {
+      "category": "validation_test_release_and_trust",
+      "paths": [
+        "tools/validation/**",
+        "validation/**",
+        "tools/xstack/testx/**",
+        "tests/**",
+        "release/**",
+        "repo/**",
+        "security/**",
+        "updates/**"
+      ],
+      "notes": "authoritative validation and test roots always; release, repo, security, and updates are authoritative when that scope is explicitly in play"
+    }
+  ],
+  "derived_or_generated_directories": [
+    {
+      "category": "planning_and_xstack_mirrors",
+      "paths": [
+        "data/planning/**",
+        "data/xstack/**"
+      ],
+      "notes": "machine-readable mirrors that must align with canonical prose and must not overrule it"
+    },
+    {
+      "category": "audit_evidence",
+      "paths": [
+        "docs/audit/**",
+        "data/audit/**"
+      ],
+      "notes": "audit evidence and reporting; operationally important but not canonical law"
+    },
+    {
+      "category": "semantic_and_validator_projections",
+      "paths": [
+        "schemas/**"
+      ],
+      "notes": "validator-facing projections or advisory mirrors, not canonical semantic contract law"
+    },
+    {
+      "category": "generated_build_cache_and_temp_outputs",
+      "paths": [
+        "build/**",
+        "out/**",
+        "artifacts/**",
+        ".xstack_cache/**",
+        "run_meta/**",
+        "tmp/**",
+        "archive/**"
+      ],
+      "notes": "generated build, cache, report, and temporary outputs"
+    },
+    {
+      "category": "built_bundle_and_runtime_state_outputs",
+      "paths": [
+        "dist/**",
+        "bundles/**",
+        "saves/**"
+      ],
+      "notes": "built or runtime-state outputs; saves is the current canonical boot location for session instances but not an authored source root"
+    }
+  ],
+  "frozen_surfaces_during_baseline": {
+    "avoid_touching_unless_explicitly_tasked": [
+      "broad post-baseline frontier work",
+      "broad non-loopback multiplayer or external transport expansion",
+      "full AIDE runtime, daemon, compiler, adapter ecosystem, or platformization work",
+      "large renames or convergence passes not required to unblock the canonical repo-local playtest path",
+      "ownership rebinding across field versus fields, schema versus schemas, or packs versus data/packs",
+      "native launcher/setup shell completion work that does not directly unblock the baseline path",
+      "release/publication/archive/trust policy changes unrelated to the active task",
+      "doctrine rewrites under docs/canon/** or AGENTS.md without an explicit doctrine-facing prompt",
+      "promotion of tools/mvp/runtime_entry.py into the canonical public playtest path without an explicit task",
+      "wrapper proliferation that creates another official startup flow"
+    ],
+    "exception_rule": {
+      "allowed_when": "a frozen surface contains a named blocker from the audit and the active prompt directly targets that blocker",
+      "constraints": [
+        "fix narrowly",
+        "stay extension-over-replacement",
+        "do not widen into speculative cleanup"
+      ]
+    }
+  },
+  "task_sizing_policy": {
+    "big_prompts": {
+      "use_for": [
+        "repo audits",
+        "topology and ownership reconciliation",
+        "inventory and classification work",
+        "multi-root planning or doctrine packaging",
+        "narrow documentation-first contract freezes"
+      ],
+      "guardrail": "must not become stealth implementation sprees"
+    },
+    "medium_prompts": {
+      "use_for": [
+        "one vertical slice of the canonical playable-baseline path",
+        "one blocker plus immediate support docs or tests",
+        "a targeted integration repair spanning a small number of closely related roots"
+      ],
+      "typical_scope": [
+        "one blocker or one operator workflow",
+        "at most a handful of directly connected roots",
+        "clear validation expectations"
+      ]
+    },
+    "small_prompts": {
+      "use_for": [
+        "one concrete bug",
+        "one entrypoint correction",
+        "one script or path fix",
+        "one doc or JSON mirror update",
+        "one validation or reporting repair"
+      ]
+    },
+    "too_broad_when": [
+      "the task mixes baseline blockers with frontier expansion",
+      "the task mixes doctrine rewrite with runtime implementation",
+      "the task spans multiple independent blockers from the audit gap ledger",
+      "the task combines broad renaming, extraction, and baseline assembly work",
+      "the task cannot be validated honestly inside one bounded change set"
+    ]
+  },
+  "code_and_docs_standards": {
+    "code_rules": [
+      "add or clarify docstrings when entrypoint behavior, path assumptions, contracts, or failure modes are not obvious",
+      "add short inline comments only where the logic would otherwise be hard to reconstruct quickly",
+      "explain boundary conditions, refusal paths, fallback limits, and save-root or repo-root assumptions clearly",
+      "document non-obvious operator expectations close to the enforcing code",
+      "avoid decorative, repetitive, or tutorial-style comments"
+    ],
+    "docs_rules": [
+      "keep documentation explicit about what is verified, likely, partial, blocked, or deferred",
+      "write operationally, not aspirationally",
+      "name real commands, presets, paths, blockers, and defaults",
+      "distinguish doctrine from implementation, implementation from integration, and integration from deferred extraction",
+      "update paired prose and machine-readable mirrors together when both are part of the contract surface"
+    ]
+  },
+  "commit_standards": {
+    "title_style": "explicit, audit-grade",
+    "body_requirements": [
+      "scope of the change",
+      "canonical rules or paths frozen or modified",
+      "surfaces intentionally left untouched",
+      "validation run, skipped, blocked, or partial",
+      "next prompt or next engineering move enabled"
+    ],
+    "general_rules": [
+      "use verbose bodies",
+      "mention blockers, deferred work, and limitations honestly",
+      "keep unrelated dirty files out of the commit",
+      "commit at meaningful boundaries rather than batching unrelated work into one change"
+    ]
+  },
+  "forbidden_operating_patterns": [
+    "assuming documentation outranks live implementation when the authority order says otherwise",
+    "treating reports, mirrors, or generated outputs as canonical law",
+    "touching unrelated roots during baseline work because they look adjacent",
+    "inventing a second canonical playtest path",
+    "claiming validation success without running the relevant validation",
+    "treating experimental or transitional wrappers as canonical operator surfaces without evidence",
+    "silently promoting raw server/server_main.py or tools/mvp/runtime_entry.py into the public playtest path",
+    "competing with the playable-baseline path by expanding into large AIDE runtime or platform work",
+    "flattening verified, likely, partial, and blocked into one status label",
+    "silently rebinding ownership-sensitive roots because one side is easier to consume"
+  ],
+  "downstream_prompts_enabled": [
+    "XStack-to-AIDE extraction mapping",
+    "playable-baseline assembly prompts that need one canonical operating rule set",
+    "future Codex runs that need stable build, validation, playtest, directory-authority, and task-sizing guidance"
+  ]
+}
