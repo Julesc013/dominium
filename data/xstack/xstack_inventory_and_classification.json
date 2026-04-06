@@ -1,0 +1,926 @@
+{
+  "artifact_id": "XSTACK_INVENTORY_AND_CLASSIFICATION",
+  "artifact_class": "inventory_and_classification",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "X-2",
+    "X-3",
+    "AIDE extraction review"
+  ],
+  "replacement_target": "later explicit XStack/AIDE inventory checkpoint or replacement artifact only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "data/xstack/xstack_scope_freeze.json"
+  ],
+  "current_program_context": {
+    "admissible_zeta_doctrine_program_complete": true,
+    "current_product_priority": "repo-local playable baseline and repo stabilization",
+    "series_role": "narrowing, modularizing, classifying, and contract extraction preparation that must not compete with playable-baseline work"
+  },
+  "x0_dependency": {
+    "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "required_scope_freeze_json": "data/xstack/xstack_scope_freeze.json"
+  },
+  "current_aide_implementation_presence": false,
+  "classification_method": {
+    "evidence_sources": [
+      "binding canon and governance sources",
+      "X-0 scope freeze artifacts",
+      "post-Zeta closure and ultra audit artifacts",
+      "direct inspection of tools/xstack, appshell, validation, launcher, setup, runtime, release, security, server, and client surfaces",
+      "direct inspection of READMEs, docstrings, and entrypoint modules",
+      "repo search evidence for imports, wrappers, stubs, and generated-evidence roots"
+    ],
+    "maturity_rules": {
+      "implemented_and_used": "real code plus direct usage evidence from imports, audit-run entrypoints, or active orchestration",
+      "implemented_but_isolated": "real code with limited or example-style usage",
+      "partial_or_incomplete": "real surface with coupling issues, TODOs, placeholder logic, or incomplete behavior",
+      "stub_wrapper_or_transitional": "wrapper, shim, or transitional surface even if runnable",
+      "doctrinal_or_planning_only": "documentation, catalog, policy, or planning only",
+      "unknown": "reserved for insufficient evidence"
+    },
+    "portability_rules": [
+      "portable_core requires structurally generic implementation with limited Dominium product or session assumptions",
+      "location under tools/xstack does not by itself prove portability",
+      "older portability docs do not outrank live implementation evidence",
+      "bundle IDs, pack roots, release or trust wiring, loopback assumptions, and product-shell coupling keep a surface in Dominium for now"
+    ],
+    "used_vs_isolated_vs_partial_rules": [
+      "used means direct imports, audit-observed entrypoints, or policy wiring",
+      "isolated means example, fixture, or non-primary command-path usage",
+      "partial means active but blocked, coupled, or placeholder-heavy",
+      "doctrinal means text or metadata rather than executing behavior"
+    ],
+    "unclear_or_mixed_definition": "surface has multiple real signals and should not be flattened into a single ownership or portability claim"
+  },
+  "role_classifications": {
+    "portable_core": "Narrow deterministic substrate with low direct Dominium or product coupling.",
+    "runtime_concern": "Session, boot, SRZ, stage, or authoritative process/session control surfaces.",
+    "ops_concern": "Gate, validation, audit, CI, orchestration, and repo-operation surfaces.",
+    "dominium_only": "Product-shell, bundle, release, loopback, or repo-control surfaces that should remain in Dominium now.",
+    "legacy_or_deprecate": "Older sibling, derived, or transitional surfaces that remain useful evidence but are not the current semantic center.",
+    "unclear_or_mixed": "Mixed ownership, bridge, support, or evidence surfaces that should not be flattened into a simple portability claim."
+  },
+  "maturity_classifications": {
+    "implemented_and_used": "Live code with direct usage evidence.",
+    "implemented_but_isolated": "Real code, but example-only or narrowly consumed.",
+    "partial_or_incomplete": "Real surface with coupling issues, placeholders, or incomplete behavior.",
+    "stub_wrapper_or_transitional": "Wrapper, shim, or transitional surface rather than the strongest implementation layer.",
+    "doctrinal_or_planning_only": "Documentation, task, policy, or planning surface only.",
+    "unknown": "Evidence insufficient."
+  },
+  "extraction_classifications": {
+    "plausible_future_aide_extraction_candidate": "Strongest later extraction candidates once baseline and uncoupling work permit it.",
+    "maybe_extractable_later": "Reusable shape exists, but current coupling or wrapper status is still too high.",
+    "retain_in_dominium": "Keep this surface in Dominium for the current series and baseline period.",
+    "defer_until_post_baseline": "Review again later, but do not treat as a current extraction target.",
+    "explicitly_not_an_aide_target": "Do not use this surface as the basis for AIDE extraction."
+  },
+  "ledger": [
+    {
+      "id": "xinv.core_substrate",
+      "name": "XStack core planner and runner substrate",
+      "repo_paths": [
+        "tools/xstack/core/"
+      ],
+      "purpose": "Deterministic planning, execution ordering, impact selection, and artifact classification for XStack profile execution.",
+      "role": "portable_core",
+      "maturity": "implemented_and_used",
+      "extraction_status": "plausible_future_aide_extraction_candidate",
+      "current_usage_status": "wired_to_entrypoints",
+      "major_dependencies": [
+        "scripts/dev/gate.py",
+        "tools/xstack/run.py",
+        "tools/xstack/controlx/orchestrator.py"
+      ],
+      "evidence_notes": [
+        "scripts/dev/gate.py imports plan, scheduler, runners, profiler, and cache helpers from tools.xstack.core",
+        "docs/governance/XSTACK_INCREMENTAL_MODEL.md and docs/XSTACK.md both identify tools/xstack/core as the planner substrate"
+      ],
+      "recommended_treatment": "reuse_and_freeze_now"
+    },
+    {
+      "id": "xinv.compatx_contract_primitives",
+      "name": "Low-level CompatX contract primitives",
+      "repo_paths": [
+        "tools/xstack/compatx/canonical_json.py",
+        "tools/xstack/compatx/validator.py",
+        "tools/xstack/compatx/schema_registry.py"
+      ],
+      "purpose": "Canonical JSON hashing, schema loading, and strict instance validation for multiple XStack-adjacent consumers.",
+      "role": "portable_core",
+      "maturity": "implemented_and_used",
+      "extraction_status": "plausible_future_aide_extraction_candidate",
+      "current_usage_status": "wired_to_entrypoints",
+      "major_dependencies": [
+        "validation/validation_engine.py",
+        "release/*.py",
+        "security/trust/*.py",
+        "appshell/**",
+        "server/server_boot.py",
+        "client/local_server/local_server_controller.py"
+      ],
+      "evidence_notes": [
+        "direct imports appear in AppShell, release, security, server, runtime, and client surfaces",
+        "this is the broadest reused XStack-adjacent substrate in the live repo"
+      ],
+      "recommended_treatment": "strongest_contract_extraction_candidate_but_not_authorized_now"
+    },
+    {
+      "id": "xinv.compatx_profile_checks_and_versioning",
+      "name": "CompatX profile checks and version routing",
+      "repo_paths": [
+        "tools/xstack/compatx/check.py",
+        "tools/xstack/compatx/versioning.py",
+        "tools/xstack/compatx/version_registry.json",
+        "tools/xstack/compatx/README.md"
+      ],
+      "purpose": "Profile-scoped contract checking and schema-version routing on top of the low-level CompatX primitives.",
+      "role": "unclear_or_mixed",
+      "maturity": "partial_or_incomplete",
+      "extraction_status": "maybe_extractable_later",
+      "current_usage_status": "active_tool_entrypoint",
+      "major_dependencies": [
+        "tools/xstack/controlx/orchestrator.py",
+        "validation/validation_engine.py",
+        "schema registry data"
+      ],
+      "evidence_notes": [
+        "run_compatx_check is used by ControlX and validation",
+        "versioning.py still routes migrations to migration_stub with refusal.compatx.migration_not_implemented",
+        "README says migration execution is currently a stub"
+      ],
+      "recommended_treatment": "freeze_low_level_contracts_and_defer_migration_portability"
+    },
+    {
+      "id": "xinv.controlx_profile_orchestration",
+      "name": "Live XStack ControlX orchestration surface",
+      "repo_paths": [
+        "tools/xstack/run.py",
+        "tools/xstack/controlx/"
+      ],
+      "purpose": "Drive FAST, STRICT, and FULL deterministic profile execution across the live XStack families.",
+      "role": "ops_concern",
+      "maturity": "implemented_and_used",
+      "extraction_status": "maybe_extractable_later",
+      "current_usage_status": "active_tool_entrypoint",
+      "major_dependencies": [
+        "compatx",
+        "pack_loader",
+        "registry_compile",
+        "sessionx",
+        "repox",
+        "auditx",
+        "testx",
+        "performx",
+        "securex",
+        "packagingx",
+        "ui_bind"
+      ],
+      "evidence_notes": [
+        "tools/xstack/run.py is the stable XStack entrypoint",
+        "orchestrator.py imports and coordinates nearly every live XStack family",
+        "audit entrypoints classify xstack_run as canonical and runnable now"
+      ],
+      "recommended_treatment": "freeze_semantics_before_any_extraction_attempt"
+    },
+    {
+      "id": "xinv.gate_and_review_bridges",
+      "name": "Repo gate and review bridge scripts that consume XStack",
+      "repo_paths": [
+        "scripts/dev/gate.py",
+        "scripts/ci/check_repox_rules.py",
+        "tools/review/xi8_common.py"
+      ],
+      "purpose": "Bridge repo-wide gate execution, review policies, and CI invariants onto XStack planning, cache, and rule surfaces.",
+      "role": "ops_concern",
+      "maturity": "implemented_and_used",
+      "extraction_status": "defer_until_post_baseline",
+      "current_usage_status": "transitional_bridge",
+      "major_dependencies": [
+        "tools/xstack/core/**",
+        "tools/xstack/repox/**",
+        "tools/xstack/sessionx/**",
+        "tools/xstack/compatx/**",
+        "tools/xstack/ci/**"
+      ],
+      "evidence_notes": [
+        "scripts/dev/gate.py imports the XStack core planner and cache store",
+        "scripts/ci/check_repox_rules.py hardcodes many tools/xstack paths and runtime-no-xstack checks",
+        "tools/review/xi8_common.py references tools/xstack/ci/xstack_ci_entrypoint.py"
+      ],
+      "recommended_treatment": "treat_as_repo_bridge_not_portable_core"
+    },
+    {
+      "id": "xinv.session_create_pipeline",
+      "name": "Session create and pipeline-contract materialization",
+      "repo_paths": [
+        "tools/xstack/session_create.py",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/pipeline_contract.py"
+      ],
+      "purpose": "Create session specs, universe artifacts, and pinned contract-bundle artifacts for the repo-local playable path.",
+      "role": "runtime_concern",
+      "maturity": "implemented_and_used",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "baseline_support",
+      "major_dependencies": [
+        "tools/xstack/registry_compile/**",
+        "tools/xstack/pack_loader/**",
+        "worldgen.core.pipeline",
+        "modding",
+        "universe"
+      ],
+      "evidence_notes": [
+        "the audit ran python tools/xstack/session_create.py successfully",
+        "ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md calls it canonical and part of the shortest path to a baseline session",
+        "creator.py depends directly on Dominium pack, worldgen, universe, geo, and profile surfaces"
+      ],
+      "recommended_treatment": "reuse_now_and_keep_in_dominium"
+    },
+    {
+      "id": "xinv.session_boot_and_runtime_control",
+      "name": "Session boot, SRZ, runtime, and control machinery",
+      "repo_paths": [
+        "tools/xstack/session_boot.py",
+        "tools/xstack/session_control.py",
+        "tools/xstack/session_surface.py",
+        "tools/xstack/session_script_run.py",
+        "tools/xstack/session_server.py",
+        "tools/xstack/srz_status.py",
+        "tools/xstack/sessionx/"
+      ],
+      "purpose": "Boot session specs, drive control flows, run SRZ execution, and coordinate session stage transitions.",
+      "role": "runtime_concern",
+      "maturity": "partial_or_incomplete",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "wired_to_entrypoints",
+      "major_dependencies": [
+        "net.policies.*",
+        "modding",
+        "universe",
+        "observation",
+        "render_model",
+        "reality.ledger",
+        "performance",
+        "inspection",
+        "core.*",
+        "logistics",
+        "materials"
+      ],
+      "evidence_notes": [
+        "audit marks this family as partial and wired_but_fragile",
+        "session_boot.py is only reliably recommended with canonical saves/<save_id> layout",
+        "process_runtime.py directly spans many authoritative runtime and domain modules"
+      ],
+      "recommended_treatment": "stabilize_for_baseline_only_do_not_extract"
+    },
+    {
+      "id": "xinv.ui_bind_surface",
+      "name": "UI bind and descriptor-to-session host boundary",
+      "repo_paths": [
+        "tools/xstack/ui_bind.py",
+        "tools/xstack/sessionx/ui_host.py"
+      ],
+      "purpose": "Validate UI window descriptors and bind them to session-host expectations and entitlements.",
+      "role": "unclear_or_mixed",
+      "maturity": "implemented_and_used",
+      "extraction_status": "maybe_extractable_later",
+      "current_usage_status": "active_tool_entrypoint",
+      "major_dependencies": [
+        "tools/xstack/compatx/validator.py",
+        "build/registries/ui.registry.json"
+      ],
+      "evidence_notes": [
+        "audit baselines repeatedly record passing ui_bind checks",
+        "the validator remains coupled to session-host semantics rather than being a purely generic UI contract layer"
+      ],
+      "recommended_treatment": "preserve_as_boundary_checker_and_revisit_later"
+    },
+    {
+      "id": "xinv.testx_harness",
+      "name": "TestX deterministic harness and suite corpus",
+      "repo_paths": [
+        "tools/xstack/testx/",
+        "tools/xstack/testx_all.py"
+      ],
+      "purpose": "Run profile-aware deterministic test subsets and larger sweeps over XStack and adjacent runtime or control surfaces.",
+      "role": "ops_concern",
+      "maturity": "implemented_and_used",
+      "extraction_status": "maybe_extractable_later",
+      "current_usage_status": "wired_to_entrypoints",
+      "major_dependencies": [
+        "tools/dev/impact_graph",
+        "tools/governance/tool_semantic_impact.py",
+        "tools/xstack/testdata/**"
+      ],
+      "evidence_notes": [
+        "audit classifies testx_all.py as canonical and present",
+        "ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md groups validation, TestX, CTest, and playtest suites as implemented_and_used",
+        "testx_all.py is a convenience wrapper on top of testx/runner.py"
+      ],
+      "recommended_treatment": "reuse_to_gate_baseline_and_defer_extraction_claims"
+    },
+    {
+      "id": "xinv.auditx_wrapper",
+      "name": "XStack AuditX wrapper",
+      "repo_paths": [
+        "tools/xstack/auditx/check.py",
+        "tools/xstack/auditx/README.md"
+      ],
+      "purpose": "Run semantic and architecture drift scanning through the XStack profile runner.",
+      "role": "ops_concern",
+      "maturity": "stub_wrapper_or_transitional",
+      "extraction_status": "maybe_extractable_later",
+      "current_usage_status": "active_wrapper",
+      "major_dependencies": [
+        "tools/audit/**",
+        "tools/auditx/**"
+      ],
+      "evidence_notes": [
+        "check.py describes itself as an XStack wrapper for the full AuditX pipeline",
+        "the owning analyzer stack still lives outside tools/xstack"
+      ],
+      "recommended_treatment": "treat_as_live_wrapper_not_platform_owner"
+    },
+    {
+      "id": "xinv.repox_wrapper",
+      "name": "XStack RepoX wrapper",
+      "repo_paths": [
+        "tools/xstack/repox/check.py",
+        "tools/xstack/repox/README.md"
+      ],
+      "purpose": "Run deterministic policy and structure checks under XStack profiles.",
+      "role": "ops_concern",
+      "maturity": "stub_wrapper_or_transitional",
+      "extraction_status": "maybe_extractable_later",
+      "current_usage_status": "active_wrapper",
+      "major_dependencies": [
+        "tools/review/xi6_common.py",
+        "tools/review/xi8_common.py",
+        "docs/governance/REPOX_*"
+      ],
+      "evidence_notes": [
+        "docstring labels it a minimal deterministic RepoX policy scan",
+        "scan roots and rules are heavily repo-specific"
+      ],
+      "recommended_treatment": "preserve_as_operational_bridge"
+    },
+    {
+      "id": "xinv.securex_minimal",
+      "name": "SecureX minimal signature-status checks",
+      "repo_paths": [
+        "tools/xstack/securex/check.py",
+        "tools/xstack/securex/README.md"
+      ],
+      "purpose": "Verify pack manifest signature-status metadata during XStack runs.",
+      "role": "ops_concern",
+      "maturity": "implemented_and_used",
+      "extraction_status": "maybe_extractable_later",
+      "current_usage_status": "active_tool_entrypoint",
+      "major_dependencies": [
+        "tools/xstack/pack_loader/loader.py"
+      ],
+      "evidence_notes": [
+        "the code performs real pack iteration and refusal or warn handling",
+        "README explicitly brands it as a minimal signature-status verifier"
+      ],
+      "recommended_treatment": "reuse_as_narrow_verifier_keep_out_of_current_extraction_scope"
+    },
+    {
+      "id": "xinv.performx_placeholder",
+      "name": "PerformX placeholder budget and fidelity checks",
+      "repo_paths": [
+        "tools/xstack/performx/check.py",
+        "tools/xstack/performx/README.md"
+      ],
+      "purpose": "Perform policy- and registry-based budget or fidelity smoke checks during profile runs.",
+      "role": "ops_concern",
+      "maturity": "partial_or_incomplete",
+      "extraction_status": "defer_until_post_baseline",
+      "current_usage_status": "active_tool_entrypoint",
+      "major_dependencies": [
+        "build/registries/*",
+        "schemas/session_spec.schema.json",
+        "packs/**",
+        "docs/contracts/**"
+      ],
+      "evidence_notes": [
+        "module docstring says placeholder checks",
+        "current logic is real but intentionally narrow and depends on build outputs"
+      ],
+      "recommended_treatment": "treat_as_live_placeholder_not_extraction_ready"
+    },
+    {
+      "id": "xinv.ci_guardrail_surface",
+      "name": "Xi-7 and Xi-8 XStack CI guardrail surface",
+      "repo_paths": [
+        "tools/xstack/ci/",
+        "docs/xstack/CI_GUARDRAILS.md",
+        "docs/xstack/ARCH_DRIFT_POLICY.md",
+        "data/xstack/gate_definitions.json"
+      ],
+      "purpose": "Define CI guardrail entrypoints, rule catalogs, profiles, and support documentation for deterministic repo checks.",
+      "role": "ops_concern",
+      "maturity": "implemented_and_used",
+      "extraction_status": "maybe_extractable_later",
+      "current_usage_status": "wired_to_entrypoints",
+      "major_dependencies": [
+        "RepoX",
+        "AuditX",
+        "TestX",
+        "CI workflow policy",
+        "review helpers"
+      ],
+      "evidence_notes": [
+        "xstack_ci_entrypoint.py is a real runner",
+        "data/xstack/gate_definitions.json records required rules, profiles, and provisional allowances",
+        "docs and tests repeatedly reference the entrypoint"
+      ],
+      "recommended_treatment": "treat_as_live_operator_policy_and_ci_wiring"
+    },
+    {
+      "id": "xinv.pack_registry_compile_pipeline",
+      "name": "Pack loading, contribution parsing, and registry compile pipeline",
+      "repo_paths": [
+        "tools/xstack/pack_loader/**",
+        "tools/xstack/pack_contrib/**",
+        "tools/xstack/registry_compile/**",
+        "tools/xstack/bundle_list.py",
+        "tools/xstack/bundle_validate.py"
+      ],
+      "purpose": "Discover packs, parse contributions, select bundles, compile registries, and validate lockfile or registry outputs.",
+      "role": "dominium_only",
+      "maturity": "implemented_and_used",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "wired_to_entrypoints",
+      "major_dependencies": [
+        "packs/**",
+        "profiles/**",
+        "locks/**",
+        "build/registries/**",
+        "modding",
+        "tools/xstack/cache_store/**"
+      ],
+      "evidence_notes": [
+        "ControlX orchestrator uses this family directly",
+        "registry_compile/constants.py bakes in DEFAULT_BUNDLE_ID bundle.base.lab and a large Dominium registry vocabulary"
+      ],
+      "recommended_treatment": "reuse_as_dominium_control_plane_substrate"
+    },
+    {
+      "id": "xinv.packagingx_dist_layout",
+      "name": "PackagingX dist layout and packaging verification",
+      "repo_paths": [
+        "tools/xstack/packagingx/**"
+      ],
+      "purpose": "Build and validate deterministic dist layouts for launcher, setup, and control-plane flows.",
+      "role": "dominium_only",
+      "maturity": "implemented_and_used",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "transitional_bridge",
+      "major_dependencies": [
+        "pack_loader",
+        "registry_compile",
+        "session_create",
+        "sessionx.runner",
+        "sessionx.script_runner"
+      ],
+      "evidence_notes": [
+        "dist_build.py imports session creation, session boot, intent-script execution, and pack or registry compile helpers",
+        "tools/setup/build.py imports PackagingX directly"
+      ],
+      "recommended_treatment": "keep_in_dominium_due_dist_and_release_coupling"
+    },
+    {
+      "id": "xinv.validation_unified_surface",
+      "name": "Unified validation engine plus legacy adapters",
+      "repo_paths": [
+        "validation/validation_engine.py",
+        "tools/validation/tool_run_validation.py",
+        "tools/validation/validate_all_main.cpp",
+        "tools/validation/validator_common.*",
+        "tools/validation/validator_reports.*",
+        "tools/validation/validators_registry.*"
+      ],
+      "purpose": "Provide a repo-wide validation entrypoint that aggregates XStack compat checks with broader legacy and product validation surfaces.",
+      "role": "unclear_or_mixed",
+      "maturity": "implemented_and_used",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "active_adapter",
+      "major_dependencies": [
+        "compat",
+        "audit",
+        "install",
+        "identity",
+        "pack",
+        "save",
+        "release",
+        "tools.xstack.compatx"
+      ],
+      "evidence_notes": [
+        "the engine imports tools.xstack.compatx helpers and maps many legacy surfaces",
+        "audit classifies the validation stack as implemented_and_used",
+        "the live FAST entrypoint exists but current full execution remains environment-sensitive"
+      ],
+      "recommended_treatment": "treat_as_repo_validation_infrastructure_not_portable_xstack_core"
+    },
+    {
+      "id": "xinv.launcher_setup_python_shells",
+      "name": "Python and AppShell launcher and setup command surfaces",
+      "repo_paths": [
+        "tools/launcher/launch.py",
+        "tools/launcher/launcher_cli.py",
+        "tools/setup/setup_cli.py",
+        "tools/setup/build.py"
+      ],
+      "purpose": "Expose the strongest live repo-local shells for packs, profiles, compat status, install or update flows, trust operations, and local product supervision.",
+      "role": "dominium_only",
+      "maturity": "implemented_and_used",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "active_product_shell",
+      "major_dependencies": [
+        "appshell/**",
+        "release/**",
+        "security/trust/**",
+        "tools/xstack/sessionx/**",
+        "tools/xstack/packagingx/**"
+      ],
+      "evidence_notes": [
+        "audit identifies tools/launcher/launch.py and tools/setup/setup_cli.py as canonical repo-local shells",
+        "both successfully ran compat-status, profiles list, and packs list"
+      ],
+      "recommended_treatment": "support_playable_baseline_with_these_shells_now"
+    },
+    {
+      "id": "xinv.compiled_launcher_setup_wrappers",
+      "name": "Compiled launcher and setup wrappers",
+      "repo_paths": [
+        "launcher/",
+        "setup/",
+        "tools/launcher/ui/",
+        "tools/setup/ui/"
+      ],
+      "purpose": "Native shells around stronger Python and AppShell flows.",
+      "role": "dominium_only",
+      "maturity": "stub_wrapper_or_transitional",
+      "extraction_status": "explicitly_not_an_aide_target",
+      "current_usage_status": "active_wrapper",
+      "major_dependencies": [
+        "verify binaries",
+        "wrapper-local UI stubs",
+        "AppShell fallback flows"
+      ],
+      "evidence_notes": [
+        "audit marks both compiled shells as partial and wired_but_fragile",
+        "smoke output still reports stub status or limited control hooks",
+        "multiple generated UI files are explicitly labeled as stubs"
+      ],
+      "recommended_treatment": "leave_as_wrappers_and_keep_baseline_focus_on_python_surfaces"
+    },
+    {
+      "id": "xinv.appshell_shared_command_layer",
+      "name": "AppShell bootstrap, command, IPC, and supervisor layer",
+      "repo_paths": [
+        "appshell/**"
+      ],
+      "purpose": "Shared repo-local command shell, compatibility negotiation, IPC, supervisor, TUI, and mode dispatch infrastructure used by launcher and setup.",
+      "role": "dominium_only",
+      "maturity": "implemented_and_used",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "active_product_shell",
+      "major_dependencies": [
+        "compat",
+        "release",
+        "validation",
+        "tools/setup/setup_cli.py",
+        "tools/launcher/launch.py"
+      ],
+      "evidence_notes": [
+        "audit classifies AppShell as implemented_and_used",
+        "bootstrap.py and product_bootstrap.py are real shared infrastructure",
+        "rendered_stub.py, tui_stub.py, and fallback paths prove that parts of AppShell intentionally preserve stub behavior"
+      ],
+      "recommended_treatment": "keep_appshell_dominium_owned_and_baseline_relevant"
+    },
+    {
+      "id": "xinv.local_baseline_runtime_bridge",
+      "name": "Local singleplayer and authoritative loopback bridge surfaces",
+      "repo_paths": [
+        "server/server_boot.py",
+        "client/local_server/local_server_controller.py",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py"
+      ],
+      "purpose": "Materialize the local authoritative loopback flow that the playable baseline relies on before external transport exists.",
+      "role": "dominium_only",
+      "maturity": "partial_or_incomplete",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "baseline_support",
+      "major_dependencies": [
+        "tools/xstack/sessionx/**",
+        "tools/xstack/compatx/**",
+        "server/client loopback transport",
+        "release/profile inputs"
+      ],
+      "evidence_notes": [
+        "audit marks server boot and loopback transport as real implementation",
+        "reuse plan says the local controller, loopback transport, and process spawn surfaces should be reused immediately",
+        "direct controller invocation produced real handshake and compat payloads, but the public wrapper path remains unclear"
+      ],
+      "recommended_treatment": "reuse_and_stabilize_only_for_playable_baseline"
+    },
+    {
+      "id": "xinv.release_and_trust_consumers",
+      "name": "Release and offline trust surfaces that consume XStack contract helpers",
+      "repo_paths": [
+        "release/archive_policy.py",
+        "release/build_id_engine.py",
+        "release/component_graph_resolver.py",
+        "release/release_manifest_engine.py",
+        "release/update_resolver.py",
+        "security/trust/trust_verifier.py",
+        "security/trust/license_capability.py"
+      ],
+      "purpose": "Release manifesting, update resolution, archive policy, and trust verification for repo-local release or control-plane flows.",
+      "role": "dominium_only",
+      "maturity": "implemented_and_used",
+      "extraction_status": "retain_in_dominium",
+      "current_usage_status": "wired_to_entrypoints",
+      "major_dependencies": [
+        "tools/xstack/compatx/canonical_json.py",
+        "release registries",
+        "trust registries",
+        "setup and launcher flows"
+      ],
+      "evidence_notes": [
+        "audit classifies release and security as implemented_and_used",
+        "these modules import XStack canonical JSON helpers directly, but their role remains release or trust control-plane work inside Dominium"
+      ],
+      "recommended_treatment": "reuse_as_dominium_release_trust_substrate"
+    },
+    {
+      "id": "xinv.legacy_controlx",
+      "name": "Legacy standalone ControlX root",
+      "repo_paths": [
+        "tools/controlx/**"
+      ],
+      "purpose": "Older autonomous prompt and control-plane wrapper with sanitization, queue execution, and run logs.",
+      "role": "legacy_or_deprecate",
+      "maturity": "implemented_but_isolated",
+      "extraction_status": "defer_until_post_baseline",
+      "current_usage_status": "transitional_bridge",
+      "major_dependencies": [
+        "scripts/dev/gate.py",
+        "tools/controlx/core/**",
+        "release/control-plane docs"
+      ],
+      "evidence_notes": [
+        "code is real and release docs still reference it",
+        "X-0 froze it as a sibling or transitional surface rather than the current branded XStack center"
+      ],
+      "recommended_treatment": "preserve_as_transitional_bridge_and_review_later_for_convergence"
+    },
+    {
+      "id": "xinv.legacy_compatx",
+      "name": "Legacy standalone CompatX root",
+      "repo_paths": [
+        "tools/compatx/**"
+      ],
+      "purpose": "Older compatibility CLI and semantic-contract tooling retained as an adapter bridge.",
+      "role": "legacy_or_deprecate",
+      "maturity": "implemented_but_isolated",
+      "extraction_status": "defer_until_post_baseline",
+      "current_usage_status": "transitional_bridge",
+      "major_dependencies": [
+        "tools/compatx/core/**",
+        "validation inventory",
+        "semantic contract helpers"
+      ],
+      "evidence_notes": [
+        "validation/validation_engine.py still maps tools/compatx/compatx.py as legacy.compatx_cli",
+        "audit and docs show tools/compatx/core/semantic_contract_validator.py remains an active bridge helper"
+      ],
+      "recommended_treatment": "keep_as_bridge_until_later_convergence_work_explicitly_resolves_the_split"
+    },
+    {
+      "id": "xinv.task_policy_and_catalog_docs",
+      "name": "Current XStack task and policy fact-base docs",
+      "repo_paths": [
+        "docs/agents/XSTACK_TASK_CATALOG.md",
+        "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+        "data/xstack/xstack_scope_freeze.json"
+      ],
+      "purpose": "Provide current governance/task taxonomy and X-0 scope boundaries for later prompts.",
+      "role": "unclear_or_mixed",
+      "maturity": "doctrinal_or_planning_only",
+      "extraction_status": "explicitly_not_an_aide_target",
+      "current_usage_status": "fact_base_only",
+      "major_dependencies": [
+        "canon",
+        "AGENTS governance",
+        "planning docs"
+      ],
+      "evidence_notes": [
+        "these artifacts are binding or task-facing fact surfaces, not implementation",
+        "later prompts should consume them, not infer portability from them"
+      ],
+      "recommended_treatment": "use_as_fact_base_for_x2_and_x3_only"
+    },
+    {
+      "id": "xinv.legacy_xstack_reference_docs",
+      "name": "Older XStack governance and portability reference docs",
+      "repo_paths": [
+        "docs/XSTACK.md",
+        "docs/governance/XSTACK_PORTABILITY.md",
+        "docs/governance/XSTACK_INCREMENTAL_MODEL.md",
+        "docs/governance/XSTACK_EXTENSION_MODEL.md",
+        "docs/governance/XSTACK_PRODUCTION_CRITERIA.md",
+        "docs/governance/XSTACK_TEMPLATE_CHECKLIST.md",
+        "docs/governance/XSTACK_SCOPE_TEMPLATE.json"
+      ],
+      "purpose": "Historical and derived reference surfaces describing portability, incremental execution, extension hooks, and production criteria.",
+      "role": "legacy_or_deprecate",
+      "maturity": "doctrinal_or_planning_only",
+      "extraction_status": "explicitly_not_an_aide_target",
+      "current_usage_status": "fact_base_only",
+      "major_dependencies": [
+        "older governance mirrors and derived docs"
+      ],
+      "evidence_notes": [
+        "several files explicitly say they are only partially aligned",
+        "X-0 already recorded that these docs overstate removability or portability relative to live code"
+      ],
+      "recommended_treatment": "preserve_as_historical_context_only"
+    },
+    {
+      "id": "xinv.support_examples_and_evidence_roots",
+      "name": "Support examples, skills, fixtures, cache split, and generated evidence roots",
+      "repo_paths": [
+        "tools/xstack/extensions/example_x/",
+        "tools/xstack/skills/*.md",
+        "tools/xstack/testdata/**",
+        "tools/xstack/cache_store/**",
+        "tools/xstack/out/**"
+      ],
+      "purpose": "Carry example extension hooks, operator skill notes, deterministic fixtures, registry-compile cache helpers, and generated run evidence.",
+      "role": "unclear_or_mixed",
+      "maturity": "implemented_but_isolated",
+      "extraction_status": "explicitly_not_an_aide_target",
+      "current_usage_status": "fixture_or_generated_evidence",
+      "major_dependencies": [
+        "tools/xstack/registry_compile/compiler.py",
+        "tools/xstack/testx/tests/**",
+        "dist verification rules"
+      ],
+      "evidence_notes": [
+        "extensions/example_x/extension.py is a no-op example runner",
+        "skills/*.md are instruction surfaces",
+        "testdata/** is actively used by TestX and docs",
+        "tools/xstack/cache_store/** is a real registry-compile cache distinct from tools/xstack/core/cache_store.py",
+        "tools/xstack/out/** is generated evidence only"
+      ],
+      "recommended_treatment": "call_out_explicitly_so_these_roots_are_not_mistaken_for_core"
+    }
+  ],
+  "reusable_now": [
+    {
+      "id": "xinv.core_substrate",
+      "why": "Strongest deterministic planner, scheduler, and artifact substrate in the live repo.",
+      "current_role": "portable_core",
+      "portable_now": true
+    },
+    {
+      "id": "xinv.compatx_contract_primitives",
+      "why": "Broadest reused contract and canonicalization substrate across XStack-adjacent consumers.",
+      "current_role": "portable_core",
+      "portable_now": true
+    },
+    {
+      "id": "xinv.controlx_profile_orchestration",
+      "why": "Live orchestration contract for FAST, STRICT, and FULL profile execution.",
+      "current_role": "ops_concern",
+      "portable_now": false
+    },
+    {
+      "id": "xinv.testx_harness",
+      "why": "Strong deterministic tool-harness family already used for validation sweeps.",
+      "current_role": "ops_concern",
+      "portable_now": false
+    },
+    {
+      "id": "xinv.ci_guardrail_surface",
+      "why": "Clean current fact source for CI guardrail profiles and rule metadata.",
+      "current_role": "ops_concern",
+      "portable_now": false
+    }
+  ],
+  "legacy_or_transitional": [
+    "xinv.auditx_wrapper",
+    "xinv.repox_wrapper",
+    "xinv.compiled_launcher_setup_wrappers",
+    "xinv.legacy_controlx",
+    "xinv.legacy_compatx",
+    "xinv.legacy_xstack_reference_docs"
+  ],
+  "ambiguous_or_mixed": [
+    "xinv.compatx_profile_checks_and_versioning",
+    "xinv.ui_bind_surface",
+    "xinv.validation_unified_surface",
+    "xinv.task_policy_and_catalog_docs",
+    "xinv.support_examples_and_evidence_roots"
+  ],
+  "baseline_relevant": [
+    {
+      "id": "xinv.session_create_pipeline",
+      "posture": "support_now",
+      "why": "Shortest current path to baseline session artifacts."
+    },
+    {
+      "id": "xinv.session_boot_and_runtime_control",
+      "posture": "support_with_caution",
+      "why": "Relevant to baseline boot and control, but still coupled to canonical saves/<save_id> layout."
+    },
+    {
+      "id": "xinv.launcher_setup_python_shells",
+      "posture": "support_now",
+      "why": "Audit identifies these as the strongest canonical repo-local shells."
+    },
+    {
+      "id": "xinv.appshell_shared_command_layer",
+      "posture": "support_now",
+      "why": "Shared shell, supervisor, and compatibility substrate beneath launcher and setup."
+    },
+    {
+      "id": "xinv.local_baseline_runtime_bridge",
+      "posture": "support_now",
+      "why": "Strongest evidence-backed local authority bridge before external transport exists."
+    },
+    {
+      "id": "xinv.testx_harness",
+      "posture": "gate_after_smoke",
+      "why": "Use to gate baseline assembly after boot and loopback smoke stabilize."
+    },
+    {
+      "id": "xinv.validation_unified_surface",
+      "posture": "gate_after_smoke",
+      "why": "Use as repo validation infrastructure after core boot or attach path is stable."
+    },
+    {
+      "id": "xinv.legacy_controlx",
+      "posture": "leave_alone_for_now",
+      "why": "Convergence with tools/xstack/controlx would distract from the playable baseline."
+    },
+    {
+      "id": "xinv.legacy_xstack_reference_docs",
+      "posture": "leave_alone_for_now",
+      "why": "Older portability docs should not drive current baseline decisions."
+    },
+    {
+      "id": "xinv.support_examples_and_evidence_roots",
+      "posture": "leave_alone_for_now",
+      "why": "Fixtures, examples, cache helpers, and generated evidence are not current baseline owners."
+    }
+  ],
+  "prohibited_misreadings": [
+    "treating every tools/xstack/** surface as portable core",
+    "extracting session or runtime control just because it lives under tools/xstack",
+    "promoting wrappers and stubs into core because they have stable command names",
+    "treating launcher, setup, or AppShell shells as current AIDE candidates",
+    "using this inventory to justify immediate broad refactors, moves, or renames",
+    "reading tools/xstack/out/** as an ownership surface",
+    "reading release or trust consumers as proof that XStack already owns the release control plane",
+    "using future AIDE ambitions to compete with canonical playable-baseline work"
+  ],
+  "downstream_prompts_enabled": [
+    {
+      "prompt_id": "X-2",
+      "purpose": "portable contract extraction mapping using the frozen scope and classified inventory ledger"
+    },
+    {
+      "prompt_id": "X-3",
+      "purpose": "Codex or repo-operating contract formalization over the classified XStack subset"
+    },
+    {
+      "prompt_id": "later AIDE extraction review",
+      "purpose": "post-baseline review of whether any current candidates are mature enough for actual extraction"
+    }
+  ]
+}
