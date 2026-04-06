@@ -1,0 +1,1151 @@
+{
+  "artifact_id": "XSTACK_TO_AIDE_EXTRACTION_MAP",
+  "artifact_class": "extraction_boundary_map",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "X-9 closure audit",
+    "post-baseline extraction checkpoints"
+  ],
+  "replacement_target": "later explicit XStack/AIDE extraction-review checkpoint or approved spinout checkpoint only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "data/planning/next_execution_order_post_zeta.json",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+    "data/audit/ultra_repo_audit_system_inventory.json",
+    "data/audit/ultra_repo_audit_reuse_plan.json",
+    "data/audit/ultra_repo_audit_product_assembly_plan.json",
+    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "data/xstack/xstack_scope_freeze.json",
+    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "data/xstack/xstack_inventory_and_classification.json",
+    "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "data/xstack/aide_portable_task_contract.json",
+    "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "data/xstack/aide_evidence_and_review_contract.json",
+    "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+    "data/xstack/aide_policy_and_permission_shape.json",
+    "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
+    "data/xstack/aide_capability_profile_shape.json",
+    "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
+    "data/xstack/aide_adapter_contract.json",
+    "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+    "data/xstack/codex_repo_operating_contract.json",
+    "tools/xstack/compatx/README.md",
+    "tools/xstack/controlx/README.md",
+    "tools/xstack/sessionx/README.md",
+    "tools/xstack/testx/README.md",
+    "tools/xstack/compatx/versioning.py",
+    "tools/xstack/compatx/profile_checks.py",
+    "tools/xstack/controlx/orchestrator.py",
+    "tools/xstack/securex/check.py",
+    "tools/xstack/sessionx/runner.py",
+    "tools/xstack/testx/runner.py",
+    "appshell/compat_adapter.py",
+    "appshell/pack_verifier_adapter.py",
+    "tools/tool_surface_adapter.py",
+    "tools/import_bridge.py",
+    "tools/controlx/core/remediation_bridge.py",
+    "validation/validation_engine.py",
+    "tools/compatx/compatx.py",
+    "tools/controlx/controlx.py",
+    "tools/xstack/auditx/check.py",
+    "tools/xstack/repox/check.py",
+    "tools/xstack/performx/check.py",
+    "tools/launcher/launch.py",
+    "tools/setup/setup_cli.py",
+    "release/release_manifest_engine.py",
+    "release/update_resolver.py",
+    "security/trust/trust_verifier.py"
+  ],
+  "current_program_context": {
+    "admissible_zeta_doctrine_program_complete": true,
+    "further_zeta_prompt_required": false,
+    "current_product_priority": "canonical repo-local playable baseline",
+    "series_role": "boundary mapping and extraction sequencing that must not compete with playable-baseline work",
+    "current_aide_runtime_present": false
+  },
+  "extraction_definition": {
+    "document_first_extraction_readiness": "Frozen portable contracts and clearly reusable semantics that can be promoted into an AIDE fact base before any code moves.",
+    "later_code_extraction_candidacy": "Live code that may eventually move or be mirrored into AIDE after baseline, stabilization, and bridge work.",
+    "wrapping_vs_moving": "Keep Dominium product, runtime, and control-plane code in place while later extracted portable cores talk through explicit adapters or wrappers.",
+    "retaining_in_dominium": "Keep the implementation in this repo because it is product-critical, runtime-critical, baseline-critical, or deeply tied to Dominium ownership.",
+    "deprecating_rather_than_extracting": "Do not spin the surface out; later convergence or retirement should reduce it instead.",
+    "deferred_until_post_baseline": "Extraction may be reviewed later, but only after the playable baseline exists and the current startup/session path is stabilized."
+  },
+  "decision_class_definitions": {
+    "extract_later_as_portable_core": "Strongest future AIDE candidate. The extracted center is already document-first or code-light enough to justify later portable-core promotion after baseline.",
+    "extract_later_with_wrapper_bridge": "A reusable kernel may later move, but only if Dominium keeps product, runtime, or control-plane adapters behind.",
+    "retain_in_dominium": "Keep the surface in Dominium. AIDE may consume surrounding contract shapes, but this implementation stays repo-owned.",
+    "deprecate_or_retire": "Do not spin this out. Prefer later convergence, retirement, or historical retention over extraction.",
+    "defer_until_after_baseline": "Too baseline-critical, incomplete, or unstable to map beyond review later.",
+    "mixed_needs_later_review": "Surface contains real reusable and repo-bound portions at the same time."
+  },
+  "ledger": [
+    {
+      "id": "xmap.portable_contract_freezes",
+      "name": "Frozen portable AIDE contract artifacts",
+      "repo_paths": [
+        "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+        "data/xstack/aide_portable_task_contract.json",
+        "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+        "data/xstack/aide_evidence_and_review_contract.json",
+        "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+        "data/xstack/aide_policy_and_permission_shape.json",
+        "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
+        "data/xstack/aide_capability_profile_shape.json",
+        "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
+        "data/xstack/aide_adapter_contract.json"
+      ],
+      "source_inventory_ids": [],
+      "current_role_summary": "portable_contract_freeze",
+      "current_maturity_summary": "implemented_as_canonical_docs_and_json_mirrors",
+      "current_usage_status": "fact_base_only",
+      "extraction_decision": "extract_later_as_portable_core",
+      "rationale": "These artifacts already freeze the portable task, evidence/review, policy/permission, capability-profile, and adapter shapes without embedding runtime machinery.",
+      "extract_later_components": [
+        "portable contract pack",
+        "later schemas generated from the frozen contracts",
+        "portable validator or checker layer for the frozen fields"
+      ],
+      "retain_components": [
+        "repo-local operating guidance",
+        "Dominium startup and runtime rules",
+        "product ownership"
+      ],
+      "shim_requirements": [
+        "contract-to-schema packager",
+        "contract-to-validator adapter",
+        "optional bridge from AIDE contracts back into Dominium tooling"
+      ],
+      "extraction_prerequisites": [
+        "playable baseline exists",
+        "closure audit accepts the frozen contracts as stable",
+        "schema or export packaging is defined explicitly"
+      ],
+      "unsafe_now_reasons": [
+        "no standalone AIDE package exists yet",
+        "immediate value still comes from using these contracts inside Dominium"
+      ]
+    },
+    {
+      "id": "xmap.core_substrate",
+      "name": "XStack core planner, scheduler, runner, and artifact substrate",
+      "repo_paths": [
+        "tools/xstack/core/"
+      ],
+      "source_inventory_ids": [
+        "xinv.core_substrate"
+      ],
+      "current_role_summary": "portable_core",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "wired_to_entrypoints",
+      "extraction_decision": "extract_later_as_portable_core",
+      "rationale": "This is the strongest live generic planner and runner substrate, and scripts/dev/gate.py plus tools/xstack/run.py already consume it as shared execution logic.",
+      "extract_later_components": [
+        "planner substrate",
+        "scheduler substrate",
+        "runner substrate",
+        "artifact contract helpers",
+        "Merkle and profiler helpers"
+      ],
+      "retain_components": [
+        "Dominium gate scripts",
+        "repo-specific step catalogs",
+        "repo-local report and output conventions"
+      ],
+      "shim_requirements": [
+        "profile-name mapping",
+        "artifact-class mapping",
+        "Dominium gate-step adapter"
+      ],
+      "extraction_prerequisites": [
+        "playable baseline exists",
+        "ControlX step taxonomy is stabilized",
+        "output and report path ownership is explicit"
+      ],
+      "unsafe_now_reasons": [
+        "the substrate is still wired into live repo gating and baseline assembly work"
+      ]
+    },
+    {
+      "id": "xmap.compatx_contract_primitives",
+      "name": "Low-level CompatX canonicalization and validation primitives",
+      "repo_paths": [
+        "tools/xstack/compatx/canonical_json.py",
+        "tools/xstack/compatx/validator.py",
+        "tools/xstack/compatx/schema_registry.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.compatx_contract_primitives"
+      ],
+      "current_role_summary": "portable_core",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "wired_to_entrypoints",
+      "extraction_decision": "extract_later_as_portable_core",
+      "rationale": "These helpers are the broadest reused XStack-adjacent substrate across runtime, client, server, release, trust, validation, and AppShell surfaces.",
+      "extract_later_components": [
+        "canonical JSON text and hash helpers",
+        "strict instance validation",
+        "schema discovery and loading helpers"
+      ],
+      "retain_components": [
+        "Dominium schema trees",
+        "specific schema registries",
+        "repo-relative defaults",
+        "product-specific refusal vocabulary"
+      ],
+      "shim_requirements": [
+        "schema-root adapter for schema versus schemas",
+        "registry source adapter",
+        "refusal-code mapping layer where needed"
+      ],
+      "extraction_prerequisites": [
+        "playable baseline exists",
+        "ownership-sensitive schema split remains explicit",
+        "contract export packaging is approved"
+      ],
+      "unsafe_now_reasons": [
+        "many baseline-critical surfaces currently import these helpers directly",
+        "the repo still owns the schema source landscape"
+      ]
+    },
+    {
+      "id": "xmap.compatx_profile_and_version_checks",
+      "name": "CompatX profile checks and version-routing layer",
+      "repo_paths": [
+        "tools/xstack/compatx/check.py",
+        "tools/xstack/compatx/profile_checks.py",
+        "tools/xstack/compatx/versioning.py",
+        "tools/xstack/compatx/version_registry.json",
+        "tools/xstack/compatx/README.md"
+      ],
+      "source_inventory_ids": [
+        "xinv.compatx_profile_checks_and_versioning"
+      ],
+      "current_role_summary": "mixed",
+      "current_maturity_summary": "partial_or_incomplete",
+      "current_usage_status": "active_tool_entrypoint",
+      "extraction_decision": "extract_later_with_wrapper_bridge",
+      "rationale": "The low-level contract primitives are reusable, but this layer is still tied to repo docs, repo schemas, version registries, and a migration path that currently stops at a migration stub.",
+      "extract_later_components": [
+        "generic version-resolution semantics",
+        "profile-check runner shape",
+        "portable mismatch and refusal reporting"
+      ],
+      "retain_components": [
+        "Dominium doc-link tables",
+        "version registry contents",
+        "schema policy registries",
+        "repo-local migration tool invocation"
+      ],
+      "shim_requirements": [
+        "schema name mapping",
+        "version-registry provider",
+        "migration-route adapter",
+        "doc-link provider"
+      ],
+      "extraction_prerequisites": [
+        "migration story is no longer stub-only",
+        "policy ownership is explicit",
+        "schema or export adapter exists"
+      ],
+      "unsafe_now_reasons": [
+        "the layer still encodes repo-specific schema and doc expectations",
+        "migration behavior is incomplete"
+      ]
+    },
+    {
+      "id": "xmap.controlx_profile_orchestration",
+      "name": "XStack ControlX orchestration surface",
+      "repo_paths": [
+        "tools/xstack/run.py",
+        "tools/xstack/controlx/"
+      ],
+      "source_inventory_ids": [
+        "xinv.controlx_profile_orchestration"
+      ],
+      "current_role_summary": "ops_concern",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "active_tool_entrypoint",
+      "extraction_decision": "extract_later_with_wrapper_bridge",
+      "rationale": "ControlX is a real orchestration surface, but it directly imports AuditX, CompatX, PerformX, PackagingX, registry compile, SessionX boot/create, TestX, and UI bind.",
+      "extract_later_components": [
+        "orchestration step model",
+        "run-context semantics",
+        "profile-to-step contract"
+      ],
+      "retain_components": [
+        "Dominium pack-loading steps",
+        "bundle-selection steps",
+        "registry-compile steps",
+        "session boot and create steps",
+        "repo-local audit and report emission"
+      ],
+      "shim_requirements": [
+        "step-provider adapter",
+        "profile mapping",
+        "task-contract adapter",
+        "report-path adapter"
+      ],
+      "extraction_prerequisites": [
+        "playable baseline exists",
+        "session and runtime surfaces are stabilized",
+        "Dominium step providers are cleanly declared"
+      ],
+      "unsafe_now_reasons": [
+        "ControlX coordinates many baseline-critical Dominium surfaces"
+      ]
+    },
+    {
+      "id": "xmap.gate_and_review_bridges",
+      "name": "Repo gate and review bridge scripts that consume XStack",
+      "repo_paths": [
+        "scripts/dev/gate.py",
+        "scripts/ci/check_repox_rules.py",
+        "tools/review/xi8_common.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.gate_and_review_bridges"
+      ],
+      "current_role_summary": "ops_concern",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "transitional_bridge",
+      "extraction_decision": "defer_until_after_baseline",
+      "rationale": "These are repo bridges between XStack semantics and Dominium review and gate flows, not portable core.",
+      "extract_later_components": [
+        "nothing by default",
+        "at most mapping hooks that let extracted cores feed repo-owned review and gate wrappers"
+      ],
+      "retain_components": [
+        "gate scripts",
+        "review bundles",
+        "Xi-series review helpers",
+        "repo policy enforcement"
+      ],
+      "shim_requirements": [
+        "task and evidence or review adapters from extracted AIDE cores back into Dominium gate flows"
+      ],
+      "extraction_prerequisites": [
+        "playable baseline exists",
+        "X-9 closure audit confirms the retained gate posture",
+        "repo review surfaces are normalized"
+      ],
+      "unsafe_now_reasons": [
+        "these bridges are part of the repo operational discipline"
+      ]
+    },
+    {
+      "id": "xmap.session_create_pipeline",
+      "name": "Session create and pipeline-contract materialization",
+      "repo_paths": [
+        "tools/xstack/session_create.py",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/pipeline_contract.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.session_create_pipeline"
+      ],
+      "current_role_summary": "runtime_concern",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "baseline_support",
+      "extraction_decision": "retain_in_dominium",
+      "rationale": "This surface is part of the shortest playable-baseline path and bakes in Dominium bundle, lock, session-template, and save-root assumptions.",
+      "extract_later_components": [
+        "only document-first contract semantics already frozen elsewhere"
+      ],
+      "retain_components": [
+        "SessionSpec materialization",
+        "universe artifact writing",
+        "bundle, lock, and template defaults",
+        "repo-local save tree semantics"
+      ],
+      "shim_requirements": [
+        "future profile and bundle mapping adapters instead of code movement"
+      ],
+      "extraction_prerequisites": [
+        "none for current planning because the implementation is retained"
+      ],
+      "unsafe_now_reasons": [
+        "it directly supports the baseline session path",
+        "it is still coupled to Dominium profile and save ownership"
+      ]
+    },
+    {
+      "id": "xmap.session_boot_runtime_control",
+      "name": "Session boot, SRZ, runtime, and control machinery",
+      "repo_paths": [
+        "tools/xstack/session_boot.py",
+        "tools/xstack/session_control.py",
+        "tools/xstack/session_surface.py",
+        "tools/xstack/session_script_run.py",
+        "tools/xstack/session_server.py",
+        "tools/xstack/srz_status.py",
+        "tools/xstack/sessionx/runner.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/sessionx/scheduler.py",
+        "tools/xstack/sessionx/server_gate.py",
+        "tools/xstack/sessionx/ui_host.py",
+        "tools/xstack/sessionx/render_model.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.session_boot_and_runtime_control"
+      ],
+      "current_role_summary": "runtime_concern",
+      "current_maturity_summary": "partial_or_incomplete",
+      "current_usage_status": "wired_to_entrypoints",
+      "extraction_decision": "defer_until_after_baseline",
+      "rationale": "This cluster is deep runtime and session machinery, and tools/xstack/sessionx/runner.py still hardcodes the repo_root/saves/<save_id> layout while session_boot.py documents that same canonical path explicitly.",
+      "extract_later_components": [
+        "not the current code path",
+        "at most later review of narrow reusable contracts already frozen by X-2 through X-6"
+      ],
+      "retain_components": [
+        "boot flow",
+        "SRZ and runtime execution",
+        "stage control",
+        "session server",
+        "UI host",
+        "render model",
+        "local authority and runtime coupling"
+      ],
+      "shim_requirements": [
+        "save-root adapter",
+        "runtime bootstrap wrapper",
+        "session or runtime provider layer",
+        "law and profile provider bridge"
+      ],
+      "extraction_prerequisites": [
+        "playable baseline exists",
+        "save-root coupling is fixed",
+        "canonical startup path is stable",
+        "runtime ownership review is explicit"
+      ],
+      "unsafe_now_reasons": [
+        "the surface is baseline-critical",
+        "the current implementation is still fragile"
+      ]
+    },
+    {
+      "id": "xmap.ui_bind_and_session_host_boundary",
+      "name": "UI bind checker and session-host boundary",
+      "repo_paths": [
+        "tools/xstack/ui_bind.py",
+        "tools/xstack/sessionx/ui_host.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.ui_bind_surface"
+      ],
+      "current_role_summary": "mixed",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "active_tool_entrypoint",
+      "extraction_decision": "mixed_needs_later_review",
+      "rationale": "The descriptor-validation side looks portable, but the checked host surface is still part of SessionX runtime and session control.",
+      "extract_later_components": [
+        "descriptor-validation rules",
+        "UI-bind contract checking only"
+      ],
+      "retain_components": [
+        "session-host behavior",
+        "action dispatch",
+        "selector wiring",
+        "Dominium UI registry semantics"
+      ],
+      "shim_requirements": [
+        "UI registry adapter",
+        "session-host provider bridge"
+      ],
+      "extraction_prerequisites": [
+        "UI registry semantics stabilized",
+        "session host separated cleanly from runtime control"
+      ],
+      "unsafe_now_reasons": [
+        "the surface still straddles portable descriptor law and Dominium runtime implementation"
+      ]
+    },
+    {
+      "id": "xmap.testx_harness",
+      "name": "TestX deterministic harness and suite corpus",
+      "repo_paths": [
+        "tools/xstack/testx/",
+        "tools/xstack/testx_all.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.testx_harness"
+      ],
+      "current_role_summary": "ops_concern",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "wired_to_entrypoints",
+      "extraction_decision": "extract_later_with_wrapper_bridge",
+      "rationale": "The runner itself is reusable, but tools/xstack/testx/runner.py still depends on repo diff detection, semantic-impact helpers, the live suite corpus, and the .xstack_cache/xstack_testx cache root.",
+      "extract_later_components": [
+        "runner semantics",
+        "profile selection",
+        "sharding",
+        "deterministic subset selection",
+        "cache contract shape"
+      ],
+      "retain_components": [
+        "Dominium test corpus",
+        "repo diff base refs",
+        "impact-graph generation",
+        "report and output path policy"
+      ],
+      "shim_requirements": [
+        "suite registry adapter",
+        "changed-files provider",
+        "cache-root adapter",
+        "repo-specific impact-graph bridge"
+      ],
+      "extraction_prerequisites": [
+        "playable baseline exists",
+        "suite taxonomy and impact coverage are stable",
+        "report and output contract is explicit"
+      ],
+      "unsafe_now_reasons": [
+        "the harness is a live baseline gate",
+        "it is tightly coupled to this repo test corpus and Git layout"
+      ]
+    },
+    {
+      "id": "xmap.auditx_and_repox_wrappers",
+      "name": "XStack AuditX and RepoX wrapper entrypoints",
+      "repo_paths": [
+        "tools/xstack/auditx/check.py",
+        "tools/xstack/repox/check.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.auditx_wrapper",
+        "xinv.repox_wrapper"
+      ],
+      "current_role_summary": "ops_concern",
+      "current_maturity_summary": "wrapper_or_transitional",
+      "current_usage_status": "active_wrapper",
+      "extraction_decision": "deprecate_or_retire",
+      "rationale": "These are wrapper CLIs over repo-specific audit and review scans. auditx/check.py explicitly calls itself a wrapper, and repox/check.py hardcodes repo scan roots and review helpers.",
+      "extract_later_components": [
+        "none by default"
+      ],
+      "retain_components": [
+        "wrapper CLIs",
+        "repo policy scan rules",
+        "audit and report destinations"
+      ],
+      "shim_requirements": [
+        "none for extraction because the wrappers themselves are not the future portable core"
+      ],
+      "extraction_prerequisites": [
+        "if later desired, portable rule schemas would need to be separated first"
+      ],
+      "unsafe_now_reasons": [
+        "wrapper behavior is not proof of portable ownership"
+      ]
+    },
+    {
+      "id": "xmap.securex_minimal",
+      "name": "SecureX minimal signature-status checks",
+      "repo_paths": [
+        "tools/xstack/securex/check.py",
+        "tools/xstack/securex/README.md"
+      ],
+      "source_inventory_ids": [
+        "xinv.securex_minimal"
+      ],
+      "current_role_summary": "ops_concern",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "active_tool_entrypoint",
+      "extraction_decision": "extract_later_with_wrapper_bridge",
+      "rationale": "The check surface is small and coherent, but it depends on Dominium pack loading, signature-status vocabulary, and trust policy resolution.",
+      "extract_later_components": [
+        "narrow verifier semantics for signature-status classification",
+        "refusal and warning posture"
+      ],
+      "retain_components": [
+        "trust policy registries",
+        "pack enumeration",
+        "release and install integration",
+        "Dominium trust plumbing"
+      ],
+      "shim_requirements": [
+        "trust-policy provider",
+        "artifact enumeration adapter",
+        "pack metadata adapter"
+      ],
+      "extraction_prerequisites": [
+        "portable policy and permission linkage remains stable",
+        "trust-root provider boundary is explicit"
+      ],
+      "unsafe_now_reasons": [
+        "current behavior is still a Dominium trust and pack check"
+      ]
+    },
+    {
+      "id": "xmap.performx_placeholder",
+      "name": "PerformX placeholder budget and fidelity checks",
+      "repo_paths": [
+        "tools/xstack/performx/check.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.performx_placeholder"
+      ],
+      "current_role_summary": "ops_concern",
+      "current_maturity_summary": "partial_or_incomplete",
+      "current_usage_status": "active_tool_entrypoint",
+      "extraction_decision": "deprecate_or_retire",
+      "rationale": "The file describes itself as a placeholder, reads build registries opportunistically, and emits warnings rather than a mature portable contract engine.",
+      "extract_later_components": [
+        "none by default"
+      ],
+      "retain_components": [
+        "current placeholder behavior until later Dominium cleanup or replacement"
+      ],
+      "shim_requirements": [
+        "none"
+      ],
+      "extraction_prerequisites": [
+        "a real capability or policy evaluator would have to exist first"
+      ],
+      "unsafe_now_reasons": [
+        "placeholder status is not extraction readiness"
+      ]
+    },
+    {
+      "id": "xmap.ci_guardrail_surface",
+      "name": "Xi-7 and Xi-8 CI guardrail surface",
+      "repo_paths": [
+        "tools/xstack/ci/",
+        "docs/xstack/CI_GUARDRAILS.md",
+        "docs/xstack/ARCH_DRIFT_POLICY.md",
+        "data/xstack/gate_definitions.json"
+      ],
+      "source_inventory_ids": [
+        "xinv.ci_guardrail_surface"
+      ],
+      "current_role_summary": "ops_concern",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "wired_to_entrypoints",
+      "extraction_decision": "mixed_needs_later_review",
+      "rationale": "The rule metadata is useful, but tools/xstack/ci/ci_common.py is deeply tied to Xi-series repo policy, GitHub workflow shape, audit report paths, and repo-local refusal categories.",
+      "extract_later_components": [
+        "guardrail rule schemas",
+        "profile shapes",
+        "CI-result contract helpers"
+      ],
+      "retain_components": [
+        "repo-specific workflow wiring",
+        "drift policy rules",
+        "audit and report output locations"
+      ],
+      "shim_requirements": [
+        "CI provider adapter",
+        "report sink adapter",
+        "repo policy rule adapter"
+      ],
+      "extraction_prerequisites": [
+        "closure audit confirms stable guardrail semantics",
+        "repo-specific rule IDs are separated from portable rule shapes"
+      ],
+      "unsafe_now_reasons": [
+        "the current surface is part of the Dominium repo policy spine"
+      ]
+    },
+    {
+      "id": "xmap.validation_unified_surface",
+      "name": "Unified validation engine plus legacy adapters",
+      "repo_paths": [
+        "validation/validation_engine.py",
+        "tools/validation/tool_run_validation.py",
+        "tools/validation/validate_all_main.cpp",
+        "tools/validation/validator_common.cpp",
+        "tools/validation/validator_common.h",
+        "tools/validation/validator_reports.cpp",
+        "tools/validation/validator_reports.h",
+        "tools/validation/validators_registry.cpp",
+        "tools/validation/validators_registry.h"
+      ],
+      "source_inventory_ids": [
+        "xinv.validation_unified_surface"
+      ],
+      "current_role_summary": "mixed",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "active_adapter",
+      "extraction_decision": "mixed_needs_later_review",
+      "rationale": "The validation engine is real and valuable, but it writes repo-local audit outputs, consumes many Dominium validators, and explicitly embeds a long legacy adapter bridge table.",
+      "extract_later_components": [
+        "narrow contract-checker kernel",
+        "report schema helpers"
+      ],
+      "retain_components": [
+        "repo suite registry",
+        "audit report destinations",
+        "legacy adapter routing",
+        "release, install, and save validators",
+        "repo-local validation policy"
+      ],
+      "shim_requirements": [
+        "suite-registry adapter",
+        "report-path adapter",
+        "validator provider bridge",
+        "output sink adapter"
+      ],
+      "extraction_prerequisites": [
+        "baseline exists",
+        "legacy adapters are reduced or clearly ring-fenced",
+        "portable checker core is explicitly separated"
+      ],
+      "unsafe_now_reasons": [
+        "it is current repo validation infrastructure, not a clean portable core"
+      ]
+    },
+    {
+      "id": "xmap.pack_and_distribution_pipeline",
+      "name": "Pack loading, contribution parsing, registry compile, and packaging pipeline",
+      "repo_paths": [
+        "tools/xstack/pack_loader/**",
+        "tools/xstack/pack_contrib/**",
+        "tools/xstack/registry_compile/**",
+        "tools/xstack/packagingx/**",
+        "tools/xstack/bundle_list.py",
+        "tools/xstack/bundle_validate.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.pack_registry_compile_pipeline",
+        "xinv.packagingx_dist_layout"
+      ],
+      "current_role_summary": "dominium_only",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "wired_to_entrypoints",
+      "extraction_decision": "retain_in_dominium",
+      "rationale": "The registry compile compiler writes Dominium registry outputs and lockfiles, calls SessionX null-boot artifact helpers, and operates over live Dominium packs, bundles, release, and dist layout semantics.",
+      "extract_later_components": [
+        "at most contract adapters around the frozen capability, policy, and adapter shapes"
+      ],
+      "retain_components": [
+        "pack loading",
+        "contribution parsing",
+        "registry compile",
+        "lockfile generation",
+        "dist layout build and validation",
+        "Dominium pack and bundle vocabulary"
+      ],
+      "shim_requirements": [
+        "future extracted cores should consume this through bundle, pack, and profile adapters instead of code movement"
+      ],
+      "extraction_prerequisites": [
+        "none for current planning because the implementation remains Dominium-owned"
+      ],
+      "unsafe_now_reasons": [
+        "it is core control-plane and baseline support substrate for the live repo"
+      ]
+    },
+    {
+      "id": "xmap.operator_shell_and_appshell_surfaces",
+      "name": "Python launcher/setup shells and shared AppShell command layer",
+      "repo_paths": [
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "appshell/**",
+        "launcher/**",
+        "setup/**"
+      ],
+      "source_inventory_ids": [
+        "xinv.launcher_setup_python_shells",
+        "xinv.compiled_launcher_setup_wrappers",
+        "xinv.appshell_shared_command_layer"
+      ],
+      "current_role_summary": "dominium_only",
+      "current_maturity_summary": "implemented_and_used_with_wrapper_substrata",
+      "current_usage_status": "active_product_shell",
+      "extraction_decision": "retain_in_dominium",
+      "rationale": "The audit identifies these as the strongest repo-local operator shells for the playable baseline, and they encode repo-root, dist, profile, pack, trust, supervision, and product-command assumptions.",
+      "extract_later_components": [
+        "not the shells themselves",
+        "only the portable contract shapes that the shells consume"
+      ],
+      "retain_components": [
+        "launcher and setup operator commands",
+        "AppShell bootstrap",
+        "command dispatch",
+        "IPC",
+        "supervisor behavior",
+        "compiled launcher and setup wrappers"
+      ],
+      "shim_requirements": [
+        "if later extracted cores need access, Dominium-owned operator wrappers should remain the integration boundary"
+      ],
+      "extraction_prerequisites": [
+        "none for current planning because these shells are baseline-critical Dominium surfaces"
+      ],
+      "unsafe_now_reasons": [
+        "baseline assembly explicitly depends on them as the canonical repo-local shells"
+      ]
+    },
+    {
+      "id": "xmap.appshell_and_tool_bridge_helpers",
+      "name": "AppShell and tool-level bridge helpers",
+      "repo_paths": [
+        "appshell/compat_adapter.py",
+        "appshell/pack_verifier_adapter.py",
+        "tools/tool_surface_adapter.py",
+        "tools/import_bridge.py",
+        "tools/controlx/core/remediation_bridge.py"
+      ],
+      "source_inventory_ids": [],
+      "current_role_summary": "mixed",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "transitional_bridge",
+      "extraction_decision": "retain_in_dominium",
+      "rationale": "These files are bridge hosts, not portable cores. They bind Dominium release, trust, packs, audit artifacts, and old import topology into current operator flows.",
+      "extract_later_components": [
+        "only the abstract adapter or bridge contracts already frozen by X-3 through X-6"
+      ],
+      "retain_components": [
+        "descriptor emission",
+        "pack verification wrapping",
+        "tool-surface command catalogs",
+        "import aliasing",
+        "remediation artifact linking"
+      ],
+      "shim_requirements": [
+        "these files are themselves the kind of bridge layer later extractions will need"
+      ],
+      "extraction_prerequisites": [
+        "none for current planning; later AIDE cores can target them as retained boundaries"
+      ],
+      "unsafe_now_reasons": [
+        "moving bridge code defeats the purpose of using Dominium-owned wrappers to protect baseline-critical behavior"
+      ]
+    },
+    {
+      "id": "xmap.local_baseline_runtime_bridge",
+      "name": "Local singleplayer and authoritative loopback bridge",
+      "repo_paths": [
+        "server/server_boot.py",
+        "client/local_server/local_server_controller.py",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.local_baseline_runtime_bridge"
+      ],
+      "current_role_summary": "dominium_only",
+      "current_maturity_summary": "partial_or_incomplete",
+      "current_usage_status": "baseline_support",
+      "extraction_decision": "retain_in_dominium",
+      "rationale": "The audit calls this the strongest evidence-backed local authority path, and it is directly coupled to repo-local server boot, process spawn, loopback negotiation, and the current playable-baseline target.",
+      "extract_later_components": [
+        "not this code path",
+        "later extracted portable cores would integrate through it"
+      ],
+      "retain_components": [
+        "server boot",
+        "loopback transport",
+        "local attach and start logic",
+        "process spawn",
+        "local authority and runtime behavior"
+      ],
+      "shim_requirements": [
+        "future adapters from extracted task, evidence, policy, or capability layers into Dominium runtime control"
+      ],
+      "extraction_prerequisites": [
+        "none for current planning because this remains baseline-critical Dominium runtime glue"
+      ],
+      "unsafe_now_reasons": [
+        "it is part of the current baseline runtime direction",
+        "it is still partially fragile"
+      ]
+    },
+    {
+      "id": "xmap.release_and_trust_consumers",
+      "name": "Release, update, and offline trust surfaces that consume XStack helpers",
+      "repo_paths": [
+        "release/archive_policy.py",
+        "release/build_id_engine.py",
+        "release/component_graph_resolver.py",
+        "release/release_manifest_engine.py",
+        "release/update_resolver.py",
+        "security/trust/trust_verifier.py",
+        "security/trust/license_capability.py"
+      ],
+      "source_inventory_ids": [
+        "xinv.release_and_trust_consumers"
+      ],
+      "current_role_summary": "dominium_only",
+      "current_maturity_summary": "implemented_and_used",
+      "current_usage_status": "wired_to_entrypoints",
+      "extraction_decision": "retain_in_dominium",
+      "rationale": "These surfaces import CompatX helpers, but they are still Dominium release and trust control-plane implementations tied to repo policy, install, dist, and publication semantics.",
+      "extract_later_components": [
+        "only portable contract checking or hashing primitives already handled elsewhere"
+      ],
+      "retain_components": [
+        "release manifests",
+        "update resolution",
+        "trust verification",
+        "license capability logic",
+        "repo publication and trust ownership"
+      ],
+      "shim_requirements": [
+        "trust-policy provider adapter",
+        "release-manifest provider adapter"
+      ],
+      "extraction_prerequisites": [
+        "none for current planning because these are protected Dominium control-plane surfaces"
+      ],
+      "unsafe_now_reasons": [
+        "release and trust meaning is review-sensitive and explicitly protected"
+      ]
+    },
+    {
+      "id": "xmap.legacy_controlx_and_compatx_roots",
+      "name": "Legacy standalone ControlX and CompatX roots",
+      "repo_paths": [
+        "tools/controlx/**",
+        "tools/compatx/**"
+      ],
+      "source_inventory_ids": [
+        "xinv.legacy_controlx",
+        "xinv.legacy_compatx"
+      ],
+      "current_role_summary": "legacy",
+      "current_maturity_summary": "implemented_but_isolated",
+      "current_usage_status": "transitional_bridge",
+      "extraction_decision": "deprecate_or_retire",
+      "rationale": "These are older sibling roots that still provide bridge value, but the current semantic center for the XStack/AIDE series lives under tools/xstack/**.",
+      "extract_later_components": [
+        "not these roots"
+      ],
+      "retain_components": [
+        "temporary bridge or archaeology value until explicit convergence work is approved"
+      ],
+      "shim_requirements": [
+        "staged migration rules",
+        "compatibility aliases if future cleanup touches their consumers"
+      ],
+      "extraction_prerequisites": [
+        "post-baseline convergence task explicitly approved"
+      ],
+      "unsafe_now_reasons": [
+        "spinning out legacy siblings would freeze the wrong ownership center"
+      ]
+    },
+    {
+      "id": "xmap.legacy_reference_docs_and_repo_contract",
+      "name": "Older XStack reference docs and repo-specific operating contract surfaces",
+      "repo_paths": [
+        "docs/XSTACK.md",
+        "docs/governance/XSTACK_PORTABILITY.md",
+        "docs/governance/XSTACK_INCREMENTAL_MODEL.md",
+        "docs/governance/XSTACK_EXTENSION_MODEL.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+        "data/xstack/codex_repo_operating_contract.json"
+      ],
+      "source_inventory_ids": [
+        "xinv.legacy_xstack_reference_docs"
+      ],
+      "current_role_summary": "legacy_and_repo_specific_governance",
+      "current_maturity_summary": "doctrinal_or_planning_only",
+      "current_usage_status": "fact_base_only",
+      "extraction_decision": "retain_in_dominium",
+      "rationale": "The older docs are historical context only, and the Codex repo operating contract is intentionally specific to this repo build, validation, playtest, and directory-authority rules.",
+      "extract_later_components": [
+        "not these documents as-is"
+      ],
+      "retain_components": [
+        "historical XStack reference set",
+        "repo-local Codex operating contract"
+      ],
+      "shim_requirements": [
+        "none"
+      ],
+      "extraction_prerequisites": [
+        "none"
+      ],
+      "unsafe_now_reasons": [
+        "these artifacts either describe superseded local context or intentionally govern this repo only"
+      ]
+    }
+  ],
+  "likely_aide_candidates": [
+    {
+      "id": "xmap.portable_contract_freezes",
+      "why": "Document-first portable core already exists."
+    },
+    {
+      "id": "xmap.core_substrate",
+      "why": "Strongest reusable planner and runner substrate."
+    },
+    {
+      "id": "xmap.compatx_contract_primitives",
+      "why": "Broadest reused contract primitives across XStack-adjacent consumers."
+    },
+    {
+      "id": "xmap.compatx_profile_and_version_checks",
+      "why": "Reusable kernel likely exists once migration and schema-provider boundaries are explicit."
+    },
+    {
+      "id": "xmap.testx_harness",
+      "why": "Runner semantics and sharding posture are reusable if suite and report adapters stay behind."
+    },
+    {
+      "id": "xmap.controlx_profile_orchestration",
+      "why": "A later extracted orchestration kernel is plausible if Dominium step providers remain behind wrappers."
+    },
+    {
+      "id": "xmap.securex_minimal",
+      "why": "Narrow verifier semantics are plausible if trust and pack providers stay Dominium-owned."
+    }
+  ],
+  "definitely_dominium_retained": [
+    {
+      "id": "xmap.session_create_pipeline",
+      "why": "Baseline session materialization and save-tree ownership stay in Dominium."
+    },
+    {
+      "id": "xmap.pack_and_distribution_pipeline",
+      "why": "Pack, registry, lockfile, dist, and packaging semantics are current Dominium control-plane substrate."
+    },
+    {
+      "id": "xmap.operator_shell_and_appshell_surfaces",
+      "why": "Canonical repo-local shells and AppShell product surfaces are baseline-critical."
+    },
+    {
+      "id": "xmap.appshell_and_tool_bridge_helpers",
+      "why": "These are retained integration seams, not portable cores."
+    },
+    {
+      "id": "xmap.local_baseline_runtime_bridge",
+      "why": "Current loopback authority and local runtime path stay with Dominium."
+    },
+    {
+      "id": "xmap.release_and_trust_consumers",
+      "why": "Release and trust meaning is protected and repo-specific."
+    },
+    {
+      "id": "xmap.legacy_reference_docs_and_repo_contract",
+      "why": "Repo-local operating law and historical reference docs are not AIDE assets."
+    }
+  ],
+  "mixed_or_deferred": [
+    {
+      "id": "xmap.session_boot_runtime_control",
+      "posture": "defer_until_after_baseline",
+      "why": "Baseline-critical runtime path remains fragile and save-root coupled."
+    },
+    {
+      "id": "xmap.ui_bind_and_session_host_boundary",
+      "posture": "mixed_needs_later_review",
+      "why": "Portable descriptor checking and Dominium session host behavior still share the same surface."
+    },
+    {
+      "id": "xmap.ci_guardrail_surface",
+      "posture": "mixed_needs_later_review",
+      "why": "Portable-looking rule metadata still mixes with Xi-specific repo policy."
+    },
+    {
+      "id": "xmap.validation_unified_surface",
+      "posture": "mixed_needs_later_review",
+      "why": "Valuable checker infrastructure still owns repo suites, report sinks, and legacy adapter routing."
+    },
+    {
+      "id": "xmap.gate_and_review_bridges",
+      "posture": "defer_until_after_baseline",
+      "why": "Repo gate and review bridges must remain stable during baseline assembly."
+    }
+  ],
+  "extraction_order_after_baseline": [
+    {
+      "stage": 1,
+      "name": "document_first_portable_core_promotion",
+      "scope": [
+        "promote frozen AIDE task, evidence/review, policy/permission, capability-profile, and adapter contracts into a standalone AIDE contract pack",
+        "carry this extraction map as the boundary ledger"
+      ],
+      "guardrails": [
+        "do not move code yet",
+        "do not weaken baseline ownership boundaries"
+      ]
+    },
+    {
+      "stage": 2,
+      "name": "low_level_portable_substrate_extraction",
+      "scope": [
+        "extract tools/xstack/core/**",
+        "extract low-level CompatX primitives: canonical_json, validator, schema_registry"
+      ],
+      "guardrails": [
+        "keep Dominium schema and provider adapters behind",
+        "do not move session, launcher, AppShell, or pack compile code"
+      ]
+    },
+    {
+      "stage": 3,
+      "name": "checker_and_harness_extraction_with_retained_bridges",
+      "scope": [
+        "review a narrow wrapped subset of CompatX profile/version checks",
+        "review a narrow wrapped subset of TestX runner semantics",
+        "review narrow SecureX verifier semantics"
+      ],
+      "guardrails": [
+        "do not move Dominium suites, registries, trust policy, or report sinks"
+      ]
+    },
+    {
+      "stage": 4,
+      "name": "orchestration_layer_extraction_with_provider_wrappers",
+      "scope": [
+        "review whether ControlX profile and orchestration semantics can move behind Dominium step-provider adapters"
+      ],
+      "guardrails": [
+        "keep session/runtime, AppShell, pack compile, and product/operator shells in Dominium"
+      ]
+    },
+    {
+      "stage": 5,
+      "name": "optional_late_mixed_surface_review",
+      "scope": [
+        "review CI guardrail schemas",
+        "review UI bind descriptor validation",
+        "review validation checker kernels"
+      ],
+      "guardrails": [
+        "treat runtime/session/AppShell/release/trust surfaces as retained unless a later checkpoint authorizes more"
+      ]
+    }
+  ],
+  "doctrine_vs_implementation_vs_extraction_markers": [
+    "doctrinal similarity does not equal extraction readiness",
+    "implementation existence does not equal portability",
+    "extraction mapping does not equal immediate extraction execution",
+    "wrapper existence does not equal platform ownership"
+  ],
+  "prohibited_extraction_shapes": [
+    "extracting baseline-critical surfaces now",
+    "moving mixed surfaces because they sound generic",
+    "treating wrapper code as portable core by default",
+    "using this map to justify immediate repo churn, broad renames, or code moves",
+    "claiming a separate AIDE runtime is ready now",
+    "collapsing document-first contract freezes, code extraction candidacy, and runtime implementation into one story",
+    "treating the current repo operating contract as AIDE policy"
+  ],
+  "downstream_prompts_enabled": [
+    "X-9 final XStack/AIDE closure audit",
+    "later post-baseline extraction checkpoints that need a conservative boundary map",
+    "future implementation prompts that need to know what to retain, wrap, defer, or retire before any code movement is proposed"
+  ]
+}
