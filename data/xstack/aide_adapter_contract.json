@@ -1,0 +1,415 @@
+{
+  "artifact_id": "AIDE_ADAPTER_CONTRACT",
+  "artifact_class": "portable_contract_freeze",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "Codex repo operating contract",
+    "AIDE extraction review"
+  ],
+  "replacement_target": "later explicit portable adapter-contract checkpoint or replacement artifact only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "data/xstack/xstack_scope_freeze.json",
+    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "data/xstack/xstack_inventory_and_classification.json",
+    "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "data/xstack/aide_portable_task_contract.json",
+    "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "data/xstack/aide_evidence_and_review_contract.json",
+    "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+    "data/xstack/aide_policy_and_permission_shape.json",
+    "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
+    "data/xstack/aide_capability_profile_shape.json",
+    "compat/data_format_loader.py",
+    "compat/handshake/handshake_engine.py",
+    "compat/shims/tool_shims.py",
+    "appshell/compat_adapter.py",
+    "appshell/pack_verifier_adapter.py",
+    "appshell/ipc/ipc_transport.py",
+    "appshell/ipc/ipc_client.py",
+    "tools/tool_surface_adapter.py",
+    "tools/setup/setup_cli.py",
+    "tools/import_bridge.py",
+    "tools/controlx/core/remediation_bridge.py",
+    "client/render/render_model_adapter.py",
+    "geo/projection/view_adapters.py",
+    "validation/validation_engine.py",
+    "schemas/tool_adapter_output.schema.json",
+    "templates/adapter_template.md",
+    "data/reality/cross_domain_bridge_registry.json",
+    "tools/xstack/testx/tests/test_tool_adapter_offline.py",
+    "tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py",
+    "tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py",
+    "tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py",
+    "tools/xstack/testx/tests/test_attach_requires_negotiation.py",
+    "tools/xstack/testx/tests/test_unnegotiated_attach_refused.py",
+    "tools/xstack/testx/tests/test_tool_incompatibility_refusal.py"
+  ],
+  "current_program_context": {
+    "admissible_zeta_doctrine_program_complete": true,
+    "current_product_priority": "repo-local playable baseline and repo stabilization",
+    "series_role": "portable contract extraction preparation that must not compete with playable-baseline work",
+    "current_aide_adapter_runtime_presence": false
+  },
+  "dependencies": {
+    "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "required_scope_freeze_json": "data/xstack/xstack_scope_freeze.json",
+    "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "required_inventory_json": "data/xstack/xstack_inventory_and_classification.json",
+    "required_task_contract_doc": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "required_task_contract_json": "data/xstack/aide_portable_task_contract.json",
+    "required_evidence_review_doc": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "required_evidence_review_json": "data/xstack/aide_evidence_and_review_contract.json",
+    "required_policy_permission_doc": "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+    "required_policy_permission_json": "data/xstack/aide_policy_and_permission_shape.json",
+    "required_capability_profile_doc": "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
+    "required_capability_profile_json": "data/xstack/aide_capability_profile_shape.json"
+  },
+  "portable_adapter_definition": {
+    "summary": "A portable adapter is a canonical declarative contract for a bounded translation or mediation path between one source interface or contract and one target interface or contract, including the adapter's identity, purpose, declared capability requirements and exclusions, linked task or evidence or policy surfaces when applicable, compatibility and stability constraints, explicit refusal and incompatibility semantics, and portability limits, without embedding runtime adapter discovery, runtime selection, execution orchestration, transport ownership, or product-shell command dispatch.",
+    "portable_now_requires": [
+      "source-to-target mediation declaration",
+      "stable adapter identity and kind",
+      "bounded mediation purpose",
+      "capability requirements and exclusions",
+      "optional task, evidence/review, and policy linkage",
+      "explicit compatibility and refusal posture",
+      "explicit portability, version, and stability markers"
+    ],
+    "canonical_adapter_contract": "Authoritative declaration of a bounded mediation path, including source and target contract identity, constraints, and refusal semantics.",
+    "adapter_implementation": "Concrete code that realizes the contract, such as format loaders, pack verifier adapters, render adapters, or projection adapters.",
+    "wrapper_shim_transitional_surface": "A local packaging layer, deprecation shim, or compatibility facade that may expose an adapter-shaped interface without defining portable adapter law.",
+    "product_shell_command_surface": "Launcher, setup, AppShell, or tool command surfaces that may consume or expose adapter logic but remain shell-owned and local to Dominium.",
+    "runtime_service_boundary": "Negotiated attach, transport, loopback, or other runtime boundaries that prove useful refusal and compatibility classes but are not portable adapter contracts now.",
+    "portable_adapter_families": [
+      "contract-to-contract translation declaration shape",
+      "format-version mediation declaration shape",
+      "descriptor mediation declaration shape",
+      "projection or transformation declaration shape only where source and target contracts are explicit"
+    ],
+    "dominium_retained_adapter_families": [
+      "AppShell subprocess adapters",
+      "IPC attach and transport adapters",
+      "render and projected-view adapters",
+      "setup and launcher bridge payload surfaces",
+      "import alias bridges",
+      "remediation bridges",
+      "validation coverage adapters",
+      "deprecation shims"
+    ]
+  },
+  "field_definitions": {
+    "adapter_id": {
+      "required": true,
+      "summary": "Stable canonical identifier for the adapter contract."
+    },
+    "adapter_kind": {
+      "required": true,
+      "summary": "Declared category of mediation the adapter performs."
+    },
+    "source_interface": {
+      "required": true,
+      "summary": "Authoritative source interface or source contract consumed by the adapter."
+    },
+    "target_interface": {
+      "required": true,
+      "summary": "Authoritative target interface or target contract produced or served by the adapter."
+    },
+    "adapter_purpose": {
+      "required": true,
+      "summary": "Bounded statement of what the adapter translates, mediates, or normalizes."
+    },
+    "capability_requirements": {
+      "required": true,
+      "summary": "Capability classes that must be present for the adapter path to be valid."
+    },
+    "capability_exclusions": {
+      "required": true,
+      "summary": "Capability classes, modes, or conditions that make the adapter path invalid or unsupported."
+    },
+    "task_linkage": {
+      "required": false,
+      "summary": "Optional linkage to portable task kinds or task identifiers."
+    },
+    "evidence_review_linkage": {
+      "required": false,
+      "summary": "Optional linkage to portable evidence or review requirements."
+    },
+    "policy_permission_linkage": {
+      "required": false,
+      "summary": "Optional linkage to policy or permission shapes that govern lawful use."
+    },
+    "compatibility_and_stability": {
+      "required": true,
+      "summary": "Supported ranges, incompatibility boundaries, and stability markers for the adapter path."
+    },
+    "failure_refusal_semantics": {
+      "required": true,
+      "summary": "Declared unsupported, incompatible, blocked, refused, degraded, ambiguous, and review-gated classes."
+    },
+    "fallback_posture": {
+      "required": false,
+      "summary": "Optional declaration of any lawful degraded or fallback path."
+    },
+    "portability_limits": {
+      "required": true,
+      "summary": "Explicit statement of what parts of the adapter are portable and what remains host-specific or runtime-owned."
+    },
+    "version_notes": {
+      "required": true,
+      "summary": "Schema version, compatibility version, migration notes, or other version markers."
+    }
+  },
+  "required_boundary_distinctions": [
+    {
+      "distinction": "adapter_contract_vs_adapter_implementation",
+      "summary": "The contract defines the mediation path; the implementation is the concrete code that realizes it."
+    },
+    {
+      "distinction": "adapter_vs_wrapper",
+      "summary": "A wrapper packages or exposes an implementation for a local consumer surface without becoming canonical adapter law."
+    },
+    {
+      "distinction": "adapter_vs_shim",
+      "summary": "A shim preserves a legacy entrypoint or deprecation path and must remain transitional rather than portable by default."
+    },
+    {
+      "distinction": "adapter_vs_runtime_resolver",
+      "summary": "A contract declares a valid mediation path; a runtime resolver would choose, load, or activate one."
+    },
+    {
+      "distinction": "adapter_compatibility_vs_capability_profile",
+      "summary": "Capability profiles describe capability posture; adapter compatibility decides whether a source-to-target path is valid."
+    },
+    {
+      "distinction": "adapter_permission_vs_adapter_existence",
+      "summary": "Adapter existence does not imply lawful use, approval, or review clearance."
+    },
+    {
+      "distinction": "canonical_adapter_contract_vs_derived_summaries",
+      "summary": "CLI payloads, dashboards, reports, and summaries may reflect adapter meaning but may not redefine it."
+    }
+  ],
+  "linkage_to_task_evidence_policy_capability_contracts": {
+    "task_contract": {
+      "contract_linkage": [
+        "adapters may declare task_linkage when a task requires a specific mediation path",
+        "task contracts may reference adapter contracts when source-to-target translation is mandatory"
+      ],
+      "runtime_linkage_not_frozen": [
+        "task scheduling",
+        "task-to-adapter selection order",
+        "worker routing or execution orchestration"
+      ],
+      "deferred_runtime_work": [
+        "runtime selection between competing adapters for the same task",
+        "planner behavior based on adapter availability"
+      ]
+    },
+    "evidence_review_contract": {
+      "contract_linkage": [
+        "adapters may declare evidence emitted, consumed, or required",
+        "adapters may declare whether degraded or sensitive paths require review"
+      ],
+      "runtime_linkage_not_frozen": [
+        "evidence storage backends",
+        "review workflow execution",
+        "promotion or reclassification operations"
+      ],
+      "deferred_runtime_work": [
+        "automatic evidence capture pipelines",
+        "review workflow engines tied to adapter execution"
+      ]
+    },
+    "policy_permission_shape": {
+      "contract_linkage": [
+        "adapters may reference policy and permission identities that govern lawful use",
+        "adapters may declare refusal, denial, escalation, or review posture without becoming the policy engine"
+      ],
+      "runtime_linkage_not_frozen": [
+        "authorization services",
+        "override execution",
+        "live trust publication or revocation plumbing"
+      ],
+      "deferred_runtime_work": [
+        "distributed permission resolution for adapter use",
+        "runtime override procedures"
+      ]
+    },
+    "capability_profile_shape": {
+      "contract_linkage": [
+        "adapters may declare capability requirements and exclusions",
+        "capability profiles may establish whether a candidate environment is compatible with the adapter contract"
+      ],
+      "runtime_linkage_not_frozen": [
+        "capability probing",
+        "dynamic capability negotiation",
+        "runtime degrade planning"
+      ],
+      "deferred_runtime_work": [
+        "adapter resolution against live capability environments",
+        "post-baseline adapter capability negotiation engines"
+      ]
+    }
+  },
+  "repo_grounded_evidence": [
+    {
+      "path": "compat/data_format_loader.py",
+      "why_it_matters": "Shows real contract mediation with migration, validation, and explicit refusal classes."
+    },
+    {
+      "path": "appshell/pack_verifier_adapter.py",
+      "why_it_matters": "Shows a real AppShell adapter that links verification, trust policy, and deterministic output writing."
+    },
+    {
+      "path": "appshell/compat_adapter.py",
+      "why_it_matters": "Shows a thin wrapper that must remain distinguishable from portable adapter law."
+    },
+    {
+      "path": "tools/tool_surface_adapter.py",
+      "why_it_matters": "Shows stable wrapper rows and adapter-shaped metadata for governed offline tool surfaces."
+    },
+    {
+      "path": "schemas/tool_adapter_output.schema.json",
+      "why_it_matters": "Shows stable adapter output obligations for local subprocess wrappers without proving runtime portability."
+    },
+    {
+      "path": "compat/shims/tool_shims.py",
+      "why_it_matters": "Shows explicit deprecation shims and replacement targets, proving shim and adapter are not interchangeable."
+    },
+    {
+      "path": "appshell/ipc/ipc_client.py",
+      "why_it_matters": "Shows negotiated attach, compatibility mode handling, and explicit refusal when negotiation or acceptance fails."
+    },
+    {
+      "path": "appshell/ipc/ipc_transport.py",
+      "why_it_matters": "Shows runtime transport ownership and endpoint descriptors that stay Dominium-retained."
+    },
+    {
+      "path": "client/render/render_model_adapter.py",
+      "why_it_matters": "Shows a real model-to-model adapter that is product-specific rather than portable now."
+    },
+    {
+      "path": "geo/projection/view_adapters.py",
+      "why_it_matters": "Shows deterministic view adapters tied to Dominium-specific projection layers."
+    },
+    {
+      "path": "tools/setup/setup_cli.py",
+      "why_it_matters": "Shows shell bridge payload translation and refusal mapping that remain local to setup surfaces."
+    },
+    {
+      "path": "validation/validation_engine.py",
+      "why_it_matters": "Shows adapter inventories with active and coverage adapters, proving that adapter naming alone does not imply portability or completeness."
+    },
+    {
+      "path": "tools/xstack/testx/tests/test_tool_incompatibility_refusal.py",
+      "why_it_matters": "Shows explicit deterministic incompatibility reason codes."
+    },
+    {
+      "path": "tools/xstack/testx/tests/test_attach_requires_negotiation.py",
+      "why_it_matters": "Shows blocked or refused attach behavior when negotiation is missing."
+    },
+    {
+      "path": "tools/xstack/testx/tests/test_unnegotiated_attach_refused.py",
+      "why_it_matters": "Shows explicit refusal on skipped IPC negotiation."
+    }
+  ],
+  "portable_now": [
+    "canonical declaration that an adapter mediates one named source interface or contract into one named target interface or contract",
+    "stable adapter identity and kind",
+    "bounded mediation purpose",
+    "capability requirements and exclusions",
+    "optional task, evidence/review, and policy/permission linkage",
+    "explicit compatibility, refusal, incompatibility, blocked, degraded, fallback, and ambiguity posture",
+    "explicit portability limits and version notes",
+    "the rule that adapter existence does not imply runtime availability, lawful use, or implementation completeness"
+  ],
+  "dominium_retained_now": [
+    "AppShell command surfaces and subprocess tool adapters under tools/tool_surface_adapter.py",
+    "tool wrapper output payload execution semantics under schemas/tool_adapter_output.schema.json",
+    "appshell/compat_adapter.py and other shell-facing wrappers",
+    "appshell/pack_verifier_adapter.py execution flow and output writing",
+    "negotiated IPC and attach flows in appshell/ipc/ipc_client.py and appshell/ipc/ipc_transport.py",
+    "render and view adapters in client/render/render_model_adapter.py and geo/projection/view_adapters.py",
+    "setup bridge payload translation in tools/setup/setup_cli.py",
+    "import alias bridges in tools/import_bridge.py",
+    "ControlX remediation bridges in tools/controlx/core/remediation_bridge.py",
+    "validation adapter inventories and coverage adapters in validation/validation_engine.py",
+    "deprecation shims in compat/shims/tool_shims.py"
+  ],
+  "deferred_until_post_baseline": [
+    "runtime adapter discovery and selection",
+    "dynamic adapter loading or activation",
+    "remote adapter registries or publication",
+    "runtime capability-resolution engines for adapter choice",
+    "queueing, scheduling, or worker routing tied to adapter execution",
+    "bakeoff or compiler systems for adapter comparison or generation",
+    "cross-repo adapter marketplaces or transport-agnostic adapter distribution"
+  ],
+  "failure_refusal_incompatibility_fallback_classes": {
+    "unsupported_adapter_path": "No lawful adapter path exists for the requested source and target combination.",
+    "incompatible_adapter_path": "A candidate adapter exists, but capability, source, target, or version constraints do not match.",
+    "blocked_adapter_path": "The adapter is known, but a required precondition such as negotiation, descriptor presence, or source artifact availability is missing.",
+    "refused_adapter_path": "The adapter path is rejected by declared policy, permission, trust, intent, or review posture even though the path is otherwise known.",
+    "degraded_or_fallback_adapter_path": "A lower-fidelity or restricted path is allowed only when the contract declares it explicitly.",
+    "ambiguous_adapter_selection": "More than one candidate path exists and no canonical contract rule selects among them.",
+    "review_gated_adapter_use": "The adapter path exists but requires review, acknowledgement, approval, or escalation before lawful use."
+  },
+  "canonical_vs_derived_markers": {
+    "canonical_truth_includes": [
+      "adapter contract identity",
+      "source and target contract references",
+      "declared capability requirements and exclusions",
+      "declared task, evidence/review, and policy linkage",
+      "compatibility, refusal, fallback, and portability limits",
+      "version and stability markers"
+    ],
+    "derived_views_include": [
+      "CLI help text",
+      "AppShell status views",
+      "tool adapter payloads",
+      "dashboard or audit summaries",
+      "compatibility reports",
+      "selector views and UI cards"
+    ],
+    "derived_views_must_not": [
+      "redefine the source or target contract",
+      "widen compatibility or fallback posture",
+      "erase refusal or review requirements",
+      "claim portability because a local wrapper exists",
+      "reinterpret a shim, bridge, or transport surface as portable adapter law"
+    ]
+  },
+  "prohibited_adapter_contract_shapes": [
+    "embedding runtime adapter engine semantics into the portable contract",
+    "treating every wrapper as a portable adapter",
+    "treating every shim or legacy bridge as a portable adapter",
+    "assuming portability from file location or naming",
+    "collapsing capability, permission, and adapter shape into one concept",
+    "treating product-shell command rows as canonical adapter truth",
+    "treating runtime transport, attach, or session flows as portable adapter contracts by default",
+    "using derived payload schemas as proof of extraction readiness",
+    "using X-6 to justify immediate broad adapter implementation or repo-wide renaming"
+  ],
+  "downstream_prompts_enabled": [
+    "Codex repo operating contract",
+    "later AIDE extraction review over which concrete adapter implementations are portable candidates versus Dominium-retained execution surfaces",
+    "later mapping work that links portable tasks to portable adapters without inventing runtime selection machinery"
+  ]
+}
