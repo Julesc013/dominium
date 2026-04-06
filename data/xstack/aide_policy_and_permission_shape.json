@@ -1,0 +1,424 @@
+{
+  "artifact_id": "AIDE_POLICY_AND_PERMISSION_SHAPE",
+  "artifact_class": "portable_contract_freeze",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "X-5",
+    "AIDE extraction review"
+  ],
+  "replacement_target": "later explicit portable policy and permission checkpoint or replacement artifact only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "data/xstack/xstack_scope_freeze.json",
+    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "data/xstack/xstack_inventory_and_classification.json",
+    "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "data/xstack/aide_portable_task_contract.json",
+    "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "data/xstack/aide_evidence_and_review_contract.json",
+    "data/xstack/gate_definitions.json",
+    "data/registries/control_policy_registry.json",
+    "data/registries/trust_policy_registry.json",
+    "data/registries/securex_policy_registry.json",
+    "data/registries/access_policy_registry.json",
+    "data/registries/tool_capability_registry.json",
+    "data/registries/role_registry.json",
+    "data/registries/security_roles.json",
+    "data/registries/law_profiles.json",
+    "data/registries/controlx_policy.json",
+    "data/registries/refusal_code_registry.json",
+    "data/registries/refusal_to_exit_registry.json",
+    "tools/xstack/registry_compile/compiler.py",
+    "tools/xstack/securex/check.py",
+    "security/trust/trust_verifier.py",
+    "appshell/command_registry.py",
+    "appshell/commands/command_engine.py",
+    "appshell/pack_verifier_adapter.py",
+    "tools/xstack/sessionx/pipeline_contract.py",
+    "tools/launcher/launch.py",
+    "tools/setup/setup_cli.py",
+    "server/server_boot.py",
+    "server/net/loopback_transport.py",
+    "client/interaction/affordance_generator.py"
+  ],
+  "current_program_context": {
+    "admissible_zeta_doctrine_program_complete": true,
+    "current_product_priority": "repo-local playable baseline and repo stabilization",
+    "series_role": "portable contract extraction preparation that must not compete with playable-baseline work",
+    "current_aide_policy_runtime_presence": false
+  },
+  "dependencies": {
+    "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "required_scope_freeze_json": "data/xstack/xstack_scope_freeze.json",
+    "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "required_inventory_json": "data/xstack/xstack_inventory_and_classification.json",
+    "required_task_contract_doc": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "required_task_contract_json": "data/xstack/aide_portable_task_contract.json",
+    "required_evidence_review_doc": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "required_evidence_review_json": "data/xstack/aide_evidence_and_review_contract.json"
+  },
+  "portable_policy_definition": {
+    "summary": "Portable policy is a canonical declarative rule surface that states which subject classes may attempt which action, capability, artifact, or operation classes under which condition or gate classes, what decision classes are allowed, what escalation or override posture exists, and what evidence or review links constrain interpretation, without embedding runtime enforcement, product-shell dispatch, storage layout, or repo-local operator workflow.",
+    "portable_now_requires": [
+      "what rule surface is being declared",
+      "what kind of subjects or governed objects it applies to",
+      "what actions, capabilities, or artifact classes it governs",
+      "what gates or conditions must hold",
+      "what decision classes can result",
+      "what escalation or override classes are explicitly allowed",
+      "what portability limits still bind the rule surface"
+    ],
+    "canonical_policy": "Authoritative declarative rule surface carried by contract-bearing registries, profiles, manifests, or equivalent canonical sources.",
+    "derived_policy_views_and_summaries": "Command help, setup or launcher status payloads, dashboards, operator summaries, or reports that expose policy meaning without redefining it.",
+    "policy_references": "Stable identifiers or linked references such as trust_policy_id, securex_policy_id, control_policy_id, access_policy_id, or law_profile_id.",
+    "policy_bundles_or_profiles": {
+      "summary": "Named selections that package several rule decisions together without becoming a runtime engine.",
+      "examples": [
+        "FAST, STRICT, and FULL gate profiles",
+        "law_profile_id selections",
+        "trust_policy_id selections"
+      ],
+      "portable_now": [
+        "named profile or bundle as a stable selection surface",
+        "the fact that profiles package policy posture"
+      ],
+      "not_portable_now": [
+        "exact profile wiring into launcher, setup, server boot, or CI",
+        "repo-local defaults, fallback order, or release-specific publication rules"
+      ]
+    }
+  },
+  "portable_permission_definition": {
+    "summary": "Portable permission is a canonical decision shape or decision-ready linkage that states whether a subject class or authority context may attempt a target action, capability, artifact interaction, or process under applicable policy, what gate conditions and evidence are required, whether the result is granted, conditional, denied, refused, blocked pending review, or escalated, and what override or exception posture exists, without embedding runtime authorization engines, product-shell execution, or queue or workflow semantics.",
+    "portable_now_requires": [
+      "what subject or authority context is being evaluated",
+      "what action or capability target is being requested",
+      "what policy basis governs the decision",
+      "what grant, denial, refusal, or conditional posture applies",
+      "what evidence or review is required",
+      "whether escalation or override is possible"
+    ],
+    "permission_requirement": "The gates that must already hold before a grant can exist.",
+    "permission_grant_posture": "Whether a request is allowed and whether it is unrestricted or conditional.",
+    "permission_denial_and_refusal_posture": {
+      "denial": "Applicable policy exists and resolves negatively.",
+      "refusal": "The request cannot lawfully proceed because required policy, evidence, compatibility, or authority context is missing, invalid, or outside supported bounds."
+    },
+    "escalation_and_override_posture": {
+      "escalation": "The current authority or review level is insufficient and stronger handling is required.",
+      "override": "A narrow and explicit exception path exists rather than an implicit bypass."
+    }
+  },
+  "policy_field_definitions": {
+    "policy_id": {
+      "required": true,
+      "meaning": "Stable canonical policy identifier."
+    },
+    "policy_kind": {
+      "required": true,
+      "meaning": "Stable policy category such as trust, securex, control, access, gate, or law-profile."
+    },
+    "policy_scope": {
+      "required": true,
+      "meaning": "Bounded domain where the policy applies, such as artifact kinds, operation categories, product contexts, profiles, or intent families."
+    },
+    "subject_classes": {
+      "required": true,
+      "meaning": "Subject or governed object classes the policy applies to, such as roles, privilege tiers, products, artifact classes, or authority contexts."
+    },
+    "action_classes": {
+      "required": true,
+      "meaning": "Actions, capabilities, processes, artifact interactions, or operation classes governed by the policy."
+    },
+    "condition_or_gate_classes": {
+      "required": true,
+      "meaning": "Required entitlements, signature states, privilege levels, physical access requirements, invariant gates, profile selectors, or other gate classes that constrain decisions."
+    },
+    "decision_classes": {
+      "required": true,
+      "meaning": "Allowed decision categories the policy can produce, such as allow, allow-with-conditions, warn, deny, refuse, or degrade."
+    },
+    "escalation_classes": {
+      "required": true,
+      "meaning": "Conditions that require stronger review, explicit override, ambiguity resolution, or higher authority."
+    },
+    "review_links": {
+      "required": false,
+      "meaning": "Review requirements or review references when the policy itself triggers or depends on review."
+    },
+    "evidence_links": {
+      "required": false,
+      "meaning": "Evidence requirements or evidence references when the policy depends on trust, validation, compat, or review-bearing evidence."
+    },
+    "policy_source_refs": {
+      "required": false,
+      "meaning": "Stable source references to the canonical registry, manifest, or profile bundle that defines the policy."
+    },
+    "portability_limits": {
+      "required": true,
+      "meaning": "Repo-local assumptions, coupled roots, or product/runtime dependencies that still limit portability."
+    },
+    "compatibility_notes": {
+      "required": true,
+      "meaning": "Version, schema, refusal-on-unknown, and compatibility expectations for the policy shape itself."
+    },
+    "stability": {
+      "required": true,
+      "meaning": "Current stability class and the threshold for future change."
+    }
+  },
+  "permission_field_definitions": {
+    "permission_id": {
+      "required": true,
+      "meaning": "Stable canonical permission identifier or stable decision identifier."
+    },
+    "policy_basis_refs": {
+      "required": true,
+      "meaning": "Stable references to the governing policy rows, profiles, or bundles used to evaluate this permission posture."
+    },
+    "permission_subject": {
+      "required": true,
+      "meaning": "The subject or authority context being evaluated."
+    },
+    "action_or_capability_target": {
+      "required": true,
+      "meaning": "The requested action, capability, process, artifact interaction, or operation target."
+    },
+    "grant_posture": {
+      "required": true,
+      "meaning": "Whether the subject is allowed, allowed with conditions, or not granted."
+    },
+    "refusal_posture": {
+      "required": true,
+      "meaning": "Whether initiation must be refused because inputs, policy, evidence, compatibility, or authority context are missing or invalid."
+    },
+    "denial_posture": {
+      "required": true,
+      "meaning": "Whether an applicable policy exists and resolves negatively on the subject or target."
+    },
+    "gate_conditions": {
+      "required": true,
+      "meaning": "Conditions that must hold for the permission to be granted, such as entitlements, trust status, profile membership, physical access, or valid negotiation."
+    },
+    "escalation_or_override_notes": {
+      "required": true,
+      "meaning": "Explicit escalation triggers, override classes, exception posture, or notes that the request is only lawful under stronger review or narrower handling."
+    },
+    "review_requirements": {
+      "required": false,
+      "meaning": "Review requirements when the permission depends on review rather than autonomous evaluation."
+    },
+    "evidence_requirements": {
+      "required": false,
+      "meaning": "Required evidence or evidence references when the permission depends on trust, validation, review, or audited state."
+    },
+    "portability_limits": {
+      "required": true,
+      "meaning": "Repo-local assumptions, coupled roots, or product/runtime dependencies that still limit portability."
+    },
+    "compatibility_notes": {
+      "required": true,
+      "meaning": "Version, schema, refusal-on-unknown, and compatibility expectations for the permission shape itself."
+    },
+    "stability": {
+      "required": true,
+      "meaning": "Current stability class and the threshold for future change."
+    }
+  },
+  "required_boundary_distinctions": {
+    "policy_vs_permission": "Policy is the declarative rule surface. Permission is the evaluated or evaluation-ready posture for a subject and target under policy.",
+    "requirement_vs_grant": "Requirements are the conditions that must already hold. Grant is the resulting posture once those conditions and the relevant policy basis are evaluated.",
+    "refusal_vs_denial_vs_escalation": "Refusal means the request cannot lawfully proceed because required policy, evidence, compatibility, or context is missing or invalid; denial means applicable policy exists and resolves negatively; escalation means stronger handling is required.",
+    "policy_declaration_vs_runtime_enforcement": "Policy declaration lives in canonical policy rows, registries, manifests, and contract-bearing metadata. Runtime enforcement lives in AppShell command dispatch, launcher/setup behavior, trust verification execution, server attach flow, session gating, and similar implementation paths.",
+    "review_linked_permission_vs_autonomous_grant": "Some permissions resolve autonomously once declared gates are satisfied. Others remain blocked pending review or require stronger review to continue.",
+    "evidence_bearing_permission_decision_vs_unevidenced_local_convenience": "Trust reports, validation findings, review evidence, compat records, or audited state can support permission decisions. Shell flags or convenience toggles alone do not redefine canonical permission law."
+  },
+  "repo_grounded_rationale": [
+    {
+      "surface": [
+        "data/registries/control_policy_registry.json",
+        "data/xstack/gate_definitions.json",
+        "data/registries/controlx_policy.json"
+      ],
+      "supports": [
+        "policy_id",
+        "policy_kind",
+        "policy_scope",
+        "action_classes",
+        "condition_or_gate_classes",
+        "decision_classes",
+        "escalation_classes"
+      ],
+      "note": "Control and gate surfaces already declare ids, allowed actions, required profiles, provisional allowances, forbidden patterns, and escalation keywords."
+    },
+    {
+      "surface": [
+        "data/registries/trust_policy_registry.json",
+        "security/trust/trust_verifier.py",
+        "data/registries/securex_policy_registry.json",
+        "tools/xstack/registry_compile/compiler.py",
+        "tools/xstack/securex/check.py"
+      ],
+      "supports": [
+        "condition_or_gate_classes",
+        "decision_classes",
+        "evidence_links",
+        "policy_source_refs",
+        "escalation_or_override_notes"
+      ],
+      "note": "Trust and securex surfaces already model signature status, unsigned allowances, publisher allowlists, warning posture, refusal posture, and signed-bridge exceptions."
+    },
+    {
+      "surface": [
+        "data/registries/access_policy_registry.json",
+        "data/registries/tool_capability_registry.json",
+        "data/registries/role_registry.json",
+        "data/registries/security_roles.json",
+        "data/registries/law_profiles.json",
+        "client/interaction/affordance_generator.py"
+      ],
+      "supports": [
+        "subject_classes",
+        "policy_basis_refs",
+        "permission_subject",
+        "action_or_capability_target",
+        "gate_conditions",
+        "grant_posture",
+        "denial_posture"
+      ],
+      "note": "Access, role, law-profile, and affordance surfaces already express required entitlements, privilege levels, grants, revocations, audit requirements, enabled posture, and missing-entitlement reasons."
+    },
+    {
+      "surface": [
+        "appshell/command_registry.py",
+        "appshell/commands/command_engine.py",
+        "data/registries/refusal_code_registry.json",
+        "data/registries/refusal_to_exit_registry.json",
+        "appshell/pack_verifier_adapter.py"
+      ],
+      "supports": [
+        "refusal_posture",
+        "compatibility_notes",
+        "policy_declaration_vs_runtime_enforcement"
+      ],
+      "note": "Product-shell surfaces package refusal codes and exit mapping, proving refusal semantics are real while also proving shell packaging must remain outside the portable contract."
+    },
+    {
+      "surface": [
+        "tools/setup/setup_cli.py",
+        "tools/launcher/launch.py",
+        "server/server_boot.py",
+        "server/net/loopback_transport.py",
+        "tools/xstack/sessionx/pipeline_contract.py"
+      ],
+      "supports": [
+        "policy_bundles_or_profiles",
+        "escalation_or_override_notes",
+        "portability_limits"
+      ],
+      "note": "Launcher, setup, session, and loopback paths expose policy selection and explicit override-like runtime behavior, but their concrete mechanics remain Dominium-owned."
+    }
+  ],
+  "portable_now": {
+    "policy_elements": [
+      "policy identity, kind, scope, subject classes, action classes, gate classes, decision classes, and escalation classes",
+      "policy references and policy-bundle or profile references as named selection surfaces",
+      "review and evidence linkage for policy declarations when they matter",
+      "portability limits, compatibility notes, and stability markers",
+      "canonical-versus-derived markers"
+    ],
+    "permission_elements": [
+      "permission subject and target",
+      "policy basis references",
+      "gate conditions",
+      "explicit grant, denial, refusal, conditional, blocked, and escalated posture",
+      "review and evidence requirements",
+      "explicit override or exception notation"
+    ]
+  },
+  "dominium_retained_now": [
+    "the concrete policy namespaces and live row vocabularies under data/registries",
+    "exact policy content for trust, securex, control, law, role, entitlement, and gate registries",
+    "AppShell command dispatch, exit-code mapping, and product-command behavior",
+    "launcher and setup CLI flags, defaults, and install-specific trust-policy resolution",
+    "session, server, and loopback enforcement paths including read-only attach and law-profile override mechanics",
+    "concrete trust-root import, publication, rotation, and revocation handling",
+    "product-specific lens, overlay, channel, and affordance semantics"
+  ],
+  "deferred_until_post_baseline": [
+    "policy engines, authorization services, or long-lived enforcement daemons",
+    "distributed role assignment or multi-tenant permission systems",
+    "remote override and approval services",
+    "cross-repo policy publication and federation",
+    "dynamic policy composition, conflict-solvers, or policy compilers",
+    "runtime orchestration for distributed trust, revocation, or policy rollout",
+    "generalized capability negotiation or profile extraction beyond the shape frozen here"
+  ],
+  "refusal_denial_review_escalation_classes": {
+    "not_permitted": "No applicable policy basis grants the subject any lawful path for the requested target or action class.",
+    "refused": "The request cannot lawfully proceed because required policy rows, evidence, compatibility records, or authority context are missing or invalid.",
+    "denied": "Applicable policy exists and resolves negatively on the subject or target.",
+    "blocked_pending_review": "Permission cannot conclude until required review or approval occurs.",
+    "escalated": "The current authority or review posture is insufficient and stronger handling is required.",
+    "allowed_with_conditions": "Permission is granted only under explicit conditions such as warnings, read-only posture, physical access, or audit requirements.",
+    "override_or_exception_path": "A narrow and explicit exception path exists, but it must be declared and evidence-bearing rather than implicit.",
+    "policy_ambiguity_or_conflict": "Applicable policy references conflict, are incomplete, or leave the system unable to determine a lawful outcome without escalation or refusal."
+  },
+  "canonical_vs_derived_markers": {
+    "canonical_truth": [
+      "the portable policy and permission shape itself",
+      "declarative policy rows, profiles, or bundles explicitly designated as authoritative by stronger contract-bearing sources",
+      "permission-bearing outputs that authoritatively record policy basis, subject, target, gate conditions, and decision posture"
+    ],
+    "derived_views": [
+      "command help",
+      "status dashboards",
+      "operator summaries",
+      "markdown reports",
+      "UI cards",
+      "exit-code mapping tables"
+    ],
+    "may_not_redefine": [
+      "policy scope",
+      "applicable subject classes",
+      "gate or condition meaning",
+      "grant, refusal, denial, or escalation posture",
+      "override requirements",
+      "portability limits",
+      "evidence or review requirements"
+    ]
+  },
+  "prohibited_policy_permission_shapes": [
+    "embedding runtime policy-engine or authorization-daemon semantics into the portable shape",
+    "confusing policy declaration with a permission instance",
+    "assuming portability from file location under data/registries or tools/xstack",
+    "treating shell flags or local convenience toggles as canonical permission law",
+    "collapsing refusal, denial, blocked review, and escalation into one generic failure posture",
+    "promoting command help or status output into canonical policy truth",
+    "overgeneralizing from future AIDE runtime ideas into present contract requirements",
+    "freezing concrete Dominium policy vocabularies as if they were already portable AIDE vocabulary",
+    "using this artifact to justify broad refactors or to compete with canonical playable-baseline work"
+  ],
+  "downstream_prompts_enabled": [
+    "X-5 capability profile shape extraction",
+    "portable refusal and override contract refinement",
+    "later AIDE interface mapping for policy-bearing surfaces",
+    "later extraction review of which live Dominium policy and permission surfaces can be wrapped versus retained"
+  ]
+}
