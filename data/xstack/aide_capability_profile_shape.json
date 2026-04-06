@@ -1,0 +1,389 @@
+{
+  "artifact_id": "AIDE_CAPABILITY_PROFILE_SHAPE",
+  "artifact_class": "portable_contract_freeze",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "X-6",
+    "AIDE extraction review"
+  ],
+  "replacement_target": "later explicit portable capability-profile checkpoint or replacement artifact only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "data/xstack/xstack_scope_freeze.json",
+    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "data/xstack/xstack_inventory_and_classification.json",
+    "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "data/xstack/aide_portable_task_contract.json",
+    "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "data/xstack/aide_evidence_and_review_contract.json",
+    "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+    "data/xstack/aide_policy_and_permission_shape.json",
+    "data/registries/capability_registry.json",
+    "data/registries/platform_capability_registry.json",
+    "data/registries/product_capability_defaults.json",
+    "data/registries/tool_capability_registry.json",
+    "data/registries/server_profile_registry.json",
+    "data/registries/law_profiles.json",
+    "data/registries/degrade_ladder_registry.json",
+    "data/registries/compat_mode_registry.json",
+    "data/registries/semantic_contract_registry.json",
+    "compat/descriptor/descriptor_engine.py",
+    "compat/capability_negotiation.py",
+    "appshell/ui_mode_selector.py",
+    "appshell/command_registry.py",
+    "tools/launcher/launch.py",
+    "tools/setup/setup_cli.py",
+    "server/server_boot.py",
+    "server/net/loopback_transport.py",
+    "client/interaction/affordance_generator.py",
+    "validation/validation_engine.py",
+    "tools/xstack/testx/tests/test_required_cap_mismatch_refuses.py",
+    "tools/xstack/testx/tests/test_unknown_cap_ignored.py",
+    "tools/xstack/testx/tests/test_cross_platform_caps_degrade_consistent.py"
+  ],
+  "current_program_context": {
+    "admissible_zeta_doctrine_program_complete": true,
+    "current_product_priority": "repo-local playable baseline and repo stabilization",
+    "series_role": "portable contract extraction preparation that must not compete with playable-baseline work",
+    "current_aide_capability_runtime_presence": false
+  },
+  "dependencies": {
+    "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "required_scope_freeze_json": "data/xstack/xstack_scope_freeze.json",
+    "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "required_inventory_json": "data/xstack/xstack_inventory_and_classification.json",
+    "required_task_contract_doc": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "required_task_contract_json": "data/xstack/aide_portable_task_contract.json",
+    "required_evidence_review_doc": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "required_evidence_review_json": "data/xstack/aide_evidence_and_review_contract.json",
+    "required_policy_permission_doc": "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+    "required_policy_permission_json": "data/xstack/aide_policy_and_permission_shape.json"
+  },
+  "portable_capability_profile_definition": {
+    "summary": "A portable capability profile is a canonical declarative profile that states which capability classes a subject, endpoint, product, platform, or governed bundle declares as supported, conditionally supported, excluded, or dependency-bound; what constraints and compatibility ranges qualify those declarations; what policy or permission surfaces they depend on; what tasks they are suitable for or exclude; and what evidence, review, version, stability, and portability limits apply, without embedding runtime capability probing, profile activation, negotiation, or host-specific fallback execution.",
+    "portable_now_requires": [
+      "declared capability posture",
+      "required versus optional dependencies",
+      "explicit exclusions and limits",
+      "task suitability and exclusions",
+      "policy or permission linkage",
+      "compatibility, portability, version, and stability markers"
+    ],
+    "canonical_profile": "Authoritative declaration in a capability-bearing registry row, defaults row, matrix row, or equivalent contract-bearing profile source.",
+    "derived_profile_views_and_summaries": "Descriptors, compatibility reports, degrade plans, selected-mode summaries, help text, dashboards, or UI cards that surface profile meaning without redefining it.",
+    "profile_references": "Stable identifiers such as product_id, platform_id, tool_id, server_profile_id, law_profile_id, access_policy_id, or securex_policy_id.",
+    "profile_bundles_or_compositions": {
+      "summary": "Named compositions that package several declarations together without becoming a runtime engine.",
+      "examples": [
+        "product capability defaults",
+        "law profiles",
+        "server profiles"
+      ],
+      "portable_now": [
+        "the concept of a named capability-bearing bundle",
+        "the concept that included, conditional, and excluded declarations can coexist in one canonical profile"
+      ],
+      "not_portable_now": [
+        "exact runtime composition order",
+        "exact fallback precedence",
+        "exact activation rules in launcher, setup, session, or loopback flows"
+      ]
+    },
+    "portable_profile_families": [
+      "product defaults as declaration shape",
+      "platform capability matrices as declaration shape",
+      "tool capability rows as declaration shape",
+      "mixed governance-bearing profiles only at the shared declaration-shape level"
+    ],
+    "dominium_retained_profile_families": [
+      "compute profiles",
+      "lens profiles",
+      "topology profiles",
+      "partition profiles",
+      "realism profiles",
+      "universe physics profiles",
+      "exact Dominium registry ownership roots and namespaces"
+    ]
+  },
+  "field_definitions": {
+    "profile_id": {
+      "required": true,
+      "meaning": "Stable canonical profile identifier that survives UI, CLI, wrapper, or registry-layout changes."
+    },
+    "profile_kind": {
+      "required": true,
+      "meaning": "Stable category of capability profile, such as product defaults, platform matrix, tool capability profile, or mixed governance profile."
+    },
+    "declared_capability_classes": {
+      "required": true,
+      "meaning": "Canonical capability classes or capability-family tokens the profile declares."
+    },
+    "capability_constraints": {
+      "required": true,
+      "meaning": "Limits, conditions, support tiers, compatibility bounds, or fallback-eligibility notes attached to declared capabilities."
+    },
+    "required_dependencies": {
+      "required": true,
+      "meaning": "Dependencies that must hold for the profile to be lawfully usable, such as protocol ranges, contract categories, entitlement gates, policy ids, or artifact requirements."
+    },
+    "optional_dependencies": {
+      "required": false,
+      "meaning": "Dependencies that refine or expand the profile without invalidating it when absent."
+    },
+    "policy_permission_links": {
+      "required": true,
+      "meaning": "Policy or permission references that govern whether declared capabilities may actually be exercised."
+    },
+    "task_suitability": {
+      "required": true,
+      "meaning": "Task kinds, task constraints, or suitability notes that describe what the profile can lawfully support."
+    },
+    "task_exclusions": {
+      "required": true,
+      "meaning": "Explicit task, action, or capability usages the profile excludes or forbids."
+    },
+    "evidence_review_links": {
+      "required": false,
+      "meaning": "Evidence or review references required to trust, elevate, or validate profile claims or exceptions."
+    },
+    "profile_source_refs": {
+      "required": false,
+      "meaning": "Stable references to the canonical registry, manifest, or profile rows that define the declaration."
+    },
+    "compatibility_notes": {
+      "required": true,
+      "meaning": "Contract-range, protocol-range, refusal-on-mismatch, forward-compatibility, or ignore-unknown expectations for the profile shape itself."
+    },
+    "portability_limits": {
+      "required": true,
+      "meaning": "Repo-local assumptions, retained bindings, or runtime/product dependencies that still bound portability."
+    },
+    "version_notes": {
+      "required": true,
+      "meaning": "Version or schema expectations for the profile and its declared compatibility surface."
+    },
+    "stability": {
+      "required": true,
+      "meaning": "Current stability class and the threshold for changing the shape later."
+    }
+  },
+  "required_boundary_distinctions": {
+    "capability_profile_vs_runtime_capability_resolution": "Capability profile declares supported, conditional, excluded, and dependency-bound posture. Runtime capability resolution decides what actually activates on a concrete host, peer, or session.",
+    "profile_declaration_vs_profile_activation": "Profile declaration is the canonical row or bundle. Profile activation is the concrete use of that declaration in launcher, setup, AppShell, session, or server flows.",
+    "profile_compatibility_vs_permission_grant": "Compatibility says whether profile declarations can interoperate or coexist. Permission says whether an authority context may exercise an action or capability under governing policy.",
+    "profile_support_vs_implementation_completeness": "Declared support means a canonical declaration exists. Implementation completeness means the repo has fully working runtime behavior for that declaration across current targets.",
+    "canonical_profile_vs_ui_or_cli_summaries": "Canonical truth lives in the profile row or equivalent contract-bearing declaration. UI selectors, help text, compatibility reports, and dashboards are derived views."
+  },
+  "linkage_to_task_evidence_policy_contracts": {
+    "task_contract_linkage": "Task contracts may reference required capabilities, optional capabilities, suitability expectations, exclusions, or portability limits. Capability profiles supply the declaration-side posture those task hooks can reference, but do not create, schedule, or execute tasks.",
+    "evidence_review_linkage": "Capability profiles may require evidence or review linkage when profile claims depend on trust, validation, negotiation, or exception handling. Compatibility reports, negotiation records, and validation findings are derived evidence about applying a profile and are not the canonical profile itself.",
+    "policy_permission_linkage": "Capability profiles may carry policy or permission references such as access_policy_id or securex_policy_id. Those links express dependency and interpretation boundaries, but do not themselves grant or deny use.",
+    "runtime_linkage_deferred": [
+      "runtime resolution of profile conflicts",
+      "activation order and fallback selection",
+      "host probing and platform filtering",
+      "queueing, scheduling, or adapter transport",
+      "persistent registry services or distributed profile publication"
+    ]
+  },
+  "repo_grounded_rationale": [
+    {
+      "surface": [
+        "data/registries/product_capability_defaults.json"
+      ],
+      "supports": [
+        "declared_capability_classes",
+        "required_dependencies",
+        "optional_dependencies",
+        "compatibility_notes",
+        "version_notes",
+        "stability"
+      ],
+      "because": "Product defaults rows already carry feature, required, optional, protocol, semantic-contract, degrade-ladder, and stability declarations."
+    },
+    {
+      "surface": [
+        "data/registries/platform_capability_registry.json"
+      ],
+      "supports": [
+        "capability_constraints",
+        "supported",
+        "conditionally_supported",
+        "excluded"
+      ],
+      "because": "Platform rows already carry support_tier plus explicit capability booleans, proving support and exclusion posture are declaration-level truths."
+    },
+    {
+      "surface": [
+        "data/registries/tool_capability_registry.json"
+      ],
+      "supports": [
+        "profile_kind",
+        "policy_permission_links",
+        "task_suitability",
+        "required_dependencies"
+      ],
+      "because": "Tool capability rows already link capability_kind, entitlements, policies, and allowed process ids."
+    },
+    {
+      "surface": [
+        "data/registries/capability_registry.json"
+      ],
+      "supports": [
+        "declared_capability_classes",
+        "stability"
+      ],
+      "because": "Capability classes already have stable ids, descriptions, and stability markers, while many remain provisional."
+    },
+    {
+      "surface": [
+        "data/registries/law_profiles.json",
+        "data/registries/server_profile_registry.json"
+      ],
+      "supports": [
+        "profile_bundles_or_compositions",
+        "task_exclusions",
+        "policy_permission_links"
+      ],
+      "because": "Named governance-bearing profiles already combine grants, revocations, entitlements, allowed laws, and refusal-bearing policy links."
+    },
+    {
+      "surface": [
+        "compat/descriptor/descriptor_engine.py",
+        "compat/capability_negotiation.py"
+      ],
+      "supports": [
+        "capability_profile_vs_runtime_capability_resolution",
+        "profile_declaration_vs_profile_activation"
+      ],
+      "because": "Descriptors are built from canonical declarations and then projected through platform probing and negotiation, proving declaration and runtime resolution are separate."
+    },
+    {
+      "surface": [
+        "appshell/ui_mode_selector.py",
+        "appshell/command_registry.py",
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py"
+      ],
+      "supports": [
+        "canonical_profile_vs_ui_or_cli_summaries",
+        "dominium_retained_now"
+      ],
+      "because": "AppShell, launcher, and setup surfaces package integration behavior, mode selection, trust wiring, and activation flow around deeper profile declarations."
+    },
+    {
+      "surface": [
+        "validation/validation_engine.py"
+      ],
+      "supports": [
+        "evidence_review_links"
+      ],
+      "because": "Negotiation and validation suites consume descriptors and negotiation records as evidence-bearing outputs rather than canonical declarations."
+    },
+    {
+      "surface": [
+        "tools/xstack/testx/tests/test_required_cap_mismatch_refuses.py",
+        "tools/xstack/testx/tests/test_unknown_cap_ignored.py",
+        "tools/xstack/testx/tests/test_cross_platform_caps_degrade_consistent.py"
+      ],
+      "supports": [
+        "profile_mismatch",
+        "conditionally_supported_capability",
+        "ignore_unknown_forward_compatibility"
+      ],
+      "because": "The live tests prove mismatch refusal, deterministic ignore of unknown future capabilities, and explicit degrade outcomes across platforms."
+    }
+  ],
+  "portable_now": [
+    "stable profile identity and profile kind",
+    "declared capability classes",
+    "support, conditional-support, exclusion, and dependency-bound posture",
+    "required and optional dependencies",
+    "compatibility ranges and compatibility notes",
+    "task suitability and task exclusions",
+    "policy and permission linkage",
+    "evidence and review linkage when explicitly declared",
+    "source references, portability limits, version notes, and stability markers",
+    "the idea of named profile bundles or compositions"
+  ],
+  "dominium_retained_now": [
+    "exact Dominium vocabularies such as cap.*, platform.*, law.*, server.profile.*, protocol.*, and contract.*",
+    "concrete product, platform, tool, law, and server profile registries as ownership roots",
+    "platform probing and capability projection in engine.platform.* and descriptor emission",
+    "runtime compatibility modes, degrade-plan execution, and read-only override behavior",
+    "AppShell mode selection, command gating, launcher attach decisions, and setup activation defaults",
+    "server, loopback, and session selection of law, server, physics, realism, lens, topology, partition, and other runtime profiles",
+    "install, update, trust, and release profile defaults"
+  ],
+  "deferred_until_post_baseline": [
+    "a portable runtime capability resolver",
+    "adapter publication and adapter-claim contracts",
+    "distributed or cross-repo capability discovery",
+    "automatic profile composition and conflict-solving services",
+    "queue, daemon, or scheduler interaction with capability claims",
+    "capability registry services, remote publication, or live subscription models"
+  ],
+  "inclusion_exclusion_conflict_classes": {
+    "supported_capability": "Capability class is declared by the profile and has no declared blocking dependency or exclusion inside the profile contract.",
+    "conditionally_supported_capability": "Capability class is declared, but only under explicit dependencies, compatibility bounds, policy posture, host constraints, or fallback-aware limits.",
+    "excluded_capability": "Capability class is explicitly absent, revoked, forbidden, or outside the intended scope of the profile.",
+    "blocked_capability": "Capability class is declared, but current policy, evidence, review, compatibility, or authority state prevents lawful activation in the current context.",
+    "conflicting_capability": "Two declarations, dependencies, or profile bundles collide in a way that cannot be treated as jointly active without explicit higher-order resolution.",
+    "profile_mismatch": "Requested or supplied profile posture does not satisfy the required profile posture for the peer, task, host, or governed context.",
+    "profile_ambiguity": "Available canonical declarations do not provide one unambiguous interpretation of what profile should apply.",
+    "notes_on_unknown_capabilities": "Unknown future capability tokens do not automatically prove support and may be ignored deterministically until stronger canon promotes them."
+  },
+  "canonical_vs_derived_markers": {
+    "canonical_profile_truth": [
+      "the authoritative declaration in a capability-bearing registry row, bundle, default set, or equivalent contract-bearing source",
+      "the declarative basis from which descriptors, selections, reports, and validations are derived"
+    ],
+    "derived_views": [
+      "endpoint descriptors",
+      "compatibility reports",
+      "degrade plans",
+      "selected mode or selected profile summaries",
+      "launcher or setup status output",
+      "UI or CLI selector cards"
+    ],
+    "may_not_redefine": [
+      "profile identity",
+      "declared capability classes",
+      "dependency posture",
+      "compatibility posture",
+      "exclusions",
+      "portability limits"
+    ]
+  },
+  "prohibited_capability_profile_shapes": [
+    "embedding runtime capability-selection or negotiation-engine semantics into the canonical profile shape",
+    "assuming declared capability support means implementation completeness",
+    "treating portability as implied by file location",
+    "collapsing compatibility posture into permission or policy posture",
+    "promoting selected mode, attach state, or negotiation record into canonical profile truth",
+    "treating AppShell or launcher command metadata as the canonical capability profile",
+    "using future adapter-runtime ambitions to overexpand the portable shape",
+    "using this artifact to justify broad refactors, broad renames, or runtime expansion ahead of the playable baseline"
+  ],
+  "downstream_prompts_enabled": [
+    "X-6 adapter-contract extraction or equivalent adapter-boundary mapping",
+    "later extraction reviews that need to relate adapters or execution surfaces back to declared capability posture",
+    "later portability review prompts that need to compare runtime claims against frozen declaration shape"
+  ]
+}
