@@ -1,0 +1,332 @@
+{
+  "artifact_id": "AIDE_PORTABLE_TASK_CONTRACT",
+  "artifact_class": "portable_contract_freeze",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "X-3",
+    "AIDE extraction review"
+  ],
+  "replacement_target": "later explicit portable-contract checkpoint or replacement artifact only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "data/xstack/xstack_scope_freeze.json",
+    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "data/xstack/xstack_inventory_and_classification.json",
+    "docs/agents/XSTACK_TASK_CATALOG.md"
+  ],
+  "current_program_context": {
+    "admissible_zeta_doctrine_program_complete": true,
+    "current_product_priority": "repo-local playable baseline and repo stabilization",
+    "series_role": "portable contract extraction preparation that must not compete with playable-baseline work",
+    "current_aide_implementation_presence": false
+  },
+  "dependencies": {
+    "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "required_scope_freeze_json": "data/xstack/xstack_scope_freeze.json",
+    "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "required_inventory_json": "data/xstack/xstack_inventory_and_classification.json"
+  },
+  "portable_task_definition": {
+    "summary": "A portable task is a canonical declarative contract for one bounded unit of governed work that specifies stable identity, task kind, intent, authoritative inputs, required and optional inputs, expected outputs, evidence obligations, review and permission hooks, refusal and failure classes, and repeatability limits without embedding scheduler, worker, session-runtime, or product-shell control semantics.",
+    "portable_shape": [
+      "describes what the work is",
+      "describes what must already be true",
+      "describes what outputs and evidence obligations apply",
+      "describes what refusal, blockage, failure, partial completion, and escalation mean"
+    ],
+    "not_portable_task_truth": [
+      "daemon job model",
+      "worker or shard assignment",
+      "queue record",
+      "product command line",
+      "AppShell command descriptor",
+      "session lifecycle definition",
+      "gate profile runner"
+    ]
+  },
+  "field_definitions": {
+    "task_id": {
+      "required": true,
+      "meaning": "Stable canonical task identifier that survives wrapper, UI, or command renaming."
+    },
+    "task_kind": {
+      "required": true,
+      "meaning": "Stable task family or category rather than a CLI verb or script filename."
+    },
+    "purpose": {
+      "required": true,
+      "meaning": "Clear statement of intent and scoped outcome."
+    },
+    "authoritative_inputs": {
+      "required": true,
+      "meaning": "Canonical doctrine, schemas, registries, or repo roots that govern lawful execution."
+    },
+    "required_inputs": {
+      "required": true,
+      "meaning": "Inputs that must be present or resolvable for the task to be valid and runnable."
+    },
+    "optional_inputs": {
+      "required": false,
+      "meaning": "Inputs that refine or narrow execution without changing task identity."
+    },
+    "expected_outputs": {
+      "required": true,
+      "meaning": "Declared outputs or result objects, each marked as canonical, derived view, run metadata, or local integration-only evidence."
+    },
+    "preconditions": {
+      "required": true,
+      "meaning": "Conditions that must hold before work may begin."
+    },
+    "postconditions": {
+      "required": true,
+      "meaning": "Conditions that must hold for successful completion."
+    },
+    "evidence_obligations": {
+      "required": true,
+      "meaning": "Evidence that must already exist plus evidence that must be emitted if the task is attempted, completed, refused, or partially completed."
+    },
+    "review_hooks": {
+      "required": true,
+      "meaning": "Review checkpoints, protected-area triggers, ownership-sensitive roots, or required human approvals."
+    },
+    "permission_policy_hooks": {
+      "required": true,
+      "meaning": "Policy, gate, or permission surfaces that may authorize, narrow, or refuse the task."
+    },
+    "refusal_states": {
+      "required": true,
+      "meaning": "Enumerated lawful refusal classes that prevent attempted execution."
+    },
+    "failure_states": {
+      "required": true,
+      "meaning": "Enumerated failure classes that can arise after execution starts or after outputs are evaluated."
+    },
+    "escalation_hooks": {
+      "required": true,
+      "meaning": "Conditions that convert the task into review-required or escalation-required posture."
+    },
+    "determinism_expectations": {
+      "required": true,
+      "meaning": "Repeatability, ordering, hashing, or result-stability expectations when applicable."
+    },
+    "idempotence_notes": {
+      "required": false,
+      "meaning": "Whether repeated execution is safe and what state or evidence changes remain acceptable."
+    },
+    "retry_notes": {
+      "required": false,
+      "meaning": "What may be retried, what must be recomputed, and what must not be silently repeated."
+    },
+    "portability_limits": {
+      "required": true,
+      "meaning": "Repo-specific assumptions, retained bindings, or coupling that still bound portability."
+    },
+    "compatibility_notes": {
+      "required": true,
+      "meaning": "Version, stability, refusal-on-unknown, and compatibility expectations for the contract itself."
+    },
+    "stability": {
+      "required": true,
+      "meaning": "Current stability class and the threshold for future change."
+    }
+  },
+  "required_boundary_distinctions": {
+    "task_definition_vs_task_execution": "Task definition describes the governed unit of work. Task execution describes where, when, and how it runs. Runner context, cache state, shard allocation, workspace allocation, and output routing belong to execution.",
+    "task_contract_vs_scheduler_runtime": "The portable task contract does not define daemons, workers, queue semantics, grouping, or scheduling policy. Runtime surfaces may consume the contract later but may not redefine it.",
+    "task_contract_vs_product_command_surface": "Product, AppShell, launcher, and setup commands are integration surfaces that may expose or orchestrate tasks but are not the canonical portable task contract.",
+    "evidence_required_vs_evidence_produced": "Evidence required is the proof, approval, registry state, or doctrine packet needed before execution is lawful. Evidence produced is the output, log, report, refusal payload, or audit artifact emitted by attempting or finishing the task.",
+    "refusal_vs_failure_vs_escalation": "Refusal prevents execution from beginning, failure means execution or evaluation did not satisfy postconditions, and escalation means additional review is required before proceeding or claiming success."
+  },
+  "repo_grounded_rationale": [
+    {
+      "surface": "docs/agents/XSTACK_TASK_CATALOG.md",
+      "supports": [
+        "task_kind",
+        "authoritative_inputs",
+        "expected_outputs",
+        "review_hooks",
+        "permission_policy_hooks"
+      ],
+      "note": "Defines XStack task families as authority-aware surfaces with bounded inputs, allowed outputs, default posture, and review expectations."
+    },
+    {
+      "surface": "tools/xstack/core/runners_base.py",
+      "supports": [
+        "task_id",
+        "expected_outputs",
+        "determinism_expectations",
+        "failure_states"
+      ],
+      "note": "Base runner exposes stable ids, deterministic input hashes, declared artifacts, normalized results, and failure class reporting."
+    },
+    {
+      "surface": "tools/xstack/extensions/example_x/extension.py",
+      "supports": [
+        "task_id",
+        "expected_outputs",
+        "compatibility_notes",
+        "portability_limits"
+      ],
+      "note": "Example extension registration already carries runner id, artifact contract, scope subtrees, and version hash."
+    },
+    {
+      "surface": "tools/xstack/core/artifact_contract.py",
+      "supports": [
+        "expected_outputs",
+        "canonical_vs_derived_markers"
+      ],
+      "note": "Classifies artifacts into CANONICAL, DERIVED_VIEW, RUN_META, and UNKNOWN."
+    },
+    {
+      "surface": "tools/xstack/sessionx/pipeline_contract.py",
+      "supports": [
+        "preconditions",
+        "refusal_states",
+        "evidence_obligations"
+      ],
+      "note": "Returns structured refusal payloads with reason codes, remediation hints, relevant ids, and path markers when contract preconditions fail."
+    },
+    {
+      "surface": "tools/xstack/controlx/types.py",
+      "supports": [
+        "required_boundary_distinctions"
+      ],
+      "note": "Execution context fields such as profile, cache, shards, shard_index, and output_dir are real but belong to orchestration rather than portable task truth."
+    },
+    {
+      "surface": "validation/validation_engine.py",
+      "supports": [
+        "evidence_obligations",
+        "compatibility_notes",
+        "review_hooks"
+      ],
+      "note": "Maps live and legacy validation surfaces, status classes, evidence outputs, and replacement targets."
+    },
+    {
+      "surface": [
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "appshell/commands/command_engine.py"
+      ],
+      "supports": [
+        "task_contract_vs_product_command_surface"
+      ],
+      "note": "Large command surfaces prove that the repo has product-shell control layers that should not be mistaken for portable task truth."
+    }
+  ],
+  "portable_now": [
+    "stable task identity and task kind",
+    "bounded purpose and intent",
+    "authoritative inputs and required or optional inputs",
+    "expected outputs with explicit output-class markers",
+    "preconditions and postconditions",
+    "evidence obligations",
+    "review hooks and permission or policy hooks",
+    "refusal, blocked, failed, partial, and escalation outcome classes",
+    "determinism expectations",
+    "idempotence and retry notes where applicable",
+    "portability limits",
+    "compatibility and stability markers",
+    "canonical-versus-derived markers for task truth and outputs"
+  ],
+  "dominium_retained_now": [
+    "concrete FAST, STRICT, and FULL runner semantics",
+    "ControlX orchestration flow and RunContext execution fields",
+    "SessionSpec creation, boot, stage, SRZ, runtime, and session-control machinery",
+    "pack, bundle, registry compile, and local universe materialization details",
+    "AppShell, launcher, setup, and loopback authority command surfaces",
+    "cache layout, workspace routing, shard assignment, and output-directory policy",
+    "repo-local CI wiring, gate bridges, and product-shell refusal-to-exit behavior"
+  ],
+  "deferred_until_post_baseline": [
+    "scheduler and worker contracts",
+    "daemon or service lifetime model",
+    "portable adapter transport and remote execution surfaces",
+    "cross-repo task registry publication",
+    "task graph composition, bakeoff, or compiler layers",
+    "portable queue and concurrency semantics",
+    "portable runtime policy engines beyond the task-level permission and refusal hooks frozen here"
+  ],
+  "failure_refusal_escalation_classes": {
+    "invalid_task": {
+      "meaning": "Contract is malformed, missing required fields, or internally contradictory.",
+      "required_handling": "Refuse interpretation and do not treat it as executable work."
+    },
+    "refused_task": {
+      "meaning": "Task is classifiable, but policy, authority, permission, or refusal law says execution must not begin.",
+      "required_handling": "Emit refusal evidence with reason code and remediation where available."
+    },
+    "blocked_task": {
+      "meaning": "Task is valid in shape, but required inputs, evidence, review, or prerequisite state are missing.",
+      "required_handling": "Preserve task identity and report missing dependencies without flattening into failure."
+    },
+    "failed_task": {
+      "meaning": "Execution began or outputs were evaluated, and required postconditions were not met.",
+      "required_handling": "Emit failure evidence and do not claim completion."
+    },
+    "partially_completed_task": {
+      "meaning": "Some work or evidence was produced, but not all required outputs or postconditions were satisfied.",
+      "required_handling": "Report partial completion explicitly and preserve outstanding obligations."
+    },
+    "review_or_escalation_required": {
+      "meaning": "Human review, ownership review, checkpoint review, or protected-area escalation is required before proceeding or claiming success.",
+      "required_handling": "Halt autonomous completion claims until the required review is satisfied."
+    }
+  },
+  "canonical_vs_derived_markers": {
+    "canonical_task_truth": [
+      "the portable task contract itself",
+      "the field definitions frozen in this artifact",
+      "later machine-readable mirrors that faithfully project this canonical shape without adding competing semantics"
+    ],
+    "derived_views": [
+      "UI task cards",
+      "queue entries",
+      "shell help text",
+      "prompt summaries",
+      "run logs",
+      "dashboards",
+      "progress views",
+      "audit summaries"
+    ],
+    "derived_views_may_not": [
+      "redefine task identity",
+      "redefine required fields",
+      "erase refusal, review, or evidence obligations",
+      "promote local shell flags into canonical task meaning",
+      "promote emitted evidence into authority over the contract"
+    ]
+  },
+  "prohibited_task_contract_shapes": [
+    "embedding scheduler, daemon, worker, queue, or shard semantics into the portable task contract",
+    "treating every CLI command or AppShell command as a portable task contract",
+    "treating path location under tools/xstack as proof of portability",
+    "promoting wrappers, bridges, or stubs into portable core without evidence",
+    "omitting refusal, review, permission, or evidence boundaries because a runner currently hardcodes them",
+    "using future AIDE runtime ambitions to justify present contract expansion",
+    "using this artifact to justify broad repo renaming, platformization, or product-shell refactors",
+    "competing with playable-baseline assembly by extracting runtime-critical Dominium surfaces too early"
+  ],
+  "downstream_prompts_enabled": [
+    "X-3 evidence and review contract extraction",
+    "permission and refusal contract mapping",
+    "execution-surface mapping that consumes task truth without redefining it",
+    "later extraction review over which live XStack surfaces can lawfully implement or expose the frozen task contract"
+  ]
+}
