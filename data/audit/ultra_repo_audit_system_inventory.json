@@ -1,0 +1,1332 @@
+{
+  "audit_date": "2026-04-06",
+  "observed_commands": [
+    {
+      "command": "cmake --preset verify",
+      "id": "configure.verify",
+      "layer": "build",
+      "status": "passed",
+      "summary": "Configure completed and wrote build files to out/build/vs2026/verify."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/client.exe --help",
+      "id": "binary.client.help",
+      "layer": "client",
+      "status": "passed",
+      "summary": "Compiled client binary is present and prints help."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/client.exe --smoke --ui=none",
+      "id": "binary.client.smoke",
+      "layer": "client",
+      "status": "passed",
+      "summary": "Client smoke emitted deterministic MP0 hash 16976973710109906564."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/server.exe --help",
+      "id": "binary.server.help",
+      "layer": "server",
+      "status": "passed",
+      "summary": "Compiled server binary is present and prints help."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/server.exe --smoke --ui=none",
+      "id": "binary.server.smoke",
+      "layer": "server",
+      "status": "passed",
+      "summary": "Server smoke emitted deterministic MP0 loopback hash 16976973710109906564."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/launcher.exe --help",
+      "id": "binary.launcher.help",
+      "layer": "launcher",
+      "status": "passed",
+      "summary": "Compiled launcher binary is present and prints help."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/launcher.exe --smoke --ui=none",
+      "id": "binary.launcher.smoke",
+      "layer": "launcher",
+      "status": "passed_with_limitations",
+      "summary": "Launcher smoke ran but only exposed control hooks and caps state, not a session boot."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/setup.exe --help",
+      "id": "binary.setup.help",
+      "layer": "setup",
+      "status": "passed",
+      "summary": "Compiled setup binary is present and prints help."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/setup.exe --smoke --ui=none",
+      "id": "binary.setup.smoke",
+      "layer": "setup",
+      "status": "passed_with_limitations",
+      "summary": "Setup smoke returned `setup status: ok (stub)` rather than a full install flow."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/tools.exe --smoke --ui=none",
+      "id": "binary.tools.smoke",
+      "layer": "tools",
+      "status": "passed",
+      "summary": "Tools smoke returned `tools_smoke=ok`."
+    },
+    {
+      "command": "python tools/launcher/launch.py compat-status",
+      "id": "launcher.compat_status",
+      "layer": "launcher",
+      "status": "passed",
+      "summary": "Launcher AppShell reported compat.full, release_manifest.json present, and repo_wrapper_shim install discovery."
+    },
+    {
+      "command": "python tools/launcher/launch.py launcher status",
+      "id": "launcher.status",
+      "layer": "launcher",
+      "status": "passed_with_risk",
+      "summary": "Supervisor status surfaced prior client/server process state, including a server child exit_code 3 and failed attach attempt."
+    },
+    {
+      "command": "python tools/launcher/launch.py profiles list",
+      "id": "launcher.profiles",
+      "layer": "launcher",
+      "status": "passed",
+      "summary": "Launcher enumerated profile.bundle.mvp_default."
+    },
+    {
+      "command": "python tools/launcher/launch.py packs list",
+      "id": "launcher.packs",
+      "layer": "launcher",
+      "status": "passed",
+      "summary": "Launcher enumerated live pack manifests; audit counted 42 pack.json files under packs/."
+    },
+    {
+      "command": "python tools/setup/setup_cli.py compat-status",
+      "id": "setup.compat_status",
+      "layer": "setup",
+      "status": "passed",
+      "summary": "Setup AppShell reported compat.full, release manifest present, and repo_wrapper_shim install discovery."
+    },
+    {
+      "command": "python tools/setup/setup_cli.py profiles list",
+      "id": "setup.profiles",
+      "layer": "setup",
+      "status": "passed",
+      "summary": "Setup AppShell enumerated the default profile bundle."
+    },
+    {
+      "command": "python tools/setup/setup_cli.py packs list",
+      "id": "setup.packs",
+      "layer": "setup",
+      "status": "passed",
+      "summary": "Setup AppShell enumerated live pack manifests."
+    },
+    {
+      "command": "python server/server_main.py --help",
+      "id": "server.script.help",
+      "layer": "server",
+      "status": "blocked",
+      "summary": "Direct script invocation failed because REPO_ROOT_HINT escapes the repo root and breaks appshell import resolution."
+    },
+    {
+      "command": "python -m server.server_main --help",
+      "id": "server.module.help",
+      "layer": "server",
+      "status": "blocked",
+      "summary": "Module invocation progressed farther but still resolved the repo root incorrectly and failed to find data/registries/product_registry.json."
+    },
+    {
+      "command": "python tools/xstack/session_create.py --repo-root . --save-id ultra_audit_session --compile-outputs off --saves-root tmp/audit_session_saves",
+      "id": "xstack.session_create",
+      "layer": "session",
+      "status": "passed",
+      "summary": "Session creation wrote session_spec.json, universe_identity.json, universe_state.json, and universe_contract_bundle.json."
+    },
+    {
+      "command": "python tools/xstack/session_boot.py --repo-root . tmp/audit_session_saves/ultra_audit_session/session_spec.json",
+      "id": "xstack.session_boot.alt_root",
+      "layer": "session",
+      "status": "blocked",
+      "summary": "Boot failed because runner.py hard-codes repo_root/saves/<save_id> instead of honoring the alternate saves root used by session_create."
+    },
+    {
+      "command": "python tools/xstack/testx_all.py --help",
+      "id": "xstack.testx_all.help",
+      "layer": "validation",
+      "status": "passed",
+      "summary": "TestX all-suite entrypoint is present and exposes FAST/STRICT/FULL profiles and shard selection."
+    },
+    {
+      "command": "python tools/validation/tool_run_validation.py --repo-root . --profile FAST",
+      "id": "validation.fast",
+      "layer": "validation",
+      "status": "timed_out",
+      "summary": "Unified validation was attempted but did not finish inside the audit timeout window, so the audit does not claim a green FAST gate."
+    },
+    {
+      "command": "ctest --test-dir out/build/vs2026/verify -N",
+      "id": "ctest.enumerate",
+      "layer": "validation",
+      "status": "passed",
+      "summary": "CTest enumerated 493 registered tests in the verify tree, including playtest, capability, distribution, trust, and performance suites."
+    },
+    {
+      "command": "python tools/mvp/runtime_entry.py client --repo-root . --local-singleplayer --ticks 1 --server-command status",
+      "id": "runtime_entry.local_singleplayer",
+      "layer": "client",
+      "status": "partial",
+      "summary": "The public MVP bootstrap did not yield a clear gameplay launch and instead dropped into the AppShell/TUI command surface."
+    },
+    {
+      "command": "python -c \"from client.local_server.local_server_controller import start_local_singleplayer; ...\"",
+      "id": "local_singleplayer.controller",
+      "layer": "client",
+      "status": "partial",
+      "summary": "Direct controller invocation produced a large accepted loopback handshake and compat payloads, but the public wrapper remains unclear."
+    }
+  ],
+  "root_snapshot": {
+    "appshell": {
+      "exists": true,
+      "file_count": 31,
+      "root": "appshell",
+      "top_extensions": [
+        {
+          "count": 31,
+          "extension": ".py"
+        }
+      ],
+      "total_bytes": 377347
+    },
+    "client": {
+      "exists": true,
+      "file_count": 77,
+      "root": "client",
+      "top_extensions": [
+        {
+          "count": 25,
+          "extension": ".py"
+        },
+        {
+          "count": 24,
+          "extension": ".h"
+        },
+        {
+          "count": 23,
+          "extension": ".c"
+        },
+        {
+          "count": 3,
+          "extension": ".cpp"
+        },
+        {
+          "count": 1,
+          "extension": ".txt"
+        },
+        {
+          "count": 1,
+          "extension": ".json"
+        }
+      ],
+      "total_bytes": 1482861
+    },
+    "data_packs": {
+      "exists": true,
+      "file_count": 375,
+      "root": "data/packs",
+      "top_extensions": [
+        {
+          "count": 276,
+          "extension": ".json"
+        },
+        {
+          "count": 36,
+          "extension": ".toml"
+        },
+        {
+          "count": 36,
+          "extension": ".md"
+        },
+        {
+          "count": 27,
+          "extension": ".manifest"
+        }
+      ],
+      "total_bytes": 836531
+    },
+    "data_planning": {
+      "exists": true,
+      "file_count": 64,
+      "root": "data/planning",
+      "top_extensions": [
+        {
+          "count": 64,
+          "extension": ".json"
+        }
+      ],
+      "total_bytes": 709328
+    },
+    "data_reality": {
+      "exists": true,
+      "file_count": 6,
+      "root": "data/reality",
+      "top_extensions": [
+        {
+          "count": 6,
+          "extension": ".json"
+        }
+      ],
+      "total_bytes": 129068
+    },
+    "data_release": {
+      "exists": true,
+      "file_count": 20,
+      "root": "data/release",
+      "top_extensions": [
+        {
+          "count": 20,
+          "extension": ".json"
+        }
+      ],
+      "total_bytes": 210622
+    },
+    "data_runtime": {
+      "exists": true,
+      "file_count": 15,
+      "root": "data/runtime",
+      "top_extensions": [
+        {
+          "count": 15,
+          "extension": ".json"
+        }
+      ],
+      "total_bytes": 213178
+    },
+    "docs_canon": {
+      "exists": true,
+      "file_count": 2,
+      "root": "docs/canon",
+      "top_extensions": [
+        {
+          "count": 2,
+          "extension": ".md"
+        }
+      ],
+      "total_bytes": 20909
+    },
+    "docs_planning": {
+      "exists": true,
+      "file_count": 57,
+      "root": "docs/planning",
+      "top_extensions": [
+        {
+          "count": 57,
+          "extension": ".md"
+        }
+      ],
+      "total_bytes": 729357
+    },
+    "docs_release": {
+      "exists": true,
+      "file_count": 49,
+      "root": "docs/release",
+      "top_extensions": [
+        {
+          "count": 49,
+          "extension": ".md"
+        }
+      ],
+      "total_bytes": 1498383
+    },
+    "docs_runtime": {
+      "exists": true,
+      "file_count": 15,
+      "root": "docs/runtime",
+      "top_extensions": [
+        {
+          "count": 15,
+          "extension": ".md"
+        }
+      ],
+      "total_bytes": 321022
+    },
+    "engine": {
+      "exists": true,
+      "file_count": 669,
+      "root": "engine",
+      "top_extensions": [
+        {
+          "count": 338,
+          "extension": ".h"
+        },
+        {
+          "count": 209,
+          "extension": ".c"
+        },
+        {
+          "count": 87,
+          "extension": ".cpp"
+        },
+        {
+          "count": 19,
+          "extension": ".py"
+        },
+        {
+          "count": 10,
+          "extension": ".md"
+        },
+        {
+          "count": 6,
+          "extension": ".txt"
+        }
+      ],
+      "total_bytes": 4839854
+    },
+    "game": {
+      "exists": true,
+      "file_count": 618,
+      "root": "game",
+      "top_extensions": [
+        {
+          "count": 220,
+          "extension": ".cpp"
+        },
+        {
+          "count": 214,
+          "extension": ".h"
+        },
+        {
+          "count": 46,
+          "extension": ".c"
+        },
+        {
+          "count": 39,
+          "extension": ".toml"
+        },
+        {
+          "count": 32,
+          "extension": ".txt"
+        },
+        {
+          "count": 22,
+          "extension": ".tlv"
+        }
+      ],
+      "total_bytes": 3269860
+    },
+    "launcher": {
+      "exists": true,
+      "file_count": 42,
+      "root": "launcher",
+      "top_extensions": [
+        {
+          "count": 25,
+          "extension": ".h"
+        },
+        {
+          "count": 11,
+          "extension": ".c"
+        },
+        {
+          "count": 2,
+          "extension": ".cpp"
+        },
+        {
+          "count": 1,
+          "extension": ".txt"
+        },
+        {
+          "count": 1,
+          "extension": ".aps"
+        },
+        {
+          "count": 1,
+          "extension": ".rc"
+        }
+      ],
+      "total_bytes": 174442
+    },
+    "locks": {
+      "exists": true,
+      "file_count": 1,
+      "root": "locks",
+      "top_extensions": [
+        {
+          "count": 1,
+          "extension": ".json"
+        }
+      ],
+      "total_bytes": 5466
+    },
+    "net": {
+      "exists": true,
+      "file_count": 17,
+      "root": "net",
+      "top_extensions": [
+        {
+          "count": 17,
+          "extension": ".py"
+        }
+      ],
+      "total_bytes": 313550
+    },
+    "packs": {
+      "exists": true,
+      "file_count": 256,
+      "root": "packs",
+      "top_extensions": [
+        {
+          "count": 248,
+          "extension": ".json"
+        },
+        {
+          "count": 4,
+          "extension": ".py"
+        },
+        {
+          "count": 1,
+          "extension": ".md"
+        },
+        {
+          "count": 1,
+          "extension": ".asc"
+        },
+        {
+          "count": 1,
+          "extension": ".bsp"
+        },
+        {
+          "count": 1,
+          "extension": ".tls"
+        }
+      ],
+      "total_bytes": 401672
+    },
+    "profiles": {
+      "exists": true,
+      "file_count": 1,
+      "root": "profiles",
+      "top_extensions": [
+        {
+          "count": 1,
+          "extension": ".json"
+        }
+      ],
+      "total_bytes": 2607
+    },
+    "release": {
+      "exists": true,
+      "file_count": 6,
+      "root": "release",
+      "top_extensions": [
+        {
+          "count": 6,
+          "extension": ".py"
+        }
+      ],
+      "total_bytes": 173056
+    },
+    "repo": {
+      "exists": true,
+      "file_count": 11,
+      "root": "repo",
+      "top_extensions": [
+        {
+          "count": 10,
+          "extension": ".json"
+        },
+        {
+          "count": 1,
+          "extension": ".toml"
+        }
+      ],
+      "total_bytes": 102065
+    },
+    "runtime": {
+      "exists": true,
+      "file_count": 2,
+      "root": "runtime",
+      "top_extensions": [
+        {
+          "count": 2,
+          "extension": ".py"
+        }
+      ],
+      "total_bytes": 6768
+    },
+    "schema": {
+      "exists": true,
+      "file_count": 996,
+      "root": "schema",
+      "top_extensions": [
+        {
+          "count": 824,
+          "extension": ".schema"
+        },
+        {
+          "count": 168,
+          "extension": ".md"
+        },
+        {
+          "count": 4,
+          "extension": ".json"
+        }
+      ],
+      "total_bytes": 1269930
+    },
+    "schemas": {
+      "exists": true,
+      "file_count": 587,
+      "root": "schemas",
+      "top_extensions": [
+        {
+          "count": 586,
+          "extension": ".json"
+        },
+        {
+          "count": 1,
+          "extension": ".md"
+        }
+      ],
+      "total_bytes": 1456709
+    },
+    "security": {
+      "exists": true,
+      "file_count": 4,
+      "root": "security",
+      "top_extensions": [
+        {
+          "count": 4,
+          "extension": ".py"
+        }
+      ],
+      "total_bytes": 41295
+    },
+    "server": {
+      "exists": true,
+      "file_count": 52,
+      "root": "server",
+      "top_extensions": [
+        {
+          "count": 23,
+          "extension": ".cpp"
+        },
+        {
+          "count": 19,
+          "extension": ".h"
+        },
+        {
+          "count": 8,
+          "extension": ".py"
+        },
+        {
+          "count": 1,
+          "extension": ".txt"
+        },
+        {
+          "count": 1,
+          "extension": ".c"
+        }
+      ],
+      "total_bytes": 517997
+    },
+    "setup": {
+      "exists": true,
+      "file_count": 100,
+      "root": "setup",
+      "top_extensions": [
+        {
+          "count": 20,
+          "extension": ".bat"
+        },
+        {
+          "count": 19,
+          "extension": ".py"
+        },
+        {
+          "count": 17,
+          "extension": ".sh"
+        },
+        {
+          "count": 12,
+          "extension": ".in"
+        },
+        {
+          "count": 5,
+          "extension": ".txt"
+        },
+        {
+          "count": 5,
+          "extension": ".c"
+        }
+      ],
+      "total_bytes": 415192
+    },
+    "specs_reality": {
+      "exists": true,
+      "file_count": 7,
+      "root": "specs/reality",
+      "top_extensions": [
+        {
+          "count": 7,
+          "extension": ".md"
+        }
+      ],
+      "total_bytes": 121096
+    },
+    "tests_playtest": {
+      "exists": true,
+      "file_count": 5,
+      "root": "tests/playtest",
+      "top_extensions": [
+        {
+          "count": 4,
+          "extension": ".py"
+        },
+        {
+          "count": 1,
+          "extension": ".txt"
+        }
+      ],
+      "total_bytes": 17491
+    },
+    "tools": {
+      "exists": true,
+      "file_count": 3693,
+      "root": "tools",
+      "top_extensions": [
+        {
+          "count": 2936,
+          "extension": ".py"
+        },
+        {
+          "count": 132,
+          "extension": ".json"
+        },
+        {
+          "count": 126,
+          "extension": ".cpp"
+        },
+        {
+          "count": 121,
+          "extension": "<no_ext>"
+        },
+        {
+          "count": 115,
+          "extension": ".cmd"
+        },
+        {
+          "count": 70,
+          "extension": ".h"
+        }
+      ],
+      "total_bytes": 27992459
+    },
+    "updates": {
+      "exists": true,
+      "file_count": 6,
+      "root": "updates",
+      "top_extensions": [
+        {
+          "count": 5,
+          "extension": ".json"
+        },
+        {
+          "count": 1,
+          "extension": ".md"
+        }
+      ],
+      "total_bytes": 294181
+    },
+    "validation": {
+      "exists": true,
+      "file_count": 2,
+      "root": "validation",
+      "top_extensions": [
+        {
+          "count": 2,
+          "extension": ".py"
+        }
+      ],
+      "total_bytes": 77604
+    }
+  },
+  "subsystems": [
+    {
+      "dependencies": [
+        "docs/canon/constitution_v1.md",
+        "docs/canon/glossary_v1.md"
+      ],
+      "entrypoint_ids": [],
+      "evidence": "Audit read the required doctrine packet before classifying implementation roots.",
+      "group": "canon/planning/doctrine",
+      "id": "canon_governance_packet",
+      "languages": [
+        "Markdown",
+        "JSON"
+      ],
+      "maturity": "doctrinal_only",
+      "name": "Canonical governance and planning packet",
+      "purpose": "Defines authority ordering, semantic ownership, post-Lambda program state, and non-negotiable execution rules.",
+      "root_paths": [
+        "AGENTS.md",
+        "docs/canon/",
+        "docs/planning/",
+        "docs/runtime/",
+        "docs/release/",
+        "specs/reality/",
+        "data/planning/",
+        "data/runtime/",
+        "data/release/",
+        "data/reality/"
+      ],
+      "surface_kind": "infrastructure",
+      "usage_status": "authoritative_doctrine"
+    },
+    {
+      "dependencies": [
+        "cmake",
+        "Python",
+        "SDL2 dependency resolution",
+        "MSVC toolchain"
+      ],
+      "entrypoint_ids": [
+        "cmake_preset_verify"
+      ],
+      "evidence": "cmake --preset verify completed successfully on 2026-04-06 and wrote out/build/vs2026/verify.",
+      "group": "tests/validation/CI",
+      "id": "build_verify_lane",
+      "languages": [
+        "CMake",
+        "Python"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "CMake verify lane and build boundary checks",
+      "purpose": "Configures the repo through the verify preset and enforces include and target-boundary checks during configure.",
+      "root_paths": [
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "scripts/"
+      ],
+      "surface_kind": "infrastructure",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "compat/",
+        "release/",
+        "security/",
+        "tools/xstack/compatx"
+      ],
+      "entrypoint_ids": [
+        "launcher_python_appshell",
+        "setup_python_appshell",
+        "client_mvp_runtime_entry",
+        "server_python_module"
+      ],
+      "evidence": "Launcher and setup compat-status/status flows completed and surfaced manifest, compatibility, and supervisor state.",
+      "group": "launcher/setup/client shell",
+      "id": "appshell_bootstrap",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "AppShell bootstrap, compatibility, IPC, and supervisor",
+      "purpose": "Provides shared product-shell bootstrap, compatibility negotiation, log/event surfaces, IPC attach, and supervised process orchestration.",
+      "root_paths": [
+        "appshell/"
+      ],
+      "surface_kind": "product_and_infrastructure",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "appshell/",
+        "release/",
+        "packs/",
+        "profiles/"
+      ],
+      "entrypoint_ids": [
+        "launcher_python_appshell"
+      ],
+      "evidence": "compat-status, profiles list, packs list, and launcher status all ran during audit.",
+      "group": "launcher/setup",
+      "id": "launcher_python_surface",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Launcher Python/AppShell command surface",
+      "purpose": "Exposes the practical launcher command surface for compat status, profile enumeration, pack enumeration, and supervisor control.",
+      "root_paths": [
+        "tools/launcher/launch.py"
+      ],
+      "surface_kind": "product_facing",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "appshell wrappers",
+        "dominium app runtime"
+      ],
+      "entrypoint_ids": [
+        "launcher_binary_verify"
+      ],
+      "evidence": "launcher.exe help and smoke ran, but launcher_config_stub.c, launcher_profile_stub.c, launcher_process_stub.c, launcher_gui_stub.c, and launcher_tui_stub.c remain explicit stubs.",
+      "group": "launcher/setup",
+      "id": "launcher_compiled_shell",
+      "languages": [
+        "C",
+        "C++"
+      ],
+      "maturity": "partial",
+      "name": "Compiled launcher shell",
+      "purpose": "Provides compiled launcher CLI/TUI/GUI wrappers and core launcher code.",
+      "root_paths": [
+        "launcher/"
+      ],
+      "surface_kind": "product_facing",
+      "usage_status": "wired_but_fragile"
+    },
+    {
+      "dependencies": [
+        "appshell/",
+        "release/",
+        "security/",
+        "packs/",
+        "profiles/"
+      ],
+      "entrypoint_ids": [
+        "setup_python_appshell"
+      ],
+      "evidence": "setup_cli.py help, compat-status, profiles list, and packs list all succeeded during audit.",
+      "group": "launcher/setup",
+      "id": "setup_python_surface",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Setup Python/AppShell command surface",
+      "purpose": "Provides deterministic install, update, trust, pack, profile, validation, and diagnostic commands for repo-local or installed flows.",
+      "root_paths": [
+        "tools/setup/setup_cli.py",
+        "tools/setup/build.py"
+      ],
+      "surface_kind": "product_and_release",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "tools/setup/setup_cli.py",
+        "dominium app runtime"
+      ],
+      "entrypoint_ids": [
+        "setup_binary_verify"
+      ],
+      "evidence": "setup.exe help worked and smoke returned `setup status: ok (stub)`; setup GUI/TUI frontends are thin wrappers rather than verified full products.",
+      "group": "launcher/setup",
+      "id": "setup_compiled_shell",
+      "languages": [
+        "C",
+        "Python"
+      ],
+      "maturity": "partial",
+      "name": "Compiled setup shell",
+      "purpose": "Provides compiled setup CLI/TUI/GUI wrappers and packaging helpers.",
+      "root_paths": [
+        "setup/"
+      ],
+      "surface_kind": "product_facing",
+      "usage_status": "wired_but_fragile"
+    },
+    {
+      "dependencies": [
+        "engine/",
+        "game/",
+        "compat/",
+        "appshell/",
+        "release/"
+      ],
+      "entrypoint_ids": [
+        "client_binary_verify",
+        "client_mvp_runtime_entry"
+      ],
+      "evidence": "client.exe help and headless smoke both succeeded; client/app/main_client.c contains extensive compatibility and UI flow handling.",
+      "group": "client/UI/UX",
+      "id": "client_runtime_ui",
+      "languages": [
+        "C",
+        "C++",
+        "Python"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Client runtime, viewer shell, and compatibility-aware UI",
+      "purpose": "Owns client binary entrypoints, viewer shell, compatibility checks, read-only open flows, and presentation surfaces.",
+      "root_paths": [
+        "client/"
+      ],
+      "surface_kind": "product_facing",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "server/server_boot.py",
+        "tools/xstack/sessionx",
+        "compat/",
+        "packs/",
+        "profiles/"
+      ],
+      "entrypoint_ids": [
+        "local_singleplayer_internal_api",
+        "client_mvp_runtime_entry"
+      ],
+      "evidence": "Direct start_local_singleplayer invocation produced accepted handshake and compat payloads, but the public CLI bootstrap is still unclear.",
+      "group": "session/gameplay",
+      "id": "local_singleplayer_loopback",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "partial",
+      "name": "Local singleplayer controller and loopback attach",
+      "purpose": "Creates or loads a session, spawns or simulates local authority, performs loopback handshake, and returns compat/runtime status to the client.",
+      "root_paths": [
+        "client/local_server/",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py"
+      ],
+      "surface_kind": "product_facing",
+      "usage_status": "wired_internal_only"
+    },
+    {
+      "dependencies": [
+        "compat/",
+        "tools/xstack/sessionx",
+        "net/",
+        "release/"
+      ],
+      "entrypoint_ids": [
+        "server_binary_verify",
+        "server_python_script",
+        "server_python_module"
+      ],
+      "evidence": "server.exe help and smoke succeeded; server/net/loopback_transport.py and server/server_boot.py implement negotiation, ack handling, and read-only refusal.",
+      "group": "server/net/shard",
+      "id": "server_authority_loopback",
+      "languages": [
+        "C",
+        "C++",
+        "Python"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Authoritative server boot and deterministic loopback transport",
+      "purpose": "Boots authoritative runtime, enforces compatibility and authority, and exposes process-local deterministic loopback transport and control channels.",
+      "root_paths": [
+        "server/"
+      ],
+      "surface_kind": "product_facing",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "schema/",
+        "data/session_templates/",
+        "packs/",
+        "profiles/",
+        "locks/"
+      ],
+      "entrypoint_ids": [
+        "xstack_session_create",
+        "xstack_session_boot"
+      ],
+      "evidence": "session_create completed successfully, but runner.py hard-codes repo_root/saves/<save_id> and blocked alternate saves-root boot.",
+      "group": "session/save/load/replay",
+      "id": "session_pipeline",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "partial",
+      "name": "XStack session create and boot pipeline",
+      "purpose": "Creates session specs and universe artifacts, then boots session runtime from those artifacts.",
+      "root_paths": [
+        "tools/xstack/session_create.py",
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/"
+      ],
+      "surface_kind": "product_and_tooling",
+      "usage_status": "wired_but_fragile"
+    },
+    {
+      "dependencies": [
+        "security/trust/",
+        "packs/",
+        "repo/"
+      ],
+      "entrypoint_ids": [
+        "setup_python_appshell",
+        "launcher_python_appshell"
+      ],
+      "evidence": "Launcher and setup compat-status both found dist/manifests/release_manifest.json and reported repo_wrapper_shim install discovery.",
+      "group": "release/trust/packaging",
+      "id": "release_control_plane",
+      "languages": [
+        "Python",
+        "JSON",
+        "TOML"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Release manifest and update resolution control plane",
+      "purpose": "Builds and verifies release manifests, resolves updates, and routes repo-local install discovery through dist/ when no install registry exists.",
+      "root_paths": [
+        "release/",
+        "updates/",
+        "dist/manifests/release_manifest.json",
+        "repo/release_policy.toml"
+      ],
+      "surface_kind": "infrastructure_and_release",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json"
+      ],
+      "entrypoint_ids": [
+        "setup_python_appshell",
+        "launcher_python_appshell"
+      ],
+      "evidence": "security/trust/trust_verifier.py defines offline trust policy and signature verification helpers used by release_manifest_engine.py and update_resolver.py.",
+      "group": "release/trust/packaging",
+      "id": "trust_security",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Offline-first trust verification",
+      "purpose": "Verifies signatures, trust roots, trust levels, and artifact trust policies for release-manifest and pack surfaces.",
+      "root_paths": [
+        "security/"
+      ],
+      "surface_kind": "infrastructure_and_release",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "libs/",
+        "client/",
+        "server/"
+      ],
+      "entrypoint_ids": [
+        "client_binary_verify",
+        "server_binary_verify",
+        "ctest_verify"
+      ],
+      "evidence": "Engine and game roots are large and heavily tested, but game/dominium_game_stub.c still marks part of the runtime library shell as a stub.",
+      "group": "runtime/engine/core",
+      "id": "engine_game_core",
+      "languages": [
+        "C",
+        "C++"
+      ],
+      "maturity": "partial",
+      "name": "Engine and game core libraries",
+      "purpose": "Holds deterministic substrate, gameplay rules, and a large C/C++ test surface that backs client/server products.",
+      "root_paths": [
+        "engine/",
+        "game/"
+      ],
+      "surface_kind": "runtime",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "fields/",
+        "schema/",
+        "packs/"
+      ],
+      "entrypoint_ids": [],
+      "evidence": "Many substantive engine files exist, but the audit did not verify a public product runpath that exercises most of them end to end.",
+      "group": "content/worldgen/domain surfaces",
+      "id": "semantic_domain_python",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "implemented_but_isolated",
+      "name": "Semantic domain, worldgen, and process engines",
+      "purpose": "Provides large Python implementations for overlay, worldgen, pathing, logic, materials, process, control, and metadata subsystems.",
+      "root_paths": [
+        "geo/",
+        "logic/",
+        "materials/",
+        "process/",
+        "control/",
+        "meta/",
+        "worldgen/"
+      ],
+      "surface_kind": "runtime_and_content",
+      "usage_status": "partially_wired"
+    },
+    {
+      "dependencies": [
+        "compat/",
+        "server/",
+        "client/"
+      ],
+      "entrypoint_ids": [
+        "server_binary_verify",
+        "local_singleplayer_internal_api"
+      ],
+      "evidence": "Loopback transport is real and used; net/transport/tcp_stub.py and udp_stub.py explicitly refuse with not_implemented errors.",
+      "group": "server/net/shard",
+      "id": "net_transports",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "partial",
+      "name": "Transport layer",
+      "purpose": "Implements loopback networking and leaves TCP/UDP placeholders for later multiplayer transport phases.",
+      "root_paths": [
+        "net/",
+        "server/net/"
+      ],
+      "surface_kind": "runtime",
+      "usage_status": "wired_for_loopback_only"
+    },
+    {
+      "dependencies": [
+        "release/",
+        "tools/setup/",
+        "tools/launcher/",
+        "tools/xstack/sessionx"
+      ],
+      "entrypoint_ids": [
+        "launcher_python_appshell",
+        "setup_python_appshell",
+        "xstack_session_create"
+      ],
+      "evidence": "Audit verified profile.bundle.mvp_default, locks/pack_lock.mvp_default.json, data/session_templates/session.mvp_default.json, and live packs list output.",
+      "group": "content/worldgen/domain surfaces",
+      "id": "packs_profiles_locks",
+      "languages": [
+        "JSON"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Pack, profile, lock, and template baseline data",
+      "purpose": "Supplies pack manifests, the default profile bundle, the MVP pack lock, and session template data used by launcher/setup/session tools.",
+      "root_paths": [
+        "packs/",
+        "profiles/",
+        "locks/",
+        "data/session_templates/"
+      ],
+      "surface_kind": "content_and_configuration",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "docs/canon/",
+        "tools/xstack/compatx",
+        "release/",
+        "security/"
+      ],
+      "entrypoint_ids": [
+        "xstack_session_create",
+        "xstack_session_boot",
+        "setup_python_appshell",
+        "validation_python"
+      ],
+      "evidence": "SessionX, release, and trust code all import schema or registry loaders; doctrine marks schema/ over schemas/ as canonical.",
+      "group": "registries/schemas/data support",
+      "id": "schema_registry_support",
+      "languages": [
+        "JSON",
+        "Markdown"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Canonical schemas and registries",
+      "purpose": "Defines canonical semantic contract law, projection schemas, and runtime registries consumed by session, compat, release, and validation tools.",
+      "root_paths": [
+        "schema/",
+        "schemas/",
+        "data/registries/"
+      ],
+      "surface_kind": "infrastructure",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "cmake verify build",
+        "repo/repox rulesets",
+        "schema/"
+      ],
+      "entrypoint_ids": [
+        "validation_python",
+        "testx_all_python",
+        "ctest_verify"
+      ],
+      "evidence": "tool_run_validation.py and testx_all.py exist; ctest -N enumerated 493 tests including playtest_scenario_parity, playtest_variant_replay, playtest_replay_regression, and playtest_mode_parity.",
+      "group": "tests/validation/CI",
+      "id": "validation_ci_surface",
+      "languages": [
+        "Python",
+        "C++"
+      ],
+      "maturity": "implemented_and_used",
+      "name": "Validation, TestX, CTest, and playtest suites",
+      "purpose": "Runs unified validation, exposes TestX FAST/STRICT/FULL harnessing, and registers broad CTest coverage including playtest suites.",
+      "root_paths": [
+        "tools/validation/",
+        "tools/xstack/testx_all.py",
+        "tests/",
+        "validation/"
+      ],
+      "surface_kind": "tooling_and_infrastructure",
+      "usage_status": "wired_to_entrypoints"
+    },
+    {
+      "dependencies": [
+        "repo/repox",
+        "tools/xstack/repox",
+        "docs/audit/"
+      ],
+      "entrypoint_ids": [],
+      "evidence": "Repo contains substantial audit tooling and many generated reports, but some auditx analyzers still carry TODO markers and were not re-run during this audit.",
+      "group": "editors/inspectors/tools",
+      "id": "audit_tooling",
+      "languages": [
+        "Python"
+      ],
+      "maturity": "partial",
+      "name": "Audit and repo-inspection tools",
+      "purpose": "Generates inventories, architecture scans, and semantic drift reports for repo-wide review.",
+      "root_paths": [
+        "tools/audit/",
+        "tools/auditx/"
+      ],
+      "surface_kind": "tooling",
+      "usage_status": "implemented_but_not_critical_to_boot"
+    },
+    {
+      "dependencies": [
+        "release/update_resolver.py",
+        "tools/setup/setup_cli.py"
+      ],
+      "entrypoint_ids": [
+        "setup_python_appshell"
+      ],
+      "evidence": "updates/ contains stable.json, beta.json, nightly.json, pinned.json, changelog.json, and README.md, but no update runtime code lives there.",
+      "group": "release/trust/packaging",
+      "id": "update_feed_data",
+      "languages": [
+        "JSON",
+        "Markdown"
+      ],
+      "maturity": "implemented_but_isolated",
+      "name": "Static update feed artifacts",
+      "purpose": "Holds channel JSON and changelog data consumed by update planning rather than a standalone runtime service.",
+      "root_paths": [
+        "updates/"
+      ],
+      "surface_kind": "release_support",
+      "usage_status": "support_data_only"
+    }
+  ]
+}

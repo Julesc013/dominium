@@ -1,0 +1,125 @@
+{
+  "audit_date": "2026-04-06",
+  "gaps": [
+    {
+      "blocker_status": "hard_blocker_for_public_python_server_entry",
+      "category": "entrypoint",
+      "evidence": "python server/server_main.py --help and python -m server.server_main --help both failed during audit.",
+      "gap_id": "GAP-001",
+      "likely_owner_system": "server/server_main.py",
+      "recommended_action": "Fix REPO_ROOT_HINT so direct script or module invocation resolves appshell and data/registries from the live repo root.",
+      "scope": "server startup",
+      "severity": "high"
+    },
+    {
+      "blocker_status": "hard_blocker_for_alt_save_roots",
+      "category": "integration",
+      "evidence": "runner.py hard-codes repo_root/saves/<save_id>; alternate saves-root boot failed.",
+      "gap_id": "GAP-002",
+      "likely_owner_system": "tools/xstack/sessionx/runner.py",
+      "recommended_action": "Make session_boot honor the save root/session artifact location already supported by session_create.",
+      "scope": "session boot",
+      "severity": "high"
+    },
+    {
+      "blocker_status": "hard_blocker_for_single_command_playtest_boot",
+      "category": "startup_ergonomics",
+      "evidence": "MVP runtime_entry local-singleplayer launch did not yield a clear gameplay boot.",
+      "gap_id": "GAP-003",
+      "likely_owner_system": "tools/mvp/runtime_entry.py and launcher/start flow",
+      "recommended_action": "Publish one canonical repo-local command that wraps session creation, local authority boot, and attach/status reporting.",
+      "scope": "local playtest bootstrap",
+      "severity": "high"
+    },
+    {
+      "blocker_status": "soft_blocker_for_repeatable_playtests",
+      "category": "supervision",
+      "evidence": "launcher status surfaced a prior exited server child and failed local attach attempt.",
+      "gap_id": "GAP-004",
+      "likely_owner_system": "appshell/supervisor and launcher status flow",
+      "recommended_action": "Resolve the server child exit_code 3 / attach refusal path before relying on launcher supervision for internal sessions.",
+      "scope": "launcher supervised sessions",
+      "severity": "high"
+    },
+    {
+      "blocker_status": "non_blocker_for_headless_tui_baseline",
+      "category": "ui_shell",
+      "evidence": "launcher_config/profile/process and GUI/TUI entrypoints remain explicit stubs.",
+      "gap_id": "GAP-005",
+      "likely_owner_system": "launcher/",
+      "recommended_action": "Keep using the Python launcher/AppShell for baseline work; defer native launcher GUI/TUI completion.",
+      "scope": "launcher native shell",
+      "severity": "medium"
+    },
+    {
+      "blocker_status": "non_blocker_for_repo_local_setup",
+      "category": "ui_shell",
+      "evidence": "setup.exe smoke reports stub status while setup_cli.py exposes richer real commands.",
+      "gap_id": "GAP-006",
+      "likely_owner_system": "setup/",
+      "recommended_action": "Treat tools/setup/setup_cli.py as canonical for now and defer native setup shell completion.",
+      "scope": "setup native shell",
+      "severity": "medium"
+    },
+    {
+      "blocker_status": "hard_blocker_for_non_loopback_multiplayer",
+      "category": "networking",
+      "evidence": "tcp_stub.py and udp_stub.py explicitly refuse not_implemented.",
+      "gap_id": "GAP-007",
+      "likely_owner_system": "net/transport/",
+      "recommended_action": "Defer broader multiplayer until TCP/UDP or another external transport is implemented beyond loopback stubs.",
+      "scope": "multiplayer transport",
+      "severity": "high"
+    },
+    {
+      "blocker_status": "soft_blocker_for_claiming_repo_green",
+      "category": "validation",
+      "evidence": "FAST validation attempt timed out during the audit.",
+      "gap_id": "GAP-008",
+      "likely_owner_system": "tools/validation/tool_run_validation.py",
+      "recommended_action": "Run FAST validation to completion after audit artifacts are in place and capture a fresh report.",
+      "scope": "green gate confidence",
+      "severity": "medium"
+    },
+    {
+      "blocker_status": "soft_blocker_for_installed_playtest_distribution",
+      "category": "packaging",
+      "evidence": "Launcher/setup compat-status use repo_wrapper_shim because install discovery refuses normal installed-mode discovery.",
+      "gap_id": "GAP-009",
+      "likely_owner_system": "dist/ and install discovery",
+      "recommended_action": "Materialize or register a real install manifest/registry when moving from repo-local playtests to installed builds.",
+      "scope": "installed-mode flows",
+      "severity": "medium"
+    },
+    {
+      "blocker_status": "non_blocker_for_minimal_playtest",
+      "category": "runtime_wiring",
+      "evidence": "Large substantive implementations exist, but most are not visibly exercised by the verified public playtest path yet.",
+      "gap_id": "GAP-010",
+      "likely_owner_system": "geo/, logic/, materials/, process/, control/, worldgen/",
+      "recommended_action": "Integrate these subsystems incrementally after the baseline boot/session loop is stable.",
+      "scope": "semantic subsystems",
+      "severity": "medium"
+    },
+    {
+      "blocker_status": "soft_blocker_for_broader_product_realization",
+      "category": "runtime",
+      "evidence": "game/dominium_game_stub.c still marks the game library shell as a stub.",
+      "gap_id": "GAP-011",
+      "likely_owner_system": "game/dominium_game_stub.c",
+      "recommended_action": "Keep reusing engine/game libraries already wired into client/server, but treat remaining stub-tagged library shells as incomplete until proven otherwise.",
+      "scope": "game runtime shell",
+      "severity": "medium"
+    },
+    {
+      "blocker_status": "non_blocker",
+      "category": "documentation",
+      "evidence": "Multiple docs still point at src/... paths or stronger portability/readiness than the live code warrants.",
+      "gap_id": "GAP-012",
+      "likely_owner_system": "docs/audit/ and derived docs",
+      "recommended_action": "Refresh stale src/ path mirrors and maturity claims so docs stop overstating GUI portability or direct server startup readiness.",
+      "scope": "repo orientation",
+      "severity": "low"
+    }
+  ]
+}

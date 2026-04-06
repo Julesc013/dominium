@@ -1,0 +1,130 @@
+{
+  "assembly_order": [
+    "Lock onto the verify lane and confirm existing verify binaries or rebuild them.",
+    "Treat tools/setup/setup_cli.py and tools/launcher/launch.py as canonical repo-local shells.",
+    "Use profile.bundle.mvp_default plus locks/pack_lock.mvp_default.json as the baseline content/config pair.",
+    "Create session artifacts with tools/xstack/session_create.py using the canonical saves layout or a runner fix.",
+    "Boot local authority through the already functional loopback path, not external multiplayer.",
+    "Prove one short start -> status -> save/load/resume cycle before broadening scope.",
+    "Only after that, run FAST validation and selected playtest/CTest suites, then widen to installed-mode, updater, and broader multiplayer work."
+  ],
+  "audit_date": "2026-04-06",
+  "defer_until_after_baseline": [
+    "TCP/UDP or any non-loopback multiplayer transport.",
+    "Native launcher/setup GUI completion.",
+    "Broad semantic-domain wiring beyond what the baseline session actually needs.",
+    "Large convergence, rename, or ownership-rebinding work."
+  ],
+  "recommended_playable_baseline": "Repo-local TUI/headless baseline using the verify build, default profile bundle, default pack lock, loopback authority only, and AppShell launcher/setup control surfaces.",
+  "target_slices": [
+    {
+      "missing_glue": [
+        "None if existing verify binaries are acceptable; otherwise run cmake --preset verify and build the preset."
+      ],
+      "name": "Repo-local bootstrap",
+      "recommended_surface": "Use verify preset plus repo_wrapper_shim dist/ manifest.",
+      "required_subsystems": [
+        "build_verify_lane",
+        "appshell_bootstrap",
+        "release_control_plane"
+      ],
+      "slice_id": "slice.repo_local_bootstrap",
+      "stop_conditions": [
+        "verify configure succeeds",
+        "verify binaries exist or are rebuilt"
+      ]
+    },
+    {
+      "missing_glue": [
+        "Document Python/AppShell commands as canonical repo-local shells.",
+        "Keep compiled launcher/setup as wrappers only."
+      ],
+      "name": "Setup and launcher shell",
+      "recommended_surface": "Use python tools/setup/setup_cli.py and python tools/launcher/launch.py.",
+      "required_subsystems": [
+        "setup_python_surface",
+        "launcher_python_surface",
+        "packs_profiles_locks"
+      ],
+      "slice_id": "slice.setup_and_launcher_shell",
+      "stop_conditions": [
+        "compat-status works",
+        "profiles list works",
+        "packs list works"
+      ]
+    },
+    {
+      "missing_glue": [
+        "Keep saves under canonical saves/ or fix session boot save-root coupling."
+      ],
+      "name": "Session create/materialize",
+      "recommended_surface": "Use tools/xstack/session_create.py with bundle.mvp_default plus pack_lock.mvp_default.",
+      "required_subsystems": [
+        "session_pipeline",
+        "packs_profiles_locks",
+        "schema_registry_support"
+      ],
+      "slice_id": "slice.session_materialization",
+      "stop_conditions": [
+        "session_spec.json exists",
+        "universe_identity/state exist"
+      ]
+    },
+    {
+      "missing_glue": [
+        "Publish a single clear wrapper that calls the currently functional loopback controller path."
+      ],
+      "name": "Local authoritative loopback runtime",
+      "recommended_surface": "Use local singleplayer controller / launcher supervision, but limit transport expectations to loopback only.",
+      "required_subsystems": [
+        "local_singleplayer_loopback",
+        "server_authority_loopback",
+        "net_transports"
+      ],
+      "slice_id": "slice.local_authority_loopback",
+      "stop_conditions": [
+        "handshake accepted",
+        "compat status emitted",
+        "server status reachable"
+      ]
+    },
+    {
+      "missing_glue": [
+        "Fix session_boot saves-root coupling before relying on non-default save roots.",
+        "Confirm client-facing load/resume path after session boot is stable."
+      ],
+      "name": "Save/load/resume path",
+      "recommended_surface": "Prefer canonical saves/<save_id> layout for now.",
+      "required_subsystems": [
+        "session_pipeline",
+        "release_control_plane"
+      ],
+      "slice_id": "slice.save_load_resume",
+      "stop_conditions": [
+        "session boot succeeds from a saved session",
+        "resume path can be repeated"
+      ]
+    },
+    {
+      "missing_glue": [
+        "Stabilize one canonical start/status/stop flow.",
+        "Capture a short repeatable smoke checklist."
+      ],
+      "name": "Internal playtest v0",
+      "recommended_surface": "Headless/TUI local authority only, default bundle/lock, repo-local manifest, FAST validation after boot smoke.",
+      "required_subsystems": [
+        "client_runtime_ui",
+        "server_authority_loopback",
+        "launcher_python_surface",
+        "setup_python_surface",
+        "validation_ci_surface"
+      ],
+      "slice_id": "slice.internal_playtest_v0",
+      "stop_conditions": [
+        "one repo-local session boots",
+        "client can attach or run loopback parity smoke",
+        "repeatable save/load check passes"
+      ]
+    }
+  ]
+}

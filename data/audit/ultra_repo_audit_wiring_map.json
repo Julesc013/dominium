@@ -1,0 +1,353 @@
+{
+  "audit_date": "2026-04-06",
+  "dependency_edges": [
+    {
+      "from": "cmake.verify",
+      "relationship": "produces",
+      "status": "verified",
+      "to": "verify.bin"
+    },
+    {
+      "from": "verify.bin",
+      "relationship": "contains",
+      "status": "verified",
+      "to": "client.exe"
+    },
+    {
+      "from": "verify.bin",
+      "relationship": "contains",
+      "status": "verified",
+      "to": "server.exe"
+    },
+    {
+      "from": "verify.bin",
+      "relationship": "parallel_surface_to",
+      "status": "implemented",
+      "to": "launcher.py"
+    },
+    {
+      "from": "launcher.py",
+      "relationship": "boots_through",
+      "status": "verified",
+      "to": "appshell"
+    },
+    {
+      "from": "setup.py",
+      "relationship": "boots_through",
+      "status": "verified",
+      "to": "appshell"
+    },
+    {
+      "from": "appshell",
+      "relationship": "discovers",
+      "status": "verified",
+      "to": "release_manifest"
+    },
+    {
+      "from": "appshell",
+      "relationship": "consults_via_release_logic",
+      "status": "verified",
+      "to": "trust_verifier"
+    },
+    {
+      "from": "release_engine",
+      "relationship": "imports",
+      "status": "implemented",
+      "to": "trust_verifier"
+    },
+    {
+      "from": "setup.py",
+      "relationship": "enumerates_and_validates",
+      "status": "verified",
+      "to": "packs_profiles_locks"
+    },
+    {
+      "from": "launcher.py",
+      "relationship": "enumerates_and_validates",
+      "status": "verified",
+      "to": "packs_profiles_locks"
+    },
+    {
+      "from": "session_create",
+      "relationship": "delegates_to",
+      "status": "verified",
+      "to": "sessionx.creator"
+    },
+    {
+      "from": "session_boot",
+      "relationship": "delegates_to",
+      "status": "verified",
+      "to": "sessionx.runner"
+    },
+    {
+      "from": "sessionx.creator",
+      "relationship": "materializes_from",
+      "status": "verified",
+      "to": "packs_profiles_locks"
+    },
+    {
+      "from": "sessionx.runner",
+      "relationship": "expects_artifacts_from",
+      "status": "blocked_by_save_root_coupling",
+      "to": "packs_profiles_locks"
+    },
+    {
+      "from": "local_singleplayer",
+      "relationship": "uses_for_local_authority",
+      "status": "implemented",
+      "to": "process_spawn"
+    },
+    {
+      "from": "local_singleplayer",
+      "relationship": "handshakes_over",
+      "status": "verified",
+      "to": "loopback_transport"
+    },
+    {
+      "from": "loopback_transport",
+      "relationship": "runtime_protocol_surface_for",
+      "status": "verified",
+      "to": "server.exe"
+    },
+    {
+      "from": "client.exe",
+      "relationship": "consumes_content_and_compat_expectations",
+      "status": "likely",
+      "to": "packs_profiles_locks"
+    },
+    {
+      "from": "ctest",
+      "relationship": "tests",
+      "status": "verified_by_enumeration",
+      "to": "client.exe"
+    },
+    {
+      "from": "ctest",
+      "relationship": "tests",
+      "status": "verified_by_enumeration",
+      "to": "server.exe"
+    },
+    {
+      "from": "validation",
+      "relationship": "checks",
+      "status": "implemented",
+      "to": "schema_registry_support"
+    }
+  ],
+  "disconnected_clusters": [
+    {
+      "cluster": "semantic_python_domains",
+      "paths": [
+        "geo/",
+        "logic/",
+        "materials/",
+        "process/",
+        "control/",
+        "worldgen/"
+      ],
+      "reason": "Large implementations exist, but the audit could not tie most of them to a verified public product runpath yet."
+    },
+    {
+      "cluster": "external_multiplayer_transport",
+      "paths": [
+        "net/transport/tcp_stub.py",
+        "net/transport/udp_stub.py"
+      ],
+      "reason": "Only deterministic loopback is implemented today."
+    },
+    {
+      "cluster": "static_update_feed_data",
+      "paths": [
+        "updates/"
+      ],
+      "reason": "Channel JSON exists, but the directory itself is data-only rather than a runnable update service."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cmake.verify",
+      "kind": "build",
+      "path": "cmake --preset verify",
+      "state": "verified"
+    },
+    {
+      "id": "verify.bin",
+      "kind": "build_artifact",
+      "path": "out/build/vs2026/verify/bin/",
+      "state": "verified"
+    },
+    {
+      "id": "appshell",
+      "kind": "shared_shell",
+      "path": "appshell/",
+      "state": "implemented_and_used"
+    },
+    {
+      "id": "launcher.py",
+      "kind": "entrypoint",
+      "path": "tools/launcher/launch.py",
+      "state": "verified"
+    },
+    {
+      "id": "setup.py",
+      "kind": "entrypoint",
+      "path": "tools/setup/setup_cli.py",
+      "state": "verified"
+    },
+    {
+      "id": "client.exe",
+      "kind": "entrypoint",
+      "path": "out/build/vs2026/verify/bin/client.exe",
+      "state": "verified"
+    },
+    {
+      "id": "server.exe",
+      "kind": "entrypoint",
+      "path": "out/build/vs2026/verify/bin/server.exe",
+      "state": "verified"
+    },
+    {
+      "id": "session_create",
+      "kind": "entrypoint",
+      "path": "tools/xstack/session_create.py",
+      "state": "verified"
+    },
+    {
+      "id": "session_boot",
+      "kind": "entrypoint",
+      "path": "tools/xstack/session_boot.py",
+      "state": "blocked"
+    },
+    {
+      "id": "sessionx.creator",
+      "kind": "tooling",
+      "path": "tools/xstack/sessionx/creator.py",
+      "state": "implemented_and_used"
+    },
+    {
+      "id": "sessionx.runner",
+      "kind": "tooling",
+      "path": "tools/xstack/sessionx/runner.py",
+      "state": "partial"
+    },
+    {
+      "id": "local_singleplayer",
+      "kind": "runtime_api",
+      "path": "client/local_server/local_server_controller.py",
+      "state": "partial"
+    },
+    {
+      "id": "process_spawn",
+      "kind": "runtime_support",
+      "path": "runtime/process_spawn.py",
+      "state": "implemented_and_used"
+    },
+    {
+      "id": "loopback_transport",
+      "kind": "runtime_support",
+      "path": "server/net/loopback_transport.py",
+      "state": "implemented_and_used"
+    },
+    {
+      "id": "release_manifest",
+      "kind": "release_data",
+      "path": "dist/manifests/release_manifest.json",
+      "state": "implemented_and_used"
+    },
+    {
+      "id": "release_engine",
+      "kind": "release_logic",
+      "path": "release/release_manifest_engine.py",
+      "state": "implemented_and_used"
+    },
+    {
+      "id": "trust_verifier",
+      "kind": "security_logic",
+      "path": "security/trust/trust_verifier.py",
+      "state": "implemented_and_used"
+    },
+    {
+      "id": "packs_profiles_locks",
+      "kind": "content_config",
+      "path": "packs/, profiles/, locks/",
+      "state": "implemented_and_used"
+    },
+    {
+      "id": "ctest",
+      "kind": "validation",
+      "path": "ctest --test-dir out/build/vs2026/verify",
+      "state": "verified"
+    },
+    {
+      "id": "validation",
+      "kind": "validation",
+      "path": "tools/validation/tool_run_validation.py",
+      "state": "partial"
+    },
+    {
+      "id": "semantic_python_domains",
+      "kind": "runtime_domain",
+      "path": "geo/, logic/, materials/, process/, control/, worldgen/",
+      "state": "implemented_but_isolated"
+    }
+  ],
+  "runpath_chains": [
+    {
+      "chain": [
+        "cmake --preset verify",
+        "out/build/vs2026/verify/bin/{client,server,launcher,setup,tools}.exe",
+        "--help / --smoke"
+      ],
+      "id": "repo_local_boot",
+      "status": "verified"
+    },
+    {
+      "chain": [
+        "python tools/launcher/launch.py",
+        "appshell bootstrap",
+        "release manifest + pack/profile checks",
+        "supervisor status / attach surface"
+      ],
+      "id": "launcher_shell_flow",
+      "status": "verified_with_risk"
+    },
+    {
+      "chain": [
+        "python tools/setup/setup_cli.py",
+        "appshell bootstrap",
+        "trust/release/install/pack/profile commands"
+      ],
+      "id": "setup_shell_flow",
+      "status": "verified"
+    },
+    {
+      "chain": [
+        "python tools/xstack/session_create.py",
+        "session_spec + universe artifacts",
+        "python tools/xstack/session_boot.py",
+        "sessionx runner"
+      ],
+      "id": "session_pipeline_flow",
+      "status": "partial"
+    },
+    {
+      "chain": [
+        "client.local_server.local_server_controller.start_local_singleplayer",
+        "runtime.process_spawn or in-proc stub",
+        "server.net.loopback_transport",
+        "compat handshake + control channel"
+      ],
+      "id": "local_singleplayer_flow",
+      "status": "partially_verified"
+    },
+    {
+      "chain": [
+        "python tools/validation/tool_run_validation.py",
+        "python tools/xstack/testx_all.py",
+        "ctest --test-dir out/build/vs2026/verify"
+      ],
+      "id": "validation_flow",
+      "status": "verified_by_enumeration_not_full_execution"
+    }
+  ]
+}

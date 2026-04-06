@@ -1,0 +1,150 @@
+{
+  "audit_date": "2026-04-06",
+  "ctest_enumerated_count": 493,
+  "matrix_rows": [
+    {
+      "blockers": "",
+      "build_status": "verified",
+      "evidence": "Configure completed successfully on 2026-04-06.",
+      "path": "cmake --preset verify",
+      "run_status": "verified",
+      "subject": "cmake verify preset",
+      "test_status": "unknown"
+    },
+    {
+      "blockers": "",
+      "build_status": "verified",
+      "evidence": "Help and headless smoke both passed; CTest tree contains client_flow_smoke and client_parity.",
+      "path": "out/build/vs2026/verify/bin/client.exe",
+      "run_status": "verified",
+      "subject": "client binary",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "Public Python server entrypoint is still broken outside the compiled binary path.",
+      "build_status": "verified",
+      "evidence": "Help and headless smoke both passed; CTest tree includes server_discovery and shard tests.",
+      "path": "out/build/vs2026/verify/bin/server.exe",
+      "run_status": "verified",
+      "subject": "server binary",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "Compiled launcher core remains stub-heavy and public session start was not fully verified.",
+      "build_status": "verified",
+      "evidence": "Help passed; smoke only showed shell-level hooks; CTest registers launcher_help and launcher_cli_tests.",
+      "path": "out/build/vs2026/verify/bin/launcher.exe",
+      "run_status": "likely",
+      "subject": "launcher binary",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "Compiled setup wrapper is thinner than the Python/AppShell setup surface.",
+      "build_status": "verified",
+      "evidence": "Help passed; smoke returned stub status; CTest registers setup_help and setup_install_tests.",
+      "path": "out/build/vs2026/verify/bin/setup.exe",
+      "run_status": "likely",
+      "subject": "setup binary",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "tools_host_main.c still self-identifies as a stub host.",
+      "build_status": "verified",
+      "evidence": "Help and smoke passed; CTest registers tools_pack_validate, tools_capability_inspect, tools_auditx.",
+      "path": "out/build/vs2026/verify/bin/tools.exe",
+      "run_status": "verified",
+      "subject": "tools binary",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "launcher status exposed a prior server child exit_code 3 and attach refusal, so supervision stability is not fully green.",
+      "build_status": "verified",
+      "evidence": "compat-status, profiles list, packs list, and launcher status all ran successfully.",
+      "path": "python tools/launcher/launch.py",
+      "run_status": "verified",
+      "subject": "launcher AppShell",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "Audit did not execute install apply/update apply against a real install root.",
+      "build_status": "verified",
+      "evidence": "help, compat-status, profiles list, and packs list all ran successfully.",
+      "path": "python tools/setup/setup_cli.py",
+      "run_status": "verified",
+      "subject": "setup AppShell",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "server/server_main.py REPO_ROOT_HINT points two directories up instead of to the repo root.",
+      "build_status": "verified",
+      "evidence": "Direct invocation failed due repo-root/import path errors.",
+      "path": "python server/server_main.py",
+      "run_status": "blocked",
+      "subject": "server Python script",
+      "test_status": "unknown"
+    },
+    {
+      "blockers": "",
+      "build_status": "verified",
+      "evidence": "Audit successfully created a full session artifact bundle.",
+      "path": "python tools/xstack/session_create.py",
+      "run_status": "verified",
+      "subject": "session_create",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "Honor session_spec saves-root metadata or keep using canonical saves/ layout.",
+      "build_status": "verified",
+      "evidence": "Help works, but alt-root boot failed because runner expects repo_root/saves/<save_id>.",
+      "path": "python tools/xstack/session_boot.py",
+      "run_status": "blocked",
+      "subject": "session_boot",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "Public CLI wrapper is still ambiguous and no short canonical user-facing command was verified end to end.",
+      "build_status": "verified",
+      "evidence": "Direct invocation produced accepted handshake payloads and compat state.",
+      "path": "client.local_server.local_server_controller.start_local_singleplayer",
+      "run_status": "likely",
+      "subject": "local singleplayer controller",
+      "test_status": "unknown"
+    },
+    {
+      "blockers": "Audit did not execute a full suite run.",
+      "build_status": "verified",
+      "evidence": "Help works and exposes test profile/shard arguments.",
+      "path": "python tools/xstack/testx_all.py",
+      "run_status": "verified",
+      "subject": "TestX all-suite",
+      "test_status": "verified"
+    },
+    {
+      "blockers": "FAST run attempt timed out, so audit cannot mark the lane green.",
+      "build_status": "verified",
+      "evidence": "Help works and validator sources exist.",
+      "path": "python tools/validation/tool_run_validation.py",
+      "run_status": "likely",
+      "subject": "Unified validation",
+      "test_status": "likely"
+    },
+    {
+      "blockers": "Audit enumerated but did not execute the full test tree.",
+      "build_status": "verified",
+      "evidence": "CTest enumerated 493 tests, including playtest suites and product smoke.",
+      "path": "ctest --test-dir out/build/vs2026/verify",
+      "run_status": "verified",
+      "subject": "CTest verify tree",
+      "test_status": "verified"
+    },
+    {
+      "blockers": "No external multiplayer transport beyond loopback is implemented.",
+      "build_status": "verified",
+      "evidence": "Both transport modules exist as explicit not_implemented stubs.",
+      "path": "net/transport/tcp_stub.py and net/transport/udp_stub.py",
+      "run_status": "blocked",
+      "subject": "TCP/UDP transport",
+      "test_status": "unknown"
+    }
+  ]
+}

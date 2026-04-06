@@ -1,0 +1,146 @@
+{
+  "audit_date": "2026-04-06",
+  "consolidate_after_baseline": [
+    {
+      "paths": [
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py"
+      ],
+      "rationale": "The same pipeline should not disagree about artifact location semantics.",
+      "unit": "Session create/boot save-root handling"
+    },
+    {
+      "paths": [
+        "server/server_main.py",
+        "tools/mvp/runtime_entry.py",
+        "out/build/vs2026/verify/bin/server.exe"
+      ],
+      "rationale": "Entry semantics should converge around a stable canonical startup path.",
+      "unit": "Server startup entrypoints"
+    },
+    {
+      "paths": [
+        "docs/audit/",
+        "docs/runtime/",
+        "docs/release/"
+      ],
+      "rationale": "Stale src/ path mirrors and maturity overclaims create avoidable planning noise.",
+      "unit": "Doc path vocabulary"
+    }
+  ],
+  "leave_alone_for_now": [
+    {
+      "paths": [
+        "docs/canon/",
+        "docs/planning/AUTHORITY_ORDER.md",
+        "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md"
+      ],
+      "rationale": "Protected governance surfaces should not be rewritten during an audit/inventory prompt.",
+      "unit": "Authority-ordering and ownership doctrine"
+    },
+    {
+      "paths": [
+        "fields/",
+        "field/",
+        "schema/",
+        "schemas/"
+      ],
+      "rationale": "Doctrine explicitly warns against collapsing these ownership splits by convenience.",
+      "unit": "Canonical root splits such as fields/ vs field/ and schema/ vs schemas/"
+    }
+  ],
+  "retire_or_ignore_during_playable_baseline": [
+    {
+      "paths": [
+        "net/transport/tcp_stub.py",
+        "net/transport/udp_stub.py"
+      ],
+      "rationale": "Not needed for the first internal local playtest and still stubbed.",
+      "unit": "External multiplayer transport work"
+    },
+    {
+      "paths": [
+        "legacy/",
+        "quarantine/",
+        "large convergence reports under docs/audit/"
+      ],
+      "rationale": "These are valuable references but should not distract from assembling a runnable baseline quickly.",
+      "unit": "Broad repo-spanning convergence or rename work"
+    }
+  ],
+  "reuse_immediately": [
+    {
+      "paths": [
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "out/build/vs2026/verify/bin/"
+      ],
+      "rationale": "This is the fastest verified path to runnable client/server/tools shells.",
+      "unit": "Verify build preset and existing verify binaries"
+    },
+    {
+      "paths": [
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "appshell/"
+      ],
+      "rationale": "These are the strongest live repo-local command surfaces for packs, profiles, compat, trust, and supervision.",
+      "unit": "Launcher and setup AppShell command surfaces"
+    },
+    {
+      "paths": [
+        "profiles/bundles/bundle.mvp_default.json",
+        "locks/pack_lock.mvp_default.json",
+        "data/session_templates/session.mvp_default.json"
+      ],
+      "rationale": "They already define a coherent baseline configuration for a near-term playable slice.",
+      "unit": "Default profile bundle, pack lock, and session template"
+    },
+    {
+      "paths": [
+        "client/local_server/local_server_controller.py",
+        "server/net/loopback_transport.py",
+        "runtime/process_spawn.py"
+      ],
+      "rationale": "This is the most evidence-backed way to get a local authoritative playtest loop before real network transport exists.",
+      "unit": "Loopback authority and local singleplayer controller"
+    },
+    {
+      "paths": [
+        "release/release_manifest_engine.py",
+        "release/update_resolver.py",
+        "security/trust/trust_verifier.py"
+      ],
+      "rationale": "These surfaces are already wired into setup/launcher compatibility and should be reused rather than replaced.",
+      "unit": "Release manifest, update resolver, and trust verifier"
+    },
+    {
+      "paths": [
+        "tools/validation/",
+        "tools/xstack/testx_all.py",
+        "tests/playtest/"
+      ],
+      "rationale": "The repo already has broad coverage scaffolding; it should gate baseline assembly rather than be rebuilt.",
+      "unit": "CTest/TestX/validation surface"
+    }
+  ],
+  "wrap_dont_rewrite": [
+    {
+      "paths": [
+        "tools/mvp/runtime_entry.py",
+        "client/local_server/local_server_controller.py",
+        "tools/xstack/session_create.py"
+      ],
+      "rationale": "A thin canonical wrapper is cheaper and safer than re-architecting startup paths.",
+      "unit": "Public local playtest startup"
+    },
+    {
+      "paths": [
+        "launcher/",
+        "setup/"
+      ],
+      "rationale": "Use them as thin wrappers around the stronger Python/AppShell flows until native shells are worth finishing.",
+      "unit": "Compiled launcher/setup shells"
+    }
+  ]
+}

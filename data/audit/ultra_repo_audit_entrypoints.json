@@ -1,0 +1,482 @@
+{
+  "audit_date": "2026-04-06",
+  "entrypoints": [
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "configure_preset",
+      "evidence": "Observed successful configure on 2026-04-06.",
+      "id": "cmake_preset_verify",
+      "likely_purpose": "Configure the verify build lane and activate build-boundary checks.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Best starting point for repo-local build verification.",
+      "path": "cmake --preset verify",
+      "run_prerequisites": [
+        "CMake",
+        "configured verify toolchain",
+        "Python"
+      ],
+      "usage_status": "wired_to_build"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "compiled_binary",
+      "evidence": "Help and headless smoke both succeeded.",
+      "id": "client_binary_verify",
+      "likely_purpose": "Run the compiled client product surface.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Current easiest verified client path is headless or minimal UI smoke.",
+      "path": "out/build/vs2026/verify/bin/client.exe",
+      "run_prerequisites": [
+        "verify build outputs",
+        "Windows/MSVC verify bin tree"
+      ],
+      "usage_status": "product_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "compiled_binary",
+      "evidence": "Help and headless smoke both succeeded.",
+      "id": "server_binary_verify",
+      "likely_purpose": "Run the compiled authoritative server surface.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Verified surface today is deterministic loopback/headless smoke, not external multiplayer.",
+      "path": "out/build/vs2026/verify/bin/server.exe",
+      "run_prerequisites": [
+        "verify build outputs",
+        "Windows/MSVC verify bin tree"
+      ],
+      "usage_status": "product_entrypoint"
+    },
+    {
+      "canonicality": "wrapper",
+      "entrypoint_type": "compiled_binary",
+      "evidence": "Help succeeded; smoke only showed control hooks/caps state.",
+      "id": "launcher_binary_verify",
+      "likely_purpose": "Run the compiled launcher wrapper surface.",
+      "likely_runnable_now": true,
+      "maturity": "partial",
+      "notes": "Practical repo-local launcher control is currently stronger through tools/launcher/launch.py.",
+      "path": "out/build/vs2026/verify/bin/launcher.exe",
+      "run_prerequisites": [
+        "verify build outputs"
+      ],
+      "usage_status": "product_wrapper"
+    },
+    {
+      "canonicality": "wrapper",
+      "entrypoint_type": "compiled_binary",
+      "evidence": "Help succeeded; smoke returned stub status.",
+      "id": "setup_binary_verify",
+      "likely_purpose": "Run the compiled setup wrapper surface.",
+      "likely_runnable_now": true,
+      "maturity": "partial",
+      "notes": "Practical repo-local setup flow is stronger through tools/setup/setup_cli.py.",
+      "path": "out/build/vs2026/verify/bin/setup.exe",
+      "run_prerequisites": [
+        "verify build outputs"
+      ],
+      "usage_status": "product_wrapper"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "compiled_binary",
+      "evidence": "Help and smoke succeeded.",
+      "id": "tools_binary_verify",
+      "likely_purpose": "Run the compiled tools host surface.",
+      "likely_runnable_now": true,
+      "maturity": "partial",
+      "notes": "tools_host_main.c still identifies the host as a stub to be replaced by a tool router.",
+      "path": "out/build/vs2026/verify/bin/tools.exe",
+      "run_prerequisites": [
+        "verify build outputs"
+      ],
+      "usage_status": "tool_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "python_cli",
+      "evidence": "compat-status, profiles list, packs list, and launcher status all ran.",
+      "id": "launcher_python_appshell",
+      "likely_purpose": "Launcher AppShell command surface for compat, packs, profiles, and supervisor operations.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Best launcher surface for repo-local audit and likely baseline assembly.",
+      "path": "python tools/launcher/launch.py",
+      "run_prerequisites": [
+        "Python",
+        "repo root",
+        "dist/manifests/release_manifest.json"
+      ],
+      "usage_status": "product_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "python_cli",
+      "evidence": "help, compat-status, profiles list, and packs list all ran.",
+      "id": "setup_python_appshell",
+      "likely_purpose": "Setup AppShell command surface for install, trust, update, packs, profiles, and diagnostics.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "This is the strongest live setup surface in the repo today.",
+      "path": "python tools/setup/setup_cli.py",
+      "run_prerequisites": [
+        "Python",
+        "repo root",
+        "dist/manifests/release_manifest.json"
+      ],
+      "usage_status": "product_entrypoint"
+    },
+    {
+      "canonicality": "documented_canonical",
+      "entrypoint_type": "python_cli",
+      "evidence": "Direct help invocation failed with broken repo-root/appshell import resolution.",
+      "id": "server_python_script",
+      "likely_purpose": "Server AppShell entrypoint when invoked as a script.",
+      "likely_runnable_now": false,
+      "maturity": "partial",
+      "notes": "Do not recommend as a baseline command until repo_root_hint is fixed.",
+      "path": "python server/server_main.py",
+      "run_prerequisites": [
+        "Python",
+        "correct repo-root resolution"
+      ],
+      "usage_status": "blocked_entrypoint"
+    },
+    {
+      "canonicality": "experimental",
+      "entrypoint_type": "python_cli",
+      "evidence": "Module invocation still resolved product registry relative to the wrong repo root.",
+      "id": "server_python_module",
+      "likely_purpose": "Alternative module-safe server startup path.",
+      "likely_runnable_now": false,
+      "maturity": "partial",
+      "notes": "Slightly farther than direct script mode, but still blocked.",
+      "path": "python -m server.server_main",
+      "run_prerequisites": [
+        "Python",
+        "correct repo-root resolution"
+      ],
+      "usage_status": "blocked_entrypoint"
+    },
+    {
+      "canonicality": "experimental",
+      "entrypoint_type": "python_cli",
+      "evidence": "Help works, but local-singleplayer launch attempt fell through to AppShell/TUI rather than a clear gameplay boot.",
+      "id": "client_mvp_runtime_entry",
+      "likely_purpose": "Legacy or transitional MVP client/server bootstrap wrapper.",
+      "likely_runnable_now": true,
+      "maturity": "partial",
+      "notes": "Useful as a compatibility wrapper, not yet a dependable playtest command.",
+      "path": "python tools/mvp/runtime_entry.py client",
+      "run_prerequisites": [
+        "Python",
+        "repo root",
+        "selected mode/profile arguments"
+      ],
+      "usage_status": "transitional_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "python_cli",
+      "evidence": "--help succeeded for the FAST command surface.",
+      "id": "xstack_run",
+      "likely_purpose": "Top-level XStack orchestration entrypoint.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Useful for governance/test orchestration rather than direct product play.",
+      "path": "python tools/xstack/run.py",
+      "run_prerequisites": [
+        "Python",
+        "repo root"
+      ],
+      "usage_status": "tool_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "python_cli",
+      "evidence": "Created session artifacts successfully during audit.",
+      "id": "xstack_session_create",
+      "likely_purpose": "Create a session spec and universe artifacts for a save/session.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Works now and is part of the shortest path to a baseline session.",
+      "path": "python tools/xstack/session_create.py",
+      "run_prerequisites": [
+        "Python",
+        "repo root",
+        "pack/profile/template inputs"
+      ],
+      "usage_status": "tool_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "python_cli",
+      "evidence": "Help works, but alternate saves-root session boot was blocked by runner save-path coupling.",
+      "id": "xstack_session_boot",
+      "likely_purpose": "Boot a created session spec into runtime/server state.",
+      "likely_runnable_now": true,
+      "maturity": "partial",
+      "notes": "Recommend using canonical saves/<save_id> until the coupling bug is fixed.",
+      "path": "python tools/xstack/session_boot.py",
+      "run_prerequisites": [
+        "Python",
+        "repo root",
+        "session artifacts in expected saves layout"
+      ],
+      "usage_status": "tool_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "python_cli",
+      "evidence": "Help works; FAST attempt timed out during audit.",
+      "id": "validation_python",
+      "likely_purpose": "Run unified validation and emit reports.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Exists and is wired, but audit did not finish a full FAST run.",
+      "path": "python tools/validation/tool_run_validation.py",
+      "run_prerequisites": [
+        "Python",
+        "repo root"
+      ],
+      "usage_status": "tool_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "python_cli",
+      "evidence": "Help works and exposes FAST/STRICT/FULL profile selection.",
+      "id": "testx_all_python",
+      "likely_purpose": "Run TestX all-suite across FAST/STRICT/FULL profiles and shards.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Best fit for large validation sweeps once baseline boot is stable.",
+      "path": "python tools/xstack/testx_all.py",
+      "run_prerequisites": [
+        "Python",
+        "repo root"
+      ],
+      "usage_status": "tool_entrypoint"
+    },
+    {
+      "canonicality": "canonical",
+      "entrypoint_type": "test_harness",
+      "evidence": "CTest enumeration found 493 tests in the verify tree.",
+      "id": "ctest_verify",
+      "likely_purpose": "Execute registered C/C++ and Python test targets from the verify tree.",
+      "likely_runnable_now": true,
+      "maturity": "implemented_and_used",
+      "notes": "Includes playtest, capability, distribution, trust, and performance suites.",
+      "path": "ctest --test-dir out/build/vs2026/verify",
+      "run_prerequisites": [
+        "verify build tree"
+      ],
+      "usage_status": "tool_entrypoint"
+    },
+    {
+      "canonicality": "internal",
+      "entrypoint_type": "internal_api",
+      "evidence": "Direct invocation produced accepted handshake and compat payloads during audit.",
+      "id": "local_singleplayer_internal_api",
+      "likely_purpose": "Directly start or restart local singleplayer through the loopback controller.",
+      "likely_runnable_now": true,
+      "maturity": "partial",
+      "notes": "Internal path is more functional today than the public CLI wrapper.",
+      "path": "client.local_server.local_server_controller.start_local_singleplayer",
+      "run_prerequisites": [
+        "Python",
+        "repo root",
+        "profile bundle",
+        "pack lock",
+        "server config"
+      ],
+      "usage_status": "internal_entrypoint"
+    }
+  ],
+  "observed_commands": [
+    {
+      "command": "cmake --preset verify",
+      "id": "configure.verify",
+      "layer": "build",
+      "status": "passed",
+      "summary": "Configure completed and wrote build files to out/build/vs2026/verify."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/client.exe --help",
+      "id": "binary.client.help",
+      "layer": "client",
+      "status": "passed",
+      "summary": "Compiled client binary is present and prints help."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/client.exe --smoke --ui=none",
+      "id": "binary.client.smoke",
+      "layer": "client",
+      "status": "passed",
+      "summary": "Client smoke emitted deterministic MP0 hash 16976973710109906564."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/server.exe --help",
+      "id": "binary.server.help",
+      "layer": "server",
+      "status": "passed",
+      "summary": "Compiled server binary is present and prints help."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/server.exe --smoke --ui=none",
+      "id": "binary.server.smoke",
+      "layer": "server",
+      "status": "passed",
+      "summary": "Server smoke emitted deterministic MP0 loopback hash 16976973710109906564."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/launcher.exe --help",
+      "id": "binary.launcher.help",
+      "layer": "launcher",
+      "status": "passed",
+      "summary": "Compiled launcher binary is present and prints help."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/launcher.exe --smoke --ui=none",
+      "id": "binary.launcher.smoke",
+      "layer": "launcher",
+      "status": "passed_with_limitations",
+      "summary": "Launcher smoke ran but only exposed control hooks and caps state, not a session boot."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/setup.exe --help",
+      "id": "binary.setup.help",
+      "layer": "setup",
+      "status": "passed",
+      "summary": "Compiled setup binary is present and prints help."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/setup.exe --smoke --ui=none",
+      "id": "binary.setup.smoke",
+      "layer": "setup",
+      "status": "passed_with_limitations",
+      "summary": "Setup smoke returned `setup status: ok (stub)` rather than a full install flow."
+    },
+    {
+      "command": "out/build/vs2026/verify/bin/tools.exe --smoke --ui=none",
+      "id": "binary.tools.smoke",
+      "layer": "tools",
+      "status": "passed",
+      "summary": "Tools smoke returned `tools_smoke=ok`."
+    },
+    {
+      "command": "python tools/launcher/launch.py compat-status",
+      "id": "launcher.compat_status",
+      "layer": "launcher",
+      "status": "passed",
+      "summary": "Launcher AppShell reported compat.full, release_manifest.json present, and repo_wrapper_shim install discovery."
+    },
+    {
+      "command": "python tools/launcher/launch.py launcher status",
+      "id": "launcher.status",
+      "layer": "launcher",
+      "status": "passed_with_risk",
+      "summary": "Supervisor status surfaced prior client/server process state, including a server child exit_code 3 and failed attach attempt."
+    },
+    {
+      "command": "python tools/launcher/launch.py profiles list",
+      "id": "launcher.profiles",
+      "layer": "launcher",
+      "status": "passed",
+      "summary": "Launcher enumerated profile.bundle.mvp_default."
+    },
+    {
+      "command": "python tools/launcher/launch.py packs list",
+      "id": "launcher.packs",
+      "layer": "launcher",
+      "status": "passed",
+      "summary": "Launcher enumerated live pack manifests; audit counted 42 pack.json files under packs/."
+    },
+    {
+      "command": "python tools/setup/setup_cli.py compat-status",
+      "id": "setup.compat_status",
+      "layer": "setup",
+      "status": "passed",
+      "summary": "Setup AppShell reported compat.full, release manifest present, and repo_wrapper_shim install discovery."
+    },
+    {
+      "command": "python tools/setup/setup_cli.py profiles list",
+      "id": "setup.profiles",
+      "layer": "setup",
+      "status": "passed",
+      "summary": "Setup AppShell enumerated the default profile bundle."
+    },
+    {
+      "command": "python tools/setup/setup_cli.py packs list",
+      "id": "setup.packs",
+      "layer": "setup",
+      "status": "passed",
+      "summary": "Setup AppShell enumerated live pack manifests."
+    },
+    {
+      "command": "python server/server_main.py --help",
+      "id": "server.script.help",
+      "layer": "server",
+      "status": "blocked",
+      "summary": "Direct script invocation failed because REPO_ROOT_HINT escapes the repo root and breaks appshell import resolution."
+    },
+    {
+      "command": "python -m server.server_main --help",
+      "id": "server.module.help",
+      "layer": "server",
+      "status": "blocked",
+      "summary": "Module invocation progressed farther but still resolved the repo root incorrectly and failed to find data/registries/product_registry.json."
+    },
+    {
+      "command": "python tools/xstack/session_create.py --repo-root . --save-id ultra_audit_session --compile-outputs off --saves-root tmp/audit_session_saves",
+      "id": "xstack.session_create",
+      "layer": "session",
+      "status": "passed",
+      "summary": "Session creation wrote session_spec.json, universe_identity.json, universe_state.json, and universe_contract_bundle.json."
+    },
+    {
+      "command": "python tools/xstack/session_boot.py --repo-root . tmp/audit_session_saves/ultra_audit_session/session_spec.json",
+      "id": "xstack.session_boot.alt_root",
+      "layer": "session",
+      "status": "blocked",
+      "summary": "Boot failed because runner.py hard-codes repo_root/saves/<save_id> instead of honoring the alternate saves root used by session_create."
+    },
+    {
+      "command": "python tools/xstack/testx_all.py --help",
+      "id": "xstack.testx_all.help",
+      "layer": "validation",
+      "status": "passed",
+      "summary": "TestX all-suite entrypoint is present and exposes FAST/STRICT/FULL profiles and shard selection."
+    },
+    {
+      "command": "python tools/validation/tool_run_validation.py --repo-root . --profile FAST",
+      "id": "validation.fast",
+      "layer": "validation",
+      "status": "timed_out",
+      "summary": "Unified validation was attempted but did not finish inside the audit timeout window, so the audit does not claim a green FAST gate."
+    },
+    {
+      "command": "ctest --test-dir out/build/vs2026/verify -N",
+      "id": "ctest.enumerate",
+      "layer": "validation",
+      "status": "passed",
+      "summary": "CTest enumerated 493 registered tests in the verify tree, including playtest, capability, distribution, trust, and performance suites."
+    },
+    {
+      "command": "python tools/mvp/runtime_entry.py client --repo-root . --local-singleplayer --ticks 1 --server-command status",
+      "id": "runtime_entry.local_singleplayer",
+      "layer": "client",
+      "status": "partial",
+      "summary": "The public MVP bootstrap did not yield a clear gameplay launch and instead dropped into the AppShell/TUI command surface."
+    },
+    {
+      "command": "python -c \"from client.local_server.local_server_controller import start_local_singleplayer; ...\"",
+      "id": "local_singleplayer.controller",
+      "layer": "client",
+      "status": "partial",
+      "summary": "Direct controller invocation produced a large accepted loopback handshake and compat payloads, but the public wrapper remains unclear."
+    }
+  ]
+}
