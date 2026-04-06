@@ -1,0 +1,224 @@
+{
+  "checkpoint_id": "checkpoint_c_xstack_aide_closure",
+  "artifact_class": "closure_checkpoint",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "post-baseline AIDE roadmapping",
+    "post-baseline extraction-admission review"
+  ],
+  "replacement_target": "later explicit post-baseline AIDE roadmap checkpoint or approved replacement closure checkpoint only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "data/planning/next_execution_order_post_zeta.json",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+    "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+    "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+    "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+    "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+    "data/audit/ultra_repo_audit_entrypoints.json",
+    "data/audit/ultra_repo_audit_product_assembly_plan.json",
+    "data/audit/ultra_repo_audit_gap_ledger.json",
+    "data/audit/ultra_repo_audit_build_run_test_matrix.json",
+    "data/audit/ultra_repo_audit_wiring_map.json",
+    "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+    "data/xstack/xstack_scope_freeze.json",
+    "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+    "data/xstack/xstack_inventory_and_classification.json",
+    "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+    "data/xstack/aide_portable_task_contract.json",
+    "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+    "data/xstack/aide_evidence_and_review_contract.json",
+    "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+    "data/xstack/aide_policy_and_permission_shape.json",
+    "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
+    "data/xstack/aide_capability_profile_shape.json",
+    "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
+    "data/xstack/aide_adapter_contract.json",
+    "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+    "data/xstack/codex_repo_operating_contract.json",
+    "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+    "data/xstack/xstack_to_aide_extraction_map.json"
+  ],
+  "phase_state": {
+    "phase_id": "xstack_aide_narrowing_and_contract",
+    "checkpoint_prompt_id": "C-XSTACK_AIDE_MEGA_AUDIT",
+    "series_range": "X-0..X-8",
+    "phase_status": "complete",
+    "subordinate_to_playable_baseline_priority": true,
+    "not_doing": [
+      "AIDE runtime implementation",
+      "code extraction or repo migration",
+      "daemon/compiler/bakeoff implementation",
+      "broad adapter implementation",
+      "scope reopening without explicit follow-up checkpoint"
+    ]
+  },
+  "family_completion_findings": [
+    {
+      "family_id": "xstack_scope_freeze",
+      "prompt_id": "X-0",
+      "verdict": "complete",
+      "summary": "Canonical XStack meaning, scope buckets, in-scope and out-of-scope boundaries, and Dominium-retained posture were frozen."
+    },
+    {
+      "family_id": "inventory_and_classification",
+      "prompt_id": "X-1",
+      "verdict": "complete_with_cautions",
+      "summary": "A detailed live-surface ledger exists, but some surfaces remain intentionally mixed, legacy, or later-review only."
+    },
+    {
+      "family_id": "portable_task_contract",
+      "prompt_id": "X-2",
+      "verdict": "complete",
+      "summary": "The portable task-unit shape was frozen without adding runtime or scheduler semantics."
+    },
+    {
+      "family_id": "evidence_review_contract",
+      "prompt_id": "X-3",
+      "verdict": "complete",
+      "summary": "Portable evidence and review semantics were frozen with explicit refusal, rejection, acknowledgement, approval, and escalation distinctions."
+    },
+    {
+      "family_id": "policy_permission_shape",
+      "prompt_id": "X-4",
+      "verdict": "complete",
+      "summary": "Portable policy and permission declarations were frozen while enforcement/runtime machinery stayed retained or deferred."
+    },
+    {
+      "family_id": "capability_profile_shape",
+      "prompt_id": "X-5",
+      "verdict": "complete",
+      "summary": "Portable capability-profile declaration shape and its contract links were frozen without creating a resolver/runtime."
+    },
+    {
+      "family_id": "adapter_contract",
+      "prompt_id": "X-6",
+      "verdict": "complete",
+      "summary": "The portable adapter declaration was frozen without implementing adapter machinery."
+    },
+    {
+      "family_id": "codex_repo_operating_contract",
+      "prompt_id": "X-7",
+      "verdict": "complete_with_cautions",
+      "summary": "One canonical build/validation/playtest/session rule set was frozen, but it honestly preserves current baseline fragility and blockers."
+    },
+    {
+      "family_id": "xstack_to_aide_extraction_map",
+      "prompt_id": "X-8",
+      "verdict": "complete_with_cautions",
+      "summary": "The extraction-boundary ledger and staged post-baseline order were frozen, with mixed and baseline-critical surfaces explicitly deferred."
+    }
+  ],
+  "portable_now_summary": {
+    "meaning": "Portable now means semantically frozen and reusable at the document-first or contract-first layer, not already extracted into a separate runtime or repo.",
+    "portable_document_first_assets": [
+      "XStack meaning and scope buckets from X-0",
+      "inventory and classification fact base from X-1",
+      "portable task contract",
+      "portable evidence and review contract",
+      "portable policy and permission shape",
+      "portable capability-profile shape",
+      "portable adapter contract",
+      "XStack-to-AIDE extraction map"
+    ],
+    "portable_core_code_candidates": [
+      "tools/xstack/core/**",
+      "tools/xstack/compatx/canonical_json.py",
+      "tools/xstack/compatx/validator.py",
+      "tools/xstack/compatx/schema_registry.py"
+    ]
+  },
+  "dominium_retained_now_summary": {
+    "retained_surfaces": [
+      "session creation, boot, runtime control, and save-root-sensitive paths",
+      "AppShell, launcher, setup, and operator-command surfaces",
+      "local loopback authority, local singleplayer bridge, and baseline runtime glue",
+      "pack, profile, lock, registry-compile, and packaging/distribution pipelines",
+      "release/trust consumers and repo-specific verification/publication behavior",
+      "validation/reporting surfaces that still own repo suites, report sinks, or Xi-specific policy",
+      "the Codex repo operating contract itself as a Dominium repo-law surface"
+    ]
+  },
+  "deferred_until_post_baseline": [
+    "full AIDE runtime implementation",
+    "daemon, scheduler, worker-pool, compiler, bakeoff, or adapter-runtime machinery",
+    "code extraction or repo migration",
+    "separate AIDE repository creation",
+    "broad wrapper or bridge implementation across the repo",
+    "mixed-surface review for UI bind, validation kernels, CI guardrail policy, and gate/review bridge layers",
+    "any extraction or promotion of session/runtime/AppShell/launcher/setup/local-loopback/release-trust paths",
+    "any reopening of XStack meaning, scope buckets, or portable contract shapes without an explicit follow-up checkpoint"
+  ],
+  "immediate_operational_value": [
+    {
+      "area": "codex_performance_on_repo",
+      "value": "Future Codex runs now have one explicit XStack/AIDE packet plus one repo-operating contract instead of inferring scope and ownership from drifted docs."
+    },
+    {
+      "area": "task_scoping",
+      "value": "Prompts can separate portable-contract work from Dominium runtime work cleanly and reject overbroad AIDE asks earlier."
+    },
+    {
+      "area": "repo_safety",
+      "value": "Protected, mixed, retained, deferred, and out-of-scope surfaces are now explicit instead of being rediscovered per run."
+    },
+    {
+      "area": "future_extraction_clarity",
+      "value": "Later AIDE work can start from a staged extraction map with prerequisites and shim requirements instead of reopening repo-wide portability debate."
+    },
+    {
+      "area": "playable_baseline_non_interference",
+      "value": "The series now acts as a constraint packet behind baseline assembly rather than as a competing architecture or platform track."
+    }
+  ],
+  "next_step_after_baseline": {
+    "prompt_id": "AIDE_POST_BASELINE_ROADMAP-0",
+    "required_before_baseline": false,
+    "purpose": "Re-check the actual playable baseline against the operating contract and extraction map, confirm which extraction prerequisites are now satisfied, and admit or refuse a first post-baseline extraction-review tranche.",
+    "should_consume": [
+      "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+      "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+      "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+      "fresh post-baseline validation and smoke evidence"
+    ],
+    "must_not_do": [
+      "runtime implementation by default",
+      "repo migration by default",
+      "broad code extraction without a later admission review"
+    ]
+  },
+  "forbidden_followups": [
+    "using closure to justify immediate AIDE platformization",
+    "reopening the XStack scope freeze because a surface sounds generic",
+    "extracting baseline-critical Dominium surfaces before the local playable baseline exists",
+    "treating contract freezes as proof that runtime implementation is complete",
+    "using the extraction map to justify broad renames, code movement, or repo splits now",
+    "creating new XStack/AIDE prompts before the baseline that compete with startup/session/playtest hardening",
+    "treating the repo-operating contract as AIDE operating policy instead of Dominium repo law"
+  ],
+  "final_verdict": {
+    "phase_complete": true,
+    "phase_completion_meaning": "The intended narrowing, contract-freeze, repo-operating, and extraction-boundary mission is complete.",
+    "runtime_or_extraction_implementation_completed": false,
+    "further_xstack_aide_prompt_required_before_baseline": false,
+    "next_prompt_after_baseline": "AIDE_POST_BASELINE_ROADMAP-0"
+  }
+}

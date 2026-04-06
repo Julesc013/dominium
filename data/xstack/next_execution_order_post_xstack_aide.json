@@ -1,0 +1,76 @@
+{
+  "ordering_id": "next_execution_order_post_xstack_aide",
+  "artifact_class": "execution_order",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "post-baseline AIDE roadmapping",
+    "post-baseline extraction-admission review"
+  ],
+  "replacement_target": "later post-baseline AIDE roadmap ordering artifact or explicit replacement checkpoint only",
+  "binding_sources": [
+    "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+    "data/xstack/checkpoint_c_xstack_aide_closure.json",
+    "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+    "data/xstack/codex_repo_operating_contract.json",
+    "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+    "data/xstack/xstack_to_aide_extraction_map.json",
+    "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+    "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md"
+  ],
+  "checkpoint_state": "xstack_aide_narrowing_and_contract_phase_closed",
+  "recommended_next_prompt": {
+    "prompt_id": "AIDE_POST_BASELINE_ROADMAP-0",
+    "timing": "after the canonical playable baseline exists",
+    "purpose": "Review post-baseline evidence against the frozen operating and extraction boundaries, then admit or refuse a first post-baseline extraction-review tranche."
+  },
+  "pre_baseline_xstack_aide_work": {
+    "new_prompt_required": false,
+    "rule": "No new XStack/AIDE prompt should run before the playable baseline exists.",
+    "use_existing_series_during_baseline": [
+      "Use X-7 as the repo-operating law for build, validation, playtest, session, directory-authority, task-sizing, and commit rules.",
+      "Use X-0 and X-1 to keep scope, ownership, and mixed-surface cautions explicit while fixing baseline blockers.",
+      "Use X-2 through X-6 as contract vocabulary only when baseline work needs task, evidence, review, policy, capability, or adapter language.",
+      "Use X-8 to avoid accidental extraction or migration when touching portable-looking but still Dominium-owned surfaces."
+    ]
+  },
+  "prompt_order": [
+    {
+      "stage": 1,
+      "prompt_or_band": "canonical playable-baseline hardening",
+      "notes": "Resolve startup, session, and loopback-path blockers using the audit-backed baseline-first plan."
+    },
+    {
+      "stage": 2,
+      "prompt_or_band": "repeatable repo-local playtest proof",
+      "notes": "Prove one repeatable repo-local baseline path with the canonical bundle, lock, session template, and loopback-authoritative mode."
+    },
+    {
+      "stage": 3,
+      "prompt_or_band": "fresh FAST validation and agreed smoke slice",
+      "notes": "Re-run FAST and the narrowed smoke gate against the assembled baseline."
+    },
+    {
+      "stage": 4,
+      "prompt_or_band": "AIDE_POST_BASELINE_ROADMAP-0",
+      "notes": "Only after the baseline is real should post-baseline extraction review planning resume."
+    }
+  ],
+  "why_this_order_is_best": [
+    "The XStack/AIDE narrowing-and-contract phase is already complete in its intended scope.",
+    "The repo gets more immediate value from baseline hardening than from more extraction planning today.",
+    "Post-baseline evidence will better distinguish truly extractable substrate from still-Dominium-owned integration glue.",
+    "This ordering prevents the repo from mistaking contract freezes for permission to start migration, platformization, or a second competing architecture track."
+  ],
+  "post_baseline_entry_expectations": [
+    "one canonical repo-local playable path exists",
+    "session materialization works on the canonical layout",
+    "one repeatable start or status or save-load-resume slice exists",
+    "a fresh successful FAST validation run exists",
+    "the X-8 extraction prerequisites can be re-scored against live post-baseline evidence"
+  ]
+}
