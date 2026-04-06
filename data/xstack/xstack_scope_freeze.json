@@ -1,0 +1,613 @@
+{
+  "artifact_id": "XSTACK_SCOPE_FREEZE",
+  "artifact_class": "scope_freeze",
+  "schema_version": "1.0.0",
+  "status": "canonical",
+  "last_reviewed": "2026-04-07",
+  "stability": "stable",
+  "future_series": [
+    "X-1",
+    "X-2",
+    "X-3",
+    "AIDE extraction review"
+  ],
+  "replacement_target": "later explicit XStack/AIDE scope checkpoint or replacement artifact only",
+  "binding_sources": [
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "AGENTS.md",
+    ".agentignore",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+    "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+    "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+    "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
+    "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md"
+  ],
+  "current_program_context": {
+    "admissible_zeta_doctrine_program_complete": true,
+    "further_zeta_prompt_required": false,
+    "post_zeta_mode": "frontier reconciliation and consolidation first",
+    "current_product_priority": "repo-local playable baseline and repo stabilization",
+    "series_role": "narrowing, classification, and contract extraction preparation that must not compete with playable-baseline work"
+  },
+  "current_xstack_definition": {
+    "summary": "XStack is the live repo-native deterministic tooling and control layer centered on tools/xstack/, plus its immediate support docs/data, used today for gate orchestration, validation families, session artifact materialization/control, pack and registry tooling, CI guardrails, and related operator surfaces.",
+    "branded_or_named_xstack": [
+      "tools/xstack/**",
+      "docs/xstack/**",
+      "data/xstack/**",
+      "docs/agents/XSTACK_TASK_CATALOG.md",
+      "docs/governance/XSTACK_*.md",
+      "docs/governance/XSTACK_SCOPE_TEMPLATE.json"
+    ],
+    "functionally_part_of_live_xstack_control_layer": [
+      "scripts/dev/gate.py",
+      "validation/validation_engine.py",
+      "tools/validation/tool_run_validation.py",
+      "appshell/**",
+      "server/server_boot.py",
+      "client/local_server/local_server_controller.py"
+    ],
+    "resembles_xstack_concerns_but_not_current_xstack_scope": [
+      "tools/controlx/**",
+      "tools/compatx/**",
+      "engine/**",
+      "game/**",
+      "geo/**",
+      "logic/**",
+      "materials/**",
+      "worldgen/**",
+      "launcher/**",
+      "setup/**"
+    ],
+    "better_understood_as_future_aide_material_than_current_xstack": [
+      "any standalone repo-independent extraction of XStack contracts into a new platform identity",
+      "any AIDE runtime, daemon, compiler, adapter ecosystem, or service layer",
+      "any portability claim that depends on XStack already being cleanly separable from Dominium today"
+    ],
+    "evidence_markers": [
+      "tools/xstack/run.py is a live XStack entrypoint",
+      "tools/xstack/controlx/orchestrator.py coordinates pack, bundle, compile, audit, test, session, and UI checks",
+      "tools/xstack/sessionx/** is a live implementation surface for session lifecycle and process/session control",
+      "validation/validation_engine.py imports and maps XStack compatx surfaces directly",
+      "appshell/**, server/server_boot.py, and client/local_server/local_server_controller.py import tools.xstack helpers",
+      "repo search found live tools.xstack references under engine/, game/, client/, and server/",
+      "repo search found no current repo-local AIDE implementation root"
+    ],
+    "conservative_interpretation": "XStack is live and important in the current repo, but it is not yet proven to be a clean standalone platform."
+  },
+  "bucket_definitions": {
+    "portable_core": {
+      "meaning": "Narrow deterministic substrate that already exposes generic planner, runner, hashing, or schema-contract behavior with limited direct product knowledge.",
+      "inclusion_criteria": [
+        "structurally generic",
+        "reused across multiple XStack families",
+        "describable without Dominium session or startup assumptions"
+      ]
+    },
+    "runtime_concern": {
+      "meaning": "XStack-branded code that directly creates, boots, stages, controls, or mutates sessions or authoritative session-adjacent state.",
+      "inclusion_criteria": [
+        "works with SessionSpec or universe artifacts",
+        "handles SRZ, stage parity, observation/render adaptation, or authoritative process/session control",
+        "directly affects session lifecycle rather than only validating or auditing it"
+      ]
+    },
+    "ops_concern": {
+      "meaning": "Operator, CI, gate, audit, validation, and repo-execution surfaces.",
+      "inclusion_criteria": [
+        "runs the repo or gates changes",
+        "emits evidence or validation output",
+        "coordinates verification rather than product gameplay"
+      ]
+    },
+    "dominium_specific_concern": {
+      "meaning": "Surfaces tied to Dominium product shells, bundle/lock/profile assumptions, loopback authority, or repo-local control-plane details.",
+      "inclusion_criteria": [
+        "bakes in Dominium paths or bundle IDs",
+        "depends on registry outputs or release/trust wiring specific to this repo",
+        "assumes product-shell behavior not proven portable"
+      ]
+    },
+    "legacy_transitional": {
+      "meaning": "Older sibling roots, wrappers, or docs that remain useful evidence but are not the current XStack semantic center.",
+      "inclusion_criteria": [
+        "predates current tools/xstack/ canon",
+        "is treated as wrapper or transitional by audit evidence",
+        "overclaims portability or removability relative to live code"
+      ]
+    },
+    "deferred_to_later_aide_extraction": {
+      "meaning": "Plausible future extraction candidates that may be mapped now but must not be platformized now.",
+      "inclusion_criteria": [
+        "shows reusable structure",
+        "would require additional uncoupling or convergence work before extraction",
+        "extraction now would compete with playable-baseline assembly"
+      ]
+    },
+    "explicitly_outside_current_scope": {
+      "meaning": "Work this series must not perform now.",
+      "inclusion_criteria": [
+        "product or runtime expansion not required for scope freeze",
+        "non-loopback multiplayer or infrastructure expansion",
+        "broad renaming, restructuring, or not-yet-present AIDE implementation"
+      ]
+    }
+  },
+  "scope_ledger": {
+    "portable_core": [
+      {
+        "paths": [
+          "tools/xstack/core/"
+        ],
+        "rationale": "plan.py, scheduler.py, runners.py, and artifact_contract.py implement a generic deterministic planner, runner, cache, and artifact-classification substrate with limited direct product knowledge."
+      },
+      {
+        "paths": [
+          "tools/xstack/compatx/canonical_json.py"
+        ],
+        "rationale": "Pure canonical JSON serialization and hashing helper reused broadly without product-shell semantics."
+      },
+      {
+        "paths": [
+          "tools/xstack/compatx/validator.py"
+        ],
+        "rationale": "Strict schema validator for canonical contracts; reusable contract substrate rather than gameplay or product runtime."
+      },
+      {
+        "paths": [
+          "tools/xstack/compatx/schema_registry.py"
+        ],
+        "rationale": "Generic schema discovery and version-registry loading helper; repo-relative today, but structurally a contract-layer primitive."
+      }
+    ],
+    "runtime_concern": [
+      {
+        "paths": [
+          "tools/xstack/sessionx/"
+        ],
+        "rationale": "creator.py, runner.py, scheduler.py, process_runtime.py, pipeline_contract.py, ui_host.py, and related modules implement the XStack-branded session lifecycle and authoritative process/session machinery."
+      },
+      {
+        "paths": [
+          "tools/xstack/session_create.py"
+        ],
+        "rationale": "Creates session_spec.json, universe_identity.json, universe_state.json, and universe_contract_bundle.json; this is session materialization, not just generic tooling."
+      },
+      {
+        "paths": [
+          "tools/xstack/session_boot.py"
+        ],
+        "rationale": "Boots SessionSpec artifacts and is audited as a real but fragile runtime/session path."
+      },
+      {
+        "paths": [
+          "tools/xstack/session_control.py",
+          "tools/xstack/session_surface.py"
+        ],
+        "rationale": "Stage, abort, resume, compact, and CLI/TUI/GUI parity wrappers are session-control surfaces."
+      },
+      {
+        "paths": [
+          "tools/xstack/session_script_run.py",
+          "tools/xstack/session_server.py",
+          "tools/xstack/srz_status.py"
+        ],
+        "rationale": "Scripted SRZ and session/server status handling are runtime/session operations."
+      },
+      {
+        "paths": [
+          "tools/xstack/ui_bind.py"
+        ],
+        "rationale": "Validates ui.registry descriptors against sessionx.ui_host expectations and session gating, so it belongs with session/runtime support rather than pure ops."
+      }
+    ],
+    "ops_concern": [
+      {
+        "paths": [
+          "tools/xstack/run.py"
+        ],
+        "rationale": "Stable FAST/STRICT/FULL XStack entrypoint for deterministic profile runs."
+      },
+      {
+        "paths": [
+          "tools/xstack/controlx/"
+        ],
+        "rationale": "orchestrator.py coordinates pack, bundle, compile, audit, test, session, and UI checks as repo operations."
+      },
+      {
+        "paths": [
+          "tools/xstack/testx/",
+          "tools/xstack/testx_all.py"
+        ],
+        "rationale": "Deterministic test harness and large suite selection are validation and evidence operations."
+      },
+      {
+        "paths": [
+          "tools/xstack/auditx/",
+          "tools/xstack/repox/",
+          "tools/xstack/securex/",
+          "tools/xstack/performx/"
+        ],
+        "rationale": "Audit, static checks, trust checks, and profile or budget checks are operator-facing gate families."
+      },
+      {
+        "paths": [
+          "tools/xstack/ci/",
+          "data/xstack/gate_definitions.json",
+          "docs/xstack/CI_GUARDRAILS.md",
+          "docs/xstack/ARCH_DRIFT_POLICY.md"
+        ],
+        "rationale": "These surfaces define and drive CI and guardrail policy rather than gameplay or product runtime."
+      },
+      {
+        "paths": [
+          "scripts/dev/gate.py"
+        ],
+        "rationale": "Imports tools.xstack.core.* and functionally participates in the live XStack control layer even though it does not live under tools/xstack/."
+      },
+      {
+        "paths": [
+          "validation/validation_engine.py",
+          "tools/validation/tool_run_validation.py"
+        ],
+        "rationale": "Unified validation surface that consumes XStack compatx contracts and emits audit or validation evidence."
+      },
+      {
+        "paths": [
+          "tools/xstack/compatx/check.py"
+        ],
+        "rationale": "Profile-driven CompatX check surface is an operational contract-check entrypoint rather than a low-level primitive."
+      }
+    ],
+    "dominium_specific_concern": [
+      {
+        "paths": [
+          "tools/xstack/registry_compile/"
+        ],
+        "rationale": "Uses default bundle IDs such as bundle.base.lab and emits a large Dominium registry set; current structure is tied to Dominium bundle and registry vocabulary."
+      },
+      {
+        "paths": [
+          "tools/xstack/pack_loader/",
+          "tools/xstack/pack_contrib/"
+        ],
+        "rationale": "Assume Dominium pack roots, manifest names, and contribution vocabulary."
+      },
+      {
+        "paths": [
+          "tools/xstack/packagingx/"
+        ],
+        "rationale": "Dist layout and packaging helpers are tied to Dominium packaging and release structure."
+      },
+      {
+        "paths": [
+          "appshell/"
+        ],
+        "rationale": "Product bootstrap, supervisor, IPC, compatibility, and virtual-path logic import XStack helpers but remain product-shell integration."
+      },
+      {
+        "paths": [
+          "server/server_boot.py"
+        ],
+        "rationale": "Directly imports tools.xstack.sessionx.* and pack or session helpers; server boot remains Dominium-owned even when it uses XStack helpers."
+      },
+      {
+        "paths": [
+          "client/local_server/local_server_controller.py"
+        ],
+        "rationale": "Loopback local-singleplayer controller is baseline gameplay glue, not current AIDE extraction material."
+      },
+      {
+        "paths": [
+          "profiles/bundles/bundle.mvp_default.json",
+          "locks/pack_lock.mvp_default.json",
+          "data/session_templates/session.mvp_default.json"
+        ],
+        "rationale": "Live baseline content and config pair plus session template called out by the audit as the near-term playable slice."
+      }
+    ],
+    "legacy_transitional": [
+      {
+        "paths": [
+          "tools/controlx/"
+        ],
+        "rationale": "Older autonomous control-plane wrapper outside tools/xstack/; still useful evidence, but not the current branded XStack root."
+      },
+      {
+        "paths": [
+          "tools/compatx/"
+        ],
+        "rationale": "Older compatibility CLI and core; validation/validation_engine.py maps it as a legacy or adapter surface rather than the current XStack canon."
+      },
+      {
+        "paths": [
+          "tools/validation/validate_all_main.cpp",
+          "tools/validation/validator_common.cpp",
+          "tools/validation/validator_common.h",
+          "tools/validation/validator_reports.cpp",
+          "tools/validation/validator_reports.h",
+          "tools/validation/validators_registry.cpp",
+          "tools/validation/validators_registry.h"
+        ],
+        "rationale": "Explicitly represented by the unified validation engine as legacy coverage adapters or deprecated aggregate validator surfaces."
+      },
+      {
+        "paths": [
+          "tools/mvp/runtime_entry.py"
+        ],
+        "rationale": "Audit marks this as a transitional wrapper rather than the dependable canonical playtest bootstrap."
+      },
+      {
+        "paths": [
+          "docs/XSTACK.md"
+        ],
+        "rationale": "Useful reference, but still describes an older gate-centric model and does not cleanly reflect current live coupling."
+      },
+      {
+        "paths": [
+          "docs/governance/XSTACK_PORTABILITY.md",
+          "docs/governance/XSTACK_INCREMENTAL_MODEL.md",
+          "docs/governance/XSTACK_EXTENSION_MODEL.md",
+          "docs/governance/XSTACK_PRODUCTION_CRITERIA.md",
+          "docs/governance/XSTACK_TEMPLATE_CHECKLIST.md",
+          "docs/governance/XSTACK_SCOPE_TEMPLATE.json"
+        ],
+        "rationale": "Derived portability and removability guidance; several files say they are only partially aligned, and live imports show stronger coupling than the docs claim."
+      }
+    ],
+    "deferred_to_later_aide_extraction": [
+      {
+        "paths": [
+          "tools/xstack/core/",
+          "tools/xstack/compatx/"
+        ],
+        "rationale": "Strongest reusable contract substrate, but extracting it now would still require uncoupling discipline and would compete with baseline assembly."
+      },
+      {
+        "paths": [
+          "tools/xstack/testx/",
+          "tools/xstack/auditx/",
+          "tools/xstack/repox/",
+          "tools/xstack/securex/",
+          "tools/xstack/performx/",
+          "tools/xstack/ci/"
+        ],
+        "rationale": "Coherent tool families that may later support AIDE-style extraction, but current scope is documentation, mapping, and contract freezing only."
+      },
+      {
+        "paths": [
+          "docs/xstack/",
+          "data/xstack/"
+        ],
+        "rationale": "Useful support surfaces for later extracted policy or catalog packaging, but docs and data do not justify a standalone platform by themselves."
+      },
+      {
+        "paths": [
+          "tools/controlx/"
+        ],
+        "rationale": "Plausible later convergence target after scope is frozen, but still a sibling and transitional surface now."
+      }
+    ],
+    "explicitly_outside_current_scope": [
+      {
+        "paths": [
+          "aide/",
+          "tools/aide/",
+          "apps/aide/"
+        ],
+        "rationale": "No such repo roots exist; a full AIDE implementation is not present and is not authorized by this series."
+      },
+      {
+        "paths": [
+          "engine/",
+          "game/",
+          "geo/",
+          "worldgen/",
+          "logic/",
+          "materials/",
+          "signals/",
+          "reality/"
+        ],
+        "rationale": "These roots may be read as evidence, but XStack/AIDE work may not broaden into general product or runtime implementation work here."
+      },
+      {
+        "paths": [
+          "net/transport/tcp_stub.py",
+          "net/transport/udp_stub.py"
+        ],
+        "rationale": "Audit evidence says non-loopback multiplayer transport is not part of the near-term playable baseline."
+      },
+      {
+        "paths": [
+          "launcher/",
+          "setup/"
+        ],
+        "rationale": "Audit evidence says compiled launcher and setup shells should stay wrappers for now."
+      },
+      {
+        "paths": [
+          "legacy/",
+          "quarantine/",
+          "attic/"
+        ],
+        "rationale": "Broad convergence or rename work here would compete with playable-baseline assembly and exceeds scope-freeze work."
+      }
+    ]
+  },
+  "in_scope_now": [
+    "freeze the current repo-grounded meaning of XStack",
+    "inventory and classify branded XStack surfaces and adjacent sibling roots that materially interact with them",
+    "identify conservative portable-contract candidates without claiming full portability",
+    "define the boundary between current XStack, Dominium-owned product or runtime surfaces, and later AIDE candidates",
+    "extract documentation-level or machine-readable contract maps for later prompts",
+    "define a repo-operating contract for later agent or Codex work over XStack/AIDE surfaces",
+    "map what should remain in Dominium versus what may later be reviewed for extraction",
+    "produce scope, inventory, classification, and extraction-mapping artifacts that do not alter runtime or product behavior"
+  ],
+  "out_of_scope_now": [
+    "implement a full AIDE runtime",
+    "implement an AIDE daemon",
+    "implement a compiler, adapter runtime, or bakeoff framework",
+    "perform broad repo renaming for its own sake",
+    "move tools/xstack/** or adjacent roots just to make the tree look cleaner",
+    "broaden into non-XStack/AIDE product work",
+    "implement multiplayer transport beyond the current loopback baseline",
+    "replace launcher, setup, or product shells instead of documenting the stronger live repo-local paths",
+    "treat portability docs as proof that the live repo is already uncoupled",
+    "reopen blocked or future-only post-Zeta frontier work"
+  ],
+  "later_aide_candidates": [
+    {
+      "paths": [
+        "tools/xstack/core/"
+      ],
+      "why_later_not_now": "Strongest generic execution substrate, but extraction should wait until after baseline stabilization and explicit uncoupling review."
+    },
+    {
+      "paths": [
+        "tools/xstack/compatx/"
+      ],
+      "why_later_not_now": "Contract helpers are reusable, but the live repo still couples them to Dominium validation and execution surfaces."
+    },
+    {
+      "paths": [
+        "tools/xstack/testx/",
+        "tools/xstack/auditx/",
+        "tools/xstack/repox/",
+        "tools/xstack/securex/",
+        "tools/xstack/performx/",
+        "tools/xstack/ci/"
+      ],
+      "why_later_not_now": "These are coherent tool families, but current scope is to classify and map them rather than platformize them."
+    },
+    {
+      "paths": [
+        "docs/xstack/",
+        "data/xstack/"
+      ],
+      "why_later_not_now": "Support docs and catalogs can mirror later extraction decisions, but they do not by themselves justify creating a new platform surface."
+    },
+    {
+      "paths": [
+        "tools/controlx/"
+      ],
+      "why_later_not_now": "Potential convergence target after semantics are frozen; still transitional and not the current semantic center."
+    }
+  ],
+  "definitely_dominium_owned": [
+    {
+      "paths": [
+        "tools/xstack/sessionx/**",
+        "tools/xstack/session_create.py",
+        "tools/xstack/session_boot.py",
+        "tools/xstack/session_control.py",
+        "tools/xstack/session_surface.py"
+      ],
+      "why": "These are tied to current session lifecycle, universe artifacts, SRZ, and authoritative runtime behavior."
+    },
+    {
+      "paths": [
+        "appshell/**"
+      ],
+      "why": "Product-shell bootstrap, supervision, IPC, compatibility, and virtual-path behavior remain Dominium-specific."
+    },
+    {
+      "paths": [
+        "server/server_boot.py",
+        "client/local_server/local_server_controller.py"
+      ],
+      "why": "These provide baseline loopback authority and local product glue rather than a portable externalized platform boundary."
+    },
+    {
+      "paths": [
+        "profiles/bundles/bundle.mvp_default.json",
+        "locks/pack_lock.mvp_default.json",
+        "data/session_templates/session.mvp_default.json"
+      ],
+      "why": "These artifacts define the current repo-local playable baseline slice."
+    },
+    {
+      "paths": [
+        "tools/xstack/registry_compile/",
+        "tools/xstack/pack_loader/",
+        "tools/xstack/pack_contrib/",
+        "tools/xstack/packagingx/"
+      ],
+      "why": "These are tied to Dominium bundle, pack, and packaging vocabulary and should remain repo-owned for now."
+    }
+  ],
+  "ambiguous_or_mixed": [
+    {
+      "paths": [
+        "validation/validation_engine.py",
+        "tools/validation/tool_run_validation.py"
+      ],
+      "why": "These are operationally XStack-adjacent and consume XStack contracts, but they are also broader repo validation infrastructure rather than purely XStack-owned."
+    },
+    {
+      "paths": [
+        "tools/xstack/ui_bind.py"
+      ],
+      "why": "This is session/runtime-adjacent today, but parts of its descriptor-validation behavior may later prove portable."
+    },
+    {
+      "paths": [
+        "docs/governance/XSTACK_PORTABILITY.md",
+        "docs/governance/XSTACK_INCREMENTAL_MODEL.md",
+        "docs/governance/XSTACK_EXTENSION_MODEL.md",
+        "docs/governance/XSTACK_PRODUCTION_CRITERIA.md"
+      ],
+      "why": "These remain useful for intent and historical framing, but they overstate current removability or extraction readiness relative to live code."
+    }
+  ],
+  "doctrine_vs_implementation_vs_extraction": {
+    "rules": [
+      "doctrinal similarity does not equal extraction readiness",
+      "implementation existence does not equal portability",
+      "current utility inside Dominium does not equal future AIDE ownership",
+      "support docs or mirrors do not override live repo implementation evidence",
+      "later extraction candidates may be mapped now without changing current ownership"
+    ],
+    "markers": {
+      "portable_core_is_not_same_as_extracted_aide": true,
+      "runtime_concern_is_not_same_as_portable": true,
+      "dominium_specific_concern_is_not_same_as_low_value": true,
+      "legacy_transitional_is_not_same_as_safe_to_delete": true,
+      "deferred_to_later_aide_extraction_is_not_same_as_authorized_now": true
+    }
+  },
+  "prohibited_scope_expansion_shapes": [
+    "treating all tooling as XStack",
+    "treating all XStack as portable",
+    "renaming roots before semantics are frozen",
+    "using future AIDE ambitions to justify present repo churn",
+    "competing with canonical playable-baseline work",
+    "promoting derived portability prose above live implementation evidence",
+    "collapsing doctrine, implementation, and extraction into one claim"
+  ],
+  "downstream_prompts_enabled": [
+    {
+      "prompt_id": "X-1",
+      "purpose": "inventory and classification refinement using the frozen scope buckets and boundaries"
+    },
+    {
+      "prompt_id": "X-2",
+      "purpose": "portable-contract extraction mapping for conservative core and ops surfaces"
+    },
+    {
+      "prompt_id": "X-3",
+      "purpose": "Codex or repo-operating contract formalization for XStack/AIDE work that respects Dominium ownership boundaries"
+    },
+    {
+      "prompt_id": "later AIDE extraction review",
+      "purpose": "future post-baseline review of whether any deferred candidates are mature enough for actual extraction"
+    }
+  ]
+}
