@@ -1,0 +1,1663 @@
+{
+  "artifact_identity": {
+    "artifact_id": "repo_topology_paths_and_ownership_reality_map",
+    "artifact_class": "repo_structure_reality_map",
+    "schema_version": "1.0.0",
+    "status": "derived",
+    "stability": "stable",
+    "series_scope": "repo_structure_discovery_and_design",
+    "series_role": "authoritative topology, path-contract, and ownership reality map for later repo-structure discovery, design, migration-planning, and decision prompts; downstream of stronger canon, the Omega0 constraint packet, audit evidence, and live implementation evidence",
+    "last_reviewed": "2026-04-08",
+    "replacement_target": "later explicit repo-structure follow-up after approved topology design or new playable-baseline evidence",
+    "binding_sources": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      ".agentignore",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/MERGED_PROGRAM_STATE.md",
+      "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "data/repo/repo_non_negotiables_and_current_reality.json",
+      "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+      "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+      "data/planning/next_execution_order_post_zeta.json",
+      "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+      "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+      "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+      "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
+      "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+      "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+      "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+      "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+      "data/audit/ultra_repo_audit_system_inventory.json",
+      "data/audit/ultra_repo_audit_entrypoints.json",
+      "data/audit/ultra_repo_audit_product_assembly_plan.json",
+      "data/audit/ultra_repo_audit_gap_ledger.json",
+      "data/audit/ultra_repo_audit_build_run_test_matrix.json",
+      "data/audit/ultra_repo_audit_wiring_map.json",
+      "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+      "data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+      "data/xstack/next_execution_order_post_xstack_aide.json",
+      "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+      "CMakePresets.json",
+      "appshell/command_registry.py",
+      "appshell/paths/virtual_paths.py",
+      "data/registries/virtual_root_registry.json",
+      "tools/launcher/launch.py",
+      "tools/setup/setup_cli.py",
+      "tools/validation/tool_run_validation.py",
+      "tools/xstack/testx_all.py",
+      "tools/xstack/session_create.py",
+      "tools/xstack/session_boot.py",
+      "tools/xstack/sessionx/creator.py",
+      "tools/xstack/sessionx/runner.py",
+      "tools/mvp/runtime_entry.py",
+      "tools/mvp/runtime_bundle.py",
+      "tools/xstack/registry_compile/constants.py",
+      "client/local_server/local_server_controller.py",
+      "runtime/process_spawn.py",
+      "server/server_main.py",
+      "server/net/loopback_transport.py",
+      "net/policies/policy_server_authoritative.py",
+      "release/release_manifest_engine.py",
+      "release/component_graph_resolver.py",
+      "release/update_resolver.py",
+      "security/trust/trust_verifier.py",
+      "profiles/bundles/bundle.mvp_default.json",
+      "locks/pack_lock.mvp_default.json",
+      "data/session_templates/session.mvp_default.json",
+      "data/registries/bundle_profiles.json",
+      "data/registries/session_defaults.json",
+      "schema/README.md",
+      "schemas/README.md",
+      "packs/README.md",
+      "repo/release_policy.toml"
+    ]
+  },
+  "topology_reality_summary": {
+    "major_top_level_roots": [
+      "client/",
+      "server/",
+      "appshell/",
+      "launcher/",
+      "setup/",
+      "runtime/",
+      "net/",
+      "tools/",
+      "validation/",
+      "tests/",
+      "packs/",
+      "profiles/",
+      "locks/",
+      "data/",
+      "schema/",
+      "schemas/",
+      "docs/",
+      "specs/",
+      "repo/",
+      "engine/",
+      "game/"
+    ],
+    "major_second_level_clusters": [
+      "client/local_server/",
+      "server/net/, server/runtime/, server/persistence/",
+      "tools/launcher/, tools/setup/, tools/xstack/, tools/validation/, tools/mvp/",
+      "profiles/bundles/",
+      "data/session_templates/",
+      "data/registries/",
+      "docs/planning/, docs/audit/, docs/repo/, docs/xstack/",
+      "specs/reality/",
+      "data/planning/, data/audit/, data/xstack/"
+    ],
+    "roots_central_to_current_product_flows": [
+      "client/",
+      "server/",
+      "appshell/",
+      "tools/launcher/",
+      "tools/setup/",
+      "tools/xstack/",
+      "tools/validation/",
+      "validation/",
+      "profiles/",
+      "locks/",
+      "data/session_templates/",
+      "data/registries/",
+      "packs/",
+      "runtime/",
+      "release/",
+      "security/trust/",
+      "dist/",
+      "saves/"
+    ],
+    "support_only_or_derived_roots": [
+      "build/",
+      "out/",
+      ".xstack_cache/",
+      "artifacts/",
+      "run_meta/",
+      "tmp/",
+      "data/audit/"
+    ]
+  },
+  "ownership_class_definitions": [
+    {
+      "id": "authoritative_canonical_root",
+      "label": "authoritative / canonical root",
+      "meaning": "A root that currently functions as the safest canonical owner of a repo-level domain of truth or behavior."
+    },
+    {
+      "id": "authoritative_bounded_domain_root",
+      "label": "authoritative but bounded-domain root",
+      "meaning": "A root that is authoritative for a specific implementation, data, or policy area, but is not a whole-repo owner."
+    },
+    {
+      "id": "derived_generated_root",
+      "label": "derived / generated root",
+      "meaning": "A root whose contents are produced, mirrored, materialized, or report-only rather than authored canon."
+    },
+    {
+      "id": "mixed_ambiguous_root",
+      "label": "mixed / ambiguous root",
+      "meaning": "A root that contains real value but mixes roles, hosts overlapping responsibilities, or should not be treated as a clean owner without more design work."
+    },
+    {
+      "id": "transitional_legacy_root",
+      "label": "transitional / legacy root",
+      "meaning": "A root that still participates in live flows or compatibility but is explicitly not the settled long-term owner."
+    },
+    {
+      "id": "wrapper_only_root",
+      "label": "wrapper-only root",
+      "meaning": "A root that exposes launch, install, or operator surfaces but is currently thinner than the stronger implementation it wraps."
+    },
+    {
+      "id": "support_data_root",
+      "label": "support-data root",
+      "meaning": "A data root that is authoritative for a bounded machine-readable payload family, but should not be mistaken for doctrine or for a broader code owner."
+    }
+  ],
+  "topology_ledger": [
+    {
+      "id": "TOP-001",
+      "path": "engine/, game/, and major authored domain module roots",
+      "actual_purpose": "Hosts the bulk of authored simulation, runtime, and domain logic outside the launcher/setup/session shell layer.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Primary authored gameplay and engine implementation bodies",
+        "Primary simulation and domain-module implementation bodies"
+      ],
+      "does_not_own": [
+        "Operator shell policy",
+        "Release or install control-plane policy",
+        "Repo topology governance"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "Compiled through the verify preset family",
+        "Consumed by client, server, and test surfaces"
+      ],
+      "evidence_notes": [
+        "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+        "CMakePresets.json"
+      ]
+    },
+    {
+      "id": "TOP-002",
+      "path": "appshell/",
+      "actual_purpose": "Repo-rooted operator shell substrate for commands, IPC, logging, supervisor behavior, and virtual path resolution.",
+      "ownership_class": "authoritative_canonical_root",
+      "owns": [
+        "Virtual-root discovery",
+        "Command registry loading",
+        "TUI panel wiring",
+        "Shell diagnostics",
+        "Supervision helpers used by repo-local launcher, setup, and server surfaces"
+      ],
+      "does_not_own": [
+        "Release policy",
+        "Core client or server product logic",
+        "Session materialization semantics"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "data/registries/command_registry.json",
+        "data/registries/tui_panel_registry.json",
+        "data/registries/virtual_root_registry.json",
+        "dist/",
+        "packs/",
+        "profiles/",
+        "locks/",
+        "saves/",
+        "runtime/"
+      ],
+      "evidence_notes": [
+        "appshell/command_registry.py",
+        "appshell/paths/virtual_paths.py",
+        "data/registries/virtual_root_registry.json"
+      ]
+    },
+    {
+      "id": "TOP-003",
+      "path": "client/",
+      "actual_purpose": "Owns the client binary and client-side presentation, input, local-server bridge, and application wiring.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Client application runtime",
+        "Input and presentation layers",
+        "The local singleplayer controller cluster"
+      ],
+      "does_not_own": [
+        "Server authority semantics",
+        "Release or update policy",
+        "Repo-wide virtual path policy"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "Verify build lane",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py",
+        "build/client/local_singleplayer/<save_id>/diag/"
+      ],
+      "evidence_notes": [
+        "client/CMakeLists.txt",
+        "client/local_server/local_server_controller.py",
+        "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md"
+      ]
+    },
+    {
+      "id": "TOP-004",
+      "path": "client/local_server/",
+      "actual_purpose": "Orchestrates repo-local singleplayer by creating or reusing session data, spawning the Python server, and attaching loopback transport.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Local-only client to server orchestration for the current baseline path"
+      ],
+      "does_not_own": [
+        "General multiplayer transport",
+        "Compiled launcher ownership",
+        "Release manifest policy"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "runtime/process_spawn.py",
+        "server/server_main.py",
+        "server/net/loopback_transport.py",
+        "tools/xstack/session_create.py",
+        "saves/<save_id>/"
+      ],
+      "evidence_notes": [
+        "client/local_server/local_server_controller.py",
+        "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md"
+      ]
+    },
+    {
+      "id": "TOP-005",
+      "path": "server/",
+      "actual_purpose": "Owns authoritative runtime, persistence, shard, and server-side net integration.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Authoritative server runtime logic",
+        "Server boot support",
+        "Persistence",
+        "Server tests",
+        "Loopback-capable server integration"
+      ],
+      "does_not_own": [
+        "Repo-root path law",
+        "Install or update manifests",
+        "Client-side local orchestration"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "server/server_main.py",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py",
+        "Verify binaries",
+        "saves/<save_id>/"
+      ],
+      "evidence_notes": [
+        "server/CMakeLists.txt",
+        "server/server_main.py",
+        "server/net/loopback_transport.py"
+      ]
+    },
+    {
+      "id": "TOP-006",
+      "path": "launcher/",
+      "actual_purpose": "Compiled launcher root with CLI, core, GUI, include, and TUI surfaces.",
+      "ownership_class": "wrapper_only_root",
+      "owns": [
+        "Native launcher wrapper surfaces",
+        "Compatibility shell packaging"
+      ],
+      "does_not_own": [
+        "The strongest repo-local operator truth",
+        "The most complete launcher behavior path"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": false,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "Verify build lane",
+        "Shared include surfaces",
+        "Current stronger shell path is under tools/launcher/"
+      ],
+      "evidence_notes": [
+        "launcher/CMakeLists.txt",
+        "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+        "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md"
+      ]
+    },
+    {
+      "id": "TOP-007",
+      "path": "setup/",
+      "actual_purpose": "Compiled setup root with CLI, core, GUI, include, packages, and TUI surfaces.",
+      "ownership_class": "wrapper_only_root",
+      "owns": [
+        "Native setup wrapper surfaces",
+        "Package and install-facing compiled code"
+      ],
+      "does_not_own": [
+        "The strongest repo-local setup truth"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": false,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "Verify build lane",
+        "Install packaging assets",
+        "Current stronger repo-local flow is tools/setup/setup_cli.py"
+      ],
+      "evidence_notes": [
+        "setup/CMakeLists.txt",
+        "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md"
+      ]
+    },
+    {
+      "id": "TOP-008",
+      "path": "release/",
+      "actual_purpose": "Release manifest, component graph, install-profile, and update resolution logic.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Release-manifest semantics",
+        "Component graph resolution",
+        "Install discovery",
+        "Store and dist-oriented install payload resolution"
+      ],
+      "does_not_own": [
+        "Gameplay code",
+        "Session boot semantics",
+        "Baseline shell orchestration"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "manifests/release_manifest.json",
+        "manifests/release_index.json",
+        "data/registries/component_graph_registry.json",
+        "data/registries/install_profile_registry.json",
+        "store/profiles/",
+        "store/locks/",
+        "dist/"
+      ],
+      "evidence_notes": [
+        "release/release_manifest_engine.py",
+        "release/component_graph_resolver.py",
+        "release/update_resolver.py"
+      ]
+    },
+    {
+      "id": "TOP-009",
+      "path": "security/trust/",
+      "actual_purpose": "Trust verification and root/policy registry resolution.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Trust policy resolution",
+        "Trust root loading",
+        "Release and install trust checks"
+      ],
+      "does_not_own": [
+        "Broader release topology",
+        "Session orchestration"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "manifests/trust_root_registry.local.json"
+      ],
+      "evidence_notes": [
+        "security/trust/trust_verifier.py"
+      ]
+    },
+    {
+      "id": "TOP-010",
+      "path": "runtime/",
+      "actual_purpose": "Thin runtime helper root, currently dominated by process-spawn support.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Bounded helper responsibilities such as server process launch specifications"
+      ],
+      "does_not_own": [
+        "The full runtime orchestration layer",
+        "Session materialization"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "server/server_main.py",
+        "Repo-root cwd assumptions",
+        "Local-server controller use"
+      ],
+      "evidence_notes": [
+        "runtime/process_spawn.py",
+        "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md"
+      ]
+    },
+    {
+      "id": "TOP-011",
+      "path": "net/",
+      "actual_purpose": "Generic network policy, transport, testing, and anti-cheat substrate.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Generic network-policy substrate",
+        "Generic transport-layer substrate consumed by server-side runtime"
+      ],
+      "does_not_own": [
+        "The full authoritative server runtime",
+        "The loopback transport implementation under server/net/"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "Operational entanglement with server/net/",
+        "Authority policy code",
+        "Runtime wiring"
+      ],
+      "evidence_notes": [
+        "net/policies/policy_server_authoritative.py",
+        "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md"
+      ]
+    },
+    {
+      "id": "TOP-012",
+      "path": "validation/",
+      "actual_purpose": "Owns the validation engine and canonical report-writing logic.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Validation inventory",
+        "Report generation",
+        "Legacy validation surface reconciliation"
+      ],
+      "does_not_own": [
+        "The CLI wrapper under tools/validation/",
+        "Repo doctrine"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "data/registries/validation_suite_registry.json",
+        "docs/audit/VALIDATION_INVENTORY.md",
+        "docs/audit/VALIDATION_REPORT_<PROFILE>.md",
+        "data/audit/validation_report_<PROFILE>.json",
+        "docs/audit/VALIDATION_UNIFY_FINAL.md"
+      ],
+      "evidence_notes": [
+        "validation/validation_engine.py",
+        "tools/validation/tool_run_validation.py"
+      ]
+    },
+    {
+      "id": "TOP-013",
+      "path": "tools/",
+      "actual_purpose": "Umbrella tooling root containing canonical baseline-critical tool subroots plus many unrelated or broader admin, audit, dist, and review tools.",
+      "ownership_class": "mixed_ambiguous_root",
+      "owns": [
+        "Many tool entrypoints",
+        "Wrappers",
+        "Validation helpers",
+        "Dist helpers",
+        "XStack utilities",
+        "Review tools"
+      ],
+      "does_not_own": [
+        "A single clean semantic or product boundary"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "tools/launcher/",
+        "tools/setup/",
+        "tools/xstack/",
+        "tools/validation/",
+        "tools/mvp/",
+        "tools/dist/",
+        "Many repo-root hints and relative-path contracts"
+      ],
+      "evidence_notes": [
+        "tools/CMakeLists.txt",
+        "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md"
+      ]
+    },
+    {
+      "id": "TOP-014",
+      "path": "tools/launcher/, tools/setup/, tools/xstack/, tools/validation/, tools/mvp/",
+      "actual_purpose": "Hosts the tool entrypoints that currently define the live build, validation, session, and transitional runtime shell flows.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Launcher and setup Python shells",
+        "Validation CLI",
+        "SessionX create and boot CLI",
+        "TestX harness",
+        "The transitional MVP runtime wrapper"
+      ],
+      "does_not_own": [
+        "The compiled launcher and setup roots",
+        "Full server runtime ownership",
+        "The final settled public playtest API"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "Repo-root hints",
+        "appshell/",
+        "validation/",
+        "build/registries/",
+        "build/lockfile.json",
+        "profiles/",
+        "locks/",
+        "data/session_templates/",
+        "saves/",
+        "dist/"
+      ],
+      "evidence_notes": [
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "tools/xstack/session_create.py",
+        "tools/xstack/session_boot.py",
+        "tools/xstack/testx_all.py",
+        "tools/mvp/runtime_entry.py"
+      ]
+    },
+    {
+      "id": "TOP-015",
+      "path": "packs/",
+      "actual_purpose": "Canonical runtime packaging, activation, compatibility, distribution-descriptor, and pack-layout root.",
+      "ownership_class": "authoritative_canonical_root",
+      "owns": [
+        "On-disk runtime pack layout",
+        "Compatibility-facing pack metadata",
+        "Pack family organization"
+      ],
+      "does_not_own": [
+        "All authored pack-content declarations under data/packs/"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "Virtual-root pack discovery",
+        "Pack compatibility validation",
+        "Session materialization inputs",
+        "Dist and store pack resolution"
+      ],
+      "evidence_notes": [
+        "packs/README.md",
+        "appshell/paths/virtual_paths.py",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "TOP-016",
+      "path": "data/packs/",
+      "actual_purpose": "Authored pack-content and declaration root that remains authoritative within its bounded scope while still being transitional for single-root convergence.",
+      "ownership_class": "transitional_legacy_root",
+      "owns": [
+        "Authored pack content",
+        "Authored pack declarations"
+      ],
+      "does_not_own": [
+        "The settled single runtime packaging root for future convergence"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "Pack manifests",
+        "Content folders",
+        "Pack tooling",
+        "Convergence cautions from governance docs"
+      ],
+      "evidence_notes": [
+        "AGENTS.md",
+        "docs/planning/AUTHORITY_ORDER.md",
+        "Inspection of data/packs/"
+      ]
+    },
+    {
+      "id": "TOP-017",
+      "path": "profiles/",
+      "actual_purpose": "Authored profile root, currently dominated by profiles/bundles/.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Authored profile bundle declarations used by runtime and baseline tooling"
+      ],
+      "does_not_own": [
+        "Generated installed profile copies under store/",
+        "Registry-compiled bundle ids"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "profiles/bundles/bundle.mvp_default.json",
+        "AppShell virtual roots",
+        "Release and install store projections"
+      ],
+      "evidence_notes": [
+        "profiles/bundles/bundle.mvp_default.json",
+        "appshell/paths/virtual_paths.py",
+        "tools/mvp/runtime_bundle.py"
+      ]
+    },
+    {
+      "id": "TOP-018",
+      "path": "locks/",
+      "actual_purpose": "Authored pack-lock root for baseline and runtime configuration.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Authored lock declarations such as pack_lock.mvp_default.json"
+      ],
+      "does_not_own": [
+        "Compiled lockfile outputs under build/",
+        "Installed lock copies under store/"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "locks/pack_lock.mvp_default.json",
+        "AppShell virtual roots",
+        "Release and install store projections",
+        "SessionX create and boot flows"
+      ],
+      "evidence_notes": [
+        "locks/pack_lock.mvp_default.json",
+        "tools/mvp/runtime_bundle.py",
+        "release/update_resolver.py"
+      ]
+    },
+    {
+      "id": "TOP-019",
+      "path": "data/session_templates/",
+      "actual_purpose": "Authored session-template support-data root.",
+      "ownership_class": "support_data_root",
+      "owns": [
+        "Session template payloads such as session.mvp_default"
+      ],
+      "does_not_own": [
+        "Runtime save materialization outputs",
+        "The whole session orchestration layer"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "data/session_templates/session.mvp_default.json",
+        "Session materialization flows",
+        "SessionX tooling",
+        "Baseline recipe docs"
+      ],
+      "evidence_notes": [
+        "data/session_templates/session.mvp_default.json",
+        "tools/mvp/runtime_bundle.py"
+      ]
+    },
+    {
+      "id": "TOP-020",
+      "path": "data/registries/",
+      "actual_purpose": "Machine-readable registry root consumed by AppShell, release, trust, validation, and parts of runtime and session tooling.",
+      "ownership_class": "support_data_root",
+      "owns": [
+        "Registry payloads for commands, panels, virtual roots, trust, install, component graphs, validation suites, session defaults, and bundle profiles"
+      ],
+      "does_not_own": [
+        "Doctrine",
+        "Broader product code",
+        "Compiled registry outputs under build/registries/"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "appshell/command_registry.py",
+        "appshell/paths/virtual_paths.py",
+        "release/component_graph_resolver.py",
+        "security/trust/trust_verifier.py",
+        "validation/validation_engine.py"
+      ],
+      "evidence_notes": [
+        "data/registries/virtual_root_registry.json",
+        "data/registries/bundle_profiles.json",
+        "data/registries/session_defaults.json"
+      ]
+    },
+    {
+      "id": "TOP-021",
+      "path": "schema/",
+      "actual_purpose": "Authoritative semantic and contract-law root.",
+      "ownership_class": "authoritative_canonical_root",
+      "owns": [
+        "Contract law",
+        "Semantic schemas",
+        "Compatibility identity and migration meaning"
+      ],
+      "does_not_own": [
+        "Validator-facing projection copies",
+        "Report mirrors"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "Contract-facing docs",
+        "Compatibility meaning",
+        "Validation consumers"
+      ],
+      "evidence_notes": [
+        "schema/README.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "TOP-022",
+      "path": "schemas/",
+      "actual_purpose": "Validator-facing JSON schema and example projection tree.",
+      "ownership_class": "mixed_ambiguous_root",
+      "owns": [
+        "Projection schemas",
+        "Examples used by tooling and validation consumers"
+      ],
+      "does_not_own": [
+        "Canonical semantic law"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "Validation scans",
+        "Compat tooling",
+        "Schema-facing consumers"
+      ],
+      "evidence_notes": [
+        "schemas/README.md",
+        "AGENTS.md",
+        "validation/validation_engine.py"
+      ]
+    },
+    {
+      "id": "TOP-023",
+      "path": "docs/ and specs/reality/",
+      "actual_purpose": "Doctrine, planning, audit, repo-series, xstack closure, and semantic-specification root cluster.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Canon",
+        "Planning law",
+        "Audit packet",
+        "XStack closure packet",
+        "Repo-series artifacts",
+        "Semantic specifications"
+      ],
+      "does_not_own": [
+        "Live implementation behavior where code disagrees"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "docs/planning/",
+        "docs/audit/",
+        "docs/repo/",
+        "docs/xstack/",
+        "specs/reality/"
+      ],
+      "evidence_notes": [
+        "docs/planning/AUTHORITY_ORDER.md",
+        "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ]
+    },
+    {
+      "id": "TOP-024",
+      "path": "data/planning/, data/audit/, data/xstack/",
+      "actual_purpose": "Machine-readable mirrors and evidence payloads for planning, audit, and xstack packets.",
+      "ownership_class": "support_data_root",
+      "owns": [
+        "JSON mirrors",
+        "Checkpoint payloads",
+        "Report artifacts with intact provenance"
+      ],
+      "does_not_own": [
+        "Higher-order doctrine",
+        "Live implementation ownership"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "Downstream planning prompts",
+        "Audit consumption",
+        "XStack closure packet parsing"
+      ],
+      "evidence_notes": [
+        "docs/planning/AUTHORITY_ORDER.md",
+        "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md"
+      ]
+    },
+    {
+      "id": "TOP-025",
+      "path": "repo/ plus root-level control files such as AGENTS.md, .agentignore, and CMakePresets.json",
+      "actual_purpose": "Repo policy, release policy, canon-state markers, and root-level execution controls.",
+      "ownership_class": "authoritative_bounded_domain_root",
+      "owns": [
+        "Release policy",
+        "Canon-state metadata",
+        "Repo-series governance anchors",
+        "The verify preset family"
+      ],
+      "does_not_own": [
+        "Product runtime implementation",
+        "Session materialization logic"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": true,
+      "dependencies_or_path_couplings": [
+        "repo/release_policy.toml",
+        "repo/canon_state.json",
+        "CMakePresets.json"
+      ],
+      "evidence_notes": [
+        "repo/release_policy.toml",
+        "CMakePresets.json",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "TOP-026",
+      "path": "dist/",
+      "actual_purpose": "Assembled distribution tree and install-style payload staging root.",
+      "ownership_class": "derived_generated_root",
+      "owns": [
+        "Assembled runtime distribution leaves",
+        "Manifests",
+        "Staged bundles",
+        "Staged locks",
+        "Install-style layouts"
+      ],
+      "does_not_own": [
+        "Authored canonical truth"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "dist/manifests/release_manifest.json",
+        "dist/packs/",
+        "dist/profiles/",
+        "dist/locks/",
+        "AppShell install and store search roots"
+      ],
+      "evidence_notes": [
+        "appshell/paths/virtual_paths.py",
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "release/release_manifest_engine.py"
+      ]
+    },
+    {
+      "id": "TOP-027",
+      "path": "saves/",
+      "actual_purpose": "Runtime materialization root for session saves and bootable session specs.",
+      "ownership_class": "mixed_ambiguous_root",
+      "owns": [
+        "Live save directories",
+        "Session specs",
+        "Runtime artifacts for the current repo-local baseline"
+      ],
+      "does_not_own": [
+        "Authored source-of-truth configuration"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/runner.py",
+        "client/local_server/local_server_controller.py",
+        "AppShell virtual paths"
+      ],
+      "evidence_notes": [
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/runner.py",
+        "appshell/paths/virtual_paths.py"
+      ]
+    },
+    {
+      "id": "TOP-028",
+      "path": "build/, out/, .xstack_cache/, artifacts/, run_meta/, tmp/",
+      "actual_purpose": "Generated work roots, build outputs, caches, reports, and transient artifact materialization.",
+      "ownership_class": "derived_generated_root",
+      "owns": [
+        "Compiled outputs",
+        "Generated registries",
+        "Generated lockfiles",
+        "Cache state",
+        "Run metadata",
+        "Report bundles"
+      ],
+      "does_not_own": [
+        "Authored doctrine",
+        "Product canon",
+        "Stable ownership truth"
+      ],
+      "product_critical_now": true,
+      "baseline_critical_now": true,
+      "safe_to_treat_as_canonical": false,
+      "dependencies_or_path_couplings": [
+        "out/build/vs2026/verify/",
+        "build/registries/",
+        "build/lockfile.json",
+        "run_meta/",
+        ".xstack_cache/"
+      ],
+      "evidence_notes": [
+        "CMakePresets.json",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py"
+      ]
+    }
+  ],
+  "path_contract_map": {
+    "repo_root_assumptions": [
+      {
+        "id": "PATH-001",
+        "statement": "Most Python tool entrypoints under tools/ compute repo root with ../.. from the script directory. This is live in tools/launcher/launch.py, tools/setup/setup_cli.py, and tools/validation/tool_run_validation.py.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "tools/launcher/launch.py",
+          "tools/setup/setup_cli.py",
+          "tools/validation/tool_run_validation.py"
+        ]
+      },
+      {
+        "id": "PATH-002",
+        "statement": "Nested SessionX modules under tools/xstack/ use deeper relative repo-root math and expect to resolve generated build outputs and save directories from repo root.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "tools/xstack/session_create.py",
+          "tools/xstack/session_boot.py",
+          "tools/xstack/sessionx/creator.py",
+          "tools/xstack/sessionx/runner.py"
+        ]
+      },
+      {
+        "id": "PATH-003",
+        "statement": "server/server_main.py computes REPO_ROOT_HINT by walking two levels up from server/, which escapes the repo root and is explicitly a live blocker.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "server/server_main.py",
+          "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+          "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md"
+        ]
+      }
+    ],
+    "entrypoint_path_assumptions": [
+      {
+        "id": "PATH-004",
+        "statement": "The compiled verify lane expects CMakePresets.json to configure and build into out/build/vs2026/<preset>/, with the audited canonical tree centered on out/build/vs2026/verify/.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "CMakePresets.json",
+          "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md"
+        ]
+      },
+      {
+        "id": "PATH-005",
+        "statement": "The verify build path produces the client and server binaries used by the audited compiled lane, even though the current repo-local shell path leans more heavily on Python/AppShell surfaces.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "client/CMakeLists.txt",
+          "server/CMakeLists.txt",
+          "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md"
+        ]
+      }
+    ],
+    "session_save_root_assumptions": [
+      {
+        "id": "PATH-006",
+        "statement": "tools/xstack/session_boot.py still documents and expects boot specs at saves/<save_id>/session_spec.json.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "tools/xstack/session_boot.py"
+        ]
+      },
+      {
+        "id": "PATH-007",
+        "statement": "tools/xstack/sessionx/runner.py still resolves save_dir = os.path.join(repo_root, \"saves\", save_id), so alternate save roots are not honored end to end.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "tools/xstack/sessionx/runner.py",
+          "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md"
+        ]
+      },
+      {
+        "id": "PATH-008",
+        "statement": "client/local_server/local_server_controller.py and related local-loopback code assume repo-local save materialization and emit diagnostics under build/client/local_singleplayer/<save_id>/diag/.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "client/local_server/local_server_controller.py"
+        ]
+      }
+    ],
+    "profile_bundle_lock_template_location_assumptions": [
+      {
+        "id": "PATH-009",
+        "statement": "The authored baseline asset trio is physically located at profiles/bundles/bundle.mvp_default.json, locks/pack_lock.mvp_default.json, and data/session_templates/session.mvp_default.json.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "profiles/bundles/bundle.mvp_default.json",
+          "locks/pack_lock.mvp_default.json",
+          "data/session_templates/session.mvp_default.json",
+          "tools/mvp/runtime_bundle.py"
+        ]
+      },
+      {
+        "id": "PATH-010",
+        "statement": "The authored baseline asset trio coexists with registry-driven defaults in data/registries/bundle_profiles.json and a SessionX default bundle id of bundle.base.lab from tools/xstack/registry_compile/constants.py.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "data/registries/bundle_profiles.json",
+          "tools/xstack/registry_compile/constants.py",
+          "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md"
+        ]
+      },
+      {
+        "id": "PATH-011",
+        "statement": "SessionX create and runner paths currently depend on build/registries/ and build/lockfile.json as generated intermediates.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "tools/xstack/sessionx/creator.py",
+          "tools/xstack/sessionx/runner.py"
+        ]
+      },
+      {
+        "id": "PATH-012",
+        "statement": "appshell/paths/virtual_paths.py and data/registries/virtual_root_registry.json encode default search locations for packs, profiles, locks, saves, runtime, and store/install-style fallbacks.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "appshell/paths/virtual_paths.py",
+          "data/registries/virtual_root_registry.json"
+        ]
+      }
+    ],
+    "manifest_registry_location_assumptions": [
+      {
+        "id": "PATH-013",
+        "statement": "The repo-local launcher/setup shells and release logic expect release manifests at manifests/release_manifest.json, with the repo-local install/discovery path commonly resolving via dist/manifests/release_manifest.json.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "tools/launcher/launch.py",
+          "tools/setup/setup_cli.py",
+          "release/release_manifest_engine.py"
+        ]
+      },
+      {
+        "id": "PATH-014",
+        "statement": "Release/update logic also expects installed or projected payloads such as store/profiles/bundles/bundle.mvp_default.json and store/locks/pack_lock.mvp_default.json.",
+        "baseline_critical": false,
+        "evidence_sources": [
+          "release/update_resolver.py"
+        ]
+      }
+    ],
+    "hard_coded_or_brittle_relative_expectations": [
+      {
+        "id": "PATH-015",
+        "statement": "schema/ remains canonical semantic law while schemas/ remains the validator-facing projection and example tree.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "AGENTS.md",
+          "schema/README.md",
+          "schemas/README.md"
+        ]
+      },
+      {
+        "id": "PATH-016",
+        "statement": "packs/ remains canonical for runtime packaging, activation, compatibility, and distribution-descriptor scope, while data/packs/ remains authoritative within authored pack-content and declaration scope.",
+        "baseline_critical": true,
+        "evidence_sources": [
+          "AGENTS.md",
+          "packs/README.md"
+        ]
+      }
+    ],
+    "baseline_critical_contract_ids": [
+      "PATH-001",
+      "PATH-002",
+      "PATH-003",
+      "PATH-004",
+      "PATH-005",
+      "PATH-006",
+      "PATH-007",
+      "PATH-008",
+      "PATH-009",
+      "PATH-010",
+      "PATH-011",
+      "PATH-012",
+      "PATH-013",
+      "PATH-015",
+      "PATH-016"
+    ]
+  },
+  "entrypoint_dependency_map": [
+    {
+      "id": "ENTRY-001",
+      "entrypoint": "cmake --preset verify; cmake --build --preset verify; ctest --preset verify",
+      "depends_on_roots": [
+        "CMakePresets.json",
+        "client/",
+        "server/",
+        "launcher/",
+        "setup/",
+        "engine/",
+        "game/",
+        "out/build/vs2026/verify/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-004",
+        "PATH-005"
+      ],
+      "baseline_critical_now": true,
+      "notes": "Canonical compiled build and test lane frozen by Omega0 and the audit packet.",
+      "evidence_sources": [
+        "CMakePresets.json",
+        "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md"
+      ]
+    },
+    {
+      "id": "ENTRY-002",
+      "entrypoint": "python tools/validation/tool_run_validation.py --repo-root . --profile FAST",
+      "depends_on_roots": [
+        "tools/validation/",
+        "validation/",
+        "data/registries/",
+        "docs/audit/",
+        "data/audit/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-001",
+        "PATH-012"
+      ],
+      "baseline_critical_now": true,
+      "notes": "Minimum honest validation lane.",
+      "evidence_sources": [
+        "tools/validation/tool_run_validation.py",
+        "validation/validation_engine.py"
+      ]
+    },
+    {
+      "id": "ENTRY-003",
+      "entrypoint": "python tools/xstack/testx_all.py --repo-root . --profile FAST",
+      "depends_on_roots": [
+        "tools/xstack/",
+        "tools/xstack/testx/",
+        "build/",
+        "data/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-002",
+        "PATH-011"
+      ],
+      "baseline_critical_now": true,
+      "notes": "Canonical TestX harness lane retained by Omega0.",
+      "evidence_sources": [
+        "tools/xstack/testx_all.py",
+        "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md"
+      ]
+    },
+    {
+      "id": "ENTRY-004",
+      "entrypoint": "python tools/launcher/launch.py",
+      "depends_on_roots": [
+        "tools/launcher/",
+        "appshell/",
+        "release/",
+        "data/registries/",
+        "dist/",
+        "saves/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-001",
+        "PATH-012",
+        "PATH-013"
+      ],
+      "baseline_critical_now": true,
+      "notes": "Strongest repo-local launcher shell now.",
+      "evidence_sources": [
+        "tools/launcher/launch.py",
+        "appshell/paths/virtual_paths.py"
+      ]
+    },
+    {
+      "id": "ENTRY-005",
+      "entrypoint": "python tools/setup/setup_cli.py",
+      "depends_on_roots": [
+        "tools/setup/",
+        "appshell/",
+        "release/",
+        "security/trust/",
+        "data/registries/",
+        "dist/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-001",
+        "PATH-012",
+        "PATH-013",
+        "PATH-014"
+      ],
+      "baseline_critical_now": true,
+      "notes": "Strongest repo-local setup shell now.",
+      "evidence_sources": [
+        "tools/setup/setup_cli.py",
+        "security/trust/trust_verifier.py",
+        "release/update_resolver.py"
+      ]
+    },
+    {
+      "id": "ENTRY-006",
+      "entrypoint": "python tools/xstack/session_create.py",
+      "depends_on_roots": [
+        "tools/xstack/",
+        "profiles/",
+        "locks/",
+        "data/session_templates/",
+        "data/registries/",
+        "build/",
+        "saves/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-002",
+        "PATH-009",
+        "PATH-010",
+        "PATH-011"
+      ],
+      "baseline_critical_now": true,
+      "notes": "Current session materialization CLI.",
+      "evidence_sources": [
+        "tools/xstack/session_create.py",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/registry_compile/constants.py"
+      ]
+    },
+    {
+      "id": "ENTRY-007",
+      "entrypoint": "python tools/xstack/session_boot.py",
+      "depends_on_roots": [
+        "tools/xstack/",
+        "saves/",
+        "build/",
+        "server/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-002",
+        "PATH-006",
+        "PATH-007",
+        "PATH-011"
+      ],
+      "baseline_critical_now": true,
+      "notes": "Current boot surface with unresolved alternate-save-root coupling.",
+      "evidence_sources": [
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/runner.py"
+      ]
+    },
+    {
+      "id": "ENTRY-008",
+      "entrypoint": "Repo-local singleplayer flow anchored in client/local_server/local_server_controller.py",
+      "depends_on_roots": [
+        "client/local_server/",
+        "runtime/",
+        "server/",
+        "server/net/",
+        "saves/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-003",
+        "PATH-006",
+        "PATH-007",
+        "PATH-008"
+      ],
+      "baseline_critical_now": true,
+      "notes": "Current local loopback-authoritative baseline path.",
+      "evidence_sources": [
+        "client/local_server/local_server_controller.py",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py"
+      ]
+    },
+    {
+      "id": "ENTRY-009",
+      "entrypoint": "python tools/mvp/runtime_entry.py --local-singleplayer",
+      "depends_on_roots": [
+        "tools/mvp/",
+        "client/local_server/",
+        "profiles/",
+        "locks/",
+        "data/session_templates/",
+        "tools/xstack/",
+        "saves/"
+      ],
+      "depends_on_contract_ids": [
+        "PATH-009",
+        "PATH-010",
+        "PATH-006",
+        "PATH-007"
+      ],
+      "baseline_critical_now": false,
+      "notes": "Transitional shell, not yet the hardened public playtest path.",
+      "evidence_sources": [
+        "tools/mvp/runtime_entry.py",
+        "tools/mvp/runtime_bundle.py",
+        "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md"
+      ]
+    }
+  ],
+  "canonical_vs_derived_location_map": [
+    {
+      "location": "packs/",
+      "current_role": "Runtime packaging, activation, compatibility, and distribution descriptor root",
+      "classification": "canonical_source_of_truth",
+      "why": "Governance and pack docs treat it as canonical for runtime packaging scope.",
+      "evidence_sources": [
+        "AGENTS.md",
+        "packs/README.md"
+      ]
+    },
+    {
+      "location": "data/packs/",
+      "current_role": "Authored pack-content and declaration root",
+      "classification": "transitional_bounded_authoritative",
+      "why": "Still authoritative for authored pack-content scope, but not the settled single-root future.",
+      "evidence_sources": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "location": "profiles/bundles/",
+      "current_role": "Authored profile bundles",
+      "classification": "canonical_source_of_truth",
+      "why": "Current baseline assets live here and AppShell resolves profiles here.",
+      "evidence_sources": [
+        "profiles/bundles/bundle.mvp_default.json",
+        "appshell/paths/virtual_paths.py"
+      ]
+    },
+    {
+      "location": "locks/",
+      "current_role": "Authored lock declarations",
+      "classification": "canonical_source_of_truth",
+      "why": "Baseline lock lives here; generated and store copies exist elsewhere.",
+      "evidence_sources": [
+        "locks/pack_lock.mvp_default.json",
+        "tools/mvp/runtime_bundle.py"
+      ]
+    },
+    {
+      "location": "data/session_templates/",
+      "current_role": "Authored session template payloads",
+      "classification": "canonical_support_data_location",
+      "why": "Current baseline template lives here and tooling references it directly.",
+      "evidence_sources": [
+        "data/session_templates/session.mvp_default.json",
+        "tools/mvp/runtime_bundle.py"
+      ]
+    },
+    {
+      "location": "data/registries/",
+      "current_role": "Machine-readable runtime, shell, release, trust, and validation registries",
+      "classification": "canonical_support_data_location",
+      "why": "Live code reads these registries directly.",
+      "evidence_sources": [
+        "appshell/paths/virtual_paths.py",
+        "release/component_graph_resolver.py",
+        "validation/validation_engine.py"
+      ]
+    },
+    {
+      "location": "build/registries/",
+      "current_role": "Compiled registry outputs",
+      "classification": "generated_and_baseline_consumed",
+      "why": "SessionX create and runner depend on them, but they are outputs, not authored canon.",
+      "evidence_sources": [
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py"
+      ]
+    },
+    {
+      "location": "build/lockfile.json",
+      "current_role": "Compiled lockfile output",
+      "classification": "generated_and_baseline_consumed",
+      "why": "Current SessionX path still expects it.",
+      "evidence_sources": [
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py"
+      ]
+    },
+    {
+      "location": "schema/",
+      "current_role": "Semantic and contract law",
+      "classification": "canonical_source_of_truth",
+      "why": "Governance explicitly assigns canonical status here.",
+      "evidence_sources": [
+        "AGENTS.md",
+        "schema/README.md"
+      ]
+    },
+    {
+      "location": "schemas/",
+      "current_role": "Validator-facing schemas and examples",
+      "classification": "derived_or_mixed_projection_root",
+      "why": "Useful and consumed, but not canonical law.",
+      "evidence_sources": [
+        "AGENTS.md",
+        "schemas/README.md"
+      ]
+    },
+    {
+      "location": "docs/planning/",
+      "current_role": "Planning law and checkpoints",
+      "classification": "canonical_source_of_truth",
+      "why": "Planning canon outranks mirrors.",
+      "evidence_sources": [
+        "docs/planning/AUTHORITY_ORDER.md"
+      ]
+    },
+    {
+      "location": "data/planning/",
+      "current_role": "Planning mirrors and machine-readable checkpoints",
+      "classification": "derived_mirror_with_intact_provenance",
+      "why": "Useful evidence, not higher-order canon.",
+      "evidence_sources": [
+        "docs/planning/AUTHORITY_ORDER.md"
+      ]
+    },
+    {
+      "location": "docs/audit/",
+      "current_role": "Human-readable audit evidence",
+      "classification": "mixed_evidence_root",
+      "why": "High-value evidence, but not implementation truth when code differs.",
+      "evidence_sources": [
+        "docs/planning/AUTHORITY_ORDER.md",
+        "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md"
+      ]
+    },
+    {
+      "location": "data/audit/",
+      "current_role": "Machine-readable audit evidence",
+      "classification": "derived_report_only_root",
+      "why": "Mirrors reports and evidence payloads.",
+      "evidence_sources": [
+        "docs/planning/AUTHORITY_ORDER.md"
+      ]
+    },
+    {
+      "location": "docs/xstack/",
+      "current_role": "XStack closure and retained or deferred contracts",
+      "classification": "canonical_bounded_domain_packet",
+      "why": "XStack/AIDE closure is frozen and constraining for this series.",
+      "evidence_sources": [
+        "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+        "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md"
+      ]
+    },
+    {
+      "location": "data/xstack/",
+      "current_role": "XStack mirrors",
+      "classification": "derived_mirror_with_intact_provenance",
+      "why": "Machine-readable consumption only.",
+      "evidence_sources": [
+        "data/xstack/checkpoint_c_xstack_aide_closure.json",
+        "data/xstack/next_execution_order_post_xstack_aide.json"
+      ]
+    },
+    {
+      "location": "dist/",
+      "current_role": "Assembled distribution tree",
+      "classification": "generated_but_operationally_important",
+      "why": "Launcher, setup, and AppShell discover it, but it is not authored canon.",
+      "evidence_sources": [
+        "appshell/paths/virtual_paths.py",
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py"
+      ]
+    },
+    {
+      "location": "saves/",
+      "current_role": "Runtime materialized saves",
+      "classification": "mixed_and_operationally_canonical_for_now",
+      "why": "Not authored truth, but the current baseline path assumes it.",
+      "evidence_sources": [
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/runner.py"
+      ]
+    }
+  ],
+  "overlap_duplication_ambiguity_findings": [
+    {
+      "id": "FIND-001",
+      "statement": "tools/ is top-level prominent but not a clean owner. Later prompts must reason at the subroot level, not by assuming the umbrella root is canonical."
+    },
+    {
+      "id": "FIND-002",
+      "statement": "launcher/ and setup/ look like natural product owners because they are first-class compiled roots, but the stronger repo-local operator truth currently sits in tools/launcher/launch.py and tools/setup/setup_cli.py."
+    },
+    {
+      "id": "FIND-003",
+      "statement": "runtime/ and validation/ are real roots, but both are thinner than the operational flows that depend on them. Later topology changes cannot assume their small size means low coupling."
+    },
+    {
+      "id": "FIND-004",
+      "statement": "net/ and server/net/ are separate roots with operationally entangled responsibilities."
+    },
+    {
+      "id": "FIND-005",
+      "statement": "schema/ and schemas/ remain an active canonical-versus-projection split."
+    },
+    {
+      "id": "FIND-006",
+      "statement": "packs/ and data/packs/ remain an active runtime-packaging-versus-authored-pack-content split."
+    },
+    {
+      "id": "FIND-007",
+      "statement": "profiles/bundles/, locks/, data/session_templates/, and data/registries/ are all live inputs, but the current default-bundle story is split between authored MVP assets and registry-compiled bundle.base.lab."
+    },
+    {
+      "id": "FIND-008",
+      "statement": "dist/ is generated, but it is still on the operational path for launcher/setup discovery."
+    },
+    {
+      "id": "FIND-009",
+      "statement": "saves/ is not authored canon, but it is a baseline-critical operational contract today."
+    }
+  ],
+  "redesign_freedom_boundaries": {
+    "later_prompts_may_redesign_conceptually": [
+      "The eventual top-level grouping or clustering model",
+      "How to present or document ownership more clearly",
+      "How to reduce ambiguity between wrapper roots and stronger implementation roots",
+      "How to phase future convergence between authored and generated intermediates",
+      "How to eventually normalize the bundle, profile, lock, and template default story"
+    ],
+    "later_prompts_must_preserve_current_reality_facts": [
+      "appshell/ is the current canonical repo-local shell and bootstrap owner",
+      "The strongest launcher and setup flows are currently the Python/AppShell shells under tools/",
+      "The playable-baseline path is repo-local, session-based, and loopback-authoritative",
+      "server/server_main.py repo-root math is still blocked",
+      "SessionX runner still hardcodes repo-local saves/<save_id>",
+      "Authored MVP assets and generated registry and lockfile intermediates currently coexist",
+      "schema/ versus schemas/ and packs/ versus data/packs/ are still active ownership splits",
+      "dist/ is derived but operationally consumed"
+    ],
+    "later_prompts_must_not_ignore_even_if_moved_later": [
+      "Verify build and test presets",
+      "FAST validation and TestX lanes",
+      "Launcher and setup AppShell flows",
+      "Session create and boot flows",
+      "Local loopback authority flow",
+      "profiles/, locks/, data/session_templates/, and data/registries/ physical locations as current live inputs",
+      "Release and trust registry paths",
+      "Current saves/ boot assumptions"
+    ]
+  },
+  "prohibited_repo_topology_misreadings": [
+    "Assuming top-level prominence means canonical ownership",
+    "Treating tools/ as a clean owner without drilling into the actual subroot entrypoints",
+    "Treating launcher/ or setup/ native wrappers as canonical just because they look cleaner than the Python shells",
+    "Collapsing schema/ and schemas/ into one class before the ownership split is designed explicitly",
+    "Collapsing packs/ and data/packs/ into one class before the authored-versus-runtime split is designed explicitly",
+    "Ignoring generated intermediates like build/registries/, build/lockfile.json, or dist/ because they are non-canonical, even though live flows still depend on them",
+    "Moving saves/ assumptions too early while the baseline path still hardcodes them",
+    "Using stale docs or root names as topology truth when live implementation evidence shows otherwise",
+    "Presenting the current tree as already normalized when the bundle-default seam, wrapper-versus-shell seam, and save-root coupling remain unresolved"
+  ],
+  "downstream_prompts_enabled": [
+    "Repo-structure coupling and drift analysis grounded in current ownership and path contracts",
+    "Candidate topology comparison against live baseline-critical roots and path dependencies",
+    "Migration sequencing and shim-strategy planning after coupling risks are mapped"
+  ]
+}
