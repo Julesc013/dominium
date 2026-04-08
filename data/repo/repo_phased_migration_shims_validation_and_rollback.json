@@ -1,0 +1,719 @@
+{
+  "artifact_identity": {
+    "artifact_id": "repo_phased_migration_shims_validation_and_rollback",
+    "artifact_class": "repo_structure_migration_planning_packet",
+    "schema_version": "1.0.0",
+    "status": "derived",
+    "stability": "stable",
+    "series_scope": "repo_structure_discovery_and_design",
+    "series_role": "authoritative phased migration and rollback packet for later relayout execution prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, the Omega2 coupling-risk packet, the Omega0 option packet, and the Omega1 preferred-target packet",
+    "last_reviewed": "2026-04-08",
+    "replacement_target": "later explicit relayout-execution checkpoint or migration-plan replacement only after new baseline-hardening evidence and follow-up approval",
+    "binding_sources": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      ".agentignore",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/MERGED_PROGRAM_STATE.md",
+      "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "data/repo/repo_non_negotiables_and_current_reality.json",
+      "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "data/repo/repo_target_topology_options_and_comparison.json",
+      "docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md",
+      "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+      "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+      "data/planning/next_execution_order_post_zeta.json",
+      "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+      "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
+      "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+      "data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+      "data/xstack/next_execution_order_post_xstack_aide.json",
+      "appshell/paths/virtual_paths.py",
+      "tools/launcher/launch.py",
+      "tools/setup/setup_cli.py",
+      "tools/xstack/session_create.py",
+      "tools/xstack/session_boot.py",
+      "tools/xstack/sessionx/runner.py",
+      "tools/xstack/registry_compile/constants.py",
+      "tools/import_bridge.py",
+      "runtime/process_spawn.py",
+      "server/server_main.py",
+      "release/release_manifest_engine.py"
+    ]
+  },
+  "migration_planning_method": {
+    "summary": "The migration design is phase-first, shim-aware, and rollback-biased.",
+    "how_phases_are_chosen": [
+      "Phases are chosen by the strongest shared risk boundary rather than by desired neatness.",
+      "No-move normalization comes before any physical change.",
+      "No phase that touches baseline-critical seams begins before one repeatable repo-local playable baseline exists.",
+      "Low-coupling and wrapper-only movement comes before mixed or critical surfaces.",
+      "Shim-backed changes come before shim retirement."
+    ],
+    "how_shim_need_is_judged": [
+      "A shim is presumed necessary when a slice changes a path that current code or scripts still resolve literally.",
+      "A shim is presumed necessary when a slice changes command or entrypoint precedence while old invocations must remain valid.",
+      "A shim is presumed necessary when a slice changes report, manifest, registry, or session artifact locations that existing consumers still read.",
+      "A shim is presumed necessary when a slice touches a mixed host such as tools, docs/audit, data/audit, or control-plane roots already consumed by launcher/setup shells."
+    ],
+    "how_validation_gates_are_selected": [
+      "Use Omega0 survival rules plus the audit-backed baseline path as the minimum gate set.",
+      "Run FAST validation after every slice.",
+      "Add verify build lane checks when build or wrapper surfaces are affected.",
+      "Add launcher/setup AppShell health whenever product shells, release/trust, or virtual-root behavior is touched.",
+      "Add SessionX create/boot, local loopback authority boot, and save/load smoke whenever session, local authority, or generated-intermediate contracts are touched.",
+      "Add selected TestX or CTest smoke whenever proof surfaces or baseline-adjacent runtime seams change."
+    ],
+    "how_rollback_boundaries_are_chosen": [
+      "A rollback boundary is required around any slice that could invalidate the canonical build lane.",
+      "A rollback boundary is required around any slice that could invalidate the canonical validation lane.",
+      "A rollback boundary is required around any slice that could invalidate the Python/AppShell launcher/setup shells.",
+      "A rollback boundary is required around any slice that could invalidate the SessionX create/boot path, local loopback-authoritative playable path, or current save/load assumptions.",
+      "Every slice must therefore be small enough that its compatibility shims and previous path behavior can be restored as one unit."
+    ],
+    "how_first_slice_safety_is_judged": [
+      "The safest first slice avoids moving files.",
+      "The safest first slice avoids changing imports, includes, or runtime path logic.",
+      "The safest first slice avoids touching Omega2 do-not-move-yet surfaces directly.",
+      "The safest first slice reduces ambiguity or drift in a way that later execution prompts can build on.",
+      "The safest first slice proves that the migration series can start without destabilizing the baseline path."
+    ]
+  },
+  "migration_phase_definitions": [
+    {
+      "id": "MP-0",
+      "name": "Pre-Baseline No-Move Contract Hardening",
+      "what_belongs_here": [
+        "authoritative path and wrapper-precedence normalization",
+        "drift reduction in derived docs and mirrors",
+        "migration slice manifests",
+        "boundary labels",
+        "compatibility planning artifacts that do not change runtime behavior"
+      ],
+      "what_must_not_happen_here": [
+        "file moves",
+        "root renames",
+        "import changes",
+        "path-resolution changes",
+        "session semantics changes",
+        "local authority changes"
+      ],
+      "entry_requirements": [
+        "the preferred-target packet exists",
+        "the current protected surfaces are known"
+      ]
+    },
+    {
+      "id": "MP-1",
+      "name": "Post-Baseline Entrypoint And Path Normalization",
+      "what_belongs_here": [
+        "wrapper-command shims",
+        "path-authority bridges",
+        "canonical entrypoint precedence cleanup",
+        "virtual-root alias planning",
+        "other no-move compatibility mechanisms that make later movement survivable"
+      ],
+      "what_must_not_happen_here": [
+        "physical movement of appshell",
+        "physical movement of launcher/setup Python shells",
+        "physical movement of SessionX create/boot surfaces",
+        "physical movement of the local authority cluster"
+      ],
+      "entry_requirements": [
+        "one repeatable repo-local playable baseline exists",
+        "FAST is green",
+        "an agreed local smoke slice is passing"
+      ]
+    },
+    {
+      "id": "MP-2",
+      "name": "Safe Low-Risk Structural Relayout",
+      "what_belongs_here": [
+        "wrapper-only native GUI/TUI leaves",
+        "clearly low-coupling support leaves",
+        "carefully scoped derived or report leaves whose consumers can be preserved easily"
+      ],
+      "what_must_not_happen_here": [
+        "movement of AppShell",
+        "movement of SessionX",
+        "movement of local authority seams",
+        "movement of save-root contracts",
+        "movement of split-root ownership surfaces"
+      ],
+      "entry_requirements": [
+        "MP-1 is green",
+        "the shims needed for affected callers are defined",
+        "rollback has been rehearsed for the slice"
+      ]
+    },
+    {
+      "id": "MP-3",
+      "name": "Shim-Backed Mixed-Root Migration",
+      "what_belongs_here": [
+        "mixed proof and tooling hosts",
+        "validation and report path normalization",
+        "control-plane boundary cleanup where launcher/setup and validation consumers still need compatibility aliases"
+      ],
+      "what_must_not_happen_here": [
+        "direct movement of baseline-critical product-shell seams without already-proven shims",
+        "direct movement of local-authority seams without already-proven shims"
+      ],
+      "entry_requirements": [
+        "MP-2 is green",
+        "shim coverage exists",
+        "the baseline remains repeatable after the earlier slices"
+      ]
+    },
+    {
+      "id": "MP-4",
+      "name": "Late Baseline-Adjacent Structural Normalization",
+      "what_belongs_here": [
+        "session artifact location bridges",
+        "generated-intermediate normalization",
+        "structural cleanup around baseline-adjacent product-shell or local-authority seams only if still needed"
+      ],
+      "what_must_not_happen_here": [
+        "split-root convergence by convenience",
+        "extraction-shaped changes",
+        "simultaneous movement of multiple critical path families"
+      ],
+      "entry_requirements": [
+        "repeatable local loopback boot",
+        "one save/load smoke",
+        "fresh FAST",
+        "selected TestX or CTest smoke after earlier phases"
+      ]
+    },
+    {
+      "id": "MP-5",
+      "name": "Shim Retirement And Cleanup",
+      "what_belongs_here": [
+        "removing temporary path aliases",
+        "removing wrapper-command shims",
+        "removing import/include aliases",
+        "removing report redirects",
+        "removing compatibility bridges once no surviving consumer depends on them"
+      ],
+      "what_must_not_happen_here": [
+        "bundling unrelated cleanup",
+        "bundling feature work",
+        "bundling new topology experiments into shim removal"
+      ],
+      "entry_requirements": [
+        "all migrated consumers are proven on the new paths",
+        "at least one full validation cycle has passed without relying on the old shims"
+      ]
+    }
+  ],
+  "shim_class_definitions": [
+    {
+      "id": "SHIM-PATH",
+      "name": "Path Resolution Shim",
+      "problem_it_solves": "Preserves callers that still resolve old relative or absolute paths when a path owner changes later.",
+      "when_appropriate": [
+        "after a path move or re-rooting of a non-canonical surface where older callers still need a bounded transition window"
+      ],
+      "when_dangerous": [
+        "when used to hide baseline-critical bugs such as server/server_main.py repo-root misresolution",
+        "when used to preserve two conflicting authorities silently"
+      ],
+      "when_to_remove": [
+        "once all known callers resolve the new path directly and old-path usage is proven absent"
+      ]
+    },
+    {
+      "id": "SHIM-IMPORT",
+      "name": "Import / Include Alias Shim",
+      "problem_it_solves": "Preserves Python imports, C/C++ include lookups, or tool module references while files are rehomed later.",
+      "when_appropriate": [
+        "for low-risk leaf moves",
+        "for controlled mixed-root decomposition where callers can be migrated incrementally"
+      ],
+      "when_dangerous": [
+        "when it hides ownership drift indefinitely",
+        "when it makes stale structure look canonical",
+        "tools/import_bridge.py is already a cautionary example"
+      ],
+      "when_to_remove": [
+        "once direct imports or includes have been updated and the old alias path no longer has consumers"
+      ]
+    },
+    {
+      "id": "SHIM-CMD",
+      "name": "Wrapper Command Shim",
+      "problem_it_solves": "Preserves user-facing or tool-facing commands while canonical entrypoint precedence changes under the hood.",
+      "when_appropriate": [
+        "for launcher/setup/runtime/session wrappers",
+        "for later canonical-entrypoint convergence"
+      ],
+      "when_dangerous": [
+        "when it creates two official commands at once",
+        "when it deepens startup ambiguity"
+      ],
+      "when_to_remove": [
+        "once one canonical entrypoint is proven and old wrapper invocations are intentionally retired"
+      ]
+    },
+    {
+      "id": "SHIM-LOCATION",
+      "name": "Manifest / Profile / Session Location Bridge",
+      "problem_it_solves": "Preserves pack, profile, lock, template, registry, session, and generated-output lookup when a slice changes where these files live.",
+      "when_appropriate": [
+        "for later movement of validation/report roots",
+        "for later movement of release manifests",
+        "for later movement of session artifact locations after explicit mapping exists"
+      ],
+      "when_dangerous": [
+        "when it writes to multiple authorities",
+        "when it hides save-root disagreement",
+        "when it lets generated outputs become silent sources of truth"
+      ],
+      "when_to_remove": [
+        "after a single canonical location is proven by one repeatable start/save/load/resume cycle and no caller requires the old location"
+      ]
+    },
+    {
+      "id": "SHIM-VROOT",
+      "name": "Virtual-Root Alias Bridge",
+      "problem_it_solves": "Preserves repo-local versus installed-mode discovery through appshell/paths/virtual_paths.py when supported roots move conceptually or physically later.",
+      "when_appropriate": [
+        "for installed-versus-repo-local boundary cleanup where the current VROOT contract can absorb bounded aliasing"
+      ],
+      "when_dangerous": [
+        "when new aliases are added without ownership review",
+        "when VROOTs start masking unresolved canonicality questions"
+      ],
+      "when_to_remove": [
+        "once the virtual-root registry and callers agree on one stable layout without compatibility overrides"
+      ]
+    },
+    {
+      "id": "SHIM-DOC",
+      "name": "Documentation Redirect And Report Regeneration Shim",
+      "problem_it_solves": "Preserves external references, machine-readable evidence paths, and derived docs while stale path vocabulary is cleaned up.",
+      "when_appropriate": [
+        "for docs/audit, data/audit, and other derived/report families where consumers still expect older locations or names"
+      ],
+      "when_dangerous": [
+        "when redirects are used to excuse stale runtime claims",
+        "when report outputs start being treated as canonical runtime truth"
+      ],
+      "when_to_remove": [
+        "once docs, reports, and machine-readable mirrors are regenerated on the new vocabulary and no old references are required"
+      ]
+    }
+  ],
+  "migration_slice_entries": [
+    {
+      "id": "RMS-001",
+      "goal": "Normalize authoritative path vocabulary, wrapper precedence, and preferred-target labels in docs and mirrors without moving files or changing runtime behavior.",
+      "affected_roots": [
+        "docs/repo/",
+        "docs/audit/",
+        "data/repo/",
+        "derived doc and report mirrors that still carry stale src vocabulary or wrapper overclaims"
+      ],
+      "safe_to_do_early": true,
+      "likely_needs_shim": false,
+      "shim_notes": [
+        "No runtime shim is required.",
+        "Only documentation redirect planning may be needed if later report paths change."
+      ],
+      "validation_gates": [
+        "JSON parse",
+        "markdown and JSON consistency",
+        "git diff --check",
+        "python tools/validation/tool_run_validation.py --profile FAST"
+      ],
+      "rollback_triggers": [
+        "any increase in source-of-truth ambiguity",
+        "contradictory canonical-path claims",
+        "unexpected FAST regression"
+      ],
+      "baseline_path_risk": "low",
+      "threatens_canonical_baseline_path": false
+    },
+    {
+      "id": "RMS-002",
+      "goal": "Introduce no-move wrapper-command and path-authority bridges so canonical launcher/setup/session entrypoints can survive later movement.",
+      "affected_roots": [
+        "tools/launcher/",
+        "tools/setup/",
+        "tools/mvp/runtime_entry.py",
+        "appshell/paths/",
+        "selected session-facing wrapper surfaces"
+      ],
+      "safe_to_do_early": false,
+      "likely_needs_shim": true,
+      "validation_gates": [
+        "python tools/validation/tool_run_validation.py --profile FAST",
+        "launcher/setup AppShell health",
+        "SessionX create health",
+        "SessionX boot health",
+        "one local loopback boot smoke"
+      ],
+      "rollback_triggers": [
+        "startup ambiguity increases",
+        "launcher/setup health regresses",
+        "session boot path behavior changes unexpectedly",
+        "local loopback boot fails"
+      ],
+      "baseline_path_risk": "high",
+      "threatens_canonical_baseline_path": true
+    },
+    {
+      "id": "RMS-003",
+      "goal": "Isolate or rehome low-risk native GUI/TUI wrapper leaves and related thin wrapper assets without altering the stronger Python/AppShell shells.",
+      "affected_roots": [
+        "launcher/gui/",
+        "launcher/tui/",
+        "setup/gui/",
+        "setup/tui/",
+        "relevant wrapper-only build scaffolding"
+      ],
+      "safe_to_do_early": true,
+      "likely_needs_shim": true,
+      "shim_notes": [
+        "At most bounded build or wrapper aliases should be required."
+      ],
+      "validation_gates": [
+        "cmake --preset verify",
+        "cmake --build --preset verify",
+        "selected launcher/setup wrapper smoke",
+        "python tools/validation/tool_run_validation.py --profile FAST"
+      ],
+      "rollback_triggers": [
+        "verify build fails",
+        "wrapper targets disappear",
+        "launcher/setup packaging expectations regress"
+      ],
+      "baseline_path_risk": "low",
+      "threatens_canonical_baseline_path": false
+    },
+    {
+      "id": "RMS-004",
+      "goal": "Separate proof tooling from emitted reports using compatibility aliases and report redirects so validation ownership becomes clearer without breaking consumers.",
+      "affected_roots": [
+        "validation/",
+        "tools/validation/",
+        "tools/import_bridge.py",
+        "docs/audit/",
+        "data/audit/"
+      ],
+      "safe_to_do_early": false,
+      "likely_needs_shim": true,
+      "validation_gates": [
+        "python tools/validation/tool_run_validation.py --profile FAST",
+        "python tools/xstack/testx_all.py --profile FAST",
+        "report-path integrity checks",
+        "selected ctest --preset verify smoke if build or wrapper surfaces were touched"
+      ],
+      "rollback_triggers": [
+        "report outputs move unexpectedly",
+        "proof consumers break",
+        "old-path compatibility fails",
+        "FAST findings change unexpectedly"
+      ],
+      "baseline_path_risk": "moderate",
+      "threatens_canonical_baseline_path": true
+    },
+    {
+      "id": "RMS-005",
+      "goal": "Align release, trust, install-discovery, and manifest-resolution surfaces to the preferred boundary model while keeping launcher/setup shells stable.",
+      "affected_roots": [
+        "release/",
+        "security/trust/",
+        "repo/",
+        "tools/setup/",
+        "tools/launcher/",
+        "dist/",
+        "related registries or manifests"
+      ],
+      "safe_to_do_early": false,
+      "likely_needs_shim": true,
+      "validation_gates": [
+        "python tools/validation/tool_run_validation.py --profile FAST",
+        "launcher/setup AppShell health",
+        "release-manifest load smoke",
+        "trust verification smoke",
+        "verify build and test if affected"
+      ],
+      "rollback_triggers": [
+        "setup or launcher cannot discover installs or manifests",
+        "trust resolution regresses",
+        "manifest path expectations diverge"
+      ],
+      "baseline_path_risk": "moderate_high",
+      "threatens_canonical_baseline_path": true
+    },
+    {
+      "id": "RMS-006",
+      "goal": "Bridge session create, boot, save, and compile outputs so later structural normalization can happen without breaking saves, build/registries, or build/lockfile.json assumptions.",
+      "affected_roots": [
+        "tools/xstack/session_create.py",
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py",
+        "tools/xstack/registry_compile/constants.py",
+        "profiles/",
+        "locks/",
+        "data/session_templates/",
+        "data/registries/",
+        "saves/",
+        "build/registries/",
+        "build/lockfile.json"
+      ],
+      "safe_to_do_early": false,
+      "likely_needs_shim": true,
+      "validation_gates": [
+        "python tools/validation/tool_run_validation.py --profile FAST",
+        "SessionX create health",
+        "SessionX boot health",
+        "one local loopback authority boot",
+        "one save/load smoke",
+        "selected TestX or CTest smoke"
+      ],
+      "rollback_triggers": [
+        "save-root ambiguity persists or worsens",
+        "session boot cannot find artifacts",
+        "generated outputs drift",
+        "local authority boot fails"
+      ],
+      "baseline_path_risk": "critical",
+      "threatens_canonical_baseline_path": true
+    },
+    {
+      "id": "RMS-007",
+      "goal": "After earlier phases are green, align AppShell, product shells, and the local authority seam to the preferred boundary model without destabilizing canonical flows.",
+      "affected_roots": [
+        "appshell/",
+        "tools/launcher/",
+        "tools/setup/",
+        "client/local_server/",
+        "runtime/process_spawn.py",
+        "server/server_main.py",
+        "server/net/loopback_transport.py"
+      ],
+      "safe_to_do_early": false,
+      "likely_needs_shim": true,
+      "validation_gates": [
+        "verify build lane",
+        "python tools/validation/tool_run_validation.py --profile FAST",
+        "launcher/setup health",
+        "SessionX create health",
+        "SessionX boot health",
+        "one local loopback boot",
+        "one save/load smoke",
+        "one selected playtest or CTest smoke slice"
+      ],
+      "rollback_triggers": [
+        "any baseline-flow regression",
+        "repo-root math regression",
+        "supervision regression",
+        "renewed ambiguity about the canonical entrypoint"
+      ],
+      "baseline_path_risk": "critical",
+      "threatens_canonical_baseline_path": true
+    },
+    {
+      "id": "RMS-008",
+      "goal": "After separate ownership review and later evidence, execute any convergence decisions around schema versus schemas and packs versus data/packs.",
+      "affected_roots": [
+        "schema/",
+        "schemas/",
+        "packs/",
+        "data/packs/",
+        "related contract and docs surfaces"
+      ],
+      "safe_to_do_early": false,
+      "likely_needs_shim": true,
+      "validation_gates": [
+        "python tools/validation/tool_run_validation.py --profile FAST",
+        "schema and compatibility checks",
+        "pack verification",
+        "explicit review-gate satisfaction"
+      ],
+      "rollback_triggers": [
+        "any canonicality conflict",
+        "pack or schema validation drift",
+        "unresolved review-gate condition"
+      ],
+      "baseline_path_risk": "high_governance_critical",
+      "threatens_canonical_baseline_path": true
+    }
+  ],
+  "safest_first_migration_slice": {
+    "id": "RMS-001",
+    "name": "No-Move Path Authority And Wrapper-Precedence Normalization",
+    "safety_class": "pre-baseline documentation-and-mirror normalization only; no runtime, import, include, or file-location change is permitted inside this slice",
+    "why_first": [
+      "it has the lowest combined structural and rollback risk while still proving something meaningful",
+      "it moves no files",
+      "it changes no imports, includes, or runtime path logic",
+      "it does not touch Omega2 do-not-move-yet surfaces directly",
+      "it reduces the exact ambiguity that later physical slices would otherwise amplify"
+    ],
+    "what_it_proves": [
+      "the migration series can begin by reducing stale path and wrapper ambiguity",
+      "docs and machine-readable mirrors can align to the preferred target before structural change",
+      "later execution prompts can inherit a sharper contract for which roots are canonical, mixed, wrapper-only, derived, or protected"
+    ],
+    "what_it_does_not_attempt": [
+      "canonical playtest-path implementation",
+      "launcher/setup/runtime/session shim implementation",
+      "any root movement",
+      "any save-root or repo-root bug fix",
+      "any ownership-split convergence"
+    ]
+  },
+  "phase_validation_model": {
+    "MP-0": [
+      "JSON parse for touched mirrors",
+      "prose and mirror consistency",
+      "git diff --check",
+      "python tools/validation/tool_run_validation.py --profile FAST"
+    ],
+    "MP-1": [
+      "all MP-0 gates",
+      "launcher/setup AppShell health",
+      "SessionX create health when session or entrypoint surfaces are touched",
+      "SessionX boot health when session or entrypoint surfaces are touched",
+      "one local loopback boot smoke when session or entrypoint surfaces are touched"
+    ],
+    "MP-2": [
+      "all relevant MP-1 gates",
+      "cmake --preset verify",
+      "cmake --build --preset verify",
+      "selected ctest --preset verify smoke when build or wrapper surfaces are affected"
+    ],
+    "MP-3": [
+      "all relevant MP-2 gates",
+      "python tools/xstack/testx_all.py --profile FAST",
+      "validation/report path integrity checks",
+      "targeted alias-parity checks required by the slice"
+    ],
+    "MP-4": [
+      "all relevant MP-3 gates",
+      "one repeatable local loopback-authority boot",
+      "one save/load smoke",
+      "one selected playtest or CTest smoke slice tied to the affected seam"
+    ],
+    "MP-5": [
+      "the same gates required by the last affected phase",
+      "proof that no live caller still depends on the retiring shim"
+    ],
+    "always_protected_checks": [
+      "verify build path",
+      "launcher/setup AppShell health",
+      "SessionX create/boot health",
+      "local loopback authority boot",
+      "save/load smoke",
+      "FAST validation",
+      "selected TestX or CTest smoke justified by the touched seam"
+    ]
+  },
+  "rollback_model": {
+    "rollback_triggers": [
+      "verify configure, build, or test regression",
+      "FAST not returning complete",
+      "launcher/setup AppShell health regression",
+      "session create or boot regression",
+      "local loopback authority boot failure",
+      "save/load smoke failure",
+      "canonical path ambiguity increasing rather than decreasing",
+      "shims shadowing canonical roots or creating two simultaneous authorities"
+    ],
+    "rollback_decision_thresholds": [
+      "For MP-0 and low-risk MP-2 slices, one blocking validation failure or one clear source-of-truth contradiction is enough to roll back the slice.",
+      "For MP-1, MP-3, and MP-4, any regression in a baseline-critical flow is an immediate rollback condition, not a fix-forward invitation inside the same slice.",
+      "Two consecutive rollbacks on the same boundary band stop the migration series until the plan is reassessed."
+    ],
+    "rollback_evidence_required": [
+      "before-and-after command outputs",
+      "validation report identifiers or fingerprints",
+      "smoke-test evidence for launcher/setup/session/loopback if run",
+      "list of touched roots and touched path contracts",
+      "explicit record of which shim or alias class was involved"
+    ],
+    "what_must_be_restorable": [
+      "previous canonical command lines",
+      "previous path resolution behavior or the shims that preserve it",
+      "report output locations",
+      "session artifact discovery behavior",
+      "manifest and trust lookup behavior",
+      "build preset and wrapper behavior"
+    ],
+    "stop_conditions_for_the_migration_series": [
+      "the baseline path is no longer repeatable even after rollback",
+      "the same protected seam rolls back twice",
+      "a new same-tier authority conflict appears around split roots or canonicality",
+      "a migration slice begins to pressure XStack/AIDE extraction or post-Zeta frontier work back into scope",
+      "rollback cannot restore pre-slice behavior quickly and unambiguously"
+    ]
+  },
+  "redesign_freedom_boundaries_for_execution_prompts": {
+    "later_execution_prompts_may": [
+      "execute one bounded migration slice at a time",
+      "introduce the minimum shim class required by that slice",
+      "perform only the validation gates required by the touched seam plus the minimum always-on gates",
+      "roll back immediately when the thresholds in the rollback model are met"
+    ],
+    "later_execution_prompts_must_not": [
+      "combine migration with unrelated feature work",
+      "move multiple high-risk boundary bands in one slice",
+      "remove old paths or commands before the replacement plus shim is validated",
+      "treat the preferred target as permission to migrate split-root ownership surfaces by convenience",
+      "reopen XStack/AIDE extraction or internal Zeta realization work under migration language"
+    ],
+    "later_execution_prompts_must_validate_first": [
+      "the protected baseline path is still the governing priority",
+      "the slice does not outrun the preferred-target boundary model",
+      "rollback can restore the old behavior for the touched seam"
+    ],
+    "surfaces_that_remain_protected_until_later": [
+      "appshell/",
+      "tools/launcher/",
+      "tools/setup/",
+      "client/local_server/",
+      "runtime/process_spawn.py",
+      "server/server_main.py",
+      "server/net/loopback_transport.py",
+      "tools/xstack/session_create.py",
+      "tools/xstack/session_boot.py",
+      "tools/xstack/sessionx/creator.py",
+      "tools/xstack/sessionx/runner.py",
+      "saves/",
+      "build/registries/",
+      "build/lockfile.json",
+      "schema/ versus schemas/",
+      "packs/ versus data/packs/"
+    ]
+  },
+  "prohibited_migration_shapes": [
+    "moving baseline-critical roots in the first slice",
+    "eliminating old paths before shims exist and are validated",
+    "coupling structural movement with unrelated feature work",
+    "using migration phases to reopen XStack/AIDE extraction or post-Zeta frontier work",
+    "claiming cleanup while invalidating build, validation, session, or playtest flows",
+    "treating compatibility bridges as permanent substitutes for real ownership cleanup",
+    "letting doc/report movement outrun proof-consumer compatibility",
+    "collapsing low-risk and high-risk slices into one generic restructure step"
+  ],
+  "downstream_prompts_enabled": [
+    "final pre-relayout validation decision prompts",
+    "first-slice execution prompts for RMS-001 and later bounded slices",
+    "shim-implementation prompts scoped to one slice at a time",
+    "rollback-aware relayout prompts"
+  ]
+}
