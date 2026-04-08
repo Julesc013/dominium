@@ -1,0 +1,836 @@
+{
+  "artifact_identity": {
+    "artifact_id": "repo_coupling_drift_and_relayout_risk_analysis",
+    "artifact_class": "repo_structure_risk_packet",
+    "schema_version": "1.0.0",
+    "status": "derived",
+    "stability": "stable",
+    "series_scope": "repo_structure_discovery_and_design",
+    "series_role": "risk and coupling packet for later topology-option, preferred-target, shim-design, migration-sequencing, and ownership-reconciliation prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, audit evidence, and live implementation evidence",
+    "last_reviewed": "2026-04-08",
+    "replacement_target": "later explicit repo-structure follow-up after approved topology decisions or new playable-baseline evidence",
+    "binding_sources": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      ".agentignore",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/MERGED_PROGRAM_STATE.md",
+      "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "data/repo/repo_non_negotiables_and_current_reality.json",
+      "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+      "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
+      "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+      "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
+      "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+      "appshell/paths/virtual_paths.py",
+      "appshell/mode_dispatcher.py",
+      "appshell/tui_stub.py",
+      "appshell/supervisor/supervisor_engine.py",
+      "tools/launcher/launch.py",
+      "tools/setup/setup_cli.py",
+      "tools/xstack/session_create.py",
+      "tools/xstack/session_boot.py",
+      "tools/xstack/sessionx/creator.py",
+      "tools/xstack/sessionx/runner.py",
+      "tools/mvp/runtime_entry.py",
+      "tools/mvp/runtime_bundle.py",
+      "tools/xstack/registry_compile/constants.py",
+      "client/local_server/local_server_controller.py",
+      "runtime/process_spawn.py",
+      "server/server_main.py",
+      "server/net/loopback_transport.py",
+      "release/release_manifest_engine.py",
+      "release/component_graph_resolver.py",
+      "release/update_resolver.py",
+      "security/trust/trust_verifier.py",
+      "validation/validation_engine.py",
+      "tools/validation/tool_run_validation.py",
+      "tools/import_bridge.py",
+      "data/registries/virtual_root_registry.json",
+      "data/audit/install_discovery_report.json",
+      "data/audit/ui_surface_report.json"
+    ]
+  },
+  "coupling_method_notes": {
+    "structural_coupling": "A root or subsystem cannot be relocated safely without changing how other roots import it, include it, spawn it, validate it, or derive identity from its physical location.",
+    "path_coupling": "Code, scripts, or machine-readable registries expect specific relative or absolute layout conventions such as repo-root math, save roots, generated output roots, or manifest locations.",
+    "ownership_coupling": "Two roots look distinct but a live subsystem only works because both participate in one shared contract or truth family.",
+    "documentation_drift": "Prose or machine-readable mirrors refer to stale paths, overstate maturity or portability, understate already-live implementation, hide compatibility scaffolding, or describe cleaner boundaries than the code actually exposes.",
+    "move_risk_judgment": [
+      "whether the surface sits on an Omega0 survival path",
+      "how many live entrypoints or data contracts depend on its current location",
+      "whether generated intermediates or virtual paths hide the dependency",
+      "whether a compatibility bridge already exists and would need to be preserved",
+      "whether the audit already identifies the surface as blocked, fragile, or wrapper-heavy"
+    ],
+    "safe_to_move_later_meaning": "Later relayout work could plausibly move the surface after ordinary review because the current baseline does not depend on it heavily.",
+    "needs_shim_meaning": "Later relayout work would probably need path adapters, import bridges, mirror regeneration, or compatibility wrappers to preserve current flows.",
+    "do_not_move_yet_meaning": "Later relayout work should not move the surface before the canonical playable-baseline path is hardened and the current blocker class is removed."
+  },
+  "coupling_class_definitions": [
+    {
+      "id": "low_coupling_easy_to_isolate",
+      "label": "low coupling / easy to isolate",
+      "meaning": "The surface has narrow dependencies and does not currently sit on the strongest baseline path."
+    },
+    {
+      "id": "moderate_coupling_review_required",
+      "label": "moderate coupling / likely needs review",
+      "meaning": "The surface has noticeable cross-root dependencies or build ties, but the baseline would probably survive careful movement if reviewed explicitly."
+    },
+    {
+      "id": "high_coupling_likely_needs_shim",
+      "label": "high coupling / likely needs shim",
+      "meaning": "The surface participates in live boot, validation, release, or data-location contracts. Relayout would likely require shims, adapters, or bridge preservation."
+    },
+    {
+      "id": "critical_coupling_do_not_move_before_baseline_stabilization",
+      "label": "critical coupling / do not move before baseline stabilization",
+      "meaning": "The surface sits directly on the current playable-baseline path or its proof surface, and moving it early would risk breaking build, session, boot, attach, validation, or operator continuity."
+    },
+    {
+      "id": "ambiguous_coupling_investigate_later",
+      "label": "ambiguous coupling / investigate later",
+      "meaning": "The surface is visibly entangled or split across roots, but the repo has not yet resolved which side is the future owner."
+    }
+  ],
+  "coupling_ledger": [
+    {
+      "id": "CRA-001",
+      "path_or_subsystem": "appshell/ core shell, command, mode-dispatch, and virtual-root path surfaces",
+      "coupling_class": "critical_coupling_do_not_move_before_baseline_stabilization",
+      "coupled_to": [
+        "tools/launcher/",
+        "tools/setup/",
+        "server/server_main.py",
+        "appshell/supervisor/",
+        "data/registries/virtual_root_registry.json",
+        "dist/",
+        "profiles/",
+        "locks/",
+        "packs/",
+        "saves/",
+        "runtime/"
+      ],
+      "coupling_type": [
+        "import",
+        "runtime",
+        "path",
+        "data",
+        "entrypoint",
+        "policy"
+      ],
+      "why_it_matters": "This is the current canonical repo-local shell/bootstrap substrate, and many other roots rely on its virtual-root and mode-dispatch assumptions rather than resolving paths independently.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "appshell/paths/virtual_paths.py",
+        "data/registries/virtual_root_registry.json",
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "server/server_main.py"
+      ]
+    },
+    {
+      "id": "CRA-002",
+      "path_or_subsystem": "appshell/supervisor/ and related IPC orchestration",
+      "coupling_class": "high_coupling_likely_needs_shim",
+      "coupled_to": [
+        "runtime/process_spawn.py",
+        "tools/appshell/supervisor_service.py",
+        "tools/appshell/supervised_product_host.py",
+        "VROOT_IPC",
+        "profiles/bundles/bundle.mvp_default.json",
+        "locks/pack_lock.mvp_default.json",
+        "data/session_templates/session.mvp_default.json"
+      ],
+      "coupling_type": [
+        "runtime",
+        "path",
+        "data",
+        "policy"
+      ],
+      "why_it_matters": "The supervisor path is not the whole playable baseline, but the audit already identifies supervision fragility as a blocker for repeatable internal sessions.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "appshell/supervisor/supervisor_engine.py",
+        "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+        "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md"
+      ]
+    },
+    {
+      "id": "CRA-003",
+      "path_or_subsystem": "tools/launcher/launch.py and tools/setup/setup_cli.py",
+      "coupling_class": "critical_coupling_do_not_move_before_baseline_stabilization",
+      "coupled_to": [
+        "appshell/",
+        "release/",
+        "security/trust/",
+        "data/registries/",
+        "dist/",
+        "install discovery",
+        "repo-local saves/",
+        "compiled wrapper expectations"
+      ],
+      "coupling_type": [
+        "import",
+        "runtime",
+        "path",
+        "data",
+        "entrypoint",
+        "policy"
+      ],
+      "why_it_matters": "These are the strongest live operator shells now, so a relayout that destabilizes them would directly weaken the path Omega0 says must survive.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ]
+    },
+    {
+      "id": "CRA-004",
+      "path_or_subsystem": "launcher/ and setup/ native wrapper roots, especially GUI/TUI leaves",
+      "coupling_class": "moderate_coupling_review_required",
+      "coupled_to": [
+        "verify build graph",
+        "include surfaces",
+        "packaging expectations",
+        "wrapper parity narratives"
+      ],
+      "coupling_type": [
+        "build",
+        "include",
+        "wrapper",
+        "maturity"
+      ],
+      "why_it_matters": "These roots are not the strongest baseline path, but moving them still affects compiled build topology and can confuse operator-facing narratives.",
+      "baseline_critical": false,
+      "safe_to_move_later": true,
+      "likely_needs_shim": false,
+      "do_not_move_yet": false,
+      "evidence_notes": [
+        "launcher/CMakeLists.txt",
+        "setup/CMakeLists.txt",
+        "launcher/gui/launcher_gui_stub.c",
+        "launcher/tui/launcher_tui_stub.c",
+        "setup/cli/setup_cli_main.c"
+      ]
+    },
+    {
+      "id": "CRA-005",
+      "path_or_subsystem": "client/local_server/ plus the local loopback authority path",
+      "coupling_class": "critical_coupling_do_not_move_before_baseline_stabilization",
+      "coupled_to": [
+        "runtime/process_spawn.py",
+        "server/server_main.py",
+        "server/net/loopback_transport.py",
+        "server.runtime.*",
+        "repo-local saves/",
+        "build/client/local_singleplayer/<save_id>/diag/"
+      ],
+      "coupling_type": [
+        "import",
+        "runtime",
+        "path",
+        "data",
+        "entrypoint"
+      ],
+      "why_it_matters": "This is the strongest evidence-backed local singleplayer path and is central to the current playable-baseline target.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "client/local_server/local_server_controller.py",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py",
+        "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md"
+      ]
+    },
+    {
+      "id": "CRA-006",
+      "path_or_subsystem": "server/server_main.py plus runtime/process_spawn.py",
+      "coupling_class": "critical_coupling_do_not_move_before_baseline_stabilization",
+      "coupled_to": [
+        "appshell/",
+        "client/local_server/",
+        "server.runtime.*",
+        "server.net.loopback_transport",
+        "repo-root path math",
+        "saves/"
+      ],
+      "coupling_type": [
+        "import",
+        "runtime",
+        "path",
+        "entrypoint"
+      ],
+      "why_it_matters": "This is the current Python server boot seam, and it is already fragile because the repo-root hint is wrong while local singleplayer still spawns it explicitly.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "runtime/process_spawn.py",
+        "server/server_main.py",
+        "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md"
+      ]
+    },
+    {
+      "id": "CRA-007",
+      "path_or_subsystem": "tools/xstack/session_create.py, tools/xstack/session_boot.py, tools/xstack/sessionx/creator.py, and tools/xstack/sessionx/runner.py",
+      "coupling_class": "critical_coupling_do_not_move_before_baseline_stabilization",
+      "coupled_to": [
+        "profiles/",
+        "locks/",
+        "data/session_templates/",
+        "data/registries/",
+        "build/registries/",
+        "build/lockfile.json",
+        "repo-local saves/",
+        "registry-compile defaults"
+      ],
+      "coupling_type": [
+        "import",
+        "runtime",
+        "path",
+        "data",
+        "entrypoint"
+      ],
+      "why_it_matters": "The pipeline both materializes and boots the current baseline session artifacts, but the create and boot sides still disagree about alternate save roots.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "tools/xstack/session_create.py",
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py",
+        "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md"
+      ]
+    },
+    {
+      "id": "CRA-008",
+      "path_or_subsystem": "release/, security/trust/, install discovery, and manifest-resolution paths",
+      "coupling_class": "high_coupling_likely_needs_shim",
+      "coupled_to": [
+        "tools/setup/setup_cli.py",
+        "tools/launcher/launch.py",
+        "data/registries/component_graph_registry.json",
+        "data/registries/install_profile_registry.json",
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "dist/",
+        "store/",
+        "manifests/"
+      ],
+      "coupling_type": [
+        "import",
+        "runtime",
+        "path",
+        "data",
+        "policy"
+      ],
+      "why_it_matters": "The release, trust, and install-discovery surfaces are already wired into the stronger operator shells, so a relayout here would need explicit compatibility preservation.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": false,
+      "evidence_notes": [
+        "release/release_manifest_engine.py",
+        "release/component_graph_resolver.py",
+        "release/update_resolver.py",
+        "security/trust/trust_verifier.py",
+        "tools/setup/setup_cli.py"
+      ]
+    },
+    {
+      "id": "CRA-009",
+      "path_or_subsystem": "validation/, tools/validation/, tools/xstack/testx_all.py, tests/, docs/audit/, and data/audit/",
+      "coupling_class": "high_coupling_likely_needs_shim",
+      "coupled_to": [
+        "data/registries/validation_suite_registry.json",
+        "tools/import_bridge.py",
+        "validation reports under docs/audit/ and data/audit/",
+        "verify build/test lane"
+      ],
+      "coupling_type": [
+        "import",
+        "path",
+        "data",
+        "report",
+        "build",
+        "validation"
+      ],
+      "why_it_matters": "This is the proof surface later relayout work must still use honestly, and it currently spans code roots, report roots, and compatibility bridging.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "validation/validation_engine.py",
+        "tools/validation/tool_run_validation.py",
+        "tools/xstack/testx_all.py",
+        "CMakePresets.json"
+      ]
+    },
+    {
+      "id": "CRA-010",
+      "path_or_subsystem": "schema/ versus schemas/",
+      "coupling_class": "ambiguous_coupling_investigate_later",
+      "coupled_to": [
+        "validation",
+        "compatibility narratives",
+        "schema-facing tooling",
+        "authority-order doctrine"
+      ],
+      "coupling_type": [
+        "ownership",
+        "data",
+        "validation",
+        "doctrine"
+      ],
+      "why_it_matters": "The split is explicit governance law, so later relayout work cannot treat the roots as casually interchangeable just because both look schema-like.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "AGENTS.md",
+        ".agentignore",
+        "docs/planning/AUTHORITY_ORDER.md",
+        "schema/README.md",
+        "schemas/README.md"
+      ]
+    },
+    {
+      "id": "CRA-011",
+      "path_or_subsystem": "packs/ versus data/packs/",
+      "coupling_class": "ambiguous_coupling_investigate_later",
+      "coupled_to": [
+        "pack layout",
+        "pack content declarations",
+        "compatibility validation",
+        "virtual-root discovery",
+        "doctrine"
+      ],
+      "coupling_type": [
+        "ownership",
+        "data",
+        "runtime",
+        "validation"
+      ],
+      "why_it_matters": "Runtime packaging and authored pack-content declarations are intentionally split today, so a later relayout cannot collapse them by convenience.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "AGENTS.md",
+        ".agentignore",
+        "packs/README.md",
+        "inspection of data/packs/"
+      ]
+    },
+    {
+      "id": "CRA-012",
+      "path_or_subsystem": "profiles/, locks/, data/session_templates/, data/registries/, and the default-bundle seam between authored MVP assets and bundle.base.lab",
+      "coupling_class": "high_coupling_likely_needs_shim",
+      "coupled_to": [
+        "SessionX create and runner paths",
+        "tools/mvp/runtime_bundle.py",
+        "AppShell virtual roots",
+        "release/install projections",
+        "baseline recipe docs"
+      ],
+      "coupling_type": [
+        "data",
+        "path",
+        "runtime",
+        "ownership"
+      ],
+      "why_it_matters": "These roots are live input roots today, but the repo still has a real default-selection seam between authored baseline assets and registry-driven bundle defaults.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": true,
+      "evidence_notes": [
+        "tools/xstack/registry_compile/constants.py",
+        "tools/xstack/session_create.py",
+        "tools/mvp/runtime_bundle.py",
+        "data/registries/bundle_profiles.json"
+      ]
+    },
+    {
+      "id": "CRA-013",
+      "path_or_subsystem": "docs/planning/, docs/repo/, docs/xstack/, docs/audit/, data/planning/, data/xstack/, and data/audit/",
+      "coupling_class": "moderate_coupling_review_required",
+      "coupled_to": [
+        "authority-order doctrine",
+        "downstream prompt consumers",
+        "machine-readable mirrors",
+        "validation outputs",
+        "audit evidence",
+        "stale path mirrors"
+      ],
+      "coupling_type": [
+        "doctrine",
+        "report",
+        "mirror",
+        "planning",
+        "path"
+      ],
+      "why_it_matters": "These packet families are not the runtime baseline themselves, but later repo-structure prompts depend on them and stale path vocabulary can create false confidence about relayout safety.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": false,
+      "evidence_notes": [
+        "docs/planning/AUTHORITY_ORDER.md",
+        "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+        "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+        "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md"
+      ]
+    },
+    {
+      "id": "CRA-014",
+      "path_or_subsystem": "tools/import_bridge.py and the stale src/... path consumers it keeps functioning",
+      "coupling_class": "high_coupling_likely_needs_shim",
+      "coupled_to": [
+        "tools/validation/tool_run_validation.py",
+        "older report paths in data/audit/install_discovery_report.json",
+        "data/audit/ui_surface_report.json",
+        "path-equivalence lookups from older restructure locks"
+      ],
+      "coupling_type": [
+        "import",
+        "path",
+        "compatibility",
+        "report"
+      ],
+      "why_it_matters": "This bridge masks structural drift by making older src. imports and path narratives continue to resolve, so later relayout work must treat it as compatibility scaffolding rather than as proof that old layouts remain canonical.",
+      "baseline_critical": true,
+      "safe_to_move_later": false,
+      "likely_needs_shim": true,
+      "do_not_move_yet": false,
+      "evidence_notes": [
+        "tools/import_bridge.py",
+        "tools/validation/tool_run_validation.py",
+        "data/audit/install_discovery_report.json",
+        "data/audit/ui_surface_report.json"
+      ]
+    }
+  ],
+  "path_and_doc_drift_findings": [
+    {
+      "id": "DRIFT-001",
+      "drift_type": "path and readiness drift",
+      "narrative": "Derived audit docs still describe src/server/server_main.py as the authoritative server CLI surface.",
+      "implementation_reality": "The live file is server/server_main.py, and direct invocation is still blocked because REPO_ROOT_HINT resolves outside the repo root.",
+      "why_it_matters": "This is not just stale naming; it overstates a broken boot path.",
+      "evidence_notes": [
+        "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
+        "server/server_main.py"
+      ]
+    },
+    {
+      "id": "DRIFT-002",
+      "drift_type": "structural and naming drift",
+      "narrative": "Multiple derived docs and machine-readable audit payloads still point at src/... paths as if they were the active live tree.",
+      "implementation_reality": "The active repo uses top-level roots such as appshell/, client/, server/, launcher/, setup/, and schema/.",
+      "why_it_matters": "This drift can make a candidate relayout look cheaper than it is because the packet appears already abstracted from the old-to-new root transition.",
+      "evidence_notes": [
+        "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
+        "data/audit/install_discovery_report.json",
+        "data/audit/ui_surface_report.json"
+      ]
+    },
+    {
+      "id": "DRIFT-003",
+      "drift_type": "maturity drift",
+      "narrative": "Older derived docs still imply existing runtime/bootstrap portability across CLI, GUI, and headless entrypoints.",
+      "implementation_reality": "Native launcher and setup GUI/TUI leaves remain explicit stubs, and AppShell mode dispatch still returns stub payloads for TUI and rendered native modes.",
+      "why_it_matters": "Later topology work must not infer that wrapper roots are mature enough to anchor the canonical path.",
+      "evidence_notes": [
+        "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
+        "appshell/mode_dispatcher.py",
+        "appshell/tui_stub.py",
+        "launcher/gui/launcher_gui_stub.c",
+        "launcher/tui/launcher_tui_stub.c"
+      ]
+    },
+    {
+      "id": "DRIFT-004",
+      "drift_type": "behavioral drift",
+      "narrative": "tools/mvp/runtime_entry.py is still described in some derived narratives as the practical MVP bootstrap surface.",
+      "implementation_reality": "The audit recorded that local-singleplayer invocation fell back to an AppShell/TUI path rather than a clear playable operator flow, so the file remains transitional rather than canonical.",
+      "why_it_matters": "This is a wrapper-versus-canonical confusion point and a relayout hazard if the transitional wrapper is treated as the stable target.",
+      "evidence_notes": [
+        "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
+        "tools/mvp/runtime_entry.py",
+        "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md"
+      ]
+    },
+    {
+      "id": "DRIFT-005",
+      "drift_type": "integration drift",
+      "narrative": "Session-pipeline doctrine and reports often frame session boot as available once a SessionSpec exists.",
+      "implementation_reality": "The practical boot path is narrower because tools/xstack/sessionx/runner.py still forces repo_root/saves/<save_id> even if creation used another root.",
+      "why_it_matters": "This is a true relayout blocker, not a cosmetic mismatch.",
+      "evidence_notes": [
+        "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/runner.py"
+      ]
+    },
+    {
+      "id": "DRIFT-006",
+      "drift_type": "compatibility-scaffolding drift",
+      "narrative": "Some older path consumers continue working well enough that the remaining src drift is easy to underestimate.",
+      "implementation_reality": "tools/validation/tool_run_validation.py installs src aliases through tools/import_bridge.py, and validation/validation_engine.py still emits checked paths such as src/time.",
+      "why_it_matters": "Later relayout work must treat the bridge as an active shim that preserves stale consumers, not as evidence that current ownership is already normalized.",
+      "evidence_notes": [
+        "tools/import_bridge.py",
+        "tools/validation/tool_run_validation.py",
+        "validation/validation_engine.py"
+      ]
+    },
+    {
+      "id": "DRIFT-007",
+      "drift_type": "ownership and structural drift",
+      "narrative": "Top-level root names suggest cleaner subsystem boundaries than the implementation actually exposes.",
+      "implementation_reality": "launcher/ and setup/ look canonical but the stronger shells live in tools/; runtime/ looks central but only hosts a thin spawn helper; validation/ looks isolated but the CLI, report paths, and src-alias bridge live elsewhere; dist/ looks derived-only but sits on live install-discovery paths.",
+      "why_it_matters": "Later topology prompts must reason from live couplings, not from tidy names.",
+      "evidence_notes": [
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "runtime/process_spawn.py",
+        "validation/validation_engine.py",
+        "tools/import_bridge.py"
+      ]
+    },
+    {
+      "id": "DRIFT-008",
+      "drift_type": "understate-implemented-reality drift",
+      "narrative": "Some machine-readable audit outputs still describe the repo through old src/... containers.",
+      "implementation_reality": "The top-level-root restructure is already real, and the current authoritative topology is what Omega1 recorded.",
+      "why_it_matters": "This understates how much current tooling already depends on the new root family and can obscure which compatibility layers must survive a future relayout.",
+      "evidence_notes": [
+        "data/audit/install_discovery_report.json",
+        "data/audit/ui_surface_report.json",
+        "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md"
+      ]
+    }
+  ],
+  "move_risk_class_definitions": [
+    {
+      "id": "safe_to_redesign_conceptually_now",
+      "label": "safe to redesign conceptually now",
+      "meaning": "Later prompts may redesign the conceptual grouping or target ownership story without creating immediate baseline risk, because the live surface is not the strongest current baseline dependency."
+    },
+    {
+      "id": "safe_to_move_only_after_shim_design",
+      "label": "safe to move only after shim design",
+      "meaning": "Later prompts may consider physical movement only if they first design explicit adapters, path shims, mirror regeneration, or import bridges."
+    },
+    {
+      "id": "do_not_move_before_canonical_playtest_path_hardened",
+      "label": "do not move before canonical playtest path is hardened",
+      "meaning": "The live surface sits on the current build, session, loopback, validation, or operator path that Omega0 requires to survive."
+    },
+    {
+      "id": "do_not_redesign_until_later_architecture_clarification",
+      "label": "do not redesign until later architecture clarification",
+      "meaning": "The root family has unresolved ownership or canonical-versus-derived meaning, so later prompts must defer structural cleanup until the owner story is clarified explicitly."
+    },
+    {
+      "id": "mixed_defer",
+      "label": "mixed / defer",
+      "meaning": "The root family contains both easier and riskier portions at once, so later prompts should avoid one blanket move judgment."
+    }
+  ],
+  "safe_move_needs_shim_do_not_move_map": {
+    "safe_to_move_later": [
+      {
+        "path_or_cluster": "launcher/gui/ and launcher/tui/",
+        "rationale": "They are compiled wrapper leaves, still stub-heavy, and not on the strongest repo-local baseline path."
+      },
+      {
+        "path_or_cluster": "setup/gui/ and setup/tui/",
+        "rationale": "They share the same posture as launcher UI leaves; baseline work already prefers the Python/AppShell setup shell."
+      }
+    ],
+    "likely_needs_shim": [
+      {
+        "path_or_cluster": "release/, security/trust/, dist/, and manifest/store path conventions",
+        "rationale": "The stronger operator shells already depend on manifest, registry, and store projections."
+      },
+      {
+        "path_or_cluster": "validation/, tools/validation/, tools/xstack/testx_all.py, docs/audit/, and data/audit/",
+        "rationale": "Relayout would need report-path preservation, mirror regeneration, or validation-path updates."
+      },
+      {
+        "path_or_cluster": "profiles/, locks/, data/session_templates/, and data/registries/",
+        "rationale": "These are live input roots with many current consumers."
+      },
+      {
+        "path_or_cluster": "tools/import_bridge.py plus stale src/... consumers in reports and some validation flows",
+        "rationale": "Old path narratives still survive behind active compatibility scaffolding."
+      }
+    ],
+    "do_not_move_yet": [
+      {
+        "path_or_cluster": "appshell/",
+        "rationale": "It is the current canonical repo-local shell/bootstrap owner and sits directly on launcher/setup/server operator continuity."
+      },
+      {
+        "path_or_cluster": "tools/launcher/ and tools/setup/",
+        "rationale": "These are the strongest live launcher/setup surfaces today."
+      },
+      {
+        "path_or_cluster": "client/local_server/, runtime/process_spawn.py, server/server_main.py, and server/net/loopback_transport.py",
+        "rationale": "This is the strongest local singleplayer and loopback-authority path."
+      },
+      {
+        "path_or_cluster": "tools/xstack/session_create.py, tools/xstack/session_boot.py, tools/xstack/sessionx/creator.py, and tools/xstack/sessionx/runner.py",
+        "rationale": "Create and boot still depend on fragile current path contracts."
+      },
+      {
+        "path_or_cluster": "repo-local saves/, build/registries/, and build/lockfile.json",
+        "rationale": "Current boot and creation flows still assume these exact locations."
+      }
+    ],
+    "mixed_defer": [
+      {
+        "path_or_cluster": "tools/ as a whole",
+        "rationale": "Some subroots are baseline-critical while others are wrappers, review tooling, or dist helpers."
+      },
+      {
+        "path_or_cluster": "launcher/ and setup/ as whole top-level roots",
+        "rationale": "The native UI leaves are easier to move than the compiled wrapper identity or build graph around them."
+      },
+      {
+        "path_or_cluster": "schema/ versus schemas/",
+        "rationale": "This is an unresolved ownership split, not a clean move target."
+      },
+      {
+        "path_or_cluster": "packs/ versus data/packs/",
+        "rationale": "This is an unresolved authored-content versus runtime-packaging split, not a clean move target."
+      },
+      {
+        "path_or_cluster": "docs/audit/ and data/audit/",
+        "rationale": "Some leaves are stale mirrors, but others are live validation or proof outputs."
+      }
+    ]
+  },
+  "baseline_critical_structural_risks": {
+    "highest_risk_findings": [
+      {
+        "id": "BCR-001",
+        "risk": "Startup ambiguity across wrappers and shells",
+        "details": "Too many surfaces still look official at once, including tools/launcher/launch.py, tools/setup/setup_cli.py, tools/mvp/runtime_entry.py, tools/xstack/session_boot.py, server/server_main.py, and compiled verify binaries."
+      },
+      {
+        "id": "BCR-002",
+        "risk": "Repo-root resolution bug",
+        "details": "server/server_main.py still computes the wrong default repo root while runtime/process_spawn.py still targets it."
+      },
+      {
+        "id": "BCR-003",
+        "risk": "Session save-root coupling",
+        "details": "session_create.py accepts alternate save roots, but session_boot.py plus sessionx/runner.py still effectively require canonical repo-local saves/<save_id>."
+      },
+      {
+        "id": "BCR-004",
+        "risk": "Supervision instability",
+        "details": "Audit evidence already records exited-child and attach-refusal behavior, so relayout work must not assume the supervisor path is robust enough to absorb churn."
+      },
+      {
+        "id": "BCR-005",
+        "risk": "Wrapper-versus-canonical confusion",
+        "details": "Native launcher/setup wrappers and runtime_entry.py still look more canonical than they are, while the stronger live path sits in the Python/AppShell shells and local authority controller."
+      },
+      {
+        "id": "BCR-006",
+        "risk": "Generated-intermediate dependency",
+        "details": "Current session and validation flows still depend on build/registries/, build/lockfile.json, and report outputs under docs/audit/ and data/audit/."
+      }
+    ],
+    "truly_baseline_critical_rather_than_merely_annoying": [
+      "repo-root misresolution in server/server_main.py",
+      "save-root disagreement between create and boot flows",
+      "operator-shell ambiguity around launcher/setup/runtime/session entrypoints",
+      "launcher supervision fragility",
+      "dist/manifest and virtual-root discovery ties that the stronger shells already consume"
+    ],
+    "annoying_but_not_first_baseline_blockers": [
+      "stale src/... path mirrors in derived docs and JSON reports",
+      "native GUI/TUI stubs when the baseline already prefers Python/AppShell shells",
+      "root names that imply cleaner boundaries than the implementation actually has",
+      "stale portability or maturity language in retro audits"
+    ]
+  },
+  "redesign_freedom_boundaries": {
+    "later_design_prompts_are_free_to_vary_conceptually": [
+      "the eventual target grouping of product roots, tool roots, and support-data roots",
+      "how to document stronger versus weaker entrypoints more clearly",
+      "how to collapse wrapper confusion after the baseline path is stable",
+      "how to converge created versus booted session semantics later",
+      "how to eventually retire stale src/... path narratives and bridge scaffolding"
+    ],
+    "later_design_prompts_must_treat_as_hard_migration_risks": [
+      "any surface on the current session-plus-loopback playable path",
+      "AppShell virtual-root and shell-bootstrap assumptions",
+      "launcher/setup Python shell continuity",
+      "release/trust/install discovery and dist-manifest discovery",
+      "validation/TestX/CTest continuity",
+      "generated build/registries/ and build/lockfile.json intermediates that current flows still expect",
+      "current saves/<save_id> boot assumptions",
+      "import-bridge compatibility for remaining src-style consumers"
+    ],
+    "later_migration_planning_must_assume_needs_protection": [
+      "appshell/",
+      "tools/launcher/ and tools/setup/",
+      "client/local_server/, runtime/process_spawn.py, server/server_main.py, and server/net/loopback_transport.py",
+      "tools/xstack/session_create.py, tools/xstack/session_boot.py, tools/xstack/sessionx/creator.py, and tools/xstack/sessionx/runner.py",
+      "profiles/, locks/, data/session_templates/, and data/registries/",
+      "release/, security/trust/, dist/, and manifest/registry path conventions",
+      "validation report paths and machine-readable mirrors used by the repo itself"
+    ]
+  },
+  "prohibited_relayout_reasoning_patterns": [
+    "choosing a target topology based only on aesthetics or top-level cleanliness",
+    "assuming separate directories imply real subsystem isolation",
+    "moving baseline-critical wrappers or shells before a stronger canonical replacement exists",
+    "redesigning around stale docs or stale src/... mirrors instead of live code",
+    "treating repo-root math or save-root drift as minor path cleanup when they already block boot flows",
+    "assuming generated roots are irrelevant because they are non-canonical, even when live flows still consume them",
+    "treating the import bridge as proof that old layouts are still authoritative",
+    "flattening safe-to-move, needs-shim, and do-not-move-yet into one generic migration bucket"
+  ],
+  "downstream_prompts_enabled": [
+    "topology-option generation against the live risk packet",
+    "preferred-target comparison using the Omega0 constraint packet, Omega1 topology map, and Omega2 coupling-risk map together",
+    "shim-strategy design for path, import, manifest, and report continuity",
+    "migration-sequencing design that protects the playable-baseline path first",
+    "ownership-reconciliation prompts for mixed or ambiguous root families such as schema versus schemas and packs versus data/packs"
+  ]
+}
