@@ -1,0 +1,440 @@
+{
+  "artifact_identity": {
+    "artifact_id": "repo_authoritative_boundary_model_and_preferred_target",
+    "artifact_class": "repo_structure_preferred_target_packet",
+    "schema_version": "1.0.0",
+    "status": "derived",
+    "stability": "stable",
+    "series_scope": "repo_structure_discovery_and_design",
+    "series_role": "authoritative preferred-target and boundary packet for later migration, shim, rollback, and ownership-reconciliation prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, the Omega2 coupling-risk packet, and the Omega0 topology-option comparison",
+    "last_reviewed": "2026-04-08",
+    "replacement_target": "later explicit migration-planning checkpoint or preferred-target replacement only after new baseline-hardening evidence and follow-up approval",
+    "binding_sources": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      ".agentignore",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/MERGED_PROGRAM_STATE.md",
+      "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "data/repo/repo_non_negotiables_and_current_reality.json",
+      "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "data/repo/repo_target_topology_options_and_comparison.json",
+      "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+      "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+      "data/planning/next_execution_order_post_zeta.json",
+      "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+      "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
+      "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+      "data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+      "data/xstack/next_execution_order_post_xstack_aide.json",
+      "appshell/paths/virtual_paths.py",
+      "tools/launcher/launch.py",
+      "tools/setup/setup_cli.py",
+      "tools/xstack/session_create.py",
+      "tools/xstack/session_boot.py",
+      "release/release_manifest_engine.py"
+    ]
+  },
+  "preferred_target_selection_method": {
+    "summary": "The preferred target is chosen from the bounded option set by using a dominance order rather than by averaging aesthetics.",
+    "dominant_criteria": [
+      "preservation of the canonical playable-baseline path",
+      "fit with current ownership reality",
+      "path-contract tractability",
+      "flow safety for build, run, test, session, and loopback-authoritative local execution",
+      "XStack/AIDE non-interference"
+    ],
+    "secondary_criteria": [
+      "maintainability",
+      "long-term modularity",
+      "Codex usability",
+      "migration affordability after baseline hardening"
+    ],
+    "current_reality_and_risk_constraints": [
+      "appshell, tools/launcher, tools/setup, SessionX create/boot, and the loopback-authoritative local path are Omega2 do-not-move-yet or high-shim surfaces",
+      "server/server_main.py repo-root math, sessionx/runner.py save-root coupling, and supervision instability are still live blockers or fragilities",
+      "wrapper-only native launcher/setup roots are not strong enough to anchor the preferred target",
+      "schema versus schemas and packs versus data/packs remain explicit split-root cautions rather than resolved convergence winners",
+      "XStack/AIDE closure forbids extraction-shaped pressure before the baseline exists"
+    ],
+    "why_conceptual_not_migratory": [
+      "the preferred target does not decide exact file moves",
+      "the preferred target does not decide exact root renames",
+      "the preferred target does not decide exact shim mechanisms",
+      "the preferred target does not decide exact staged ordering",
+      "the preferred target does not decide exact rollback boundaries"
+    ]
+  },
+  "preferred_target_entry": {
+    "id": "PT-001",
+    "selected_option_id": "TTO-001",
+    "name": "Preferred Target: Stabilized Current-Root Federation With Federated Boundary Model",
+    "summary": "Keep the current top-level root federation as the future structural frame, but freeze a stricter conceptual boundary model across those roots so later migration planning can reduce mixed hosts and drift without destabilizing the baseline-critical path.",
+    "why_preferred": [
+      "best preservation of the canonical playable-baseline path",
+      "best fit with current ownership and path-contract reality",
+      "best safety profile for verify, FAST, TestX, CTest, launcher/setup shells, SessionX create/boot, and the loopback-authoritative local path",
+      "strongest alignment with extend-over-replace doctrine",
+      "strongest alignment with XStack/AIDE non-interference"
+    ],
+    "optimizes_for": [
+      "preserving current baseline-critical flows while future cleanup is designed",
+      "staying truthful to the live ownership and coupling map",
+      "creating a boundary model that later migration prompts can implement incrementally",
+      "minimizing false canonicality and premature extraction pressure"
+    ],
+    "accepted_tradeoffs": [
+      "the repo stays conceptually federated rather than physically simplified right away",
+      "mixed roots such as tools, launcher, setup, docs/audit, and data/audit remain visible as mixed hosts for longer",
+      "long-term modularity and Codex ergonomics improve more slowly than they would under the lattice option"
+    ],
+    "selection_notes": [
+      "TTO-002 remains the strongest non-selected reference model for long-term clarity, but it loses as the preferred target because it would require more shim design and more early conceptual distance from the current baseline-critical seams."
+    ]
+  },
+  "authoritative_boundary_model": [
+    {
+      "boundary_band": "product_shells_and_apps",
+      "firmness": "firm_now",
+      "owns": [
+        "repo-local operator shells and product entry surfaces",
+        "appshell/",
+        "tools/launcher/",
+        "tools/setup/",
+        "product-facing application wiring in client/ and server/",
+        "local singleplayer orchestration under client/local_server/",
+        "wrapper-only native launcher/setup leaves as wrappers"
+      ],
+      "does_not_own": [
+        "deep runtime/service substrate",
+        "release/trust policy",
+        "validation/report ownership",
+        "canonical authored content roots"
+      ],
+      "legitimate_dependencies": [
+        "runtime/substrate for authority services, process spawn, and loopback transport",
+        "control-plane for install discovery, release resolution, and trust verification",
+        "tooling for session assembly entry surfaces",
+        "content roots for profiles, locks, templates, and registries"
+      ],
+      "boundary_violation_examples": [
+        "treating launcher or setup wrapper leaves as canonical ownership centers",
+        "mutating release policy directly from shell code",
+        "reading docs/audit mirrors as runtime truth"
+      ]
+    },
+    {
+      "boundary_band": "runtime_substrate_and_engine",
+      "firmness": "firm_now",
+      "owns": [
+        "engine/",
+        "game/",
+        "shared runtime/service code",
+        "net/",
+        "process/",
+        "server/runtime/",
+        "server/persistence/",
+        "loopback implementation under server/net/",
+        "runtime side of authoritative client/server execution"
+      ],
+      "does_not_own": [
+        "product-shell policy",
+        "release/trust governance",
+        "session assembly CLI ownership",
+        "planning/doctrine authority"
+      ],
+      "legitimate_dependencies": [
+        "content roots for packs, profiles, locks, templates, registries, and schema-facing machine-readable contracts",
+        "tooling for tests and validation harnesses",
+        "control-plane at explicit manifest, compatibility, or trust boundaries"
+      ],
+      "boundary_violation_examples": [
+        "using runtime/ as the assumed whole-repo orchestrator home",
+        "deriving behavior from docs instead of code and machine-readable inputs",
+        "mutating control-plane or planning surfaces directly from runtime substrate"
+      ]
+    },
+    {
+      "boundary_band": "control_plane_release_and_trust",
+      "firmness": "firm_now",
+      "owns": [
+        "release/",
+        "security/trust/",
+        "updates/",
+        "repo/ release-policy law",
+        "install discovery",
+        "manifest resolution",
+        "trust verification behavior consumed by launcher/setup shells"
+      ],
+      "does_not_own": [
+        "gameplay/runtime implementation",
+        "client/server product behavior",
+        "authored content truth beyond governed inputs"
+      ],
+      "legitimate_dependencies": [
+        "content roots for pack/profile/lock/registry inputs",
+        "tooling and validation for proof/report generation",
+        "product shells for operator invocation and status presentation"
+      ],
+      "boundary_violation_examples": [
+        "treating dist outputs as canonical policy truth",
+        "turning release/trust roots into general product orchestration homes",
+        "rebinding authored content ownership into release outputs"
+      ]
+    },
+    {
+      "boundary_band": "tooling_validation_and_dev_workflows",
+      "firmness": "conditional_pending_migration_planning",
+      "owns": [
+        "tools/xstack/",
+        "tools/validation/",
+        "validation/",
+        "tests/",
+        "cmake/",
+        "build scripts and workflow automation",
+        "compatibility scaffolding such as tools/import_bridge.py"
+      ],
+      "does_not_own": [
+        "canonical product-shell ownership",
+        "semantic doctrine",
+        "release policy law",
+        "authored content truth"
+      ],
+      "legitimate_dependencies": [
+        "product-shell roots for operator entry surfaces",
+        "runtime roots for proof targets",
+        "content roots for compile and validation inputs",
+        "docs/audit roots for derived report emission"
+      ],
+      "boundary_violation_examples": [
+        "promoting validation reports or compatibility bridges into canonical structural truth",
+        "treating tools path location as proof of unified ownership",
+        "letting tool wrappers redefine product or control-plane semantics"
+      ]
+    },
+    {
+      "boundary_band": "content_profiles_locks_templates_registries_and_schema_contracts",
+      "firmness": "firm_with_split_cautions",
+      "owns": [
+        "packs/",
+        "profiles/",
+        "locks/",
+        "data/session_templates/",
+        "data/registries/",
+        "schema/",
+        "schemas/",
+        "the explicitly unresolved packs versus data/packs caution zone"
+      ],
+      "does_not_own": [
+        "runtime/service logic",
+        "product-shell behavior",
+        "validation-report outputs",
+        "release-generated manifests"
+      ],
+      "legitimate_dependencies": [
+        "tooling for compilation and validation",
+        "product/runtime roots as governed inputs",
+        "control-plane roots for install/release/trust planning where explicit registries or contracts are consumed"
+      ],
+      "boundary_violation_examples": [
+        "silently collapsing schema with schemas",
+        "silently collapsing packs with data/packs",
+        "treating generated outputs as replacements for the authored source roots"
+      ]
+    },
+    {
+      "boundary_band": "docs_specs_planning_and_audit",
+      "firmness": "firm_now",
+      "owns": [
+        "docs/",
+        "specs/",
+        "docs/planning/",
+        "docs/repo/",
+        "docs/xstack/",
+        "docs/audit/",
+        "data/planning/",
+        "data/xstack/",
+        "data/audit/ as machine-readable mirrors and evidence"
+      ],
+      "does_not_own": [
+        "runtime structural truth when code and live machine-readable inputs disagree",
+        "product execution",
+        "release policy implementation"
+      ],
+      "legitimate_dependencies": [
+        "references to every other boundary band for doctrine, inventories, evidence, and audit reporting",
+        "validation may emit derived evidence here"
+      ],
+      "boundary_violation_examples": [
+        "treating audit reports as runtime truth",
+        "letting stale docs override live code or active registries",
+        "using planning artifacts to choose ownership winners silently"
+      ]
+    }
+  ],
+  "canonical_vs_derived_boundary_model": {
+    "canonical_source_roots": [
+      "appshell/",
+      "client/",
+      "server/",
+      "tools/launcher/",
+      "tools/setup/",
+      "engine/",
+      "game/",
+      "net/",
+      "process/",
+      "release/",
+      "security/trust/",
+      "updates/",
+      "repo/ policy surfaces",
+      "packs/",
+      "profiles/",
+      "locks/",
+      "data/session_templates/",
+      "data/registries/",
+      "docs/canon/",
+      "docs/planning/",
+      "docs/repo/",
+      "docs/xstack/",
+      "specs/"
+    ],
+    "split_truth_and_bounded_scope_canonicality": [
+      "schema/ is canonical semantic contract law",
+      "schemas/ is the validator-facing machine-readable contract projection within its bounded tooling scope",
+      "docs/planning/ is canonical over data/planning/",
+      "docs/xstack/ and docs/repo/ are canonical over their machine-readable mirrors",
+      "packs/ remains canonical in runtime packaging, activation, compatibility, and distribution-descriptor scope",
+      "data/packs/ remains authoritative within authored pack-content declaration scope and must not be erased by convenience"
+    ],
+    "derived_or_generated_roots": [
+      "build/",
+      "out/",
+      ".xstack_cache/",
+      "artifacts/",
+      "run_meta/",
+      "large assembled portions of dist/",
+      "generated validation and audit outputs under docs/audit/ and data/audit/"
+    ],
+    "mixed_or_operationally_protected_roots": [
+      "tools/ is a mixed host, not one clean owner",
+      "launcher/ and setup/ are wrapper-only hosts, not primary product-shell owners",
+      "saves/ is not authored canon, but it is an operationally protected generated root because the current baseline path depends on it directly",
+      "docs/audit/ and data/audit/ mix useful evidence with stale or derived mirrors and therefore require phased treatment rather than blanket cleanup"
+    ],
+    "documentation_and_report_non_masquerade_rules": [
+      "implementation evidence outranks stale docs where they conflict",
+      "audit/report roots are evidence surfaces, not runtime owners",
+      "stale src path mirrors remain drift to be cleaned later, not structural truth to design around now"
+    ]
+  },
+  "baseline_path_preservation_notes": {
+    "verify_build_path": [
+      "verify remains the canonical compiled lane",
+      "the preferred target does not require a new build-root abstraction before migration planning",
+      "build and test discovery remain tied to current live product and tool roots"
+    ],
+    "validation_testx_ctest_paths": [
+      "python tools/validation/tool_run_validation.py --profile FAST remains the minimum validation spine",
+      "python tools/xstack/testx_all.py --profile FAST remains the XStack/TestX companion",
+      "ctest --preset verify remains the compiled companion",
+      "report roots remain derived proof surfaces rather than canonical owners"
+    ],
+    "launcher_setup_appshell_flows": [
+      "appshell, tools/launcher, and tools/setup remain inside the same preferred target family",
+      "wrapper-only native launcher and setup roots remain explicitly weaker than the Python/AppShell shells",
+      "release/trust/install-discovery dependencies remain legitimate cross-band dependencies rather than excuses to move the shells"
+    ],
+    "session_create_boot_path": [
+      "SessionX create/boot remains protected as one boundary-crossing path instead of being split into new topology buckets",
+      "the save-root disagreement is preserved as a real blocker, not hidden by conceptual cleanup",
+      "generated intermediates such as build/registries and build/lockfile.json remain protected transition contracts"
+    ],
+    "local_loopback_authority_path": [
+      "client/local_server/, runtime/process_spawn.py, server/server_main.py, and server/net/loopback_transport.py remain on a protected path family",
+      "the preferred target does not reinterpret the loopback path as an extraction-oriented adapter seam",
+      "direct Python server startup remains blocked truth until fixed explicitly"
+    ],
+    "save_load_baseline_assumptions": [
+      "repo-local saves/<save_id> remains an operationally protected assumption",
+      "the preferred target does not relocate saves conceptually into a generic derived bucket that later prompts could discard",
+      "current save/load semantics remain visible as fragile but binding current-reality contracts"
+    ]
+  },
+  "rejected_or_not_preferred_options": [
+    {
+      "option_id": "TTO-002",
+      "outcome": "not_preferred",
+      "reason": "It is the strongest non-selected alternative, but it lost because it carries higher shim burden across appshell, launcher/setup shells, validation, release/trust, and SessionX create/boot, preserves the baseline path less directly than TTO-001, and creates more early conceptual distance from the live ownership map while baseline blockers still exist."
+    },
+    {
+      "option_id": "TTO-003",
+      "outcome": "not_preferred",
+      "reason": "It splits the current playable-baseline path across too many conceptual seams, creates more ownership mismatch around AppShell, launcher/setup, and SessionX than TTO-001, and brings more conceptual churn than protection value."
+    },
+    {
+      "option_id": "TTO-004",
+      "outcome": "rejected",
+      "reason": "It optimizes for extraction-style modularity rather than baseline survival, conflicts directly with XStack/AIDE non-interference, would normalize platformization and bridge proliferation before the canonical playable baseline exists, and is the least truthful option about current mixed-root and path-contract reality."
+    }
+  ],
+  "conditional_not_yet_decided_areas": [
+    "exact file moves",
+    "exact root renames, if any",
+    "exact shim mechanisms and alias surfaces",
+    "exact staged ordering and rollback points",
+    "exact cleanup timing for stale src mirrors in docs and reports",
+    "exact breakup of the tools umbrella into sub-ownerships",
+    "exact physical separation inside client and server",
+    "exact future treatment of launcher and setup wrapper leaves",
+    "exact future treatment of docs/audit and data/audit",
+    "exact convergence strategy for schema versus schemas",
+    "exact convergence strategy for packs versus data/packs",
+    "exact resolution of the default bundle seam between authored MVP assets and bundle.base.lab",
+    "exact future use of any TTO-002-style boundary names as physical directory names versus conceptual-only documentation bands"
+  ],
+  "redesign_freedom_boundaries_for_later_prompts": {
+    "must_now_treat_as_preferred_target": [
+      "the repo's preferred conceptual target is PT-001, which selects TTO-001 - Stabilized Current-Root Federation",
+      "later migration planning must assume the current root federation is the protected structural frame",
+      "later prompts may use boundary bands from this packet, but they may not replace the preferred target with a different topology family silently"
+    ],
+    "still_free_to_choose_within_migration_planning": [
+      "exact phased ordering",
+      "exact shim and alias mechanisms",
+      "exact rollback checkpoints",
+      "exact treatment of second-tier mixed roots",
+      "whether some TTO-002-style vocabulary is used as documentation scaffolding during migration, as long as PT-001 remains the chosen target"
+    ],
+    "must_not_reinterpret": [
+      "preferred-target selection as permission to move files immediately",
+      "TTO-002 as secretly co-equal with the selected target",
+      "wrapper-only roots as canonical ownership centers",
+      "split-root cautions as already resolved",
+      "XStack/AIDE closure as permission for extraction-first migration"
+    ]
+  },
+  "prohibited_misuses_of_preferred_target": [
+    "treating preferred-target selection as if the migration plan has already been approved",
+    "using conceptual cleanliness to ignore Omega2 mixed-root and do-not-move-yet findings",
+    "treating launcher or setup wrappers as the new product-shell authority center",
+    "hiding saves, build/registries, or build/lockfile.json because they are generated rather than authored",
+    "allowing future AIDE extraction aspirations to redefine Dominium-owned boundaries before the baseline exists",
+    "treating the authoritative boundary model as license to collapse schema with schemas or packs with data/packs"
+  ],
+  "downstream_prompts_enabled": [
+    "phased migration planning for PT-001",
+    "shim-strategy design against the selected boundary model",
+    "rollback planning for protected baseline-critical flows",
+    "ownership-reconciliation follow-up for mixed and split roots that remain conditional"
+  ]
+}
