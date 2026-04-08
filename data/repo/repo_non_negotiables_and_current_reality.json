@@ -1,0 +1,970 @@
+{
+  "artifact_identity": {
+    "artifact_id": "repo_non_negotiables_and_current_reality",
+    "artifact_class": "repo_structure_constraint_packet",
+    "schema_version": "1.0.0",
+    "status": "derived",
+    "stability": "stable",
+    "series_scope": "repo_structure_discovery_and_design",
+    "series_role": "canonical constraint packet for later repo-structure discovery, design, migration-planning, and decision prompts; downstream of stronger canon, planning law, audit evidence, and live implementation evidence",
+    "last_reviewed": "2026-04-08",
+    "replacement_target": "later explicit repo-structure follow-up after new playable-baseline evidence or an approved redesign checkpoint",
+    "binding_sources": [
+      "docs/canon/constitution_v1.md",
+      "docs/canon/glossary_v1.md",
+      "AGENTS.md",
+      ".agentignore",
+      "docs/planning/AUTHORITY_ORDER.md",
+      "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "docs/planning/GATES_AND_PROOFS.md",
+      "docs/planning/MERGED_PROGRAM_STATE.md",
+      "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+      "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+      "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+      "data/planning/next_execution_order_post_zeta.json",
+      "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+      "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+      "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+      "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
+      "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+      "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+      "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+      "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+      "data/audit/ultra_repo_audit_system_inventory.json",
+      "data/audit/ultra_repo_audit_entrypoints.json",
+      "data/audit/ultra_repo_audit_product_assembly_plan.json",
+      "data/audit/ultra_repo_audit_gap_ledger.json",
+      "data/audit/ultra_repo_audit_build_run_test_matrix.json",
+      "data/audit/ultra_repo_audit_wiring_map.json",
+      "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+      "data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+      "data/xstack/next_execution_order_post_xstack_aide.json",
+      "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "data/xstack/codex_repo_operating_contract.json",
+      "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+      "data/xstack/xstack_to_aide_extraction_map.json",
+      "CMakePresets.json",
+      "tools/launcher/launch.py",
+      "tools/setup/setup_cli.py",
+      "tools/xstack/session_create.py",
+      "tools/xstack/session_boot.py",
+      "tools/xstack/sessionx/creator.py",
+      "tools/xstack/sessionx/runner.py",
+      "tools/validation/tool_run_validation.py",
+      "tools/xstack/testx_all.py",
+      "tools/mvp/runtime_entry.py",
+      "server/server_main.py",
+      "client/local_server/local_server_controller.py",
+      "runtime/process_spawn.py",
+      "server/net/loopback_transport.py",
+      "profiles/bundles/bundle.mvp_default.json",
+      "locks/pack_lock.mvp_default.json",
+      "data/session_templates/session.mvp_default.json"
+    ]
+  },
+  "current_reality_summary": {
+    "verified_now": [
+      {
+        "id": "reality.verified.post_zeta_closed",
+        "statement": "Post-Zeta doctrine and gating closure is complete, no further internal Zeta prompt is required, and the next broader mode is reconciliation and consolidation rather than more internal Zeta expansion.",
+        "evidence_sources": [
+          "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+          "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+          "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+          "data/planning/next_execution_order_post_zeta.json"
+        ]
+      },
+      {
+        "id": "reality.verified.xstack_aide_closed",
+        "statement": "The XStack/AIDE narrowing-and-contract phase is complete, no further XStack/AIDE prompt is required before the playable baseline exists, and the existing X-series artifacts act as a constraint packet rather than a competing implementation track.",
+        "evidence_sources": [
+          "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+          "data/xstack/checkpoint_c_xstack_aide_closure.json",
+          "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+          "data/xstack/next_execution_order_post_xstack_aide.json"
+        ]
+      },
+      {
+        "id": "reality.verified.verify_preset_family_exists",
+        "statement": "CMakePresets.json still defines aligned verify configure, build, and test presets, and the audit freezes that lane as the canonical compiled baseline.",
+        "evidence_sources": [
+          "CMakePresets.json",
+          "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+          "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+          "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+        ]
+      },
+      {
+        "id": "reality.verified.validation_entrypoints_exist",
+        "statement": "tool_run_validation.py and testx_all.py both expose FAST/STRICT/FULL profile surfaces, with FAST frozen as the minimum honest validation lane.",
+        "evidence_sources": [
+          "tools/validation/tool_run_validation.py",
+          "tools/xstack/testx_all.py",
+          "AGENTS.md",
+          "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+        ]
+      },
+      {
+        "id": "reality.verified.appshell_shells_exist",
+        "statement": "The Python/AppShell launcher and setup shells are real repo-rooted operator surfaces and remain the strongest repo-local command surfaces in the audit packet.",
+        "evidence_sources": [
+          "tools/launcher/launch.py",
+          "tools/setup/setup_cli.py",
+          "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+          "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+          "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md"
+        ]
+      },
+      {
+        "id": "reality.verified.loopback_path_exists",
+        "statement": "SessionX create/boot surfaces, the local singleplayer controller, deterministic process spawn helper, and loopback transport adapter together define a real local authority path, even though parts of that path remain fragile.",
+        "evidence_sources": [
+          "tools/xstack/session_create.py",
+          "tools/xstack/session_boot.py",
+          "client/local_server/local_server_controller.py",
+          "runtime/process_spawn.py",
+          "server/net/loopback_transport.py",
+          "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md"
+        ]
+      },
+      {
+        "id": "reality.verified.mvp_assets_exist",
+        "statement": "The authored MVP baseline asset trio exists and is live: profile.bundle.mvp_default, pack_lock.mvp_default, and session.mvp_default.",
+        "evidence_sources": [
+          "profiles/bundles/bundle.mvp_default.json",
+          "locks/pack_lock.mvp_default.json",
+          "data/session_templates/session.mvp_default.json",
+          "tools/mvp/runtime_bundle.py"
+        ]
+      }
+    ],
+    "likely_but_not_fully_verified": [
+      {
+        "id": "reality.likely.verify_binary_lane",
+        "statement": "The current strongest runnable compiled path is still the out/build/vs2026/verify tree produced by the verify preset family.",
+        "evidence_sources": [
+          "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+          "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+          "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md"
+        ]
+      },
+      {
+        "id": "reality.likely.python_shells_strongest",
+        "statement": "The strongest repo-local product-shell path remains Python/AppShell-first rather than native-wrapper-first.",
+        "evidence_sources": [
+          "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+          "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+          "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+        ]
+      },
+      {
+        "id": "reality.likely.ctest_playtest_coverage",
+        "statement": "The compiled verify tree still carries broad CTest coverage, including playtest-adjacent suites, but that breadth was not fully re-executed in this prompt.",
+        "evidence_sources": [
+          "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+          "data/audit/ultra_repo_audit_entrypoints.json",
+          "data/audit/ultra_repo_audit_system_inventory.json"
+        ]
+      },
+      {
+        "id": "reality.likely.wrapper_hardening_is_shortest_path",
+        "statement": "The shortest path to a playable baseline is still wrapper-hardening around existing session creation plus local loopback authority rather than greenfield runtime or platform work.",
+        "evidence_sources": [
+          "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+          "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+          "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md"
+        ]
+      }
+    ],
+    "blocked_or_fragile": [
+      {
+        "id": "reality.blocked.server_python_entry",
+        "statement": "server/server_main.py remains an unsafe public Python server startup path because its REPO_ROOT_HINT still resolves outside the repo root.",
+        "evidence_sources": [
+          "server/server_main.py",
+          "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+          "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md"
+        ]
+      },
+      {
+        "id": "reality.blocked.session_boot_alt_save_root",
+        "statement": "session_boot remains coupled to sessionx.runner, and runner.py still resolves boot artifacts back through repo_root/saves/<save_id> instead of honoring alternate save roots end to end.",
+        "evidence_sources": [
+          "tools/xstack/session_boot.py",
+          "tools/xstack/sessionx/runner.py",
+          "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+          "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md"
+        ]
+      },
+      {
+        "id": "reality.fragile.runtime_entry_wrapper",
+        "statement": "tools/mvp/runtime_entry.py --local-singleplayer remains transitional and does not yet qualify as the fully hardened public playtest command.",
+        "evidence_sources": [
+          "tools/mvp/runtime_entry.py",
+          "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+          "data/audit/ultra_repo_audit_entrypoints.json"
+        ]
+      },
+      {
+        "id": "reality.fragile.launcher_supervision",
+        "statement": "Launcher-supervised attach and restart behavior remains fragile enough that the audit treats supervision stability as a real blocker for repeatable internal sessions.",
+        "evidence_sources": [
+          "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+          "data/audit/ultra_repo_audit_gap_ledger.json",
+          "data/audit/ultra_repo_audit_entrypoints.json"
+        ]
+      },
+      {
+        "id": "reality.blocked.non_loopback_transport",
+        "statement": "External multiplayer transport remains blocked because the non-loopback transport surfaces are still explicit stubs.",
+        "evidence_sources": [
+          "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+          "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+          "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md"
+        ]
+      },
+      {
+        "id": "reality.fragile.native_wrappers",
+        "statement": "Native launcher and setup shells remain wrapper-thin and stub-heavy relative to the Python/AppShell shells.",
+        "evidence_sources": [
+          "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+          "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+          "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md"
+        ]
+      }
+    ],
+    "doctrinally_closed_but_realization_incomplete": [
+      {
+        "id": "reality.closed.post_zeta_frontier",
+        "statement": "Post-Zeta frontier items remain unresolved realization territory; they are explicit frontier, not omitted work, and they are not reopened by this series.",
+        "evidence_sources": [
+          "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+          "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md"
+        ]
+      },
+      {
+        "id": "reality.closed.xstack_aide_contracts_only",
+        "statement": "XStack/AIDE contract freezing is complete, but runtime extraction, platformization, daemon or scheduler work, and repo migration remain intentionally deferred until after the playable baseline exists.",
+        "evidence_sources": [
+          "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+          "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+          "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md"
+        ]
+      }
+    ],
+    "implementation_guidance_seams": [
+      {
+        "id": "reality.seam.bundle_default_mismatch",
+        "statement": "The baseline recipe and XStack repo-operating guidance lean on the authored MVP asset trio, but session_create.py still defaults its --bundle argument through DEFAULT_BUNDLE_ID, which is bundle.base.lab in the live registry-compile constants.",
+        "evidence_sources": [
+          "tools/xstack/session_create.py",
+          "tools/xstack/registry_compile/constants.py",
+          "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+          "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+          "profiles/bundles/bundle.mvp_default.json",
+          "locks/pack_lock.mvp_default.json",
+          "data/session_templates/session.mvp_default.json"
+        ]
+      }
+    ]
+  },
+  "constraint_category_definitions": [
+    {
+      "id": "governance_authority",
+      "name": "Governance / authority constraints",
+      "meaning": "Higher-order doctrine, authority ordering, protected-surface discipline, and extension-over-replacement rules that later topology work must remain downstream of."
+    },
+    {
+      "id": "build_constraints",
+      "name": "Build constraints",
+      "meaning": "The compiled lane, preset family, and build-artifact assumptions that future relayout must preserve or explicitly migrate."
+    },
+    {
+      "id": "validation_constraints",
+      "name": "Validation constraints",
+      "meaning": "The minimum honest validation surfaces, profile vocabulary, and status-language rules that later prompts must preserve."
+    },
+    {
+      "id": "entrypoint_runpath_constraints",
+      "name": "Entrypoint / runpath constraints",
+      "meaning": "Operator shells, public entrypoints, blocked startup paths, and live runpath contracts that must remain truthful under relayout."
+    },
+    {
+      "id": "session_profile_save_constraints",
+      "name": "Session / profile / save constraints",
+      "meaning": "Session materialization, boot semantics, save-root truth, and authored baseline asset contracts that later prompts must preserve."
+    },
+    {
+      "id": "playtest_path_constraints",
+      "name": "Playtest-path constraints",
+      "meaning": "The current canonical local playable-baseline target, including loopback authority and repo-local scope."
+    },
+    {
+      "id": "canonical_vs_derived_constraints",
+      "name": "Canonical-vs-derived constraints",
+      "meaning": "Distinctions between canon, implementation, mirrors, audit evidence, projections, and generated outputs."
+    },
+    {
+      "id": "retained_vs_deferred_constraints",
+      "name": "Retained-vs-deferred constraints",
+      "meaning": "Which surfaces must stay stable in Dominium until after baseline, and which work must remain deferred instead of becoming redesign pretext."
+    },
+    {
+      "id": "xstack_aide_non_interference",
+      "name": "Non-interference constraints from XStack/AIDE closure",
+      "meaning": "The rule that XStack/AIDE closure now constrains baseline work instead of competing with it."
+    }
+  ],
+  "non_negotiable_ledger": [
+    {
+      "id": "RNC-GOV-001",
+      "title": "Higher-order authority and stronger-source precedence remain binding",
+      "category": "governance_authority",
+      "rationale": "Repo-structure work is downstream of canon and task law, and the authority model explicitly forbids resolving drift by convenience.",
+      "evidence_sources": [
+        "docs/canon/constitution_v1.md",
+        "docs/canon/glossary_v1.md",
+        "AGENTS.md",
+        ".agentignore",
+        "docs/planning/AUTHORITY_ORDER.md"
+      ],
+      "must_preserve": [
+        "canon and glossary precedence",
+        "AGENTS.md task discipline",
+        "live implementation as structural truth",
+        "mirrors and generated outputs as derived evidence only unless explicitly promoted"
+      ],
+      "may_vary": [
+        "how the series restates or mirrors these rules",
+        "how later redesign docs summarize supporting evidence"
+      ],
+      "may_not_vary": [
+        "repo-structure docs, generated outputs, and chat memory may not outrank canon, AGENTS.md, or live structural evidence"
+      ],
+      "violation_risk": [
+        "topology decisions are made from stale prose, mirrors, or convenience wrappers instead of higher-order canon plus the live repo"
+      ]
+    },
+    {
+      "id": "RNC-GOV-002",
+      "title": "Extend-over-replace and ownership-sensitive splits stay visible",
+      "category": "governance_authority",
+      "rationale": "The planning packet already freezes keep/extend/do-not-replace zones and quarantined ownership splits.",
+      "evidence_sources": [
+        "AGENTS.md",
+        "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+        "docs/planning/MERGED_PROGRAM_STATE.md",
+        ".agentignore"
+      ],
+      "must_preserve": [
+        "stable product anchors",
+        "runtime substrate caution",
+        "explicit ownership sensitivity around field vs fields, schema vs schemas, and packs vs data/packs"
+      ],
+      "may_vary": [
+        "later explicit convergence proposals",
+        "shim plans",
+        "ownership review sequencing"
+      ],
+      "may_not_vary": [
+        "split roots may not be silently collapsed",
+        "the runtime plan may not pivot around runtime/ by convenience"
+      ],
+      "violation_risk": [
+        "directory moves choose ownership winners implicitly instead of through explicit later review"
+      ]
+    },
+    {
+      "id": "RNC-ZET-001",
+      "title": "Internal Zeta stays closed",
+      "category": "governance_authority",
+      "rationale": "Post-Zeta doctrine closure already states that the admissible Zeta program is complete and that the next broader mode is reconciliation and consolidation.",
+      "evidence_sources": [
+        "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+        "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+        "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+        "data/planning/next_execution_order_post_zeta.json"
+      ],
+      "must_preserve": [
+        "no further internal Zeta prompt before post-Zeta reconciliation",
+        "no silent widening of bounded-only, proof-only, guarded, blocked, or future-only frontier families"
+      ],
+      "may_vary": [
+        "how post-Zeta reconciliation is documented or sequenced after this series"
+      ],
+      "may_not_vary": [
+        "repo-structure work may not become live-ops frontier work or guarded-family promotion"
+      ],
+      "violation_risk": [
+        "relayout or cleanup work smuggles blocked Zeta realization work back into near-term scope"
+      ]
+    },
+    {
+      "id": "RNC-XA-001",
+      "title": "XStack/AIDE remains a constraint packet, not a competing workstream",
+      "category": "xstack_aide_non_interference",
+      "rationale": "The XStack/AIDE narrowing-and-contract phase is closed, and its own closure packet explicitly subordinates it to the playable-baseline priority.",
+      "evidence_sources": [
+        "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+        "data/xstack/checkpoint_c_xstack_aide_closure.json",
+        "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+        "data/xstack/next_execution_order_post_xstack_aide.json",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+        "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md"
+      ],
+      "must_preserve": [
+        "no new XStack/AIDE prompt before the playable baseline exists",
+        "no pre-baseline platformization or migration",
+        "no extraction of baseline-critical Dominium surfaces"
+      ],
+      "may_vary": [
+        "post-baseline AIDE roadmap details after the playable baseline is proven"
+      ],
+      "may_not_vary": [
+        "XStack/AIDE contract freezing may not become permission to start extraction, repo splits, or wrapper proliferation now"
+      ],
+      "violation_risk": [
+        "portability aspirations justify pre-baseline repo churn or a second competing architecture track"
+      ]
+    },
+    {
+      "id": "RNC-BLD-001",
+      "title": "The verify preset family remains the canonical compiled lane",
+      "category": "build_constraints",
+      "rationale": "Both the audit and the XStack repo-operating contract freeze the verify preset family as the current compiled baseline.",
+      "evidence_sources": [
+        "CMakePresets.json",
+        "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+        "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+        "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ],
+      "must_preserve": [
+        "cmake --preset verify",
+        "cmake --build --preset verify",
+        "ctest --preset verify",
+        "the current verify-aligned build/test relationship"
+      ],
+      "may_vary": [
+        "internal CMake helper placement",
+        "wrapper scripts",
+        "a future explicitly admitted replacement lane"
+      ],
+      "may_not_vary": [
+        "verify may not be silently demoted",
+        "the aligned preset family may not be broken",
+        "another lane may not be presented as canonical during this series"
+      ],
+      "violation_risk": [
+        "relayout breaks the canonical preset family or strands the repo without one explicit proveable compiled lane"
+      ]
+    },
+    {
+      "id": "RNC-VAL-001",
+      "title": "FAST, TestX, CTest, and honest status language must survive",
+      "category": "validation_constraints",
+      "rationale": "Later prompts need one honest validation spine and one stable way to report verified, likely, partial, and blocked instead of flattening them.",
+      "evidence_sources": [
+        "AGENTS.md",
+        "tools/validation/tool_run_validation.py",
+        "tools/xstack/testx_all.py",
+        "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ],
+      "must_preserve": [
+        "python tools/validation/tool_run_validation.py --profile FAST as the minimum canonical validation path",
+        "python tools/xstack/testx_all.py --profile FAST as the XStack/TestX companion when relevant",
+        "ctest --preset verify as the compiled companion when the compiled lane is implicated",
+        "explicit verified vs likely vs partial vs blocked reporting"
+      ],
+      "may_vary": [
+        "stronger validation",
+        "narrower smoke slices",
+        "helper wrappers",
+        "post-baseline validation reshaping after explicit proof"
+      ],
+      "may_not_vary": [
+        "honest status classes may not be flattened",
+        "green validation may not be claimed without real execution"
+      ],
+      "violation_risk": [
+        "relayout breaks the validation surfaces, hides them behind unproven wrappers, or makes blocked flows look verified"
+      ]
+    },
+    {
+      "id": "RNC-RUN-001",
+      "title": "Python/AppShell launcher and setup shells remain the canonical repo-local operator surfaces",
+      "category": "entrypoint_runpath_constraints",
+      "rationale": "The audit identifies these shells as the strongest operator surfaces now, and the canonical playable-baseline recipe depends on them.",
+      "evidence_sources": [
+        "tools/launcher/launch.py",
+        "tools/setup/setup_cli.py",
+        "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+        "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+        "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ],
+      "must_preserve": [
+        "python tools/launcher/launch.py and python tools/setup/setup_cli.py as the canonical repo-local shells for compat, profile, pack, install-discovery, and status/reporting work"
+      ],
+      "may_vary": [
+        "future wrapper or facade strategy",
+        "internal module layout",
+        "later native parity work after the baseline exists"
+      ],
+      "may_not_vary": [
+        "compiled launcher/setup wrappers may not be treated as the canonical operator path just because they look cleaner or shorter"
+      ],
+      "violation_risk": [
+        "relayout hides or degrades the Python/AppShell shells before a stronger proved replacement exists"
+      ]
+    },
+    {
+      "id": "RNC-RUN-002",
+      "title": "Direct Python server startup remains blocked truth until explicitly fixed",
+      "category": "entrypoint_runpath_constraints",
+      "rationale": "Later prompts must not use path moves to pretend that a blocked startup entrypoint is already ready.",
+      "evidence_sources": [
+        "server/server_main.py",
+        "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+        "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+        "data/audit/ultra_repo_audit_entrypoints.json",
+        "data/audit/ultra_repo_audit_gap_ledger.json"
+      ],
+      "must_preserve": [
+        "the current reality that python server/server_main.py and python -m server.server_main are not safe baseline commands today"
+      ],
+      "may_vary": [
+        "an explicit later fix to repo-root math, import bootstrapping, or path resolution"
+      ],
+      "may_not_vary": [
+        "these paths may not be promoted to canonical status through documentation, path aliases, or relayout alone"
+      ],
+      "violation_risk": [
+        "redesign prose tells operators to use a server startup path that is still blocked in live code"
+      ]
+    },
+    {
+      "id": "RNC-SES-001",
+      "title": "Session materialization and boot semantics stay anchored in SessionX",
+      "category": "session_profile_save_constraints",
+      "rationale": "The playable-baseline path already depends on session_create and session_boot, and the save-root coupling is a real current constraint.",
+      "evidence_sources": [
+        "tools/xstack/session_create.py",
+        "tools/xstack/session_boot.py",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py",
+        "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+        "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ],
+      "must_preserve": [
+        "tools/xstack/session_create.py as the canonical materialization entrypoint",
+        "tools/xstack/session_boot.py as the canonical boot entrypoint",
+        "save_id as required identity",
+        "saves/<save_id>/session_spec.json as the current honest bootable layout"
+      ],
+      "may_vary": [
+        "later explicit fixes to save-root handling",
+        "later wrapper naming",
+        "later internal module grouping after explicit prompt approval"
+      ],
+      "may_not_vary": [
+        "the canonical saves/<save_id>/ boot path may not be broken before a proved replacement exists"
+      ],
+      "violation_risk": [
+        "relayout strands session artifacts from their boot path or advertises alternate save roots as supported without code proof"
+      ]
+    },
+    {
+      "id": "RNC-SES-002",
+      "title": "The authored MVP asset trio and the current bundle-default seam must stay explicit",
+      "category": "session_profile_save_constraints",
+      "rationale": "The repo contains real authored MVP baseline assets, but the live session-create default still points at a different bundle id.",
+      "evidence_sources": [
+        "profiles/bundles/bundle.mvp_default.json",
+        "locks/pack_lock.mvp_default.json",
+        "data/session_templates/session.mvp_default.json",
+        "tools/mvp/runtime_bundle.py",
+        "tools/xstack/session_create.py",
+        "tools/xstack/registry_compile/constants.py",
+        "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ],
+      "must_preserve": [
+        "the existence and path stability of the authored MVP bundle, pack lock, and session template",
+        "the ability to target them explicitly",
+        "the explicit note that session_create.py defaults --bundle to bundle.base.lab while the baseline recipe leans on profile.bundle.mvp_default"
+      ],
+      "may_vary": [
+        "a later explicit convergence strategy for bundle defaults",
+        "a shim",
+        "a revised baseline recipe after proof"
+      ],
+      "may_not_vary": [
+        "the seam may not be written as already solved",
+        "directory moves may not be used to hide the seam"
+      ],
+      "violation_risk": [
+        "topology work silently turns an open guidance-vs-implementation seam into a fake closure story"
+      ]
+    },
+    {
+      "id": "RNC-PLT-001",
+      "title": "The canonical local playtest target remains repo-local, single-machine, and loopback-authoritative",
+      "category": "playtest_path_constraints",
+      "rationale": "The ultra audit and XStack repo-operating contract both freeze the same immediate product priority: harden one canonical repo-local playable baseline around session creation plus local loopback authority.",
+      "evidence_sources": [
+        "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+        "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+        "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
+        "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ],
+      "must_preserve": [
+        "repo-local scope",
+        "single-machine posture",
+        "loopback authority only",
+        "Python/AppShell-first operator surfaces",
+        "canonical saves/<save_id>/ materialization",
+        "the truth that the current path is a target recipe rather than a finished one-command flow"
+      ],
+      "may_vary": [
+        "which explicit wrapper later hardens the one canonical command, provided it composes the existing surfaces honestly"
+      ],
+      "may_not_vary": [
+        "the baseline may not be broadened to non-loopback multiplayer, installed-mode assumptions, or native-shell-first assumptions by convenience"
+      ],
+      "violation_risk": [
+        "a cleaner-but-less-proven runtime direction is chosen and called the new canonical playtest path without proof"
+      ]
+    },
+    {
+      "id": "RNC-PLT-002",
+      "title": "The local loopback runtime bridge remains baseline-critical Dominium-owned substrate",
+      "category": "playtest_path_constraints",
+      "rationale": "The local authority path is both the strongest evidence-backed runtime direction and a retained Dominium surface in the extraction map.",
+      "evidence_sources": [
+        "client/local_server/local_server_controller.py",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py",
+        "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+        "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md"
+      ],
+      "must_preserve": [
+        "the connection between client/local_server/local_server_controller.py, runtime/process_spawn.py, server/net/loopback_transport.py, and the current server boot/runtime path"
+      ],
+      "may_vary": [
+        "later post-baseline wrappers, shims, or provider interfaces after explicit review"
+      ],
+      "may_not_vary": [
+        "this bridge may not be extracted, migrated, or de-owned before the playable baseline exists and later review admits it"
+      ],
+      "violation_risk": [
+        "the current local authority bridge is moved into a portability track and the shortest proven playtest direction breaks"
+      ]
+    },
+    {
+      "id": "RNC-DRV-001",
+      "title": "Canonical, derived, audit-evidence, and implementation statuses must not be flattened",
+      "category": "canonical_vs_derived_constraints",
+      "rationale": "The repo already has canonical doctrine, derived mirrors, audit evidence, generated outputs, and live code; later prompts need those classes to stay distinguishable.",
+      "evidence_sources": [
+        "docs/planning/AUTHORITY_ORDER.md",
+        "AGENTS.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+        "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+        "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
+        "data/audit/ultra_repo_audit_build_run_test_matrix.json"
+      ],
+      "must_preserve": [
+        "canon over mirrors",
+        "live implementation over stale docs for structure",
+        "audit docs and JSON as evidence rather than law",
+        "generated outputs as non-canonical unless explicitly promoted",
+        "explicit verified vs likely vs blocked reporting"
+      ],
+      "may_vary": [
+        "doc refreshes",
+        "mirror improvements",
+        "evidence packaging"
+      ],
+      "may_not_vary": [
+        "audit reports, generated outputs, and stale docs may not become stronger than live implementation or canon where those sources disagree"
+      ],
+      "violation_risk": [
+        "a redesign packet turns evidence into doctrine or turns blocked paths into verified ones by writing style"
+      ]
+    },
+    {
+      "id": "RNC-DEF-001",
+      "title": "Baseline-critical retained and deferred surfaces must stay stable until after the playable baseline exists",
+      "category": "retained_vs_deferred_constraints",
+      "rationale": "The audit and XStack/AIDE extraction map both freeze a retained-vs-deferred posture specifically so the baseline path is not destabilized by broad repo churn.",
+      "evidence_sources": [
+        "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+        "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
+        "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+        "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+        "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+      ],
+      "must_preserve": [
+        "the retained status of SessionX runtime/control, AppShell and operator shells, local loopback runtime glue, pack and distribution pipelines, release/trust consumers, and repo-local operating law surfaces until after the baseline exists"
+      ],
+      "may_vary": [
+        "later post-baseline extraction-review sequencing",
+        "convergence proposals",
+        "explicit migration plans"
+      ],
+      "may_not_vary": [
+        "the repo-structure series may not do broad renames, extraction, ownership rebinding, or migration across these surfaces before the baseline exists"
+      ],
+      "violation_risk": [
+        "repo-structure work becomes a stealth migration or platformization pass that increases baseline risk instead of containing it"
+      ]
+    }
+  ],
+  "build_validation_runpath_survival_rules": [
+    {
+      "id": "survive.build.verify",
+      "name": "Verify build lane",
+      "current_anchor": [
+        "cmake --preset verify",
+        "cmake --build --preset verify",
+        "ctest --preset verify"
+      ],
+      "status": "canonical lane frozen by audit and presets; not re-executed in this prompt",
+      "must_survive": [
+        "one verify-aligned configure/build/test lane",
+        "the current verify preset family semantics until an explicit follow-up changes them"
+      ],
+      "notes": [
+        "Later prompts may introduce explicit equivalents, but they may not silently demote verify during this series."
+      ]
+    },
+    {
+      "id": "survive.validation.fast",
+      "name": "FAST validation entry surface",
+      "current_anchor": [
+        "python tools/validation/tool_run_validation.py --profile FAST"
+      ],
+      "status": "live entrypoint verified; full green status remains task-dependent",
+      "must_survive": [
+        "the FAST validation entry surface",
+        "the current report semantics"
+      ],
+      "notes": [
+        "Relayout must not hide or replace this path with an unproven wrapper."
+      ]
+    },
+    {
+      "id": "survive.validation.testx_fast",
+      "name": "FAST TestX companion",
+      "current_anchor": [
+        "python tools/xstack/testx_all.py --profile FAST"
+      ],
+      "status": "live entrypoint verified; full suite not re-run here",
+      "must_survive": [
+        "the TestX companion surface for tooling/session/compat/validation changes"
+      ],
+      "notes": [
+        "The CLI default profile is still STRICT; later prompts must preserve honest profile semantics."
+      ]
+    },
+    {
+      "id": "survive.validation.ctest_verify",
+      "name": "Compiled verify test companion",
+      "current_anchor": [
+        "ctest --preset verify"
+      ],
+      "status": "audited compiled harness; broad tree enumerated, not fully rerun here",
+      "must_survive": [
+        "a compiled-test companion aligned with the verify lane"
+      ],
+      "notes": [
+        "The playtest tree and compiled smoke coverage must remain reachable through the canonical compiled lane."
+      ]
+    },
+    {
+      "id": "survive.shell.launcher_appshell",
+      "name": "Launcher AppShell flow",
+      "current_anchor": [
+        "python tools/launcher/launch.py compat-status",
+        "python tools/launcher/launch.py profiles list",
+        "python tools/launcher/launch.py packs list",
+        "python tools/launcher/launch.py launcher status"
+      ],
+      "status": "strongest current launcher/operator shell",
+      "must_survive": [
+        "the launcher AppShell flow as a canonical repo-local operator surface until a stronger proved replacement exists"
+      ],
+      "notes": [
+        "Relayout must not default operators back to the stub-heavier compiled wrapper-first path."
+      ]
+    },
+    {
+      "id": "survive.shell.setup_appshell",
+      "name": "Setup AppShell flow",
+      "current_anchor": [
+        "python tools/setup/setup_cli.py compat-status",
+        "python tools/setup/setup_cli.py profiles list",
+        "python tools/setup/setup_cli.py packs list"
+      ],
+      "status": "strongest current setup/operator shell",
+      "must_survive": [
+        "the setup AppShell flow as a canonical repo-local operator surface until a stronger proved replacement exists"
+      ],
+      "notes": [
+        "Relayout must not degrade the setup shell into a thin wrapper with less operator value."
+      ]
+    },
+    {
+      "id": "survive.session.create",
+      "name": "Session materialization flow",
+      "current_anchor": [
+        "python tools/xstack/session_create.py --save-id <save_id>"
+      ],
+      "status": "canonical materialization path; default bundle seam remains open",
+      "must_survive": [
+        "the ability to create session artifacts through SessionX",
+        "explicit baseline-oriented bundle/lock/template targeting"
+      ],
+      "notes": [
+        "The CLI default bundle still routes through bundle.base.lab, so later prompts must preserve that truth while keeping MVP baseline asset targeting possible."
+      ]
+    },
+    {
+      "id": "survive.session.boot",
+      "name": "Session boot flow",
+      "current_anchor": [
+        "python tools/xstack/session_boot.py saves/<save_id>/session_spec.json"
+      ],
+      "status": "canonical boot surface, but save-root fragile",
+      "must_survive": [
+        "the current honest boot contract around saves/<save_id>/session_spec.json until explicit save-root support changes"
+      ],
+      "notes": [
+        "Relayout may not market alternate save roots as supported without a real code fix."
+      ]
+    },
+    {
+      "id": "survive.runtime.loopback_local",
+      "name": "Local loopback runtime bridge",
+      "current_anchor": [
+        "client.local_server.local_server_controller.start_local_singleplayer",
+        "runtime/process_spawn.py",
+        "server/net/loopback_transport.py"
+      ],
+      "status": "partially verified internal runtime anchor",
+      "must_survive": [
+        "the local singleplayer loopback bridge",
+        "its retained in-repo ownership"
+      ],
+      "notes": [
+        "The public wrapper remains transitional, but the internal loopback path is still the strongest runtime anchor."
+      ]
+    },
+    {
+      "id": "survive.playtest.baseline_recipe",
+      "name": "Canonical local playtest target recipe",
+      "current_anchor": [
+        "verify lane",
+        "Python/AppShell shells",
+        "SessionX materialization",
+        "local loopback authority"
+      ],
+      "status": "target recipe, not yet one finished command",
+      "must_survive": [
+        "the current baseline recipe as the top redesign constraint",
+        "the rule that later prompts may not invent a second official playtest path"
+      ],
+      "notes": [
+        "A later prompt may harden one command around these surfaces, but this prompt must not pretend that work is already done."
+      ]
+    },
+    {
+      "id": "survive.save_resume.baseline",
+      "name": "Baseline save/load/resume assumptions",
+      "current_anchor": [
+        "canonical saves/<save_id>/ layout",
+        "repeatable boot/resume expectation"
+      ],
+      "status": "fragile and not fully green yet",
+      "must_survive": [
+        "the current save/load/resume assumptions or an explicitly fixed replacement"
+      ],
+      "notes": [
+        "Relayout must not break resume expectations while the baseline path is still being hardened."
+      ]
+    }
+  ],
+  "redesign_freedom_boundaries": {
+    "free_to_redesign_conceptually": [
+      "future topology options and grouping proposals",
+      "later migration phase ordering and shim strategy proposals",
+      "documentation packaging and evidence presentation",
+      "explicit wrapper strategy for a later one-command playtest flow",
+      "later convergence proposals for mixed or legacy roots after they are analyzed under this packet"
+    ],
+    "not_free_to_break": [
+      "the authority order, extension-over-replacement discipline, and ownership-sensitive split cautions",
+      "the verify build lane and the FAST plus TestX plus CTest validation spine",
+      "the current canonical repo-local operator shells",
+      "the current SessionX create and boot path contracts",
+      "the repo-local, loopback-authoritative, single-machine playable-baseline target",
+      "the truth that some paths are verified, some only likely, and some still blocked or fragile",
+      "the retained-vs-deferred baseline-critical posture from the XStack/AIDE closure packet"
+    ],
+    "must_remain_stable_until_playable_baseline_exists": [
+      "tools/launcher/launch.py, tools/setup/setup_cli.py, and appshell/** as the current operator-shell center",
+      "tools/xstack/session_create.py, tools/xstack/session_boot.py, and the current canonical saves/<save_id>/ boot layout",
+      "the local loopback runtime bridge rooted in client/local_server/**, runtime/process_spawn.py, and server/net/loopback_transport.py",
+      "the post-Zeta closure boundary and the XStack/AIDE non-interference boundary",
+      "the retained status of pack/distribution, release/trust, and repo-local validation/control surfaces that the extraction map keeps in Dominium for now"
+    ]
+  },
+  "explicit_out_of_scope": [
+    "implementing the one-command canonical playtest path",
+    "patching server/server_main.py repo-root logic directly",
+    "patching tools/xstack/sessionx/runner.py save-root coupling directly",
+    "moving files or renaming roots in this prompt",
+    "redesigning the final repo topology in this prompt",
+    "broadening into feature expansion",
+    "reopening internal Zeta work",
+    "broadening into post-Zeta live-ops frontier realization",
+    "implementing a full AIDE runtime, daemon, scheduler, compiler, adapter runtime, or separate AIDE repo",
+    "performing broad extraction or migration because a surface looks portable",
+    "performing large convergence or ownership-rebinding work driven by XStack concerns",
+    "broadening into non-loopback multiplayer, installed-mode distribution, or native launcher/setup completion work"
+  ],
+  "open_questions_not_yet_decided": [
+    "what the final preferred repo topology actually is",
+    "what the exact migration phases and rollback points should be",
+    "what the exact shim or alias strategy should be for any future path changes",
+    "which future wrapper, if any, should become the one canonical playtest command after baseline hardening",
+    "how session_create.py default bundle.base.lab behavior should converge, if at all, with the baseline recipe that leans on the authored MVP bundle, pack lock, and session template",
+    "which mixed surfaces later belong in portable substrate, retained Dominium wrappers, or later retirement work",
+    "whether out/build/vs2026/verify/ remains the literal future artifact root or is later abstracted behind another stable equivalent",
+    "what the exact target ownership moves are, if any, across field vs fields, schema vs schemas, and packs vs data/packs"
+  ],
+  "prohibited_repo_redesign_shapes": [
+    "choosing a topology that breaks the verify preset family",
+    "treating compiled launcher or setup wrappers as canonical just because they look cleaner on paper",
+    "moving baseline-critical SessionX, AppShell, launcher/setup, or loopback runtime surfaces too early",
+    "using XStack/AIDE portability aspirations to justify repo churn before the playable baseline exists",
+    "promoting server/server_main.py or tools/mvp/runtime_entry.py into the canonical public playtest path through documentation only",
+    "using stale docs, mirrors, or generated outputs as stronger truth than live implementation where structural reality disagrees",
+    "flattening verified, likely, partial, and blocked into one status class",
+    "assuming alternate save roots or non-loopback transport are baseline-ready because flags or stubs exist",
+    "solving ownership-sensitive split questions by directory preference instead of explicit later review",
+    "reopening internal Zeta or pre-baseline XStack/AIDE platform work through repo-structure language"
+  ],
+  "downstream_prompts_enabled": [
+    "the next repo-structure discovery prompt class that maps topology, path dependencies, and ownership boundaries under frozen constraints before any topology design is chosen",
+    "later topology-option prompts that compare repo layouts without breaking the current playable-baseline path",
+    "later migration-planning prompts that need a frozen must-not-break packet before proposing shims, moves, or root renames",
+    "later redesign decision prompts that must distinguish verified, likely, blocked, retained, and deferred realities honestly"
+  ]
+}
