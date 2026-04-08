@@ -1,0 +1,52 @@
+{
+  "artifact_identity": {
+    "artifact_id": "next_execution_order_post_repo_structure_review",
+    "artifact_class": "repo_structure_next_order_packet",
+    "schema_version": "1.0.0",
+    "status": "derived",
+    "stability": "stable",
+    "series_scope": "repo_structure_discovery_and_design",
+    "series_role": "authoritative next-order handoff after the final repo-structure review checkpoint; downstream of the repo-structure series packets and the pre-relayout decision checkpoint",
+    "last_reviewed": "2026-04-08",
+    "replacement_target": "later first-slice execution receipt or explicit replacement checkpoint after RMS-001 execution"
+  },
+  "recommended_next_prompt": {
+    "prompt_id": "REPO-MIGRATION-Ω1",
+    "title": "RMS-001_NO_MOVE_PATH_AUTHORITY_AND_WRAPPER_PRECEDENCE_NORMALIZATION-0"
+  },
+  "relayout_execution_approved_now": {
+    "approved": true,
+    "scope": "MP-0 / RMS-001 only",
+    "physical_relayout_approved": false,
+    "shim_backed_relayout_approved": false
+  },
+  "immediate_post_slice_validation_sequence": [
+    "parse all touched JSON mirrors",
+    "confirm prose and machine-readable mirrors still align to live root names, ownership claims, and canonical wrapper precedence",
+    "run git diff --check",
+    "run python tools/validation/tool_run_validation.py --profile FAST",
+    "verify that no runtime, entrypoint, manifest, or path-resolution code was touched; if any was, stop and reclassify the work",
+    "roll back immediately if ambiguity increased or FAST regressed"
+  ],
+  "explicitly_deferred": [
+    "all MP-1 through MP-5 work",
+    "RMS-002 and every later migration slice",
+    "canonical playtest-path hardening itself",
+    "server/server_main.py repo-root correction",
+    "session save-root correction",
+    "launcher supervision stabilization",
+    "split-root convergence for schema/schemas and packs/data-packs",
+    "any XStack/AIDE extraction or platformization work"
+  ],
+  "why_this_order_is_best": [
+    "the repo-structure series is complete enough to approve a bounded first execution slice",
+    "RMS-001 reduces real drift without destabilizing baseline-critical runtime seams",
+    "stopping after RMS-001 preserves the stronger product priority of hardening one canonical repo-local playable baseline",
+    "the order prevents the repo from flattening planning, approval, and execution into one over-broad relayout step"
+  ],
+  "follow_on_constraint": {
+    "after_rms_001_succeeds": "do not automatically continue to RMS-002",
+    "next_broader_work_remains": "canonical playable-baseline hardening and its blockers",
+    "later_relayout_reconsideration_gate": "only after one repeatable repo-local playable baseline exists with fresh FAST and the agreed smoke slice"
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "checkpoint_identity": {
+    "checkpoint_id": "C-REPO-MEGA-STRUCTURE-REVIEW",
+    "artifact_class": "repo_structure_pre_relayout_decision_checkpoint",
+    "schema_version": "1.0.0",
+    "status": "derived",
+    "stability": "stable",
+    "series_scope": "repo_structure_discovery_and_design",
+    "series_role": "authoritative pre-relayout validation, decision, and packaging checkpoint for the completed repo-structure series; downstream of stronger canon, the six repo-structure packets, post-Zeta closure, ultra audit evidence, XStack/AIDE closure, and selected live implementation evidence",
+    "last_reviewed": "2026-04-08",
+    "replacement_target": "later first-slice execution checkpoint or explicit replacement review after RMS-001 execution or new baseline-hardening evidence"
+  },
+  "decision_state": {
+    "checkpoint_state": "pre_relayout_validation_and_decision",
+    "candidate_next_work_under_review": [
+      "RMS-001 - No-Move Path Authority And Wrapper-Precedence Normalization"
+    ],
+    "candidate_final_clarification_artifact": "none_required_if_rms_001_remains_doc_and_mirror_only"
+  },
+  "series_completion_findings": [
+    {
+      "packet_id": "REPO-DISCOVERY-Ω0",
+      "title": "constraints and current reality",
+      "verdict": "complete",
+      "why_decision_grade": "The packet freezes what must not break, preserves baseline-first priority, and keeps verified, likely, and blocked distinct.",
+      "active_caution": "None beyond the already-frozen blocker set."
+    },
+    {
+      "packet_id": "REPO-DISCOVERY-Ω1",
+      "title": "topology, paths, and ownership reality",
+      "verdict": "complete",
+      "why_decision_grade": "The packet maps the live root families, ownership classes, path contracts, and baseline-critical clusters with implementation evidence.",
+      "active_caution": "Mixed roots remain intentionally mixed in the map; that is a feature, not a gap."
+    },
+    {
+      "packet_id": "REPO-DISCOVERY-Ω2",
+      "title": "coupling, drift, and relayout risk",
+      "verdict": "complete",
+      "why_decision_grade": "The packet ranks safe-to-move, needs-shim, and do-not-move-yet surfaces clearly enough to constrain design and migration.",
+      "active_caution": "The packet proves that physical movement beyond the lightest slice is still high risk pre-baseline."
+    },
+    {
+      "packet_id": "REPO-DESIGN-Ω0",
+      "title": "topology option generation and comparison",
+      "verdict": "complete",
+      "why_decision_grade": "The packet generated materially distinct options and discriminated among them honestly instead of collapsing them into aesthetic ties.",
+      "active_caution": "TTO-002 remains a useful long-term reference, but not the selected target."
+    },
+    {
+      "packet_id": "REPO-DESIGN-Ω1",
+      "title": "preferred target and authoritative boundary model",
+      "verdict": "complete_with_cautions",
+      "why_decision_grade": "The packet selected PT-001 / TTO-001 for repo-grounded reasons and froze a usable boundary model for later migration planning.",
+      "active_caution": "The selection is conceptual only and does not authorize physical relayout on its own."
+    },
+    {
+      "packet_id": "REPO-MIGRATION-Ω0",
+      "title": "migration, shims, validation, and rollback",
+      "verdict": "complete_with_cautions",
+      "why_decision_grade": "The packet defines phases, shim classes, concrete slices, validation gates, rollback thresholds, and the safest first slice.",
+      "active_caution": "Only RMS-001 is safe pre-baseline; later phases remain gated on playable-baseline proof."
+    }
+  ],
+  "preferred_target_findings": {
+    "preferred_target_id": "PT-001",
+    "selected_option_id": "TTO-001",
+    "justified": true,
+    "preserves_baseline_path": true,
+    "grounded_in_repo_reality": true,
+    "compatible_with_migration_and_risk_findings": true,
+    "why_still_preferred": [
+      "it best preserves the verify lane, FAST validation path, Python/AppShell launcher and setup shells, SessionX create/boot path, current saves/<save_id> assumptions, and the loopback-authoritative local path",
+      "it matches the current live root federation and does not invent new physical owners that the code does not actually honor today",
+      "it aligns strongly with extend-over-replace doctrine and XStack/AIDE non-interference",
+      "it leaves mixed or split ownership surfaces visible instead of pretending they are already settled"
+    ],
+    "critical_uncertainties_still_unresolved": [
+      "one canonical repo-local playtest command still does not exist",
+      "server/server_main.py repo-root resolution remains blocked truth",
+      "session_boot and sessionx/runner.py still disagree about save-root generality",
+      "launcher supervision remains fragile",
+      "schema versus schemas and packs versus data/packs remain deferred ownership splits",
+      "the authored MVP baseline trio and the live default bundle id still form an implementation-versus-guidance seam"
+    ]
+  },
+  "first_migration_slice_findings": {
+    "approved_slice_id": "RMS-001",
+    "approved_slice_title": "No-Move Path Authority And Wrapper-Precedence Normalization",
+    "is_safest_first_slice": true,
+    "avoids_baseline_critical_breakage_if_scoped_correctly": true,
+    "requires_shims_first": false,
+    "approval_scope": "MP-0 doc-and-mirror-only normalization; no runtime, entrypoint, manifest, import, include, or path-logic change is approved",
+    "why_safe_first": [
+      "it moves no files",
+      "it changes no imports, includes, or runtime path logic",
+      "it does not touch Omega2 do-not-move-yet surfaces directly",
+      "it targets the exact drift identified by the audit and Omega2 packet: stale src path vocabulary, wrapper overclaims, and ambiguous path-authority narratives",
+      "rollback is trivial compared with any slice that would touch AppShell, SessionX, loopback authority, release/trust, or build-path ownership"
+    ],
+    "validation_must_immediately_follow": [
+      "parse all touched JSON mirrors",
+      "confirm prose and machine-readable mirrors still align",
+      "run git diff --check",
+      "run python tools/validation/tool_run_validation.py --profile FAST",
+      "confirm that the slice did not touch runtime, entrypoint, or path-resolution code"
+    ],
+    "immediate_rollback_triggers": [
+      "source-of-truth ambiguity increases instead of decreasing",
+      "a doc or mirror starts claiming a different canonical entrypoint than the live shells and audit evidence support",
+      "FAST regresses unexpectedly",
+      "scope expands into runtime behavior, imports, includes, manifests, session semantics, or real path logic",
+      "report or audit regeneration begins to misstate runtime truth"
+    ]
+  },
+  "residual_risk_ledger": [
+    {
+      "risk_id": "RR-001",
+      "title": "canonical playable-baseline path is still not hardened",
+      "risk_class": "baseline_critical",
+      "why_it_matters": "Blocks MP-1 and all later slices that touch entrypoints or product-shell seams.",
+      "effect_on_first_slice": "Does not block RMS-001, but forbids using RMS-001 as proof that broader relayout is now safe."
+    },
+    {
+      "risk_id": "RR-002",
+      "title": "server/server_main.py repo-root misresolution",
+      "risk_class": "baseline_critical",
+      "why_it_matters": "Keeps direct Python server startup blocked and makes local-authority seam movement unsafe.",
+      "effect_on_first_slice": "Must stay documented truth; RMS-001 must not overclaim readiness."
+    },
+    {
+      "risk_id": "RR-003",
+      "title": "session_boot and sessionx/runner.py save-root coupling",
+      "risk_class": "baseline_critical",
+      "why_it_matters": "Keeps session-location movement and generated-output rebinding unsafe.",
+      "effect_on_first_slice": "RMS-001 may document the constraint, not fix it."
+    },
+    {
+      "risk_id": "RR-004",
+      "title": "launcher supervision instability",
+      "risk_class": "baseline_critical",
+      "why_it_matters": "Keeps AppShell and operator-shell relayout high risk.",
+      "effect_on_first_slice": "RMS-001 must not describe supervision as solved."
+    },
+    {
+      "risk_id": "RR-005",
+      "title": "native launcher/setup and non-loopback surfaces remain stub-heavy",
+      "risk_class": "readiness_drift",
+      "why_it_matters": "Prevents wrappers from being treated as canonical owners.",
+      "effect_on_first_slice": "RMS-001 should narrow wrapper readiness claims, not widen them."
+    },
+    {
+      "risk_id": "RR-006",
+      "title": "stale src mirrors plus tools/import_bridge.py still coexist",
+      "risk_class": "doc_code_path_drift",
+      "why_it_matters": "Drift is real and is exactly why the first slice exists, but bridge retirement remains later work.",
+      "effect_on_first_slice": "This is the main risk addressed by RMS-001."
+    },
+    {
+      "risk_id": "RR-007",
+      "title": "default bundle seam between authored MVP guidance and bundle.base.lab",
+      "risk_class": "integration_seam",
+      "why_it_matters": "Silent normalization would create false truth during later movement or path cleanup.",
+      "effect_on_first_slice": "RMS-001 must keep the seam visible."
+    },
+    {
+      "risk_id": "RR-008",
+      "title": "split-root ambiguity in schema/schemas and packs/data-packs",
+      "risk_class": "ownership_split",
+      "why_it_matters": "Keeps ownership convergence explicitly deferred.",
+      "effect_on_first_slice": "RMS-001 must not pick winners by wording."
+    },
+    {
+      "risk_id": "RR-009",
+      "title": "validation strength after a doc-only slice is necessarily narrow",
+      "risk_class": "validation_limit",
+      "why_it_matters": "FAST proves consistency and non-regression in the repo audit pipeline, but not playable-baseline readiness.",
+      "effect_on_first_slice": "Requires an explicit stop after RMS-001; no automatic progression to RMS-002."
+    }
+  ],
+  "final_decision": {
+    "decision_label": "proceed_with_first_migration_slice",
+    "series_complete_and_decision_grade": true,
+    "preferred_target_approved": true,
+    "phased_relayout_approved_now": true,
+    "approval_scope": "MP-0 / RMS-001 only",
+    "physical_relayout_or_shim_backed_relayout_approved_now": false,
+    "why": [
+      "the series is complete and decision-grade",
+      "the preferred target is justified",
+      "RMS-001 is a real execution slice with meaningful value, not a redundant extra clarification artifact",
+      "RMS-001 does not compete with the baseline-first priority because it is no-move, no-shim, and no-runtime-change",
+      "broader relayout execution is still not safe because the canonical playable-baseline path is not yet hardened"
+    ]
+  },
+  "next_execution_order": {
+    "recommended_next_prompt": {
+      "prompt_id": "REPO-MIGRATION-Ω1",
+      "title": "RMS-001_NO_MOVE_PATH_AUTHORITY_AND_WRAPPER_PRECEDENCE_NORMALIZATION-0",
+      "approved_now": true
+    },
+    "ordered_steps": [
+      "Execute REPO-MIGRATION-Ω1 for RMS-001 only.",
+      "Immediately validate the slice with JSON parse for touched mirrors, prose/mirror consistency, git diff --check, and python tools/validation/tool_run_validation.py --profile FAST.",
+      "Stop after the slice and record MP-0 complete while broader relayout remains gated.",
+      "Return the broader product priority to canonical playable-baseline hardening and its blockers.",
+      "Do not attempt RMS-002, MP-1, any physical relayout, any shim introduction, split-root convergence, or any XStack/AIDE-shaped extraction work yet."
+    ]
+  },
+  "forbidden_execution_shapes": [
+    "treating RMS-001 as permission to start physical relayout immediately after merge",
+    "slipping runtime, entrypoint, manifest, or path-resolution edits into a doc-normalization slice",
+    "using stale audit or doc cleanup to overstate readiness",
+    "bundling RMS-001 with baseline-blocker fixes and calling the combined work cleanup",
+    "treating the preferred conceptual target as if the repo had already migrated"
+  ]
+}
