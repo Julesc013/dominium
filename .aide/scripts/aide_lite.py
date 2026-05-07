@@ -8198,6 +8198,7 @@ def _write_minimal_repo(root: Path) -> None:
     for rel in REQUIRED_FILES:
         (root / rel).parent.mkdir(parents=True, exist_ok=True)
     source_root = repo_root_from_script()
+    write_text(root / "core/__init__.py", '"""Selftest core package stub."""\n')
     if (source_root / ".gitignore").exists():
         write_text(root / ".gitignore", read_text(source_root / ".gitignore"))
     else:
@@ -8260,6 +8261,88 @@ def _write_minimal_repo(root: Path) -> None:
         source = source_root / rel
         if source.exists() and source.is_file():
             write_text(root / rel, read_text(source))
+        elif rel == "core/gateway/__init__.py":
+            write_text(root / rel, '"""Selftest gateway package stub."""\n')
+        elif rel == "core/gateway/gateway_status.py":
+            write_text(
+                root / rel,
+                '''"""No-call Gateway status stub for AIDE Lite selftest."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+
+GATEWAY_STATUS_JSON_PATH = ".aide/gateway/latest-gateway-status.json"
+GATEWAY_STATUS_MD_PATH = ".aide/gateway/latest-gateway-status.md"
+
+
+def stable_json(data):
+    return json.dumps(data, indent=2, sort_keys=True, separators=(",", ": ")) + "\\n"
+
+
+def health_payload():
+    return {
+        "status": "ok",
+        "provider_calls_enabled": False,
+        "model_calls_enabled": False,
+        "outbound_network_enabled": False,
+        "raw_prompt_storage": False,
+        "raw_response_storage": False,
+    }
+
+
+def build_gateway_status(repo_root=None):
+    data = {
+        "schema_version": "aide.gateway-status.v0",
+        "generated_by": "q19.gateway-skeleton.v0",
+        "service": "aide-gateway-skeleton",
+        "mode": "offline_metadata_only",
+        "readiness": {},
+        "signals": {},
+        "summaries": {},
+    }
+    data.update(health_payload())
+    return data
+
+
+def write_gateway_status_files(repo_root):
+    root = Path(repo_root)
+    data = build_gateway_status(root)
+    json_path = root / GATEWAY_STATUS_JSON_PATH
+    md_path = root / GATEWAY_STATUS_MD_PATH
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(stable_json(data), encoding="utf-8")
+    md_path.write_text(
+        "# Latest Gateway Status\\n\\n"
+        "- provider_calls_enabled: `false`\\n"
+        "- model_calls_enabled: `false`\\n"
+        "- outbound_network_enabled: `false`\\n",
+        encoding="utf-8",
+    )
+    return json_path, md_path, data
+
+
+def smoke_gateway(repo_root=None):
+    return {
+        "result": "PASS",
+        "provider_calls_enabled": False,
+        "model_calls_enabled": False,
+        "outbound_network_enabled": False,
+    }
+''',
+            )
+        elif rel == "core/gateway/server.py":
+            write_text(
+                root / rel,
+                '''"""No-call Gateway server stub for AIDE Lite selftest."""
+
+
+def app():
+    return None
+''',
+            )
         elif rel.endswith(".json"):
             write_text(root / rel, stable_json_text({"schema_version": "aide.gateway-status.v0", "provider_calls_enabled": False, "model_calls_enabled": False, "outbound_network_enabled": False, "raw_prompt_storage": False, "raw_response_storage": False, "readiness": {}, "signals": {}, "summaries": {}}))
         else:
@@ -8268,6 +8351,145 @@ def _write_minimal_repo(root: Path) -> None:
         source = source_root / rel
         if source.exists() and source.is_file():
             write_text(root / rel, read_text(source))
+        elif rel == "core/providers/__init__.py":
+            write_text(root / rel, '"""Selftest provider package stub."""\n')
+        elif rel == "core/providers/contracts.py":
+            write_text(
+                root / rel,
+                '''"""Provider metadata contract stub for AIDE Lite selftest."""
+
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class ProviderMetadata:
+    provider_id: str
+    display_name: str = ""
+    adapter_class: str = "remote_model"
+    provider_class: str = "remote_model"
+    privacy_class: str = "remote"
+    credentials_required: bool = True
+    credentials_location: str = ".aide.local/"
+    live_calls_allowed_in_q20: bool = False
+    status: str = "metadata_only"
+''',
+            )
+        elif rel == "core/providers/registry.py":
+            write_text(
+                root / rel,
+                '''"""Offline provider registry stub for AIDE Lite selftest."""
+
+
+REQUIRED_PROVIDER_IDS = [
+    "deterministic_tools",
+    "human",
+    "local_ollama",
+    "local_lm_studio",
+    "local_llama_cpp",
+    "local_vllm",
+    "local_sglang",
+    "openai",
+    "anthropic",
+    "google_gemini",
+    "deepseek",
+    "openrouter",
+    "other_remote_provider",
+]
+
+
+def validate_provider_files(repo_root=None):
+    return {
+        "result": "PASS",
+        "provider_count": len(REQUIRED_PROVIDER_IDS),
+        "errors": [],
+        "warnings": [],
+    }
+''',
+            )
+        elif rel == "core/providers/status.py":
+            write_text(
+                root / rel,
+                '''"""No-call provider status stub for AIDE Lite selftest."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+
+PROVIDER_STATUS_JSON_PATH = ".aide/providers/latest-provider-status.json"
+PROVIDER_STATUS_MD_PATH = ".aide/providers/latest-provider-status.md"
+PROVIDER_IDS = [
+    "deterministic_tools",
+    "human",
+    "local_ollama",
+    "local_lm_studio",
+    "local_llama_cpp",
+    "local_vllm",
+    "local_sglang",
+    "openai",
+    "anthropic",
+    "google_gemini",
+    "deepseek",
+    "openrouter",
+    "other_remote_provider",
+]
+
+
+def stable_json(data):
+    return json.dumps(data, indent=2, sort_keys=True, separators=(",", ": ")) + "\\n"
+
+
+def build_provider_status(repo_root=None):
+    return {
+        "schema_version": "aide.provider-status.v0",
+        "generated_by": "q20.provider-adapter.v0",
+        "provider_adapter_contract": "implemented_metadata_only",
+        "live_provider_calls": False,
+        "live_model_calls": False,
+        "network_calls": False,
+        "provider_probe_calls": False,
+        "credentials_configured": False,
+        "gateway_forwarding": False,
+        "raw_prompt_storage": False,
+        "raw_response_storage": False,
+        "no_credentials_in_status": True,
+        "provider_family_count": len(PROVIDER_IDS),
+        "provider_ids": PROVIDER_IDS,
+        "provider_class_counts": {"deterministic": 1, "human": 1, "local_model": 5, "remote_model": 5, "aggregator": 1},
+        "adapter_class_counts": {"deterministic_tool": 1, "human_review": 1, "local_model": 5, "remote_model": 5, "aggregator": 1},
+        "privacy_class_counts": {"local": 6, "human": 1, "remote": 6},
+        "status_counts": {"metadata_only": len(PROVIDER_IDS)},
+        "validation": {"result": "PASS", "provider_count": len(PROVIDER_IDS), "errors": [], "warnings": []},
+    }
+
+
+def write_provider_status_files(repo_root):
+    root = Path(repo_root)
+    data = build_provider_status(root)
+    json_path = root / PROVIDER_STATUS_JSON_PATH
+    md_path = root / PROVIDER_STATUS_MD_PATH
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(stable_json(data), encoding="utf-8")
+    md_path.write_text(
+        "# Latest Provider Status\\n\\n"
+        "- live_provider_calls: `false`\\n"
+        "- live_model_calls: `false`\\n"
+        "- network_calls: `false`\\n",
+        encoding="utf-8",
+    )
+    return json_path, md_path, data
+
+
+def offline_probe(repo_root=None):
+    return {
+        "provider_probe_calls": False,
+        "live_provider_calls": False,
+        "live_model_calls": False,
+        "network_calls": False,
+    }
+''',
+            )
         elif rel.endswith(".json"):
             write_text(root / rel, stable_json_text({"schema_version": "aide.provider-status.v0", "live_provider_calls": False, "live_model_calls": False, "network_calls": False, "provider_probe_calls": False, "credentials_configured": False, "gateway_forwarding": False, "raw_prompt_storage": False, "raw_response_storage": False, "provider_ids": []}))
         else:
