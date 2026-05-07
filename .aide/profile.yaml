@@ -1,0 +1,36 @@
+schema_version: aide.profile.v0
+profile_id: julesc013-dominium
+project_name: Dominium
+generated_from: aide-lite-pack-v0
+status: target_initialized
+purpose: >
+  Use AIDE Lite to produce compact, doctrine-aware Dominium task packets from
+  repo-local state without copying full doctrine, chat history, provider logs,
+  or source AIDE project state into prompt memory.
+current_focus:
+  phase: Q23-dominium-import-pilot
+  primary_goal: >
+    Import the portable AIDE Lite Pack, initialize Dominium-specific state, and
+    generate a compact doctrine-aware next task packet.
+  next_task: >
+    Audit Dominium current repo state and produce the next compact
+    doctrine-aware implementation task.
+deferred_surfaces:
+  - Dominium product implementation
+  - engine/runtime/client/server feature changes
+  - governance or constitutional rewrites
+  - Gateway forwarding
+  - provider or model calls
+  - autonomous loops
+  - exact tokenizer or provider billing integration
+runtime:
+  gateway_forwarding: deferred
+  provider_calls: forbidden_until_reviewed_phase
+  model_calls: forbidden_until_reviewed_phase
+local_state:
+  root: .aide.local/
+  committed: false
+notes: >
+  Full Dominium doctrine remains in repo artifacts and should be referenced by
+  path. AIDE memory and task packets should summarize only current actionable
+  state needed for bounded work.
