@@ -1,0 +1,30 @@
+schema_version: aide.queue-task.v0
+task_id: DOMINIUM-AIDE-PILOT-01
+title: Dominium AIDE Lite import pilot
+status: needs_review
+work_class: validation_audit
+repo: julesc013/dominium
+source_pack: D:/Projects/AIDE/aide/.aide/export/aide-lite-pack-v0
+allowed_paths:
+  - .aide/**
+  - .aide.local.example/**
+  - .gitignore
+  - AGENTS.md
+  - docs/reference/aide-lite-import.md
+forbidden_paths:
+  - .git/**
+  - .env
+  - secrets/**
+  - .aide.local/**
+  - engine/**
+  - game/**
+  - client/**
+  - server/**
+  - runtime/**
+  - worldgen/**
+  - specs/reality/**
+  - docs/canon/**
+validation_level: FAST
+contracts_or_schemas_changed: false
+provider_or_model_calls: false
+network_calls: false

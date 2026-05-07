@@ -16,7 +16,7 @@
 
 - token_budget_status: within_budget
 - verifier_status: WARN
-- golden_task_status: WARN
+- golden_task_status: PASS
 - outcome_recommendation_status: WARN
 - quality_gate_status: WARN
 

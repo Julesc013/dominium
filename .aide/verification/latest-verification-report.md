@@ -9,45 +9,42 @@
 
 ## CHECK_COUNTS
 
-- info: 111
+- info: 108
 - warnings: 5
 - errors: 0
 - checked_files: 62
-- changed_files: 23
+- changed_files: 20
 
 ## CHANGED_FILES
 
-- allowed: `.aide/context/ignore.yaml` (M; matches active task allowed path)
-- allowed: `.aide/context/priority.yaml` (M; matches active task allowed path)
-- allowed: `.aide/scripts/aide_lite.py` (M; matches active task allowed path)
-- allowed: `AGENTS.md` (M; matches active task allowed path)
+- unknown: `.aide/cache/latest-cache-keys.json` (M; does not match active task allowed paths)
+- unknown: `.aide/cache/latest-cache-keys.md` (M; does not match active task allowed paths)
+- allowed: `.aide/context/context-index.json` (M; matches active task allowed path)
+- allowed: `.aide/context/latest-context-packet.md` (M; matches active task allowed path)
+- allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-map.json` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-map.md` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-snapshot.json` (M; matches active task allowed path)
+- allowed: `.aide/context/test-map.json` (M; matches active task allowed path)
+- allowed: `.aide/evals/runs/latest-golden-tasks.json` (M; matches active task allowed path)
+- allowed: `.aide/evals/runs/latest-golden-tasks.md` (M; matches active task allowed path)
+- allowed: `.aide/reports/token-ledger.jsonl` (M; matches active task allowed path)
+- allowed: `.aide/reports/token-savings-summary.md` (M; matches active task allowed path)
+- allowed: `.aide/routing/latest-route-decision.json` (M; matches active task allowed path)
+- allowed: `.aide/routing/latest-route-decision.md` (M; matches active task allowed path)
+- allowed: `.aide/verification/latest-verification-report.md` (M; matches active task allowed path)
 - unknown: `data/audit/validation_report_FAST.json` (M; does not match active task allowed paths)
 - unknown: `docs/audit/VALIDATION_REPORT_FAST.md` (M; does not match active task allowed paths)
-- unknown: `.aide.local.example` (??; does not match active task allowed paths)
-- unknown: `.aide/cache/latest-cache-keys.json` (??; does not match active task allowed paths)
-- unknown: `.aide/cache/latest-cache-keys.md` (??; does not match active task allowed paths)
-- allowed: `.aide/context/context-index.json` (??; matches active task allowed path)
-- allowed: `.aide/context/dominium-doctrine-refs.md` (??; matches active task allowed path)
-- allowed: `.aide/context/latest-context-packet.md` (??; matches active task allowed path)
-- allowed: `.aide/context/latest-review-packet.md` (??; matches active task allowed path)
-- allowed: `.aide/context/latest-task-packet.md` (??; matches active task allowed path)
-- allowed: `.aide/context/repo-map.json` (??; matches active task allowed path)
-- allowed: `.aide/context/repo-map.md` (??; matches active task allowed path)
-- allowed: `.aide/context/repo-snapshot.json` (??; matches active task allowed path)
-- allowed: `.aide/context/test-map.json` (??; matches active task allowed path)
-- allowed: `.aide/evals/runs` (??; matches active task allowed path)
-- allowed: `.aide/reports` (??; matches active task allowed path)
-- allowed: `.aide/routing/latest-route-decision.json` (??; matches active task allowed path)
-- allowed: `.aide/routing/latest-route-decision.md` (??; matches active task allowed path)
-- allowed: `.aide/verification/latest-verification-report.md` (??; matches active task allowed path)
+- unknown: `.aide/queue/DOMINIUM-AIDE-PILOT-01` (??; does not match active task allowed paths)
+- allowed: `docs/reference` (??; matches active task allowed path)
 
 ## WARNINGS
 
-- diff_scope: does not match active task allowed paths `data/audit/validation_report_FAST.json`
-- diff_scope: does not match active task allowed paths `docs/audit/VALIDATION_REPORT_FAST.md`
-- diff_scope: does not match active task allowed paths `.aide.local.example`
 - diff_scope: does not match active task allowed paths `.aide/cache/latest-cache-keys.json`
 - diff_scope: does not match active task allowed paths `.aide/cache/latest-cache-keys.md`
+- diff_scope: does not match active task allowed paths `data/audit/validation_report_FAST.json`
+- diff_scope: does not match active task allowed paths `docs/audit/VALIDATION_REPORT_FAST.md`
+- diff_scope: does not match active task allowed paths `.aide/queue/DOMINIUM-AIDE-PILOT-01`
 
 ## ERRORS
 

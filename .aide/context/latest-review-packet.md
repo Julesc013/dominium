@@ -14,7 +14,7 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Context Packet Reference
 
-- `.aide/context/latest-context-packet.md` (1865 chars, 467 approximate tokens)
+- `.aide/context/latest-context-packet.md` (1866 chars, 467 approximate tokens)
 - `.aide/context/repo-map.json`
 - `.aide/context/test-map.json`
 - `.aide/context/context-index.json`
@@ -23,8 +23,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - `.aide/verification/latest-verification-report.md`
 - verifier_result: WARN
-- report_chars: 5078
-- report_approx_tokens: 1270
+- report_chars: 4911
+- report_approx_tokens: 1228
 
 ## Evidence Packet References
 
@@ -32,29 +32,26 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Changed Files Summary
 
-- unknown: `.aide.local.example` (??; does not match active task allowed paths)
-- unknown: `.aide/cache/latest-cache-keys.json` (??; does not match active task allowed paths)
-- unknown: `.aide/cache/latest-cache-keys.md` (??; does not match active task allowed paths)
-- allowed: `.aide/context/context-index.json` (??; matches active task allowed path)
-- allowed: `.aide/context/dominium-doctrine-refs.md` (??; matches active task allowed path)
-- allowed: `.aide/context/ignore.yaml` (M; matches active task allowed path)
-- allowed: `.aide/context/latest-context-packet.md` (??; matches active task allowed path)
-- allowed: `.aide/context/latest-review-packet.md` (??; matches active task allowed path)
-- allowed: `.aide/context/latest-task-packet.md` (??; matches active task allowed path)
-- allowed: `.aide/context/priority.yaml` (M; matches active task allowed path)
-- allowed: `.aide/context/repo-map.json` (??; matches active task allowed path)
-- allowed: `.aide/context/repo-map.md` (??; matches active task allowed path)
-- allowed: `.aide/context/repo-snapshot.json` (??; matches active task allowed path)
-- allowed: `.aide/context/test-map.json` (??; matches active task allowed path)
-- allowed: `.aide/evals/runs` (??; matches active task allowed path)
-- allowed: `.aide/reports` (??; matches active task allowed path)
-- allowed: `.aide/routing/latest-route-decision.json` (??; matches active task allowed path)
-- allowed: `.aide/routing/latest-route-decision.md` (??; matches active task allowed path)
-- allowed: `.aide/scripts/aide_lite.py` (M; matches active task allowed path)
-- allowed: `.aide/verification/latest-verification-report.md` (??; matches active task allowed path)
-- allowed: `AGENTS.md` (M; matches active task allowed path)
+- unknown: `.aide/cache/latest-cache-keys.json` (M; does not match active task allowed paths)
+- unknown: `.aide/cache/latest-cache-keys.md` (M; does not match active task allowed paths)
+- allowed: `.aide/context/context-index.json` (M; matches active task allowed path)
+- allowed: `.aide/context/latest-context-packet.md` (M; matches active task allowed path)
+- allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-map.json` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-map.md` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-snapshot.json` (M; matches active task allowed path)
+- allowed: `.aide/context/test-map.json` (M; matches active task allowed path)
+- allowed: `.aide/evals/runs/latest-golden-tasks.json` (M; matches active task allowed path)
+- allowed: `.aide/evals/runs/latest-golden-tasks.md` (M; matches active task allowed path)
+- unknown: `.aide/queue/DOMINIUM-AIDE-PILOT-01` (??; does not match active task allowed paths)
+- allowed: `.aide/reports/token-ledger.jsonl` (M; matches active task allowed path)
+- allowed: `.aide/reports/token-savings-summary.md` (M; matches active task allowed path)
+- allowed: `.aide/routing/latest-route-decision.json` (M; matches active task allowed path)
+- allowed: `.aide/routing/latest-route-decision.md` (M; matches active task allowed path)
+- allowed: `.aide/verification/latest-verification-report.md` (M; matches active task allowed path)
 - unknown: `data/audit/validation_report_FAST.json` (M; does not match active task allowed paths)
 - unknown: `docs/audit/VALIDATION_REPORT_FAST.md` (M; does not match active task allowed paths)
+- allowed: `docs/reference` (??; matches active task allowed path)
 
 ## Validation Summary
 
@@ -64,8 +61,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - packet_path: `.aide/context/latest-review-packet.md`
 - method: chars / 4, rounded up
-- chars: 5307
-- approx_tokens: 1327
+- chars: 5125
+- approx_tokens: 1282
 - budget_status: PASS
 - max_token_warning: 2400
 - warnings:

@@ -18,7 +18,7 @@
   "fallback_route_class": "cheap_remote",
   "generator": "aide-lite",
   "generator_version": "q24.existing-tool-adapter-compiler.v0",
-  "golden_task_status": "WARN",
+  "golden_task_status": "PASS",
   "hard_floor_applied": "none",
   "live_calls_allowed_in_q17": false,
   "live_calls_allowed_in_q20": false,

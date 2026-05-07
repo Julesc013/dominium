@@ -56,7 +56,7 @@
       "warnings": []
     },
     {
-      "approx_tokens_if_applicable": 1327,
+      "approx_tokens_if_applicable": 1282,
       "checks_run": 20,
       "errors": [],
       "notes": "Checks review packet evidence-only shape.",

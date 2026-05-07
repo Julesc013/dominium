@@ -1,0 +1,11 @@
+schema_version: aide.queue-status.v0
+task_id: DOMINIUM-AIDE-PILOT-01
+status: needs_review
+result: PASS_WITH_WARNINGS
+review_required: true
+provider_or_model_calls: false
+network_calls: false
+notes:
+  - AIDE Lite imported and initialized in Dominium.
+  - Compact task, context, review, verification, route, cache, ledger, and eval artifacts generated locally.
+  - Verifier result is WARN because cache metadata, Q23 evidence queue scope, and pre-existing dirty FAST validation reports remain outside active AIDE verifier task inference.
