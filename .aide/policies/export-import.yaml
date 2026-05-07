@@ -1,0 +1,64 @@
+schema_version: q21.export-import-policy.v0
+policy_id: aide.export-import.v0
+status: active
+purpose: >
+  Define the safe boundary for exporting a portable AIDE Lite Pack from this
+  repository and importing it into target repositories without copying
+  source-specific identity, history, generated context, local state, secrets,
+  raw prompts, or raw responses.
+operating_mode:
+  - portable_pack_only
+  - no_external_repo_mutation
+  - no_network
+  - no_provider_calls
+export_pack_id:
+  - aide-lite-pack-v0
+portable_include_classes:
+  - scripts
+  - policies
+  - prompts
+  - context_templates
+  - verification_templates
+  - eval_starter_templates
+  - adapter_templates
+  - docs
+  - install_instructions
+portable_exclude_classes:
+  - source_repo_identity
+  - source_repo_queue_history
+  - source_repo_memory
+  - generated_context
+  - generated_reports
+  - route_decisions
+  - cache_key_reports
+  - gateway_status_reports
+  - provider_status_reports
+  - eval_runs
+  - outcome_ledgers
+  - local_state
+  - secrets
+  - raw_prompts
+  - raw_responses
+target_repo_generation:
+  create_target_profile_template: true
+  create_target_project_state_template: true
+  require_target_snapshot: true
+  require_target_index: true
+  require_target_pack: true
+safety_rules:
+  never_copy_aide_self_hosting_queue: true
+  never_copy_aide_generated_context: true
+  never_copy_aide_local_state: true
+  never_copy_provider_credentials: true
+  import_requires_target_specific_memory: true
+validation:
+  fixture_import_required: true
+  doctor_required: true
+  snapshot_required: true
+  pack_required: true
+  no_secrets_scan_required: true
+raw_prompt_storage_default: false
+raw_response_storage_default: false
+live_provider_calls: false
+live_model_calls: false
+network_calls: false

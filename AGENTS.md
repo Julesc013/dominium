@@ -263,6 +263,15 @@ The following moves are forbidden unless a prompt explicitly authorizes them and
 - silently promoting generated outputs into semantic authority
 - silently normalizing ownership drift because two roots look similar
 
+<!-- AIDE-PORTABLE:BEGIN section=aide-lite-pack-v0 mode=managed -->
+## AIDE Lite Portable Guidance
+
+- Use `.aide/context/latest-task-packet.md` as the default compact AIDE task brief when a task explicitly opts into AIDE Lite context.
+- Keep target-specific project state in `.aide/memory/`; do not copy source AIDE memory, queue history, generated context, reports, route decisions, cache-key reports, Gateway/provider status reports, `.aide.local/`, raw prompts, raw responses, or secrets.
+- Generate target-local context with `py -3 .aide/scripts/aide_lite.py snapshot`, `index`, `context`, and `pack`; keep Dominium doctrine referenced by path instead of pasted into prompt memory.
+- Provider/model/network calls and Gateway forwarding remain forbidden unless a future reviewed Dominium task explicitly enables them.
+<!-- AIDE-PORTABLE:END section=aide-lite-pack-v0 -->
+
 ## 14. Task Invocation Template
 
 Use this block when framing future work:

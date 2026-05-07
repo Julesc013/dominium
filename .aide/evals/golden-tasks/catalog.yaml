@@ -1,0 +1,52 @@
+schema_version: aide.golden-tasks-catalog.v0
+catalog_id: q15-golden-tasks-v0
+status: active-pending-review
+purpose: Deterministic repo-local quality gates for AIDE token-saving workflow artifacts.
+runner: .aide/scripts/aide_lite.py eval run
+tasks:
+  - id: compact-task-packet-required-sections
+    title: Compact Task Packet Required Sections
+    status: active
+    description: Verify latest task packet keeps required sections, forbids full-history prompts, and includes an approximate token estimate.
+    quality_dimensions:
+      - required_sections
+      - forbidden_content_absent
+      - token_budget_status
+  - id: context-packet-no-full-repo-dump
+    title: Context Packet No Full Repo Dump
+    status: active
+    description: Verify latest context packet references repo-map, test-map, and context-index without inlining source files or ignored path contents.
+    quality_dimensions:
+      - references_present
+      - forbidden_content_absent
+      - deterministic_output
+  - id: verifier-detects-bad-evidence
+    title: Verifier Detects Bad Evidence
+    status: active
+    description: Verify malformed evidence fixtures produce verifier warnings or errors instead of being accepted silently.
+    quality_dimensions:
+      - verifier_passes
+      - evidence_present
+  - id: review-packet-evidence-only
+    title: Review Packet Evidence Only
+    status: active
+    description: Verify latest review packet references task, context, verifier, and evidence outputs and requests a bounded decision without requiring full chat history.
+    quality_dimensions:
+      - references_present
+      - required_sections
+      - forbidden_content_absent
+  - id: token-ledger-budget-check
+    title: Token Ledger Budget Check
+    status: active
+    description: Verify token ledger/report metadata exists, records compact surfaces, includes budget status, and stores no raw prompts or responses.
+    quality_dimensions:
+      - token_budget_status
+      - evidence_present
+      - forbidden_content_absent
+  - id: adapter-managed-section-determinism
+    title: Adapter Managed Section Determinism
+    status: active
+    description: Verify managed AGENTS guidance can be rendered deterministically without deleting manual content outside generated markers.
+    quality_dimensions:
+      - deterministic_output
+      - references_present

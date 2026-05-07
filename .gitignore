@@ -260,6 +260,8 @@ __pycache__/
 *.class
 node_modules/
 venv/
+.aide.local/
+.aide.local/**
 .env
 .env.*
 
