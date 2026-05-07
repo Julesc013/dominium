@@ -36,6 +36,7 @@ REPO_MAP_MD_PATH = ".aide/context/repo-map.md"
 TEST_MAP_JSON_PATH = ".aide/context/test-map.json"
 CONTEXT_INDEX_PATH = ".aide/context/context-index.json"
 LATEST_CONTEXT_PACKET_PATH = ".aide/context/latest-context-packet.md"
+DOCTRINE_REFS_PATH = ".aide/context/dominium-doctrine-refs.md"
 CONTEXT_COMPILER_CONFIG_PATH = ".aide/context/compiler.yaml"
 CONTEXT_PRIORITY_PATH = ".aide/context/priority.yaml"
 EXCERPT_POLICY_PATH = ".aide/context/excerpt-policy.yaml"
@@ -3585,6 +3586,30 @@ def priority_for_path(rel_path: str) -> int:
         (86, [".aide/queue/index.yaml"]),
         (85, [".aide/queue/Q11-context-compiler-v0/**"]),
         (84, ["AGENTS.md"]),
+        (
+            83,
+            [
+                "docs/canon/**",
+                "docs/planning/AUTHORITY_ORDER.md",
+                "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+                "docs/planning/MERGED_PROGRAM_STATE.md",
+                "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+                "docs/planning/GATES_AND_PROOFS.md",
+                "docs/planning/POST_PI_EXECUTION_PLAN.md",
+                "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+                "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
+            ],
+        ),
+        (82, ["specs/reality/**", "data/reality/**"]),
+        (
+            81,
+            [
+                "docs/xstack/AIDE_*.md",
+                "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+                "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+                "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+            ],
+        ),
         (80, ["README.md", "ROADMAP.md", "PLANS.md", "IMPLEMENT.md", "DOCUMENTATION.md"]),
         (76, ["core/harness/**"]),
         (74, ["core/compat/**"]),
@@ -3835,6 +3860,7 @@ def render_context_packet(repo_root: Path, repo_map: dict[str, object], test_map
 - `{CONTEXT_PRIORITY_PATH}`
 - `{EXCERPT_POLICY_PATH}`
 - `.aide/context/ignore.yaml`
+- `{DOCTRINE_REFS_PATH}` ({'present' if (repo_root / DOCTRINE_REFS_PATH).exists() else 'missing'})
 - `{SNAPSHOT_PATH}`
 - `{CONTEXT_INDEX_PATH}`
 - `.aide/memory/project-state.md`
@@ -6140,6 +6166,20 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `.aide/memory/project-state.md`
 - `.aide/memory/decisions.md`
 - `.aide/memory/open-risks.md`
+- `{DOCTRINE_REFS_PATH}` ({'present' if (repo_root / DOCTRINE_REFS_PATH).exists() else 'missing'})
+- `docs/canon/constitution_v1.md`
+- `docs/canon/glossary_v1.md`
+- `AGENTS.md`
+- `docs/planning/AUTHORITY_ORDER.md`
+- `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
+- `docs/planning/MERGED_PROGRAM_STATE.md`
+- `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`
+- `docs/planning/GATES_AND_PROOFS.md`
+- `docs/planning/POST_PI_EXECUTION_PLAN.md`
+- `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`
+- `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`
+- `specs/reality/`
+- `data/reality/`
 - `{SNAPSHOT_PATH}` ({snapshot_state})
 - `{REPO_MAP_JSON_PATH}` ({repo_map_state})
 - `{REPO_MAP_MD_PATH}` ({repo_map_state})

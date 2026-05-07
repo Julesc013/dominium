@@ -1,0 +1,105 @@
+{
+  "fail_count": 0,
+  "generator": "aide-lite",
+  "generator_version": "q24.existing-tool-adapter-compiler.v0",
+  "network_calls": "none",
+  "pass_count": 6,
+  "provider_or_model_calls": "none",
+  "raw_prompt_storage": false,
+  "raw_response_storage": false,
+  "result": "PASS",
+  "schema_version": "aide.golden-tasks-run.v0",
+  "task_count": 6,
+  "tasks": [
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks managed section replacement on an isolated fixture repo.",
+      "passed_checks": 4,
+      "related_paths": [
+        "AGENTS.md"
+      ],
+      "result": "PASS",
+      "task_id": "adapter-managed-section-determinism",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": 1087,
+      "checks_run": 17,
+      "errors": [],
+      "notes": "Checks the compact task packet shape and forbidden prompt discipline.",
+      "passed_checks": 17,
+      "related_paths": [
+        ".aide/context/latest-task-packet.md",
+        ".aide/policies/token-budget.yaml",
+        ".aide/prompts/compact-task.md"
+      ],
+      "result": "PASS",
+      "task_id": "compact-task-packet-required-sections",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": 467,
+      "checks_run": 17,
+      "errors": [],
+      "notes": "Checks context refs instead of whole-repo dumps.",
+      "passed_checks": 17,
+      "related_paths": [
+        ".aide/context/context-index.json",
+        ".aide/context/latest-context-packet.md",
+        ".aide/context/repo-map.json",
+        ".aide/context/test-map.json"
+      ],
+      "result": "PASS",
+      "task_id": "context-packet-no-full-repo-dump",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": 1327,
+      "checks_run": 20,
+      "errors": [],
+      "notes": "Checks review packet evidence-only shape.",
+      "passed_checks": 20,
+      "related_paths": [
+        ".aide/context/latest-review-packet.md",
+        ".aide/prompts/evidence-review.md",
+        ".aide/verification/review-packet.template.md"
+      ],
+      "result": "PASS",
+      "task_id": "review-packet-evidence-only",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 14,
+      "errors": [],
+      "notes": "Checks estimated token metadata without raw prompt or response storage.",
+      "passed_checks": 14,
+      "related_paths": [
+        ".aide/policies/token-ledger.yaml",
+        ".aide/reports/token-ledger.jsonl",
+        ".aide/reports/token-savings-summary.md"
+      ],
+      "result": "PASS",
+      "task_id": "token-ledger-budget-check",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 3,
+      "errors": [],
+      "notes": "Passes when the verifier refuses to accept malformed evidence silently.",
+      "passed_checks": 3,
+      "related_paths": [
+        ".aide/evals/golden-tasks/verifier-detects-bad-evidence/fixtures/missing-sections.md",
+        ".aide/verification/evidence-packet.template.md"
+      ],
+      "result": "PASS",
+      "task_id": "verifier-detects-bad-evidence",
+      "warnings": []
+    }
+  ],
+  "token_quality_statement": "Token reduction remains valid only if golden tasks pass.",
+  "warn_count": 0
+}

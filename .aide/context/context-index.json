@@ -1,0 +1,33 @@
+{
+  "contents_inline": false,
+  "counts": {
+    "repo_files": 13577,
+    "test_mappings": 4178,
+    "test_mappings_with_existing_candidate": 1
+  },
+  "creation_mode": "deterministic-local",
+  "generated_outputs": {
+    "latest_context_packet": ".aide/context/latest-context-packet.md",
+    "repo_map_json": ".aide/context/repo-map.json",
+    "repo_map_md": ".aide/context/repo-map.md",
+    "test_map_json": ".aide/context/test-map.json"
+  },
+  "generator": "aide-lite",
+  "generator_version": "q24.existing-tool-adapter-compiler.v0",
+  "role_counts": {
+    "aide_context": 5,
+    "aide_contract": 26,
+    "aide_policy": 28,
+    "aide_prompt": 3,
+    "aide_queue": 1,
+    "config": 2282,
+    "docs": 4065,
+    "governance": 2,
+    "script": 49,
+    "test": 2127,
+    "unknown": 4989
+  },
+  "schema_version": "aide.context-index.v0",
+  "source_snapshot": ".aide/context/repo-snapshot.json",
+  "source_snapshot_hash": "c199dfef48ec5cbe868dea80ba8584f7103d4864644e6de04e2a3246a6512b7e"
+}

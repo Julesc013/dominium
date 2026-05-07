@@ -5,21 +5,70 @@ purpose: Exclude local state, secrets, caches, generated binaries, and large art
 allowlist_note: Generated context packets may reference ignored paths by path name if needed, but must not inline their contents.
 exclude:
   - .git/**
+  - .git
   - .env
   - secrets/**
+  - secrets
   - .aide.local/**
+  - .aide.local
   - caches/**
+  - caches
   - cache/**
+  - cache
   - .cache/**
+  - .cache
   - __pycache__/**
+  - __pycache__
   - .pytest_cache/**
+  - .pytest_cache
   - .mypy_cache/**
+  - .mypy_cache
   - .ruff_cache/**
+  - .ruff_cache
   - node_modules/**
+  - node_modules
+  - .xstack_cache/**
+  - .xstack_cache
+  - artifacts/**
+  - artifacts
+  - docs/audit/*.json
+  - docs/audit/**/*.json
+  - data/refactor
+  - data/refactor/**
+  - data/analysis
+  - data/analysis/**
+  - run_meta/**
+  - run_meta
+  - tmp/**
+  - tmp
+  - temp/**
+  - temp
   - dist/**
+  - dist
   - build/**
+  - build
   - out/**
+  - out
   - target/**
+  - target
+  - archive
+  - archive/**
+  - attic
+  - attic/**
+  - legacy
+  - legacy/**
+  - quarantine
+  - quarantine/**
+  - ide
+  - ide/**
+  - .vscode
+  - .vscode/**
+  - saves
+  - saves/**
+  - worlds
+  - worlds/**
+  - universes
+  - universes/**
   - "*.pyc"
   - "*.pyo"
   - "*.zip"
@@ -46,3 +95,7 @@ exclude:
   - "*.pkg"
   - "*.nupkg"
   - "*.whl"
+  - docs/audit/**/RUN_META*.json
+  - docs/audit/**/PROFILE_*.json
+  - docs/audit/**/TESTX_SUMMARY*.json
+  - docs/audit/**/REPOX_PROFILE*.json

@@ -35,6 +35,30 @@ families:
     priority: 84
     patterns:
       - AGENTS.md
+  - id: canonical-doctrine
+    priority: 83
+    patterns:
+      - docs/canon/**
+      - docs/planning/AUTHORITY_ORDER.md
+      - docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md
+      - docs/planning/MERGED_PROGRAM_STATE.md
+      - docs/planning/EXTEND_NOT_REPLACE_LEDGER.md
+      - docs/planning/GATES_AND_PROOFS.md
+      - docs/planning/POST_PI_EXECUTION_PLAN.md
+      - docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md
+      - docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md
+  - id: lambda-reality-doctrine
+    priority: 82
+    patterns:
+      - specs/reality/**
+      - data/reality/**
+  - id: xstack-aide-doctrine
+    priority: 81
+    patterns:
+      - docs/xstack/AIDE_*.md
+      - docs/xstack/XSTACK_SCOPE_FREEZE.md
+      - docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md
+      - docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md
   - id: root-docs
     priority: 80
     patterns:
