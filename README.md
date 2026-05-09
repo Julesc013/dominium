@@ -3,18 +3,19 @@
 
 # Dominium / Domino
 
-Dominium is a game built on the Domino engine.
+**Dominium** is a game built on the **Domino** engine.
 
-The Engine is written in C89 for maximum portability, and is designed to be highly modular and extensible, fully deterministic, and able to support various applications (from simple games to realistic simulations).
+The **Engine** is written in ***C*** *(1989)* for maximum portability, and is designed to be highly modular and extensible, fully deterministic, and able to support various applications *(from simple games to realistic simulations)*.
 
-The Setup, Launcher, Client, Server, and various tools are offered as natively executable applications, built from cross platform C98++ code.
+The **Setup**, **Launcher**, **Client**, **Server**, and various tools are offered as natively executable applications, built from cross platform ***C++*** *(1998)* code.
 
 All of these applications provide a unified command line interface, and should provide a text user interface too.
 
-Besides the Client, all will be paired with native OS SDK GUIs, for period correct OEM+ styles.
-The Client will have a unified cross platform GUI that supports various platforms and renderers.
+Besides the **Client**, all will be paired with native OS SDK GUIs, for period correct OEM+ styles.
+The **Client** will have a unified cross platform GUI that supports various platforms and renderers.
 
-Buils will be provided for Windows NT, Mac OS X, and Linux.
+Each release will provid builds for **Windows NT**, **Mac OS X**, and **Linux**.
+Definitely for *64-bit* ***x86*** and ***ARM***, maybe for *32-bit* ***x86*** systems too.
 
 I don't yet know what this project will become, but my original inspiration was the desire to play an MMO where invention, industry, manufacturing, logistics, economics, and trade are all real emergent behaviours driven by players.
 
