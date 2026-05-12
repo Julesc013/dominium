@@ -12,6 +12,8 @@ Status: FROZEN.
 
 Purpose: Freeze renderer behavior so rendering remains purely presentational, deterministic, and never a gameplay concern.
 
+CONVERGE-11 cross-reference: renderer support posture is recorded in `contracts/release/component_matrix.contract.toml` and `docs/release/RENDER_BACKEND_MATRIX.md`. This document remains the renderer responsibility contract; the matrix does not implement render backends.
+
 ## Renderer Responsibility (Final)
 
 Renderers MUST:

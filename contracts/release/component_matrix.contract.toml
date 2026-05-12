@@ -1,0 +1,544 @@
+[contract]
+id = "dominium.release.component_matrix.v1"
+status = "provisional"
+phase = "CONVERGE-11"
+description = "Machine-readable component, product, platform, renderer, native app, toolchain, packaging, and runtime backend matrix."
+
+[policy]
+statuses = ["available", "implemented", "stub", "planned", "experimental", "provisional", "deprecated", "unsupported", "blocked", "research", "unknown"]
+support_tiers = ["T0", "T1", "T2", "T3", "T4", "T5"]
+unknown_defaults_to_unsupported = true
+stub_is_not_support = true
+planned_is_not_support = true
+research_is_not_support = true
+experimental_requires_label = true
+matrices_are_planning_contracts_not_implementations = true
+available_requires_evidence = true
+
+[support_tiers.T0]
+name = "correctness_baseline"
+purpose = "Deterministic, headless, portable baseline for tests, replay, and minimal operation."
+
+[support_tiers.T1]
+name = "early_modern_desktop"
+purpose = "Initial public-ish desktop coverage on modern Windows, macOS, and Linux."
+
+[support_tiers.T2]
+name = "broad_compatibility"
+purpose = "Wider compatibility coverage including older desktop paths where feasible."
+
+[support_tiers.T3]
+name = "retro_research"
+purpose = "Legacy/retro lanes requiring frozen toolchains and smoke tests."
+
+[support_tiers.T4]
+name = "advanced_modern"
+purpose = "Advanced GPU/render/platform/toolchain work after baseline stability."
+
+[support_tiers.T5]
+name = "mobile_web_exotic"
+purpose = "Mobile, web, exotic OS, console, and special-device research lanes."
+
+[products.client]
+role = "Rendered game client product."
+preferred_modes = ["rendered", "tui", "cli"]
+status = "provisional"
+tier = "T1"
+evidence = "apps/client exists with CLI/TUI/rendered/native-host source surfaces; rendered support remains matrix-governed."
+
+[products.server]
+role = "Authoritative/headless server product."
+preferred_modes = ["headless", "tui", "cli"]
+status = "provisional"
+tier = "T0"
+evidence = "apps/server exists with server entrypoint, console, network, and persistence surfaces."
+
+[products.launcher]
+role = "Install/profile/launch selection and preflight product."
+preferred_modes = ["os_native", "tui", "cli"]
+status = "provisional"
+tier = "T1"
+evidence = "apps/launcher exists with CLI, TUI stub, and Win32 GUI stub/source surfaces."
+
+[products.setup]
+role = "Install/update/repair/package setup product."
+preferred_modes = ["os_native", "tui", "cli"]
+status = "provisional"
+tier = "T1"
+evidence = "apps/setup exists with CLI, TUI stub, Win32 GUI stub/source, and packaging scripts."
+
+[products.tools]
+role = "Shipped tools where distinct from developer tools."
+preferred_modes = ["cli", "tui", "os_native"]
+status = "planned"
+tier = "T2"
+evidence = "Developer tooling exists under tools; shipped product tools require explicit classification before apps/tools."
+
+[product_modes.cli]
+status = "available"
+tier = "T0"
+description = "Command line interface."
+evidence = "Product shell contract and AppShell mode policy make CLI canonical."
+
+[product_modes.tui]
+status = "stub"
+tier = "T0"
+description = "Text user interface or deterministic TUI stub."
+evidence = "AppShell and product roots contain TUI stubs; full TUI parity is not claimed."
+
+[product_modes.headless]
+status = "available"
+tier = "T0"
+description = "No UI; server/CI/runtime mode."
+evidence = "AppShell mode policy and server/headless CMake lanes define headless operation."
+
+[product_modes.rendered]
+status = "provisional"
+tier = "T1"
+description = "Rendered client UI."
+evidence = "Client render/presentation surfaces exist; renderer backend support is status-tagged separately."
+
+[product_modes.os_native]
+status = "stub"
+tier = "T1"
+description = "OS-native/OEM+ setup/launcher/admin/tool shell."
+evidence = "Setup, launcher, client, and server have Win32 GUI source/stub surfaces; no broad native GUI implementation is claimed."
+
+[platform_backends.null]
+status = "available"
+tier = "T0"
+purpose = "Null/headless platform backend."
+evidence = "DOM_PLATFORM accepts null and maps it to a platform ID."
+
+[platform_backends.posix_headless]
+status = "available"
+tier = "T0"
+purpose = "POSIX headless/server/CI path."
+evidence = "CMake defaults DOM_PLATFORM to posix_headless on UNIX hosts."
+
+[platform_backends.win32]
+status = "provisional"
+tier = "T1"
+purpose = "Windows native platform host."
+evidence = "DOM_PLATFORM accepts win32; Windows presets and Win32 app shell source surfaces exist."
+
+[platform_backends.win32_headless]
+status = "provisional"
+tier = "T0"
+purpose = "Windows headless platform host."
+evidence = "DOM_PLATFORM accepts win32_headless."
+
+[platform_backends.cocoa]
+status = "stub"
+tier = "T1"
+purpose = "macOS native platform host."
+evidence = "DOM_PLATFORM accepts cocoa and macOS Xcode presets exist; current platform docs describe cocoa as headless-safe stub."
+
+[platform_backends.posix_x11]
+status = "stub"
+tier = "T1"
+purpose = "Linux X11 desktop host."
+evidence = "DOM_PLATFORM accepts posix_x11 and Linux presets reference it; current platform docs describe X11 as headless-safe stub."
+
+[platform_backends.posix_wayland]
+status = "stub"
+tier = "T1"
+purpose = "Linux Wayland desktop host."
+evidence = "DOM_PLATFORM accepts posix_wayland; current platform docs describe Wayland as headless-safe stub."
+
+[platform_backends.sdl2]
+status = "experimental"
+tier = "T1"
+purpose = "Convenience/dev portability adapter, not product identity."
+evidence = "DOM_PLATFORM accepts sdl2 and DOM_BACKEND_SDL2/DOM_FETCH_SDL2 exist; dependency availability gates actual use."
+
+[platform_backends.android]
+status = "research"
+tier = "T5"
+purpose = "Deferred mobile platform lane."
+evidence = "No current source implementation or build preset is treated as supported."
+
+[render_backends.null]
+status = "available"
+tier = "T0"
+purpose = "CI/server/headless renderer."
+evidence = "DOM_BACKEND_NULL defaults ON and registers dom_render_backend_null; renderer docs call null a required correctness path."
+
+[render_backends.soft]
+status = "available"
+tier = "T0"
+purpose = "Software renderer baseline."
+evidence = "DOM_BACKEND_SOFT defaults ON and registers dom_render_backend_soft; renderer docs call software a required correctness path."
+
+[render_backends.gl1]
+status = "research"
+tier = "T3"
+purpose = "Extreme legacy/fixed-function renderer."
+evidence = "DOM_BACKEND_GL1 exists but defaults OFF; current docs classify GPU backends as soft-backed stubs until native implementations land."
+
+[render_backends.gl2]
+status = "stub"
+tier = "T1"
+purpose = "OpenGL compatibility renderer."
+evidence = "DOM_BACKEND_GL2 exists and is Windows/WGL-gated; current docs classify GPU backends as soft-backed stubs."
+
+[render_backends.gl4]
+status = "stub"
+tier = "T4"
+purpose = "Modern OpenGL renderer."
+evidence = "DOM_BACKEND_GL4 exists but defaults OFF; native implementation support is not claimed."
+
+[render_backends.dx9]
+status = "research"
+tier = "T3"
+purpose = "Legacy Windows renderer."
+evidence = "DOM_BACKEND_DX9 exists and fallback presets reference DX9; current docs classify GPU backends as soft-backed stubs."
+
+[render_backends.dx11]
+status = "stub"
+tier = "T1"
+purpose = "First serious Windows hardware renderer."
+evidence = "DOM_BACKEND_DX11 exists but defaults OFF; native implementation support is not claimed."
+
+[render_backends.dx12]
+status = "planned"
+tier = "T4"
+purpose = "Advanced Windows renderer."
+evidence = "DOM_BACKEND_DX12 exists but defaults OFF; no implemented support is claimed."
+
+[render_backends.vk1]
+status = "planned"
+tier = "T4"
+purpose = "Modern Vulkan renderer."
+evidence = "DOM_BACKEND_VK1 exists but defaults OFF; no implemented support is claimed."
+
+[render_backends.metal]
+status = "planned"
+tier = "T4"
+purpose = "Modern macOS native GPU renderer."
+evidence = "DOM_BACKEND_METAL exists but defaults OFF; no implemented support is claimed."
+
+[render_backends.vector2d]
+status = "planned"
+tier = "T2"
+purpose = "2D/UI/vector acceleration for setup/launcher/tools/overlays."
+evidence = "DOM_BACKEND_VECTOR2D exists but defaults OFF; CMakePresets reference it for selected lanes."
+
+[native_shells.win32]
+status = "stub"
+products = ["setup", "launcher", "client", "server"]
+tier = "T1"
+evidence = "apps/*/gui contain Win32 source or stub files; product semantics remain outside native shells."
+
+[native_shells.appkit]
+status = "planned"
+products = ["setup", "launcher", "tools"]
+tier = "T1"
+evidence = "macOS cocoa/AppKit lanes are documented, but no implemented native shell is claimed."
+
+[native_shells.gtk]
+status = "planned"
+products = ["setup", "launcher", "tools"]
+tier = "T1"
+evidence = "Linux native GUI lane is planned; no implemented GTK shell is claimed."
+
+[native_shells.qt]
+status = "research"
+products = ["tools"]
+tier = "T2"
+evidence = "Qt is not current product identity and remains optional research if mentioned by later docs."
+
+[native_shells.winforms]
+status = "research"
+products = ["launcher", "tools"]
+tier = "T2"
+evidence = "Convenience/admin tooling lane only; no support claim."
+
+[native_shells.swiftui]
+status = "research"
+products = ["launcher", "tools"]
+tier = "T4"
+evidence = "Modern macOS layer/bridge research only."
+
+[native_shells.winui3]
+status = "research"
+products = ["launcher", "tools"]
+tier = "T4"
+evidence = "Modern Windows layer research only."
+
+[toolchains.msvc]
+status = "provisional"
+families = ["windows", "winnt"]
+tier = "T1"
+evidence = "CMakePresets define MSVC/VS 2022 lanes; local availability is host/toolchain dependent."
+
+[toolchains.gcc]
+status = "provisional"
+families = ["linux", "posix"]
+tier = "T1"
+evidence = "CMake toolchain policy accepts GCC on Linux and presets define Linux GCC lanes."
+
+[toolchains.clang]
+status = "provisional"
+families = ["linux", "macosx", "posix", "windows"]
+tier = "T1"
+evidence = "CMake toolchain policy accepts Clang on Linux and presets define Linux Clang and Windows clang-cl lanes."
+
+[toolchains.xcode]
+status = "planned"
+families = ["macosx"]
+tier = "T1"
+evidence = "CMakePresets define macOS Xcode lanes; implementation support remains host/toolchain dependent."
+
+[toolchains.mingw]
+status = "experimental"
+families = ["windows"]
+tier = "T2"
+evidence = "CMakePresets include Windows MinGW-w64 debug lane; Windows policy prefers MSVC."
+
+[toolchains.legacy_vc6]
+status = "research"
+families = ["win9x", "winnt"]
+tier = "T3"
+evidence = "Legacy IDE/preset lanes exist but are declared/research and require frozen toolchains."
+
+[toolchains.freestanding_16bit]
+status = "research"
+families = ["dos", "win16"]
+tier = "T3"
+evidence = "Declared x86_16/DOS lanes exist; no current support claim."
+
+[packaging.dompkg]
+status = "provisional"
+tier = "T0"
+evidence = "Distribution projection contract defines package exports through logical roots."
+
+[packaging.portable_zip]
+status = "planned"
+tier = "T0"
+evidence = "Distribution projection contract defines compressed archives extracting to portable installs."
+
+[packaging.tarball]
+status = "planned"
+tier = "T0"
+evidence = "Release/archive docs describe deterministic archives; no generated package bytes are created by CONVERGE-11."
+
+[packaging.app_bundle]
+status = "planned"
+tier = "T1"
+evidence = "macOS packaging scripts/templates exist under setup packaging; support remains matrix-gated."
+
+[packaging.installer]
+status = "planned"
+tier = "T2"
+evidence = "Setup packaging scripts include Windows/Linux/macOS installer surfaces; no installer support is newly claimed."
+
+[packaging.server_bundle]
+status = "planned"
+tier = "T0"
+evidence = "Distribution projection contract separates server install and runtime roots."
+
+[packaging.tools_bundle]
+status = "planned"
+tier = "T2"
+evidence = "Shipped tools need product classification before support can be claimed."
+
+[packaging.media_offline_bundle]
+status = "planned"
+tier = "T2"
+evidence = "Distribution projection contract defines media layout."
+
+[packaging.symbols_debug_package]
+status = "planned"
+tier = "T1"
+evidence = "Distribution projection contract defines dist/sym and symbols/provenance lanes."
+
+[packaging.source_archive]
+status = "planned"
+tier = "T2"
+evidence = "Media/source archive lane is optional in the distribution projection contract."
+
+[audio_backends.null]
+status = "planned"
+tier = "T0"
+evidence = "DOM_ENABLE_AUDIO is present, but a distinct audio backend implementation matrix is not yet validated."
+
+[audio_backends.wasapi]
+status = "planned"
+tier = "T1"
+evidence = "Windows audio lane planned; no implemented backend is claimed."
+
+[audio_backends.directsound]
+status = "research"
+tier = "T3"
+evidence = "Legacy Windows audio lane only."
+
+[audio_backends.coreaudio]
+status = "planned"
+tier = "T1"
+evidence = "macOS audio lane planned; no implemented backend is claimed."
+
+[audio_backends.alsa]
+status = "planned"
+tier = "T1"
+evidence = "Linux audio lane planned; no implemented backend is claimed."
+
+[audio_backends.pulseaudio]
+status = "planned"
+tier = "T2"
+evidence = "Linux desktop audio lane planned."
+
+[audio_backends.pipewire]
+status = "planned"
+tier = "T2"
+evidence = "Modern Linux desktop audio lane planned."
+
+[audio_backends.sdl_audio]
+status = "research"
+tier = "T2"
+evidence = "SDL convenience adapter is not product identity."
+
+[input_backends.keyboard_mouse]
+status = "provisional"
+tier = "T0"
+evidence = "apps/client/input contains input binding source; AppShell command routing remains authoritative."
+
+[input_backends.raw_input]
+status = "planned"
+tier = "T1"
+evidence = "Windows raw-input lane planned; no implemented support is claimed."
+
+[input_backends.ime]
+status = "planned"
+tier = "T2"
+evidence = "IME support remains planned and must route through AppShell/runtime contracts."
+
+[input_backends.gamepad]
+status = "planned"
+tier = "T2"
+evidence = "Controller support planned; no implemented support is claimed."
+
+[input_backends.touch]
+status = "research"
+tier = "T5"
+evidence = "Mobile/touch lane is deferred."
+
+[input_backends.accessibility_input]
+status = "planned"
+tier = "T2"
+evidence = "Accessibility input is planned as runtime command input, not direct truth mutation."
+
+[network_backends.loopback]
+status = "provisional"
+tier = "T0"
+evidence = "apps/server and apps/client contain loopback transport/client surfaces."
+
+[network_backends.tcp]
+status = "planned"
+tier = "T1"
+evidence = "Server/network surfaces exist, but TCP support is not claimed as implemented by this matrix."
+
+[network_backends.udp]
+status = "planned"
+tier = "T2"
+evidence = "UDP lane remains planned."
+
+[network_backends.reliable_udp]
+status = "research"
+tier = "T4"
+evidence = "Reliable UDP is a future transport research lane."
+
+[network_backends.relay_federation]
+status = "research"
+tier = "T5"
+evidence = "Relay/federation remains future research."
+
+[network_backends.quic_webtransport]
+status = "research"
+tier = "T5"
+evidence = "QUIC/WebTransport remains mobile/web/exotic research."
+
+[storage_backends.local_fs]
+status = "provisional"
+tier = "T0"
+evidence = "apps/client adapters and distribution projection docs define local filesystem binding surfaces."
+
+[storage_backends.pack_fs]
+status = "planned"
+tier = "T0"
+evidence = "Pack/content layout exists, but backend support remains matrix-gated."
+
+[storage_backends.cas_store]
+status = "provisional"
+tier = "T0"
+evidence = "Content-addressed store appears in distribution/cache doctrine; support remains provisional."
+
+[storage_backends.save_export_roots]
+status = "provisional"
+tier = "T0"
+evidence = "Distribution projection contract defines saves and exports as logical roots."
+
+[storage_backends.cache_staging]
+status = "provisional"
+tier = "T0"
+evidence = "Distribution projection contract defines cache and ops transaction/staging roots."
+
+[storage_backends.cloud_sync]
+status = "research"
+tier = "T5"
+evidence = "Cloud/sync is future research and not source/runtime authority."
+
+[distribution_projections.source_repo]
+status = "available"
+tier = "T0"
+evidence = "Source repo layout contract exists under contracts/repo."
+
+[distribution_projections.dist_output]
+status = "provisional"
+tier = "T0"
+evidence = "Distribution layout contract defines dist/pkg, dist/sys, dist/sym, and dist/meta projections."
+
+[distribution_projections.compressed_archive]
+status = "planned"
+tier = "T0"
+evidence = "Distribution layout contract defines compressed archive roots."
+
+[distribution_projections.portable_install]
+status = "planned"
+tier = "T0"
+evidence = "Distribution layout contract defines portable install projection."
+
+[distribution_projections.installed_desktop]
+status = "planned"
+tier = "T1"
+evidence = "Distribution layout contract defines installed desktop projection."
+
+[distribution_projections.server_install]
+status = "planned"
+tier = "T0"
+evidence = "Distribution layout contract defines server install projection."
+
+[distribution_projections.media_layout]
+status = "planned"
+tier = "T2"
+evidence = "Distribution layout contract defines offline media projection."
+
+[distribution_projections.package_export]
+status = "provisional"
+tier = "T0"
+evidence = "Distribution layout contract defines package export logical roots."
+
+[distribution_projections.bundle_export]
+status = "provisional"
+tier = "T0"
+evidence = "Distribution layout contract defines bundle export projection."
+
+[distribution_projections.cache_and_staging]
+status = "provisional"
+tier = "T0"
+evidence = "Distribution layout contract defines cache and staging projection."
+
+[distribution_projections.symbols_and_provenance]
+status = "planned"
+tier = "T1"
+evidence = "Distribution layout contract defines symbols and provenance projection."

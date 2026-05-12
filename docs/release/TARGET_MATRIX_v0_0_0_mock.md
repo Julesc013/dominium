@@ -8,6 +8,8 @@ Replacement Target: release-pinned target matrix and downloadable artifact avail
 
 # Target Matrix v0.0.0 Mock
 
+CONVERGE-11 cross-reference: current support-tier vocabulary and component status rows are recorded in `contracts/release/component_matrix.contract.toml` and `docs/release/SUPPORT_TIERS.md`. This mock remains a reference input until CONVERGE-12 cleanup.
+
 Fingerprint: `23c806eb2270a3538317815717afe3a1c45a405b95ccd058a91869452dfe8f73`
 
 ## Axes

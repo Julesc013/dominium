@@ -8,6 +8,8 @@ Replacement Target: release-pinned interop contract and signed archive compatibi
 
 # Interop Matrix v0.0.0 mock
 
+CONVERGE-11 cross-reference: current product/platform/render/toolchain/package support posture is recorded in `contracts/release/component_matrix.contract.toml` and `docs/release/COMPONENT_MATRIX.md`. This mock remains a reference surface, not current support authority.
+
 DIST-6 defines the deterministic version-interop acceptance matrix for the `v0.0.0-mock` distribution bundles.
 
 ## Purpose

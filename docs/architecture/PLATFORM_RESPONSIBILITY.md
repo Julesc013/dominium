@@ -12,6 +12,8 @@ Status: FROZEN.
 
 Purpose: Freeze the platform runtime layer so all supported operating systems, environments, and execution modes behave consistently without affecting simulation semantics.
 
+CONVERGE-11 cross-reference: platform backend support posture is recorded in `contracts/release/component_matrix.contract.toml` and `docs/release/PLATFORM_MATRIX.md`. This document remains the semantic responsibility contract; the matrix does not implement platform backends.
+
 ## Platform Responsibility (Final)
 
 The platform layer provides only:

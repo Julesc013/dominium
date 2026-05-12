@@ -24,6 +24,8 @@ Canonical anchors:
 - `docs/architecture/INSTALLER_CONTRACT.md`
 - `docs/architecture/GUI_BASELINE.md`
 
+CONVERGE-11 cross-reference: product/mode/native-shell support posture is recorded in `contracts/release/component_matrix.contract.toml`, `docs/release/PRODUCT_MODE_MATRIX.md`, and `docs/release/NATIVE_APP_MATRIX.md`. This contract still defines product shell behavior; the matrices do not implement shell features.
+
 Global rules (apply to all sections):
 - CLI is canonical. TUI/GUI are projections of CLI semantics.
 - Refusals are first-class, visible, and use canonical refusal codes.

@@ -10,6 +10,8 @@ Replacement Target: release-pinned platform support and archive verification con
 
 DIST-4 defines the deterministic distribution-platform validation matrix for `v0.0.0-mock`.
 
+CONVERGE-11 cross-reference: current component support posture is recorded in `contracts/release/component_matrix.contract.toml`, `docs/release/COMPONENT_MATRIX.md`, and `docs/release/PLATFORM_MATRIX.md`. This DIST-4 model remains an input/validation model until CONVERGE-12 reconciles stale support language.
+
 ## Purpose
 
 The platform matrix proves that the assembled distribution surfaces:

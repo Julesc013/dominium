@@ -173,3 +173,14 @@ Future move-map focus:
 - CONVERGE-11: product/platform/render/native/toolchain/package matrices.
 - CONVERGE-12: retire or narrow remaining exceptions and reconcile stale cross-references.
 - Future scoped tasks: split protected roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `net/`, `packs/`, `repo/`, `security/`, and `specs/`.
+
+## CONVERGE-11 Matrix Note
+
+CONVERGE-11 added product, platform, render, native shell, toolchain, package, audio, input, network, storage, and distribution projection matrices. No physical moves occurred.
+
+The move map remains about source repository roots. Matrix rows describe future expansion lanes and support posture after layout convergence; they do not define install/media/runtime projection directories and do not authorize new source roots.
+
+Future move-map focus:
+
+- CONVERGE-12: reconcile stale cross-references against the matrix and layout contracts.
+- Future scoped tasks: retire active layout exceptions as roots are split, removed, or made canonical by reviewed contract updates.

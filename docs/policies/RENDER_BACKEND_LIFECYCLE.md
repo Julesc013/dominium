@@ -21,6 +21,8 @@ Version: 1
 ## Purpose
 Define the lifecycle of renderer backends and their deprecation rules.
 
+CONVERGE-11 cross-reference: current renderer matrix rows and support tiers are recorded in `contracts/release/component_matrix.contract.toml` and `docs/release/RENDER_BACKEND_MATRIX.md`. Lifecycle terms in this policy must be reconciled with matrix status during CONVERGE-12 stale-doc cleanup.
+
 ## Lifecycle stages
 - **Active**: supported and tested in CI.
 - **Deprecated**: supported for compatibility, no new features.

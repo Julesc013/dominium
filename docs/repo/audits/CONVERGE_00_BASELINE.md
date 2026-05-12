@@ -447,3 +447,9 @@ CONVERGE-10 made strict layout validation available with explicit active excepti
 Active exception count: 37. Unexcepted strict layout violation count: 0.
 
 No broad physical moves occurred.
+
+## CONVERGE-11 Follow-up Note
+
+CONVERGE-11 added the release component matrix layer. It added `contracts/release/component_matrix.contract.toml`, `contracts/release/component_matrix.schema.json`, `tools/validators/check_component_matrices.py`, and product/mode/platform/render/native/toolchain/packaging/audio/input/network/storage/support-tier docs under `docs/release/`.
+
+No platform, render, native shell, backend, toolchain, or packaging implementation occurred. No physical moves occurred.

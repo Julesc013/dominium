@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.release.component_matrix.schema.v1",
+  "title": "Dominium Component Matrix Contract",
+  "type": "object",
+  "required": [
+    "contract",
+    "policy",
+    "support_tiers",
+    "products",
+    "product_modes",
+    "platform_backends",
+    "render_backends",
+    "native_shells",
+    "toolchains",
+    "packaging",
+    "audio_backends",
+    "input_backends",
+    "network_backends",
+    "storage_backends"
+  ],
+  "properties": {
+    "contract": {
+      "type": "object",
+      "required": ["id", "status", "phase"],
+      "properties": {
+        "id": { "const": "dominium.release.component_matrix.v1" },
+        "status": { "type": "string" },
+        "phase": { "const": "CONVERGE-11" },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "policy": {
+      "type": "object",
+      "required": ["statuses", "support_tiers"],
+      "properties": {
+        "statuses": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "support_tiers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "support_tiers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "purpose"],
+        "properties": {
+          "name": { "type": "string" },
+          "purpose": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "products": { "$ref": "#/$defs/matrixSection" },
+    "product_modes": { "$ref": "#/$defs/matrixSection" },
+    "platform_backends": { "$ref": "#/$defs/matrixSection" },
+    "render_backends": { "$ref": "#/$defs/matrixSection" },
+    "native_shells": { "$ref": "#/$defs/matrixSection" },
+    "toolchains": { "$ref": "#/$defs/matrixSection" },
+    "packaging": { "$ref": "#/$defs/matrixSection" },
+    "audio_backends": { "$ref": "#/$defs/matrixSection" },
+    "input_backends": { "$ref": "#/$defs/matrixSection" },
+    "network_backends": { "$ref": "#/$defs/matrixSection" },
+    "storage_backends": { "$ref": "#/$defs/matrixSection" },
+    "distribution_projections": { "$ref": "#/$defs/matrixSection" }
+  },
+  "$defs": {
+    "matrixSection": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "type": "string" },
+          "tier": { "type": "string" },
+          "evidence": { "type": "string" },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -10,6 +10,8 @@ Replacement Target: release-pinned standalone shell and product UI bootstrap con
 
 AppShell owns deterministic product UI selection before product bootstrap, pack validation handoff, or IPC startup.
 
+CONVERGE-11 cross-reference: product mode support posture is recorded in `contracts/release/component_matrix.contract.toml` and `docs/release/PRODUCT_MODE_MATRIX.md`. This document remains the AppShell mode-resolution policy; the matrix does not change mode selection semantics.
+
 ## Decision Tree
 
 1. Parse explicit `--mode` or supported legacy `--ui` migration.

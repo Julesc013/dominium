@@ -84,3 +84,15 @@ The intended strict validation surface is:
 - `python tools/validators/check_distribution_layout.py --repo-root . --strict`
 
 CONVERGE-10 does not change branch protection and does not make CMake configure fail by default. A later gate or CI change may invoke these strict commands explicitly.
+
+## CONVERGE-11 Matrix Expansion
+
+Component matrices are governed by:
+
+- `contracts/release/component_matrix.contract.toml`
+- `tools/validators/check_component_matrices.py`
+- `docs/release/COMPONENT_MATRIX.md`
+
+Matrix expansion must not create new root-level directories outside the layout contract and exception ledger. New platform, render, native shell, audio, input, network, and storage implementation belongs under existing ownership roots, especially `runtime/`, `apps/`, `contracts/`, `content/`, and `tools/`.
+
+Matrix status values are support posture, not implementation. A `planned`, `stub`, or `research` row cannot be treated as supported merely because a CMake option, preset, or placeholder source file exists.
