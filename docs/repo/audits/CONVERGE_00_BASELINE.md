@@ -403,3 +403,7 @@ Expected future deliverables:
 - `docs/repo/ROOT_FILE_POLICY.md`
 
 This section is only a recommendation. CONVERGE-01 was not implemented by this task.
+
+## CONVERGE-01 Follow-up Note
+
+CONVERGE-01 added the first machine-readable source repository layout contract, contract schema, non-blocking root layout validator, generated root inventory, generated root move map, and concise repo layout documentation for target layout, ownership rules, domain split rules, and root-file policy.

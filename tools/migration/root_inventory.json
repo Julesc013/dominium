@@ -1,0 +1,1159 @@
+{
+  "generated_at_utc": "2026-05-12T02:44:51Z",
+  "repo_root": "C:/Inbox/Git Repos/dominium",
+  "contract_id": "dominium.repo.layout.v1",
+  "contract_phase": "CONVERGE-01",
+  "head_sha": "156cd84de31cd117bc81efc59ddc7a24f6364a7b",
+  "roots": [
+    {
+      "name": ".agentignore",
+      "path": ".agentignore",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": ".agentignore",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": ".aide",
+      "path": ".aide",
+      "kind": "directory",
+      "classification": "metadata",
+      "target": ".aide",
+      "action": "retain_metadata",
+      "notes": "Allowed metadata/config root.",
+      "present": true
+    },
+    {
+      "name": ".aide.local.example",
+      "path": ".aide.local.example",
+      "kind": "directory",
+      "classification": "metadata",
+      "target": ".aide.local.example",
+      "action": "retain_metadata",
+      "notes": "Allowed metadata/config root.",
+      "present": true
+    },
+    {
+      "name": ".gitattributes",
+      "path": ".gitattributes",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": ".gitattributes",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": ".github",
+      "path": ".github",
+      "kind": "directory",
+      "classification": "metadata",
+      "target": ".github",
+      "action": "retain_metadata",
+      "notes": "Allowed metadata/config root.",
+      "present": true
+    },
+    {
+      "name": ".gitignore",
+      "path": ".gitignore",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": ".gitignore",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": ".vscode",
+      "path": ".vscode",
+      "kind": "directory",
+      "classification": "metadata",
+      "target": ".vscode",
+      "action": "retain_metadata",
+      "notes": "Allowed metadata/config root.",
+      "present": true
+    },
+    {
+      "name": "__init__.py",
+      "path": "__init__.py",
+      "kind": "file",
+      "classification": "violation",
+      "target": "review",
+      "action": "review_or_remove_from_root",
+      "notes": "No matching root classification in layout contract.",
+      "present": true
+    },
+    {
+      "name": "AGENTS.md",
+      "path": "AGENTS.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "AGENTS.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "app",
+      "path": "app",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "runtime/app",
+      "action": "split_or_move_after_runtime_boundary_review",
+      "notes": "Current runtime/app substrate; do not move in CONVERGE-01.",
+      "present": true
+    },
+    {
+      "name": "appshell",
+      "path": "appshell",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "runtime/appshell",
+      "action": "move_after_runtime_boundary_review",
+      "notes": "AppShell should converge under runtime after boundary proof.",
+      "present": true
+    },
+    {
+      "name": "archive",
+      "path": "archive",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "archive",
+      "action": "retain",
+      "notes": "Historical, superseded, quarantined, generated-evidence, and legacy material retained with provenance.",
+      "present": true
+    },
+    {
+      "name": "artifacts",
+      "path": "artifacts",
+      "kind": "directory",
+      "classification": "generated_or_ephemeral",
+      "target": "artifacts",
+      "action": "preserve_as_generated_or_review",
+      "notes": "Review before using as authority.",
+      "present": true
+    },
+    {
+      "name": "astro",
+      "path": "astro",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/astro; contracts/registries/astro; game/domains/astro; content/domain-data/astro; docs/domains/astro; tests/determinism/astro; tests/fixtures/astro",
+      "present": true
+    },
+    {
+      "name": "attic",
+      "path": "attic",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "archive/historical",
+      "action": "move_after_archive_review",
+      "notes": "Historical material should converge under archive.",
+      "present": true
+    },
+    {
+      "name": "bundles",
+      "path": "bundles",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "content_or_exports_review",
+      "action": "split_by_bundle_role",
+      "notes": "Authored bundles and generated exports require separate handling.",
+      "present": true
+    },
+    {
+      "name": "CHANGELOG.md",
+      "path": "CHANGELOG.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "CHANGELOG.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "chem",
+      "path": "chem",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/chem; contracts/registries/chem; game/domains/chem; content/domain-data/chem; docs/domains/chem; tests/determinism/chem; tests/fixtures/chem",
+      "present": true
+    },
+    {
+      "name": "CLAUDE.md",
+      "path": "CLAUDE.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "CLAUDE.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "client",
+      "path": "client",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "apps/client",
+      "action": "move_thin_entrypoint_after_product_review",
+      "notes": "Only thin product binding should remain under apps.",
+      "present": true
+    },
+    {
+      "name": "cmake",
+      "path": "cmake",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "cmake",
+      "action": "retain",
+      "notes": "CMake modules and build configuration helpers.",
+      "present": true
+    },
+    {
+      "name": "CMakeLists.txt",
+      "path": "CMakeLists.txt",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "CMakeLists.txt",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "CMakePresets.json",
+      "path": "CMakePresets.json",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "CMakePresets.json",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "CODE_CHANGE_JUSTIFICATION.md",
+      "path": "CODE_CHANGE_JUSTIFICATION.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "CODE_CHANGE_JUSTIFICATION.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "compat",
+      "path": "compat",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "contracts/compatibility",
+      "action": "split_contract_and_runtime_portions",
+      "notes": "Compatibility meaning belongs in contracts; runtime adapters may move separately.",
+      "present": true
+    },
+    {
+      "name": "contracts",
+      "path": "contracts",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "contracts",
+      "action": "retain",
+      "notes": "Machine-readable and prose contracts for schemas, registries, protocols, compatibility, stability, replay, ABI, repository, and distribution rules.",
+      "present": true
+    },
+    {
+      "name": "CONTRIBUTING.md",
+      "path": "CONTRIBUTING.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "CONTRIBUTING.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "control",
+      "path": "control",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "runtime/control",
+      "action": "split_runtime_and_contract_portions",
+      "notes": "Control substrate must preserve process-only mutation boundaries.",
+      "present": true
+    },
+    {
+      "name": "core",
+      "path": "core",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "runtime/core_or_game_domain_review",
+      "action": "classify_before_move",
+      "notes": "Core is likely mixed; do not move wholesale.",
+      "present": true
+    },
+    {
+      "name": "data",
+      "path": "data",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "content_or_runtime_store_review",
+      "action": "split_by_authority",
+      "notes": "Data contains registries, content, planning mirrors, and generated evidence; split by authority.",
+      "present": true
+    },
+    {
+      "name": "diag",
+      "path": "diag",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "runtime/diagnostics",
+      "action": "move_after_runtime_boundary_review",
+      "notes": "Diagnostics belong under runtime if they do not own truth.",
+      "present": true
+    },
+    {
+      "name": "diegetics",
+      "path": "diegetics",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/diegetics; contracts/registries/diegetics; game/domains/diegetics; content/domain-data/diegetics; docs/domains/diegetics; tests/determinism/diegetics; tests/fixtures/diegetics",
+      "present": true
+    },
+    {
+      "name": "dist",
+      "path": "dist",
+      "kind": "directory",
+      "classification": "generated_or_ephemeral",
+      "target": "dist",
+      "action": "preserve_as_generated_or_review",
+      "notes": "Distribution output is governed by distribution contracts, not source repo layout.",
+      "present": true
+    },
+    {
+      "name": "docs",
+      "path": "docs",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "docs",
+      "action": "retain",
+      "notes": "Human-readable doctrine, guides, audits, and explanatory material.",
+      "present": true
+    },
+    {
+      "name": "DOMINIUM.md",
+      "path": "DOMINIUM.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "DOMINIUM.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "electric",
+      "path": "electric",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/electric; contracts/registries/electric; game/domains/electric; content/domain-data/electric; docs/domains/electric; tests/determinism/electric; tests/fixtures/electric",
+      "present": true
+    },
+    {
+      "name": "embodiment",
+      "path": "embodiment",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/embodiment; contracts/registries/embodiment; game/domains/embodiment; content/domain-data/embodiment; docs/domains/embodiment; tests/determinism/embodiment; tests/fixtures/embodiment",
+      "present": true
+    },
+    {
+      "name": "engine",
+      "path": "engine",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "engine",
+      "action": "retain",
+      "notes": "Deterministic Domino substrate and public engine contracts.",
+      "present": true
+    },
+    {
+      "name": "epistemics",
+      "path": "epistemics",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/epistemics; contracts/registries/epistemics; game/domains/epistemics; content/domain-data/epistemics; docs/domains/epistemics; tests/determinism/epistemics; tests/fixtures/epistemics",
+      "present": true
+    },
+    {
+      "name": "field",
+      "path": "field",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/field; contracts/registries/field; game/domains/field; content/domain-data/field; docs/domains/field; tests/determinism/field; tests/fixtures/field",
+      "present": true
+    },
+    {
+      "name": "fields",
+      "path": "fields",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/fields; contracts/registries/fields; game/domains/fields; content/domain-data/fields; docs/domains/fields; tests/determinism/fields; tests/fixtures/fields",
+      "present": true
+    },
+    {
+      "name": "fluid",
+      "path": "fluid",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/fluid; contracts/registries/fluid; game/domains/fluid; content/domain-data/fluid; docs/domains/fluid; tests/determinism/fluid; tests/fixtures/fluid",
+      "present": true
+    },
+    {
+      "name": "game",
+      "path": "game",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "game",
+      "action": "retain",
+      "notes": "Dominium rules, domain process semantics, and authoritative game meaning.",
+      "present": true
+    },
+    {
+      "name": "geo",
+      "path": "geo",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/geo; contracts/registries/geo; game/domains/geo; content/domain-data/geo; docs/domains/geo; tests/determinism/geo; tests/fixtures/geo",
+      "present": true
+    },
+    {
+      "name": "governance",
+      "path": "governance",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "docs/governance",
+      "action": "classify_before_move",
+      "notes": "Governance mirrors must not compete with AGENTS.md or canon.",
+      "present": true
+    },
+    {
+      "name": "GOVERNANCE.md",
+      "path": "GOVERNANCE.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "GOVERNANCE.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "ide",
+      "path": "ide",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "cmake_or_tools_review",
+      "action": "classify_before_move",
+      "notes": "IDE projections may belong under cmake, tools, or generated evidence depending on role.",
+      "present": true
+    },
+    {
+      "name": "infrastructure",
+      "path": "infrastructure",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/infrastructure; contracts/registries/infrastructure; game/domains/infrastructure; content/domain-data/infrastructure; docs/domains/infrastructure; tests/determinism/infrastructure; tests/fixtures/infrastructure",
+      "present": true
+    },
+    {
+      "name": "inspection",
+      "path": "inspection",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/inspection; contracts/registries/inspection; game/domains/inspection; content/domain-data/inspection; docs/domains/inspection; tests/determinism/inspection; tests/fixtures/inspection",
+      "present": true
+    },
+    {
+      "name": "interaction",
+      "path": "interaction",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/interaction; contracts/registries/interaction; game/domains/interaction; content/domain-data/interaction; docs/domains/interaction; tests/determinism/interaction; tests/fixtures/interaction",
+      "present": true
+    },
+    {
+      "name": "interior",
+      "path": "interior",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/interior; contracts/registries/interior; game/domains/interior; content/domain-data/interior; docs/domains/interior; tests/determinism/interior; tests/fixtures/interior",
+      "present": true
+    },
+    {
+      "name": "labs",
+      "path": "labs",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "review",
+      "action": "classify_before_move",
+      "notes": "Experimental material requires review before binding.",
+      "present": true
+    },
+    {
+      "name": "launcher",
+      "path": "launcher",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "apps/launcher",
+      "action": "move_thin_entrypoint_after_product_review",
+      "notes": "Launcher product identity and executable naming must remain stable.",
+      "present": true
+    },
+    {
+      "name": "legacy",
+      "path": "legacy",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "archive/legacy",
+      "action": "move_after_archive_review",
+      "notes": "Legacy material should converge under archive.",
+      "present": true
+    },
+    {
+      "name": "lib",
+      "path": "lib",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "review",
+      "action": "classify_before_move",
+      "notes": "Do not classify by name alone; inspect ownership first.",
+      "present": true
+    },
+    {
+      "name": "libs",
+      "path": "libs",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "review",
+      "action": "classify_before_move",
+      "notes": "Do not classify by name alone; inspect ownership first.",
+      "present": true
+    },
+    {
+      "name": "LICENSE.md",
+      "path": "LICENSE.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "LICENSE.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "locks",
+      "path": "locks",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "contracts/replay",
+      "action": "split_lock_classes",
+      "notes": "Deterministic locks, runtime locks, and ops transactions require separate homes.",
+      "present": true
+    },
+    {
+      "name": "logic",
+      "path": "logic",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/logic; contracts/registries/logic; game/domains/logic; content/domain-data/logic; docs/domains/logic; tests/determinism/logic; tests/fixtures/logic",
+      "present": true
+    },
+    {
+      "name": "logistics",
+      "path": "logistics",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/logistics; contracts/registries/logistics; game/domains/logistics; content/domain-data/logistics; docs/domains/logistics; tests/determinism/logistics; tests/fixtures/logistics",
+      "present": true
+    },
+    {
+      "name": "machines",
+      "path": "machines",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/machines; contracts/registries/machines; game/domains/machines; content/domain-data/machines; docs/domains/machines; tests/determinism/machines; tests/fixtures/machines",
+      "present": true
+    },
+    {
+      "name": "materials",
+      "path": "materials",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/materials; contracts/registries/materials; game/domains/materials; content/domain-data/materials; docs/domains/materials; tests/determinism/materials; tests/fixtures/materials",
+      "present": true
+    },
+    {
+      "name": "mechanics",
+      "path": "mechanics",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/mechanics; contracts/registries/mechanics; game/domains/mechanics; content/domain-data/mechanics; docs/domains/mechanics; tests/determinism/mechanics; tests/fixtures/mechanics",
+      "present": true
+    },
+    {
+      "name": "meta",
+      "path": "meta",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "review",
+      "action": "classify_before_move",
+      "notes": "Meta surfaces require ownership review.",
+      "present": true
+    },
+    {
+      "name": "meta_extensions_engine.py",
+      "path": "meta_extensions_engine.py",
+      "kind": "file",
+      "classification": "violation",
+      "target": "review",
+      "action": "review_or_remove_from_root",
+      "notes": "No matching root classification in layout contract.",
+      "present": true
+    },
+    {
+      "name": "mobility",
+      "path": "mobility",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/mobility; contracts/registries/mobility; game/domains/mobility; content/domain-data/mobility; docs/domains/mobility; tests/determinism/mobility; tests/fixtures/mobility",
+      "present": true
+    },
+    {
+      "name": "modding",
+      "path": "modding",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "content/modding",
+      "action": "split_docs_content_contracts",
+      "notes": "Modding may include content, contracts, and docs.",
+      "present": true
+    },
+    {
+      "name": "MODDING.md",
+      "path": "MODDING.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "MODDING.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "models",
+      "path": "models",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "content/models",
+      "action": "classify_before_move",
+      "notes": "Model data should be distinguished from generated or runtime state.",
+      "present": true
+    },
+    {
+      "name": "net",
+      "path": "net",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "runtime/network",
+      "action": "move_after_runtime_boundary_review",
+      "notes": "Network adapters belong under runtime after authority boundaries are checked.",
+      "present": true
+    },
+    {
+      "name": "numeric_discipline.py",
+      "path": "numeric_discipline.py",
+      "kind": "file",
+      "classification": "violation",
+      "target": "review",
+      "action": "review_or_remove_from_root",
+      "notes": "No matching root classification in layout contract.",
+      "present": true
+    },
+    {
+      "name": "packs",
+      "path": "packs",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "content/packs",
+      "action": "split_with_pack_ownership_review",
+      "notes": "Current runtime pack substrate; pack ownership split remains review-sensitive.",
+      "present": true
+    },
+    {
+      "name": "performance",
+      "path": "performance",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "tools/performance",
+      "action": "classify_before_move",
+      "notes": "Performance tooling and evidence should stay tool/evidence scoped.",
+      "present": true
+    },
+    {
+      "name": "physics",
+      "path": "physics",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/physics; contracts/registries/physics; game/domains/physics; content/domain-data/physics; docs/domains/physics; tests/determinism/physics; tests/fixtures/physics",
+      "present": true
+    },
+    {
+      "name": "pollution",
+      "path": "pollution",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/pollution; contracts/registries/pollution; game/domains/pollution; content/domain-data/pollution; docs/domains/pollution; tests/determinism/pollution; tests/fixtures/pollution",
+      "present": true
+    },
+    {
+      "name": "process",
+      "path": "process",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/process; contracts/registries/process; game/domains/process; content/domain-data/process; docs/domains/process; tests/determinism/process; tests/fixtures/process",
+      "present": true
+    },
+    {
+      "name": "profiles",
+      "path": "profiles",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "content/profiles",
+      "action": "move_after_content_review",
+      "notes": "Profile data belongs under content unless runtime-store evidence proves otherwise.",
+      "present": true
+    },
+    {
+      "name": "quarantine",
+      "path": "quarantine",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "archive/quarantine",
+      "action": "move_after_archive_review",
+      "notes": "Quarantined material should remain visible and provenance-preserved.",
+      "present": true
+    },
+    {
+      "name": "README.md",
+      "path": "README.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "README.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "reality",
+      "path": "reality",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/reality; contracts/registries/reality; game/domains/reality; content/domain-data/reality; docs/domains/reality; tests/determinism/reality; tests/fixtures/reality",
+      "present": true
+    },
+    {
+      "name": "release",
+      "path": "release",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "release",
+      "action": "retain",
+      "notes": "Release definitions, package recipes, matrices, signing metadata, and release policy inputs.",
+      "present": true
+    },
+    {
+      "name": "repo",
+      "path": "repo",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "split_to_contracts_docs_tools",
+      "action": "split_existing_root_by_ownership",
+      "notes": "Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration.",
+      "present": true
+    },
+    {
+      "name": "runtime",
+      "path": "runtime",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "runtime",
+      "action": "retain",
+      "notes": "Runtime host, AppShell, platform, render, input, audio, network, storage, diagnostics, and UI adapters.",
+      "present": true
+    },
+    {
+      "name": "safety",
+      "path": "safety",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "contracts/safety",
+      "action": "classify_before_move",
+      "notes": "Safety policy belongs under contracts or docs depending on authority.",
+      "present": true
+    },
+    {
+      "name": "schema",
+      "path": "schema",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "contracts/schemas",
+      "action": "split_schema_law_and_projection_with_review",
+      "notes": "Current canonical schema law root; future physical convergence must preserve semantic authority.",
+      "present": true
+    },
+    {
+      "name": "schemas",
+      "path": "schemas",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "contracts/schemas",
+      "action": "split_schema_law_and_projection_with_review",
+      "notes": "Current validator-facing schema projection; must not replace schema law silently.",
+      "present": true
+    },
+    {
+      "name": "scripts",
+      "path": "scripts",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "scripts",
+      "action": "retain",
+      "notes": "Developer workflow scripts and repository automation entrypoints.",
+      "present": true
+    },
+    {
+      "name": "security",
+      "path": "security",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "contracts/security",
+      "action": "classify_before_move",
+      "notes": "Security and trust surfaces are protected and review-sensitive.",
+      "present": true
+    },
+    {
+      "name": "SECURITY.md",
+      "path": "SECURITY.md",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "SECURITY.md",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "server",
+      "path": "server",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "apps/server",
+      "action": "move_thin_entrypoint_after_product_review",
+      "notes": "Server authority semantics must stay governed by game/engine/runtime contracts.",
+      "present": true
+    },
+    {
+      "name": "setup",
+      "path": "setup",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "apps/setup",
+      "action": "move_thin_entrypoint_after_product_review",
+      "notes": "Setup install identity and virtual roots must not change during moves.",
+      "present": true
+    },
+    {
+      "name": "signals",
+      "path": "signals",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/signals; contracts/registries/signals; game/domains/signals; content/domain-data/signals; docs/domains/signals; tests/determinism/signals; tests/fixtures/signals",
+      "present": true
+    },
+    {
+      "name": "sitecustomize.py",
+      "path": "sitecustomize.py",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "sitecustomize.py",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "specs",
+      "path": "specs",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "contracts/specs",
+      "action": "preserve_spec_authority_then_split",
+      "notes": "Normative specs must retain authority; reality specs remain canonical over data projections.",
+      "present": true
+    },
+    {
+      "name": "system",
+      "path": "system",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/system; contracts/registries/system; game/domains/system; content/domain-data/system; docs/domains/system; tests/determinism/system; tests/fixtures/system",
+      "present": true
+    },
+    {
+      "name": "templates",
+      "path": "templates",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "content/templates",
+      "action": "classify_before_move",
+      "notes": "Templates may be authored content, contracts, or generated inputs.",
+      "present": true
+    },
+    {
+      "name": "tests",
+      "path": "tests",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "tests",
+      "action": "retain",
+      "notes": "Test suites, determinism checks, fixtures, and verification evidence inputs.",
+      "present": true
+    },
+    {
+      "name": "thermal",
+      "path": "thermal",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/thermal; contracts/registries/thermal; game/domains/thermal; content/domain-data/thermal; docs/domains/thermal; tests/determinism/thermal; tests/fixtures/thermal",
+      "present": true
+    },
+    {
+      "name": "tool_ui_bind.cmd",
+      "path": "tool_ui_bind.cmd",
+      "kind": "file",
+      "classification": "violation",
+      "target": "review",
+      "action": "review_or_remove_from_root",
+      "notes": "No matching root classification in layout contract.",
+      "present": true
+    },
+    {
+      "name": "tool_ui_doc_annotate.cmd",
+      "path": "tool_ui_doc_annotate.cmd",
+      "kind": "file",
+      "classification": "violation",
+      "target": "review",
+      "action": "review_or_remove_from_root",
+      "notes": "No matching root classification in layout contract.",
+      "present": true
+    },
+    {
+      "name": "tool_ui_validate.cmd",
+      "path": "tool_ui_validate.cmd",
+      "kind": "file",
+      "classification": "violation",
+      "target": "review",
+      "action": "review_or_remove_from_root",
+      "notes": "No matching root classification in layout contract.",
+      "present": true
+    },
+    {
+      "name": "tools",
+      "path": "tools",
+      "kind": "directory",
+      "classification": "canonical",
+      "target": "tools",
+      "action": "retain",
+      "notes": "Developer, validation, migration, CI, code generation, review, and audit tools.",
+      "present": true
+    },
+    {
+      "name": "ui",
+      "path": "ui",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "runtime/ui",
+      "action": "move_after_runtime_boundary_review",
+      "notes": "UI is presentation/adaptation only and must not mutate truth.",
+      "present": true
+    },
+    {
+      "name": "universe",
+      "path": "universe",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/universe; contracts/registries/universe; game/domains/universe; content/domain-data/universe; docs/domains/universe; tests/determinism/universe; tests/fixtures/universe",
+      "present": true
+    },
+    {
+      "name": "updates",
+      "path": "updates",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "release_or_ops_review",
+      "action": "split_release_and_ops_surfaces",
+      "notes": "Update metadata belongs to release/control-plane ownership after review.",
+      "present": true
+    },
+    {
+      "name": "validation",
+      "path": "validation",
+      "kind": "directory",
+      "classification": "transitional_alias",
+      "target": "tools/validation",
+      "action": "classify_before_move",
+      "notes": "Validation tooling belongs under tools unless it is contract law.",
+      "present": true
+    },
+    {
+      "name": "VERSION_CLIENT",
+      "path": "VERSION_CLIENT",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "VERSION_CLIENT",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "VERSION_ENGINE",
+      "path": "VERSION_ENGINE",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "VERSION_ENGINE",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "VERSION_GAME",
+      "path": "VERSION_GAME",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "VERSION_GAME",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "VERSION_LAUNCHER",
+      "path": "VERSION_LAUNCHER",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "VERSION_LAUNCHER",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "VERSION_SERVER",
+      "path": "VERSION_SERVER",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "VERSION_SERVER",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "VERSION_SETUP",
+      "path": "VERSION_SETUP",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "VERSION_SETUP",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "VERSION_SUITE",
+      "path": "VERSION_SUITE",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "VERSION_SUITE",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "VERSION_TOOLS",
+      "path": "VERSION_TOOLS",
+      "kind": "file",
+      "classification": "allowed_file",
+      "target": "VERSION_TOOLS",
+      "action": "retain_allowed_file",
+      "notes": "Allowed root file.",
+      "present": true
+    },
+    {
+      "name": "worldgen",
+      "path": "worldgen",
+      "kind": "directory",
+      "classification": "split_required_domain_root",
+      "target": "split_per_domain_rules",
+      "action": "split_required",
+      "notes": "contracts/schemas/worldgen; contracts/registries/worldgen; game/domains/worldgen; content/domain-data/worldgen; docs/domains/worldgen; tests/determinism/worldgen; tests/fixtures/worldgen",
+      "present": true
+    }
+  ]
+}

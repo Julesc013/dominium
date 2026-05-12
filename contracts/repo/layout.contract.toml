@@ -1,0 +1,583 @@
+[contract]
+id = "dominium.repo.layout.v1"
+status = "provisional"
+enforcement = "audit"
+phase = "CONVERGE-01"
+description = "Machine-readable repository layout contract for non-blocking convergence audit."
+
+[policy]
+default_for_unknown_root = "violation"
+strict_fails_unknown_root = true
+strict_fails_forbidden_root = true
+strict_fails_missing_required_root = true
+strict_fails_stale_alias_after_phase = "CONVERGE-10"
+generated_outputs_tracked = false
+source_repo_layout_is_not_runtime_layout = true
+
+[canonical_roots.apps]
+purpose = "Thin product entrypoints and product composition surfaces."
+required = true
+category = "product_entrypoints"
+may_contain = ["client", "server", "setup", "launcher", "tools"]
+must_not_contain = ["engine internals", "game domain truth", "generated package bytes"]
+
+[canonical_roots.engine]
+purpose = "Deterministic Domino substrate and public engine contracts."
+required = true
+category = "engine"
+may_contain = ["deterministic mechanisms", "engine headers", "engine tests"]
+must_not_contain = ["product behavior", "OS GUI ownership", "mutable runtime store"]
+
+[canonical_roots.game]
+purpose = "Dominium rules, domain process semantics, and authoritative game meaning."
+required = true
+category = "game"
+may_contain = ["rules", "domain implementations", "world logic", "economy logic", "civilization logic"]
+must_not_contain = ["platform adapters", "release package bytes", "tool-only code"]
+
+[canonical_roots.runtime]
+purpose = "Runtime host, AppShell, platform, render, input, audio, network, storage, diagnostics, and UI adapters."
+required = true
+category = "runtime_platform"
+may_contain = ["appshell", "platform adapters", "render adapters", "input", "audio", "network", "storage", "diagnostics", "ui adapters"]
+must_not_contain = ["simulation truth ownership", "domain law", "product identity"]
+
+[canonical_roots.contracts]
+purpose = "Machine-readable and prose contracts for schemas, registries, protocols, compatibility, stability, replay, ABI, repository, and distribution rules."
+required = true
+category = "contracts"
+may_contain = ["schemas", "registries", "protocols", "capabilities", "compatibility", "stability", "replay", "abi", "repo", "distribution"]
+must_not_contain = ["generated package bytes", "runtime mutable state", "product entrypoints"]
+
+[canonical_roots.content]
+purpose = "Authored packs, profiles, fixtures, datasets, assets, and domain data."
+required = true
+category = "content"
+may_contain = ["packs", "profiles", "fixtures", "datasets", "assets", "domain-data"]
+must_not_contain = ["generated dist output", "mutable runtime store", "product behavior"]
+
+[canonical_roots.docs]
+purpose = "Human-readable doctrine, guides, audits, and explanatory material."
+required = true
+category = "documentation"
+may_contain = ["canon", "architecture", "planning", "repo", "release", "domains", "guides", "audits"]
+must_not_contain = ["source code ownership", "generated package bytes"]
+
+[canonical_roots.tests]
+purpose = "Test suites, determinism checks, fixtures, and verification evidence inputs."
+required = true
+category = "validation"
+may_contain = ["unit tests", "integration tests", "determinism tests", "fixtures"]
+must_not_contain = ["runtime product code", "release package bytes"]
+
+[canonical_roots.tools]
+purpose = "Developer, validation, migration, CI, code generation, review, and audit tools."
+required = true
+category = "tools"
+may_contain = ["validators", "migration", "ci", "codegen", "review", "audit"]
+must_not_contain = ["runtime dependencies from product code", "simulation truth ownership"]
+
+[canonical_roots.scripts]
+purpose = "Developer workflow scripts and repository automation entrypoints."
+required = true
+category = "tools"
+may_contain = ["developer scripts", "verification launchers", "automation helpers"]
+must_not_contain = ["runtime product logic", "generated package bytes"]
+
+[canonical_roots.cmake]
+purpose = "CMake modules and build configuration helpers."
+required = true
+category = "build_configuration"
+may_contain = ["cmake modules", "toolchain helpers", "build projections"]
+must_not_contain = ["source domain ownership", "generated build output"]
+
+[canonical_roots.external]
+purpose = "Pinned third-party source or vendored external dependencies."
+required = true
+category = "external_dependencies"
+may_contain = ["vendored dependencies", "third-party source", "dependency manifests"]
+must_not_contain = ["Dominium-owned source", "generated build output"]
+
+[canonical_roots.release]
+purpose = "Release definitions, package recipes, matrices, signing metadata, and release policy inputs."
+required = true
+category = "release_control_plane"
+may_contain = ["release policy", "package recipes", "matrices", "signing metadata", "publication metadata"]
+must_not_contain = ["generated package bytes", "mutable install state"]
+
+[canonical_roots.archive]
+purpose = "Historical, superseded, quarantined, generated-evidence, and legacy material retained with provenance."
+required = true
+category = "archive"
+may_contain = ["historical", "legacy", "quarantine", "superseded", "generated"]
+must_not_contain = ["new canonical source ownership", "active product entrypoints"]
+
+[optional_roots.sdk]
+purpose = "Future public SDK headers, samples, and packaging surfaces."
+required = false
+category = "optional_sdk"
+may_contain = ["public headers", "samples", "sdk docs"]
+must_not_contain = ["private engine internals", "generated package bytes"]
+
+[optional_roots.examples]
+purpose = "Future examples and sample projects."
+required = false
+category = "optional_examples"
+may_contain = ["examples", "sample projects"]
+must_not_contain = ["canonical runtime truth", "release package bytes"]
+
+[metadata_roots]
+allowed = [".github", ".vscode", ".aide", ".aide.local.example"]
+
+[allowed_root_files]
+allowed = [".agentignore", ".gitattributes", ".gitignore", "AGENTS.md", "CLAUDE.md", "CMakeLists.txt", "CMakePresets.json", "CHANGELOG.md", "CODE_CHANGE_JUSTIFICATION.md", "CONTRIBUTING.md", "DOMINIUM.md", "GOVERNANCE.md", "LICENSE.md", "MODDING.md", "README.md", "SECURITY.md", "sitecustomize.py", "VERSION_CLIENT", "VERSION_ENGINE", "VERSION_GAME", "VERSION_LAUNCHER", "VERSION_SERVER", "VERSION_SETUP", "VERSION_SUITE", "VERSION_TOOLS"]
+patterns = ["VERSION_*"]
+
+[transitional_aliases.app]
+target = "runtime/app"
+action = "split_or_move_after_runtime_boundary_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+notes = "Current runtime/app substrate; do not move in CONVERGE-01."
+
+[transitional_aliases.appshell]
+target = "runtime/appshell"
+action = "move_after_runtime_boundary_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+notes = "AppShell should converge under runtime after boundary proof."
+
+[transitional_aliases.client]
+target = "apps/client"
+action = "move_thin_entrypoint_after_product_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-08"
+notes = "Only thin product binding should remain under apps."
+
+[transitional_aliases.server]
+target = "apps/server"
+action = "move_thin_entrypoint_after_product_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-08"
+notes = "Server authority semantics must stay governed by game/engine/runtime contracts."
+
+[transitional_aliases.setup]
+target = "apps/setup"
+action = "move_thin_entrypoint_after_product_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-08"
+notes = "Setup install identity and virtual roots must not change during moves."
+
+[transitional_aliases.launcher]
+target = "apps/launcher"
+action = "move_thin_entrypoint_after_product_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-08"
+notes = "Launcher product identity and executable naming must remain stable."
+
+[transitional_aliases.schema]
+target = "contracts/schemas"
+action = "split_schema_law_and_projection_with_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Current canonical schema law root; future physical convergence must preserve semantic authority."
+
+[transitional_aliases.schemas]
+target = "contracts/schemas"
+action = "split_schema_law_and_projection_with_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Current validator-facing schema projection; must not replace schema law silently."
+
+[transitional_aliases.compat]
+target = "contracts/compatibility"
+action = "split_contract_and_runtime_portions"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Compatibility meaning belongs in contracts; runtime adapters may move separately."
+
+[transitional_aliases.locks]
+target = "contracts/replay"
+action = "split_lock_classes"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Deterministic locks, runtime locks, and ops transactions require separate homes."
+
+[transitional_aliases.lib]
+target = "review"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Do not classify by name alone; inspect ownership first."
+
+[transitional_aliases.libs]
+target = "review"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Do not classify by name alone; inspect ownership first."
+
+[transitional_aliases.repo]
+target = "split_to_contracts_docs_tools"
+action = "split_existing_root_by_ownership"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration."
+
+[transitional_aliases.attic]
+target = "archive/historical"
+action = "move_after_archive_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-05"
+notes = "Historical material should converge under archive."
+
+[transitional_aliases.legacy]
+target = "archive/legacy"
+action = "move_after_archive_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-05"
+notes = "Legacy material should converge under archive."
+
+[transitional_aliases.quarantine]
+target = "archive/quarantine"
+action = "move_after_archive_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-05"
+notes = "Quarantined material should remain visible and provenance-preserved."
+
+[transitional_aliases.data]
+target = "content_or_runtime_store_review"
+action = "split_by_authority"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-09"
+notes = "Data contains registries, content, planning mirrors, and generated evidence; split by authority."
+
+[transitional_aliases.packs]
+target = "content/packs"
+action = "split_with_pack_ownership_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-09"
+notes = "Current runtime pack substrate; pack ownership split remains review-sensitive."
+
+[transitional_aliases.profiles]
+target = "content/profiles"
+action = "move_after_content_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-09"
+notes = "Profile data belongs under content unless runtime-store evidence proves otherwise."
+
+[transitional_aliases.bundles]
+target = "content_or_exports_review"
+action = "split_by_bundle_role"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-09"
+notes = "Authored bundles and generated exports require separate handling."
+
+[transitional_aliases.updates]
+target = "release_or_ops_review"
+action = "split_release_and_ops_surfaces"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Update metadata belongs to release/control-plane ownership after review."
+
+[transitional_aliases.control]
+target = "runtime/control"
+action = "split_runtime_and_contract_portions"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+notes = "Control substrate must preserve process-only mutation boundaries."
+
+[transitional_aliases.core]
+target = "runtime/core_or_game_domain_review"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+notes = "Core is likely mixed; do not move wholesale."
+
+[transitional_aliases.diag]
+target = "runtime/diagnostics"
+action = "move_after_runtime_boundary_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+notes = "Diagnostics belong under runtime if they do not own truth."
+
+[transitional_aliases.net]
+target = "runtime/network"
+action = "move_after_runtime_boundary_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+notes = "Network adapters belong under runtime after authority boundaries are checked."
+
+[transitional_aliases.ui]
+target = "runtime/ui"
+action = "move_after_runtime_boundary_review"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+notes = "UI is presentation/adaptation only and must not mutate truth."
+
+[transitional_aliases.governance]
+target = "docs/governance"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-02"
+notes = "Governance mirrors must not compete with AGENTS.md or canon."
+
+[transitional_aliases.ide]
+target = "cmake_or_tools_review"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-03"
+notes = "IDE projections may belong under cmake, tools, or generated evidence depending on role."
+
+[transitional_aliases.labs]
+target = "review"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-03"
+notes = "Experimental material requires review before binding."
+
+[transitional_aliases.meta]
+target = "review"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-03"
+notes = "Meta surfaces require ownership review."
+
+[transitional_aliases.modding]
+target = "content/modding"
+action = "split_docs_content_contracts"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-09"
+notes = "Modding may include content, contracts, and docs."
+
+[transitional_aliases.models]
+target = "content/models"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-09"
+notes = "Model data should be distinguished from generated or runtime state."
+
+[transitional_aliases.performance]
+target = "tools/performance"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-03"
+notes = "Performance tooling and evidence should stay tool/evidence scoped."
+
+[transitional_aliases.safety]
+target = "contracts/safety"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Safety policy belongs under contracts or docs depending on authority."
+
+[transitional_aliases.security]
+target = "contracts/security"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Security and trust surfaces are protected and review-sensitive."
+
+[transitional_aliases.specs]
+target = "contracts/specs"
+action = "preserve_spec_authority_then_split"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+notes = "Normative specs must retain authority; reality specs remain canonical over data projections."
+
+[transitional_aliases.templates]
+target = "content/templates"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-09"
+notes = "Templates may be authored content, contracts, or generated inputs."
+
+[transitional_aliases.validation]
+target = "tools/validation"
+action = "classify_before_move"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-03"
+notes = "Validation tooling belongs under tools unless it is contract law."
+
+[transitional_aliases.dist]
+target = "generated_dist"
+action = "do_not_treat_as_source_root"
+classification = "generated_or_ephemeral"
+retire_by_phase = "CONVERGE-10"
+notes = "Distribution output is not source repo layout authority."
+
+[transitional_aliases.artifacts]
+target = "generated_or_release_review"
+action = "review_generated_evidence_role"
+classification = "generated_or_ephemeral"
+retire_by_phase = "CONVERGE-10"
+notes = "Artifacts may be generated evidence or release material; require provenance."
+
+[transitional_aliases.build]
+target = "generated_build"
+action = "do_not_track_as_source_root"
+classification = "generated_or_ephemeral"
+retire_by_phase = "CONVERGE-10"
+notes = "Build output should not be a canonical source root."
+
+[transitional_aliases.out]
+target = "generated_build"
+action = "do_not_track_as_source_root"
+classification = "generated_or_ephemeral"
+retire_by_phase = "CONVERGE-10"
+notes = "Build output should not be a canonical source root."
+
+[domain_roots.astro]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/astro", "contracts/registries/astro", "game/domains/astro", "content/domain-data/astro", "docs/domains/astro", "tests/determinism/astro", "tests/fixtures/astro"]
+
+[domain_roots.chem]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/chem", "contracts/registries/chem", "game/domains/chem", "content/domain-data/chem", "docs/domains/chem", "tests/determinism/chem", "tests/fixtures/chem"]
+
+[domain_roots.electric]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/electric", "contracts/registries/electric", "game/domains/electric", "content/domain-data/electric", "docs/domains/electric", "tests/determinism/electric", "tests/fixtures/electric"]
+
+[domain_roots.field]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/field", "contracts/registries/field", "game/domains/field", "content/domain-data/field", "docs/domains/field", "tests/determinism/field", "tests/fixtures/field"]
+
+[domain_roots.fields]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/fields", "contracts/registries/fields", "game/domains/fields", "content/domain-data/fields", "docs/domains/fields", "tests/determinism/fields", "tests/fixtures/fields"]
+
+[domain_roots.fluid]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/fluid", "contracts/registries/fluid", "game/domains/fluid", "content/domain-data/fluid", "docs/domains/fluid", "tests/determinism/fluid", "tests/fixtures/fluid"]
+
+[domain_roots.geo]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/geo", "contracts/registries/geo", "game/domains/geo", "content/domain-data/geo", "docs/domains/geo", "tests/determinism/geo", "tests/fixtures/geo"]
+
+[domain_roots.logic]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/logic", "contracts/registries/logic", "game/domains/logic", "content/domain-data/logic", "docs/domains/logic", "tests/determinism/logic", "tests/fixtures/logic"]
+
+[domain_roots.materials]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/materials", "contracts/registries/materials", "game/domains/materials", "content/domain-data/materials", "docs/domains/materials", "tests/determinism/materials", "tests/fixtures/materials"]
+
+[domain_roots.mechanics]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/mechanics", "contracts/registries/mechanics", "game/domains/mechanics", "content/domain-data/mechanics", "docs/domains/mechanics", "tests/determinism/mechanics", "tests/fixtures/mechanics"]
+
+[domain_roots.physics]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/physics", "contracts/registries/physics", "game/domains/physics", "content/domain-data/physics", "docs/domains/physics", "tests/determinism/physics", "tests/fixtures/physics"]
+
+[domain_roots.pollution]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/pollution", "contracts/registries/pollution", "game/domains/pollution", "content/domain-data/pollution", "docs/domains/pollution", "tests/determinism/pollution", "tests/fixtures/pollution"]
+
+[domain_roots.process]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/process", "contracts/registries/process", "game/domains/process", "content/domain-data/process", "docs/domains/process", "tests/determinism/process", "tests/fixtures/process"]
+
+[domain_roots.signals]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/signals", "contracts/registries/signals", "game/domains/signals", "content/domain-data/signals", "docs/domains/signals", "tests/determinism/signals", "tests/fixtures/signals"]
+
+[domain_roots.system]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/system", "contracts/registries/system", "game/domains/system", "content/domain-data/system", "docs/domains/system", "tests/determinism/system", "tests/fixtures/system"]
+
+[domain_roots.thermal]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/thermal", "contracts/registries/thermal", "game/domains/thermal", "content/domain-data/thermal", "docs/domains/thermal", "tests/determinism/thermal", "tests/fixtures/thermal"]
+
+[domain_roots.universe]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/universe", "contracts/registries/universe", "game/domains/universe", "content/domain-data/universe", "docs/domains/universe", "tests/determinism/universe", "tests/fixtures/universe"]
+
+[domain_roots.worldgen]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/worldgen", "contracts/registries/worldgen", "game/domains/worldgen", "content/domain-data/worldgen", "docs/domains/worldgen", "tests/determinism/worldgen", "tests/fixtures/worldgen"]
+
+[domain_roots.mobility]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/mobility", "contracts/registries/mobility", "game/domains/mobility", "content/domain-data/mobility", "docs/domains/mobility", "tests/determinism/mobility", "tests/fixtures/mobility"]
+
+[domain_roots.logistics]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/logistics", "contracts/registries/logistics", "game/domains/logistics", "content/domain-data/logistics", "docs/domains/logistics", "tests/determinism/logistics", "tests/fixtures/logistics"]
+
+[domain_roots.economy]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/economy", "contracts/registries/economy", "game/domains/economy", "content/domain-data/economy", "docs/domains/economy", "tests/determinism/economy", "tests/fixtures/economy"]
+
+[domain_roots.civilization]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/civilization", "contracts/registries/civilization", "game/domains/civilization", "content/domain-data/civilization", "docs/domains/civilization", "tests/determinism/civilization", "tests/fixtures/civilization"]
+
+[domain_roots.ecology]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/ecology", "contracts/registries/ecology", "game/domains/ecology", "content/domain-data/ecology", "docs/domains/ecology", "tests/determinism/ecology", "tests/fixtures/ecology"]
+
+[domain_roots.diegetics]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/diegetics", "contracts/registries/diegetics", "game/domains/diegetics", "content/domain-data/diegetics", "docs/domains/diegetics", "tests/determinism/diegetics", "tests/fixtures/diegetics"]
+
+[domain_roots.embodiment]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/embodiment", "contracts/registries/embodiment", "game/domains/embodiment", "content/domain-data/embodiment", "docs/domains/embodiment", "tests/determinism/embodiment", "tests/fixtures/embodiment"]
+
+[domain_roots.epistemics]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/epistemics", "contracts/registries/epistemics", "game/domains/epistemics", "content/domain-data/epistemics", "docs/domains/epistemics", "tests/determinism/epistemics", "tests/fixtures/epistemics"]
+
+[domain_roots.infrastructure]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/infrastructure", "contracts/registries/infrastructure", "game/domains/infrastructure", "content/domain-data/infrastructure", "docs/domains/infrastructure", "tests/determinism/infrastructure", "tests/fixtures/infrastructure"]
+
+[domain_roots.inspection]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/inspection", "contracts/registries/inspection", "game/domains/inspection", "content/domain-data/inspection", "docs/domains/inspection", "tests/determinism/inspection", "tests/fixtures/inspection"]
+
+[domain_roots.interaction]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/interaction", "contracts/registries/interaction", "game/domains/interaction", "content/domain-data/interaction", "docs/domains/interaction", "tests/determinism/interaction", "tests/fixtures/interaction"]
+
+[domain_roots.interior]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/interior", "contracts/registries/interior", "game/domains/interior", "content/domain-data/interior", "docs/domains/interior", "tests/determinism/interior", "tests/fixtures/interior"]
+
+[domain_roots.machines]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/machines", "contracts/registries/machines", "game/domains/machines", "content/domain-data/machines", "docs/domains/machines", "tests/determinism/machines", "tests/fixtures/machines"]
+
+[domain_roots.reality]
+classification = "split_required_domain_root"
+targets = ["contracts/schemas/reality", "contracts/registries/reality", "game/domains/reality", "content/domain-data/reality", "docs/domains/reality", "tests/determinism/reality", "tests/fixtures/reality"]
+
+[generated_roots.build]
+purpose = "Generated build output."
+classification = "generated_or_ephemeral"
+tracked = false
+notes = "Must not be treated as source repository ownership."
+
+[generated_roots.out]
+purpose = "Generated build output."
+classification = "generated_or_ephemeral"
+tracked = false
+notes = "Must not be treated as source repository ownership."
+
+[generated_roots.dist]
+purpose = "Generated release/build output unless explicitly tracked by exception."
+classification = "generated_or_ephemeral"
+tracked = false
+notes = "Distribution output is governed by distribution contracts, not source repo layout."
+
+[generated_roots.artifacts]
+purpose = "Generated evidence or release-adjacent artifacts requiring provenance review."
+classification = "generated_or_ephemeral"
+tracked = false
+notes = "Review before using as authority."
+
+[distribution_projection_note]
+text = "Distribution, install, media, portable-store, and runtime layout projections are governed by a later distribution layout contract and must not be inferred from source repository roots."
