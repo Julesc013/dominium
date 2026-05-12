@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-01
+Phase: CONVERGE-02
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -8,20 +8,23 @@ Stability: provisional
 
 The repository root is a coordination surface, not a general source directory. Root-level sprawl hides ownership, weakens mechanical validation, and causes future agents to bind work to convenient paths instead of canonical owners.
 
+`contracts/repo/root_allowlist.toml` is the machine-readable allowlist for root-level entries. `contracts/repo/layout.contract.toml` remains the broader source-layout convergence authority.
+
 ## Allowed Metadata Directories
 
-Allowed metadata/config roots are declared in `contracts/repo/layout.contract.toml` and include:
+Allowed metadata/config roots are declared in `contracts/repo/root_allowlist.toml` and include:
 
 - `.github/`
 - `.vscode/`
 - `.aide/`
+- `.codex/`
 - `.aide.local.example/`
 
 Other dot roots require explicit contract classification.
 
 ## Allowed Root Files
 
-Allowed root files are declared in the contract and include governance, project, build, license, security, contribution, README, and version identity files:
+Allowed root files are declared in the allowlist contract and include governance, project, build, license, security, contribution, README, and version identity files:
 
 - `AGENTS.md`
 - `CLAUDE.md`
@@ -30,12 +33,32 @@ Allowed root files are declared in the contract and include governance, project,
 - `CONTRIBUTING.md`
 - `DOMINIUM.md`
 - `GOVERNANCE.md`
+- `LICENSE`
 - `LICENSE.md`
+- `MODDING.md`
 - `README.md`
 - `SECURITY.md`
+- `VERSION_CLIENT`
+- `VERSION_ENGINE`
+- `VERSION_GAME`
+- `VERSION_LAUNCHER`
+- `VERSION_SERVER`
+- `VERSION_SETUP`
+- `VERSION_SUITE`
+- `VERSION_TOOLS`
 - `VERSION_*`
 
-The contract may also allow specific existing project files such as changelogs or tool metadata. New root files should be avoided unless they are project-level coordination files and are added to the contract deliberately.
+The contract may also allow specific existing project files such as changelogs or tool metadata. Additional `VERSION_*` files should be reviewed and added deliberately.
+
+## Forbidden New Root Patterns
+
+Do not add new root-level product, domain, schema, runtime-adapter, or generated-output folders. New work should bind to the existing contract targets:
+
+- product entrypoints under `apps/`
+- domain implementation under `game/domains/`
+- schemas and registries under `contracts/`
+- runtime adapters under `runtime/`
+- generated output only under explicitly governed output roots
 
 ## Generated Roots
 
@@ -56,3 +79,15 @@ The existing root-level `repo/` must be classified and migrated later by ownersh
 ## Version And Project Policy Files
 
 `VERSION_*` files are allowed root identity files. README, license, security, contributing, governance, and agent instruction files may remain at root when they represent repository-wide coordination.
+
+## Validator Policy
+
+Both root validators are audit-only by default:
+
+- `python tools/validators/check_repo_layout.py --repo-root .`
+- `python tools/validators/check_root_allowlist.py --repo-root .`
+
+Strict modes are explicit and may fail until convergence removes or classifies transitional roots:
+
+- `python tools/validators/check_repo_layout.py --repo-root . --strict`
+- `python tools/validators/check_root_allowlist.py --repo-root . --strict`

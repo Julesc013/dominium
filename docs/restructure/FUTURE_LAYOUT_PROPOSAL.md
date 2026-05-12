@@ -1,12 +1,24 @@
 Status: CANONICAL
 Last Reviewed: 2026-03-13
 Supersedes: none
-Superseded By: none
+Superseded By: `contracts/repo/layout.contract.toml` for current source repo layout convergence authority
 Stability: provisional
 Future Series: RESTRUCTURE
-Replacement Target: executed post-v0.0.0 layout migration plan with shim retirement after one stable release
+Replacement Target: retained planning input for later migration; current authority is `contracts/repo/layout.contract.toml` plus `docs/repo/REPO_LAYOUT_TARGET.md`
 
 # Future Layout Proposal
+
+## CONVERGE-02 Notice
+
+This document is retained as planning/reference material. It is not the current machine-readable source repo layout authority.
+
+Current convergence authority:
+
+- source layout contract: `contracts/repo/layout.contract.toml`
+- root allowlist contract: `contracts/repo/root_allowlist.toml`
+- human target explanation: `docs/repo/REPO_LAYOUT_TARGET.md`
+
+Do not use this document alone to decide new paths.
 
 This document is a no-move planning artifact for the future repository restructure. It uses the current repository inventory, canon reconciliation, and the existing build/entrypoint surfaces to define a target layout that can be reached incrementally without changing semantics, build outputs, product ids, or install behavior.
 

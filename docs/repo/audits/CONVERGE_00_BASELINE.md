@@ -407,3 +407,7 @@ This section is only a recommendation. CONVERGE-01 was not implemented by this t
 ## CONVERGE-01 Follow-up Note
 
 CONVERGE-01 added the first machine-readable source repository layout contract, contract schema, non-blocking root layout validator, generated root inventory, generated root move map, and concise repo layout documentation for target layout, ownership rules, domain split rules, and root-file policy.
+
+## CONVERGE-02 Follow-up Note
+
+CONVERGE-02 added a root allowlist contract and non-blocking root allowlist validator, marked stale layout authority docs as legacy/planning/reference surfaces for current source-layout purposes, and performed no physical moves.

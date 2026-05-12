@@ -1,12 +1,24 @@
 Status: CANONICAL
 Last Reviewed: 2026-02-01
 Supersedes: none
-Superseded By: none
+Superseded By: `contracts/repo/layout.contract.toml` for current source repo layout convergence authority
 Stability: provisional
 Future Series: DOC-CONVERGENCE
-Replacement Target: patched document aligned to current canon ownership and release scope
+Replacement Target: `contracts/repo/layout.contract.toml` plus `docs/repo/REPO_LAYOUT_TARGET.md`
 
 # ARCH_REPO_LAYOUT — Canonical Repository Layout and Ownership
+
+## CONVERGE-02 Notice
+
+This document is retained as legacy/reference material. It is not the current machine-readable source repo layout authority.
+
+Current convergence authority:
+
+- source layout contract: `contracts/repo/layout.contract.toml`
+- root allowlist contract: `contracts/repo/root_allowlist.toml`
+- human target explanation: `docs/repo/REPO_LAYOUT_TARGET.md`
+
+Do not use this document alone to decide new paths.
 
 ## Patch Notes
 

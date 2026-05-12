@@ -1,9 +1,9 @@
 {
-  "generated_at_utc": "2026-05-12T02:44:51Z",
+  "generated_at_utc": "2026-05-12T02:52:56Z",
   "repo_root": "C:/Inbox/Git Repos/dominium",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-01",
-  "head_sha": "156cd84de31cd117bc81efc59ddc7a24f6364a7b",
+  "head_sha": "bd087a97a431148def05686c2c6dc8958845c787",
   "entries": [
     {
       "name": ".agentignore",

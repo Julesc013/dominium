@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dominium.local/contracts/repo/root_allowlist.schema.json",
+  "title": "Dominium Root Allowlist Contract",
+  "description": "Broad JSON Schema for the TOML-to-object shape of contracts/repo/root_allowlist.toml.",
+  "type": "object",
+  "required": [
+    "contract",
+    "policy",
+    "canonical_directories",
+    "optional_directories",
+    "metadata_directories",
+    "allowed_root_files",
+    "transitional_directories",
+    "forbidden_root_patterns"
+  ],
+  "properties": {
+    "contract": {
+      "type": "object",
+      "required": ["id", "status", "enforcement", "phase"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "const": "dominium.repo.root_allowlist.v1"
+        },
+        "status": {
+          "type": "string"
+        },
+        "enforcement": {
+          "type": "string",
+          "enum": ["audit", "strict", "disabled"]
+        },
+        "phase": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "default_for_unknown_root",
+        "audit_exits_zero",
+        "strict_fails_unknown_root",
+        "strict_fails_forbidden_root",
+        "strict_fails_missing_expected_root",
+        "source_repo_layout_is_not_runtime_layout"
+      ],
+      "additionalProperties": true
+    },
+    "canonical_directories": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/directory_rule"
+      }
+    },
+    "optional_directories": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/directory_rule"
+      }
+    },
+    "metadata_directories": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/directory_rule"
+      }
+    },
+    "allowed_root_files": {
+      "type": "object",
+      "properties": {
+        "allowed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "patterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "transitional_directories": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["classification", "target_or_review", "retire_by_phase", "notes"],
+        "additionalProperties": true
+      }
+    },
+    "forbidden_root_patterns": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "patterns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "directory_rule": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

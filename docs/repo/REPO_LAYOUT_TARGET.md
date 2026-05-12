@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-01
+Phase: CONVERGE-02
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -9,7 +9,20 @@ Replacement Target: hardened source repository layout contract after controlled 
 
 `contracts/repo/layout.contract.toml` is the machine-readable authority for Dominium source repository layout during convergence. This document explains that contract for human readers; the validator reads the contract, not this prose.
 
-CONVERGE-01 does not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity.
+`contracts/repo/root_allowlist.toml` is the machine-readable allowlist for current and transitional root-level entries.
+
+CONVERGE-01 and CONVERGE-02 do not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity.
+
+## CONVERGE-02 Authority Note
+
+Older layout documents may remain useful historical or planning inputs, but they are no longer standalone current physical-layout authority during convergence. Use:
+
+- machine-readable layout authority: `contracts/repo/layout.contract.toml`
+- machine-readable root allowlist: `contracts/repo/root_allowlist.toml`
+- stale-doc orientation: `docs/repo/STALE_LAYOUT_AUTHORITY.md`
+- human target explanation: this document
+
+The current repository still contains transitional roots until later convergence phases. Strict allowlist and layout modes are expected to fail until those roots are moved, split, archived, or explicitly reclassified.
 
 ## Target Roots
 
@@ -45,8 +58,8 @@ Do not infer `dist/`, `store/`, `instances/`, `saves/`, media, package, or insta
 
 Later CONVERGE tasks may use the contract, inventory, and move map to plan controlled changes:
 
-- CONVERGE-02: stale layout authority supersession.
-- CONVERGE-03: root allowlist and root-file policy hardening.
+- CONVERGE-02: stale layout authority supersession and root allowlist hardening.
+- CONVERGE-03: complete root inventory and move map refinement.
 - CONVERGE-05: archive, attic, legacy, and quarantine convergence.
 - CONVERGE-06: contract, schema, compatibility, and lock convergence.
 - CONVERGE-07: runtime, AppShell, platform, render, UI, network, and diagnostics convergence.

@@ -39,6 +39,8 @@ See `docs/ARCHITECTURE.md` for the technical model.
 
 ## High-Level Architecture
 
+Repository layout is undergoing convergence. For current machine-readable layout convergence authority, see `contracts/repo/layout.contract.toml`, `contracts/repo/root_allowlist.toml`, and `docs/repo/REPO_LAYOUT_TARGET.md`.
+
 - **Engine (`engine/`)**: deterministic simulation substrate (C89)
 - **Game (`game/`)**: meaning/rules layer on engine APIs (C++98)
 - **Client (`client/`)**: presentation and command projection

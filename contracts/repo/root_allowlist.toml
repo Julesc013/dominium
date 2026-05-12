@@ -1,0 +1,125 @@
+[contract]
+id = "dominium.repo.root_allowlist.v1"
+status = "provisional"
+enforcement = "audit"
+phase = "CONVERGE-02"
+description = "Root-level allowlist contract for non-blocking repository convergence audit."
+
+[policy]
+default_for_unknown_root = "violation"
+audit_exits_zero = true
+strict_fails_unknown_root = true
+strict_fails_forbidden_root = true
+strict_fails_missing_expected_root = false
+source_repo_layout_is_not_runtime_layout = true
+
+[canonical_directories]
+apps = { required = false, notes = "Target product entrypoint root; may not exist until convergence moves." }
+engine = { required = true, notes = "Deterministic engine substrate." }
+game = { required = true, notes = "Dominium game/rules/domain layer." }
+runtime = { required = false, notes = "Target AppShell/platform/render/runtime root." }
+contracts = { required = true, notes = "Machine-readable contracts, schemas, registries, capabilities, compatibility, replay, repo/distribution contracts." }
+content = { required = false, notes = "Target packs, profiles, fixtures, datasets, assets." }
+docs = { required = true, notes = "Human documentation." }
+tests = { required = false, notes = "Test roots; may be split with module-local tests during migration." }
+tools = { required = true, notes = "Developer tooling, validators, migration, CI, review." }
+scripts = { required = true, notes = "Automation entrypoints." }
+cmake = { required = true, notes = "CMake modules." }
+external = { required = false, notes = "Vendored/external dependencies." }
+release = { required = false, notes = "Release definitions, recipes, matrices, signing metadata." }
+archive = { required = false, notes = "Historical/superseded/quarantined material." }
+
+[optional_directories]
+sdk = { notes = "Only for real external SDK surfaces; avoid as internal junk drawer." }
+examples = { notes = "Only for explicit example/samples surface." }
+
+[metadata_directories]
+".github" = { notes = "GitHub workflows and repository automation." }
+".vscode" = { notes = "Editor configuration." }
+".aide" = { notes = "AIDE local/project governance if present." }
+".codex" = { notes = "Codex local/project configuration if present." }
+".aide.local.example" = { notes = "AIDE local-state example if present." }
+
+[allowed_root_files]
+allowed = [".agentignore", ".gitattributes", ".gitignore", "AGENTS.md", "CHANGELOG.md", "CLAUDE.md", "CMakeLists.txt", "CMakePresets.json", "CODE_CHANGE_JUSTIFICATION.md", "CONTRIBUTING.md", "DOMINIUM.md", "GOVERNANCE.md", "LICENSE", "LICENSE.md", "MODDING.md", "README.md", "SECURITY.md", "sitecustomize.py", "VERSION_CLIENT", "VERSION_ENGINE", "VERSION_GAME", "VERSION_LAUNCHER", "VERSION_SERVER", "VERSION_SETUP", "VERSION_SUITE", "VERSION_TOOLS"]
+patterns = ["VERSION_*"]
+
+[transitional_directories]
+app = { classification = "transitional_runtime_root", target_or_review = "runtime/app", retire_by_phase = "CONVERGE-07", notes = "Current runtime/app substrate; split only after boundary review." }
+appshell = { classification = "transitional_runtime_root", target_or_review = "runtime/appshell", retire_by_phase = "CONVERGE-07", notes = "Current AppShell root; final home is runtime/appshell after review." }
+client = { classification = "transitional_product_root", target_or_review = "apps/client", retire_by_phase = "CONVERGE-08", notes = "Current product root; final app root should be apps/client." }
+server = { classification = "transitional_product_root", target_or_review = "apps/server", retire_by_phase = "CONVERGE-08", notes = "Current product root; final app root should be apps/server." }
+setup = { classification = "transitional_product_root", target_or_review = "apps/setup", retire_by_phase = "CONVERGE-08", notes = "Current product root; final app root should be apps/setup." }
+launcher = { classification = "transitional_product_root", target_or_review = "apps/launcher", retire_by_phase = "CONVERGE-08", notes = "Current product root; final app root should be apps/launcher." }
+schema = { classification = "transitional_alias", target_or_review = "contracts/schemas", retire_by_phase = "CONVERGE-06", notes = "Legacy/current schema law root; preserve semantic authority during convergence." }
+schemas = { classification = "transitional_alias", target_or_review = "contracts/schemas", retire_by_phase = "CONVERGE-06", notes = "Validator-facing schema projection; do not silently replace schema law." }
+lib = { classification = "transitional_alias", target_or_review = "review", retire_by_phase = "CONVERGE-06", notes = "Classify by ownership before moving." }
+libs = { classification = "transitional_alias", target_or_review = "review", retire_by_phase = "CONVERGE-06", notes = "Classify by ownership before moving." }
+repo = { classification = "transitional_control_plane_root", target_or_review = "contracts/repo or docs/repo or tools/migration", retire_by_phase = "CONVERGE-06", notes = "Existing root-level repo is transitional; do not add new authority here." }
+data = { classification = "transitional_mixed_data_root", target_or_review = "content/contracts/docs/tools split", retire_by_phase = "CONVERGE-09", notes = "Mixed registries, content, planning mirrors, and evidence." }
+packs = { classification = "transitional_content_root", target_or_review = "content/packs", retire_by_phase = "CONVERGE-09", notes = "Current runtime pack substrate; pack ownership remains review-sensitive." }
+profiles = { classification = "transitional_content_root", target_or_review = "content/profiles", retire_by_phase = "CONVERGE-09", notes = "Profile data should converge under content if not runtime state." }
+bundles = { classification = "transitional_content_or_export_root", target_or_review = "content or generated exports review", retire_by_phase = "CONVERGE-09", notes = "Authored bundles and generated exports require split review." }
+updates = { classification = "transitional_release_root", target_or_review = "release or ops review", retire_by_phase = "CONVERGE-06", notes = "Update metadata belongs to release/control-plane ownership after review." }
+locks = { classification = "transitional_contract_root", target_or_review = "contracts/replay or runtime/locks or ops/transactions", retire_by_phase = "CONVERGE-06", notes = "Split deterministic locks, runtime locks, and ops transactions." }
+compat = { classification = "transitional_contract_root", target_or_review = "contracts/compatibility plus runtime adapters", retire_by_phase = "CONVERGE-06", notes = "Split compatibility law from runtime adapters." }
+core = { classification = "transitional_runtime_root", target_or_review = "runtime/core or game domain review", retire_by_phase = "CONVERGE-07", notes = "Likely mixed; do not move wholesale." }
+field = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Compatibility facade; field ownership must respect fields review." }
+fields = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Canonical semantic field substrate; split by ownership." }
+process = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Process domain is ownership-sensitive because mutation must stay lawful." }
+ui = { classification = "transitional_runtime_root", target_or_review = "runtime/ui", retire_by_phase = "CONVERGE-07", notes = "UI is presentation/adaptation only." }
+diag = { classification = "transitional_runtime_root", target_or_review = "runtime/diagnostics", retire_by_phase = "CONVERGE-07", notes = "Diagnostic runtime substrate." }
+control = { classification = "transitional_runtime_root", target_or_review = "runtime/control plus contracts review", retire_by_phase = "CONVERGE-07", notes = "Control surfaces must preserve process-only mutation." }
+net = { classification = "transitional_runtime_root", target_or_review = "runtime/network", retire_by_phase = "CONVERGE-07", notes = "Network adapters require authority boundary review." }
+astro = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+chem = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+electric = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+fluid = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+geo = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+logic = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+materials = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+mechanics = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+physics = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+pollution = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+signals = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+system = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+thermal = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+universe = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+worldgen = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+mobility = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+logistics = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+economy = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+civilization = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+ecology = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+diegetics = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+embodiment = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+epistemics = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+infrastructure = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+inspection = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+interaction = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+interior = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+machines = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+reality = { classification = "split_required_domain_root", target_or_review = "contracts/game/content/docs/tests split", retire_by_phase = "CONVERGE-09", notes = "Domain root must be split, not moved wholesale." }
+archive = { classification = "canonical_or_transitional_archive_root", target_or_review = "archive", retire_by_phase = "CONVERGE-05", notes = "Target archive root exists; contents still require future review." }
+attic = { classification = "transitional_archive_root", target_or_review = "archive/historical", retire_by_phase = "CONVERGE-05", notes = "Historical material should converge under archive." }
+legacy = { classification = "transitional_archive_root", target_or_review = "archive/legacy", retire_by_phase = "CONVERGE-05", notes = "Legacy material should converge under archive." }
+quarantine = { classification = "transitional_archive_root", target_or_review = "archive/quarantine", retire_by_phase = "CONVERGE-05", notes = "Quarantined material should remain visible and provenance-preserved." }
+dist = { classification = "generated_or_release_output", target_or_review = "generated output unless explicit exception", retire_by_phase = "review", notes = "Distribution output root; source authority lives in release/contracts." }
+artifacts = { classification = "generated_or_ephemeral", target_or_review = "generated evidence or release review", retire_by_phase = "review", notes = "Generated or release-adjacent artifacts require provenance review." }
+build = { classification = "generated_or_ephemeral", target_or_review = "generated build output", retire_by_phase = "review", notes = "Generated build output; not source authority." }
+out = { classification = "generated_or_ephemeral", target_or_review = "generated build output", retire_by_phase = "review", notes = "Generated build output; not source authority." }
+governance = { classification = "transitional_docs_root", target_or_review = "docs/governance", retire_by_phase = "CONVERGE-02", notes = "Governance mirrors must not compete with AGENTS.md." }
+ide = { classification = "transitional_tooling_root", target_or_review = "cmake or tools review", retire_by_phase = "CONVERGE-03", notes = "IDE projections require ownership review." }
+labs = { classification = "transitional_review_root", target_or_review = "review", retire_by_phase = "CONVERGE-03", notes = "Experimental material requires review before binding." }
+meta = { classification = "transitional_review_root", target_or_review = "review", retire_by_phase = "CONVERGE-03", notes = "Meta surfaces require ownership review." }
+modding = { classification = "transitional_content_root", target_or_review = "content/modding plus contracts/docs split", retire_by_phase = "CONVERGE-09", notes = "Modding may include content, contracts, and docs." }
+models = { classification = "transitional_content_root", target_or_review = "content/models", retire_by_phase = "CONVERGE-09", notes = "Model data requires generated/runtime distinction." }
+performance = { classification = "transitional_tooling_root", target_or_review = "tools/performance", retire_by_phase = "CONVERGE-03", notes = "Performance tooling/evidence should stay tool/evidence scoped." }
+safety = { classification = "transitional_contract_root", target_or_review = "contracts/safety or docs/safety", retire_by_phase = "CONVERGE-06", notes = "Safety policy belongs under contracts or docs depending on authority." }
+security = { classification = "transitional_contract_root", target_or_review = "contracts/security or docs/security", retire_by_phase = "CONVERGE-06", notes = "Security and trust surfaces are protected and review-sensitive." }
+specs = { classification = "transitional_contract_root", target_or_review = "contracts/specs", retire_by_phase = "CONVERGE-06", notes = "Normative specs must retain authority during convergence." }
+templates = { classification = "transitional_content_root", target_or_review = "content/templates", retire_by_phase = "CONVERGE-09", notes = "Templates may be authored content, contract inputs, or generated inputs." }
+validation = { classification = "transitional_tooling_root", target_or_review = "tools/validation", retire_by_phase = "CONVERGE-03", notes = "Validation tooling belongs under tools unless it is contract law." }
+
+[forbidden_root_patterns]
+patterns = ["new_domain_root", "new_product_root_outside_apps", "new_schema_root_outside_contracts", "new_runtime_adapter_root_outside_runtime", "generated_output_without_exception"]
