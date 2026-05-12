@@ -117,3 +117,7 @@ POST-CONVERGE-02 reduces active layout exceptions to 32 by retiring `__init__.py
 ## POST-CONVERGE-04 Enforcement Status
 
 POST-CONVERGE-04 keeps the active layout exception count at 32 after narrowing high-risk `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` exceptions. These roots remain explicit protected review items in `contracts/repo/layout_exceptions.toml`; strict validators continue to require zero unexcepted root-layout violations.
+
+## POST-CONVERGE-05 Enforcement Status
+
+POST-CONVERGE-05 keeps the active layout exception count at 32 after narrowing `core/`, `control/`, and `net/` exceptions. These roots remain explicit protected review items in `contracts/repo/layout_exceptions.toml`; strict validators continue to require zero unexcepted root-layout violations and no hidden source-root authority.

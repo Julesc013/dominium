@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T10:20:23Z",
+  "generated_at_utc": "2026-05-12T10:33:37Z",
   "repo_root": ".",
-  "head_sha": "ed571cd32cd9c5ec53786f24919f87d64710f031",
+  "head_sha": "44bf83626fd1efade2d8e96ffe5bf8497a5aed3b",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
   "active_exception_count": 32,
@@ -671,7 +671,7 @@
       "completed_notes": "",
       "exception_id": "control_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "runtime/control, contracts, game, or tools review"
+      "exception_target": "protected control ownership review: runtime-bound adapters to runtime/control, machine-readable control policy to contracts/control, docs to docs/control, tools/tests to their owning roots"
     },
     {
       "name": "core",
@@ -699,7 +699,7 @@
       "completed_notes": "",
       "exception_id": "core_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "engine, game, runtime, contracts, or tools split review"
+      "exception_target": "protected core ownership review: universal deterministic primitives to engine, domain-specific logic to game/domains, contracts to contracts, tooling/tests to their owning roots"
     },
     {
       "name": "data",
@@ -1742,7 +1742,7 @@
       "completed_notes": "",
       "exception_id": "net_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "runtime/network plus apps/server and contracts review"
+      "exception_target": "protected network ownership review: runtime adapters to runtime/network, server composition to apps/server, protocol contracts to contracts/protocols/network, docs/tests/tools to their owning roots"
     },
     {
       "name": "network",

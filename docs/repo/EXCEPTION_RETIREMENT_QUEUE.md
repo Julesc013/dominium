@@ -157,6 +157,8 @@ Notes:
 
 ### POST-CONVERGE-05 - Core / Control / Net Ownership Review
 
+Status: completed with protected review carryover.
+
 Scope:
 
 - `core`
@@ -167,6 +169,23 @@ Goal:
 
 - classify by actual ownership
 - preserve process-only mutation, authority, runtime, network, and server semantics
+
+Result:
+
+- Retired: none.
+- Moved: none.
+- Left active for protected review: `core`, `control`, `net`.
+- Active exception count after cleanup: 32.
+- Cleanup audit: `docs/repo/audits/POST_CONVERGE_05_CORE_CONTROL_NET_REVIEW.md`.
+- Ownership note: `docs/repo/CORE_CONTROL_NET_OWNERSHIP.md`.
+
+Notes:
+
+- `core/` remains active deterministic substrate used by game domains, tools, and XStack session runtime.
+- `control/` remains active control gateway, Control IR, negotiation, fidelity, planning, capability, view, effects, and proof implementation.
+- `net/` remains active transport, server-authoritative, lockstep, SRZ hybrid, anti-cheat, shard coordination, and deterministic network test-harness implementation.
+- Process-only mutation, authority, server, network protocol, anti-cheat, SRZ, resync, and replay semantics were not changed.
+- Next task: POST-CONVERGE-06.
 
 ### POST-CONVERGE-06 - Build and FAST Gate Remediation
 

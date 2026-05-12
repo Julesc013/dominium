@@ -280,3 +280,17 @@ Current high-risk inventory state:
 - `safety/`, `security/`, and `specs/` remain protected semantics surfaces; `specs/reality/` authority is unchanged.
 - `updates/` remains tracked RepoX-generated update feed material referenced by release/update tooling.
 - Unexcepted strict violations: 0.
+
+## POST-CONVERGE-05 Core / Control / Net Ownership Review
+
+POST-CONVERGE-05 inspected `core`, `control`, and `net` and kept them active as narrowed protected ownership exceptions.
+
+Current core/control/net inventory state:
+
+- Active layout exception count: 32.
+- Retired in this task: none.
+- `core/` remains active deterministic substrate for constraints, flow, graph/routing, hazards, schedules, spatial transforms, and state machines.
+- `control/` remains active deterministic control gateway, Control IR, negotiation, fidelity, planning, capability, view, effects, and proof implementation.
+- `net/` remains active transport, server-authoritative, lockstep, SRZ hybrid, anti-cheat, shard coordination, and deterministic network test-harness implementation.
+- Ownership note: `docs/repo/CORE_CONTROL_NET_OWNERSHIP.md`.
+- Unexcepted strict violations: 0.

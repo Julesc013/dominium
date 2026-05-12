@@ -25,15 +25,15 @@ No hidden exceptions are allowed. The table below is explanatory; the TOML ledge
 | `dist_root` | `dist` | `generated_exception` | Tracked distribution projection files remain. | distribution projection policy review | POST-CONVERGE | medium | POST-CONVERGE-01 found 13 tracked projection files and left the exception active. |
 | `bundles_root` | `bundles` | `partial_review` | Active bundle profile source referenced by XStack control tooling, skills, and docs. | protected bundle ownership review | POST-CONVERGE | high | Bundle IDs and lock semantics unchanged. |
 | `compat_root` | `compat` | `partial_review` | Active compatibility implementation, migration/refusal helpers, and shims are imported by client, server, runtime, tooling, and tests. | protected compatibility split review | POST-CONVERGE | high | POST-CONVERGE-04 made no moves; compatibility semantics and shim imports are preserved. |
-| `control_root` | `control` | `partial_review` | Control surfaces are process-sensitive and mixed. | runtime, contracts, game, or tools review | POST-CONVERGE | high | Preserve process-only mutation. |
-| `core_root` | `core` | `partial_review` | Core material may include universal primitives or mixed surfaces. | engine, game, runtime, contracts, or tools split | POST-CONVERGE | high | Do not classify by name alone. |
+| `control_root` | `control` | `partial_review` | Active deterministic control gateway, IR, negotiation, fidelity, planning, capability, view, effect, and proof engines are imported by apps/client, game domains, net policies, tools, and XStack. | protected control ownership review | POST-CONVERGE | high | POST-CONVERGE-05 made no moves; process-only mutation, authority gates, proof, and Control IR semantics are preserved. |
+| `core_root` | `core` | `partial_review` | Active deterministic substrate helpers for constraints, flow, graph/routing, hazards, schedules, spatial transforms, and state machines are imported by domains, tools, and XStack. | protected core ownership review | POST-CONVERGE | high | POST-CONVERGE-05 made no moves; deterministic substrate semantics and import paths are preserved. |
 | `data_root` | `data` | `partial_review` | Large mixed surface: registries, authored pack declarations, world/domain data, planning mirrors, generated evidence, baselines, release/runtime data, and XStack metadata. | file-family split review | POST-CONVERGE | high | `data/packs` remains scoped authored pack content/declaration authority and residual-quarantined for single-root convergence. |
 | `lib_root` | `lib` | `partial_review` | Active Python install, instance, save, store, bundle, import/export, and artifact library implementation is imported by runtime, tools, and tests. | protected library ownership review | POST-CONVERGE | high | POST-CONVERGE-04 made no moves; Python import and install/save/store semantics are preserved. |
 | `libs_root` | `libs` | `partial_review` | Build- and ABI-critical C/C++ libraries, CMake targets, and public dom_contracts headers are actively referenced. | protected build/interface ownership review | POST-CONVERGE | high | POST-CONVERGE-04 made no moves; CMake targets, include paths, and ABI surfaces are preserved. |
 | `locks_root` | `locks` | `partial_review` | Concrete pack lock artifact embeds path, hash, ordered pack, profile bundle, and universal identity metadata. | protected lock artifact ownership review | POST-CONVERGE | high | POST-CONVERGE-04 made no moves; lockfile identity and distribution copy behavior are preserved. |
 | `modding_root` | `modding` | `partial_review` | Active mod trust and capability policy implementation imported by product/server and XStack/tooling. | protected mod policy ownership review | POST-CONVERGE | high | Not docs-only or authored mod content. |
 | `models_root` | `models` | `partial_review` | Active constitutive model engine imported by engine, game domains, meta, and tests. | protected model engine ownership review | POST-CONVERGE | high | Not authored model assets. |
-| `net_root` | `net` | `partial_review` | Network material remains mixed. | runtime/network plus apps/server and contracts review | POST-CONVERGE | high | Preserve runtime and server behavior. |
+| `net_root` | `net` | `partial_review` | Active network transport, server-authoritative, lockstep, SRZ hybrid, anti-cheat, shard coordination, and test-harness modules are imported by apps, tools, and XStack tests. | protected network ownership review | POST-CONVERGE | high | POST-CONVERGE-05 made no moves; network protocol, server authority, anti-cheat, SRZ, resync, and replay semantics are preserved. |
 | `packs_root` | `packs` | `partial_review` | Active runtime pack substrate for packaging, activation, compatibility, trust, capabilities, and distribution descriptors. | protected pack ownership review | POST-CONVERGE | high | Preserve `packs/` runtime-packaging scope and `data/packs/` authored-content scope. |
 | `profiles_root` | `profiles` | `partial_review` | Active MVP profile bundle with embedded identity, fingerprint, content hash, and rel-path metadata. | profile ownership review before relocation | POST-CONVERGE | high | Profile IDs and hashes unchanged. |
 | `repo_root` | `repo` | `partial_review` | Active release policy, RepoX rulesets/exemptions, and canon state are referenced by governance, release, and planning surfaces. | protected repo control-plane split review | POST-CONVERGE | high | POST-CONVERGE-04 made no moves; release/control-plane semantics are preserved. |
@@ -116,3 +116,16 @@ POST-CONVERGE-04 narrowed high-risk contract, compatibility, library, lock, repo
 - Compatibility, security, safety, update, lockfile, ABI, and build semantics were not changed.
 - Unexcepted strict violation count: 0.
 - Cleanup audit: `docs/repo/audits/POST_CONVERGE_04_COMPAT_LIB_SPEC_SECURITY_CLEANUP.md`.
+
+## POST-CONVERGE-05 Core / Control / Net Ownership Review
+
+POST-CONVERGE-05 narrowed the final high-risk `core`, `control`, and `net` exceptions after protected ownership review.
+
+- Active exception count: 32.
+- Retired exception count: 5.
+- Retired in this task: none.
+- Active target exceptions kept for protected review: `core_root`, `control_root`, `net_root`.
+- Process-only mutation, authority/control, network protocol, server, anti-cheat/integrity, SRZ/shard/resync, ABI, and build semantics were not changed.
+- Ownership note: `docs/repo/CORE_CONTROL_NET_OWNERSHIP.md`.
+- Unexcepted strict violation count: 0.
+- Cleanup audit: `docs/repo/audits/POST_CONVERGE_05_CORE_CONTROL_NET_REVIEW.md`.

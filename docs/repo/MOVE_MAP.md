@@ -240,3 +240,13 @@ POST-CONVERGE-04 performed no physical high-risk moves. The move-map targets for
 - `updates`: tracked RepoX-generated update feeds referenced by release/update tooling.
 
 No compatibility, security, safety, update, lockfile, ABI, build, product, runtime, or support-matrix semantics changed.
+
+## POST-CONVERGE-05 Core / Control / Net Ownership Review
+
+POST-CONVERGE-05 performed no physical core/control/net moves. The move-map targets for these roots remain protected review targets only and must not be executed without a later ownership task that can preserve deterministic substrate, process-only mutation, authority, network protocol, server, anti-cheat, SRZ, resync, and replay semantics.
+
+- `core`: active deterministic substrate used by game domains, tools, and XStack session runtime.
+- `control`: active control gateway, Control IR, negotiation, fidelity, planning, capability, view, effects, and proof implementation.
+- `net`: active transport, server-authoritative, lockstep, SRZ hybrid, anti-cheat, shard coordination, and deterministic network test-harness implementation.
+
+No product, runtime, engine, domain, build, ABI, process, authority, network, server, integrity, SRZ, or support-matrix semantics changed.

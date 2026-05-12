@@ -267,25 +267,25 @@ notes = "POST-CONVERGE-04 made no moves here; compatibility semantics, migration
 path = "control"
 kind = "directory"
 classification = "partial_review"
-reason = "Control surfaces are process-mutation-sensitive and remain mixed after runtime/domain convergence."
+reason = "Active deterministic control gateway, IR, negotiation, fidelity, planning, capability, view, effect, and proof engines are imported by apps/client, game domains, net policies, tools, and XStack."
 retirement_phase = "POST-CONVERGE"
-target = "runtime/control, contracts, game, or tools review"
+target = "protected control ownership review: runtime-bound adapters to runtime/control, machine-readable control policy to contracts/control, docs to docs/control, tools/tests to their owning roots"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Process-only mutation invariants must be preserved."
+notes = "POST-CONVERGE-05 made no moves here; process-only mutation, authority gates, control proof, and Control IR semantics are preserved."
 
 [exceptions.core_root]
 path = "core"
 kind = "directory"
 classification = "partial_review"
-reason = "Core substrate material may include universal engine primitives or mixed domain/runtime surfaces."
+reason = "Active deterministic substrate helpers for constraints, flow, graph/routing, hazards, schedules, spatial transforms, and state machines are imported by game domains, tools, and XStack session runtime."
 retirement_phase = "POST-CONVERGE"
-target = "engine, game, runtime, contracts, or tools split review"
+target = "protected core ownership review: universal deterministic primitives to engine, domain-specific logic to game/domains, contracts to contracts, tooling/tests to their owning roots"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Do not classify by name alone."
+notes = "POST-CONVERGE-05 made no moves here; deterministic substrate semantics and existing import paths are preserved."
 
 [exceptions.data_root]
 path = "data"
@@ -363,13 +363,13 @@ notes = "POST-CONVERGE-03 found this is implementation code, not authored model 
 path = "net"
 kind = "directory"
 classification = "partial_review"
-reason = "Network-related material remains mixed across runtime adapters, server policy, anti-cheat, and SRZ code."
+reason = "Active network transport, server-authoritative, lockstep, SRZ hybrid, anti-cheat, shard coordination, and deterministic test-harness modules are imported by apps/client, apps/server, tools, and XStack tests."
 retirement_phase = "POST-CONVERGE"
-target = "runtime/network plus apps/server and contracts review"
+target = "protected network ownership review: runtime adapters to runtime/network, server composition to apps/server, protocol contracts to contracts/protocols/network, docs/tests/tools to their owning roots"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Do not move wholesale without preserving runtime and server behavior."
+notes = "POST-CONVERGE-05 made no moves here; network protocol, server authority, anti-cheat, SRZ, resync, and replay semantics are preserved."
 
 [exceptions.packs_root]
 path = "packs"

@@ -152,6 +152,8 @@ After POST-CONVERGE-03, content/package/profile/bundle review did not retire add
 
 After POST-CONVERGE-04, high-risk contract/security/update review did not retire additional roots. `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` remain explicit active exceptions because they are implementation-backed, build/ABI-sensitive, identity-sensitive, generated-feed-backed, or protected semantics surfaces. New pure contracts should use `contracts/`, release/update recipes should use reviewed `release/` ownership, and no new root-level compatibility, security, safety, spec, lock, repo, or update authority should be added.
 
+After POST-CONVERGE-05, `core/`, `control/`, and `net/` remain explicit active protected review exceptions. New deterministic substrate should normally land under `engine/` when universal or `game/domains/` when domain-specific; new control or network contracts should land under `contracts/`; new runtime adapters should land under reviewed runtime ownership; new human explanation should land under `docs/`. Do not add new root-level core/control/net authority.
+
 No broad wildcard exceptions are allowed without a reviewed task. Add one exception per root, file, or tightly scoped pattern, and include a reason, target or review target, risk, and retirement phase.
 
 `VERSION_*` files remain allowed root identity files through the root allowlist pattern and explicit known file list. New non-version root files require allowlist review or an exception.
