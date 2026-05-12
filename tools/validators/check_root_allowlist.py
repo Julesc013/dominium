@@ -244,6 +244,8 @@ def classify_entry(name, kind, contract):
         return CLASS_ALLOWED_FILE, name, "", "Allowed root file."
     if kind == "directory" and name in transitional:
         info = transitional[name]
+        if info.get("retired", False):
+            return CLASS_VIOLATION, info.get("target_or_review", "review"), info.get("retire_by_phase", ""), info.get("notes", "")
         raw_class = info.get("classification", "transitional")
         if raw_class.startswith("generated"):
             classification = CLASS_GENERATED

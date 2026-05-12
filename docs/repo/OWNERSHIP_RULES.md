@@ -1,12 +1,12 @@
 Status: PROVISIONAL
-Phase: CONVERGE-03
+Phase: CONVERGE-05
 Supersedes: none
 Superseded By: none
 Stability: provisional
 
 # Repository Ownership Rules
 
-These rules explain the ownership model encoded in `contracts/repo/layout.contract.toml`. They do not authorize physical moves in CONVERGE-01.
+These rules explain the ownership model encoded in `contracts/repo/layout.contract.toml`. Physical moves require an explicit CONVERGE phase and must stay within that phase scope.
 
 ## `contracts/`
 
@@ -61,6 +61,14 @@ Runtime and product code must not depend on tools. Tools may inspect broad repo 
 Owns historical, superseded, quarantined, generated-evidence, and legacy material.
 
 Archive material is visible for provenance and archaeology. It must not silently become active source authority.
+
+CONVERGE-05 made `archive/` the single archive-family ownership root. Root-level `attic/`, `legacy/`, and `quarantine/` are retired and their retained material lives under:
+
+- `archive/historical/attic/`
+- `archive/legacy/`
+- `archive/quarantine/`
+
+`archive/` does not own active source. Archived material must not become an active build input without an explicit reviewed exception. Quarantined material must remain visibly quarantined.
 
 ## CONVERGE-03 Ownership Surface Vocabulary
 

@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-03
+Phase: CONVERGE-05
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -10,7 +10,7 @@ The repository root is a coordination surface, not a general source directory. R
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for root-level entries. `contracts/repo/layout.contract.toml` remains the broader source-layout convergence authority.
 
-CONVERGE-03 records root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. Those files are planning evidence only and do not authorize moves.
+CONVERGE-03 recorded root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. CONVERGE-05 updated those artifacts after the archive-family move. Those files are planning evidence only and do not authorize unrelated moves.
 
 ## Allowed Metadata Directories
 
@@ -71,6 +71,18 @@ Do not add new root-level product, domain, schema, runtime-adapter, or generated
 Generated roots are evidence or output, not source ownership. `build/`, `out/`, `dist/`, and `artifacts/` must not become canonical source roots merely because tooling emits them.
 
 The move map records generated roots with generated/output handling and review notes. It does not delete them.
+
+## Archive-Family Roots
+
+Do not create new root-level archive-family directories. Use the canonical archive classes instead:
+
+- `archive/historical/`
+- `archive/legacy/`
+- `archive/quarantine/`
+- `archive/superseded/`
+- `archive/generated/`
+
+Root-level `attic/`, `legacy/`, and `quarantine/` were retired in CONVERGE-05. If a future tool needs to quarantine material, it must place it under `archive/quarantine/` or a later explicit quarantine contract.
 
 ## `dist/`
 

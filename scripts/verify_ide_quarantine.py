@@ -54,6 +54,8 @@ def is_allowed_projection_path(rel_path):
         "setup/**/xcode/**",
         "legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs/**",
         "legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/**",
+        "archive/legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs/**",
+        "archive/legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/**",
     ]
     for pattern in allow_patterns:
         if fnmatch.fnmatch(rel_path, pattern):

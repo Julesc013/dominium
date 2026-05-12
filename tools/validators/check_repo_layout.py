@@ -348,6 +348,19 @@ def _classify(name, kind, contract):
         }
     if name in aliases:
         info = aliases[name]
+        if info.get("retired", False):
+            target = info.get("target", "review")
+            return {
+                "classification": CLASS_VIOLATION,
+                "target": target,
+                "action": "retired_root_must_remain_under_archive",
+                "notes": (
+                    "Retired root alias; retained material belongs under {0}. {1}".format(
+                        target, info.get("notes", "")
+                    )
+                ).strip(),
+                "retire_by_phase": info.get("retire_by_phase", ""),
+            }
         return {
             "classification": info.get("classification", CLASS_TRANSITIONAL),
             "target": info.get("target", "review"),
@@ -717,6 +730,10 @@ def infer_move_entry(root):
         "semantic_change_allowed": False,
         "build_change_allowed": False,
         "notes": root["notes"],
+        "status": "not_started",
+        "completed_phase": "",
+        "completed_target": "",
+        "completed_notes": "",
     }
 
 
@@ -738,14 +755,57 @@ def load_existing_move_map(path):
     return by_name
 
 
-def merge_move_map(existing, roots):
+def completed_archive_move_entries(repo_root, roots):
+    present = set(root["name"] for root in roots)
+    completed = []
+    archive_targets = {
+        "attic": "archive/historical/attic",
+        "legacy": "archive/legacy",
+        "quarantine": "archive/quarantine",
+    }
+    for name, target in sorted(archive_targets.items()):
+        if name in present:
+            continue
+        target_path = os.path.join(repo_root, *target.split("/"))
+        if not os.path.exists(target_path):
+            continue
+        completed.append(
+            {
+                "name": name,
+                "current_path": name,
+                "proposed_target": target,
+                "action": "archive",
+                "classification": CLASS_TRANSITIONAL_ARCHIVE,
+                "ownership_surface": "archive",
+                "split_required": False,
+                "risk_level": "low",
+                "phase_hint": "CONVERGE-05",
+                "dependencies": [],
+                "preserve_paths": "Root path retired in CONVERGE-05; do not recreate a root-level compatibility shim.",
+                "shim_required": False,
+                "semantic_change_allowed": False,
+                "build_change_allowed": False,
+                "notes": "Completed in CONVERGE-05; root-level {0}/ moved under {1}/.".format(name, target),
+                "status": "completed",
+                "completed_phase": "CONVERGE-05",
+                "completed_target": target,
+                "completed_notes": "Root-level {0}/ is retired; material is retained under {1}/.".format(name, target),
+            }
+        )
+    return completed
+
+
+def merge_move_map(repo_root, existing, roots):
     entries = []
+    completed = completed_archive_move_entries(repo_root, roots)
     names = sorted(set(root["name"] for root in roots), key=lambda item: (item.casefold(), item))
     inferred_by_name = dict((root["name"], infer_move_entry(root)) for root in roots)
     for name in names:
         inferred = inferred_by_name.get(name)
         if inferred:
             entries.append(inferred)
+    entries.extend(completed)
+    entries.sort(key=lambda item: (item.get("name", "").casefold(), item.get("name", "")))
     return entries
 
 
@@ -783,7 +843,7 @@ def build_outputs(repo_root, contract, roots, inventory_out, move_map_path):
         "head_sha": sha,
         "source_branch": branch,
         "map_status": "complete",
-        "entries": merge_move_map(load_existing_move_map(move_map_path), roots),
+        "entries": merge_move_map(repo_root, load_existing_move_map(move_map_path), roots),
     }
     return inventory, move_map
 

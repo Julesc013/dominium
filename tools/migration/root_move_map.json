@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T03:13:56Z",
+  "generated_at_utc": "2026-05-12T03:25:28Z",
   "repo_root": ".",
-  "head_sha": "948790d7fca55a20067c3f4ab6cdfd14e15a12a5",
+  "head_sha": "5dc42ca3bd7faaec0ccbd9071e95e15f46afe248",
   "source_branch": "main",
   "map_status": "complete",
   "entries": [
@@ -21,7 +21,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": ".aide",
@@ -38,7 +42,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed metadata/config root."
+      "notes": "Allowed metadata/config root.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": ".aide.local.example",
@@ -55,7 +63,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed metadata/config root."
+      "notes": "Allowed metadata/config root.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": ".gitattributes",
@@ -72,7 +84,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": ".github",
@@ -89,7 +105,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed metadata/config root."
+      "notes": "Allowed metadata/config root.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": ".gitignore",
@@ -106,7 +126,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": ".vscode",
@@ -123,7 +147,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed metadata/config root."
+      "notes": "Allowed metadata/config root.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "__init__.py",
@@ -142,7 +170,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract."
+      "notes": "No matching root classification in layout contract.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "AGENTS.md",
@@ -159,7 +191,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "app",
@@ -180,7 +216,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Current runtime/app substrate; do not move in CONVERGE-01."
+      "notes": "Current runtime/app substrate; do not move in CONVERGE-01.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "appshell",
@@ -201,7 +241,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "AppShell should converge under runtime after boundary proof."
+      "notes": "AppShell should converge under runtime after boundary proof.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "archive",
@@ -218,7 +262,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Historical, superseded, quarantined, generated-evidence, and legacy material retained with provenance."
+      "notes": "Historical, superseded, quarantined, generated-evidence, and legacy material retained with provenance.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "artifacts",
@@ -237,7 +285,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Review before using as authority."
+      "notes": "Review before using as authority.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "astro",
@@ -258,26 +310,32 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/astro; contracts/registries/astro; game/domains/astro; content/domain-data/astro; docs/domains/astro; tests/determinism/astro; tests/fixtures/astro"
+      "notes": "contracts/schemas/astro; contracts/registries/astro; game/domains/astro; content/domain-data/astro; docs/domains/astro; tests/determinism/astro; tests/fixtures/astro",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "attic",
       "current_path": "attic",
-      "proposed_target": "archive/historical",
+      "proposed_target": "archive/historical/attic",
       "action": "archive",
       "classification": "transitional_archive_or_quarantine_root",
       "ownership_surface": "archive",
       "split_required": false,
       "risk_level": "low",
       "phase_hint": "CONVERGE-05",
-      "dependencies": [
-        "requires archive provenance review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-05; do not recreate a root-level compatibility shim.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Historical material should converge under archive."
+      "notes": "Completed in CONVERGE-05; root-level attic/ moved under archive/historical/attic/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-05",
+      "completed_target": "archive/historical/attic",
+      "completed_notes": "Root-level attic/ is retired; material is retained under archive/historical/attic/."
     },
     {
       "name": "bundles",
@@ -297,7 +355,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Authored bundles and generated exports require separate handling."
+      "notes": "Authored bundles and generated exports require separate handling.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "CHANGELOG.md",
@@ -314,7 +376,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "chem",
@@ -335,7 +401,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/chem; contracts/registries/chem; game/domains/chem; content/domain-data/chem; docs/domains/chem; tests/determinism/chem; tests/fixtures/chem"
+      "notes": "contracts/schemas/chem; contracts/registries/chem; game/domains/chem; content/domain-data/chem; docs/domains/chem; tests/determinism/chem; tests/fixtures/chem",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "CLAUDE.md",
@@ -352,7 +422,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "client",
@@ -373,7 +447,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Only thin product binding should remain under apps."
+      "notes": "Only thin product binding should remain under apps.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "cmake",
@@ -390,7 +468,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "CMake modules and build configuration helpers."
+      "notes": "CMake modules and build configuration helpers.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "CMakeLists.txt",
@@ -407,7 +489,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "CMakePresets.json",
@@ -424,7 +510,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "CODE_CHANGE_JUSTIFICATION.md",
@@ -441,7 +531,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "compat",
@@ -461,7 +555,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Compatibility meaning belongs in contracts; runtime adapters may move separately."
+      "notes": "Compatibility meaning belongs in contracts; runtime adapters may move separately.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "contracts",
@@ -478,7 +576,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Machine-readable and prose contracts for schemas, registries, protocols, compatibility, stability, replay, ABI, repository, and distribution rules."
+      "notes": "Machine-readable and prose contracts for schemas, registries, protocols, compatibility, stability, replay, ABI, repository, and distribution rules.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "CONTRIBUTING.md",
@@ -495,7 +597,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "control",
@@ -516,7 +622,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Control substrate must preserve process-only mutation boundaries."
+      "notes": "Control substrate must preserve process-only mutation boundaries.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "core",
@@ -537,7 +647,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Core is likely mixed; do not move wholesale."
+      "notes": "Core is likely mixed; do not move wholesale.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "data",
@@ -557,7 +671,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Data contains registries, content, planning mirrors, and generated evidence; split by authority."
+      "notes": "Data contains registries, content, planning mirrors, and generated evidence; split by authority.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "diag",
@@ -578,7 +696,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Diagnostics belong under runtime if they do not own truth."
+      "notes": "Diagnostics belong under runtime if they do not own truth.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "diegetics",
@@ -599,7 +721,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/diegetics; contracts/registries/diegetics; game/domains/diegetics; content/domain-data/diegetics; docs/domains/diegetics; tests/determinism/diegetics; tests/fixtures/diegetics"
+      "notes": "contracts/schemas/diegetics; contracts/registries/diegetics; game/domains/diegetics; content/domain-data/diegetics; docs/domains/diegetics; tests/determinism/diegetics; tests/fixtures/diegetics",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "dist",
@@ -618,7 +744,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Distribution output is governed by distribution contracts, not source repo layout."
+      "notes": "Distribution output is governed by distribution contracts, not source repo layout.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "docs",
@@ -635,7 +765,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Human-readable doctrine, guides, audits, and explanatory material."
+      "notes": "Human-readable doctrine, guides, audits, and explanatory material.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "DOMINIUM.md",
@@ -652,7 +786,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "electric",
@@ -673,7 +811,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/electric; contracts/registries/electric; game/domains/electric; content/domain-data/electric; docs/domains/electric; tests/determinism/electric; tests/fixtures/electric"
+      "notes": "contracts/schemas/electric; contracts/registries/electric; game/domains/electric; content/domain-data/electric; docs/domains/electric; tests/determinism/electric; tests/fixtures/electric",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "embodiment",
@@ -694,7 +836,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/embodiment; contracts/registries/embodiment; game/domains/embodiment; content/domain-data/embodiment; docs/domains/embodiment; tests/determinism/embodiment; tests/fixtures/embodiment"
+      "notes": "contracts/schemas/embodiment; contracts/registries/embodiment; game/domains/embodiment; content/domain-data/embodiment; docs/domains/embodiment; tests/determinism/embodiment; tests/fixtures/embodiment",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "engine",
@@ -711,7 +857,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Deterministic Domino substrate and public engine contracts."
+      "notes": "Deterministic Domino substrate and public engine contracts.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "epistemics",
@@ -732,7 +882,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/epistemics; contracts/registries/epistemics; game/domains/epistemics; content/domain-data/epistemics; docs/domains/epistemics; tests/determinism/epistemics; tests/fixtures/epistemics"
+      "notes": "contracts/schemas/epistemics; contracts/registries/epistemics; game/domains/epistemics; content/domain-data/epistemics; docs/domains/epistemics; tests/determinism/epistemics; tests/fixtures/epistemics",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "field",
@@ -753,7 +907,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/field; contracts/registries/field; game/domains/field; content/domain-data/field; docs/domains/field; tests/determinism/field; tests/fixtures/field"
+      "notes": "contracts/schemas/field; contracts/registries/field; game/domains/field; content/domain-data/field; docs/domains/field; tests/determinism/field; tests/fixtures/field",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "fields",
@@ -774,7 +932,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/fields; contracts/registries/fields; game/domains/fields; content/domain-data/fields; docs/domains/fields; tests/determinism/fields; tests/fixtures/fields"
+      "notes": "contracts/schemas/fields; contracts/registries/fields; game/domains/fields; content/domain-data/fields; docs/domains/fields; tests/determinism/fields; tests/fixtures/fields",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "fluid",
@@ -795,7 +957,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/fluid; contracts/registries/fluid; game/domains/fluid; content/domain-data/fluid; docs/domains/fluid; tests/determinism/fluid; tests/fixtures/fluid"
+      "notes": "contracts/schemas/fluid; contracts/registries/fluid; game/domains/fluid; content/domain-data/fluid; docs/domains/fluid; tests/determinism/fluid; tests/fixtures/fluid",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "game",
@@ -812,7 +978,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Dominium rules, domain process semantics, and authoritative game meaning."
+      "notes": "Dominium rules, domain process semantics, and authoritative game meaning.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "geo",
@@ -833,7 +1003,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/geo; contracts/registries/geo; game/domains/geo; content/domain-data/geo; docs/domains/geo; tests/determinism/geo; tests/fixtures/geo"
+      "notes": "contracts/schemas/geo; contracts/registries/geo; game/domains/geo; content/domain-data/geo; docs/domains/geo; tests/determinism/geo; tests/fixtures/geo",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "governance",
@@ -852,7 +1026,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Governance mirrors must not compete with AGENTS.md or canon."
+      "notes": "Governance mirrors must not compete with AGENTS.md or canon.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "GOVERNANCE.md",
@@ -869,7 +1047,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "ide",
@@ -888,7 +1070,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "IDE projections may belong under cmake, tools, or generated evidence depending on role."
+      "notes": "IDE projections may belong under cmake, tools, or generated evidence depending on role.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "infrastructure",
@@ -909,7 +1095,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/infrastructure; contracts/registries/infrastructure; game/domains/infrastructure; content/domain-data/infrastructure; docs/domains/infrastructure; tests/determinism/infrastructure; tests/fixtures/infrastructure"
+      "notes": "contracts/schemas/infrastructure; contracts/registries/infrastructure; game/domains/infrastructure; content/domain-data/infrastructure; docs/domains/infrastructure; tests/determinism/infrastructure; tests/fixtures/infrastructure",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "inspection",
@@ -930,7 +1120,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/inspection; contracts/registries/inspection; game/domains/inspection; content/domain-data/inspection; docs/domains/inspection; tests/determinism/inspection; tests/fixtures/inspection"
+      "notes": "contracts/schemas/inspection; contracts/registries/inspection; game/domains/inspection; content/domain-data/inspection; docs/domains/inspection; tests/determinism/inspection; tests/fixtures/inspection",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "interaction",
@@ -951,7 +1145,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/interaction; contracts/registries/interaction; game/domains/interaction; content/domain-data/interaction; docs/domains/interaction; tests/determinism/interaction; tests/fixtures/interaction"
+      "notes": "contracts/schemas/interaction; contracts/registries/interaction; game/domains/interaction; content/domain-data/interaction; docs/domains/interaction; tests/determinism/interaction; tests/fixtures/interaction",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "interior",
@@ -972,7 +1170,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/interior; contracts/registries/interior; game/domains/interior; content/domain-data/interior; docs/domains/interior; tests/determinism/interior; tests/fixtures/interior"
+      "notes": "contracts/schemas/interior; contracts/registries/interior; game/domains/interior; content/domain-data/interior; docs/domains/interior; tests/determinism/interior; tests/fixtures/interior",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "labs",
@@ -991,7 +1193,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Experimental material requires review before binding."
+      "notes": "Experimental material requires review before binding.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "launcher",
@@ -1012,7 +1218,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Launcher product identity and executable naming must remain stable."
+      "notes": "Launcher product identity and executable naming must remain stable.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "legacy",
@@ -1024,14 +1234,16 @@
       "split_required": false,
       "risk_level": "low",
       "phase_hint": "CONVERGE-05",
-      "dependencies": [
-        "requires archive provenance review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-05; do not recreate a root-level compatibility shim.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Legacy material should converge under archive."
+      "notes": "Completed in CONVERGE-05; root-level legacy/ moved under archive/legacy/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-05",
+      "completed_target": "archive/legacy",
+      "completed_notes": "Root-level legacy/ is retired; material is retained under archive/legacy/."
     },
     {
       "name": "lib",
@@ -1052,7 +1264,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Do not classify by name alone; inspect ownership first."
+      "notes": "Do not classify by name alone; inspect ownership first.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "libs",
@@ -1073,7 +1289,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Do not classify by name alone; inspect ownership first."
+      "notes": "Do not classify by name alone; inspect ownership first.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "LICENSE.md",
@@ -1090,7 +1310,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "locks",
@@ -1110,7 +1334,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Deterministic locks, runtime locks, and ops transactions require separate homes."
+      "notes": "Deterministic locks, runtime locks, and ops transactions require separate homes.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "logic",
@@ -1131,7 +1359,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/logic; contracts/registries/logic; game/domains/logic; content/domain-data/logic; docs/domains/logic; tests/determinism/logic; tests/fixtures/logic"
+      "notes": "contracts/schemas/logic; contracts/registries/logic; game/domains/logic; content/domain-data/logic; docs/domains/logic; tests/determinism/logic; tests/fixtures/logic",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "logistics",
@@ -1152,7 +1384,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/logistics; contracts/registries/logistics; game/domains/logistics; content/domain-data/logistics; docs/domains/logistics; tests/determinism/logistics; tests/fixtures/logistics"
+      "notes": "contracts/schemas/logistics; contracts/registries/logistics; game/domains/logistics; content/domain-data/logistics; docs/domains/logistics; tests/determinism/logistics; tests/fixtures/logistics",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "machines",
@@ -1173,7 +1409,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/machines; contracts/registries/machines; game/domains/machines; content/domain-data/machines; docs/domains/machines; tests/determinism/machines; tests/fixtures/machines"
+      "notes": "contracts/schemas/machines; contracts/registries/machines; game/domains/machines; content/domain-data/machines; docs/domains/machines; tests/determinism/machines; tests/fixtures/machines",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "materials",
@@ -1194,7 +1434,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/materials; contracts/registries/materials; game/domains/materials; content/domain-data/materials; docs/domains/materials; tests/determinism/materials; tests/fixtures/materials"
+      "notes": "contracts/schemas/materials; contracts/registries/materials; game/domains/materials; content/domain-data/materials; docs/domains/materials; tests/determinism/materials; tests/fixtures/materials",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "mechanics",
@@ -1215,7 +1459,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/mechanics; contracts/registries/mechanics; game/domains/mechanics; content/domain-data/mechanics; docs/domains/mechanics; tests/determinism/mechanics; tests/fixtures/mechanics"
+      "notes": "contracts/schemas/mechanics; contracts/registries/mechanics; game/domains/mechanics; content/domain-data/mechanics; docs/domains/mechanics; tests/determinism/mechanics; tests/fixtures/mechanics",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "meta",
@@ -1234,7 +1482,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Meta surfaces require ownership review."
+      "notes": "Meta surfaces require ownership review.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "meta_extensions_engine.py",
@@ -1253,7 +1505,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract."
+      "notes": "No matching root classification in layout contract.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "mobility",
@@ -1274,7 +1530,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/mobility; contracts/registries/mobility; game/domains/mobility; content/domain-data/mobility; docs/domains/mobility; tests/determinism/mobility; tests/fixtures/mobility"
+      "notes": "contracts/schemas/mobility; contracts/registries/mobility; game/domains/mobility; content/domain-data/mobility; docs/domains/mobility; tests/determinism/mobility; tests/fixtures/mobility",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "modding",
@@ -1294,7 +1554,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Modding may include content, contracts, and docs."
+      "notes": "Modding may include content, contracts, and docs.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "MODDING.md",
@@ -1311,7 +1575,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "models",
@@ -1331,7 +1599,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Model data should be distinguished from generated or runtime state."
+      "notes": "Model data should be distinguished from generated or runtime state.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "net",
@@ -1352,7 +1624,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Network adapters belong under runtime after authority boundaries are checked."
+      "notes": "Network adapters belong under runtime after authority boundaries are checked.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "numeric_discipline.py",
@@ -1371,7 +1647,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract."
+      "notes": "No matching root classification in layout contract.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "packs",
@@ -1391,7 +1671,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Current runtime pack substrate; pack ownership split remains review-sensitive."
+      "notes": "Current runtime pack substrate; pack ownership split remains review-sensitive.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "performance",
@@ -1410,7 +1694,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Performance tooling and evidence should stay tool/evidence scoped."
+      "notes": "Performance tooling and evidence should stay tool/evidence scoped.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "physics",
@@ -1431,7 +1719,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/physics; contracts/registries/physics; game/domains/physics; content/domain-data/physics; docs/domains/physics; tests/determinism/physics; tests/fixtures/physics"
+      "notes": "contracts/schemas/physics; contracts/registries/physics; game/domains/physics; content/domain-data/physics; docs/domains/physics; tests/determinism/physics; tests/fixtures/physics",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "pollution",
@@ -1452,7 +1744,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/pollution; contracts/registries/pollution; game/domains/pollution; content/domain-data/pollution; docs/domains/pollution; tests/determinism/pollution; tests/fixtures/pollution"
+      "notes": "contracts/schemas/pollution; contracts/registries/pollution; game/domains/pollution; content/domain-data/pollution; docs/domains/pollution; tests/determinism/pollution; tests/fixtures/pollution",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "process",
@@ -1473,7 +1769,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/process; contracts/registries/process; game/domains/process; content/domain-data/process; docs/domains/process; tests/determinism/process; tests/fixtures/process"
+      "notes": "contracts/schemas/process; contracts/registries/process; game/domains/process; content/domain-data/process; docs/domains/process; tests/determinism/process; tests/fixtures/process",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "profiles",
@@ -1493,7 +1793,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Profile data belongs under content unless runtime-store evidence proves otherwise."
+      "notes": "Profile data belongs under content unless runtime-store evidence proves otherwise.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "quarantine",
@@ -1505,14 +1809,16 @@
       "split_required": false,
       "risk_level": "low",
       "phase_hint": "CONVERGE-05",
-      "dependencies": [
-        "requires archive provenance review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-05; do not recreate a root-level compatibility shim.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Quarantined material should remain visible and provenance-preserved."
+      "notes": "Completed in CONVERGE-05; root-level quarantine/ moved under archive/quarantine/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-05",
+      "completed_target": "archive/quarantine",
+      "completed_notes": "Root-level quarantine/ is retired; material is retained under archive/quarantine/."
     },
     {
       "name": "README.md",
@@ -1529,7 +1835,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "reality",
@@ -1550,7 +1860,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/reality; contracts/registries/reality; game/domains/reality; content/domain-data/reality; docs/domains/reality; tests/determinism/reality; tests/fixtures/reality"
+      "notes": "contracts/schemas/reality; contracts/registries/reality; game/domains/reality; content/domain-data/reality; docs/domains/reality; tests/determinism/reality; tests/fixtures/reality",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "release",
@@ -1567,7 +1881,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Release definitions, package recipes, matrices, signing metadata, and release policy inputs."
+      "notes": "Release definitions, package recipes, matrices, signing metadata, and release policy inputs.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "repo",
@@ -1587,7 +1905,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration."
+      "notes": "Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "runtime",
@@ -1604,7 +1926,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Runtime host, AppShell, platform, render, input, audio, network, storage, diagnostics, and UI adapters. Present canonical target root; inspect contents before treating adjacent runtime roots as converged."
+      "notes": "Runtime host, AppShell, platform, render, input, audio, network, storage, diagnostics, and UI adapters. Present canonical target root; inspect contents before treating adjacent runtime roots as converged.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "safety",
@@ -1624,7 +1950,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Safety policy belongs under contracts or docs depending on authority."
+      "notes": "Safety policy belongs under contracts or docs depending on authority.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "schema",
@@ -1645,7 +1975,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Current canonical schema law root; future physical convergence must preserve semantic authority."
+      "notes": "Current canonical schema law root; future physical convergence must preserve semantic authority.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "schemas",
@@ -1666,7 +2000,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Current validator-facing schema projection; must not replace schema law silently."
+      "notes": "Current validator-facing schema projection; must not replace schema law silently.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "scripts",
@@ -1683,7 +2021,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Developer workflow scripts and repository automation entrypoints."
+      "notes": "Developer workflow scripts and repository automation entrypoints.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "security",
@@ -1703,7 +2045,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Security and trust surfaces are protected and review-sensitive."
+      "notes": "Security and trust surfaces are protected and review-sensitive.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "SECURITY.md",
@@ -1720,7 +2066,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "server",
@@ -1741,7 +2091,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Server authority semantics must stay governed by game/engine/runtime contracts."
+      "notes": "Server authority semantics must stay governed by game/engine/runtime contracts.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "setup",
@@ -1762,7 +2116,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Setup install identity and virtual roots must not change during moves."
+      "notes": "Setup install identity and virtual roots must not change during moves.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "signals",
@@ -1783,7 +2141,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/signals; contracts/registries/signals; game/domains/signals; content/domain-data/signals; docs/domains/signals; tests/determinism/signals; tests/fixtures/signals"
+      "notes": "contracts/schemas/signals; contracts/registries/signals; game/domains/signals; content/domain-data/signals; docs/domains/signals; tests/determinism/signals; tests/fixtures/signals",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "sitecustomize.py",
@@ -1800,7 +2162,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "specs",
@@ -1820,7 +2186,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Normative specs must retain authority; reality specs remain canonical over data projections."
+      "notes": "Normative specs must retain authority; reality specs remain canonical over data projections.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "system",
@@ -1841,7 +2211,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/system; contracts/registries/system; game/domains/system; content/domain-data/system; docs/domains/system; tests/determinism/system; tests/fixtures/system"
+      "notes": "contracts/schemas/system; contracts/registries/system; game/domains/system; content/domain-data/system; docs/domains/system; tests/determinism/system; tests/fixtures/system",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "templates",
@@ -1861,7 +2235,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Templates may be authored content, contracts, or generated inputs."
+      "notes": "Templates may be authored content, contracts, or generated inputs.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "tests",
@@ -1878,7 +2256,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Test suites, determinism checks, fixtures, and verification evidence inputs."
+      "notes": "Test suites, determinism checks, fixtures, and verification evidence inputs.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "thermal",
@@ -1899,7 +2281,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/thermal; contracts/registries/thermal; game/domains/thermal; content/domain-data/thermal; docs/domains/thermal; tests/determinism/thermal; tests/fixtures/thermal"
+      "notes": "contracts/schemas/thermal; contracts/registries/thermal; game/domains/thermal; content/domain-data/thermal; docs/domains/thermal; tests/determinism/thermal; tests/fixtures/thermal",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "tool_ui_bind.cmd",
@@ -1918,7 +2304,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract."
+      "notes": "No matching root classification in layout contract.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "tool_ui_doc_annotate.cmd",
@@ -1937,7 +2327,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract."
+      "notes": "No matching root classification in layout contract.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "tool_ui_validate.cmd",
@@ -1956,7 +2350,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract."
+      "notes": "No matching root classification in layout contract.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "tools",
@@ -1973,7 +2371,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Developer, validation, migration, CI, code generation, review, and audit tools."
+      "notes": "Developer, validation, migration, CI, code generation, review, and audit tools.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "ui",
@@ -1994,7 +2396,11 @@
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "UI is presentation/adaptation only and must not mutate truth."
+      "notes": "UI is presentation/adaptation only and must not mutate truth.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "universe",
@@ -2015,7 +2421,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/universe; contracts/registries/universe; game/domains/universe; content/domain-data/universe; docs/domains/universe; tests/determinism/universe; tests/fixtures/universe"
+      "notes": "contracts/schemas/universe; contracts/registries/universe; game/domains/universe; content/domain-data/universe; docs/domains/universe; tests/determinism/universe; tests/fixtures/universe",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "updates",
@@ -2035,7 +2445,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Update metadata belongs to release/control-plane ownership after review."
+      "notes": "Update metadata belongs to release/control-plane ownership after review.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "validation",
@@ -2054,7 +2468,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Validation tooling belongs under tools unless it is contract law."
+      "notes": "Validation tooling belongs under tools unless it is contract law.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "VERSION_CLIENT",
@@ -2071,7 +2489,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "VERSION_ENGINE",
@@ -2088,7 +2510,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "VERSION_GAME",
@@ -2105,7 +2531,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "VERSION_LAUNCHER",
@@ -2122,7 +2552,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "VERSION_SERVER",
@@ -2139,7 +2573,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "VERSION_SETUP",
@@ -2156,7 +2594,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "VERSION_SUITE",
@@ -2173,7 +2615,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "VERSION_TOOLS",
@@ -2190,7 +2636,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Allowed root file."
+      "notes": "Allowed root file.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     },
     {
       "name": "worldgen",
@@ -2211,7 +2661,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "contracts/schemas/worldgen; contracts/registries/worldgen; game/domains/worldgen; content/domain-data/worldgen; docs/domains/worldgen; tests/determinism/worldgen; tests/fixtures/worldgen"
+      "notes": "contracts/schemas/worldgen; contracts/registries/worldgen; game/domains/worldgen; content/domain-data/worldgen; docs/domains/worldgen; tests/determinism/worldgen; tests/fixtures/worldgen",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
     }
   ]
 }

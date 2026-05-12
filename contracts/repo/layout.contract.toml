@@ -225,25 +225,34 @@ retire_by_phase = "CONVERGE-06"
 notes = "Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration."
 
 [transitional_aliases.attic]
-target = "archive/historical"
-action = "move_after_archive_review"
+target = "archive/historical/attic"
+action = "retired_after_archive_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-05"
-notes = "Historical material should converge under archive."
+retired = true
+completed_phase = "CONVERGE-05"
+status_after_phase = "violation"
+notes = "Root-level attic/ was retired in CONVERGE-05; retained material belongs under archive/historical/attic/."
 
 [transitional_aliases.legacy]
 target = "archive/legacy"
-action = "move_after_archive_review"
+action = "retired_after_archive_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-05"
-notes = "Legacy material should converge under archive."
+retired = true
+completed_phase = "CONVERGE-05"
+status_after_phase = "violation"
+notes = "Root-level legacy/ was retired in CONVERGE-05; retained material belongs under archive/legacy/."
 
 [transitional_aliases.quarantine]
 target = "archive/quarantine"
-action = "move_after_archive_review"
+action = "retired_after_archive_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-05"
-notes = "Quarantined material should remain visible and provenance-preserved."
+retired = true
+completed_phase = "CONVERGE-05"
+status_after_phase = "violation"
+notes = "Root-level quarantine/ was retired in CONVERGE-05; retained material belongs under archive/quarantine/."
 
 [transitional_aliases.data]
 target = "content_or_runtime_store_review"

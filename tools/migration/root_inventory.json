@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T03:13:56Z",
+  "generated_at_utc": "2026-05-12T03:25:28Z",
   "repo_root": ".",
-  "head_sha": "948790d7fca55a20067c3f4ab6cdfd14e15a12a5",
+  "head_sha": "5dc42ca3bd7faaec0ccbd9071e95e15f46afe248",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-01",
@@ -232,22 +232,6 @@
       "phase_hint": "CONVERGE-09",
       "authority_status": "transitional",
       "notes": "contracts/schemas/astro; contracts/registries/astro; game/domains/astro; content/domain-data/astro; docs/domains/astro; tests/determinism/astro; tests/fixtures/astro"
-    },
-    {
-      "name": "attic",
-      "path": "attic",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_archive_or_quarantine_root",
-      "ownership_surface": "archive",
-      "current_role": "Current historical, legacy, or quarantined root retained until archive convergence.",
-      "proposed_target": "archive/historical",
-      "migration_action": "archive",
-      "split_required": false,
-      "risk_level": "low",
-      "phase_hint": "CONVERGE-05",
-      "authority_status": "legacy_reference",
-      "notes": "Historical material should converge under archive."
     },
     {
       "name": "bundles",
@@ -858,22 +842,6 @@
       "notes": "Launcher product identity and executable naming must remain stable."
     },
     {
-      "name": "legacy",
-      "path": "legacy",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_archive_or_quarantine_root",
-      "ownership_surface": "archive",
-      "current_role": "Current historical, legacy, or quarantined root retained until archive convergence.",
-      "proposed_target": "archive/legacy",
-      "migration_action": "archive",
-      "split_required": false,
-      "risk_level": "low",
-      "phase_hint": "CONVERGE-05",
-      "authority_status": "legacy_reference",
-      "notes": "Legacy material should converge under archive."
-    },
-    {
       "name": "lib",
       "path": "lib",
       "kind": "directory",
@@ -1240,22 +1208,6 @@
       "phase_hint": "CONVERGE-09",
       "authority_status": "transitional",
       "notes": "Profile data belongs under content unless runtime-store evidence proves otherwise."
-    },
-    {
-      "name": "quarantine",
-      "path": "quarantine",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_archive_or_quarantine_root",
-      "ownership_surface": "archive",
-      "current_role": "Current historical, legacy, or quarantined root retained until archive convergence.",
-      "proposed_target": "archive/quarantine",
-      "migration_action": "archive",
-      "split_required": false,
-      "risk_level": "low",
-      "phase_hint": "CONVERGE-05",
-      "authority_status": "legacy_reference",
-      "notes": "Quarantined material should remain visible and provenance-preserved."
     },
     {
       "name": "README.md",

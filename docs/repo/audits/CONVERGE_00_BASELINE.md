@@ -419,3 +419,7 @@ CONVERGE-03 refined the root inventory and convergence move map into complete mi
 ## CONVERGE-04 Follow-up Note
 
 CONVERGE-04 added a distribution layout contract, distribution layout validator, and distribution/install/media/bundle/cache/symbol documentation. It performed no physical moves and generated no package bytes.
+
+## CONVERGE-05 Follow-up Note
+
+CONVERGE-05 completed archive-family convergence. Root-level `attic/`, `legacy/`, and `quarantine/` were moved under `archive/`, `archive/README.md` and `archive/MANIFEST.md` were added, and no non-archive roots were moved.

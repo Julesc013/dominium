@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-03
+Phase: CONVERGE-05
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -11,7 +11,7 @@ Replacement Target: hardened source repository layout contract after controlled 
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for current and transitional root-level entries.
 
-CONVERGE-01 and CONVERGE-02 do not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity.
+CONVERGE-01 through CONVERGE-04 did not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity. CONVERGE-05 performed only the archive-family root convergence described below.
 
 ## CONVERGE-02 Authority Note
 
@@ -44,6 +44,16 @@ Source repository layout and distribution/install/runtime/media layout are separ
 - human distribution explanation: `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`
 
 `dist/` is generated release/build output. It is not a canonical source root and must not be used to decide source ownership, runtime storage ownership, or package export targets.
+
+## CONVERGE-05 Archive Convergence Note
+
+CONVERGE-05 completed the first physical root convergence pass for archive-family material:
+
+- `attic/` moved to `archive/historical/attic/`
+- `legacy/` moved to `archive/legacy/`
+- `quarantine/` moved to `archive/quarantine/`
+
+`archive/` is now the canonical archive ownership root. Root-level `attic/`, `legacy/`, and `quarantine/` are retired aliases and must not be recreated as active top-level roots.
 
 ## Target Roots
 
@@ -81,7 +91,7 @@ Later CONVERGE tasks may use the contract, inventory, and move map to plan contr
 
 - CONVERGE-02: stale layout authority supersession and root allowlist hardening.
 - CONVERGE-03: complete root inventory and move map refinement.
-- CONVERGE-05: archive, attic, legacy, and quarantine convergence.
+- CONVERGE-05: archive, attic, legacy, and quarantine convergence. Completed for root-level archive-family roots.
 - CONVERGE-06: contract, schema, compatibility, and lock convergence.
 - CONVERGE-07: runtime, AppShell, platform, render, UI, network, and diagnostics convergence.
 - CONVERGE-08: product entrypoint convergence into `apps/`.

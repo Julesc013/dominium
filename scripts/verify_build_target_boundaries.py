@@ -23,7 +23,7 @@ OS_TOKEN_PATTERNS = (
 
 RUNTIME_ROOTS = ("src", "engine", "game", "client", "server")
 RUNTIME_EXTS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp")
-SKIP_PREFIXES = ("build/", "dist/", "docs/", "legacy/", "tools/xstack/out/")
+SKIP_PREFIXES = ("build/", "dist/", "docs/", "archive/", "legacy/", "tools/xstack/out/")
 QUARANTINE_SKIP_PREFIXES = ("build/", "dist/", "docs/", "tools/xstack/out/")
 
 CORE_REVERSE_IMPORT_PATTERNS = (
@@ -137,16 +137,26 @@ def _check_cmake_boundary_markers(repo_root: str, failures: List[str]) -> None:
 
 
 def _check_quarantine_policy(repo_root: str, failures: List[str]) -> None:
-    legacy_abs = os.path.join(repo_root, "legacy")
-    quarantine_abs = os.path.join(repo_root, "quarantine")
+    attic_abs = os.path.join(repo_root, "archive", "historical", "attic")
+    legacy_abs = os.path.join(repo_root, "archive", "legacy")
+    quarantine_abs = os.path.join(repo_root, "archive", "quarantine")
+    if not os.path.isdir(attic_abs):
+        failures.append("BOUNDARY-LEGACY-000 missing archive/historical/attic/ directory")
     if not os.path.isdir(legacy_abs):
-        failures.append("BOUNDARY-LEGACY-000 missing legacy/ directory")
+        failures.append("BOUNDARY-LEGACY-000 missing archive/legacy/ directory")
     if not os.path.isdir(quarantine_abs):
-        failures.append("BOUNDARY-LEGACY-000 missing quarantine/ directory")
+        failures.append("BOUNDARY-LEGACY-000 missing archive/quarantine/ directory")
 
     cmake_lines = _read_lines(repo_root, "CMakeLists.txt")
     cmake_text = "\n".join(cmake_lines)
-    for token in ("add_subdirectory(legacy", "add_subdirectory(quarantine"):
+    for token in (
+        "add_subdirectory(attic",
+        "add_subdirectory(legacy",
+        "add_subdirectory(quarantine",
+        "add_subdirectory(archive/historical/attic",
+        "add_subdirectory(archive/legacy",
+        "add_subdirectory(archive/quarantine",
+    ):
         if token in cmake_text:
             failures.append("BOUNDARY-CMAKE-003 forbidden CMake linkage token '{}'".format(token))
 
@@ -156,10 +166,10 @@ def _check_quarantine_policy(repo_root: str, failures: List[str]) -> None:
                 continue
             for line_no, line in enumerate(_read_lines(repo_root, rel_path), start=1):
                 lowered = str(line).replace("\\", "/")
-                if "legacy/" not in lowered and "quarantine/" not in lowered:
+                if "legacy/" not in lowered and "quarantine/" not in lowered and "archive/historical/attic/" not in lowered:
                     continue
                 failures.append(
-                    "BOUNDARY-LEGACY-001 {}:{} runtime module references legacy/quarantine path".format(
+                    "BOUNDARY-LEGACY-001 {}:{} runtime module references archived legacy/quarantine path".format(
                         rel_path,
                         line_no,
                     )

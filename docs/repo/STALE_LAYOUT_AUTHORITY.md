@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-02
+Phase: CONVERGE-05
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -32,3 +32,13 @@ Do not use any legacy document alone to choose new paths. Future phases must con
 ## CONVERGE-03 Move-Map Note
 
 `tools/migration/root_move_map.json` is the operational planning artifact for future physical moves. `docs/repo/MOVE_MAP.md` explains it for human readers. Older layout docs are not move maps and must not be used alone to decide migration targets, shims, split requirements, or phase order.
+
+## CONVERGE-05 Archive Path Note
+
+Older docs may still mention root-level `attic/`, `legacy/`, or `quarantine/` as current roots. After CONVERGE-05 those path claims are stale for current source-layout purposes:
+
+- `attic/` is retired; retained material lives under `archive/historical/attic/`.
+- `legacy/` is retired; retained material lives under `archive/legacy/`.
+- `quarantine/` is retired; retained material lives under `archive/quarantine/`.
+
+Historical references may remain as history. New path decisions must use the layout contract, root allowlist, inventory, and move map.
