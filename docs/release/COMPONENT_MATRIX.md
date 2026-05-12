@@ -43,6 +43,19 @@ Product boot proof is partial and is recorded in `docs/release/PRODUCT_BOOT_PROO
 
 No row below is promoted to `available` or `implemented` by POST-CONVERGE-08. Planned, provisional, stub, and research statuses remain non-support claims unless later proof updates both this document and the machine-readable contract.
 
+## POST-CONVERGE-09 Package Evidence
+
+Package/projection smoke proof is partial and is recorded in `docs/release/PACKAGE_SMOKE_PROOF.md`.
+
+| Area | Evidence Status | Notes |
+| --- | --- | --- |
+| `.dompkg` tool smoke | partial | a temporary docs package was packed and verified under `%TEMP%`, then removed |
+| portable install projection | blocked | no real projection root was generated |
+| package index/build manifest | blocked | no package directory or build manifest input exists |
+| public release packaging | not_supported_yet | no public release artifact was generated or claimed |
+
+This evidence does not promote packaging rows in the machine-readable contract.
+
 ## Products
 
 | Product | Status | Tier | Preferred Modes | Notes |

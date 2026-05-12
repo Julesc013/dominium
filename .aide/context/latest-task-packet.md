@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-08 product boot matrix proof
+UNSPECIFIED - POST-CONVERGE-09 portable projection smoke proof
 
 ## GOAL
 
-POST-CONVERGE-08 product boot matrix proof
+POST-CONVERGE-09 portable projection smoke proof
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4237
-- approx_tokens: 1060
+- chars: 4249
+- approx_tokens: 1063
 - budget_status: PASS
 - warnings:
   - none

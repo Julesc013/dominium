@@ -127,3 +127,7 @@ Targeted product/AppShell/build remediation before POST-CONVERGE-09:
 - repair or retire the tracked `dist/bin/dom` wrapper target
 - fix or classify `apps/server/server_main.py` CLI argument forwarding
 - rerun POST-CONVERGE-08 after those blockers are resolved or explicitly accepted
+
+## POST-CONVERGE-09 Follow-up Note
+
+POST-CONVERGE-09 was attempted on 2026-05-12 at the user's request. It recorded partial package smoke proof: `.dompkg` pack/verify tooling can create and verify a temporary local docs package, but no real portable projection root was generated because build output and native product binaries remain missing. See `docs/repo/audits/POST_CONVERGE_09_PORTABLE_PROJECTION_PROOF.md`.

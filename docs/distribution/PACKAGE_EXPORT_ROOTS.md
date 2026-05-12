@@ -61,3 +61,9 @@ Symbols and source payloads are separate package classes unless an explicit pack
 ## Relationship To `dist/pkg`
 
 `dist/pkg/<platform>/<arch>/` is the generated package output channel. It may contain `.dompkg` artifacts and indexes. It is not a source root and does not define install paths by itself.
+
+## POST-CONVERGE-09 Proof Status
+
+Package smoke proof is partial. See `docs/release/PACKAGE_SMOKE_PROOF.md`.
+
+POST-CONVERGE-09 proved a temporary one-file `.dompkg` pack/verify smoke under `%TEMP%` and removed the output. It did not generate a release package set, package index, portable projection, or public release artifact.

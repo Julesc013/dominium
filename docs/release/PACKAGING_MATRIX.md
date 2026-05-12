@@ -11,6 +11,19 @@ Related projection authority:
 - `contracts/distribution/layout.contract.toml`
 - `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`
 
+## POST-CONVERGE-09 Evidence Note
+
+Package/projection smoke proof is partial. See `docs/release/PACKAGE_SMOKE_PROOF.md` and `docs/distribution/PORTABLE_PROJECTION_SMOKE_PROOF.md`.
+
+| Lane | POST-CONVERGE-09 Status | Evidence | Blocker |
+| --- | --- | --- | --- |
+| dompkg | partial | temporary one-file smoke package packed and verified | not a release package set |
+| portable_install | blocked | contract and expected layout validated by dry-run audit | no build output, binaries, or generated manifests |
+| portable_zip | blocked | packaging pipeline `portable` help exists | no assembled artifact root |
+| dist_output | partial | package/dist tooling and CMake targets exist | no built products or generated package tree |
+
+No package row is promoted to `available` or `implemented` by this proof.
+
 ## Package Rows
 
 | Package Lane | Status | Tier | Notes |

@@ -69,6 +69,15 @@ Existing `VROOT_LOCKS` language in AppShell docs remains compatibility input. Ne
 
 CONVERGE-04 adds a contract, validator, and explanatory docs only. It does not move folders, populate `dist/`, generate package bytes, change executable names, alter product IDs, change install IDs, or change virtual-root resolution implementation.
 
+## POST-CONVERGE-09 Proof Note
+
+POST-CONVERGE-09 recorded partial portable projection/package smoke proof in `docs/distribution/PORTABLE_PROJECTION_SMOKE_PROOF.md`.
+
+- The distribution contract and package/export docs are coherent.
+- `.dompkg` pack/verify tooling can pack and verify a temporary local smoke package.
+- A real portable install projection is still blocked because the canonical build output and native product binaries are missing.
+- No generated projection or package output was committed.
+
 ## Future Phases
 
 - CONVERGE-05: archive/attic/legacy/quarantine convergence.

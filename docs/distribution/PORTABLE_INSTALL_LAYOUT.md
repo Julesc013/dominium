@@ -71,3 +71,9 @@ Do not collapse these into one generic portable `locks/` doctrine.
 - Hash identity is computed from content and manifests, not host path.
 - Portable copies remain valid after directory copy when manifests and payloads are intact.
 - Portable mode does not imply a gameplay/runtime mode flag.
+
+## POST-CONVERGE-09 Proof Status
+
+Portable projection smoke proof is partial. See `docs/distribution/PORTABLE_PROJECTION_SMOKE_PROOF.md`.
+
+The expected layout above remains the target. POST-CONVERGE-09 did not generate a real `DominiumPortable/` tree because the canonical build lane is blocked and no native product binaries are available for `bin/`.
