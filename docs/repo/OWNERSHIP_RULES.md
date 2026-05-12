@@ -119,6 +119,8 @@ Runtime roots may host, adapt, observe, present, connect, persist, and diagnose.
 
 Content ownership covers authored packs, profiles, fixtures, datasets, assets, templates, and domain data. Mixed roots such as `data/`, `packs/`, `bundles/`, and `templates/` require review because they may also contain registries, planning mirrors, generated evidence, or runtime-store assumptions.
 
+POST-CONVERGE-03 keeps this boundary conservative: `content/` is the target ownership root for new authored content, but existing `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` material was not moved because live references, identity metadata, pack/profile/bundle IDs, generated-evidence mixtures, or implementation imports remain unresolved.
+
 ## Generated And Ephemeral Roots
 
 Generated roots are non-authoritative unless a stronger release or evidence contract says otherwise. `dist/`, `artifacts/`, `build/`, and `out/` must be treated as outputs or evidence, not source ownership.

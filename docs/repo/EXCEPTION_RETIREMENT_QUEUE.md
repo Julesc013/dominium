@@ -80,6 +80,8 @@ Notes:
 
 ### POST-CONVERGE-03 - Content / Pack / Profile / Bundle Cleanup
 
+Status: completed with review carryover.
+
 Scope:
 
 - `data`
@@ -94,6 +96,24 @@ Goal:
 
 - split by ownership into content/contracts/docs/tests/release/archive
 - preserve pack/profile IDs and compatibility semantics
+
+Result:
+
+- Retired: none.
+- Moved: none.
+- Left active for protected or identity-sensitive review: `data`, `packs`, `profiles`, `bundles`, `modding`, `models`, `templates`.
+- Active exception count after cleanup: 32.
+- Cleanup audit: `docs/repo/audits/POST_CONVERGE_03_CONTENT_PACK_CLEANUP.md`.
+
+Notes:
+
+- `data/` is mixed across registries, authored pack declarations, world/domain data, planning mirrors, generated evidence, baselines, release/runtime data, and XStack metadata.
+- `packs/` remains the active runtime pack substrate; `data/packs/` remains scoped authored pack content/declaration authority and residual-quarantined for any single-root convergence.
+- `profiles/bundles/bundle.mvp_default.json` embeds identity, hashes, and rel-path metadata and was not moved.
+- `bundles/` remains active bundle profile source referenced by XStack/control tooling.
+- `modding/` and `models/` are active Python implementation packages, not content-only roots.
+- `templates/` remains active because safe relocation crosses protected specs/reality and XStack/AIDE contract references.
+- Next task: POST-CONVERGE-04.
 
 ### POST-CONVERGE-04 - Compat / Lib / Specs / Security / Update Cleanup
 

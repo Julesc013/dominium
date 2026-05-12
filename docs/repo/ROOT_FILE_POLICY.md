@@ -148,6 +148,8 @@ Generated roots require explicit generated policy or an active exception. After 
 
 After POST-CONVERGE-02, the root package marker `__init__.py` and root `labs/` directory are retired. The three `tool_ui_*.cmd` files remain explicit compatibility shims for documented developer workflow and must continue to resolve canonical tools through `scripts/dev/tool_shim.py`.
 
+After POST-CONVERGE-03, content/package/profile/bundle review did not retire additional roots. `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` remain explicit active exceptions because each is mixed, identity-sensitive, implementation-backed, or protected-reference-backed. New authored content should use `content/` ownership roots instead of adding new root-level content directories.
+
 No broad wildcard exceptions are allowed without a reviewed task. Add one exception per root, file, or tightly scoped pattern, and include a reason, target or review target, risk, and retirement phase.
 
 `VERSION_*` files remain allowed root identity files through the root allowlist pattern and explicit known file list. New non-version root files require allowlist review or an exception.

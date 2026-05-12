@@ -248,3 +248,18 @@ Current wrapper/tooling/governance inventory state:
 - Remaining root compatibility shims: `tool_ui_bind.cmd`, `tool_ui_doc_annotate.cmd`, and `tool_ui_validate.cmd`.
 - Remaining protected review roots/files: `governance`, `ide`, `meta`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance`, and `validation`.
 - Unexcepted strict violations: 0.
+
+## POST-CONVERGE-03 Content / Pack / Profile / Bundle Cleanup
+
+POST-CONVERGE-03 inspected `data`, `packs`, `profiles`, `bundles`, `modding`, `models`, and `templates` and kept them active as narrowed exceptions.
+
+Current content/package/profile/bundle inventory state:
+
+- Active layout exception count: 32.
+- Retired in this task: none.
+- `data/` remains mixed across registries, authored pack declarations, world/domain data, planning mirrors, generated evidence, baselines, release/runtime data, and XStack metadata.
+- `packs/` remains the runtime pack substrate; `data/packs/` remains scoped authored pack content/declaration material and residual-quarantined for single-root convergence.
+- `profiles/` and `bundles/` remain identity-sensitive because profile and bundle IDs, hashes, lock semantics, and release/XStack references are live.
+- `modding/` and `models/` remain active implementation packages, not content-only roots.
+- `templates/` remains active because protected specs/reality and XStack/AIDE contract references still point at it.
+- Unexcepted strict violations: 0.

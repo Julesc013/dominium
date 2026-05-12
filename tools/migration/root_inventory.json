@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T09:27:21Z",
+  "generated_at_utc": "2026-05-12T09:55:15Z",
   "repo_root": ".",
-  "head_sha": "49ee68ca8f69ee1606847719cc265f914bed455d",
+  "head_sha": "e81e6d7f2a97af5e3c0fe2d26736d8e4cf9e66a6",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-10",
@@ -209,9 +209,9 @@
       "notes": "Authored bundles and generated exports require separate handling.",
       "exception_id": "bundles_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/bundles, content, release, tests, or generated export review",
-      "exception_reason": "Bundle source, export, and generated surfaces require ownership review before moving.",
-      "exception_risk": "review"
+      "exception_target": "protected bundle ownership review before relocation; possible contracts/bundles, content bundle examples, release recipes, or tests only after bundle ID and lock semantics review",
+      "exception_reason": "Root bundles contain active bundle profile source referenced by XStack control tooling, skills, and bundle documentation.",
+      "exception_risk": "high"
     },
     {
       "name": "CHANGELOG.md",
@@ -437,8 +437,8 @@
       "notes": "Data contains registries, content, planning mirrors, and generated evidence; split by authority.",
       "exception_id": "data_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content, contracts, docs, tools, or generated evidence split review",
-      "exception_reason": "Data root remains mixed between content, registries, planning mirrors, generated evidence, and compatibility inputs.",
+      "exception_target": "file-family split review across content/domain-data, content/packs, contracts/registries, docs, tests, release, archive/generated evidence, and runtime/release projection policy",
+      "exception_reason": "Data root remains a large mixed surface containing registries, authored pack declarations, world/domain data, planning mirrors, generated evidence, baselines, release/runtime data, and XStack metadata.",
       "exception_risk": "high"
     },
     {
@@ -722,9 +722,9 @@
       "notes": "Modding may include content, contracts, and docs.",
       "exception_id": "modding_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/modding, contracts, docs, or tools review",
-      "exception_reason": "Modding material can include content, docs, contracts, tools, and package policy.",
-      "exception_risk": "review"
+      "exception_target": "protected mod policy ownership review before relocation; possible tools, contracts/modding, docs/modding, or content/modding split only under explicit scope",
+      "exception_reason": "Root modding package contains active deterministic mod trust and capability policy implementation imported by apps/server, packs/compat, XStack, and tools.",
+      "exception_risk": "high"
     },
     {
       "name": "MODDING.md",
@@ -759,9 +759,9 @@
       "notes": "Model data should be distinguished from generated or runtime state.",
       "exception_id": "models_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/models or generated output review",
-      "exception_reason": "Model material requires review to distinguish authored content from generated/runtime state.",
-      "exception_risk": "review"
+      "exception_target": "protected model engine ownership review before relocation; authored model content may later move to content/assets or content/domain-data only if separated from implementation code",
+      "exception_reason": "Root models package contains active constitutive model engine code imported by engine, game domains, meta reference tooling, and tests.",
+      "exception_risk": "high"
     },
     {
       "name": "net",
@@ -822,8 +822,8 @@
       "notes": "Current runtime pack substrate; pack ownership split remains review-sensitive.",
       "exception_id": "packs_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/packs plus contracts/packs and release review",
-      "exception_reason": "Pack substrate remains review-sensitive and may include runtime packaging, activation, compatibility, and authored content.",
+      "exception_target": "protected pack ownership review; preserve packs/ runtime-packaging scope and data/packs authored-content scope until human review resolves any single-root convergence",
+      "exception_reason": "Root packs remain the active runtime pack substrate for packaging, activation, compatibility, trust, capabilities, and distribution descriptors.",
       "exception_risk": "high"
     },
     {
@@ -864,9 +864,9 @@
       "notes": "Profile data belongs under content unless runtime-store evidence proves otherwise.",
       "exception_id": "profiles_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/profiles or runtime-store projection review",
-      "exception_reason": "Profile data remains at repository root and needs review against content and runtime-store boundaries.",
-      "exception_risk": "medium"
+      "exception_target": "profile ownership review before relocation; possible content/profiles move only with explicit profile identity, hash, release, and store projection review",
+      "exception_reason": "Root profiles contain the active MVP profile bundle with embedded identity, deterministic fingerprint, content hash, and official rel-path metadata.",
+      "exception_risk": "high"
     },
     {
       "name": "README.md",
@@ -1065,9 +1065,9 @@
       "notes": "Templates may be authored content, contracts, or generated inputs.",
       "exception_id": "templates_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/templates, contracts, tools, or generated projection review",
-      "exception_reason": "Template material may be authored content, contract source, tooling input, or generated projection.",
-      "exception_risk": "review"
+      "exception_target": "docs/templates, contracts template review, or tools template review after protected spec/XStack reference review",
+      "exception_reason": "Root templates contain adapter and domain contract templates referenced by protected specs/reality and XStack/AIDE contract surfaces.",
+      "exception_risk": "medium"
     },
     {
       "name": "tests",

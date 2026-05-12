@@ -213,3 +213,16 @@ POST-CONVERGE-02 retired the root package marker and moved quarantined labs docu
 - `governance`, `ide`, `meta`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance`, and `validation`: retained as active review exceptions because references remain live or protected.
 
 No product, runtime, domain, contract, build-preset, or support-matrix semantics changed.
+
+## POST-CONVERGE-03 Content / Pack / Profile / Bundle Cleanup
+
+POST-CONVERGE-03 performed no physical content/package/profile/bundle moves. The generic move-map targets for the target roots remain review targets only and must not be executed without a later protected ownership task.
+
+- `data`: still requires file-family split review.
+- `packs`: still preserves runtime-packaging scope; do not collapse with `data/packs` without human review.
+- `profiles`: still preserves `profiles/bundles/bundle.mvp_default.json` identity, hashes, and rel-path metadata.
+- `bundles`: still preserves bundle IDs and lock/dependency semantics.
+- `modding` and `models`: active implementation packages, not content-only move candidates.
+- `templates`: protected-reference-backed root template surface.
+
+No pack IDs, profile IDs, bundle IDs, content hashes, build semantics, or support-matrix semantics changed.

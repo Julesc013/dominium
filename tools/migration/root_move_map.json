@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T09:27:21Z",
+  "generated_at_utc": "2026-05-12T09:55:15Z",
   "repo_root": ".",
-  "head_sha": "49ee68ca8f69ee1606847719cc265f914bed455d",
+  "head_sha": "e81e6d7f2a97af5e3c0fe2d26736d8e4cf9e66a6",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
   "active_exception_count": 32,
@@ -379,7 +379,7 @@
       "completed_notes": "",
       "exception_id": "bundles_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/bundles, content, release, tests, or generated export review"
+      "exception_target": "protected bundle ownership review before relocation; possible contracts/bundles, content bundle examples, release recipes, or tests only after bundle ID and lock semantics review"
     },
     {
       "name": "CHANGELOG.md",
@@ -726,7 +726,7 @@
       "completed_notes": "",
       "exception_id": "data_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content, contracts, docs, tools, or generated evidence split review"
+      "exception_target": "file-family split review across content/domain-data, content/packs, contracts/registries, docs, tests, release, archive/generated evidence, and runtime/release projection policy"
     },
     {
       "name": "diag",
@@ -1666,7 +1666,7 @@
       "completed_notes": "",
       "exception_id": "modding_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/modding, contracts, docs, or tools review"
+      "exception_target": "protected mod policy ownership review before relocation; possible tools, contracts/modding, docs/modding, or content/modding split only under explicit scope"
     },
     {
       "name": "MODDING.md",
@@ -1714,7 +1714,7 @@
       "completed_notes": "",
       "exception_id": "models_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/models or generated output review"
+      "exception_target": "protected model engine ownership review before relocation; authored model content may later move to content/assets or content/domain-data only if separated from implementation code"
     },
     {
       "name": "net",
@@ -1816,7 +1816,7 @@
       "completed_notes": "",
       "exception_id": "packs_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/packs plus contracts/packs and release review"
+      "exception_target": "protected pack ownership review; preserve packs/ runtime-packaging scope and data/packs authored-content scope until human review resolves any single-root convergence"
     },
     {
       "name": "performance",
@@ -1968,7 +1968,7 @@
       "completed_notes": "",
       "exception_id": "profiles_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/profiles or runtime-store projection review"
+      "exception_target": "profile ownership review before relocation; possible content/profiles move only with explicit profile identity, hash, release, and store projection review"
     },
     {
       "name": "quarantine",
@@ -2496,7 +2496,7 @@
       "completed_notes": "",
       "exception_id": "templates_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "content/templates, contracts, tools, or generated projection review"
+      "exception_target": "docs/templates, contracts template review, or tools template review after protected spec/XStack reference review"
     },
     {
       "name": "tests",

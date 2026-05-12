@@ -23,24 +23,24 @@ No hidden exceptions are allowed. The table below is explanatory; the TOML ledge
 | `validation_root` | `validation` | `partial_review` | Active unified validation engine imported by runtime, tools, compatibility shims, and tests. | validation ownership review before relocation | POST-CONVERGE | high | Do not create new validation root authority. |
 | `artifacts_root` | `artifacts` | `generated_exception` | Tracked toolchain-run provenance remains. | provenance/evidence policy review | POST-CONVERGE | review | POST-CONVERGE-01 found 10 tracked JSON evidence files and left the exception active. |
 | `dist_root` | `dist` | `generated_exception` | Tracked distribution projection files remain. | distribution projection policy review | POST-CONVERGE | medium | POST-CONVERGE-01 found 13 tracked projection files and left the exception active. |
-| `bundles_root` | `bundles` | `partial_review` | Bundle source/export/generated surfaces require review. | contracts, content, release, tests, or generated review | POST-CONVERGE | review | Distribution layout is separate. |
+| `bundles_root` | `bundles` | `partial_review` | Active bundle profile source referenced by XStack control tooling, skills, and docs. | protected bundle ownership review | POST-CONVERGE | high | Bundle IDs and lock semantics unchanged. |
 | `compat_root` | `compat` | `partial_review` | Compatibility material is mixed. | contracts/compatibility plus runtime/tools split | POST-CONVERGE | high | Do not move wholesale. |
 | `control_root` | `control` | `partial_review` | Control surfaces are process-sensitive and mixed. | runtime, contracts, game, or tools review | POST-CONVERGE | high | Preserve process-only mutation. |
 | `core_root` | `core` | `partial_review` | Core material may include universal primitives or mixed surfaces. | engine, game, runtime, contracts, or tools split | POST-CONVERGE | high | Do not classify by name alone. |
-| `data_root` | `data` | `partial_review` | Data root is mixed across content, registries, mirrors, and evidence. | content, contracts, docs, tools, or evidence split | POST-CONVERGE | high | Do not promote projections to authority. |
+| `data_root` | `data` | `partial_review` | Large mixed surface: registries, authored pack declarations, world/domain data, planning mirrors, generated evidence, baselines, release/runtime data, and XStack metadata. | file-family split review | POST-CONVERGE | high | `data/packs` remains scoped authored pack content/declaration authority and residual-quarantined for single-root convergence. |
 | `lib_root` | `lib` | `partial_review` | Library root remains ambiguous. | engine, runtime, external, contracts, or tools review | POST-CONVERGE | review | No new library root authority. |
 | `libs_root` | `libs` | `partial_review` | Library root remains ambiguous. | engine, runtime, external, contracts, or tools review | POST-CONVERGE | review | No new library root authority. |
 | `locks_root` | `locks` | `partial_review` | Concrete lock artifacts are not pure lockfile schemas. | contracts/locks, content/store-lock, or release review | POST-CONVERGE | high | Runtime mutable locks do not belong in contracts. |
-| `modding_root` | `modding` | `partial_review` | Modding material spans content, docs, contracts, tools, and package policy. | content/modding, contracts, docs, or tools review | POST-CONVERGE | review | Use ownership roots for new material. |
-| `models_root` | `models` | `partial_review` | Model material needs content/generated distinction. | content/models or generated review | POST-CONVERGE | review | No generated model authority. |
+| `modding_root` | `modding` | `partial_review` | Active mod trust and capability policy implementation imported by product/server and XStack/tooling. | protected mod policy ownership review | POST-CONVERGE | high | Not docs-only or authored mod content. |
+| `models_root` | `models` | `partial_review` | Active constitutive model engine imported by engine, game domains, meta, and tests. | protected model engine ownership review | POST-CONVERGE | high | Not authored model assets. |
 | `net_root` | `net` | `partial_review` | Network material remains mixed. | runtime/network plus apps/server and contracts review | POST-CONVERGE | high | Preserve runtime and server behavior. |
-| `packs_root` | `packs` | `partial_review` | Pack substrate remains review-sensitive. | content/packs plus contracts/packs and release review | POST-CONVERGE | high | Preserve pack IDs and compatibility. |
-| `profiles_root` | `profiles` | `partial_review` | Profiles need content/runtime-store review. | content/profiles or runtime-store projection review | POST-CONVERGE | medium | Profiles are not mutable store by default. |
+| `packs_root` | `packs` | `partial_review` | Active runtime pack substrate for packaging, activation, compatibility, trust, capabilities, and distribution descriptors. | protected pack ownership review | POST-CONVERGE | high | Preserve `packs/` runtime-packaging scope and `data/packs/` authored-content scope. |
+| `profiles_root` | `profiles` | `partial_review` | Active MVP profile bundle with embedded identity, fingerprint, content hash, and rel-path metadata. | profile ownership review before relocation | POST-CONVERGE | high | Profile IDs and hashes unchanged. |
 | `repo_root` | `repo` | `partial_review` | Transitional repo control-plane root remains. | contracts/repo, docs/repo, release, or tools split | POST-CONVERGE | high | Do not add new layout authority here. |
 | `safety_root` | `safety` | `partial_review` | Protected safety material requires review. | contracts/safety, docs/safety, tools, or runtime policy | POST-CONVERGE | high | Safety meaning must not drift. |
 | `security_root` | `security` | `partial_review` | Protected security material requires review. | contracts/security, docs/security, release, tools, or runtime policy | POST-CONVERGE | high | Trust semantics require review. |
 | `specs_root` | `specs` | `partial_review` | Protected normative specs need careful split. | contracts/specs, docs/specs, or semantic spec review | POST-CONVERGE | high | Reality specs retain established authority. |
-| `templates_root` | `templates` | `partial_review` | Templates may be content, contracts, tooling input, or generated projection. | content/templates, contracts, tools, or generated review | POST-CONVERGE | review | No new root-level template authority. |
+| `templates_root` | `templates` | `partial_review` | Adapter and domain contract templates referenced by protected specs/reality and XStack/AIDE contract surfaces. | docs/templates, contracts, or tools template review | POST-CONVERGE | medium | Kept until protected references can move with review. |
 | `updates_root` | `updates` | `partial_review` | Update material belongs to release/control-plane review. | release/update, contracts/distribution, or ops review | POST-CONVERGE | high | Do not change update identity here. |
 
 Active exception count: 32.
@@ -92,3 +92,15 @@ POST-CONVERGE-02 retired the unused root package marker and moved quarantined la
 - Protected review exceptions kept: `governance_root`, `ide_root`, `meta_root`, `meta_extensions_engine_file`, `numeric_discipline_file`, `performance_root`, `validation_root`.
 - Unexcepted strict violation count: 0.
 - Cleanup audit: `docs/repo/audits/POST_CONVERGE_02_WRAPPER_TOOLING_CLEANUP.md`.
+
+## POST-CONVERGE-03 Content / Pack / Profile / Bundle Cleanup
+
+POST-CONVERGE-03 narrowed content, pack, profile, bundle, modding, model, and template exceptions after file-shape and reference review.
+
+- Active exception count: 32.
+- Retired exception count: 5.
+- Retired in this task: none.
+- Active target exceptions kept for review: `data_root`, `packs_root`, `profiles_root`, `bundles_root`, `modding_root`, `models_root`, `templates_root`.
+- Identity-sensitive paths were not moved: pack IDs, profile IDs, bundle IDs, embedded hashes, and rel-path metadata remain unchanged.
+- Unexcepted strict violation count: 0.
+- Cleanup audit: `docs/repo/audits/POST_CONVERGE_03_CONTENT_PACK_CLEANUP.md`.
