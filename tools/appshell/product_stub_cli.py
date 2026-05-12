@@ -18,7 +18,7 @@ from tools.import_bridge import install_src_aliases
 
 install_src_aliases(REPO_ROOT_HINT)
 
-from appshell import appshell_main
+from runtime.appshell import appshell_main
 
 
 def _split_stub_args(argv: list[str]) -> tuple[str, list[str]]:

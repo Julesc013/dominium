@@ -8,15 +8,15 @@ import os
 from functools import lru_cache
 from typing import Iterable, Mapping
 
-from appshell.command_registry import build_root_command_descriptors
-from appshell.config_loader import list_profile_bundles
-from appshell.paths import (
+from runtime.appshell.command_registry import build_root_command_descriptors
+from runtime.appshell.config_loader import list_profile_bundles
+from runtime.appshell.paths import (
     VROOT_INSTANCES,
     VROOT_SAVES,
     get_current_virtual_paths,
     vpath_candidate_roots,
 )
-from appshell.ui_mode_selector import policy_row_for_product
+from runtime.appshell.ui_mode_selector import policy_row_for_product
 from lib.instance import instance_ui_mode_default, validate_instance_manifest
 from lib.save import validate_save_manifest
 

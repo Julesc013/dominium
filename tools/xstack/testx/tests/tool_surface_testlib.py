@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from appshell.commands.command_engine import dispatch_registered_command
+from runtime.appshell.commands.command_engine import dispatch_registered_command
 from tools import DOM_PRODUCT_ID, build_tool_surface_report
 
 

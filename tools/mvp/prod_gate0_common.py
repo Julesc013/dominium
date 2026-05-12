@@ -414,7 +414,7 @@ def _patched_probe_payload(probe_payload: Mapping[str, object] | None):
     if probe_payload is None:
         yield
         return
-    import appshell.ui_mode_selector as ui_mode_selector
+    import runtime.appshell.ui_mode_selector as ui_mode_selector
     import compat.capability_negotiation as capability_negotiation
     import compat.descriptor.descriptor_engine as descriptor_engine
     import engine.platform.platform_probe as platform_probe
@@ -1054,7 +1054,7 @@ def render_product_boot_matrix_doc(report: Mapping[str, object]) -> str:
             "",
             "## Notes",
             "",
-            "- Product mode selection must route through `appshell/ui_mode_selector.py` with platform capabilities sourced from `engine/platform/platform_probe.py`.",
+            "- Product mode selection must route through `runtime/appshell/ui_mode_selector.py` with platform capabilities sourced from `engine/platform/platform_probe.py`.",
             "- `compat-status` must expose both `mode_selection` and `install_discovery` for every product.",
             "- Portable runs resolve from `install.manifest.json` adjacent to the product executable.",
             "- Installed runs resolve through `install_registry.json` without bypassing virtual paths, negotiation, or validation surfaces.",

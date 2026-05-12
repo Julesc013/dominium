@@ -19,10 +19,10 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from appshell import appshell_main
-from appshell.logging import log_emit
-from appshell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
-from appshell.paths import (
+from runtime.appshell import appshell_main
+from runtime.appshell.logging import log_emit
+from runtime.appshell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
+from runtime.appshell.paths import (
     VROOT_INSTANCES,
     VROOT_PACKS,
     vpath_candidate_roots,

@@ -45,8 +45,8 @@ This is a post-`Σ-B` / post-`Φ-A2` / post-`Φ-B1` artifact. It carries forward
 
 Repo-grounded extension surfaces already exist and must be treated as evidence rather than as automatic canon:
 
-- `app/readonly_adapter.c`
-- `app/readonly_format.c`
+- `runtime/app/readonly_adapter.c`
+- `runtime/app/readonly_format.c`
 - `process/capsules/capsule_executor.py`
 - `control/control_plane_engine.py`
 - `client/local_server/local_server_controller.py`

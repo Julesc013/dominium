@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
                 related_paths=[
                     rel_path or "data/audit/ipc_unify_report.json",
                     "tools/appshell/tool_run_ipc_unify.py",
-                    "appshell/ipc/ipc_transport.py",
+                    "runtime/appshell/ipc/ipc_transport.py",
                     "compat/handshake/handshake_engine.py",
                 ],
             )

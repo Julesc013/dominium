@@ -7,7 +7,7 @@ import shutil
 import tempfile
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from appshell.paths import (
+from runtime.appshell.paths import (
     VROOT_INSTANCES,
     VROOT_SAVES,
     vpath_init,

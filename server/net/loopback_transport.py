@@ -14,7 +14,7 @@ from compat import (
     build_session_begin_payload,
     negotiate_product_endpoints,
 )
-from appshell.logging import build_log_event, get_current_log_engine
+from runtime.appshell.logging import build_log_event, get_current_log_engine
 from net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE, join_client_midstream
 from net.transport.loopback import LoopbackTransport
 from server.server_boot import REFUSAL_CLIENT_UNAUTHORIZED, build_connection_authority_context

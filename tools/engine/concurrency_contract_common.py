@@ -26,8 +26,8 @@ RULE_DERIVED = "INV-PARALLEL-DERIVED-MUST-CANONICALIZE"
 LAST_REVIEWED = "2026-03-14"
 
 ALLOWED_PARALLEL_ZONES = {
-    "appshell/ipc/ipc_endpoint_server.py": "Dedicated local IPC serving thread; no truth mutation.",
-    "appshell/supervisor/supervisor_engine.py": "Derived log/status aggregation only; merge order canonicalized before persistence.",
+    "runtime/appshell/ipc/ipc_endpoint_server.py": "Dedicated local IPC serving thread; no truth mutation.",
+    "runtime/appshell/supervisor/supervisor_engine.py": "Derived log/status aggregation only; merge order canonicalized before persistence.",
     "tools/xstack/core/scheduler.py": "Validation and audit execution only; ready and final results are canonically ordered.",
 }
 FORBIDDEN_PARALLEL_ZONES = {
@@ -190,8 +190,8 @@ def concurrency_contract_violations(repo_root: str) -> list[dict]:
             continue
         violations.append({"code": "missing_required_file", "message": message, "file_path": rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
-        ("appshell/supervisor/supervisor_engine.py", "canonicalize_parallel_mapping_rows(", "supervisor derived log merge must canonicalize output ordering", RULE_DERIVED),
-        ("appshell/supervisor/supervisor_engine.py", "build_field_sort_key(", "supervisor derived log merge must use the canonical merge key builder", RULE_DERIVED),
+        ("runtime/appshell/supervisor/supervisor_engine.py", "canonicalize_parallel_mapping_rows(", "supervisor derived log merge must canonicalize output ordering", RULE_DERIVED),
+        ("runtime/appshell/supervisor/supervisor_engine.py", "build_field_sort_key(", "supervisor derived log merge must use the canonical merge key builder", RULE_DERIVED),
         ("tools/xstack/core/scheduler.py", "ready.sort(", "parallel validation scheduler must canonicalize ready-node ordering", RULE_DERIVED),
         ("tools/xstack/core/scheduler.py", "ordered = sorted(", "parallel validation scheduler must canonicalize final result ordering", RULE_DERIVED),
         ("tools/xstack/sessionx/scheduler.py", "\"worker_count_effective\": 1", "truth scheduler must not silently enable parallel truth execution", RULE_TRUTH),

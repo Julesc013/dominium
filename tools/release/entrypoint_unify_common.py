@@ -5,12 +5,12 @@ from __future__ import annotations
 import os
 from typing import Iterable, Mapping
 
-from appshell.args_parser import parse_appshell_args
-from appshell.compat_adapter import build_version_payload
-from appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init
-from appshell.product_bootstrap import build_product_bootstrap_context, resolve_mode_request
-from appshell.product_bootstrap import flag_migration_rows
-from appshell.ui_mode_selector import select_ui_mode
+from runtime.appshell.args_parser import parse_appshell_args
+from runtime.appshell.compat_adapter import build_version_payload
+from runtime.appshell.paths import clear_current_virtual_paths, set_current_virtual_paths, vpath_init
+from runtime.appshell.product_bootstrap import build_product_bootstrap_context, resolve_mode_request
+from runtime.appshell.product_bootstrap import flag_migration_rows
+from runtime.appshell.ui_mode_selector import select_ui_mode
 from compat.shims import apply_flag_shims
 from engine.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -39,7 +39,7 @@ PRODUCT_ROWS = (
         "main_symbol": "client_main",
         "ui_init_location": "AppShell mode handoff -> tools/mvp/runtime_entry.py::_legacy_main",
         "pack_loading_location": "tools/mvp/runtime_bundle.py::build_runtime_bootstrap",
-        "ipc_start_location": "appshell/bootstrap.py::AppShellIPCEndpointServer",
+        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "no",
     },
     {
@@ -49,7 +49,7 @@ PRODUCT_ROWS = (
         "main_symbol": "main",
         "ui_init_location": "AppShell stub mode only",
         "pack_loading_location": "none",
-        "ipc_start_location": "appshell/bootstrap.py::AppShellIPCEndpointServer",
+        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "no",
     },
     {
@@ -59,7 +59,7 @@ PRODUCT_ROWS = (
         "main_symbol": "main",
         "ui_init_location": "AppShell stub mode only",
         "pack_loading_location": "none",
-        "ipc_start_location": "appshell/bootstrap.py::AppShellIPCEndpointServer",
+        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "no",
     },
     {
@@ -69,7 +69,7 @@ PRODUCT_ROWS = (
         "main_symbol": "main",
         "ui_init_location": "AppShell mode handoff -> tools/launcher/launch.py::_legacy_main",
         "pack_loading_location": "appshell.pack_verifier_adapter.verify_pack_root",
-        "ipc_start_location": "appshell/bootstrap.py::AppShellIPCEndpointServer",
+        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "yes",
     },
     {
@@ -79,7 +79,7 @@ PRODUCT_ROWS = (
         "main_symbol": "main",
         "ui_init_location": "AppShell mode handoff -> server/server_main.py::_legacy_main",
         "pack_loading_location": "server/server_boot.py::boot_server_runtime",
-        "ipc_start_location": "appshell/bootstrap.py::AppShellIPCEndpointServer; server/net/loopback_transport.py",
+        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer; server/net/loopback_transport.py",
         "supervisor_involvement": "no",
     },
     {
@@ -89,7 +89,7 @@ PRODUCT_ROWS = (
         "main_symbol": "main",
         "ui_init_location": "AppShell mode handoff -> tools/setup/setup_cli.py::_legacy_main",
         "pack_loading_location": "appshell.pack_verifier_adapter.verify_pack_root",
-        "ipc_start_location": "appshell/bootstrap.py::AppShellIPCEndpointServer",
+        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "no",
     },
     {
@@ -99,7 +99,7 @@ PRODUCT_ROWS = (
         "main_symbol": "main",
         "ui_init_location": "AppShell stub mode only",
         "pack_loading_location": "none",
-        "ipc_start_location": "appshell/bootstrap.py::AppShellIPCEndpointServer",
+        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer",
         "supervisor_involvement": "no",
     },
 )
@@ -441,7 +441,7 @@ def render_flag_migration(report: Mapping[str, object]) -> str:
             "## Notes",
             "",
             "- `client` and `server` continue to accept legacy `--ui` values, but AppShell resolves them as `--mode` before product bootstrap.",
-            "- Default mode selection is now centralized in `appshell/ui_mode_selector.py` and follows the product policy registry plus deterministic platform probing.",
+            "- Default mode selection is now centralized in `runtime/appshell/ui_mode_selector.py` and follows the product policy registry plus deterministic platform probing.",
             "- `headless` remains an explicit legacy/non-interactive mode for governed server and engine surfaces; it is not part of the default interactive ladder.",
             "- Existing product-domain flags such as setup `--ui-mode` remain product arguments and are not AppShell shell-mode aliases.",
             "- Deprecated legacy flags emit a structured AppShell warning event before product bootstrap.",

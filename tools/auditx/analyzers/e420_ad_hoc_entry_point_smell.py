@@ -14,31 +14,31 @@ REQUIRED_TOKENS = {
         "mode.cli",
         "Runtime Independence",
     ),
-    "appshell/bootstrap.py": (
+    "runtime/appshell/bootstrap.py": (
         "def appshell_main(",
         "dispatch_registered_command(",
         "build_root_command_descriptors(",
         "format_help_text(",
     ),
     "tools/mvp/runtime_entry.py": (
-        "from appshell import appshell_main",
+        "from runtime.appshell import appshell_main",
         "def appshell_product_bootstrap(",
         "def client_main(",
         "def server_main(",
         "product_bootstrap=appshell_product_bootstrap",
     ),
     "server/server_main.py": (
-        "from appshell import appshell_main",
+        "from runtime.appshell import appshell_main",
         "def appshell_product_bootstrap(",
         "product_bootstrap=appshell_product_bootstrap",
     ),
     "tools/setup/setup_cli.py": (
-        "from appshell import appshell_main",
+        "from runtime.appshell import appshell_main",
         "def appshell_product_bootstrap(",
         "product_bootstrap=appshell_product_bootstrap",
     ),
     "tools/launcher/launch.py": (
-        "from appshell import appshell_main",
+        "from runtime.appshell import appshell_main",
         "def appshell_product_bootstrap(",
         "product_bootstrap=appshell_product_bootstrap",
     ),

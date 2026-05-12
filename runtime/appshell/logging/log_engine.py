@@ -8,7 +8,7 @@ import os
 import sys
 from typing import Mapping
 
-from appshell.paths import VROOT_LOGS, get_current_virtual_paths, vpath_resolve
+from runtime.appshell.paths import VROOT_LOGS, get_current_virtual_paths, vpath_resolve
 from meta.observability import redact_observability_mapping, validate_observability_event
 
 

@@ -14,8 +14,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from appshell.compat_adapter import build_version_payload, emit_descriptor_payload  # noqa: E402
-from appshell.ipc import (  # noqa: E402
+from runtime.appshell.compat_adapter import build_version_payload, emit_descriptor_payload  # noqa: E402
+from runtime.appshell.ipc import (  # noqa: E402
     AppShellIPCEndpointServer,
     attach_ipc_endpoint,
     build_console_io_message,
@@ -26,8 +26,8 @@ from appshell.ipc import (  # noqa: E402
     query_ipc_status,
     run_ipc_console_command,
 )
-from appshell.ipc.ipc_transport import connect_ipc_client, recv_frame, send_frame  # noqa: E402
-from appshell.logging import (  # noqa: E402
+from runtime.appshell.ipc.ipc_transport import connect_ipc_client, recv_frame, send_frame  # noqa: E402
+from runtime.appshell.logging import (  # noqa: E402
     clear_current_log_engine,
     create_log_engine,
     get_current_log_engine,

@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "Argument ordering must be stable and canonical.",
         "Supervisor ordering must remain deterministic across platforms and thread counts.",
     ),
-    "appshell/supervisor/supervisor_engine.py": (
+    "runtime/appshell/supervisor/supervisor_engine.py": (
         "build_supervisor_run_spec(",
         "_build_run_manifest(",
         "canonical_sha256(",
@@ -31,7 +31,7 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "appshell/supervisor/supervisor_engine.py": ("random.", "uuid.uuid4(", "secrets.", "os.urandom("),
+    "runtime/appshell/supervisor/supervisor_engine.py": ("random.", "uuid.uuid4(", "secrets.", "os.urandom("),
     "tools/appshell/supervisor_service.py": ("random.", "uuid.uuid4(", "secrets.", "os.urandom("),
 }
 

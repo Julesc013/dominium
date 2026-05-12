@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-06
+Phase: CONVERGE-07
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -21,6 +21,8 @@ Do not move a root domain folder wholesale unless it is proven pure. Most curren
 Domain split work must happen after the contract, inventory, and move-map phases. Later moves must preserve process-only mutation, truth/perceived/render separation, pack-driven integration, deterministic ordering, named RNG discipline, and explicit compatibility/refusal obligations.
 
 CONVERGE-06 moved shared schema roots into `contracts/schemas/`. It did not perform a full domain split. Domain-specific schemas and registries found during later domain inspection should ultimately live under `contracts/schemas/<domain>/` or `contracts/registries/<domain>/`, but domain implementation, content, docs, and tests remain separate ownership surfaces.
+
+CONVERGE-07 moved only safe runtime-facing roots into `runtime/`. It did not perform a domain split. Runtime adapters may observe, present, route, and diagnose domain state, but they must not absorb domain law or Process mutation authority during CONVERGE-09.
 
 ## CONVERGE-03 Planning Basis
 

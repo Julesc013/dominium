@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-06
+Phase: CONVERGE-07
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -51,3 +51,14 @@ Older docs may still mention root-level `schema/` or `schemas/` as current roots
 - `schemas/` is retired; retained schema projections live under `contracts/schemas/`.
 
 The CONVERGE-03 move map is the operational planning artifact for physical moves. Old layout docs are not move maps and must not be used alone to decide whether contract, registry, compatibility, or lock material should move.
+
+## CONVERGE-07 Runtime Path Note
+
+Older docs may still mention root-level `app/`, `appshell/`, `ui/`, or `diag/` as current roots. After CONVERGE-07 those path claims are stale for current source-layout purposes:
+
+- `app/` is retired; retained app runtime source lives under `runtime/app/`.
+- `appshell/` is retired; retained AppShell source lives under `runtime/appshell/`.
+- `ui/` is retired; retained shared UI runtime source lives under `runtime/ui/`.
+- `diag/` is retired; retained diagnostic source lives under `runtime/diagnostics/`.
+
+The move map remains the operational planning artifact. Old layout docs are not move maps and must not be used alone to decide whether runtime, AppShell, platform, render, UI, network, or diagnostic material should move.

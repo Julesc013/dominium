@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict, List, Mapping, Tuple
 
-from appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_candidate_roots
+from runtime.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_candidate_roots
 from compat.migration_lifecycle import (
     ARTIFACT_KIND_SAVE,
     DECISION_MIGRATE,

@@ -7,8 +7,8 @@ import os
 import threading
 from typing import Mapping
 
-from appshell.compat_adapter import emit_descriptor_payload
-from appshell.logging import get_current_log_engine, log_emit
+from runtime.appshell.compat_adapter import emit_descriptor_payload
+from runtime.appshell.logging import get_current_log_engine, log_emit
 from compat import (
     COMPAT_MODE_READ_ONLY,
     REFUSAL_CONNECTION_NO_NEGOTIATION,
@@ -172,7 +172,7 @@ class AppShellIPCEndpointServer:
         return [dict(_normalize_tree(dict(row))) for row in rows[:limit]]
 
     def _dispatch_console(self, negotiation_record: Mapping[str, object], payload_ref: Mapping[str, object]) -> list[dict]:
-        from appshell.commands.command_engine import dispatch_registered_command
+        from runtime.appshell.commands.command_engine import dispatch_registered_command
 
         message = dict(_normalize_tree(dict(payload_ref or {})))
         command_text = str(message.get("text", "")).strip()

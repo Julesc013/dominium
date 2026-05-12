@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
-from appshell.ui_mode_selector import load_ui_mode_policy_registry, select_ui_mode
+from runtime.appshell.ui_mode_selector import load_ui_mode_policy_registry, select_ui_mode
 from engine.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -78,12 +78,12 @@ def selection_for_product(
 
 def ui_mode_resolution_violations(repo_root: str) -> list[dict]:
     violations: list[dict] = []
-    bootstrap_text = _file_text(repo_root, "appshell/bootstrap.py")
+    bootstrap_text = _file_text(repo_root, "runtime/appshell/bootstrap.py")
     if "select_ui_mode(" not in bootstrap_text:
         violations.append(
             {
                 "code": "ad_hoc_mode_selection",
-                "file_path": "appshell/bootstrap.py",
+                "file_path": "runtime/appshell/bootstrap.py",
                 "message": "AppShell bootstrap must resolve UI mode through appshell.ui_mode_selector.select_ui_mode",
                 "rule_id": "INV-UI-MODE-SELECTOR-SINGLE",
             }
@@ -92,7 +92,7 @@ def ui_mode_resolution_violations(repo_root: str) -> list[dict]:
         violations.append(
             {
                 "code": "mode_not_logged",
-                "file_path": "appshell/bootstrap.py",
+                "file_path": "runtime/appshell/bootstrap.py",
                 "message": "selected UI mode must be logged explicitly",
                 "rule_id": "INV-UI-MODE-LOGGED",
             }
@@ -101,27 +101,27 @@ def ui_mode_resolution_violations(repo_root: str) -> list[dict]:
         violations.append(
             {
                 "code": "degrade_not_logged",
-                "file_path": "appshell/bootstrap.py",
+                "file_path": "runtime/appshell/bootstrap.py",
                 "message": "mode degrade chains must be logged explicitly",
                 "rule_id": "INV-FALLBACK-DETERMINISTIC",
             }
         )
-    command_engine_text = _file_text(repo_root, "appshell/commands/command_engine.py")
+    command_engine_text = _file_text(repo_root, "runtime/appshell/commands/command_engine.py")
     if "\"mode_selection\"" not in command_engine_text:
         violations.append(
             {
                 "code": "silent_mode_fallback",
-                "file_path": "appshell/commands/command_engine.py",
+                "file_path": "runtime/appshell/commands/command_engine.py",
                 "message": "compat-status must expose current mode selection and degrade details",
                 "rule_id": "INV-UI-MODE-LOGGED",
             }
         )
-    mode_dispatcher_text = _file_text(repo_root, "appshell/mode_dispatcher.py")
+    mode_dispatcher_text = _file_text(repo_root, "runtime/appshell/mode_dispatcher.py")
     if "return [\"cli\", \"tui\"" in mode_dispatcher_text or "token == \"client\"" in mode_dispatcher_text:
         violations.append(
             {
                 "code": "ad_hoc_mode_selection",
-                "file_path": "appshell/mode_dispatcher.py",
+                "file_path": "runtime/appshell/mode_dispatcher.py",
                 "message": "mode dispatcher must not keep product-specific hardcoded selection ladders",
                 "rule_id": "INV-UI-MODE-SELECTOR-SINGLE",
             }
@@ -331,7 +331,7 @@ def render_ui_mode_resolution_baseline(report: Mapping[str, object]) -> str:
             "",
             "## Readiness",
             "",
-            "- The governed selector is centralized in `appshell/ui_mode_selector.py`.",
+            "- The governed selector is centralized in `runtime/appshell/ui_mode_selector.py`.",
             "- The presentation-only probe is isolated in `engine/platform/platform_probe.py`.",
             "- The selector is ready for UI-RECONCILE-0 and PLATFORM-FORMALIZE-0 without changing simulation truth.",
         )

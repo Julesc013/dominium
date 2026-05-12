@@ -15,8 +15,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from appshell.rendered_stub import build_rendered_stub
-from appshell.tui.tui_engine import build_tui_surface, render_tui_text
+from runtime.appshell.rendered_stub import build_rendered_stub
+from runtime.appshell.tui.tui_engine import build_tui_surface, render_tui_text
 from tools.appshell.tool_generate_command_docs import generate_cli_reference
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
@@ -294,7 +294,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "refusal_surface_missing_refusal",
                     "message": "refusal surface did not emit a refused payload for {}".format(_token(row.get("surface_id"))),
-                    "file_path": "appshell/commands/command_engine.py",
+                    "file_path": "runtime/appshell/commands/command_engine.py",
                     "rule_id": RULE_REMEDIATION_ID,
                 }
             )
@@ -303,7 +303,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "unstructured_user_facing_error",
                     "message": "user-facing refusal omitted a stable code or short reason for {}".format(_token(row.get("surface_id"))),
-                    "file_path": "appshell/commands/command_engine.py",
+                    "file_path": "runtime/appshell/commands/command_engine.py",
                     "rule_id": RULE_REMEDIATION_ID,
                 }
             )
@@ -312,7 +312,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "refusal_missing_remediation",
                     "message": "refusal payload omitted a remediation hint for {}".format(_token(row.get("surface_id"))),
-                    "file_path": "appshell/commands/command_engine.py",
+                    "file_path": "runtime/appshell/commands/command_engine.py",
                     "rule_id": RULE_REMEDIATION_ID,
                 }
             )
@@ -342,7 +342,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
             {
                 "code": "tui_help_missing",
                 "message": "TUI help is not visible by default",
-                "file_path": "appshell/tui/tui_engine.py",
+                "file_path": "runtime/appshell/tui/tui_engine.py",
                 "rule_id": RULE_HELP_ID,
             }
         )
@@ -352,7 +352,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "tui_panel_missing",
                     "message": "TUI surface is missing required panel {}".format(panel_id),
-                    "file_path": "appshell/tui/tui_engine.py",
+                    "file_path": "runtime/appshell/tui/tui_engine.py",
                     "rule_id": RULE_HELP_ID,
                 }
             )

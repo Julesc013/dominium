@@ -427,3 +427,7 @@ CONVERGE-05 completed archive-family convergence. Root-level `attic/`, `legacy/`
 ## CONVERGE-06 Follow-up Note
 
 CONVERGE-06 completed contract-adjacent convergence for root-level `schema/` and `schemas/`, merging retained schema material under `contracts/schemas/`. `compat/` and `locks/` remain review roots, `registry/` and `registries/` were confirmed absent, contracts README/MANIFEST were added, and no product, runtime, AppShell, domain, content, archive, or generated-output roots were moved.
+
+## CONVERGE-07 Follow-up Note
+
+CONVERGE-07 completed runtime/AppShell convergence for safe runtime-facing roots. Root-level `appshell/` moved to `runtime/appshell/`, `app/` moved to `runtime/app/`, `ui/` moved to `runtime/ui/`, and `diag/` moved to `runtime/diagnostics/`. Root-level `net/`, `control/`, and `core/` remain review roots because they are mixed and ownership-sensitive. Runtime README/MANIFEST were added, and no product or domain roots were moved.

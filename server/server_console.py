@@ -8,9 +8,9 @@ from typing import Mapping
 from compat import build_compat_status_payload
 from compat.data_format_loader import stamp_artifact_metadata
 from compat import emit_product_descriptor
-from diag import write_repro_bundle
+from runtime.diagnostics import write_repro_bundle
 from engine.time import ANCHOR_REASON_SAVE, emit_epoch_anchor
-from appshell.logging import get_current_log_engine
+from runtime.appshell.logging import get_current_log_engine
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, write_canonical_json
 

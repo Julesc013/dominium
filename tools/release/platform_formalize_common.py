@@ -138,12 +138,12 @@ def _host_probe_row(repo_root: str, product_id: str) -> dict:
 
 def platform_formalize_violations(repo_root: str) -> list[dict]:
     violations: list[dict] = []
-    selector_text = _file_text(repo_root, "appshell/ui_mode_selector.py")
+    selector_text = _file_text(repo_root, "runtime/appshell/ui_mode_selector.py")
     if "probe_platform_descriptor" not in selector_text:
         violations.append(
             {
                 "code": "selector_not_using_platform_probe",
-                "file_path": "appshell/ui_mode_selector.py",
+                "file_path": "runtime/appshell/ui_mode_selector.py",
                 "message": "UI mode selector must resolve host capabilities through engine.platform.platform_probe.probe_platform_descriptor",
                 "rule_id": "INV-UI-MODE-SELECTION-USES-PROBE",
             }
@@ -152,7 +152,7 @@ def platform_formalize_violations(repo_root: str) -> list[dict]:
         violations.append(
             {
                 "code": "legacy_probe_import_left_in_selector",
-                "file_path": "appshell/ui_mode_selector.py",
+                "file_path": "runtime/appshell/ui_mode_selector.py",
                 "message": "UI mode selector must not import the legacy platform_caps_probe wrapper directly",
                 "rule_id": "INV-UI-MODE-SELECTION-USES-PROBE",
             }

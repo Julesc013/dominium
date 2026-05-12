@@ -9,18 +9,18 @@ import subprocess
 import threading
 from typing import Mapping, Sequence
 
-from diag import write_repro_bundle
+from runtime.diagnostics import write_repro_bundle
 from engine.concurrency import build_field_sort_key, canonicalize_parallel_mapping_rows
-from appshell.ipc import (
+from runtime.appshell.ipc import (
     attach_ipc_endpoint,
     discover_ipc_endpoints,
     query_ipc_log_events,
     query_ipc_status,
     run_ipc_console_command,
 )
-from appshell.ipc.ipc_transport import remove_ipc_manifest_entry
-from appshell.logging import append_jsonl, log_emit
-from appshell.paths import (
+from runtime.appshell.ipc.ipc_transport import remove_ipc_manifest_entry
+from runtime.appshell.logging import append_jsonl, log_emit
+from runtime.appshell.paths import (
     VROOT_EXPORTS,
     VROOT_IPC,
     VROOT_INSTALL,
@@ -33,10 +33,10 @@ from appshell.paths import (
     vpath_resolve_existing,
     vpath_root,
 )
-from appshell.pack_verifier_adapter import verify_pack_root
+from runtime.appshell.pack_verifier_adapter import verify_pack_root
 from compat import emit_product_descriptor
 from runtime.process_spawn import build_python_process_spec, poll_process, spawn_process
-from appshell.supervisor.args_canonicalizer import canonicalize_args
+from runtime.appshell.supervisor.args_canonicalizer import canonicalize_args
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_canonical_json
 

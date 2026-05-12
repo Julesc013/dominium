@@ -315,7 +315,7 @@ def _decision_override(path: str) -> tuple[str, str, str]:
         return ("approved_for_xi5", "ui", "Shared DUI code is reusable UI infrastructure and should move under the approved UI domain.")
     if normalized.startswith("libs/ui_backends/win32/src/"):
         return ("approved_for_xi5", "platform", "Win32 UI backend stubs are platform adapters and are approved under the platform domain.")
-    if normalized == "appshell/commands/command_engine.py":
+    if normalized == "runtime/appshell/commands/command_engine.py":
         return ("approved_for_xi5", "apps", "Appshell command routing belongs with application shell runtime rather than generic tools.")
     if normalized.startswith("src/appshell/"):
         return ("approved_for_xi5", "apps", "Appshell surfaces are approved with the application runtime shell baseline.")

@@ -30,7 +30,7 @@ VALIDATION_SHIMS_PATH = "compat/shims/validation_shims.py"
 _INTEGRATION_TARGETS = (
     {
         "integration_id": "bootstrap_flag_shims",
-        "file_path": "appshell/bootstrap.py",
+        "file_path": "runtime/appshell/bootstrap.py",
         "required_tokens": ("apply_flag_shims(",),
         "rule_id": "INV-SHIMS-MUST-LOG-DEPRECATION",
         "message": "AppShell bootstrap must apply centralized legacy flag shims before shell argument resolution.",

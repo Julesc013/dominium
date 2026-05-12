@@ -5276,29 +5276,29 @@ def check_products_must_use_appshell(repo_root):
             "run_tui_mode(",
         ),
         wrapper_stub_rel: (
-            "from appshell import appshell_main",
+            "from runtime.appshell import appshell_main",
             "--product-id",
             "legacy_main=None",
         ),
         runtime_entry_rel: (
-            "from appshell import appshell_main",
+            "from runtime.appshell import appshell_main",
             "def appshell_product_bootstrap(",
             "def client_main(",
             "def server_main(",
             "product_bootstrap=appshell_product_bootstrap",
         ),
         server_main_rel: (
-            "from appshell import appshell_main",
+            "from runtime.appshell import appshell_main",
             "def appshell_product_bootstrap(",
             "product_bootstrap=appshell_product_bootstrap",
         ),
         setup_rel: (
-            "from appshell import appshell_main",
+            "from runtime.appshell import appshell_main",
             "def appshell_product_bootstrap(",
             "product_bootstrap=appshell_product_bootstrap",
         ),
         launcher_rel: (
-            "from appshell import appshell_main",
+            "from runtime.appshell import appshell_main",
             "def appshell_product_bootstrap(",
             "product_bootstrap=appshell_product_bootstrap",
         ),
@@ -5364,7 +5364,7 @@ def check_no_adhoc_main(repo_root):
     for rel_path in (runtime_entry_rel, server_main_rel, setup_rel, launcher_rel):
         path = os.path.join(repo_root, rel_path.replace("/", os.sep))
         text = read_text(path) or ""
-        if "from appshell import appshell_main" not in text:
+        if "from runtime.appshell import appshell_main" not in text:
             violations.append("{}: {} missing appshell_main import".format(invariant_id, normalize_path(rel_path)))
         if "def appshell_product_bootstrap(" not in text:
             violations.append(
@@ -5791,7 +5791,7 @@ def check_no_printf_logging(repo_root):
     if "class LogEngine" not in log_engine_text or "sys.stderr.write" not in log_engine_text or "append_jsonl(" not in log_engine_text:
         violations.append("{}: {} missing shared structured logging engine markers".format(invariant_id, normalize_path(log_engine_rel)))
     sink_text = read_text(os.path.join(repo_root, sink_rel.replace("/", os.sep))) or ""
-    if "from appshell.logging import append_jsonl, build_log_event" not in sink_text:
+    if "from runtime.appshell.logging import append_jsonl, build_log_event" not in sink_text:
         violations.append("{}: {} no longer delegates through the shared log engine".format(invariant_id, normalize_path(sink_rel)))
     print_re = re.compile(r"\bprint\s*\(")
     for rel_path in guarded_rels:
@@ -5813,12 +5813,12 @@ def check_log_engine_only(repo_root):
             "log_emit(",
         ),
         os.path.join("appshell", "commands", "command_engine.py"): (
-            "from appshell.logging import get_current_log_engine, log_emit",
+            "from runtime.appshell.logging import get_current_log_engine, log_emit",
             "message_key",
             "diag snapshot",
         ),
         os.path.join("server", "net", "loopback_transport.py"): (
-            "from appshell.logging import build_log_event, get_current_log_engine",
+            "from runtime.appshell.logging import build_log_event, get_current_log_engine",
             "message_key=",
         ),
         os.path.join("server", "runtime", "tick_loop.py"): (

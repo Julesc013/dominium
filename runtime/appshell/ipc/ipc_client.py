@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping
 
-from appshell.compat_adapter import emit_descriptor_payload
+from runtime.appshell.compat_adapter import emit_descriptor_payload
 from compat import (
     REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
     build_compat_refusal,

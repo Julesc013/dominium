@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "sort by relative path",
         "proof-anchor window hash equivalence",
     ),
-    "diag/repro_bundle_builder.py": (
+    "runtime/diagnostics/repro_bundle_builder.py": (
         "sorted(bundle_files",
         'canonical_sha256({"files": file_rows})',
         '"proof_window_hash"',
@@ -30,7 +30,7 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "diag/repro_bundle_builder.py": ("random.", "uuid.uuid4(", "os.urandom(", "time.time(", "datetime.utcnow("),
+    "runtime/diagnostics/repro_bundle_builder.py": ("random.", "uuid.uuid4(", "os.urandom(", "time.time(", "datetime.utcnow("),
     "tools/diag/tool_replay_bundle.py": ("random.", "uuid.uuid4(", "os.urandom("),
 }
 

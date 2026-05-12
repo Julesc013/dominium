@@ -7,7 +7,7 @@ import os
 import tempfile
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from appshell.paths import VROOT_STORE, vpath_candidate_roots, vpath_init
+from runtime.appshell.paths import VROOT_STORE, vpath_candidate_roots, vpath_init
 from lib.bundle import (
     ZERO_SHA256,
     collect_directory_entries,

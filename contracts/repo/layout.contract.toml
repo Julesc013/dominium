@@ -135,17 +135,23 @@ patterns = ["VERSION_*"]
 
 [transitional_aliases.app]
 target = "runtime/app"
-action = "split_or_move_after_runtime_boundary_review"
+action = "retired_after_runtime_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-07"
-notes = "Current runtime/app substrate; do not move in CONVERGE-01."
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level app/ was retired in CONVERGE-07; retained app runtime substrate belongs under runtime/app/."
 
 [transitional_aliases.appshell]
 target = "runtime/appshell"
-action = "move_after_runtime_boundary_review"
+action = "retired_after_runtime_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-07"
-notes = "AppShell should converge under runtime after boundary proof."
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level appshell/ was retired in CONVERGE-07; AppShell source belongs under runtime/appshell/."
 
 [transitional_aliases.client]
 target = "apps/client"
@@ -331,24 +337,100 @@ notes = "Core is likely mixed; do not move wholesale."
 
 [transitional_aliases.diag]
 target = "runtime/diagnostics"
-action = "move_after_runtime_boundary_review"
+action = "retired_after_runtime_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-07"
-notes = "Diagnostics belong under runtime if they do not own truth."
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level diag/ was retired in CONVERGE-07; source diagnostics belong under runtime/diagnostics/."
 
 [transitional_aliases.net]
 target = "runtime/network"
-action = "move_after_runtime_boundary_review"
+action = "review_mixed_network_authority_boundary"
 classification = "transitional_alias"
-retire_by_phase = "CONVERGE-07"
-notes = "Network adapters belong under runtime after authority boundaries are checked."
+retire_by_phase = "review"
+notes = "Root-level net/ remains mixed after CONVERGE-07 because it contains transport, anti-cheat, SRZ, and server-authoritative policy code; do not move wholesale."
 
 [transitional_aliases.ui]
 target = "runtime/ui"
-action = "move_after_runtime_boundary_review"
+action = "retired_after_runtime_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-07"
-notes = "UI is presentation/adaptation only and must not mutate truth."
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level ui/ was retired in CONVERGE-07; shared UI runtime model belongs under runtime/ui/."
+
+[transitional_aliases.diagnostics]
+target = "runtime/diagnostics"
+action = "retired_absent_after_runtime_convergence"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level diagnostics/ is absent after CONVERGE-07; future source diagnostics belong under runtime/diagnostics/."
+
+[transitional_aliases.input]
+target = "runtime/input"
+action = "retired_absent_after_runtime_convergence"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level input/ is absent after CONVERGE-07; future input adapters belong under runtime/input/."
+
+[transitional_aliases.audio]
+target = "runtime/audio"
+action = "retired_absent_after_runtime_convergence"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level audio/ is absent after CONVERGE-07; future audio adapters belong under runtime/audio/."
+
+[transitional_aliases.network]
+target = "runtime/network"
+action = "retired_absent_after_runtime_convergence"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level network/ is absent after CONVERGE-07; future network adapters belong under runtime/network/."
+
+[transitional_aliases.storage]
+target = "runtime/storage"
+action = "retired_absent_after_runtime_convergence"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level storage/ is absent after CONVERGE-07; future storage/VFS adapters belong under runtime/storage/."
+
+[transitional_aliases.platform]
+target = "runtime/platform"
+action = "retired_absent_after_runtime_convergence"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level platform/ is absent after CONVERGE-07; future platform adapters belong under runtime/platform/."
+
+[transitional_aliases.render]
+target = "runtime/render"
+action = "retired_absent_after_runtime_convergence"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-07"
+retired = true
+completed_phase = "CONVERGE-07"
+status_after_phase = "violation"
+notes = "Root-level render/ is absent after CONVERGE-07; future render adapters belong under runtime/render/."
 
 [transitional_aliases.governance]
 target = "docs/governance"

@@ -312,7 +312,7 @@ def _inline_vpath_probe_script(mode_policy: str) -> str:
         [
             "import json",
             "import os",
-            "from appshell.paths import vpath_init",
+            "from runtime.appshell.paths import vpath_init",
             "payload = vpath_init({",
             "    'repo_root': '.',",
             "    'product_id': 'launcher',",

@@ -14,12 +14,12 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from appshell.paths import load_virtual_root_registry, vpath_init  # noqa: E402
+from runtime.appshell.paths import load_virtual_root_registry, vpath_init  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
 VIRTUAL_ROOT_REGISTRY_PATH = "data/registries/virtual_root_registry.json"
-VIRTUAL_PATHS_ENGINE_PATH = "appshell/paths/virtual_paths.py"
+VIRTUAL_PATHS_ENGINE_PATH = "runtime/appshell/paths/virtual_paths.py"
 VIRTUAL_PATHS_DOC_PATH = "docs/appshell/VIRTUAL_PATHS.md"
 VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
 VIRTUAL_PATHS_REPORT_PATH = "data/audit/virtual_paths_report.json"
@@ -36,7 +36,7 @@ TARGET_EXTENSIONS = {".py"}
 ROOT_TOKENS = ("dist", "packs", "profiles", "locks", "instances", "saves", "exports", "runtime", "logs", "build")
 BASE_TOKENS = ("repo_root", "repo_root_abs", "REPO_ROOT", "REPO_ROOT_HINT", "resolve_repo_root(", "install_root", "store_root", "data_root", "state_root")
 ALLOWED_SCAN_PATHS = {
-    "appshell/paths/virtual_paths.py",
+    "runtime/appshell/paths/virtual_paths.py",
     "tools/release/virtual_paths_common.py",
 }
 PACKAGING_LAYOUT_PATHS = {
@@ -46,47 +46,47 @@ PACKAGING_LAYOUT_PATHS = {
 }
 INTEGRATION_TARGETS = (
     {
-        "file_path": "appshell/bootstrap.py",
+        "file_path": "runtime/appshell/bootstrap.py",
         "markers": ("vpath_init(", "set_current_virtual_paths(", "clear_current_virtual_paths("),
         "surface": "bootstrap",
     },
     {
-        "file_path": "appshell/commands/command_engine.py",
+        "file_path": "runtime/appshell/commands/command_engine.py",
         "markers": ("VROOT_LOCKS", "VROOT_LOGS", "vpath_resolve(", "vpath_candidate_roots("),
         "surface": "command_engine",
     },
     {
-        "file_path": "appshell/config_loader.py",
+        "file_path": "runtime/appshell/config_loader.py",
         "markers": ("vpath_candidate_roots(", "get_current_virtual_paths("),
         "surface": "config_loader",
     },
     {
-        "file_path": "appshell/diag/diag_snapshot.py",
+        "file_path": "runtime/appshell/diag/diag_snapshot.py",
         "markers": ("VROOT_EXPORTS", "vpath_resolve(", "get_current_virtual_paths("),
         "surface": "diag_snapshot",
     },
     {
-        "file_path": "appshell/ipc/ipc_transport.py",
+        "file_path": "runtime/appshell/ipc/ipc_transport.py",
         "markers": ("VROOT_IPC", "vpath_resolve(", "get_current_virtual_paths("),
         "surface": "ipc_transport",
     },
     {
-        "file_path": "appshell/logging/log_engine.py",
+        "file_path": "runtime/appshell/logging/log_engine.py",
         "markers": ("VROOT_LOGS", "vpath_resolve(", "get_current_virtual_paths("),
         "surface": "log_sink",
     },
     {
-        "file_path": "appshell/pack_verifier_adapter.py",
+        "file_path": "runtime/appshell/pack_verifier_adapter.py",
         "markers": ("VROOT_STORE", "vpath_root(", "get_current_virtual_paths("),
         "surface": "pack_verifier",
     },
     {
-        "file_path": "appshell/supervisor/supervisor_engine.py",
+        "file_path": "runtime/appshell/supervisor/supervisor_engine.py",
         "markers": ("VROOT_IPC", "VROOT_LOGS", "VROOT_EXPORTS", "vpath_resolve(", "get_current_virtual_paths("),
         "surface": "supervisor",
     },
     {
-        "file_path": "diag/repro_bundle_builder.py",
+        "file_path": "runtime/diagnostics/repro_bundle_builder.py",
         "markers": ("VROOT_EXPORTS", "vpath_resolve(", "get_current_virtual_paths("),
         "surface": "diag_bundle_writer",
     },
@@ -111,7 +111,7 @@ INTEGRATION_TARGETS = (
         "surface": "save_validator",
     },
     {
-        "file_path": "ui/ui_model.py",
+        "file_path": "runtime/ui/ui_model.py",
         "markers": ("VROOT_INSTANCES", "VROOT_SAVES", "vpath_candidate_roots(", "get_current_virtual_paths("),
         "surface": "ui_model",
     },
@@ -505,7 +505,7 @@ def render_virtual_paths_baseline(report: Mapping[str, object]) -> str:
             "",
             "## Integration Coverage Report",
             "",
-            "- Path resolution is centralized in `appshell/paths/virtual_paths.py` after install discovery is resolved by `lib/install/install_discovery_engine.py`.",
+            "- Path resolution is centralized in `runtime/appshell/paths/virtual_paths.py` after install discovery is resolved by `lib/install/install_discovery_engine.py`.",
             "- AppShell now refuses launches that do not resolve a governed install root with `refusal.install.not_found`.",
             "- Remaining path literals are limited to explicit shims and packaging-layout builders, not authoritative runtime root discovery.",
         )

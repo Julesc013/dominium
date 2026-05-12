@@ -63,7 +63,24 @@ OWNERSHIP_SURFACES = set(
 )
 
 PRODUCT_ROOTS = set(["client", "server", "setup", "launcher"])
-RUNTIME_ROOTS = set(["app", "appshell", "control", "core", "diag", "net", "ui"])
+RUNTIME_ROOTS = set(
+    [
+        "app",
+        "appshell",
+        "audio",
+        "control",
+        "core",
+        "diag",
+        "diagnostics",
+        "input",
+        "net",
+        "network",
+        "platform",
+        "render",
+        "storage",
+        "ui",
+    ]
+)
 CONTRACT_ROOTS = set(
     ["compat", "locks", "registry", "registries", "repo", "safety", "schema", "schemas", "security", "specs"]
 )
@@ -81,6 +98,7 @@ SPLIT_MIXED_ROOTS = set(
         "data",
         "locks",
         "modding",
+        "net",
         "packs",
         "repo",
         "safety",
@@ -508,7 +526,7 @@ def migration_action_for(name, classification):
     if classification == CLASS_TRANSITIONAL_PRODUCT:
         return "move"
     if classification == CLASS_TRANSITIONAL_RUNTIME:
-        return "split" if name in ("control", "core") else "move"
+        return "split" if name in ("control", "core", "net") else "move"
     if classification == CLASS_TRANSITIONAL_CONTRACT:
         if name in ("schema", "schemas"):
             return "merge"
@@ -614,7 +632,7 @@ def risk_level_for(root):
     if cls == CLASS_TRANSITIONAL_CONTENT:
         return "high" if name in SPLIT_MIXED_ROOTS else "medium"
     if cls == CLASS_TRANSITIONAL_RUNTIME:
-        return "high" if name in ("control", "core") else "medium"
+        return "high" if name in ("control", "core", "net") else "medium"
     if cls == CLASS_TRANSITIONAL_PRODUCT:
         return "medium"
     if cls == CLASS_TRANSITIONAL_RELEASE:
@@ -878,10 +896,108 @@ def completed_contract_move_entries(repo_root, roots):
     return completed
 
 
+def completed_runtime_move_entries(repo_root, roots):
+    present = set(root["name"] for root in roots)
+    completed = []
+    runtime_targets = {
+        "app": {
+            "target": "runtime/app",
+            "action": "move",
+            "notes": "Completed in CONVERGE-07; root-level app/ moved under runtime/app/.",
+            "completed_notes": "Root-level app/ is retired; retained app runtime substrate lives under runtime/app/.",
+        },
+        "appshell": {
+            "target": "runtime/appshell",
+            "action": "move",
+            "notes": "Completed in CONVERGE-07; root-level appshell/ moved under runtime/appshell/.",
+            "completed_notes": "Root-level appshell/ is retired; AppShell source lives under runtime/appshell/.",
+        },
+        "diag": {
+            "target": "runtime/diagnostics",
+            "action": "move",
+            "notes": "Completed in CONVERGE-07; root-level diag/ moved under runtime/diagnostics/.",
+            "completed_notes": "Root-level diag/ is retired; source diagnostics live under runtime/diagnostics/.",
+        },
+        "ui": {
+            "target": "runtime/ui",
+            "action": "move",
+            "notes": "Completed in CONVERGE-07; root-level ui/ moved under runtime/ui/.",
+            "completed_notes": "Root-level ui/ is retired; shared UI runtime source lives under runtime/ui/.",
+        },
+    }
+    for name, info in sorted(runtime_targets.items()):
+        if name in present:
+            continue
+        target = info["target"]
+        target_path = os.path.join(repo_root, *target.split("/"))
+        if not os.path.exists(target_path):
+            continue
+        completed.append(
+            {
+                "name": name,
+                "current_path": name,
+                "proposed_target": target,
+                "action": info["action"],
+                "classification": CLASS_TRANSITIONAL_RUNTIME,
+                "ownership_surface": "runtime",
+                "split_required": False,
+                "risk_level": "medium",
+                "phase_hint": "CONVERGE-07",
+                "dependencies": [],
+                "preserve_paths": "Root path retired in CONVERGE-07; active references should use {0}/.".format(target),
+                "shim_required": False,
+                "semantic_change_allowed": False,
+                "build_change_allowed": False,
+                "notes": info["notes"],
+                "status": "completed",
+                "completed_phase": "CONVERGE-07",
+                "completed_target": target,
+                "completed_notes": info["completed_notes"],
+            }
+        )
+    absent_targets = {
+        "audio": "runtime/audio",
+        "diagnostics": "runtime/diagnostics",
+        "input": "runtime/input",
+        "network": "runtime/network",
+        "platform": "runtime/platform",
+        "render": "runtime/render",
+        "storage": "runtime/storage",
+    }
+    for name, target in sorted(absent_targets.items()):
+        if name in present:
+            continue
+        completed.append(
+            {
+                "name": name,
+                "current_path": name,
+                "proposed_target": target,
+                "action": "review_absent",
+                "classification": CLASS_TRANSITIONAL_RUNTIME,
+                "ownership_surface": "runtime",
+                "split_required": False,
+                "risk_level": "low",
+                "phase_hint": "CONVERGE-07",
+                "dependencies": [],
+                "preserve_paths": "Root path is absent; do not create a new root-level runtime-adapter authority.",
+                "shim_required": False,
+                "semantic_change_allowed": False,
+                "build_change_allowed": False,
+                "notes": "Confirmed absent in CONVERGE-07; future source material belongs under {0}/.".format(target),
+                "status": "completed",
+                "completed_phase": "CONVERGE-07",
+                "completed_target": target,
+                "completed_notes": "Root-level {0}/ was not present during CONVERGE-07.".format(name),
+            }
+        )
+    return completed
+
+
 def merge_move_map(repo_root, existing, roots):
     entries = []
     completed = completed_archive_move_entries(repo_root, roots)
     completed.extend(completed_contract_move_entries(repo_root, roots))
+    completed.extend(completed_runtime_move_entries(repo_root, roots))
     names = sorted(set(root["name"] for root in roots), key=lambda item: (item.casefold(), item))
     inferred_by_name = dict((root["name"], infer_move_entry(root)) for root in roots)
     for name in names:

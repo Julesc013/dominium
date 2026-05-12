@@ -12,8 +12,8 @@ The read-only adapter isolates application code from engine/game headers and
 centralizes compatibility checks and read-only queries.
 
 ## Location
-- API: `app/include/dominium/app/readonly_adapter.h`
-- Implementation: `app/readonly_adapter.c`
+- API: `runtime/app/include/dominium/app/readonly_adapter.h`
+- Implementation: `runtime/app/readonly_adapter.c`
 
 ## Contract
 - `dom_app_ro_open` runs `dom_app_compat_check` and fails on build-info ABI/struct

@@ -27,7 +27,7 @@ UI_SURFACE_REPORT_PATH = "data/audit/ui_surface_report.json"
 
 _GOVERNED_SURFACES = (
     {
-        "path": "ui/ui_model.py",
+        "path": "runtime/ui/ui_model.py",
         "surface_kind": "shared_ui_model",
         "status": "governed_active",
         "purpose": "Shared menu/navigation model over AppShell command descriptors and LIB manifests.",
@@ -62,14 +62,14 @@ _GOVERNED_SURFACES = (
         "product_scope": "client",
     },
     {
-        "path": "appshell/tui/tui_engine.py",
+        "path": "runtime/appshell/tui/tui_engine.py",
         "surface_kind": "tui_adapter",
         "status": "governed_active",
         "purpose": "AppShell TUI adapter over command engine, logs, and derived surfaces.",
         "product_scope": "client,engine,game,launcher,server,setup,tool.attach_console_stub",
     },
     {
-        "path": "appshell/rendered_stub.py",
+        "path": "runtime/appshell/rendered_stub.py",
         "surface_kind": "rendered_adapter",
         "status": "governed_active",
         "purpose": "Rendered-mode adapter that exposes the shared client main-menu surface or a deterministic stub.",
@@ -110,13 +110,13 @@ _BUSINESS_LOGIC_TOKENS = (
 )
 _FORBIDDEN_TRUTH_NAMES = {"truth_model", "universe_state", "process_runtime"}
 _GOVERNED_ADAPTER_PATHS = {
-    "appshell/tui/tui_engine.py",
-    "appshell/rendered_stub.py",
+    "runtime/appshell/tui/tui_engine.py",
+    "runtime/appshell/rendered_stub.py",
     "client/ui/main_menu_surface.py",
 }
 _SHARED_UI_MODEL_REQUIRED_PATHS = {
-    "appshell/tui/tui_engine.py": "build_ui_model(",
-    "appshell/rendered_stub.py": "build_client_main_menu_surface(",
+    "runtime/appshell/tui/tui_engine.py": "build_ui_model(",
+    "runtime/appshell/rendered_stub.py": "build_client_main_menu_surface(",
     "client/ui/main_menu_surface.py": "build_ui_model(",
 }
 _NATIVE_ADAPTER_MARKERS = (
@@ -230,7 +230,7 @@ def _surface_row(repo_root: str, *, rel_path: str, surface_kind: str, status: st
         "uses_shared_ui_model": bool(
             "build_ui_model(" in text
             or "build_client_main_menu_surface(" in text
-            or _norm(rel_path) == "ui/ui_model.py"
+            or _norm(rel_path) == "runtime/ui/ui_model.py"
         ),
         "reads_truth_directly": bool(truth_names),
         "truth_name_hits": truth_names,
@@ -333,7 +333,7 @@ def ui_reconcile_violations(repo_root: str) -> list[dict]:
     root = _repo_root(repo_root)
     violations: list[dict] = []
     for rel_path, rule_id, message in (
-        ("ui/ui_model.py", "INV-UI-SHARES-UI_MODEL", "shared UI model is required"),
+        ("runtime/ui/ui_model.py", "INV-UI-SHARES-UI_MODEL", "shared UI model is required"),
         (UI_ADAPTER_CONTRACT_PATH, "INV-UI-ADAPTERS-COMMAND-ONLY", "UI adapter contract documentation is required"),
         (UI_SURFACE_MAP_PATH, "INV-UI-SHARES-UI_MODEL", "UI surface map is required"),
         (UI_RECONCILE_FINAL_PATH, "INV-UI-SHARES-UI_MODEL", "UI reconcile final report is required"),
@@ -588,7 +588,7 @@ def render_ui_reconcile_final(report: Mapping[str, object]) -> str:
             "",
             "## Readiness",
             "",
-            "- Shared menu/navigation state is centralized in `ui/ui_model.py`.",
+            "- Shared menu/navigation state is centralized in `runtime/ui/ui_model.py`.",
             "- Rendered and TUI adapters now bind through the shared model without changing the locked viewer-shell truth/view contract.",
             "- Governed native adapters remain capability-disabled until PLATFORM-FORMALIZE-0 provides concrete platform bindings.",
         )

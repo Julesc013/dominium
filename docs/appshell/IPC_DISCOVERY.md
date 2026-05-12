@@ -24,7 +24,7 @@ It guarantees:
 
 - Manifest: `VROOT_IPC/ipc_endpoints.json`
 - Descriptor files: `VROOT_IPC/endpoints/<endpoint_id>.json`
-- Address payloads: emitted by `appshell/ipc/ipc_transport.py`
+- Address payloads: emitted by `runtime/appshell/ipc/ipc_transport.py`
 
 ## Discovery Flow
 
@@ -52,6 +52,6 @@ It guarantees:
 ## Current Baseline
 
 - VROOT probe result: `complete`
-- VROOT IPC root: `D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime`
-- Manifest path: `D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime/ipc_endpoints.json`
+- VROOT IPC root: `C:/Inbox/Git Repos/dominium/build/appshell/ipc_unify/store/runtime`
+- Manifest path: `C:/Inbox/Git Repos/dominium/build/appshell/ipc_unify/store/runtime/ipc_endpoints.json`
 - Descriptor rel path: `endpoints/ipc.server.session.ipc_unify.vroot.json`

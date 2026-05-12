@@ -11,13 +11,13 @@ import os
 from typing import Mapping, Sequence
 
 from compat import build_compat_status_payload, build_product_descriptor, negotiate_product_endpoints
-from appshell.command_registry import build_root_command_descriptors, find_command_descriptor, format_help_text
-from appshell.compat_adapter import build_version_payload, emit_descriptor_payload
-from appshell.config_loader import list_pack_manifests, list_profile_bundles
-from appshell.console_repl import build_console_session_stub
-from appshell.diag import write_diag_snapshot_bundle
-from diag import write_repro_bundle
-from appshell.ipc import (
+from runtime.appshell.command_registry import build_root_command_descriptors, find_command_descriptor, format_help_text
+from runtime.appshell.compat_adapter import build_version_payload, emit_descriptor_payload
+from runtime.appshell.config_loader import list_pack_manifests, list_profile_bundles
+from runtime.appshell.console_repl import build_console_session_stub
+from runtime.appshell.diag import write_diag_snapshot_bundle
+from runtime.diagnostics import write_repro_bundle
+from runtime.appshell.ipc import (
     attach_ipc_endpoint,
     detach_ipc_session,
     discover_ipc_endpoints,
@@ -26,9 +26,9 @@ from appshell.ipc import (
     query_ipc_status,
     run_ipc_console_command,
 )
-from appshell.logging import get_current_log_engine, log_emit
-from appshell.pack_verifier_adapter import verify_pack_root
-from appshell.paths import (
+from runtime.appshell.logging import get_current_log_engine, log_emit
+from runtime.appshell.pack_verifier_adapter import verify_pack_root
+from runtime.appshell.paths import (
     VROOT_LOCKS,
     VROOT_LOGS,
     VROOT_PROFILES,
@@ -36,7 +36,7 @@ from appshell.paths import (
     vpath_candidate_roots,
     vpath_resolve,
 )
-from appshell.supervisor import (
+from runtime.appshell.supervisor import (
     DEFAULT_SUPERVISOR_POLICY_ID,
     attach_supervisor_children,
     discover_active_supervisor_endpoint,
@@ -45,7 +45,7 @@ from appshell.supervisor import (
     launch_supervisor_service,
     load_supervisor_runtime_state,
 )
-from appshell.ui_mode_selector import get_current_ui_mode_selection
+from runtime.appshell.ui_mode_selector import get_current_ui_mode_selection
 from release import (
     DEFAULT_RELEASE_MANIFEST_REL,
     infer_dist_root_from_manifest_path,

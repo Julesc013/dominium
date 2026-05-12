@@ -6,7 +6,7 @@ import json
 import os
 from typing import List, Tuple
 
-from appshell.paths import (
+from runtime.appshell.paths import (
     VROOT_PACKS,
     VROOT_PROFILES,
     get_current_virtual_paths,

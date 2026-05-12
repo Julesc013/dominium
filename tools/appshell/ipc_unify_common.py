@@ -14,7 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from appshell.paths import (  # noqa: E402
+from runtime.appshell.paths import (  # noqa: E402
     VROOT_IPC,
     clear_current_virtual_paths,
     get_current_virtual_paths,
@@ -38,7 +38,7 @@ LAST_REVIEWED = "2026-03-13"
 
 CANONICAL_SURFACES = (
     {
-        "path": "appshell/ipc/ipc_transport.py",
+        "path": "runtime/appshell/ipc/ipc_transport.py",
         "surface": "transport",
         "classification": "canonical",
         "notes": "Single transport abstraction, framing, manifest, and descriptor-file discovery.",
@@ -62,7 +62,7 @@ CANONICAL_SURFACES = (
         ),
     },
     {
-        "path": "appshell/ipc/ipc_endpoint_server.py",
+        "path": "runtime/appshell/ipc/ipc_endpoint_server.py",
         "surface": "endpoint_server",
         "classification": "canonical",
         "notes": "Canonical negotiated attach server and channel dispatcher.",
@@ -74,7 +74,7 @@ CANONICAL_SURFACES = (
         ),
     },
     {
-        "path": "appshell/ipc/ipc_client.py",
+        "path": "runtime/appshell/ipc/ipc_client.py",
         "surface": "attach_client",
         "classification": "canonical",
         "notes": "Canonical attach/discovery/status/log/console client surface.",
@@ -87,7 +87,7 @@ CANONICAL_SURFACES = (
         ),
     },
     {
-        "path": "appshell/commands/command_engine.py",
+        "path": "runtime/appshell/commands/command_engine.py",
         "surface": "command_entrypoint",
         "classification": "canonical",
         "notes": "AppShell console attach command routes through the canonical IPC client.",
@@ -99,7 +99,7 @@ CANONICAL_SURFACES = (
         ),
     },
     {
-        "path": "appshell/supervisor/supervisor_engine.py",
+        "path": "runtime/appshell/supervisor/supervisor_engine.py",
         "surface": "supervisor_consumer",
         "classification": "canonical",
         "notes": "Supervisor uses the canonical attach/status/log/console IPC client.",
@@ -112,7 +112,7 @@ CANONICAL_SURFACES = (
         ),
     },
     {
-        "path": "appshell/tui/tui_engine.py",
+        "path": "runtime/appshell/tui/tui_engine.py",
         "surface": "tui_consumer",
         "classification": "canonical",
         "notes": "TUI multiplexing uses the canonical attach/status/log/console IPC client.",
@@ -139,45 +139,45 @@ CANONICAL_SURFACES = (
 CANONICAL_BINDINGS = (
     {
         "surface": "Console attach command",
-        "consumer_path": "appshell/commands/command_engine.py",
-        "canonical_target": "appshell/ipc/ipc_client.py",
+        "consumer_path": "runtime/appshell/commands/command_engine.py",
+        "canonical_target": "runtime/appshell/ipc/ipc_client.py",
         "notes": "All console attach requests route through attach_ipc_endpoint/query_ipc_status/query_ipc_log_events/run_ipc_console_command.",
     },
     {
         "surface": "TUI multiplex",
-        "consumer_path": "appshell/tui/tui_engine.py",
-        "canonical_target": "appshell/ipc/ipc_client.py",
+        "consumer_path": "runtime/appshell/tui/tui_engine.py",
+        "canonical_target": "runtime/appshell/ipc/ipc_client.py",
         "notes": "TUI session tabs attach and refresh through the shared IPC client helpers.",
     },
     {
         "surface": "Supervisor attach",
-        "consumer_path": "appshell/supervisor/supervisor_engine.py",
-        "canonical_target": "appshell/ipc/ipc_client.py",
+        "consumer_path": "runtime/appshell/supervisor/supervisor_engine.py",
+        "canonical_target": "runtime/appshell/ipc/ipc_client.py",
         "notes": "Supervisor attach and log merge flows reuse the same IPC client and negotiation path.",
     },
     {
         "surface": "Endpoint listener",
-        "consumer_path": "appshell/ipc/ipc_endpoint_server.py",
-        "canonical_target": "appshell/ipc/ipc_transport.py",
+        "consumer_path": "runtime/appshell/ipc/ipc_endpoint_server.py",
+        "canonical_target": "runtime/appshell/ipc/ipc_transport.py",
         "notes": "Endpoint server opens the canonical listener and emits deterministic frames only after handshake success.",
     },
 )
 
 ALLOWED_DIRECT_SOCKET_USERS = {
-    "appshell/ipc/ipc_transport.py": "canonical_transport",
+    "runtime/appshell/ipc/ipc_transport.py": "canonical_transport",
 }
 ALLOWED_LOW_LEVEL_PRIMITIVE_USERS = {
-    "appshell/ipc/ipc_transport.py": "canonical_transport",
-    "appshell/ipc/ipc_endpoint_server.py": "canonical_endpoint_server",
-    "appshell/ipc/ipc_client.py": "canonical_client",
+    "runtime/appshell/ipc/ipc_transport.py": "canonical_transport",
+    "runtime/appshell/ipc/ipc_endpoint_server.py": "canonical_endpoint_server",
+    "runtime/appshell/ipc/ipc_client.py": "canonical_client",
     "tools/appshell/appshell4_probe.py": "test_only_probe",
 }
 DIRECT_SOCKET_TOKENS = ("socket.socket(",)
 LOW_LEVEL_IPC_TOKENS = ("connect_ipc_client(", "open_ipc_listener(", "send_frame(", "recv_frame(")
 LOW_LEVEL_IMPORT_MARKERS = (
     "from .ipc_transport import",
-    "from appshell.ipc import",
-    "from appshell.ipc.ipc_transport import",
+    "from runtime.appshell.ipc import",
+    "from runtime.appshell.ipc.ipc_transport import",
 )
 SCAN_ROOTS = ("src", "tools")
 PY_EXTENSIONS = (".py",)
@@ -379,7 +379,7 @@ def _scan_low_level_ipc_primitive_users(repo_root: str) -> tuple[list[dict], lis
         hits = [token for token in LOW_LEVEL_IPC_TOKENS if token in text]
         if not hits:
             continue
-        if rel_path != "appshell/ipc/ipc_transport.py" and not any(marker in text for marker in LOW_LEVEL_IMPORT_MARKERS):
+        if rel_path != "runtime/appshell/ipc/ipc_transport.py" and not any(marker in text for marker in LOW_LEVEL_IMPORT_MARKERS):
             continue
         classification = "canonical" if rel_path in ALLOWED_LOW_LEVEL_PRIMITIVE_USERS else "duplicate"
         row = {
@@ -439,7 +439,7 @@ def _replay_probe(repo_root: str) -> dict:
 
 
 def _vroot_ipc_probe(repo_root: str) -> dict:
-    from appshell.ipc import (  # noqa: E402
+    from runtime.appshell.ipc import (  # noqa: E402
         AppShellIPCEndpointServer,
         discover_ipc_endpoint_descriptor,
         discover_ipc_endpoints,
@@ -572,7 +572,7 @@ def build_ipc_unify_report(repo_root: str, *, include_runtime: bool = True) -> d
             violations.append(
                 {
                     "code": "vroot_probe_failed",
-                    "file_path": "appshell/ipc/ipc_transport.py",
+                    "file_path": "runtime/appshell/ipc/ipc_transport.py",
                     "message": "VROOT_IPC discovery probe failed ({})".format(str(exc)),
                     "rule_id": "INV-IPC-REQUIRES-NEGOTIATION",
                 }
@@ -590,7 +590,7 @@ def build_ipc_unify_report(repo_root: str, *, include_runtime: bool = True) -> d
             violations.append(
                 {
                     "code": "unnegotiated_attach_not_refused",
-                    "file_path": "appshell/ipc/ipc_endpoint_server.py",
+                    "file_path": "runtime/appshell/ipc/ipc_endpoint_server.py",
                     "message": "unnegotiated attach did not refuse with refusal.connection.no_negotiation",
                     "rule_id": "INV-IPC-REQUIRES-NEGOTIATION",
                 }
@@ -756,7 +756,7 @@ def _render_duplication_fixes(report: Mapping[str, object]) -> str:
     else:
         lines.extend(
             [
-                "- None. Supervisor, command-engine attach, and TUI multiplexing all route through `appshell/ipc/ipc_client.py`.",
+                "- None. Supervisor, command-engine attach, and TUI multiplexing all route through `runtime/appshell/ipc/ipc_client.py`.",
                 "",
             ]
         )
@@ -782,7 +782,7 @@ def _render_ipc_discovery(report: Mapping[str, object]) -> str:
         "",
         "- Manifest: `VROOT_IPC/ipc_endpoints.json`",
         "- Descriptor files: `VROOT_IPC/endpoints/<endpoint_id>.json`",
-        "- Address payloads: emitted by `appshell/ipc/ipc_transport.py`",
+        "- Address payloads: emitted by `runtime/appshell/ipc/ipc_transport.py`",
         "",
         "## Discovery Flow",
         "",
@@ -827,11 +827,11 @@ def _render_final_report(report: Mapping[str, object]) -> str:
         _doc_header(status="DERIVED", title="IPC Unify Final", canonical=False).rstrip(),
         "## Canonical Stack",
         "",
-        "- Transport: `appshell/ipc/ipc_transport.py`",
+        "- Transport: `runtime/appshell/ipc/ipc_transport.py`",
         "- Handshake: `compat/handshake/handshake_engine.py`",
-        "- Attach client: `appshell/ipc/ipc_client.py`",
-        "- Endpoint server: `appshell/ipc/ipc_endpoint_server.py`",
-        "- Consumers: `appshell/commands/command_engine.py`, `appshell/tui/tui_engine.py`, and `appshell/supervisor/supervisor_engine.py`",
+        "- Attach client: `runtime/appshell/ipc/ipc_client.py`",
+        "- Endpoint server: `runtime/appshell/ipc/ipc_endpoint_server.py`",
+        "- Consumers: `runtime/appshell/commands/command_engine.py`, `runtime/appshell/tui/tui_engine.py`, and `runtime/appshell/supervisor/supervisor_engine.py`",
         "",
         "## Removed Duplicate IPC Paths",
         "",

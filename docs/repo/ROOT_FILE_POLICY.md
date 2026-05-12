@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-06
+Phase: CONVERGE-07
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -10,7 +10,7 @@ The repository root is a coordination surface, not a general source directory. R
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for root-level entries. `contracts/repo/layout.contract.toml` remains the broader source-layout convergence authority.
 
-CONVERGE-03 recorded root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. CONVERGE-05 updated those artifacts after the archive-family move. CONVERGE-06 updated them after schema root convergence. Those files are planning evidence only and do not authorize unrelated moves.
+CONVERGE-03 recorded root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. CONVERGE-05 updated those artifacts after the archive-family move. CONVERGE-06 updated them after schema root convergence. CONVERGE-07 updated them after runtime/AppShell convergence. Those files are planning evidence only and do not authorize unrelated moves.
 
 ## Allowed Metadata Directories
 
@@ -73,6 +73,12 @@ Do not add a new root-level `compat/`, `registry/`, or `registries/` authority. 
 Lock artifacts and lock contracts must not be confused. `contracts/locks/` is for deterministic lockfile schemas and contract definitions. Concrete lock artifacts belong to install/runtime projections such as `store/locks/`; process and IPC locks belong under `runtime/locks/`; setup/update/rollback state belongs under `ops/transactions/`.
 
 Generated schema outputs require explicit generated-output policy before they are committed or treated as source authority.
+
+Root-level `app/`, `appshell/`, `ui/`, and `diag/` are retired after CONVERGE-07. New runtime-facing AppShell, app-runtime, UI, diagnostic, platform, render, input, audio, network, storage, IPC, logging, supervisor, CLI/TUI, or mode-selection source must live under `runtime/<subroot>/`.
+
+Do not add new root-level `platform/`, `render/`, `input/`, `audio/`, `network/`, `storage/`, or `diagnostics/` roots. Existing `net/`, `control/`, and `core/` remain review roots because they are mixed; do not add new authority there.
+
+Generated runtime output belongs in install/runtime projection roots, not in source repo root and not in source `runtime/`.
 
 ## Generated Roots
 

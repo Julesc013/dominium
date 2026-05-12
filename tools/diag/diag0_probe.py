@@ -13,7 +13,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from compat import emit_product_descriptor  # noqa: E402
-from diag import verify_repro_bundle, write_repro_bundle  # noqa: E402
+from runtime.diagnostics import verify_repro_bundle, write_repro_bundle  # noqa: E402
 from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL  # noqa: E402
 
 

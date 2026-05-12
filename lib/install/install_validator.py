@@ -8,7 +8,7 @@ import subprocess
 import sys
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from appshell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing
+from runtime.appshell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing
 from compat.migration_lifecycle import (
     ARTIFACT_KIND_INSTALL_MANIFEST,
     DECISION_READ_ONLY,

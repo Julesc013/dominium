@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-06
+Phase: CONVERGE-07
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -44,6 +44,12 @@ Owns Dominium rules, domain process semantics, authority rules, world/economy/ci
 Owns AppShell, platform adapters, render adapters, audio, input, network, storage, diagnostics, and UI adapters.
 
 Runtime may host, adapt, observe, and present. Runtime does not own simulation truth, game law, domain semantics, or process authority.
+
+CONVERGE-07 moved root-level `app/`, `appshell/`, `ui/`, and `diag/` under `runtime/`. Root-level runtime-adapter directories are retired when fully migrated and must not be recreated as active authority.
+
+Runtime also must not own product semantics, product IDs, executable names, machine-readable contract law, generated runtime logs, process/IPC lock artifacts, caches, mutable stores, or package output. Runtime source belongs in `runtime/<subroot>/`; generated runtime projection material belongs to install/runtime layouts governed by the distribution contract.
+
+Mixed runtime-adjacent roots such as `net/`, `control/`, and `core/` remain review roots. They must be split by file role before anything is bound to runtime, game, engine, contracts, or content ownership.
 
 ## `apps/`
 

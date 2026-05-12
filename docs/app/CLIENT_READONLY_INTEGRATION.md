@@ -12,7 +12,7 @@ The client uses the app-layer read-only adapter for observability while keeping
 engine/game APIs isolated.
 
 ## Modules
-- Adapter API: `app/include/dominium/app/readonly_adapter.h`
+- Adapter API: `runtime/app/include/dominium/app/readonly_adapter.h`
 - View model: `client/observability/readonly_view_model.h`,
   `client/observability/readonly_view_model.c`
 - Input bindings: `client/input/client_input_bindings.h`,

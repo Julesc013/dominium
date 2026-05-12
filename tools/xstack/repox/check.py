@@ -1100,7 +1100,7 @@ PLATFORM_FORMALIZE_COMMON_PATH = "tools/release/platform_formalize_common.py"
 PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
 PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
 PLATFORM_FORMALIZE_REPORT_PATH = "data/audit/platform_formalize_report.json"
-UI_MODE_SELECTOR_PATH = "appshell/ui_mode_selector.py"
+UI_MODE_SELECTOR_PATH = "runtime/appshell/ui_mode_selector.py"
 UI_RECONCILE_TOOL_PATH = "tools/release/tool_run_ui_reconcile.py"
 UI_RECONCILE_COMMON_PATH = "tools/release/ui_reconcile_common.py"
 UI_ADAPTER_CONTRACT_PATH = "docs/ui/UI_ADAPTER_CONTRACT.md"
@@ -1113,7 +1113,7 @@ TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
 TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
 TOOL_SURFACE_REFERENCE_PATH = "docs/appshell/TOOL_REFERENCE.md"
 VIRTUAL_ROOT_REGISTRY_PATH = "data/registries/virtual_root_registry.json"
-VIRTUAL_PATHS_ENGINE_PATH = "appshell/paths/virtual_paths.py"
+VIRTUAL_PATHS_ENGINE_PATH = "runtime/appshell/paths/virtual_paths.py"
 VIRTUAL_PATHS_DOC_PATH = "docs/appshell/VIRTUAL_PATHS.md"
 VIRTUAL_PATHS_TOOL_PATH = "tools/release/tool_run_virtual_paths.py"
 VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
@@ -8481,7 +8481,7 @@ def _append_ui_reconcile_findings(
         (UI_SURFACE_MAP_AUDIT_PATH, "UI surface map is required", "INV-UI-SHARES-UI_MODEL"),
         (UI_RECONCILE_FINAL_PATH, "UI reconcile final report is required", "INV-UI-SHARES-UI_MODEL"),
         (UI_SURFACE_REPORT_JSON_PATH, "UI surface machine-readable report is required", "INV-UI-SHARES-UI_MODEL"),
-        ("ui/ui_model.py", "shared UI model is required", "INV-UI-SHARES-UI_MODEL"),
+        ("runtime/ui/ui_model.py", "shared UI model is required", "INV-UI-SHARES-UI_MODEL"),
         ("client/ui/main_menu_surface.py", "rendered client menu surface is required", "INV-UI-SHARES-UI_MODEL"),
         ("tools/auditx/analyzers/e477_business_logic_in_ui_adapter_smell.py", "BusinessLogicInUIAdapterSmell analyzer is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
         ("tools/auditx/analyzers/e478_truth_leak_in_ui_smell.py", "TruthLeakInUISmell analyzer is required", "INV-NO-TRUTH-READ-IN-UI"),
@@ -10022,7 +10022,7 @@ def _append_supervisor_hardening_findings(
                 ("data/audit/supervisor_hardening_report.json", "supervisor hardening machine-readable report is required"),
                 ("tools/appshell/supervisor_hardening_common.py", "supervisor hardening helper module is required"),
                 ("tools/appshell/tool_run_supervisor_hardening.py", "supervisor hardening tool runner is required"),
-                ("appshell/supervisor/args_canonicalizer.py", "supervisor args canonicalizer is required"),
+                ("runtime/appshell/supervisor/args_canonicalizer.py", "supervisor args canonicalizer is required"),
                 ("tools/xstack/testx/tests/test_args_canonicalization_stable.py", "supervisor args canonicalization TestX coverage is required"),
                 ("tools/xstack/testx/tests/test_readiness_bounded_no_wallclock.py", "supervisor bounded readiness TestX coverage is required"),
                 ("tools/xstack/testx/tests/test_log_merge_order_stable.py", "supervisor log merge TestX coverage is required"),

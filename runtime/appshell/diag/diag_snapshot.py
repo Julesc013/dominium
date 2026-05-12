@@ -7,8 +7,8 @@ import json
 import os
 from typing import Mapping
 
-from appshell.logging import append_jsonl
-from appshell.paths import VROOT_EXPORTS, get_current_virtual_paths, vpath_resolve
+from runtime.appshell.logging import append_jsonl
+from runtime.appshell.paths import VROOT_EXPORTS, get_current_virtual_paths, vpath_resolve
 
 
 def _normalize_tree(value: object) -> object:

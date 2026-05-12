@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-06
+Phase: CONVERGE-07
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -11,7 +11,7 @@ Replacement Target: hardened source repository layout contract after controlled 
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for current and transitional root-level entries.
 
-CONVERGE-01 through CONVERGE-04 did not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity. CONVERGE-05 performed only archive-family root convergence. CONVERGE-06 performed only schema and contract-adjacent convergence described below.
+CONVERGE-01 through CONVERGE-04 did not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity. CONVERGE-05 performed only archive-family root convergence. CONVERGE-06 performed only schema and contract-adjacent convergence. CONVERGE-07 performed only runtime/AppShell/UI/diagnostics convergence described below.
 
 ## CONVERGE-02 Authority Note
 
@@ -65,6 +65,19 @@ CONVERGE-06 completed the second physical root convergence pass for safe contrac
 
 `contracts/` is canonical for schemas, registries, protocols, capabilities, compatibility contracts, stability contracts, replay/proof contracts, ABI contracts, repository layout contracts, and distribution projection contracts. Mixed contract-adjacent roots such as `compat/` and `locks/` remain under review because they contain implementation or concrete lock artifacts, not only contract definitions.
 
+## CONVERGE-07 Runtime Convergence Note
+
+CONVERGE-07 completed the third physical root convergence pass for safe runtime-facing material:
+
+- `appshell/` moved to `runtime/appshell/`
+- `app/` moved to `runtime/app/`
+- `ui/` moved to `runtime/ui/`
+- `diag/` moved to `runtime/diagnostics/`
+
+`runtime/` is canonical for AppShell, platform, render, UI, input, audio, network, storage, diagnostics, IPC, logging, supervisor, CLI/TUI, and mode-selection source. Root-level `app/`, `appshell/`, `ui/`, and `diag/` are retired aliases. Mixed runtime-adjacent roots such as `net/`, `control/`, and `core/` remain under review because they cannot be moved wholesale without deeper ownership inspection.
+
+Product roots still migrate in CONVERGE-08. Domain roots still split in CONVERGE-09.
+
 ## Target Roots
 
 The source repository should converge toward ownership-based top-level roots:
@@ -103,7 +116,7 @@ Later CONVERGE tasks may use the contract, inventory, and move map to plan contr
 - CONVERGE-03: complete root inventory and move map refinement.
 - CONVERGE-05: archive, attic, legacy, and quarantine convergence. Completed for root-level archive-family roots.
 - CONVERGE-06: contract, schema, compatibility, and lock convergence. Completed for root-level `schema/` and `schemas/`; `compat/` and `locks/` remain review roots.
-- CONVERGE-07: runtime, AppShell, platform, render, UI, network, and diagnostics convergence.
+- CONVERGE-07: runtime, AppShell, platform, render, UI, network, and diagnostics convergence. Completed for root-level `app/`, `appshell/`, `ui/`, and `diag/`; `net/`, `control/`, and `core/` remain review roots.
 - CONVERGE-08: product entrypoint convergence into `apps/`.
 - CONVERGE-09: mixed domain-root split.
 - CONVERGE-10: blocking enforcement only after controlled moves.

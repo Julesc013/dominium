@@ -16,7 +16,7 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 def build_surface(repo_root: str, *, product_id: str = "client", layout_id: str = "", backend_override: str = "lite") -> dict:
     ensure_repo_on_path(repo_root)
-    from appshell.tui import build_tui_surface
+    from runtime.appshell.tui import build_tui_surface
 
     return build_tui_surface(
         repo_root,

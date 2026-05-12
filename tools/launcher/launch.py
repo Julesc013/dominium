@@ -15,9 +15,9 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from appshell import appshell_main  # noqa: E402
-from appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
-from appshell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
+from runtime.appshell import appshell_main  # noqa: E402
+from runtime.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
+from runtime.appshell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
 from compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
 from lib.install import default_install_registry_path, discover_install  # noqa: E402
 from release import (  # noqa: E402
@@ -33,7 +33,7 @@ from release import (  # noqa: E402
     select_install_profile,
     validate_instance_against_install_plan,
 )
-from ui.ui_model import discover_instance_menu_entries  # noqa: E402
+from runtime.ui.ui_model import discover_instance_menu_entries  # noqa: E402
 
 
 def _norm(path: str) -> str:

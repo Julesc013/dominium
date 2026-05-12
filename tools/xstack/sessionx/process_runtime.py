@@ -47306,7 +47306,7 @@ def execute_intent(
             ),
         )
         try:
-            from appshell.logging import log_emit
+            from runtime.appshell.logging import log_emit
         except Exception:  # pragma: no cover - logging is optional in non-AppShell runtimes
             log_emit = None
         approved_rows = [dict(row) for row in list(scheduler_plan.get("approved_rows") or []) if isinstance(row, Mapping)]

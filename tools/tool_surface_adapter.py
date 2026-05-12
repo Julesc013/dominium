@@ -11,7 +11,7 @@ import subprocess
 import sys
 from typing import Iterable, Mapping, Sequence
 
-from appshell.command_registry import COMMAND_REGISTRY_REL, load_command_registry
+from runtime.appshell.command_registry import COMMAND_REGISTRY_REL, load_command_registry
 from meta_extensions_engine import normalize_extensions_tree
 
 

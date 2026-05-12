@@ -166,7 +166,7 @@ ENGINE_SPECS = (
         "semantic_area": "VPATH",
         "canonical_module_id": "appshell.paths",
         "canonical_entrypoint_symbols": ("vpath_resolve", "vpath_resolve_existing"),
-        "canonical_file_paths": ("appshell/paths/virtual_paths.py",),
+        "canonical_file_paths": ("runtime/appshell/paths/virtual_paths.py",),
         "allowed_definition_modules": ("appshell.paths",),
         "description": "Virtual path resolution must stay inside the AppShell paths module.",
     },

@@ -156,7 +156,7 @@ def _integration_checks(repo_root: str) -> list[dict]:
         ("tools/setup/setup_cli.py", "handle_trust(", RULE_POLICY, "setup_trust_cli_missing", "setup CLI must expose trust commands"),
         ("tools/setup/setup_cli.py", "trust_policy_id", RULE_POLICY, "setup_trust_policy_missing", "setup verification and update flows must accept trust_policy_id"),
         ("release/update_resolver.py", "verify_artifact_trust(", RULE_STRICT, "update_resolver_trust_missing", "update resolver must verify release index trust"),
-        ("appshell/pack_verifier_adapter.py", "verify_artifact_trust(", RULE_HASHES, "pack_pipeline_trust_missing", "pack verification pipeline must route through trust verification"),
+        ("runtime/appshell/pack_verifier_adapter.py", "verify_artifact_trust(", RULE_HASHES, "pack_pipeline_trust_missing", "pack verification pipeline must route through trust verification"),
         ("tools/dist/dist_verify_common.py", "verify_release_manifest(", RULE_HASHES, "dist_verify_trust_missing", "dist verification must route through release manifest verification"),
     ):
         if token in _file_text(repo_root, rel_path):

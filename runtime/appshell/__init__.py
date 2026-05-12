@@ -6,7 +6,7 @@ from importlib import import_module
 
 
 _EXPORTS = {
-    "appshell_main": ("appshell.bootstrap", "appshell_main"),
+    "appshell_main": ("runtime.appshell.bootstrap", "appshell_main"),
 }
 
 __all__ = sorted(_EXPORTS.keys())
@@ -15,7 +15,7 @@ __all__ = sorted(_EXPORTS.keys())
 def __getattr__(name: str):
     target = _EXPORTS.get(name)
     if not target:
-        raise AttributeError("module 'appshell' has no attribute {!r}".format(name))
+        raise AttributeError("module 'runtime.appshell' has no attribute {!r}".format(name))
     module_name, attr_name = target
     module = import_module(module_name)
     value = getattr(module, attr_name)

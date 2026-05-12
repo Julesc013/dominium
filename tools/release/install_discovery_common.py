@@ -41,17 +41,17 @@ INTEGRATION_TARGETS = (
         "markers": ("discover_install(", "REFUSAL_INSTALL_NOT_FOUND", "portable_manifest"),
     },
     {
-        "file_path": "appshell/paths/virtual_paths.py",
+        "file_path": "runtime/appshell/paths/virtual_paths.py",
         "surface": "virtual_paths",
         "markers": ("discover_install(", "\"install_discovery\": {", "REFUSAL_INSTALL_NOT_FOUND"),
     },
     {
-        "file_path": "appshell/bootstrap.py",
+        "file_path": "runtime/appshell/bootstrap.py",
         "surface": "appshell_bootstrap",
         "markers": ("compat.install_selected", "refusal.install.not_found", "_allow_install_refusal_cli"),
     },
     {
-        "file_path": "appshell/commands/command_engine.py",
+        "file_path": "runtime/appshell/commands/command_engine.py",
         "surface": "compat_status",
         "markers": ("status_payload[\"install_discovery\"]",),
     },

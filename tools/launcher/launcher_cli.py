@@ -61,7 +61,7 @@ from lib.save import (
     evaluate_save_open,
     resolve_save_manifest_path,
 )
-from appshell.paths import (
+from runtime.appshell.paths import (
     VROOT_LOGS,
     VROOT_PACKS,
     VROOT_PROFILES,

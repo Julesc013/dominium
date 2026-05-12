@@ -131,7 +131,7 @@ These services coordinate presentation-adjacent runtime support behavior while r
 
 Representative evidence roots include:
 
-- `app/ui_event_log.c`
+- `runtime/app/ui_event_log.c`
 - `engine/modules/view`
 - `engine/modules/ui`
 - `client/presentation`

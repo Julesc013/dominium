@@ -18,4 +18,4 @@ without touching engine/game.
 - Read-only view model: `client/observability/readonly_view_model.h`,
   `client/observability/readonly_view_model.c`
 - Entry point: `client/app/main_client.c`
-- Adapter boundary: `app/include/dominium/app/readonly_adapter.h`
+- Adapter boundary: `runtime/app/include/dominium/app/readonly_adapter.h`

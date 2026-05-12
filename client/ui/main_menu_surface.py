@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 
-from ui import MENU_STATE_MAIN, build_ui_model
+from runtime.ui import MENU_STATE_MAIN, build_ui_model
 
 
 def build_client_main_menu_surface(
@@ -53,7 +53,7 @@ def build_client_main_menu_surface(
         "inspect_hint": "Press I after entering the world to inspect the current target.",
         "refinement_status_hint": "Refinement activity appears in the status strip without blocking play.",
         "ui_contract": {
-            "shared_ui_model": "ui/ui_model.py",
+            "shared_ui_model": "runtime/ui/ui_model.py",
             "consumes_command_registry": True,
             "consumes_lib_manifests": True,
             "virtual_path_policy": "repo_relative_manifest_refs",

@@ -9,7 +9,7 @@ import platform
 import shutil
 from typing import Mapping, Sequence
 
-from appshell.paths import VROOT_EXPORTS, get_current_virtual_paths, vpath_resolve
+from runtime.appshell.paths import VROOT_EXPORTS, get_current_virtual_paths, vpath_resolve
 from meta_extensions_engine import normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance

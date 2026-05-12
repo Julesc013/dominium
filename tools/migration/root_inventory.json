@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T03:47:43Z",
+  "generated_at_utc": "2026-05-12T04:05:13Z",
   "repo_root": ".",
-  "head_sha": "008778d301e965a264cca42fd1d66dd92310cea0",
+  "head_sha": "65bda5e3ee9465d5c890b8070ffa89b524b226bf",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-01",
@@ -152,38 +152,6 @@
       "phase_hint": "none",
       "authority_status": "metadata",
       "notes": "Allowed root file."
-    },
-    {
-      "name": "app",
-      "path": "app",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_runtime_root",
-      "ownership_surface": "runtime",
-      "current_role": "Current runtime/AppShell/platform-adjacent root retained until runtime convergence.",
-      "proposed_target": "runtime/app",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
-      "phase_hint": "CONVERGE-07",
-      "authority_status": "transitional",
-      "notes": "Current runtime/app substrate; do not move in CONVERGE-01."
-    },
-    {
-      "name": "appshell",
-      "path": "appshell",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_runtime_root",
-      "ownership_surface": "runtime",
-      "current_role": "Current runtime/AppShell/platform-adjacent root retained until runtime convergence.",
-      "proposed_target": "runtime/appshell",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
-      "phase_hint": "CONVERGE-07",
-      "authority_status": "transitional",
-      "notes": "AppShell should converge under runtime after boundary proof."
     },
     {
       "name": "archive",
@@ -472,22 +440,6 @@
       "phase_hint": "CONVERGE-09",
       "authority_status": "transitional",
       "notes": "Data contains registries, content, planning mirrors, and generated evidence; split by authority."
-    },
-    {
-      "name": "diag",
-      "path": "diag",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_runtime_root",
-      "ownership_surface": "runtime",
-      "current_role": "Current runtime/AppShell/platform-adjacent root retained until runtime convergence.",
-      "proposed_target": "runtime/diagnostics",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
-      "phase_hint": "CONVERGE-07",
-      "authority_status": "transitional",
-      "notes": "Diagnostics belong under runtime if they do not own truth."
     },
     {
       "name": "diegetics",
@@ -1090,12 +1042,12 @@
       "ownership_surface": "runtime",
       "current_role": "Current runtime/AppShell/platform-adjacent root retained until runtime convergence.",
       "proposed_target": "runtime/network",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
+      "migration_action": "split",
+      "split_required": true,
+      "risk_level": "high",
       "phase_hint": "CONVERGE-07",
       "authority_status": "transitional",
-      "notes": "Network adapters belong under runtime after authority boundaries are checked."
+      "notes": "Root-level net/ remains mixed after CONVERGE-07 because it contains transport, anti-cheat, SRZ, and server-authoritative policy code; do not move wholesale."
     },
     {
       "name": "numeric_discipline.py",
@@ -1560,22 +1512,6 @@
       "phase_hint": "none",
       "authority_status": "authoritative_current",
       "notes": "Developer, validation, migration, CI, code generation, review, and audit tools."
-    },
-    {
-      "name": "ui",
-      "path": "ui",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_runtime_root",
-      "ownership_surface": "runtime",
-      "current_role": "Current runtime/AppShell/platform-adjacent root retained until runtime convergence.",
-      "proposed_target": "runtime/ui",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
-      "phase_hint": "CONVERGE-07",
-      "authority_status": "transitional",
-      "notes": "UI is presentation/adaptation only and must not mutate truth."
     },
     {
       "name": "universe",

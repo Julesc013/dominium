@@ -11,8 +11,8 @@ ANALYZER_ID = "E425_WALLCLOCK_IN_SIM_SMELL"
 GUARDED_PATHS = (
     "server/net/loopback_transport.py",
     "server/runtime/tick_loop.py",
-    "appshell/logging/log_engine.py",
-    "appshell/diag/diag_snapshot.py",
+    "runtime/appshell/logging/log_engine.py",
+    "runtime/appshell/diag/diag_snapshot.py",
 )
 FORBIDDEN_TOKENS = (
     "datetime.utcnow(",

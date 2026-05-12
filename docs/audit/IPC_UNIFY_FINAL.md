@@ -9,11 +9,11 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 # IPC Unify Final
 ## Canonical Stack
 
-- Transport: `src/appshell/ipc/ipc_transport.py`
-- Handshake: `src/compat/handshake/handshake_engine.py`
-- Attach client: `src/appshell/ipc/ipc_client.py`
-- Endpoint server: `src/appshell/ipc/ipc_endpoint_server.py`
-- Consumers: `src/appshell/commands/command_engine.py`, `src/appshell/tui/tui_engine.py`, and `src/appshell/supervisor/supervisor_engine.py`
+- Transport: `runtime/appshell/ipc/ipc_transport.py`
+- Handshake: `compat/handshake/handshake_engine.py`
+- Attach client: `runtime/appshell/ipc/ipc_client.py`
+- Endpoint server: `runtime/appshell/ipc/ipc_endpoint_server.py`
+- Consumers: `runtime/appshell/commands/command_engine.py`, `runtime/appshell/tui/tui_engine.py`, and `runtime/appshell/supervisor/supervisor_engine.py`
 
 ## Removed Duplicate IPC Paths
 
@@ -23,16 +23,16 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 ## Attach Discipline Summary
 
 - Unnegotiated attach refusal: `refusal.connection.no_negotiation`
-- Negotiation record hash: `d835395666963dcfe0b71e548660c9ede5bb16ac4722d614f32063a61d8f8732`
+- Negotiation record hash: `56e4e2b4cf76e62533f86a6ef51e05bbcbe3722eca0205a1dd381b4e882a0f17`
 - Replay result: `complete`
 - VROOT discovery result: `complete`
 
 ## Runtime Verification
 
 - Attach probe result: `complete`
-- Cross-platform IPC hash: `077479cca928e1344809927ef75fd807bacaba0232352f7c52fe635d9b5bae2d`
+- Cross-platform IPC hash: `ec7a3b39c953388a85e77d32545edc4aeb611f698b9bbb734a39700eaa5f8ec8`
 - Replay mismatches: `none`
-- Descriptor file path: `D:/Projects/Dominium/dominium/build/appshell/ipc_unify/store/runtime/endpoints/ipc.server.session.ipc_unify.vroot.json`
+- Descriptor file path: `C:/Inbox/Git Repos/dominium/build/appshell/ipc_unify/store/runtime/endpoints/ipc.server.session.ipc_unify.vroot.json`
 
 ## Readiness
 
