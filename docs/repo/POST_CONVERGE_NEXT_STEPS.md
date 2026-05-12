@@ -4,7 +4,7 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
-## Current Correction After POST-CONVERGE-07
+## Current Correction After POST-CONVERGE-08
 
 POST-CONVERGE-00 confirmed that exception retirement and build/runtime proof must precede platform, render, native shell, worldgen, and broad domain expansion.
 
@@ -22,12 +22,24 @@ POST-CONVERGE-07 attempted canonical local runtime proof and is blocked:
 - `python apps/server/server_main.py --help` exits 0 but enters AppShell TUI because the script invocation does not forward CLI args
 - `tools/validators/check_local_playtest_path.py` records the current blocked state
 
+POST-CONVERGE-08 attempted product boot matrix proof at the user's request and is partial:
+
+- launcher AppShell help boots through `python tools/launcher/launch.py --help`
+- client AppShell help boots through `python dist/bin/dominium_client --help`
+- server AppShell help boots through `python dist/bin/dominium_server --help`
+- the attach-console tool stub help boots through `python tools/appshell/product_stub_cli.py --product-id tool.attach_console_stub --help`
+- setup remains blocked before help through the Python bridge on local Python 3.8
+- `dist/bin/dom` remains blocked because `dist/bin/tool_attach_console_stub` is missing
+- no native product binary boot was proven
+
 Current priority order:
 
 1. provide a valid Visual Studio 17 2022 verify lane or accepted CI proof
 2. run configure/build/CTest through the canonical verify lane
 3. remediate or explicitly accept remaining RepoX FAST drift findings
-4. rerun POST-CONVERGE-07 only after build and FAST status is accepted
+4. fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
+5. fix or classify direct `apps/server/server_main.py` CLI argument forwarding
+6. rerun POST-CONVERGE-08 only after build and product command blockers are accepted or resolved
 
 Planning references:
 
@@ -35,6 +47,7 @@ Planning references:
 - `docs/repo/audits/POST_CONVERGE_EXCEPTION_TRIAGE.md`
 - `docs/repo/audits/POST_CONVERGE_06_BUILD_FAST_REMEDIATION.md`
 - `docs/repo/audits/POST_CONVERGE_07_LOCAL_RUNTIME_PROOF.md`
+- `docs/repo/audits/POST_CONVERGE_08_PRODUCT_BOOT_MATRIX_PROOF.md`
 - `docs/repo/EXCEPTION_RETIREMENT_QUEUE.md`
 - `docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md`
 - `docs/repo/BUILD_VERIFICATION_PATHS.md`
@@ -42,6 +55,7 @@ Planning references:
 - `docs/repo/AIDE_PACK_REMEDIATION.md`
 - `docs/runtime/CANONICAL_LOCAL_PLAYTEST.md`
 - `docs/release/LOCAL_RUNTIME_PROOF.md`
+- `docs/release/PRODUCT_BOOT_PROOF.md`
 
 ## What Can Proceed
 
@@ -50,6 +64,8 @@ The repository is ready for scoped work in these areas:
 - toolchain installation or CI proof for the existing `verify` preset
 - targeted RepoX FAST drift remediation
 - targeted command-surface remediation for script-level CLI argument forwarding, after build proof is available
+- targeted setup Python compatibility remediation if the Python setup bridge remains a product proof path
+- targeted `dist/bin/dom` wrapper remediation or retirement if that wrapper remains a shipped tool surface
 - documentation updates that reflect the current validation state
 - narrowly scoped AIDE/tooling compatibility fixes
 
@@ -64,16 +80,17 @@ Platform, render, native shell, AppShell enforcement, worldgen, domain realism, 
 - no distribution/runtime/install/media roots treated as source roots
 - no support claims without component matrix status
 - no new machine-readable authority under transitional roots without contract review
-- no runtime/playtest proof until build and FAST status are accepted
+- no POST-CONVERGE-09 portable projection smoke proof until build, product boot, and wrapper/script blockers are accepted or resolved
 
 ## Suggested Sequence
 
 1. Install or expose Visual Studio 17 2022 build tools, or capture accepted CI proof for `cmake --preset verify`.
 2. Run configure, build, and CTest through the canonical verify lane.
 3. Address remaining RepoX FAST drift findings in a targeted remediation task.
-4. Rerun strict layout validators, docs/build/UI/ABI checks, FAST, and AIDE pack.
-5. Rerun POST-CONVERGE-07 canonical local runtime/playtest proof if the gates are pass or explicitly accepted warn.
-6. Start POST-CONVERGE-08 product boot matrix proof only after POST-CONVERGE-07 records full or accepted partial product command proof.
+4. Remediate or explicitly classify setup Python bridge compatibility and the missing `dist/bin/dom` target.
+5. Rerun strict layout validators, docs/build/UI/ABI checks, FAST, and AIDE pack.
+6. Rerun POST-CONVERGE-08 product boot matrix proof after build output or accepted equivalent proof exists.
+7. Start POST-CONVERGE-09 portable projection smoke proof only after POST-CONVERGE-08 records full or accepted partial product command proof.
 
 ## Domain Work Rule
 

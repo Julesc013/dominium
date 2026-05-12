@@ -63,6 +63,17 @@ This document defines the canonical local developer/agent runtime path for Domin
 - `apps/server/server_main.py` can be invoked, but script execution does not forward `sys.argv[1:]`, so `--help` and `--descriptor` are not honored as actual script-level commands.
 - Full local session/status/save/load/resume proof is therefore not supported yet.
 
+## POST-CONVERGE-08 Product Boot Note
+
+POST-CONVERGE-08 recorded partial product help proof in `docs/release/PRODUCT_BOOT_PROOF.md`:
+
+- launcher AppShell help boots through `python tools/launcher/launch.py --help`
+- client AppShell help boots through `python dist/bin/dominium_client --help`
+- server AppShell help boots through `python dist/bin/dominium_server --help`
+- the attach-console tool stub help boots through `python tools/appshell/product_stub_cli.py --product-id tool.attach_console_stub --help`
+
+The local playtest path remains blocked because native product binaries are not built, setup help is blocked in the Python bridge on local Python 3.8, and no session/status/save/load/resume sequence is proven.
+
 ## Non-Goals
 
 - No new gameplay systems.

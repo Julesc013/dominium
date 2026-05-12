@@ -29,6 +29,20 @@ See `docs/release/SUPPORT_TIERS.md`.
 | T4 | advanced_modern |
 | T5 | mobile_web_exotic |
 
+## POST-CONVERGE-08 Boot Evidence
+
+Product boot proof is partial and is recorded in `docs/release/PRODUCT_BOOT_PROOF.md`.
+
+| Product | Boot Evidence Status | Notes |
+| --- | --- | --- |
+| setup | blocked | no built binary; Python setup bridge fails before help under local Python 3.8 |
+| launcher | partial | Python AppShell help boots; native binary not built |
+| client | partial | tracked wrapper and MVP runtime entry help boot; native binary not built |
+| server | partial | tracked wrapper and MVP runtime entry help boot; native binary not built |
+| tools | partial | attach-console tool stub help boots; shipped tools host binary not built |
+
+No row below is promoted to `available` or `implemented` by POST-CONVERGE-08. Planned, provisional, stub, and research statuses remain non-support claims unless later proof updates both this document and the machine-readable contract.
+
 ## Products
 
 | Product | Status | Tier | Preferred Modes | Notes |

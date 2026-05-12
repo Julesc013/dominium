@@ -10,6 +10,20 @@ Machine-readable source: `contracts/release/component_matrix.contract.toml`
 
 Product modes describe how product entrypoints bind AppShell/runtime surfaces. They do not move product code and do not change AppShell mode resolution.
 
+## POST-CONVERGE-08 Evidence Note
+
+Product boot proof is currently partial. See `docs/release/PRODUCT_BOOT_PROOF.md`.
+
+| Product | POST-CONVERGE-08 Boot Status | Evidence | Blocker |
+| --- | --- | --- | --- |
+| setup | blocked | CMake target and source surface exist | no built binary; Python setup bridge fails before help on local Python 3.8 |
+| launcher | partial | Python AppShell launcher help exits 0 | no built `launcher` binary |
+| client | partial | tracked wrapper and MVP runtime entry emit AppShell client help | no built `client` binary |
+| server | partial | tracked wrapper and MVP runtime entry emit AppShell server help | no built `server` binary; direct server script ignores CLI args |
+| tools | partial | attach-console tool stub emits AppShell help | no built `tools` binary; `dist/bin/dom` target is missing |
+
+This note does not promote any product mode status. The matrix below remains a planning and status view until native product binaries and runtime smoke commands are build-proven.
+
 ## Matrix
 
 | Product | Preferred Mode Order | Status | Notes |

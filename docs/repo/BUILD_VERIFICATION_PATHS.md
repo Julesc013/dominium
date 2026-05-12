@@ -7,6 +7,8 @@
 
 POST-CONVERGE-06 confirmed that repository layout and supplemental validators can run locally, but the canonical CMake verify lane is still blocked by this machine's missing Visual Studio toolchain. POST-CONVERGE-07 confirmed that no local product runtime proof can proceed without that build output or an accepted equivalent CI proof.
 
+POST-CONVERGE-08 re-ran `cmake --preset verify` with the same missing-generator failure. Product boot proof is therefore limited to script/wrapper AppShell help surfaces and does not replace native configure/build/CTest proof.
+
 ## Canonical Verify Lane
 
 The canonical lane remains:
@@ -76,4 +78,5 @@ ctest --preset verify
 - No validated fallback preset exists.
 - FAST still fails after the structural fix because RepoX now exposes broad drift and missing-artifact backlog.
 - POST-CONVERGE-07 could not run product binaries or prove local playtest/session/status/save/load/resume.
+- POST-CONVERGE-08 could not run native product binaries; only partial script/wrapper help surfaces were proven.
 - The Python server AppShell script can be invoked, but direct script execution currently ignores CLI args, so it is not a canonical product command proof.

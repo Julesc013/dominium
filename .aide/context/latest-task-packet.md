@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-07 local runtime proof
+UNSPECIFIED - POST-CONVERGE-08 product boot matrix proof
 
 ## GOAL
 
-POST-CONVERGE-07 local runtime proof
+POST-CONVERGE-08 product boot matrix proof
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4225
-- approx_tokens: 1057
+- chars: 4237
+- approx_tokens: 1060
 - budget_status: PASS
 - warnings:
   - none
