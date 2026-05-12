@@ -109,3 +109,7 @@ Strict validators are expected to pass:
 Repo and root allowlist strict modes pass with active explicit exceptions. Active exceptions are listed in `contracts/repo/layout_exceptions.toml` and summarized in `docs/repo/LAYOUT_EXCEPTION_LEDGER.md`.
 
 Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
+
+## POST-CONVERGE-02 Enforcement Status
+
+POST-CONVERGE-02 reduces active layout exceptions to 32 by retiring `__init__.py` and moving root `labs/` material to `archive/historical/labs/`. The remaining wrapper/tooling/governance exceptions are still explicit in `contracts/repo/layout_exceptions.toml`, with zero unexcepted strict layout violations.

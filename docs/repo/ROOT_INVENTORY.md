@@ -22,7 +22,7 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 - `transitional_contract_or_schema_root`: 8
 - `transitional_release_or_dist_root`: 1
 - `transitional_runtime_root`: 3
-- `unknown_needs_review`: 12
+- `unknown_needs_review`: 10
 
 ## Root Entries
 
@@ -35,7 +35,6 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 | `.github` | `metadata` | `metadata` | `retain_metadata` | `none` | `low` | Allowed metadata/config root. |
 | `.gitignore` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
 | `.vscode` | `metadata` | `metadata` | `retain_metadata` | `none` | `low` | Allowed metadata/config root. |
-| `__init__.py` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `AGENTS.md` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
 | `apps` | `canonical` | `apps` | `keep` | `none` | `low` | Thin product entrypoints and product composition surfaces. |
 | `archive` | `canonical` | `archive` | `keep` | `none` | `low` | Historical, superseded, quarantined, generated-evidence, and legacy material retained with provenance. |
@@ -62,7 +61,6 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 | `governance` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | Governance mirrors must not compete with AGENTS.md or canon. |
 | `GOVERNANCE.md` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
 | `ide` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | IDE projections may belong under cmake, tools, or generated evidence depending on role. |
-| `labs` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | Experimental material requires review before binding. |
 | `lib` | `transitional_contract_or_schema_root` | `unknown` | `review` | `CONVERGE-06` | `review` | Do not classify by name alone; inspect ownership first. |
 | `libs` | `transitional_contract_or_schema_root` | `unknown` | `review` | `CONVERGE-06` | `review` | Do not classify by name alone; inspect ownership first. |
 | `LICENSE.md` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
@@ -106,13 +104,11 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 
 ## Unknown Or Review Roots
 
-- `__init__.py`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
 - `artifacts`: `generated_or_ephemeral`, target `generated evidence or release artifact review`, risk `review`. Review before using as authority.
 - `compat`: `transitional_contract_or_schema_root`, target `contracts/compatibility_plus_runtime_review`, risk `review`. Root-level compat/ remains mixed implementation and shim code after CONVERGE-06; do not move wholesale into contracts/.
 - `dist`: `generated_or_ephemeral`, target `generated distribution output; future distribution contract review`, risk `review`. Distribution output is governed by distribution contracts, not source repo layout.
 - `governance`: `unknown_needs_review`, target `docs/governance`, risk `review`. Governance mirrors must not compete with AGENTS.md or canon.
 - `ide`: `unknown_needs_review`, target `cmake_or_tools_review`, risk `review`. IDE projections may belong under cmake, tools, or generated evidence depending on role.
-- `labs`: `unknown_needs_review`, target `review`, risk `review`. Experimental material requires review before binding.
 - `lib`: `transitional_contract_or_schema_root`, target `review`, risk `review`. Do not classify by name alone; inspect ownership first.
 - `libs`: `transitional_contract_or_schema_root`, target `review`, risk `review`. Do not classify by name alone; inspect ownership first.
 - `locks`: `transitional_contract_or_schema_root`, target `contracts/locks_or_store_locks_review`, risk `review`. Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.
@@ -204,12 +200,12 @@ Current enforcement summary after CONVERGE-10:
 - Metadata roots: 4
 - Allowed root files: 25
 - Generated or ephemeral roots: 2
-- Active layout exceptions: 34
+- Active layout exceptions: 32
 - Unexcepted strict violations: 0
 
 Strict mode now passes only because every remaining generated, transitional, missing, unknown, or review root has an active entry in `contracts/repo/layout_exceptions.toml`.
 
-Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `__init__.py`, `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
+Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
 
 New root-level entries must either match the contracts and allowlist or add a specific, bounded exception. No broad wildcard exception exists.
 
@@ -238,4 +234,17 @@ Current generated/output exception state:
 - Active generated/output exceptions: `artifacts/` and `dist/`.
 - Retired generated/output exceptions: `.xstack_cache/`, `build/`, and `out/`.
 - Active layout exception count: 34.
+- Unexcepted strict violations: 0.
+
+## POST-CONVERGE-02 Wrapper / Tooling / Governance Cleanup
+
+POST-CONVERGE-02 removed the unused root package marker and moved quarantined labs documentation from `labs/README.md` to `archive/historical/labs/README.md`.
+
+Current wrapper/tooling/governance inventory state:
+
+- Active layout exception count: 32.
+- Unknown/review root count: 10.
+- Retired root/file exceptions: `__init__.py` and `labs`.
+- Remaining root compatibility shims: `tool_ui_bind.cmd`, `tool_ui_doc_annotate.cmd`, and `tool_ui_validate.cmd`.
+- Remaining protected review roots/files: `governance`, `ide`, `meta`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance`, and `validation`.
 - Unexcepted strict violations: 0.

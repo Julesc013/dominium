@@ -11,18 +11,16 @@ No hidden exceptions are allowed. The table below is explanatory; the TOML ledge
 | Exception ID | Path | Classification | Reason | Target | Retirement Phase | Risk | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `missing_external_root` | `external` | `partial_review` | Canonical root declared but currently absent. | `external/` optionality or materialization review | POST-CONVERGE | low | Strict pass is exception-backed while absence is explicit. |
-| `root_init_py` | `__init__.py` | `compatibility_shim` | Root package marker remains for legacy import assumptions. | remove or allowlist after review | POST-CONVERGE | medium | Do not add more root package markers. |
-| `governance_root` | `governance` | `partial_review` | Governance mirror material remains outside `docs/`. | `docs/governance` or mirror review | POST-CONVERGE | review | Must not compete with AGENTS.md or canon. |
-| `ide_root` | `ide` | `partial_review` | IDE projection material remains at root. | tools, cmake, docs, or generated review | POST-CONVERGE | review | No source authority here. |
-| `labs_root` | `labs` | `partial_review` | Experimental material requires ownership review. | archive, tools, docs, or experiment review | POST-CONVERGE | review | Experiments are not canonical roots. |
-| `meta_root` | `meta` | `partial_review` | Mixed meta/provenance/reference material remains. | contracts, tools, docs, game, or archive split | POST-CONVERGE | review | No new authority here. |
-| `meta_extensions_engine_file` | `meta_extensions_engine.py` | `partial_review` | Root-level engine-like module remains. | game, engine, tools, or contracts review | POST-CONVERGE | review | Ownership unresolved. |
-| `numeric_discipline_file` | `numeric_discipline.py` | `partial_review` | Root-level numeric discipline module remains. | engine, contracts, tools, or docs review | POST-CONVERGE | review | Ownership unresolved. |
-| `performance_root` | `performance` | `partial_review` | Performance tooling/evidence remains at root. | tools/performance or evidence review | POST-CONVERGE | review | Evidence is not source authority. |
-| `tool_ui_bind_cmd` | `tool_ui_bind.cmd` | `compatibility_shim` | Root command wrapper remains. | scripts or tools wrapper review | POST-CONVERGE | low | New wrappers should avoid root. |
-| `tool_ui_doc_annotate_cmd` | `tool_ui_doc_annotate.cmd` | `compatibility_shim` | Root command wrapper remains. | scripts or tools wrapper review | POST-CONVERGE | low | New wrappers should avoid root. |
-| `tool_ui_validate_cmd` | `tool_ui_validate.cmd` | `compatibility_shim` | Root command wrapper remains. | scripts or tools wrapper review | POST-CONVERGE | low | New wrappers should avoid root. |
-| `validation_root` | `validation` | `partial_review` | Validation material remains at root. | tools, tests, contracts, or docs review | POST-CONVERGE | review | No new validation root authority. |
+| `governance_root` | `governance` | `partial_review` | Active deterministic governance profile helper imported by release and tooling surfaces. | protected governance ownership review | POST-CONVERGE | high | Not a canonical doctrine source; AGENTS.md and canon remain authoritative. |
+| `ide_root` | `ide` | `partial_review` | Intentional IDE projection boundary with tracked README, manifest schema, and examples. | keep root projection boundary until policy relocation | POST-CONVERGE | medium | Generation and quarantine checks still reference `ide/`. |
+| `meta_root` | `meta` | `partial_review` | Mixed semantic, provenance, reference, and tooling helpers remain active. | protected ownership split review | POST-CONVERGE | high | Do not bind new authority here without contract update. |
+| `meta_extensions_engine_file` | `meta_extensions_engine.py` | `partial_review` | Active meta extension engine imported by governance, compatibility, domain, distribution, and audit tooling. | protected ownership review before relocation | POST-CONVERGE | high | Relocation crosses governance, compatibility, and domain semantics. |
+| `numeric_discipline_file` | `numeric_discipline.py` | `partial_review` | Active numeric discipline helper imported by domain truth/geometry/ephemeris code. | numeric ownership review before relocation | POST-CONVERGE | high | No numeric semantic change authorized by exception cleanup. |
+| `performance_root` | `performance` | `partial_review` | Active helper package imported by domain performance logic. | performance ownership review before relocation | POST-CONVERGE | high | Not pure tooling or generated evidence. |
+| `tool_ui_bind_cmd` | `tool_ui_bind.cmd` | `compatibility_shim` | Documented zero-setup developer command wrapper. | allowed root shim via `scripts/dev/tool_shim.py` | POST-CONVERGE | low | Existing workflows and policy docs still expect the shim. |
+| `tool_ui_doc_annotate_cmd` | `tool_ui_doc_annotate.cmd` | `compatibility_shim` | Documented zero-setup developer command wrapper. | allowed root shim via `scripts/dev/tool_shim.py` | POST-CONVERGE | low | Existing workflows and policy docs still expect the shim. |
+| `tool_ui_validate_cmd` | `tool_ui_validate.cmd` | `compatibility_shim` | Documented zero-setup developer command wrapper. | allowed root shim via `scripts/dev/tool_shim.py` | POST-CONVERGE | low | Existing workflows and policy docs still expect the shim. |
+| `validation_root` | `validation` | `partial_review` | Active unified validation engine imported by runtime, tools, compatibility shims, and tests. | validation ownership review before relocation | POST-CONVERGE | high | Do not create new validation root authority. |
 | `artifacts_root` | `artifacts` | `generated_exception` | Tracked toolchain-run provenance remains. | provenance/evidence policy review | POST-CONVERGE | review | POST-CONVERGE-01 found 10 tracked JSON evidence files and left the exception active. |
 | `dist_root` | `dist` | `generated_exception` | Tracked distribution projection files remain. | distribution projection policy review | POST-CONVERGE | medium | POST-CONVERGE-01 found 13 tracked projection files and left the exception active. |
 | `bundles_root` | `bundles` | `partial_review` | Bundle source/export/generated surfaces require review. | contracts, content, release, tests, or generated review | POST-CONVERGE | review | Distribution layout is separate. |
@@ -45,7 +43,7 @@ No hidden exceptions are allowed. The table below is explanatory; the TOML ledge
 | `templates_root` | `templates` | `partial_review` | Templates may be content, contracts, tooling input, or generated projection. | content/templates, contracts, tools, or generated review | POST-CONVERGE | review | No new root-level template authority. |
 | `updates_root` | `updates` | `partial_review` | Update material belongs to release/control-plane review. | release/update, contracts/distribution, or ops review | POST-CONVERGE | high | Do not change update identity here. |
 
-Active exception count: 34.
+Active exception count: 32.
 
 Unexcepted violation count after CONVERGE-10 validator updates: 0.
 
@@ -82,3 +80,15 @@ POST-CONVERGE-01 retired the ignored, untracked generated/cache exceptions for `
 - Cleanup audit: `docs/repo/audits/POST_CONVERGE_01_GENERATED_OUTPUT_CLEANUP.md`.
 
 Retired entries remain in `contracts/repo/layout_exceptions.toml` under `retired_exceptions.*` for audit history. They are not active strict-validation exceptions.
+
+## POST-CONVERGE-02 Wrapper / Tooling / Governance Cleanup
+
+POST-CONVERGE-02 retired the unused root package marker and moved quarantined labs documentation out of the source root while narrowing the remaining wrapper/tooling/governance exceptions.
+
+- Active exception count: 32.
+- Retired exception count: 5.
+- Retired in this task: `root_init_py`, `labs_root`.
+- Compatibility shims kept: `tool_ui_bind_cmd`, `tool_ui_doc_annotate_cmd`, `tool_ui_validate_cmd`.
+- Protected review exceptions kept: `governance_root`, `ide_root`, `meta_root`, `meta_extensions_engine_file`, `numeric_discipline_file`, `performance_root`, `validation_root`.
+- Unexcepted strict violation count: 0.
+- Cleanup audit: `docs/repo/audits/POST_CONVERGE_02_WRAPPER_TOOLING_CLEANUP.md`.

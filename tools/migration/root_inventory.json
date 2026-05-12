@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T08:30:38Z",
+  "generated_at_utc": "2026-05-12T09:27:21Z",
   "repo_root": ".",
-  "head_sha": "20ecdf86a6321f87360396eb57988e1fa2987557",
+  "head_sha": "49ee68ca8f69ee1606847719cc265f914bed455d",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-10",
   "allowlist_contract_id": "dominium.repo.root_allowlist.v1",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
-  "active_exception_count": 34,
+  "active_exception_count": 32,
   "inventory_status": "complete",
   "roots": [
     {
@@ -122,27 +122,6 @@
       "phase_hint": "none",
       "authority_status": "metadata",
       "notes": "Allowed metadata/config root."
-    },
-    {
-      "name": "__init__.py",
-      "path": "__init__.py",
-      "kind": "file",
-      "present": true,
-      "classification": "unknown_needs_review",
-      "ownership_surface": "unknown",
-      "current_role": "Unclassified root entry requiring manual ownership review.",
-      "proposed_target": "review",
-      "migration_action": "review",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "authority_status": "exception",
-      "notes": "No matching root classification in layout contract.",
-      "exception_id": "root_init_py",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "remove after import surface review or document as allowed root file",
-      "exception_reason": "Root package marker remains for compatibility with legacy import assumptions.",
-      "exception_risk": "medium"
     },
     {
       "name": "AGENTS.md",
@@ -564,9 +543,9 @@
       "notes": "Governance mirrors must not compete with AGENTS.md or canon.",
       "exception_id": "governance_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "docs/governance or generated mirror review",
-      "exception_reason": "Governance mirror material remains outside docs/ and must not compete with AGENTS.md or canon.",
-      "exception_risk": "review"
+      "exception_target": "protected governance ownership review before any move; possible tools/governance or release-control split only with explicit review",
+      "exception_reason": "Root governance package is an active deterministic governance profile helper imported by release and tooling surfaces.",
+      "exception_risk": "high"
     },
     {
       "name": "GOVERNANCE.md",
@@ -601,30 +580,9 @@
       "notes": "IDE projections may belong under cmake, tools, or generated evidence depending on role.",
       "exception_id": "ide_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "tools/ide, cmake/ide, docs/ide, or generated projection review",
-      "exception_reason": "IDE projection material remains at repository root and needs classification as tools, cmake, docs, or generated evidence.",
-      "exception_risk": "review"
-    },
-    {
-      "name": "labs",
-      "path": "labs",
-      "kind": "directory",
-      "present": true,
-      "classification": "unknown_needs_review",
-      "ownership_surface": "unknown",
-      "current_role": "Unclassified root entry requiring manual ownership review.",
-      "proposed_target": "review",
-      "migration_action": "review",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "authority_status": "exception",
-      "notes": "Experimental material requires review before binding.",
-      "exception_id": "labs_root",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "archive, tools, docs, or explicit experimental contract review",
-      "exception_reason": "Experimental material remains at repository root and needs ownership review before convergence.",
-      "exception_risk": "review"
+      "exception_target": "keep root projection boundary until IDE generation policy is relocated or explicitly revised",
+      "exception_reason": "Root IDE projection boundary is intentionally referenced by generation and quarantine checks; tracked files are README, manifest schema, and examples.",
+      "exception_risk": "medium"
     },
     {
       "name": "lib",
@@ -722,9 +680,9 @@
       "notes": "Meta surfaces require ownership review.",
       "exception_id": "meta_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts, tools, docs, game, or archive split review",
-      "exception_reason": "Meta surfaces remain mixed and include provenance, compilation, and reference material requiring ownership review.",
-      "exception_risk": "review"
+      "exception_target": "protected ownership split review before any move",
+      "exception_reason": "Meta surfaces remain active mixed semantic, provenance, reference, and tooling helpers imported across runtime, game, tools, and tests.",
+      "exception_risk": "high"
     },
     {
       "name": "meta_extensions_engine.py",
@@ -743,9 +701,9 @@
       "notes": "No matching root classification in layout contract.",
       "exception_id": "meta_extensions_engine_file",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "game, engine, tools, or contracts review",
-      "exception_reason": "Root-level engine-like meta extension module remains outside canonical ownership roots.",
-      "exception_risk": "review"
+      "exception_target": "protected ownership review before relocation; update compatibility wrapper and imports only under explicit semantic review",
+      "exception_reason": "Root-level meta extension engine remains actively imported by governance, compatibility, domain, distribution, and audit tooling.",
+      "exception_risk": "high"
     },
     {
       "name": "modding",
@@ -843,9 +801,9 @@
       "notes": "No matching root classification in layout contract.",
       "exception_id": "numeric_discipline_file",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "engine, contracts, tools, or docs review",
-      "exception_reason": "Root-level numeric discipline module remains outside canonical ownership roots.",
-      "exception_risk": "review"
+      "exception_target": "numeric ownership review before relocation; no numeric semantic change in exception cleanup",
+      "exception_reason": "Root-level numeric discipline helper remains actively imported by domain truth/geometry/ephemeris code.",
+      "exception_risk": "high"
     },
     {
       "name": "packs",
@@ -885,9 +843,9 @@
       "notes": "Performance tooling and evidence should stay tool/evidence scoped.",
       "exception_id": "performance_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "tools/performance or generated evidence review",
-      "exception_reason": "Performance tooling and evidence remain at repository root and need split between tools and generated evidence.",
-      "exception_risk": "review"
+      "exception_target": "performance ownership review before relocation; possible engine/game/tools split only under explicit scope",
+      "exception_reason": "Root performance package contains active helper code imported by domain performance logic, not only tooling or generated evidence.",
+      "exception_risk": "high"
     },
     {
       "name": "profiles",
@@ -1144,8 +1102,8 @@
       "notes": "No matching root classification in layout contract.",
       "exception_id": "tool_ui_bind_cmd",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "scripts or tools wrapper review",
-      "exception_reason": "Root-level command wrapper remains for existing developer workflow compatibility.",
+      "exception_target": "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools",
+      "exception_reason": "Root-level command wrapper remains for documented zero-setup developer workflow compatibility.",
       "exception_risk": "low"
     },
     {
@@ -1165,8 +1123,8 @@
       "notes": "No matching root classification in layout contract.",
       "exception_id": "tool_ui_doc_annotate_cmd",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "scripts or tools wrapper review",
-      "exception_reason": "Root-level command wrapper remains for existing developer workflow compatibility.",
+      "exception_target": "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools",
+      "exception_reason": "Root-level command wrapper remains for documented zero-setup developer workflow compatibility.",
       "exception_risk": "low"
     },
     {
@@ -1186,8 +1144,8 @@
       "notes": "No matching root classification in layout contract.",
       "exception_id": "tool_ui_validate_cmd",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "scripts or tools wrapper review",
-      "exception_reason": "Root-level command wrapper remains for existing developer workflow compatibility.",
+      "exception_target": "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools",
+      "exception_reason": "Root-level command wrapper remains for documented zero-setup developer workflow compatibility.",
       "exception_risk": "low"
     },
     {
@@ -1244,9 +1202,9 @@
       "notes": "Validation tooling belongs under tools unless it is contract law.",
       "exception_id": "validation_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "tools/validation, tests, contracts, or docs review",
-      "exception_reason": "Validation material remains at repository root and needs split between tools, contracts, tests, and docs.",
-      "exception_risk": "review"
+      "exception_target": "validation ownership review before relocation; possible tools/contracts/tests split only under explicit scope",
+      "exception_reason": "Root validation package contains active unified validation engine code imported by runtime, tools, compatibility shims, and tests.",
+      "exception_risk": "high"
     },
     {
       "name": "VERSION_CLIENT",

@@ -37,7 +37,6 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `.github` | `.github` | `retain_metadata` | `false` | `false` | `not_started` | `none` | `low` | Allowed metadata/config root. |
 | `.gitignore` | `.gitignore` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `.vscode` | `.vscode` | `retain_metadata` | `false` | `false` | `not_started` | `none` | `low` | Allowed metadata/config root. |
-| `__init__.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `AGENTS.md` | `AGENTS.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `app` | `runtime/app` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level app/ moved under runtime/app/. |
 | `apps` | `apps` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Thin product entrypoints and product composition surfaces. |
@@ -86,7 +85,6 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `inspection` | `game/domains/inspection` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level inspection/ implementation moved under game/domains/inspection/. No schemas, registries, content data, or docs were found in that root durin... |
 | `interaction` | `game/domains/interaction` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level interaction/ implementation moved under game/domains/interaction/. No schemas, registries, content data, or docs were found in that root dur... |
 | `interior` | `game/domains/interior` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level interior/ implementation moved under game/domains/interior/. No schemas, registries, content data, or docs were found in that root during th... |
-| `labs` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | Experimental material requires review before binding. |
 | `launcher` | `apps/launcher` | `move` | `false` | `false` | `completed` | `CONVERGE-08` | `medium` | Completed in CONVERGE-08; root-level launcher/ moved under apps/launcher/. |
 | `legacy` | `archive/legacy` | `archive` | `false` | `false` | `completed` | `CONVERGE-05` | `low` | Completed in CONVERGE-05; root-level legacy/ moved under archive/legacy/. |
 | `lib` | `review` | `review` | `false` | `true` | `review` | `CONVERGE-06` | `review` | Do not classify by name alone; inspect ownership first. |
@@ -204,3 +202,14 @@ The active generated/output move-map review surface is now:
 - `dist/`: active review, tracked distribution projection files.
 
 No source roots were moved, and no product, runtime, domain, contract, or support-matrix semantics changed.
+
+## POST-CONVERGE-02 Wrapper / Tooling / Governance Cleanup
+
+POST-CONVERGE-02 retired the root package marker and moved quarantined labs documentation to the archive:
+
+- `__init__.py`: removed after reference review found no in-repo import dependency.
+- `labs/README.md`: moved to `archive/historical/labs/README.md`.
+- `tool_ui_bind.cmd`, `tool_ui_doc_annotate.cmd`, and `tool_ui_validate.cmd`: retained as documented root compatibility shims.
+- `governance`, `ide`, `meta`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance`, and `validation`: retained as active review exceptions because references remain live or protected.
+
+No product, runtime, domain, contract, build-preset, or support-matrix semantics changed.

@@ -146,6 +146,8 @@ After CONVERGE-10, root files and root directories not covered by `contracts/rep
 
 Generated roots require explicit generated policy or an active exception. After POST-CONVERGE-01, only `dist/` and `artifacts/` remain active generated or generated-adjacent exceptions; `.xstack_cache/`, `build/`, and `out/` are retired generated/cache exceptions and must not regrow as source authority.
 
+After POST-CONVERGE-02, the root package marker `__init__.py` and root `labs/` directory are retired. The three `tool_ui_*.cmd` files remain explicit compatibility shims for documented developer workflow and must continue to resolve canonical tools through `scripts/dev/tool_shim.py`.
+
 No broad wildcard exceptions are allowed without a reviewed task. Add one exception per root, file, or tightly scoped pattern, and include a reason, target or review target, risk, and retirement phase.
 
 `VERSION_*` files remain allowed root identity files through the root allowlist pattern and explicit known file list. New non-version root files require allowlist review or an exception.

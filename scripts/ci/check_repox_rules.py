@@ -76,8 +76,8 @@ CANON_LEVEL_FIELD_RE = re.compile(r"\bcanon_level\s*[:=]\s*([A-Za-z0-9_.-]+)\b",
 
 ALLOWED_ARCHIVE_ROOTS = (
     "docs/archive",
+    "archive/historical/labs",
     "legacy",
-    "labs",
     "tmp",
 )
 

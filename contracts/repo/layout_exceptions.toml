@@ -39,149 +39,153 @@ retired_phase = "POST-CONVERGE-01"
 retired_reason = "Root contained no tracked files and was removed as local generated/cache output."
 notes = "Retained for audit history only. POST-CONVERGE-00 recorded the FAST failure evidence; future .xstack_cache material is ignored local cache, not source authority."
 
-[exceptions.root_init_py]
+[retired_exceptions.root_init_py]
 path = "__init__.py"
 kind = "file"
 classification = "compatibility_shim"
-reason = "Root package marker remains for compatibility with legacy import assumptions."
-retirement_phase = "POST-CONVERGE"
-target = "remove after import surface review or document as allowed root file"
-risk = "medium"
+reason = "Root package marker had no in-repo import users after POST-CONVERGE-02 reference review."
+retirement_phase = "POST-CONVERGE-02"
+target = "not present in source checkout"
+risk = "low"
 created_phase = "CONVERGE-10"
-active = true
-notes = "Do not add additional root package markers without contract update."
+active = false
+retired_phase = "POST-CONVERGE-02"
+retired_reason = "Removed after wrapper/tooling/governance cleanup found no direct repo import dependency on the root package marker."
+notes = "Retained for audit history only. Do not add additional root package markers without contract update."
 
 [exceptions.governance_root]
 path = "governance"
 kind = "directory"
 classification = "partial_review"
-reason = "Governance mirror material remains outside docs/ and must not compete with AGENTS.md or canon."
+reason = "Root governance package is an active deterministic governance profile helper imported by release and tooling surfaces."
 retirement_phase = "POST-CONVERGE"
-target = "docs/governance or generated mirror review"
-risk = "review"
+target = "protected governance ownership review before any move; possible tools/governance or release-control split only with explicit review"
+risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Authority remains AGENTS.md and canon until reconciled."
+notes = "POST-CONVERGE-02 found active imports from release and tooling helpers. This package is not a canonical governance doctrine source and must not compete with AGENTS.md or canon."
 
 [exceptions.ide_root]
 path = "ide"
 kind = "directory"
 classification = "partial_review"
-reason = "IDE projection material remains at repository root and needs classification as tools, cmake, docs, or generated evidence."
+reason = "Root IDE projection boundary is intentionally referenced by generation and quarantine checks; tracked files are README, manifest schema, and examples."
 retirement_phase = "POST-CONVERGE"
-target = "tools/ide, cmake/ide, docs/ide, or generated projection review"
-risk = "review"
+target = "keep root projection boundary until IDE generation policy is relocated or explicitly revised"
+risk = "medium"
 created_phase = "CONVERGE-10"
 active = true
-notes = "No new source authority may be added here."
+notes = "POST-CONVERGE-02 left this active because .gitignore and verify_ide_quarantine.py intentionally preserve ide/ as the generated IDE projection boundary. No source authority may be added here."
 
-[exceptions.labs_root]
+[retired_exceptions.labs_root]
 path = "labs"
 kind = "directory"
 classification = "partial_review"
-reason = "Experimental material remains at repository root and needs ownership review before convergence."
-retirement_phase = "POST-CONVERGE"
-target = "archive, tools, docs, or explicit experimental contract review"
-risk = "review"
+reason = "Root labs material was quarantined docs-only experiment material."
+retirement_phase = "POST-CONVERGE-02"
+target = "archive/historical/labs"
+risk = "low"
 created_phase = "CONVERGE-10"
-active = true
-notes = "Experiments are not canonical source ownership roots."
+active = false
+retired_phase = "POST-CONVERGE-02"
+retired_reason = "Moved quarantined labs README to archive/historical/labs after wrapper/tooling/governance cleanup."
+notes = "Retained for audit history only. Experiments are not canonical source ownership roots."
 
 [exceptions.meta_root]
 path = "meta"
 kind = "directory"
 classification = "partial_review"
-reason = "Meta surfaces remain mixed and include provenance, compilation, and reference material requiring ownership review."
+reason = "Meta surfaces remain active mixed semantic, provenance, reference, and tooling helpers imported across runtime, game, tools, and tests."
 retirement_phase = "POST-CONVERGE"
-target = "contracts, tools, docs, game, or archive split review"
-risk = "review"
+target = "protected ownership split review before any move"
+risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Do not bind new authority here without updating the contract."
+notes = "POST-CONVERGE-02 did not move mixed semantic authority. Do not bind new authority here without updating the contract."
 
 [exceptions.meta_extensions_engine_file]
 path = "meta_extensions_engine.py"
 kind = "file"
 classification = "partial_review"
-reason = "Root-level engine-like meta extension module remains outside canonical ownership roots."
+reason = "Root-level meta extension engine remains actively imported by governance, compatibility, domain, distribution, and audit tooling."
 retirement_phase = "POST-CONVERGE"
-target = "game, engine, tools, or contracts review"
-risk = "review"
+target = "protected ownership review before relocation; update compatibility wrapper and imports only under explicit semantic review"
+risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Kept only as an explicit exception pending ownership review."
+notes = "POST-CONVERGE-02 left this file active because relocation would cross governance, compatibility, and domain semantics."
 
 [exceptions.numeric_discipline_file]
 path = "numeric_discipline.py"
 kind = "file"
 classification = "partial_review"
-reason = "Root-level numeric discipline module remains outside canonical ownership roots."
+reason = "Root-level numeric discipline helper remains actively imported by domain truth/geometry/ephemeris code."
 retirement_phase = "POST-CONVERGE"
-target = "engine, contracts, tools, or docs review"
-risk = "review"
+target = "numeric ownership review before relocation; no numeric semantic change in exception cleanup"
+risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Do not add new root-level discipline modules without contract update."
+notes = "POST-CONVERGE-02 left this file active to avoid changing numeric semantics. Do not add new root-level discipline modules without contract update."
 
 [exceptions.performance_root]
 path = "performance"
 kind = "directory"
 classification = "partial_review"
-reason = "Performance tooling and evidence remain at repository root and need split between tools and generated evidence."
+reason = "Root performance package contains active helper code imported by domain performance logic, not only tooling or generated evidence."
 retirement_phase = "POST-CONVERGE"
-target = "tools/performance or generated evidence review"
-risk = "review"
+target = "performance ownership review before relocation; possible engine/game/tools split only under explicit scope"
+risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Performance evidence must not become source authority by path."
+notes = "POST-CONVERGE-02 left this active because moving it would require product/domain import changes. Performance evidence must not become source authority by path."
 
 [exceptions.tool_ui_bind_cmd]
 path = "tool_ui_bind.cmd"
 kind = "file"
 classification = "compatibility_shim"
-reason = "Root-level command wrapper remains for existing developer workflow compatibility."
+reason = "Root-level command wrapper remains for documented zero-setup developer workflow compatibility."
 retirement_phase = "POST-CONVERGE"
-target = "scripts or tools wrapper review"
+target = "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
 risk = "low"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Prefer scripts/ or tools/ for new command wrappers."
+notes = "POST-CONVERGE-02 found .github, CMake, RepoX, and developer docs references to the tool name and root shim policy. Prefer scripts/ or tools/ for new command wrappers."
 
 [exceptions.tool_ui_doc_annotate_cmd]
 path = "tool_ui_doc_annotate.cmd"
 kind = "file"
 classification = "compatibility_shim"
-reason = "Root-level command wrapper remains for existing developer workflow compatibility."
+reason = "Root-level command wrapper remains for documented zero-setup developer workflow compatibility."
 retirement_phase = "POST-CONVERGE"
-target = "scripts or tools wrapper review"
+target = "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
 risk = "low"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Prefer scripts/ or tools/ for new command wrappers."
+notes = "POST-CONVERGE-02 found .github, CMake, RepoX, and developer docs references to the tool name and root shim policy. Prefer scripts/ or tools/ for new command wrappers."
 
 [exceptions.tool_ui_validate_cmd]
 path = "tool_ui_validate.cmd"
 kind = "file"
 classification = "compatibility_shim"
-reason = "Root-level command wrapper remains for existing developer workflow compatibility."
+reason = "Root-level command wrapper remains for documented zero-setup developer workflow compatibility."
 retirement_phase = "POST-CONVERGE"
-target = "scripts or tools wrapper review"
+target = "allowed root compatibility shim resolving through scripts/dev/tool_shim.py to canonical tools"
 risk = "low"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Prefer scripts/ or tools/ for new command wrappers."
+notes = "POST-CONVERGE-02 found .github, CMake, RepoX, and developer docs references to the tool name and root shim policy. Prefer scripts/ or tools/ for new command wrappers."
 
 [exceptions.validation_root]
 path = "validation"
 kind = "directory"
 classification = "partial_review"
-reason = "Validation material remains at repository root and needs split between tools, contracts, tests, and docs."
+reason = "Root validation package contains active unified validation engine code imported by runtime, tools, compatibility shims, and tests."
 retirement_phase = "POST-CONVERGE"
-target = "tools/validation, tests, contracts, or docs review"
-risk = "review"
+target = "validation ownership review before relocation; possible tools/contracts/tests split only under explicit scope"
+risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Do not create new validation root authority."
+notes = "POST-CONVERGE-02 left this active because moving it would require runtime/tooling import changes. Do not create new validation root authority."
 
 [exceptions.artifacts_root]
 path = "artifacts"

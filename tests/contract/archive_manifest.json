@@ -11,9 +11,9 @@
       "status": "archived"
     },
     {
-      "path": "labs",
-      "readme": "labs/README.md",
-      "status": "quarantined"
+      "path": "archive/historical/labs",
+      "readme": "archive/historical/labs/README.md",
+      "status": "archived"
     },
     {
       "path": "tmp",
