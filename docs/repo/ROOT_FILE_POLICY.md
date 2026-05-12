@@ -90,7 +90,7 @@ If a temporary root-level domain redirect is ever required, it must contain only
 
 Generated roots are evidence or output, not source ownership. `build/`, `out/`, `dist/`, and `artifacts/` must not become canonical source roots merely because tooling emits them.
 
-The move map records generated roots with generated/output handling and review notes. It does not delete them.
+POST-CONVERGE-01 removed ignored, untracked `.xstack_cache/`, `build/`, and `out/` generated/cache roots. `artifacts/` and `dist/` remain active review exceptions because they contain tracked provenance or distribution-projection files.
 
 ## Archive-Family Roots
 
@@ -110,7 +110,7 @@ Root-level `attic/`, `legacy/`, and `quarantine/` were retired in CONVERGE-05. I
 
 ## `build/` And `out/`
 
-`build/` and `out/` are generated build outputs. They should not be relied on for canonical source, schema, contract, or product ownership.
+`build/` and `out/` are generated build outputs. They should remain ignored local output and absent from the source checkout unless a future reviewed task explicitly requires tracked provenance elsewhere.
 
 ## `repo/`
 
@@ -144,7 +144,7 @@ Strict modes are explicit and may fail until convergence removes or classifies t
 
 After CONVERGE-10, root files and root directories not covered by `contracts/repo/layout.contract.toml`, `contracts/repo/root_allowlist.toml`, or `contracts/repo/layout_exceptions.toml` fail strict validation.
 
-Generated roots require explicit generated policy or an active exception. `build/`, `out/`, `dist/`, and `artifacts/` remain generated or generated-adjacent exceptions, not source ownership roots.
+Generated roots require explicit generated policy or an active exception. After POST-CONVERGE-01, only `dist/` and `artifacts/` remain active generated or generated-adjacent exceptions; `.xstack_cache/`, `build/`, and `out/` are retired generated/cache exceptions and must not regrow as source authority.
 
 No broad wildcard exceptions are allowed without a reviewed task. Add one exception per root, file, or tightly scoped pattern, and include a reason, target or review target, risk, and retirement phase.
 

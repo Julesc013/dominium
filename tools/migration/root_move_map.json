@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T08:01:41Z",
+  "generated_at_utc": "2026-05-12T08:30:38Z",
   "repo_root": ".",
-  "head_sha": "88ed6b4dfadbc19515431d785f27de75e9a38685",
+  "head_sha": "20ecdf86a6321f87360396eb57988e1fa2987557",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
-  "active_exception_count": 37,
+  "active_exception_count": 34,
   "map_status": "complete",
   "entries": [
     {
@@ -154,32 +154,6 @@
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
-    },
-    {
-      "name": ".xstack_cache",
-      "current_path": ".xstack_cache",
-      "proposed_target": "review",
-      "action": "review",
-      "classification": "violation",
-      "ownership_surface": "unknown",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires manual root ownership review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "No matching root classification in layout contract.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "xstack_cache_root",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "ignored local cache or tools/artifacts evidence review"
     },
     {
       "name": "__init__.py",
@@ -336,7 +310,7 @@
       "completed_notes": "",
       "exception_id": "artifacts_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "generated evidence cleanup or release/artifact policy exception"
+      "exception_target": "provenance/evidence policy review; possible release or archive evidence relocation"
     },
     {
       "name": "astro",
@@ -405,32 +379,6 @@
       "completed_phase": "CONVERGE-07",
       "completed_target": "runtime/audio",
       "completed_notes": "Root-level audio/ was not present during CONVERGE-07."
-    },
-    {
-      "name": "build",
-      "current_path": "build",
-      "proposed_target": "generated build output",
-      "action": "ignore_generated",
-      "classification": "generated_or_ephemeral",
-      "ownership_surface": "generated",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires generated-output provenance review"
-      ],
-      "preserve_paths": "Do not preserve generated path as source authority; preserve only if external workflows require it.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "Must not be treated as source repository ownership.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "build_root",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "ignored generated build output"
     },
     {
       "name": "bundles",
@@ -898,7 +846,7 @@
       "completed_notes": "",
       "exception_id": "dist_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "generated distribution output or explicit release exception"
+      "exception_target": "distribution projection policy review; release/source authority split"
     },
     {
       "name": "docs",
@@ -1894,32 +1842,6 @@
       "exception_id": "numeric_discipline_file",
       "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, contracts, tools, or docs review"
-    },
-    {
-      "name": "out",
-      "current_path": "out",
-      "proposed_target": "generated build output",
-      "action": "ignore_generated",
-      "classification": "generated_or_ephemeral",
-      "ownership_surface": "generated",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires generated-output provenance review"
-      ],
-      "preserve_paths": "Do not preserve generated path as source authority; preserve only if external workflows require it.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "Must not be treated as source repository ownership.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "out_root",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "ignored generated build output"
     },
     {
       "name": "packs",

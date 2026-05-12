@@ -16,14 +16,13 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 
 - `allowed_file`: 25
 - `canonical`: 13
-- `generated_or_ephemeral`: 4
+- `generated_or_ephemeral`: 2
 - `metadata`: 4
 - `transitional_content_or_data_root`: 7
 - `transitional_contract_or_schema_root`: 8
 - `transitional_release_or_dist_root`: 1
 - `transitional_runtime_root`: 3
 - `unknown_needs_review`: 12
-- `violation`: 1
 
 ## Root Entries
 
@@ -36,13 +35,11 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 | `.github` | `metadata` | `metadata` | `retain_metadata` | `none` | `low` | Allowed metadata/config root. |
 | `.gitignore` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
 | `.vscode` | `metadata` | `metadata` | `retain_metadata` | `none` | `low` | Allowed metadata/config root. |
-| `.xstack_cache` | `violation` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `__init__.py` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `AGENTS.md` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
 | `apps` | `canonical` | `apps` | `keep` | `none` | `low` | Thin product entrypoints and product composition surfaces. |
 | `archive` | `canonical` | `archive` | `keep` | `none` | `low` | Historical, superseded, quarantined, generated-evidence, and legacy material retained with provenance. |
 | `artifacts` | `generated_or_ephemeral` | `generated` | `ignore_generated` | `review` | `review` | Review before using as authority. |
-| `build` | `generated_or_ephemeral` | `generated` | `ignore_generated` | `review` | `review` | Must not be treated as source repository ownership. |
 | `bundles` | `transitional_content_or_data_root` | `content` | `split` | `CONVERGE-09` | `high` | Authored bundles and generated exports require separate handling. |
 | `CHANGELOG.md` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
 | `CLAUDE.md` | `allowed_file` | `metadata` | `retain_file` | `none` | `low` | Allowed root file. |
@@ -77,7 +74,6 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 | `models` | `transitional_content_or_data_root` | `content` | `move` | `CONVERGE-09` | `medium` | Model data should be distinguished from generated or runtime state. |
 | `net` | `transitional_runtime_root` | `runtime` | `split` | `CONVERGE-07` | `high` | Root-level net/ remains mixed after CONVERGE-07 because it contains transport, anti-cheat, SRZ, and server-authoritative policy code; do not move wholesale. |
 | `numeric_discipline.py` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | No matching root classification in layout contract. |
-| `out` | `generated_or_ephemeral` | `generated` | `ignore_generated` | `review` | `review` | Must not be treated as source repository ownership. |
 | `packs` | `transitional_content_or_data_root` | `content` | `split` | `CONVERGE-09` | `high` | Current runtime pack substrate; pack ownership split remains review-sensitive. |
 | `performance` | `unknown_needs_review` | `unknown` | `review` | `review` | `review` | Performance tooling and evidence should stay tool/evidence scoped. |
 | `profiles` | `transitional_content_or_data_root` | `content` | `move` | `CONVERGE-09` | `medium` | Profile data belongs under content unless runtime-store evidence proves otherwise. |
@@ -110,10 +106,8 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 
 ## Unknown Or Review Roots
 
-- `.xstack_cache`: `violation`, target `review`, risk `review`. No matching root classification in layout contract.
 - `__init__.py`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
 - `artifacts`: `generated_or_ephemeral`, target `generated evidence or release artifact review`, risk `review`. Review before using as authority.
-- `build`: `generated_or_ephemeral`, target `generated build output`, risk `review`. Must not be treated as source repository ownership.
 - `compat`: `transitional_contract_or_schema_root`, target `contracts/compatibility_plus_runtime_review`, risk `review`. Root-level compat/ remains mixed implementation and shim code after CONVERGE-06; do not move wholesale into contracts/.
 - `dist`: `generated_or_ephemeral`, target `generated distribution output; future distribution contract review`, risk `review`. Distribution output is governed by distribution contracts, not source repo layout.
 - `governance`: `unknown_needs_review`, target `docs/governance`, risk `review`. Governance mirrors must not compete with AGENTS.md or canon.
@@ -125,7 +119,6 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 - `meta`: `unknown_needs_review`, target `review`, risk `review`. Meta surfaces require ownership review.
 - `meta_extensions_engine.py`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
 - `numeric_discipline.py`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
-- `out`: `generated_or_ephemeral`, target `generated build output`, risk `review`. Must not be treated as source repository ownership.
 - `performance`: `unknown_needs_review`, target `tools/performance`, risk `review`. Performance tooling and evidence should stay tool/evidence scoped.
 - `tool_ui_bind.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
 - `tool_ui_doc_annotate.cmd`: `unknown_needs_review`, target `review`, risk `review`. No matching root classification in layout contract.
@@ -167,9 +160,7 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 ## Generated Or Ephemeral Roots
 
 - `artifacts`: Review before using as authority.
-- `build`: Must not be treated as source repository ownership.
 - `dist`: Distribution output is governed by distribution contracts, not source repo layout.
-- `out`: Must not be treated as source repository ownership.
 
 ## Metadata And Root Files
 
@@ -212,13 +203,13 @@ Current enforcement summary after CONVERGE-10:
 - Canonical roots: 13
 - Metadata roots: 4
 - Allowed root files: 25
-- Generated or ephemeral roots: 4
-- Active layout exceptions: 37
+- Generated or ephemeral roots: 2
+- Active layout exceptions: 34
 - Unexcepted strict violations: 0
 
 Strict mode now passes only because every remaining generated, transitional, missing, unknown, or review root has an active entry in `contracts/repo/layout_exceptions.toml`.
 
-Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `build/`, `dist/`, `out/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `__init__.py`, `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
+Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `__init__.py`, `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
 
 New root-level entries must either match the contracts and allowlist or add a specific, bounded exception. No broad wildcard exception exists.
 
@@ -232,8 +223,19 @@ Final CONVERGE-12 inventory status:
 - Canonical roots: 13
 - Metadata roots: 4
 - Allowed root files: 25
-- Generated or ephemeral roots: 4
-- Active layout exceptions: 37
+- Generated or ephemeral roots: 2
+- Active layout exceptions: 34
 - Unexcepted strict violations: 0
 
 All active exceptions now carry `POST-CONVERGE` retirement metadata. Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
+
+## POST-CONVERGE-01 Generated Output Cleanup
+
+POST-CONVERGE-01 removed ignored, untracked generated/cache roots `.xstack_cache/`, `build/`, and `out/` and refreshed `tools/migration/root_inventory.json`.
+
+Current generated/output exception state:
+
+- Active generated/output exceptions: `artifacts/` and `dist/`.
+- Retired generated/output exceptions: `.xstack_cache/`, `build/`, and `out/`.
+- Active layout exception count: 34.
+- Unexcepted strict violations: 0.

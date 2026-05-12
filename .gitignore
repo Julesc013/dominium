@@ -353,3 +353,8 @@ docs/audit/GR3_FULL_SYS_STRESS.json
 /run_meta/
 /tmp_intent_marker_files.txt
 /.vscode/settings.json
+
+# Re-ignore Python bytecode caches after broad source allow-list negations.
+**/__pycache__
+**/__pycache__/
+**/__pycache__/**

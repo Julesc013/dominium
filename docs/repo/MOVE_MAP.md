@@ -37,7 +37,6 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `.github` | `.github` | `retain_metadata` | `false` | `false` | `not_started` | `none` | `low` | Allowed metadata/config root. |
 | `.gitignore` | `.gitignore` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `.vscode` | `.vscode` | `retain_metadata` | `false` | `false` | `not_started` | `none` | `low` | Allowed metadata/config root. |
-| `.xstack_cache` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `__init__.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `AGENTS.md` | `AGENTS.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `app` | `runtime/app` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level app/ moved under runtime/app/. |
@@ -48,7 +47,6 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `astro` | `game/domains/astronomy` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level astro/ implementation moved under game/domains/astronomy/. No schemas, registries, content data, or docs were found in that root during the... |
 | `attic` | `archive/historical/attic` | `archive` | `false` | `false` | `completed` | `CONVERGE-05` | `low` | Completed in CONVERGE-05; root-level attic/ moved under archive/historical/attic/. |
 | `audio` | `runtime/audio` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/audio/. |
-| `build` | `generated build output` | `ignore_generated` | `false` | `false` | `not_started` | `review` | `review` | Must not be treated as source repository ownership. |
 | `bundles` | `content_or_exports_review` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Authored bundles and generated exports require separate handling. |
 | `CHANGELOG.md` | `CHANGELOG.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `chem` | `game/domains/chemistry` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level chem/ implementation moved under game/domains/chemistry/. No schemas, registries, content data, or docs were found in that root during the s... |
@@ -109,7 +107,6 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `net` | `runtime/network` | `split` | `true` | `true` | `not_started` | `CONVERGE-07` | `high` | Root-level net/ remains mixed after CONVERGE-07 because it contains transport, anti-cheat, SRZ, and server-authoritative policy code; do not move wholesale. |
 | `network` | `runtime/network` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/network/. |
 | `numeric_discipline.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
-| `out` | `generated build output` | `ignore_generated` | `false` | `false` | `not_started` | `review` | `review` | Must not be treated as source repository ownership. |
 | `packs` | `content/packs` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Current runtime pack substrate; pack ownership split remains review-sensitive. |
 | `performance` | `tools/performance` | `review` | `false` | `false` | `review` | `review` | `review` | Performance tooling and evidence should stay tool/evidence scoped. |
 | `physics` | `game/domains/physics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level physics/ implementation moved under game/domains/physics/. No schemas, registries, content data, or docs were found in that root during the... |
@@ -196,3 +193,14 @@ Remaining move-map work is now post-CONVERGE exception retirement:
 - keep historical path mentions out of current authority claims
 
 Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
+
+## POST-CONVERGE-01 Generated Output Cleanup
+
+POST-CONVERGE-01 removed ignored, untracked generated/cache roots `.xstack_cache/`, `build/`, and `out/`. These paths now remain only as retired audit entries in `contracts/repo/layout_exceptions.toml`.
+
+The active generated/output move-map review surface is now:
+
+- `artifacts/`: active review, tracked toolchain-run provenance.
+- `dist/`: active review, tracked distribution projection files.
+
+No source roots were moved, and no product, runtime, domain, contract, or support-matrix semantics changed.

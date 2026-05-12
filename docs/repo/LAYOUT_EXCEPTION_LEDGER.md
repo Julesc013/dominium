@@ -11,7 +11,6 @@ No hidden exceptions are allowed. The table below is explanatory; the TOML ledge
 | Exception ID | Path | Classification | Reason | Target | Retirement Phase | Risk | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `missing_external_root` | `external` | `partial_review` | Canonical root declared but currently absent. | `external/` optionality or materialization review | POST-CONVERGE | low | Strict pass is exception-backed while absence is explicit. |
-| `xstack_cache_root` | `.xstack_cache` | `generated_exception` | Generated/cache evidence root remains. | ignored cache or evidence review | POST-CONVERGE | review | Not source authority. |
 | `root_init_py` | `__init__.py` | `compatibility_shim` | Root package marker remains for legacy import assumptions. | remove or allowlist after review | POST-CONVERGE | medium | Do not add more root package markers. |
 | `governance_root` | `governance` | `partial_review` | Governance mirror material remains outside `docs/`. | `docs/governance` or mirror review | POST-CONVERGE | review | Must not compete with AGENTS.md or canon. |
 | `ide_root` | `ide` | `partial_review` | IDE projection material remains at root. | tools, cmake, docs, or generated review | POST-CONVERGE | review | No source authority here. |
@@ -24,10 +23,8 @@ No hidden exceptions are allowed. The table below is explanatory; the TOML ledge
 | `tool_ui_doc_annotate_cmd` | `tool_ui_doc_annotate.cmd` | `compatibility_shim` | Root command wrapper remains. | scripts or tools wrapper review | POST-CONVERGE | low | New wrappers should avoid root. |
 | `tool_ui_validate_cmd` | `tool_ui_validate.cmd` | `compatibility_shim` | Root command wrapper remains. | scripts or tools wrapper review | POST-CONVERGE | low | New wrappers should avoid root. |
 | `validation_root` | `validation` | `partial_review` | Validation material remains at root. | tools, tests, contracts, or docs review | POST-CONVERGE | review | No new validation root authority. |
-| `artifacts_root` | `artifacts` | `generated_exception` | Generated or release-adjacent artifacts remain. | generated evidence or release exception review | POST-CONVERGE | review | Not source authority. |
-| `build_root` | `build` | `generated_exception` | Generated build output root is present. | ignored generated output | POST-CONVERGE | low | Not source authority. |
-| `dist_root` | `dist` | `generated_exception` | Distribution output root is present. | generated distribution or release exception | POST-CONVERGE | medium | Governed by distribution projection contract. |
-| `out_root` | `out` | `generated_exception` | Generated build output root is present. | ignored generated output | POST-CONVERGE | low | Not source authority. |
+| `artifacts_root` | `artifacts` | `generated_exception` | Tracked toolchain-run provenance remains. | provenance/evidence policy review | POST-CONVERGE | review | POST-CONVERGE-01 found 10 tracked JSON evidence files and left the exception active. |
+| `dist_root` | `dist` | `generated_exception` | Tracked distribution projection files remain. | distribution projection policy review | POST-CONVERGE | medium | POST-CONVERGE-01 found 13 tracked projection files and left the exception active. |
 | `bundles_root` | `bundles` | `partial_review` | Bundle source/export/generated surfaces require review. | contracts, content, release, tests, or generated review | POST-CONVERGE | review | Distribution layout is separate. |
 | `compat_root` | `compat` | `partial_review` | Compatibility material is mixed. | contracts/compatibility plus runtime/tools split | POST-CONVERGE | high | Do not move wholesale. |
 | `control_root` | `control` | `partial_review` | Control surfaces are process-sensitive and mixed. | runtime, contracts, game, or tools review | POST-CONVERGE | high | Preserve process-only mutation. |
@@ -48,7 +45,7 @@ No hidden exceptions are allowed. The table below is explanatory; the TOML ledge
 | `templates_root` | `templates` | `partial_review` | Templates may be content, contracts, tooling input, or generated projection. | content/templates, contracts, tools, or generated review | POST-CONVERGE | review | No new root-level template authority. |
 | `updates_root` | `updates` | `partial_review` | Update material belongs to release/control-plane review. | release/update, contracts/distribution, or ops review | POST-CONVERGE | high | Do not change update identity here. |
 
-Active exception count: 37.
+Active exception count: 34.
 
 Unexcepted violation count after CONVERGE-10 validator updates: 0.
 
@@ -73,3 +70,15 @@ POST-CONVERGE-00 rechecked the active exception ledger against live `main`.
 - Retirement queue: `docs/repo/EXCEPTION_RETIREMENT_QUEUE.md`.
 
 No exceptions were retired in POST-CONVERGE-00.
+
+## POST-CONVERGE-01 Generated Output Cleanup
+
+POST-CONVERGE-01 retired the ignored, untracked generated/cache exceptions for `.xstack_cache/`, `build/`, and `out/`.
+
+- Active exception count: 34.
+- Retired generated/output exceptions: 3.
+- Active generated/output exceptions: `artifacts_root` and `dist_root`.
+- Unexcepted strict violation count: 0.
+- Cleanup audit: `docs/repo/audits/POST_CONVERGE_01_GENERATED_OUTPUT_CLEANUP.md`.
+
+Retired entries remain in `contracts/repo/layout_exceptions.toml` under `retired_exceptions.*` for audit history. They are not active strict-validation exceptions.

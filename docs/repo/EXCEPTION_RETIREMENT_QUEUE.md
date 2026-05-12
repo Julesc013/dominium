@@ -14,6 +14,8 @@
 
 ### POST-CONVERGE-01 - Generated / Output Root Cleanup
 
+Status: completed with review carryover.
+
 Scope:
 
 - `.xstack_cache`
@@ -28,6 +30,19 @@ Goal:
 - confirm ignored/generated status
 - preserve evidence/provenance where required
 - update exception ledger
+
+Result:
+
+- Retired: `.xstack_cache`, `build`, `out`.
+- Left active for review: `artifacts`, `dist`.
+- Active exception count after cleanup: 34.
+- Cleanup audit: `docs/repo/audits/POST_CONVERGE_01_GENERATED_OUTPUT_CLEANUP.md`.
+
+Notes:
+
+- `artifacts/` contains tracked toolchain-run provenance JSON and needs release/evidence policy review.
+- `dist/` contains tracked distribution projection wrappers, locks, pack aliases, profile data, and `.gitkeep` files and needs distribution projection policy review.
+- Python `__pycache__/` residue from validation was removed and `.gitignore` was tightened so broad source allow-list negations do not re-expose bytecode caches.
 
 ### POST-CONVERGE-02 - Root Wrapper / Tooling / Governance Cleanup
 
