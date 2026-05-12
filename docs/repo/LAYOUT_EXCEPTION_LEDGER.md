@@ -61,3 +61,15 @@ CONVERGE-12 did not perform broad physical moves, so no active exceptions were r
 There are zero unexcepted strict layout violations after validator review.
 
 Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
+
+## POST-CONVERGE-00 Triage
+
+POST-CONVERGE-00 rechecked the active exception ledger against live `main`.
+
+- Active exception count: 37.
+- Unexcepted strict violation count: 0.
+- Exceptions are now post-CONVERGE retirement items.
+- Triage report: `docs/repo/audits/POST_CONVERGE_EXCEPTION_TRIAGE.md`.
+- Retirement queue: `docs/repo/EXCEPTION_RETIREMENT_QUEUE.md`.
+
+No exceptions were retired in POST-CONVERGE-00.

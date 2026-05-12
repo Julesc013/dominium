@@ -4,6 +4,24 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
+## Immediate Correction After POST-CONVERGE-00
+
+POST-CONVERGE-00 confirmed that exception retirement and build/runtime proof must precede platform, render, native shell, worldgen, and broad domain expansion.
+
+Current priority order:
+
+1. exception triage
+2. generated/output cleanup
+3. build/FAST remediation
+4. canonical local runtime/playtest proof
+
+Planning references:
+
+- `docs/repo/audits/POST_CONVERGE_00_HEALTH.md`
+- `docs/repo/audits/POST_CONVERGE_EXCEPTION_TRIAGE.md`
+- `docs/repo/EXCEPTION_RETIREMENT_QUEUE.md`
+- `docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md`
+
 ## What Can Proceed
 
 The repository is ready for scoped work in these areas:

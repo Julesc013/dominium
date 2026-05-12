@@ -112,3 +112,7 @@ These are mainly historical docs, older matrix mocks, and active exception-backe
 ## Confirmation
 
 CONVERGE-12 added final audit and stale-reference cleanup only. It did not implement new platform, render, native, domain, worldgen, product, runtime, AppShell, toolchain, packaging, install, or distribution behavior.
+
+## POST-CONVERGE-00 Follow-up Note
+
+POST-CONVERGE-00 health, exception, and build triage completed after this final audit. Active exceptions remain 37, unexcepted strict layout violations remain 0, local CMake verify remains blocked by the missing Visual Studio 2022 instance, FAST remains blocked in `repox_runner` by mod policy/schema validation, and the recommended next queue item is `POST-CONVERGE-01 - Generated / Output Root Cleanup`.
