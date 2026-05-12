@@ -189,6 +189,8 @@ Notes:
 
 ### POST-CONVERGE-06 - Build and FAST Gate Remediation
 
+Status: partial, with targeted remediation completed.
+
 Scope:
 
 - verify preset/toolchain
@@ -200,6 +202,25 @@ Goal:
 - decide whether local verify requires Visual Studio 2022 or a Ninja fallback
 - update CompatX schema discovery for post-CONVERGE schema locations if approved
 - resolve AIDE Lite Python compatibility or document Python floor
+
+Result:
+
+- CMake verify: still blocked locally by missing Visual Studio 17 2022 instance.
+- Build and CTest: not run because configure failed.
+- Fallback preset: not added because no local compiler or Ninja/NMake/Make toolchain was discoverable.
+- FAST: original `repox_runner` structural blocker fixed; remaining failure is broad RepoX `DRIFT`.
+- AIDE: doctor, validate, and pack pass after the Python 3.8 newline writer compatibility fix.
+- Audit: `docs/repo/audits/POST_CONVERGE_06_BUILD_FAST_REMEDIATION.md`.
+- Build path docs: `docs/repo/BUILD_VERIFICATION_PATHS.md`.
+- FAST remediation docs: `docs/repo/FAST_GATE_REMEDIATION.md`.
+- AIDE remediation docs: `docs/repo/AIDE_PACK_REMEDIATION.md`.
+
+Notes:
+
+- CompatX schema discovery now prefers `contracts/schemas/` and keeps legacy `schemas/` fallback.
+- RepoX worldgen path references were updated to canonical `game/domains/...` paths.
+- The remaining FAST drift backlog is too broad for exception retirement or build remediation scope.
+- Next task remains blocked until build proof and FAST drift are resolved or explicitly accepted by review.
 
 ### POST-CONVERGE-07 - Canonical Local Runtime/Playtest Proof
 

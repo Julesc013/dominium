@@ -63,7 +63,7 @@ def _earth_bindings() -> dict:
         tide_params_rows,
     )
     from game.domains.worldgen.earth.material import evaluate_earth_tile_material_proxy
-    surface_module = importlib.import_module("worldgen.earth." + "earth" + "_surface" + "_generator")
+    surface_module = importlib.import_module("game.domains.worldgen.earth." + "earth" + "_surface" + "_generator")
     generate_earth_surface_tile_plan = getattr(surface_module, "generate_earth_surface_tile_plan")
 
     # RepoX deterministic markers:

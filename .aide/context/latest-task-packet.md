@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - Audit Dominium current repo state and produce the next compact doctrine-aware implementation task
+UNSPECIFIED - POST-CONVERGE-06 build and gate remediation
 
 ## GOAL
 
-Audit Dominium current repo state and produce the next compact doctrine-aware implementation task
+POST-CONVERGE-06 build and gate remediation
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4347
-- approx_tokens: 1087
+- chars: 4239
+- approx_tokens: 1060
 - budget_status: PASS
 - warnings:
   - none
