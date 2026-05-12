@@ -8,11 +8,11 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E338_RAW_SQRT_USAGE_SMELL"
-WATCH_PREFIXES = ("src/mobility/", "src/fields/", "src/pollution/", "src/system/")
+WATCH_PREFIXES = ("game/domains/mobility/", "game/domains/fields/", "game/domains/pollution/", "game/domains/systems/")
 RAW_SQRT_TOKENS = ("math.sqrt(", "math.isqrt(")
 ALLOWLIST = {
-    "geo/kernel/geo_kernel.py",
-    "geo/metric/metric_engine.py",
+    "game/domains/geology/kernel/geo_kernel.py",
+    "game/domains/geology/metric/metric_engine.py",
 }
 
 
@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-RAW-DISTANCE-CALCULATION"],
-                    related_paths=[rel_path, "geo/metric/metric_engine.py"],
+                    related_paths=[rel_path, "game/domains/geology/metric/metric_engine.py"],
                 )
             )
             break

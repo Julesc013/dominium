@@ -122,7 +122,7 @@ def run(graph, repo_root, changed_files=None):
                 if rel_path not in {
                     "models/model_engine.py",
                     "tools/xstack/sessionx/process_runtime.py",
-                } and not rel_path.startswith("src/fields/"):
+                } and not rel_path.startswith("game/domains/fields/"):
                     continue
                 text = _read_text(repo_root, rel_path)
                 if not text:

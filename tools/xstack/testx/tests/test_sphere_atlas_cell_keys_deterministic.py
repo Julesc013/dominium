@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from geo import geo_cell_key_from_position
+from game.domains.geology import geo_cell_key_from_position
 
 
 TEST_ID = "test_sphere_atlas_cell_keys_deterministic"

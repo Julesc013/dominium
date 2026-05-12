@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "inspection/inspection_engine.py",
+        "game/domains/inspection/inspection_engine.py",
         "tools/xstack/repox/check.py",
     }
 

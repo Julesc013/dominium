@@ -24,8 +24,8 @@ from control.proof import (
     build_control_proof_bundle_from_markers,
     collect_control_decision_markers,
 )
-from mobility import compute_mobility_proof_hashes
-from reality.ledger import finalize_noop_tick
+from game.domains.mobility import compute_mobility_proof_hashes
+from game.domains.reality.ledger import finalize_noop_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute

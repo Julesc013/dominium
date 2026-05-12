@@ -23,10 +23,10 @@ _INLINE_PATTERNS = (
 )
 
 _SCAN_PREFIXES = (
-    "src/chem/",
-    "src/fluid/",
-    "src/thermal/",
-    "src/mechanics/",
+    "game/domains/chemistry/",
+    "game/domains/fluids/",
+    "game/domains/thermal/",
+    "game/domains/mechanics/",
     "tools/xstack/sessionx/",
 )
 
@@ -39,7 +39,7 @@ _SKIP_PREFIXES = (
 )
 
 _ALLOWED_FILES = {
-    "chem/degradation/degradation_engine.py",
+    "game/domains/chemistry/degradation/degradation_engine.py",
     "models/model_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/repox/check.py",
@@ -107,7 +107,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "chem/degradation/degradation_engine.py",
+                                "game/domains/chemistry/degradation/degradation_engine.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

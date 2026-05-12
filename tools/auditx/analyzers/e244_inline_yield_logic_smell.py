@@ -52,7 +52,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
         "models/model_engine.py",
-        "chem/process_run_engine.py",
+        "game/domains/chemistry/process_run_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

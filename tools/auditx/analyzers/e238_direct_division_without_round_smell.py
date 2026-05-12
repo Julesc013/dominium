@@ -17,14 +17,14 @@ class DirectDivisionWithoutRoundSmell:
 
 WATCH_PREFIXES = (
     "src/time/",
-    "src/physics/",
-    "src/mobility/micro/",
+    "game/domains/physics/",
+    "game/domains/mobility/micro/",
 )
 
 _TARGET_FILES = (
     "engine/time/time_mapping_engine.py",
-    "physics/momentum_engine.py",
-    "mobility/micro/free_motion_solver.py",
+    "game/domains/physics/momentum_engine.py",
+    "game/domains/mobility/micro/free_motion_solver.py",
 )
 
 _DIVISION_PATTERN = re.compile(r"\b[A-Za-z0-9_)\]]+\s+/\s+[A-Za-z0-9_(\[]+")

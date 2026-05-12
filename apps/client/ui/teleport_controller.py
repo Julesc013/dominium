@@ -5,10 +5,10 @@ from __future__ import annotations
 import re
 from typing import Iterable, Mapping
 
-from geo.worldgen import build_worldgen_request_for_query
-from worldgen.refinement.refinement_scheduler import build_refinement_request_record
-from worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key, sol_anchor_object_ids
-from worldgen.mw.system_query_engine import (
+from game.domains.geology.worldgen import build_worldgen_request_for_query
+from game.domains.worldgen.refinement.refinement_scheduler import build_refinement_request_record
+from game.domains.worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key, sol_anchor_object_ids
+from game.domains.worldgen.mw.system_query_engine import (
     build_system_teleport_plan,
     filter_habitable_candidates,
     list_systems_in_cell,

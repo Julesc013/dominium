@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from infrastructure.formalization import infer_candidates
+    from game.domains.infrastructure.formalization import infer_candidates
 
     kwargs = {
         "formalization_id": "formalization.det.alpha",

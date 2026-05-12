@@ -48,7 +48,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    degrade_rel = "logic/eval/degradation_policy.py"
+    degrade_rel = "game/domains/logic/eval/degradation_policy.py"
     degrade_text = _read_text(repo_root, degrade_rel)
     for token in (
         "prefer_compiled_execution",

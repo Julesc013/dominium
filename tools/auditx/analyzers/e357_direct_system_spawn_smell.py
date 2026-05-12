@@ -8,12 +8,12 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E357_DIRECT_SYSTEM_SPAWN_SMELL"
-WATCH_PREFIXES = ("src/worldgen/mw/", "src/geo/worldgen/", "tools/xstack/sessionx/", "tools/worldgen/", "tools/mvp/")
-SCAN_ROOTS = ("src/worldgen/mw", "src/geo/worldgen", "tools/xstack/sessionx", "tools/worldgen", "tools/mvp")
+WATCH_PREFIXES = ("game/domains/worldgen/mw/", "game/domains/geology/worldgen/", "tools/xstack/sessionx/", "tools/worldgen/", "tools/mvp/")
+SCAN_ROOTS = ("game/domains/worldgen/mw", "game/domains/geology/worldgen", "tools/xstack/sessionx", "tools/worldgen", "tools/mvp")
 SCAN_EXTS = (".py",)
 ALLOWLIST = {
-    "worldgen/mw/mw_cell_generator.py",
-    "geo/worldgen/worldgen_engine.py",
+    "game/domains/worldgen/mw/mw_cell_generator.py",
+    "game/domains/geology/worldgen/worldgen_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
 }
 SPAWN_TOKENS = (
@@ -83,7 +83,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN"],
-                    related_paths=[rel_path, "geo/worldgen/worldgen_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                    related_paths=[rel_path, "game/domains/geology/worldgen/worldgen_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                 )
             )
             break

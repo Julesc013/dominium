@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from reality.ledger import (
+    from game.domains.reality.ledger import (
         begin_process_accounting,
         emit_exception,
         finalize_process_accounting,

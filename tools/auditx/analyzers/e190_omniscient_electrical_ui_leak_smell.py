@@ -18,7 +18,7 @@ class OmniscientElectricalUILeakSmell:
 _UI_PATHS = (
     "tools/xstack/sessionx/observation.py",
     "apps/client/interaction/inspection_overlays.py",
-    "inspection/inspection_engine.py",
+    "game/domains/inspection/inspection_engine.py",
 )
 _FORBIDDEN_PATTERNS = (
     re.compile(r"ch\.truth\.overlay\.[^\n]*elec", re.IGNORECASE),

@@ -19,7 +19,7 @@ def _load_module_registry(repo_root: str) -> dict:
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from worldgen.core.constraint_solver import solve_constraints
+    from game.domains.worldgen.core.constraint_solver import solve_constraints
 
     constraints_payload = {
         "schema_version": "1.0.0",

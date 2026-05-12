@@ -131,6 +131,38 @@ SHIM_ROOTS = set(
     ]
 )
 
+DOMAIN_MOVE_TARGETS = {
+    "astro": "game/domains/astronomy",
+    "chem": "game/domains/chemistry",
+    "diegetics": "game/domains/diegetics",
+    "electric": "game/domains/electricity",
+    "embodiment": "game/domains/embodiment",
+    "epistemics": "game/domains/epistemics",
+    "field": "game/domains/fields/from_root_field",
+    "fields": "game/domains/fields",
+    "fluid": "game/domains/fluids",
+    "geo": "game/domains/geology",
+    "infrastructure": "game/domains/infrastructure",
+    "inspection": "game/domains/inspection",
+    "interaction": "game/domains/interaction",
+    "interior": "game/domains/interior",
+    "logic": "game/domains/logic",
+    "logistics": "game/domains/logistics",
+    "machines": "game/domains/machines",
+    "materials": "game/domains/materials",
+    "mechanics": "game/domains/mechanics",
+    "mobility": "game/domains/mobility",
+    "physics": "game/domains/physics",
+    "pollution": "game/domains/pollution",
+    "process": "game/domains/processes",
+    "reality": "game/domains/reality",
+    "signals": "game/domains/signals",
+    "system": "game/domains/systems",
+    "thermal": "game/domains/thermal",
+    "universe": "game/domains/universe",
+    "worldgen": "game/domains/worldgen",
+}
+
 
 def _utc_now():
     return _datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
@@ -360,6 +392,15 @@ def _classify(name, kind, contract):
         }
     if name in domains:
         info = domains[name]
+        if info.get("status_after_phase") == "violation" and info.get("completed_phase"):
+            target = info.get("implementation_target", "contracts/game/content/docs/tests split")
+            return {
+                "classification": CLASS_VIOLATION,
+                "target": target,
+                "action": "retired_domain_root_must_remain_absent",
+                "notes": info.get("notes", "Retired domain root alias; use the CONVERGE-09 split targets."),
+                "retire_by_phase": info.get("retire_by_phase", ""),
+            }
         return {
             "classification": CLASS_DOMAIN,
             "target": "split_per_domain_rules",
@@ -1051,12 +1092,51 @@ def completed_product_move_entries(repo_root, roots):
     return completed
 
 
+def completed_domain_move_entries(repo_root, roots):
+    present = set(root["name"] for root in roots)
+    completed = []
+    for name, target in sorted(DOMAIN_MOVE_TARGETS.items()):
+        if name in present:
+            continue
+        target_path = os.path.join(repo_root, *target.split("/"))
+        if not os.path.exists(target_path):
+            continue
+        completed.append(
+            {
+                "name": name,
+                "current_path": name,
+                "proposed_target": target,
+                "action": "split",
+                "classification": CLASS_DOMAIN,
+                "ownership_surface": "game",
+                "split_required": True,
+                "risk_level": "medium",
+                "phase_hint": "CONVERGE-09",
+                "dependencies": [],
+                "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use {0}/.".format(target),
+                "shim_required": False,
+                "semantic_change_allowed": False,
+                "build_change_allowed": False,
+                "notes": "Completed in CONVERGE-09; root-level {0}/ implementation moved under {1}/. No schemas, registries, content data, or docs were found in that root during the safe split.".format(name, target),
+                "status": "completed",
+                "completed_phase": "CONVERGE-09",
+                "completed_target": target,
+                "completed_targets": [target],
+                "completed_notes": "Root-level {0}/ is retired; domain implementation source lives under {1}/.".format(name, target),
+                "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
+                "remaining_blockers": [],
+            }
+        )
+    return completed
+
+
 def merge_move_map(repo_root, existing, roots):
     entries = []
     completed = completed_archive_move_entries(repo_root, roots)
     completed.extend(completed_contract_move_entries(repo_root, roots))
     completed.extend(completed_runtime_move_entries(repo_root, roots))
     completed.extend(completed_product_move_entries(repo_root, roots))
+    completed.extend(completed_domain_move_entries(repo_root, roots))
     names = sorted(set(root["name"] for root in roots), key=lambda item: (item.casefold(), item))
     inferred_by_name = dict((root["name"], infer_move_entry(root)) for root in roots)
     for name in names:

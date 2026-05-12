@@ -12,14 +12,14 @@ ANALYZER_ID = "E317_COMMIT_PHASE_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "tools/auditx/analyzers/e317_commit_phase_bypass_smell.py",
     "tools/auditx/analyzers/__init__.py",
-    "src/logic/eval/",
+    "game/domains/logic/eval/",
     "tools/xstack/sessionx/process_runtime.py",
 )
 
 _NON_COMMIT_PATHS = (
-    "logic/eval/sense_engine.py",
-    "logic/eval/compute_engine.py",
-    "logic/eval/propagate_engine.py",
+    "game/domains/logic/eval/sense_engine.py",
+    "game/domains/logic/eval/compute_engine.py",
+    "game/domains/logic/eval/propagate_engine.py",
 )
 _COMMIT_ONLY_TOKENS = (
     "serialize_state(",
@@ -55,7 +55,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    commit_rel = "logic/eval/commit_engine.py"
+    commit_rel = "game/domains/logic/eval/commit_engine.py"
     commit_text = _read_text(repo_root, commit_rel)
     for token in _COMMIT_ONLY_TOKENS:
         if _contains_call(commit_text, token):

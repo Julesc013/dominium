@@ -22,7 +22,7 @@ from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
 from compat.data_format_loader import load_versioned_artifact  # noqa: E402
-from geo import build_overlay_layer, build_property_patch  # noqa: E402
+from game.domains.geology import build_overlay_layer, build_property_patch  # noqa: E402
 from lib.install.install_validator import validate_install_manifest  # noqa: E402
 from lib.provides.provider_resolution import (  # noqa: E402
     RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS,
@@ -43,7 +43,7 @@ from security.trust.trust_verifier import (  # noqa: E402
     TRUST_POLICY_STRICT,
     verify_artifact_trust,
 )
-from universe import (  # noqa: E402
+from game.domains.universe import (  # noqa: E402
     build_universe_contract_bundle_payload,
     enforce_session_contract_bundle,
     pin_contract_bundle_metadata,

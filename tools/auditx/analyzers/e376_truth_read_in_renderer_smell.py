@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E376_TRUTH_READ_IN_RENDERER_SMELL"
-SKY_VIEW_ENGINE_REL = "worldgen/earth/sky/sky_view_engine.py"
+SKY_VIEW_ENGINE_REL = "game/domains/worldgen/earth/sky/sky_view_engine.py"
 VIEWER_SHELL_REL = "apps/client/ui/viewer_shell.py"
 RENDER_MODEL_ADAPTER_REL = "apps/client/render/render_model_adapter.py"
 SOFTWARE_RENDERER_REL = "apps/client/render/renderers/software_renderer.py"

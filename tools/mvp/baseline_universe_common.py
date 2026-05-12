@@ -18,7 +18,7 @@ from tools.import_bridge import install_src_aliases
 install_src_aliases(REPO_ROOT_HINT)
 
 from compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
-from geo import (
+from game.domains.geology import (
     build_default_overlay_manifest,
     build_worldgen_request,
     overlay_proof_surface,
@@ -39,8 +39,8 @@ from engine.time.epoch_anchor_engine import (
     build_epoch_anchor_record,
     load_time_anchor_policy,
 )
-from universe import build_universe_contract_bundle_payload
-from worldgen.mw import build_planet_surface_cell_key, resolve_sol_anchor_cell_key, sol_anchor_object_ids, surface_tile_artifact_hash_chain
+from game.domains.universe import build_universe_contract_bundle_payload
+from game.domains.worldgen.mw import build_planet_surface_cell_key, resolve_sol_anchor_cell_key, sol_anchor_object_ids, surface_tile_artifact_hash_chain
 from tools.worldgen.worldgen_lock_common import (
     WORLDGEN_LOCK_ID,
     WORLDGEN_LOCK_VERSION,

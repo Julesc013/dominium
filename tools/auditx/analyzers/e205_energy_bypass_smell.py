@@ -58,9 +58,9 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "electric/power_network_engine.py",
-        "thermal/network/thermal_network_engine.py",
-        "reality/ledger/ledger_engine.py",
+        "game/domains/electricity/power_network_engine.py",
+        "game/domains/thermal/network/thermal_network_engine.py",
+        "game/domains/reality/ledger/ledger_engine.py",
         "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }

@@ -52,8 +52,8 @@ def run(graph, repo_root, changed_files=None):
         "contracts/schemas/",
     )
     allowed_files = {
-        "electric/fault/fault_engine.py",
-        "electric/protection/protection_engine.py",
+        "game/domains/electricity/fault/fault_engine.py",
+        "game/domains/electricity/protection/protection_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -95,7 +95,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "electric/fault/fault_engine.py",
+                                "game/domains/electricity/fault/fault_engine.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

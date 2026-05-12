@@ -39,7 +39,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    macro_engine_rel = "system/macro/macro_capsule_engine.py"
+    macro_engine_rel = "game/domains/systems/macro/macro_capsule_engine.py"
     runtime_text = _read_text(repo_root, runtime_rel)
 
     for token in (
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
         runtime_rel,
         macro_engine_rel,
         "control/proof/control_proof_bundle.py",
-        "system/forensics/system_forensics_engine.py",
+        "game/domains/systems/forensics/system_forensics_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

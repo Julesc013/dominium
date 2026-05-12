@@ -64,7 +64,7 @@ def _loss_registry() -> dict:
 
 
 def _run_once() -> str:
-    from signals import build_signal_channel, process_signal_send, tick_signal_transport
+    from game.domains.signals import build_signal_channel, process_signal_send, tick_signal_transport
 
     channels = [
         build_signal_channel(

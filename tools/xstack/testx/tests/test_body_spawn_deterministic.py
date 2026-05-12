@@ -14,7 +14,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from embodiment import instantiate_body_system
+    from game.domains.embodiment import instantiate_body_system
 
     first = instantiate_body_system(
         subject_id="agent.emb.alpha",

@@ -64,8 +64,8 @@ SOURCE_ROOTS = (
 )
 DANGEROUS_ROOTS = ("src", "app/src")
 
-WORLDGEN_INIT_SOURCE = "src/worldgen/__init__.py"
-WORLDGEN_INIT_TARGET = "worldgen/__init__.py"
+WORLDGEN_INIT_SOURCE = "game/domains/worldgen/__init__.py"
+WORLDGEN_INIT_TARGET = "game/domains/worldgen/__init__.py"
 WORLDGEN_INIT_QUARANTINE = "attic/src_quarantine/src/worldgen/__init__.py"
 
 BATCH_SAFE_1 = "BATCH_SAFE_1"

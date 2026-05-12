@@ -50,8 +50,8 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "process/process_run_engine.py",
-        "process/maturity/maturity_engine.py",
+        "game/domains/processes/process_run_engine.py",
+        "game/domains/processes/maturity/maturity_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:
@@ -95,8 +95,8 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "process/process_run_engine.py",
-                                "process/maturity/maturity_engine.py",
+                                "game/domains/processes/process_run_engine.py",
+                                "game/domains/processes/maturity/maturity_engine.py",
                             ],
                         )
                     )

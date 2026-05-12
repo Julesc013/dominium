@@ -12,13 +12,13 @@ ANALYZER_ID = "E310_DIRECT_SIGNAL_MUTATION_SMELL"
 WATCH_PREFIXES = (
     "tools/auditx/analyzers/e310_direct_signal_mutation_smell.py",
     "tools/auditx/analyzers/__init__.py",
-    "src/logic/",
+    "game/domains/logic/",
     "tools/xstack/sessionx/process_runtime.py",
     "data/registries/process_registry.json",
 )
 
 _ALLOWED_PATHS = {
-    "logic/signal/signal_store.py",
+    "game/domains/logic/signal/signal_store.py",
     "tools/xstack/sessionx/process_runtime.py",
 }
 _DIRECT_MUTATION_PATTERNS = (
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="INVALID",
                             recommended_action="REWRITE",
                             related_invariants=["INV-SIGNAL-UPDATES-PROCESS-ONLY"],
-                            related_paths=[rel_path, "logic/signal/signal_store.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "game/domains/logic/signal/signal_store.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

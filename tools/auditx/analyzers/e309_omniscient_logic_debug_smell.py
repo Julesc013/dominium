@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/",
     "data/registries/instrument_type_registry.json",
-    "src/logic/",
+    "game/domains/logic/",
     "tools/logic/",
 )
 

@@ -8,10 +8,10 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E362_EAGER_TILE_GENERATION_SMELL"
-WATCH_PREFIXES = ("src/worldgen/mw/", "src/geo/worldgen/", "tools/xstack/sessionx/", "docs/worldgen/")
-SURFACE_REFINER_REL = "worldgen/mw/mw_surface_refiner_l3.py"
-INSOLATION_PROXY_REL = "worldgen/mw/insolation_proxy.py"
-WORLDGEN_ENGINE_REL = "geo/worldgen/worldgen_engine.py"
+WATCH_PREFIXES = ("game/domains/worldgen/mw/", "game/domains/geology/worldgen/", "tools/xstack/sessionx/", "docs/worldgen/")
+SURFACE_REFINER_REL = "game/domains/worldgen/mw/mw_surface_refiner_l3.py"
+INSOLATION_PROXY_REL = "game/domains/worldgen/mw/insolation_proxy.py"
+WORLDGEN_ENGINE_REL = "game/domains/geology/worldgen/worldgen_engine.py"
 DOC_REL = "docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md"
 REQUIRED_REFINER_TOKENS = (
     "surface_geo_cell_key",

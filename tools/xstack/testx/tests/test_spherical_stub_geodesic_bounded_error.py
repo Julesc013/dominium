@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from geo import geo_geodesic
+from game.domains.geology import geo_geodesic
 
 
 TEST_ID = "test_spherical_stub_geodesic_bounded_error"

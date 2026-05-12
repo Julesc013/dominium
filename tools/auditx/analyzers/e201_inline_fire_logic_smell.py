@@ -60,9 +60,9 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "models/model_engine.py",
-        "thermal/network/thermal_network_engine.py",
+        "game/domains/thermal/network/thermal_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "inspection/inspection_engine.py",
+        "game/domains/inspection/inspection_engine.py",
         "tools/xstack/repox/check.py",
     }
 
@@ -105,7 +105,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-FIRE-MODEL-ONLY", "INV-NO-ADHOC-BURN-LOGIC"],
                             related_paths=[
                                 rel_path,
-                                "thermal/network/thermal_network_engine.py",
+                                "game/domains/thermal/network/thermal_network_engine.py",
                                 "models/model_engine.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],

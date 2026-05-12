@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 from typing import Dict, List, Tuple
 
-from geo import geo_distance
+from game.domains.geology import geo_distance
 
 
 DEFAULT_PRIMITIVE_ID = "prim.box.default"

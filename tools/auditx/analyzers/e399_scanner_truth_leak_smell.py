@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E399_SCANNER_TRUTH_LEAK_SMELL"
 REQUIRED_TOKENS = {
-    "embodiment/tools/scanner_tool.py": (
+    "game/domains/embodiment/tools/scanner_tool.py": (
         '"source_kind": "derived.scan_result"',
         "inspection_snapshot",
         "field_values",
@@ -24,7 +24,7 @@ REQUIRED_TOKENS = {
     ),
 }
 FORBIDDEN_TOKENS = {
-    "embodiment/tools/scanner_tool.py": ("truth_model", "universe_state", "process_runtime"),
+    "game/domains/embodiment/tools/scanner_tool.py": ("truth_model", "universe_state", "process_runtime"),
 }
 
 

@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "docs/logic/",
     "contracts/schemas/logic/",
     "data/registries/signal_type_registry.json",
-    "src/logic/",
+    "game/domains/logic/",
     "tools/logic/",
 )
 

@@ -9,9 +9,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E350_SILENT_IDENTITY_CHANGE_SMELL"
-WATCH_PREFIXES = ("src/geo/", "tools/geo/", "tools/xstack/sessionx/")
+WATCH_PREFIXES = ("game/domains/geology/", "tools/geo/", "tools/xstack/sessionx/")
 REQUIRED_FILES = {
-    "geo/overlay/overlay_merge_engine.py": (
+    "game/domains/geology/overlay/overlay_merge_engine.py": (
         "_IMMUTABLE_PROPERTY_PATHS",
         '"object_id"',
         '"identity_hash"',
@@ -98,7 +98,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-NO-IDENTITY-OVERRIDE-WITHOUT-MIGRATION"],
-                related_paths=[rel_path, "geo/overlay/overlay_merge_engine.py"],
+                related_paths=[rel_path, "game/domains/geology/overlay/overlay_merge_engine.py"],
             )
         )
 
@@ -142,7 +142,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-IDENTITY-OVERRIDE-WITHOUT-MIGRATION"],
-                    related_paths=[rel_path, "geo/overlay/overlay_merge_engine.py"],
+                    related_paths=[rel_path, "game/domains/geology/overlay/overlay_merge_engine.py"],
                 )
             )
             break

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from geo import geo_project
+from game.domains.geology import geo_project
 
 
 TEST_ID = "test_projection_stub_deterministic"

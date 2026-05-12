@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from logic.eval.common import active_signal_for_slot
-from logic.signal import process_signal_set
+from game.domains.logic.eval.common import active_signal_for_slot
+from game.domains.logic.signal import process_signal_set
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

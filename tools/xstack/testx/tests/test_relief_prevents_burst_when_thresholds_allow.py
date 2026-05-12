@@ -47,7 +47,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from fluid import solve_fluid_network_f1
+    from game.domains.fluids import solve_fluid_network_f1
 
     result = solve_fluid_network_f1(
         graph_row=_graph_payload(),

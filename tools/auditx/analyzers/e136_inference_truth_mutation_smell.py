@@ -9,8 +9,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E136_INFERENCE_TRUTH_MUTATION_SMELL"
-INFERENCE_REL = "infrastructure/formalization/inference_engine.py"
-FORMALIZATION_DIR = "src/infrastructure/formalization"
+INFERENCE_REL = "game/domains/infrastructure/formalization/inference_engine.py"
+FORMALIZATION_DIR = "game/domains/infrastructure/formalization"
 _FORBIDDEN_PATTERNS = (
     re.compile(r"\bstate\s*\["),
     re.compile(r"\bnetwork_graphs\b"),

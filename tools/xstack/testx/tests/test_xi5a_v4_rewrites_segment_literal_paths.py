@@ -19,7 +19,7 @@ def run(repo_root: str):
 
     needed = {
         "compat/capability_negotiation.py",
-        "universe/universe_contract_enforcer.py",
+        "game/domains/universe/universe_contract_enforcer.py",
         "release/component_graph_resolver.py",
     }
     rows = [row for row in list(lock_payload.get("approved_for_xi5") or []) if row.get("source_path") in needed]

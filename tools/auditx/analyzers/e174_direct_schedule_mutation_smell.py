@@ -15,7 +15,7 @@ class DirectScheduleMutationSmell:
     analyzer_id = ANALYZER_ID
 
 
-WATCH_PREFIXES = ("src/signals/", "tools/xstack/sessionx/")
+WATCH_PREFIXES = ("game/domains/signals/", "tools/xstack/sessionx/")
 
 _MUTATION_PATTERNS = (
     re.compile(r"\btravel_schedules?\b", re.IGNORECASE),
@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     allow_files = {
-        "signals/institutions/dispatch_engine.py",
+        "game/domains/signals/institutions/dispatch_engine.py",
         "tools/auditx/analyzers/e174_direct_schedule_mutation_smell.py",
     }
     scan_roots = (
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
                             related_invariants=["INV-INSTITUTIONAL-SCHEDULES-THROUGH-CTRL"],
-                            related_paths=[rel_path, "signals/institutions/dispatch_engine.py"],
+                            related_paths=[rel_path, "game/domains/signals/institutions/dispatch_engine.py"],
                         )
                     )
                     break

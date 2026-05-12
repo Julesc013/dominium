@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E229_WALLCLOCK_USE_SMELL"
-WATCH_PREFIXES = ("src/time/", "src/reality/transitions/", "src/performance/", "src/mobility/", "tools/xstack/sessionx/")
+WATCH_PREFIXES = ("src/time/", "game/domains/reality/transitions/", "src/performance/", "game/domains/mobility/", "tools/xstack/sessionx/")
 
 _WALLCLOCK_PATTERN = re.compile(
     r"\b(?:time\.time|time\.perf_counter|time\.monotonic|datetime\.now|datetime\.utcnow|time\.sleep)\s*\(",

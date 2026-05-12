@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
 
     integration_specs = (
         (
-            "system/macro/macro_capsule_engine.py",
+            "game/domains/systems/macro/macro_capsule_engine.py",
             ("compute_request.get(\"decision_log_row\")", "compute_request.get(\"explain_artifact_row\")"),
         ),
         (
@@ -90,7 +90,7 @@ def run(graph, repo_root, changed_files=None):
             ("compute_decision_log_row", "compute_explain_artifact_row"),
         ),
         (
-            "process/software/pipeline_engine.py",
+            "game/domains/processes/software/pipeline_engine.py",
             ("compute_decision_log_rows", "compute_explain_artifact_rows"),
         ),
     )

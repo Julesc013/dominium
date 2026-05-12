@@ -9,13 +9,13 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E397_UNKEYED_CACHE_SMELL"
 REQUIRED_TOKENS = {
-    "worldgen/refinement/refinement_cache.py": (
+    "game/domains/worldgen/refinement/refinement_cache.py": (
         "universe_contract_bundle_hash",
         "overlay_manifest_hash",
         "mod_policy_id",
         "refinement_level",
     ),
-    "geo/worldgen/worldgen_engine.py": (
+    "game/domains/geology/worldgen/worldgen_engine.py": (
         "build_refinement_cache_key(",
         "universe_contract_bundle_hash",
         "overlay_manifest_hash",

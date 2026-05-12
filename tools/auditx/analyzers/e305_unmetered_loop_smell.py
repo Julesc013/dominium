@@ -33,9 +33,9 @@ def run(graph, repo_root, changed_files=None):
 
     required_files = (
         "meta/compute/compute_budget_engine.py",
-        "system/macro/macro_capsule_engine.py",
+        "game/domains/systems/macro/macro_capsule_engine.py",
         "meta/compile/compile_engine.py",
-        "process/software/pipeline_engine.py",
+        "game/domains/processes/software/pipeline_engine.py",
     )
     for rel_path in required_files:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -59,7 +59,7 @@ def run(graph, repo_root, changed_files=None):
 
     hook_checks = (
         (
-            "system/macro/macro_capsule_engine.py",
+            "game/domains/systems/macro/macro_capsule_engine.py",
             ("evaluate_model_bindings(", "request_compute(", "compute_consumption_record_rows"),
         ),
         (
@@ -67,7 +67,7 @@ def run(graph, repo_root, changed_files=None):
             ("compiled_model_execute(", "request_compute(", "compute_consumption_record_row"),
         ),
         (
-            "process/software/pipeline_engine.py",
+            "game/domains/processes/software/pipeline_engine.py",
             ("evaluate_software_pipeline_execution(", "request_compute(", "compute_consumption_record_rows"),
         ),
     )

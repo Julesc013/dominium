@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from astro import build_orbit_view_surface
+from game.domains.astronomy import build_orbit_view_surface
 from apps.client.render import build_render_model
-from embodiment import (
+from game.domains.embodiment import (
     build_cut_trench_task,
     build_fill_at_cursor_task,
     build_logic_probe_task,
@@ -21,12 +21,12 @@ from embodiment import (
 )
 from apps.client.ui.inspect_panels import build_inspection_panel_set
 from apps.client.ui.map_views import build_map_view_set, debug_view_limit_for_compute_profile
-from geo import build_position_ref
-from worldgen.galaxy import build_galaxy_object_layer_source_payloads
-from worldgen.earth.lighting import build_lighting_view_surface
-from worldgen.earth.sky import build_sky_view_surface
-from worldgen.earth.water import build_water_layer_source_payloads, build_water_view_surface
-from worldgen.refinement.refinement_scheduler import (
+from game.domains.geology import build_position_ref
+from game.domains.worldgen.galaxy import build_galaxy_object_layer_source_payloads
+from game.domains.worldgen.earth.lighting import build_lighting_view_surface
+from game.domains.worldgen.earth.sky import build_sky_view_surface
+from game.domains.worldgen.earth.water import build_water_layer_source_payloads, build_water_view_surface
+from game.domains.worldgen.refinement.refinement_scheduler import (
     build_refinement_layer_source_payloads,
     build_refinement_request_record,
     build_refinement_status_view,

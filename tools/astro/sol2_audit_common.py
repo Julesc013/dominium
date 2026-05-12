@@ -7,15 +7,15 @@ from typing import Iterable
 
 
 SOL2_SCOPE_PATHS = (
-    "src/astro/ephemeris/",
-    "src/astro/views/",
+    "game/domains/astronomy/ephemeris/",
+    "game/domains/astronomy/views/",
     "src/client/ui/",
     "tools/astro/",
 )
 
 SOL2_RUNTIME_SCAN_FILES = (
-    "astro/ephemeris/kepler_proxy_engine.py",
-    "astro/views/orbit_view_engine.py",
+    "game/domains/astronomy/ephemeris/kepler_proxy_engine.py",
+    "game/domains/astronomy/views/orbit_view_engine.py",
     "apps/client/ui/viewer_shell.py",
     "tools/astro/sol2_runtime_common.py",
 )

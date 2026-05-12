@@ -7,18 +7,18 @@ from typing import Iterable
 
 
 SOL1_SCOPE_PATHS = (
-    "src/astro/illumination/",
-    "src/worldgen/earth/sky/",
-    "src/worldgen/earth/lighting/",
+    "game/domains/astronomy/illumination/",
+    "game/domains/worldgen/earth/sky/",
+    "game/domains/worldgen/earth/lighting/",
     "tools/astro/",
     "tools/worldgen/",
 )
 
 SOL1_RUNTIME_SCAN_FILES = (
-    "astro/illumination/illumination_geometry_engine.py",
-    "worldgen/earth/sky/astronomy_proxy_engine.py",
-    "worldgen/earth/sky/sky_view_engine.py",
-    "worldgen/earth/lighting/illumination_engine.py",
+    "game/domains/astronomy/illumination/illumination_geometry_engine.py",
+    "game/domains/worldgen/earth/sky/astronomy_proxy_engine.py",
+    "game/domains/worldgen/earth/sky/sky_view_engine.py",
+    "game/domains/worldgen/earth/lighting/illumination_engine.py",
 )
 
 

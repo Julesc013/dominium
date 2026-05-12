@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E336_RAW_GLOBAL_COORD_SMELL"
-WATCH_PREFIXES = ("src/geo/frame/", "tools/geo/")
+WATCH_PREFIXES = ("game/domains/geology/frame/", "tools/geo/")
 _ALLOWLIST = {
     "tools/geo/tool_replay_frame_window.py",
 }
@@ -83,7 +83,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-RAW-GLOBAL-COORDS"],
-                    related_paths=[rel_path, "geo/frame/frame_engine.py"],
+                    related_paths=[rel_path, "game/domains/geology/frame/frame_engine.py"],
                 )
             )
             break

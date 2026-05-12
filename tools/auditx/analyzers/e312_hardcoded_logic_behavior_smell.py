@@ -12,7 +12,7 @@ ANALYZER_ID = "E312_HARDCODED_LOGIC_BEHAVIOR_SMELL"
 WATCH_PREFIXES = (
     "tools/auditx/analyzers/e312_hardcoded_logic_behavior_smell.py",
     "tools/auditx/analyzers/__init__.py",
-    "src/logic/",
+    "game/domains/logic/",
     "packs/core/pack.core.logic_base/",
 )
 

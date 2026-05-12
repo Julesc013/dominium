@@ -24,11 +24,11 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from process.maturity.metrics_engine import (
+    from game.domains.processes.maturity.metrics_engine import (
         build_process_metrics_state_row,
         stabilization_policy_rows_by_id,
     )
-    from process.maturity.maturity_engine import (
+    from game.domains.processes.maturity.maturity_engine import (
         evaluate_process_maturity,
         process_lifecycle_policy_rows_by_id,
     )

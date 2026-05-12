@@ -29,7 +29,7 @@ _SKIP_PREFIXES = (
 
 _ALLOWED_FILES = {
     "tools/xstack/sessionx/process_runtime.py",
-    "physics/energy/energy_ledger_engine.py",
+    "game/domains/physics/energy/energy_ledger_engine.py",
 }
 
 

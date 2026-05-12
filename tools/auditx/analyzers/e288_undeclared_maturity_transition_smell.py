@@ -51,10 +51,10 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "process/process_run_engine.py",
-        "process/maturity/maturity_engine.py",
-        "process/maturity/__init__.py",
-        "process/capsules/capsule_builder.py",
+        "game/domains/processes/process_run_engine.py",
+        "game/domains/processes/maturity/maturity_engine.py",
+        "game/domains/processes/maturity/__init__.py",
+        "game/domains/processes/capsules/capsule_builder.py",
         "tools/process/tool_replay_maturity_window.py",
         "tools/process/tool_generate_proc_stress.py",
         "tools/process/tool_run_proc_stress.py",
@@ -101,8 +101,8 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "process/process_run_engine.py",
-                                "process/maturity/maturity_engine.py",
+                                "game/domains/processes/process_run_engine.py",
+                                "game/domains/processes/maturity/maturity_engine.py",
                             ],
                         )
                     )

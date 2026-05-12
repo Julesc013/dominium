@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E74_UNBOUNDED_WORK_SMELL"
 TARGETS = (
     (
-        "materials/performance/mat_scale_engine.py",
+        "game/domains/materials/performance/mat_scale_engine.py",
         (
             "DEFAULT_MAT_DEGRADATION_ORDER",
             "apply_mat_degradation_policy(",

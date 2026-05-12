@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "mobility/signals/signal_engine.py",
+        "game/domains/mobility/signals/signal_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):
@@ -89,7 +89,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-INTERLOCKING-POLICY-DRIVEN",
                                 "INV-NO-ADHOC-STOP-LOGIC",
                             ],
-                            related_paths=[rel_path, "mobility/signals/signal_engine.py"],
+                            related_paths=[rel_path, "game/domains/mobility/signals/signal_engine.py"],
                         )
                     )
                     break

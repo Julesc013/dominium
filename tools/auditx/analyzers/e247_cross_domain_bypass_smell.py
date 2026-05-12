@@ -16,7 +16,7 @@ class CrossDomainBypassSmell:
 
 
 _PATTERNS_BY_PREFIX = {
-    "src/chem/": (
+    "game/domains/chemistry/": (
         re.compile(r"\bfluid_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
@@ -26,15 +26,15 @@ _PATTERNS_BY_PREFIX = {
         re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
     ),
-    "src/fluid/": (
+    "game/domains/fluids/": (
         re.compile(r"\bchem_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']chem_", re.IGNORECASE),
     ),
-    "src/thermal/": (
+    "game/domains/thermal/": (
         re.compile(r"\bchem_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']chem_", re.IGNORECASE),
     ),
-    "src/mechanics/": (
+    "game/domains/mechanics/": (
         re.compile(r"\bchem_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']chem_", re.IGNORECASE),
     ),

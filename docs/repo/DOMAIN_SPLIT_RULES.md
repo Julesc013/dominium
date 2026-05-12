@@ -51,3 +51,23 @@ CONVERGE-09 examples after contract convergence:
 - `materials/` registry definitions -> `contracts/registries/materials/`; authored material datasets remain content.
 - `worldgen/` schemas -> `contracts/schemas/worldgen/`; deterministic generation logic remains game/domain implementation.
 - `field/` and `fields/` schema contracts -> `contracts/schemas/fields/` or `contracts/registries/fields/` depending on file role.
+
+## CONVERGE-09 Execution Status
+
+CONVERGE-09 moved safe Python-only implementation roots to `game/domains/` and retired those root-level aliases. The full report is `docs/repo/DOMAIN_SPLIT_REPORT.md`.
+
+Completed implementation moves include:
+
+- `astro/` -> `game/domains/astronomy/`
+- `chem/` -> `game/domains/chemistry/`
+- `electric/` -> `game/domains/electricity/`
+- `field/` -> `game/domains/fields/from_root_field/`
+- `fields/` -> `game/domains/fields/`
+- `fluid/` -> `game/domains/fluids/`
+- `geo/` -> `game/domains/geology/`
+- `logic/`, `materials/`, `mechanics/`, `physics/`, `pollution/`, `signals/`, `thermal/`, `universe/`, `worldgen/`, `mobility/`, and `logistics/` -> matching `game/domains/` targets.
+- additional detected domain roots `diegetics/`, `embodiment/`, `epistemics/`, `infrastructure/`, `inspection/`, `interaction/`, `interior/`, `machines/`, and `reality/` -> matching `game/domains/` targets.
+
+`economy/`, `civilization/`, and `ecology/` were absent. `control/`, `core/`, and `meta/` remain review roots because they are mixed or ownership-sensitive.
+
+No new domain features, schemas, registries, process semantics, RNG behavior, fixed-point math, renderer behavior, or platform behavior were introduced.

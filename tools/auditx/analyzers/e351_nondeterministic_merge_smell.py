@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E351_NONDETERMINISTIC_MERGE_SMELL"
 REQUIRED_FILES = {
-    "geo/overlay/overlay_merge_engine.py": (
+    "game/domains/geology/overlay/overlay_merge_engine.py": (
         "_ordered_patches_for_manifest(",
         "sorted(",
         "canonical_sha256(",
@@ -24,7 +24,7 @@ REQUIRED_FILES = {
         "stable_across_repeated_runs",
     ),
 }
-WATCH_PREFIXES = ("src/geo/overlay/", "tools/geo/")
+WATCH_PREFIXES = ("game/domains/geology/overlay/", "tools/geo/")
 _BANNED_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(")
 
 
@@ -86,7 +86,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-OVERLAY-MERGE-DETERMINISTIC"],
-                related_paths=[rel_path, "geo/overlay/overlay_merge_engine.py"],
+                related_paths=[rel_path, "game/domains/geology/overlay/overlay_merge_engine.py"],
             )
         )
 
@@ -124,7 +124,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-OVERLAY-MERGE-DETERMINISTIC"],
-                    related_paths=[rel_path, "geo/overlay/overlay_merge_engine.py"],
+                    related_paths=[rel_path, "game/domains/geology/overlay/overlay_merge_engine.py"],
                 )
             )
             break

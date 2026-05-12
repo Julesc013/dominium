@@ -56,7 +56,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
         "core/flow/flow_engine.py",
-        "electric/power_network_engine.py",
+        "game/domains/electricity/power_network_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

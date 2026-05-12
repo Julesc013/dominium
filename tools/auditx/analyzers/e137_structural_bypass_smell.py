@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E137_STRUCTURAL_BYPASS_SMELL"
 RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
-MECH_ENGINE_REL = "mechanics/structural_graph_engine.py"
+MECH_ENGINE_REL = "game/domains/mechanics/structural_graph_engine.py"
 
 _FAILURE_ASSIGN_RE = re.compile(r"failure_state[^\n=]*=\s*[\"']failed[\"']", re.IGNORECASE)
 
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
         os.path.join(repo_root, "tools"),
     )
     skip_prefixes = (
-        "src/mechanics/",
+        "game/domains/mechanics/",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/testx/tests/",
         "tools/auditx/analyzers/",

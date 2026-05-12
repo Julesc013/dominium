@@ -104,9 +104,9 @@ def seed_micro_state(
     initial_velocity: int = 0,
     include_second_vehicle: bool = False,
 ) -> dict:
-    from mobility.geometry import build_guide_geometry
-    from mobility.micro import build_micro_motion_state
-    from mobility.vehicle.vehicle_engine import (
+    from game.domains.mobility.geometry import build_guide_geometry
+    from game.domains.mobility.micro import build_micro_motion_state
+    from game.domains.mobility.vehicle.vehicle_engine import (
         build_motion_state,
         build_vehicle,
         deterministic_motion_state_ref,
@@ -243,9 +243,9 @@ def seed_micro_state(
 
 
 def seed_switch_handoff_state() -> dict:
-    from mobility.geometry import build_guide_geometry, build_junction
-    from mobility.micro import build_micro_motion_state
-    from mobility.vehicle.vehicle_engine import (
+    from game.domains.mobility.geometry import build_guide_geometry, build_junction
+    from game.domains.mobility.micro import build_micro_motion_state
+    from game.domains.mobility.vehicle.vehicle_engine import (
         build_motion_state,
         build_vehicle,
         deterministic_motion_state_ref,

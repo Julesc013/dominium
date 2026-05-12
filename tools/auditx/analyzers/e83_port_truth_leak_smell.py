@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E83_PORT_TRUTH_LEAK_SMELL"
 AFFORDANCE_PATH = "apps/client/interaction/affordance_generator.py"
 DISPATCH_PATH = "apps/client/interaction/interaction_dispatch.py"
-INSPECTION_ENGINE_PATH = "inspection/inspection_engine.py"
+INSPECTION_ENGINE_PATH = "game/domains/inspection/inspection_engine.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 
 REQUIRED_SAFE_TOKENS = (

@@ -12,7 +12,7 @@ ANALYZER_ID = "E311_CARRIER_BIAS_SMELL"
 WATCH_PREFIXES = (
     "tools/auditx/analyzers/e311_carrier_bias_smell.py",
     "tools/auditx/analyzers/__init__.py",
-    "src/logic/",
+    "game/domains/logic/",
     "docs/logic/",
 )
 
@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="NEEDS_REVIEW",
                             recommended_action="REWRITE",
                             related_invariants=["INV-NO-CARRIER-SEMANTIC-BIAS"],
-                            related_paths=[rel_path, "logic/signal/carrier_adapters.py"],
+                            related_paths=[rel_path, "game/domains/logic/signal/carrier_adapters.py"],
                         )
                     )
                     break

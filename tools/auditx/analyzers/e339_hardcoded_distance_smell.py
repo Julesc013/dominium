@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E339_HARDCODED_DISTANCE_SMELL"
-WATCH_PREFIXES = ("src/mobility/", "src/fields/", "src/pollution/", "src/system/")
+WATCH_PREFIXES = ("game/domains/mobility/", "game/domains/fields/", "game/domains/pollution/", "game/domains/systems/")
 DISTANCE_PATTERNS = (
     re.compile(r"\bdx\s*\*\s*dx\b"),
     re.compile(r"\bdy\s*\*\s*dy\b"),
@@ -17,8 +17,8 @@ DISTANCE_PATTERNS = (
     re.compile(r"\bdist(?:ance)?_sq\b"),
 )
 ALLOWLIST = {
-    "geo/kernel/geo_kernel.py",
-    "geo/metric/metric_engine.py",
+    "game/domains/geology/kernel/geo_kernel.py",
+    "game/domains/geology/metric/metric_engine.py",
 }
 
 
@@ -84,7 +84,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-RAW-DISTANCE-CALCULATION", "INV-METRIC-PROFILE-DECLARED"],
-                    related_paths=[rel_path, "geo/metric/metric_engine.py"],
+                    related_paths=[rel_path, "game/domains/geology/metric/metric_engine.py"],
                 )
             )
             break

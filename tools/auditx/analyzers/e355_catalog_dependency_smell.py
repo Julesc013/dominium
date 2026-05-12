@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E355_CATALOG_DEPENDENCY_SMELL"
-WATCH_PREFIXES = ("src/worldgen/mw/", "src/geo/worldgen/", "tools/geo/", "tools/xstack/sessionx/")
-SCAN_ROOTS = ("src/worldgen/mw", "src/geo/worldgen", "tools/geo", "tools/xstack/sessionx")
+WATCH_PREFIXES = ("game/domains/worldgen/mw/", "game/domains/geology/worldgen/", "tools/geo/", "tools/xstack/sessionx/")
+SCAN_ROOTS = ("game/domains/worldgen/mw", "game/domains/geology/worldgen", "tools/geo", "tools/xstack/sessionx")
 SCAN_EXTS = (".py",)
 CATALOG_TOKENS = (
     "data/world/milky_way/",
@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-CATALOG-REQUIRED"],
-                    related_paths=[rel_path, "worldgen/mw/mw_cell_generator.py", "data/registries/galaxy_priors_registry.json"],
+                    related_paths=[rel_path, "game/domains/worldgen/mw/mw_cell_generator.py", "data/registries/galaxy_priors_registry.json"],
                 )
             )
             break

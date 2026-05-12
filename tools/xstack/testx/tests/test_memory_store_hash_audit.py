@@ -83,7 +83,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from epistemics.memory import memory_store_hash, update_memory_store
+    from game.domains.epistemics.memory import memory_store_hash, update_memory_store
     from net.anti_cheat.anti_cheat_engine import check_state_integrity
 
     store = _memory_store(update_memory_store=update_memory_store)

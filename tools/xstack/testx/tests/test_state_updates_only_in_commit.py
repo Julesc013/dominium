@@ -15,9 +15,9 @@ def run(repo_root: str):
 
     from tools.xstack.testx.tests._logic_network_test_utils import binding_row, graph_row, node_row
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs
-    from logic.eval import process_logic_network_evaluate
-    from logic.signal import process_signal_set
-    from system import (
+    from game.domains.logic.eval import process_logic_network_evaluate
+    from game.domains.logic.signal import process_signal_set
+    from game.domains.systems import (
         build_state_vector_definition_row,
         deserialize_state,
         normalize_state_vector_definition_rows,

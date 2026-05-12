@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    transport_rel = "signals/transport/transport_engine.py"
+    transport_rel = "game/domains/signals/transport/transport_engine.py"
     transport_text = _read_text(repo_root, transport_rel)
     if transport_text and "query_route_result(" not in transport_text:
         findings.append(
@@ -58,8 +58,8 @@ def run(graph, repo_root, changed_files=None):
         )
 
     allow_files = {
-        "signals/transport/transport_engine.py",
-        "signals/transport/channel_executor.py",
+        "game/domains/signals/transport/transport_engine.py",
+        "game/domains/signals/transport/channel_executor.py",
     }
     scan_root = os.path.join(repo_root, "src", "signals")
     if os.path.isdir(scan_root):

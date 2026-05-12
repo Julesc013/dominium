@@ -295,11 +295,11 @@ def _approved_module_for_override(path: str, approved_domain: str, current_modul
         return "compat.handshake"
     if normalized.startswith("src/compat/negotiation/"):
         return "compat.negotiation"
-    if normalized.startswith("src/geo/index/"):
+    if normalized.startswith("game/domains/geology/index/"):
         return "engine.geo.index"
-    if normalized.startswith("src/geo/lens/"):
+    if normalized.startswith("game/domains/geology/lens/"):
         return "engine.geo.lens"
-    if normalized.startswith("src/geo/projection/"):
+    if normalized.startswith("game/domains/geology/projection/"):
         return "engine.geo.projection"
     if current_module_id and current_module_id.split(".", 1)[0] == approved_domain:
         return current_module_id
@@ -321,13 +321,13 @@ def _decision_override(path: str) -> tuple[str, str, str]:
         return ("approved_for_xi5", "apps", "Appshell surfaces are approved with the application runtime shell baseline.")
     if normalized.startswith("src/client/render/"):
         return ("approved_for_xi5", "apps", "Client render surfaces remain product-facing app shell code under the approved layout.")
-    if normalized.startswith("src/interaction/"):
+    if normalized.startswith("game/domains/interaction/"):
         return ("approved_for_xi5", "apps", "Interaction surfaces are application runtime entry surfaces, not free-floating tools.")
     if normalized.startswith("src/compat/"):
         return ("approved_for_xi5", "compat", "Negotiation, handshake, descriptor, and shim code belongs under compat.")
     if normalized.startswith("src/lib/") and normalized not in DEFERRED_PATHS:
         return ("approved_for_xi5", "lib", "Reusable runtime support code is approved under lib.")
-    if normalized.startswith("src/geo/"):
+    if normalized.startswith("game/domains/geology/"):
         return ("approved_for_xi5", "engine", "Geo engine helpers are approved into the engine domain despite tool-skewed duplicate evidence.")
     if normalized.startswith("src/security/trust/"):
         return ("approved_for_xi5", "engine", "Trust verification remains an engine-level invariant surface.")

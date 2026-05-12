@@ -78,7 +78,7 @@ def _perceived_model():
 def _candidate_row(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from infrastructure.formalization import build_inference_candidate
+    from game.domains.infrastructure.formalization import build_inference_candidate
 
     return build_inference_candidate(
         formalization_id="formalization.overlay.alpha",
@@ -100,7 +100,7 @@ def _snapshot(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from inspection.inspection_engine import build_inspection_snapshot_artifact
+    from game.domains.inspection.inspection_engine import build_inspection_snapshot_artifact
 
     snapshot, _diag = build_inspection_snapshot_artifact(
         request_row=_request(),

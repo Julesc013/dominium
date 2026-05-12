@@ -82,6 +82,10 @@ Generated runtime output belongs in install/runtime projection roots, not in sou
 
 Root-level `client/`, `server/`, `setup/`, and `launcher/` are retired after CONVERGE-08. New product entrypoint source must live under `apps/<product>/`. Developer tools remain under `tools/`; shipped product tools require explicit classification before using `apps/tools/`.
 
+Root-level domain folders moved in CONVERGE-09 are retired aliases. Do not add new top-level folders such as `geo/`, `chem/`, `worldgen/`, `materials/`, `field/`, `fields/`, `process/`, `signals/`, `mobility/`, or similar domain roots. Use `game/domains/`, `contracts/`, `content/domain-data/`, `docs/domains/`, and `tests/` according to file ownership.
+
+If a temporary root-level domain redirect is ever required, it must contain only a minimal non-authoritative README or shim, be recorded in the move map, and identify the target ownership locations. CONVERGE-09 retained no root-level domain compatibility redirects.
+
 ## Generated Roots
 
 Generated roots are evidence or output, not source ownership. `build/`, `out/`, `dist/`, and `artifacts/` must not become canonical source roots merely because tooling emits them.

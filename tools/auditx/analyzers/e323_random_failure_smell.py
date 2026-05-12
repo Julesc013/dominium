@@ -13,9 +13,9 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e323_random_failure_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
-    "src/logic/fault/",
-    "src/logic/noise/",
-    "logic/eval/sense_engine.py",
+    "game/domains/logic/fault/",
+    "game/domains/logic/noise/",
+    "game/domains/logic/eval/sense_engine.py",
     "tools/logic/tool_replay_fault_window.py",
 )
 
@@ -47,7 +47,7 @@ def _read_text(repo_root: str, rel_path: str) -> str:
 
 
 def _logic_runtime_paths(repo_root: str):
-    for root_rel in ("src/logic/fault", "src/logic/noise", "tools/logic"):
+    for root_rel in ("game/domains/logic/fault", "game/domains/logic/noise", "tools/logic"):
         abs_root = os.path.join(repo_root, root_rel.replace("/", os.sep))
         if not os.path.isdir(abs_root):
             continue
@@ -84,7 +84,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    noise_rel = "logic/noise/noise_engine.py"
+    noise_rel = "game/domains/logic/noise/noise_engine.py"
     noise_text = _read_text(repo_root, noise_rel)
     for token in ("kind == \"quantize\"", "kind == \"named_rng\"", "rng_stream_name", "build_logic_noise_decision_row("):
         if token in noise_text:

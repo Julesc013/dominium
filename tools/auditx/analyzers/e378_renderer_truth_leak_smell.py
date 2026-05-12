@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E378_RENDERER_TRUTH_LEAK_SMELL"
-LIGHTING_VIEW_REL = "worldgen/earth/lighting/lighting_view_engine.py"
+LIGHTING_VIEW_REL = "game/domains/worldgen/earth/lighting/lighting_view_engine.py"
 VIEWER_SHELL_REL = "apps/client/ui/viewer_shell.py"
 RENDER_MODEL_ADAPTER_REL = "apps/client/render/render_model_adapter.py"
 SOFTWARE_RENDERER_REL = "apps/client/render/renderers/software_renderer.py"

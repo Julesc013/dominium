@@ -285,7 +285,7 @@ def build_logic_network_panel(*, inspection_snapshot: Mapping[str, object] | Non
         panel_title="Logic / Network",
         visible=bool(rows),
         rows=rows,
-        summary="logic/network sections {}".format(len(rows)),
+        summary="game/domains/logic/network sections {}".format(len(rows)),
     )
 
 
@@ -303,7 +303,7 @@ def build_system_capsule_panel(*, inspection_snapshot: Mapping[str, object] | No
         panel_title="System / Capsule",
         visible=bool(rows),
         rows=rows,
-        summary="system/capsule sections {}".format(len(rows)),
+        summary="game/domains/systems/capsule sections {}".format(len(rows)),
     )
 
 

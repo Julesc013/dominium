@@ -426,39 +426,39 @@ def _classify_layer(rel_path: str, text: str) -> str:
 
 def _classify_responsibility(rel_path: str, layer: str) -> str:
     rel_norm = _norm(rel_path)
-    if rel_norm.startswith(("src/universe/", "src/field/", "src/fields/", "src/time/")):
+    if rel_norm.startswith(("game/domains/universe/", "game/domains/fields/from_root_field/", "game/domains/fields/", "src/time/")):
         return "core.truth_time"
-    if rel_norm.startswith(("src/process/", "src/system/", "src/meta/provenance/", "src/diag/")):
+    if rel_norm.startswith(("game/domains/processes/", "game/domains/systems/", "src/meta/provenance/", "src/diag/")):
         return "core.proof_process"
-    if rel_norm.startswith(("src/worldgen/refinement/",)):
+    if rel_norm.startswith(("game/domains/worldgen/refinement/",)):
         return "core.refinement"
     if rel_norm.startswith(("src/control/", "src/core/", "src/compat/")):
         return "game.composition_binding"
     if rel_norm.startswith(("src/appshell/", "src/client/",)):
         return "ui.shared"
-    if rel_norm.startswith(("src/geo/",)):
+    if rel_norm.startswith(("game/domains/geology/",)):
         return "domain.geo"
-    if rel_norm.startswith(("src/worldgen/mw/", "src/worldgen/galaxy/")):
+    if rel_norm.startswith(("game/domains/worldgen/mw/", "game/domains/worldgen/galaxy/")):
         return "domain.mw"
-    if rel_norm.startswith(("src/astro/",)):
+    if rel_norm.startswith(("game/domains/astronomy/",)):
         return "domain.sol"
-    if rel_norm.startswith(("src/worldgen/earth/",)):
+    if rel_norm.startswith(("game/domains/worldgen/earth/",)):
         return "domain.earth"
-    if rel_norm.startswith(("src/logic/",)):
+    if rel_norm.startswith(("game/domains/logic/",)):
         return "domain.logic"
-    if rel_norm.startswith(("src/pollution/",)):
+    if rel_norm.startswith(("game/domains/pollution/",)):
         return "domain.poll"
-    if rel_norm.startswith(("src/embodiment/",)):
+    if rel_norm.startswith(("game/domains/embodiment/",)):
         return "domain.embodiment"
-    if rel_norm.startswith(("src/mobility/",)):
+    if rel_norm.startswith(("game/domains/mobility/",)):
         return "domain.mobility"
-    if rel_norm.startswith(("src/thermal/",)):
+    if rel_norm.startswith(("game/domains/thermal/",)):
         return "domain.thermal"
-    if rel_norm.startswith(("src/fluid/",)):
+    if rel_norm.startswith(("game/domains/fluids/",)):
         return "domain.fluid"
-    if rel_norm.startswith(("src/chem/", "src/materials/")):
+    if rel_norm.startswith(("game/domains/chemistry/", "game/domains/materials/")):
         return "domain.materials"
-    if rel_norm.startswith(("src/electric/", "src/signals/")):
+    if rel_norm.startswith(("game/domains/electricity/", "game/domains/signals/")):
         return "domain.electric"
     if rel_norm.startswith(("src/client/render/",)):
         return "ui.rendered"

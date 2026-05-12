@@ -20,7 +20,7 @@ _REQUIRED_TOKENS = {
         "_normalize_temporal_domain_id(",
         "\"temporal_domain_id\": temporal_domain_id",
     ),
-    "signals/aggregation/aggregation_engine.py": (
+    "game/domains/signals/aggregation/aggregation_engine.py": (
         "_normalize_temporal_domain_id(",
         "\"temporal_domain_id\": _normalize_temporal_domain_id(",
     ),

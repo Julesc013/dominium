@@ -33,10 +33,10 @@ ALLOWED_PARALLEL_ZONES = {
 FORBIDDEN_PARALLEL_ZONES = {
     "tools/xstack/sessionx/process_runtime.py": "Authoritative state mutation must remain deterministic and must not depend on thread completion order.",
     "tools/xstack/sessionx/scheduler.py": "Truth execution may not become parallel without an explicit deterministic shard-merge contract.",
-    "src/process/": "Canonical process execution remains ordered truth execution.",
-    "src/field/": "Field mutation is authoritative and may not race.",
-    "src/fields/": "Field mutation is authoritative and may not race.",
-    "src/logic/": "Logic truth evaluation may not depend on scheduling.",
+    "game/domains/processes/": "Canonical process execution remains ordered truth execution.",
+    "game/domains/fields/from_root_field/": "Field mutation is authoritative and may not race.",
+    "game/domains/fields/": "Field mutation is authoritative and may not race.",
+    "game/domains/logic/": "Logic truth evaluation may not depend on scheduling.",
     "src/time/": "Canonical time and proof paths may not depend on thread timing.",
 }
 

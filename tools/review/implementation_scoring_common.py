@@ -53,7 +53,7 @@ DOC_REPORT_DATE = "2026-03-26"
 ENTRYPOINT_PRODUCTS = {"app", "client", "launcher", "server", "setup"}
 TEST_PATH_PREFIXES = ("tests/", "game/tests/", "tools/xstack/testx/tests/", "Testing/")
 SOURCE_LIKE_DIRS = {"src", "source", "Sources", "Source"}
-RUNTIME_PATH_PREFIXES = ("apps/client/", "engine/", "game/", "apps/launcher/", "apps/server/", "apps/setup/", "src/", "worldgen/")
+RUNTIME_PATH_PREFIXES = ("apps/client/", "engine/", "game/", "apps/launcher/", "apps/server/", "apps/setup/", "src/", "game/domains/worldgen/")
 NON_RUNTIME_TOOL_PATH_PREFIXES = ("tools/auditx/", "tools/review/", "tools/xstack/testx/tests/")
 HIGH_CONFIDENCE_SCORE = 78.0
 MEDIUM_CONFIDENCE_SCORE = 62.0
@@ -311,13 +311,13 @@ TRUTH_PATH_HINTS = (
     "game/",
     "src/control/",
     "src/core/",
-    "src/geo/",
-    "src/logic/",
-    "src/process/",
-    "src/signals/",
-    "src/system/",
+    "game/domains/geology/",
+    "game/domains/logic/",
+    "game/domains/processes/",
+    "game/domains/signals/",
+    "game/domains/systems/",
     "src/time/",
-    "src/worldgen/",
+    "game/domains/worldgen/",
 )
 
 CAMEL_RE_1 = re.compile(r"([a-z0-9])([A-Z])")

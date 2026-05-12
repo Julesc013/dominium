@@ -8,7 +8,7 @@ import os
 from functools import lru_cache
 from typing import Mapping
 
-from geo import (
+from game.domains.geology import (
     build_lens_request,
     build_position_ref,
     build_projected_view_artifact,

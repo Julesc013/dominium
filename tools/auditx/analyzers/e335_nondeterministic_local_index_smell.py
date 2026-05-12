@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E335_NONDETERMINISTIC_LOCAL_INDEX_SMELL"
-WATCH_PREFIXES = ("src/geo/index/", "src/worldgen/", "tools/geo/")
+WATCH_PREFIXES = ("game/domains/geology/index/", "game/domains/worldgen/", "tools/geo/")
 _BANNED_TOKENS = ("uuid", "random.", "shuffle(", "time.time(", "datetime.now(")
 
 
@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-SPATIAL-OBJECTS-MUST-USE-GEO_IDS"],
-                    related_paths=[rel_path, "geo/index/object_id_engine.py"],
+                    related_paths=[rel_path, "game/domains/geology/index/object_id_engine.py"],
                 )
             )
             break

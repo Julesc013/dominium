@@ -46,3 +46,16 @@ Active tooling, script, test, CMake, and GitHub automation references to root-le
 ## Material Not Moved
 
 `compat/`, `locks/`, and `data/registries/` remain under review. They require file-level ownership inspection before any future movement.
+
+## CONVERGE-09 Domain Split Note
+
+CONVERGE-09 inspected root-level domain packages and moved Python implementation source to `game/domains/<domain>/`. The moved roots did not contain identified schema, registry, capability, protocol, content, docs, or test subsets during this pass.
+
+Domain contract authority remains under:
+
+- `contracts/schemas/<domain>/`
+- `contracts/registries/<domain>/`
+- `contracts/capabilities/<domain>/`
+- `contracts/protocols/<domain>/`
+
+Domain implementation must stay under `game/domains/`, not `contracts/`.

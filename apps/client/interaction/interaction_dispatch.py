@@ -16,7 +16,7 @@ from net.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
 from control import build_control_intent, build_control_resolution
-from interaction.task import resolve_task_type_for_completion_process
+from game.domains.interaction.task import resolve_task_type_for_completion_process
 
 from .affordance_generator import build_affordance_list
 from .inspection_overlays import build_inspection_overlays

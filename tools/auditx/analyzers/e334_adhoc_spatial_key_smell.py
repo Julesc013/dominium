@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E334_ADHOC_SPATIAL_KEY_SMELL"
-WATCH_PREFIXES = ("src/net/srz/", "src/system/roi/", "src/worldgen/", "tools/geo/")
+WATCH_PREFIXES = ("src/net/srz/", "game/domains/systems/roi/", "game/domains/worldgen/", "tools/geo/")
 _PATTERNS = (
     re.compile(r'["\']cell\.[^"\']*\{'),
     re.compile(r'["\']atlas\.[^"\']*\{'),
@@ -17,8 +17,8 @@ _PATTERNS = (
     re.compile(r'format\(\s*["\']atlas\.'),
 )
 _ALLOWLIST = {
-    "geo/kernel/geo_kernel.py",
-    "geo/index/geo_index_engine.py",
+    "game/domains/geology/kernel/geo_kernel.py",
+    "game/domains/geology/index/geo_index_engine.py",
 }
 
 
@@ -84,7 +84,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-NO-ADHOC-SPATIAL-KEYS"],
-                    related_paths=[rel_path, "geo/index/geo_index_engine.py"],
+                    related_paths=[rel_path, "game/domains/geology/index/geo_index_engine.py"],
                 )
             )
             break

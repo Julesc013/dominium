@@ -12,7 +12,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e316_unmetered_logic_eval_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/LOGIC_EVALUATION_ENGINE.md",
-    "src/logic/eval/",
+    "game/domains/logic/eval/",
     "tools/xstack/sessionx/process_runtime.py",
 )
 
@@ -59,7 +59,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    compute_rel = "logic/eval/compute_engine.py"
+    compute_rel = "game/domains/logic/eval/compute_engine.py"
     compute_text = _read_text(repo_root, compute_rel)
     for token in ("request_logic_element_compute(", "compute_budget_profile_registry_payload"):
         if token in compute_text:
@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    engine_rel = "logic/eval/logic_eval_engine.py"
+    engine_rel = "game/domains/logic/eval/logic_eval_engine.py"
     engine_text = _read_text(repo_root, engine_rel)
     for token in ("evaluate_logic_compute_phase(", "logic_compute_throttle", "logic_throttle_event_rows"):
         if token in engine_text:

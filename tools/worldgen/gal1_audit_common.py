@@ -13,7 +13,7 @@ GAL1_SCOPE_PATHS: Tuple[str, ...] = (
     "contracts/schemas/worldgen/galaxy_object_stub.schema",
     "contracts/schemas/galaxy_object_stub.schema.json",
     "data/registries/object_kind_registry.json",
-    "src/worldgen/galaxy",
+    "game/domains/worldgen/galaxy",
     "tools/worldgen/gal1_audit_common.py",
     "tools/worldgen/gal1_probe.py",
     "tools/worldgen/tool_replay_galaxy_objects.py",

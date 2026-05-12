@@ -9,8 +9,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E56_RAW_FLOAT_IN_INVARIANT_SMELL"
 INVARIANT_MATH_FILES = (
-    "materials/dimension_engine.py",
-    "reality/ledger/ledger_engine.py",
+    "game/domains/materials/dimension_engine.py",
+    "game/domains/reality/ledger/ledger_engine.py",
 )
 
 

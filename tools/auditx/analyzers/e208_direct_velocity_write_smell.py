@@ -52,9 +52,9 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "mobility/micro/free_motion_solver.py",
-        "mobility/micro/constrained_motion_solver.py",
-        "physics/momentum_engine.py",
+        "game/domains/mobility/micro/free_motion_solver.py",
+        "game/domains/mobility/micro/constrained_motion_solver.py",
+        "game/domains/physics/momentum_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

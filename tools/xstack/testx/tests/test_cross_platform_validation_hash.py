@@ -15,7 +15,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from tools.xstack.compatx.canonical_json import canonical_sha256
-    from system import validate_boundary_invariants, validate_interface_signature
+    from game.domains.systems import validate_boundary_invariants, validate_interface_signature
     from tools.xstack.testx.tests.sys1_testlib import cloned_state, validation_payloads
 
     base_state = cloned_state()

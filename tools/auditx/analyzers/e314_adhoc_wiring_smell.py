@@ -12,16 +12,16 @@ ANALYZER_ID = "E314_AD_HOC_WIRING_SMELL"
 WATCH_PREFIXES = (
     "tools/auditx/analyzers/e314_adhoc_wiring_smell.py",
     "tools/auditx/analyzers/__init__.py",
-    "src/logic/",
+    "game/domains/logic/",
     "tools/xstack/sessionx/process_runtime.py",
 )
 
 _ALLOWED_PATHS = {
-    "logic/network/logic_network_engine.py",
-    "logic/network/logic_network_validator.py",
-    "logic/network/instrumentation_binding.py",
-    "logic/network/__init__.py",
-    "logic/__init__.py",
+    "game/domains/logic/network/logic_network_engine.py",
+    "game/domains/logic/network/logic_network_validator.py",
+    "game/domains/logic/network/instrumentation_binding.py",
+    "game/domains/logic/network/__init__.py",
+    "game/domains/logic/__init__.py",
     "tools/xstack/sessionx/process_runtime.py",
 }
 _PATTERNS = (
@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
                         suggested_classification="INVALID",
                         recommended_action="REWRITE",
                         related_invariants=["INV-LOGIC-WIRING-USES-NETWORKGRAPH"],
-                        related_paths=[rel_path, "logic/network/logic_network_engine.py"],
+                        related_paths=[rel_path, "game/domains/logic/network/logic_network_engine.py"],
                     )
                 )
 

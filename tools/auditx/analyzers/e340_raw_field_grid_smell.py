@@ -9,8 +9,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E340_RAW_FIELD_GRID_SMELL"
 REQUIRED_FILES = {
-    "fields/field_engine.py": ("geo_cell_key", "def field_get_value(", "def field_sample_position_ref("),
-    "field/field_boundary_exchange.py": ("exchange_field_boundary_values(", '"field_sampled_geo_cell_keys"'),
+    "game/domains/fields/field_engine.py": ("geo_cell_key", "def field_get_value(", "def field_sample_position_ref("),
+    "game/domains/fields/from_root_field/field_boundary_exchange.py": ("exchange_field_boundary_values(", '"field_sampled_geo_cell_keys"'),
 }
 
 
@@ -60,7 +60,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-FIELD-STORAGE-GEO-KEYED", "INV-NO-RAW-FIELD-GRID-ASSUMPTION"],
-                related_paths=[rel_path, "fields/field_engine.py"],
+                related_paths=[rel_path, "game/domains/fields/field_engine.py"],
             )
         )
     return findings

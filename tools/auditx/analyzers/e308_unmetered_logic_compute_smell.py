@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "docs/logic/",
     "data/registries/logic_policy_registry.json",
     "data/registries/compute_budget_profile_registry.json",
-    "src/logic/",
+    "game/domains/logic/",
     "tools/logic/",
 )
 
@@ -45,7 +45,7 @@ def _read_json(repo_root: str, rel_path: str):
 
 
 def _logic_runtime_paths(repo_root: str):
-    for root_rel in ("src/logic/eval",):
+    for root_rel in ("game/domains/logic/eval",):
         abs_root = os.path.join(repo_root, root_rel.replace("/", os.sep))
         if not os.path.isdir(abs_root):
             continue

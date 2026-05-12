@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from geo import build_position_ref
+from game.domains.geology import build_position_ref
 
 
 def baseline_frame_nodes() -> list[dict]:

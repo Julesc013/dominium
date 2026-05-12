@@ -23,7 +23,7 @@ REQUIRED_TOKENS = {
         "def compat_status(",
         '"compat_rows"',
     ),
-    "embodiment/tools/logic_tool.py": (
+    "game/domains/embodiment/tools/logic_tool.py": (
         "enforce_negotiated_capability",
         '"cap.logic.debug_analyzer"',
     ),

@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     profile_engine_rel = "meta/profile/profile_engine.py"
-    collapse_rel = "system/system_collapse_engine.py"
+    collapse_rel = "game/domains/systems/system_collapse_engine.py"
     required_profile_tokens = (
         "resolve_profile(",
         "apply_override(",

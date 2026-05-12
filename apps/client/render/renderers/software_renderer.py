@@ -8,7 +8,7 @@ import math
 import os
 from typing import Dict, List, Tuple
 
-from geo import geo_project
+from game.domains.geology import geo_project
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .null_renderer import build_frame_summary

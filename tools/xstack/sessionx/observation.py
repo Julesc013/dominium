@@ -5,9 +5,9 @@ from __future__ import annotations
 import copy
 from typing import Dict, List, Tuple
 
-from diegetics import compute_diegetic_instruments
-from epistemics.memory import update_memory_store
-from interior import InteriorError, path_exists
+from game.domains.diegetics import compute_diegetic_instruments
+from game.domains.epistemics.memory import update_memory_store
+from game.domains.interior import InteriorError, path_exists
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal

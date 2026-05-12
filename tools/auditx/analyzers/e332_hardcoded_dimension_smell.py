@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E332_HARDCODED_DIMENSION_SMELL"
-WATCH_PREFIXES = ("src/fields/",)
-TARGET_FILE = "fields/field_engine.py"
+WATCH_PREFIXES = ("game/domains/fields/",)
+TARGET_FILE = "game/domains/fields/field_engine.py"
 LEGACY_TOKEN = 'return "cell.{}.{}.{}".format('
 
 
@@ -47,7 +47,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-NO-HARDCODED-DIMENSION-ASSUMPTIONS"],
-                related_paths=[TARGET_FILE, "geo/kernel/geo_kernel.py"],
+                related_paths=[TARGET_FILE, "game/domains/geology/kernel/geo_kernel.py"],
             )
         )
         break

@@ -50,9 +50,9 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "process/process_run_engine.py",
-        "process/capsules/capsule_executor.py",
-        "process/software/pipeline_engine.py",
+        "game/domains/processes/process_run_engine.py",
+        "game/domains/processes/capsules/capsule_executor.py",
+        "game/domains/processes/software/pipeline_engine.py",
         "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "process/process_run_engine.py",
+                                "game/domains/processes/process_run_engine.py",
                                 "data/registries/yield_model_registry.json",
                             ],
                         )

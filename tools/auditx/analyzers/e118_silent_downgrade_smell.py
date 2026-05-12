@@ -11,8 +11,8 @@ ANALYZER_ID = "E118_SILENT_DOWNGRADE_SMELL"
 WATCH_PREFIXES = (
     "control/control_plane_engine.py",
     "apps/client/interaction/interaction_dispatch.py",
-    "inspection/inspection_engine.py",
-    "materials/materialization/materialization_engine.py",
+    "game/domains/inspection/inspection_engine.py",
+    "game/domains/materials/materialization/materialization_engine.py",
 )
 
 
@@ -73,8 +73,8 @@ def run(graph, repo_root, changed_files=None):
         )
 
     for rel_path in (
-        "inspection/inspection_engine.py",
-        "materials/materialization/materialization_engine.py",
+        "game/domains/inspection/inspection_engine.py",
+        "game/domains/materials/materialization/materialization_engine.py",
     ):
         text = _read_text(repo_root, rel_path)
         if not text:

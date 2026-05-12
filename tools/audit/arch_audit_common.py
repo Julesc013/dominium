@@ -1043,8 +1043,8 @@ def scan_worldgen_lock(repo_root: str) -> dict:
         for row in list(determinism_scan.get("blocking_findings") or [])
         if _token(row.get("category")) == "determinism.unnamed_rng"
         and (
-            _token(row.get("path")).startswith("src/worldgen/")
-            or _token(row.get("path")).startswith("src/geo/worldgen/")
+            _token(row.get("path")).startswith("game/domains/worldgen/")
+            or _token(row.get("path")).startswith("game/domains/geology/worldgen/")
         )
     ]
     for row in unnamed_rng_rows:

@@ -13,12 +13,12 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from astro.illumination.illumination_geometry_engine import (
+    from game.domains.astronomy.illumination.illumination_geometry_engine import (
         build_emitter_descriptor,
         build_illumination_view_artifact,
         build_receiver_descriptor,
     )
-    from geo import build_position_ref
+    from game.domains.geology import build_position_ref
 
     viewer_ref = build_position_ref(object_id="object.viewer.fixture", frame_id="frame.sol1.fixture", local_position=[0, 0, 0])
     emitter_row = build_emitter_descriptor(

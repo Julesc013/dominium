@@ -4386,8 +4386,8 @@ def check_extensions_deterministic_serialization(repo_root):
         SESSION_COMMON_REL: ("normalize_extensions_tree(",),
         DISTRIBUTION_LIB_REL: ("normalize_extensions_tree(",),
         PACK_LOADER_REL: ("normalize_extensions_tree(",),
-        "geo/overlay/overlay_merge_engine.py": ("normalize_extensions_tree(",),
-        "geo/worldgen/worldgen_engine.py": ("normalize_extensions_tree(",),
+        "game/domains/geology/overlay/overlay_merge_engine.py": ("normalize_extensions_tree(",),
+        "game/domains/geology/worldgen/worldgen_engine.py": ("normalize_extensions_tree(",),
         EXTENSION_DISCIPLINE_DOC_REL: ("serialized in sorted key order", "Deterministic normalization must happen before canonical hashing and fingerprinting."),
     }
     for rel_path, tokens in required_tokens.items():
@@ -10849,7 +10849,7 @@ def check_cache_key_includes_contracts(repo_root):
     try:
         if repo_root not in sys.path:
             sys.path.insert(0, repo_root)
-        from worldgen.refinement.refinement_cache import build_refinement_cache_key
+        from game.domains.worldgen.refinement.refinement_cache import build_refinement_cache_key
         from tools.xstack.testx.tests.geo8_testlib import worldgen_cell_key
 
         common = {

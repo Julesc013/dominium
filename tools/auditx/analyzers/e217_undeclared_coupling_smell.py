@@ -23,27 +23,19 @@ _REQUIRED_CONTRACTS = (
     ("force_coupling", "FLUID", "MECH", "constitutive_model"),
 )
 _CROSS_DOMAIN_PATTERNS_BY_PREFIX = {
-    "src/electric/": (
+    "game/domains/electricity/": (
         re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
     ),
-    "src/thermal/": (
+    "game/domains/thermal/": (
         re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
     ),
-    "src/signals/": (
-        re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-        re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-        re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-        re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
-        re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
-        re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
-    ),
-    "src/mobility/": (
+    "game/domains/signals/": (
         re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
@@ -51,7 +43,15 @@ _CROSS_DOMAIN_PATTERNS_BY_PREFIX = {
         re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
     ),
-    "src/fluid/": (
+    "game/domains/mobility/": (
+        re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+    ),
+    "game/domains/fluids/": (
         re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bint_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),

@@ -70,7 +70,7 @@ def run(graph, repo_root, changed_files=None):
                 ],
                 related_paths=[
                     runtime_rel,
-                    "process/software/pipeline_engine.py",
+                    "game/domains/processes/software/pipeline_engine.py",
                 ],
             )
         )
@@ -87,8 +87,8 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "process/software/pipeline_engine.py",
-        "process/software/__init__.py",
+        "game/domains/processes/software/pipeline_engine.py",
+        "game/domains/processes/software/__init__.py",
         runtime_rel,
         "tools/process/tool_replay_pipeline_window.py",
         "tools/xstack/repox/check.py",
@@ -136,7 +136,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 runtime_rel,
-                                "process/software/pipeline_engine.py",
+                                "game/domains/processes/software/pipeline_engine.py",
                             ],
                         )
                     )

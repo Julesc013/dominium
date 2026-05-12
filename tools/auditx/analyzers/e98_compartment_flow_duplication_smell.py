@@ -9,19 +9,19 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E98_COMPARTMENT_FLOW_DUPLICATION_SMELL"
 REQUIRED_FILES = {
-    "interior/compartment_flow_builder.py": (
+    "game/domains/interior/compartment_flow_builder.py": (
         "normalize_flow_channel(",
         "build_compartment_flow_channels(",
         "channel.interior.",
     ),
-    "interior/compartment_flow_engine.py": (
+    "game/domains/interior/compartment_flow_engine.py": (
         "tick_flow_channels(",
         "build_compartment_flow_channels(",
         "_pressure_from_air_mass(",
     ),
 }
 SCAN_EXCLUDE_PREFIXES = (
-    "src/interior/",
+    "game/domains/interior/",
     "src/core/flow/",
 )
 

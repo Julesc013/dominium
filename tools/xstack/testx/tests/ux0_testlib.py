@@ -246,7 +246,7 @@ def redacted_map_fixture(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _candidate_system_rows_cached(repo_root: str) -> list[dict]:
     _ensure_repo_root(repo_root)
-    from worldgen.mw import list_systems_in_cell
+    from game.domains.worldgen.mw import list_systems_in_cell
     from tools.xstack.testx.tests.geo8_testlib import seed_worldgen_state, worldgen_cell_key
 
     worldgen_state = seed_worldgen_state()

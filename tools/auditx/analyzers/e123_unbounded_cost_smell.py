@@ -10,9 +10,9 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E123_UNBOUNDED_COST_SMELL"
 WATCH_PREFIXES = (
     "src/control/fidelity/",
-    "inspection/inspection_engine.py",
-    "materials/materialization/materialization_engine.py",
-    "materials/commitments/commitment_engine.py",
+    "game/domains/inspection/inspection_engine.py",
+    "game/domains/materials/materialization/materialization_engine.py",
+    "game/domains/materials/commitments/commitment_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
 )
 
@@ -125,9 +125,9 @@ def run(graph, repo_root, changed_files=None):
         )
 
     for rel_path in (
-        "inspection/inspection_engine.py",
-        "materials/materialization/materialization_engine.py",
-        "materials/commitments/commitment_engine.py",
+        "game/domains/inspection/inspection_engine.py",
+        "game/domains/materials/materialization/materialization_engine.py",
+        "game/domains/materials/commitments/commitment_engine.py",
     ):
         text = _read_text(repo_root, rel_path)
         if not text:

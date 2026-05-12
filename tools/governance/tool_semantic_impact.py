@@ -45,13 +45,13 @@ CONTROL_DEPENDENCY_SCAN_TOKENS = (
 NETWORKGRAPH_FLOW_PREFIXES = (
     "src/core/graph/",
     "src/core/flow/",
-    "src/logistics/",
-    "src/interior/",
-    "src/mobility/",
+    "game/domains/logistics/",
+    "game/domains/interior/",
+    "game/domains/mobility/",
 )
 EPISTEMIC_PREFIXES = (
-    "src/inspection/",
-    "src/interior/",
+    "game/domains/inspection/",
+    "game/domains/interior/",
     "src/client/interaction/",
     "tools/xstack/sessionx/observation.py",
     "docs/architecture/lens_system.md",

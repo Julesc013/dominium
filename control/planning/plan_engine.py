@@ -6,7 +6,7 @@ from typing import List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from materials.blueprint_engine import (
+from game.domains.materials.blueprint_engine import (
     BlueprintCompileError,
     blueprint_bom_summary,
     build_blueprint_ghost_overlay,

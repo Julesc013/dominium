@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E97_DUPLICATE_INTERIOR_GRAPH_SMELL"
-INTERIOR_ENGINE_PATH = "interior/interior_engine.py"
+INTERIOR_ENGINE_PATH = "game/domains/interior/interior_engine.py"
 
 
 def _norm(path: str) -> str:
@@ -54,7 +54,7 @@ def run(graph, repo_root, changed_files=None):
                 continue
             abs_path = os.path.join(root, name)
             rel_path = _norm(os.path.relpath(abs_path, repo_root))
-            if rel_path.startswith(("src/interior/", "src/core/graph/")):
+            if rel_path.startswith(("game/domains/interior/", "src/core/graph/")):
                 continue
             text = _read_text(repo_root, rel_path)
             if not text:

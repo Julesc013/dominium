@@ -9,14 +9,14 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E398_UNGATED_TOOL_USE_SMELL"
 REQUIRED_TOKENS = {
-    "embodiment/tools/terrain_edit_tool.py": ('evaluate_tool_access(tool_id="tool.terrain_edit"',),
-    "embodiment/tools/scanner_tool.py": ('evaluate_tool_access(', '"tool.scanner_basic"'),
-    "embodiment/tools/logic_tool.py": (
+    "game/domains/embodiment/tools/terrain_edit_tool.py": ('evaluate_tool_access(tool_id="tool.terrain_edit"',),
+    "game/domains/embodiment/tools/scanner_tool.py": ('evaluate_tool_access(', '"tool.scanner_basic"'),
+    "game/domains/embodiment/tools/logic_tool.py": (
         'evaluate_tool_access(tool_id="tool.logic_probe"',
         'evaluate_tool_access(tool_id="tool.logic_analyzer"',
     ),
-    "embodiment/tools/teleport_tool.py": ('evaluate_tool_access(tool_id="tool.teleport"',),
-    "embodiment/tools/toolbelt_engine.py": (
+    "game/domains/embodiment/tools/teleport_tool.py": ('evaluate_tool_access(tool_id="tool.teleport"',),
+    "game/domains/embodiment/tools/toolbelt_engine.py": (
         "required_entitlement_id",
         '"refusal.tool.entitlement_missing"',
     ),

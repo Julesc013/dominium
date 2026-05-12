@@ -62,3 +62,9 @@ Older docs may still mention root-level `app/`, `appshell/`, `ui/`, or `diag/` a
 - `diag/` is retired; retained diagnostic source lives under `runtime/diagnostics/`.
 
 The move map remains the operational planning artifact. Old layout docs are not move maps and must not be used alone to decide whether runtime, AppShell, platform, render, UI, network, or diagnostic material should move.
+
+## CONVERGE-09 Domain Path Note
+
+Older docs may still mention root-level domain folders such as `geo/`, `chem/`, `worldgen/`, `materials/`, `field/`, `fields/`, `process/`, or `signals/` as current source roots. After CONVERGE-09, moved implementation source lives under `game/domains/`, and those root-level path claims are stale for current source-layout purposes.
+
+`tools/migration/root_move_map.json` and `docs/repo/DOMAIN_SPLIT_REPORT.md` record the operational domain split state. Old layout docs are not move maps and must not be used alone to decide whether domain material belongs in `contracts/`, `game/domains/`, `content/`, `docs/domains/`, or `tests/`.

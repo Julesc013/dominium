@@ -51,7 +51,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         "core/graph/network_graph_engine.py",
         "core/graph/routing_engine.py",
-        "mobility/network/mobility_network_engine.py",
+        "game/domains/mobility/network/mobility_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:

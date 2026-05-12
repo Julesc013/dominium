@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E348_UNNAMED_RNG_WORLDGEN_SMELL"
-WATCH_PREFIXES = ("src/geo/worldgen/", "tools/geo/", "tools/xstack/sessionx/")
+WATCH_PREFIXES = ("game/domains/geology/worldgen/", "tools/geo/", "tools/xstack/sessionx/")
 _BANNED_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(")
 
 
@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-WORLDGEN-RNG-NAMED-ONLY"],
-                    related_paths=[rel_path, "geo/worldgen/worldgen_engine.py"],
+                    related_paths=[rel_path, "game/domains/geology/worldgen/worldgen_engine.py"],
                 )
             )
             break

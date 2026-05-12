@@ -36,7 +36,7 @@ from engine.platform.platform_probe import (
     probe_platform_descriptor,
     project_feature_capabilities_for_platform,
 )
-from universe.universe_identity_builder import build_universe_contract_bundle_payload
+from game.domains.universe.universe_identity_builder import build_universe_contract_bundle_payload
 from tools.dist.dist_tree_common import (
     DEFAULT_PLATFORM_TAG,
     DEFAULT_RELEASE_CHANNEL,

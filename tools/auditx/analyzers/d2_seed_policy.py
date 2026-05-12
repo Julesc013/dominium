@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "D2_SEED_POLICY"
 WATCH_PREFIXES = (
-    "worldgen/",
+    "game/domains/worldgen/",
     "tools/worldgen_offline/",
     "tools/xstack/sessionx/",
     "packs/",
@@ -19,9 +19,9 @@ WATCH_PREFIXES = (
 )
 
 SOURCE_PATHS = (
-    "worldgen/core/constraint_solver.py",
-    "worldgen/core/constraint_commands.py",
-    "worldgen/core/pipeline.py",
+    "game/domains/worldgen/core/constraint_solver.py",
+    "game/domains/worldgen/core/constraint_commands.py",
+    "game/domains/worldgen/core/pipeline.py",
     "tools/worldgen_offline/constraints_cli.py",
     "tools/xstack/sessionx/creator.py",
 )

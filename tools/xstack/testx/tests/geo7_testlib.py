@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import copy
 
-from geo import build_geometry_cell_state, geometry_get_cell_state
-from materials import create_material_batch
+from game.domains.geology import build_geometry_cell_state, geometry_get_cell_state
+from game.domains.materials import create_material_batch
 from tools.xstack.sessionx.process_runtime import execute_intent
 from tools.xstack.testx.tests.mobility_free_testlib import (
     authority_context,

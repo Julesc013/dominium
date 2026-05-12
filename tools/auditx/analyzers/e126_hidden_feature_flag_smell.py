@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E126_HIDDEN_FEATURE_FLAG_SMELL"
 WATCH_PREFIXES = (
     "src/control/",
-    "src/interaction/",
+    "game/domains/interaction/",
     "tools/xstack/sessionx/",
 )
 SCAN_ROOTS = (

@@ -558,131 +558,320 @@ notes = "Build output should not be a canonical source root."
 
 [domain_roots.astro]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/astro", "contracts/registries/astro", "game/domains/astro", "content/domain-data/astro", "docs/domains/astro", "tests/determinism/astro", "tests/fixtures/astro"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "astronomy"
+implementation_target = "game/domains/astronomy"
+targets = ["contracts/schemas/astronomy", "contracts/registries/astronomy", "contracts/capabilities/astronomy", "contracts/protocols/astronomy", "game/domains/astronomy", "content/domain-data/astronomy", "docs/domains/astronomy", "tests/determinism/astronomy", "tests/fixtures/astronomy", "tests/regression/astronomy", "tests/golden/astronomy"]
+notes = "Root-level astro/ was retired in CONVERGE-09; implementation moved to game/domains/astronomy/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.chem]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/chem", "contracts/registries/chem", "game/domains/chem", "content/domain-data/chem", "docs/domains/chem", "tests/determinism/chem", "tests/fixtures/chem"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "chemistry"
+implementation_target = "game/domains/chemistry"
+targets = ["contracts/schemas/chemistry", "contracts/registries/chemistry", "contracts/capabilities/chemistry", "contracts/protocols/chemistry", "game/domains/chemistry", "content/domain-data/chemistry", "docs/domains/chemistry", "tests/determinism/chemistry", "tests/fixtures/chemistry", "tests/regression/chemistry", "tests/golden/chemistry"]
+notes = "Root-level chem/ was retired in CONVERGE-09; implementation moved to game/domains/chemistry/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.electric]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/electric", "contracts/registries/electric", "game/domains/electric", "content/domain-data/electric", "docs/domains/electric", "tests/determinism/electric", "tests/fixtures/electric"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "electricity"
+implementation_target = "game/domains/electricity"
+targets = ["contracts/schemas/electricity", "contracts/registries/electricity", "contracts/capabilities/electricity", "contracts/protocols/electricity", "game/domains/electricity", "content/domain-data/electricity", "docs/domains/electricity", "tests/determinism/electricity", "tests/fixtures/electricity", "tests/regression/electricity", "tests/golden/electricity"]
+notes = "Root-level electric/ was retired in CONVERGE-09; implementation moved to game/domains/electricity/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.field]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/field", "contracts/registries/field", "game/domains/field", "content/domain-data/field", "docs/domains/field", "tests/determinism/field", "tests/fixtures/field"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "fields"
+implementation_target = "game/domains/fields/from_root_field"
+targets = ["contracts/schemas/fields", "contracts/registries/fields", "contracts/capabilities/fields", "contracts/protocols/fields", "game/domains/fields/from_root_field", "content/domain-data/fields", "docs/domains/fields", "tests/determinism/fields", "tests/fixtures/fields", "tests/regression/fields", "tests/golden/fields"]
+notes = "Root-level field/ was retired in CONVERGE-09; implementation moved to game/domains/fields/from_root_field/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.fields]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/fields", "contracts/registries/fields", "game/domains/fields", "content/domain-data/fields", "docs/domains/fields", "tests/determinism/fields", "tests/fixtures/fields"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "fields"
+implementation_target = "game/domains/fields"
+targets = ["contracts/schemas/fields", "contracts/registries/fields", "contracts/capabilities/fields", "contracts/protocols/fields", "game/domains/fields", "content/domain-data/fields", "docs/domains/fields", "tests/determinism/fields", "tests/fixtures/fields", "tests/regression/fields", "tests/golden/fields"]
+notes = "Root-level fields/ was retired in CONVERGE-09; implementation moved to game/domains/fields/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.fluid]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/fluid", "contracts/registries/fluid", "game/domains/fluid", "content/domain-data/fluid", "docs/domains/fluid", "tests/determinism/fluid", "tests/fixtures/fluid"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "fluids"
+implementation_target = "game/domains/fluids"
+targets = ["contracts/schemas/fluids", "contracts/registries/fluids", "contracts/capabilities/fluids", "contracts/protocols/fluids", "game/domains/fluids", "content/domain-data/fluids", "docs/domains/fluids", "tests/determinism/fluids", "tests/fixtures/fluids", "tests/regression/fluids", "tests/golden/fluids"]
+notes = "Root-level fluid/ was retired in CONVERGE-09; implementation moved to game/domains/fluids/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.geo]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/geo", "contracts/registries/geo", "game/domains/geo", "content/domain-data/geo", "docs/domains/geo", "tests/determinism/geo", "tests/fixtures/geo"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "geology"
+implementation_target = "game/domains/geology"
+targets = ["contracts/schemas/geology", "contracts/registries/geology", "contracts/capabilities/geology", "contracts/protocols/geology", "game/domains/geology", "content/domain-data/geology", "docs/domains/geology", "tests/determinism/geology", "tests/fixtures/geology", "tests/regression/geology", "tests/golden/geology"]
+notes = "Root-level geo/ was retired in CONVERGE-09; implementation moved to game/domains/geology/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.logic]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/logic", "contracts/registries/logic", "game/domains/logic", "content/domain-data/logic", "docs/domains/logic", "tests/determinism/logic", "tests/fixtures/logic"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "logic"
+implementation_target = "game/domains/logic"
+targets = ["contracts/schemas/logic", "contracts/registries/logic", "contracts/capabilities/logic", "contracts/protocols/logic", "game/domains/logic", "content/domain-data/logic", "docs/domains/logic", "tests/determinism/logic", "tests/fixtures/logic", "tests/regression/logic", "tests/golden/logic"]
+notes = "Root-level logic/ was retired in CONVERGE-09; implementation moved to game/domains/logic/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.materials]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/materials", "contracts/registries/materials", "game/domains/materials", "content/domain-data/materials", "docs/domains/materials", "tests/determinism/materials", "tests/fixtures/materials"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "materials"
+implementation_target = "game/domains/materials"
+targets = ["contracts/schemas/materials", "contracts/registries/materials", "contracts/capabilities/materials", "contracts/protocols/materials", "game/domains/materials", "content/domain-data/materials", "docs/domains/materials", "tests/determinism/materials", "tests/fixtures/materials", "tests/regression/materials", "tests/golden/materials"]
+notes = "Root-level materials/ was retired in CONVERGE-09; implementation moved to game/domains/materials/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.mechanics]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/mechanics", "contracts/registries/mechanics", "game/domains/mechanics", "content/domain-data/mechanics", "docs/domains/mechanics", "tests/determinism/mechanics", "tests/fixtures/mechanics"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "mechanics"
+implementation_target = "game/domains/mechanics"
+targets = ["contracts/schemas/mechanics", "contracts/registries/mechanics", "contracts/capabilities/mechanics", "contracts/protocols/mechanics", "game/domains/mechanics", "content/domain-data/mechanics", "docs/domains/mechanics", "tests/determinism/mechanics", "tests/fixtures/mechanics", "tests/regression/mechanics", "tests/golden/mechanics"]
+notes = "Root-level mechanics/ was retired in CONVERGE-09; implementation moved to game/domains/mechanics/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.physics]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/physics", "contracts/registries/physics", "game/domains/physics", "content/domain-data/physics", "docs/domains/physics", "tests/determinism/physics", "tests/fixtures/physics"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "physics"
+implementation_target = "game/domains/physics"
+targets = ["contracts/schemas/physics", "contracts/registries/physics", "contracts/capabilities/physics", "contracts/protocols/physics", "game/domains/physics", "content/domain-data/physics", "docs/domains/physics", "tests/determinism/physics", "tests/fixtures/physics", "tests/regression/physics", "tests/golden/physics"]
+notes = "Root-level physics/ was retired in CONVERGE-09; implementation moved to game/domains/physics/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.pollution]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/pollution", "contracts/registries/pollution", "game/domains/pollution", "content/domain-data/pollution", "docs/domains/pollution", "tests/determinism/pollution", "tests/fixtures/pollution"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "pollution"
+implementation_target = "game/domains/pollution"
+targets = ["contracts/schemas/pollution", "contracts/registries/pollution", "contracts/capabilities/pollution", "contracts/protocols/pollution", "game/domains/pollution", "content/domain-data/pollution", "docs/domains/pollution", "tests/determinism/pollution", "tests/fixtures/pollution", "tests/regression/pollution", "tests/golden/pollution"]
+notes = "Root-level pollution/ was retired in CONVERGE-09; implementation moved to game/domains/pollution/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.process]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/process", "contracts/registries/process", "game/domains/process", "content/domain-data/process", "docs/domains/process", "tests/determinism/process", "tests/fixtures/process"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "processes"
+implementation_target = "game/domains/processes"
+targets = ["contracts/schemas/processes", "contracts/registries/processes", "contracts/capabilities/processes", "contracts/protocols/processes", "game/domains/processes", "content/domain-data/processes", "docs/domains/processes", "tests/determinism/processes", "tests/fixtures/processes", "tests/regression/processes", "tests/golden/processes"]
+notes = "Root-level process/ was retired in CONVERGE-09; implementation moved to game/domains/processes/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.signals]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/signals", "contracts/registries/signals", "game/domains/signals", "content/domain-data/signals", "docs/domains/signals", "tests/determinism/signals", "tests/fixtures/signals"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "signals"
+implementation_target = "game/domains/signals"
+targets = ["contracts/schemas/signals", "contracts/registries/signals", "contracts/capabilities/signals", "contracts/protocols/signals", "game/domains/signals", "content/domain-data/signals", "docs/domains/signals", "tests/determinism/signals", "tests/fixtures/signals", "tests/regression/signals", "tests/golden/signals"]
+notes = "Root-level signals/ was retired in CONVERGE-09; implementation moved to game/domains/signals/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.system]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/system", "contracts/registries/system", "game/domains/system", "content/domain-data/system", "docs/domains/system", "tests/determinism/system", "tests/fixtures/system"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "systems"
+implementation_target = "game/domains/systems"
+targets = ["contracts/schemas/systems", "contracts/registries/systems", "contracts/capabilities/systems", "contracts/protocols/systems", "game/domains/systems", "content/domain-data/systems", "docs/domains/systems", "tests/determinism/systems", "tests/fixtures/systems", "tests/regression/systems", "tests/golden/systems"]
+notes = "Root-level system/ was retired in CONVERGE-09; implementation moved to game/domains/systems/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.thermal]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/thermal", "contracts/registries/thermal", "game/domains/thermal", "content/domain-data/thermal", "docs/domains/thermal", "tests/determinism/thermal", "tests/fixtures/thermal"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "thermal"
+implementation_target = "game/domains/thermal"
+targets = ["contracts/schemas/thermal", "contracts/registries/thermal", "contracts/capabilities/thermal", "contracts/protocols/thermal", "game/domains/thermal", "content/domain-data/thermal", "docs/domains/thermal", "tests/determinism/thermal", "tests/fixtures/thermal", "tests/regression/thermal", "tests/golden/thermal"]
+notes = "Root-level thermal/ was retired in CONVERGE-09; implementation moved to game/domains/thermal/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.universe]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/universe", "contracts/registries/universe", "game/domains/universe", "content/domain-data/universe", "docs/domains/universe", "tests/determinism/universe", "tests/fixtures/universe"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "universe"
+implementation_target = "game/domains/universe"
+targets = ["contracts/schemas/universe", "contracts/registries/universe", "contracts/capabilities/universe", "contracts/protocols/universe", "game/domains/universe", "content/domain-data/universe", "docs/domains/universe", "tests/determinism/universe", "tests/fixtures/universe", "tests/regression/universe", "tests/golden/universe"]
+notes = "Root-level universe/ was retired in CONVERGE-09; implementation moved to game/domains/universe/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.worldgen]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/worldgen", "contracts/registries/worldgen", "game/domains/worldgen", "content/domain-data/worldgen", "docs/domains/worldgen", "tests/determinism/worldgen", "tests/fixtures/worldgen"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "worldgen"
+implementation_target = "game/domains/worldgen"
+targets = ["contracts/schemas/worldgen", "contracts/registries/worldgen", "contracts/capabilities/worldgen", "contracts/protocols/worldgen", "game/domains/worldgen", "content/domain-data/worldgen", "docs/domains/worldgen", "tests/determinism/worldgen", "tests/fixtures/worldgen", "tests/regression/worldgen", "tests/golden/worldgen"]
+notes = "Root-level worldgen/ was retired in CONVERGE-09; implementation moved to game/domains/worldgen/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.mobility]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/mobility", "contracts/registries/mobility", "game/domains/mobility", "content/domain-data/mobility", "docs/domains/mobility", "tests/determinism/mobility", "tests/fixtures/mobility"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "mobility"
+implementation_target = "game/domains/mobility"
+targets = ["contracts/schemas/mobility", "contracts/registries/mobility", "contracts/capabilities/mobility", "contracts/protocols/mobility", "game/domains/mobility", "content/domain-data/mobility", "docs/domains/mobility", "tests/determinism/mobility", "tests/fixtures/mobility", "tests/regression/mobility", "tests/golden/mobility"]
+notes = "Root-level mobility/ was retired in CONVERGE-09; implementation moved to game/domains/mobility/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.logistics]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/logistics", "contracts/registries/logistics", "game/domains/logistics", "content/domain-data/logistics", "docs/domains/logistics", "tests/determinism/logistics", "tests/fixtures/logistics"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "logistics"
+implementation_target = "game/domains/logistics"
+targets = ["contracts/schemas/logistics", "contracts/registries/logistics", "contracts/capabilities/logistics", "contracts/protocols/logistics", "game/domains/logistics", "content/domain-data/logistics", "docs/domains/logistics", "tests/determinism/logistics", "tests/fixtures/logistics", "tests/regression/logistics", "tests/golden/logistics"]
+notes = "Root-level logistics/ was retired in CONVERGE-09; implementation moved to game/domains/logistics/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.economy]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/economy", "contracts/registries/economy", "game/domains/economy", "content/domain-data/economy", "docs/domains/economy", "tests/determinism/economy", "tests/fixtures/economy"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+normalized_domain = "economy"
+implementation_target = "game/domains/economy"
+targets = ["contracts/schemas/economy", "contracts/registries/economy", "contracts/capabilities/economy", "contracts/protocols/economy", "game/domains/economy", "content/domain-data/economy", "docs/domains/economy", "tests/determinism/economy", "tests/fixtures/economy", "tests/regression/economy", "tests/golden/economy"]
+notes = "Root-level economy/ was absent during CONVERGE-09; future economy/ roots are non-authoritative and must split into the listed ownership targets."
 
 [domain_roots.civilization]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/civilization", "contracts/registries/civilization", "game/domains/civilization", "content/domain-data/civilization", "docs/domains/civilization", "tests/determinism/civilization", "tests/fixtures/civilization"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+normalized_domain = "civilization"
+implementation_target = "game/domains/civilization"
+targets = ["contracts/schemas/civilization", "contracts/registries/civilization", "contracts/capabilities/civilization", "contracts/protocols/civilization", "game/domains/civilization", "content/domain-data/civilization", "docs/domains/civilization", "tests/determinism/civilization", "tests/fixtures/civilization", "tests/regression/civilization", "tests/golden/civilization"]
+notes = "Root-level civilization/ was absent during CONVERGE-09; future civilization/ roots are non-authoritative and must split into the listed ownership targets."
 
 [domain_roots.ecology]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/ecology", "contracts/registries/ecology", "game/domains/ecology", "content/domain-data/ecology", "docs/domains/ecology", "tests/determinism/ecology", "tests/fixtures/ecology"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+normalized_domain = "ecology"
+implementation_target = "game/domains/ecology"
+targets = ["contracts/schemas/ecology", "contracts/registries/ecology", "contracts/capabilities/ecology", "contracts/protocols/ecology", "game/domains/ecology", "content/domain-data/ecology", "docs/domains/ecology", "tests/determinism/ecology", "tests/fixtures/ecology", "tests/regression/ecology", "tests/golden/ecology"]
+notes = "Root-level ecology/ was absent during CONVERGE-09; future ecology/ roots are non-authoritative and must split into the listed ownership targets."
 
 [domain_roots.diegetics]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/diegetics", "contracts/registries/diegetics", "game/domains/diegetics", "content/domain-data/diegetics", "docs/domains/diegetics", "tests/determinism/diegetics", "tests/fixtures/diegetics"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "diegetics"
+implementation_target = "game/domains/diegetics"
+targets = ["contracts/schemas/diegetics", "contracts/registries/diegetics", "contracts/capabilities/diegetics", "contracts/protocols/diegetics", "game/domains/diegetics", "content/domain-data/diegetics", "docs/domains/diegetics", "tests/determinism/diegetics", "tests/fixtures/diegetics", "tests/regression/diegetics", "tests/golden/diegetics"]
+notes = "Root-level diegetics/ was retired in CONVERGE-09; implementation moved to game/domains/diegetics/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.embodiment]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/embodiment", "contracts/registries/embodiment", "game/domains/embodiment", "content/domain-data/embodiment", "docs/domains/embodiment", "tests/determinism/embodiment", "tests/fixtures/embodiment"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "embodiment"
+implementation_target = "game/domains/embodiment"
+targets = ["contracts/schemas/embodiment", "contracts/registries/embodiment", "contracts/capabilities/embodiment", "contracts/protocols/embodiment", "game/domains/embodiment", "content/domain-data/embodiment", "docs/domains/embodiment", "tests/determinism/embodiment", "tests/fixtures/embodiment", "tests/regression/embodiment", "tests/golden/embodiment"]
+notes = "Root-level embodiment/ was retired in CONVERGE-09; implementation moved to game/domains/embodiment/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.epistemics]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/epistemics", "contracts/registries/epistemics", "game/domains/epistemics", "content/domain-data/epistemics", "docs/domains/epistemics", "tests/determinism/epistemics", "tests/fixtures/epistemics"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "epistemics"
+implementation_target = "game/domains/epistemics"
+targets = ["contracts/schemas/epistemics", "contracts/registries/epistemics", "contracts/capabilities/epistemics", "contracts/protocols/epistemics", "game/domains/epistemics", "content/domain-data/epistemics", "docs/domains/epistemics", "tests/determinism/epistemics", "tests/fixtures/epistemics", "tests/regression/epistemics", "tests/golden/epistemics"]
+notes = "Root-level epistemics/ was retired in CONVERGE-09; implementation moved to game/domains/epistemics/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.infrastructure]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/infrastructure", "contracts/registries/infrastructure", "game/domains/infrastructure", "content/domain-data/infrastructure", "docs/domains/infrastructure", "tests/determinism/infrastructure", "tests/fixtures/infrastructure"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "infrastructure"
+implementation_target = "game/domains/infrastructure"
+targets = ["contracts/schemas/infrastructure", "contracts/registries/infrastructure", "contracts/capabilities/infrastructure", "contracts/protocols/infrastructure", "game/domains/infrastructure", "content/domain-data/infrastructure", "docs/domains/infrastructure", "tests/determinism/infrastructure", "tests/fixtures/infrastructure", "tests/regression/infrastructure", "tests/golden/infrastructure"]
+notes = "Root-level infrastructure/ was retired in CONVERGE-09; implementation moved to game/domains/infrastructure/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.inspection]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/inspection", "contracts/registries/inspection", "game/domains/inspection", "content/domain-data/inspection", "docs/domains/inspection", "tests/determinism/inspection", "tests/fixtures/inspection"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "inspection"
+implementation_target = "game/domains/inspection"
+targets = ["contracts/schemas/inspection", "contracts/registries/inspection", "contracts/capabilities/inspection", "contracts/protocols/inspection", "game/domains/inspection", "content/domain-data/inspection", "docs/domains/inspection", "tests/determinism/inspection", "tests/fixtures/inspection", "tests/regression/inspection", "tests/golden/inspection"]
+notes = "Root-level inspection/ was retired in CONVERGE-09; implementation moved to game/domains/inspection/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.interaction]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/interaction", "contracts/registries/interaction", "game/domains/interaction", "content/domain-data/interaction", "docs/domains/interaction", "tests/determinism/interaction", "tests/fixtures/interaction"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "interaction"
+implementation_target = "game/domains/interaction"
+targets = ["contracts/schemas/interaction", "contracts/registries/interaction", "contracts/capabilities/interaction", "contracts/protocols/interaction", "game/domains/interaction", "content/domain-data/interaction", "docs/domains/interaction", "tests/determinism/interaction", "tests/fixtures/interaction", "tests/regression/interaction", "tests/golden/interaction"]
+notes = "Root-level interaction/ was retired in CONVERGE-09; implementation moved to game/domains/interaction/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.interior]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/interior", "contracts/registries/interior", "game/domains/interior", "content/domain-data/interior", "docs/domains/interior", "tests/determinism/interior", "tests/fixtures/interior"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "interior"
+implementation_target = "game/domains/interior"
+targets = ["contracts/schemas/interior", "contracts/registries/interior", "contracts/capabilities/interior", "contracts/protocols/interior", "game/domains/interior", "content/domain-data/interior", "docs/domains/interior", "tests/determinism/interior", "tests/fixtures/interior", "tests/regression/interior", "tests/golden/interior"]
+notes = "Root-level interior/ was retired in CONVERGE-09; implementation moved to game/domains/interior/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.machines]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/machines", "contracts/registries/machines", "game/domains/machines", "content/domain-data/machines", "docs/domains/machines", "tests/determinism/machines", "tests/fixtures/machines"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "machines"
+implementation_target = "game/domains/machines"
+targets = ["contracts/schemas/machines", "contracts/registries/machines", "contracts/capabilities/machines", "contracts/protocols/machines", "game/domains/machines", "content/domain-data/machines", "docs/domains/machines", "tests/determinism/machines", "tests/fixtures/machines", "tests/regression/machines", "tests/golden/machines"]
+notes = "Root-level machines/ was retired in CONVERGE-09; implementation moved to game/domains/machines/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [domain_roots.reality]
 classification = "split_required_domain_root"
-targets = ["contracts/schemas/reality", "contracts/registries/reality", "game/domains/reality", "content/domain-data/reality", "docs/domains/reality", "tests/determinism/reality", "tests/fixtures/reality"]
+retire_by_phase = "CONVERGE-09"
+status_after_phase = "violation"
+completed_phase = "CONVERGE-09"
+normalized_domain = "reality"
+implementation_target = "game/domains/reality"
+targets = ["contracts/schemas/reality", "contracts/registries/reality", "contracts/capabilities/reality", "contracts/protocols/reality", "game/domains/reality", "content/domain-data/reality", "docs/domains/reality", "tests/determinism/reality", "tests/fixtures/reality", "tests/regression/reality", "tests/golden/reality"]
+notes = "Root-level reality/ was retired in CONVERGE-09; implementation moved to game/domains/reality/ and no contract/content/docs/tests subsets were identified in the root during the safe split."
 
 [generated_roots.build]
 purpose = "Generated build output."

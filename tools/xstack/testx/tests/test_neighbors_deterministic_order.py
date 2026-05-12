@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from geo import geo_cell_key_from_position, geo_neighbors
+from game.domains.geology import geo_cell_key_from_position, geo_neighbors
 
 
 TEST_ID = "test_neighbors_deterministic_order"

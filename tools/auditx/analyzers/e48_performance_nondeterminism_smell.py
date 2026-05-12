@@ -12,7 +12,7 @@ ANALYZER_ID = "E48_PERFORMANCE_NONDETERMINISM_SMELL"
 TARGET_PATHS = (
     "performance/cost_engine.py",
     "performance/inspection_cache.py",
-    "reality/transitions/transition_controller.py",
+    "game/domains/reality/transitions/transition_controller.py",
     "tools/xstack/sessionx/process_runtime.py",
 )
 FORBIDDEN_PATTERNS = (

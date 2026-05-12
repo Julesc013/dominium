@@ -10,9 +10,9 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E122_SILENT_FIDELITY_DOWNGRADE_SMELL"
 WATCH_PREFIXES = (
     "src/control/fidelity/",
-    "inspection/inspection_engine.py",
-    "materials/materialization/materialization_engine.py",
-    "materials/commitments/commitment_engine.py",
+    "game/domains/inspection/inspection_engine.py",
+    "game/domains/materials/materialization/materialization_engine.py",
+    "game/domains/materials/commitments/commitment_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
 )
 
@@ -75,9 +75,9 @@ def run(graph, repo_root, changed_files=None):
 
     # Domain modules should use fidelity engine + expose allocation evidence.
     domain_expectations = {
-        "inspection/inspection_engine.py": ("build_fidelity_request(", "arbitrate_fidelity_requests(", "fidelity_allocation"),
-        "materials/materialization/materialization_engine.py": ("build_fidelity_request(", "arbitrate_fidelity_requests(", "fidelity_allocation"),
-        "materials/commitments/commitment_engine.py": ("build_fidelity_request(", "arbitrate_fidelity_requests(", "fidelity_allocation"),
+        "game/domains/inspection/inspection_engine.py": ("build_fidelity_request(", "arbitrate_fidelity_requests(", "fidelity_allocation"),
+        "game/domains/materials/materialization/materialization_engine.py": ("build_fidelity_request(", "arbitrate_fidelity_requests(", "fidelity_allocation"),
+        "game/domains/materials/commitments/commitment_engine.py": ("build_fidelity_request(", "arbitrate_fidelity_requests(", "fidelity_allocation"),
         "tools/xstack/sessionx/process_runtime.py": ("arbitrate_fidelity_requests(", "_append_fidelity_decision_entries(", "fidelity_decision_entries"),
     }
     for rel_path, required_tokens in sorted(domain_expectations.items(), key=lambda item: item[0]):
@@ -125,9 +125,9 @@ def run(graph, repo_root, changed_files=None):
         "if desired_fidelity == \"micro\" and not micro_allowed",
     )
     for rel_path in (
-        "inspection/inspection_engine.py",
-        "materials/materialization/materialization_engine.py",
-        "materials/commitments/commitment_engine.py",
+        "game/domains/inspection/inspection_engine.py",
+        "game/domains/materials/materialization/materialization_engine.py",
+        "game/domains/materials/commitments/commitment_engine.py",
     ):
         text = _read_text(repo_root, rel_path)
         if not text:

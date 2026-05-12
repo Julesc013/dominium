@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "logic", "schema", "bus"]
 
 
 def run(repo_root: str):
-    from logic.signal import build_bus_definition_row
+    from game.domains.logic.signal import build_bus_definition_row
 
     schema_path = os.path.join(repo_root, "contracts/schemas/logic/bus_definition.schema".replace("/", os.sep))
     registry_path = os.path.join(repo_root, "data/registries/bus_encoding_registry.json".replace("/", os.sep))

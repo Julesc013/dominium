@@ -16,7 +16,7 @@ from lib.provides import (
     resolve_providers,
 )
 from compat.descriptor.descriptor_engine import build_product_descriptor
-from geo import build_overlay_manifest, merge_overlay_view
+from game.domains.geology import build_overlay_manifest, merge_overlay_view
 from modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
 from tools.compatx.core.semantic_contract_validator import (
     CONTRACT_FIELD_ORDER,

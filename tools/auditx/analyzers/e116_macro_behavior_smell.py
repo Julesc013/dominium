@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E116_MACRO_BEHAVIOR_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/process_runtime.py",
-    "materials/construction/construction_engine.py",
+    "game/domains/materials/construction/construction_engine.py",
     "control/ir/control_ir_programs.py",
 )
 
@@ -77,7 +77,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    construction_rel = "materials/construction/construction_engine.py"
+    construction_rel = "game/domains/materials/construction/construction_engine.py"
     construction_text = _read_text(repo_root, construction_rel)
     if construction_text and "tick_construction_projects(" in construction_text and "build_blueprint_execution_ir(" not in runtime_text:
         findings.append(

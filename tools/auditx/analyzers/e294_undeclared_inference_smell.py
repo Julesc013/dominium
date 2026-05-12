@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
                 ],
                 related_paths=[
                     runtime_rel,
-                    "process/research/inference_engine.py",
+                    "game/domains/processes/research/inference_engine.py",
                 ],
             )
         )
@@ -87,9 +87,9 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         runtime_rel,
-        "process/research/inference_engine.py",
-        "process/research/experiment_engine.py",
-        "process/research/__init__.py",
+        "game/domains/processes/research/inference_engine.py",
+        "game/domains/processes/research/experiment_engine.py",
+        "game/domains/processes/research/__init__.py",
         "tools/process/tool_replay_experiment_window.py",
         "tools/process/tool_replay_reverse_engineering_window.py",
         "tools/xstack/repox/check.py",
@@ -136,7 +136,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 runtime_rel,
-                                "process/research/inference_engine.py",
+                                "game/domains/processes/research/inference_engine.py",
                             ],
                         )
                     )

@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    macro_engine_rel = "system/macro/macro_capsule_engine.py"
+    macro_engine_rel = "game/domains/systems/macro/macro_capsule_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
 
     macro_text = _read_text(repo_root, macro_engine_rel)
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         macro_engine_rel,
         runtime_rel,
-        "system/forensics/system_forensics_engine.py",
+        "game/domains/systems/forensics/system_forensics_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from astro.illumination.illumination_geometry_engine import (
+from game.domains.astronomy.illumination.illumination_geometry_engine import (
     cos_permille_from_angle_mdeg,
     sin_permille_from_angle_mdeg,
 )

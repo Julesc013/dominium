@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.compatx.schema_registry import load_version_registry
-from universe import (
+from game.domains.universe import (
     DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
     build_universe_contract_bundle_payload,
     pin_contract_bundle_metadata,
@@ -24,9 +24,9 @@ from tools.xstack.registry_compile.compiler import compile_bundle
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.bundle_profile import resolve_bundle_selection
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
-from worldgen.core.pipeline import run_worldgen_pipeline
+from game.domains.worldgen.core.pipeline import run_worldgen_pipeline
 
-from geo import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
+from game.domains.geology import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
 from meta.profile import resolve_effective_profile_snapshot
 from compat.data_format_loader import stamp_artifact_metadata
 

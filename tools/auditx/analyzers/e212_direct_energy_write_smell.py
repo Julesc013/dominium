@@ -51,7 +51,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "physics/energy/energy_ledger_engine.py",
+        "game/domains/physics/energy/energy_ledger_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

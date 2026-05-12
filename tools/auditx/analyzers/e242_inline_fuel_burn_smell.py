@@ -54,7 +54,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "thermal/network/thermal_network_engine.py",
+        "game/domains/thermal/network/thermal_network_engine.py",
         "models/model_engine.py",
     }
     for root in scan_roots:

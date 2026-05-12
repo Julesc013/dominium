@@ -13,8 +13,8 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e318_implicit_timing_assumption_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/TIMING_AND_OSCILLATION_MODEL.md",
-    "src/logic/timing/",
-    "src/logic/eval/",
+    "game/domains/logic/timing/",
+    "game/domains/logic/eval/",
     "tools/logic/tool_replay_timing_window.py",
 )
 
@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    propagate_rel = "logic/eval/propagate_engine.py"
+    propagate_rel = "game/domains/logic/eval/propagate_engine.py"
     propagate_text = _read_text(repo_root, propagate_rel)
     for token in ("evaluate_time_mappings(", "temporal_domain_registry_payload", "time_mapping_registry_payload"):
         if token in propagate_text:
@@ -101,7 +101,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    engine_rel = "logic/eval/logic_eval_engine.py"
+    engine_rel = "game/domains/logic/eval/logic_eval_engine.py"
     engine_text = _read_text(repo_root, engine_rel)
     for token in ("detect_network_oscillation(", "evaluate_logic_timing_constraints(", "requires_l2_timing"):
         if token in engine_text:

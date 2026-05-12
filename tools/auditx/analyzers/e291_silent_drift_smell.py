@@ -51,10 +51,10 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "process/process_run_engine.py",
-        "process/drift/drift_engine.py",
-        "process/drift/__init__.py",
-        "process/__init__.py",
+        "game/domains/processes/process_run_engine.py",
+        "game/domains/processes/drift/drift_engine.py",
+        "game/domains/processes/drift/__init__.py",
+        "game/domains/processes/__init__.py",
         "tools/process/tool_replay_drift_window.py",
         "tools/xstack/repox/check.py",
     }
@@ -107,8 +107,8 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "process/process_run_engine.py",
-                                "process/drift/drift_engine.py",
+                                "game/domains/processes/process_run_engine.py",
+                                "game/domains/processes/drift/drift_engine.py",
                             ],
                         )
                     )

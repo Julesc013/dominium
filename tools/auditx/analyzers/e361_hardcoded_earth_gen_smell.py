@@ -8,8 +8,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E361_HARDCODED_EARTH_GEN_SMELL"
-WATCH_PREFIXES = ("src/worldgen/mw/", "src/geo/worldgen/", "tools/xstack/sessionx/", "data/registries/", "docs/worldgen/")
-SURFACE_REFINER_REL = "worldgen/mw/mw_surface_refiner_l3.py"
+WATCH_PREFIXES = ("game/domains/worldgen/mw/", "game/domains/geology/worldgen/", "tools/xstack/sessionx/", "data/registries/", "docs/worldgen/")
+SURFACE_REFINER_REL = "game/domains/worldgen/mw/mw_surface_refiner_l3.py"
 ROUTING_REGISTRY_REL = "data/registries/surface_generator_routing_registry.json"
 GENERATOR_REGISTRY_REL = "data/registries/surface_generator_registry.json"
 DOC_REL = "docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md"

@@ -131,3 +131,19 @@ Generated roots are non-authoritative unless a stronger release or evidence cont
 - `locks/` contains concrete deterministic pack lock artifacts, so it cannot be moved wholesale into `contracts/locks/`.
 
 Later phases must split these by file role before binding anything to contracts, runtime, store, or ops ownership.
+
+## CONVERGE-09 Domain Ownership
+
+CONVERGE-09 moved safe root-level domain implementation packages under `game/domains/`. The moved roots were implementation code only during inspection; domain schemas, registries, capabilities, protocols, authored content, docs, and tests remain governed by their own target roots.
+
+Domain ownership surfaces are:
+
+- `game/domains/<domain>/` for Dominium domain rules, deterministic implementation, process semantics, and domain engines.
+- `contracts/schemas/<domain>/`, `contracts/registries/<domain>/`, `contracts/capabilities/<domain>/`, and `contracts/protocols/<domain>/` for machine-readable domain authority.
+- `content/domain-data/<domain>/` and `content/packs/` for authored source data, datasets, and pack material.
+- `docs/domains/<domain>/` for human-readable domain explanation.
+- `tests/fixtures/<domain>/`, `tests/determinism/<domain>/`, `tests/regression/<domain>/`, and `tests/golden/<domain>/` for verification material.
+
+Engine primitives remain an exception: universal deterministic substrate belongs under `engine/`, not under a domain merely because a domain uses it.
+
+Domain code must not own runtime adapters, product entrypoints, generated runtime output, install/store state, or presentation state. It must preserve fixed-point truth discipline, named RNG streams, stable ordering, deterministic reductions, and process-only mutation.

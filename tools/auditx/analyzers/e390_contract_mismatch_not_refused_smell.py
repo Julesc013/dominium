@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E390_CONTRACT_MISMATCH_NOT_REFUSED_SMELL"
 REQUIRED_FILE_TOKENS = {
-    "universe/universe_contract_enforcer.py": (
+    "game/domains/universe/universe_contract_enforcer.py": (
         "enforce_session_contract_bundle(",
         "refusal.contract.missing_bundle",
         "refusal.contract.mismatch",

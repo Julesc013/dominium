@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E347_UNLOGGED_TERRAIN_EDIT_SMELL"
 
 REQUIRED_FILES = {
-    "geo/edit/geometry_state_engine.py": (
+    "game/domains/geology/edit/geometry_state_engine.py": (
         "build_geometry_edit_event(",
         "geometry_edit_event_hash_chain(",
         "geometry_state_hash_surface(",

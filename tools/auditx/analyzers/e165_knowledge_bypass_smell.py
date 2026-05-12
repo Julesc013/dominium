@@ -49,7 +49,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/auditx/analyzers/",
     )
     allowed_files = {
-        "signals/transport/transport_engine.py",
+        "game/domains/signals/transport/transport_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     scan_roots = (
@@ -90,7 +90,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="INVALID",
                             recommended_action="REWRITE",
                             related_invariants=["INV-NO-DIRECT-KNOWLEDGE-TRANSFER"],
-                            related_paths=[rel_path, "signals/transport/transport_engine.py"],
+                            related_paths=[rel_path, "game/domains/signals/transport/transport_engine.py"],
                         )
                     )
                     break

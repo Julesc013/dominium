@@ -10,7 +10,7 @@ TEST_TAGS = ["fast", "signals", "institutions", "budget", "determinism"]
 
 
 def _profile_rows():
-    from signals import build_institution_profile
+    from game.domains.signals import build_institution_profile
 
     return [
         build_institution_profile(
@@ -41,7 +41,7 @@ def _profile_rows():
 
 
 def _run_once() -> dict:
-    from signals import build_signal_channel, process_institution_bulletin_tick
+    from game.domains.signals import build_signal_channel, process_institution_bulletin_tick
 
     out = process_institution_bulletin_tick(
         current_tick=1200,

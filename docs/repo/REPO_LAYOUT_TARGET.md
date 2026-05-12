@@ -89,6 +89,20 @@ CONVERGE-08 completed the fourth physical root convergence pass for product entr
 
 `apps/` is now the canonical product-entrypoint root. Root-level `client/`, `server/`, `setup/`, and `launcher/` are retired aliases and must not be recreated as active source roots. Product IDs, executable names, command behavior, install IDs, pack IDs, and virtual-root IDs remain stable. Domain roots still split in CONVERGE-09, and strict validators may still fail until domain and review roots are resolved.
 
+## CONVERGE-09 Domain Split Note
+
+CONVERGE-09 completed the safe portion of the domain-root split. Root-level Python implementation packages for domain surfaces moved under `game/domains/` using normalized domain names such as `astronomy`, `chemistry`, `electricity`, `fluids`, `geology`, `processes`, and `systems`.
+
+Domain ownership is now split across:
+
+- `contracts/` for schemas, registries, capabilities, and protocols.
+- `game/domains/` for deterministic Dominium domain implementation.
+- `content/domain-data/` and `content/packs/` for authored data and pack content.
+- `docs/domains/` for human-readable domain docs.
+- `tests/` for fixtures, determinism, regression, and golden cases.
+
+Root-level domain folders moved in CONVERGE-09 are retired aliases. Mixed review roots such as `control/`, `core/`, and `meta/` remain unresolved until a later ownership-specific pass. Strict validators may still fail until those review roots and other transitional roots are resolved or explicitly excepted.
+
 ## Target Roots
 
 The source repository should converge toward ownership-based top-level roots:
@@ -129,5 +143,5 @@ Later CONVERGE tasks may use the contract, inventory, and move map to plan contr
 - CONVERGE-06: contract, schema, compatibility, and lock convergence. Completed for root-level `schema/` and `schemas/`; `compat/` and `locks/` remain review roots.
 - CONVERGE-07: runtime, AppShell, platform, render, UI, network, and diagnostics convergence. Completed for root-level `app/`, `appshell/`, `ui/`, and `diag/`; `net/`, `control/`, and `core/` remain review roots.
 - CONVERGE-08: product entrypoint convergence into `apps/`. Completed for root-level `client/`, `server/`, `setup/`, and `launcher/`.
-- CONVERGE-09: mixed domain-root split.
+- CONVERGE-09: mixed domain-root split. Completed for safe Python implementation domain roots; mixed review roots remain.
 - CONVERGE-10: blocking enforcement only after controlled moves.

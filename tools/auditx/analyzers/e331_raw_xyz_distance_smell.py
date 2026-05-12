@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
                         "INV-GEO-API-ONLY-FOR-DOMAIN-DISTANCE",
                         "INV-NO-HARDCODED-DIMENSION-ASSUMPTIONS",
                     ],
-                    related_paths=[rel_path, "geo/kernel/geo_kernel.py"],
+                    related_paths=[rel_path, "game/domains/geology/kernel/geo_kernel.py"],
                 )
             )
             break

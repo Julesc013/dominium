@@ -44,7 +44,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-PROJECTION-EPITEMIC-GATED"],
-                related_paths=[TARGET_FILE, "geo/kernel/geo_kernel.py"],
+                related_paths=[TARGET_FILE, "game/domains/geology/kernel/geo_kernel.py"],
             )
         )
         return findings
@@ -69,7 +69,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-PROJECTION-EPITEMIC-GATED"],
-                related_paths=[TARGET_FILE, "geo/kernel/geo_kernel.py"],
+                related_paths=[TARGET_FILE, "game/domains/geology/kernel/geo_kernel.py"],
             )
         )
         break

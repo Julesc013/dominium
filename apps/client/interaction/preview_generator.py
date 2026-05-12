@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict
 
-from materials.blueprint_engine import (
+from game.domains.materials.blueprint_engine import (
     BlueprintCompileError,
     blueprint_bom_summary,
     build_blueprint_ghost_overlay,

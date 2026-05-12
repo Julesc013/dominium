@@ -13,7 +13,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e321_truth_leak_via_debug_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/DEBUG_AND_INSTRUMENTATION.md",
-    "src/logic/debug/",
+    "game/domains/logic/debug/",
     "tools/logic/tool_replay_trace_window.py",
 )
 
@@ -41,7 +41,7 @@ def _read_text(repo_root: str, rel_path: str) -> str:
 
 
 def _debug_runtime_paths(repo_root: str):
-    for root_rel in ("src/logic/debug", "tools/logic"):
+    for root_rel in ("game/domains/logic/debug", "tools/logic"):
         abs_root = os.path.join(repo_root, root_rel.replace("/", os.sep))
         if not os.path.isdir(abs_root):
             continue
@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    engine_rel = "logic/debug/debug_engine.py"
+    engine_rel = "game/domains/logic/debug/debug_engine.py"
     engine_text = _read_text(repo_root, engine_rel)
     for token in ("generate_measurement_observation(", "REFUSAL_LOGIC_DEBUG_REQUIRES_EXPAND", "available_instrument_type_ids"):
         if token in engine_text:

@@ -50,8 +50,8 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "process/capsules/capsule_builder.py",
-        "process/capsules/capsule_executor.py",
+        "game/domains/processes/capsules/capsule_builder.py",
+        "game/domains/processes/capsules/capsule_executor.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/process/tool_replay_capsule_window.py",
         "tools/xstack/repox/check.py",
@@ -104,7 +104,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "process/capsules/capsule_executor.py",
+                                "game/domains/processes/capsules/capsule_executor.py",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

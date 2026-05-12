@@ -18,7 +18,7 @@ from net.policies.policy_srz_hybrid import (
     prepare_hybrid_baseline,
 )
 from modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
-from universe import enforce_session_contract_bundle
+from game.domains.universe import enforce_session_contract_bundle
 from compat.data_format_loader import load_versioned_artifact
 
 from tools.xstack.compatx.canonical_json import canonical_sha256

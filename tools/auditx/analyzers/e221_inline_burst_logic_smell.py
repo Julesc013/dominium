@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "fluid/network/fluid_network_engine.py",
+        "game/domains/fluids/network/fluid_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -66,7 +66,7 @@ def run(graph, repo_root, changed_files=None):
                     continue
                 if rel_path in allowed_files:
                     continue
-                if not (rel_path.startswith("src/fluid/") or rel_path.startswith("src/interior/") or rel_path.startswith("tools/xstack/sessionx/")):
+                if not (rel_path.startswith("game/domains/fluids/") or rel_path.startswith("game/domains/interior/") or rel_path.startswith("tools/xstack/sessionx/")):
                     continue
                 text = _read_text(repo_root, rel_path)
                 if not text:
@@ -91,7 +91,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=[
                                 "INV-FLUID-FAILURE-THROUGH-SAFETY-OR-PROCESS",
                             ],
-                            related_paths=[rel_path, "fluid/network/fluid_network_engine.py", "tools/xstack/sessionx/process_runtime.py"],
+                            related_paths=[rel_path, "game/domains/fluids/network/fluid_network_engine.py", "tools/xstack/sessionx/process_runtime.py"],
                         )
                     )
                     break

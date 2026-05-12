@@ -17,16 +17,16 @@ class ImplicitFloatUsageSmell:
 
 WATCH_PREFIXES = (
     "src/time/",
-    "src/physics/",
-    "src/mobility/micro/",
+    "game/domains/physics/",
+    "game/domains/mobility/micro/",
     "src/meta/",
 )
 
 _TARGET_FILES = (
     "engine/time/time_mapping_engine.py",
-    "physics/momentum_engine.py",
-    "physics/energy/energy_ledger_engine.py",
-    "mobility/micro/free_motion_solver.py",
+    "game/domains/physics/momentum_engine.py",
+    "game/domains/physics/energy/energy_ledger_engine.py",
+    "game/domains/mobility/micro/free_motion_solver.py",
     "meta/numeric.py",
 )
 

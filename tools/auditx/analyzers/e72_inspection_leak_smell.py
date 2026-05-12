@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E72_INSPECTION_LEAK_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-INSPECTION_ENGINE_PATH = "inspection/inspection_engine.py"
+INSPECTION_ENGINE_PATH = "game/domains/inspection/inspection_engine.py"
 OVERLAY_PATH = "apps/client/interaction/inspection_overlays.py"
 REQUIRED_RUNTIME_TOKENS = (
     "process.inspect_generate_snapshot",

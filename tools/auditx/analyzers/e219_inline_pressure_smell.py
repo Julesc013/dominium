@@ -52,8 +52,8 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "interior/compartment_flow_engine.py",
-        "interior/compartment_flow_builder.py",
+        "game/domains/interior/compartment_flow_engine.py",
+        "game/domains/interior/compartment_flow_builder.py",
         "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
@@ -70,7 +70,7 @@ def run(graph, repo_root, changed_files=None):
                     continue
                 if rel_path in allowed_files:
                     continue
-                if not (rel_path.startswith("src/fluid/") or rel_path.startswith("src/interior/") or rel_path.startswith("tools/xstack/sessionx/")):
+                if not (rel_path.startswith("game/domains/fluids/") or rel_path.startswith("game/domains/interior/") or rel_path.startswith("tools/xstack/sessionx/")):
                     continue
                 text = _read_text(repo_root, rel_path)
                 if not text:

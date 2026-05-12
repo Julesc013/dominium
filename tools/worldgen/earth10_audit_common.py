@@ -15,9 +15,9 @@ EARTH10_SCOPE_PATHS: Tuple[str, ...] = (
     "data/registries/field_type_registry.json",
     "data/registries/field_binding_registry.json",
     "data/registries/process_registry.json",
-    "src/worldgen/earth/material",
-    "worldgen/earth/water/water_view_engine.py",
-    "worldgen/earth/lighting/lighting_view_engine.py",
+    "game/domains/worldgen/earth/material",
+    "game/domains/worldgen/earth/water/water_view_engine.py",
+    "game/domains/worldgen/earth/lighting/lighting_view_engine.py",
     "tools/worldgen/earth10_probe.py",
     "tools/worldgen/tool_replay_material_proxy_window.py",
 )
