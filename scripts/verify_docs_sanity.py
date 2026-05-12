@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 import os
 import re
@@ -16,7 +18,7 @@ REQUIRED_PATHS = (
     "ide/README.md",
     "ide/manifests/projection_manifest.schema.json",
 )
-PATH_PREFIXES = ("docs/", "schema/", "ide/", "scripts/")
+PATH_PREFIXES = ("docs/", "contracts/schemas/", "ide/", "scripts/")
 PLACEHOLDER_TOKENS = ("*", "<", ">", "{", "}", "...", "::", "|")
 
 

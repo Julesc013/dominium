@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**`.
 THREADING MODEL: Single-threaded UI driver expected.
 ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Presentation-only; visuals driven by explicit inputs + integer frame counters.
-VERSIONING / ABI / DATA FORMAT NOTES: `dui_api_v1` vtable; schema/state TLV are skip-unknown.
+VERSIONING / ABI / DATA FORMAT NOTES: `dui_api_v1` vtable; contracts/schemas/state TLV are skip-unknown.
 EXTENSION POINTS: Test/native handle extensions via query_interface.
 */
 #include "dui/dui_api_v1.h"

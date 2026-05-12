@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "tools/worldgen_offline/",
     "tools/xstack/sessionx/",
     "packs/",
-    "schemas/worldgen_constraints.schema.json",
+    "contracts/schemas/worldgen_constraints.schema.json",
 )
 
 SOURCE_PATHS = (

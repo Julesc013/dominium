@@ -32,7 +32,7 @@ _SCAN_ROOTS = (
 _SKIP_PREFIXES = (
     "data/",
     "docs/",
-    "schemas/",
+    "contracts/schemas/",
     "tools/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",

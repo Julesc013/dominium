@@ -14,7 +14,7 @@ WATCH_PREFIXES = (
     "packs/",
     "data/registries/worldgen_constraints_registry.json",
     "data/registries/worldgen_module_registry.json",
-    "schemas/worldgen_constraints.schema.json",
+    "contracts/schemas/worldgen_constraints.schema.json",
     "worldgen/",
 )
 

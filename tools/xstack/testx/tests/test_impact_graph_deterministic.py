@@ -17,7 +17,7 @@ def run(repo_root: str):
     from tools.dev.impact_graph import build_graph_and_write
 
     changed = [
-        "schemas/session_spec.schema.json",
+        "contracts/schemas/session_spec.schema.json",
         "tools/xstack/testx/runner.py",
     ]
     first = build_graph_and_write(

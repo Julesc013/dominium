@@ -26,7 +26,7 @@ FEATURE_PATH_PREFIXES = (
     "server/",
     "client/",
     "data/registries/",
-    "schema/",
+    "contracts/schemas/",
     "packs/system_templates/",
     "tools/domain/",
     "tools/xstack/sessionx/",

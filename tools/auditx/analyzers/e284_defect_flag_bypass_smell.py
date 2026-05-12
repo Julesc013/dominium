@@ -45,8 +45,8 @@ def run(graph, repo_root, changed_files=None):
     )
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -98,8 +98,8 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 "process/process_run_engine.py",
-                                "schema/process/process_quality_record.schema",
-                                "schema/materials/batch_quality.schema",
+                                "contracts/schemas/process/process_quality_record.schema",
+                                "contracts/schemas/materials/batch_quality.schema",
                             ],
                         )
                     )

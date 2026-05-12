@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E386_BEHAVIOR_WITHOUT_CONTRACT_SMELL"
 WATCH_PREFIXES = (
     "data/registries/semantic_contract_registry.json",
-    "schema/universe/universe_contract_bundle.schema",
-    "schemas/universe_contract_bundle.schema.json",
+    "contracts/schemas/universe/universe_contract_bundle.schema",
+    "contracts/schemas/universe_contract_bundle.schema.json",
     "tools/xstack/sessionx/creator.py",
     "tools/compatx/core/semantic_contract_validator.py",
     "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
@@ -23,12 +23,12 @@ REQUIRED_FILE_TOKENS = {
         '"contract.overlay.merge.v1"',
         '"contract.logic.eval.v1"',
     ),
-    "schema/universe/universe_contract_bundle.schema": (
+    "contracts/schemas/universe/universe_contract_bundle.schema": (
         "record universe_contract_bundle",
         "contract_worldgen_refinement_version",
         "contract_appshell_lifecycle_version",
     ),
-    "schemas/universe_contract_bundle.schema.json": (
+    "contracts/schemas/universe_contract_bundle.schema.json": (
         '"contract_worldgen_refinement_version"',
         '"contract_appshell_lifecycle_version"',
         '"deterministic_fingerprint"',

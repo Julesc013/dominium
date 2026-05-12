@@ -34,8 +34,8 @@ TRUST_ROOT_DOC_REL = os.path.join("docs", "governance", "TRUST_ROOT_GOVERNANCE.m
 LICENSING_DOC_REL = os.path.join("docs", "governance", "LICENSING_STRATEGY.md")
 BASELINE_DOC_REL = os.path.join("docs", "audit", "GOVERNANCE_POLICY_BASELINE.md")
 REPORT_JSON_REL = os.path.join("data", "audit", "governance_policy_report.json")
-GOVERNANCE_PROFILE_SCHEMA_REL = os.path.join("schema", "governance", "governance_profile.schema")
-GOVERNANCE_PROFILE_SCHEMA_JSON_REL = os.path.join("schemas", "governance_profile.schema.json")
+GOVERNANCE_PROFILE_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "governance_profile.schema")
+GOVERNANCE_PROFILE_SCHEMA_JSON_REL = os.path.join("contracts", "schemas", "governance_profile.schema.json")
 RULE_PROFILE = "INV-GOVERNANCE-PROFILE-PRESENT-IN-RELEASE"
 LAST_REVIEWED = "2026-03-14"
 

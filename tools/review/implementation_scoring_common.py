@@ -588,11 +588,11 @@ def _build_indexes(
             rel_path
             for row in module_rows
             for rel_path in list(row.get("owned_files") or [])
-            if _norm_rel(rel_path).startswith(("schema/", "schemas/"))
+            if _norm_rel(rel_path).startswith(("contracts/schemas/", "contracts/schemas/"))
             or "registry" in os.path.basename(_norm_rel(rel_path)).lower()
             or (
                 _norm_rel(rel_path).endswith((".json", ".toml", ".yaml", ".yml"))
-                and _norm_rel(rel_path).startswith(("schema/", "schemas/", "data/", "packs/", "src/"))
+                and _norm_rel(rel_path).startswith(("contracts/schemas/", "contracts/schemas/", "data/", "packs/", "src/"))
             )
         }
     )

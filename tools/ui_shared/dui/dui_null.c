@@ -8,7 +8,7 @@ FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**`.
 THREADING MODEL: Single-threaded UI driver expected.
 ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Presentation-only; no simulation-affecting state.
-VERSIONING / ABI / DATA FORMAT NOTES: `dui_api_v1` vtable; schema/state TLV are skip-unknown.
+VERSIONING / ABI / DATA FORMAT NOTES: `dui_api_v1` vtable; contracts/schemas/state TLV are skip-unknown.
 EXTENSION POINTS: Test/native handle extensions via query_interface.
 */
 #include "dui/dui_api_v1.h"
@@ -52,7 +52,7 @@ static const char* null_backend_name(void) { return "null"; }
 
 static dui_caps null_caps(void)
 {
-    /* Null backend parses schema/state and participates in the event flow,
+    /* Null backend parses contracts/schemas/state and participates in the event flow,
      * but does not render to a real window. Cap bits are reported as supported
      * to avoid schema gating for headless tests.
      */

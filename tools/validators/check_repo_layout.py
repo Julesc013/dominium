@@ -64,7 +64,9 @@ OWNERSHIP_SURFACES = set(
 
 PRODUCT_ROOTS = set(["client", "server", "setup", "launcher"])
 RUNTIME_ROOTS = set(["app", "appshell", "control", "core", "diag", "net", "ui"])
-CONTRACT_ROOTS = set(["compat", "locks", "repo", "safety", "schema", "schemas", "security", "specs"])
+CONTRACT_ROOTS = set(
+    ["compat", "locks", "registry", "registries", "repo", "safety", "schema", "schemas", "security", "specs"]
+)
 CONTENT_ROOTS = set(["bundles", "data", "modding", "models", "packs", "profiles", "templates"])
 RELEASE_ROOTS = set(["updates"])
 ARCHIVE_ALIAS_ROOTS = set(["attic", "legacy", "quarantine"])
@@ -353,7 +355,7 @@ def _classify(name, kind, contract):
             return {
                 "classification": CLASS_VIOLATION,
                 "target": target,
-                "action": "retired_root_must_remain_under_archive",
+                "action": "retired_root_must_remain_absent",
                 "notes": (
                     "Retired root alias; retained material belongs under {0}. {1}".format(
                         target, info.get("notes", "")
@@ -510,6 +512,8 @@ def migration_action_for(name, classification):
     if classification == CLASS_TRANSITIONAL_CONTRACT:
         if name in ("schema", "schemas"):
             return "merge"
+        if name in ("compat", "locks"):
+            return "review"
         if name in CONTRACT_REVIEW_ROOTS:
             return "review"
         return "split"
@@ -606,7 +610,7 @@ def risk_level_for(root):
     if cls == CLASS_DOMAIN:
         return "high"
     if cls == CLASS_TRANSITIONAL_CONTRACT:
-        return "high" if name not in CONTRACT_REVIEW_ROOTS else "review"
+        return "review" if name in CONTRACT_REVIEW_ROOTS or name in ("compat", "locks") else "high"
     if cls == CLASS_TRANSITIONAL_CONTENT:
         return "high" if name in SPLIT_MIXED_ROOTS else "medium"
     if cls == CLASS_TRANSITIONAL_RUNTIME:
@@ -685,7 +689,9 @@ def dependencies_for(root):
     if cls == CLASS_TRANSITIONAL_CONTRACT:
         deps = ["requires contract convergence first", "requires docs cross-reference update"]
         if name in ("schema", "schemas"):
-            deps.append("requires schema/projection ownership review")
+            deps.append("requires contracts/schemas/projection ownership review")
+        if name in ("compat", "locks"):
+            deps.append("requires mixed contract-adjacent root review")
         if name in CONTRACT_REVIEW_ROOTS:
             deps.append("requires manual library ownership review")
         return deps
@@ -714,6 +720,7 @@ def preserve_paths_for(root, shim_required):
 
 def infer_move_entry(root):
     shim_required = shim_required_for(root)
+    status = "review" if root["migration_action"] == "review" else "not_started"
     return {
         "name": root["name"],
         "current_path": root["path"],
@@ -730,7 +737,7 @@ def infer_move_entry(root):
         "semantic_change_allowed": False,
         "build_change_allowed": False,
         "notes": root["notes"],
-        "status": "not_started",
+        "status": status,
         "completed_phase": "",
         "completed_target": "",
         "completed_notes": "",
@@ -795,9 +802,86 @@ def completed_archive_move_entries(repo_root, roots):
     return completed
 
 
+def completed_contract_move_entries(repo_root, roots):
+    present = set(root["name"] for root in roots)
+    completed = []
+    contract_targets = {
+        "schema": {
+            "target": "contracts/schemas",
+            "action": "merge",
+            "notes": "Completed in CONVERGE-06; root-level schema/ moved under contracts/schemas/.",
+            "completed_notes": "Root-level schema/ is retired; retained schema law lives under contracts/schemas/.",
+        },
+        "schemas": {
+            "target": "contracts/schemas",
+            "action": "merge",
+            "notes": "Completed in CONVERGE-06; root-level schemas/ merged under contracts/schemas/.",
+            "completed_notes": "Root-level schemas/ is retired; retained validator-facing schema projections live under contracts/schemas/.",
+        },
+    }
+    for name, info in sorted(contract_targets.items()):
+        if name in present:
+            continue
+        target = info["target"]
+        target_path = os.path.join(repo_root, *target.split("/"))
+        if not os.path.exists(target_path):
+            continue
+        completed.append(
+            {
+                "name": name,
+                "current_path": name,
+                "proposed_target": target,
+                "action": info["action"],
+                "classification": CLASS_TRANSITIONAL_CONTRACT,
+                "ownership_surface": "contracts",
+                "split_required": False,
+                "risk_level": "medium",
+                "phase_hint": "CONVERGE-06",
+                "dependencies": [],
+                "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schemas/.",
+                "shim_required": False,
+                "semantic_change_allowed": False,
+                "build_change_allowed": False,
+                "notes": info["notes"],
+                "status": "completed",
+                "completed_phase": "CONVERGE-06",
+                "completed_target": target,
+                "completed_notes": info["completed_notes"],
+            }
+        )
+    for name in ("registry", "registries"):
+        if name in present:
+            continue
+        completed.append(
+            {
+                "name": name,
+                "current_path": name,
+                "proposed_target": "contracts/registries",
+                "action": "review_absent",
+                "classification": CLASS_TRANSITIONAL_CONTRACT,
+                "ownership_surface": "contracts",
+                "split_required": False,
+                "risk_level": "low",
+                "phase_hint": "CONVERGE-06",
+                "dependencies": [],
+                "preserve_paths": "Root path is absent; do not create a new root-level registry authority.",
+                "shim_required": False,
+                "semantic_change_allowed": False,
+                "build_change_allowed": False,
+                "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registries/.",
+                "status": "completed",
+                "completed_phase": "CONVERGE-06",
+                "completed_target": "contracts/registries",
+                "completed_notes": "Root-level {0}/ was not present during CONVERGE-06.".format(name),
+            }
+        )
+    return completed
+
+
 def merge_move_map(repo_root, existing, roots):
     entries = []
     completed = completed_archive_move_entries(repo_root, roots)
+    completed.extend(completed_contract_move_entries(repo_root, roots))
     names = sorted(set(root["name"] for root in roots), key=lambda item: (item.casefold(), item))
     inferred_by_name = dict((root["name"], infer_move_entry(root)) for root in roots)
     for name in names:

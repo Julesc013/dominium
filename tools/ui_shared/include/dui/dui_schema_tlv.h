@@ -2,12 +2,12 @@
 FILE: include/dui/dui_schema_tlv.h
 MODULE: DUI
 LAYER / SUBSYSTEM: DUI API / schema TLV
-RESPONSIBILITY: Defines the TLV tags and enums for DUI schemas/state snapshots (POD-only, baseline-visible).
+RESPONSIBILITY: Defines the TLV tags and enums for DUI contracts/schemas/state snapshots (POD-only, baseline-visible).
 ALLOWED DEPENDENCIES: `include/domino/**` plus C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: `source/**` private headers; launcher core headers; UI toolkit headers.
 THREADING MODEL: N/A (data format constants only).
 ERROR MODEL: N/A (data format constants only).
-DETERMINISM: Data-driven UI only; schemas/state are inputs and must not influence simulation.
+DETERMINISM: Data-driven UI only; contracts/schemas/state are inputs and must not influence simulation.
 VERSIONING / ABI / DATA FORMAT NOTES: TLV format; skip-unknown; see `docs/specs/SPEC_DUI.md`.
 EXTENSION POINTS: Add new tags and enum values; old readers must skip unknown tags.
 */
@@ -20,7 +20,7 @@ EXTENSION POINTS: Add new tags and enum values; old readers must skip unknown ta
 extern "C" {
 #endif
 
-/* DUI schema/state TLV uses the canonical TLV record shape:
+/* DUI contracts/schemas/state TLV uses the canonical TLV record shape:
  *   u32_le tag, u32_le len, payload bytes
  *
  * Tags below are stable u32 constants. Payloads are either:

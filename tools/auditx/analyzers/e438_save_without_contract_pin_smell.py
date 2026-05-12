@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "universe_contract_bundle_hash",
         "pack_lock_hash",
     ),
-    "schema/lib/save_manifest.schema": (
+    "contracts/schemas/lib/save_manifest.schema": (
         "universe_contract_bundle_hash",
         "pack_lock_hash",
         "allow_read_only_open",

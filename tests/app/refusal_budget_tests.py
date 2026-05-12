@@ -75,7 +75,7 @@ def main():
 
     repo_root = os.path.abspath(args.repo_root)
     refusal_doc = os.path.join(repo_root, "docs", "architecture", "REFUSAL_SEMANTICS.md")
-    refusal_spec = os.path.join(repo_root, "schema", "integrity", "SPEC_REFUSAL_CODES.md")
+    refusal_spec = os.path.join(repo_root, "contracts", "schemas", "integrity", "SPEC_REFUSAL_CODES.md")
     wd_lib = os.path.join(repo_root, "tools", "worldgen_offline", "world_definition_lib.py")
 
     if not os.path.isfile(refusal_doc):

@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-05
+Phase: CONVERGE-06
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -42,3 +42,12 @@ Older docs may still mention root-level `attic/`, `legacy/`, or `quarantine/` as
 - `quarantine/` is retired; retained material lives under `archive/quarantine/`.
 
 Historical references may remain as history. New path decisions must use the layout contract, root allowlist, inventory, and move map.
+
+## CONVERGE-06 Contract Path Note
+
+Older docs may still mention root-level `schema/` or `schemas/` as current roots. After CONVERGE-06 those path claims are stale for current source-layout purposes:
+
+- `schema/` is retired; retained schema law lives under `contracts/schemas/`.
+- `schemas/` is retired; retained schema projections live under `contracts/schemas/`.
+
+The CONVERGE-03 move map is the operational planning artifact for physical moves. Old layout docs are not move maps and must not be used alone to decide whether contract, registry, compatibility, or lock material should move.

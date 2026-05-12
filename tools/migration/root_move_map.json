@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T03:25:28Z",
+  "generated_at_utc": "2026-05-12T03:47:43Z",
   "repo_root": ".",
-  "head_sha": "5dc42ca3bd7faaec0ccbd9071e95e15f46afe248",
+  "head_sha": "008778d301e965a264cca42fd1d66dd92310cea0",
   "source_branch": "main",
   "map_status": "complete",
   "entries": [
@@ -171,7 +171,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -540,23 +540,24 @@
     {
       "name": "compat",
       "current_path": "compat",
-      "proposed_target": "contracts/compatibility",
-      "action": "split",
+      "proposed_target": "contracts/compatibility_plus_runtime_review",
+      "action": "review",
       "classification": "transitional_contract_or_schema_root",
       "ownership_surface": "contracts",
       "split_required": true,
-      "risk_level": "high",
+      "risk_level": "review",
       "phase_hint": "CONVERGE-06",
       "dependencies": [
         "requires contract convergence first",
-        "requires docs cross-reference update"
+        "requires docs cross-reference update",
+        "requires mixed contract-adjacent root review"
       ],
       "preserve_paths": "Compatibility shims or redirects may be required before changing this root path.",
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Compatibility meaning belongs in contracts; runtime adapters may move separately.",
-      "status": "not_started",
+      "notes": "Root-level compat/ remains mixed implementation and shim code after CONVERGE-06; do not move wholesale into contracts/.",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1027,7 +1028,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Governance mirrors must not compete with AGENTS.md or canon.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1071,7 +1072,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "IDE projections may belong under cmake, tools, or generated evidence depending on role.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1194,7 +1195,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Experimental material requires review before binding.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1265,7 +1266,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Do not classify by name alone; inspect ownership first.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1290,7 +1291,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Do not classify by name alone; inspect ownership first.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1319,23 +1320,24 @@
     {
       "name": "locks",
       "current_path": "locks",
-      "proposed_target": "contracts/replay",
-      "action": "split",
+      "proposed_target": "contracts/locks_or_store_locks_review",
+      "action": "review",
       "classification": "transitional_contract_or_schema_root",
       "ownership_surface": "contracts",
       "split_required": true,
-      "risk_level": "high",
+      "risk_level": "review",
       "phase_hint": "CONVERGE-06",
       "dependencies": [
         "requires contract convergence first",
-        "requires docs cross-reference update"
+        "requires docs cross-reference update",
+        "requires mixed contract-adjacent root review"
       ],
       "preserve_paths": "Compatibility shims or redirects may be required before changing this root path.",
       "shim_required": true,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Deterministic locks, runtime locks, and ops transactions require separate homes.",
-      "status": "not_started",
+      "notes": "Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1483,7 +1485,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Meta surfaces require ownership review.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1506,7 +1508,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1648,7 +1650,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1695,7 +1697,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Performance tooling and evidence should stay tool/evidence scoped.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -1867,6 +1869,48 @@
       "completed_notes": ""
     },
     {
+      "name": "registries",
+      "current_path": "registries",
+      "proposed_target": "contracts/registries",
+      "action": "review_absent",
+      "classification": "transitional_contract_or_schema_root",
+      "ownership_surface": "contracts",
+      "split_required": false,
+      "risk_level": "low",
+      "phase_hint": "CONVERGE-06",
+      "dependencies": [],
+      "preserve_paths": "Root path is absent; do not create a new root-level registry authority.",
+      "shim_required": false,
+      "semantic_change_allowed": false,
+      "build_change_allowed": false,
+      "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registries/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-06",
+      "completed_target": "contracts/registries",
+      "completed_notes": "Root-level registries/ was not present during CONVERGE-06."
+    },
+    {
+      "name": "registry",
+      "current_path": "registry",
+      "proposed_target": "contracts/registries",
+      "action": "review_absent",
+      "classification": "transitional_contract_or_schema_root",
+      "ownership_surface": "contracts",
+      "split_required": false,
+      "risk_level": "low",
+      "phase_hint": "CONVERGE-06",
+      "dependencies": [],
+      "preserve_paths": "Root path is absent; do not create a new root-level registry authority.",
+      "shim_required": false,
+      "semantic_change_allowed": false,
+      "build_change_allowed": false,
+      "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registries/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-06",
+      "completed_target": "contracts/registries",
+      "completed_notes": "Root-level registry/ was not present during CONVERGE-06."
+    },
+    {
       "name": "release",
       "current_path": "release",
       "proposed_target": "release",
@@ -1964,22 +2008,18 @@
       "classification": "transitional_contract_or_schema_root",
       "ownership_surface": "contracts",
       "split_required": false,
-      "risk_level": "high",
+      "risk_level": "medium",
       "phase_hint": "CONVERGE-06",
-      "dependencies": [
-        "requires contract convergence first",
-        "requires docs cross-reference update",
-        "requires schema/projection ownership review"
-      ],
-      "preserve_paths": "Compatibility shims or redirects may be required before changing this root path.",
-      "shim_required": true,
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schemas/.",
+      "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Current canonical schema law root; future physical convergence must preserve semantic authority.",
-      "status": "not_started",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": ""
+      "notes": "Completed in CONVERGE-06; root-level schema/ moved under contracts/schemas/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-06",
+      "completed_target": "contracts/schemas",
+      "completed_notes": "Root-level schema/ is retired; retained schema law lives under contracts/schemas/."
     },
     {
       "name": "schemas",
@@ -1989,22 +2029,18 @@
       "classification": "transitional_contract_or_schema_root",
       "ownership_surface": "contracts",
       "split_required": false,
-      "risk_level": "high",
+      "risk_level": "medium",
       "phase_hint": "CONVERGE-06",
-      "dependencies": [
-        "requires contract convergence first",
-        "requires docs cross-reference update",
-        "requires schema/projection ownership review"
-      ],
-      "preserve_paths": "Compatibility shims or redirects may be required before changing this root path.",
-      "shim_required": true,
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schemas/.",
+      "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Current validator-facing schema projection; must not replace schema law silently.",
-      "status": "not_started",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": ""
+      "notes": "Completed in CONVERGE-06; root-level schemas/ merged under contracts/schemas/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-06",
+      "completed_target": "contracts/schemas",
+      "completed_notes": "Root-level schemas/ is retired; retained validator-facing schema projections live under contracts/schemas/."
     },
     {
       "name": "scripts",
@@ -2305,7 +2341,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -2328,7 +2364,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -2351,7 +2387,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -2469,7 +2505,7 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Validation tooling belongs under tools unless it is contract law.",
-      "status": "not_started",
+      "status": "review",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""

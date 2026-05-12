@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-05
+Phase: CONVERGE-06
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -10,7 +10,7 @@ The repository root is a coordination surface, not a general source directory. R
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for root-level entries. `contracts/repo/layout.contract.toml` remains the broader source-layout convergence authority.
 
-CONVERGE-03 recorded root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. CONVERGE-05 updated those artifacts after the archive-family move. Those files are planning evidence only and do not authorize unrelated moves.
+CONVERGE-03 recorded root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. CONVERGE-05 updated those artifacts after the archive-family move. CONVERGE-06 updated them after schema root convergence. Those files are planning evidence only and do not authorize unrelated moves.
 
 ## Allowed Metadata Directories
 
@@ -65,6 +65,14 @@ Do not add new root-level product, domain, schema, runtime-adapter, or generated
 - schemas and registries under `contracts/`
 - runtime adapters under `runtime/`
 - generated output only under explicitly governed output roots
+
+Root-level `schema/` and `schemas/` are retired after CONVERGE-06. New schemas, schema projections, validation schemas, and registry schemas belong under `contracts/schemas/` or another explicit `contracts/` class directory.
+
+Do not add a new root-level `compat/`, `registry/`, or `registries/` authority. Existing `compat/` remains a review root because it contains implementation and shim code. Future compatibility law belongs under `contracts/compatibility/` after file-level split. Future registry contracts belong under `contracts/registries/`.
+
+Lock artifacts and lock contracts must not be confused. `contracts/locks/` is for deterministic lockfile schemas and contract definitions. Concrete lock artifacts belong to install/runtime projections such as `store/locks/`; process and IPC locks belong under `runtime/locks/`; setup/update/rollback state belongs under `ops/transactions/`.
+
+Generated schema outputs require explicit generated-output policy before they are committed or treated as source authority.
 
 ## Generated Roots
 

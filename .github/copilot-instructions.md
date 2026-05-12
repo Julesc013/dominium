@@ -51,7 +51,7 @@ Do not collapse these terms into one generic "engine", "service", "module", or "
 Do not normalize these splits for convenience:
 
 - `fields/` is canonical semantic field substrate; `field/` is transitional
-- `schema/` is canonical semantic contract law; `schemas/` is a projection or advisory mirror
+- `contracts/schemas/` is canonical schema authority after CONVERGE-06; retired root-level `schema/` and `schemas/` must not be recreated
 - `packs/` and `data/packs/` have scoped ownership and are not interchangeable
 - thin `runtime/` naming does not imply canonical authority
 - generated roots under `build/`, `artifacts/`, `.xstack_cache/`, and `run_meta/` are evidence only

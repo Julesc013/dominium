@@ -60,7 +60,7 @@ def _profile_defaults(gate_command: str, gate_policy_payload: dict) -> str:
 
 
 def _detect_strict_depth(changed_paths: List[str], gate_policy_payload: dict) -> str:
-    deep_prefixes = ("schema/", "data/registries/", "repo/repox/", "scripts/ci/")
+    deep_prefixes = ("contracts/schemas/", "data/registries/", "repo/repox/", "scripts/ci/")
     triggers = ((((gate_policy_payload.get("record") or {}).get("extensions") or {}).get("strict_split_triggers") or {}).get("STRICT_DEEP") or [])
     if isinstance(triggers, list):
         normalized = tuple(_norm(str(item)).rstrip("*") for item in triggers if str(item).strip() and str(item).strip() != "**")

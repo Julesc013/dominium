@@ -8,7 +8,7 @@ Compatibility: Bound to `docs/canon/constitution_v1.md` and `docs/canon/glossary
 # XStack CompatX Schema Substrate
 
 ## Purpose
-Provide deterministic schema validation tooling for canonical `schemas/*.schema.json` contracts.
+Provide deterministic schema validation tooling for canonical `contracts/schemas/*.schema.json` contracts.
 
 ## Invariants
 - Validation is strict: missing required fields, unknown top-level fields, and version mismatch refuse.

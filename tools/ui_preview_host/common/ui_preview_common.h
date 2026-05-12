@@ -1,7 +1,7 @@
 /*
 FILE: tools/ui_preview_host/common/ui_preview_common.h
 MODULE: Dominium tools
-RESPONSIBILITY: Shared helpers for UI preview hosts (doc loading, schema/state build, logging).
+RESPONSIBILITY: Shared helpers for UI preview hosts (doc loading, contracts/schemas/state build, logging).
 */
 #ifndef DOMINIUM_UI_PREVIEW_COMMON_H_INCLUDED
 #define DOMINIUM_UI_PREVIEW_COMMON_H_INCLUDED

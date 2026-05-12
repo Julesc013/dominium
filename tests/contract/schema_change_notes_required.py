@@ -67,7 +67,7 @@ def main() -> int:
         print("{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id))
         return 1
 
-    schema_changed = any(path.startswith("schema/") for path in changed)
+    schema_changed = any(path.startswith("contracts/schemas/") for path in changed)
     if not schema_changed:
         print("schema change notes not required (no schema changes detected)")
         return 0

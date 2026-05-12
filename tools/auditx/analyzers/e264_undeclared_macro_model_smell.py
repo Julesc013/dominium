@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     macro_registry_rel = "data/registries/macro_model_set_registry.json"
-    macro_schema_rel = "schema/system/macro_capsule.schema"
+    macro_schema_rel = "contracts/schemas/system/macro_capsule.schema"
     collapse_rel = "system/system_collapse_engine.py"
     validation_rel = "system/system_validation_engine.py"
 

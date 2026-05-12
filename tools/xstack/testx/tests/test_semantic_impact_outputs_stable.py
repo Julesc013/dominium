@@ -19,7 +19,7 @@ def run(repo_root: str):
 
     topology = generate_topology_map(repo_root=repo_root, commit_hash="", generated_tick=0)
     changed_files = [
-        "schema/governance/topology_map.schema",
+        "contracts/schemas/governance/topology_map.schema",
         "data/registries/inspection_section_registry.json",
         "core/graph/network_graph_engine.py",
         "tools/xstack/sessionx/observation.py",

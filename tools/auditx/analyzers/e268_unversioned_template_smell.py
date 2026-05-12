@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    schema_rel = "schema/system/system_template.schema"
+    schema_rel = "contracts/schemas/system/system_template.schema"
     pack_registry_rel = "packs/system_templates/base/data/system_template_registry.json"
     core_registry_rel = "data/registries/system_template_registry.json"
     docs_rel = "docs/system/SYSTEM_TEMPLATES.md"

@@ -42,7 +42,7 @@ def _collect_declared_capabilities(repo_root, file_nodes):
     declared = set()
     for node in file_nodes:
         rel = node.label
-        if not rel.startswith(("data/", "schema/", "docs/")):
+        if not rel.startswith(("data/", "contracts/schemas/", "docs/")):
             continue
         if not rel.lower().endswith(REGISTRY_EXTS):
             continue
@@ -56,7 +56,7 @@ def _collect_capability_references(repo_root, file_nodes):
     references = {}
     for node in file_nodes:
         rel = node.label
-        if rel.startswith(("data/", "schema/", "docs/")):
+        if rel.startswith(("data/", "contracts/schemas/", "docs/")):
             continue
         if not rel.lower().endswith(SOURCE_EXTS):
             continue

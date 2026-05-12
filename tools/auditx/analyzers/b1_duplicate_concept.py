@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "A1_DUPLICATE_CONCEPT"
-WATCH_PREFIXES = ("schema/", "data/registries/", "docs/")
+WATCH_PREFIXES = ("contracts/schemas/", "data/registries/", "docs/")
 
 SCHEMA_ID_RE = re.compile(r"^\s*schema_id\s*:\s*([A-Za-z0-9_.-]+)\s*$", re.MULTILINE)
 
@@ -24,7 +24,7 @@ def run(graph, repo_root, changed_files=None):
     del graph
     del changed_files
 
-    schema_root = os.path.join(repo_root, "schema")
+    schema_root = os.path.join(repo_root, "contracts", "schemas")
     schema_map = {}
     for root, dirs, files in os.walk(schema_root):
         dirs[:] = sorted(dirs)

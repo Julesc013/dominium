@@ -28,7 +28,7 @@ def _read_topology(repo_root: str) -> dict:
 
 def _schema_paths(repo_root: str) -> List[str]:
     out: List[str] = []
-    for root_name, suffix in (("schema", ".schema"), ("schemas", ".schema.json")):
+    for root_name, suffix in (("contracts/schemas", ".schema"), ("contracts/schemas", ".schema.json")):
         abs_root = os.path.join(repo_root, root_name)
         if not os.path.isdir(abs_root):
             continue

@@ -17,7 +17,7 @@ def run(repo_root: str):
 
     from tools.xstack.compatx.validator import validate_instance
 
-    example_path = os.path.join(repo_root, "schemas", "examples", "session_spec.example.json")
+    example_path = os.path.join(repo_root, "contracts", "schemas", "examples", "session_spec.example.json")
     try:
         payload = json.load(open(example_path, "r", encoding="utf-8"))
     except (OSError, ValueError):

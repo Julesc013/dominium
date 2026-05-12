@@ -3,7 +3,7 @@ Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `schemas/pack_manifest.schema.json` and `docs/architecture/pack_system.md`.
+Compatibility: Bound to `contracts/schemas/pack_manifest.schema.json` and `docs/architecture/pack_system.md`.
 
 # Pack Loader
 

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T03:25:28Z",
+  "generated_at_utc": "2026-05-12T03:47:43Z",
   "repo_root": ".",
-  "head_sha": "5dc42ca3bd7faaec0ccbd9071e95e15f46afe248",
+  "head_sha": "008778d301e965a264cca42fd1d66dd92310cea0",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-01",
@@ -385,13 +385,13 @@
       "classification": "transitional_contract_or_schema_root",
       "ownership_surface": "contracts",
       "current_role": "Current contract, schema, compatibility, or adjacent root retained until contract convergence.",
-      "proposed_target": "contracts/compatibility",
-      "migration_action": "split",
+      "proposed_target": "contracts/compatibility_plus_runtime_review",
+      "migration_action": "review",
       "split_required": true,
-      "risk_level": "high",
+      "risk_level": "review",
       "phase_hint": "CONVERGE-06",
       "authority_status": "transitional",
-      "notes": "Compatibility meaning belongs in contracts; runtime adapters may move separately."
+      "notes": "Root-level compat/ remains mixed implementation and shim code after CONVERGE-06; do not move wholesale into contracts/."
     },
     {
       "name": "contracts",
@@ -897,13 +897,13 @@
       "classification": "transitional_contract_or_schema_root",
       "ownership_surface": "contracts",
       "current_role": "Current contract, schema, compatibility, or adjacent root retained until contract convergence.",
-      "proposed_target": "contracts/replay",
-      "migration_action": "split",
+      "proposed_target": "contracts/locks_or_store_locks_review",
+      "migration_action": "review",
       "split_required": true,
-      "risk_level": "high",
+      "risk_level": "review",
       "phase_hint": "CONVERGE-06",
       "authority_status": "transitional",
-      "notes": "Deterministic locks, runtime locks, and ops transactions require separate homes."
+      "notes": "Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas."
     },
     {
       "name": "logic",
@@ -1304,38 +1304,6 @@
       "phase_hint": "CONVERGE-06",
       "authority_status": "transitional",
       "notes": "Safety policy belongs under contracts or docs depending on authority."
-    },
-    {
-      "name": "schema",
-      "path": "schema",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_contract_or_schema_root",
-      "ownership_surface": "contracts",
-      "current_role": "Current contract, schema, compatibility, or adjacent root retained until contract convergence.",
-      "proposed_target": "contracts/schemas",
-      "migration_action": "merge",
-      "split_required": false,
-      "risk_level": "high",
-      "phase_hint": "CONVERGE-06",
-      "authority_status": "transitional",
-      "notes": "Current canonical schema law root; future physical convergence must preserve semantic authority."
-    },
-    {
-      "name": "schemas",
-      "path": "schemas",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_contract_or_schema_root",
-      "ownership_surface": "contracts",
-      "current_role": "Current contract, schema, compatibility, or adjacent root retained until contract convergence.",
-      "proposed_target": "contracts/schemas",
-      "migration_action": "merge",
-      "split_required": false,
-      "risk_level": "high",
-      "phase_hint": "CONVERGE-06",
-      "authority_status": "transitional",
-      "notes": "Current validator-facing schema projection; must not replace schema law silently."
     },
     {
       "name": "scripts",

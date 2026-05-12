@@ -1,4 +1,4 @@
-"""Schema registry loading for canonical v1 JSON schemas under schemas/."""
+"""Schema registry loading for canonical v1 JSON schemas under contracts/schemas/."""
 
 from __future__ import annotations
 

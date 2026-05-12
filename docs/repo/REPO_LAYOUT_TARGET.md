@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-05
+Phase: CONVERGE-06
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -11,7 +11,7 @@ Replacement Target: hardened source repository layout contract after controlled 
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for current and transitional root-level entries.
 
-CONVERGE-01 through CONVERGE-04 did not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity. CONVERGE-05 performed only the archive-family root convergence described below.
+CONVERGE-01 through CONVERGE-04 did not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity. CONVERGE-05 performed only archive-family root convergence. CONVERGE-06 performed only schema and contract-adjacent convergence described below.
 
 ## CONVERGE-02 Authority Note
 
@@ -55,6 +55,16 @@ CONVERGE-05 completed the first physical root convergence pass for archive-famil
 
 `archive/` is now the canonical archive ownership root. Root-level `attic/`, `legacy/`, and `quarantine/` are retired aliases and must not be recreated as active top-level roots.
 
+## CONVERGE-06 Contract Convergence Note
+
+CONVERGE-06 completed the second physical root convergence pass for safe contract-adjacent material:
+
+- `schema/` moved to `contracts/schemas/`
+- `schemas/` merged into `contracts/schemas/`
+- root-level `schema/` and `schemas/` are retired aliases
+
+`contracts/` is canonical for schemas, registries, protocols, capabilities, compatibility contracts, stability contracts, replay/proof contracts, ABI contracts, repository layout contracts, and distribution projection contracts. Mixed contract-adjacent roots such as `compat/` and `locks/` remain under review because they contain implementation or concrete lock artifacts, not only contract definitions.
+
 ## Target Roots
 
 The source repository should converge toward ownership-based top-level roots:
@@ -92,7 +102,7 @@ Later CONVERGE tasks may use the contract, inventory, and move map to plan contr
 - CONVERGE-02: stale layout authority supersession and root allowlist hardening.
 - CONVERGE-03: complete root inventory and move map refinement.
 - CONVERGE-05: archive, attic, legacy, and quarantine convergence. Completed for root-level archive-family roots.
-- CONVERGE-06: contract, schema, compatibility, and lock convergence.
+- CONVERGE-06: contract, schema, compatibility, and lock convergence. Completed for root-level `schema/` and `schemas/`; `compat/` and `locks/` remain review roots.
 - CONVERGE-07: runtime, AppShell, platform, render, UI, network, and diagnostics convergence.
 - CONVERGE-08: product entrypoint convergence into `apps/`.
 - CONVERGE-09: mixed domain-root split.

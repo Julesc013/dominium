@@ -25,7 +25,7 @@ SCAN_DIRS = (
 
 SKIP_PREFIXES = (
     "docs/",
-    "schema/",
+    "contracts/schemas/",
     "data/",
     "tests/",
     "legacy/",

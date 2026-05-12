@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-03
+Phase: CONVERGE-06
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -19,6 +19,8 @@ For any domain such as geology, chemistry, ecology, hydrology, materials, fluid,
 Do not move a root domain folder wholesale unless it is proven pure. Most current domain roots are probably mixed across contract, game, content, docs, and tests ownership.
 
 Domain split work must happen after the contract, inventory, and move-map phases. Later moves must preserve process-only mutation, truth/perceived/render separation, pack-driven integration, deterministic ordering, named RNG discipline, and explicit compatibility/refusal obligations.
+
+CONVERGE-06 moved shared schema roots into `contracts/schemas/`. It did not perform a full domain split. Domain-specific schemas and registries found during later domain inspection should ultimately live under `contracts/schemas/<domain>/` or `contracts/registries/<domain>/`, but domain implementation, content, docs, and tests remain separate ownership surfaces.
 
 ## CONVERGE-03 Planning Basis
 
@@ -40,3 +42,10 @@ Examples:
 - `worldgen/`: likely crosses generation contracts, deterministic implementation, content seeds/datasets, docs, and tests.
 - `process/`: ownership-sensitive because authoritative truth mutation must stay lawful and deterministic.
 - `field/` and `fields/`: must respect the existing semantic ownership review; `fields/` is the stronger semantic substrate while `field/` is transitional compatibility.
+
+CONVERGE-09 examples after contract convergence:
+
+- `geo/` schema material -> `contracts/schemas/geology/` or `contracts/registries/geology/`; implementation remains under a game/domain owner.
+- `materials/` registry definitions -> `contracts/registries/materials/`; authored material datasets remain content.
+- `worldgen/` schemas -> `contracts/schemas/worldgen/`; deterministic generation logic remains game/domain implementation.
+- `field/` and `fields/` schema contracts -> `contracts/schemas/fields/` or `contracts/registries/fields/` depending on file role.

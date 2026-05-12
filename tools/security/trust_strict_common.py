@@ -62,8 +62,8 @@ UNSIGNED_OFFICIAL_PACK_REL = os.path.join(TRUST_FIXTURE_DIR_REL, "unsigned_offic
 SIGNED_LICENSE_CAPABILITY_REL = os.path.join(TRUST_FIXTURE_DIR_REL, "signed_license_capability.json")
 TRUST_STRICT_TOOL_REL = os.path.join("tools", "security", "tool_run_trust_strict_suite")
 TRUST_STRICT_TOOL_PY_REL = os.path.join("tools", "security", "tool_run_trust_strict_suite.py")
-LICENSE_CAPABILITY_SCHEMA_REL = os.path.join("schema", "security", "license_capability_artifact.schema")
-LICENSE_CAPABILITY_SCHEMA_JSON_REL = os.path.join("schemas", "license_capability_artifact.schema.json")
+LICENSE_CAPABILITY_SCHEMA_REL = os.path.join("contracts", "schemas", "security", "license_capability_artifact.schema")
+LICENSE_CAPABILITY_SCHEMA_JSON_REL = os.path.join("contracts", "schemas", "license_capability_artifact.schema.json")
 UPDATE_SIM_BASELINE_INDEX_REL = os.path.join("data", "baselines", "update_sim", "release_index_baseline.json")
 
 OFFICIAL_SIGNER_ID = "signer.fixture.official"

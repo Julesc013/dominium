@@ -63,7 +63,7 @@ def infer_subsystem(rel_path: str) -> str:
     ):
         if rel_path.startswith(prefix):
             return prefix.rstrip("/")
-    if rel_path.startswith("schema/"):
+    if rel_path.startswith("contracts/schemas/"):
         return "schema"
     if rel_path.startswith("data/"):
         return "data"
@@ -173,7 +173,7 @@ def collect_packs(repo_root: Path):
 
 def collect_schemas(repo_root: Path):
     schemas = []
-    schema_root = repo_root / "schema"
+    schema_root = repo_root / "contracts" / "schemas"
     if not schema_root.is_dir():
         return schemas
     for path in schema_root.rglob("*.schema"):

@@ -83,7 +83,7 @@ def run_compatx_check(repo_root: str, profile: str) -> Dict[str, object]:
                 schema_name="<all>",
                 severity="refusal",
                 code="refuse.compatx.missing_schemas",
-                message="no schema files discovered under schemas/*.schema.json",
+                message="no schema files discovered under contracts/schemas/*.schema.json",
             )
         )
     version_registry, version_error = load_version_registry(repo_root)
@@ -191,13 +191,13 @@ def run_compatx_check(repo_root: str, profile: str) -> Dict[str, object]:
                     )
                 )
 
-        if not _norm(os.path.relpath(schema_path, repo_root)).startswith("schemas/"):
+        if not _norm(os.path.relpath(schema_path, repo_root)).startswith("contracts/schemas/"):
             findings.append(
                 _finding(
                     schema_name=schema_name,
                     severity="fail",
                     code="fail.compatx.schema_path_mismatch",
-                    message="schema '{}' path must remain under schemas/".format(schema_name),
+                    message="schema '{}' path must remain under contracts/schemas/".format(schema_name),
                 )
             )
 
@@ -216,7 +216,7 @@ def run_compatx_check(repo_root: str, profile: str) -> Dict[str, object]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run CompatX schema/version checks.")
+    parser = argparse.ArgumentParser(description="Run CompatX contracts/schemas/version checks.")
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--profile", default="FAST", choices=("FAST", "STRICT", "FULL"))
     args = parser.parse_args()

@@ -10,10 +10,10 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E231_UNDECLARED_TEMPORAL_DOMAIN_SMELL"
 
-_SCHEDULE_SCHEMA_REL = "schemas/schedule.schema.json"
+_SCHEDULE_SCHEMA_REL = "contracts/schemas/schedule.schema.json"
 
 _REQUIRED_TOKENS = {
-    "schema/core/schedule.schema": (
+    "contracts/schemas/core/schedule.schema": (
         "temporal_domain_id",
     ),
     "core/schedule/schedule_engine.py": (

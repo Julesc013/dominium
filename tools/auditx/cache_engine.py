@@ -130,7 +130,7 @@ def _scan_rel_files(repo_root: str) -> List[str]:
 def _registry_rel_files(repo_root: str) -> List[str]:
     roots = [
         os.path.join("data", "registries"),
-        os.path.join("schema"),
+        os.path.join("contracts", "schemas"),
         os.path.join("repo", "repox", "rulesets"),
     ]
     rels: List[str] = []

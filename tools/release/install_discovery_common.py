@@ -20,7 +20,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
 INSTALL_DISCOVERY_ENGINE_PATH = "lib/install/install_discovery_engine.py"
-INSTALL_DISCOVERY_SCHEMA_PATH = "schema/lib/install_registry.schema"
+INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schemas/lib/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"

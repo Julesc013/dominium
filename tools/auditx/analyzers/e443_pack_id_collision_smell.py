@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "fork.<origin_pack_id>.<fork_author>.<fork_name>",
         "forks must not reuse the origin pack_id",
     ),
-    "schema/pack_manifest.schema": (
+    "contracts/schemas/pack_manifest.schema": (
         "fork.<origin_pack_id>.<fork_author>.<fork_name>",
         "Legacy reverse-DNS pack ids remain loadable for compatibility.",
     ),

@@ -19,25 +19,25 @@ REQUIRED_TOKENS = {
         "stamp_artifact_metadata(",
         "load_versioned_artifact(",
     ),
-    "schemas/save_file.schema.json": (
+    "contracts/schemas/save_file.schema.json": (
         "\"title\": \"Save File Metadata Schema\"",
         "\"format_version\"",
         "\"semantic_contract_bundle_hash\"",
     ),
-    "schemas/blueprint_file.schema.json": (
+    "contracts/schemas/blueprint_file.schema.json": (
         "\"title\": \"Blueprint File Metadata Schema\"",
         "\"format_version\"",
         "\"required_contract_ranges\"",
     ),
-    "schemas/profile_bundle.schema.json": (
+    "contracts/schemas/profile_bundle.schema.json": (
         "\"format_version\"",
         "\"engine_version_created\"",
     ),
-    "schemas/session_template.schema.json": (
+    "contracts/schemas/session_template.schema.json": (
         "\"format_version\"",
         "\"engine_version_created\"",
     ),
-    "schemas/pack_lock.schema.json": (
+    "contracts/schemas/pack_lock.schema.json": (
         "\"format_version\"",
         "\"engine_version_created\"",
     ),

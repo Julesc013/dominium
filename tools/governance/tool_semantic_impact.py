@@ -21,7 +21,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 DEFAULT_TOPOLOGY_MAP_REL = "docs/audit/TOPOLOGY_MAP.json"
 
-SCHEMA_ROOT_PREFIXES = ("schema/", "schemas/")
+SCHEMA_ROOT_PREFIXES = ("contracts/schemas/", "contracts/schemas/")
 REGISTRY_ROOT_PREFIXES = ("data/registries/", "data/governance/")
 
 CONTROL_PLANE_PREFIXES = (

@@ -44,7 +44,7 @@ static void require_doc(const ValidationContext& ctx,
 static void require_governance_ref(const ValidationContext& ctx,
                                    ValidationReport& report,
                                    const std::string& token) {
-    std::string path = ctx.repo_root + "/schema/SCHEMA_GOVERNANCE.md";
+    std::string path = ctx.repo_root + "/contracts/schemas/SCHEMA_GOVERNANCE.md";
     std::string text;
     if (!read_file_text(path, text)) {
         report.add("FINAL-DOC-001", VAL_SEV_ERROR, path, 0u,

@@ -3,7 +3,7 @@ Last Reviewed: 2026-02-14
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `schemas/session_spec.schema.json` v1.0.0 and `docs/architecture/session_lifecycle.md`.
+Compatibility: Bound to `contracts/schemas/session_spec.schema.json` v1.0.0 and `docs/architecture/session_lifecycle.md`.
 
 # SessionX v1
 

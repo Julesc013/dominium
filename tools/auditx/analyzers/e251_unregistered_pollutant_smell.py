@@ -86,8 +86,8 @@ def run(graph, repo_root, changed_files=None):
     )
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )

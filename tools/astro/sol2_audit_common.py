@@ -23,8 +23,8 @@ SOL2_RUNTIME_SCAN_FILES = (
 SOL2_TRUTH_SCAN_FILES = (
     "tools/xstack/sessionx/process_runtime.py",
     "server/server_boot.py",
-    "schema/universe_state.schema",
-    "schemas/universe_state.schema.json",
+    "contracts/schemas/universe_state.schema",
+    "contracts/schemas/universe_state.schema.json",
 )
 
 

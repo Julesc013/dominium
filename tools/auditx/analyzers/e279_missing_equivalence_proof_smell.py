@@ -30,7 +30,7 @@ def run(graph, repo_root, changed_files=None):
     compile_engine_rel = "meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "data/registries/process_registry.json"
-    schema_rel = "schema/meta/equivalence_proof.schema"
+    schema_rel = "contracts/schemas/meta/equivalence_proof.schema"
 
     for rel in (compile_engine_rel, runtime_rel, process_registry_rel, schema_rel):
         if os.path.isfile(os.path.join(repo_root, rel.replace("/", os.sep))):

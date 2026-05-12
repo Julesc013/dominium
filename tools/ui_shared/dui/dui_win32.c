@@ -2,13 +2,13 @@
 FILE: source/domino/dui/dui_win32.c
 MODULE: Domino
 LAYER / SUBSYSTEM: Domino impl / dui/dui_win32
-RESPONSIBILITY: Implements the DUI Win32 native backend (common controls; message pump; schema/state driven).
+RESPONSIBILITY: Implements the DUI Win32 native backend (common controls; message pump; contracts/schemas/state driven).
 ALLOWED DEPENDENCIES: `include/dui/**`, `include/domino/**`, `source/domino/**`, Win32 SDK headers.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**`.
 THREADING MODEL: Single-threaded UI driver expected.
 ERROR MODEL: Return codes; no exceptions.
 DETERMINISM: Presentation-only; UI does not influence deterministic simulation.
-VERSIONING / ABI / DATA FORMAT NOTES: `dui_api_v1` vtable; schema/state TLV are skip-unknown.
+VERSIONING / ABI / DATA FORMAT NOTES: `dui_api_v1` vtable; contracts/schemas/state TLV are skip-unknown.
 EXTENSION POINTS: Test/native handle extensions via query_interface.
 */
 #include "dui/dui_api_v1.h"

@@ -13,7 +13,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e307_electrical_bias_in_logic_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/",
-    "schema/logic/",
+    "contracts/schemas/logic/",
     "data/registries/signal_type_registry.json",
     "src/logic/",
     "tools/logic/",
@@ -50,8 +50,8 @@ def _read_text(repo_root: str, rel_path: str) -> str:
 
 def _logic_scan_paths(repo_root: str):
     fixed_paths = (
-        "schema/logic/signal_type.schema",
-        "schema/logic/logic_policy.schema",
+        "contracts/schemas/logic/signal_type.schema",
+        "contracts/schemas/logic/logic_policy.schema",
         "data/registries/signal_type_registry.json",
     )
     for rel_path in fixed_paths:

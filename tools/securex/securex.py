@@ -158,10 +158,10 @@ def _security_findings(repo_root: str) -> List[Dict[str, Any]]:
 
 def _manifest_inputs(repo_root: str) -> Tuple[List[tuple[str, str]], List[tuple[str, str]], List[tuple[str, str]], List[tuple[str, str]]]:
     schema_files = [
-        ("schema.trust_policy", os.path.join(repo_root, "schema", "governance", "trust_policy.schema")),
-        ("schema.pack_signature", os.path.join(repo_root, "schema", "governance", "pack_signature.schema")),
-        ("schema.integrity_manifest", os.path.join(repo_root, "schema", "governance", "integrity_manifest.schema")),
-        ("schema.privilege_model", os.path.join(repo_root, "schema", "governance", "privilege_model.schema")),
+        ("schema.trust_policy", os.path.join(repo_root, "contracts", "schemas", "governance", "trust_policy.schema")),
+        ("schema.pack_signature", os.path.join(repo_root, "contracts", "schemas", "governance", "pack_signature.schema")),
+        ("schema.integrity_manifest", os.path.join(repo_root, "contracts", "schemas", "governance", "integrity_manifest.schema")),
+        ("schema.privilege_model", os.path.join(repo_root, "contracts", "schemas", "governance", "privilege_model.schema")),
     ]
     pack_files = [
         ("registry.trust_policy", os.path.join(repo_root, TRUST_POLICY_REL)),

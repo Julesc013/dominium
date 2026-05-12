@@ -4,7 +4,7 @@
   "entries": [
     {
       "ui_type": "legacy",
-      "path": "source/dominium/launcher/ui_schema/launcher_ui_v1.tlv",
+      "path": "source/dominium/launcher/ui_contracts/schemas/launcher_ui_v1.tlv",
       "tool": "launcher",
       "format_version": 0
     },

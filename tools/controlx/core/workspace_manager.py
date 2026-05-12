@@ -50,7 +50,7 @@ def allowed_mutation_path(repo_root: str, workspace: Dict[str, Any], path: str) 
     dirs = workspace.get("dirs", {}) if isinstance(workspace, dict) else {}
     allowed_roots = [
         os.path.normpath(os.path.abspath(os.path.join(repo_root, "docs"))),
-        os.path.normpath(os.path.abspath(os.path.join(repo_root, "schema"))),
+        os.path.normpath(os.path.abspath(os.path.join(repo_root, "contracts", "schemas"))),
         os.path.normpath(os.path.abspath(os.path.join(repo_root, "data"))),
     ]
     for key in ("build_root", "dist_root"):

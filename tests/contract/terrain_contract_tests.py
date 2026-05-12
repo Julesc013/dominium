@@ -66,7 +66,7 @@ DOC_TOKENS = {
 }
 
 SCHEMA_TOKENS = {
-    "schema/terrain.field.schema": [
+    "contracts/schemas/terrain.field.schema": [
         "terrain.phi",
         "terrain.material_primary",
         "terrain.support_capacity",
@@ -78,7 +78,7 @@ SCHEMA_TOKENS = {
         "maturity",
         "extensions",
     ],
-    "schema/terrain.provider.schema": [
+    "contracts/schemas/terrain.provider.schema": [
         "terrain_provider_chain",
         "provider_id",
         "provider_type",
@@ -87,7 +87,7 @@ SCHEMA_TOKENS = {
         "maturity",
         "extensions",
     ],
-    "schema/terrain.overlay.schema": [
+    "contracts/schemas/terrain.overlay.schema": [
         "terrain_overlay",
         "overlay_id",
         "overlay_type",
@@ -100,7 +100,7 @@ SCHEMA_TOKENS = {
         "maturity",
         "extensions",
     ],
-    "schema/terrain.macro_capsule.schema": [
+    "contracts/schemas/terrain.macro_capsule.schema": [
         "terrain_macro_capsule",
         "capsule_id",
         "rng_cursor",

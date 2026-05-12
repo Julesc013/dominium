@@ -111,7 +111,7 @@ def run(graph, repo_root, changed_files=None):
         if node.node_type != "file":
             continue
         rel = node.label
-        if rel.startswith(("tests/", "docs/", "schema/", "data/")):
+        if rel.startswith(("tests/", "docs/", "contracts/schemas/", "data/")):
             continue
         if not rel.lower().endswith(SOURCE_EXTS):
             continue

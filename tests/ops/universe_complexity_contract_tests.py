@@ -15,7 +15,7 @@ REQUIRED_DOCS = [
 ]
 
 REQUIRED_SCHEMA_TOKENS = {
-    os.path.join("schema", "observation.artifact.schema"): [
+    os.path.join("contracts", "schemas", "observation.artifact.schema"): [
         "modality",
         "payload_type",
         "payload",
@@ -25,18 +25,18 @@ REQUIRED_SCHEMA_TOKENS = {
         "epistemic_status",
         "reason_codes",
     ],
-    os.path.join("schema", "memory.artifact.schema"): [
+    os.path.join("contracts", "schemas", "memory.artifact.schema"): [
         "derived_from_observation_artifact_id",
         "decay_rules",
         "compression_rules",
         "error_allowance",
     ],
-    os.path.join("schema", "knowledge.artifact.schema"): [
+    os.path.join("contracts", "schemas", "knowledge.artifact.schema"): [
         "confidence",
         "provenance",
         "uncertainty_envelope",
     ],
-    os.path.join("schema", "conformance.bundle.schema"): [
+    os.path.join("contracts", "schemas", "conformance.bundle.schema"): [
         "port_contracts",
         "tolerances",
         "allowed_solvers",

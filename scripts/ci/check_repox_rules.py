@@ -86,14 +86,14 @@ DOCS_ROOT = "docs"
 DOC_EXTS = [".md", ".txt"]
 DOC_STATUS_VALUES = {"CANONICAL", "DERIVED", "HISTORICAL"}
 SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
-SEMANTIC_CONTRACT_BUNDLE_SCHEMA_REL = os.path.join("schema", "universe", "universe_contract_bundle.schema")
-SEMANTIC_CONTRACT_BUNDLE_JSON_SCHEMA_REL = os.path.join("schemas", "universe_contract_bundle.schema.json")
+SEMANTIC_CONTRACT_BUNDLE_SCHEMA_REL = os.path.join("contracts", "schemas", "universe", "universe_contract_bundle.schema")
+SEMANTIC_CONTRACT_BUNDLE_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "universe_contract_bundle.schema.json")
 SEMANTIC_CONTRACT_MODEL_REL = os.path.join("docs", "contracts", "SEMANTIC_CONTRACT_MODEL.md")
 UNIVERSE_CONTRACT_BUNDLE_DOC_REL = os.path.join("docs", "meta", "UNIVERSE_CONTRACT_BUNDLE.md")
-UNIVERSE_IDENTITY_SCHEMA_REL = os.path.join("schema", "universe", "universe_identity.schema")
-UNIVERSE_IDENTITY_JSON_SCHEMA_REL = os.path.join("schemas", "universe_identity.schema.json")
-SESSION_SPEC_SCHEMA_REL = os.path.join("schema", "session", "session_spec.schema")
-SESSION_SPEC_JSON_SCHEMA_REL = os.path.join("schemas", "session_spec.schema.json")
+UNIVERSE_IDENTITY_SCHEMA_REL = os.path.join("contracts", "schemas", "universe", "universe_identity.schema")
+UNIVERSE_IDENTITY_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "universe_identity.schema.json")
+SESSION_SPEC_SCHEMA_REL = os.path.join("contracts", "schemas", "session", "session_spec.schema")
+SESSION_SPEC_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "session_spec.schema.json")
 UNIVERSE_IDENTITY_BUILDER_REL = os.path.join("universe", "universe_identity_builder.py")
 UNIVERSE_CONTRACT_ENFORCER_REL = os.path.join("universe", "universe_contract_enforcer.py")
 SESSION_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "runner.py")
@@ -132,16 +132,16 @@ MOD_POLICY_CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "capabil
 MOD_POLICY_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
 PACK_COMPAT_DOC_REL = os.path.join("docs", "packs", "PACK_COMPATIBILITY_MANIFEST.md")
 PACK_COMPAT_BASELINE_REL = os.path.join("docs", "audit", "PACK_COMPAT_BASELINE.md")
-PACK_COMPAT_SCHEMA_REL = os.path.join("schema", "packs", "pack_compat_manifest.schema")
-PACK_COMPAT_JSON_SCHEMA_REL = os.path.join("schemas", "pack_compat_manifest.schema.json")
+PACK_COMPAT_SCHEMA_REL = os.path.join("contracts", "schemas", "packs", "pack_compat_manifest.schema")
+PACK_COMPAT_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "pack_compat_manifest.schema.json")
 PACK_COMPAT_VALIDATOR_REL = os.path.join("packs", "compat", "pack_compat_validator.py")
 PACK_DEGRADE_MODE_REGISTRY_REL = os.path.join("data", "registries", "pack_degrade_mode_registry.json")
 PACK_VERIFICATION_DOC_REL = os.path.join("docs", "packs", "PACK_VERIFICATION_PIPELINE.md")
 PACK_VERIFICATION_BASELINE_REL = os.path.join("docs", "audit", "PACK_VERIFICATION_BASELINE.md")
-PACK_COMPAT_REPORT_SCHEMA_REL = os.path.join("schema", "packs", "pack_compatibility_report.schema")
-PACK_COMPAT_REPORT_JSON_SCHEMA_REL = os.path.join("schemas", "pack_compatibility_report.schema.json")
-PACK_LOCK_SCHEMA_REL = os.path.join("schema", "packs", "pack_lock.schema")
-PACK_LOCK_JSON_SCHEMA_REL = os.path.join("schemas", "pack_lock.schema.json")
+PACK_COMPAT_REPORT_SCHEMA_REL = os.path.join("contracts", "schemas", "packs", "pack_compatibility_report.schema")
+PACK_COMPAT_REPORT_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "pack_compatibility_report.schema.json")
+PACK_LOCK_SCHEMA_REL = os.path.join("contracts", "schemas", "packs", "pack_lock.schema")
+PACK_LOCK_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "pack_lock.schema.json")
 PACK_VERIFICATION_PIPELINE_REL = os.path.join("packs", "compat", "pack_verification_pipeline.py")
 SETUP_CLI_REL = os.path.join("tools", "setup", "setup_cli.py")
 LAUNCHER_CLI_REL = os.path.join("tools", "launcher", "launch.py")
@@ -156,7 +156,7 @@ CANON_STATE_PATH = os.path.join("repo", "canon_state.json")
 PROCESS_REGISTRY_REL = os.path.join("data", "registries", "process_registry.json")
 PROCESS_SCHEMA_ID = "dominium.schema.process"
 PROCESS_REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
-SCHEMA_MIGRATION_REGISTRY_REL = os.path.join("schema", "SCHEMA_MIGRATION_REGISTRY.json")
+SCHEMA_MIGRATION_REGISTRY_REL = os.path.join("contracts", "schemas", "SCHEMA_MIGRATION_REGISTRY.json")
 SCHEMA_MIGRATION_REGISTRY_SCHEMA_ID = "dominium.schema.migration_registry"
 SOLVER_REGISTRY_REL = os.path.join("data", "registries", "solver_registry.json")
 SOLVER_REGISTRY_SCHEMA_ID = "dominium.registry.solver_registry"
@@ -657,16 +657,16 @@ SOL_PIN_MAX_PATCH_COUNT = 96
 SOL_PIN_MAX_TOTAL_BYTES = 73728
 IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.json")
 IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
-GLOSSARY_SCHEMA_REL = os.path.join("schema", "governance", "glossary.schema")
+GLOSSARY_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "glossary.schema")
 GLOSSARY_REGISTRY_REL = os.path.join("data", "registries", "glossary.json")
-PRESENTATION_MATRIX_SCHEMA_REL = os.path.join("schema", "governance", "presentation_matrix.schema")
+PRESENTATION_MATRIX_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "presentation_matrix.schema")
 PRESENTATION_MATRIX_REGISTRY_REL = os.path.join("data", "registries", "presentation_matrix.json")
 PRESENTATION_MATRIX_SCHEMA_ID = "dominium.schema.governance.presentation_matrix"  # schema_version: 1.0.0
 AUDITX_PROMOTION_POLICY_REL = os.path.join("docs", "governance", "AUDITX_PROMOTION_POLICY.md")
 REPO_HEALTH_SNAPSHOT_JSON_REL = os.path.join("docs", "audit", "system", "REPO_HEALTH_SNAPSHOT.json")
 REPO_HEALTH_SNAPSHOT_MD_REL = os.path.join("docs", "audit", "system", "REPO_HEALTH_SNAPSHOT.md")
 GOVERNANCE_FINAL_REPORT_REL = os.path.join("docs", "audit", "system", "GOVERNANCE_FINAL_REPORT.md")
-DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL = os.path.join("schema", "governance", "derived_artifact_contract.schema")
+DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "derived_artifact_contract.schema")
 DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
 DERIVED_ARTIFACT_SCHEMA_ID = "dominium.schema.governance.derived_artifact_contract"  # schema_version: 1.0.0
 DERIVED_ARTIFACT_CLASSES = ("CANONICAL", "DERIVED_VIEW", "RUN_META")
@@ -688,7 +688,7 @@ DERIVED_ARTIFACT_CANONICAL_FORBIDDEN_KEYS = (
     "run_id",
     "duration_ms",
 )
-REMEDIATION_PLAYBOOK_SCHEMA_REL = os.path.join("schema", "governance", "remediation_playbook.schema")
+REMEDIATION_PLAYBOOK_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "remediation_playbook.schema")
 REMEDIATION_PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
 REMEDIATION_PLAYBOOK_SCHEMA_ID = ".".join(("dominium", "schema", "governance", "remediation_playbook"))  # schema_version is validated from payload
 REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
@@ -704,23 +704,23 @@ REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
     "WORKSPACE_COLLISION",
     "VERSIONING_POLICY_MISMATCH",
 )
-FAILURE_CLASS_SCHEMA_REL = os.path.join("schema", "governance", "failure_classes.schema")
+FAILURE_CLASS_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "failure_classes.schema")
 FAILURE_CLASS_REGISTRY_REL = os.path.join("data", "registries", "failure_classes.json")
 FAILURE_CLASS_SCHEMA_ID = "dominium.schema.governance.failure_classes"  # schema_version: 1.0.0
 
-COMPAT_MATRIX_SCHEMA_REL = os.path.join("schema", "governance", "compat_matrix.schema")
+COMPAT_MATRIX_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "compat_matrix.schema")
 COMPAT_MATRIX_REGISTRY_REL = os.path.join("data", "registries", "compat_matrix.json")
 COMPAT_MATRIX_SCHEMA_ID = "dominium.schema.governance.compat_matrix"  # schema_version: 1.0.0
-COMPAT_MIGRATION_SCHEMA_REL = os.path.join("schema", "governance", "migration_spec.schema")
+COMPAT_MIGRATION_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "migration_spec.schema")
 COMPAT_MIGRATION_REGISTRY_REL = os.path.join("data", "registries", "migrations.json")
 COMPAT_MIGRATION_SCHEMA_ID = "dominium.schema.governance.migration_spec"  # schema_version: 1.0.0
-COMPAT_SCHEMA_POLICY_SCHEMA_REL = os.path.join("schema", "governance", "schema_version_policy.schema")
+COMPAT_SCHEMA_POLICY_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "schema_version_policy.schema")
 COMPAT_SCHEMA_POLICY_REGISTRY_REL = os.path.join("data", "registries", "schema_version_policy.json")
 COMPAT_SCHEMA_POLICY_SCHEMA_ID = "dominium.schema.governance.schema_version_policy"  # schema_version: 1.0.0
-SECUREX_TRUST_POLICY_SCHEMA_REL = os.path.join("schema", "governance", "trust_policy.schema")
+SECUREX_TRUST_POLICY_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "trust_policy.schema")
 SECUREX_TRUST_POLICY_REGISTRY_REL = os.path.join("data", "registries", "trust_policy.json")
 SECUREX_TRUST_POLICY_SCHEMA_ID = "dominium.schema.governance.trust_policy"  # schema_version: 1.0.0
-SECUREX_PRIVILEGE_MODEL_SCHEMA_REL = os.path.join("schema", "governance", "privilege_model.schema")
+SECUREX_PRIVILEGE_MODEL_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "privilege_model.schema")
 SECUREX_PRIVILEGE_MODEL_REGISTRY_REL = os.path.join("data", "registries", "security_roles.json")
 SECUREX_PRIVILEGE_MODEL_SCHEMA_ID = "dominium.schema.governance.privilege_model"  # schema_version: 1.0.0
 SECUREX_INTEGRITY_MANIFEST_REL = os.path.join("docs", "audit", "security", "INTEGRITY_MANIFEST.json")
@@ -1196,7 +1196,7 @@ def _load_inline_exemptions(repo_root):
         os.path.join(repo_root, "libs"),
         os.path.join(repo_root, "tools"),
         os.path.join(repo_root, "scripts"),
-        os.path.join(repo_root, "schema"),
+        os.path.join(repo_root, "contracts", "schemas"),
         os.path.join(repo_root, "data"),
         os.path.join(repo_root, "tests"),
         os.path.join(repo_root, "docs"),
@@ -1380,7 +1380,7 @@ def _build_proof_manifest(repo_root, warnings, failures):
                 "INV-PROCESS-REGISTRY",
                 "INV-PROCESS-RUNTIME-ID",
             })
-        if path.startswith("schema/") or path.startswith("data/"):
+        if path.startswith("contracts/schemas/") or path.startswith("data/"):
             required_tests.update({
                 "schema_version_immutability_contracts",
                 "schema_migration_contracts",
@@ -1690,7 +1690,7 @@ def check_schema_version_bumps(repo_root):
     changed_files = get_changed_files(repo_root)
     if changed_files is None:
         return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
-    schema_files = [path for path in changed_files if path.startswith("schema/") and path.endswith(".schema")]
+    schema_files = [path for path in changed_files if path.startswith("contracts/schemas/") and path.endswith(".schema")]
     if not schema_files:
         return []
     baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
@@ -1888,7 +1888,7 @@ def check_schema_migration_routes(repo_root):
         return violations
 
     baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
-    schema_files = [path for path in changed_files if path.startswith("schema/") and path.endswith(".schema")]
+    schema_files = [path for path in changed_files if path.startswith("contracts/schemas/") and path.endswith(".schema")]
     for rel in schema_files:
         baseline_blob = run_git(["show", "{}:{}".format(baseline, rel)], repo_root)
         if baseline_blob is None:
@@ -1931,7 +1931,7 @@ def check_schema_no_implicit_defaults(repo_root):
     default_re = re.compile(r"\bdefault\b", re.IGNORECASE)
     for rel_path, lines in added.items():
         rel = rel_path.replace("\\", "/")
-        if not rel.startswith("schema/") or not rel.endswith(".schema"):
+        if not rel.startswith("contracts/schemas/") or not rel.endswith(".schema"):
             continue
         for idx, line in enumerate(lines, start=1):
             if default_re.search(line):
@@ -3592,8 +3592,8 @@ def check_authority_context_required(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    session_rel = "schema/session/session_spec.schema"
-    authority_rel = "schema/authority/authority_context.schema"
+    session_rel = "contracts/schemas/session/session_spec.schema"
+    authority_rel = "contracts/schemas/authority/authority_context.schema"
     required_session_fields = (
         "universe_id",
         "save_id",
@@ -3723,8 +3723,8 @@ def check_universe_identity_immutability(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    identity_rel = "schema/universe/universe_identity.schema"
-    state_rel = "schema/universe/universe_state.schema"
+    identity_rel = "contracts/schemas/universe/universe_identity.schema"
+    state_rel = "contracts/schemas/universe/universe_state.schema"
     identity_path = os.path.join(repo_root, identity_rel.replace("/", os.sep))
     state_path = os.path.join(repo_root, state_rel.replace("/", os.sep))
     violations = []
@@ -3908,7 +3908,7 @@ def check_authority_context_required_for_intents(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    schema_rel = "schema/authority/authority_context.schema"
+    schema_rel = "contracts/schemas/authority/authority_context.schema"
     client_rel = "client/core/client_command_bridge.c"
     server_h_rel = "server/authority/dom_server_authority.h"
     server_cpp_rel = "server/authority/dom_server_authority.cpp"
@@ -3955,7 +3955,7 @@ def check_session_spec_required_for_run(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    schema_rel = "schema/session/session_spec.schema"
+    schema_rel = "contracts/schemas/session/session_spec.schema"
     registry_rel = "data/registries/session_defaults.json"
     bridge_rel = "client/core/client_command_bridge.c"
     commands_rel = "client/core/client_commands_registry.c"
@@ -4178,8 +4178,8 @@ def check_new_contract_requires_entry(repo_root):
         os.path.join(repo_root, "src"),
         os.path.join(repo_root, "tools"),
         os.path.join(repo_root, "data"),
-        os.path.join(repo_root, "schema"),
-        os.path.join(repo_root, "schemas"),
+        os.path.join(repo_root, "contracts", "schemas"),
+        os.path.join(repo_root, "contracts", "schemas"),
     )
     allowed = set(by_id.keys())
     missing = set()
@@ -4708,8 +4708,8 @@ def check_degrade_ladder_declared(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
-    ladder_schema_rel = os.path.join("schema", "compat", "degrade_ladder.schema")
-    fallback_schema_rel = os.path.join("schema", "compat", "fallback_map.schema")
+    ladder_schema_rel = os.path.join("contracts", "schemas", "compat", "degrade_ladder.schema")
+    fallback_schema_rel = os.path.join("contracts", "schemas", "compat", "fallback_map.schema")
     ladder_registry_rel = os.path.join("data", "registries", "degrade_ladder_registry.json")
     fallback_registry_rel = os.path.join("data", "registries", "capability_fallback_registry.json")
     enforcer_rel = os.path.join("compat", "negotiation", "degrade_enforcer.py")
@@ -4828,7 +4828,7 @@ def check_degrade_recorded_in_negotiation(repo_root):
         return []
 
     negotiation_rel = os.path.join("compat", "capability_negotiation.py")
-    negotiation_schema_rel = os.path.join("schema", "compat", "negotiation_record.schema")
+    negotiation_schema_rel = os.path.join("contracts", "schemas", "compat", "negotiation_record.schema")
     handshake_doc_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
     replay_tool_rel = os.path.join("tools", "compat", "tool_replay_negotiation.py")
 
@@ -6184,11 +6184,11 @@ def check_mod_policy_enforced(repo_root):
         MOD_POLICY_SESSION_CREATE_REL: (
             "--mod-policy-id",
         ),
-        "schemas/session_spec.schema.json": (
+        "contracts/schemas/session_spec.schema.json": (
             '"mod_policy_id"',
             '"mod_policy_registry_hash"',
         ),
-        "schemas/bundle_lockfile.schema.json": (
+        "contracts/schemas/bundle_lockfile.schema.json": (
             '"mod_policy_id"',
             '"mod_policy_registry_hash"',
             '"mod_policy_proof_hash"',
@@ -6610,25 +6610,25 @@ def check_artifacts_must_have_format_version(repo_root):
             "engine_version_created",
             "semantic_contract_bundle_hash",
         ),
-        "schemas/save_file.schema.json": (
+        "contracts/schemas/save_file.schema.json": (
             "\"format_version\"",
             "\"semantic_contract_bundle_hash\"",
             "\"engine_version_created\"",
         ),
-        "schemas/blueprint_file.schema.json": (
+        "contracts/schemas/blueprint_file.schema.json": (
             "\"format_version\"",
             "\"required_contract_ranges\"",
             "\"engine_version_created\"",
         ),
-        "schemas/profile_bundle.schema.json": (
+        "contracts/schemas/profile_bundle.schema.json": (
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
-        "schemas/session_template.schema.json": (
+        "contracts/schemas/session_template.schema.json": (
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
-        "schemas/pack_lock.schema.json": (
+        "contracts/schemas/pack_lock.schema.json": (
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
@@ -7100,8 +7100,8 @@ def check_overlay_conflict_policy_declared(repo_root):
 
     conflict_registry_rel = os.path.join("data", "registries", "overlay_conflict_policy_registry.json")
     conflict_doc_rel = os.path.join("docs", "geo", "OVERLAY_CONFLICT_POLICIES.md")
-    conflict_schema_rel = os.path.join("schema", "geo", "overlay_conflict_policy.schema")
-    conflict_artifact_schema_rel = os.path.join("schema", "geo", "overlay_conflict_artifact.schema")
+    conflict_schema_rel = os.path.join("contracts", "schemas", "geo", "overlay_conflict_policy.schema")
+    conflict_artifact_schema_rel = os.path.join("contracts", "schemas", "geo", "overlay_conflict_artifact.schema")
     overlay_policy_registry_rel = os.path.join("data", "registries", "overlay_policy_registry.json")
     overlay_engine_rel = os.path.join("geo", "overlay", "overlay_merge_engine.py")
     explain_registry_rel = os.path.join("data", "registries", "explain_contract_registry.json")
@@ -10019,7 +10019,7 @@ def check_contracts_validated_on_boot(repo_root):
     server_boot_rel = os.path.join("server", "server_boot.py")
     server_main_rel = os.path.join("server", "server_main.py")
     doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
-    config_schema_rel = os.path.join("schema", "server", "server_config.schema")
+    config_schema_rel = os.path.join("contracts", "schemas", "server", "server_config.schema")
     config_registry_rel = os.path.join("data", "registries", "server_config_registry.json")
 
     violations = []
@@ -10181,7 +10181,7 @@ def check_ipc_seq_no_monotonic(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    schema_rel = os.path.join("schema", "ipc", "ipc_frame.schema")
+    schema_rel = os.path.join("contracts", "schemas", "ipc", "ipc_frame.schema")
     transport_rel = os.path.join("appshell", "ipc", "ipc_transport.py")
     endpoint_server_rel = os.path.join("appshell", "ipc", "ipc_endpoint_server.py")
     replay_tool_rel = os.path.join("tools", "appshell", "tool_replay_ipc_attach.py")
@@ -10570,7 +10570,7 @@ def check_repro_bundle_deterministic(repo_root):
 
     doctrine_rel = os.path.join("docs", "diag", "REPRO_BUNDLE_MODEL.md")
     baseline_rel = os.path.join("docs", "audit", "REPRO_BUNDLE_BASELINE.md")
-    schema_rel = os.path.join("schema", "diag", "repro_bundle_manifest.schema")
+    schema_rel = os.path.join("contracts", "schemas", "diag", "repro_bundle_manifest.schema")
     builder_rel = os.path.join("diag", "repro_bundle_builder.py")
     replay_rel = os.path.join("tools", "diag", "tool_replay_bundle.py")
     probe_rel = os.path.join("tools", "diag", "diag0_probe.py")
@@ -11659,7 +11659,7 @@ def check_forbidden_legacy_gating_tokens(repo_root):
         os.path.join(repo_root, "launcher"),
         os.path.join(repo_root, "tools"),
         os.path.join(repo_root, "libs"),
-        os.path.join(repo_root, "schema"),
+        os.path.join(repo_root, "contracts", "schemas"),
         os.path.join(repo_root, "tests"),
         os.path.join(repo_root, "scripts"),
         os.path.join(repo_root, "ci"),
@@ -11762,8 +11762,8 @@ def check_solver_registry_contracts(repo_root):
         if not isinstance(conformance_refs, list) or not conformance_refs:
             violations.append("{}: conformance_bundle_refs missing for {}".format(invariant_id, solver_id))
 
-    conformance_schema_rel = os.path.join("schema", "conformance.bundle.schema").replace("\\", "/")
-    conformance_schema_path = os.path.join(repo_root, "schema", "conformance.bundle.schema")
+    conformance_schema_rel = os.path.join("contracts", "schemas", "conformance.bundle.schema").replace("\\", "/")
+    conformance_schema_path = os.path.join(repo_root, "contracts", "schemas", "conformance.bundle.schema")
     if not os.path.isfile(conformance_schema_path):
         violations.append("{}: missing {}".format(invariant_id, conformance_schema_rel))
     else:
@@ -12417,7 +12417,7 @@ def check_raw_paths(repo_root):
         os.path.join(repo_root, "data", "packs"),
         os.path.join(repo_root, "data", "world"),
         os.path.join(repo_root, "data", "worldgen"),
-        os.path.join(repo_root, "schema"),
+        os.path.join(repo_root, "contracts", "schemas"),
         os.path.join(repo_root, "tests", "fixtures"),
     ]
     text_exts = [".md", ".schema", ".json", ".toml", ".yaml", ".yml", ".txt", ".replay", ".worlddef", ".save", ".pack", ".manifest", ".ini", ".cfg"]
@@ -12548,7 +12548,7 @@ def check_data_first_behavior(repo_root):
     if not runtime_changed:
         return []
 
-    data_first_roots = ("schema/", "data/", "docs/", "repo/", "tests/fixtures/")
+    data_first_roots = ("contracts/schemas/", "data/", "docs/", "repo/", "tests/fixtures/")
     has_data_first_change = False
     for rel in changed:
         rel_norm = normalize_path(rel)
@@ -12563,7 +12563,7 @@ def check_data_first_behavior(repo_root):
         if _has_marker(repo_root, rel, MECHANISM_ONLY_MARKER):
             continue
         violations.append(
-            "{}: runtime behavior change without schema/data anchor {} (add {} if mechanism-only)".format(
+            "{}: runtime behavior change without contracts/schemas/data anchor {} (add {} if mechanism-only)".format(
                 invariant_id, rel, MECHANISM_ONLY_MARKER
             )
         )
@@ -12606,7 +12606,7 @@ def check_no_silent_defaults(repo_root):
 
 def _collect_schema_tokens(repo_root):
     tokens = set()
-    roots = [os.path.join(repo_root, "schema")]
+    roots = [os.path.join(repo_root, "contracts", "schemas")]
     token_re = re.compile(r"[A-Za-z][A-Za-z0-9_.-]{1,}")
     for path in iter_files(roots, DEFAULT_EXCLUDES, [".schema", ".json", ".yaml", ".yml", ".md"]):
         text = read_text(path) or ""
@@ -12737,7 +12737,7 @@ def check_new_feature_requires_data_first(repo_root):
     data_touch = False
     for rel in changed:
         rel_norm = normalize_path(rel)
-        if rel_norm.startswith("data/") or rel_norm.startswith("schema/") or rel_norm.startswith("docs/"):
+        if rel_norm.startswith("data/") or rel_norm.startswith("contracts/schemas/") or rel_norm.startswith("docs/"):
             data_touch = True
             break
     if data_touch:
@@ -12748,7 +12748,7 @@ def check_new_feature_requires_data_first(repo_root):
         if _has_marker(repo_root, rel, INFRA_ONLY_MARKER):
             continue
         violations.append(
-            "{}: runtime feature touched without data/schema/docs anchor {} (file {})".format(
+            "{}: runtime feature touched without data/contracts/schemas/docs anchor {} (file {})".format(
                 invariant_id, INFRA_ONLY_MARKER, rel
             )
         )
@@ -13069,7 +13069,7 @@ def check_schema_deprecated_fields(repo_root):
     changed_files = get_changed_files(repo_root)
     if changed_files is None:
         return []
-    candidates = [path for path in changed_files if path.startswith("schema/") or path.startswith("data/")]
+    candidates = [path for path in changed_files if path.startswith("contracts/schemas/") or path.startswith("data/")]
     violations = []
     for rel in sorted(candidates):
         diff = run_git(["diff", "--unified=0", "--", rel], repo_root)

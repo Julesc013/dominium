@@ -37,7 +37,7 @@ def main() -> int:
     parser.add_argument("--compression-optional", action="append", default=[])
     parser.add_argument("--zstd-threshold-bytes", type=int, default=1073741824)
     parser.add_argument("--signature-policy", default="dev_optional")
-    parser.add_argument("--trust-policy-ref", default="schema/distribution/trust_policy.schema")
+    parser.add_argument("--trust-policy-ref", default="contracts/schemas/distribution/trust_policy.schema")
     args = parser.parse_args()
 
     index_json = os.path.abspath(args.index_json)

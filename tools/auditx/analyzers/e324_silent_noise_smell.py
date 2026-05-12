@@ -12,7 +12,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e324_silent_noise_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
-    "schema/logic/noise_policy.schema",
+    "contracts/schemas/logic/noise_policy.schema",
     "data/registries/logic_noise_policy_registry.json",
     "logic/noise/noise_engine.py",
     "logic/eval/sense_engine.py",
@@ -62,7 +62,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    schema_rel = "schema/logic/noise_policy.schema"
+    schema_rel = "contracts/schemas/logic/noise_policy.schema"
     schema_text = _read_text(repo_root, schema_rel)
     for token in ("noise_policy_id", "kind", "magnitude", "rng_stream_name"):
         if token in schema_text:

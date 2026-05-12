@@ -12,7 +12,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e325_security_bypass_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
-    "schema/logic/security_policy.schema",
+    "contracts/schemas/logic/security_policy.schema",
     "data/registries/logic_security_policy_registry.json",
     "logic/eval/sense_engine.py",
     "tools/logic/tool_replay_fault_window.py",
@@ -61,7 +61,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    schema_rel = "schema/logic/security_policy.schema"
+    schema_rel = "contracts/schemas/logic/security_policy.schema"
     schema_text = _read_text(repo_root, schema_rel)
     for token in ("security_policy_id", "requires_auth", "requires_encryption", "allowed_credential_types"):
         if token in schema_text:

@@ -46,7 +46,7 @@ must_not_contain = ["simulation truth ownership", "domain law", "product identit
 purpose = "Machine-readable and prose contracts for schemas, registries, protocols, compatibility, stability, replay, ABI, repository, and distribution rules."
 required = true
 category = "contracts"
-may_contain = ["schemas", "registries", "protocols", "capabilities", "compatibility", "stability", "replay", "abi", "repo", "distribution"]
+may_contain = ["abi", "schemas", "registries", "protocols", "capabilities", "compatibility", "stability", "replay", "repo", "distribution", "packs", "install", "instances", "saves", "bundles", "locks"]
 must_not_contain = ["generated package bytes", "runtime mutable state", "product entrypoints"]
 
 [canonical_roots.content]
@@ -177,31 +177,57 @@ notes = "Launcher product identity and executable naming must remain stable."
 
 [transitional_aliases.schema]
 target = "contracts/schemas"
-action = "split_schema_law_and_projection_with_review"
+action = "retired_after_contract_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-06"
-notes = "Current canonical schema law root; future physical convergence must preserve semantic authority."
+retired = true
+completed_phase = "CONVERGE-06"
+status_after_phase = "violation"
+notes = "Root-level schema/ was retired in CONVERGE-06; retained schema law belongs under contracts/schemas/."
 
 [transitional_aliases.schemas]
 target = "contracts/schemas"
-action = "split_schema_law_and_projection_with_review"
+action = "retired_after_contract_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-06"
-notes = "Current validator-facing schema projection; must not replace schema law silently."
+retired = true
+completed_phase = "CONVERGE-06"
+status_after_phase = "violation"
+notes = "Root-level schemas/ was retired in CONVERGE-06; retained validator-facing schema projections belong under contracts/schemas/."
 
 [transitional_aliases.compat]
-target = "contracts/compatibility"
-action = "split_contract_and_runtime_portions"
+target = "contracts/compatibility_plus_runtime_review"
+action = "review_mixed_compatibility_implementation"
 classification = "transitional_alias"
-retire_by_phase = "CONVERGE-06"
-notes = "Compatibility meaning belongs in contracts; runtime adapters may move separately."
+retire_by_phase = "review"
+notes = "Root-level compat/ remains mixed implementation and shim code after CONVERGE-06; do not move wholesale into contracts/."
 
 [transitional_aliases.locks]
-target = "contracts/replay"
-action = "split_lock_classes"
+target = "contracts/locks_or_store_locks_review"
+action = "review_lock_contracts_vs_lock_artifacts"
+classification = "transitional_alias"
+retire_by_phase = "review"
+notes = "Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas."
+
+[transitional_aliases.registry]
+target = "contracts/registries"
+action = "retired_absent_after_contract_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-06"
-notes = "Deterministic locks, runtime locks, and ops transactions require separate homes."
+retired = true
+completed_phase = "CONVERGE-06"
+status_after_phase = "violation"
+notes = "Root-level registry/ is absent after CONVERGE-06; future registry contracts belong under contracts/registries/."
+
+[transitional_aliases.registries]
+target = "contracts/registries"
+action = "retired_absent_after_contract_convergence"
+classification = "transitional_alias"
+retire_by_phase = "CONVERGE-06"
+retired = true
+completed_phase = "CONVERGE-06"
+status_after_phase = "violation"
+notes = "Root-level registries/ is absent after CONVERGE-06; future registry contracts belong under contracts/registries/."
 
 [transitional_aliases.lib]
 target = "review"

@@ -22,7 +22,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 MODULE_ROOTS = ("engine", "game", "client", "server", "platform", "src", "launcher", "setup")
-SCHEMA_ROOTS = ("schema", "schemas")
+SCHEMA_ROOTS = ("contracts/schemas",)
 REGISTRY_ROOTS = ("data/registries", "data/governance")
 TOOL_ROOT = "tools"
 PROCESS_RE = re.compile(r"\bprocess\.[A-Za-z0-9_.]+\b")
@@ -118,7 +118,7 @@ def _repository_hash(repo_root: str, explicit_commit_hash: str = "") -> str:
     if head:
         return "HEAD:{}".format(head)
     file_tokens: List[str] = []
-    for root in ("src", "schema", "schemas", "data/registries", "data/governance", "tools/xstack", "docs/architecture"):
+    for root in ("src", "contracts/schemas", "data/registries", "data/governance", "tools/xstack", "docs/architecture"):
         abs_root = os.path.join(repo_root, root.replace("/", os.sep))
         if not os.path.exists(abs_root):
             continue
@@ -381,13 +381,13 @@ def generate_topology_map(
 
     schema_nodes: List[dict] = []
     for root in SCHEMA_ROOTS:
-        suffixes = (".schema",) if root == "schema" else (".schema.json",)
+        suffixes = (".schema", ".schema.json")
         for rel_path in sorted(_iter_rel_files(repo_root, root, suffixes=suffixes)):
             node_id = "schema:{}".format(rel_path)
             owner = ""
             parts = rel_path.split("/")
-            if len(parts) >= 2 and parts[0] == "schema":
-                owner = parts[1]
+            if len(parts) >= 3 and parts[0] == "contracts" and parts[1] == "schemas":
+                owner = parts[2]
             version = _schema_version_for(rel_path, repo_root)
             schema_nodes.append(
                 _node(
@@ -632,7 +632,7 @@ def generate_topology_map(
         for target_id in policy_node_ids + contract_node_ids:
             edges.append(_edge(edge_kind="validates", from_node_id=tool_node, to_node_id=target_id))
 
-    # Module/schema/registry textual dependency approximation.
+    # Module/contracts/schemas/registry textual dependency approximation.
     schema_tokens = dict(
         (
             os.path.basename(str(node.get("path") or "")).replace(".schema.json", "").replace(".schema", "").lower(),

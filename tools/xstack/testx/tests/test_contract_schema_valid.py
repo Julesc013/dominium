@@ -28,19 +28,19 @@ def _required_fields(schema_payload: dict):
 def run(repo_root: str):
     checks = (
         (
-            "schemas/tier_contract.schema.json",
+            "contracts/schemas/tier_contract.schema.json",
             {"contract_id", "subsystem_id", "supported_tiers", "deterministic_degradation_order", "cost_model_id", "shard_safe"},
         ),
         (
-            "schemas/coupling_contract.schema.json",
+            "contracts/schemas/coupling_contract.schema.json",
             {"contract_id", "coupling_class_id", "from_domain_id", "to_domain_id", "mechanism", "mechanism_id"},
         ),
         (
-            "schemas/explain_contract.schema.json",
+            "contracts/schemas/explain_contract.schema.json",
             {"contract_id", "event_kind_id", "explain_artifact_type_id", "required_inputs", "remediation_hint_keys"},
         ),
         (
-            "schemas/explain_artifact.schema.json",
+            "contracts/schemas/explain_artifact.schema.json",
             {"explain_id", "cause_chain", "referenced_artifacts", "remediation_hints", "deterministic_fingerprint"},
         ),
     )

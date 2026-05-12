@@ -19,7 +19,7 @@ def main():
         "setup": "docs/app/README.md",
         "tools": "docs/tools/TOOLING_OVERVIEW.md",
         "libs": "docs/architecture/PROJECT_LIBRARIES.md",
-        "schema": "docs/schema/SCHEMA_INDEX.md",
+        "schema": "docs/contracts/schemas/SCHEMA_INDEX.md",
         "data": "docs/pack_format/PACK_MANIFEST.md",
         "ci": "docs/ci/README.md",
         "build": "docs/build/README.md",

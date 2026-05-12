@@ -40,7 +40,7 @@ def run(repo_root: str):
 
     schema_checks = (
         (
-            "schema/logic/logic_element_definition.schema",
+            "contracts/schemas/logic/logic_element_definition.schema",
             (
                 "element_id",
                 "description",
@@ -53,7 +53,7 @@ def run(repo_root: str):
             ),
         ),
         (
-            "schema/logic/logic_behavior_model.schema",
+            "contracts/schemas/logic/logic_behavior_model.schema",
             (
                 "behavior_model_id",
                 "model_kind",
@@ -62,7 +62,7 @@ def run(repo_root: str):
             ),
         ),
         (
-            "schema/logic/state_machine_definition.schema",
+            "contracts/schemas/logic/state_machine_definition.schema",
             (
                 "sm_id",
                 "states",

@@ -423,3 +423,7 @@ CONVERGE-04 added a distribution layout contract, distribution layout validator,
 ## CONVERGE-05 Follow-up Note
 
 CONVERGE-05 completed archive-family convergence. Root-level `attic/`, `legacy/`, and `quarantine/` were moved under `archive/`, `archive/README.md` and `archive/MANIFEST.md` were added, and no non-archive roots were moved.
+
+## CONVERGE-06 Follow-up Note
+
+CONVERGE-06 completed contract-adjacent convergence for root-level `schema/` and `schemas/`, merging retained schema material under `contracts/schemas/`. `compat/` and `locks/` remain review roots, `registry/` and `registries/` were confirmed absent, contracts README/MANIFEST were added, and no product, runtime, AppShell, domain, content, archive, or generated-output roots were moved.

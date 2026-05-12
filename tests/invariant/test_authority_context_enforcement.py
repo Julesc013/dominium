@@ -5,7 +5,7 @@ import sys
 from invariant_utils import is_override_active
 
 
-SCHEMA_REL = os.path.join("schema", "authority", "authority_context.schema")
+SCHEMA_REL = os.path.join("contracts", "schemas", "authority", "authority_context.schema")
 CLIENT_REL = os.path.join("client", "core", "client_command_bridge.c")
 SERVER_H_REL = os.path.join("server", "authority", "dom_server_authority.h")
 SERVER_CPP_REL = os.path.join("server", "authority", "dom_server_authority.cpp")

@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E435_BINARY_WITHOUT_DESCRIPTOR_SMELL"
 REQUIRED_TOKENS = {
-    "schema/lib/product_build_descriptor.schema": (
+    "contracts/schemas/lib/product_build_descriptor.schema": (
         "binary_hash",
         "endpoint_descriptor_hash",
     ),

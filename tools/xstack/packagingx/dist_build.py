@@ -478,14 +478,14 @@ def build_dist_layout(
         )
     _copy_tree_deterministic(src_registry_root, dst_registry_root)
 
-    src_schema_root = os.path.join(repo_root, "schemas")
+    src_schema_root = os.path.join(repo_root, "contracts", "schemas")
     dst_schema_root = os.path.join(out_root, "schemas")
     if not os.path.isdir(src_schema_root):
         return _refused(
             [
                 {
                     "code": "REFUSE_DIST_SCHEMA_ROOT_MISSING",
-                    "message": "schemas/ is required for portable offline verification",
+                    "message": "contracts/schemas/ is required for portable offline verification",
                     "path": "$.schemas",
                 }
             ]

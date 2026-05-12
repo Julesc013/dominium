@@ -52,7 +52,7 @@ def run(repo_root: str):
     if str(dict(agg_rows[0]).get("temporal_domain_id", "")).strip() != "time.canonical_tick":
         return {"status": "fail", "message": "aggregation schedule rows must default temporal_domain_id"}
 
-    schema_path = os.path.join(repo_root, "schemas", "schedule.schema.json")
+    schema_path = os.path.join(repo_root, "contracts", "schemas", "schedule.schema.json")
     try:
         schema_payload = json.load(open(schema_path, "r", encoding="utf-8"))
     except (OSError, ValueError):

@@ -53,8 +53,8 @@ def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str
                 os.path.join(cfg_root, "profiles", "**", "*"),
                 os.path.join(cfg_root, "schemas", "**", "*"),
                 os.path.join(repo_root, "data", "profiles", "*.json"),
-                os.path.join(repo_root, "schema", "distribution", "*.schema"),
-                os.path.join(repo_root, "schema", "ui", "*.schema"),
+                os.path.join(repo_root, "contracts", "schemas", "distribution", "*.schema"),
+                os.path.join(repo_root, "contracts", "schemas", "ui", "*.schema"),
             ]),
         },
         {
@@ -79,7 +79,7 @@ def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str
             "files": _existing_glob([
                 os.path.join(build_lib, "domino_engine.lib"),
                 os.path.join(repo_root, "engine", "include", "domino", "**", "*.h"),
-                os.path.join(repo_root, "schema", "distribution", "*.schema"),
+                os.path.join(repo_root, "contracts", "schemas", "distribution", "*.schema"),
                 os.path.join(repo_root, "LICENSE.md"),
                 os.path.join(repo_root, "README.md"),
             ]),
@@ -92,7 +92,7 @@ def _group_specs(build_bin: str, build_lib: str, dist_tools: str, repo_root: str
             "files": _existing_glob([
                 os.path.join(build_lib, "dominium_game.lib"),
                 os.path.join(repo_root, "game", "include", "dominium", "**", "*.h"),
-                os.path.join(repo_root, "schema", "distribution", "*.schema"),
+                os.path.join(repo_root, "contracts", "schemas", "distribution", "*.schema"),
                 os.path.join(repo_root, "LICENSE.md"),
                 os.path.join(repo_root, "README.md"),
             ]),

@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E30_FACTION_ORPHAN_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
-    "schemas/",
+    "contracts/schemas/",
     "docs/civilisation/",
 )
 
@@ -64,7 +64,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    universe_schema_rel = "schemas/universe_state.schema.json"
+    universe_schema_rel = "contracts/schemas/universe_state.schema.json"
     universe_schema_text = _read_text(repo_root, universe_schema_rel)
     required_schema_tokens = (
         "\"faction_assemblies\"",

@@ -21,7 +21,7 @@ def _invoke(repo_root: str):
             ".",
             "impacted-tests",
             "--changed-files",
-            "schemas/session_spec.schema.json",
+            "contracts/schemas/session_spec.schema.json",
             "--out",
             "build/impact_graph.test.det.json",
         ],

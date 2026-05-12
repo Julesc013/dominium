@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "artifact_id",
         "content_hash",
     ),
-    "schema/lib/artifact_manifest.schema": (
+    "contracts/schemas/lib/artifact_manifest.schema": (
         "artifact_id",
         "artifact_kind_id",
         "migration_refs",

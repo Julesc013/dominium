@@ -5,17 +5,17 @@ from typing import Dict, List, Optional, Set, Tuple
 
 
 FAB_SCHEMA_FILES = [
-    "schema/material.schema",
-    "schema/substance.schema",
-    "schema/interface.schema",
-    "schema/part.schema",
-    "schema/assembly.schema",
-    "schema/process_family.schema",
-    "schema/instrument.schema",
-    "schema/standard.schema",
-    "schema/quality.schema",
-    "schema/batch_lot.schema",
-    "schema/hazard.schema",
+    "contracts/schemas/material.schema",
+    "contracts/schemas/substance.schema",
+    "contracts/schemas/interface.schema",
+    "contracts/schemas/part.schema",
+    "contracts/schemas/assembly.schema",
+    "contracts/schemas/process_family.schema",
+    "contracts/schemas/instrument.schema",
+    "contracts/schemas/standard.schema",
+    "contracts/schemas/quality.schema",
+    "contracts/schemas/batch_lot.schema",
+    "contracts/schemas/hazard.schema",
 ]
 
 ALLOWLIST_REFS = {
@@ -93,11 +93,11 @@ def main() -> int:
             if ref_type in ALLOWLIST_REFS:
                 continue
             base = ref_type[: -len("_ref")]
-            schema_path = os.path.join(repo_root, "schema", "{}.schema".format(base))
+            schema_path = os.path.join(repo_root, "contracts", "schemas", "{}.schema".format(base))
             if not os.path.isfile(schema_path):
                 violations.append(
                     "missing referenced schema for {} in {} (expected {})".format(
-                        ref_type, rel_path, "schema/{}.schema".format(base)
+                        ref_type, rel_path, "contracts/schemas/{}.schema".format(base)
                     )
                 )
 

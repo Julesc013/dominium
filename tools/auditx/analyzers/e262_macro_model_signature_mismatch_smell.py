@@ -41,8 +41,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    macro_set_schema_rel = "schema/system/macro_model_set.schema"
-    macro_capsule_schema_rel = "schema/system/macro_capsule.schema"
+    macro_set_schema_rel = "contracts/schemas/system/macro_model_set.schema"
+    macro_capsule_schema_rel = "contracts/schemas/system/macro_capsule.schema"
     macro_registry_rel = "data/registries/macro_model_set_registry.json"
     validation_rel = "system/system_validation_engine.py"
 

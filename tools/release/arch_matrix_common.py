@@ -729,7 +729,7 @@ def render_arch_matrix_retro_audit(report: Mapping[str, object]) -> str:
         "## Existing Inputs",
         "",
         "- `data/registries/platform_capability_registry.json` already declares platform-family capability envelopes.",
-        "- `schema/release/release_index.schema` already exposes `platform_matrix` rows with `{os, arch, abi, artifact_url_or_path}`.",
+        "- `contracts/schemas/release/release_index.schema` already exposes `platform_matrix` rows with `{os, arch, abi, artifact_url_or_path}`.",
         "- `data/registries/install_profile_registry.json` already defines deterministic install profiles for full/client/server/tools/sdk.",
         "- CAP-NEG endpoint descriptors now expose `official.target_id`, `official.os_id`, `official.arch_id`, `official.abi_id`, and `official.target_tier`.",
         "",

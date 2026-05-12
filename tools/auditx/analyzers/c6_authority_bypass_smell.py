@@ -20,7 +20,7 @@ def run(graph, repo_root, changed_files=None):
     del graph
     del changed_files
     findings = []
-    schema_rel = "schema/authority/authority_context.schema"
+    schema_rel = "contracts/schemas/authority/authority_context.schema"
     client_rel = "client/core/client_command_bridge.c"
     server_rel = "server/authority/dom_server_authority.cpp"
 

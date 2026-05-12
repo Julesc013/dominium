@@ -12,9 +12,9 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e322_unbounded_trace_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/DEBUG_AND_INSTRUMENTATION.md",
-    "schema/logic/debug_trace_request.schema",
-    "schema/logic/debug_trace_artifact.schema",
-    "schema/logic/debug_sampling_policy.schema",
+    "contracts/schemas/logic/debug_trace_request.schema",
+    "contracts/schemas/logic/debug_trace_artifact.schema",
+    "contracts/schemas/logic/debug_sampling_policy.schema",
     "data/registries/debug_sampling_policy_registry.json",
     "logic/debug/debug_engine.py",
     "tools/logic/tool_replay_trace_window.py",
@@ -63,7 +63,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    schema_rel = "schema/logic/debug_sampling_policy.schema"
+    schema_rel = "contracts/schemas/logic/debug_sampling_policy.schema"
     schema_text = _read_text(repo_root, schema_rel)
     for token in ("max_points", "max_ticks", "max_samples", "throttle_strategy"):
         if token in schema_text:

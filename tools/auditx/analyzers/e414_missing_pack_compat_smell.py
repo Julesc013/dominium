@@ -14,7 +14,7 @@ REQUIRED_FILES = {
         "strict policy surfaces must refuse packs missing it",
         "refusal.pack.compat_manifest_missing",
     ),
-    "schemas/pack_compat_manifest.schema.json": (
+    "contracts/schemas/pack_compat_manifest.schema.json": (
         "\"title\": \"Pack Compatibility Manifest Schema\"",
         "\"required_contract_ranges\"",
         "\"degrade_mode_id\"",

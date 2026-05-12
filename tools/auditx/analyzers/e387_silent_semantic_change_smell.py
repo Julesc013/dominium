@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E387_SILENT_SEMANTIC_CHANGE_SMELL"
-WATCH_PREFIXES = ("docs/", "src/", "tools/", "data/", "schema/", "schemas/")
+WATCH_PREFIXES = ("docs/", "src/", "tools/", "data/", "contracts/schemas/", "contracts/schemas/")
 REGISTRY_REL = "data/registries/semantic_contract_registry.json"
 TOKEN_RE = re.compile(r"\b(contract\.[a-z0-9_.]+\.v[0-9]+)\b")
 SCAN_EXTS = (".md", ".txt", ".py", ".json", ".schema", ".schema.json")
@@ -64,8 +64,8 @@ def run(graph, repo_root, changed_files=None):
         os.path.join(repo_root, "src"),
         os.path.join(repo_root, "tools"),
         os.path.join(repo_root, "data"),
-        os.path.join(repo_root, "schema"),
-        os.path.join(repo_root, "schemas"),
+        os.path.join(repo_root, "contracts", "schemas"),
+        os.path.join(repo_root, "contracts", "schemas"),
     )
     for root in scan_roots:
         if not os.path.isdir(root):

@@ -40,7 +40,7 @@ def _registry_policy_rows(repo_root: str, file_name: str, key: str):
 
 
 def _load_session_example(repo_root: str):
-    schema_path = os.path.join(repo_root, "schemas", "session_spec.schema.json")
+    schema_path = os.path.join(repo_root, "contracts", "schemas", "session_spec.schema.json")
     payload, err = _read_json(schema_path)
     if err:
         return {}, err

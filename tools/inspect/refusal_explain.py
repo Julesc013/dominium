@@ -9,17 +9,17 @@ from distribution_lib import discover_pack_manifests  # noqa: E402
 
 
 SCHEMA_MAP = {
-    "materials": "schema/material.schema",
-    "interfaces": "schema/interface.schema",
-    "parts": "schema/part.schema",
-    "assemblies": "schema/assembly.schema",
-    "process_families": "schema/process_family.schema",
-    "instruments": "schema/instrument.schema",
-    "standards": "schema/standard.schema",
-    "qualities": "schema/quality.schema",
-    "batches": "schema/batch_lot.schema",
-    "hazards": "schema/hazard.schema",
-    "substances": "schema/substance.schema",
+    "materials": "contracts/schemas/material.schema",
+    "interfaces": "contracts/schemas/interface.schema",
+    "parts": "contracts/schemas/part.schema",
+    "assemblies": "contracts/schemas/assembly.schema",
+    "process_families": "contracts/schemas/process_family.schema",
+    "instruments": "contracts/schemas/instrument.schema",
+    "standards": "contracts/schemas/standard.schema",
+    "qualities": "contracts/schemas/quality.schema",
+    "batches": "contracts/schemas/batch_lot.schema",
+    "hazards": "contracts/schemas/hazard.schema",
+    "substances": "contracts/schemas/substance.schema",
 }
 
 

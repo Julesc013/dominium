@@ -3,15 +3,15 @@
   "level_name": "Systemic stress and collapse",
   "status": "UNSUPPORTED",
   "required_schemas": [
-    "schema/budget_policy.schema",
-    "schema/budget_snapshot.schema",
-    "schema/hazard.schema",
-    "schema/institution.schema",
-    "schema/process_family.schema",
-    "schema/refinement_plan.schema",
-    "schema/shard_lifecycle.schema",
-    "schema/world_definition.schema",
-    "schema/worldgen_model.schema"
+    "contracts/schemas/budget_policy.schema",
+    "contracts/schemas/budget_snapshot.schema",
+    "contracts/schemas/hazard.schema",
+    "contracts/schemas/institution.schema",
+    "contracts/schemas/process_family.schema",
+    "contracts/schemas/refinement_plan.schema",
+    "contracts/schemas/shard_lifecycle.schema",
+    "contracts/schemas/world_definition.schema",
+    "contracts/schemas/worldgen_model.schema"
   ],
   "required_process_families": [
     "org.dominium.coverage.c-g.process.collapse",

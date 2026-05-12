@@ -30,7 +30,7 @@ def parse_build_number(repo_root):
 
 
 def iter_schema_files(repo_root):
-    root = os.path.join(repo_root, "schema")
+    root = os.path.join(repo_root, "contracts", "schemas")
     for dirpath, _dirnames, filenames in os.walk(root):
         for name in sorted(filenames):
             if name.endswith(".schema"):

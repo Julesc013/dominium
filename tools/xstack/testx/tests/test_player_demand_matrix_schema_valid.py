@@ -83,7 +83,7 @@ def run(repo_root: str):
                     ),
                 }
 
-    schema_rel = "schema/meta/player_demand_matrix.schema"
+    schema_rel = "contracts/schemas/meta/player_demand_matrix.schema"
     if not os.path.isfile(os.path.join(repo_root, schema_rel.replace("/", os.sep))):
         return {"status": "fail", "message": "{} missing".format(schema_rel)}
     return {"status": "pass", "message": "player demand matrix shape valid"}

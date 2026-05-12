@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E41_IMPLICIT_DEFAULT_PROFILE_SMELL"
 TOKEN_REQUIREMENTS = {
-    "schemas/universe_identity.schema.json": (
+    "contracts/schemas/universe_identity.schema.json": (
         "physics_profile_id",
         "immutable_after_create",
     ),

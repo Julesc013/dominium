@@ -25,7 +25,7 @@ SUBSYSTEM_KEYWORDS = {
     "launcher": ("launcher/",),
     "setup": ("setup/",),
     "tools": ("tools/",),
-    "schema": ("schema/", ".schema"),
+    "schema": ("contracts/schemas/", ".schema"),
     "data": ("data/", ".json"),
     "docs": ("docs/", ".md"),
     "tests": ("tests/", "ctest", "testx"),

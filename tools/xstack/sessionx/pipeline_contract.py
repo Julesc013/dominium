@@ -96,7 +96,7 @@ def _validate_stage_rows(repo_root: str, stage_rows: List[dict]) -> Tuple[Dict[s
             return {}, refusal(
                 "REFUSE_SESSION_STAGE_REGISTRY_INVALID",
                 "stage '{}' failed session_stage schema validation".format(stage_id),
-                "Fix stage row fields to satisfy schemas/session_stage.schema.json.",
+                "Fix stage row fields to satisfy contracts/schemas/session_stage.schema.json.",
                 {"stage_id": stage_id, "schema_id": "session_stage"},
                 str(first.get("path", "$")),
             )
@@ -196,7 +196,7 @@ def load_session_pipeline_contract(repo_root: str, pipeline_id: str = "") -> Dic
         return refusal(
             "REFUSE_SESSION_PIPELINE_REGISTRY_INVALID",
             "pipeline '{}' failed session_pipeline schema validation".format(selected_pipeline_id),
-            "Fix pipeline fields to satisfy schemas/session_pipeline.schema.json.",
+            "Fix pipeline fields to satisfy contracts/schemas/session_pipeline.schema.json.",
             {"pipeline_id": selected_pipeline_id, "schema_id": "session_pipeline"},
             str(first.get("path", "$")),
         )

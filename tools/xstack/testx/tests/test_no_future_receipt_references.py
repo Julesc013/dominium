@@ -42,8 +42,8 @@ def run(repo_root: str):
     )
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )

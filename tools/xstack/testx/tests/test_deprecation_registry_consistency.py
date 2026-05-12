@@ -17,7 +17,7 @@ def _read_json(path: str):
 
 def run(repo_root: str):
     registry_rel = "data/registries/deprecation_registry.json"
-    schema_rel = "schemas/deprecation_registry.schema.json"
+    schema_rel = "contracts/schemas/deprecation_registry.schema.json"
     registry_path = os.path.join(repo_root, registry_rel.replace("/", os.sep))
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
     if not os.path.isfile(registry_path):

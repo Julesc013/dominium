@@ -77,7 +77,7 @@ SCAN_ROOTS = (
     "tools/xstack/session_boot.py",
     "tools/worldgen_offline",
     "schemas",
-    "schema/worldgen",
+    "contracts/schemas/worldgen",
     "data/registries/domain_registry.json",
     "data/registries/domain_contract_registry.json",
     "data/registries/solver_registry.json",
@@ -128,9 +128,9 @@ RENDERER_TRUTH_INCLUDE_FORBIDDEN = {
 }
 
 SESSION_PIPELINE_REQUIRED_FILES = (
-    "schemas/session_spec.schema.json",
-    "schemas/session_stage.schema.json",
-    "schemas/session_pipeline.schema.json",
+    "contracts/schemas/session_spec.schema.json",
+    "contracts/schemas/session_stage.schema.json",
+    "contracts/schemas/session_pipeline.schema.json",
     "data/registries/session_stage_registry.json",
     "data/registries/session_pipeline_registry.json",
 )
@@ -156,9 +156,9 @@ DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
     "data/registries/solver_registry.json",
     "packs/system_templates/",
     "docs/scale/",
-    "schema/scale/",
-    "schemas/domain_",
-    "schemas/solver_registry.schema.json",
+    "contracts/schemas/scale/",
+    "contracts/schemas/domain_",
+    "contracts/schemas/solver_registry.schema.json",
     "tools/domain/",
 )
 
@@ -167,10 +167,10 @@ CONTRACT_TOKEN_ALLOWED_PATH_PREFIXES = (
     "data/registries/domain_contract_registry.json",
     "data/registries/solver_registry.json",
     "docs/scale/",
-    "schema/scale/",
-    "schemas/domain_foundation_registry.schema.json",
-    "schemas/domain_contract_registry.schema.json",
-    "schemas/solver_registry.schema.json",
+    "contracts/schemas/scale/",
+    "contracts/schemas/domain_foundation_registry.schema.json",
+    "contracts/schemas/domain_contract_registry.schema.json",
+    "contracts/schemas/solver_registry.schema.json",
     "tools/domain/",
     "tools/xstack/testx/tests/",
 )
@@ -671,7 +671,7 @@ INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS = (
 PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/",
     "docs/",
-    "schemas/",
+    "contracts/schemas/",
     "tools/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",
@@ -680,7 +680,7 @@ PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
 PLAYER_FACTION_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/",
     "docs/",
-    "schemas/",
+    "contracts/schemas/",
     "tools/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",
@@ -721,8 +721,8 @@ PLAYER_DEBUG_FORBIDDEN_ENTITLEMENTS = (
 )
 
 WORLDGEN_CONSTRAINT_REQUIRED_FILES = (
-    "schemas/worldgen_constraints.schema.json",
-    "schemas/worldgen_search_plan.schema.json",
+    "contracts/schemas/worldgen_constraints.schema.json",
+    "contracts/schemas/worldgen_search_plan.schema.json",
     "data/registries/worldgen_constraints_registry.json",
 )
 
@@ -731,11 +731,11 @@ WORLDGEN_CONSTRAINT_LITERAL_ALLOWED_PATH_PREFIXES = (
     "bundles/",
     "data/registries/worldgen_constraints_registry.json",
     "docs/worldgen/",
-    "schema/worldgen/",
-    "schemas/",
-    "schemas/worldgen_constraints.schema.json",
-    "schemas/worldgen_search_plan.schema.json",
-    "schemas/worldgen_constraints_registry.schema.json",
+    "contracts/schemas/worldgen/",
+    "contracts/schemas/",
+    "contracts/schemas/worldgen_constraints.schema.json",
+    "contracts/schemas/worldgen_search_plan.schema.json",
+    "contracts/schemas/worldgen_constraints_registry.schema.json",
     "tools/xstack/testx/tests/",
     "tools/worldgen_offline/",
     "worldgen/core/constraint_solver.py",
@@ -795,7 +795,7 @@ NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/registries/",
     "docs/net/",
     "docs/contracts/",
-    "schemas/",
+    "contracts/schemas/",
     "tools/xstack/testx/tests/",
     "tools/auditx/",
     "tools/xstack/registry_compile/",
@@ -807,7 +807,7 @@ PHYSICS_LITERAL_ALLOWED_PATH_PREFIXES = (
     "packs/",
     "data/registries/",
     "docs/",
-    "schemas/",
+    "contracts/schemas/",
     "tools/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",
@@ -817,8 +817,8 @@ BLUEPRINT_LITERAL_ALLOWED_PATH_PREFIXES = (
     "packs/",
     "data/registries/",
     "docs/",
-    "schemas/",
-    "schema/",
+    "contracts/schemas/",
+    "contracts/schemas/",
     "tools/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",
@@ -1039,8 +1039,8 @@ META_STABILITY_RETRO_AUDIT_PATH = "docs/audit/META_STABILITY1_RETRO_AUDIT.md"
 META_STABILITY_FIX_PLAN_PATH = "docs/audit/META_STABILITY1_FIX_PLAN.md"
 META_STABILITY_DOCTRINE_PATH = "docs/meta/STABILITY_CLASSIFICATION.md"
 META_STABILITY_CONVENTION_PATH = "docs/meta/STABILITY_REGISTRY_CONVENTION.md"
-META_STABILITY_SCHEMA_DOC_PATH = "schema/meta/stability_marker.schema"
-META_STABILITY_SCHEMA_JSON_PATH = "schemas/stability_marker.schema.json"
+META_STABILITY_SCHEMA_DOC_PATH = "contracts/schemas/meta/stability_marker.schema"
+META_STABILITY_SCHEMA_JSON_PATH = "contracts/schemas/stability_marker.schema.json"
 META_STABILITY_CLASS_REGISTRY_PATH = "data/registries/stability_class_registry.json"
 META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "data/registries/stability_requirements_registry.json"
 META_STABILITY_VALIDATOR_PATH = "meta/stability/stability_validator.py"
@@ -1049,10 +1049,10 @@ META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_TAGGING_FINAL.md"
 
 TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
 TIME_ANCHOR_DOCTRINE_PATH = "docs/time/TIME_ANCHOR_MODEL.md"
-TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "schema/time/tick_t.schema"
-TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "schema/time/epoch_anchor_record.schema"
-TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "schemas/tick_t.schema.json"
-TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH = "schemas/epoch_anchor_record.schema.json"
+TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "contracts/schemas/time/tick_t.schema"
+TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "contracts/schemas/time/epoch_anchor_record.schema"
+TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "contracts/schemas/tick_t.schema.json"
+TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH = "contracts/schemas/epoch_anchor_record.schema.json"
 TIME_ANCHOR_POLICY_REGISTRY_PATH = "data/registries/time_anchor_policy_registry.json"
 TIME_ANCHOR_TICK_MODULE_PATH = "engine/time/tick_t.py"
 TIME_ANCHOR_ENGINE_PATH = "engine/time/epoch_anchor_engine.py"
@@ -1120,7 +1120,7 @@ VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
 VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
 VIRTUAL_PATHS_REPORT_PATH = "data/audit/virtual_paths_report.json"
 INSTALL_DISCOVERY_ENGINE_PATH = "lib/install/install_discovery_engine.py"
-INSTALL_DISCOVERY_SCHEMA_PATH = "schema/lib/install_registry.schema"
+INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schemas/lib/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
@@ -1153,8 +1153,8 @@ VALIDATION_SHIMS_PATH = "compat/shims/validation_shims.py"
 VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
-VALIDATION_RESULT_SCHEMA_DOC_PATH = "schema/validation/validation_result.schema"
-VALIDATION_RESULT_SCHEMA_JSON_PATH = "schemas/validation_result.schema.json"
+VALIDATION_RESULT_SCHEMA_DOC_PATH = "contracts/schemas/validation/validation_result.schema"
+VALIDATION_RESULT_SCHEMA_JSON_PATH = "contracts/schemas/validation_result.schema.json"
 VALIDATION_SUITE_REGISTRY_PATH = "data/registries/validation_suite_registry.json"
 VALIDATION_ENGINE_PATH = "validation/validation_engine.py"
 VALIDATION_TOOL_PATH = "tools/validation/tool_run_validation.py"
@@ -1178,12 +1178,12 @@ EARTH10_BASELINE_PATH = "docs/audit/EARTH_MATERIAL_PROXY_BASELINE.md"
 
 SOL1_RETRO_AUDIT_PATH = "docs/audit/SOL1_RETRO_AUDIT.md"
 SOL1_DOCTRINE_PATH = "docs/sol/ILLUMINATION_GEOMETRY_MODEL.md"
-SOL1_EMITTER_SCHEMA_DOC_PATH = "schema/astro/emitter.schema"
-SOL1_RECEIVER_SCHEMA_DOC_PATH = "schema/astro/receiver.schema"
-SOL1_VIEW_SCHEMA_DOC_PATH = "schema/astro/illumination_view_artifact.schema"
-SOL1_EMITTER_SCHEMA_JSON_PATH = "schemas/emitter.schema.json"
-SOL1_RECEIVER_SCHEMA_JSON_PATH = "schemas/receiver.schema.json"
-SOL1_VIEW_SCHEMA_JSON_PATH = "schemas/illumination_view_artifact.schema.json"
+SOL1_EMITTER_SCHEMA_DOC_PATH = "contracts/schemas/astro/emitter.schema"
+SOL1_RECEIVER_SCHEMA_DOC_PATH = "contracts/schemas/astro/receiver.schema"
+SOL1_VIEW_SCHEMA_DOC_PATH = "contracts/schemas/astro/illumination_view_artifact.schema"
+SOL1_EMITTER_SCHEMA_JSON_PATH = "contracts/schemas/emitter.schema.json"
+SOL1_RECEIVER_SCHEMA_JSON_PATH = "contracts/schemas/receiver.schema.json"
+SOL1_VIEW_SCHEMA_JSON_PATH = "contracts/schemas/illumination_view_artifact.schema.json"
 SOL1_EMITTER_REGISTRY_PATH = "data/registries/emitter_kind_registry.json"
 SOL1_RECEIVER_REGISTRY_PATH = "data/registries/receiver_kind_registry.json"
 SOL1_OCCLUSION_POLICY_REGISTRY_PATH = "data/registries/occlusion_policy_registry.json"
@@ -1193,12 +1193,12 @@ SOL1_AUDIT_COMMON_PATH = "tools/astro/sol1_audit_common.py"
 
 SOL2_RETRO_AUDIT_PATH = "docs/audit/SOL2_RETRO_AUDIT.md"
 SOL2_DOCTRINE_PATH = "docs/sol/ORBIT_VISUALIZATION_MODEL.md"
-SOL2_PROVIDER_SCHEMA_DOC_PATH = "schema/astro/ephemeris_provider.schema"
-SOL2_POLICY_SCHEMA_DOC_PATH = "schema/astro/orbit_path_policy.schema"
-SOL2_VIEW_SCHEMA_DOC_PATH = "schema/astro/orbit_view_artifact.schema"
-SOL2_PROVIDER_SCHEMA_JSON_PATH = "schemas/ephemeris_provider.schema.json"
-SOL2_POLICY_SCHEMA_JSON_PATH = "schemas/orbit_path_policy.schema.json"
-SOL2_VIEW_SCHEMA_JSON_PATH = "schemas/orbit_view_artifact.schema.json"
+SOL2_PROVIDER_SCHEMA_DOC_PATH = "contracts/schemas/astro/ephemeris_provider.schema"
+SOL2_POLICY_SCHEMA_DOC_PATH = "contracts/schemas/astro/orbit_path_policy.schema"
+SOL2_VIEW_SCHEMA_DOC_PATH = "contracts/schemas/astro/orbit_view_artifact.schema"
+SOL2_PROVIDER_SCHEMA_JSON_PATH = "contracts/schemas/ephemeris_provider.schema.json"
+SOL2_POLICY_SCHEMA_JSON_PATH = "contracts/schemas/orbit_path_policy.schema.json"
+SOL2_VIEW_SCHEMA_JSON_PATH = "contracts/schemas/orbit_view_artifact.schema.json"
 SOL2_PROVIDER_REGISTRY_PATH = "data/registries/ephemeris_provider_registry.json"
 SOL2_POLICY_REGISTRY_PATH = "data/registries/orbit_path_policy_registry.json"
 SOL2_ENGINE_PATH = "astro/ephemeris/kepler_proxy_engine.py"
@@ -1216,8 +1216,8 @@ GAL0_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_galaxy_proxies.py"
 GAL0_BASELINE_PATH = "docs/audit/GALAXY_PROXY_BASELINE.md"
 GAL1_RETRO_AUDIT_PATH = "docs/audit/GAL1_RETRO_AUDIT.md"
 GAL1_DOCTRINE_PATH = "docs/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
-GAL1_SCHEMA_DOC_PATH = "schema/worldgen/galaxy_object_stub.schema"
-GAL1_SCHEMA_JSON_PATH = "schemas/galaxy_object_stub.schema.json"
+GAL1_SCHEMA_DOC_PATH = "contracts/schemas/worldgen/galaxy_object_stub.schema"
+GAL1_SCHEMA_JSON_PATH = "contracts/schemas/galaxy_object_stub.schema.json"
 GAL1_OBJECT_KIND_REGISTRY_PATH = "data/registries/object_kind_registry.json"
 GAL1_ENGINE_PATH = "worldgen/galaxy/galaxy_object_stub_generator.py"
 GAL1_PROBE_PATH = "tools/worldgen/gal1_probe.py"
@@ -1654,7 +1654,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="schemas/{}.schema.json".format(schema_name),
+                        file_path="contracts/schemas/{}.schema.json".format(schema_name),
                         line_number=1,
                         snippet="",
                         message="multiplayer schema example validation failed for '{}'".format(schema_name),
@@ -3390,9 +3390,9 @@ def _append_profile_override_invariant_findings(
 
     required_paths = (
         "meta/profile/profile_engine.py",
-        "schema/meta/profile.schema",
-        "schema/meta/profile_binding.schema",
-        "schema/meta/exception_event.schema",
+        "contracts/schemas/meta/profile.schema",
+        "contracts/schemas/meta/profile_binding.schema",
+        "contracts/schemas/meta/exception_event.schema",
         "data/registries/profile_registry.json",
     )
     for rel_path in required_paths:
@@ -3518,8 +3518,8 @@ def _append_compute_budget_invariant_findings(
     severity = _strict_only_severity(profile)
 
     required_paths = (
-        "schema/meta/compute_budget_profile.schema",
-        "schema/meta/compute_consumption_record.schema",
+        "contracts/schemas/meta/compute_budget_profile.schema",
+        "contracts/schemas/meta/compute_consumption_record.schema",
         "data/registries/compute_budget_profile_registry.json",
         "data/registries/compute_degrade_policy_registry.json",
         "meta/compute/compute_budget_engine.py",
@@ -3667,8 +3667,8 @@ def _append_logic_constitution_invariant_findings(
     carrier_bias_rule_id = "INV-NO-CARRIER-SEMANTIC-BIAS"
 
     constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
-    signal_schema_rel = "schema/logic/signal_type.schema"
-    logic_policy_schema_rel = "schema/logic/logic_policy.schema"
+    signal_schema_rel = "contracts/schemas/logic/signal_type.schema"
+    logic_policy_schema_rel = "contracts/schemas/logic/logic_policy.schema"
     signal_registry_rel = "data/registries/signal_type_registry.json"
     carrier_registry_rel = "data/registries/carrier_type_registry.json"
     bus_encoding_rel = "data/registries/bus_encoding_registry.json"
@@ -3684,7 +3684,7 @@ def _append_logic_constitution_invariant_findings(
     compute_registry_rel = "data/registries/compute_budget_profile_registry.json"
     instrument_registry_rel = "data/registries/instrument_type_registry.json"
     profile_registry_rel = "data/registries/profile_registry.json"
-    exception_schema_rel = "schema/meta/exception_event.schema"
+    exception_schema_rel = "contracts/schemas/meta/exception_event.schema"
 
     constitution_text = _file_text(repo_root, constitution_rel)
     if not constitution_text:
@@ -4081,9 +4081,9 @@ def _append_logic_element_invariant_findings(
 
     required_files = (
         ("docs/logic/LOGIC_ELEMENT_MODEL.md", statevec_rule_id),
-        ("schema/logic/logic_element_definition.schema", statevec_rule_id),
-        ("schema/logic/logic_behavior_model.schema", statevec_rule_id),
-        ("schema/logic/state_machine_definition.schema", statevec_rule_id),
+        ("contracts/schemas/logic/logic_element_definition.schema", statevec_rule_id),
+        ("contracts/schemas/logic/logic_behavior_model.schema", statevec_rule_id),
+        ("contracts/schemas/logic/state_machine_definition.schema", statevec_rule_id),
         ("data/registries/logic_element_registry.json", compute_rule_id),
         ("data/registries/logic_behavior_model_registry.json", hardcoded_rule_id),
         ("data/registries/logic_state_machine_registry.json", statevec_rule_id),
@@ -4209,9 +4209,9 @@ def _append_logic_network_invariant_findings(
     required_files = (
         ("docs/logic/LOGIC_NETWORKGRAPH.md", substrate_rule_id),
         ("docs/logic/LOGIC_SHARD_BOUNDARY_RULES.md", loop_rule_id),
-        ("schema/logic/logic_node_payload.schema", substrate_rule_id),
-        ("schema/logic/logic_edge_payload.schema", substrate_rule_id),
-        ("schema/logic/logic_network_binding.schema", substrate_rule_id),
+        ("contracts/schemas/logic/logic_node_payload.schema", substrate_rule_id),
+        ("contracts/schemas/logic/logic_edge_payload.schema", substrate_rule_id),
+        ("contracts/schemas/logic/logic_network_binding.schema", substrate_rule_id),
         ("data/registries/logic_node_kind_registry.json", substrate_rule_id),
         ("data/registries/logic_edge_kind_registry.json", substrate_rule_id),
         ("data/registries/logic_network_policy_registry.json", loop_rule_id),
@@ -4429,9 +4429,9 @@ def _append_logic_eval_invariant_findings(
 
     required_files = (
         ("docs/logic/LOGIC_EVALUATION_ENGINE.md", budget_rule_id),
-        ("schema/logic/logic_network_runtime_state.schema", budget_rule_id),
-        ("schema/logic/logic_eval_record.schema", budget_rule_id),
-        ("schema/logic/logic_throttle_event.schema", budget_rule_id),
+        ("contracts/schemas/logic/logic_network_runtime_state.schema", budget_rule_id),
+        ("contracts/schemas/logic/logic_eval_record.schema", budget_rule_id),
+        ("contracts/schemas/logic/logic_throttle_event.schema", budget_rule_id),
         ("logic/eval/sense_engine.py", budget_rule_id),
         ("logic/eval/compute_engine.py", budget_rule_id),
         ("logic/eval/commit_engine.py", state_rule_id),
@@ -4634,11 +4634,11 @@ def _append_logic_timing_invariant_findings(
 
     required_files = (
         ("docs/logic/TIMING_AND_OSCILLATION_MODEL.md", clock_rule_id),
-        ("schema/logic/timing_constraint.schema", delay_rule_id),
-        ("schema/logic/oscillation_record.schema", explain_rule_id),
-        ("schema/logic/watchdog_definition.schema", explain_rule_id),
-        ("schema/logic/timing_violation_event.schema", explain_rule_id),
-        ("schema/logic/watchdog_timeout_event.schema", explain_rule_id),
+        ("contracts/schemas/logic/timing_constraint.schema", delay_rule_id),
+        ("contracts/schemas/logic/oscillation_record.schema", explain_rule_id),
+        ("contracts/schemas/logic/watchdog_definition.schema", explain_rule_id),
+        ("contracts/schemas/logic/timing_violation_event.schema", explain_rule_id),
+        ("contracts/schemas/logic/watchdog_timeout_event.schema", explain_rule_id),
         ("data/registries/timing_pattern_registry.json", delay_rule_id),
         ("logic/timing/oscillation_engine.py", explain_rule_id),
         ("logic/timing/pattern_engine.py", explain_rule_id),
@@ -4994,10 +4994,10 @@ def _append_logic_debug_invariant_findings(
 
     required_files = (
         ("docs/logic/DEBUG_AND_INSTRUMENTATION.md", omniscient_rule_id),
-        ("schema/logic/debug_probe_request.schema", bounded_rule_id),
-        ("schema/logic/debug_trace_request.schema", bounded_rule_id),
-        ("schema/logic/debug_trace_artifact.schema", bounded_rule_id),
-        ("schema/logic/debug_sampling_policy.schema", bounded_rule_id),
+        ("contracts/schemas/logic/debug_probe_request.schema", bounded_rule_id),
+        ("contracts/schemas/logic/debug_trace_request.schema", bounded_rule_id),
+        ("contracts/schemas/logic/debug_trace_artifact.schema", bounded_rule_id),
+        ("contracts/schemas/logic/debug_sampling_policy.schema", bounded_rule_id),
         ("data/registries/debug_sampling_policy_registry.json", bounded_rule_id),
         ("logic/debug/debug_engine.py", budget_rule_id),
         ("logic/debug/runtime_state.py", bounded_rule_id),
@@ -5212,9 +5212,9 @@ def _append_logic_protocol_invariant_findings(
     required_files = (
         ("docs/logic/PROTOCOL_LAYER_MODEL.md", deterministic_rule_id),
         ("docs/logic/PROTOCOL_SHARD_RULES.md", bypass_rule_id),
-        ("schema/logic/protocol_frame.schema", deterministic_rule_id),
-        ("schema/logic/arbitration_state.schema", deterministic_rule_id),
-        ("schema/logic/protocol_event_record.schema", deterministic_rule_id),
+        ("contracts/schemas/logic/protocol_frame.schema", deterministic_rule_id),
+        ("contracts/schemas/logic/arbitration_state.schema", deterministic_rule_id),
+        ("contracts/schemas/logic/protocol_event_record.schema", deterministic_rule_id),
         ("data/registries/arbitration_policy_registry.json", deterministic_rule_id),
         ("data/registries/error_detection_policy_registry.json", deterministic_rule_id),
         ("logic/protocol/protocol_engine.py", bypass_rule_id),
@@ -5637,7 +5637,7 @@ def _append_provenance_compaction_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     registry_rel = "data/registries/provenance_classification_registry.json"
-    schema_rel = "schemas/control_proof_bundle.schema.json"
+    schema_rel = "contracts/schemas/control_proof_bundle.schema.json"
     engine_rel = "meta/provenance/compaction_engine.py"
     tool_rel = "tools/meta/tool_verify_replay_from_anchor.py"
 
@@ -11058,8 +11058,8 @@ def _append_reserved_misuse_findings(
         return
     rel_norm = _norm(rel_path)
     exempt_roots = (
-        "schemas/",
-        "schema/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "docs/",
         "packs/derived/",
     )
@@ -11236,7 +11236,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-            has_schema_token = ("schemas/" in lower) or ("schema/" in lower) or (".schema.json" in lower)
+            has_schema_token = ("contracts/schemas/" in lower) or ("contracts/schemas/" in lower) or (".schema.json" in lower)
             if has_schema_token and any(token in lower for token in io_read_tokens):
                 if not rel_norm.startswith(SCHEMA_READ_ALLOWED_PREFIXES):
                     findings.append(
@@ -13263,7 +13263,7 @@ def _append_reality_profile_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_files = {
-        "schemas/universe_identity.schema.json": (
+        "contracts/schemas/universe_identity.schema.json": (
             "physics_profile_id",
             "immutable_after_create",
             "initial_pack_set_hash_expectation",
@@ -13368,7 +13368,7 @@ def _append_phys_profile_declared_invariant_findings(
     severity = _strict_only_severity(profile)
     rule_id = "INV-PHYS-PROFILE-DECLARED"
 
-    session_schema_rel = "schemas/session_spec.schema.json"
+    session_schema_rel = "contracts/schemas/session_spec.schema.json"
     payload, payload_error = _load_json_object(repo_root, session_schema_rel)
     if payload_error:
         findings.append(
@@ -13411,10 +13411,10 @@ def _append_phys_profile_declared_invariant_findings(
             )
 
     required_tokens = {
-        "schema/session/session_spec.schema": (
+        "contracts/schemas/session/session_spec.schema": (
             "physics_profile_id",
         ),
-        "schemas/examples/session_spec.example.json": (
+        "contracts/schemas/examples/session_spec.example.json": (
             "\"physics_profile_id\"",
         ),
         "tools/xstack/testdata/session/session_spec.fixture.json": (
@@ -13490,8 +13490,8 @@ def _append_unregistered_quantity_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -14570,10 +14570,10 @@ def _append_material_materialization_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_schema_paths = (
-        "schemas/micro_part_instance.schema.json",
-        "schemas/materialization_state.schema.json",
-        "schemas/distribution_aggregate.schema.json",
-        "schemas/reenactment_descriptor.schema.json",
+        "contracts/schemas/micro_part_instance.schema.json",
+        "contracts/schemas/materialization_state.schema.json",
+        "contracts/schemas/distribution_aggregate.schema.json",
+        "contracts/schemas/reenactment_descriptor.schema.json",
     )
     for rel_path in required_schema_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -14726,10 +14726,10 @@ def _append_material_commitment_reenactment_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_schema_paths = (
-        "schemas/commitment.schema.json",
-        "schemas/event_stream_index.schema.json",
-        "schemas/reenactment_request.schema.json",
-        "schemas/reenactment_artifact.schema.json",
+        "contracts/schemas/commitment.schema.json",
+        "contracts/schemas/event_stream_index.schema.json",
+        "contracts/schemas/reenactment_request.schema.json",
+        "contracts/schemas/reenactment_artifact.schema.json",
     )
     for rel_path in required_schema_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -16336,7 +16336,7 @@ def _append_deprecation_framework_invariant_findings(
     for rel_norm in changed_paths:
         if not rel_norm.startswith(all_code_prefixes):
             continue
-        if rel_norm.startswith(("docs/", "data/", "schema/", "schemas/", "tools/xstack/testx/tests/", "tests/")):
+        if rel_norm.startswith(("docs/", "data/", "contracts/schemas/", "contracts/schemas/", "tools/xstack/testx/tests/", "tests/")):
             continue
         text = _file_text(repo_root, rel_norm)
         if not text:
@@ -16700,7 +16700,7 @@ def _append_topology_map_invariant_findings(
 
     def _iter_schema_paths() -> List[str]:
         out: List[str] = []
-        schema_root = os.path.join(repo_root, "schema")
+        schema_root = os.path.join(repo_root, "contracts", "schemas")
         if os.path.isdir(schema_root):
             for walk_root, dirs, files in os.walk(schema_root):
                 dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
@@ -16709,7 +16709,7 @@ def _append_topology_map_invariant_findings(
                         continue
                     rel = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
                     out.append(rel)
-        schemas_root = os.path.join(repo_root, "schemas")
+        schemas_root = os.path.join(repo_root, "contracts", "schemas")
         if os.path.isdir(schemas_root):
             for walk_root, dirs, files in os.walk(schemas_root):
                 dirs[:] = sorted(token for token in dirs if not token.startswith(".") and token != "__pycache__")
@@ -16932,7 +16932,7 @@ def _append_time_constitution_invariant_findings(
         "tools/time/tool_time_branch_from_checkpoint.py": (
             "branch_from_checkpoint(",
         ),
-        "schema/time/branch.schema": (
+        "contracts/schemas/time/branch.schema": (
             "parent_save_id",
             "parent_checkpoint_id",
             "divergence_tick",
@@ -17016,7 +17016,7 @@ def _append_time_constitution_invariant_findings(
 
     strict_severity = _strict_only_severity(profile)
 
-    schedule_schema_rel = "schemas/schedule.schema.json"
+    schedule_schema_rel = "contracts/schemas/schedule.schema.json"
     schedule_schema_payload, schedule_schema_error = _load_json_object(repo_root, schedule_schema_rel)
     if schedule_schema_error:
         findings.append(
@@ -17045,7 +17045,7 @@ def _append_time_constitution_invariant_findings(
             )
 
     schedule_domain_required_tokens = {
-        "schema/core/schedule.schema": (
+        "contracts/schemas/core/schedule.schema": (
             "temporal_domain_id",
         ),
         "core/schedule/schedule_engine.py": (
@@ -17448,8 +17448,8 @@ def _append_time_constitution_invariant_findings(
     )
     future_receipt_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -17705,7 +17705,7 @@ def _append_tier_transition_invariant_findings(
             )
         )
 
-    transition_event_schema_rel = "schema/reality/transition_event.schema"
+    transition_event_schema_rel = "contracts/schemas/reality/transition_event.schema"
     transition_event_schema_abs = os.path.join(repo_root, transition_event_schema_rel.replace("/", os.sep))
     try:
         transition_event_schema_text = open(transition_event_schema_abs, "r", encoding="utf-8").read()
@@ -17737,7 +17737,7 @@ def _append_tier_transition_invariant_findings(
                 )
             )
 
-    universe_state_schema_rel = "schemas/universe_state.schema.json"
+    universe_state_schema_rel = "contracts/schemas/universe_state.schema.json"
     universe_state_schema_abs = os.path.join(repo_root, universe_state_schema_rel.replace("/", os.sep))
     try:
         universe_state_schema_text = open(universe_state_schema_abs, "r", encoding="utf-8").read()
@@ -19383,8 +19383,8 @@ def _append_meta_contract_invariant_findings(
         scan_prefixes = tuple(direct_coupling_patterns_by_prefix.keys())
         skip_prefixes = (
             "docs/",
-            "schema/",
-            "schemas/",
+            "contracts/schemas/",
+            "contracts/schemas/",
             "tools/auditx/analyzers/",
             "tools/xstack/testx/tests/",
         )
@@ -21084,8 +21084,8 @@ def _append_field_invariant_findings(
         "tools/xstack/testx/tests/",
         "docs/",
         "data/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
     )
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -21259,8 +21259,8 @@ def _append_field_generalization_invariant_findings(
     )
     mutation_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -21353,8 +21353,8 @@ def _append_field_generalization_invariant_findings(
     )
     sample_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -22427,8 +22427,8 @@ def _append_geo_worldgen_invariant_findings(
     roi_rel = "system/roi/system_roi_scheduler.py"
     replay_tool_rel = "tools/geo/tool_replay_worldgen_cell.py"
     geo_init_rel = "geo/__init__.py"
-    schema_rel = "schema/universe/universe_identity.schema"
-    schema_json_rel = "schemas/universe_identity.schema.json"
+    schema_rel = "contracts/schemas/universe/universe_identity.schema"
+    schema_json_rel = "contracts/schemas/universe_identity.schema.json"
     realism_registry_rel = "data/registries/realism_profile_registry.json"
     generator_registry_rel = "data/registries/generator_version_registry.json"
 
@@ -23302,8 +23302,8 @@ def _append_mobility_invariant_findings(
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
     )
     mobility_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     for rel_path in _scan_files(repo_root):
@@ -24044,8 +24044,8 @@ def _append_mobility_invariant_findings(
     )
     adhoc_routing_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -24142,8 +24142,8 @@ def _append_mobility_invariant_findings(
     )
     gauge_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
         "src/specs/",
@@ -24262,8 +24262,8 @@ def _append_safety_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -24529,8 +24529,8 @@ def _append_electric_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -24657,8 +24657,8 @@ def _append_electric_invariant_findings(
             )
         )
     momentum_schema_paths = (
-        "schema/physics/momentum_state.schema",
-        "schemas/momentum_state.schema.json",
+        "contracts/schemas/physics/momentum_state.schema",
+        "contracts/schemas/momentum_state.schema.json",
     )
     for rel_path in momentum_schema_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -24692,8 +24692,8 @@ def _append_electric_invariant_findings(
     velocity_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     velocity_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -24980,8 +24980,8 @@ def _append_thermal_invariant_findings(
     cooling_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     cooling_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -25069,8 +25069,8 @@ def _append_thermal_invariant_findings(
     phase_cure_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     phase_cure_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -25116,8 +25116,8 @@ def _append_thermal_invariant_findings(
     burn_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     burn_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -25159,8 +25159,8 @@ def _append_thermal_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -25314,8 +25314,8 @@ def _append_fluid_constitution_invariant_findings(
     scan_prefixes = ("src/fluid/", "src/interior/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -25365,12 +25365,12 @@ def _append_fluid_containment_invariant_findings(
     mass_rule_id = "INV-NO-DIRECT-MASS-MUTATION"
 
     required_paths = (
-        "schema/fluid/pressure_vessel_state.schema",
-        "schema/fluid/leak_state.schema",
-        "schema/fluid/burst_event.schema",
-        "schemas/pressure_vessel_state.schema.json",
-        "schemas/leak_state.schema.json",
-        "schemas/burst_event.schema.json",
+        "contracts/schemas/fluid/pressure_vessel_state.schema",
+        "contracts/schemas/fluid/leak_state.schema",
+        "contracts/schemas/fluid/burst_event.schema",
+        "contracts/schemas/pressure_vessel_state.schema.json",
+        "contracts/schemas/leak_state.schema.json",
+        "contracts/schemas/burst_event.schema.json",
         "data/registries/fluid_failure_policy_registry.json",
     )
     for rel_path in required_paths:
@@ -25422,8 +25422,8 @@ def _append_fluid_containment_invariant_findings(
     scan_prefixes = ("src/fluid/", "src/interior/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -25705,14 +25705,14 @@ def _append_pollution_constitution_invariant_findings(
     required_paths = (
         "docs/pollution/POLLUTION_CONSTITUTION.md",
         "docs/pollution/EXPOSURE_AND_COMPLIANCE_MODEL.md",
-        "schema/pollution/pollutant_type.schema",
-        "schema/pollution/pollution_source_event.schema",
-        "schema/pollution/pollution_field_policy.schema",
-        "schema/pollution/exposure_state.schema",
-        "schema/pollution/exposure_threshold.schema",
-        "schema/pollution/health_risk_event.schema",
-        "schema/pollution/pollution_measurement.schema",
-        "schema/pollution/compliance_report.schema",
+        "contracts/schemas/pollution/pollutant_type.schema",
+        "contracts/schemas/pollution/pollution_source_event.schema",
+        "contracts/schemas/pollution/pollution_field_policy.schema",
+        "contracts/schemas/pollution/exposure_state.schema",
+        "contracts/schemas/pollution/exposure_threshold.schema",
+        "contracts/schemas/pollution/health_risk_event.schema",
+        "contracts/schemas/pollution/pollution_measurement.schema",
+        "contracts/schemas/pollution/compliance_report.schema",
         "pollution/pollution_engine.py",
         "pollution/exposure_engine.py",
         "pollution/measurement_engine.py",
@@ -25891,8 +25891,8 @@ def _append_pollution_constitution_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -26385,10 +26385,10 @@ def _append_system_composition_invariant_findings(
     process_registry_rel = "data/registries/process_registry.json"
     boundary_registry_rel = "data/registries/system_boundary_invariant_registry.json"
     required_schema_rels = (
-        "schema/system/interface_signature.schema",
-        "schema/system/boundary_invariant.schema",
-        "schema/system/macro_capsule.schema",
-        "schema/system/system_state_vector.schema",
+        "contracts/schemas/system/interface_signature.schema",
+        "contracts/schemas/system/boundary_invariant.schema",
+        "contracts/schemas/system/macro_capsule.schema",
+        "contracts/schemas/system/system_state_vector.schema",
     )
     required_registry_rels = (
         "data/registries/system_template_registry.json",
@@ -26406,7 +26406,7 @@ def _append_system_composition_invariant_findings(
                 file_path=rel_path,
                 line_number=1,
                 snippet=rel_path,
-                message="SYS-0 composition baseline requires schema/registry/runtime artifact",
+                message="SYS-0 composition baseline requires contracts/schemas/registry/runtime artifact",
                 rule_id=boundary_rule_id,
             )
         )
@@ -26563,8 +26563,8 @@ def _append_system_composition_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -26613,10 +26613,10 @@ def _append_system_validation_invariant_findings(
     invariant_rule_id = "INV-SYSTEM-INVARIANTS-REQUIRED"
     macro_rule_id = "INV-MACRO-MODEL-SET-REQUIRED-FOR-CAPSULE"
 
-    interface_schema_rel = "schema/system/interface_signature.schema"
-    invariant_schema_rel = "schema/system/boundary_invariant.schema"
-    macro_capsule_schema_rel = "schema/system/macro_capsule.schema"
-    macro_model_set_schema_rel = "schema/system/macro_model_set.schema"
+    interface_schema_rel = "contracts/schemas/system/interface_signature.schema"
+    invariant_schema_rel = "contracts/schemas/system/boundary_invariant.schema"
+    macro_capsule_schema_rel = "contracts/schemas/system/macro_capsule.schema"
+    macro_model_set_schema_rel = "contracts/schemas/system/macro_model_set.schema"
     validation_engine_rel = "system/system_validation_engine.py"
     collapse_engine_rel = "system/system_collapse_engine.py"
     expand_engine_rel = "system/system_expand_engine.py"
@@ -26914,9 +26914,9 @@ def _append_system_macro_invariant_findings(
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "data/registries/process_registry.json"
     replay_tool_rel = "tools/system/tool_replay_capsule_window.py"
-    runtime_schema_rel = "schema/system/macro_runtime_state.schema"
-    forced_schema_rel = "schema/system/forced_expand_event.schema"
-    output_schema_rel = "schema/system/macro_output_record.schema"
+    runtime_schema_rel = "contracts/schemas/system/macro_runtime_state.schema"
+    forced_schema_rel = "contracts/schemas/system/forced_expand_event.schema"
+    output_schema_rel = "contracts/schemas/system/macro_output_record.schema"
 
     required_paths = (
         macro_engine_rel,
@@ -27104,7 +27104,7 @@ def _append_system_tier_invariant_findings(
 
     scheduler_rel = "system/roi/system_roi_scheduler.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    schema_rel = "schema/system/system_tier_change_event.schema"
+    schema_rel = "contracts/schemas/system/system_tier_change_event.schema"
     process_registry_rel = "data/registries/process_registry.json"
     tier_registry_rel = "data/registries/tier_contract_registry.json"
     replay_tool_rel = "tools/system/tool_replay_tier_transitions.py"
@@ -27316,8 +27316,8 @@ def _append_system_tier_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -27367,8 +27367,8 @@ def _append_system_template_invariant_findings(
 
     required_paths = (
         "docs/system/SYSTEM_TEMPLATES.md",
-        "schema/system/system_template.schema",
-        "schema/system/template_instance_record.schema",
+        "contracts/schemas/system/system_template.schema",
+        "contracts/schemas/system/template_instance_record.schema",
         "system/templates/template_compiler.py",
         "tools/xstack/sessionx/process_runtime.py",
         "data/registries/system_template_registry.json",
@@ -27416,7 +27416,7 @@ def _append_system_template_invariant_findings(
             )
         )
 
-    schema_text = _file_text(repo_root, "schema/system/system_template.schema")
+    schema_text = _file_text(repo_root, "contracts/schemas/system/system_template.schema")
     for token in (
         "template_id",
         "interface_signature_template_id",
@@ -27432,7 +27432,7 @@ def _append_system_template_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="schema/system/system_template.schema",
+                file_path="contracts/schemas/system/system_template.schema",
                 line_number=1,
                 snippet=token,
                 message="system_template schema is missing required SYS-4 declaration field",
@@ -27494,7 +27494,7 @@ def _append_system_template_invariant_findings(
         rel_norm = _norm(rel_path)
         if not rel_norm.endswith(".py"):
             continue
-        if rel_norm.startswith(("docs/", "schema/", "schemas/", "tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+        if rel_norm.startswith(("docs/", "contracts/schemas/", "contracts/schemas/", "tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
             continue
         if rel_norm in allowed_compiler_paths:
             continue
@@ -27529,9 +27529,9 @@ def _append_system_certification_invariant_findings(
 
     required_paths = (
         "docs/system/SYSTEM_CERTIFICATION_MODEL.md",
-        "schema/system/certification_profile.schema",
-        "schema/system/certification_result.schema",
-        "schema/system/certificate_artifact.schema",
+        "contracts/schemas/system/certification_profile.schema",
+        "contracts/schemas/system/certification_result.schema",
+        "contracts/schemas/system/certificate_artifact.schema",
         "data/registries/certification_profile_registry.json",
         "system/certification/system_cert_engine.py",
         "tools/system/tool_replay_certification_window.py",
@@ -27651,7 +27651,7 @@ def _append_system_certification_invariant_findings(
         re.IGNORECASE,
     )
     scan_prefixes = ("src/system/", "tools/xstack/sessionx/")
-    skip_prefixes = ("docs/", "schema/", "schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    skip_prefixes = ("docs/", "contracts/schemas/", "contracts/schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
     allowed_spec_paths = {
         "system/certification/system_cert_engine.py",
         runtime_rel,
@@ -27714,9 +27714,9 @@ def _append_system_reliability_invariant_findings(
     reliability_registry_rel = "data/registries/reliability_profile_registry.json"
     required_paths = (
         "docs/system/SYSTEM_RELIABILITY_MODEL.md",
-        "schema/system/reliability_profile.schema",
-        "schema/system/system_health_state.schema",
-        "schema/system/failure_event.schema",
+        "contracts/schemas/system/reliability_profile.schema",
+        "contracts/schemas/system/system_health_state.schema",
+        "contracts/schemas/system/failure_event.schema",
         reliability_registry_rel,
         "system/reliability/system_health_engine.py",
         "system/reliability/reliability_engine.py",
@@ -27854,7 +27854,7 @@ def _append_system_reliability_invariant_findings(
         re.IGNORECASE,
     )
     scan_prefixes = ("src/system/", "tools/xstack/sessionx/")
-    skip_prefixes = ("docs/", "schema/", "schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    skip_prefixes = ("docs/", "contracts/schemas/", "contracts/schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
     allowed_failure_mutation_paths = {
         runtime_rel,
         "tools/xstack/repox/check.py",
@@ -27918,9 +27918,9 @@ def _append_system_forensics_invariant_findings(
     replay_tool_rel = "tools/system/tool_verify_explain_determinism.py"
     required_paths = (
         "docs/system/SYSTEM_FORENSICS_MODEL.md",
-        "schema/system/system_explain_request.schema",
-        "schema/system/system_explain_artifact.schema",
-        "schema/system/cause_entry.schema",
+        "contracts/schemas/system/system_explain_request.schema",
+        "contracts/schemas/system/system_explain_artifact.schema",
+        "contracts/schemas/system/cause_entry.schema",
         forensics_engine_rel,
         runtime_rel,
         replay_tool_rel,
@@ -28077,7 +28077,7 @@ def _append_system_forensics_invariant_findings(
         re.IGNORECASE,
     )
     scan_prefixes = ("src/system/", "tools/xstack/sessionx/")
-    skip_prefixes = ("docs/", "schema/", "schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    skip_prefixes = ("docs/", "contracts/schemas/", "contracts/schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
     allowed_write_paths = {
         runtime_rel,
         "tools/xstack/repox/check.py",
@@ -28330,11 +28330,11 @@ def _append_compiled_model_invariant_findings(
     process_registry_rel = "data/registries/process_registry.json"
     verify_tool_rel = "tools/meta/tool_verify_compiled_model.py"
     required_schema_rels = (
-        "schema/meta/compiled_model.schema",
-        "schema/meta/equivalence_proof.schema",
-        "schema/meta/validity_domain.schema",
-        "schema/meta/compile_request.schema",
-        "schema/meta/compile_result.schema",
+        "contracts/schemas/meta/compiled_model.schema",
+        "contracts/schemas/meta/equivalence_proof.schema",
+        "contracts/schemas/meta/validity_domain.schema",
+        "contracts/schemas/meta/compile_request.schema",
+        "contracts/schemas/meta/compile_result.schema",
     )
     required_registry_rels = (
         "data/registries/compiled_type_registry.json",
@@ -28438,7 +28438,7 @@ def _append_compiled_model_invariant_findings(
         rel_norm = _norm(rel_path)
         if not rel_norm.endswith(".py"):
             continue
-        if rel_norm.startswith(("docs/", "schema/", "schemas/", "tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+        if rel_norm.startswith(("docs/", "contracts/schemas/", "contracts/schemas/", "tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
             continue
         if rel_norm in allowed_compile_paths:
             continue
@@ -28479,8 +28479,8 @@ def _append_state_vector_invariant_findings(
     verify_tool_rel = "tools/system/tool_verify_statevec_roundtrip.py"
     required_paths = (
         "docs/system/EXPLICIT_STATE_VECTOR_RULE.md",
-        "schema/system/state_vector_definition.schema",
-        "schema/system/state_vector_snapshot.schema",
+        "contracts/schemas/system/state_vector_definition.schema",
+        "contracts/schemas/system/state_vector_snapshot.schema",
         statevec_registry_rel,
         statevec_engine_rel,
         collapse_engine_rel,
@@ -28637,8 +28637,8 @@ def _append_state_vector_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -28722,8 +28722,8 @@ def _append_cross_domain_mutation_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -28794,8 +28794,8 @@ def _append_loss_target_invariant_findings(
     scan_prefixes = ("src/electric/", "src/thermal/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -28937,8 +28937,8 @@ def _append_energy_ledger_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -28979,8 +28979,8 @@ def _append_energy_ledger_invariant_findings(
     mutation_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     mutation_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -29135,8 +29135,8 @@ def _append_chem_combustion_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -29187,7 +29187,7 @@ def _append_chem_processing_invariant_findings(
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     reaction_registry_rel = "data/registries/reaction_profile_registry.json"
     yield_registry_rel = "data/registries/yield_model_registry.json"
-    quality_schema_rel = "schema/materials/batch_quality.schema"
+    quality_schema_rel = "contracts/schemas/materials/batch_quality.schema"
     provenance_registry_rel = "data/registries/provenance_classification_registry.json"
 
     reaction_payload, reaction_error = _load_json_object(repo_root, reaction_registry_rel)
@@ -29400,8 +29400,8 @@ def _append_chem_processing_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -29503,19 +29503,19 @@ def _append_process_constitution_invariant_findings(
     test_procedure_registry_rel = "data/registries/test_procedure_registry.json"
     yield_registry_rel = "data/registries/yield_model_registry.json"
     defect_registry_rel = "data/registries/defect_model_registry.json"
-    process_definition_schema_rel = "schema/process/process_definition.schema"
-    qc_policy_schema_rel = "schema/process/qc_policy.schema"
-    qc_result_schema_rel = "schema/process/qc_result_record.schema"
-    test_procedure_schema_rel = "schema/process/test_procedure.schema"
-    process_quality_schema_rel = "schema/process/process_quality_record.schema"
-    process_capsule_schema_rel = "schema/process/process_capsule.schema"
-    capsule_execution_schema_rel = "schema/process/capsule_execution_record.schema"
-    process_metrics_schema_rel = "schema/process/process_metrics_state.schema"
-    process_maturity_schema_rel = "schema/process/process_maturity_record.schema"
-    stabilization_policy_schema_rel = "schema/process/stabilization_policy.schema"
-    drift_policy_schema_rel = "schema/process/drift_policy.schema"
-    process_drift_state_schema_rel = "schema/process/process_drift_state.schema"
-    drift_event_record_schema_rel = "schema/process/drift_event_record.schema"
+    process_definition_schema_rel = "contracts/schemas/process/process_definition.schema"
+    qc_policy_schema_rel = "contracts/schemas/process/qc_policy.schema"
+    qc_result_schema_rel = "contracts/schemas/process/qc_result_record.schema"
+    test_procedure_schema_rel = "contracts/schemas/process/test_procedure.schema"
+    process_quality_schema_rel = "contracts/schemas/process/process_quality_record.schema"
+    process_capsule_schema_rel = "contracts/schemas/process/process_capsule.schema"
+    capsule_execution_schema_rel = "contracts/schemas/process/capsule_execution_record.schema"
+    process_metrics_schema_rel = "contracts/schemas/process/process_metrics_state.schema"
+    process_maturity_schema_rel = "contracts/schemas/process/process_maturity_record.schema"
+    stabilization_policy_schema_rel = "contracts/schemas/process/stabilization_policy.schema"
+    drift_policy_schema_rel = "contracts/schemas/process/drift_policy.schema"
+    process_drift_state_schema_rel = "contracts/schemas/process/process_drift_state.schema"
+    drift_event_record_schema_rel = "contracts/schemas/process/drift_event_record.schema"
     constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
     process_capsule_doc_rel = "docs/process/PROCESS_CAPSULE_MODEL.md"
     qc_doc_rel = "docs/process/QC_SAMPLING_MODEL.md"
@@ -29540,14 +29540,14 @@ def _append_process_constitution_invariant_findings(
     drift_replay_tool_rel = "tools/process/tool_replay_drift_window.py"
     experiment_replay_tool_rel = "tools/process/tool_replay_experiment_window.py"
     reverse_replay_tool_rel = "tools/process/tool_replay_reverse_engineering_window.py"
-    experiment_definition_schema_rel = "schema/process/experiment_definition.schema"
-    experiment_result_schema_rel = "schema/process/experiment_result.schema"
-    candidate_process_schema_rel = "schema/process/candidate_process_definition.schema"
-    reverse_engineering_schema_rel = "schema/process/reverse_engineering_record.schema"
+    experiment_definition_schema_rel = "contracts/schemas/process/experiment_definition.schema"
+    experiment_result_schema_rel = "contracts/schemas/process/experiment_result.schema"
+    candidate_process_schema_rel = "contracts/schemas/process/candidate_process_definition.schema"
+    reverse_engineering_schema_rel = "contracts/schemas/process/reverse_engineering_record.schema"
     research_policy_registry_rel = "data/registries/research_policy_registry.json"
-    software_pipeline_profile_schema_rel = "schema/process/software_pipeline_profile.schema"
-    software_artifact_schema_rel = "schema/process/software_artifact.schema"
-    deployment_record_schema_rel = "schema/process/deployment_record.schema"
+    software_pipeline_profile_schema_rel = "contracts/schemas/process/software_pipeline_profile.schema"
+    software_artifact_schema_rel = "contracts/schemas/process/software_artifact.schema"
+    deployment_record_schema_rel = "contracts/schemas/process/deployment_record.schema"
     software_toolchain_registry_rel = "data/registries/software_toolchain_registry.json"
     software_pipeline_template_registry_rel = "data/registries/software_pipeline_template_registry.json"
     software_pipeline_doc_rel = "docs/process/SOFTWARE_PIPELINE_MODEL.md"
@@ -29557,8 +29557,8 @@ def _append_process_constitution_invariant_findings(
     proc_replay_tool_rel = "tools/process/tool_replay_proc_window.py"
     proc_compaction_tool_rel = "tools/process/tool_verify_proc_compaction.py"
     proc_regression_rel = "data/regression/proc_full_baseline.json"
-    run_schema_rel = "schema/process/process_run_record.schema"
-    step_schema_rel = "schema/process/process_step_record.schema"
+    run_schema_rel = "contracts/schemas/process/process_run_record.schema"
+    step_schema_rel = "contracts/schemas/process/process_step_record.schema"
 
     process_payload, process_error = _load_json_object(repo_root, process_registry_rel)
     process_rows = list(process_payload.get("records") or [])
@@ -30074,7 +30074,7 @@ def _append_process_constitution_invariant_findings(
                 file_path=rel_path,
                 line_number=1,
                 snippet="missing",
-                message="required PROC-4 maturity schema/documentation artifact is missing",
+                message="required PROC-4 maturity contracts/schemas/documentation artifact is missing",
                 rule_id=maturity_record_rule_id,
             )
         )
@@ -30126,7 +30126,7 @@ def _append_process_constitution_invariant_findings(
                 file_path=rel_path,
                 line_number=1,
                 snippet="missing",
-                message="required PROC-3 QC schema/documentation artifact is missing",
+                message="required PROC-3 QC contracts/schemas/documentation artifact is missing",
                 rule_id=qc_policy_rule_id,
             )
         )
@@ -31018,8 +31018,8 @@ def _append_process_constitution_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -31105,8 +31105,8 @@ def _append_process_constitution_invariant_findings(
     rng_scan_prefixes = ("src/process/", "tools/process/")
     rng_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -31150,8 +31150,8 @@ def _append_process_constitution_invariant_findings(
     qc_sampling_scan_prefixes = ("src/process/qc/", "tools/process/")
     qc_sampling_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -31194,8 +31194,8 @@ def _append_process_constitution_invariant_findings(
     qc_logic_scan_prefixes = ("src/process/", "tools/process/")
     qc_logic_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -31244,8 +31244,8 @@ def _append_process_constitution_invariant_findings(
     maturity_scan_prefixes = ("src/process/", "tools/process/")
     maturity_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -31329,8 +31329,8 @@ def _append_process_constitution_invariant_findings(
     inference_scan_prefixes = ("src/process/", "tools/xstack/sessionx/")
     inference_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -31445,8 +31445,8 @@ def _append_process_constitution_invariant_findings(
     software_scan_prefixes = ("src/process/", "tools/xstack/sessionx/")
     software_skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -31538,9 +31538,9 @@ def _append_logic_fault_invariant_findings(
 
     required_files = (
         ("docs/logic/FAULT_NOISE_SECURITY_MODEL.md", process_rule_id),
-        ("schema/logic/logic_fault_state.schema", process_rule_id),
-        ("schema/logic/noise_policy.schema", noise_rule_id),
-        ("schema/logic/security_policy.schema", security_rule_id),
+        ("contracts/schemas/logic/logic_fault_state.schema", process_rule_id),
+        ("contracts/schemas/logic/noise_policy.schema", noise_rule_id),
+        ("contracts/schemas/logic/security_policy.schema", security_rule_id),
         ("data/registries/logic_fault_kind_registry.json", process_rule_id),
         ("data/registries/logic_noise_policy_registry.json", noise_rule_id),
         ("data/registries/logic_security_policy_registry.json", security_rule_id),
@@ -31922,8 +31922,8 @@ def _append_chem_degradation_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -32341,8 +32341,8 @@ def _append_entropy_policy_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -32723,10 +32723,10 @@ def _append_store_gc_findings(
     required_files = (
         ("docs/audit/STORE_GC0_RETRO_AUDIT.md", "STORE-GC retro audit is required", graph_rule_id),
         ("docs/lib/STORE_INTEGRITY_AND_GC.md", "store integrity and GC doctrine is required", graph_rule_id),
-        ("schema/lib/gc_policy.schema", "gc_policy schema is required", policy_rule_id),
-        ("schema/lib/gc_report.schema", "gc_report schema is required", policy_rule_id),
-        ("schemas/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
-        ("schemas/gc_report.schema.json", "compiled gc_report schema is required", policy_rule_id),
+        ("contracts/schemas/lib/gc_policy.schema", "gc_policy schema is required", policy_rule_id),
+        ("contracts/schemas/lib/gc_report.schema", "gc_report schema is required", policy_rule_id),
+        ("contracts/schemas/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
+        ("contracts/schemas/gc_report.schema.json", "compiled gc_report schema is required", policy_rule_id),
         ("data/registries/gc_policy_registry.json", "gc policy registry is required", policy_rule_id),
         ("lib/store/reachability_engine.py", "reachability engine is required", graph_rule_id),
         ("lib/store/gc_engine.py", "gc engine is required", graph_rule_id),
@@ -32865,8 +32865,8 @@ def _append_constitutive_model_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -32943,8 +32943,8 @@ def _append_model_output_process_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -33116,8 +33116,8 @@ def _append_signal_transport_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
@@ -33398,7 +33398,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-INSTANCE-USES-PACK-LOCK",
                 "pack_lock_hash",
             ),
-            "schema/lib/instance_manifest.schema": (
+            "contracts/schemas/lib/instance_manifest.schema": (
                 "pack_lock_hash",
                 "profile_bundle_hash",
             ),
@@ -33416,7 +33416,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-INSTANCE-USES-PROFILE-BUNDLE",
                 "profile_bundle_hash",
             ),
-            "schema/lib/instance_manifest.schema": (
+            "contracts/schemas/lib/instance_manifest.schema": (
                 "profile_bundle_hash",
                 "instance_kind",
             ),
@@ -33434,7 +33434,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-SAVES-NOT-EMBEDDED-IN-INSTANCE",
                 "save_refs",
             ),
-            "schema/lib/instance_manifest.schema": (
+            "contracts/schemas/lib/instance_manifest.schema": (
                 "save_refs",
                 "last_opened_save_id",
             ),
@@ -33495,7 +33495,7 @@ def _append_save_manifest_invariant_findings(
                 "INV-SAVE-MANIFEST-REQUIRED",
                 "save.manifest.json",
             ),
-            "schema/lib/save_manifest.schema": (
+            "contracts/schemas/lib/save_manifest.schema": (
                 "save_format_version",
                 "migration_chain",
             ),
@@ -33514,7 +33514,7 @@ def _append_save_manifest_invariant_findings(
                 "universe_contract_bundle_hash",
                 "pack_lock_hash",
             ),
-            "schema/lib/save_manifest.schema": (
+            "contracts/schemas/lib/save_manifest.schema": (
                 "universe_contract_bundle_hash",
                 "pack_lock_hash",
                 "allow_read_only_open",
@@ -33535,7 +33535,7 @@ def _append_save_manifest_invariant_findings(
                 "INV-NO-SILENT-MIGRATION",
                 "explicit invoke-only",
             ),
-            "schema/lib/migration_event.schema": (
+            "contracts/schemas/lib/migration_event.schema": (
                 "migration application remains explicit invoke-only",
                 "tick_applied",
             ),
@@ -33598,7 +33598,7 @@ def _append_artifact_manifest_invariant_findings(
                 "artifact_id",
                 "content_hash",
             ),
-            "schema/lib/artifact_manifest.schema": (
+            "contracts/schemas/lib/artifact_manifest.schema": (
                 "artifact_id",
                 "artifact_kind_id",
                 "content_hash",
@@ -33698,7 +33698,7 @@ def _append_forking_provides_invariant_findings(
                 "fork.<origin_pack_id>.<fork_author>.<fork_name>",
                 "forks must not reuse the origin pack_id",
             ),
-            "schema/pack_manifest.schema": (
+            "contracts/schemas/pack_manifest.schema": (
                 "fork.<origin_pack_id>.<fork_author>.<fork_name>",
                 "Legacy reverse-DNS pack ids remain loadable for compatibility.",
             ),
@@ -33719,7 +33719,7 @@ def _append_forking_provides_invariant_findings(
                 "resolve.deterministic_lowest_pack_id",
                 "All provider selections are logged",
             ),
-            "schema/lib/provides_resolution.schema": (
+            "contracts/schemas/lib/provides_resolution.schema": (
                 "resolution_policy_id",
                 "chosen_pack_id",
                 "deterministic_fingerprint",
@@ -33784,16 +33784,16 @@ def _append_component_graph_findings(
         ("docs/audit/COMPONENT_GRAPH0_RETRO_AUDIT.md", "COMPONENT-GRAPH-0 retro audit is required", install_rule_id),
         ("docs/release/COMPONENT_GRAPH_CONSTITUTION.md", "COMPONENT-GRAPH-0 constitution is required", install_rule_id),
         ("docs/release/RELEASE_NOTES_v0_0_0_mock.md", "release notes doc is required for graph-backed docs component coverage", hardcoded_rule_id),
-        ("schema/release/component_id.schema", "component_id schema is required", install_rule_id),
-        ("schema/release/component_descriptor.schema", "component descriptor schema is required", install_rule_id),
-        ("schema/release/component_edge.schema", "component edge schema is required", install_rule_id),
-        ("schema/release/component_graph.schema", "component graph schema is required", install_rule_id),
-        ("schema/release/install_plan.schema", "install plan schema is required", install_rule_id),
-        ("schemas/component_id.schema.json", "compiled component_id schema is required", install_rule_id),
-        ("schemas/component_descriptor.schema.json", "compiled component descriptor schema is required", install_rule_id),
-        ("schemas/component_edge.schema.json", "compiled component edge schema is required", install_rule_id),
-        ("schemas/component_graph.schema.json", "compiled component graph schema is required", install_rule_id),
-        ("schemas/install_plan.schema.json", "compiled install plan schema is required", install_rule_id),
+        ("contracts/schemas/release/component_id.schema", "component_id schema is required", install_rule_id),
+        ("contracts/schemas/release/component_descriptor.schema", "component descriptor schema is required", install_rule_id),
+        ("contracts/schemas/release/component_edge.schema", "component edge schema is required", install_rule_id),
+        ("contracts/schemas/release/component_graph.schema", "component graph schema is required", install_rule_id),
+        ("contracts/schemas/release/install_plan.schema", "install plan schema is required", install_rule_id),
+        ("contracts/schemas/component_id.schema.json", "compiled component_id schema is required", install_rule_id),
+        ("contracts/schemas/component_descriptor.schema.json", "compiled component descriptor schema is required", install_rule_id),
+        ("contracts/schemas/component_edge.schema.json", "compiled component edge schema is required", install_rule_id),
+        ("contracts/schemas/component_graph.schema.json", "compiled component graph schema is required", install_rule_id),
+        ("contracts/schemas/install_plan.schema.json", "compiled install plan schema is required", install_rule_id),
         ("data/registries/arch_registry.json", "architecture registry is required", install_rule_id),
         ("data/registries/os_registry.json", "operating-system registry is required", install_rule_id),
         ("data/registries/component_graph_registry.json", "component graph registry is required", install_rule_id),
@@ -33898,8 +33898,8 @@ def _append_install_profile_findings(
     required_files = (
         ("docs/audit/DIST_REFINE1_RETRO_AUDIT.md", "DIST-REFINE-1 retro audit is required", use_rule_id),
         ("docs/release/INSTALL_PROFILES.md", "install profile doctrine is required", use_rule_id),
-        ("schema/release/install_profile.schema", "install_profile schema is required", use_rule_id),
-        ("schemas/install_profile.schema.json", "compiled install_profile schema is required", use_rule_id),
+        ("contracts/schemas/release/install_profile.schema", "install_profile schema is required", use_rule_id),
+        ("contracts/schemas/install_profile.schema.json", "compiled install_profile schema is required", use_rule_id),
         ("data/registries/install_profile_registry.json", "install profile registry is required", use_rule_id),
         ("tools/release/install_profile_common.py", "install profile helper is required", use_rule_id),
         ("tools/release/tool_run_install_profiles.py", "install profile runner is required", use_rule_id),
@@ -34003,10 +34003,10 @@ def _append_update_model_findings(
         ("docs/audit/UPDATE_MODEL0_RETRO_AUDIT.md", "UPDATE-MODEL-0 retro audit is required", graph_rule_id),
         ("docs/release/RELEASE_INDEX_MODEL.md", "release index doctrine is required", graph_rule_id),
         ("docs/release/SETUP_SELF_UPDATE.md", "setup self-update doctrine is required", graph_rule_id),
-        ("schema/release/release_index.schema", "release_index schema is required", graph_rule_id),
-        ("schema/release/update_plan.schema", "update_plan schema is required", graph_rule_id),
-        ("schemas/release_index.schema.json", "compiled release_index schema is required", graph_rule_id),
-        ("schemas/update_plan.schema.json", "compiled update_plan schema is required", graph_rule_id),
+        ("contracts/schemas/release/release_index.schema", "release_index schema is required", graph_rule_id),
+        ("contracts/schemas/release/update_plan.schema", "update_plan schema is required", graph_rule_id),
+        ("contracts/schemas/release_index.schema.json", "compiled release_index schema is required", graph_rule_id),
+        ("contracts/schemas/update_plan.schema.json", "compiled update_plan schema is required", graph_rule_id),
         ("release/update_resolver.py", "update resolver is required", graph_rule_id),
         ("tools/release/update_model_common.py", "update-model helper is required", graph_rule_id),
         ("tools/release/tool_run_update_model.py", "update-model runner is required", graph_rule_id),
@@ -34146,12 +34146,12 @@ def _append_trust_model_findings(
     required_files = (
         ("docs/audit/TRUST_MODEL0_RETRO_AUDIT.md", "TRUST-MODEL-0 retro audit is required", policy_rule_id),
         ("docs/security/TRUST_AND_SIGNING_MODEL.md", "trust and signing doctrine is required", policy_rule_id),
-        ("schema/security/trust_root.schema", "trust_root schema is required", policy_rule_id),
-        ("schema/security/trust_policy.schema", "trust_policy schema is required", policy_rule_id),
-        ("schema/security/signature_record.schema", "signature_record schema is required", policy_rule_id),
-        ("schemas/trust_root.schema.json", "compiled trust_root schema is required", policy_rule_id),
-        ("schemas/trust_policy.schema.json", "compiled trust_policy schema is required", policy_rule_id),
-        ("schemas/signature_record.schema.json", "compiled signature_record schema is required", policy_rule_id),
+        ("contracts/schemas/security/trust_root.schema", "trust_root schema is required", policy_rule_id),
+        ("contracts/schemas/security/trust_policy.schema", "trust_policy schema is required", policy_rule_id),
+        ("contracts/schemas/security/signature_record.schema", "signature_record schema is required", policy_rule_id),
+        ("contracts/schemas/trust_root.schema.json", "compiled trust_root schema is required", policy_rule_id),
+        ("contracts/schemas/trust_policy.schema.json", "compiled trust_policy schema is required", policy_rule_id),
+        ("contracts/schemas/signature_record.schema.json", "compiled signature_record schema is required", policy_rule_id),
         ("data/registries/trust_root_registry.json", "trust root registry is required", policy_rule_id),
         ("data/registries/trust_policy_registry.json", "trust policy registry is required", policy_rule_id),
         ("security/trust/trust_verifier.py", "trust verifier is required", hashes_rule_id),
@@ -34257,8 +34257,8 @@ def _append_governance_model_findings(
         ("docs/governance/GOVERNANCE_MODEL.md", "governance doctrine is required", rule_id),
         ("docs/governance/TRUST_ROOT_GOVERNANCE.md", "trust-root governance doctrine is required", rule_id),
         ("docs/governance/LICENSING_STRATEGY.md", "licensing strategy document is required", rule_id),
-        ("schema/governance/governance_profile.schema", "governance_profile schema is required", rule_id),
-        ("schemas/governance_profile.schema.json", "compiled governance_profile schema is required", rule_id),
+        ("contracts/schemas/governance/governance_profile.schema", "governance_profile schema is required", rule_id),
+        ("contracts/schemas/governance_profile.schema.json", "compiled governance_profile schema is required", rule_id),
         ("data/registries/governance_mode_registry.json", "governance mode registry is required", rule_id),
         ("data/governance/governance_profile.json", "governance profile is required", rule_id),
         ("tools/governance/governance_model_common.py", "governance-model helper is required", rule_id),
@@ -34523,8 +34523,8 @@ def _append_universal_identity_findings(
         ("docs/audit/UNIVERSAL_IDENTITY0_RETRO_AUDIT.md", "UNIVERSAL-ID retro audit is required", warn_rule_id),
         ("docs/meta/UNIVERSAL_IDENTITY_MODEL.md", "universal identity doctrine is required", warn_rule_id),
         ("docs/meta/IDENTITY_INTEGRATION_MAP.md", "identity integration map is required", warn_rule_id),
-        ("schema/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
-        ("schemas/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
+        ("contracts/schemas/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
+        ("contracts/schemas/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
         ("data/registries/identity_kind_registry.json", "identity kind registry is required", namespaced_rule_id),
         ("meta/identity/identity_validator.py", "identity validator is required", canonical_rule_id),
         ("tools/meta/identity_common.py", "identity helper is required", canonical_rule_id),
@@ -34612,12 +34612,12 @@ def _append_migration_lifecycle_findings(
     required_files = (
         ("docs/audit/MIGRATION_LIFECYCLE0_RETRO_AUDIT.md", "migration lifecycle retro audit is required", policy_rule_id),
         ("docs/compat/MIGRATION_LIFECYCLE_MODEL.md", "migration lifecycle doctrine is required", policy_rule_id),
-        ("schema/compat/migration_policy.schema", "migration policy schema is required", policy_rule_id),
-        ("schema/compat/migration_chain.schema", "migration chain schema is required", policy_rule_id),
-        ("schema/compat/migration_decision_record.schema", "migration decision record schema is required", policy_rule_id),
-        ("schemas/migration_policy.schema.json", "compiled migration policy schema is required", policy_rule_id),
-        ("schemas/migration_chain.schema.json", "compiled migration chain schema is required", policy_rule_id),
-        ("schemas/migration_decision_record.schema.json", "compiled migration decision record schema is required", policy_rule_id),
+        ("contracts/schemas/compat/migration_policy.schema", "migration policy schema is required", policy_rule_id),
+        ("contracts/schemas/compat/migration_chain.schema", "migration chain schema is required", policy_rule_id),
+        ("contracts/schemas/compat/migration_decision_record.schema", "migration decision record schema is required", policy_rule_id),
+        ("contracts/schemas/migration_policy.schema.json", "compiled migration policy schema is required", policy_rule_id),
+        ("contracts/schemas/migration_chain.schema.json", "compiled migration chain schema is required", policy_rule_id),
+        ("contracts/schemas/migration_decision_record.schema.json", "compiled migration decision record schema is required", policy_rule_id),
         ("data/registries/migration_policy_registry.json", "migration policy registry is required", policy_rule_id),
         ("compat/migration_lifecycle.py", "migration lifecycle helper is required", policy_rule_id),
         ("tools/compat/migration_lifecycle_common.py", "migration lifecycle helper/reporting tool is required", policy_rule_id),
@@ -34707,7 +34707,7 @@ def _append_bundle_invariant_findings(
                 "`bundle_hash` is computed from the canonical ordered item-hash projection only.",
                 "filesystem timestamps do not affect `bundle_hash`",
             ),
-            "schema/lib/bundle_manifest.schema": (
+            "contracts/schemas/lib/bundle_manifest.schema": (
                 "included_artifacts ordering is canonical",
                 "bundle_hash is computed from the canonical ordered item projection",
                 "deterministic_fingerprint",

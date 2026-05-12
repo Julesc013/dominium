@@ -187,9 +187,9 @@ def _include_file(path: str, changed_only: bool, selected_set: Set[str]) -> bool
 
 def _add_schema_nodes(graph: AnalysisGraph, repo_root: str, changed_only: bool, selected_set: Set[str]) -> Dict[str, str]:
     schema_nodes: Dict[str, str] = {}
-    schema_roots = ["schemas", "schema"]
+    schema_roots = ["contracts/schemas"]
     for root_name in schema_roots:
-        abs_root = os.path.join(repo_root, root_name)
+        abs_root = os.path.join(repo_root, root_name.replace("/", os.sep))
         if not os.path.isdir(abs_root):
             continue
         for root, dirs, files in os.walk(abs_root):

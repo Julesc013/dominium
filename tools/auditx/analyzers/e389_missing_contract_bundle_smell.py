@@ -9,11 +9,11 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E389_MISSING_CONTRACT_BUNDLE_SMELL"
 REQUIRED_FILE_TOKENS = {
-    "schema/universe/universe_identity.schema": (
+    "contracts/schemas/universe/universe_identity.schema": (
         "universe_contract_bundle_ref",
         "universe_contract_bundle_hash",
     ),
-    "schemas/universe_identity.schema.json": (
+    "contracts/schemas/universe_identity.schema.json": (
         '"universe_contract_bundle_ref"',
         '"universe_contract_bundle_hash"',
     ),

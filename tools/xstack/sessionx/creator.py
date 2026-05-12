@@ -532,7 +532,7 @@ def _load_constraints_payload(
         return {}, refusal(
             "REFUSE_CONSTRAINTS_SCHEMA_INVALID",
             "worldgen constraints payload failed schema validation",
-            "Fix constraints fields to satisfy schemas/worldgen_constraints.schema.json.",
+            "Fix constraints fields to satisfy contracts/schemas/worldgen_constraints.schema.json.",
             {"constraints_file": norm(abs_path)},
             "$.worldgen.constraints",
         )
@@ -981,7 +981,7 @@ def _validate_universe_identity(repo_root: str, payload: dict) -> Dict[str, obje
         return refusal(
             "REFUSE_UNIVERSE_IDENTITY_INVALID",
             "UniverseIdentity payload failed schema validation",
-            "Fix universe identity fields to match schemas/universe_identity.schema.json.",
+            "Fix universe identity fields to match contracts/schemas/universe_identity.schema.json.",
             {"schema_id": "universe_identity"},
             "$.universe_identity",
         )
@@ -1909,7 +1909,7 @@ def create_session_spec(
         return refusal(
             "REFUSE_UNIVERSE_STATE_INVALID",
             "generated UniverseState failed schema validation",
-            "Review generated initial state fields against schemas/universe_state.schema.json.",
+            "Review generated initial state fields against contracts/schemas/universe_state.schema.json.",
             {"schema_id": "universe_state"},
             "$.universe_state",
         )

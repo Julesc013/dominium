@@ -1314,7 +1314,7 @@ def run_intent_script(
         return refusal(
             "REFUSE_UNIVERSE_STATE_INVALID",
             "post-process UniverseState failed schema validation",
-            "Fix process runtime outputs to match schemas/universe_state.schema.json.",
+            "Fix process runtime outputs to match contracts/schemas/universe_state.schema.json.",
             {"schema_id": "universe_state"},
             "$.universe_state",
         )

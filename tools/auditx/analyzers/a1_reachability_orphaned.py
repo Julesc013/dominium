@@ -8,7 +8,7 @@ SOURCE_EXTS = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".py")
 IGNORE_PREFIXES = (
     "tests/",
     "docs/",
-    "schema/",
+    "contracts/schemas/",
     "data/",
     "legacy/",
     "build/",

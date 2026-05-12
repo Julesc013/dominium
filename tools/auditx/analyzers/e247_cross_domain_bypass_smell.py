@@ -43,8 +43,8 @@ _PATTERNS_BY_PREFIX = {
 _SCAN_PREFIXES = tuple(_PATTERNS_BY_PREFIX.keys())
 _SKIP_PREFIXES = (
     "docs/",
-    "schema/",
-    "schemas/",
+    "contracts/schemas/",
+    "contracts/schemas/",
     "tools/auditx/analyzers/",
     "tools/xstack/testx/tests/",
 )

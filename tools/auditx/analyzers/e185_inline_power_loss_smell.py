@@ -49,8 +49,8 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
         "tools/auditx/analyzers/",
         "docs/",
-        "schema/",
-        "schemas/",
+        "contracts/schemas/",
+        "contracts/schemas/",
     )
     allowed_files = {
         "electric/power_network_engine.py",

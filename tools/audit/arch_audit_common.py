@@ -108,14 +108,14 @@ TRUST_STRICT_UNSIGNED_RELEASE_INDEX_REL = os.path.join("data", "baselines", "tru
 TRUST_STRICT_SIGNED_RELEASE_INDEX_REL = os.path.join("data", "baselines", "trust", "signed_release_index.json")
 TRUST_STRICT_UNSIGNED_PACK_REL = os.path.join("data", "baselines", "trust", "unsigned_official_pack.compat.json")
 TRUST_STRICT_SIGNED_LICENSE_REL = os.path.join("data", "baselines", "trust", "signed_license_capability.json")
-LICENSE_CAPABILITY_SCHEMA_REL = os.path.join("schema", "security", "license_capability_artifact.schema")
-LICENSE_CAPABILITY_SCHEMA_JSON_REL = os.path.join("schemas", "license_capability_artifact.schema.json")
+LICENSE_CAPABILITY_SCHEMA_REL = os.path.join("contracts", "schemas", "security", "license_capability_artifact.schema")
+LICENSE_CAPABILITY_SCHEMA_JSON_REL = os.path.join("contracts", "schemas", "license_capability_artifact.schema.json")
 
 TRUTH_PURITY_TARGETS = (
-    os.path.join("schema", "universe", "universe_state.schema"),
-    os.path.join("schema", "universe", "universe_identity.schema"),
-    os.path.join("schemas", "universe_state.schema.json"),
-    os.path.join("schemas", "universe_identity.schema.json"),
+    os.path.join("contracts", "schemas", "universe", "universe_state.schema"),
+    os.path.join("contracts", "schemas", "universe", "universe_identity.schema"),
+    os.path.join("contracts", "schemas", "universe_state.schema.json"),
+    os.path.join("contracts", "schemas", "universe_identity.schema.json"),
     os.path.join("server", "server_boot.py"),
     os.path.join("server", "server_console.py"),
     os.path.join("universe", "universe_identity_builder.py"),
@@ -355,15 +355,15 @@ NONCANONICAL_NUMERIC_SERIALIZATION_PATTERNS = (
     re.compile(r"\bjson\.dumps\s*\("),
 )
 CONTRACT_PIN_TARGETS = {
-    os.path.join("schema", "universe", "universe_identity.schema"): (
+    os.path.join("contracts", "schemas", "universe", "universe_identity.schema"): (
         "universe_contract_bundle_ref",
         "universe_contract_bundle_hash",
     ),
-    os.path.join("schemas", "universe_identity.schema.json"): (
+    os.path.join("contracts", "schemas", "universe_identity.schema.json"): (
         "universe_contract_bundle_ref",
         "universe_contract_bundle_hash",
     ),
-    os.path.join("schemas", "session_spec.schema.json"): (
+    os.path.join("contracts", "schemas", "session_spec.schema.json"): (
         "contract_bundle_hash",
     ),
     os.path.join("universe", "universe_contract_enforcer.py"): (

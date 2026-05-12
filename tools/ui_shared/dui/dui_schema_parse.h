@@ -2,7 +2,7 @@
 FILE: source/domino/dui/dui_schema_parse.h
 MODULE: Domino
 LAYER / SUBSYSTEM: Domino impl / dui/schema_parse
-RESPONSIBILITY: Internal TLV schema/state parsing helpers for DUI backends (skip-unknown; bounded outputs).
+RESPONSIBILITY: Internal TLV contracts/schemas/state parsing helpers for DUI backends (skip-unknown; bounded outputs).
 ALLOWED DEPENDENCIES: `include/dui/**`, `include/domino/**`, `source/domino/**` (within engine), and C89/C++98 standard headers.
 FORBIDDEN DEPENDENCIES: `include/dominium/**`, `source/dominium/**`.
 THREADING MODEL: No internal synchronization.
