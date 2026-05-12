@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-01
+Phase: CONVERGE-03
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -19,3 +19,24 @@ For any domain such as geology, chemistry, ecology, hydrology, materials, fluid,
 Do not move a root domain folder wholesale unless it is proven pure. Most current domain roots are probably mixed across contract, game, content, docs, and tests ownership.
 
 Domain split work must happen after the contract, inventory, and move-map phases. Later moves must preserve process-only mutation, truth/perceived/render separation, pack-driven integration, deterministic ordering, named RNG discipline, and explicit compatibility/refusal obligations.
+
+## CONVERGE-03 Planning Basis
+
+CONVERGE-09 depends on `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. Roots classified as `split_required_domain_root` are not move-ready directories; they are inspection scopes.
+
+Before splitting a domain root, inspect at least:
+
+- schema, registry, protocol, capability, compatibility, stability, and ABI material
+- implementation and Process logic
+- fixtures, authored datasets, packs, profiles, assets, and generated material
+- docs, design notes, planning mirrors, and legacy references
+- tests, determinism proofs, replay fixtures, and verification inputs
+
+Examples:
+
+- `geo/`: likely splits into geology schemas/registries, game domain implementation, terrain or geologic datasets, docs, and determinism fixtures.
+- `chem/`: likely splits into reaction/material contracts, game process logic, authored chemistry data, docs, and validation fixtures.
+- `materials/`: likely crosses contracts, game rules, content data, pack descriptors, docs, and tests.
+- `worldgen/`: likely crosses generation contracts, deterministic implementation, content seeds/datasets, docs, and tests.
+- `process/`: ownership-sensitive because authoritative truth mutation must stay lawful and deterministic.
+- `field/` and `fields/`: must respect the existing semantic ownership review; `fields/` is the stronger semantic substrate while `field/` is transitional compatibility.

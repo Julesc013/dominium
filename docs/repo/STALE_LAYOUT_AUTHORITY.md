@@ -28,3 +28,7 @@ Existing older layout docs are retained as legacy, planning, or reference materi
 | `contracts/repo/root_allowlist.toml` | Machine-readable root-level allowlist. | Current root allowlist authority. | Harden after transitional roots are resolved. |
 
 Do not use any legacy document alone to choose new paths. Future phases must consume the contracts, inventory, move map, and ownership rules before moving or creating roots.
+
+## CONVERGE-03 Move-Map Note
+
+`tools/migration/root_move_map.json` is the operational planning artifact for future physical moves. `docs/repo/MOVE_MAP.md` explains it for human readers. Older layout docs are not move maps and must not be used alone to decide migration targets, shims, split requirements, or phase order.

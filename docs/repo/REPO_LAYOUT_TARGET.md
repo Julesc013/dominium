@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-02
+Phase: CONVERGE-03
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -23,6 +23,17 @@ Older layout documents may remain useful historical or planning inputs, but they
 - human target explanation: this document
 
 The current repository still contains transitional roots until later convergence phases. Strict allowlist and layout modes are expected to fail until those roots are moved, split, archived, or explicitly reclassified.
+
+## CONVERGE-03 Inventory Note
+
+CONVERGE-03 makes the current root inventory and move map the planning basis for future physical convergence:
+
+- machine-readable inventory: `tools/migration/root_inventory.json`
+- machine-readable move map: `tools/migration/root_move_map.json`
+- human inventory summary: `docs/repo/ROOT_INVENTORY.md`
+- human move-map summary: `docs/repo/MOVE_MAP.md`
+
+These artifacts classify current transitional roots; they do not move them. Later phases must consume the inventory and move map before changing any root path. Strict validators may still fail because missing target roots, transitional roots, and review-required root entries remain visible by design.
 
 ## Target Roots
 

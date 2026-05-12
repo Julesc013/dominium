@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-02
+Phase: CONVERGE-03
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -9,6 +9,8 @@ Stability: provisional
 The repository root is a coordination surface, not a general source directory. Root-level sprawl hides ownership, weakens mechanical validation, and causes future agents to bind work to convenient paths instead of canonical owners.
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for root-level entries. `contracts/repo/layout.contract.toml` remains the broader source-layout convergence authority.
+
+CONVERGE-03 records root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. Those files are planning evidence only and do not authorize moves.
 
 ## Allowed Metadata Directories
 
@@ -21,6 +23,8 @@ Allowed metadata/config roots are declared in `contracts/repo/root_allowlist.tom
 - `.aide.local.example/`
 
 Other dot roots require explicit contract classification.
+
+Metadata directories are included in the root inventory with `classification = "metadata"` and `migration_action = "retain_metadata"`.
 
 ## Allowed Root Files
 
@@ -50,6 +54,8 @@ Allowed root files are declared in the allowlist contract and include governance
 
 The contract may also allow specific existing project files such as changelogs or tool metadata. Additional `VERSION_*` files should be reviewed and added deliberately.
 
+Allowed root files are included in the root inventory with `classification = "allowed_file"` and `migration_action = "retain_file"`. Root-level files that are not allowed by contract are classified as review items rather than silently promoted.
+
 ## Forbidden New Root Patterns
 
 Do not add new root-level product, domain, schema, runtime-adapter, or generated-output folders. New work should bind to the existing contract targets:
@@ -64,6 +70,8 @@ Do not add new root-level product, domain, schema, runtime-adapter, or generated
 
 Generated roots are evidence or output, not source ownership. `build/`, `out/`, `dist/`, and `artifacts/` must not become canonical source roots merely because tooling emits them.
 
+The move map records generated roots with generated/output handling and review notes. It does not delete them.
+
 ## `dist/`
 
 `dist/` is a distribution/build projection unless a stronger release contract explicitly says otherwise. It is not the source repo layout and must not define source ownership.
@@ -75,6 +83,8 @@ Generated roots are evidence or output, not source ownership. `build/`, `out/`, 
 ## `repo/`
 
 The existing root-level `repo/` must be classified and migrated later by ownership. Do not add new authority there. Future material should prefer `contracts/repo/`, `docs/repo/`, or `tools/migration/` depending on whether it is machine-readable contract, human documentation, or migration tooling.
+
+In CONVERGE-03, `repo/` remains transitional and review-sensitive. It is not a destination for new source-layout authority.
 
 ## Version And Project Policy Files
 

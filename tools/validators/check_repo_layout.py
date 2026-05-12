@@ -18,10 +18,98 @@ CLASS_OPTIONAL = "optional"
 CLASS_METADATA = "metadata"
 CLASS_ALLOWED_FILE = "allowed_file"
 CLASS_TRANSITIONAL = "transitional_alias"
+CLASS_TRANSITIONAL_PRODUCT = "transitional_product_root"
+CLASS_TRANSITIONAL_RUNTIME = "transitional_runtime_root"
+CLASS_TRANSITIONAL_CONTRACT = "transitional_contract_or_schema_root"
+CLASS_TRANSITIONAL_CONTENT = "transitional_content_or_data_root"
+CLASS_TRANSITIONAL_RELEASE = "transitional_release_or_dist_root"
+CLASS_TRANSITIONAL_ARCHIVE = "transitional_archive_or_quarantine_root"
 CLASS_DOMAIN = "split_required_domain_root"
 CLASS_GENERATED = "generated_or_ephemeral"
 CLASS_VIOLATION = "violation"
 CLASS_UNKNOWN = "unknown_needs_review"
+
+TRANSITIONAL_CLASSES = (
+    CLASS_TRANSITIONAL,
+    CLASS_TRANSITIONAL_PRODUCT,
+    CLASS_TRANSITIONAL_RUNTIME,
+    CLASS_TRANSITIONAL_CONTRACT,
+    CLASS_TRANSITIONAL_CONTENT,
+    CLASS_TRANSITIONAL_RELEASE,
+    CLASS_TRANSITIONAL_ARCHIVE,
+)
+
+OWNERSHIP_SURFACES = set(
+    [
+        "apps",
+        "engine",
+        "game",
+        "runtime",
+        "contracts",
+        "content",
+        "docs",
+        "tests",
+        "tools",
+        "scripts",
+        "cmake",
+        "external",
+        "release",
+        "archive",
+        "metadata",
+        "generated",
+        "mixed_split_required",
+        "unknown",
+    ]
+)
+
+PRODUCT_ROOTS = set(["client", "server", "setup", "launcher"])
+RUNTIME_ROOTS = set(["app", "appshell", "control", "core", "diag", "net", "ui"])
+CONTRACT_ROOTS = set(["compat", "locks", "repo", "safety", "schema", "schemas", "security", "specs"])
+CONTENT_ROOTS = set(["bundles", "data", "modding", "models", "packs", "profiles", "templates"])
+RELEASE_ROOTS = set(["updates"])
+ARCHIVE_ALIAS_ROOTS = set(["attic", "legacy", "quarantine"])
+REVIEW_ROOTS = set(["governance", "ide", "labs", "meta", "performance", "validation"])
+CONTRACT_REVIEW_ROOTS = set(["lib", "libs"])
+SPLIT_MIXED_ROOTS = set(
+    [
+        "bundles",
+        "compat",
+        "control",
+        "core",
+        "data",
+        "locks",
+        "modding",
+        "packs",
+        "repo",
+        "safety",
+        "security",
+        "specs",
+        "templates",
+        "updates",
+    ]
+)
+SHIM_ROOTS = set(
+    [
+        "app",
+        "appshell",
+        "client",
+        "compat",
+        "control",
+        "core",
+        "diag",
+        "launcher",
+        "lib",
+        "libs",
+        "locks",
+        "net",
+        "repo",
+        "schema",
+        "schemas",
+        "server",
+        "setup",
+        "ui",
+    ]
+)
 
 
 def _utc_now():
@@ -279,27 +367,6 @@ def _classify(name, kind, contract):
     }
 
 
-def collect_roots(repo_root, contract):
-    roots = []
-    for name in _root_entries(repo_root):
-        path = os.path.join(repo_root, name)
-        kind = _entry_kind(path)
-        info = _classify(name, kind, contract)
-        roots.append(
-            {
-                "name": name,
-                "path": _repo_rel(repo_root, path),
-                "kind": kind,
-                "classification": info.get("classification", CLASS_UNKNOWN),
-                "target": info.get("target", "review"),
-                "action": info.get("action", "review"),
-                "notes": info.get("notes", ""),
-                "present": True,
-            }
-        )
-    return roots
-
-
 def head_sha(repo_root):
     try:
         out = subprocess.check_output(
@@ -310,6 +377,39 @@ def head_sha(repo_root):
     except Exception:
         return None
     return out.decode("utf-8", "replace").strip()
+
+
+def source_branch(repo_root):
+    try:
+        out = subprocess.check_output(
+            ["git", "branch", "--show-current"],
+            cwd=repo_root,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        return None
+    branch = out.decode("utf-8", "replace").strip()
+    return branch or None
+
+
+def contract_id_from_toml(path):
+    if not os.path.exists(path):
+        return ""
+    in_contract = False
+    for raw_line in _read_text(path).splitlines():
+        line = _strip_comment(raw_line)
+        if not line:
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            in_contract = line[1:-1].strip() == "contract"
+            continue
+        if in_contract and line.startswith("id") and "=" in line:
+            _key, value = line.split("=", 1)
+            try:
+                return _parse_simple_value(value)
+            except Exception:
+                return value.strip().strip('"')
+    return ""
 
 
 def missing_required_roots(repo_root, contract):
@@ -328,18 +428,155 @@ def counts_by_classification(roots):
     return dict(sorted(counts.items()))
 
 
+def detailed_classification(name, kind, raw_class):
+    if raw_class == CLASS_VIOLATION and kind == "file":
+        return CLASS_UNKNOWN
+    if raw_class == CLASS_TRANSITIONAL:
+        if name in PRODUCT_ROOTS:
+            return CLASS_TRANSITIONAL_PRODUCT
+        if name in RUNTIME_ROOTS:
+            return CLASS_TRANSITIONAL_RUNTIME
+        if name in CONTRACT_ROOTS or name in CONTRACT_REVIEW_ROOTS:
+            return CLASS_TRANSITIONAL_CONTRACT
+        if name in CONTENT_ROOTS:
+            return CLASS_TRANSITIONAL_CONTENT
+        if name in RELEASE_ROOTS:
+            return CLASS_TRANSITIONAL_RELEASE
+        if name in ARCHIVE_ALIAS_ROOTS:
+            return CLASS_TRANSITIONAL_ARCHIVE
+        if name in REVIEW_ROOTS:
+            return CLASS_UNKNOWN
+    return raw_class
+
+
+def ownership_surface_for(name, classification):
+    if classification == CLASS_CANONICAL:
+        return name if name in OWNERSHIP_SURFACES else "unknown"
+    if classification == CLASS_OPTIONAL:
+        if name == "sdk":
+            return "external"
+        if name == "examples":
+            return "docs"
+        return "unknown"
+    if classification in (CLASS_METADATA, CLASS_ALLOWED_FILE):
+        return "metadata"
+    if classification == CLASS_GENERATED:
+        return "generated"
+    if classification == CLASS_DOMAIN:
+        return "mixed_split_required"
+    if classification == CLASS_TRANSITIONAL_PRODUCT:
+        return "apps"
+    if classification == CLASS_TRANSITIONAL_RUNTIME:
+        return "runtime"
+    if classification == CLASS_TRANSITIONAL_CONTRACT:
+        return "contracts" if name not in CONTRACT_REVIEW_ROOTS else "unknown"
+    if classification == CLASS_TRANSITIONAL_CONTENT:
+        return "content"
+    if classification == CLASS_TRANSITIONAL_RELEASE:
+        return "release"
+    if classification == CLASS_TRANSITIONAL_ARCHIVE:
+        return "archive"
+    return "unknown"
+
+
+def migration_action_for(name, classification):
+    if classification in (CLASS_CANONICAL, CLASS_OPTIONAL):
+        return "keep"
+    if classification == CLASS_METADATA:
+        return "retain_metadata"
+    if classification == CLASS_ALLOWED_FILE:
+        return "retain_file"
+    if classification == CLASS_GENERATED:
+        return "ignore_generated"
+    if classification == CLASS_DOMAIN:
+        return "split"
+    if classification == CLASS_TRANSITIONAL_PRODUCT:
+        return "move"
+    if classification == CLASS_TRANSITIONAL_RUNTIME:
+        return "split" if name in ("control", "core") else "move"
+    if classification == CLASS_TRANSITIONAL_CONTRACT:
+        if name in ("schema", "schemas"):
+            return "merge"
+        if name in CONTRACT_REVIEW_ROOTS:
+            return "review"
+        return "split"
+    if classification == CLASS_TRANSITIONAL_CONTENT:
+        return "split" if name in SPLIT_MIXED_ROOTS else "move"
+    if classification == CLASS_TRANSITIONAL_RELEASE:
+        return "split"
+    if classification == CLASS_TRANSITIONAL_ARCHIVE:
+        return "archive"
+    return "review"
+
+
+def authority_status_for(classification):
+    if classification in (CLASS_CANONICAL, CLASS_OPTIONAL):
+        return "authoritative_current"
+    if classification in (CLASS_METADATA, CLASS_ALLOWED_FILE):
+        return "metadata"
+    if classification == CLASS_GENERATED:
+        return "generated_non_authoritative"
+    if classification == CLASS_TRANSITIONAL_ARCHIVE:
+        return "legacy_reference"
+    if classification in TRANSITIONAL_CLASSES or classification == CLASS_DOMAIN:
+        return "transitional"
+    return "unknown"
+
+
+def current_role_for(classification):
+    if classification == CLASS_CANONICAL:
+        return "Current canonical target root for the source repository layout."
+    if classification == CLASS_OPTIONAL:
+        return "Optional target root if a real external surface exists."
+    if classification == CLASS_METADATA:
+        return "Repository metadata or local/project configuration root."
+    if classification == CLASS_ALLOWED_FILE:
+        return "Allowed root-level project file."
+    if classification == CLASS_TRANSITIONAL_PRODUCT:
+        return "Current top-level product root retained until product entrypoint convergence."
+    if classification == CLASS_TRANSITIONAL_RUNTIME:
+        return "Current runtime/AppShell/platform-adjacent root retained until runtime convergence."
+    if classification == CLASS_TRANSITIONAL_CONTRACT:
+        return "Current contract, schema, compatibility, or adjacent root retained until contract convergence."
+    if classification == CLASS_TRANSITIONAL_CONTENT:
+        return "Current content, data, pack, profile, or export-adjacent root retained until split review."
+    if classification == CLASS_TRANSITIONAL_RELEASE:
+        return "Current release, update, or control-plane-adjacent root retained until split review."
+    if classification == CLASS_TRANSITIONAL_ARCHIVE:
+        return "Current historical, legacy, or quarantined root retained until archive convergence."
+    if classification == CLASS_DOMAIN:
+        return "Current mixed domain root that must be split by ownership."
+    if classification == CLASS_GENERATED:
+        return "Generated, ephemeral, or release-adjacent output root."
+    return "Unclassified root entry requiring manual ownership review."
+
+
+def proposed_target_for(name, classification, raw_target):
+    if classification == CLASS_DOMAIN:
+        return "contracts/game/content/docs/tests split"
+    if classification == CLASS_GENERATED:
+        if name == "dist":
+            return "generated distribution output; future distribution contract review"
+        if name == "artifacts":
+            return "generated evidence or release artifact review"
+        return "generated build output"
+    return raw_target or "review"
+
+
 def phase_hint_for(root):
     name = root["name"]
     cls = root["classification"]
-    if name in ("archive", "attic", "legacy", "quarantine"):
+    if cls in (CLASS_CANONICAL, CLASS_OPTIONAL, CLASS_METADATA, CLASS_ALLOWED_FILE):
+        return "none"
+    if cls == CLASS_TRANSITIONAL_ARCHIVE or name in ("attic", "legacy", "quarantine"):
         return "CONVERGE-05"
-    if name in ("schema", "schemas", "compat", "locks", "contracts", "safety", "security", "specs"):
+    if cls == CLASS_TRANSITIONAL_CONTRACT or name in ("schema", "schemas", "compat", "locks", "contracts", "safety", "security", "specs"):
         return "CONVERGE-06"
-    if name in ("runtime", "appshell", "app", "platform", "render", "ui", "input", "audio", "net", "diag", "storage", "control", "core"):
+    if cls == CLASS_TRANSITIONAL_RUNTIME or name in ("appshell", "app", "platform", "render", "ui", "input", "audio", "net", "diag", "storage", "control", "core"):
         return "CONVERGE-07"
-    if name in ("client", "server", "setup", "launcher"):
+    if cls == CLASS_TRANSITIONAL_PRODUCT or name in ("client", "server", "setup", "launcher"):
         return "CONVERGE-08"
-    if cls == CLASS_DOMAIN:
+    if cls in (CLASS_DOMAIN, CLASS_TRANSITIONAL_CONTENT):
         return "CONVERGE-09"
     return "review"
 
@@ -348,31 +585,137 @@ def risk_level_for(root):
     name = root["name"]
     cls = root["classification"]
     if cls in (CLASS_CANONICAL, CLASS_METADATA, CLASS_ALLOWED_FILE, CLASS_OPTIONAL):
+        if name == "runtime":
+            return "medium"
         return "low"
     if cls == CLASS_GENERATED:
         return "review"
     if cls == CLASS_DOMAIN:
         return "high"
-    if name in ("schema", "schemas", "packs", "data", "repo", "compat", "locks", "security", "specs"):
-        return "high"
-    if name in ("client", "server", "setup", "launcher", "app", "appshell", "runtime", "core", "control", "net", "ui", "diag"):
+    if cls == CLASS_TRANSITIONAL_CONTRACT:
+        return "high" if name not in CONTRACT_REVIEW_ROOTS else "review"
+    if cls == CLASS_TRANSITIONAL_CONTENT:
+        return "high" if name in SPLIT_MIXED_ROOTS else "medium"
+    if cls == CLASS_TRANSITIONAL_RUNTIME:
+        return "high" if name in ("control", "core") else "medium"
+    if cls == CLASS_TRANSITIONAL_PRODUCT:
         return "medium"
-    if name in ("attic", "legacy", "quarantine"):
+    if cls == CLASS_TRANSITIONAL_RELEASE:
+        return "high"
+    if cls == CLASS_TRANSITIONAL_ARCHIVE:
         return "low"
     return "review"
 
 
+def split_required_for(name, classification, action):
+    if classification == CLASS_DOMAIN:
+        return True
+    if action == "split":
+        return True
+    return name in SPLIT_MIXED_ROOTS
+
+
+def enrich_root(repo_root, name, kind, info):
+    classification = detailed_classification(name, kind, info.get("classification", CLASS_UNKNOWN))
+    action = migration_action_for(name, classification)
+    root = {
+        "name": name,
+        "path": _repo_rel(repo_root, os.path.join(repo_root, name)),
+        "kind": kind,
+        "present": True,
+        "classification": classification,
+        "ownership_surface": ownership_surface_for(name, classification),
+        "current_role": current_role_for(classification),
+        "proposed_target": proposed_target_for(name, classification, info.get("target", "review")),
+        "migration_action": action,
+        "split_required": split_required_for(name, classification, action),
+        "risk_level": "review",
+        "phase_hint": "review",
+        "authority_status": authority_status_for(classification),
+        "notes": info.get("notes", ""),
+    }
+    if name == "runtime" and classification == CLASS_CANONICAL:
+        root["notes"] = (
+            (root["notes"] + " ").strip()
+            + " Present canonical target root; inspect contents before treating adjacent runtime roots as converged."
+        ).strip()
+    if classification == CLASS_UNKNOWN and not root["notes"]:
+        root["notes"] = "No matching root classification in layout contract; manual review required."
+    root["risk_level"] = risk_level_for(root)
+    root["phase_hint"] = phase_hint_for(root)
+    return root
+
+
+def collect_roots(repo_root, contract):
+    roots = []
+    for name in _root_entries(repo_root):
+        path = os.path.join(repo_root, name)
+        kind = _entry_kind(path)
+        info = _classify(name, kind, contract)
+        roots.append(enrich_root(repo_root, name, kind, info))
+    return roots
+
+
+def dependencies_for(root):
+    cls = root["classification"]
+    name = root["name"]
+    if cls in (CLASS_CANONICAL, CLASS_OPTIONAL, CLASS_METADATA, CLASS_ALLOWED_FILE):
+        return []
+    if cls == CLASS_GENERATED:
+        return ["requires generated-output provenance review"]
+    if cls == CLASS_DOMAIN:
+        return ["requires domain split inspection", "requires contract convergence first", "requires fixtures/tests inventory"]
+    if cls == CLASS_TRANSITIONAL_PRODUCT:
+        return ["requires product entrypoint audit", "requires build path update", "requires docs cross-reference update"]
+    if cls == CLASS_TRANSITIONAL_RUNTIME:
+        return ["requires runtime boundary review", "requires build/import path update", "requires docs cross-reference update"]
+    if cls == CLASS_TRANSITIONAL_CONTRACT:
+        deps = ["requires contract convergence first", "requires docs cross-reference update"]
+        if name in ("schema", "schemas"):
+            deps.append("requires schema/projection ownership review")
+        if name in CONTRACT_REVIEW_ROOTS:
+            deps.append("requires manual library ownership review")
+        return deps
+    if cls == CLASS_TRANSITIONAL_CONTENT:
+        return ["requires content/data ownership review", "requires pack/profile authority review"]
+    if cls == CLASS_TRANSITIONAL_RELEASE:
+        return ["requires release/control-plane ownership review", "requires distribution contract sequencing"]
+    if cls == CLASS_TRANSITIONAL_ARCHIVE:
+        return ["requires archive provenance review"]
+    return ["requires manual root ownership review"]
+
+
+def shim_required_for(root):
+    return root["name"] in SHIM_ROOTS and root["migration_action"] in ("move", "merge", "split", "review")
+
+
+def preserve_paths_for(root, shim_required):
+    if shim_required:
+        return "Compatibility shims or redirects may be required before changing this root path."
+    if root["classification"] == CLASS_GENERATED:
+        return "Do not preserve generated path as source authority; preserve only if external workflows require it."
+    if root["classification"] in (CLASS_CANONICAL, CLASS_OPTIONAL, CLASS_METADATA, CLASS_ALLOWED_FILE):
+        return "No compatibility shim expected because the entry is retained."
+    return "Preserve current path until manual review proves no compatibility dependency."
+
+
 def infer_move_entry(root):
-    split_required = root["classification"] == CLASS_DOMAIN
+    shim_required = shim_required_for(root)
     return {
         "name": root["name"],
         "current_path": root["path"],
-        "proposed_target": root["target"],
-        "action": root["action"],
+        "proposed_target": root["proposed_target"],
+        "action": root["migration_action"],
         "classification": root["classification"],
-        "split_required": split_required,
-        "risk_level": risk_level_for(root),
-        "phase_hint": phase_hint_for(root),
+        "ownership_surface": root["ownership_surface"],
+        "split_required": root["split_required"],
+        "risk_level": root["risk_level"],
+        "phase_hint": root["phase_hint"],
+        "dependencies": dependencies_for(root),
+        "preserve_paths": preserve_paths_for(root, shim_required),
+        "shim_required": shim_required,
+        "semantic_change_allowed": False,
+        "build_change_allowed": False,
         "notes": root["notes"],
     }
 
@@ -397,23 +740,11 @@ def load_existing_move_map(path):
 
 def merge_move_map(existing, roots):
     entries = []
-    names = sorted(set(existing.keys()) | set(root["name"] for root in roots), key=lambda item: (item.casefold(), item))
+    names = sorted(set(root["name"] for root in roots), key=lambda item: (item.casefold(), item))
     inferred_by_name = dict((root["name"], infer_move_entry(root)) for root in roots)
     for name in names:
         inferred = inferred_by_name.get(name)
-        if name in existing and inferred:
-            merged = dict(inferred)
-            old = existing[name]
-            for key, value in old.items():
-                if value not in (None, "", [], {}):
-                    merged[key] = value
-            for key, value in inferred.items():
-                if key not in merged or merged[key] in (None, "", [], {}):
-                    merged[key] = value
-            entries.append(merged)
-        elif name in existing:
-            entries.append(existing[name])
-        else:
+        if inferred:
             entries.append(inferred)
     return entries
 
@@ -430,20 +761,28 @@ def write_json(path, data):
 def build_outputs(repo_root, contract, roots, inventory_out, move_map_path):
     generated_at = _utc_now()
     meta = contract.get("contract", {})
+    sha = head_sha(repo_root)
+    branch = source_branch(repo_root)
+    allowlist_id = contract_id_from_toml(os.path.join(repo_root, "contracts", "repo", "root_allowlist.toml"))
     inventory = {
+        "schema_version": "1.0",
         "generated_at_utc": generated_at,
-        "repo_root": _posix(os.path.abspath(repo_root)),
+        "repo_root": ".",
+        "head_sha": sha,
+        "source_branch": branch,
         "contract_id": meta.get("id", ""),
         "contract_phase": meta.get("phase", ""),
-        "head_sha": head_sha(repo_root),
+        "allowlist_contract_id": allowlist_id,
+        "inventory_status": "complete",
         "roots": roots,
     }
     move_map = {
+        "schema_version": "1.0",
         "generated_at_utc": generated_at,
-        "repo_root": _posix(os.path.abspath(repo_root)),
-        "contract_id": meta.get("id", ""),
-        "contract_phase": meta.get("phase", ""),
-        "head_sha": inventory["head_sha"],
+        "repo_root": ".",
+        "head_sha": sha,
+        "source_branch": branch,
+        "map_status": "complete",
         "entries": merge_move_map(load_existing_move_map(move_map_path), roots),
     }
     return inventory, move_map
@@ -483,8 +822,8 @@ def strict_violations(repo_root, contract, roots, contract_errors):
 
 def build_report(repo_root, contract, roots, contract_errors, strict):
     missing = missing_required_roots(repo_root, contract)
-    split_required = [root["name"] for root in roots if root["classification"] == CLASS_DOMAIN]
-    transitional = [root["name"] for root in roots if root["classification"] == CLASS_TRANSITIONAL]
+    split_required = [root["name"] for root in roots if root.get("split_required")]
+    transitional = [root["name"] for root in roots if root["classification"] in TRANSITIONAL_CLASSES]
     generated = [root["name"] for root in roots if root["classification"] == CLASS_GENERATED]
     unknown = [root["name"] for root in roots if root["classification"] in (CLASS_UNKNOWN, CLASS_VIOLATION)]
     violations = strict_violations(repo_root, contract, roots, contract_errors)
@@ -518,7 +857,7 @@ def print_text_report(report):
     for key, value in report["summary_counts"].items():
         print("- {0}: {1}".format(key, value))
     print("")
-    print("Unknown/violating roots:")
+    print("Unknown/review roots:")
     if report["unknown_roots"]:
         for name in report["unknown_roots"]:
             print("- {0}".format(name))

@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-01
+Phase: CONVERGE-03
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -61,3 +61,33 @@ Runtime and product code must not depend on tools. Tools may inspect broad repo 
 Owns historical, superseded, quarantined, generated-evidence, and legacy material.
 
 Archive material is visible for provenance and archaeology. It must not silently become active source authority.
+
+## CONVERGE-03 Ownership Surface Vocabulary
+
+`tools/migration/root_inventory.json` uses the `ownership_surface` field to make later migration planning explicit. Allowed surfaces are:
+
+- `apps`, `engine`, `game`, `runtime`, `contracts`, `content`, `docs`, `tests`, `tools`, `scripts`, `cmake`, `external`, `release`, and `archive` for target source ownership.
+- `metadata` for allowed metadata directories and root coordination files.
+- `generated` for build, release, or evidence outputs that are not source authority.
+- `mixed_split_required` for roots that must be split across multiple owners.
+- `unknown` for roots that need manual review before a target owner is chosen.
+
+## Mixed Split Required
+
+`mixed_split_required` means a root name is not enough evidence to move the directory wholesale. Later work must inspect file-level roles and split schemas, registries, implementation, content, docs, tests, generated outputs, and compatibility surfaces into their owning roots.
+
+## Product Roots After Migration
+
+Product roots under `apps/` must remain thin entrypoints and composition surfaces. AppShell logic, platform adapters, renderer backends, domain rules, schemas, registries, pack data, and docs must be rehomed by ownership instead of carried into `apps/` as bulk product history.
+
+## Runtime Roots After Migration
+
+Runtime roots may host, adapt, observe, present, connect, persist, and diagnose. They must not own simulation truth, law, Process mutation, domain semantics, pack authority, or product identity.
+
+## Content And Data Roots
+
+Content ownership covers authored packs, profiles, fixtures, datasets, assets, templates, and domain data. Mixed roots such as `data/`, `packs/`, `bundles/`, and `templates/` require review because they may also contain registries, planning mirrors, generated evidence, or runtime-store assumptions.
+
+## Generated And Ephemeral Roots
+
+Generated roots are non-authoritative unless a stronger release or evidence contract says otherwise. `dist/`, `artifacts/`, `build/`, and `out/` must be treated as outputs or evidence, not source ownership.

@@ -411,3 +411,7 @@ CONVERGE-01 added the first machine-readable source repository layout contract, 
 ## CONVERGE-02 Follow-up Note
 
 CONVERGE-02 added a root allowlist contract and non-blocking root allowlist validator, marked stale layout authority docs as legacy/planning/reference surfaces for current source-layout purposes, and performed no physical moves.
+
+## CONVERGE-03 Follow-up Note
+
+CONVERGE-03 refined the root inventory and convergence move map into complete migration-planning artifacts, added human-readable inventory and move-map summaries, updated repo layout guidance, and performed no physical moves.
