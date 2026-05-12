@@ -8,6 +8,10 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Dist Tree Contract
 
+## CONVERGE-04 Projection Note
+
+This document remains an input/partial contract for generated `dist/` output roles. CONVERGE-04 reconciles distribution, install, media, package, bundle, cache, staging, symbols, and runtime projection layout at `contracts/distribution/layout.contract.toml` and `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`.
+
 ## Scope
 
 This document defines immutable layout intent for distribution outputs.

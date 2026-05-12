@@ -35,6 +35,16 @@ CONVERGE-03 makes the current root inventory and move map the planning basis for
 
 These artifacts classify current transitional roots; they do not move them. Later phases must consume the inventory and move map before changing any root path. Strict validators may still fail because missing target roots, transitional roots, and review-required root entries remain visible by design.
 
+## CONVERGE-04 Distribution Projection Note
+
+Source repository layout and distribution/install/runtime/media layout are separate contracts:
+
+- source layout authority: `contracts/repo/layout.contract.toml`
+- distribution projection authority: `contracts/distribution/layout.contract.toml`
+- human distribution explanation: `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`
+
+`dist/` is generated release/build output. It is not a canonical source root and must not be used to decide source ownership, runtime storage ownership, or package export targets.
+
 ## Target Roots
 
 The source repository should converge toward ownership-based top-level roots:

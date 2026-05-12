@@ -86,6 +86,12 @@ The existing root-level `repo/` must be classified and migrated later by ownersh
 
 In CONVERGE-03, `repo/` remains transitional and review-sensitive. It is not a destination for new source-layout authority.
 
+## Distribution Projection Roots
+
+Source root policy does not authorize runtime, install, media, package cache, staging, save-store, or package export roots at the repository root.
+
+Distribution projections are governed by `contracts/distribution/layout.contract.toml`. `dist/` is generated release/build output unless an explicit stronger exception says otherwise. Package caches, staging directories, runtime stores, media payloads, save stores, and rollback transaction roots are projections, not source repository ownership roots.
+
 ## Version And Project Policy Files
 
 `VERSION_*` files are allowed root identity files. README, license, security, contributing, governance, and agent instruction files may remain at root when they represent repository-wide coordination.

@@ -415,3 +415,7 @@ CONVERGE-02 added a root allowlist contract and non-blocking root allowlist vali
 ## CONVERGE-03 Follow-up Note
 
 CONVERGE-03 refined the root inventory and convergence move map into complete migration-planning artifacts, added human-readable inventory and move-map summaries, updated repo layout guidance, and performed no physical moves.
+
+## CONVERGE-04 Follow-up Note
+
+CONVERGE-04 added a distribution layout contract, distribution layout validator, and distribution/install/media/bundle/cache/symbol documentation. It performed no physical moves and generated no package bytes.

@@ -8,6 +8,10 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Install Model (OPS0 / LIB-1)
 
+## CONVERGE-04 Projection Note
+
+This document remains an input/partial contract for install identity and store linkage. CONVERGE-04 reconciles distribution, install, media, package, bundle, cache, staging, symbols, and runtime projection layout at `contracts/distribution/layout.contract.toml` and `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`.
+
 Status: binding.
 Scope: install identity, product build selection, store linkage, and multi-install coexistence.
 

@@ -16,6 +16,12 @@ Future migration sequence:
 
 Distribution, install, media, portable-store, and runtime projection layouts are handled by CONVERGE-04, not by this source-repo move map.
 
+## CONVERGE-04 Projection Note
+
+Physical repository moves do not define install, media, package, cache, bundle, or runtime-store layout. Those layouts are projections governed by `contracts/distribution/layout.contract.toml` and explained in `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`.
+
+`dist/`, `build/`, `out/`, package caches, staging directories, media payloads, and runtime stores must not be confused with source ownership roots. Future source moves should not create or preserve those outputs as source authority.
+
 ## Planning Table
 
 | Current Path | Proposed Target | Action | Split? | Shim? | Phase | Risk | Notes |

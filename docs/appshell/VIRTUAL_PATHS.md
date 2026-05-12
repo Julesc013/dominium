@@ -8,6 +8,10 @@ Replacement Target: release-pinned install discovery and virtual root contract
 
 # Virtual Paths
 
+## CONVERGE-04 Projection Note
+
+This document remains an input/partial contract for AppShell virtual-root resolution. CONVERGE-04 reconciles distribution, install, media, package, bundle, cache, staging, symbols, and runtime projection layout at `contracts/distribution/layout.contract.toml` and `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`.
+
 AppShell owns deterministic logical-root resolution for packs, profiles, instances, saves, exports, logs, and IPC metadata.
 
 ## Logical Roots

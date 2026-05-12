@@ -1,0 +1,232 @@
+[contract]
+id = "dominium.distribution.layout.v1"
+status = "provisional"
+enforcement = "audit"
+phase = "CONVERGE-04"
+description = "Machine-readable layout contract for distribution, install, media, package export, bundle, cache, staging, symbols, and runtime projections."
+
+[policy]
+source_repo_layout_is_not_runtime_layout = true
+dist_is_generated_output = true
+package_exports_use_logical_roots = true
+absolute_host_paths_for_packages_forbidden = true
+portable_archive_extracts_to_valid_portable_install = true
+installed_mode_separates_immutable_install_from_mutable_store = true
+media_payload_is_read_only_by_default = true
+validators_audit_only_by_default = true
+
+[logical_roots.INSTALL_ROOT]
+purpose = "Root of a concrete install or portable extracted tree; carries install identity and manifests."
+mutable = "contextual"
+required_in_portable = true
+required_in_installed = true
+package_export_allowed = false
+notes = "Install root identity is manifest-driven and must not depend on a singleton host path."
+
+[logical_roots.BIN_ROOT]
+purpose = "Product binaries, wrappers, and endpoint descriptors."
+mutable = false
+required_in_portable = true
+required_in_installed = true
+package_export_allowed = true
+notes = "Executable names and product IDs are preserved by higher contracts."
+
+[logical_roots.DESCRIPTOR_ROOT]
+purpose = "Release, product-build, endpoint, package, and install descriptor sidecars."
+mutable = false
+required_in_portable = true
+required_in_installed = true
+package_export_allowed = true
+notes = "Descriptors are identity and verification inputs, not mutable runtime state."
+
+[logical_roots.STORE_ROOT]
+purpose = "Content-addressed store for packs, profiles, locks, reusable artifacts, and store metadata."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = true
+notes = "Installed mode may bind this to a user, system, or shared mutable store outside immutable install."
+
+[logical_roots.PACK_ROOT]
+purpose = "Pack manifests and content payloads within the store."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = true
+notes = "Pack identity remains hash/manifest driven."
+
+[logical_roots.PROFILE_ROOT]
+purpose = "Profile bundles and profile manifests."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = true
+notes = "Profiles compose behavior through data, not runtime mode flags."
+
+[logical_roots.INSTANCE_ROOT]
+purpose = "Instance manifests, instance-local overrides, and runtime instance roots."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = false
+notes = "Instances may reference saves but do not own save truth unless a compound bundle says so."
+
+[logical_roots.SAVE_ROOT]
+purpose = "Save manifests, snapshots, patches, proofs, and save payloads."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = false
+notes = "Save identity is portable and hash-pinned, never host-path pinned."
+
+[logical_roots.EXPORT_ROOT]
+purpose = "Exported bundles, diagnostics, replays, and operator-selected output packages."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = false
+notes = "Exports are produced outputs, not canonical source ownership."
+
+[logical_roots.LOG_ROOT]
+purpose = "Structured logs for AppShell, setup, products, diagnostics, and operational reports."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = false
+notes = "Logs are evidence and diagnostics, not package payload authority."
+
+[logical_roots.RUNTIME_ROOT]
+purpose = "Runtime IPC, transient runtime files, runtime locks, and temp material."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = false
+notes = "Runtime projection must not own simulation truth."
+
+[logical_roots.CACHE_ROOT]
+purpose = "Package cache, indexes, downloads, verification reports, and staging scratch space."
+mutable = true
+required_in_portable = false
+required_in_installed = "contextual"
+package_export_allowed = "cache_package_only"
+notes = "Cache entries are content-hash keyed; partial downloads are never valid packages."
+
+[logical_roots.OPS_ROOT]
+purpose = "Setup/update/rollback operation logs, plans, staging pointers, and transaction state."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = false
+notes = "Ops state is transactional and separate from deterministic store locks."
+
+[logical_roots.DOC_ROOT]
+purpose = "Runtime-facing documentation, notices, release notes, and operator guides."
+mutable = false
+required_in_portable = true
+required_in_installed = true
+package_export_allowed = true
+notes = "Docs included in payloads are shipped projection docs, not source-repo layout authority."
+
+[logical_roots.REDIST_ROOT]
+purpose = "Runtime redistributables and platform prerequisites."
+mutable = false
+required_in_portable = false
+required_in_installed = "contextual"
+package_export_allowed = true
+notes = "Redistributables are separate from Dominium-owned runtime payloads."
+
+[logical_roots.SYMBOL_ROOT]
+purpose = "Debug symbols, symbol indexes, source-link metadata, and symbol packages."
+mutable = false
+required_in_portable = false
+required_in_installed = false
+package_export_allowed = "symbol_package_only"
+notes = "Symbols are separate from runtime payload packages and may ship through a separate channel."
+
+[logical_roots.MEDIA_ROOT]
+purpose = "Read-only offline media payload root."
+mutable = false
+required_in_portable = false
+required_in_installed = false
+package_export_allowed = false
+notes = "Writable roots must be selected, copied, or projected outside read-only media."
+
+[logical_roots.STORE_LOCK_ROOT]
+purpose = "Deterministic content, pack, capability, compatibility, and store-resolution locks."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = true
+notes = "Refines legacy generic locks into deterministic store locks."
+
+[logical_roots.RUNTIME_LOCK_ROOT]
+purpose = "Process, IPC, launch coordination, and transient runtime locks."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = false
+notes = "Runtime locks must not be confused with pack or compatibility locks."
+
+[logical_roots.OPS_TRANSACTION_ROOT]
+purpose = "Setup, update, repair, uninstall, rollback, stage, commit, and rollback transaction records."
+mutable = true
+required_in_portable = true
+required_in_installed = "contextual"
+package_export_allowed = false
+notes = "Transactions are setup/ops state, not runtime or store lock payloads."
+
+[projections.source_repo]
+governed_by = "contracts/repo/layout.contract.toml"
+not_install_layout = true
+not_package_layout = true
+not_runtime_store_layout = true
+rules = ["Source repo roots do not imply install roots.", "Distribution and runtime projections are governed by this contract."]
+
+[projections.dist_output]
+root_paths = ["dist/pkg/<platform>/<arch>/", "dist/sys/<platform>/<arch>/", "dist/sym/<platform>/<arch>/", "dist/meta/", "dist/cfg/", "dist/redist/", "dist/res/"]
+rules = ["dist/pkg ships package artifacts.", "dist/sys is a realized install projection for local or CI flows.", "dist/sym is a separate symbols channel.", "dist/meta carries build metadata, indexes, manifests, checksums, and signatures.", "dist is generated output unless explicitly tracked by exception.", "Symbols are never merged into runtime payload packages."]
+
+[projections.compressed_archive]
+root_pattern = "Dominium-<version>-<platform>-<arch>/"
+paths = ["install.manifest.json", "semantic_contract_registry.json", "release.manifest.json", "README.txt", "LICENSES/", "NOTICE.txt", "bin/", "descriptors/", "store/", "instances/", "saves/", "exports/", "logs/", "runtime/", "cache/", "ops/", "docs/", "redist/"]
+rules = ["Extraction must produce a valid portable install.", "Archive manifests must be present.", "Portable mode requires no second install step."]
+
+[projections.portable_install]
+root_pattern = "DominiumPortable/ or extracted release root"
+paths = ["install.manifest.json", "semantic_contract_registry.json", "release.manifest.json", "bin/", "descriptors/", "store/packs/", "store/profiles/", "store/locks/", "instances/", "saves/", "exports/", "logs/", "runtime/ipc/", "runtime/locks/", "runtime/temp/", "cache/", "ops/transactions/", "docs/", "LICENSES/"]
+rules = ["Install root and store root may be the same physical tree.", "Mutable roots live adjacent to the install root.", "Portable installs are self-describing.", "No host registry is required.", "Identity must not contain absolute host paths."]
+
+[projections.installed_desktop]
+example_families = ["Windows immutable: Program Files/Dominium", "Windows mutable: ProgramData/Dominium and/or LocalAppData/Dominium", "macOS immutable: .app bundle or /Applications", "macOS mutable: Library/Application Support/Dominium", "Linux immutable: /opt/dominium or distro roots", "Linux mutable: XDG data or /var/lib/dominium for server/system install"]
+rules = ["Immutable install root contains binaries, descriptors, docs, and licenses.", "Mutable store/user roots are outside immutable install root.", "Multiple installs and forks may coexist.", "Store reuse depends on hashes and contracts, not singleton install paths."]
+
+[projections.server_install]
+example_families = ["immutable root: /opt/dominium", "mutable store: /var/lib/dominium", "logs: /var/log/dominium", "runtime IPC and locks: /run/dominium"]
+rules = ["Headless operation must not require GUI roots.", "Server install preserves immutable install versus mutable store separation."]
+
+[projections.media_layout]
+root_pattern = "DOMINIUM_MEDIA/"
+paths = ["media.manifest.json", "release.manifest.json", "package.index.json", "checksums.sha256", "signatures/", "README_FIRST.txt", "LICENSES/", "packages/<platform>/<arch>/", "portable/<platform>/<arch>/", "bootstrap/<platform>/", "docs/", "redist/", "symbols/", "source/", "writable_template/"]
+rules = ["Media payload is read-only by default.", "Writable roots must be selected, copied, or projected externally.", "Media may include packages, portable projections, bootstrap setup, docs, redist, symbols, and source archive.", "Runtime must not assume it can write to media."]
+
+[projections.package_export]
+allowed_export_roots = ["install", "bin", "descriptors", "store", "packs", "profiles", "docs", "redist", "cache", "symbols", "source"]
+absolute_host_paths_allowed = false
+rules = [".dompkg exports files into logical roots.", ".dompkg must not encode absolute host install paths.", "Export target roots must be declared.", "Package manifest controls file_exports.", "Symbols are separate packages or channels unless explicitly a symbols package."]
+
+[projections.bundle_export]
+bundle_types = ["instance bundle", "save bundle", "replay bundle", "diagnostic bundle", "compound bundle"]
+rules = ["Bundles are not installs.", "Instance bundles may reference saves but do not own authoritative save payloads unless compound.", "Save bundles carry save manifest, snapshots, patches, proofs, and contract/pack locks.", "Diagnostic bundles carry logs, events, proofs, hashes, environment, command line, contract bundle, and pack lock.", "Deterministic ordering is required."]
+
+[projections.cache_and_staging]
+paths = ["cache/packages/", "cache/indexes/", "cache/verify/", "cache/staging/", "cache/downloads/partial/", "ops/transactions/<transaction_id>/"]
+rules = ["Partial downloads never appear as valid packages.", "Cache entries are keyed by content hash.", "Staging is setup-owned.", "Rollback is projection/lockfile based, not ad hoc copying."]
+
+[projections.symbols_and_provenance]
+rules = ["Symbols remain separate from runtime payload.", "Build provenance and manifests live in dist/meta or release metadata.", "Checksums and signatures are explicit.", "Debug packages may exist separately.", "Release identity is manifest-driven."]
+
+[platform_ids]
+allowed = ["winnt", "win9x", "win16", "dos", "macosx", "macclassic", "linux", "android", "ios", "web"]
+provisional = true
+source = "docs/distribution/PLATFORM_ID_CANON.md"
+notes = "CONVERGE-04 uses the existing platform-id canon as an input and does not change platform IDs."

@@ -8,6 +8,10 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Content and Storage Model (STOR0 / LIB-0)
 
+## CONVERGE-04 Projection Note
+
+This document remains an input/partial contract for content-addressed storage and portable/linked topology. CONVERGE-04 reconciles distribution, install, media, package, bundle, cache, staging, symbols, and runtime projection layout at `contracts/distribution/layout.contract.toml` and `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`.
+
 Status: binding.
 Scope: content-addressable storage, linked vs portable instances, and deterministic export/import layout.
 
