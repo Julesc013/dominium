@@ -134,6 +134,8 @@ Generated roots are non-authoritative unless a stronger release or evidence cont
 
 Later phases must split these by file role before binding anything to contracts, runtime, store, or ops ownership.
 
+POST-CONVERGE-04 keeps this boundary conservative for the high-risk roots: `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` were not moved because active imports, CMake/ABI references, embedded lock identity, release/update references, or protected semantic authority remain unresolved. Pure future contract material should use `contracts/`, but existing high-risk roots require protected ownership review before relocation.
+
 ## CONVERGE-09 Domain Ownership
 
 CONVERGE-09 moved safe root-level domain implementation packages under `game/domains/`. The moved roots were implementation code only during inspection; domain schemas, registries, capabilities, protocols, authored content, docs, and tests remain governed by their own target roots.

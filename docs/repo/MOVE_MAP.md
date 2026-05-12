@@ -226,3 +226,17 @@ POST-CONVERGE-03 performed no physical content/package/profile/bundle moves. The
 - `templates`: protected-reference-backed root template surface.
 
 No pack IDs, profile IDs, bundle IDs, content hashes, build semantics, or support-matrix semantics changed.
+
+## POST-CONVERGE-04 Compat / Lib / Specs / Security / Update Cleanup
+
+POST-CONVERGE-04 performed no physical high-risk moves. The move-map targets for these roots remain protected review targets only and must not be executed without a later ownership task that can preserve compatibility, security, safety, update, lock, ABI, and build semantics.
+
+- `compat`: active implementation and shims; pure contracts may move only after compatibility review.
+- `lib`: active Python install/save/store/bundle/artifact implementation; do not move without runtime/tooling import review.
+- `libs`: CMake and ABI-critical C/C++ libraries and public headers; do not move without build/interface review.
+- `locks`: concrete pack lock artifact with embedded identity and distribution copy behavior.
+- `repo`: release policy, RepoX rulesets/exemptions, and canon state control-plane material.
+- `safety`, `security`, and `specs`: protected semantic roots requiring explicit review.
+- `updates`: tracked RepoX-generated update feeds referenced by release/update tooling.
+
+No compatibility, security, safety, update, lockfile, ABI, build, product, runtime, or support-matrix semantics changed.

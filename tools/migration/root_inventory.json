@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T09:55:15Z",
+  "generated_at_utc": "2026-05-12T10:20:23Z",
   "repo_root": ".",
-  "head_sha": "e81e6d7f2a97af5e3c0fe2d26736d8e4cf9e66a6",
+  "head_sha": "ed571cd32cd9c5ec53786f24919f87d64710f031",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-10",
@@ -326,8 +326,8 @@
       "notes": "Root-level compat/ remains mixed implementation and shim code after CONVERGE-06; do not move wholesale into contracts/.",
       "exception_id": "compat_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/compatibility plus runtime/tools split review",
-      "exception_reason": "Compatibility material remains mixed between contracts, implementation, shims, and tools.",
+      "exception_target": "protected compatibility split review: pure contracts to contracts/compatibility; implementation and shims only after runtime/tooling ownership review",
+      "exception_reason": "Active compatibility implementation, negotiation engines, migration/refusal helpers, and legacy shims are imported by client, server, runtime, tooling, and tests.",
       "exception_risk": "high"
     },
     {
@@ -601,9 +601,9 @@
       "notes": "Do not classify by name alone; inspect ownership first.",
       "exception_id": "lib_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "engine, runtime, external, contracts, or tools review",
-      "exception_reason": "Library root remains ambiguous and requires ownership inspection before convergence.",
-      "exception_risk": "review"
+      "exception_target": "protected library ownership review before any split across runtime, tools, contracts, external, or implementation surfaces",
+      "exception_reason": "Active Python library implementation for install, instance, save, store, bundle, import/export, and artifact flows is imported by runtime, tools, and tests.",
+      "exception_risk": "high"
     },
     {
       "name": "libs",
@@ -622,9 +622,9 @@
       "notes": "Do not classify by name alone; inspect ownership first.",
       "exception_id": "libs_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "engine, runtime, external, contracts, or tools review",
-      "exception_reason": "Library root remains ambiguous and requires ownership inspection before convergence.",
-      "exception_risk": "review"
+      "exception_target": "protected build/interface ownership review before any split across external, contracts, runtime, or implementation surfaces",
+      "exception_reason": "Build- and ABI-critical C/C++ libraries, CMake targets, and public dom_contracts headers are referenced by apps, runtime, tests, and ABI validators.",
+      "exception_risk": "high"
     },
     {
       "name": "LICENSE.md",
@@ -659,8 +659,8 @@
       "notes": "Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.",
       "exception_id": "locks_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/locks, content/store-lock policy, or release lock review",
-      "exception_reason": "Root-level locks contain concrete deterministic lock artifacts and are not pure contract schemas.",
+      "exception_target": "protected lock artifact ownership review preserving source lock artifacts versus store/locks projection and contracts/locks schema boundaries",
+      "exception_reason": "Root-level locks contain a concrete pack lock artifact with embedded path, hash, ordered pack, profile bundle, and universal identity metadata.",
       "exception_risk": "high"
     },
     {
@@ -917,8 +917,8 @@
       "notes": "Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration.",
       "exception_id": "repo_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/repo, docs/repo, release, or tools/migration split review",
-      "exception_reason": "Root-level repo/ is transitional and may contain release policy, repo contracts, docs, or tooling surfaces.",
+      "exception_target": "protected repo control-plane split review across contracts/repo, docs/repo, tools/migration, and release policy surfaces",
+      "exception_reason": "Root-level repo/ contains active release policy, RepoX rulesets/exemptions, and canon state material referenced by governance, release, and planning surfaces.",
       "exception_risk": "high"
     },
     {
@@ -954,8 +954,8 @@
       "notes": "Safety policy belongs under contracts or docs depending on authority.",
       "exception_id": "safety_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/safety, docs/safety, tools, or runtime policy review",
-      "exception_reason": "Safety material is protected and may belong under contracts, docs, tools, or runtime policy after review.",
+      "exception_target": "protected safety ownership review before any split across contracts/safety, docs/safety, tools, or runtime policy",
+      "exception_reason": "Active safety engine implementation and refusal/pattern semantics are imported by domain logic and backed by safety docs/schemas.",
       "exception_risk": "high"
     },
     {
@@ -991,8 +991,8 @@
       "notes": "Security and trust surfaces are protected and review-sensitive.",
       "exception_id": "security_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/security, docs/security, release, tools, or runtime policy review",
-      "exception_reason": "Security material is protected and may belong under contracts, docs, tools, release, or runtime policy after review.",
+      "exception_target": "protected security/trust ownership review before any split across contracts/security, docs/security, release, tools, or runtime policy",
+      "exception_reason": "Active trust and license-capability implementation under security/trust is referenced by release, tooling, docs, and schema surfaces.",
       "exception_risk": "high"
     },
     {
@@ -1044,8 +1044,8 @@
       "notes": "Normative specs must retain authority; reality specs remain canonical over data projections.",
       "exception_id": "specs_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/specs, docs/specs, or protected semantic spec review",
-      "exception_reason": "Normative specs remain a protected source and require careful split against contracts, docs, and game/domain ownership.",
+      "exception_target": "protected spec ownership review preserving specs/reality authority and separating contract-bound specs or docs only after review",
+      "exception_reason": "Root specs contain active spec_engine imports and canonical specs/reality normative documents that must not be demoted during layout cleanup.",
       "exception_risk": "high"
     },
     {
@@ -1181,8 +1181,8 @@
       "notes": "Update metadata belongs to release/control-plane ownership after review.",
       "exception_id": "updates_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "release/update, contracts/distribution, or ops transaction review",
-      "exception_reason": "Update material belongs to release/control-plane ownership after protected release review.",
+      "exception_target": "protected update feed ownership review across release/updates, contracts/distribution or contracts/updates, and ops transaction boundaries",
+      "exception_reason": "Tracked RepoX-generated update feeds are referenced by update/release tooling, command registry, tests, and release docs.",
       "exception_risk": "high"
     },
     {

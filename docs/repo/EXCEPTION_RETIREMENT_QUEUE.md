@@ -117,6 +117,8 @@ Notes:
 
 ### POST-CONVERGE-04 - Compat / Lib / Specs / Security / Update Cleanup
 
+Status: completed with protected review carryover.
+
 Scope:
 
 - `compat`
@@ -134,6 +136,24 @@ Goal:
 - inspect first
 - split only pure subsets
 - preserve trust/security/update/compat semantics
+
+Result:
+
+- Retired: none.
+- Moved: none.
+- Left active for protected or build/identity-sensitive review: `compat`, `lib`, `libs`, `locks`, `repo`, `safety`, `security`, `specs`, `updates`.
+- Active exception count after cleanup: 32.
+- Cleanup audit: `docs/repo/audits/POST_CONVERGE_04_COMPAT_LIB_SPEC_SECURITY_CLEANUP.md`.
+
+Notes:
+
+- `compat/` remains active implementation and shim code imported by client, server, runtime, tooling, and tests.
+- `lib/` and `libs/` remain active implementation and build/ABI surfaces; no CMake target names, include paths, or ABI headers moved.
+- `locks/pack_lock.mvp_default.json` remains a concrete source lock artifact with embedded identity and distribution copy behavior.
+- `repo/` remains active release/control-plane material for release policy, RepoX rulesets, and canon state.
+- `safety/`, `security/`, and `specs/` remain protected semantics surfaces; `specs/reality/` authority is preserved.
+- `updates/` remains tracked RepoX-generated update feed material referenced by release/update tooling.
+- Next task: POST-CONVERGE-05.
 
 ### POST-CONVERGE-05 - Core / Control / Net Ownership Review
 

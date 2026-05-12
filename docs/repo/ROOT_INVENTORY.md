@@ -263,3 +263,20 @@ Current content/package/profile/bundle inventory state:
 - `modding/` and `models/` remain active implementation packages, not content-only roots.
 - `templates/` remains active because protected specs/reality and XStack/AIDE contract references still point at it.
 - Unexcepted strict violations: 0.
+
+## POST-CONVERGE-04 Compat / Lib / Specs / Security / Update Cleanup
+
+POST-CONVERGE-04 inspected `compat`, `lib`, `libs`, `locks`, `repo`, `safety`, `security`, `specs`, and `updates` and kept them active as narrowed high-risk exceptions.
+
+Current high-risk inventory state:
+
+- Active layout exception count: 32.
+- Retired in this task: none.
+- `compat/` remains active compatibility implementation, migration/refusal logic, negotiation/handshake logic, and shim code.
+- `lib/` remains active Python implementation for install, instance, save, store, bundle, import/export, and artifact flows.
+- `libs/` remains build- and ABI-critical C/C++ library and public contract header material.
+- `locks/` remains a concrete source lock artifact root, not a pure lockfile contract root.
+- `repo/` remains release/control-plane material for release policy, RepoX rulesets/exemptions, and canon state.
+- `safety/`, `security/`, and `specs/` remain protected semantics surfaces; `specs/reality/` authority is unchanged.
+- `updates/` remains tracked RepoX-generated update feed material referenced by release/update tooling.
+- Unexcepted strict violations: 0.

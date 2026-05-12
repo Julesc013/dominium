@@ -255,13 +255,13 @@ notes = "POST-CONVERGE-03 found two tracked bundle.json profiles and live refere
 path = "compat"
 kind = "directory"
 classification = "partial_review"
-reason = "Compatibility material remains mixed between contracts, implementation, shims, and tools."
+reason = "Active compatibility implementation, negotiation engines, migration/refusal helpers, and legacy shims are imported by client, server, runtime, tooling, and tests."
 retirement_phase = "POST-CONVERGE"
-target = "contracts/compatibility plus runtime/tools split review"
+target = "protected compatibility split review: pure contracts to contracts/compatibility; implementation and shims only after runtime/tooling ownership review"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Do not move wholesale without compatibility review."
+notes = "POST-CONVERGE-04 made no moves here; compatibility semantics, migration behavior, and shim import paths are preserved."
 
 [exceptions.control_root]
 path = "control"
@@ -303,37 +303,37 @@ notes = "POST-CONVERGE-03 did not move data/ wholesale. data/packs remains scope
 path = "lib"
 kind = "directory"
 classification = "partial_review"
-reason = "Library root remains ambiguous and requires ownership inspection before convergence."
+reason = "Active Python library implementation for install, instance, save, store, bundle, import/export, and artifact flows is imported by runtime, tools, and tests."
 retirement_phase = "POST-CONVERGE"
-target = "engine, runtime, external, contracts, or tools review"
-risk = "review"
+target = "protected library ownership review before any split across runtime, tools, contracts, external, or implementation surfaces"
+risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "No new library root authority should be added."
+notes = "POST-CONVERGE-04 made no moves here; install/save/store/bundle semantics and Python import compatibility are preserved."
 
 [exceptions.libs_root]
 path = "libs"
 kind = "directory"
 classification = "partial_review"
-reason = "Library root remains ambiguous and requires ownership inspection before convergence."
+reason = "Build- and ABI-critical C/C++ libraries, CMake targets, and public dom_contracts headers are referenced by apps, runtime, tests, and ABI validators."
 retirement_phase = "POST-CONVERGE"
-target = "engine, runtime, external, contracts, or tools review"
-risk = "review"
+target = "protected build/interface ownership review before any split across external, contracts, runtime, or implementation surfaces"
+risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "No new library root authority should be added."
+notes = "POST-CONVERGE-04 made no moves here; CMake target names, include paths, and ABI surfaces are preserved."
 
 [exceptions.locks_root]
 path = "locks"
 kind = "directory"
 classification = "partial_review"
-reason = "Root-level locks contain concrete deterministic lock artifacts and are not pure contract schemas."
+reason = "Root-level locks contain a concrete pack lock artifact with embedded path, hash, ordered pack, profile bundle, and universal identity metadata."
 retirement_phase = "POST-CONVERGE"
-target = "contracts/locks, content/store-lock policy, or release lock review"
+target = "protected lock artifact ownership review preserving source lock artifacts versus store/locks projection and contracts/locks schema boundaries"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Runtime mutable locks must not move into contracts."
+notes = "POST-CONVERGE-04 made no moves here; lockfile semantics, path identity, and distribution copy behavior are preserved."
 
 [exceptions.modding_root]
 path = "modding"
@@ -399,49 +399,49 @@ notes = "POST-CONVERGE-03 left profiles/bundles/bundle.mvp_default.json in place
 path = "repo"
 kind = "directory"
 classification = "partial_review"
-reason = "Root-level repo/ is transitional and may contain release policy, repo contracts, docs, or tooling surfaces."
+reason = "Root-level repo/ contains active release policy, RepoX rulesets/exemptions, and canon state material referenced by governance, release, and planning surfaces."
 retirement_phase = "POST-CONVERGE"
-target = "contracts/repo, docs/repo, release, or tools/migration split review"
+target = "protected repo control-plane split review across contracts/repo, docs/repo, tools/migration, and release policy surfaces"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Do not add new layout authority here."
+notes = "POST-CONVERGE-04 made no moves here; no new root-level repo authority was created and existing release/control-plane semantics are preserved."
 
 [exceptions.safety_root]
 path = "safety"
 kind = "directory"
 classification = "partial_review"
-reason = "Safety material is protected and may belong under contracts, docs, tools, or runtime policy after review."
+reason = "Active safety engine implementation and refusal/pattern semantics are imported by domain logic and backed by safety docs/schemas."
 retirement_phase = "POST-CONVERGE"
-target = "contracts/safety, docs/safety, tools, or runtime policy review"
+target = "protected safety ownership review before any split across contracts/safety, docs/safety, tools, or runtime policy"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Safety meaning must not silently drift."
+notes = "POST-CONVERGE-04 made no moves here; safety policy and implementation semantics are preserved."
 
 [exceptions.security_root]
 path = "security"
 kind = "directory"
 classification = "partial_review"
-reason = "Security material is protected and may belong under contracts, docs, tools, release, or runtime policy after review."
+reason = "Active trust and license-capability implementation under security/trust is referenced by release, tooling, docs, and schema surfaces."
 retirement_phase = "POST-CONVERGE"
-target = "contracts/security, docs/security, release, tools, or runtime policy review"
+target = "protected security/trust ownership review before any split across contracts/security, docs/security, release, tools, or runtime policy"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Trust and security semantics require explicit review."
+notes = "POST-CONVERGE-04 made no moves here; security, trust, signing, and capability semantics are preserved."
 
 [exceptions.specs_root]
 path = "specs"
 kind = "directory"
 classification = "partial_review"
-reason = "Normative specs remain a protected source and require careful split against contracts, docs, and game/domain ownership."
+reason = "Root specs contain active spec_engine imports and canonical specs/reality normative documents that must not be demoted during layout cleanup."
 retirement_phase = "POST-CONVERGE"
-target = "contracts/specs, docs/specs, or protected semantic spec review"
+target = "protected spec ownership review preserving specs/reality authority and separating contract-bound specs or docs only after review"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Reality specs retain authority where already established."
+notes = "POST-CONVERGE-04 made no moves here; normative spec authority and active imports are preserved."
 
 [exceptions.templates_root]
 path = "templates"
@@ -459,10 +459,10 @@ notes = "POST-CONVERGE-03 did not move templates because safe relocation would r
 path = "updates"
 kind = "directory"
 classification = "partial_review"
-reason = "Update material belongs to release/control-plane ownership after protected release review."
+reason = "Tracked RepoX-generated update feeds are referenced by update/release tooling, command registry, tests, and release docs."
 retirement_phase = "POST-CONVERGE"
-target = "release/update, contracts/distribution, or ops transaction review"
+target = "protected update feed ownership review across release/updates, contracts/distribution or contracts/updates, and ops transaction boundaries"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = true
-notes = "Do not change update identity or release semantics in this task."
+notes = "POST-CONVERGE-04 made no moves here; update feed identity, generated-feed policy, and release semantics are preserved."

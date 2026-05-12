@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T09:55:15Z",
+  "generated_at_utc": "2026-05-12T10:20:23Z",
   "repo_root": ".",
-  "head_sha": "e81e6d7f2a97af5e3c0fe2d26736d8e4cf9e66a6",
+  "head_sha": "ed571cd32cd9c5ec53786f24919f87d64710f031",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
   "active_exception_count": 32,
@@ -580,7 +580,7 @@
       "completed_notes": "",
       "exception_id": "compat_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/compatibility plus runtime/tools split review"
+      "exception_target": "protected compatibility split review: pure contracts to contracts/compatibility; implementation and shims only after runtime/tooling ownership review"
     },
     {
       "name": "content",
@@ -1354,7 +1354,7 @@
       "completed_notes": "",
       "exception_id": "lib_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "engine, runtime, external, contracts, or tools review"
+      "exception_target": "protected library ownership review before any split across runtime, tools, contracts, external, or implementation surfaces"
     },
     {
       "name": "libs",
@@ -1382,7 +1382,7 @@
       "completed_notes": "",
       "exception_id": "libs_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "engine, runtime, external, contracts, or tools review"
+      "exception_target": "protected build/interface ownership review before any split across external, contracts, runtime, or implementation surfaces"
     },
     {
       "name": "LICENSE.md",
@@ -1431,7 +1431,7 @@
       "completed_notes": "",
       "exception_id": "locks_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/locks, content/store-lock policy, or release lock review"
+      "exception_target": "protected lock artifact ownership review preserving source lock artifacts versus store/locks projection and contracts/locks schema boundaries"
     },
     {
       "name": "logic",
@@ -2147,7 +2147,7 @@
       "completed_notes": "",
       "exception_id": "repo_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/repo, docs/repo, release, or tools/migration split review"
+      "exception_target": "protected repo control-plane split review across contracts/repo, docs/repo, tools/migration, and release policy surfaces"
     },
     {
       "name": "runtime",
@@ -2195,7 +2195,7 @@
       "completed_notes": "",
       "exception_id": "safety_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/safety, docs/safety, tools, or runtime policy review"
+      "exception_target": "protected safety ownership review before any split across contracts/safety, docs/safety, tools, or runtime policy"
     },
     {
       "name": "schema",
@@ -2285,7 +2285,7 @@
       "completed_notes": "",
       "exception_id": "security_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/security, docs/security, release, tools, or runtime policy review"
+      "exception_target": "protected security/trust ownership review before any split across contracts/security, docs/security, release, tools, or runtime policy"
     },
     {
       "name": "SECURITY.md",
@@ -2422,7 +2422,7 @@
       "completed_notes": "",
       "exception_id": "specs_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "contracts/specs, docs/specs, or protected semantic spec review"
+      "exception_target": "protected spec ownership review preserving specs/reality authority and separating contract-bound specs or docs only after review"
     },
     {
       "name": "storage",
@@ -2716,7 +2716,7 @@
       "completed_notes": "",
       "exception_id": "updates_root",
       "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "release/update, contracts/distribution, or ops transaction review"
+      "exception_target": "protected update feed ownership review across release/updates, contracts/distribution or contracts/updates, and ops transaction boundaries"
     },
     {
       "name": "validation",
