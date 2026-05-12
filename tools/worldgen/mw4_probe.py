@@ -1,4 +1,4 @@
-"""Deterministic MW-4 refinement pipeline probe helpers."""
+﻿"""Deterministic MW-4 refinement pipeline probe helpers."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from client.ui.viewer_shell import build_viewer_shell_state  # noqa: E402
+from apps.client.ui.viewer_shell import build_viewer_shell_state  # noqa: E402
 from worldgen.refinement.refinement_cache import build_refinement_cache_key  # noqa: E402
 from worldgen.refinement.refinement_scheduler import build_refinement_request_record  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402

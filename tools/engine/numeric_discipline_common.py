@@ -40,7 +40,7 @@ REVIEWED_NUMERIC_BRIDGES = {
     "meta/instrumentation/instrumentation_engine.py": "measurement quantization bridge",
 }
 RENDER_ONLY_NUMERIC = (
-    "client/render/renderers/software_renderer.py",
+    "apps/client/render/renderers/software_renderer.py",
     "engine/platform/platform_input_routing.py",
     "engine/platform/platform_window.py",
 )

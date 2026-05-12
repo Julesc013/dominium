@@ -16,10 +16,10 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - `dominium-tools` (output: `tools`)
 
 ## Entrypoints
-- `client_main` in `client/app/main_client.c`
-- `server_main` in `server/app/main_server.c`
-- `launcher_main` in `launcher/cli/launcher_cli_main.c`
-- `setup_main` in `setup/cli/setup_cli_main.c`
+- `client_main` in `apps/client/app/main_client.c`
+- `server_main` in `apps/server/app/main_server.c`
+- `launcher_main` in `apps/launcher/cli/launcher_cli_main.c`
+- `setup_main` in `apps/setup/cli/setup_cli_main.c`
 - `tools_main` in `tools/tools_host_main.c`
 
 Individual tool executables continue to use `dom_tool_*_main` entrypoints.

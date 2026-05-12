@@ -59,7 +59,7 @@ FIX3_OUTPUT_RELS = (
 
 DANGEROUS_SHADOW_PREFIXES = ("app/src/", "src/")
 MISSING_PACKAGE_INIT_TARGETS = {
-    "client/interaction/__init__.py": "client/interaction/__init__.py",
+    "apps/client/interaction/__init__.py": "apps/client/interaction/__init__.py",
     "lib/store/__init__.py": "lib/store/__init__.py",
 }
 RESERVED_PACKAGE_TARGETS = ("engine/platform/", "engine/time/")

@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E81_TASK_BYPASS_SMELL"
-DISPATCH_PATH = "client/interaction/interaction_dispatch.py"
+DISPATCH_PATH = "apps/client/interaction/interaction_dispatch.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 TASK_ENGINE_PATH = "interaction/task/task_engine.py"
 

@@ -28,7 +28,7 @@ REQUIRED_TOKENS = {
         "stamp_artifact_metadata(",
         "artifact_kind=\"save_file\"",
     ),
-    "server/server_console.py": (
+    "apps/server/server_console.py": (
         "stamp_artifact_metadata(",
         "artifact_kind=\"save_file\"",
     ),

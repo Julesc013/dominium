@@ -21,7 +21,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    bridge_rel = "client/core/client_command_bridge.c"
+    bridge_rel = "apps/client/core/client_command_bridge.c"
     bridge_text = _read_text(os.path.join(repo_root, bridge_rel.replace("/", os.sep)))
     if not bridge_text:
         findings.append(
@@ -66,7 +66,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    registry_rel = "client/core/client_commands_registry.c"
+    registry_rel = "apps/client/core/client_commands_registry.c"
     registry_text = _read_text(os.path.join(repo_root, registry_rel.replace("/", os.sep)))
     if not registry_text:
         findings.append(

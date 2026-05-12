@@ -27,7 +27,7 @@ REQUIRED_TOKENS = {
         "def server_main(",
         "product_bootstrap=appshell_product_bootstrap",
     ),
-    "server/server_main.py": (
+    "apps/server/server_main.py": (
         "from runtime.appshell import appshell_main",
         "def appshell_product_bootstrap(",
         "product_bootstrap=appshell_product_bootstrap",

@@ -9,8 +9,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E425_WALLCLOCK_IN_SIM_SMELL"
 GUARDED_PATHS = (
-    "server/net/loopback_transport.py",
-    "server/runtime/tick_loop.py",
+    "apps/server/net/loopback_transport.py",
+    "apps/server/runtime/tick_loop.py",
     "runtime/appshell/logging/log_engine.py",
     "runtime/appshell/diag/diag_snapshot.py",
 )

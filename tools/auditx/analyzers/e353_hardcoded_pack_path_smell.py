@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E353_HARDCODED_PACK_PATH_SMELL"
-WATCH_PREFIXES = ("client/", "server/", "launcher/", "setup/", "tools/", "scripts/")
+WATCH_PREFIXES = ("apps/client/", "apps/server/", "apps/launcher/", "apps/setup/", "tools/", "scripts/")
 SCAN_ROOTS = ("client", "server", "launcher", "setup", "tools", "scripts")
 SCAN_EXTS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp", ".cmd", ".bat", ".ps1", ".sh")
 ALLOWLIST = {

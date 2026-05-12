@@ -16,13 +16,13 @@ SOL2_SCOPE_PATHS = (
 SOL2_RUNTIME_SCAN_FILES = (
     "astro/ephemeris/kepler_proxy_engine.py",
     "astro/views/orbit_view_engine.py",
-    "client/ui/viewer_shell.py",
+    "apps/client/ui/viewer_shell.py",
     "tools/astro/sol2_runtime_common.py",
 )
 
 SOL2_TRUTH_SCAN_FILES = (
     "tools/xstack/sessionx/process_runtime.py",
-    "server/server_boot.py",
+    "apps/server/server_boot.py",
     "contracts/schemas/universe_state.schema",
     "contracts/schemas/universe_state.schema.json",
 )

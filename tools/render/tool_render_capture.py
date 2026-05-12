@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Capture deterministic render snapshot artifacts from RenderModel input."""
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from client.render.snapshot_capture import capture_render_snapshot, load_render_model_from_artifact
+from apps.client.render.snapshot_capture import capture_render_snapshot, load_render_model_from_artifact
 
 
 def _repo_root(value: str) -> str:

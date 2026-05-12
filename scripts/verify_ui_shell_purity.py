@@ -9,10 +9,10 @@ INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]+)[">]')
 FORBIDDEN_PREFIXES = [
     "engine/",
     "game/",
-    "server/",
-    "client/presentation/",
-    "client/net/",
-    "client/input/",
+    "apps/server/",
+    "apps/client/presentation/",
+    "apps/client/net/",
+    "apps/client/input/",
     "engine/modules/",
     "game/source/",
 ]
@@ -42,11 +42,11 @@ def main():
 
     repo_root = os.path.abspath(args.repo_root)
     default_roots = [
-        "client/ui",
-        "launcher/gui",
-        "launcher/tui",
-        "setup/gui",
-        "setup/tui",
+        "apps/client/ui",
+        "apps/launcher/gui",
+        "apps/launcher/tui",
+        "apps/setup/gui",
+        "apps/setup/tui",
         "tools/editor_gui",
         "tools/launcher/ui",
         "tools/setup/ui",

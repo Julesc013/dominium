@@ -29,13 +29,13 @@ _DOC_ONLY_PREFIXES = (
 _UI_ONLY_PREFIXES = (
     "contracts/schemas/ui/",
     "docs/ui/",
-    "client/ui/",
+    "apps/client/ui/",
     "libs/ui_",
     "tools/ui_",
 )
 
 _FAST_CODE_PREFIXES = (
-    "client/",
+    "apps/client/",
     "game/",
 )
 

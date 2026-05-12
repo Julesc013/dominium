@@ -86,7 +86,7 @@ PRODUCT_HINTS = {
     "engine": ("tools/appshell/product_stub_cli.py",),
     "game": ("tools/appshell/product_stub_cli.py",),
     "launcher": ("tools/launcher/launch.py",),
-    "server": ("server/server_main.py", "tools/mvp/runtime_entry.py"),
+    "server": ("apps/server/server_main.py", "tools/mvp/runtime_entry.py"),
     "setup": ("tools/setup/setup_cli.py",),
     "tool.attach_console_stub": ("tools/appshell/product_stub_cli.py",),
 }
@@ -514,7 +514,7 @@ def _platform_specific(rel_path: str, text: str) -> bool:
 
 def _build_target(rel_path: str, product: str, text: str, entrypoints: list[str]) -> str:
     rel_norm = _norm(rel_path)
-    if rel_norm == "server/server_main.py":
+    if rel_norm == "apps/server/server_main.py":
         return "server"
     if rel_norm == "tools/launcher/launch.py":
         return "launcher"
@@ -582,9 +582,9 @@ def _summary_maps(entries: list[dict]) -> dict:
 def _renderer_surface(repo_root: str, entries: list[dict], product_rows: Mapping[str, object]) -> dict:
     del product_rows
     backend_map = {
-        "null": "client/render/renderers/null_renderer.py",
-        "software": "client/render/renderers/software_renderer.py",
-        "hardware_gl": "client/render/renderers/hw_renderer_gl.py",
+        "null": "apps/client/render/renderers/null_renderer.py",
+        "software": "apps/client/render/renderers/software_renderer.py",
+        "hardware_gl": "apps/client/render/renderers/hw_renderer_gl.py",
     }
     python_files = [row for row in entries if str(row.get("path", "")).endswith(".py")]
     rows: list[dict] = []
@@ -717,7 +717,7 @@ def _scan_product_main_bypasses(repo_root: str, python_files: Iterable[str]) -> 
         if rel_norm.startswith("tools/") and not rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/mvp/", "tools/appshell/")):
             continue
         if rel_norm not in {
-            "server/server_main.py",
+            "apps/server/server_main.py",
             "tools/launcher/launch.py",
             "tools/setup/setup_cli.py",
             "tools/mvp/runtime_entry.py",

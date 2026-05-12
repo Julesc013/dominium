@@ -14,13 +14,13 @@ WATCH_PREFIXES = (
     "tools/interaction/",
     "tools/xstack/sessionx/interaction.py",
 )
-DISPATCH_PATH = "client/interaction/interaction_dispatch.py"
+DISPATCH_PATH = "apps/client/interaction/interaction_dispatch.py"
 SURFACE_PATHS = (
-    "client/interaction/affordance_generator.py",
-    "client/interaction/interaction_dispatch.py",
-    "client/interaction/preview_generator.py",
-    "client/interaction/inspection_overlays.py",
-    "client/interaction/interaction_panel.py",
+    "apps/client/interaction/affordance_generator.py",
+    "apps/client/interaction/interaction_dispatch.py",
+    "apps/client/interaction/preview_generator.py",
+    "apps/client/interaction/inspection_overlays.py",
+    "apps/client/interaction/interaction_panel.py",
     "tools/interaction/interaction_cli.py",
     "tools/xstack/sessionx/interaction.py",
 )

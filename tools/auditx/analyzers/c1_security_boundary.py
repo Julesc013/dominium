@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "C1"
-WATCH_PREFIXES = ("engine/", "game/", "client/", "server/", "launcher/", "setup/", "tools/", "docs/security/")
+WATCH_PREFIXES = ("engine/", "game/", "apps/client/", "apps/server/", "apps/launcher/", "apps/setup/", "tools/", "docs/security/")
 
 SOURCE_EXTS = {".c", ".cc", ".cpp", ".cxx", ".h", ".hpp", ".py", ".json", ".md"}
 SECRET_RE = re.compile(r"(AKIA[0-9A-Z]{16}|BEGIN[ ]+PRIVATE[ ]+KEY|password\\s*=\\s*['\\\"])", re.IGNORECASE)
@@ -77,7 +77,7 @@ def run(_graph, repo_root, changed_files=None):
                         related_paths=[rel],
                     )
                 )
-        if rel.startswith(("client/", "launcher/", "setup/")) and "open(" in lowered and "scripts/dev" not in rel:
+        if rel.startswith(("apps/client/", "apps/launcher/", "apps/setup/")) and "open(" in lowered and "scripts/dev" not in rel:
             findings.append(
                 make_finding(
                     analyzer_id=ANALYZER_ID,

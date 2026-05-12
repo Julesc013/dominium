@@ -11,7 +11,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm
 
 
-SERVER_MAIN_REL = os.path.join("server", "server_main.py")
+SERVER_MAIN_REL = os.path.join("apps", "server", "server_main.py")
 SPAWN_ENV_KEYS = (
     "COMSPEC",
     "PATH",

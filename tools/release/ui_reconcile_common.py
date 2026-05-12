@@ -34,28 +34,28 @@ _GOVERNED_SURFACES = (
         "product_scope": "client,launcher,setup,server,engine,game,tool.attach_console_stub",
     },
     {
-        "path": "client/ui/main_menu_surface.py",
+        "path": "apps/client/ui/main_menu_surface.py",
         "surface_kind": "rendered_menu_surface",
         "status": "governed_active",
         "purpose": "Derived rendered main-menu surface for client menu flows.",
         "product_scope": "client",
     },
     {
-        "path": "client/ui/viewer_shell.py",
+        "path": "apps/client/ui/viewer_shell.py",
         "surface_kind": "rendered_view_surface",
         "status": "governed_active",
         "purpose": "Derived rendered viewer shell over map, inspection, sky, water, and orbit artifacts.",
         "product_scope": "client",
     },
     {
-        "path": "client/ui/map_views.py",
+        "path": "apps/client/ui/map_views.py",
         "surface_kind": "derived_view_surface",
         "status": "governed_active",
         "purpose": "Derived map view artifacts for client and TUI map surfaces.",
         "product_scope": "client",
     },
     {
-        "path": "client/ui/inspect_panels.py",
+        "path": "apps/client/ui/inspect_panels.py",
         "surface_kind": "derived_view_surface",
         "status": "governed_active",
         "purpose": "Derived inspect panels over perceived/inspection artifacts.",
@@ -112,12 +112,12 @@ _FORBIDDEN_TRUTH_NAMES = {"truth_model", "universe_state", "process_runtime"}
 _GOVERNED_ADAPTER_PATHS = {
     "runtime/appshell/tui/tui_engine.py",
     "runtime/appshell/rendered_stub.py",
-    "client/ui/main_menu_surface.py",
+    "apps/client/ui/main_menu_surface.py",
 }
 _SHARED_UI_MODEL_REQUIRED_PATHS = {
     "runtime/appshell/tui/tui_engine.py": "build_ui_model(",
     "runtime/appshell/rendered_stub.py": "build_client_main_menu_surface(",
-    "client/ui/main_menu_surface.py": "build_ui_model(",
+    "apps/client/ui/main_menu_surface.py": "build_ui_model(",
 }
 _NATIVE_ADAPTER_MARKERS = (
     "src/platform/native_win32_adapter.py",

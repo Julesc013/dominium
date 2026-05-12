@@ -91,8 +91,8 @@ REQUIRED_MESSAGE_KEYS = {
 PRINTF_SCAN_FILES = (
     "runtime/appshell/logging/log_engine.py",
     "runtime/diagnostics/repro_bundle_builder.py",
-    "server/net/loopback_transport.py",
-    "server/runtime/tick_loop.py",
+    "apps/server/net/loopback_transport.py",
+    "apps/server/runtime/tick_loop.py",
     "runtime/appshell/diag/diag_snapshot.py",
 )
 INTEGRATION_TOKENS = (

@@ -167,6 +167,8 @@ def product_for_path(path):
     parts = rel.split(os.sep)
     if not parts:
         return None
+    if parts[0] == "apps" and len(parts) > 1:
+        return parts[1]
     return parts[0]
 
 

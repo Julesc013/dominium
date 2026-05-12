@@ -34,6 +34,6 @@ Each executable owns exactly one primary loop. No background loops mutate
 observable state.
 
 ## Current implementations
-- Client windowed + TUI loops: `client/app/main_client.c`
+- Client windowed + TUI loops: `apps/client/app/main_client.c`
 - Tools TUI loop: `tools/tools_host_main.c`
 - Server/launcher/setup CLI commands: init/probe/work/shutdown without a loop

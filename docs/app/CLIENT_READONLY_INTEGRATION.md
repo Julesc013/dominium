@@ -13,13 +13,13 @@ engine/game APIs isolated.
 
 ## Modules
 - Adapter API: `runtime/app/include/dominium/app/readonly_adapter.h`
-- View model: `client/observability/readonly_view_model.h`,
-  `client/observability/readonly_view_model.c`
-- Input bindings: `client/input/client_input_bindings.h`,
-  `client/input/client_input_bindings.c`
-- UI overlay: `client/ui/client_ui_compositor.h`,
-  `client/ui/client_ui_compositor.c`
-- Entry point wiring: `client/app/main_client.c`
+- View model: `apps/client/observability/readonly_view_model.h`,
+  `apps/client/observability/readonly_view_model.c`
+- Input bindings: `apps/client/input/client_input_bindings.h`,
+  `apps/client/input/client_input_bindings.c`
+- UI overlay: `apps/client/ui/client_ui_compositor.h`,
+  `apps/client/ui/client_ui_compositor.c`
+- Entry point wiring: `apps/client/app/main_client.c`
 
 ## CLI
 - `--topology` outputs `packages_tree` summary in text or JSON.

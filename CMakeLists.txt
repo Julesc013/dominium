@@ -161,7 +161,7 @@ foreach(_doc_ratio_ext IN LISTS DOC_RATIO_EXTS)
 endforeach()
 
 add_custom_target(doc_ratio_check
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/setup/packages/scripts/doc_ratio_check.py ${_doc_ratio_args}
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/apps/setup/packages/scripts/doc_ratio_check.py ${_doc_ratio_args}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Checking documentation ratios (mode=${DOC_RATIO_MODE})"
     VERBATIM
@@ -269,7 +269,7 @@ add_dependencies(check_all
 
 set(DOMINIUM_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/engine/include")
 set(DOMINIUM_GAME_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/game/include")
-set(DOMINIUM_SETUP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/setup/include")
+set(DOMINIUM_SETUP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/apps/setup/include")
 set(DOMINIUM_TOOLS_UI_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tools/ui_shared/include")
 set(DOMINIUM_GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated/include")
 set(DOMINIUM_SOURCE_INCLUDE_DIR "${DOMINIUM_ENGINE_INCLUDE_DIR}")
@@ -948,7 +948,7 @@ add_custom_target(dom_update_build_number ALL
         -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
         -DDOM_BUILD_ID=${DOM_BUILD_ID}
         -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/apps/setup/packages/scripts/update_build_number.cmake
     COMMENT "Refreshing build number header (no bump)"
 )
 add_custom_target(dom_bump_build_number
@@ -963,7 +963,7 @@ add_custom_target(dom_bump_build_number
         -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
         -DDOM_BUILD_ID=${DOM_BUILD_ID}
         -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/apps/setup/packages/scripts/update_build_number.cmake
     COMMENT "Bumping global build number"
 )
 set(DOM_TESTX_TIMEOUT "1200" CACHE STRING "Per-test timeout seconds for TestX gate")
@@ -1031,7 +1031,7 @@ add_custom_target(testx_all
         -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
         -DDOM_BUILD_ID=${DOM_BUILD_ID}
         -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/setup/packages/scripts/update_build_number.cmake
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/apps/setup/packages/scripts/update_build_number.cmake
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     COMMENT "Run TestX verify suite and bump build number on success"
 )
@@ -1121,17 +1121,17 @@ if(WIN32)
 endif()
 if(DOM_BUILD_GAME)
     add_subdirectory(game)
-    add_subdirectory(client)
-    add_subdirectory(server)
+    add_subdirectory(apps/client)
+    add_subdirectory(apps/server)
     if(DOM_BUILD_TESTS)
         add_subdirectory(game/tests/phase6)
     endif()
 endif()
 if(DOM_BUILD_SETUP)
-    add_subdirectory(setup)
+    add_subdirectory(apps/setup)
 endif()
 if(DOM_BUILD_LAUNCHER)
-    add_subdirectory(launcher)
+    add_subdirectory(apps/launcher)
 endif()
 if(DOM_BUILD_TOOLS)
     add_subdirectory(tools)
@@ -1331,7 +1331,7 @@ if(DOM_BUILD_TESTS)
 endif()
 
 if(DOMINIUM_ENABLE_PACKAGING)
-    add_subdirectory(setup/packages/scripts/packaging)
+    add_subdirectory(apps/setup/packages/scripts/packaging)
 endif()
 
 get_property(_dom_dist_targets GLOBAL PROPERTY DOM_DIST_ROLE_TARGETS)

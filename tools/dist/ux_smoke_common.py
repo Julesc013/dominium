@@ -363,7 +363,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
             {
                 "code": "rendered_menu_missing",
                 "message": "rendered client menu title is missing",
-                "file_path": "client/ui/main_menu_surface.py",
+                "file_path": "apps/client/ui/main_menu_surface.py",
                 "rule_id": RULE_HELP_ID,
             }
         )
@@ -373,7 +373,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
                 {
                     "code": "rendered_menu_missing",
                     "message": "rendered client quick action {} is missing".format(token),
-                    "file_path": "client/ui/main_menu_surface.py",
+                    "file_path": "apps/client/ui/main_menu_surface.py",
                     "rule_id": RULE_HELP_ID,
                 }
             )
@@ -382,7 +382,7 @@ def build_ux_smoke_report(repo_root: str) -> dict:
             {
                 "code": "rendered_menu_missing",
                 "message": "rendered client console overlay hint is missing",
-                "file_path": "client/ui/main_menu_surface.py",
+                "file_path": "apps/client/ui/main_menu_surface.py",
                 "rule_id": RULE_HELP_ID,
             }
         )

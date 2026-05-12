@@ -155,31 +155,43 @@ notes = "Root-level appshell/ was retired in CONVERGE-07; AppShell source belong
 
 [transitional_aliases.client]
 target = "apps/client"
-action = "move_thin_entrypoint_after_product_review"
+action = "retired_after_product_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-08"
-notes = "Only thin product binding should remain under apps."
+retired = true
+completed_phase = "CONVERGE-08"
+status_after_phase = "violation"
+notes = "Root-level client/ was retired in CONVERGE-08; thin client product entrypoint source belongs under apps/client/."
 
 [transitional_aliases.server]
 target = "apps/server"
-action = "move_thin_entrypoint_after_product_review"
+action = "retired_after_product_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-08"
-notes = "Server authority semantics must stay governed by game/engine/runtime contracts."
+retired = true
+completed_phase = "CONVERGE-08"
+status_after_phase = "violation"
+notes = "Root-level server/ was retired in CONVERGE-08; thin server product entrypoint source belongs under apps/server/ while authority semantics remain governed by game/engine/runtime contracts."
 
 [transitional_aliases.setup]
 target = "apps/setup"
-action = "move_thin_entrypoint_after_product_review"
+action = "retired_after_product_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-08"
-notes = "Setup install identity and virtual roots must not change during moves."
+retired = true
+completed_phase = "CONVERGE-08"
+status_after_phase = "violation"
+notes = "Root-level setup/ was retired in CONVERGE-08; setup product entrypoint source belongs under apps/setup/ without changing install identity or virtual roots."
 
 [transitional_aliases.launcher]
 target = "apps/launcher"
-action = "move_thin_entrypoint_after_product_review"
+action = "retired_after_product_convergence"
 classification = "transitional_alias"
 retire_by_phase = "CONVERGE-08"
-notes = "Launcher product identity and executable naming must remain stable."
+retired = true
+completed_phase = "CONVERGE-08"
+status_after_phase = "violation"
+notes = "Root-level launcher/ was retired in CONVERGE-08; launcher product entrypoint source belongs under apps/launcher/ while product identity and executable naming remain stable."
 
 [transitional_aliases.schema]
 target = "contracts/schemas"

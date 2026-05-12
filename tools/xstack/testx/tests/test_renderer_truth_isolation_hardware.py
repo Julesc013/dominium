@@ -11,8 +11,8 @@ TEST_ID = "testx.render.renderer_truth_isolation_hardware"
 TEST_TAGS = ["strict", "render", "repox"]
 
 TARGETS = (
-    "client/render/renderers/hw_renderer_gl.py",
-    "client/render/snapshot_capture.py",
+    "apps/client/render/renderers/hw_renderer_gl.py",
+    "apps/client/render/snapshot_capture.py",
 )
 FORBIDDEN = re.compile(r"\b(truth_model|truthmodel|universe_state|process_runtime|apply_intent)\b", re.IGNORECASE)
 

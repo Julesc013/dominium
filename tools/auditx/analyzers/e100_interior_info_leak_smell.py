@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E100_INTERIOR_INFO_LEAK_SMELL"
 OBSERVATION_PATH = "tools/xstack/sessionx/observation.py"
 INSPECTION_ENGINE_PATH = "inspection/inspection_engine.py"
-OVERLAY_PATH = "client/interaction/inspection_overlays.py"
+OVERLAY_PATH = "apps/client/interaction/inspection_overlays.py"
 
 REQUIRED_OBSERVATION_TOKENS = (
     "ch.diegetic.pressure_status",

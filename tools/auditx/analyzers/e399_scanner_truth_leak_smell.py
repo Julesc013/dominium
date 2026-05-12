@@ -15,7 +15,7 @@ REQUIRED_TOKENS = {
         "field_values",
         "property_origin_result",
     ),
-    "client/ui/inspect_panels.py": (
+    "apps/client/ui/inspect_panels.py": (
         "build_scan_result_panel(",
         'panel.inspect.scan_result',
     ),

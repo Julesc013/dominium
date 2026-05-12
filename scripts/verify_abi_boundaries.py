@@ -44,8 +44,8 @@ def main():
         "engine/include",
         "game/include",
         "libs/contracts/include",
-        "launcher/include",
-        "setup/include",
+        "apps/launcher/include",
+        "apps/setup/include",
         "tools/ui_shared/include",
     ]
 

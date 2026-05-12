@@ -21,7 +21,7 @@ Future runtime subroots such as `runtime/platform/`, `runtime/render/`, `runtime
 
 - Engine truth remains under `engine/`.
 - Game/domain logic remains under `game/` or current domain roots until CONVERGE-09.
-- Product entrypoints remain under `client/`, `server/`, `setup/`, and `launcher/` until CONVERGE-08.
+- Product entrypoints live under `apps/` after CONVERGE-08.
 - Machine-readable schemas, registries, and contracts remain under `contracts/`.
 - Authored packs, profiles, fixtures, datasets, and assets belong under `content/` after content convergence.
 - Generated runtime logs, IPC sockets, locks, caches, and temp files belong to install/runtime projections, not source `runtime/`.

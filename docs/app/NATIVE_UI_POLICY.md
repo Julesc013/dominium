@@ -18,5 +18,5 @@ Policy rules:
   testable without UI.
 
 APR3 status:
-- `server`, `launcher`, `setup`, and `tools` return `D_APP_EXIT_UNAVAILABLE`
+- `apps/server`, `apps/launcher`, `apps/setup`, and `tools` return `D_APP_EXIT_UNAVAILABLE`
   with a clear "gui not implemented" message.

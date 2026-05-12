@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E118_SILENT_DOWNGRADE_SMELL"
 WATCH_PREFIXES = (
     "control/control_plane_engine.py",
-    "client/interaction/interaction_dispatch.py",
+    "apps/client/interaction/interaction_dispatch.py",
     "inspection/inspection_engine.py",
     "materials/materialization/materialization_engine.py",
 )
@@ -112,7 +112,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    ui_rel = "client/interaction/interaction_dispatch.py"
+    ui_rel = "apps/client/interaction/interaction_dispatch.py"
     ui_text = _read_text(repo_root, ui_rel)
     if ui_text and ("_decision_log_ui_messages(" not in ui_text or "_read_decision_log_payload(" not in ui_text):
         findings.append(

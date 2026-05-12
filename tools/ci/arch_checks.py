@@ -36,8 +36,8 @@ SKIP_SUBDIRS = (
 
 INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]+)[">]')
 
-FORBIDDEN_ENGINE_REF_PREFIXES = ("game/", "launcher/", "setup/", "tools/")
-FORBIDDEN_ENGINE_REF_CONTAINS = ("/game/", "/launcher/", "/setup/", "/tools/")
+FORBIDDEN_ENGINE_REF_PREFIXES = ("game/", "apps/launcher/", "apps/setup/", "tools/")
+FORBIDDEN_ENGINE_REF_CONTAINS = ("/game/", "/apps/launcher/", "/apps/setup/", "/tools/")
 
 FORBIDDEN_PLATFORM_HEADERS = {
     "windows.h",

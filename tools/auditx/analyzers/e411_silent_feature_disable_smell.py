@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "def build_compat_status_payload(",
         '"effective_ui_mode"',
     ),
-    "server/server_console.py": (
+    "apps/server/server_console.py": (
         "def compat_status(",
         '"compat_rows"',
     ),

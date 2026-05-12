@@ -245,7 +245,7 @@ def _is_runtime_path(path: object) -> bool:
     norm = _norm_rel(path)
     if _tests_only_path(norm):
         return False
-    return norm.startswith(("app/", "apps/", "client/", "engine/", "game/", "launcher/", "server/", "setup/", "src/"))
+    return norm.startswith(("app/", "apps/", "apps/client/", "engine/", "game/", "apps/launcher/", "apps/server/", "apps/setup/", "src/"))
 
 
 def _action_with_fingerprint(payload: Mapping[str, object]) -> dict[str, object]:

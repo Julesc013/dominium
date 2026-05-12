@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    for rel in _find_suspect_files(graph, "client/"):
+    for rel in _find_suspect_files(graph, "apps/client/"):
         text = _read_file(repo_root, rel)
         if _contains_any(text, MUTATION_TOKENS) and _contains_any(text, INSTALL_TOKENS):
             findings.append(
@@ -99,7 +99,7 @@ def run(graph, repo_root, changed_files=None):
                 )
             )
 
-    for rel in _find_suspect_files(graph, "launcher/"):
+    for rel in _find_suspect_files(graph, "apps/launcher/"):
         text = _read_file(repo_root, rel)
         if _contains_any(text, MUTATION_TOKENS) and _contains_any(text, SIMULATION_MUTATION_TOKENS):
             findings.append(
@@ -142,7 +142,7 @@ def run(graph, repo_root, changed_files=None):
                     )
                 )
 
-    ui_prefixes = ("client/", "launcher/", "tools/", "libs/")
+    ui_prefixes = ("apps/client/", "apps/launcher/", "tools/", "libs/")
     for prefix in ui_prefixes:
         for rel in _find_suspect_files(graph, prefix):
             lowered = rel.lower()

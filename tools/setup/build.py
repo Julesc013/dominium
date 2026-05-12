@@ -57,7 +57,7 @@ def main() -> int:
             "result": "refused",
             "refusal": {
                 "reason_code": "REFUSE_SETUP_PIPELINE_FORBIDDEN",
-                "message": "setup/build cannot trigger runtime session stages",
+                "message": "tools/setup/build.py cannot trigger runtime session stages",
                 "remediation_hint": "Use tools/launcher/launch run for runtime transitions after setup build.",
                 "relevant_ids": {
                     "blocked_args": ",".join(forbidden),
@@ -66,7 +66,7 @@ def main() -> int:
             "errors": [
                 {
                     "code": "REFUSE_SETUP_PIPELINE_FORBIDDEN",
-                    "message": "setup/build cannot trigger runtime session stages",
+                    "message": "tools/setup/build.py cannot trigger runtime session stages",
                     "path": "$.args",
                 }
             ],

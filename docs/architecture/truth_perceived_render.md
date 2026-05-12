@@ -3,7 +3,7 @@ Last Reviewed: 2026-02-15
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to canon v1.0.0 and enforced by `client/CMakeLists.txt` and `tools/xstack/repox/check.py`.
+Compatibility: Bound to canon v1.0.0 and enforced by `apps/client/CMakeLists.txt` and `tools/xstack/repox/check.py`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation
@@ -18,10 +18,10 @@ Define hard architectural boundaries that prevent renderer epistemic leakage and
   - `engine/include/domino/truth_model_v1.h`
   - authoritative references only.
 - PerceivedModel owner:
-  - `client/observability/perceived_model_v1.h`
+  - `apps/client/observability/perceived_model_v1.h`
   - derived immutable snapshot only.
 - RenderModel owner:
-  - `client/presentation/render_model_v1.h`
+  - `apps/client/presentation/render_model_v1.h`
   - presentation projection only.
 
 ## Allowed Dependencies
@@ -32,7 +32,7 @@ Define hard architectural boundaries that prevent renderer epistemic leakage and
 - UI host may emit Intents only through process-intent pipeline.
 
 ## Forbidden Dependencies
-- `client/presentation/*` importing `domino/truth_model_v1.h`
+- `apps/client/presentation/*` importing `domino/truth_model_v1.h`
 - renderer logic directly reading authoritative simulation payloads
 - renderer-owned law/authority decisions
 - UI host direct mutation of TruthModel / UniverseState
@@ -40,7 +40,7 @@ Define hard architectural boundaries that prevent renderer epistemic leakage and
 
 ## Enforcement Mechanisms
 1. Build-time boundary:
-   - `client/CMakeLists.txt` compiles presentation sources with `DOMINIUM_RENDERER_BOUNDARY=1`.
+   - `apps/client/CMakeLists.txt` compiles presentation sources with `DOMINIUM_RENDERER_BOUNDARY=1`.
    - `engine/include/domino/truth_model_v1.h` hard-errors when included under renderer boundary macro.
    - CMake configure check refuses if presentation sources are missing the boundary macro.
 2. Static boundary scan (STRICT/FULL):

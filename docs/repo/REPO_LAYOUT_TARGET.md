@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-07
+Phase: CONVERGE-08
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -11,7 +11,7 @@ Replacement Target: hardened source repository layout contract after controlled 
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for current and transitional root-level entries.
 
-CONVERGE-01 through CONVERGE-04 did not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity. CONVERGE-05 performed only archive-family root convergence. CONVERGE-06 performed only schema and contract-adjacent convergence. CONVERGE-07 performed only runtime/AppShell/UI/diagnostics convergence described below.
+CONVERGE-01 through CONVERGE-04 did not move directories, rename roots, change build behavior, or change product, install, pack, executable, or virtual-root identity. CONVERGE-05 performed only archive-family root convergence. CONVERGE-06 performed only schema and contract-adjacent convergence. CONVERGE-07 performed only runtime/AppShell/UI/diagnostics convergence. CONVERGE-08 performed only product entrypoint convergence into `apps/`.
 
 ## CONVERGE-02 Authority Note
 
@@ -76,7 +76,18 @@ CONVERGE-07 completed the third physical root convergence pass for safe runtime-
 
 `runtime/` is canonical for AppShell, platform, render, UI, input, audio, network, storage, diagnostics, IPC, logging, supervisor, CLI/TUI, and mode-selection source. Root-level `app/`, `appshell/`, `ui/`, and `diag/` are retired aliases. Mixed runtime-adjacent roots such as `net/`, `control/`, and `core/` remain under review because they cannot be moved wholesale without deeper ownership inspection.
 
-Product roots still migrate in CONVERGE-08. Domain roots still split in CONVERGE-09.
+Product roots moved under `apps/` in CONVERGE-08. Domain roots still split in CONVERGE-09.
+
+## CONVERGE-08 Apps Convergence Note
+
+CONVERGE-08 completed the fourth physical root convergence pass for product entrypoint roots:
+
+- `client/` moved to `apps/client/`
+- `server/` moved to `apps/server/`
+- `setup/` moved to `apps/setup/`
+- `launcher/` moved to `apps/launcher/`
+
+`apps/` is now the canonical product-entrypoint root. Root-level `client/`, `server/`, `setup/`, and `launcher/` are retired aliases and must not be recreated as active source roots. Product IDs, executable names, command behavior, install IDs, pack IDs, and virtual-root IDs remain stable. Domain roots still split in CONVERGE-09, and strict validators may still fail until domain and review roots are resolved.
 
 ## Target Roots
 
@@ -117,6 +128,6 @@ Later CONVERGE tasks may use the contract, inventory, and move map to plan contr
 - CONVERGE-05: archive, attic, legacy, and quarantine convergence. Completed for root-level archive-family roots.
 - CONVERGE-06: contract, schema, compatibility, and lock convergence. Completed for root-level `schema/` and `schemas/`; `compat/` and `locks/` remain review roots.
 - CONVERGE-07: runtime, AppShell, platform, render, UI, network, and diagnostics convergence. Completed for root-level `app/`, `appshell/`, `ui/`, and `diag/`; `net/`, `control/`, and `core/` remain review roots.
-- CONVERGE-08: product entrypoint convergence into `apps/`.
+- CONVERGE-08: product entrypoint convergence into `apps/`. Completed for root-level `client/`, `server/`, `setup/`, and `launcher/`.
 - CONVERGE-09: mixed domain-root split.
 - CONVERGE-10: blocking enforcement only after controlled moves.

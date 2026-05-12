@@ -993,11 +993,70 @@ def completed_runtime_move_entries(repo_root, roots):
     return completed
 
 
+def completed_product_move_entries(repo_root, roots):
+    present = set(root["name"] for root in roots)
+    completed = []
+    product_targets = {
+        "client": {
+            "target": "apps/client",
+            "notes": "Completed in CONVERGE-08; root-level client/ moved under apps/client/.",
+            "completed_notes": "Root-level client/ is retired; thin client entrypoint source lives under apps/client/.",
+        },
+        "server": {
+            "target": "apps/server",
+            "notes": "Completed in CONVERGE-08; root-level server/ moved under apps/server/.",
+            "completed_notes": "Root-level server/ is retired; thin server entrypoint source lives under apps/server/.",
+        },
+        "setup": {
+            "target": "apps/setup",
+            "notes": "Completed in CONVERGE-08; root-level setup/ moved under apps/setup/.",
+            "completed_notes": "Root-level setup/ is retired; setup product entrypoint source lives under apps/setup/.",
+        },
+        "launcher": {
+            "target": "apps/launcher",
+            "notes": "Completed in CONVERGE-08; root-level launcher/ moved under apps/launcher/.",
+            "completed_notes": "Root-level launcher/ is retired; launcher product entrypoint source lives under apps/launcher/.",
+        },
+    }
+    for name, info in sorted(product_targets.items()):
+        if name in present:
+            continue
+        target = info["target"]
+        target_path = os.path.join(repo_root, *target.split("/"))
+        if not os.path.exists(target_path):
+            continue
+        completed.append(
+            {
+                "name": name,
+                "current_path": name,
+                "proposed_target": target,
+                "action": "move",
+                "classification": CLASS_TRANSITIONAL_PRODUCT,
+                "ownership_surface": "apps",
+                "split_required": False,
+                "risk_level": "medium",
+                "phase_hint": "CONVERGE-08",
+                "dependencies": [],
+                "preserve_paths": "Root path retired in CONVERGE-08; active references should use {0}/.".format(target),
+                "shim_required": False,
+                "semantic_change_allowed": False,
+                "build_change_allowed": False,
+                "notes": info["notes"],
+                "status": "completed",
+                "completed_phase": "CONVERGE-08",
+                "completed_target": target,
+                "completed_notes": info["completed_notes"],
+            }
+        )
+    return completed
+
+
 def merge_move_map(repo_root, existing, roots):
     entries = []
     completed = completed_archive_move_entries(repo_root, roots)
     completed.extend(completed_contract_move_entries(repo_root, roots))
     completed.extend(completed_runtime_move_entries(repo_root, roots))
+    completed.extend(completed_product_move_entries(repo_root, roots))
     names = sorted(set(root["name"] for root in roots), key=lambda item: (item.casefold(), item))
     inferred_by_name = dict((root["name"], infer_move_entry(root)) for root in roots)
     for name in names:

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T04:05:13Z",
+  "generated_at_utc": "2026-05-12T04:31:50Z",
   "repo_root": ".",
-  "head_sha": "65bda5e3ee9465d5c890b8070ffa89b524b226bf",
+  "head_sha": "e4feaa13ca7d20107ab8cb20c8aa78a973fa2e32",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-01",
@@ -154,6 +154,22 @@
       "notes": "Allowed root file."
     },
     {
+      "name": "apps",
+      "path": "apps",
+      "kind": "directory",
+      "present": true,
+      "classification": "canonical",
+      "ownership_surface": "apps",
+      "current_role": "Current canonical target root for the source repository layout.",
+      "proposed_target": "apps",
+      "migration_action": "keep",
+      "split_required": false,
+      "risk_level": "low",
+      "phase_hint": "none",
+      "authority_status": "authoritative_current",
+      "notes": "Thin product entrypoints and product composition surfaces."
+    },
+    {
       "name": "archive",
       "path": "archive",
       "kind": "directory",
@@ -200,6 +216,22 @@
       "phase_hint": "CONVERGE-09",
       "authority_status": "transitional",
       "notes": "contracts/schemas/astro; contracts/registries/astro; game/domains/astro; content/domain-data/astro; docs/domains/astro; tests/determinism/astro; tests/fixtures/astro"
+    },
+    {
+      "name": "build",
+      "path": "build",
+      "kind": "directory",
+      "present": true,
+      "classification": "generated_or_ephemeral",
+      "ownership_surface": "generated",
+      "current_role": "Generated, ephemeral, or release-adjacent output root.",
+      "proposed_target": "generated build output",
+      "migration_action": "ignore_generated",
+      "split_required": false,
+      "risk_level": "review",
+      "phase_hint": "review",
+      "authority_status": "generated_non_authoritative",
+      "notes": "Must not be treated as source repository ownership."
     },
     {
       "name": "bundles",
@@ -264,22 +296,6 @@
       "phase_hint": "none",
       "authority_status": "metadata",
       "notes": "Allowed root file."
-    },
-    {
-      "name": "client",
-      "path": "client",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_product_root",
-      "ownership_surface": "apps",
-      "current_role": "Current top-level product root retained until product entrypoint convergence.",
-      "proposed_target": "apps/client",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
-      "phase_hint": "CONVERGE-08",
-      "authority_status": "transitional",
-      "notes": "Only thin product binding should remain under apps."
     },
     {
       "name": "cmake",
@@ -778,22 +794,6 @@
       "notes": "Experimental material requires review before binding."
     },
     {
-      "name": "launcher",
-      "path": "launcher",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_product_root",
-      "ownership_surface": "apps",
-      "current_role": "Current top-level product root retained until product entrypoint convergence.",
-      "proposed_target": "apps/launcher",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
-      "phase_hint": "CONVERGE-08",
-      "authority_status": "transitional",
-      "notes": "Launcher product identity and executable naming must remain stable."
-    },
-    {
       "name": "lib",
       "path": "lib",
       "kind": "directory",
@@ -1066,6 +1066,22 @@
       "notes": "No matching root classification in layout contract."
     },
     {
+      "name": "out",
+      "path": "out",
+      "kind": "directory",
+      "present": true,
+      "classification": "generated_or_ephemeral",
+      "ownership_surface": "generated",
+      "current_role": "Generated, ephemeral, or release-adjacent output root.",
+      "proposed_target": "generated build output",
+      "migration_action": "ignore_generated",
+      "split_required": false,
+      "risk_level": "review",
+      "phase_hint": "review",
+      "authority_status": "generated_non_authoritative",
+      "notes": "Must not be treated as source repository ownership."
+    },
+    {
       "name": "packs",
       "path": "packs",
       "kind": "directory",
@@ -1304,38 +1320,6 @@
       "phase_hint": "none",
       "authority_status": "metadata",
       "notes": "Allowed root file."
-    },
-    {
-      "name": "server",
-      "path": "server",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_product_root",
-      "ownership_surface": "apps",
-      "current_role": "Current top-level product root retained until product entrypoint convergence.",
-      "proposed_target": "apps/server",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
-      "phase_hint": "CONVERGE-08",
-      "authority_status": "transitional",
-      "notes": "Server authority semantics must stay governed by game/engine/runtime contracts."
-    },
-    {
-      "name": "setup",
-      "path": "setup",
-      "kind": "directory",
-      "present": true,
-      "classification": "transitional_product_root",
-      "ownership_surface": "apps",
-      "current_role": "Current top-level product root retained until product entrypoint convergence.",
-      "proposed_target": "apps/setup",
-      "migration_action": "move",
-      "split_required": false,
-      "risk_level": "medium",
-      "phase_hint": "CONVERGE-08",
-      "authority_status": "transitional",
-      "notes": "Setup install identity and virtual roots must not change during moves."
     },
     {
       "name": "signals",

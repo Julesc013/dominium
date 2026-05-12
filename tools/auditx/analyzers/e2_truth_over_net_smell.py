@@ -13,8 +13,8 @@ WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
     "tools/xstack/controlx/",
     "tools/xstack/registry_compile/",
-    "server/",
-    "client/",
+    "apps/server/",
+    "apps/client/",
     "docs/net/",
 )
 

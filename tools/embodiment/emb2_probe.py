@@ -1,4 +1,4 @@
-"""Deterministic EMB-2 locomotion polish probes for replay and TestX reuse."""
+﻿"""Deterministic EMB-2 locomotion polish probes for replay and TestX reuse."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from client.ui.viewer_shell import build_viewer_shell_state  # noqa: E402
+from apps.client.ui.viewer_shell import build_viewer_shell_state  # noqa: E402
 from embodiment import lens_profile_rows_by_id, resolve_smoothed_camera_state  # noqa: E402
 from tools.embodiment.earth6_probe import build_collision_fixture  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402

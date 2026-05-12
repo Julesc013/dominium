@@ -21,7 +21,7 @@ OS_TOKEN_PATTERNS = (
     re.compile(r"\bimport\s+win32api\b", re.IGNORECASE),
 )
 
-RUNTIME_ROOTS = ("src", "engine", "game", "client", "server")
+RUNTIME_ROOTS = ("src", "engine", "game", "apps/client", "apps/server")
 RUNTIME_EXTS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp")
 SKIP_PREFIXES = ("build/", "dist/", "docs/", "archive/", "legacy/", "tools/xstack/out/")
 QUARANTINE_SKIP_PREFIXES = ("build/", "dist/", "docs/", "tools/xstack/out/")
@@ -95,7 +95,7 @@ def _check_platform_isolation(repo_root: str, failures: List[str]) -> None:
 
 
 def _check_render_truth_isolation(repo_root: str, failures: List[str]) -> None:
-    for rel_path in _iter_files(repo_root, "src/client/render", (".py",)):
+    for rel_path in _iter_files(repo_root, "apps/client/render", (".py",)):
         for line_no, line in enumerate(_read_lines(repo_root, rel_path), start=1):
             if not RENDER_TRUTH_PATTERN.search(line):
                 continue

@@ -431,3 +431,7 @@ CONVERGE-06 completed contract-adjacent convergence for root-level `schema/` and
 ## CONVERGE-07 Follow-up Note
 
 CONVERGE-07 completed runtime/AppShell convergence for safe runtime-facing roots. Root-level `appshell/` moved to `runtime/appshell/`, `app/` moved to `runtime/app/`, `ui/` moved to `runtime/ui/`, and `diag/` moved to `runtime/diagnostics/`. Root-level `net/`, `control/`, and `core/` remain review roots because they are mixed and ownership-sensitive. Runtime README/MANIFEST were added, and no product or domain roots were moved.
+
+## CONVERGE-08 Follow-up Note
+
+CONVERGE-08 completed product entrypoint convergence by moving root-level `client/`, `server/`, `setup/`, and `launcher/` under `apps/`. It added `apps/README.md`, `apps/MANIFEST.md`, and `docs/repo/APPS_CONVERGENCE.md`; updated contracts, validators, inventory, move map, and path references required by the move; performed no domain split; and preserved product IDs, executable names, install IDs, pack IDs, virtual-root IDs, and command behavior.

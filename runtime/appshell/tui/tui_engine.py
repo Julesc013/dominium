@@ -1,4 +1,4 @@
-"""Deterministic AppShell TUI engine with curses and lite backends."""
+﻿"""Deterministic AppShell TUI engine with curses and lite backends."""
 
 from __future__ import annotations
 
@@ -16,8 +16,8 @@ from runtime.appshell.console_repl import build_console_session_stub
 from runtime.appshell.ipc import attach_ipc_endpoint, query_ipc_log_events, query_ipc_status, run_ipc_console_command
 from runtime.appshell.logging import get_current_log_engine, log_emit
 from runtime.appshell.supervisor import SUPERVISOR_AGGREGATED_LOG_REL, load_supervisor_runtime_state
-from client.ui.inspect_panels import build_inspection_panel_set
-from client.ui.map_views import build_map_view_set
+from apps.client.ui.inspect_panels import build_inspection_panel_set
+from apps.client.ui.map_views import build_map_view_set
 from meta_extensions_engine import normalize_extensions_tree
 from runtime.ui import MENU_STATE_MAIN, build_ui_model
 

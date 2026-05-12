@@ -43,8 +43,9 @@ Repository layout is undergoing convergence. For current machine-readable layout
 
 - **Engine (`engine/`)**: deterministic simulation substrate (C89)
 - **Game (`game/`)**: meaning/rules layer on engine APIs (C++98)
-- **Client (`client/`)**: presentation and command projection
-- **Server (`server/`)**: authoritative multiplayer/session enforcement
+- **Client (`apps/client/`)**: presentation and command projection
+- **Server (`apps/server/`)**: authoritative multiplayer/session enforcement
+- **Launcher (`apps/launcher/`)** and **Setup (`apps/setup/`)**: product entrypoints and composition surfaces
 - **Governance (`repo/`, `tests/`, `tools/*x/`)**: RepoX/TestX/AuditX/XStack
 
 Canonical architecture contracts are under `docs/architecture/`, starting at `docs/architecture/ARCH0_CONSTITUTION.md`.

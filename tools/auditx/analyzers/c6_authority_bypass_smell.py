@@ -21,8 +21,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
     schema_rel = "contracts/schemas/authority/authority_context.schema"
-    client_rel = "client/core/client_command_bridge.c"
-    server_rel = "server/authority/dom_server_authority.cpp"
+    client_rel = "apps/client/core/client_command_bridge.c"
+    server_rel = "apps/server/authority/dom_server_authority.cpp"
 
     schema_text = _read(os.path.join(repo_root, schema_rel.replace("/", os.sep)))
     client_text = _read(os.path.join(repo_root, client_rel.replace("/", os.sep)))

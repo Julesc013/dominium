@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-07
+Phase: CONVERGE-08
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -55,7 +55,11 @@ Mixed runtime-adjacent roots such as `net/`, `control/`, and `core/` remain revi
 
 Owns thin product entrypoints and product-specific composition only.
 
-If a product root contains AppShell logic, platform adapters, renderer backends, UI contracts, domain rules, schemas, registries, pack data, or docs, those parts require later split by ownership.
+CONVERGE-08 moved root-level `client/`, `server/`, `setup/`, and `launcher/` under `apps/`. Those root-level product directories are retired and must not be recreated as active source authority.
+
+`apps/` must not own runtime adapters, engine truth, game/domain law, schemas/contracts, content/packs, generated install/runtime/media output, or developer tooling. Product semantics flow through contracts, runtime, engine, game, and content layers. Product-specific UI shell code must remain thin and contract-bound.
+
+If product-local material contains AppShell logic, platform adapters, renderer backends, UI contracts, domain rules, schemas, registries, pack data, or docs, those parts require later split by ownership rather than broad retention under `apps/`.
 
 ## `content/`
 
@@ -105,7 +109,7 @@ CONVERGE-05 made `archive/` the single archive-family ownership root. Root-level
 
 ## Product Roots After Migration
 
-Product roots under `apps/` must remain thin entrypoints and composition surfaces. AppShell logic, platform adapters, renderer backends, domain rules, schemas, registries, pack data, and docs must be rehomed by ownership instead of carried into `apps/` as bulk product history.
+Product roots under `apps/` must remain thin entrypoints and composition surfaces. AppShell logic, platform adapters, renderer backends, domain rules, schemas, registries, pack data, developer tools, and docs must be rehomed by ownership instead of carried into `apps/` as bulk product history.
 
 ## Runtime Roots After Migration
 

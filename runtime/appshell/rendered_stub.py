@@ -10,9 +10,9 @@ import json
 def build_rendered_stub(product_id: str) -> dict:
     product_token = str(product_id).strip()
     if product_token == "client":
-        from client.ui.main_menu_surface import build_client_main_menu_surface
+        from apps.client.ui.main_menu_surface import build_client_main_menu_surface
 
-        repo_root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+        repo_root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
         payload = build_client_main_menu_surface(repo_root=repo_root)
         payload["mode"] = "rendered"
         payload["status"] = "ready"

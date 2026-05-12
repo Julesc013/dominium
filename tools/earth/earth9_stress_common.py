@@ -1,4 +1,4 @@
-"""Shared deterministic EARTH-9 stress scenario helpers."""
+﻿"""Shared deterministic EARTH-9 stress scenario helpers."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from typing import Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from client.ui.map_views import build_map_view_surface, debug_view_limit_for_compute_profile
+from apps.client.ui.map_views import build_map_view_surface, debug_view_limit_for_compute_profile
 from geo import build_position_ref
 from worldgen.earth.water import build_water_layer_source_payloads
 from worldgen.earth import DEFAULT_EARTH_CLIMATE_PARAMS_ID, DEFAULT_TIDE_PARAMS_ID, earth_climate_params_rows, tide_params_rows
@@ -85,7 +85,7 @@ from tools.worldgen.earth8_probe import (
     verify_water_view_replay,
     water_hash,
 )
-from client.ui.teleport_controller import build_teleport_plan
+from apps.client.ui.teleport_controller import build_teleport_plan
 
 
 DEFAULT_EARTH9_SEED = 91029

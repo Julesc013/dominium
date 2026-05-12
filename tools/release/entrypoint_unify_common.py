@@ -75,11 +75,11 @@ PRODUCT_ROWS = (
     {
         "product_id": "server",
         "executable_names": ["server", "dominium_server"],
-        "source_file": "server/server_main.py",
+        "source_file": "apps/server/server_main.py",
         "main_symbol": "main",
-        "ui_init_location": "AppShell mode handoff -> server/server_main.py::_legacy_main",
-        "pack_loading_location": "server/server_boot.py::boot_server_runtime",
-        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer; server/net/loopback_transport.py",
+        "ui_init_location": "AppShell mode handoff -> apps/server/server_main.py::_legacy_main",
+        "pack_loading_location": "apps/server/server_boot.py::boot_server_runtime",
+        "ipc_start_location": "runtime/appshell/bootstrap.py::AppShellIPCEndpointServer; apps/server/net/loopback_transport.py",
         "supervisor_involvement": "no",
     },
     {

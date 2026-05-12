@@ -50,13 +50,14 @@ def should_skip(rel_path: str) -> bool:
 
 
 def infer_subsystem(rel_path: str) -> str:
+    if rel_path.startswith("apps/"):
+        parts = rel_path.split("/")
+        if len(parts) > 1 and parts[1] in {"client", "server", "launcher", "setup"}:
+            return parts[1]
+        return "apps"
     for prefix in (
         "engine/",
         "game/",
-        "client/",
-        "server/",
-        "launcher/",
-        "setup/",
         "tools/",
         "libs/",
         "app/",

@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-07
+Phase: CONVERGE-08
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -10,7 +10,7 @@ The repository root is a coordination surface, not a general source directory. R
 
 `contracts/repo/root_allowlist.toml` is the machine-readable allowlist for root-level entries. `contracts/repo/layout.contract.toml` remains the broader source-layout convergence authority.
 
-CONVERGE-03 recorded root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. CONVERGE-05 updated those artifacts after the archive-family move. CONVERGE-06 updated them after schema root convergence. CONVERGE-07 updated them after runtime/AppShell convergence. Those files are planning evidence only and do not authorize unrelated moves.
+CONVERGE-03 recorded root files, metadata directories, generated roots, and transitional directories in `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json`. CONVERGE-05 updated those artifacts after the archive-family move. CONVERGE-06 updated them after schema root convergence. CONVERGE-07 updated them after runtime/AppShell convergence. CONVERGE-08 updated them after product entrypoint convergence. Those files are planning evidence only and do not authorize unrelated moves.
 
 ## Allowed Metadata Directories
 
@@ -79,6 +79,8 @@ Root-level `app/`, `appshell/`, `ui/`, and `diag/` are retired after CONVERGE-07
 Do not add new root-level `platform/`, `render/`, `input/`, `audio/`, `network/`, `storage/`, or `diagnostics/` roots. Existing `net/`, `control/`, and `core/` remain review roots because they are mixed; do not add new authority there.
 
 Generated runtime output belongs in install/runtime projection roots, not in source repo root and not in source `runtime/`.
+
+Root-level `client/`, `server/`, `setup/`, and `launcher/` are retired after CONVERGE-08. New product entrypoint source must live under `apps/<product>/`. Developer tools remain under `tools/`; shipped product tools require explicit classification before using `apps/tools/`.
 
 ## Generated Roots
 

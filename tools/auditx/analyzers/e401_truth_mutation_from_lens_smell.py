@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E401_TRUTH_MUTATION_FROM_LENS_SMELL"
 SMOOTHING_REL = "embodiment/lens/camera_smoothing.py"
 LENS_ENGINE_REL = "embodiment/lens/lens_engine.py"
-VIEWER_SHELL_REL = "client/ui/viewer_shell.py"
+VIEWER_SHELL_REL = "apps/client/ui/viewer_shell.py"
 DOC_REL = "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
 REQUIRED_TOKENS = {
     SMOOTHING_REL: (

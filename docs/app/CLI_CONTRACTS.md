@@ -43,7 +43,7 @@ Key/value lines include:
 - Products may append platform capability lines (e.g. `platform_*`,
   `window_default_*`, `dpi_scale_default`).
 
-## Client (`client`)
+## Client (`apps/client`)
 - `--renderer <name>`: explicit renderer selection; fails loudly if unavailable
 - `--ui=none|tui|gui`: select GUI/TUI/CLI-only shell
 - `--ui-script <list>`, `--ui-frames <n>`, `--ui-log <path>`, `--headless`
@@ -65,12 +65,12 @@ Key/value lines include:
 - Commands: `start`, `load-save`, `scenario-load`, `replay-save`, `inspect-replay`, `tools`, `settings`, `exit`,
   `survey-here`, `extract-here`, `fabricate`, `build`, `connect-network`
 
-## Server (`server`)
+## Server (`apps/server`)
 - `--mp0-loopback`: MP0 loopback (deterministic)
 - `--mp0-server-auth`: MP0 server-auth demo (deterministic)
 - `--ui=none|tui|gui`: optional UI selection (TUI/GUI are stubs in APR3)
 
-## Launcher (`launcher`)
+## Launcher (`apps/launcher`)
 - Commands: `version`, `list-profiles`, `capabilities`, `start`, `load-save`,
   `inspect-replay`, `tools`, `settings`, `exit`
 - `--status`/`--smoke`: prints control capability status
@@ -79,7 +79,7 @@ Key/value lines include:
 - `--renderer <name>`, `--ui-scale <pct>`, `--palette <name>`,
   `--log-verbosity <level>`, `--debug-ui`
 
-## Setup (`setup`)
+## Setup (`apps/setup`)
 - Commands: `version`, `status`, `prepare`
 - `status` prints `setup status: ok (stub)` and control capability status
 - `prepare` creates an empty install layout (uses `--root` when provided)

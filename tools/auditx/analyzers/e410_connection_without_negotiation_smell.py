@@ -14,13 +14,13 @@ REQUIRED_TOKENS = {
         "`compat.read_only`",
         "session_begin",
     ),
-    "server/net/loopback_transport.py": (
+    "apps/server/net/loopback_transport.py": (
         "build_handshake_message(",
         '"official.handshake_messages"',
         '"client_acknowledged"',
         "compat.handshake.ack.v1",
     ),
-    "server/server_boot.py": (
+    "apps/server/server_boot.py": (
         "REFUSAL_CONNECTION_NO_NEGOTIATION",
         "REFUSAL_CLIENT_READ_ONLY",
         "COMPAT_MODE_READ_ONLY",

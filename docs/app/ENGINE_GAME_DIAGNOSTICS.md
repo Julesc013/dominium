@@ -12,7 +12,7 @@ Engine and game modules remain platform-agnostic and do not host UI layers.
 APR3 does not add new engine/game CLI tools.
 
 Diagnostics live in the application layer:
-- `client`, `server`, `launcher`, `setup`, and `tools` provide CLI-only smoke
+- `apps/client`, `apps/server`, `apps/launcher`, `apps/setup`, and `tools` provide CLI-only smoke
   paths and build-info output.
 - Engine/game tests run via `ctest` (see `engine/tests` and `game/tests`).
 

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T04:05:13Z",
+  "generated_at_utc": "2026-05-12T04:31:50Z",
   "repo_root": ".",
-  "head_sha": "65bda5e3ee9465d5c890b8070ffa89b524b226bf",
+  "head_sha": "e4feaa13ca7d20107ab8cb20c8aa78a973fa2e32",
   "source_branch": "main",
   "map_status": "complete",
   "entries": [
@@ -219,6 +219,27 @@
       "completed_notes": "Root-level app/ is retired; retained app runtime substrate lives under runtime/app/."
     },
     {
+      "name": "apps",
+      "current_path": "apps",
+      "proposed_target": "apps",
+      "action": "keep",
+      "classification": "canonical",
+      "ownership_surface": "apps",
+      "split_required": false,
+      "risk_level": "low",
+      "phase_hint": "none",
+      "dependencies": [],
+      "preserve_paths": "No compatibility shim expected because the entry is retained.",
+      "shim_required": false,
+      "semantic_change_allowed": false,
+      "build_change_allowed": false,
+      "notes": "Thin product entrypoints and product composition surfaces.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
+    },
+    {
       "name": "appshell",
       "current_path": "appshell",
       "proposed_target": "runtime/appshell",
@@ -351,6 +372,29 @@
       "completed_notes": "Root-level audio/ was not present during CONVERGE-07."
     },
     {
+      "name": "build",
+      "current_path": "build",
+      "proposed_target": "generated build output",
+      "action": "ignore_generated",
+      "classification": "generated_or_ephemeral",
+      "ownership_surface": "generated",
+      "split_required": false,
+      "risk_level": "review",
+      "phase_hint": "review",
+      "dependencies": [
+        "requires generated-output provenance review"
+      ],
+      "preserve_paths": "Do not preserve generated path as source authority; preserve only if external workflows require it.",
+      "shim_required": false,
+      "semantic_change_allowed": false,
+      "build_change_allowed": false,
+      "notes": "Must not be treated as source repository ownership.",
+      "status": "not_started",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
+    },
+    {
       "name": "bundles",
       "current_path": "bundles",
       "proposed_target": "content_or_exports_review",
@@ -451,20 +495,16 @@
       "split_required": false,
       "risk_level": "medium",
       "phase_hint": "CONVERGE-08",
-      "dependencies": [
-        "requires product entrypoint audit",
-        "requires build path update",
-        "requires docs cross-reference update"
-      ],
-      "preserve_paths": "Compatibility shims or redirects may be required before changing this root path.",
-      "shim_required": true,
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-08; active references should use apps/client/.",
+      "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Only thin product binding should remain under apps.",
-      "status": "not_started",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": ""
+      "notes": "Completed in CONVERGE-08; root-level client/ moved under apps/client/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-08",
+      "completed_target": "apps/client",
+      "completed_notes": "Root-level client/ is retired; thin client entrypoint source lives under apps/client/."
     },
     {
       "name": "cmake",
@@ -1261,20 +1301,16 @@
       "split_required": false,
       "risk_level": "medium",
       "phase_hint": "CONVERGE-08",
-      "dependencies": [
-        "requires product entrypoint audit",
-        "requires build path update",
-        "requires docs cross-reference update"
-      ],
-      "preserve_paths": "Compatibility shims or redirects may be required before changing this root path.",
-      "shim_required": true,
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-08; active references should use apps/launcher/.",
+      "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Launcher product identity and executable naming must remain stable.",
-      "status": "not_started",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": ""
+      "notes": "Completed in CONVERGE-08; root-level launcher/ moved under apps/launcher/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-08",
+      "completed_target": "apps/launcher",
+      "completed_notes": "Root-level launcher/ is retired; launcher product entrypoint source lives under apps/launcher/."
     },
     {
       "name": "legacy",
@@ -1723,6 +1759,29 @@
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
       "status": "review",
+      "completed_phase": "",
+      "completed_target": "",
+      "completed_notes": ""
+    },
+    {
+      "name": "out",
+      "current_path": "out",
+      "proposed_target": "generated build output",
+      "action": "ignore_generated",
+      "classification": "generated_or_ephemeral",
+      "ownership_surface": "generated",
+      "split_required": false,
+      "risk_level": "review",
+      "phase_hint": "review",
+      "dependencies": [
+        "requires generated-output provenance review"
+      ],
+      "preserve_paths": "Do not preserve generated path as source authority; preserve only if external workflows require it.",
+      "shim_required": false,
+      "semantic_change_allowed": false,
+      "build_change_allowed": false,
+      "notes": "Must not be treated as source repository ownership.",
+      "status": "not_started",
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
@@ -2232,20 +2291,16 @@
       "split_required": false,
       "risk_level": "medium",
       "phase_hint": "CONVERGE-08",
-      "dependencies": [
-        "requires product entrypoint audit",
-        "requires build path update",
-        "requires docs cross-reference update"
-      ],
-      "preserve_paths": "Compatibility shims or redirects may be required before changing this root path.",
-      "shim_required": true,
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-08; active references should use apps/server/.",
+      "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Server authority semantics must stay governed by game/engine/runtime contracts.",
-      "status": "not_started",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": ""
+      "notes": "Completed in CONVERGE-08; root-level server/ moved under apps/server/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-08",
+      "completed_target": "apps/server",
+      "completed_notes": "Root-level server/ is retired; thin server entrypoint source lives under apps/server/."
     },
     {
       "name": "setup",
@@ -2257,20 +2312,16 @@
       "split_required": false,
       "risk_level": "medium",
       "phase_hint": "CONVERGE-08",
-      "dependencies": [
-        "requires product entrypoint audit",
-        "requires build path update",
-        "requires docs cross-reference update"
-      ],
-      "preserve_paths": "Compatibility shims or redirects may be required before changing this root path.",
-      "shim_required": true,
+      "dependencies": [],
+      "preserve_paths": "Root path retired in CONVERGE-08; active references should use apps/setup/.",
+      "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Setup install identity and virtual roots must not change during moves.",
-      "status": "not_started",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": ""
+      "notes": "Completed in CONVERGE-08; root-level setup/ moved under apps/setup/.",
+      "status": "completed",
+      "completed_phase": "CONVERGE-08",
+      "completed_target": "apps/setup",
+      "completed_notes": "Root-level setup/ is retired; setup product entrypoint source lives under apps/setup/."
     },
     {
       "name": "signals",

@@ -504,10 +504,10 @@ def build_graph(repo_root: str, changed_files: Optional[List[str]] = None) -> Di
     product_roots = {
         "engine": "engine/",
         "game": "game/",
-        "client": "client/",
-        "server": "server/",
-        "launcher": "launcher/",
-        "setup": "setup/",
+        "client": "apps/client/",
+        "server": "apps/server/",
+        "launcher": "apps/launcher/",
+        "setup": "apps/setup/",
         "tools": "tools/",
     }
     for product_id in sorted(product_roots.keys()):

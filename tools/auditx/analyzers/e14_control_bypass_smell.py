@@ -12,11 +12,11 @@ ANALYZER_ID = "E14_CONTROL_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "engine/",
     "game/",
-    "client/",
-    "server/",
+    "apps/client/",
+    "apps/server/",
     "tools/",
-    "launcher/",
-    "setup/",
+    "apps/launcher/",
+    "apps/setup/",
 )
 
 _SCAN_ROOTS = (

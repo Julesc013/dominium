@@ -12,11 +12,11 @@ ANALYZER_ID = "E13_PLAYER_SPECIAL_CASE_SMELL"
 WATCH_PREFIXES = (
     "engine/",
     "game/",
-    "client/",
-    "server/",
+    "apps/client/",
+    "apps/server/",
     "tools/",
-    "launcher/",
-    "setup/",
+    "apps/launcher/",
+    "apps/setup/",
 )
 
 _PLAYER_LITERAL_RE = re.compile(r"[\"']player(?:\.[a-z0-9_.-]+)?[\"']", re.IGNORECASE)

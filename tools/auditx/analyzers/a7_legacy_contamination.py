@@ -24,7 +24,7 @@ def _label(node_id):
 def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
-    canonical_roots = ("client/", "launcher/", "setup/", "engine/", "game/", "libs/", "tools/", "app/")
+    canonical_roots = ("apps/client/", "apps/launcher/", "apps/setup/", "engine/", "game/", "libs/", "tools/", "app/")
 
     for edge in graph.edges:
         if edge.edge_type not in ("include", "import", "file_ref"):

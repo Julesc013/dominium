@@ -136,7 +136,7 @@ def _security_findings(repo_root: str) -> List[Dict[str, Any]]:
                         "evidence": token,
                     }
                 )
-        if rel.startswith(("client/", "renderer/")) and any(token in lowered for token in direct_io_tokens):
+        if rel.startswith(("apps/client/", "renderer/")) and any(token in lowered for token in direct_io_tokens):
             findings.append(
                 {
                     "category": "boundary_io",

@@ -17,7 +17,7 @@ CONVERGE-07 consolidates safe runtime-facing source roots under `runtime/` witho
 
 ## What Did Not Move
 
-- `client/`, `server/`, `setup/`, and `launcher/` remain top-level product roots until CONVERGE-08.
+- `client/`, `server/`, `setup/`, and `launcher/` were not moved in CONVERGE-07; CONVERGE-08 later moved them under `apps/`.
 - Domain roots remain in place until CONVERGE-09.
 - `net/` remains a review root because it mixes transport, anti-cheat, SRZ, and server-authoritative policy code.
 - `control/` and `core/` remain review roots because they are mixed and ownership-sensitive.
@@ -45,7 +45,7 @@ UI runtime source may present and route UI state. It must not mutate truth direc
 
 ## Future Work
 
-- CONVERGE-08: product entrypoints into `apps/`.
+- CONVERGE-08: product entrypoints into `apps/`. Completed for root-level `client/`, `server/`, `setup/`, and `launcher/`.
 - CONVERGE-09: domain split into contracts/game/content/docs/tests.
 - CONVERGE-11: product, platform, render, native, toolchain, and packaging matrices.
 - CONVERGE-12: stale-doc and cross-reference cleanup.

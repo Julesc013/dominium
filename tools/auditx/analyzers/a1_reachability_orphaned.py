@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
         severity = "WARN"
         confidence = 0.70
         classification = "PROTOTYPE"
-        if path.startswith(("engine/", "game/", "server/")):
+        if path.startswith(("engine/", "game/", "apps/server/")):
             severity = "RISK"
             confidence = 0.82
             classification = "LEGACY"

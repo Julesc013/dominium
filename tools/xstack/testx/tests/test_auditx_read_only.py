@@ -14,10 +14,10 @@ TEST_TAGS = ["strict", "auditx", "smoke"]
 RUNTIME_PREFIXES = (
     "engine/",
     "game/",
-    "client/",
-    "server/",
-    "launcher/",
-    "setup/",
+    "apps/client/",
+    "apps/server/",
+    "apps/launcher/",
+    "apps/setup/",
     "libs/",
 )
 

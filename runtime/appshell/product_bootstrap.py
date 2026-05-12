@@ -40,7 +40,7 @@ _PRODUCT_ENTRYPOINT_LABELS = {
     "engine": "tools/appshell/product_stub_cli.py::main",
     "game": "tools/appshell/product_stub_cli.py::main",
     "launcher": "tools/launcher/launch.py::appshell_product_bootstrap",
-    "server": "server/server_main.py::appshell_product_bootstrap",
+    "server": "apps/server/server_main.py::appshell_product_bootstrap",
     "setup": "tools/setup/setup_cli.py::appshell_product_bootstrap",
     "tool.attach_console_stub": "tools/appshell/product_stub_cli.py::main",
 }

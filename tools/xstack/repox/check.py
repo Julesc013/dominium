@@ -56,8 +56,8 @@ RESERVED_WORDS = (
 )
 
 SCAN_ROOTS = (
-    "client/observability",
-    "client/presentation",
+    "apps/client/observability",
+    "apps/client/presentation",
     "worldgen",
     "tools/xstack/compatx",
     "tools/xstack/pack_loader",
@@ -243,26 +243,26 @@ CIV_MUTATION_ALLOWED_PREFIXES = (
 )
 
 REPRESENTATION_RENDER_ONLY_FILES = (
-    "client/render/render_model_adapter.py",
-    "client/render/representation_resolver.py",
+    "apps/client/render/render_model_adapter.py",
+    "apps/client/render/representation_resolver.py",
     "tools/xstack/sessionx/render_model.py",
 )
 
 RENDERER_RENDERMODEL_ONLY_FILES = (
-    "client/render/render_model_adapter.py",
-    "client/render/representation_resolver.py",
-    "client/render/snapshot_capture.py",
-    "client/render/renderers/null_renderer.py",
-    "client/render/renderers/software_renderer.py",
+    "apps/client/render/render_model_adapter.py",
+    "apps/client/render/representation_resolver.py",
+    "apps/client/render/snapshot_capture.py",
+    "apps/client/render/renderers/null_renderer.py",
+    "apps/client/render/renderers/software_renderer.py",
     "tools/xstack/sessionx/render_model.py",
     "tools/render/tool_render_capture.py",
     "tools/render/render_cli.py",
 )
 
 RENDER_SNAPSHOT_DERIVED_FILES = (
-    "client/render/snapshot_capture.py",
-    "client/render/renderers/null_renderer.py",
-    "client/render/renderers/software_renderer.py",
+    "apps/client/render/snapshot_capture.py",
+    "apps/client/render/renderers/null_renderer.py",
+    "apps/client/render/renderers/software_renderer.py",
     "tools/render/tool_render_capture.py",
 )
 
@@ -571,11 +571,11 @@ PLATFORM_ABSTRACTION_FILES = (
 )
 
 HW_RENDERER_RENDERMODEL_ONLY_FILES = (
-    "client/render/renderers/hw_renderer_gl.py",
-    "client/render/snapshot_capture.py",
+    "apps/client/render/renderers/hw_renderer_gl.py",
+    "apps/client/render/snapshot_capture.py",
 )
 
-REPRESENTATION_DATA_DRIVEN_FILE = "client/render/representation_resolver.py"
+REPRESENTATION_DATA_DRIVEN_FILE = "apps/client/render/representation_resolver.py"
 REPRESENTATION_DATA_DRIVEN_REQUIRED_TOKENS = (
     "representation_rule_registry",
     "_rule_rows(",
@@ -592,17 +592,17 @@ COSMETIC_SEMANTIC_FORBIDDEN_TOKENS = (
 )
 
 INTERACTION_UI_SURFACE_FILES = (
-    "client/interaction/affordance_generator.py",
-    "client/interaction/interaction_dispatch.py",
-    "client/interaction/preview_generator.py",
-    "client/interaction/inspection_overlays.py",
-    "client/interaction/interaction_panel.py",
+    "apps/client/interaction/affordance_generator.py",
+    "apps/client/interaction/interaction_dispatch.py",
+    "apps/client/interaction/preview_generator.py",
+    "apps/client/interaction/inspection_overlays.py",
+    "apps/client/interaction/interaction_panel.py",
     "tools/xstack/sessionx/interaction.py",
     "tools/interaction/interaction_cli.py",
 )
 
 PUBLIC_INTERACTION_ENTRYPOINT_REQUIREMENTS = {
-    "client/interaction/interaction_dispatch.py": (
+    "apps/client/interaction/interaction_dispatch.py": (
         "def run_interaction_command(",
         "def build_interaction_control_intent(",
         "build_control_intent(",
@@ -623,14 +623,14 @@ UI_DIRECT_PROCESS_SCAN_ROOTS = (
 )
 
 UI_DIRECT_PROCESS_ALLOWED_FILES = (
-    "client/interaction/interaction_dispatch.py",
+    "apps/client/interaction/interaction_dispatch.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/testx/tests/",
     "tools/auditx/analyzers/",
 )
 
-INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "client/interaction/interaction_dispatch.py"
-INTERACTION_AFFORDANCE_FILE = "client/interaction/affordance_generator.py"
+INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "apps/client/interaction/interaction_dispatch.py"
+INTERACTION_AFFORDANCE_FILE = "apps/client/interaction/affordance_generator.py"
 ACTION_SURFACE_ENGINE_FILE = "interaction/action_surface_engine.py"
 ACTION_SURFACE_REGISTRY_FILES = (
     "data/registries/surface_type_registry.json",
@@ -1267,10 +1267,10 @@ STATUS_NOW_REQUIRED_SECTIONS = (
 RUNTIME_PATH_PREFIXES = (
     "engine/",
     "game/",
-    "client/",
-    "server/",
-    "launcher/",
-    "setup/",
+    "apps/client/",
+    "apps/server/",
+    "apps/launcher/",
+    "apps/setup/",
     "libs/",
 )
 
@@ -1280,8 +1280,8 @@ PLAYER_DEMAND_RUNTIME_PREFIXES = (
     "src/",
     "engine/",
     "game/",
-    "client/",
-    "server/",
+    "apps/client/",
+    "apps/server/",
     "tools/domain/",
     "tools/xstack/sessionx/",
 )
@@ -8482,7 +8482,7 @@ def _append_ui_reconcile_findings(
         (UI_RECONCILE_FINAL_PATH, "UI reconcile final report is required", "INV-UI-SHARES-UI_MODEL"),
         (UI_SURFACE_REPORT_JSON_PATH, "UI surface machine-readable report is required", "INV-UI-SHARES-UI_MODEL"),
         ("runtime/ui/ui_model.py", "shared UI model is required", "INV-UI-SHARES-UI_MODEL"),
-        ("client/ui/main_menu_surface.py", "rendered client menu surface is required", "INV-UI-SHARES-UI_MODEL"),
+        ("apps/client/ui/main_menu_surface.py", "rendered client menu surface is required", "INV-UI-SHARES-UI_MODEL"),
         ("tools/auditx/analyzers/e477_business_logic_in_ui_adapter_smell.py", "BusinessLogicInUIAdapterSmell analyzer is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
         ("tools/auditx/analyzers/e478_truth_leak_in_ui_smell.py", "TruthLeakInUISmell analyzer is required", "INV-NO-TRUTH-READ-IN-UI"),
         ("tools/xstack/testx/tests/ui_reconcile_testlib.py", "UI reconcile TestX helper is required", "INV-UI-SHARES-UI_MODEL"),
@@ -11181,7 +11181,7 @@ def _append_renderer_truth_boundary_findings(
     if profile not in ("STRICT", "FULL"):
         return
     rel_norm = _norm(rel_path).lower()
-    if not rel_norm.startswith("client/presentation/"):
+    if not rel_norm.startswith("apps/client/presentation/"):
         return
     match = INCLUDE_RE.match(line)
     if match:
@@ -11250,7 +11250,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-            if rel_norm.startswith(("client/presentation/", "client/ui/")):
+            if rel_norm.startswith(("apps/client/presentation/", "apps/client/ui/")):
                 ui_bypass_tokens = (
                     "boot_session_spec(",
                     "create_session_spec(",
@@ -11271,7 +11271,7 @@ def _append_negative_invariant_findings(
                             )
                         )
 
-            if rel_norm.startswith(("tools/launcher/", "tools/setup/", "launcher/", "setup/")):
+            if rel_norm.startswith(("tools/launcher/", "tools/setup/", "apps/launcher/", "apps/setup/")):
                 if "add_argument(" in lower and re.search(r"--(from-stage|to-stage|stage-id)\b", lower):
                     findings.append(
                         _finding(
@@ -13970,12 +13970,12 @@ def _append_material_structure_invariant_findings(
             "cache_key",
             "pack_lock_hash",
         ),
-        "client/interaction/preview_generator.py": (
+        "apps/client/interaction/preview_generator.py": (
             "_blueprint_preview_payload(",
             "process.blueprint_inspect",
             "build_blueprint_ghost_overlay(",
         ),
-        "client/interaction/inspection_overlays.py": (
+        "apps/client/interaction/inspection_overlays.py": (
             "_blueprint_overlay_payload(",
             "build_blueprint_ghost_overlay(",
             "blueprint_bom_summary(",
@@ -15472,7 +15472,7 @@ def _append_core_abstraction_invariant_findings(
                 "target_kind",
             ),
         },
-        "client/interaction/inspection_overlays.py": {
+        "apps/client/interaction/inspection_overlays.py": {
             "INV-NO-OMNISCIENT-INTERIOR-UI": (
                 "_interior_overlay_payload(",
                 "section.interior.pressure_summary",
@@ -15945,7 +15945,7 @@ def _append_boundary_blocker_invariant_findings(
                 )
             )
 
-    runtime_roots = ("src/", "engine/", "game/", "client/", "server/")
+    runtime_roots = ("src/", "engine/", "game/", "apps/client/", "apps/server/")
     runtime_skip_prefixes = (
         "tools/",
         "docs/",
@@ -16267,7 +16267,7 @@ def _append_deprecation_framework_invariant_findings(
         )
     )
 
-    runtime_prefixes = ("src/", "engine/", "game/", "client/", "server/", "platform/")
+    runtime_prefixes = ("src/", "engine/", "game/", "apps/client/", "apps/server/", "platform/")
     runtime_file_exts = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp")
     all_code_prefixes = runtime_prefixes + ("tools/",)
     legacy_import_patterns = (
@@ -16562,7 +16562,7 @@ def _append_retro_consistency_invariant_findings(
 
     allowed_intent_dispatch_paths = {
         "control/control_plane_engine.py",
-        "client/interaction/interaction_dispatch.py",
+        "apps/client/interaction/interaction_dispatch.py",
         "net/srz/shard_coordinator.py",
         "net/policies/policy_server_authoritative.py",
     }
@@ -16623,7 +16623,7 @@ def _append_retro_consistency_invariant_findings(
     for rel_path in _scan_files(repo_root):
         if not rel_path.endswith((".py", ".cpp", ".h", ".hpp", ".c", ".cc")):
             continue
-        if not rel_path.startswith(("src/", "engine/", "game/", "server/", "client/")):
+        if not rel_path.startswith(("src/", "engine/", "game/", "apps/server/", "apps/client/")):
             continue
         if rel_path.startswith(
             (
@@ -19833,7 +19833,7 @@ def _append_platform_renderer_invariant_findings(
                 )
             )
 
-    hw_renderer_rel = "client/render/renderers/hw_renderer_gl.py"
+    hw_renderer_rel = "apps/client/render/renderers/hw_renderer_gl.py"
     hw_renderer_abs = os.path.join(repo_root, hw_renderer_rel.replace("/", os.sep))
     try:
         hw_text = open(hw_renderer_abs, "r", encoding="utf-8").read()
@@ -20210,7 +20210,7 @@ def _append_plan_execution_enforcement_invariant_findings(
                 )
             )
 
-    overlays_rel = "client/interaction/inspection_overlays.py"
+    overlays_rel = "apps/client/interaction/inspection_overlays.py"
     overlays_text = _file_text(repo_root, overlays_rel)
     if not overlays_text:
         findings.append(
@@ -21441,8 +21441,8 @@ def _append_geo_portability_invariant_findings(
     severity = _strict_only_severity(profile)
     field_engine_rel = "fields/field_engine.py"
     pollution_rel = "pollution/dispersion_engine.py"
-    representation_rel = "client/render/representation_resolver.py"
-    renderer_rel = "client/render/renderers/software_renderer.py"
+    representation_rel = "apps/client/render/representation_resolver.py"
+    renderer_rel = "apps/client/render/renderers/software_renderer.py"
 
     field_text = _file_text(repo_root, field_engine_rel)
     if "geo_partition_cell_key(" not in field_text:
@@ -24407,7 +24407,7 @@ def _append_electric_invariant_findings(
 
     observation_rel = "tools/xstack/sessionx/observation.py"
     inspection_rel = "inspection/inspection_engine.py"
-    overlay_rel = "client/interaction/inspection_overlays.py"
+    overlay_rel = "apps/client/interaction/inspection_overlays.py"
     control_registry_rel = "data/registries/control_action_registry.json"
     action_template_rel = "data/registries/action_template_registry.json"
     observation_text = _file_text(repo_root, observation_rel)

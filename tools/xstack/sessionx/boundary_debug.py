@@ -35,8 +35,8 @@ def _assert_render_truth_isolation_contract() -> None:
         return
     repo_root = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
     targets = (
-        "client/render/render_model_adapter.py",
-        "client/render/representation_resolver.py",
+        "apps/client/render/render_model_adapter.py",
+        "apps/client/render/representation_resolver.py",
     )
     for rel_path in targets:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))

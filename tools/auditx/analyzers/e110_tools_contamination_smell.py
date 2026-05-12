@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E110_TOOLS_CONTAMINATION_SMELL"
-WATCH_PREFIXES = ("src/", "engine/", "game/", "client/", "server/")
+WATCH_PREFIXES = ("src/", "engine/", "game/", "apps/client/", "apps/server/")
 
 RUNTIME_ROOTS = ("src", "engine", "game", "client", "server")
 RUNTIME_EXTS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp")

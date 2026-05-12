@@ -92,7 +92,7 @@ DECISION_CLASSES = ("approved_for_xi5", "approved_to_attic", "deferred_to_xi5b")
 OPTION_C = "C"
 
 DEFERRED_PATHS = {
-    "client/interaction/__init__.py",
+    "apps/client/interaction/__init__.py",
     "lib/store/__init__.py",
 }
 
@@ -444,7 +444,7 @@ def _deferred_rows(decisions: Sequence[Mapping[str, object]]) -> list[dict[str, 
             continue
         file_path = _norm_rel(row.get("file_path"))
         blocker = "Current evidence remains tool-leaning but the file is not worth broadening XI-5a over."
-        if file_path == "client/interaction/__init__.py":
+        if file_path == "apps/client/interaction/__init__.py":
             blocker = "Interaction init surface is isolated and does not justify blocking the approved XI-5a move set."
         rows.append(
             {

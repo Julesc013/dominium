@@ -50,8 +50,8 @@ def is_allowed_projection_path(rel_path):
     if rel_path.startswith("ide/"):
         return True
     allow_patterns = [
-        "setup/**/package/**/vs/**",
-        "setup/**/xcode/**",
+        "apps/setup/**/package/**/vs/**",
+        "apps/setup/**/xcode/**",
         "legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs/**",
         "legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/**",
         "archive/legacy/setup_core_setup/setup/adapters/winnt/package/exe/vs/**",

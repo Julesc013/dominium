@@ -561,12 +561,12 @@ EMB1_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_tool_ses
 EMB1_CLI_TOOL_REL = os.path.join("tools", "embodiment", "toolbelt_cli.py")
 EMB2_PROBE_TOOL_REL = os.path.join("tools", "embodiment", "emb2_probe.py")
 EMB2_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_locomotion_window.py")
-UX_VIEWER_SHELL_REL = os.path.join("client", "ui", "viewer_shell.py")
-UX_MAP_VIEWS_REL = os.path.join("client", "ui", "map_views.py")
-UX_INSPECT_PANELS_REL = os.path.join("client", "ui", "inspect_panels.py")
-RENDER_MODEL_ADAPTER_REL = os.path.join("client", "render", "render_model_adapter.py")
-SOFTWARE_RENDERER_REL = os.path.join("client", "render", "renderers", "software_renderer.py")
-NULL_RENDERER_REL = os.path.join("client", "render", "renderers", "null_renderer.py")
+UX_VIEWER_SHELL_REL = os.path.join("apps", "client", "ui", "viewer_shell.py")
+UX_MAP_VIEWS_REL = os.path.join("apps", "client", "ui", "map_views.py")
+UX_INSPECT_PANELS_REL = os.path.join("apps", "client", "ui", "inspect_panels.py")
+RENDER_MODEL_ADAPTER_REL = os.path.join("apps", "client", "render", "render_model_adapter.py")
+SOFTWARE_RENDERER_REL = os.path.join("apps", "client", "render", "renderers", "software_renderer.py")
+NULL_RENDERER_REL = os.path.join("apps", "client", "render", "renderers", "null_renderer.py")
 UX_VIEWER_DOC_REL = os.path.join("docs", "ux", "MVP_VIEWER_SHELL.md")
 EMB_ASSET_FORBIDDEN_TOKENS = (
     ".png",
@@ -1353,10 +1353,11 @@ def _build_proof_manifest(repo_root, warnings, failures):
     required_capability_checks = set(CAMERA_MODE_RUNTIME_CAPABILITIES + OBSERVER_TOOL_ENTITLEMENTS)
 
     for path in changed:
-        top = path.split("/", 1)[0] if "/" in path else path
+        parts = path.split("/")
+        top = parts[1] if len(parts) > 1 and parts[0] == "apps" else (parts[0] if parts else path)
         if top in ("engine", "game", "client", "server", "launcher", "setup", "tools", "schema", "data", "docs", "tests", "libs"):
             impacted_subsystems.add(top)
-        if path.startswith("client/") or path.startswith("libs/appcore/command/") or path.startswith("libs/appcore/ui_bind/"):
+        if path.startswith("apps/client/") or path.startswith("libs/appcore/command/") or path.startswith("libs/appcore/ui_bind/"):
             required_tests.update({
                 "capability_runtime_enforcement",
                 "freecam_epistemics",
@@ -1951,7 +1952,7 @@ def check_unversioned_schema_references(repo_root):
     violations = []
     for rel_path, lines in added.items():
         rel = rel_path.replace("\\", "/")
-        if not any(rel.startswith(prefix) for prefix in ("engine/", "game/", "client/", "server/", "tools/", "scripts/")):
+        if not any(rel.startswith(prefix) for prefix in ("engine/", "game/", "apps/client/", "apps/server/", "tools/", "scripts/")):
             continue
         for idx, line in enumerate(lines, start=1):
             for match in SCHEMA_ID_LITERAL_RE.finditer(line):
@@ -2875,8 +2876,8 @@ def check_runtime_no_xstack_imports(repo_root):
     runtime_cmake = [
         os.path.join(repo_root, "engine", "CMakeLists.txt"),
         os.path.join(repo_root, "game", "CMakeLists.txt"),
-        os.path.join(repo_root, "client", "CMakeLists.txt"),
-        os.path.join(repo_root, "server", "CMakeLists.txt"),
+        os.path.join(repo_root, "apps", "client", "CMakeLists.txt"),
+        os.path.join(repo_root, "apps", "server", "CMakeLists.txt"),
         os.path.join(repo_root, "CMakeLists.txt"),
     ]
     violations = []
@@ -3246,8 +3247,8 @@ def check_observer_freecam_entitlement_gate(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "client/shell/client_shell.c"
-    path = os.path.join(repo_root, "client", "shell", "client_shell.c")
+    rel = "apps/client/shell/client_shell.c"
+    path = os.path.join(repo_root, "apps", "client", "shell", "client_shell.c")
     if not os.path.isfile(path):
         return ["{}: missing {}".format(invariant_id, rel)]
 
@@ -3338,8 +3339,8 @@ def check_runtime_command_capability_guards(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "client/shell/client_shell.c"
-    path = os.path.join(repo_root, "client", "shell", "client_shell.c")
+    rel = "apps/client/shell/client_shell.c"
+    path = os.path.join(repo_root, "apps", "client", "shell", "client_shell.c")
     if not os.path.isfile(path):
         return ["{}: missing {}".format(invariant_id, rel)]
 
@@ -3383,13 +3384,13 @@ def check_client_canonical_bridge(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    bridge_rel = "client/core/client_command_bridge.c"
-    registry_rel = "client/core/client_commands_registry.c"
-    runtime_rel = "client/app/main_client.c"
+    bridge_rel = "apps/client/core/client_command_bridge.c"
+    registry_rel = "apps/client/core/client_commands_registry.c"
+    runtime_rel = "apps/client/app/main_client.c"
     mode_files = (
-        "client/modes/client_mode_cli.c",
-        "client/modes/client_mode_tui.c",
-        "client/modes/client_mode_gui.c",
+        "apps/client/modes/client_mode_cli.c",
+        "apps/client/modes/client_mode_tui.c",
+        "apps/client/modes/client_mode_gui.c",
     )
     required_commands = (
         "client.boot.start",
@@ -3455,16 +3456,16 @@ def check_settings_ownership_boundaries(repo_root):
         return []
 
     boundary_rules = (
-        ("client/", ("setup/",), "client sources must not include setup mutators directly"),
-        ("launcher/", ("client/", "setup/"), "launcher sources must not include client/setup implementation headers"),
-        ("setup/", ("client/", "launcher/"), "setup sources must not include client/launcher implementation headers"),
+        ("apps/client/", ("setup/",), "client sources must not include setup mutators directly"),
+        ("apps/launcher/", ("client/", "setup/"), "launcher sources must not include client/setup implementation headers"),
+        ("apps/setup/", ("client/", "launcher/"), "setup sources must not include client/launcher implementation headers"),
     )
     violations = []
 
     roots = (
-        os.path.join(repo_root, "client"),
-        os.path.join(repo_root, "launcher"),
-        os.path.join(repo_root, "setup"),
+        os.path.join(repo_root, "apps", "client"),
+        os.path.join(repo_root, "apps", "launcher"),
+        os.path.join(repo_root, "apps", "setup"),
     )
     for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
         rel = repo_rel(repo_root, path).replace("\\", "/")
@@ -3848,7 +3849,7 @@ def check_survival_diegetic_contract(repo_root):
         return []
 
     law_rel = "data/registries/law_profiles.json"
-    bridge_rel = "client/core/client_command_bridge.c"
+    bridge_rel = "apps/client/core/client_command_bridge.c"
     law_path = os.path.join(repo_root, law_rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
     if not os.path.isfile(law_path):
@@ -3909,9 +3910,9 @@ def check_authority_context_required_for_intents(repo_root):
         return []
 
     schema_rel = "contracts/schemas/authority/authority_context.schema"
-    client_rel = "client/core/client_command_bridge.c"
-    server_h_rel = "server/authority/dom_server_authority.h"
-    server_cpp_rel = "server/authority/dom_server_authority.cpp"
+    client_rel = "apps/client/core/client_command_bridge.c"
+    server_h_rel = "apps/server/authority/dom_server_authority.h"
+    server_cpp_rel = "apps/server/authority/dom_server_authority.cpp"
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
     client_path = os.path.join(repo_root, client_rel.replace("/", os.sep))
     server_h_path = os.path.join(repo_root, server_h_rel.replace("/", os.sep))
@@ -3957,8 +3958,8 @@ def check_session_spec_required_for_run(repo_root):
 
     schema_rel = "contracts/schemas/session/session_spec.schema"
     registry_rel = "data/registries/session_defaults.json"
-    bridge_rel = "client/core/client_command_bridge.c"
-    commands_rel = "client/core/client_commands_registry.c"
+    bridge_rel = "apps/client/core/client_command_bridge.c"
+    commands_rel = "apps/client/core/client_commands_registry.c"
     violations = []
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
     registry_path = os.path.join(repo_root, registry_rel.replace("/", os.sep))
@@ -4456,7 +4457,7 @@ def check_negotiation_required_for_connections(repo_root):
         return []
 
     handshake_rel = os.path.join("tools", "xstack", "sessionx", "net_handshake.py")
-    loopback_rel = os.path.join("server", "net", "loopback_transport.py")
+    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
     doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
     server_probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
 
@@ -4508,8 +4509,8 @@ def check_connection_requires_negotiation(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
-    loopback_rel = os.path.join("server", "net", "loopback_transport.py")
-    server_boot_rel = os.path.join("server", "server_boot.py")
+    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
+    server_boot_rel = os.path.join("apps", "server", "server_boot.py")
 
     violations = []
     required_tokens = {
@@ -4554,8 +4555,8 @@ def check_negotiation_record_logged(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
-    loopback_rel = os.path.join("server", "net", "loopback_transport.py")
-    tick_loop_rel = os.path.join("server", "runtime", "tick_loop.py")
+    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
+    tick_loop_rel = os.path.join("apps", "server", "runtime", "tick_loop.py")
     replay_rel = os.path.join("tools", "compat", "tool_replay_negotiation.py")
 
     violations = []
@@ -4604,8 +4605,8 @@ def check_readonly_enforced_when_negotiated(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
-    loopback_rel = os.path.join("server", "net", "loopback_transport.py")
-    server_boot_rel = os.path.join("server", "server_boot.py")
+    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
+    server_boot_rel = os.path.join("apps", "server", "server_boot.py")
 
     violations = []
     required_tokens = {
@@ -4772,8 +4773,8 @@ def check_no_silent_degrade(repo_root):
 
     doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
     enforcer_rel = os.path.join("compat", "negotiation", "degrade_enforcer.py")
-    local_controller_rel = os.path.join("client", "local_server", "local_server_controller.py")
-    server_console_rel = os.path.join("server", "server_console.py")
+    local_controller_rel = os.path.join("apps", "client", "local_server", "local_server_controller.py")
+    server_console_rel = os.path.join("apps", "server", "server_console.py")
     logic_tool_rel = os.path.join("embodiment", "tools", "logic_tool.py")
 
     violations = []
@@ -5254,7 +5255,7 @@ def check_products_must_use_appshell(repo_root):
     bootstrap_rel = os.path.join("appshell", "bootstrap.py")
     wrapper_stub_rel = os.path.join("tools", "appshell", "product_stub_cli.py")
     runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
-    server_main_rel = os.path.join("server", "server_main.py")
+    server_main_rel = os.path.join("apps", "server", "server_main.py")
     setup_rel = os.path.join("tools", "setup", "setup_cli.py")
     launcher_rel = os.path.join("tools", "launcher", "launch.py")
 
@@ -5358,7 +5359,7 @@ def check_no_adhoc_main(repo_root):
             )
 
     runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
-    server_main_rel = os.path.join("server", "server_main.py")
+    server_main_rel = os.path.join("apps", "server", "server_main.py")
     setup_rel = os.path.join("tools", "setup", "setup_cli.py")
     launcher_rel = os.path.join("tools", "launcher", "launch.py")
     for rel_path in (runtime_entry_rel, server_main_rel, setup_rel, launcher_rel):
@@ -5778,8 +5779,8 @@ def check_no_printf_logging(repo_root):
     log_engine_rel = os.path.join("appshell", "logging", "log_engine.py")
     sink_rel = os.path.join("appshell", "logging_sink.py")
     guarded_rels = (
-        os.path.join("server", "net", "loopback_transport.py"),
-        os.path.join("server", "runtime", "tick_loop.py"),
+        os.path.join("apps", "server", "net", "loopback_transport.py"),
+        os.path.join("apps", "server", "runtime", "tick_loop.py"),
         os.path.join("appshell", "diag", "diag_snapshot.py"),
     )
     violations = []
@@ -5817,11 +5818,11 @@ def check_log_engine_only(repo_root):
             "message_key",
             "diag snapshot",
         ),
-        os.path.join("server", "net", "loopback_transport.py"): (
+        os.path.join("apps", "server", "net", "loopback_transport.py"): (
             "from runtime.appshell.logging import build_log_event, get_current_log_engine",
             "message_key=",
         ),
-        os.path.join("server", "runtime", "tick_loop.py"): (
+        os.path.join("apps", "server", "runtime", "tick_loop.py"): (
             "message_key=\"server.proof_anchor.emitted\"",
             "message_key=\"server.tick.advanced\"",
         ),
@@ -5850,8 +5851,8 @@ def check_no_wallclock_in_sim(repo_root):
         return []
 
     rel_paths = (
-        os.path.join("server", "net", "loopback_transport.py"),
-        os.path.join("server", "runtime", "tick_loop.py"),
+        os.path.join("apps", "server", "net", "loopback_transport.py"),
+        os.path.join("apps", "server", "runtime", "tick_loop.py"),
         os.path.join("appshell", "logging", "log_engine.py"),
         os.path.join("appshell", "diag", "diag_snapshot.py"),
     )
@@ -9948,7 +9949,7 @@ def check_server_tick_deterministic(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    tick_loop_rel = os.path.join("server", "runtime", "tick_loop.py")
+    tick_loop_rel = os.path.join("apps", "server", "runtime", "tick_loop.py")
     replay_tool_rel = os.path.join("tools", "server", "tool_replay_server_window.py")
     probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
     doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
@@ -10016,8 +10017,8 @@ def check_contracts_validated_on_boot(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    server_boot_rel = os.path.join("server", "server_boot.py")
-    server_main_rel = os.path.join("server", "server_main.py")
+    server_boot_rel = os.path.join("apps", "server", "server_boot.py")
+    server_main_rel = os.path.join("apps", "server", "server_main.py")
     doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
     config_schema_rel = os.path.join("contracts", "schemas", "server", "server_config.schema")
     config_registry_rel = os.path.join("data", "registries", "server_config_registry.json")
@@ -10073,8 +10074,8 @@ def check_authority_required(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    server_boot_rel = os.path.join("server", "server_boot.py")
-    loopback_rel = os.path.join("server", "net", "loopback_transport.py")
+    server_boot_rel = os.path.join("apps", "server", "server_boot.py")
+    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
     probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
     doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
 
@@ -10274,7 +10275,7 @@ def check_local_spawn_profiled(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    controller_rel = os.path.join("client", "local_server", "local_server_controller.py")
+    controller_rel = os.path.join("apps", "client", "local_server", "local_server_controller.py")
     runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
     doc_rel = os.path.join("docs", "server", "LOCAL_SINGLEPLAYER_MODEL.md")
 
@@ -10320,7 +10321,7 @@ def check_no_wallclock_timeouts_in_boot(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    controller_rel = os.path.join("client", "local_server", "local_server_controller.py")
+    controller_rel = os.path.join("apps", "client", "local_server", "local_server_controller.py")
     runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
     replay_tool_rel = os.path.join("tools", "server", "tool_replay_local_singleplayer.py")
     doc_rel = os.path.join("docs", "server", "LOCAL_SINGLEPLAYER_MODEL.md")
@@ -10910,8 +10911,8 @@ def check_no_blocking_worldgen_in_ui(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    viewer_rel = os.path.join("client", "ui", "viewer_shell.py")
-    teleport_rel = os.path.join("client", "ui", "teleport_controller.py")
+    viewer_rel = os.path.join("apps", "client", "ui", "viewer_shell.py")
+    teleport_rel = os.path.join("apps", "client", "ui", "teleport_controller.py")
     doc_rel = os.path.join("docs", "worldgen", "REFINEMENT_PIPELINE_MODEL.md")
     stress_tool_rel = os.path.join("tools", "worldgen", "tool_run_refinement_stress.py")
 
@@ -11219,8 +11220,8 @@ def check_ui_entitlement_gating(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "client/core/client_commands_registry.c"
-    bridge_rel = "client/core/client_command_bridge.c"
+    rel = "apps/client/core/client_commands_registry.c"
+    bridge_rel = "apps/client/core/client_command_bridge.c"
     path = os.path.join(repo_root, rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
     violations = []
@@ -11485,7 +11486,7 @@ def check_renderer_no_truth_access(repo_root):
                     )
                 )
 
-    frame_graph_rel = os.path.join("client", "presentation", "frame_graph_builder.h")
+    frame_graph_rel = os.path.join("apps", "client", "presentation", "frame_graph_builder.h")
     frame_graph_path = os.path.join(repo_root, frame_graph_rel)
     if not os.path.isfile(frame_graph_path):
         violations.append("{}: missing {}".format(invariant_id, frame_graph_rel.replace("\\", "/")))
@@ -11511,7 +11512,7 @@ def check_renderer_no_truth_access(repo_root):
                     )
                 )
 
-    render_prep_rel = os.path.join("client", "presentation", "render_prep_system.cpp")
+    render_prep_rel = os.path.join("apps", "client", "presentation", "render_prep_system.cpp")
     render_prep_path = os.path.join(repo_root, render_prep_rel)
     if not os.path.isfile(render_prep_path):
         violations.append("{}: missing {}".format(invariant_id, render_prep_rel.replace("\\", "/")))
@@ -12505,10 +12506,10 @@ def _runtime_scope_prefixes():
     return (
         "engine/",
         "game/",
-        "client/",
-        "server/",
-        "launcher/",
-        "setup/",
+        "apps/client/",
+        "apps/server/",
+        "apps/launcher/",
+        "apps/setup/",
         "libs/appcore/",
         "tools/",
     )

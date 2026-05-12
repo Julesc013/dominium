@@ -25,7 +25,7 @@ def run(graph, repo_root, changed_files=None):
                 continue
             abs_path = os.path.join(root, name)
             rel_path = _norm(os.path.relpath(abs_path, repo_root))
-            if not rel_path.startswith(("src/", "engine/", "game/", "server/", "client/")):
+            if not rel_path.startswith(("src/", "engine/", "game/", "apps/server/", "apps/client/")):
                 continue
             if rel_path.startswith(
                 (

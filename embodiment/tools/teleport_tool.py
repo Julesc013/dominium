@@ -1,11 +1,11 @@
-"""Deterministic EMB-1 teleport tool wrappers over MW-4 teleport planning."""
+﻿"""Deterministic EMB-1 teleport tool wrappers over MW-4 teleport planning."""
 
 from __future__ import annotations
 
 from typing import Mapping
 
 from worldgen.refinement.refinement_scheduler import build_refinement_request_record
-from client.ui.teleport_controller import build_teleport_plan
+from apps.client.ui.teleport_controller import build_teleport_plan
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .toolbelt_engine import evaluate_tool_access

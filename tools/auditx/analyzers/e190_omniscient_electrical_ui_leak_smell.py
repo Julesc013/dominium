@@ -17,7 +17,7 @@ class OmniscientElectricalUILeakSmell:
 
 _UI_PATHS = (
     "tools/xstack/sessionx/observation.py",
-    "client/interaction/inspection_overlays.py",
+    "apps/client/interaction/inspection_overlays.py",
     "inspection/inspection_engine.py",
 )
 _FORBIDDEN_PATTERNS = (
