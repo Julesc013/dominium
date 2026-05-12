@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-06 build and gate remediation
+UNSPECIFIED - POST-CONVERGE-07 local runtime proof
 
 ## GOAL
 
-POST-CONVERGE-06 build and gate remediation
+POST-CONVERGE-07 local runtime proof
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4239
-- approx_tokens: 1060
+- chars: 4225
+- approx_tokens: 1057
 - budget_status: PASS
 - warnings:
   - none

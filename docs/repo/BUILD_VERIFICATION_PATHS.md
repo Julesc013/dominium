@@ -2,10 +2,10 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-06
-- Current status: partially proven
+- Phase: POST-CONVERGE-07
+- Current status: blocked for local runtime proof
 
-POST-CONVERGE-06 confirmed that repository layout and supplemental validators can run locally, but the canonical CMake verify lane is still blocked by this machine's missing Visual Studio toolchain.
+POST-CONVERGE-06 confirmed that repository layout and supplemental validators can run locally, but the canonical CMake verify lane is still blocked by this machine's missing Visual Studio toolchain. POST-CONVERGE-07 confirmed that no local product runtime proof can proceed without that build output or an accepted equivalent CI proof.
 
 ## Canonical Verify Lane
 
@@ -75,3 +75,5 @@ ctest --preset verify
 - Local configure/build/CTest proof is not complete.
 - No validated fallback preset exists.
 - FAST still fails after the structural fix because RepoX now exposes broad drift and missing-artifact backlog.
+- POST-CONVERGE-07 could not run product binaries or prove local playtest/session/status/save/load/resume.
+- The Python server AppShell script can be invoked, but direct script execution currently ignores CLI args, so it is not a canonical product command proof.
