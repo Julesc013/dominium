@@ -159,3 +159,17 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `VERSION_SUITE` | `VERSION_SUITE` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `VERSION_TOOLS` | `VERSION_TOOLS` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `worldgen` | `game/domains/worldgen` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level worldgen/ implementation moved under game/domains/worldgen/. No schemas, registries, content data, or docs were found in that root during th... |
+
+## CONVERGE-10 Enforcement Note
+
+CONVERGE-10 does not execute physical moves. It converts the remaining move-map review surface into explicit enforcement exceptions.
+
+Remaining moves or splits are deferred behind `contracts/repo/layout_exceptions.toml`. Each active exception names the current path, target or review target, risk, and retirement phase. The main follow-up phase for exception retirement is CONVERGE-12 unless a narrower task retires an exception earlier.
+
+Strict validators now pass with zero unexcepted violations. They will fail if a new root appears without contract/allowlist support or an active exception.
+
+Future move-map focus:
+
+- CONVERGE-11: product/platform/render/native/toolchain/package matrices.
+- CONVERGE-12: retire or narrow remaining exceptions and reconcile stale cross-references.
+- Future scoped tasks: split protected roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `net/`, `packs/`, `repo/`, `security/`, and `specs/`.

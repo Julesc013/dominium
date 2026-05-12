@@ -1,9 +1,11 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T05:01:38Z",
+  "generated_at_utc": "2026-05-12T05:18:39Z",
   "repo_root": ".",
-  "head_sha": "929451f7ff08461afd45685f80f51763a2cf2e14",
+  "head_sha": "be9219ad988507e4437663c0b97dfacf9a2cfc9d",
   "source_branch": "main",
+  "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
+  "active_exception_count": 37,
   "map_status": "complete",
   "entries": [
     {
@@ -171,10 +173,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "xstack_cache_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "ignored local cache or tools/artifacts evidence review"
     },
     {
       "name": "__init__.py",
@@ -194,10 +199,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "root_init_py",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "remove after import surface review or document as allowed root file"
     },
     {
       "name": "AGENTS.md",
@@ -322,10 +330,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Review before using as authority.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "artifacts_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "generated evidence cleanup or release/artifact policy exception"
     },
     {
       "name": "astro",
@@ -413,10 +424,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Must not be treated as source repository ownership.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "build_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "ignored generated build output"
     },
     {
       "name": "bundles",
@@ -437,10 +451,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Authored bundles and generated exports require separate handling.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "bundles_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "contracts/bundles, content, release, tests, or generated export review"
     },
     {
       "name": "CHANGELOG.md",
@@ -635,10 +652,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Root-level compat/ remains mixed implementation and shim code after CONVERGE-06; do not move wholesale into contracts/.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "compat_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "contracts/compatibility plus runtime/tools split review"
     },
     {
       "name": "content",
@@ -723,10 +743,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Control substrate must preserve process-only mutation boundaries.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "control_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "runtime/control, contracts, game, or tools review"
     },
     {
       "name": "core",
@@ -748,10 +771,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Core is likely mixed; do not move wholesale.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "core_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "engine, game, runtime, contracts, or tools split review"
     },
     {
       "name": "data",
@@ -772,10 +798,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Data contains registries, content, planning mirrors, and generated evidence; split by authority.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "data_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "content, contracts, docs, tools, or generated evidence split review"
     },
     {
       "name": "diag",
@@ -863,10 +892,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Distribution output is governed by distribution contracts, not source repo layout.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "dist_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "generated distribution output or explicit release exception"
     },
     {
       "name": "docs",
@@ -1152,10 +1184,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Governance mirrors must not compete with AGENTS.md or canon.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "governance_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "docs/governance or generated mirror review"
     },
     {
       "name": "GOVERNANCE.md",
@@ -1196,10 +1231,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "IDE projections may belong under cmake, tools, or generated evidence depending on role.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "ide_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "tools/ide, cmake/ide, docs/ide, or generated projection review"
     },
     {
       "name": "infrastructure",
@@ -1344,10 +1382,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Experimental material requires review before binding.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "labs_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "archive, tools, docs, or explicit experimental contract review"
     },
     {
       "name": "launcher",
@@ -1411,10 +1452,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Do not classify by name alone; inspect ownership first.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "lib_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "engine, runtime, external, contracts, or tools review"
     },
     {
       "name": "libs",
@@ -1436,10 +1480,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Do not classify by name alone; inspect ownership first.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "libs_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "engine, runtime, external, contracts, or tools review"
     },
     {
       "name": "LICENSE.md",
@@ -1482,10 +1529,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "locks_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "contracts/locks, content/store-lock policy, or release lock review"
     },
     {
       "name": "logic",
@@ -1635,10 +1685,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Meta surfaces require ownership review.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "meta_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "contracts, tools, docs, game, or archive split review"
     },
     {
       "name": "meta_extensions_engine.py",
@@ -1658,10 +1711,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "meta_extensions_engine_file",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "game, engine, tools, or contracts review"
     },
     {
       "name": "mobility",
@@ -1708,10 +1764,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Modding may include content, contracts, and docs.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "modding_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "content/modding, contracts, docs, or tools review"
     },
     {
       "name": "MODDING.md",
@@ -1753,10 +1812,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Model data should be distinguished from generated or runtime state.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "models_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "content/models or generated output review"
     },
     {
       "name": "net",
@@ -1778,10 +1840,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Root-level net/ remains mixed after CONVERGE-07 because it contains transport, anti-cheat, SRZ, and server-authoritative policy code; do not move wholesale.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "net_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "runtime/network plus apps/server and contracts review"
     },
     {
       "name": "network",
@@ -1822,10 +1887,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "numeric_discipline_file",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "engine, contracts, tools, or docs review"
     },
     {
       "name": "out",
@@ -1845,10 +1913,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Must not be treated as source repository ownership.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "out_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "ignored generated build output"
     },
     {
       "name": "packs",
@@ -1869,10 +1940,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Current runtime pack substrate; pack ownership split remains review-sensitive.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "packs_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "content/packs plus contracts/packs and release review"
     },
     {
       "name": "performance",
@@ -1892,10 +1966,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Performance tooling and evidence should stay tool/evidence scoped.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "performance_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "tools/performance or generated evidence review"
     },
     {
       "name": "physics",
@@ -2015,10 +2092,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Profile data belongs under content unless runtime-store evidence proves otherwise.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "profiles_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "content/profiles or runtime-store projection review"
     },
     {
       "name": "quarantine",
@@ -2191,10 +2271,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "repo_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "contracts/repo, docs/repo, release, or tools/migration split review"
     },
     {
       "name": "runtime",
@@ -2236,10 +2319,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Safety policy belongs under contracts or docs depending on authority.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "safety_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "contracts/safety, docs/safety, tools, or runtime policy review"
     },
     {
       "name": "schema",
@@ -2323,10 +2409,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Security and trust surfaces are protected and review-sensitive.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "security_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "contracts/security, docs/security, release, tools, or runtime policy review"
     },
     {
       "name": "SECURITY.md",
@@ -2457,10 +2546,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Normative specs must retain authority; reality specs remain canonical over data projections.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "specs_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "contracts/specs, docs/specs, or protected semantic spec review"
     },
     {
       "name": "storage",
@@ -2528,10 +2620,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Templates may be authored content, contracts, or generated inputs.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "templates_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "content/templates, contracts, tools, or generated projection review"
     },
     {
       "name": "tests",
@@ -2598,10 +2693,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "tool_ui_bind_cmd",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "scripts or tools wrapper review"
     },
     {
       "name": "tool_ui_doc_annotate.cmd",
@@ -2621,10 +2719,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "tool_ui_doc_annotate_cmd",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "scripts or tools wrapper review"
     },
     {
       "name": "tool_ui_validate.cmd",
@@ -2644,10 +2745,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "No matching root classification in layout contract.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "tool_ui_validate_cmd",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "scripts or tools wrapper review"
     },
     {
       "name": "tools",
@@ -2736,10 +2840,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Update metadata belongs to release/control-plane ownership after review.",
-      "status": "not_started",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "updates_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "release/update, contracts/distribution, or ops transaction review"
     },
     {
       "name": "validation",
@@ -2759,10 +2866,13 @@
       "semantic_change_allowed": false,
       "build_change_allowed": false,
       "notes": "Validation tooling belongs under tools unless it is contract law.",
-      "status": "review",
+      "status": "exception",
       "completed_phase": "",
       "completed_target": "",
-      "completed_notes": ""
+      "completed_notes": "",
+      "exception_id": "validation_root",
+      "exception_retirement_phase": "CONVERGE-12",
+      "exception_target": "tools/validation, tests, contracts, or docs review"
     },
     {
       "name": "VERSION_CLIENT",

@@ -147,3 +147,18 @@ Domain ownership surfaces are:
 Engine primitives remain an exception: universal deterministic substrate belongs under `engine/`, not under a domain merely because a domain uses it.
 
 Domain code must not own runtime adapters, product entrypoints, generated runtime output, install/store state, or presentation state. It must preserve fixed-point truth discipline, named RNG streams, stable ordering, deterministic reductions, and process-only mutation.
+
+## CONVERGE-10 Enforcement
+
+Root ownership must match the layout contract and root allowlist. Deviations require an active entry in `contracts/repo/layout_exceptions.toml`.
+
+Strict validators now block unexcepted ownership drift:
+
+- product entrypoints outside `apps/`
+- runtime adapters outside `runtime/`
+- schemas, registries, or contracts outside `contracts/`
+- domain roots outside the contracts/game/content/docs/tests split
+- generated roots without generated policy or exception
+- unknown root files or directories
+
+Tools may inspect broadly for validation and migration planning. Runtime and product code must not depend on developer-only tooling under `tools/`.

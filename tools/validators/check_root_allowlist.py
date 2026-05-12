@@ -185,6 +185,137 @@ def validate_contract_shape(contract):
     return errors
 
 
+def normalize_exception_path(path):
+    normalized = str(path or "").replace("\\", "/").strip()
+    while normalized.endswith("/") and normalized != "/":
+        normalized = normalized[:-1]
+    return normalized
+
+
+def load_exception_ledger(path):
+    if not os.path.exists(path):
+        return {"contract": {}, "policy": {}, "exceptions": {}}, ["missing exception ledger: {0}".format(path)]
+    try:
+        data = load_contract(path)
+    except Exception as exc:
+        return {"contract": {}, "policy": {}, "exceptions": {}}, [
+            "failed to load exception ledger {0}: {1}".format(path, exc)
+        ]
+    return data, validate_exception_ledger_shape(data, os.path.dirname(os.path.dirname(os.path.dirname(path))))
+
+
+def validate_exception_ledger_shape(ledger, repo_root=None):
+    errors = []
+    for key in ["contract", "policy", "exceptions"]:
+        if key not in ledger:
+            errors.append("missing top-level exception ledger key: {0}".format(key))
+    meta = ledger.get("contract", {})
+    for key in ["id", "status", "phase"]:
+        if key not in meta:
+            errors.append("missing exception contract.{0}".format(key))
+    if meta.get("id") and meta.get("id") != "dominium.repo.layout_exceptions.v1":
+        errors.append("unexpected exception contract id: {0}".format(meta.get("id")))
+    policy = ledger.get("policy", {})
+    exceptions = ledger.get("exceptions", {})
+    if not isinstance(exceptions, dict):
+        errors.append("exceptions must be an object")
+        return errors
+    required = [
+        "path",
+        "kind",
+        "classification",
+        "reason",
+        "retirement_phase",
+        "target",
+        "risk",
+        "created_phase",
+        "notes",
+    ]
+    allowed_kinds = set(["directory", "file", "pattern"])
+    allowed_classes = set(
+        ["transitional", "generated_exception", "metadata_exception", "compatibility_shim", "partial_review", "blocked"]
+    )
+    allowed_risks = set(["low", "medium", "high", "review"])
+    fail_missing = bool(policy.get("exceptions_fail_if_path_missing", False))
+    fail_expired = bool(policy.get("exceptions_fail_if_expired", True))
+    for exception_id, info in sorted(exceptions.items()):
+        if not isinstance(info, dict):
+            errors.append("exception {0} must be an object".format(exception_id))
+            continue
+        for key in required:
+            if key not in info or info.get(key) == "":
+                errors.append("exception {0} missing {1}".format(exception_id, key))
+        if info.get("kind") and info.get("kind") not in allowed_kinds:
+            errors.append("exception {0} has invalid kind {1}".format(exception_id, info.get("kind")))
+        if info.get("classification") and info.get("classification") not in allowed_classes:
+            errors.append(
+                "exception {0} has invalid classification {1}".format(exception_id, info.get("classification"))
+            )
+        if info.get("risk") and info.get("risk") not in allowed_risks:
+            errors.append("exception {0} has invalid risk {1}".format(exception_id, info.get("risk")))
+        if info.get("active", True) is False and fail_expired:
+            errors.append("exception {0} is inactive or expired".format(exception_id))
+        if fail_missing and repo_root and info.get("kind") != "pattern":
+            candidate = os.path.join(repo_root, *(normalize_exception_path(info.get("path")).split("/")))
+            if not os.path.exists(candidate):
+                errors.append("exception {0} path is missing: {1}".format(exception_id, info.get("path")))
+    return errors
+
+
+def active_exceptions(ledger):
+    active = []
+    for exception_id, info in sorted(ledger.get("exceptions", {}).items()):
+        if not isinstance(info, dict):
+            continue
+        if info.get("active", True) is False:
+            continue
+        record = dict(info)
+        record["id"] = exception_id
+        record["path"] = normalize_exception_path(record.get("path", ""))
+        active.append(record)
+    return active
+
+
+def find_exception(path, kind, exceptions):
+    normalized = normalize_exception_path(path)
+    for exception in exceptions:
+        if exception.get("kind") == "pattern":
+            if fnmatch.fnmatchcase(normalized, exception.get("path", "")):
+                return exception
+            continue
+        if exception.get("path") == normalized:
+            return exception
+    return None
+
+
+def violation(path, code, message):
+    return {"path": path, "code": code, "message": message}
+
+
+def format_violation(record):
+    path = record.get("path", "")
+    if path:
+        return "{0}: {1}: {2}".format(record.get("code", "violation"), path, record.get("message", ""))
+    return "{0}: {1}".format(record.get("code", "violation"), record.get("message", ""))
+
+
+def apply_exceptions_to_violations(violations, exceptions):
+    applied = []
+    unexcepted = []
+    for item in violations:
+        path = item.get("path", "")
+        exception = find_exception(path, "", exceptions) if path else None
+        if exception:
+            applied_item = dict(item)
+            applied_item["exception_id"] = exception["id"]
+            applied_item["exception_retirement_phase"] = exception.get("retirement_phase", "")
+            applied_item["exception_target"] = exception.get("target", "")
+            applied.append(applied_item)
+        else:
+            unexcepted.append(item)
+    return applied, unexcepted
+
+
 def head_sha(repo_root):
     try:
         output = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo_root, stderr=subprocess.DEVNULL)
@@ -259,22 +390,28 @@ def classify_entry(name, kind, contract):
     return default_class, "review", "", "No root allowlist entry matched."
 
 
-def collect_entries(repo_root, contract):
+def collect_entries(repo_root, contract, exceptions=None):
     entries = []
+    exceptions = exceptions or []
     for name in root_entries(repo_root):
         path = os.path.join(repo_root, name)
         kind = entry_kind(path)
         classification, target, retire_by_phase, notes = classify_entry(name, kind, contract)
-        entries.append(
-            {
-                "name": name,
-                "kind": kind,
-                "classification": classification,
-                "target_or_review": target,
-                "retire_by_phase": retire_by_phase,
-                "notes": notes,
-            }
-        )
+        entry = {
+            "name": name,
+            "kind": kind,
+            "classification": classification,
+            "target_or_review": target,
+            "retire_by_phase": retire_by_phase,
+            "notes": notes,
+        }
+        exception = find_exception(name, kind, exceptions)
+        if exception:
+            entry["exception_id"] = exception["id"]
+            entry["exception_retirement_phase"] = exception.get("retirement_phase", "")
+            entry["exception_target"] = exception.get("target", "")
+            entry["exception_reason"] = exception.get("reason", "")
+        entries.append(entry)
     return entries
 
 
@@ -319,35 +456,44 @@ def transitional_by_phase(entries):
     return dict((phase, sorted(names, key=lambda item: (item.casefold(), item))) for phase, names in sorted(grouped.items()))
 
 
-def strict_violations(contract, entries, contract_errors):
+def strict_violation_records(contract, entries, contract_errors, exception_errors):
     policy = contract.get("policy", {})
     violations = []
     if contract_errors:
-        violations.extend("malformed contract: {0}".format(error) for error in contract_errors)
+        for error in contract_errors:
+            violations.append(violation("", "malformed_contract", error))
+    if exception_errors:
+        for error in exception_errors:
+            violations.append(violation("", "malformed_exception_ledger", error))
     if policy.get("strict_fails_unknown_root", True):
         for entry in entries:
             if entry["classification"] in (CLASS_UNKNOWN, CLASS_VIOLATION):
-                violations.append("unknown or violating root entry: {0}".format(entry["name"]))
+                violations.append(
+                    violation(entry["name"], "unknown_or_violating_root_entry", "unknown or violating root entry")
+                )
     if policy.get("strict_fails_forbidden_root", True):
         for entry in entries:
             if entry["classification"] == "forbidden":
-                violations.append("forbidden root entry: {0}".format(entry["name"]))
-    current = phase_number(contract.get("contract", {}).get("phase", ""))
-    if current is not None:
-        for entry in entries:
-            retire = phase_number(entry.get("retire_by_phase", ""))
-            if retire is not None and current > retire:
-                violations.append("transitional root past retire phase: {0}".format(entry["name"]))
+                violations.append(violation(entry["name"], "forbidden_root_entry", "forbidden root entry"))
+    for entry in entries:
+        if entry["classification"] == CLASS_TRANSITIONAL:
+            violations.append(violation(entry["name"], "transitional_root_requires_exception", "transitional root present"))
+        elif entry["classification"] == CLASS_GENERATED:
+            violations.append(violation(entry["name"], "generated_root_requires_exception", "generated root present"))
     return violations
 
 
-def build_report(repo_root, contract, entries, contract_errors, strict):
-    violations = strict_violations(contract, entries, contract_errors)
+def build_report(repo_root, contract, entries, contract_errors, strict, exception_ledger, exception_errors):
+    exceptions = active_exceptions(exception_ledger)
+    violations = strict_violation_records(contract, entries, contract_errors, exception_errors)
+    exceptions_applied, unexcepted = apply_exceptions_to_violations(violations, exceptions)
     generated = [entry["name"] for entry in entries if entry["classification"] == CLASS_GENERATED]
     unknown = [entry["name"] for entry in entries if entry["classification"] in (CLASS_UNKNOWN, CLASS_VIOLATION)]
     return {
         "contract_id": contract.get("contract", {}).get("id", ""),
         "phase": contract.get("contract", {}).get("phase", ""),
+        "exception_contract_id": exception_ledger.get("contract", {}).get("id", ""),
+        "active_exception_count": len(exceptions),
         "repo_root": posix_path(os.path.abspath(repo_root)),
         "head_sha": head_sha(repo_root),
         "strict": bool(strict),
@@ -358,8 +504,13 @@ def build_report(repo_root, contract, entries, contract_errors, strict):
         "missing_expected_canonical_roots": missing_expected(contract, repo_root),
         "forbidden_root_patterns": forbidden_patterns(contract),
         "contract_errors": contract_errors,
-        "strict_violations": violations,
-        "strict_result": "fail" if strict and violations else ("pass" if strict else "not_run"),
+        "exception_errors": exception_errors,
+        "violations": violations,
+        "exceptions_applied": exceptions_applied,
+        "unexcepted_violations": unexcepted,
+        "strict_violations": [format_violation(item) for item in unexcepted],
+        "strict_result": "fail" if strict and unexcepted else ("pass" if strict else "not_run"),
+        "result": "fail" if strict and unexcepted else ("pass" if strict else "not_run"),
         "entries": entries,
     }
 
@@ -368,6 +519,8 @@ def print_text_report(report):
     print("Root allowlist audit")
     print("contract_id: {0}".format(report["contract_id"]))
     print("phase: {0}".format(report["phase"]))
+    print("exception_contract_id: {0}".format(report.get("exception_contract_id", "")))
+    print("active_exception_count: {0}".format(report.get("active_exception_count", 0)))
     print("head_sha: {0}".format(report["head_sha"]))
     print("")
     print("Summary counts:")
@@ -411,12 +564,31 @@ def print_text_report(report):
         for error in report["contract_errors"]:
             print("- {0}".format(error))
         print("")
+    if report.get("exception_errors"):
+        print("Exception ledger errors:")
+        for error in report["exception_errors"]:
+            print("- {0}".format(error))
+        print("")
+    print("Exceptions applied:")
+    if report.get("exceptions_applied"):
+        for item in report["exceptions_applied"]:
+            print("- {0}: {1}".format(item.get("exception_id", ""), format_violation(item)))
+    else:
+        print("- none")
+    print("")
+    print("Unexcepted violations:")
+    if report.get("unexcepted_violations"):
+        for item in report["unexcepted_violations"]:
+            print("- {0}".format(format_violation(item)))
+    else:
+        print("- none")
+    print("")
     if report["strict_result"] == "not_run":
         print("Strict-mode result: not run")
-        if report["strict_violations"]:
+        if report.get("unexcepted_violations"):
             print("Potential strict violations:")
-            for violation in report["strict_violations"]:
-                print("- {0}".format(violation))
+            for item in report["unexcepted_violations"]:
+                print("- {0}".format(format_violation(item)))
     else:
         print("Strict-mode result: {0}".format(report["strict_result"]))
         if report["strict_violations"]:
@@ -429,6 +601,11 @@ def parse_args(argv):
     parser = argparse.ArgumentParser(description="Audit root-level entries against root_allowlist.toml.")
     parser.add_argument("--repo-root", default=".", help="Repository root to audit.")
     parser.add_argument("--contract", default="contracts/repo/root_allowlist.toml", help="Root allowlist contract path.")
+    parser.add_argument(
+        "--exceptions",
+        default="contracts/repo/layout_exceptions.toml",
+        help="Layout exception ledger path.",
+    )
     parser.add_argument("--strict", action="store_true", help="Fail on strict allowlist violations.")
     parser.add_argument("--json", action="store_true", help="Print JSON report.")
     parser.add_argument("--no-write", action="store_true", help="Accepted for parity; this validator is read-only by default.")
@@ -442,6 +619,9 @@ def main(argv=None):
     contract_path = args.contract
     if not os.path.isabs(contract_path):
         contract_path = os.path.join(repo_root, contract_path)
+    exceptions_path = args.exceptions
+    if not os.path.isabs(exceptions_path):
+        exceptions_path = os.path.join(repo_root, exceptions_path)
 
     try:
         contract = load_contract(contract_path)
@@ -450,15 +630,18 @@ def main(argv=None):
         return 2
 
     contract_errors = validate_contract_shape(contract)
-    entries = collect_entries(repo_root, contract)
-    report = build_report(repo_root, contract, entries, contract_errors, args.strict)
+    exception_ledger, exception_errors = load_exception_ledger(exceptions_path)
+    if exception_errors and not args.strict:
+        print("WARN: exception ledger issues detected; continuing audit mode.", file=sys.stderr)
+    entries = collect_entries(repo_root, contract, active_exceptions(exception_ledger))
+    report = build_report(repo_root, contract, entries, contract_errors, args.strict, exception_ledger, exception_errors)
 
     if args.json:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:
         print_text_report(report)
 
-    if args.strict and report["strict_violations"]:
+    if args.strict and report["unexcepted_violations"]:
         return 1
     return 0
 

@@ -139,3 +139,13 @@ Strict modes are explicit and may fail until convergence removes or classifies t
 
 - `python tools/validators/check_repo_layout.py --repo-root . --strict`
 - `python tools/validators/check_root_allowlist.py --repo-root . --strict`
+
+## CONVERGE-10 Enforcement Note
+
+After CONVERGE-10, root files and root directories not covered by `contracts/repo/layout.contract.toml`, `contracts/repo/root_allowlist.toml`, or `contracts/repo/layout_exceptions.toml` fail strict validation.
+
+Generated roots require explicit generated policy or an active exception. `build/`, `out/`, `dist/`, and `artifacts/` remain generated or generated-adjacent exceptions, not source ownership roots.
+
+No broad wildcard exceptions are allowed without a reviewed task. Add one exception per root, file, or tightly scoped pattern, and include a reason, target or review target, risk, and retirement phase.
+
+`VERSION_*` files remain allowed root identity files through the root allowlist pattern and explicit known file list. New non-version root files require allowlist review or an exception.

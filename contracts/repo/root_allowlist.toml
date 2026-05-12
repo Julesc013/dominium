@@ -2,8 +2,8 @@
 id = "dominium.repo.root_allowlist.v1"
 status = "provisional"
 enforcement = "audit"
-phase = "CONVERGE-02"
-description = "Root-level allowlist contract for non-blocking repository convergence audit."
+phase = "CONVERGE-10"
+description = "Root-level allowlist contract for repository convergence audit and strict enforcement with explicit exceptions."
 
 [policy]
 default_for_unknown_root = "violation"
@@ -12,6 +12,12 @@ strict_fails_unknown_root = true
 strict_fails_forbidden_root = true
 strict_fails_missing_expected_root = false
 source_repo_layout_is_not_runtime_layout = true
+strict_enforcement_available = true
+blocking_phase = "CONVERGE-10"
+exception_ledger = "contracts/repo/layout_exceptions.toml"
+strict_allows_active_exceptions = true
+strict_fails_unexcepted_transitional_root = true
+strict_fails_unexcepted_generated_root = true
 
 [canonical_directories]
 apps = { required = false, notes = "Target product entrypoint root; may not exist until convergence moves." }

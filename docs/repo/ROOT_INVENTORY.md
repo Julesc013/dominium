@@ -202,3 +202,22 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 - `VERSION_SETUP`: `allowed_file`
 - `VERSION_SUITE`: `allowed_file`
 - `VERSION_TOOLS`: `allowed_file`
+
+## CONVERGE-10 Enforcement Note
+
+CONVERGE-10 adds strict layout validation with explicit exceptions. The machine-readable inventory remains `tools/migration/root_inventory.json`; this document is explanatory.
+
+Current enforcement summary after CONVERGE-10:
+
+- Canonical roots: 13
+- Metadata roots: 4
+- Allowed root files: 25
+- Generated or ephemeral roots: 4
+- Active layout exceptions: 37
+- Unexcepted strict violations: 0
+
+Strict mode now passes only because every remaining generated, transitional, missing, unknown, or review root has an active entry in `contracts/repo/layout_exceptions.toml`.
+
+Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `build/`, `dist/`, `out/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `__init__.py`, `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
+
+New root-level entries must either match the contracts and allowlist or add a specific, bounded exception. No broad wildcard exception exists.

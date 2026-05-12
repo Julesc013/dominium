@@ -439,3 +439,11 @@ CONVERGE-08 completed product entrypoint convergence by moving root-level `clien
 ## CONVERGE-09 Follow-up Note
 
 CONVERGE-09 completed the safe portion of the domain-root split by moving root-level Python domain implementation packages under `game/domains/`. It added `game/domains/README.md`, `game/domains/MANIFEST.md`, and `docs/repo/DOMAIN_SPLIT_REPORT.md`; updated contracts, validators, inventory, move map, and path references required by the split; and added no new simulation features.
+
+## CONVERGE-10 Follow-up Note
+
+CONVERGE-10 made strict layout validation available with explicit active exceptions. It added `contracts/repo/layout_exceptions.toml`, `contracts/repo/layout_exceptions.schema.json`, `docs/repo/LAYOUT_ENFORCEMENT.md`, and `docs/repo/LAYOUT_EXCEPTION_LEDGER.md`.
+
+Active exception count: 37. Unexcepted strict layout violation count: 0.
+
+No broad physical moves occurred.

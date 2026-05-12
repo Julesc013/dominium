@@ -2,8 +2,8 @@
 id = "dominium.repo.layout.v1"
 status = "provisional"
 enforcement = "audit"
-phase = "CONVERGE-01"
-description = "Machine-readable repository layout contract for non-blocking convergence audit."
+phase = "CONVERGE-10"
+description = "Machine-readable repository layout contract for source repository convergence audit and strict enforcement with explicit exceptions."
 
 [policy]
 default_for_unknown_root = "violation"
@@ -13,6 +13,12 @@ strict_fails_missing_required_root = true
 strict_fails_stale_alias_after_phase = "CONVERGE-10"
 generated_outputs_tracked = false
 source_repo_layout_is_not_runtime_layout = true
+strict_enforcement_available = true
+blocking_phase = "CONVERGE-10"
+exception_ledger = "contracts/repo/layout_exceptions.toml"
+strict_allows_active_exceptions = true
+strict_fails_unexcepted_transitional_root = true
+strict_fails_unexcepted_generated_root = true
 
 [canonical_roots.apps]
 purpose = "Thin product entrypoints and product composition surfaces."

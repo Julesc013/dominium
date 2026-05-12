@@ -71,3 +71,17 @@ Completed implementation moves include:
 `economy/`, `civilization/`, and `ecology/` were absent. `control/`, `core/`, and `meta/` remain review roots because they are mixed or ownership-sensitive.
 
 No new domain features, schemas, registries, process semantics, RNG behavior, fixed-point math, renderer behavior, or platform behavior were introduced.
+
+## CONVERGE-10 Enforcement
+
+After CONVERGE-10, new root-level domain folders are invalid without a specific active exception. Do not recreate roots such as `geo/`, `chem/`, `worldgen/`, `materials/`, `field/`, `fields/`, `process/`, `signals/`, `mobility/`, or similar domain roots.
+
+New domains must be introduced through the split ownership model:
+
+- `contracts/schemas/<domain>/`, `contracts/registries/<domain>/`, `contracts/capabilities/<domain>/`, or `contracts/protocols/<domain>/`
+- `game/domains/<domain>/`
+- `content/domain-data/<domain>/` or `content/packs/`
+- `docs/domains/<domain>/`
+- `tests/fixtures/<domain>/`, `tests/determinism/<domain>/`, `tests/regression/<domain>/`, or `tests/golden/<domain>/`
+
+If a temporary root-level domain compatibility shim is unavoidable, it must be minimal, non-authoritative, and recorded in `contracts/repo/layout_exceptions.toml`.

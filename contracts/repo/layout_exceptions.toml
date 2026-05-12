@@ -1,0 +1,458 @@
+[contract]
+id = "dominium.repo.layout_exceptions.v1"
+status = "provisional"
+phase = "CONVERGE-10"
+description = "Explicit exception ledger for bounded repository layout enforcement exceptions."
+
+[policy]
+exceptions_are_temporary = true
+exceptions_require_reason = true
+exceptions_require_owner = false
+exceptions_require_retirement_phase = true
+exceptions_fail_if_path_missing = false
+exceptions_fail_if_expired = true
+unknown_roots_without_exception_fail_strict = true
+
+[exceptions.missing_external_root]
+path = "external"
+kind = "directory"
+classification = "partial_review"
+reason = "The canonical external/ root is declared by the source layout contract, but this checkout currently has no vendored external dependency root."
+retirement_phase = "CONVERGE-12"
+target = "external/ if vendored dependencies are introduced, or contract optionality review if the root remains intentionally absent"
+risk = "low"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Strict validation may pass while the absence is explicit; CONVERGE-12 should decide whether external/ remains required."
+
+[exceptions.xstack_cache_root]
+path = ".xstack_cache"
+kind = "directory"
+classification = "generated_exception"
+reason = "Existing generated/cache evidence root remains at repository root and needs provenance review before removal or relocation."
+retirement_phase = "CONVERGE-12"
+target = "ignored local cache or tools/artifacts evidence review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Must not become source authority."
+
+[exceptions.root_init_py]
+path = "__init__.py"
+kind = "file"
+classification = "compatibility_shim"
+reason = "Root package marker remains for compatibility with legacy import assumptions."
+retirement_phase = "CONVERGE-12"
+target = "remove after import surface review or document as allowed root file"
+risk = "medium"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not add additional root package markers without contract update."
+
+[exceptions.governance_root]
+path = "governance"
+kind = "directory"
+classification = "partial_review"
+reason = "Governance mirror material remains outside docs/ and must not compete with AGENTS.md or canon."
+retirement_phase = "CONVERGE-12"
+target = "docs/governance or generated mirror review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Authority remains AGENTS.md and canon until reconciled."
+
+[exceptions.ide_root]
+path = "ide"
+kind = "directory"
+classification = "partial_review"
+reason = "IDE projection material remains at repository root and needs classification as tools, cmake, docs, or generated evidence."
+retirement_phase = "CONVERGE-12"
+target = "tools/ide, cmake/ide, docs/ide, or generated projection review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "No new source authority may be added here."
+
+[exceptions.labs_root]
+path = "labs"
+kind = "directory"
+classification = "partial_review"
+reason = "Experimental material remains at repository root and needs ownership review before convergence."
+retirement_phase = "CONVERGE-12"
+target = "archive, tools, docs, or explicit experimental contract review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Experiments are not canonical source ownership roots."
+
+[exceptions.meta_root]
+path = "meta"
+kind = "directory"
+classification = "partial_review"
+reason = "Meta surfaces remain mixed and include provenance, compilation, and reference material requiring ownership review."
+retirement_phase = "CONVERGE-12"
+target = "contracts, tools, docs, game, or archive split review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not bind new authority here without updating the contract."
+
+[exceptions.meta_extensions_engine_file]
+path = "meta_extensions_engine.py"
+kind = "file"
+classification = "partial_review"
+reason = "Root-level engine-like meta extension module remains outside canonical ownership roots."
+retirement_phase = "CONVERGE-12"
+target = "game, engine, tools, or contracts review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Kept only as an explicit exception pending ownership review."
+
+[exceptions.numeric_discipline_file]
+path = "numeric_discipline.py"
+kind = "file"
+classification = "partial_review"
+reason = "Root-level numeric discipline module remains outside canonical ownership roots."
+retirement_phase = "CONVERGE-12"
+target = "engine, contracts, tools, or docs review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not add new root-level discipline modules without contract update."
+
+[exceptions.performance_root]
+path = "performance"
+kind = "directory"
+classification = "partial_review"
+reason = "Performance tooling and evidence remain at repository root and need split between tools and generated evidence."
+retirement_phase = "CONVERGE-12"
+target = "tools/performance or generated evidence review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Performance evidence must not become source authority by path."
+
+[exceptions.tool_ui_bind_cmd]
+path = "tool_ui_bind.cmd"
+kind = "file"
+classification = "compatibility_shim"
+reason = "Root-level command wrapper remains for existing developer workflow compatibility."
+retirement_phase = "CONVERGE-12"
+target = "scripts or tools wrapper review"
+risk = "low"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Prefer scripts/ or tools/ for new command wrappers."
+
+[exceptions.tool_ui_doc_annotate_cmd]
+path = "tool_ui_doc_annotate.cmd"
+kind = "file"
+classification = "compatibility_shim"
+reason = "Root-level command wrapper remains for existing developer workflow compatibility."
+retirement_phase = "CONVERGE-12"
+target = "scripts or tools wrapper review"
+risk = "low"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Prefer scripts/ or tools/ for new command wrappers."
+
+[exceptions.tool_ui_validate_cmd]
+path = "tool_ui_validate.cmd"
+kind = "file"
+classification = "compatibility_shim"
+reason = "Root-level command wrapper remains for existing developer workflow compatibility."
+retirement_phase = "CONVERGE-12"
+target = "scripts or tools wrapper review"
+risk = "low"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Prefer scripts/ or tools/ for new command wrappers."
+
+[exceptions.validation_root]
+path = "validation"
+kind = "directory"
+classification = "partial_review"
+reason = "Validation material remains at repository root and needs split between tools, contracts, tests, and docs."
+retirement_phase = "CONVERGE-12"
+target = "tools/validation, tests, contracts, or docs review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not create new validation root authority."
+
+[exceptions.artifacts_root]
+path = "artifacts"
+kind = "directory"
+classification = "generated_exception"
+reason = "Generated or release-adjacent artifacts remain at repository root and require provenance review."
+retirement_phase = "CONVERGE-12"
+target = "generated evidence cleanup or release/artifact policy exception"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Not source authority."
+
+[exceptions.build_root]
+path = "build"
+kind = "directory"
+classification = "generated_exception"
+reason = "Generated build output root is present in this checkout."
+retirement_phase = "CONVERGE-12"
+target = "ignored generated build output"
+risk = "low"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Must not be tracked as source authority."
+
+[exceptions.dist_root]
+path = "dist"
+kind = "directory"
+classification = "generated_exception"
+reason = "Generated distribution output root is present and governed by the distribution projection contract, not source ownership."
+retirement_phase = "CONVERGE-12"
+target = "generated distribution output or explicit release exception"
+risk = "medium"
+created_phase = "CONVERGE-10"
+active = true
+notes = "No package bytes are generated by this task."
+
+[exceptions.out_root]
+path = "out"
+kind = "directory"
+classification = "generated_exception"
+reason = "Generated build output root is present in this checkout."
+retirement_phase = "CONVERGE-12"
+target = "ignored generated build output"
+risk = "low"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Must not be tracked as source authority."
+
+[exceptions.bundles_root]
+path = "bundles"
+kind = "directory"
+classification = "partial_review"
+reason = "Bundle source, export, and generated surfaces require ownership review before moving."
+retirement_phase = "CONVERGE-12"
+target = "contracts/bundles, content, release, tests, or generated export review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Distribution bundle layout remains governed by contracts/distribution."
+
+[exceptions.compat_root]
+path = "compat"
+kind = "directory"
+classification = "partial_review"
+reason = "Compatibility material remains mixed between contracts, implementation, shims, and tools."
+retirement_phase = "CONVERGE-12"
+target = "contracts/compatibility plus runtime/tools split review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not move wholesale without compatibility review."
+
+[exceptions.control_root]
+path = "control"
+kind = "directory"
+classification = "partial_review"
+reason = "Control surfaces are process-mutation-sensitive and remain mixed after runtime/domain convergence."
+retirement_phase = "CONVERGE-12"
+target = "runtime/control, contracts, game, or tools review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Process-only mutation invariants must be preserved."
+
+[exceptions.core_root]
+path = "core"
+kind = "directory"
+classification = "partial_review"
+reason = "Core substrate material may include universal engine primitives or mixed domain/runtime surfaces."
+retirement_phase = "CONVERGE-12"
+target = "engine, game, runtime, contracts, or tools split review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not classify by name alone."
+
+[exceptions.data_root]
+path = "data"
+kind = "directory"
+classification = "partial_review"
+reason = "Data root remains mixed between content, registries, planning mirrors, generated evidence, and compatibility inputs."
+retirement_phase = "CONVERGE-12"
+target = "content, contracts, docs, tools, or generated evidence split review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not silently promote data projections to source authority."
+
+[exceptions.lib_root]
+path = "lib"
+kind = "directory"
+classification = "partial_review"
+reason = "Library root remains ambiguous and requires ownership inspection before convergence."
+retirement_phase = "CONVERGE-12"
+target = "engine, runtime, external, contracts, or tools review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "No new library root authority should be added."
+
+[exceptions.libs_root]
+path = "libs"
+kind = "directory"
+classification = "partial_review"
+reason = "Library root remains ambiguous and requires ownership inspection before convergence."
+retirement_phase = "CONVERGE-12"
+target = "engine, runtime, external, contracts, or tools review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "No new library root authority should be added."
+
+[exceptions.locks_root]
+path = "locks"
+kind = "directory"
+classification = "partial_review"
+reason = "Root-level locks contain concrete deterministic lock artifacts and are not pure contract schemas."
+retirement_phase = "CONVERGE-12"
+target = "contracts/locks, content/store-lock policy, or release lock review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Runtime mutable locks must not move into contracts."
+
+[exceptions.modding_root]
+path = "modding"
+kind = "directory"
+classification = "partial_review"
+reason = "Modding material can include content, docs, contracts, tools, and package policy."
+retirement_phase = "CONVERGE-12"
+target = "content/modding, contracts, docs, or tools review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "New modding material should use the appropriate ownership root."
+
+[exceptions.models_root]
+path = "models"
+kind = "directory"
+classification = "partial_review"
+reason = "Model material requires review to distinguish authored content from generated/runtime state."
+retirement_phase = "CONVERGE-12"
+target = "content/models or generated output review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "No generated model outputs should be treated as source authority."
+
+[exceptions.net_root]
+path = "net"
+kind = "directory"
+classification = "partial_review"
+reason = "Network-related material remains mixed across runtime adapters, server policy, anti-cheat, and SRZ code."
+retirement_phase = "CONVERGE-12"
+target = "runtime/network plus apps/server and contracts review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not move wholesale without preserving runtime and server behavior."
+
+[exceptions.packs_root]
+path = "packs"
+kind = "directory"
+classification = "partial_review"
+reason = "Pack substrate remains review-sensitive and may include runtime packaging, activation, compatibility, and authored content."
+retirement_phase = "CONVERGE-12"
+target = "content/packs plus contracts/packs and release review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Pack IDs and compatibility semantics must remain stable."
+
+[exceptions.profiles_root]
+path = "profiles"
+kind = "directory"
+classification = "partial_review"
+reason = "Profile data remains at repository root and needs review against content and runtime-store boundaries."
+retirement_phase = "CONVERGE-12"
+target = "content/profiles or runtime-store projection review"
+risk = "medium"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Profiles are not mutable runtime store by default."
+
+[exceptions.repo_root]
+path = "repo"
+kind = "directory"
+classification = "partial_review"
+reason = "Root-level repo/ is transitional and may contain release policy, repo contracts, docs, or tooling surfaces."
+retirement_phase = "CONVERGE-12"
+target = "contracts/repo, docs/repo, release, or tools/migration split review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not add new layout authority here."
+
+[exceptions.safety_root]
+path = "safety"
+kind = "directory"
+classification = "partial_review"
+reason = "Safety material is protected and may belong under contracts, docs, tools, or runtime policy after review."
+retirement_phase = "CONVERGE-12"
+target = "contracts/safety, docs/safety, tools, or runtime policy review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Safety meaning must not silently drift."
+
+[exceptions.security_root]
+path = "security"
+kind = "directory"
+classification = "partial_review"
+reason = "Security material is protected and may belong under contracts, docs, tools, release, or runtime policy after review."
+retirement_phase = "CONVERGE-12"
+target = "contracts/security, docs/security, release, tools, or runtime policy review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Trust and security semantics require explicit review."
+
+[exceptions.specs_root]
+path = "specs"
+kind = "directory"
+classification = "partial_review"
+reason = "Normative specs remain a protected source and require careful split against contracts, docs, and game/domain ownership."
+retirement_phase = "CONVERGE-12"
+target = "contracts/specs, docs/specs, or protected semantic spec review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Reality specs retain authority where already established."
+
+[exceptions.templates_root]
+path = "templates"
+kind = "directory"
+classification = "partial_review"
+reason = "Template material may be authored content, contract source, tooling input, or generated projection."
+retirement_phase = "CONVERGE-12"
+target = "content/templates, contracts, tools, or generated projection review"
+risk = "review"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not create new root-level template authority."
+
+[exceptions.updates_root]
+path = "updates"
+kind = "directory"
+classification = "partial_review"
+reason = "Update material belongs to release/control-plane ownership after protected release review."
+retirement_phase = "CONVERGE-12"
+target = "release/update, contracts/distribution, or ops transaction review"
+risk = "high"
+created_phase = "CONVERGE-10"
+active = true
+notes = "Do not change update identity or release semantics in this task."

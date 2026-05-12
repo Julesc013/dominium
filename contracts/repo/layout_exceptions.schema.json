@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.repo.layout_exceptions.schema.v1",
+  "title": "Dominium Repository Layout Exceptions",
+  "type": "object",
+  "required": [
+    "contract",
+    "policy",
+    "exceptions"
+  ],
+  "properties": {
+    "contract": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "phase"
+      ],
+      "properties": {
+        "id": {
+          "const": "dominium.repo.layout_exceptions.v1"
+        },
+        "status": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "exceptions_are_temporary",
+        "exceptions_require_reason",
+        "exceptions_require_retirement_phase",
+        "unknown_roots_without_exception_fail_strict"
+      ],
+      "additionalProperties": {
+        "type": [
+          "boolean",
+          "string",
+          "number",
+          "array",
+          "object"
+        ]
+      }
+    },
+    "exceptions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "path",
+          "kind",
+          "classification",
+          "reason",
+          "retirement_phase",
+          "target",
+          "risk",
+          "created_phase",
+          "notes"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "directory",
+              "file",
+              "pattern"
+            ]
+          },
+          "classification": {
+            "enum": [
+              "transitional",
+              "generated_exception",
+              "metadata_exception",
+              "compatibility_shim",
+              "partial_review",
+              "blocked"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "retirement_phase": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          },
+          "risk": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "review"
+            ]
+          },
+          "created_phase": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
