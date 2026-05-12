@@ -162,3 +162,11 @@ Strict validators now block unexcepted ownership drift:
 - unknown root files or directories
 
 Tools may inspect broadly for validation and migration planning. Runtime and product code must not depend on developer-only tooling under `tools/`.
+
+## CONVERGE-12 Final Cross-Links
+
+Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
+
+Post-converge work plan: `docs/repo/POST_CONVERGE_NEXT_STEPS.md`.
+
+Future platform, renderer, native shell, toolchain, package, worldgen, and domain work must preserve these ownership boundaries and update the matrix or domain split docs when status changes.

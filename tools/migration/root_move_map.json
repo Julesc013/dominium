@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T05:29:06Z",
+  "generated_at_utc": "2026-05-12T05:37:52Z",
   "repo_root": ".",
-  "head_sha": "7f4ce5e97d5ec2cf0512cc3f6bf091eaaf9af7c1",
+  "head_sha": "fa4e78290ef512c14de772eff5877bf7289a68c7",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
   "active_exception_count": 37,
@@ -178,7 +178,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "xstack_cache_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "ignored local cache or tools/artifacts evidence review"
     },
     {
@@ -204,7 +204,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "root_init_py",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "remove after import surface review or document as allowed root file"
     },
     {
@@ -335,7 +335,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "artifacts_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "generated evidence cleanup or release/artifact policy exception"
     },
     {
@@ -429,7 +429,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "build_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "ignored generated build output"
     },
     {
@@ -456,7 +456,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "bundles_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/bundles, content, release, tests, or generated export review"
     },
     {
@@ -657,7 +657,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "compat_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/compatibility plus runtime/tools split review"
     },
     {
@@ -748,7 +748,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "control_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "runtime/control, contracts, game, or tools review"
     },
     {
@@ -776,7 +776,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "core_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, game, runtime, contracts, or tools split review"
     },
     {
@@ -803,7 +803,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "data_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content, contracts, docs, tools, or generated evidence split review"
     },
     {
@@ -897,7 +897,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "dist_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "generated distribution output or explicit release exception"
     },
     {
@@ -1189,7 +1189,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "governance_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "docs/governance or generated mirror review"
     },
     {
@@ -1236,7 +1236,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "ide_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "tools/ide, cmake/ide, docs/ide, or generated projection review"
     },
     {
@@ -1387,7 +1387,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "labs_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "archive, tools, docs, or explicit experimental contract review"
     },
     {
@@ -1457,7 +1457,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "lib_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, runtime, external, contracts, or tools review"
     },
     {
@@ -1485,7 +1485,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "libs_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, runtime, external, contracts, or tools review"
     },
     {
@@ -1534,7 +1534,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "locks_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/locks, content/store-lock policy, or release lock review"
     },
     {
@@ -1690,7 +1690,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "meta_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts, tools, docs, game, or archive split review"
     },
     {
@@ -1716,7 +1716,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "meta_extensions_engine_file",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "game, engine, tools, or contracts review"
     },
     {
@@ -1769,7 +1769,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "modding_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/modding, contracts, docs, or tools review"
     },
     {
@@ -1817,7 +1817,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "models_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/models or generated output review"
     },
     {
@@ -1845,7 +1845,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "net_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "runtime/network plus apps/server and contracts review"
     },
     {
@@ -1892,7 +1892,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "numeric_discipline_file",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, contracts, tools, or docs review"
     },
     {
@@ -1918,7 +1918,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "out_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "ignored generated build output"
     },
     {
@@ -1945,7 +1945,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "packs_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/packs plus contracts/packs and release review"
     },
     {
@@ -1971,7 +1971,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "performance_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "tools/performance or generated evidence review"
     },
     {
@@ -2097,7 +2097,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "profiles_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/profiles or runtime-store projection review"
     },
     {
@@ -2276,7 +2276,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "repo_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/repo, docs/repo, release, or tools/migration split review"
     },
     {
@@ -2324,7 +2324,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "safety_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/safety, docs/safety, tools, or runtime policy review"
     },
     {
@@ -2414,7 +2414,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "security_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/security, docs/security, release, tools, or runtime policy review"
     },
     {
@@ -2551,7 +2551,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "specs_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/specs, docs/specs, or protected semantic spec review"
     },
     {
@@ -2625,7 +2625,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "templates_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/templates, contracts, tools, or generated projection review"
     },
     {
@@ -2698,7 +2698,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "tool_ui_bind_cmd",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "scripts or tools wrapper review"
     },
     {
@@ -2724,7 +2724,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "tool_ui_doc_annotate_cmd",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "scripts or tools wrapper review"
     },
     {
@@ -2750,7 +2750,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "tool_ui_validate_cmd",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "scripts or tools wrapper review"
     },
     {
@@ -2845,7 +2845,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "updates_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "release/update, contracts/distribution, or ops transaction review"
     },
     {
@@ -2871,7 +2871,7 @@
       "completed_target": "",
       "completed_notes": "",
       "exception_id": "validation_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "tools/validation, tests, contracts, or docs review"
     },
     {

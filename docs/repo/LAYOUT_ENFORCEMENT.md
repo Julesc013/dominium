@@ -96,3 +96,16 @@ Component matrices are governed by:
 Matrix expansion must not create new root-level directories outside the layout contract and exception ledger. New platform, render, native shell, audio, input, network, and storage implementation belongs under existing ownership roots, especially `runtime/`, `apps/`, `contracts/`, `content/`, and `tools/`.
 
 Matrix status values are support posture, not implementation. A `planned`, `stub`, or `research` row cannot be treated as supported merely because a CMake option, preset, or placeholder source file exists.
+
+## CONVERGE-12 Final Enforcement Status
+
+Strict validators are expected to pass:
+
+- `python tools/validators/check_repo_layout.py --repo-root . --strict`
+- `python tools/validators/check_root_allowlist.py --repo-root . --strict`
+- `python tools/validators/check_distribution_layout.py --repo-root . --strict`
+- `python tools/validators/check_component_matrices.py --repo-root . --strict`
+
+Repo and root allowlist strict modes pass with active explicit exceptions. Active exceptions are listed in `contracts/repo/layout_exceptions.toml` and summarized in `docs/repo/LAYOUT_EXCEPTION_LEDGER.md`.
+
+Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.

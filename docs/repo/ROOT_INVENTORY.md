@@ -221,3 +221,19 @@ Strict mode now passes only because every remaining generated, transitional, mis
 Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `build/`, `dist/`, `out/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `__init__.py`, `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
 
 New root-level entries must either match the contracts and allowlist or add a specific, bounded exception. No broad wildcard exception exists.
+
+## CONVERGE-12 Final Inventory Status
+
+Machine-readable source: `tools/migration/root_inventory.json`.
+
+Final CONVERGE-12 inventory status:
+
+- Inventory status: complete
+- Canonical roots: 13
+- Metadata roots: 4
+- Allowed root files: 25
+- Generated or ephemeral roots: 4
+- Active layout exceptions: 37
+- Unexcepted strict violations: 0
+
+All active exceptions now carry `POST-CONVERGE` retirement metadata. Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.

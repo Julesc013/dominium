@@ -20,6 +20,10 @@ Current convergence authority:
 
 Do not use this document alone to decide new paths.
 
+## CONVERGE-12 Final Layout Note
+
+The proposed `/src` layout and older path mappings below are retained as historical planning inputs. They do not override the completed CONVERGE source-root model, the exception ledger, or the release component matrices.
+
 This document is a no-move planning artifact for the future repository restructure. It uses the current repository inventory, canon reconciliation, and the existing build/entrypoint surfaces to define a target layout that can be reached incrementally without changing semantics, build outputs, product ids, or install behavior.
 
 ## Purpose

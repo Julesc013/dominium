@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-12T05:29:06Z",
+  "generated_at_utc": "2026-05-12T05:37:52Z",
   "repo_root": ".",
-  "head_sha": "7f4ce5e97d5ec2cf0512cc3f6bf091eaaf9af7c1",
+  "head_sha": "fa4e78290ef512c14de772eff5877bf7289a68c7",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-10",
@@ -139,7 +139,7 @@
       "authority_status": "exception",
       "notes": "No matching root classification in layout contract.",
       "exception_id": "xstack_cache_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "ignored local cache or tools/artifacts evidence review",
       "exception_reason": "Existing generated/cache evidence root remains at repository root and needs provenance review before removal or relocation.",
       "exception_risk": "review"
@@ -160,7 +160,7 @@
       "authority_status": "exception",
       "notes": "No matching root classification in layout contract.",
       "exception_id": "root_init_py",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "remove after import surface review or document as allowed root file",
       "exception_reason": "Root package marker remains for compatibility with legacy import assumptions.",
       "exception_risk": "medium"
@@ -229,7 +229,7 @@
       "authority_status": "exception",
       "notes": "Review before using as authority.",
       "exception_id": "artifacts_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "generated evidence cleanup or release/artifact policy exception",
       "exception_reason": "Generated or release-adjacent artifacts remain at repository root and require provenance review.",
       "exception_risk": "review"
@@ -250,7 +250,7 @@
       "authority_status": "exception",
       "notes": "Must not be treated as source repository ownership.",
       "exception_id": "build_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "ignored generated build output",
       "exception_reason": "Generated build output root is present in this checkout.",
       "exception_risk": "low"
@@ -271,7 +271,7 @@
       "authority_status": "exception",
       "notes": "Authored bundles and generated exports require separate handling.",
       "exception_id": "bundles_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/bundles, content, release, tests, or generated export review",
       "exception_reason": "Bundle source, export, and generated surfaces require ownership review before moving.",
       "exception_risk": "review"
@@ -388,7 +388,7 @@
       "authority_status": "exception",
       "notes": "Root-level compat/ remains mixed implementation and shim code after CONVERGE-06; do not move wholesale into contracts/.",
       "exception_id": "compat_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/compatibility plus runtime/tools split review",
       "exception_reason": "Compatibility material remains mixed between contracts, implementation, shims, and tools.",
       "exception_risk": "high"
@@ -457,7 +457,7 @@
       "authority_status": "exception",
       "notes": "Control substrate must preserve process-only mutation boundaries.",
       "exception_id": "control_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "runtime/control, contracts, game, or tools review",
       "exception_reason": "Control surfaces are process-mutation-sensitive and remain mixed after runtime/domain convergence.",
       "exception_risk": "high"
@@ -478,7 +478,7 @@
       "authority_status": "exception",
       "notes": "Core is likely mixed; do not move wholesale.",
       "exception_id": "core_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, game, runtime, contracts, or tools split review",
       "exception_reason": "Core substrate material may include universal engine primitives or mixed domain/runtime surfaces.",
       "exception_risk": "high"
@@ -499,7 +499,7 @@
       "authority_status": "exception",
       "notes": "Data contains registries, content, planning mirrors, and generated evidence; split by authority.",
       "exception_id": "data_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content, contracts, docs, tools, or generated evidence split review",
       "exception_reason": "Data root remains mixed between content, registries, planning mirrors, generated evidence, and compatibility inputs.",
       "exception_risk": "high"
@@ -520,7 +520,7 @@
       "authority_status": "exception",
       "notes": "Distribution output is governed by distribution contracts, not source repo layout.",
       "exception_id": "dist_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "generated distribution output or explicit release exception",
       "exception_reason": "Generated distribution output root is present and governed by the distribution projection contract, not source ownership.",
       "exception_risk": "medium"
@@ -605,7 +605,7 @@
       "authority_status": "exception",
       "notes": "Governance mirrors must not compete with AGENTS.md or canon.",
       "exception_id": "governance_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "docs/governance or generated mirror review",
       "exception_reason": "Governance mirror material remains outside docs/ and must not compete with AGENTS.md or canon.",
       "exception_risk": "review"
@@ -642,7 +642,7 @@
       "authority_status": "exception",
       "notes": "IDE projections may belong under cmake, tools, or generated evidence depending on role.",
       "exception_id": "ide_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "tools/ide, cmake/ide, docs/ide, or generated projection review",
       "exception_reason": "IDE projection material remains at repository root and needs classification as tools, cmake, docs, or generated evidence.",
       "exception_risk": "review"
@@ -663,7 +663,7 @@
       "authority_status": "exception",
       "notes": "Experimental material requires review before binding.",
       "exception_id": "labs_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "archive, tools, docs, or explicit experimental contract review",
       "exception_reason": "Experimental material remains at repository root and needs ownership review before convergence.",
       "exception_risk": "review"
@@ -684,7 +684,7 @@
       "authority_status": "exception",
       "notes": "Do not classify by name alone; inspect ownership first.",
       "exception_id": "lib_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, runtime, external, contracts, or tools review",
       "exception_reason": "Library root remains ambiguous and requires ownership inspection before convergence.",
       "exception_risk": "review"
@@ -705,7 +705,7 @@
       "authority_status": "exception",
       "notes": "Do not classify by name alone; inspect ownership first.",
       "exception_id": "libs_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, runtime, external, contracts, or tools review",
       "exception_reason": "Library root remains ambiguous and requires ownership inspection before convergence.",
       "exception_risk": "review"
@@ -742,7 +742,7 @@
       "authority_status": "exception",
       "notes": "Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.",
       "exception_id": "locks_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/locks, content/store-lock policy, or release lock review",
       "exception_reason": "Root-level locks contain concrete deterministic lock artifacts and are not pure contract schemas.",
       "exception_risk": "high"
@@ -763,7 +763,7 @@
       "authority_status": "exception",
       "notes": "Meta surfaces require ownership review.",
       "exception_id": "meta_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts, tools, docs, game, or archive split review",
       "exception_reason": "Meta surfaces remain mixed and include provenance, compilation, and reference material requiring ownership review.",
       "exception_risk": "review"
@@ -784,7 +784,7 @@
       "authority_status": "exception",
       "notes": "No matching root classification in layout contract.",
       "exception_id": "meta_extensions_engine_file",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "game, engine, tools, or contracts review",
       "exception_reason": "Root-level engine-like meta extension module remains outside canonical ownership roots.",
       "exception_risk": "review"
@@ -805,7 +805,7 @@
       "authority_status": "exception",
       "notes": "Modding may include content, contracts, and docs.",
       "exception_id": "modding_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/modding, contracts, docs, or tools review",
       "exception_reason": "Modding material can include content, docs, contracts, tools, and package policy.",
       "exception_risk": "review"
@@ -842,7 +842,7 @@
       "authority_status": "exception",
       "notes": "Model data should be distinguished from generated or runtime state.",
       "exception_id": "models_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/models or generated output review",
       "exception_reason": "Model material requires review to distinguish authored content from generated/runtime state.",
       "exception_risk": "review"
@@ -863,7 +863,7 @@
       "authority_status": "exception",
       "notes": "Root-level net/ remains mixed after CONVERGE-07 because it contains transport, anti-cheat, SRZ, and server-authoritative policy code; do not move wholesale.",
       "exception_id": "net_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "runtime/network plus apps/server and contracts review",
       "exception_reason": "Network-related material remains mixed across runtime adapters, server policy, anti-cheat, and SRZ code.",
       "exception_risk": "high"
@@ -884,7 +884,7 @@
       "authority_status": "exception",
       "notes": "No matching root classification in layout contract.",
       "exception_id": "numeric_discipline_file",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "engine, contracts, tools, or docs review",
       "exception_reason": "Root-level numeric discipline module remains outside canonical ownership roots.",
       "exception_risk": "review"
@@ -905,7 +905,7 @@
       "authority_status": "exception",
       "notes": "Must not be treated as source repository ownership.",
       "exception_id": "out_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "ignored generated build output",
       "exception_reason": "Generated build output root is present in this checkout.",
       "exception_risk": "low"
@@ -926,7 +926,7 @@
       "authority_status": "exception",
       "notes": "Current runtime pack substrate; pack ownership split remains review-sensitive.",
       "exception_id": "packs_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/packs plus contracts/packs and release review",
       "exception_reason": "Pack substrate remains review-sensitive and may include runtime packaging, activation, compatibility, and authored content.",
       "exception_risk": "high"
@@ -947,7 +947,7 @@
       "authority_status": "exception",
       "notes": "Performance tooling and evidence should stay tool/evidence scoped.",
       "exception_id": "performance_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "tools/performance or generated evidence review",
       "exception_reason": "Performance tooling and evidence remain at repository root and need split between tools and generated evidence.",
       "exception_risk": "review"
@@ -968,7 +968,7 @@
       "authority_status": "exception",
       "notes": "Profile data belongs under content unless runtime-store evidence proves otherwise.",
       "exception_id": "profiles_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/profiles or runtime-store projection review",
       "exception_reason": "Profile data remains at repository root and needs review against content and runtime-store boundaries.",
       "exception_risk": "medium"
@@ -1021,7 +1021,7 @@
       "authority_status": "exception",
       "notes": "Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration.",
       "exception_id": "repo_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/repo, docs/repo, release, or tools/migration split review",
       "exception_reason": "Root-level repo/ is transitional and may contain release policy, repo contracts, docs, or tooling surfaces.",
       "exception_risk": "high"
@@ -1058,7 +1058,7 @@
       "authority_status": "exception",
       "notes": "Safety policy belongs under contracts or docs depending on authority.",
       "exception_id": "safety_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/safety, docs/safety, tools, or runtime policy review",
       "exception_reason": "Safety material is protected and may belong under contracts, docs, tools, or runtime policy after review.",
       "exception_risk": "high"
@@ -1095,7 +1095,7 @@
       "authority_status": "exception",
       "notes": "Security and trust surfaces are protected and review-sensitive.",
       "exception_id": "security_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/security, docs/security, release, tools, or runtime policy review",
       "exception_reason": "Security material is protected and may belong under contracts, docs, tools, release, or runtime policy after review.",
       "exception_risk": "high"
@@ -1148,7 +1148,7 @@
       "authority_status": "exception",
       "notes": "Normative specs must retain authority; reality specs remain canonical over data projections.",
       "exception_id": "specs_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "contracts/specs, docs/specs, or protected semantic spec review",
       "exception_reason": "Normative specs remain a protected source and require careful split against contracts, docs, and game/domain ownership.",
       "exception_risk": "high"
@@ -1169,7 +1169,7 @@
       "authority_status": "exception",
       "notes": "Templates may be authored content, contracts, or generated inputs.",
       "exception_id": "templates_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "content/templates, contracts, tools, or generated projection review",
       "exception_reason": "Template material may be authored content, contract source, tooling input, or generated projection.",
       "exception_risk": "review"
@@ -1206,7 +1206,7 @@
       "authority_status": "exception",
       "notes": "No matching root classification in layout contract.",
       "exception_id": "tool_ui_bind_cmd",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "scripts or tools wrapper review",
       "exception_reason": "Root-level command wrapper remains for existing developer workflow compatibility.",
       "exception_risk": "low"
@@ -1227,7 +1227,7 @@
       "authority_status": "exception",
       "notes": "No matching root classification in layout contract.",
       "exception_id": "tool_ui_doc_annotate_cmd",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "scripts or tools wrapper review",
       "exception_reason": "Root-level command wrapper remains for existing developer workflow compatibility.",
       "exception_risk": "low"
@@ -1248,7 +1248,7 @@
       "authority_status": "exception",
       "notes": "No matching root classification in layout contract.",
       "exception_id": "tool_ui_validate_cmd",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "scripts or tools wrapper review",
       "exception_reason": "Root-level command wrapper remains for existing developer workflow compatibility.",
       "exception_risk": "low"
@@ -1285,7 +1285,7 @@
       "authority_status": "exception",
       "notes": "Update metadata belongs to release/control-plane ownership after review.",
       "exception_id": "updates_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "release/update, contracts/distribution, or ops transaction review",
       "exception_reason": "Update material belongs to release/control-plane ownership after protected release review.",
       "exception_risk": "high"
@@ -1306,7 +1306,7 @@
       "authority_status": "exception",
       "notes": "Validation tooling belongs under tools unless it is contract law.",
       "exception_id": "validation_root",
-      "exception_retirement_phase": "CONVERGE-12",
+      "exception_retirement_phase": "POST-CONVERGE",
       "exception_target": "tools/validation, tests, contracts, or docs review",
       "exception_reason": "Validation material remains at repository root and needs split between tools, contracts, tests, and docs.",
       "exception_risk": "review"

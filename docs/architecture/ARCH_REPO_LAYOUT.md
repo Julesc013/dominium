@@ -20,6 +20,10 @@ Current convergence authority:
 
 Do not use this document alone to decide new paths.
 
+## CONVERGE-12 Final Layout Note
+
+Any later `canonical`, `authoritative`, or `current directory layout` wording in this file is retained as historical architecture context only. For current physical source repository layout authority, use `contracts/repo/layout.contract.toml`, `contracts/repo/root_allowlist.toml`, `contracts/repo/layout_exceptions.toml`, and `docs/repo/REPO_LAYOUT_TARGET.md`.
+
 ## Patch Notes
 
 - Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
@@ -55,7 +59,7 @@ enforcement rules that keep boundaries intact.
 
 
 
-## Canonical layout (authoritative)
+## Legacy Canonical Layout (Superseded For Physical Paths)
 
 
 Top-level domains:

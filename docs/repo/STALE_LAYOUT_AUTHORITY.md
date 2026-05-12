@@ -1,5 +1,5 @@
 Status: PROVISIONAL
-Phase: CONVERGE-07
+Phase: CONVERGE-12
 Supersedes: none
 Superseded By: none
 Stability: provisional
@@ -12,9 +12,12 @@ Current convergence authority:
 
 - machine-readable source layout: `contracts/repo/layout.contract.toml`
 - machine-readable root allowlist: `contracts/repo/root_allowlist.toml`
+- machine-readable layout exceptions: `contracts/repo/layout_exceptions.toml`
+- distribution projection authority: `contracts/distribution/layout.contract.toml`
+- release component matrix authority: `contracts/release/component_matrix.contract.toml`
 - human target explanation: `docs/repo/REPO_LAYOUT_TARGET.md`
 
-Existing older layout docs are retained as legacy, planning, or reference material unless a later task reconciles them. CONVERGE-02 performs no physical moves.
+Existing older layout docs are retained as legacy, planning, or reference material unless a later task reconciles them. CONVERGE-12 performed final high-risk stale-authority review for the CONVERGE series and performed no physical moves.
 
 | Document | Current role | CONVERGE-02 treatment | Future action |
 | --- | --- | --- | --- |
@@ -26,6 +29,28 @@ Existing older layout docs are retained as legacy, planning, or reference materi
 | `docs/repo/REPO_LAYOUT_TARGET.md` | Human explanation of target source layout. | Current human explanation. | Keep aligned with layout contracts. |
 | `contracts/repo/layout.contract.toml` | Machine-readable source layout convergence contract. | Current machine-readable layout authority. | Refine during CONVERGE-03 and later. |
 | `contracts/repo/root_allowlist.toml` | Machine-readable root-level allowlist. | Current root allowlist authority. | Harden after transitional roots are resolved. |
+
+## CONVERGE-12 Review Status
+
+High-risk stale authority docs patched in CONVERGE-12:
+
+- `README.md`
+- `docs/architecture/ARCH_REPO_LAYOUT.md`
+- `docs/architecture/DIRECTORY_CONTEXT.md`
+- `docs/restructure/FUTURE_LAYOUT_PROPOSAL.md`
+- `docs/architecture/CANON_INDEX.md`
+
+These files may still contain historical old-path examples. Those examples are not current source-layout authority unless they agree with the current contracts and repo docs.
+
+Historical/reference docs still expected to contain old paths:
+
+- archived/audit records documenting pre-convergence state
+- older release and target matrix mock docs
+- legacy architecture docs retained for intent, not physical path authority
+
+Unresolved follow-up is tracked in `docs/repo/audits/STALE_PATH_REFERENCE_AUDIT.md` and in active exceptions under `contracts/repo/layout_exceptions.toml`.
+
+Final CONVERGE audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
 
 Do not use any legacy document alone to choose new paths. Future phases must consume the contracts, inventory, move map, and ownership rules before moving or creating roots.
 

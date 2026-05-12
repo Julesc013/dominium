@@ -13,6 +13,10 @@ All binding prompts MUST be materialized as exactly one
 canonical document listed here. Prompts themselves are
 execution artifacts and are not authoritative.
 
+## CONVERGE-12 Layout Authority Note
+
+This canon index remains a legacy reference surface for broad documentation discovery. It is not the current physical source repository layout authority. Current layout authority is `contracts/repo/layout.contract.toml`, `contracts/repo/root_allowlist.toml`, `contracts/repo/layout_exceptions.toml`, and `docs/repo/REPO_LAYOUT_TARGET.md`; release/component support posture is governed by `contracts/release/component_matrix.contract.toml` and `docs/release/COMPONENT_MATRIX.md`.
+
 ## CANONICAL
 - `docs/PROCESS_REGISTRY.md`
 - `docs/agents/AGENT_IDENTITY.md`

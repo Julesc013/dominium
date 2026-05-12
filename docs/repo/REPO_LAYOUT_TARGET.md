@@ -172,3 +172,16 @@ The release/component matrix layer now lives under:
 These matrices are planning and support-status authority. They do not implement platform, renderer, native shell, toolchain, package, audio, input, network, or storage backends.
 
 Matrix expansion must respect the source layout ownership roots in this document. New implementation belongs under `runtime/`, `apps/`, `contracts/`, `content/`, `tools/`, or another existing canonical root as appropriate; it must not create new top-level platform/render/native roots.
+
+## CONVERGE-12 Final Status
+
+The CONVERGE source-layout series is closed subject to explicit active exceptions in `contracts/repo/layout_exceptions.toml`.
+
+Final audits:
+
+- `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`
+- `docs/repo/audits/STALE_PATH_REFERENCE_AUDIT.md`
+- `docs/repo/audits/CONVERGE_VALIDATION_SUMMARY.md`
+- `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
+
+Physical source layout authority remains machine-readable first. Older docs that mention old roots are historical/reference surfaces unless they agree with this document and the contracts.

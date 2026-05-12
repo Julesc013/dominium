@@ -149,3 +149,11 @@ Generated roots require explicit generated policy or an active exception. `build
 No broad wildcard exceptions are allowed without a reviewed task. Add one exception per root, file, or tightly scoped pattern, and include a reason, target or review target, risk, and retirement phase.
 
 `VERSION_*` files remain allowed root identity files through the root allowlist pattern and explicit known file list. New non-version root files require allowlist review or an exception.
+
+## CONVERGE-12 Final Cross-Links
+
+Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
+
+Post-converge work plan: `docs/repo/POST_CONVERGE_NEXT_STEPS.md`.
+
+New root files or directories after CONVERGE-12 must be added through the layout contracts, root allowlist, component/distribution contracts where relevant, or a specific temporary exception.

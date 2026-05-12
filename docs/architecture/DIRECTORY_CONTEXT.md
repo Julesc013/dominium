@@ -20,17 +20,21 @@ Current convergence authority:
 
 Do not use this document alone to decide new paths.
 
+## CONVERGE-12 Final Layout Note
+
+Any later claim that this file is the authoritative directory/layout contract is superseded for current physical source paths. Use `contracts/repo/layout.contract.toml`, `contracts/repo/root_allowlist.toml`, `contracts/repo/layout_exceptions.toml`, and `docs/repo/REPO_LAYOUT_TARGET.md` for current source layout authority.
 
 
 
 
-This document is the authoritative directory/layout contract for this
+
+Historically, this document was the authoritative directory/layout contract for this
 
 
 repository. If another document disagrees on paths or module placement, this
 
 
-file is the source of truth.
+file is legacy context; the CONVERGE source-layout contracts are the source of truth for current physical paths.
 
 
 

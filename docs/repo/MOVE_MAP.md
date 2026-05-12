@@ -184,3 +184,15 @@ Future move-map focus:
 
 - CONVERGE-12: reconcile stale cross-references against the matrix and layout contracts.
 - Future scoped tasks: retire active layout exceptions as roots are split, removed, or made canonical by reviewed contract updates.
+
+## CONVERGE-12 Final Move-Map Status
+
+CONVERGE-05 through CONVERGE-09 physical convergence phases are recorded as completed, partial, review, or exception-backed in the move map. CONVERGE-12 performed no physical moves.
+
+Remaining move-map work is now post-CONVERGE exception retirement:
+
+- review and retire active exceptions in `contracts/repo/layout_exceptions.toml`
+- split or reclassify protected roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `net/`, `packs/`, `repo/`, `security/`, and `specs/`
+- keep historical path mentions out of current authority claims
+
+Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.

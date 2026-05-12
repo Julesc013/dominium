@@ -85,3 +85,11 @@ New domains must be introduced through the split ownership model:
 - `tests/fixtures/<domain>/`, `tests/determinism/<domain>/`, `tests/regression/<domain>/`, or `tests/golden/<domain>/`
 
 If a temporary root-level domain compatibility shim is unavoidable, it must be minimal, non-authoritative, and recorded in `contracts/repo/layout_exceptions.toml`.
+
+## CONVERGE-12 Final Cross-Links
+
+Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
+
+Post-converge work plan: `docs/repo/POST_CONVERGE_NEXT_STEPS.md`.
+
+Future worldgen, ecology, geology, evolution, economy, civilization, process, and domain realism work must continue through the contracts/game/content/docs/tests split model. No new root-level domain folders are allowed without a reviewed exception.

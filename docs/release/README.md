@@ -36,4 +36,13 @@ The matrix layer complements existing release docs, including:
 - [Signing Policy](SIGNING_POLICY.md)
 - [Preset And Toolchain Consolidation](PRESET_AND_TOOLCHAIN_CONSOLIDATION.md)
 
-CONVERGE-11 does not rewrite older release docs. CONVERGE-12 should reconcile stale cross-references and aspirational support claims against the matrix contract.
+CONVERGE-11 does not rewrite older release docs. CONVERGE-12 reconciled high-risk cross-references and aspirational support claims against the matrix contract.
+
+## Layout Convergence Closure
+
+- [Final CONVERGE Audit](../repo/audits/CONVERGE_12_FINAL_AUDIT.md)
+- [Stale Path Reference Audit](../repo/audits/STALE_PATH_REFERENCE_AUDIT.md)
+- [CONVERGE Validation Summary](../repo/audits/CONVERGE_VALIDATION_SUMMARY.md)
+- [Post-CONVERGE Next Steps](../repo/POST_CONVERGE_NEXT_STEPS.md)
+
+Release expansion after CONVERGE must keep support claims aligned with `contracts/release/component_matrix.contract.toml`.
