@@ -171,3 +171,30 @@ The canonical `verify` build also produced `setup.exe`, `launcher.exe`, `client.
 
 - ready_for_POST_CONVERGE_11: no
 - reason: native builds pass and product binaries exist, but CTest is still blocked by auditx/RepoX test failures and timeout.
+
+## POST-CONVERGE-10E Follow-up
+
+POST-CONVERGE-10E fixed the targeted AuditX/CTest path blockers from this report:
+
+- `tools_coverage_inspect` and `tools_refusal_explain` now pass after direct tool subprocesses resolve the repo root before importing `compat`.
+- AuditX tests no longer assume root `schema` as source authority; generated bundle projections now source schema content from `contracts/schemas/`.
+- Missing generated release manifests now produce deterministic refused verification results instead of crashing AuditX.
+- Focused AuditX CTest cases pass:
+  - `tools_auditx`
+  - `test_auditx_canonical_hash_stability`
+  - `test_auditx_empty_path`
+  - `test_auditx_arbitrary_cwd`
+
+Build status after POST-CONVERGE-10E:
+
+- `verify.winnt10.x64.msvc143.mt.debug` configure: pass.
+- `verify.winnt10.x64.msvc143.mt.debug` build: pass.
+- `cmake --preset verify`: pass.
+- `cmake --build --preset verify`: pass.
+- Native product binaries remain present under `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/`.
+
+Remaining CTest blockers:
+
+- `invariant_units_present` fails on undeclared `unit.mass_energy.stub` and `unit.schema`.
+- `inv_repox_rules` fails on broad existing RepoX drift.
+- Full `ctest --preset verify --output-on-failure` exceeds a 40-minute local shell timeout because slow AuditX tests remain part of the full suite.

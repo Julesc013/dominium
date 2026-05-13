@@ -2,7 +2,7 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-06
+- Phase: POST-CONVERGE-10E
 - Current status: partial
 
 ## Command
@@ -45,6 +45,9 @@ Remaining:
 
 - RepoX now reports broad drift, including stale canonical-doc index entries, missing generated distribution descriptors, stale AppShell/embodiment/geo path assumptions, generated audit drift, rule-map gaps, and root-structure drift.
 - These are not safe to resolve as part of POST-CONVERGE-06 without broad RepoX, AppShell, distribution, and generated-evidence remediation.
+- POST-CONVERGE-10E fixed targeted AuditX path assumptions exposed by CTest, but it did not fix broad RepoX drift.
+- Canonical CTest now exposes the same drift through `inv_repox_rules`.
+- FAST pass is not claimed because `python scripts/dev/gate.py verify --repo-root .` was not rerun to completion and RepoX drift remains active.
 
 ## Follow-up
 
@@ -55,3 +58,4 @@ Run a targeted RepoX drift remediation task after build toolchain status is reso
 - stale audit evidence
 - intentionally absent roots that need updated RepoX rules or exemptions
 - real invariant regressions that require product/runtime review
+- the current CTest `invariant_units_present` failure, which is separate from FAST but blocks native CTest proof

@@ -352,8 +352,8 @@ def _binary_identity_summary(repo_root: str, selected_product_ids: set[str], tru
     missing_products = sorted(selected_product_ids.difference({_token(row.get("product_id")) for row in matched_rows}))
     dist_root = _repo_abs(repo_root, dist_root_rel)
     release_manifest_path = _repo_abs(repo_root, release_manifest_rel)
-    default_verify = dict(verify_release_manifest(dist_root, release_manifest_path, repo_root=repo_root, trust_policy_id=trust_policy_id) or {})
-    strict_verify = dict(verify_release_manifest(dist_root, release_manifest_path, repo_root=repo_root, trust_policy_id="trust.strict_ranked") or {})
+    default_verify = _verify_release_manifest_or_refused(dist_root, release_manifest_path, repo_root=repo_root, trust_policy_id=trust_policy_id)
+    strict_verify = _verify_release_manifest_or_refused(dist_root, release_manifest_path, repo_root=repo_root, trust_policy_id="trust.strict_ranked")
     result = (
         _token(release_identity.get("result")) == "complete"
         and not missing_products
@@ -383,6 +383,34 @@ def _binary_identity_summary(repo_root: str, selected_product_ids: set[str], tru
             "error_count": len(_as_list(strict_verify.get("errors"))),
         },
     }
+
+
+def _verify_release_manifest_or_refused(dist_root: str, release_manifest_path: str, *, repo_root: str, trust_policy_id: str) -> dict:
+    try:
+        return dict(
+            verify_release_manifest(
+                dist_root,
+                release_manifest_path,
+                repo_root=repo_root,
+                trust_policy_id=trust_policy_id,
+            )
+            or {}
+        )
+    except (OSError, ValueError) as exc:
+        return {
+            "result": "refused",
+            "trust_policy_id": _token(trust_policy_id),
+            "signature_status": "",
+            "verified_signature_count": 0,
+            "warnings": [],
+            "errors": [
+                {
+                    "code": "refusal.release_manifest.unavailable",
+                    "message": str(exc),
+                    "path": _norm(release_manifest_path),
+                }
+            ],
+        }
 
 
 def _identity_coverage(
@@ -483,23 +511,17 @@ def _trust_coverage(repo_root: str, governance_profile_path: str, release_index_
     governance_hash_matches = governance_profile_hash == _token(release_index.get("governance_profile_hash"))
     selected_trust_policy_id = _token(trust_policy_id) or default_trust_policy_id
     selected_policy_known = selected_trust_policy_id in {_token(item) for item in _as_list(trust_report.get("policy_ids"))}
-    default_verify = dict(
-        verify_release_manifest(
-            _repo_abs(repo_root, dist_root_rel),
-            _repo_abs(repo_root, release_manifest_rel),
-            repo_root=repo_root,
-            trust_policy_id=default_trust_policy_id,
-        )
-        or {}
+    default_verify = _verify_release_manifest_or_refused(
+        _repo_abs(repo_root, dist_root_rel),
+        _repo_abs(repo_root, release_manifest_rel),
+        repo_root=repo_root,
+        trust_policy_id=default_trust_policy_id,
     )
-    strict_verify = dict(
-        verify_release_manifest(
-            _repo_abs(repo_root, dist_root_rel),
-            _repo_abs(repo_root, release_manifest_rel),
-            repo_root=repo_root,
-            trust_policy_id="trust.strict_ranked",
-        )
-        or {}
+    strict_verify = _verify_release_manifest_or_refused(
+        _repo_abs(repo_root, dist_root_rel),
+        _repo_abs(repo_root, release_manifest_rel),
+        repo_root=repo_root,
+        trust_policy_id="trust.strict_ranked",
     )
     cases = _as_map(trust_report.get("cases"))
     result = (

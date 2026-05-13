@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-10D UI bind freshness remediation
+UNSPECIFIED - POST-CONVERGE-10E CTest AuditX remediation
 
 ## GOAL
 
-POST-CONVERGE-10D UI bind freshness remediation
+POST-CONVERGE-10E CTest AuditX remediation
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4247
-- approx_tokens: 1062
+- chars: 4237
+- approx_tokens: 1060
 - budget_status: PASS
 - warnings:
   - none

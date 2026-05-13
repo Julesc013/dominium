@@ -4,7 +4,7 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
-## Current Correction After POST-CONVERGE-10D
+## Current Correction After POST-CONVERGE-10E
 
 POST-CONVERGE-00 confirmed that exception retirement and build/runtime proof must precede platform, render, native shell, worldgen, and broad domain expansion.
 
@@ -71,10 +71,21 @@ POST-CONVERGE-10D fixed the UI bind generated-output freshness gate:
 - canonical verify binaries for setup/launcher/client/server are present under `out/build/vs2026/verify/bin/`
 - CTest remains blocked by tools/auditx failures and timeout
 
+POST-CONVERGE-10E fixed the targeted AuditX/CTest path blockers:
+
+- `tools_refusal_explain` and `tools_coverage_inspect` now pass after direct tool subprocesses resolve the repo root before importing `compat`
+- AuditX no longer assumes retired root `schema` as source authority; generated bundle projections now source schemas from `contracts/schemas/`
+- generated wrapper smoke includes current converged `apps/` and `game/` runtime roots
+- missing generated release manifests now surface as deterministic refused verification results instead of uncaught AuditX crashes
+- focused AuditX CTest cases pass
+- `verify.winnt10.x64.msvc143.mt.debug` configure/build still pass
+- `cmake --preset verify` and `cmake --build --preset verify` still pass
+- full CTest remains blocked by `invariant_units_present`, `inv_repox_rules`, and local wall-time
+
 Current priority order:
 
-1. remediate or explicitly classify CTest tools/auditx failures and timeout
-2. remediate or explicitly accept remaining RepoX FAST drift findings
+1. remediate or explicitly classify `invariant_units_present`
+2. remediate or explicitly accept remaining RepoX FAST/CTest drift findings
 3. decide whether POST-CONVERGE-11 may proceed with build-green/CTest-warning status
 4. fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
 5. fix or classify direct `apps/server/server_main.py` CLI argument forwarding
@@ -90,6 +101,7 @@ Planning references:
 - `docs/repo/audits/POST_CONVERGE_08_PRODUCT_BOOT_MATRIX_PROOF.md`
 - `docs/repo/audits/POST_CONVERGE_09_PORTABLE_PROJECTION_PROOF.md`
 - `docs/repo/audits/POST_CONVERGE_10_BUILD_BINARY_PROOF.md`
+- `docs/repo/audits/POST_CONVERGE_10E_CTEST_AUDITX_REMEDIATION.md`
 - `docs/repo/EXCEPTION_RETIREMENT_QUEUE.md`
 - `docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md`
 - `docs/repo/BUILD_VERIFICATION_PATHS.md`
@@ -132,10 +144,10 @@ Platform, render, native shell, Universal Reality enforcement, worldgen, domain 
 
 ## Suggested Sequence
 
-1. Fix tools/auditx CTest failures and timeout after build proof.
+1. Fix `invariant_units_present` unit registry drift after build proof.
 2. Rerun `tools/build/probe_toolchains.py` and generate ignored local preset data.
 3. Rerun CTest through `verify.winnt10.x64.msvc143.mt.debug` or the canonical `verify` lane.
-4. Address remaining RepoX FAST drift findings in a targeted remediation task.
+4. Address remaining RepoX FAST/CTest drift findings in a targeted remediation task.
 5. Remediate or explicitly classify setup Python bridge compatibility and the missing `dist/bin/dom` target.
 6. Add or prove a portable projection assembly path that emits `install.manifest.json`, `semantic_contract_registry.json`, `release.manifest.json`, product binaries, and required portable roots.
 7. Rerun strict layout validators, docs/build/UI/ABI checks, FAST, and AIDE pack.

@@ -2,14 +2,14 @@
 
 ## Status
 
-- Task ID: POST-CONVERGE-10D
-- Current build proof status: build passes; CTest blocked
+- Task ID: POST-CONVERGE-10E
+- Current build proof status: build passes; targeted AuditX tests pass; full CTest blocked
 - Full build proven: yes
 - CTest proven: no
 - FAST status: partial, structural blocker fixed, RepoX drift remains
 - AIDE pack status: pass
 
-The strict source layout validators remain the repo-level proof floor. POST-CONVERGE-10 added a tuple build contract and machine probe. POST-CONVERGE-10B confirmed that Visual Studio 2022/MSVC v143 is detected. POST-CONVERGE-10C fixed the stale client/server CMake and test references. POST-CONVERGE-10D fixed the UI bind generated-output freshness blocker. Configure and build now pass for the VS2022/v143 tuple and canonical `verify` lane; CTest remains blocked in tools/auditx tests.
+The strict source layout validators remain the repo-level proof floor. POST-CONVERGE-10 added a tuple build contract and machine probe. POST-CONVERGE-10B confirmed that Visual Studio 2022/MSVC v143 is detected. POST-CONVERGE-10C fixed the stale client/server CMake and test references. POST-CONVERGE-10D fixed the UI bind generated-output freshness blocker. POST-CONVERGE-10E fixed the targeted AuditX path and generated-projection blockers. Configure and build now pass for the VS2022/v143 tuple and canonical `verify` lane; focused AuditX CTest cases pass; full CTest remains blocked by unit and RepoX gates.
 
 ## CMake Verify Preset
 
@@ -74,7 +74,9 @@ POST-CONVERGE-10B updated classification: `path_stale_after_convergence`.
 
 POST-CONVERGE-10C updated classification: `generated_output_stale`. The missing Visual Studio blocker and stale client/server path blocker are resolved on this machine, but build now fails because `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`.
 
-POST-CONVERGE-10D updated classification: `test_failure` and `long_running_or_timeout`. The UI bind freshness blocker is resolved by pinning tracked UI bind generated sources to LF line endings. Tuple and canonical builds pass. CTest times out in tools/auditx tests after failures including `tools_coverage_inspect` missing `compat`, auditx/governance model paths assuming root `schema`, and the existing RepoX drift backlog.
+POST-CONVERGE-10D updated classification: `test_failure` and `long_running_or_timeout`. The UI bind freshness blocker is resolved by pinning tracked UI bind generated sources to LF line endings. Tuple and canonical builds pass.
+
+POST-CONVERGE-10E updated classification: targeted AuditX failures are fixed; remaining CTest state is `test_failure`, `real_drift`, and `long_running_or_timeout`. Focused AuditX CTest cases pass. Full CTest now fails on `invariant_units_present` and `inv_repox_rules`, and the canonical full run exceeds a 40-minute local shell timeout.
 
 Current build result:
 
@@ -83,7 +85,7 @@ python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143
 cmake --build --preset verify
 ```
 
-Both commands pass on this machine after POST-CONVERGE-10D. CTest remains blocked.
+Both commands pass on this machine after POST-CONVERGE-10E. CTest remains blocked by unit and RepoX gates.
 
 ## POST-CONVERGE-10 Build Contract Probe
 
@@ -210,8 +212,9 @@ POST-CONVERGE-06 remediation:
 
 ## Recommended Build Remediation Sequence
 
-1. Run targeted CTest/auditx remediation for the current tools/auditx failures and timeout.
-2. Rerun `python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --test`.
-3. Rerun `ctest --preset verify`.
-4. Run a targeted RepoX drift remediation task to separate stale paths, generated evidence gaps, missing dist artifacts, and real invariant failures.
-5. Proceed to product boot proof after CTest is green or explicitly accepted as warning-only for POST-CONVERGE-11.
+1. Run targeted unit annotation remediation for `invariant_units_present`.
+2. Run targeted RepoX drift remediation for `inv_repox_rules`.
+3. Add a reviewed CTest timeout/runtime policy only if the full suite is expected to exceed local shell timeouts.
+4. Rerun `python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --test`.
+5. Rerun `ctest --preset verify --output-on-failure`.
+6. Proceed to product boot proof after CTest is green or explicitly accepted as warning-only for POST-CONVERGE-11.

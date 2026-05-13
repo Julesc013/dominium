@@ -84,7 +84,7 @@ PRODUCT_SPECS = (
 )
 PRODUCT_IDS = tuple(str(row["product_id"]) for row in PRODUCT_SPECS)
 
-DEFAULT_RUNTIME_SOURCE_ROOTS = ("src", "tools")
+DEFAULT_RUNTIME_SOURCE_ROOTS = ("src", "tools", "apps", "game")
 EXCLUDED_RUNTIME_TOP_LEVEL = {"app", "attic", "build", "data", "dist", "docs", "legacy", "libs", "schema", "schemas", "scripts", "tests", "tmp"}
 EXCLUDED_RUNTIME_PREFIXES = (
     "tools/auditx",
@@ -336,16 +336,16 @@ def _compile_runtime_tree(repo_root: str, bundle_root: str) -> dict:
 def _copy_runtime_data(repo_root: str, bundle_root: str) -> dict:
     repo_root_abs = _repo_root(repo_root)
     copied: list[str] = []
-    for rel_path in (
-        "data/registries",
-        "data/governance/governance_profile.json",
-        "data/session_templates/session.mvp_default.json",
-        "schema",
-        "schemas",
-        "tools/xstack/compatx/version_registry.json",
+    for source_rel_path, dest_rel_path in (
+        ("data/registries", "data/registries"),
+        ("data/governance/governance_profile.json", "data/governance/governance_profile.json"),
+        ("data/session_templates/session.mvp_default.json", "data/session_templates/session.mvp_default.json"),
+        ("contracts/schemas", "schema"),
+        ("contracts/schemas", "schemas"),
+        ("tools/xstack/compatx/version_registry.json", "tools/xstack/compatx/version_registry.json"),
     ):
-        src_path = os.path.join(repo_root_abs, rel_path.replace("/", os.sep))
-        dest_path = os.path.join(bundle_root, rel_path.replace("/", os.sep))
+        src_path = os.path.join(repo_root_abs, source_rel_path.replace("/", os.sep))
+        dest_path = os.path.join(bundle_root, dest_rel_path.replace("/", os.sep))
         if os.path.isdir(src_path):
             last_error: OSError | None = None
             for attempt in range(0, 4):

@@ -2,7 +2,7 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10D
+- Phase: POST-CONVERGE-10E
 - Status: partial
 
 ## Build Tuple
@@ -15,7 +15,7 @@
 | config | `debug` |
 | platform | `win32` |
 | renderer | `software` |
-| proof level | build; CTest attempted and timed out in tools/auditx tests |
+| proof level | build; focused AuditX CTest fixed; full CTest blocked by unit/RepoX gates |
 
 ## Product Binaries
 
@@ -34,6 +34,7 @@
 - CMake configure passes for the tuple and canonical `verify` preset.
 - The VS2022/v143 tuple build passes and emits native product binaries.
 - The canonical `verify` build passes and bounded product smoke checks pass.
+- Focused AuditX CTest cases pass after targeted path and generated-projection fixes.
 
 ## What This Does Not Prove
 
@@ -47,6 +48,6 @@
 
 CTest remains blocked after build proof:
 
-- full tuple CTest timed out after 20 minutes in the tools/auditx block
-- canonical `ctest --preset verify` timed out after 20 minutes in the tools/auditx block
-- representative failures include `tools_coverage_inspect` missing `compat`, auditx/governance paths assuming root `schema`, and existing RepoX drift
+- full tuple CTest timed out after 20 minutes; CTest reached `invariant_units_present`, which fails on undeclared `unit.mass_energy.stub` and `unit.schema`
+- canonical `ctest --preset verify --output-on-failure` exceeded a 40-minute shell timeout; focused logs show `inv_repox_rules` fails on broad RepoX drift while AuditX cases now pass
+- no generated binaries were committed
