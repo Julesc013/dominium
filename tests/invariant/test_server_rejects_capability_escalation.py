@@ -5,8 +5,8 @@ import sys
 from invariant_utils import is_override_active
 
 
-SERVER_CPP_REL = os.path.join("server", "authority", "dom_server_authority.cpp")
-SERVER_H_REL = os.path.join("server", "authority", "dom_server_authority.h")
+SERVER_CPP_REL = os.path.join("apps", "server", "authority", "dom_server_authority.cpp")
+SERVER_H_REL = os.path.join("apps", "server", "authority", "dom_server_authority.h")
 
 
 def _read(path: str) -> str:

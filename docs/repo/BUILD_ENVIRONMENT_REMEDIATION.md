@@ -2,14 +2,14 @@
 
 ## Status
 
-- Task ID: POST-CONVERGE-10B
-- Current build proof status: blocked at CMake generation
+- Task ID: POST-CONVERGE-10C
+- Current build proof status: blocked during build
 - Full build proven: no
 - CTest proven: no
 - FAST status: partial, structural blocker fixed, RepoX drift remains
 - AIDE pack status: pass
 
-The strict source layout validators remain the repo-level proof floor, but local configure/build/test proof is still blocked. POST-CONVERGE-10 added a tuple build contract and machine probe. POST-CONVERGE-10B confirmed that Visual Studio 2022/MSVC v143 is now detected, generated local presets exist, and CMake reaches compiler/SDK selection before failing on stale CMake source paths.
+The strict source layout validators remain the repo-level proof floor, but local build/test proof is still blocked. POST-CONVERGE-10 added a tuple build contract and machine probe. POST-CONVERGE-10B confirmed that Visual Studio 2022/MSVC v143 is detected. POST-CONVERGE-10C fixed the stale client/server CMake and test references; configure now passes, and build proceeds until the UI bind generated-output freshness gate fails.
 
 ## CMake Verify Preset
 
@@ -70,7 +70,9 @@ Local tool evidence:
 
 POST-CONVERGE-10 classification: environment-only `missing_generator`.
 
-POST-CONVERGE-10B updated classification: `path_stale_after_convergence`. The missing Visual Studio blocker is resolved on this machine, but CMake generation now fails because tests still reference source files at retired root paths.
+POST-CONVERGE-10B updated classification: `path_stale_after_convergence`.
+
+POST-CONVERGE-10C updated classification: `generated_output_stale`. The missing Visual Studio blocker and stale client/server path blocker are resolved on this machine, but build now fails because `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`.
 
 ## POST-CONVERGE-10 Build Contract Probe
 
@@ -101,10 +103,18 @@ POST-CONVERGE-10B probe result:
 - generated local presets: `.dominium.local/CMakeUserPresets.generated.json` and ignored `CMakeUserPresets.json`
 - generated tuple presets: `verify.winnt10.x64.msvc143.mt.debug`, `verify.host.host.host_default.host.debug`, `smoke.host.host.host_default.host.debug`
 
-Generated local presets now expose the canonical VS2022 tuple, but configure fails on stale CMake source references:
+Generated local presets expose the canonical VS2022 tuple. POST-CONVERGE-10C remediated stale CMake/test references:
 
 - `client/presentation/frame_graph_builder.cpp` should now be represented from `apps/client/presentation/frame_graph_builder.cpp`.
 - `server/authority/dom_server_authority.cpp` should now be represented from `apps/server/authority/dom_server_authority.cpp`.
+
+Current build blocker:
+
+- `libs/appcore/ui_bind/ui_command_binding_table.h`
+- `libs/appcore/ui_bind/ui_command_binding_table.c`
+- `libs/appcore/ui_bind/ui_accessibility_map.h`
+- `libs/appcore/ui_bind/ui_accessibility_map.c`
+- `libs/appcore/ui_bind/ui_localisation_usage_report.json`
 
 POST-CONVERGE-06 remediation:
 
@@ -183,8 +193,8 @@ POST-CONVERGE-06 remediation:
 
 ## Recommended Build Remediation Sequence
 
-1. Run a targeted CMake/test path remediation for stale `client/` and `server/` references.
-2. Rerun `python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --configure`.
-3. If configure passes, run build and CTest.
+1. Run a targeted UI bind generated-output remediation.
+2. Rerun `python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --build`.
+3. If build passes, run CTest.
 4. Run a targeted RepoX drift remediation task to separate stale paths, generated evidence gaps, missing dist artifacts, and real invariant failures.
 5. Proceed to product boot proof only after build proof exists and FAST drift is fixed or explicitly accepted by review.

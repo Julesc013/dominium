@@ -1,6 +1,6 @@
 add_executable(tourist_non_interference_tests
     tourist_non_interference_tests.cpp
-    ${CMAKE_SOURCE_DIR}/server/authority/dom_server_authority.cpp
+    ${CMAKE_SOURCE_DIR}/apps/server/authority/dom_server_authority.cpp
 )
 target_include_directories(tourist_non_interference_tests PRIVATE
     ${CMAKE_SOURCE_DIR}

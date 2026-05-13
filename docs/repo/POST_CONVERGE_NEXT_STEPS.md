@@ -4,7 +4,7 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
-## Current Correction After POST-CONVERGE-10B
+## Current Correction After POST-CONVERGE-10C
 
 POST-CONVERGE-00 confirmed that exception retirement and build/runtime proof must precede platform, render, native shell, worldgen, and broad domain expansion.
 
@@ -53,10 +53,18 @@ POST-CONVERGE-10 added the tuple-driven build contract and machine probe. POST-C
   - `server/authority/dom_server_authority.cpp`
 - no native product binaries were produced
 
+POST-CONVERGE-10C fixed the stale client/server CMake and test paths:
+
+- `verify.winnt10.x64.msvc143.mt.debug` configure now passes
+- `cmake --preset verify` now passes
+- tuple and canonical builds produce native product binaries before failing
+- build remains red because `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`
+- `ctest --preset verify` was not run because build failed
+
 Current priority order:
 
-1. remediate stale CMake/test references for retired root paths now owned by `apps/client/` and `apps/server/`
-2. rerun the POST-CONVERGE-10B generated `verify.winnt10.x64.msvc143.mt.debug` tuple configure, build, and CTest
+1. remediate stale UI bind generated outputs under `libs/appcore/ui_bind/`
+2. rerun the generated `verify.winnt10.x64.msvc143.mt.debug` tuple build and CTest
 3. remediate or explicitly accept remaining RepoX FAST drift findings
 4. fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
 5. fix or classify direct `apps/server/server_main.py` CLI argument forwarding
@@ -89,7 +97,7 @@ Planning references:
 
 The repository is ready for scoped work in these areas:
 
-- targeted CMake/test path remediation for the existing `verify` preset
+- targeted UI bind generated-output remediation for the existing `verify` preset
 - targeted build tuple/probe/preset remediation using `contracts/build/`
 - targeted RepoX FAST drift remediation
 - targeted command-surface remediation for script-level CLI argument forwarding, after build proof is available
@@ -114,9 +122,9 @@ Platform, render, native shell, Universal Reality enforcement, worldgen, domain 
 
 ## Suggested Sequence
 
-1. Fix stale CMake/test path references to `client/` and `server/` sources after convergence.
+1. Fix stale UI bind generated outputs under `libs/appcore/ui_bind/`.
 2. Rerun `tools/build/probe_toolchains.py` and generate ignored local preset data.
-3. Run configure, build, and CTest through `verify.winnt10.x64.msvc143.mt.debug` or the canonical `verify` lane.
+3. Run build and CTest through `verify.winnt10.x64.msvc143.mt.debug` or the canonical `verify` lane.
 4. Address remaining RepoX FAST drift findings in a targeted remediation task.
 5. Remediate or explicitly classify setup Python bridge compatibility and the missing `dist/bin/dom` target.
 6. Add or prove a portable projection assembly path that emits `install.manifest.json`, `semantic_contract_registry.json`, `release.manifest.json`, product binaries, and required portable roots.

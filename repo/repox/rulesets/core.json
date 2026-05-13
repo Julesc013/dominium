@@ -1150,7 +1150,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "data/registries/law_profiles.json",
-        "client/core/client_command_bridge.c",
+        "apps/client/core/client_command_bridge.c",
         "schema/lens/lens.schema"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-survival-diegetic-contract",
@@ -1199,9 +1199,9 @@
       "severity": "FAIL",
       "scope_paths": [
         "schema/authority/authority_context.schema",
-        "client/core/client_command_bridge.c",
-        "server/authority/dom_server_authority.h",
-        "server/authority/dom_server_authority.cpp"
+        "apps/client/core/client_command_bridge.c",
+        "apps/server/authority/dom_server_authority.h",
+        "apps/server/authority/dom_server_authority.cpp"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-authority-context-required-for-intents",
       "exemption_policy": "deny"
@@ -1212,8 +1212,8 @@
       "scope_paths": [
         "schema/session/session_spec.schema",
         "data/registries/session_defaults.json",
-        "client/core/client_command_bridge.c",
-        "client/core/client_commands_registry.c"
+        "apps/client/core/client_command_bridge.c",
+        "apps/client/core/client_commands_registry.c"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-session-spec-required-for-run",
       "exemption_policy": "deny"
@@ -1932,8 +1932,8 @@
       "rule_id": "INV-UI-ENTITLEMENT-GATING",
       "severity": "FAIL",
       "scope_paths": [
-        "client/core/client_commands_registry.c",
-        "client/core/client_command_bridge.c"
+        "apps/client/core/client_commands_registry.c",
+        "apps/client/core/client_command_bridge.c"
       ],
       "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#entitlement-gating",
       "exemption_policy": "deny"
@@ -1946,7 +1946,7 @@
         "data/registries/presentation_matrix.json",
         "data/registries/law_profiles.json",
         "data/registries/lenses.json",
-        "client/core/client_commands_registry.c"
+        "apps/client/core/client_commands_registry.c"
       ],
       "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#presentation-matrix-integrity",
       "exemption_policy": "deny"

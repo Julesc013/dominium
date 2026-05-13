@@ -163,3 +163,23 @@ Updated result:
 - No native product binaries were produced.
 
 Current blocker: targeted CMake/test path remediation is required before native build proof can proceed.
+
+## POST-CONVERGE-10C Follow-up
+
+POST-CONVERGE-10C fixed the active stale client/server CMake and test references discovered by POST-CONVERGE-10B.
+
+Updated proof level:
+
+- `verify.winnt10.x64.msvc143.mt.debug` configure: pass.
+- `cmake --preset verify`: pass.
+- Tuple build: fail on stale UI bind generated outputs.
+- Canonical `cmake --build --preset verify`: fail on the same UI bind freshness gate.
+- `ctest --preset verify`: not run because build failed.
+
+Native binary status:
+
+- `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` were produced under `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin` before the tuple build failed.
+- `setup.exe`, `launcher.exe`, `client.exe`, and `server.exe` were produced under `out/build/vs2026/verify/bin` before the canonical build failed.
+- Generated binaries were not committed.
+
+Current blocker: `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`.

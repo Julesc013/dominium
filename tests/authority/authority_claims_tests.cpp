@@ -1,7 +1,7 @@
 /*
 Authority profile and upgrade/downgrade tests (TESTX3).
 */
-#include "server/authority/dom_server_authority.h"
+#include "apps/server/authority/dom_server_authority.h"
 #include "tests/control/control_test_common.h"
 
 #include <stdio.h>

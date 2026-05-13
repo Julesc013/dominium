@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-10B toolchain reprobe and native build attempt
+UNSPECIFIED - POST-CONVERGE-10C CMake path remediation
 
 ## GOAL
 
-POST-CONVERGE-10B toolchain reprobe and native build attempt
+POST-CONVERGE-10C CMake path remediation
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4273
-- approx_tokens: 1069
+- chars: 4233
+- approx_tokens: 1059
 - budget_status: PASS
 - warnings:
   - none

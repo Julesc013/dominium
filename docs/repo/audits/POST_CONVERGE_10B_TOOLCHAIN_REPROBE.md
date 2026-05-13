@@ -160,3 +160,22 @@ No build scripts, CMake files, contracts, product source, runtime source, or pac
 
 - ready_for_POST_CONVERGE_11: no
 - reason: no product binaries were produced; configure is now blocked by stale CMake/test source paths rather than missing Visual Studio.
+
+## POST-CONVERGE-10C Follow-up
+
+POST-CONVERGE-10C remediated the active stale CMake/TestX references to moved client/server source files.
+
+Updated result:
+
+- `verify.winnt10.x64.msvc143.mt.debug` configure: pass.
+- `cmake --preset verify`: pass.
+- Tuple build and canonical `verify` build: fail on UI bind generated-output freshness checks.
+- Product binaries were produced locally before the build gate failed:
+  - `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/setup.exe`
+  - `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/launcher.exe`
+  - `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/client.exe`
+  - `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/server.exe`
+  - `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/tools.exe`
+- CTest was not run because build did not complete.
+
+Current blocker: targeted UI bind generated-output remediation is required before native build proof can pass.

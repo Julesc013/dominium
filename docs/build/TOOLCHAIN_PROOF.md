@@ -2,14 +2,14 @@
 
 Status: PROVISIONAL
 
-Phase: POST-CONVERGE-10B
+Phase: POST-CONVERGE-10C
 
 ## Contract Toolchains
 
 | Toolchain | Contract Status | Proof Level | Notes |
 | --- | --- | --- | --- |
-| `host_default` | unknown | configure-attempted | maps to detected VS2022 generator on this host |
-| `msvc143` | planned | detected | Visual Studio Enterprise 2022 and C++ tools detected; configure fails on stale CMake source paths |
+| `host_default` | unknown | configure | maps to detected VS2022 generator on this host |
+| `msvc143` | planned | configure | Visual Studio Enterprise 2022 and C++ tools detected; configure passes; build fails at UI bind freshness gate |
 | `msvc145` | unknown | none | Visual Studio 18 2026 generator name is visible, but no instance is detected |
 | `msvc141` | research | none | Visual Studio 15 2017 instance not detected |
 | `msvc141_xp` | research | none | XP toolset not detected |
@@ -20,7 +20,7 @@ Phase: POST-CONVERGE-10B
 
 ## Local Probe Result
 
-POST-CONVERGE-10B probe result on this machine:
+POST-CONVERGE-10C proof result on this machine:
 
 | Tool | Detected? | Version/Detail | Notes |
 | --- | --- | --- | --- |
@@ -41,7 +41,7 @@ POST-CONVERGE-10B probe result on this machine:
 
 | Tuple | Proof Level | Notes |
 | --- | --- | --- |
-| `verify.winnt10.x64.msvc143.mt.debug` | detected | generated preset exists; configure attempted and failed during CMake generation |
+| `verify.winnt10.x64.msvc143.mt.debug` | configure | generated preset exists; configure passes; build fails at UI bind generated-output freshness gate |
 | `verify.host.host.host_default.host.debug` | generated | host default maps to detected VS generator |
 | `smoke.host.host.host_default.host.debug` | generated | host default maps to detected VS generator |
 
@@ -54,4 +54,4 @@ POST-CONVERGE-10B probe result on this machine:
 | `verify.linux.x64.gcc.host.debug` | `gcc` unavailable |
 | `verify.linux.x64.clang.host.debug` | `clang` unavailable |
 
-No build or CTest proof exists yet. The first configure attempt reached MSVC/SDK selection and then failed on stale pre-convergence source paths in CMake test targets.
+No complete build or CTest proof exists yet. POST-CONVERGE-10C cleared the stale CMake/test path blocker and produced local product binaries before build failure, but the build remains blocked by stale UI bind generated outputs under `libs/appcore/ui_bind/`.
