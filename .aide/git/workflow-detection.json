@@ -1,0 +1,35 @@
+{
+  "branch_role_for_current_branch": "canonical",
+  "canonical_branch": "main",
+  "confidence": "medium",
+  "current_branch": "main",
+  "current_commit": "f2a1b4412cbeac0c5da1d5e357a5dfdee59a8959",
+  "detected_workflow": "trunk_without_dev",
+  "generated_by": "aide-lite",
+  "integration_branch": "",
+  "integration_branch_detected": false,
+  "local_branches": [
+    "main"
+  ],
+  "non_mutating": true,
+  "recommended_next_action": "classify dirty tree before branch-sensitive work",
+  "remote_branches": [
+    "origin/main",
+    "origin/recovery/mega-13cb8ca7"
+  ],
+  "remote_url_summary": "Julesc013/dominium",
+  "repo_id": "Julesc013/dominium",
+  "schema_version": "aide.git-workflow-detection.v0",
+  "tags_summary": {
+    "count": 2,
+    "tags": [
+      "canon-clean-2",
+      "safety/mega-13cb8ca7"
+    ]
+  },
+  "warnings": [
+    "dirty_tree_detected",
+    "integration_branch_dev_missing"
+  ],
+  "worktree_dirty": true
+}

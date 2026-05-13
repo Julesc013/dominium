@@ -1,0 +1,124 @@
+{
+  "categories": {
+    "Changed": [
+      {
+        "commit": "f2a1b4412cbe",
+        "entry": "imported portable AIDE governance and recovery tooling into Dominium.",
+        "subject": "aide(dominium): sync portable commit and WorkUnit policies"
+      }
+    ],
+    "Fixed": [
+      {
+        "commit": "f2a1b4412cbe",
+        "entry": "prevented AIDE Lite selftest from resolving Dominium product `core` modules.",
+        "subject": "aide(dominium): sync portable commit and WorkUnit policies"
+      }
+    ],
+    "Internal": [
+      {
+        "commit": "dd843482c92d",
+        "entry": "added the Q33 queue and evidence recovery surface.",
+        "subject": "aide(dominium): add canonical governance sync packet"
+      }
+    ]
+  },
+  "commit_count": 20,
+  "generated_by": "aide-lite",
+  "malformed_commits": [
+    {
+      "commit": "7f4ce5e97d5ec2cf0512cc3f6bf091eaaf9af7c1",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(repo): enable strict layout validation with exceptions"
+    },
+    {
+      "commit": "fa4e78290ef512c14de772eff5877bf7289a68c7",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "docs(release): add component and support matrices"
+    },
+    {
+      "commit": "88ed6b4dfadbc19515431d785f27de75e9a38685",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "docs(repo): close layout convergence audit"
+    },
+    {
+      "commit": "20ecdf86a6321f87360396eb57988e1fa2987557",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(repo): triage post-converge health and exceptions"
+    },
+    {
+      "commit": "49ee68ca8f69ee1606847719cc265f914bed455d",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "chore(repo): retire generated output root exceptions"
+    },
+    {
+      "commit": "e81e6d7f2a97af5e3c0fe2d26736d8e4cf9e66a6",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "chore(repo): retire root wrapper and tooling exceptions"
+    },
+    {
+      "commit": "ed571cd32cd9c5ec53786f24919f87d64710f031",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "chore(repo): retire content and pack root exceptions"
+    },
+    {
+      "commit": "44bf83626fd1efade2d8e96ffe5bf8497a5aed3b",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "chore(repo): narrow high-risk contract root exceptions"
+    },
+    {
+      "commit": "b08080e478c131b489545e813767c3f3aedc3367",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(repo): review core control and net ownership"
+    },
+    {
+      "commit": "b5d89feadad1fe6ffa67a02ad8b849b7976b5086",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "fix(repo): remediate post-converge build and gate blockers"
+    },
+    {
+      "commit": "4ccb80276ed4e2b250876fd1e037ccbe98522964",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(runtime): classify canonical local playtest blockers"
+    },
+    {
+      "commit": "9083d064bc3726f10b98727c5371bc94972b5ea7",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(apps): classify product boot blockers"
+    },
+    {
+      "commit": "3455d6976847ad3a3072850fc4b3b49783246830",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(distribution): classify portable projection blockers"
+    },
+    {
+      "commit": "40b71c11a9ffb5e88719bbb557d48fc73980915f",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(build): add tuple build contract and probe blockers"
+    },
+    {
+      "commit": "2aed29926182de61d9f5e20c8c6362b888f5152d",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(build): reprobe toolchains and classify native build blockers"
+    },
+    {
+      "commit": "4e256e81c37c8e8a699174d21c4cbc429fbf7cee",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "fix(build): repair stale product source paths and classify next blocker"
+    },
+    {
+      "commit": "0f842071f543e31c18edc557576adc6ff301cd81",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "fix(build): refresh UI bind generated outputs for native build"
+    },
+    {
+      "commit": "06d383b3d85563f33276e4be8ad561c962c6695e",
+      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "subject": "audit(test): classify AuditX CTest blockers after native build"
+    }
+  ],
+  "network_calls": "none",
+  "provider_or_model_calls": "none",
+  "release_publishing": false,
+  "schema_version": "aide.changelog-preview.v0",
+  "source_range": "HEAD~20..HEAD"
+}

@@ -1,0 +1,89 @@
+{
+  "apply_requested": false,
+  "blockers": [
+    "dirty_tree_requires_classification"
+  ],
+  "dry_run": true,
+  "executed_commands": [],
+  "force_push_allowed": false,
+  "generated_by": "aide-lite",
+  "non_mutating": true,
+  "operation": "plan",
+  "planned_commands": [],
+  "push_requested": false,
+  "recommendations": [
+    "clean or classify the working tree before branch-sensitive helper actions"
+  ],
+  "remote_mutation": false,
+  "schema_version": "aide.git-helper-plan.v0",
+  "source": "",
+  "state": {
+    "ahead_behind": {
+      "ahead": 2,
+      "behind": 0,
+      "error": "",
+      "known": true
+    },
+    "aide_branch_policy_path": "",
+    "aide_branch_policy_present": false,
+    "branch_roles": {
+      "main": "canonical",
+      "origin/main": "canonical",
+      "origin/recovery/mega-13cb8ca7": "unknown"
+    },
+    "current_branch": "main",
+    "current_commit": "f2a1b4412cbeac0c5da1d5e357a5dfdee59a8959",
+    "current_role": "canonical",
+    "detached_head": false,
+    "local_branches": [
+      "main"
+    ],
+    "non_mutating": true,
+    "policy_files": {
+      ".aide/git/helper-policy.yaml": true,
+      ".aide/policies/branch-roles.yaml": true,
+      ".aide/policies/git-workflow.yaml": true,
+      ".aide/policies/promotion-rules.yaml": true,
+      ".aide/policies/prune-policy.yaml": true,
+      ".aide/policies/sync-policy.yaml": true
+    },
+    "policy_ready": true,
+    "protected_roles": [
+      "canonical",
+      "deploy",
+      "integration",
+      "release"
+    ],
+    "remote_branches": [
+      "origin/main",
+      "origin/recovery/mega-13cb8ca7"
+    ],
+    "repo_root": "C:/Inbox/Git Repos/dominium",
+    "repo_root_detected": true,
+    "repo_root_error": "",
+    "schema_version": "aide.git-helper-state.v0",
+    "unpushed_protected_branches": [
+      {
+        "ahead": 2,
+        "behind": 0,
+        "branch": "main",
+        "error": "",
+        "known": true,
+        "remote": "origin/main"
+      }
+    ],
+    "upstream": "origin/main",
+    "upstream_available": true,
+    "warnings": [
+      "dirty_tree_detected",
+      "integration_branch_dev_missing"
+    ],
+    "worktree_dirty": true
+  },
+  "status": "blocked",
+  "target": "",
+  "warnings": [
+    "dirty_tree_detected",
+    "integration_branch_dev_missing"
+  ]
+}
