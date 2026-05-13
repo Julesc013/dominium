@@ -13,3 +13,10 @@ the repo under `.aide.local/`, which is gitignored. The committed
 `.aide.local.example/` directory contains examples only.
 
 Q23 evidence lives at `.aide/queue/DOMINIUM-AIDE-PILOT-01/`.
+
+Q33 canonical governance sync evidence lives at
+`.aide/queue/DOMINIUM-AIDE-SYNC-01/`. The sync imported portable commit,
+WorkUnit recovery, changelog preview, and Git workflow governance from the
+canonical AIDE Lite Pack without copying AIDE source queue/history, source
+memory, generated branch reports, or Dominium doctrine content into AIDE
+memory.
