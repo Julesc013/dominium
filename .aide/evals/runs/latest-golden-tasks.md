@@ -54,7 +54,7 @@
 - result: PASS
 - checks_run: 17
 - passed_checks: 17
-- approx_tokens_if_applicable: 1060
+- approx_tokens_if_applicable: 1158
 - related_paths: .aide/context/latest-task-packet.md, .aide/policies/token-budget.yaml, .aide/prompts/compact-task.md
 - notes: Checks the compact task packet shape and forbidden prompt discipline.
 
@@ -189,7 +189,7 @@
 - result: PASS
 - checks_run: 20
 - passed_checks: 20
-- approx_tokens_if_applicable: 1141
+- approx_tokens_if_applicable: 1231
 - related_paths: .aide/context/latest-review-packet.md, .aide/prompts/evidence-review.md, .aide/verification/review-packet.template.md
 - notes: Checks review packet evidence-only shape.
 

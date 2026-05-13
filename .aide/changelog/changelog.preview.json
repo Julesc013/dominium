@@ -5,6 +5,18 @@
         "commit": "f2a1b4412cbe",
         "entry": "imported portable AIDE governance and recovery tooling into Dominium.",
         "subject": "aide(dominium): sync portable commit and WorkUnit policies"
+      },
+      {
+        "commit": "4f04a866b73c",
+        "entry": "added Dominium-local Git workflow reports and dry-run helper plan outputs.",
+        "subject": "aide(dominium): sync Git workflow policy and reports"
+      }
+    ],
+    "Docs": [
+      {
+        "commit": "4252584e060b",
+        "entry": "added compact Dominium AIDE governance sync reference.",
+        "subject": "docs(dominium): record canonical AIDE governance sync"
       }
     ],
     "Fixed": [
@@ -19,27 +31,29 @@
         "commit": "dd843482c92d",
         "entry": "added the Q33 queue and evidence recovery surface.",
         "subject": "aide(dominium): add canonical governance sync packet"
+      },
+      {
+        "commit": "4f04a866b73c",
+        "entry": "refreshed Codex adapter guidance for governance-aware task recovery and branch planning.",
+        "subject": "aide(dominium): sync Git workflow policy and reports"
+      },
+      {
+        "commit": "d722727e80e1",
+        "entry": "refreshed Dominium-local AIDE generated reports and review evidence.",
+        "subject": "aide(dominium): regenerate packets and validation evidence"
+      }
+    ],
+    "Tests": [
+      {
+        "commit": "d722727e80e1",
+        "entry": "recorded 25/25 portable golden tasks passing after target-local helper-plan generation.",
+        "subject": "aide(dominium): regenerate packets and validation evidence"
       }
     ]
   },
   "commit_count": 20,
   "generated_by": "aide-lite",
   "malformed_commits": [
-    {
-      "commit": "7f4ce5e97d5ec2cf0512cc3f6bf091eaaf9af7c1",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
-      "subject": "audit(repo): enable strict layout validation with exceptions"
-    },
-    {
-      "commit": "fa4e78290ef512c14de772eff5877bf7289a68c7",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
-      "subject": "docs(release): add component and support matrices"
-    },
-    {
-      "commit": "88ed6b4dfadbc19515431d785f27de75e9a38685",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
-      "subject": "docs(repo): close layout convergence audit"
-    },
     {
       "commit": "20ecdf86a6321f87360396eb57988e1fa2987557",
       "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",

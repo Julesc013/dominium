@@ -7,20 +7,28 @@ release_publishing: false
 ## Changed
 
 - imported portable AIDE governance and recovery tooling into Dominium. (f2a1b4412cbe aide(dominium): sync portable commit and WorkUnit policies)
+- added Dominium-local Git workflow reports and dry-run helper plan outputs. (4f04a866b73c aide(dominium): sync Git workflow policy and reports)
 
 ## Fixed
 
 - prevented AIDE Lite selftest from resolving Dominium product `core` modules. (f2a1b4412cbe aide(dominium): sync portable commit and WorkUnit policies)
 
+## Docs
+
+- added compact Dominium AIDE governance sync reference. (4252584e060b docs(dominium): record canonical AIDE governance sync)
+
+## Tests
+
+- recorded 25/25 portable golden tasks passing after target-local helper-plan generation. (d722727e80e1 aide(dominium): regenerate packets and validation evidence)
+
 ## Internal
 
 - added the Q33 queue and evidence recovery surface. (dd843482c92d aide(dominium): add canonical governance sync packet)
+- refreshed Codex adapter guidance for governance-aware task recovery and branch planning. (4f04a866b73c aide(dominium): sync Git workflow policy and reports)
+- refreshed Dominium-local AIDE generated reports and review evidence. (d722727e80e1 aide(dominium): regenerate packets and validation evidence)
 
 ## Malformed Commits
 
-- 7f4ce5e97d5e audit(repo): enable strict layout validation with exceptions: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact
-- fa4e78290ef5 docs(release): add component and support matrices: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact
-- 88ed6b4dfadb docs(repo): close layout convergence audit: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact
 - 20ecdf86a632 audit(repo): triage post-converge health and exceptions: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact
 - 49ee68ca8f69 chore(repo): retire generated output root exceptions: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact
 - e81e6d7f2a97 chore(repo): retire root wrapper and tooling exceptions: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact

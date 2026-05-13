@@ -87,6 +87,9 @@
 - `py -3 .aide/scripts/aide_lite.py estimate --file .aide/context/latest-task-packet.md`:
   PASS; 4,632 chars, about 1,158 tokens.
 - `py -3 scripts/verify_docs_sanity.py`: PASS.
+- Targeted `rg` secret scan: WARN/inspected; matches were policy terms,
+  token-estimate labels, generated ref names, and existing code/data symbols,
+  not credential-shaped provider keys or private keys.
 
 ## Not Run / Not Applicable
 

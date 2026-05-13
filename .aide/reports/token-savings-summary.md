@@ -12,7 +12,7 @@
 
 - `.aide/context/latest-task-packet.md`: 4632 chars / 1158 approx tokens / within_budget
 - `.aide/context/latest-context-packet.md`: 1900 chars / 475 approx tokens / within_budget
-- `.aide/context/latest-review-packet.md`: 4562 chars / 1141 approx tokens / within_budget
+- `.aide/context/latest-review-packet.md`: 4924 chars / 1231 approx tokens / within_budget
 - `.aide/verification/latest-verification-report.md`: 4911 chars / 1228 approx tokens / within_budget
 
 ## Named Baselines
@@ -34,9 +34,9 @@
 - `.aide/evals/runs/latest-golden-tasks.md` (eval_report): 2151 approx tokens
 - `.aide/cache/latest-cache-keys.json` (cache_report): 2008 approx tokens
 - `.aide/prompts/codex-token-mode.md` (baseline_surface): 1593 approx tokens
+- `.aide/context/latest-review-packet.md` (review_packet): 1231 approx tokens
 - `.aide/verification/latest-verification-report.md` (verification_report): 1228 approx tokens
 - `.aide/context/latest-task-packet.md` (task_packet): 1158 approx tokens
-- `.aide/context/latest-review-packet.md` (review_packet): 1141 approx tokens
 - `.aide/prompts/compact-task.md` (baseline_surface): 1000 approx tokens
 - `.aide/prompts/evidence-review.md` (baseline_surface): 856 approx tokens
 

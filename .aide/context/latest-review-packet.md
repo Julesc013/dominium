@@ -33,24 +33,18 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Changed Files Summary
 
-- unknown: `.aide/changelog` (??; does not match active task allowed paths)
-- allowed: `.aide/context/context-index.json` (M; matches active task allowed path)
-- allowed: `.aide/context/latest-context-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/context/latest-task-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/context/repo-map.json` (M; matches active task allowed path)
-- allowed: `.aide/context/repo-map.md` (M; matches active task allowed path)
-- allowed: `.aide/context/repo-snapshot.json` (M; matches active task allowed path)
-- allowed: `.aide/context/test-map.json` (M; matches active task allowed path)
+- unknown: `.aide/changelog/CHANGELOG.preview.md` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/RELEASE_NOTES.preview.md` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/changelog.preview.json` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/malformed-commits.md` (M; does not match active task allowed paths)
 - allowed: `.aide/evals/runs/latest-golden-tasks.json` (M; matches active task allowed path)
 - allowed: `.aide/evals/runs/latest-golden-tasks.md` (M; matches active task allowed path)
-- unknown: `.aide/git/latest-helper-plan.json` (??; does not match active task allowed paths)
-- unknown: `.aide/git/latest-helper-plan.md` (??; does not match active task allowed paths)
-- unknown: `.aide/git/workflow-detection.json` (??; does not match active task allowed paths)
-- unknown: `.aide/git/workflow-detection.md` (??; does not match active task allowed paths)
+- unknown: `.aide/git/latest-helper-plan.json` (M; does not match active task allowed paths)
+- unknown: `.aide/git/latest-helper-plan.md` (M; does not match active task allowed paths)
+- unknown: `.aide/git/workflow-detection.json` (M; does not match active task allowed paths)
+- unknown: `.aide/git/workflow-detection.md` (M; does not match active task allowed paths)
 - allowed: `.aide/reports/token-ledger.jsonl` (M; matches active task allowed path)
 - allowed: `.aide/reports/token-savings-summary.md` (M; matches active task allowed path)
-- allowed: `AGENTS.md` (M; matches active task allowed path)
 
 ## Validation Summary
 
@@ -60,8 +54,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - packet_path: `.aide/context/latest-review-packet.md`
 - method: chars / 4, rounded up
-- chars: 4924
-- approx_tokens: 1231
+- chars: 4489
+- approx_tokens: 1123
 - budget_status: PASS
 - max_token_warning: 2400
 - warnings:
@@ -77,8 +71,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 ## Route Decision Summary
 
 - route_decision: `.aide/routing/latest-route-decision.json`
-- route_class: local_strong
-- task_class: bounded_code_patch
+- route_class: frontier
+- task_class: unknown
 - hard_floor_applied: none
 - quality_gate_status: WARN
 - advisory_only: true

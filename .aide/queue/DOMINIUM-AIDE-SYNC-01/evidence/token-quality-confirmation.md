@@ -8,8 +8,8 @@
   - method: chars / 4, rounded up
   - budget: within 3,200-token packet budget
 - Latest review packet: `.aide/context/latest-review-packet.md`
-  - chars: 4,924
-  - approx tokens: 1,231
+  - chars: 4,489
+  - approx tokens: 1,123
   - method: chars / 4, rounded up
   - budget: within 2,400-token review budget
 - Doctrine-heavy baseline from Q23/Q33 prompt:
