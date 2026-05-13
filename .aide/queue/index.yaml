@@ -1,0 +1,14 @@
+schema_version: aide.queue-index.v0
+items:
+  - id: DOMINIUM-AIDE-PILOT-01
+    title: Dominium AIDE Lite import pilot
+    status: needs_review
+    purpose: Target-scoped AIDE Lite import and doctrine-aware compact packet pilot.
+    task: .aide/queue/DOMINIUM-AIDE-PILOT-01/task.yaml
+    evidence: .aide/queue/DOMINIUM-AIDE-PILOT-01
+  - id: DOMINIUM-AIDE-SYNC-01
+    title: Sync canonical AIDE governance into Dominium
+    status: running
+    purpose: Import portable Q31 AIDE Lite commit, WorkUnit, changelog, and Git workflow governance while preserving Dominium doctrine and target state.
+    task: .aide/queue/DOMINIUM-AIDE-SYNC-01/task.yaml
+    evidence: .aide/queue/DOMINIUM-AIDE-SYNC-01/evidence

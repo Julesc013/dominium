@@ -1,0 +1,61 @@
+schema_version: aide.queue-task.v0
+task_id: DOMINIUM-AIDE-SYNC-01
+title: Dominium sync from canonical AIDE Lite Pack
+status: running
+target_repo: julesc013/dominium
+phase: Q33
+created_at: 2026-05-14
+owner: Codex
+objective: >
+  Synchronize Dominium's target-local AIDE Lite governance from the canonical
+  Q31 AIDE Lite Pack while preserving Dominium doctrine references, compact
+  memory, queue evidence, generated context, manual guidance, and product
+  source boundaries.
+scope:
+  allowed_paths:
+    - .aide/**
+    - .gitignore
+    - AGENTS.md
+    - README.md
+    - PLANS.md
+    - IMPLEMENT.md
+    - DOCUMENTATION.md
+    - docs/reference/aide-governance-sync.md
+  forbidden_paths:
+    - .git/**
+    - .env
+    - secrets/**
+    - .aide.local/**
+    - runtime/**
+    - engine/**
+    - client/**
+    - server/**
+    - apps/**
+    - content/**
+    - contracts/**
+    - specs/**
+    - data/**
+    - tests/**
+validation:
+  required:
+    - py -3 .aide/scripts/aide_lite.py doctor
+    - py -3 .aide/scripts/aide_lite.py validate
+    - py -3 .aide/scripts/aide_lite.py test
+    - py -3 .aide/scripts/aide_lite.py selftest
+    - py -3 .aide/scripts/aide_lite.py eval run
+review_gate:
+  required: true
+  final_status: needs_review
+non_goals:
+  - Dominium product/source implementation
+  - doctrine rewrite or doctrine duplication into memory
+  - branch mutation
+  - hook auto-install
+  - provider/model/network calls
+acceptance:
+  - Q31 source pack reviewed or blocker recorded
+  - portable commit/task/git governance synced where safe
+  - Dominium memory, queue, doctrine refs, and manual guidance preserved
+  - doctrine referenced by path, not inlined into memory
+  - target-local reports and latest task packet regenerated
+  - evidence complete

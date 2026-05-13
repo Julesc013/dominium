@@ -1,0 +1,20 @@
+schema_version: aide.queue-status.v0
+task_id: DOMINIUM-AIDE-SYNC-01
+status: running
+planning_state: running
+owner: Codex
+created_at: 2026-05-14
+started_at: 2026-05-14
+completed_at:
+review_gate:
+  required: true
+  status: open
+  reason: >
+    Q33 is a target synchronization and validation phase. It must stop at
+    needs_review and does not authorize Dominium product work, doctrine
+    rewrites, branch mutation, provider calls, or hook installation.
+evidence_path: .aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/
+recommended_next: Select the next bounded Dominium task after canonical AIDE governance sync
+notes: >
+  Baseline Dominium AIDE Lite is healthy but lacks canonical Q31 commit,
+  changelog, task recovery, and Git workflow command families.
