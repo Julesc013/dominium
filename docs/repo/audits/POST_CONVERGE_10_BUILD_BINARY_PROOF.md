@@ -145,3 +145,21 @@ Targeted build/toolchain remediation:
 - alternatively install a supported compiler plus build tool and add a reviewed tuple mapping
 - rerun POST-CONVERGE-10 to configure/build/test and produce native binaries
 - then run POST-CONVERGE-11 product boot proof with native binaries
+
+## POST-CONVERGE-10B Follow-up
+
+POST-CONVERGE-10B reprobed this machine after Visual Studio installation.
+
+Updated result:
+
+- Visual Studio Enterprise 2022 `17.14.37301.10` is detected.
+- `vswhere -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64` detects a C++-capable VS2022 instance.
+- CMake selects Windows SDK `10.0.26100.0` and MSVC toolset path `VC/Tools/MSVC/14.44.35207`.
+- Generated ignored local presets now include `tuple.verify.winnt10.x64.msvc143.mt.debug`.
+- The tuple and direct `verify` configure both fail during CMake generation on stale pre-convergence source paths:
+  - `client/presentation/frame_graph_builder.cpp`
+  - `server/authority/dom_server_authority.cpp`
+- Build and CTest were not run because configure did not complete.
+- No native product binaries were produced.
+
+Current blocker: targeted CMake/test path remediation is required before native build proof can proceed.

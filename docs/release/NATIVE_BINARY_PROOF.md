@@ -2,35 +2,36 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10
+- Phase: POST-CONVERGE-10B
 - Status: blocked
 
 ## Build Tuple
 
 | Field | Value |
 | --- | --- |
-| tuple ID | `verify.host.host.host_default.host.debug` attempted as dry-run |
-| toolchain | `host_default` |
-| generator | none generated |
+| tuple ID | `verify.winnt10.x64.msvc143.mt.debug` |
+| toolchain | `msvc143` |
+| generator | `Visual Studio 17 2022` |
 | config | `debug` |
-| platform | `host` |
-| renderer | `host` |
-| proof level | probe only; configure/build/test blocked |
+| platform | `win32` |
+| renderer | `software` |
+| proof level | detected; configure attempted and failed during CMake generation |
 
 ## Product Binaries
 
 | Product | Target | Executable Name | Path | Present? | Notes |
 | --- | --- | --- | --- | --- | --- |
-| setup | `setup_cli` | `setup` | verify/local generated binary dir | no | no tuple configured |
-| launcher | `launcher_cli` | `launcher` | verify/local generated binary dir | no | no tuple configured |
-| client | `dominium_client` | `client` | verify/local generated binary dir | no | no tuple configured |
-| server | `dominium_server` | `server` | verify/local generated binary dir | no | no tuple configured |
-| tools | `dominium-tools` | `tools` | verify/local generated binary dir | no | no tuple configured |
+| setup | `setup_cli` | `setup` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin` | no | configure failed |
+| launcher | `launcher_cli` | `launcher` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin` | no | configure failed |
+| client | `dominium_client` | `client` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin` | no | configure failed |
+| server | `dominium_server` | `server` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin` | no | configure failed |
+| tools | `dominium-tools` | `tools` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin` | no | configure failed |
 
 ## What This Proves
 
 - The build contract, probe, local preset generator, and tuple runner exist.
-- The local machine currently has no supported compiler/build-tool tuple.
+- The local machine now detects Visual Studio 2022/MSVC v143 and can generate the canonical local tuple preset.
+- CMake reaches compiler and Windows SDK selection.
 - Native binaries remain missing.
 
 ## What This Does Not Prove
@@ -40,3 +41,10 @@
 - portable projection proof
 - public release support
 - renderer or native GUI support
+
+## Current Blocker
+
+CMake generation fails before build files are complete because test CMake files still reference retired root paths:
+
+- `client/presentation/frame_graph_builder.cpp`
+- `server/authority/dom_server_authority.cpp`

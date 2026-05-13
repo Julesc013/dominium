@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-10 build contract and native binary proof
+UNSPECIFIED - POST-CONVERGE-10B toolchain reprobe and native build attempt
 
 ## GOAL
 
-POST-CONVERGE-10 build contract and native binary proof
+POST-CONVERGE-10B toolchain reprobe and native build attempt
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4263
-- approx_tokens: 1066
+- chars: 4273
+- approx_tokens: 1069
 - budget_status: PASS
 - warnings:
   - none

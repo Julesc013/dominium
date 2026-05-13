@@ -2,14 +2,14 @@
 
 ## Status
 
-- Task ID: POST-CONVERGE-10
-- Current build proof status: blocked locally
+- Task ID: POST-CONVERGE-10B
+- Current build proof status: blocked at CMake generation
 - Full build proven: no
 - CTest proven: no
 - FAST status: partial, structural blocker fixed, RepoX drift remains
 - AIDE pack status: pass
 
-The strict source layout validators remain the repo-level proof floor, but local configure/build/test proof is still blocked. POST-CONVERGE-10 added a tuple build contract and machine probe; the probe found no available compiler/build-tool tuple on this machine.
+The strict source layout validators remain the repo-level proof floor, but local configure/build/test proof is still blocked. POST-CONVERGE-10 added a tuple build contract and machine probe. POST-CONVERGE-10B confirmed that Visual Studio 2022/MSVC v143 is now detected, generated local presets exist, and CMake reaches compiler/SDK selection before failing on stale CMake source paths.
 
 ## CMake Verify Preset
 
@@ -68,7 +68,9 @@ Local tool evidence:
 - `where.exe ninja`: not found
 - `where.exe gcc`, `clang`, `clang-cl`, `mingw32-make`, `nmake`, and `make`: not found
 
-Classification: environment-only `missing_generator`. CMake supports the generator type, but no Visual Studio 2022 installation or usable fallback compiler is discoverable.
+POST-CONVERGE-10 classification: environment-only `missing_generator`.
+
+POST-CONVERGE-10B updated classification: `path_stale_after_convergence`. The missing Visual Studio blocker is resolved on this machine, but CMake generation now fails because tests still reference source files at retired root paths.
 
 ## POST-CONVERGE-10 Build Contract Probe
 
@@ -83,19 +85,26 @@ New build contract and local tooling:
 - `tools/build/validate_build_contract.py`
 - `tools/build/run_tuple.py`
 
-Probe result:
+POST-CONVERGE-10B probe result:
 
 - CMake: `4.2.0`
 - Python: `3.8.1`
-- Visual Studio 17 2022: not detected
+- Visual Studio 17 2022: detected, Visual Studio Enterprise 2022 `17.14.37301.10`
+- MSVC v143: detected by CMake as MSVC tools `14.44.35207`
+- Windows SDK: detected by CMake as `10.0.26100.0`
 - Visual Studio 18 2026: not detected
 - Visual Studio 15 2017: not detected
+- Visual Studio 2015: legacy VS14 paths detected, not used as canonical proof lane
 - Ninja: not detected
 - GCC/G++: not detected
 - Clang/Clang++/clang-cl: not detected
-- generated local presets: `.dominium.local/CMakeUserPresets.generated.json`, ignored, zero configure presets
+- generated local presets: `.dominium.local/CMakeUserPresets.generated.json` and ignored `CMakeUserPresets.json`
+- generated tuple presets: `verify.winnt10.x64.msvc143.mt.debug`, `verify.host.host.host_default.host.debug`, `smoke.host.host.host_default.host.debug`
 
-Generated local presets do not solve local proof until a supported compiler/build-tool tuple is installed or exposed.
+Generated local presets now expose the canonical VS2022 tuple, but configure fails on stale CMake source references:
+
+- `client/presentation/frame_graph_builder.cpp` should now be represented from `apps/client/presentation/frame_graph_builder.cpp`.
+- `server/authority/dom_server_authority.cpp` should now be represented from `apps/server/authority/dom_server_authority.cpp`.
 
 POST-CONVERGE-06 remediation:
 
@@ -174,10 +183,8 @@ POST-CONVERGE-06 remediation:
 
 ## Recommended Build Remediation Sequence
 
-1. Install Visual Studio 2022 Build Tools or run the canonical verify lane in CI with Visual Studio 2022.
-2. Rerun `python tools/build/probe_toolchains.py --repo-root . --out .dominium.local/toolchains.detected.json`.
-3. Regenerate local presets with `python tools/build/generate_user_presets.py --repo-root . --probe .dominium.local/toolchains.detected.json --out .dominium.local/CMakeUserPresets.generated.json`.
-4. Run `cmake --preset verify`, or run an available generated tuple through `tools/build/run_tuple.py`.
-5. If configure passes, run build and CTest.
-6. Run a targeted RepoX drift remediation task to separate stale paths, generated evidence gaps, missing dist artifacts, and real invariant failures.
-7. Proceed to product boot proof only after build proof exists and FAST drift is fixed or explicitly accepted by review.
+1. Run a targeted CMake/test path remediation for stale `client/` and `server/` references.
+2. Rerun `python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --configure`.
+3. If configure passes, run build and CTest.
+4. Run a targeted RepoX drift remediation task to separate stale paths, generated evidence gaps, missing dist artifacts, and real invariant failures.
+5. Proceed to product boot proof only after build proof exists and FAST drift is fixed or explicitly accepted by review.
