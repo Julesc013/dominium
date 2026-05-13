@@ -133,7 +133,7 @@ may_contain = ["examples", "sample projects"]
 must_not_contain = ["canonical runtime truth", "release package bytes"]
 
 [metadata_roots]
-allowed = [".github", ".vscode", ".aide", ".aide.local.example"]
+allowed = [".github", ".vscode", ".aide", ".aide.local.example", ".dominium.local"]
 
 [allowed_root_files]
 allowed = [".agentignore", ".gitattributes", ".gitignore", "AGENTS.md", "CLAUDE.md", "CMakeLists.txt", "CMakePresets.json", "CHANGELOG.md", "CODE_CHANGE_JUSTIFICATION.md", "CONTRIBUTING.md", "DOMINIUM.md", "GOVERNANCE.md", "LICENSE.md", "MODDING.md", "README.md", "SECURITY.md", "sitecustomize.py", "VERSION_CLIENT", "VERSION_ENGINE", "VERSION_GAME", "VERSION_LAUNCHER", "VERSION_SERVER", "VERSION_SETUP", "VERSION_SUITE", "VERSION_TOOLS"]

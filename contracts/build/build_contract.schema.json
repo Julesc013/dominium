@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.build.build_contract.schema.v1",
+  "title": "Dominium Build Contract Shape",
+  "type": "object",
+  "additionalProperties": true,
+  "oneOf": [
+    { "$ref": "#/$defs/floorsFile" },
+    { "$ref": "#/$defs/toolchainsFile" },
+    { "$ref": "#/$defs/tuplesFile" },
+    { "$ref": "#/$defs/artifactsFile" }
+  ],
+  "$defs": {
+    "contract": {
+      "type": "object",
+      "required": ["id", "status", "phase", "description"],
+      "properties": {
+        "id": { "type": "string" },
+        "status": { "type": "string" },
+        "phase": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "floorsFile": {
+      "type": "object",
+      "required": ["contract", "floors"],
+      "properties": {
+        "contract": { "$ref": "#/$defs/contract" },
+        "floors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["name", "family", "status", "minimum_os", "notes"]
+          }
+        }
+      }
+    },
+    "toolchainsFile": {
+      "type": "object",
+      "required": ["contract", "toolchains"],
+      "properties": {
+        "contract": { "$ref": "#/$defs/contract" },
+        "toolchains": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["name", "family", "status", "cmake_generator", "cmake_toolset", "requires_probe", "notes"]
+          }
+        }
+      }
+    },
+    "tuplesFile": {
+      "type": "object",
+      "required": ["contract", "policy", "tuples"],
+      "properties": {
+        "contract": { "$ref": "#/$defs/contract" },
+        "policy": {
+          "type": "object",
+          "required": [
+            "tuple_name_pattern",
+            "cmake_remains_executor",
+            "generated_local_presets_are_not_source_authority",
+            "support_claim_requires_evidence"
+          ]
+        },
+        "tuples": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "intent",
+              "floor",
+              "arch",
+              "toolchain",
+              "runtime",
+              "config",
+              "products",
+              "platform",
+              "renderer",
+              "status",
+              "proof",
+              "notes"
+            ]
+          }
+        }
+      }
+    },
+    "artifactsFile": {
+      "type": "object",
+      "required": ["contract", "policy", "artifacts"],
+      "properties": {
+        "contract": { "$ref": "#/$defs/contract" },
+        "policy": {
+          "type": "object",
+          "required": [
+            "artifacts_are_generated",
+            "dist_is_generated_projection",
+            "no_absolute_host_paths_in_artifact_identity",
+            "artifact_identity_includes_tuple",
+            "artifact_identity_includes_commit",
+            "artifact_identity_includes_contract_hash"
+          ]
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["notes"]
+          }
+        }
+      }
+    }
+  }
+}

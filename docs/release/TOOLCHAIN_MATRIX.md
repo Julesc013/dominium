@@ -6,6 +6,28 @@ Phase: CONVERGE-11
 
 Machine-readable source: `contracts/release/component_matrix.contract.toml`
 
+Build contract source:
+
+- `contracts/build/floors.toml`
+- `contracts/build/toolchains.toml`
+- `contracts/build/tuples.toml`
+- `contracts/build/artifacts.toml`
+
+POST-CONVERGE-10 probe evidence is recorded in `docs/build/TOOLCHAIN_PROOF.md`.
+
+## POST-CONVERGE-10 Local Probe
+
+| Toolchain | Local Status | Notes |
+| --- | --- | --- |
+| msvc143 | blocked | Visual Studio 17 2022 instance not detected |
+| msvc145 | blocked | Visual Studio 18 2026 instance not detected |
+| msvc141 | blocked | Visual Studio 15 2017 instance not detected |
+| gcc | blocked | `gcc`/`g++` and build tool not detected |
+| clang | blocked | `clang`/`clang++`/`clang-cl` and build tool not detected |
+| host_default | blocked | no usable compiler/build-tool pair detected |
+
+No toolchain row is promoted by POST-CONVERGE-10.
+
 ## Baselines
 
 - Engine baseline: C89/C90 with extensions off.

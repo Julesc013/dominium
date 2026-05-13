@@ -37,6 +37,9 @@ CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+CMakeUserPresets.json
+/.dominium.local/
+/.dominium.local/**
 
 # Ninja
 .ninja_deps

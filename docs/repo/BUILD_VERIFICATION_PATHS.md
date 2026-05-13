@@ -2,12 +2,22 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-07
-- Current status: blocked for local runtime proof
+- Phase: POST-CONVERGE-10
+- Current status: blocked for native binary proof
 
 POST-CONVERGE-06 confirmed that repository layout and supplemental validators can run locally, but the canonical CMake verify lane is still blocked by this machine's missing Visual Studio toolchain. POST-CONVERGE-07 confirmed that no local product runtime proof can proceed without that build output or an accepted equivalent CI proof.
 
 POST-CONVERGE-08 re-ran `cmake --preset verify` with the same missing-generator failure. Product boot proof is therefore limited to script/wrapper AppShell help surfaces and does not replace native configure/build/CTest proof.
+
+POST-CONVERGE-10 added a tuple-driven build contract and local machine probe. The probe writes ignored local evidence under `.dominium.local/`, but it found no available compiler/build-tool tuple on this machine, so native configure/build/CTest proof remains blocked.
+
+Build contract references:
+
+- `contracts/build/floors.toml`
+- `contracts/build/toolchains.toml`
+- `contracts/build/tuples.toml`
+- `contracts/build/artifacts.toml`
+- `docs/build/BUILD_CONTRACT.md`
 
 ## Canonical Verify Lane
 
@@ -33,7 +43,7 @@ ctest --preset verify
 
 ## Local Fallback Lane
 
-No local fallback preset was added in POST-CONVERGE-06.
+No committed fallback preset was added in POST-CONVERGE-06 or POST-CONVERGE-10.
 
 Reason:
 
@@ -41,7 +51,39 @@ Reason:
 - `where.exe ninja`: not found
 - `where.exe gcc`, `clang`, `clang-cl`, `mingw32-make`, `nmake`, and `make`: not found
 
-Adding `verify-ninja` or `verify-local` without a discovered compiler would be speculative and unvalidated. A future fallback preset should be added only after a concrete local toolchain exists and its support tier is documented.
+POST-CONVERGE-10 generated ignored local preset data at:
+
+```text
+.dominium.local/CMakeUserPresets.generated.json
+```
+
+It contains no configure presets because no tuple was available in the probe. Adding `verify-ninja` or `verify-local` without a discovered compiler would be speculative and unvalidated.
+
+## Build Contract Commands
+
+Probe:
+
+```text
+python tools/build/probe_toolchains.py --repo-root . --out .dominium.local/toolchains.detected.json
+```
+
+Generate local preset data:
+
+```text
+python tools/build/generate_user_presets.py --repo-root . --probe .dominium.local/toolchains.detected.json --out .dominium.local/CMakeUserPresets.generated.json
+```
+
+Validate build contracts:
+
+```text
+python tools/build/validate_build_contract.py --repo-root . --strict
+```
+
+Run a tuple after a generated mapping exists:
+
+```text
+python tools/build/run_tuple.py --repo-root . --tuple verify.host.host.host_default.host.debug --all
+```
 
 ## Build/Test Commands
 
@@ -74,6 +116,8 @@ ctest --preset verify
 ## Current Gaps
 
 - Local Visual Studio 2022 generator instance is missing.
+- Local Visual Studio 2026 and 2017 instances are not detected.
+- No local compiler/build-tool pair was detected for generated host fallback tuples.
 - Local configure/build/CTest proof is not complete.
 - No validated fallback preset exists.
 - FAST still fails after the structural fix because RepoX now exposes broad drift and missing-artifact backlog.

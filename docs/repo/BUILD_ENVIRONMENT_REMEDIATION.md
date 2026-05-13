@@ -2,14 +2,14 @@
 
 ## Status
 
-- Task ID: POST-CONVERGE-06
+- Task ID: POST-CONVERGE-10
 - Current build proof status: blocked locally
 - Full build proven: no
 - CTest proven: no
 - FAST status: partial, structural blocker fixed, RepoX drift remains
 - AIDE pack status: pass
 
-The strict source layout validators remain the repo-level proof floor, but local configure/build/test proof is still blocked by the missing Visual Studio 2022 toolchain.
+The strict source layout validators remain the repo-level proof floor, but local configure/build/test proof is still blocked. POST-CONVERGE-10 added a tuple build contract and machine probe; the probe found no available compiler/build-tool tuple on this machine.
 
 ## CMake Verify Preset
 
@@ -69,6 +69,33 @@ Local tool evidence:
 - `where.exe gcc`, `clang`, `clang-cl`, `mingw32-make`, `nmake`, and `make`: not found
 
 Classification: environment-only `missing_generator`. CMake supports the generator type, but no Visual Studio 2022 installation or usable fallback compiler is discoverable.
+
+## POST-CONVERGE-10 Build Contract Probe
+
+New build contract and local tooling:
+
+- `contracts/build/floors.toml`
+- `contracts/build/toolchains.toml`
+- `contracts/build/tuples.toml`
+- `contracts/build/artifacts.toml`
+- `tools/build/probe_toolchains.py`
+- `tools/build/generate_user_presets.py`
+- `tools/build/validate_build_contract.py`
+- `tools/build/run_tuple.py`
+
+Probe result:
+
+- CMake: `4.2.0`
+- Python: `3.8.1`
+- Visual Studio 17 2022: not detected
+- Visual Studio 18 2026: not detected
+- Visual Studio 15 2017: not detected
+- Ninja: not detected
+- GCC/G++: not detected
+- Clang/Clang++/clang-cl: not detected
+- generated local presets: `.dominium.local/CMakeUserPresets.generated.json`, ignored, zero configure presets
+
+Generated local presets do not solve local proof until a supported compiler/build-tool tuple is installed or exposed.
 
 POST-CONVERGE-06 remediation:
 
@@ -148,7 +175,9 @@ POST-CONVERGE-06 remediation:
 ## Recommended Build Remediation Sequence
 
 1. Install Visual Studio 2022 Build Tools or run the canonical verify lane in CI with Visual Studio 2022.
-2. Rerun `cmake --preset verify`.
-3. If configure passes, run `cmake --build --preset verify` and `ctest --preset verify`.
-4. Run a targeted RepoX drift remediation task to separate stale paths, generated evidence gaps, missing dist artifacts, and real invariant failures.
-5. Proceed to POST-CONVERGE-07 only after build proof exists and FAST drift is either fixed or explicitly accepted by review.
+2. Rerun `python tools/build/probe_toolchains.py --repo-root . --out .dominium.local/toolchains.detected.json`.
+3. Regenerate local presets with `python tools/build/generate_user_presets.py --repo-root . --probe .dominium.local/toolchains.detected.json --out .dominium.local/CMakeUserPresets.generated.json`.
+4. Run `cmake --preset verify`, or run an available generated tuple through `tools/build/run_tuple.py`.
+5. If configure passes, run build and CTest.
+6. Run a targeted RepoX drift remediation task to separate stale paths, generated evidence gaps, missing dist artifacts, and real invariant failures.
+7. Proceed to product boot proof only after build proof exists and FAST drift is fixed or explicitly accepted by review.

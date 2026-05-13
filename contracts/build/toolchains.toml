@@ -1,0 +1,86 @@
+[contract]
+id = "dominium.build.toolchains.v1"
+status = "provisional"
+phase = "POST-CONVERGE-10"
+description = "Toolchain registry for tuple-driven Dominium builds."
+
+[toolchains.host_default]
+name = "Host default"
+family = "other"
+status = "unknown"
+cmake_generator = ""
+cmake_toolset = ""
+requires_probe = true
+notes = "Probe-selected host lane; not a support claim."
+
+[toolchains.msvc143]
+name = "MSVC v143"
+family = "msvc"
+status = "planned"
+cmake_generator = "Visual Studio 17 2022"
+cmake_toolset = "v143"
+requires_probe = true
+notes = "Canonical Windows verify lane when Visual Studio 2022 is installed."
+
+[toolchains.msvc145]
+name = "MSVC v145"
+family = "msvc"
+status = "unknown"
+cmake_generator = "Visual Studio 18 2026"
+cmake_toolset = "v145"
+requires_probe = true
+notes = "Generator may be visible in newer CMake; support requires installed VS instance proof."
+
+[toolchains.msvc141]
+name = "MSVC v141"
+family = "msvc"
+status = "research"
+cmake_generator = "Visual Studio 15 2017"
+cmake_toolset = "v141"
+requires_probe = true
+notes = "Compatibility research lane; no current proof."
+
+[toolchains.msvc141_xp]
+name = "MSVC v141 XP"
+family = "msvc"
+status = "research"
+cmake_generator = "Visual Studio 15 2017"
+cmake_toolset = "v141_xp"
+requires_probe = true
+notes = "XP research lane; requires explicit XP toolset proof."
+
+[toolchains.gcc]
+name = "GCC"
+family = "gcc"
+status = "planned"
+cmake_generator = "Ninja"
+cmake_toolset = ""
+requires_probe = true
+notes = "Linux/host lane when gcc and a build tool are detected."
+
+[toolchains.clang]
+name = "Clang"
+family = "clang"
+status = "planned"
+cmake_generator = "Ninja"
+cmake_toolset = ""
+requires_probe = true
+notes = "Linux/macOS/Windows clang lane when compiler and build tool are detected."
+
+[toolchains.xcode9]
+name = "Xcode 9"
+family = "xcode"
+status = "research"
+cmake_generator = "Xcode"
+cmake_toolset = ""
+requires_probe = true
+notes = "macOS research lane; support requires host Xcode proof."
+
+[toolchains.codewarrior9]
+name = "CodeWarrior 9"
+family = "codewarrior"
+status = "research"
+cmake_generator = ""
+cmake_toolset = ""
+requires_probe = true
+notes = "Classic Mac research lane; not a CMake-native support claim."

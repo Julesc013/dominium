@@ -1,0 +1,109 @@
+[contract]
+id = "dominium.build.tuples.v1"
+status = "provisional"
+phase = "POST-CONVERGE-10"
+description = "Build tuple registry for Dominium configure/build/test/package proof."
+
+[policy]
+tuple_name_pattern = "<intent>.<floor>.<arch>.<toolchain>.<runtime>.<config>"
+cmake_remains_executor = true
+generated_local_presets_are_not_source_authority = true
+support_claim_requires_evidence = true
+
+[tuples."verify.host.host.host_default.host.debug"]
+intent = "verify"
+floor = "host"
+arch = "host"
+toolchain = "host_default"
+runtime = "host"
+config = "debug"
+products = ["setup", "launcher", "client", "server", "tools"]
+platform = "host"
+renderer = "host"
+status = "unknown"
+proof = "none"
+notes = "Probe-selected local verify lane; generated presets may bind this only when a compiler and generator are detected."
+
+[tuples."smoke.host.host.host_default.host.debug"]
+intent = "smoke"
+floor = "host"
+arch = "host"
+toolchain = "host_default"
+runtime = "host"
+config = "debug"
+products = ["setup", "launcher", "client", "server", "tools"]
+platform = "null"
+renderer = "null"
+status = "unknown"
+proof = "none"
+notes = "Lowest-risk local build smoke lane; availability is machine-probe driven."
+
+[tuples."verify.winnt10.x64.msvc143.mt.debug"]
+intent = "verify"
+floor = "winnt10"
+arch = "x64"
+toolchain = "msvc143"
+runtime = "mt"
+config = "debug"
+products = ["setup", "launcher", "client", "server", "tools"]
+platform = "win32"
+renderer = "software"
+status = "planned"
+proof = "none"
+notes = "Canonical Windows verify tuple corresponding to Visual Studio 2022 / v143."
+
+[tuples."verify.winnt10.x64.msvc145.mt.debug"]
+intent = "verify"
+floor = "winnt10"
+arch = "x64"
+toolchain = "msvc145"
+runtime = "mt"
+config = "debug"
+products = ["setup", "launcher", "client", "server", "tools"]
+platform = "win32"
+renderer = "software"
+status = "unknown"
+proof = "none"
+notes = "Visual Studio 2026 candidate tuple; no support claim without installed-instance proof."
+
+[tuples."research.xp.x86.msvc141_xp.mt.release"]
+intent = "research"
+floor = "xp"
+arch = "x86"
+toolchain = "msvc141_xp"
+runtime = "mt"
+config = "release"
+products = ["setup", "launcher", "client", "server", "tools"]
+platform = "win32"
+renderer = "software"
+status = "research"
+proof = "none"
+notes = "XP research tuple requiring protected compatibility review."
+
+[tuples."verify.linux.x64.gcc.host.debug"]
+intent = "verify"
+floor = "linux"
+arch = "x64"
+toolchain = "gcc"
+runtime = "host"
+config = "debug"
+products = ["setup", "launcher", "client", "server", "tools"]
+platform = "posix"
+renderer = "null"
+status = "planned"
+proof = "none"
+notes = "Linux GCC tuple; support requires host or CI configure/build/test evidence."
+
+[tuples."verify.linux.x64.clang.host.debug"]
+intent = "verify"
+floor = "linux"
+arch = "x64"
+toolchain = "clang"
+runtime = "host"
+config = "debug"
+products = ["setup", "launcher", "client", "server", "tools"]
+platform = "posix"
+renderer = "null"
+status = "planned"
+proof = "none"
+notes = "Linux Clang tuple; support requires host or CI configure/build/test evidence."

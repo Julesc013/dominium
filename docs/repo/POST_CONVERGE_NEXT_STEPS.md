@@ -4,7 +4,7 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
-## Current Correction After POST-CONVERGE-09
+## Current Correction After POST-CONVERGE-10
 
 POST-CONVERGE-00 confirmed that exception retirement and build/runtime proof must precede platform, render, native shell, worldgen, and broad domain expansion.
 
@@ -40,15 +40,23 @@ POST-CONVERGE-09 attempted portable projection/package smoke proof and is partia
 - no real portable projection root was generated
 - required portable manifests and native product binaries remain blocked by the missing build output
 
+POST-CONVERGE-10 added the tuple-driven build contract and machine probe, but native binary proof is still blocked:
+
+- build contract files now exist under `contracts/build/`
+- local probe output is generated under ignored `.dominium.local/`
+- generated local preset data exists, but contains zero configure presets
+- no Visual Studio 17 2022, Visual Studio 18 2026, Visual Studio 15 2017, Ninja, GCC, or Clang toolchain is detected
+- no native product binaries were produced
+
 Current priority order:
 
-1. provide a valid Visual Studio 17 2022 verify lane or accepted CI proof
-2. run configure/build/CTest through the canonical verify lane
+1. install or expose a supported toolchain tuple, preferably Visual Studio 17 2022 for the canonical `verify` lane
+2. rerun the POST-CONVERGE-10 probe, local preset generation, configure, build, and CTest
 3. remediate or explicitly accept remaining RepoX FAST drift findings
 4. fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
 5. fix or classify direct `apps/server/server_main.py` CLI argument forwarding
 6. add or prove a real portable projection assembly path that emits required manifests and roots
-7. rerun POST-CONVERGE-08 and POST-CONVERGE-09 only after build, product command, and projection blockers are accepted or resolved
+7. rerun product boot and portable projection proof only after build, product command, and projection blockers are accepted or resolved
 
 Planning references:
 
@@ -58,6 +66,7 @@ Planning references:
 - `docs/repo/audits/POST_CONVERGE_07_LOCAL_RUNTIME_PROOF.md`
 - `docs/repo/audits/POST_CONVERGE_08_PRODUCT_BOOT_MATRIX_PROOF.md`
 - `docs/repo/audits/POST_CONVERGE_09_PORTABLE_PROJECTION_PROOF.md`
+- `docs/repo/audits/POST_CONVERGE_10_BUILD_BINARY_PROOF.md`
 - `docs/repo/EXCEPTION_RETIREMENT_QUEUE.md`
 - `docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md`
 - `docs/repo/BUILD_VERIFICATION_PATHS.md`
@@ -68,12 +77,15 @@ Planning references:
 - `docs/release/PRODUCT_BOOT_PROOF.md`
 - `docs/distribution/PORTABLE_PROJECTION_SMOKE_PROOF.md`
 - `docs/release/PACKAGE_SMOKE_PROOF.md`
+- `docs/release/NATIVE_BINARY_PROOF.md`
+- `docs/build/BUILD_CONTRACT.md`
 
 ## What Can Proceed
 
 The repository is ready for scoped work in these areas:
 
 - toolchain installation or CI proof for the existing `verify` preset
+- targeted build tuple/probe/preset remediation using `contracts/build/`
 - targeted RepoX FAST drift remediation
 - targeted command-surface remediation for script-level CLI argument forwarding, after build proof is available
 - targeted setup Python compatibility remediation if the Python setup bridge remains a product proof path
@@ -98,14 +110,15 @@ Platform, render, native shell, Universal Reality enforcement, worldgen, domain 
 ## Suggested Sequence
 
 1. Install or expose Visual Studio 17 2022 build tools, or capture accepted CI proof for `cmake --preset verify`.
-2. Run configure, build, and CTest through the canonical verify lane.
-3. Address remaining RepoX FAST drift findings in a targeted remediation task.
-4. Remediate or explicitly classify setup Python bridge compatibility and the missing `dist/bin/dom` target.
-5. Add or prove a portable projection assembly path that emits `install.manifest.json`, `semantic_contract_registry.json`, `release.manifest.json`, product binaries, and required portable roots.
-6. Rerun strict layout validators, docs/build/UI/ABI checks, FAST, and AIDE pack.
-7. Rerun POST-CONVERGE-08 product boot matrix proof after build output or accepted equivalent proof exists.
-8. Rerun POST-CONVERGE-09 portable projection smoke proof after projection generation is available.
-9. Start CONTRACT-00 only after these blockers are resolved or explicitly accepted as warning-only.
+2. Rerun `tools/build/probe_toolchains.py` and generate ignored local preset data.
+3. Run configure, build, and CTest through the canonical verify lane or a reviewed available tuple.
+4. Address remaining RepoX FAST drift findings in a targeted remediation task.
+5. Remediate or explicitly classify setup Python bridge compatibility and the missing `dist/bin/dom` target.
+6. Add or prove a portable projection assembly path that emits `install.manifest.json`, `semantic_contract_registry.json`, `release.manifest.json`, product binaries, and required portable roots.
+7. Rerun strict layout validators, docs/build/UI/ABI checks, FAST, and AIDE pack.
+8. Run POST-CONVERGE-11 product boot proof with native binaries after build output exists.
+9. Rerun portable projection smoke proof after projection generation is available.
+10. Start CONTRACT-00 only after these blockers are resolved or explicitly accepted as warning-only.
 
 ## Domain Work Rule
 

@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-09 portable projection smoke proof
+UNSPECIFIED - POST-CONVERGE-10 build contract and native binary proof
 
 ## GOAL
 
-POST-CONVERGE-09 portable projection smoke proof
+POST-CONVERGE-10 build contract and native binary proof
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4249
-- approx_tokens: 1063
+- chars: 4263
+- approx_tokens: 1066
 - budget_status: PASS
 - warnings:
   - none

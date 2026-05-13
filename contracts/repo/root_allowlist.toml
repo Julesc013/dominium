@@ -45,6 +45,7 @@ examples = { notes = "Only for explicit example/samples surface." }
 ".aide" = { notes = "AIDE local/project governance if present." }
 ".codex" = { notes = "Codex local/project configuration if present." }
 ".aide.local.example" = { notes = "AIDE local-state example if present." }
+".dominium.local" = { notes = "Ignored local build probe and generated CMake user preset evidence; not source authority." }
 
 [allowed_root_files]
 allowed = [".agentignore", ".gitattributes", ".gitignore", "AGENTS.md", "CHANGELOG.md", "CLAUDE.md", "CMakeLists.txt", "CMakePresets.json", "CODE_CHANGE_JUSTIFICATION.md", "CONTRIBUTING.md", "DOMINIUM.md", "GOVERNANCE.md", "LICENSE", "LICENSE.md", "MODDING.md", "README.md", "SECURITY.md", "sitecustomize.py", "VERSION_CLIENT", "VERSION_ENGINE", "VERSION_GAME", "VERSION_LAUNCHER", "VERSION_SERVER", "VERSION_SETUP", "VERSION_SUITE", "VERSION_TOOLS"]

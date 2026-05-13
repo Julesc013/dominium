@@ -1,0 +1,21 @@
+[contract]
+id = "dominium.build.artifacts.v1"
+status = "provisional"
+phase = "POST-CONVERGE-10"
+description = "Artifact naming and build evidence rules for Dominium build tuples."
+
+[policy]
+artifacts_are_generated = true
+dist_is_generated_projection = true
+no_absolute_host_paths_in_artifact_identity = true
+artifact_identity_includes_tuple = true
+artifact_identity_includes_commit = true
+artifact_identity_includes_contract_hash = false
+
+[artifacts.native_binary]
+pattern = "dominium-<product>_<version>_<floor>-<arch>_<toolchain>-<runtime>_<config>"
+notes = "Pattern is provisional and must not change executable names without product identity review."
+
+[artifacts.evidence]
+path = "docs/repo/audits/ or generated local evidence"
+notes = "Committed audit docs summarize evidence; generated evidence belongs in ignored output unless explicitly archived."

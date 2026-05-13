@@ -56,6 +56,19 @@ Package/projection smoke proof is partial and is recorded in `docs/release/PACKA
 
 This evidence does not promote packaging rows in the machine-readable contract.
 
+## POST-CONVERGE-10 Build Evidence
+
+Native binary proof is blocked and recorded in `docs/release/NATIVE_BINARY_PROOF.md`.
+
+| Area | Evidence Status | Notes |
+| --- | --- | --- |
+| build contract | partial | tuple/floor/toolchain/artifact contracts exist |
+| machine probe | partial | CMake/Python detected; no compiler/build-tool tuple available |
+| generated local presets | partial | ignored preset data written with zero configure presets |
+| native product binaries | blocked | no configure/build/test tuple ran |
+
+This evidence does not promote products, toolchains, or packaging rows in the machine-readable contract.
+
 ## Products
 
 | Product | Status | Tier | Preferred Modes | Notes |

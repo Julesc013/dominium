@@ -1,0 +1,68 @@
+[contract]
+id = "dominium.build.floors.v1"
+status = "provisional"
+phase = "POST-CONVERGE-10"
+description = "Build and runtime floor registry for tuple-driven Dominium build proof."
+
+[floors.host]
+name = "Host"
+family = "other"
+status = "unknown"
+minimum_os = "current developer or CI host"
+notes = "Resolved by machine probe; never a release floor by itself."
+
+[floors.winnt10]
+name = "Windows NT 10"
+family = "windows"
+status = "planned"
+minimum_os = "Windows 10 1507 or later"
+notes = "Current canonical Windows verify family; support requires build/test evidence."
+
+[floors.winnt7]
+name = "Windows NT 6.1"
+family = "windows"
+status = "planned"
+minimum_os = "Windows 7 SP1"
+notes = "Compatibility floor only; no current proof."
+
+[floors.xp]
+name = "Windows XP"
+family = "windows"
+status = "research"
+minimum_os = "Windows XP SP3"
+notes = "Research compatibility floor requiring protected toolchain evidence."
+
+[floors.linux]
+name = "Linux"
+family = "linux"
+status = "planned"
+minimum_os = "distribution-specific glibc or musl floor"
+notes = "Declared in CMake presets; host proof is required before support claims."
+
+[floors.macos]
+name = "macOS"
+family = "macos"
+status = "planned"
+minimum_os = "macOS floor defined by Xcode tuple"
+notes = "Declared in CMake presets; host proof is required before support claims."
+
+[floors.classic_macos]
+name = "Classic Mac OS"
+family = "classic_macos"
+status = "research"
+minimum_os = "classic Mac OS research floor"
+notes = "Projection/research only; no native build proof."
+
+[floors.android]
+name = "Android"
+family = "android"
+status = "research"
+minimum_os = "Android floor not yet proven"
+notes = "No current package or build proof."
+
+[floors.web]
+name = "Web"
+family = "web"
+status = "research"
+minimum_os = "browser/runtime floor not yet proven"
+notes = "No current package or build proof."
