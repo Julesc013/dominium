@@ -50,3 +50,156 @@ tasks:
     quality_dimensions:
       - deterministic_output
       - references_present
+  - id: commit_message_standard_golden
+    title: Commit Message Standard Golden
+    status: active
+    description: Verify structured commit messages pass and malformed/vague messages fail deterministically.
+    quality_dimensions:
+      - deterministic_output
+      - policy_anchors
+      - changelog_ready
+  - id: task_resumption_standard_golden
+    title: Task Resumption Standard Golden
+    status: active
+    description: Verify repeated, partial, and out-of-order task resumption policy anchors exist.
+    quality_dimensions:
+      - policy_anchors
+      - evidence_present
+      - repo_state_first
+  - id: workunit_idempotency_golden
+    title: WorkUnit Idempotency Golden
+    status: active
+    description: Verify WorkUnit states and no-op behavior are defined and fixture-detectable.
+    quality_dimensions:
+      - idempotency
+      - deterministic_output
+      - recovery_policy
+  - id: changelog_preview_golden
+    title: Changelog Preview Golden
+    status: active
+    description: Verify changelog preview grouping and malformed commit reporting.
+    quality_dimensions:
+      - changelog_ready
+      - malformed_input_reporting
+      - no_release_publishing
+  - id: git_workflow_policy_golden
+    title: Git Workflow Policy Golden
+    status: active
+    description: Verify Q28 Git workflow policy files define main/dev/task/release/hotfix conventions and report-only detection anchors.
+    quality_dimensions:
+      - policy_anchors
+      - branch_workflow
+      - no_mutation
+  - id: branch_role_detection_golden
+    title: Branch Role Detection Golden
+    status: active
+    description: Verify deterministic branch role classification and conservative unknown-role behavior.
+    quality_dimensions:
+      - deterministic_output
+      - branch_roles
+      - conservative_fallback
+  - id: promotion_rules_golden
+    title: Promotion Rules Golden
+    status: active
+    description: Verify task-to-dev and dev-to-main promotion gates exist without implementing merge helpers.
+    quality_dimensions:
+      - promotion_gates
+      - review_required
+      - no_mutation
+  - id: sync_policy_golden
+    title: Sync Policy Golden
+    status: active
+    description: Verify multi-machine sync policy requires explicit branch decisions and no implicit merge/rebase.
+    quality_dimensions:
+      - sync_safety
+      - report_only
+      - branch_roles
+  - id: prune_policy_golden
+    title: Prune Policy Golden
+    status: active
+    description: Verify pruning requires ancestor containment, protects long-lived roles, and remains dry-run/report-only in Q28.
+    quality_dimensions:
+      - prune_guard
+      - containment_required
+      - protected_roles
+  - id: git_helper_policy_golden
+    title: Git Helper Policy Golden
+    status: active
+    description: Verify Q29 helper policy, command docs, dry-run default, protected roles, and generated helper-plan artifacts.
+    quality_dimensions:
+      - policy_anchors
+      - branch_helper
+      - no_mutation
+  - id: git_land_plan_golden
+    title: Git Land Plan Golden
+    status: active
+    description: Verify land helper dry-run planning, no-ff merge command documentation, and fixture-only apply boundary.
+    quality_dimensions:
+      - land_plan
+      - dry_run_default
+      - no_remote_mutation
+  - id: git_promote_plan_golden
+    title: Git Promote Plan Golden
+    status: active
+    description: Verify promote helper review gates, dry-run planning, and dev-to-main promotion policy linkage.
+    quality_dimensions:
+      - promote_plan
+      - review_required
+      - branch_roles
+  - id: git_prune_guard_golden
+    title: Git Prune Guard Golden
+    status: active
+    description: Verify prune helper requires ancestor containment and refuses protected branch roles.
+    quality_dimensions:
+      - prune_guard
+      - containment_required
+      - protected_roles
+  - id: git_live_repo_no_mutation_golden
+    title: Git Live Repo No Mutation Golden
+    status: active
+    description: Verify generated helper plans and docs keep live AIDE repo mutation disabled by default.
+    quality_dimensions:
+      - no_live_mutation
+      - dry_run_default
+      - force_push_forbidden
+  - id: export_pack_commit_policy_inclusion_golden
+    title: Export Pack Commit Policy Inclusion Golden
+    status: active
+    description: Verify the portable pack or imported target contains commit discipline and changelog support.
+    quality_dimensions:
+      - export_inclusion
+      - commit_discipline
+      - changelog_ready
+  - id: export_pack_task_recovery_inclusion_golden
+    title: Export Pack Task Recovery Inclusion Golden
+    status: active
+    description: Verify the portable pack or imported target contains task resumption, WorkUnit, and recovery support.
+    quality_dimensions:
+      - export_inclusion
+      - workunit_recovery
+      - repo_state_first
+  - id: export_pack_git_policy_inclusion_golden
+    title: Export Pack Git Policy Inclusion Golden
+    status: active
+    description: Verify the portable pack or imported target contains generic Git workflow and helper support.
+    quality_dimensions:
+      - export_inclusion
+      - branch_workflow
+      - dry_run_default
+  - id: export_pack_excludes_source_branch_state_golden
+    title: Export Pack Excludes Source Branch State Golden
+    status: active
+    description: Verify source-specific branch detection, helper plans, and generated previews are excluded from target truth.
+    quality_dimensions:
+      - export_exclusion
+      - source_state_boundary
+      - no_stale_branch_truth
+  - id: fixture_import_governance_commands_golden
+    title: Fixture Import Governance Commands Golden
+    status: active
+    description: Verify safe fixture import receives governance files and can run commit, task, and Git commands without hook auto-installation.
+    quality_dimensions:
+      - fixture_import
+      - governance_commands
+      - hook_opt_in
+

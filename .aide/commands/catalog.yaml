@@ -26,3 +26,27 @@ commands:
     owner_component: existing-tool-adapters
     mutates_repo: command-dependent
     notes: renders compact existing-tool guidance previews and safe managed AGENTS output only; no provider/model/network calls.
+  - id: aide-lite-commit
+    display_name: AIDE Lite commit discipline
+    invocation: py -3 .aide/scripts/aide_lite.py commit <check|template|status|install-hook>
+    command_kind: repo-local-helper
+    status: implemented-portable
+    owner_component: commit-discipline
+    mutates_repo: command-dependent
+    notes: validates structured commit messages and prints/writes templates; hook installation remains explicit and opt-in.
+  - id: aide-lite-task
+    display_name: AIDE Lite task recovery
+    invocation: py -3 .aide/scripts/aide_lite.py task <inspect|status|noop-check|dependencies|recover|evidence|current>
+    command_kind: repo-local-helper
+    status: implemented-portable
+    owner_component: workunit-recovery
+    mutates_repo: false
+    notes: report-first task inspection and recovery guidance for repeated or out-of-order prompts.
+  - id: aide-lite-git
+    display_name: AIDE Lite Git workflow
+    invocation: py -3 .aide/scripts/aide_lite.py git <detect|doctor|status|policy|plan|sync|land|promote|prune>
+    command_kind: repo-local-helper
+    status: implemented-portable
+    owner_component: git-workflow
+    mutates_repo: command-dependent
+    notes: policy and dry-run helpers default to no live branch or remote mutation; --apply/--push require explicit future operator intent.

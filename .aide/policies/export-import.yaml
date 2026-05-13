@@ -16,19 +16,39 @@ export_pack_id:
 portable_include_classes:
   - scripts
   - policies
+  - commit_message_policy
+  - commit_hook_template
+  - commit_template
+  - changelog_preview_support
+  - task_resumption_policy
+  - workunit_policy
+  - recovery_policy
+  - git_workflow_policy
+  - branch_roles_policy
+  - promotion_rules_policy
+  - sync_policy
+  - prune_policy
+  - git_helper_policy
+  - project_workflow_profiles
   - prompts
   - context_templates
   - verification_templates
   - eval_starter_templates
+  - governance_golden_tasks
   - adapter_templates
-  - docs
+  - portable_reference_docs
   - install_instructions
 portable_exclude_classes:
   - source_repo_identity
   - source_repo_queue_history
   - source_repo_memory
+  - source_repo_git_detection
+  - source_repo_git_helper_plan
+  - source_repo_branch_policy
+  - source_repo_changelog_previews
   - generated_context
   - generated_reports
+  - generated_status_outputs
   - route_decisions
   - cache_key_reports
   - gateway_status_reports
@@ -57,6 +77,27 @@ validation:
   snapshot_required: true
   pack_required: true
   no_secrets_scan_required: true
+import_scope:
+  default_mode: safe
+  dry_run_required_before_target_write: true
+  safe_mode_writes:
+    - portable_aide_files
+    - target_templates
+    - local_state_example_templates
+    - portable_reference_docs
+    - agents_managed_section
+    - gitignore_local_state_rules
+  safe_mode_skips:
+    - core_root
+    - broad_docs_root_except_portable_reference
+    - product_code_roots
+  full_mode:
+    allowed_only_for_reviewed_local_fixtures: true
+    requires_explicit_flag: true
+  conflict_policy:
+    preserve_existing_manual_agents_content: true
+    do_not_overwrite_conflicting_target_files: true
+    report_exact_planned_writes: true
 raw_prompt_storage_default: false
 raw_response_storage_default: false
 live_provider_calls: false
