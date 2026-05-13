@@ -3,13 +3,13 @@
   "generator": "aide-lite",
   "generator_version": "q24.existing-tool-adapter-compiler.v0",
   "network_calls": "none",
-  "pass_count": 6,
+  "pass_count": 25,
   "provider_or_model_calls": "none",
   "raw_prompt_storage": false,
   "raw_response_storage": false,
   "result": "PASS",
   "schema_version": "aide.golden-tasks-run.v0",
-  "task_count": 6,
+  "task_count": 25,
   "tasks": [
     {
       "approx_tokens_if_applicable": null,
@@ -25,7 +25,53 @@
       "warnings": []
     },
     {
-      "approx_tokens_if_applicable": 1087,
+      "approx_tokens_if_applicable": null,
+      "checks_run": 15,
+      "errors": [],
+      "notes": "Checks deterministic branch-role classification and conservative unknown handling.",
+      "passed_checks": 15,
+      "related_paths": [
+        ".aide/git/branch-roles.md",
+        ".aide/git/workflow-detection.json",
+        ".aide/policies/branch-roles.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "branch_role_detection_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks deterministic changelog preview grouping and malformed commit reporting.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/changelog/CHANGELOG.preview.md",
+        ".aide/changelog/RELEASE_NOTES.preview.md",
+        ".aide/policies/commit-messages.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "changelog_preview_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 14,
+      "errors": [],
+      "notes": "Checks changelog-ready commit message validation anchors.",
+      "passed_checks": 14,
+      "related_paths": [
+        ".aide/git/commit-template.md",
+        ".aide/hooks/commit-msg",
+        ".aide/policies/commit-messages.yaml",
+        ".aide/reports/aide-commit-message-standard.md"
+      ],
+      "result": "PASS",
+      "task_id": "commit_message_standard_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": 1060,
       "checks_run": 17,
       "errors": [],
       "notes": "Checks the compact task packet shape and forbidden prompt discipline.",
@@ -40,7 +86,7 @@
       "warnings": []
     },
     {
-      "approx_tokens_if_applicable": 467,
+      "approx_tokens_if_applicable": 475,
       "checks_run": 17,
       "errors": [],
       "notes": "Checks context refs instead of whole-repo dumps.",
@@ -56,7 +102,205 @@
       "warnings": []
     },
     {
-      "approx_tokens_if_applicable": 1282,
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks portable commit discipline and changelog support are exported from source-pack repos.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/git/commit-template.md",
+        ".aide/hooks/commit-msg",
+        ".aide/policies/commit-messages.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "export_pack_commit_policy_inclusion_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks source-specific Git detection, helper plans, branch policy, and generated previews are not exported as target truth.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/policies/export-import.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "export_pack_excludes_source_branch_state_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks portable Git workflow and helper governance are exported from source-pack repos.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/git/helper-policy.yaml",
+        ".aide/policies/branch-roles.yaml",
+        ".aide/policies/git-workflow.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "export_pack_git_policy_inclusion_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks portable task resumption, WorkUnit, and recovery governance are exported from source-pack repos.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/policies/recovery.yaml",
+        ".aide/policies/task-resumption.yaml",
+        ".aide/policies/work-units.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "export_pack_task_recovery_inclusion_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks safe fixture import receives governance files and can run portable commit/task/Git commands.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/hooks/commit-msg",
+        ".aide/scripts/aide_lite.py"
+      ],
+      "result": "PASS",
+      "task_id": "fixture_import_governance_commands_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 26,
+      "errors": [],
+      "notes": "Checks Q29 helper policy anchors and generated helper-plan artifacts.",
+      "passed_checks": 26,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/helper-policy.yaml",
+        ".aide/git/latest-helper-plan.json",
+        ".aide/git/latest-helper-plan.md"
+      ],
+      "result": "PASS",
+      "task_id": "git_helper_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks land dry-run planning and no remote mutation anchors.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/latest-helper-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "git_land_plan_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks live-repo helper plans remain no-mutation by default.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/helper-policy.yaml",
+        ".aide/git/latest-helper-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "git_live_repo_no_mutation_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks promotion helper review gates and dry-run command documentation.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/helper-policy.yaml",
+        ".aide/policies/promotion-rules.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "git_promote_plan_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks prune containment and protected-role guards.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/helper-policy.yaml",
+        ".aide/policies/prune-policy.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "git_prune_guard_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 16,
+      "errors": [],
+      "notes": "Checks Q28 Git workflow policy anchors and project profiles.",
+      "passed_checks": 16,
+      "related_paths": [
+        ".aide/git/project-profiles.yaml",
+        ".aide/policies/branch-roles.yaml",
+        ".aide/policies/git-workflow.yaml",
+        ".aide/policies/promotion-rules.yaml",
+        ".aide/policies/prune-policy.yaml",
+        ".aide/policies/sync-policy.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "git_workflow_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 6,
+      "errors": [],
+      "notes": "Checks task-to-dev and dev-to-main gate anchors.",
+      "passed_checks": 6,
+      "related_paths": [
+        ".aide/git/promotion-rules.md",
+        ".aide/policies/promotion-rules.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "promotion_rules_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks prune guards require containment and remain dry-run/report-only.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/git/prune-policy.md",
+        ".aide/policies/prune-policy.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "prune_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": 1141,
       "checks_run": 20,
       "errors": [],
       "notes": "Checks review packet evidence-only shape.",
@@ -68,6 +312,36 @@
       ],
       "result": "PASS",
       "task_id": "review-packet-evidence-only",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks multi-machine sync policy anchors remain report-only.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/git/sync-policy.md",
+        ".aide/policies/sync-policy.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "sync_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 15,
+      "errors": [],
+      "notes": "Checks repeated and out-of-order task recovery policy anchors.",
+      "passed_checks": 15,
+      "related_paths": [
+        ".aide/context/latest-task-packet.md",
+        ".aide/policies/task-resumption.yaml",
+        ".aide/queue/index.yaml",
+        ".aide/reports/aide-task-resumption-standard.md"
+      ],
+      "result": "PASS",
+      "task_id": "task_resumption_standard_golden",
       "warnings": []
     },
     {
@@ -97,6 +371,21 @@
       ],
       "result": "PASS",
       "task_id": "verifier-detects-bad-evidence",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 17,
+      "errors": [],
+      "notes": "Checks WorkUnit idempotency and no-op behavior.",
+      "passed_checks": 17,
+      "related_paths": [
+        ".aide/policies/recovery.yaml",
+        ".aide/policies/work-units.yaml",
+        ".aide/reports/aide-workunit-recovery-standard.md"
+      ],
+      "result": "PASS",
+      "task_id": "workunit_idempotency_golden",
       "warnings": []
     }
   ],

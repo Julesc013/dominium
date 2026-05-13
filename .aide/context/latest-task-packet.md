@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-10E CTest AuditX remediation
+UNSPECIFIED - Select the next bounded Dominium task after canonical AIDE governance sync
 
 ## GOAL
 
-POST-CONVERGE-10E CTest AuditX remediation
+Select the next bounded Dominium task after canonical AIDE governance sync
 
 ## WHY
 
@@ -60,6 +60,8 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `secrets/**`
 - `.aide.local/**`
 - raw provider credentials, API keys, local caches, raw prompt logs
+- Dominium product/source roots unless the queue packet explicitly authorizes them: `runtime/**`, `engine/**`, `client/**`, `server/**`, `apps/**`, `content/**`, `contracts/**`, `specs/**`, `data/**`, `tests/**`
+- Dominium doctrine rewrites unless the queue packet explicitly authorizes a compact pointer-only documentation update
 - Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
@@ -119,8 +121,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4237
-- approx_tokens: 1060
+- chars: 4632
+- approx_tokens: 1158
 - budget_status: PASS
 - warnings:
   - none

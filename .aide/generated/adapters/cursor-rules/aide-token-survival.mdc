@@ -1,0 +1,16 @@
+<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=cursor generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/cursor-rule.template.md mode=preview_only manual=outside-only fingerprint=sha256:0bb4c8617ebac2593a704c5f9d83009a131752d943aa37369cea6260e5f33367 -->
+---
+description: AIDE token-survival and evidence workflow
+alwaysApply: false
+---
+
+- Use `.aide/context/latest-task-packet.md` as the compact task source.
+- Do not paste full histories, full repo dumps, secrets, provider keys,
+  `.aide.local/`, raw prompts, or raw responses.
+- Prefer exact file refs and line refs; ask for focused context when needed.
+- Run `py -3 .aide/scripts/aide_lite.py doctor`, `validate`, `pack`, `verify`,
+  and `review-pack` where available.
+- Generated adapter outputs are not canonical truth; `.aide/` policy and queue
+  records remain authoritative.
+- Gateway/provider calls and forwarding remain deferred until reviewed policy.
+<!-- AIDE-GENERATED:END section=aide-token-survival-adapter -->

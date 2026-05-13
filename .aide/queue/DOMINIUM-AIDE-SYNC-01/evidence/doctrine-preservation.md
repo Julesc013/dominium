@@ -24,4 +24,22 @@ is compact and also instructs future agents not to inline whole doctrine files.
 
 ## Final Result
 
-To be completed before review.
+- `.aide/memory/project-state.md` remained unchanged and compact:
+  3,620 chars, about 905 tokens.
+- `.aide/memory/decisions.md` and `.aide/memory/open-risks.md` remained
+  unchanged.
+- `.aide/context/dominium-doctrine-refs.md` remained unchanged.
+- No files under `docs/canon/**`, `docs/planning/**`, `specs/**`, or `data/**`
+  were modified.
+- The latest task packet references doctrine by path and does not inline whole
+  doctrine files.
+- `AGENTS.md` manual doctrine and governance content was preserved; only the
+  managed AIDE adapter block changed.
+
+## Remaining Doctrine Risks
+
+- Q33 does not prove complete doctrine coverage for future product tasks.
+- Future tasks still need task-specific doctrine refs from
+  `.aide/context/dominium-doctrine-refs.md`.
+- Dominium-specific golden tasks may need refinement beyond the portable AIDE
+  golden set.

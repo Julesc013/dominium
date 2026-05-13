@@ -1,7 +1,7 @@
 schema_version: aide.queue-task.v0
 task_id: DOMINIUM-AIDE-SYNC-01
 title: Dominium sync from canonical AIDE Lite Pack
-status: running
+status: needs_review
 target_repo: julesc013/dominium
 phase: Q33
 created_at: 2026-05-14

@@ -8,7 +8,7 @@ items:
     evidence: .aide/queue/DOMINIUM-AIDE-PILOT-01
   - id: DOMINIUM-AIDE-SYNC-01
     title: Sync canonical AIDE governance into Dominium
-    status: running
+    status: needs_review
     purpose: Import portable Q31 AIDE Lite commit, WorkUnit, changelog, and Git workflow governance while preserving Dominium doctrine and target state.
     task: .aide/queue/DOMINIUM-AIDE-SYNC-01/task.yaml
     evidence: .aide/queue/DOMINIUM-AIDE-SYNC-01/evidence

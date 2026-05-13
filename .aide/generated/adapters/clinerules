@@ -1,0 +1,13 @@
+<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=cline generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/clinerules.template mode=preview_only manual=outside-only fingerprint=sha256:b09d17ae7fc1344440c86dd37022d82f83e1d50c3d3c705fdffc2a86bbb61e49 -->
+# AIDE Existing-Tool Adapter: Cline
+
+- Read `.aide/context/latest-task-packet.md` before proposing changes.
+- Avoid full-history prompts, full-repo prompts, raw prompt/response logs,
+  provider keys, secrets, and `.aide.local/` contents.
+- Use file and line refs. Request extra context narrowly.
+- Run AIDE Lite validation and packet commands before review when available:
+  `doctor`, `validate`, `pack`, `verify`, and `review-pack`.
+- Do not implement Gateway forwarding, provider/model calls, or autonomous
+  loops from this guidance.
+- End with compact evidence, validation, risks, and next step.
+<!-- AIDE-GENERATED:END section=aide-token-survival-adapter -->

@@ -1,0 +1,12 @@
+# AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=aider generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/aider.conf.yml.template mode=preview_only manual=outside-only fingerprint=sha256:e8048a12df9a71c738876dabcee41566b473b46aeeb9ca0e212971f92290ae7d
+# AIDE Existing-Tool Adapter: Aider
+#
+# This is a preview guidance fragment, not canonical config truth.
+# Use `.aide/context/latest-task-packet.md` as the task brief.
+# Do not paste long chat history or full repo dumps.
+# Do not include secrets, provider keys, `.aide.local/`, raw prompts, or raw responses.
+# Use path and line refs instead of copied source bodies.
+# Run `py -3 .aide/scripts/aide_lite.py doctor`, `validate`, `pack`, `verify`,
+# and `review-pack` where available.
+# Gateway/provider forwarding remains deferred; do not add live-call config here.
+# AIDE-GENERATED:END section=aide-token-survival-adapter

@@ -1,0 +1,89 @@
+{
+  "compiler": "aide-adapter-compiler-v0",
+  "contents_inline": false,
+  "generated_by": "aide-lite q24.existing-tool-adapter-compiler.v0",
+  "generated_outputs_not_canonical": true,
+  "network_calls": false,
+  "provider_or_model_calls": false,
+  "schema_version": "q24.adapter-generated-manifest.v0",
+  "target_count": 7,
+  "targets": [
+    {
+      "display_name": "Aider guidance",
+      "drift_status": "preview_only",
+      "enabled_by_default": true,
+      "generated_path": ".aide/generated/adapters/aider.conf.yml",
+      "output_mode": "preview_only",
+      "output_path": ".aider.conf.yml",
+      "risk_level": "medium",
+      "sha256": "422846380b5dc8fd24fd0b77fd8c461b4ec2670b156d8483a98899430ca74c48",
+      "target_id": "aider"
+    },
+    {
+      "display_name": "Claude Code CLAUDE.md",
+      "drift_status": "drifted",
+      "enabled_by_default": true,
+      "generated_path": ".aide/generated/adapters/CLAUDE.md",
+      "output_mode": "preview_only",
+      "output_path": "CLAUDE.md",
+      "risk_level": "medium",
+      "sha256": "68fedf3586f122c2347f9b8f8b59c26254ac9b1c93289357530ac70dfba5e9f4",
+      "target_id": "claude_code"
+    },
+    {
+      "display_name": "Cline rules",
+      "drift_status": "preview_only",
+      "enabled_by_default": true,
+      "generated_path": ".aide/generated/adapters/clinerules",
+      "output_mode": "preview_only",
+      "output_path": ".clinerules",
+      "risk_level": "medium",
+      "sha256": "873e315e2e7dee8fecf7f1110cd05c50253c15c9bf7495c6f3e74d8f3e110afb",
+      "target_id": "cline"
+    },
+    {
+      "display_name": "Codex AGENTS.md",
+      "drift_status": "current",
+      "enabled_by_default": true,
+      "generated_path": ".aide/generated/adapters/AGENTS.md",
+      "output_mode": "managed_section",
+      "output_path": "AGENTS.md",
+      "risk_level": "low",
+      "sha256": "e4aa7ee69737b39d55324b1911ad76736af24de894eca2163e58164a5d294512",
+      "target_id": "codex_agents_md"
+    },
+    {
+      "display_name": "Continue token-survival check",
+      "drift_status": "preview_only",
+      "enabled_by_default": true,
+      "generated_path": ".aide/generated/adapters/continue-checks/aide-token-survival.md",
+      "output_mode": "preview_only",
+      "output_path": ".continue/checks/aide-token-survival.md",
+      "risk_level": "medium",
+      "sha256": "76792be679879481e7351af2802246359dee98464f86988eee3a6e90d451c424",
+      "target_id": "continue"
+    },
+    {
+      "display_name": "Cursor rule",
+      "drift_status": "preview_only",
+      "enabled_by_default": true,
+      "generated_path": ".aide/generated/adapters/cursor-rules/aide-token-survival.mdc",
+      "output_mode": "preview_only",
+      "output_path": ".cursor/rules/aide-token-survival.mdc",
+      "risk_level": "medium",
+      "sha256": "c881572a7993e1833edeb076e459ab4593e4e54957bc6f6a83ded9b93616a7d3",
+      "target_id": "cursor"
+    },
+    {
+      "display_name": "Windsurf rule",
+      "drift_status": "preview_only",
+      "enabled_by_default": true,
+      "generated_path": ".aide/generated/adapters/windsurf-rules/aide-token-survival.md",
+      "output_mode": "preview_only",
+      "output_path": ".windsurf/rules/aide-token-survival.md",
+      "risk_level": "medium",
+      "sha256": "59b91307e0857b04b275638d92cea25f25646482d636c198630a740c38baf0af",
+      "target_id": "windsurf"
+    }
+  ]
+}
