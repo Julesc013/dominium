@@ -2,14 +2,14 @@
 
 ## Status
 
-- Task ID: POST-CONVERGE-10C
-- Current build proof status: blocked during build
-- Full build proven: no
+- Task ID: POST-CONVERGE-10D
+- Current build proof status: build passes; CTest blocked
+- Full build proven: yes
 - CTest proven: no
 - FAST status: partial, structural blocker fixed, RepoX drift remains
 - AIDE pack status: pass
 
-The strict source layout validators remain the repo-level proof floor, but local build/test proof is still blocked. POST-CONVERGE-10 added a tuple build contract and machine probe. POST-CONVERGE-10B confirmed that Visual Studio 2022/MSVC v143 is detected. POST-CONVERGE-10C fixed the stale client/server CMake and test references; configure now passes, and build proceeds until the UI bind generated-output freshness gate fails.
+The strict source layout validators remain the repo-level proof floor. POST-CONVERGE-10 added a tuple build contract and machine probe. POST-CONVERGE-10B confirmed that Visual Studio 2022/MSVC v143 is detected. POST-CONVERGE-10C fixed the stale client/server CMake and test references. POST-CONVERGE-10D fixed the UI bind generated-output freshness blocker. Configure and build now pass for the VS2022/v143 tuple and canonical `verify` lane; CTest remains blocked in tools/auditx tests.
 
 ## CMake Verify Preset
 
@@ -40,15 +40,15 @@ Current verify lane summary:
 - `release-check`
 - `release-winnt-x86_64`
 
-## Local Failure
+## Local Build History
 
-Command:
+Original POST-CONVERGE-06 command:
 
 ```text
 cmake --preset verify
 ```
 
-Result:
+Original result:
 
 ```text
 CMake Error at CMakeLists.txt:6 (project):
@@ -73,6 +73,17 @@ POST-CONVERGE-10 classification: environment-only `missing_generator`.
 POST-CONVERGE-10B updated classification: `path_stale_after_convergence`.
 
 POST-CONVERGE-10C updated classification: `generated_output_stale`. The missing Visual Studio blocker and stale client/server path blocker are resolved on this machine, but build now fails because `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`.
+
+POST-CONVERGE-10D updated classification: `test_failure` and `long_running_or_timeout`. The UI bind freshness blocker is resolved by pinning tracked UI bind generated sources to LF line endings. Tuple and canonical builds pass. CTest times out in tools/auditx tests after failures including `tools_coverage_inspect` missing `compat`, auditx/governance model paths assuming root `schema`, and the existing RepoX drift backlog.
+
+Current build result:
+
+```text
+python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --build
+cmake --build --preset verify
+```
+
+Both commands pass on this machine after POST-CONVERGE-10D. CTest remains blocked.
 
 ## POST-CONVERGE-10 Build Contract Probe
 
@@ -108,13 +119,19 @@ Generated local presets expose the canonical VS2022 tuple. POST-CONVERGE-10C rem
 - `client/presentation/frame_graph_builder.cpp` should now be represented from `apps/client/presentation/frame_graph_builder.cpp`.
 - `server/authority/dom_server_authority.cpp` should now be represented from `apps/server/authority/dom_server_authority.cpp`.
 
-Current build blocker:
+Resolved UI bind blocker:
 
 - `libs/appcore/ui_bind/ui_command_binding_table.h`
 - `libs/appcore/ui_bind/ui_command_binding_table.c`
 - `libs/appcore/ui_bind/ui_accessibility_map.h`
 - `libs/appcore/ui_bind/ui_accessibility_map.c`
 - `libs/appcore/ui_bind/ui_localisation_usage_report.json`
+
+These tracked generated outputs are now protected by `.gitattributes`:
+
+```text
+libs/appcore/ui_bind/** text eol=lf
+```
 
 POST-CONVERGE-06 remediation:
 
@@ -193,8 +210,8 @@ POST-CONVERGE-06 remediation:
 
 ## Recommended Build Remediation Sequence
 
-1. Run a targeted UI bind generated-output remediation.
-2. Rerun `python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --build`.
-3. If build passes, run CTest.
+1. Run targeted CTest/auditx remediation for the current tools/auditx failures and timeout.
+2. Rerun `python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --test`.
+3. Rerun `ctest --preset verify`.
 4. Run a targeted RepoX drift remediation task to separate stale paths, generated evidence gaps, missing dist artifacts, and real invariant failures.
-5. Proceed to product boot proof only after build proof exists and FAST drift is fixed or explicitly accepted by review.
+5. Proceed to product boot proof after CTest is green or explicitly accepted as warning-only for POST-CONVERGE-11.

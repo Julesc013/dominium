@@ -2,7 +2,7 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10C
+- Phase: POST-CONVERGE-10D
 - Status: partial
 
 ## Build Tuple
@@ -15,24 +15,25 @@
 | config | `debug` |
 | platform | `win32` |
 | renderer | `software` |
-| proof level | configure; build attempted and failed at UI bind freshness gate |
+| proof level | build; CTest attempted and timed out in tools/auditx tests |
 
 ## Product Binaries
 
 | Product | Target | Executable Name | Path | Present? | Notes |
 | --- | --- | --- | --- | --- | --- |
-| setup | `setup_cli` | `setup` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/setup.exe` | yes | produced before build gate failure |
-| launcher | `launcher_cli` | `launcher` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/launcher.exe` | yes | produced before build gate failure |
-| client | `dominium_client` | `client` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/client.exe` | yes | produced before build gate failure |
-| server | `dominium_server` | `server` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/server.exe` | yes | produced before build gate failure |
-| tools | `dominium-tools` | `tools` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/tools.exe` | yes | produced before build gate failure |
+| setup | `setup_cli` | `setup` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/setup.exe` | yes | tuple build passes |
+| launcher | `launcher_cli` | `launcher` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/launcher.exe` | yes | tuple build passes |
+| client | `dominium_client` | `client` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/client.exe` | yes | tuple build passes |
+| server | `dominium_server` | `server` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/server.exe` | yes | tuple build passes |
+| tools | `dominium-tools` | `tools` | `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/tools.exe` | yes | tuple build passes |
 
 ## What This Proves
 
 - The build contract, probe, local preset generator, and tuple runner exist.
 - The local machine detects Visual Studio 2022/MSVC v143 and can generate the canonical local tuple preset.
 - CMake configure passes for the tuple and canonical `verify` preset.
-- Native product binaries are emitted locally before the build gate fails.
+- The VS2022/v143 tuple build passes and emits native product binaries.
+- The canonical `verify` build passes and bounded product smoke checks pass.
 
 ## What This Does Not Prove
 
@@ -44,10 +45,8 @@
 
 ## Current Blocker
 
-Build fails after binary generation because UI bind generated outputs are stale:
+CTest remains blocked after build proof:
 
-- `libs/appcore/ui_bind/ui_command_binding_table.h`
-- `libs/appcore/ui_bind/ui_command_binding_table.c`
-- `libs/appcore/ui_bind/ui_accessibility_map.h`
-- `libs/appcore/ui_bind/ui_accessibility_map.c`
-- `libs/appcore/ui_bind/ui_localisation_usage_report.json`
+- full tuple CTest timed out after 20 minutes in the tools/auditx block
+- canonical `ctest --preset verify` timed out after 20 minutes in the tools/auditx block
+- representative failures include `tools_coverage_inspect` missing `compat`, auditx/governance paths assuming root `schema`, and existing RepoX drift

@@ -163,3 +163,19 @@ The canonical `verify` build also produced `setup.exe`, `launcher.exe`, `client.
 
 - ready_for_POST_CONVERGE_11: no
 - reason: product binaries were produced, but the build is still failing on stale UI bind generated outputs, so native binary proof is not yet green.
+
+## POST-CONVERGE-10D Follow-up
+
+POST-CONVERGE-10D remediated the UI bind freshness blocker.
+
+Updated result:
+
+- `libs/appcore/ui_bind/**` is now pinned to LF line endings for byte-identical generated-source freshness checks.
+- `tool_ui_bind --check`: pass.
+- `verify.winnt10.x64.msvc143.mt.debug` configure/build: pass.
+- `cmake --preset verify`: pass.
+- `cmake --build --preset verify`: pass.
+- Tuple and canonical CTest: timeout/fail in tools/auditx tests.
+- Native product binaries are present under `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/`.
+
+Current blocker: targeted CTest/auditx remediation is required before native build/test proof is fully green.

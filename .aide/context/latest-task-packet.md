@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-10C CMake path remediation
+UNSPECIFIED - POST-CONVERGE-10D UI bind freshness remediation
 
 ## GOAL
 
-POST-CONVERGE-10C CMake path remediation
+POST-CONVERGE-10D UI bind freshness remediation
 
 ## WHY
 
@@ -119,8 +119,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4233
-- approx_tokens: 1059
+- chars: 4247
+- approx_tokens: 1062
 - budget_status: PASS
 - warnings:
   - none

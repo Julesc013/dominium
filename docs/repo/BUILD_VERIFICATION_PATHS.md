@@ -2,14 +2,14 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10C
-- Current status: blocked at UI bind generated-output freshness gate
+- Phase: POST-CONVERGE-10D
+- Current status: build proven, CTest blocked in tools/auditx tests
 
-POST-CONVERGE-06 confirmed that repository layout and supplemental validators can run locally, but the canonical CMake verify lane is still blocked by this machine's missing Visual Studio toolchain. POST-CONVERGE-07 confirmed that no local product runtime proof can proceed without that build output or an accepted equivalent CI proof.
+POST-CONVERGE-06 confirmed that repository layout and supplemental validators can run locally, while the canonical CMake verify lane was blocked by this machine's missing Visual Studio toolchain at that time. POST-CONVERGE-07 confirmed that no local product runtime proof could proceed without build output or an accepted equivalent CI proof.
 
 POST-CONVERGE-08 re-ran `cmake --preset verify` with the same missing-generator failure. Product boot proof is therefore limited to script/wrapper AppShell help surfaces and does not replace native configure/build/CTest proof.
 
-POST-CONVERGE-10 added a tuple-driven build contract and local machine probe. POST-CONVERGE-10B reprobed after Visual Studio installation. POST-CONVERGE-10C fixed the stale client/server source paths in active CMake and test inputs. The VS2022/MSVC v143 tuple and the canonical `verify` preset now configure successfully, but build fails because UI bind generated outputs are stale.
+POST-CONVERGE-10 added a tuple-driven build contract and local machine probe. POST-CONVERGE-10B reprobed after Visual Studio installation. POST-CONVERGE-10C fixed the stale client/server source paths in active CMake and test inputs. POST-CONVERGE-10D fixed the UI bind byte-for-byte freshness issue by pinning tracked UI bind generated sources to LF line endings. The VS2022/MSVC v143 tuple and the canonical `verify` preset now configure and build successfully, but CTest is still blocked by tools/auditx failures and timeout.
 
 Build contract references:
 
@@ -38,7 +38,7 @@ ctest --preset verify
 | Binary dir | `${sourceDir}/out/build/vs2026/${presetName}` |
 | Build type | `Debug` |
 | Tests | `DOM_BUILD_TESTS=ON` |
-| Local status | configure passes; build fails at UI bind generated-output freshness check |
+| Local status | configure and build pass; CTest fails/times out in tools/auditx tests |
 | CI status | intended MSVC proof lane if CI has Visual Studio 2022 |
 
 ## Local Fallback Lane
@@ -86,6 +86,7 @@ Run a tuple after a generated mapping exists:
 python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --dry-run
 python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --configure
 python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --build
+python tools/build/run_tuple.py --repo-root . --tuple verify.winnt10.x64.msvc143.mt.debug --test
 ```
 
 ## Build/Test Commands
@@ -121,11 +122,12 @@ ctest --preset verify
 
 - Local Visual Studio 2022 generator instance is present.
 - Stale client/server CMake and test paths were remediated in POST-CONVERGE-10C.
-- Build now fails on stale UI bind generated outputs under `libs/appcore/ui_bind/`.
+- UI bind generated-output freshness was remediated in POST-CONVERGE-10D.
+- Tuple and canonical `verify` builds now pass.
 - Local Visual Studio 2026 and 2017 instances are not detected.
-- Local configure proof is complete for the VS2022/v143 tuple and canonical `verify` preset.
-- Build and CTest proof are not complete.
-- Native product binaries are produced locally before the build gate fails, but are not accepted as green proof until the UI bind blocker is fixed.
+- Local configure/build proof is complete for the VS2022/v143 tuple and canonical `verify` preset.
+- CTest proof is not complete: the full CTest run times out in tools/auditx tests after earlier failures.
+- Native product binaries are produced locally by the tuple build; canonical `verify` produces setup/launcher/client/server binaries.
 - FAST still fails after the structural fix because RepoX now exposes broad drift and missing-artifact backlog.
 - POST-CONVERGE-07 could not run product binaries or prove local playtest/session/status/save/load/resume.
 - POST-CONVERGE-08 could not run native product binaries; only partial script/wrapper help surfaces were proven.

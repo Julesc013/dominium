@@ -2,14 +2,14 @@
 
 Status: PROVISIONAL
 
-Phase: POST-CONVERGE-10C
+Phase: POST-CONVERGE-10D
 
 ## Contract Toolchains
 
 | Toolchain | Contract Status | Proof Level | Notes |
 | --- | --- | --- | --- |
-| `host_default` | unknown | configure | maps to detected VS2022 generator on this host |
-| `msvc143` | planned | configure | Visual Studio Enterprise 2022 and C++ tools detected; configure passes; build fails at UI bind freshness gate |
+| `host_default` | unknown | build | maps to detected VS2022 generator on this host |
+| `msvc143` | planned | build | Visual Studio Enterprise 2022 and C++ tools detected; configure/build pass; CTest fails/times out in tools/auditx tests |
 | `msvc145` | unknown | none | Visual Studio 18 2026 generator name is visible, but no instance is detected |
 | `msvc141` | research | none | Visual Studio 15 2017 instance not detected |
 | `msvc141_xp` | research | none | XP toolset not detected |
@@ -20,7 +20,7 @@ Phase: POST-CONVERGE-10C
 
 ## Local Probe Result
 
-POST-CONVERGE-10C proof result on this machine:
+POST-CONVERGE-10D proof result on this machine:
 
 | Tool | Detected? | Version/Detail | Notes |
 | --- | --- | --- | --- |
@@ -28,7 +28,7 @@ POST-CONVERGE-10C proof result on this machine:
 | Python | yes | `3.8.1` | sufficient for the build tools added in this task |
 | Ninja | no | not found | not required for VS generator |
 | Visual Studio 17 2022 | yes | Visual Studio Enterprise 2022 `17.14.37301.10` | canonical VS2022 instance detected |
-| MSVC v143 | yes | CMake selected MSVC tools `14.44.35207`; compiler reports MSVC `19.44.35227.0` | tuple configure attempted |
+| MSVC v143 | yes | CMake selected MSVC tools `14.44.35207`; compiler reports MSVC `19.44.35227.0` | tuple configure/build pass |
 | Windows SDK | yes | `10.0.26100.0` | selected by CMake |
 | Visual Studio 18 2026 | no | no instance detected | generator name alone is not proof |
 | Visual Studio 15 2017 | no | no instance detected | compatibility tuple blocked |
@@ -41,7 +41,7 @@ POST-CONVERGE-10C proof result on this machine:
 
 | Tuple | Proof Level | Notes |
 | --- | --- | --- |
-| `verify.winnt10.x64.msvc143.mt.debug` | configure | generated preset exists; configure passes; build fails at UI bind generated-output freshness gate |
+| `verify.winnt10.x64.msvc143.mt.debug` | build | generated preset exists; configure/build pass; CTest fails/times out in tools/auditx tests |
 | `verify.host.host.host_default.host.debug` | generated | host default maps to detected VS generator |
 | `smoke.host.host.host_default.host.debug` | generated | host default maps to detected VS generator |
 
@@ -54,4 +54,4 @@ POST-CONVERGE-10C proof result on this machine:
 | `verify.linux.x64.gcc.host.debug` | `gcc` unavailable |
 | `verify.linux.x64.clang.host.debug` | `clang` unavailable |
 
-No complete build or CTest proof exists yet. POST-CONVERGE-10C cleared the stale CMake/test path blocker and produced local product binaries before build failure, but the build remains blocked by stale UI bind generated outputs under `libs/appcore/ui_bind/`.
+Build proof exists for the VS2022/v143 tuple and canonical `verify` build. CTest proof remains blocked: full CTest times out in the tools/auditx block after failures involving `compat` import resolution, root `schema` path assumptions, and existing RepoX drift.

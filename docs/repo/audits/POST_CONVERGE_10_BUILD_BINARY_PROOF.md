@@ -183,3 +183,25 @@ Native binary status:
 - Generated binaries were not committed.
 
 Current blocker: `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`.
+
+## POST-CONVERGE-10D Follow-up
+
+POST-CONVERGE-10D fixed the UI bind generated-output freshness blocker by adding a narrow LF line-ending policy for tracked generated UI bind outputs.
+
+Updated proof level:
+
+- `tool_ui_bind --check`: pass.
+- `verify.winnt10.x64.msvc143.mt.debug` configure: pass.
+- `verify.winnt10.x64.msvc143.mt.debug` build: pass.
+- `verify.winnt10.x64.msvc143.mt.debug` CTest: timeout/fail in tools/auditx tests.
+- `cmake --preset verify`: pass.
+- `cmake --build --preset verify`: pass.
+- `ctest --preset verify`: timeout/fail in tools/auditx tests.
+
+Native binary status:
+
+- `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` are present under `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin`.
+- `setup.exe`, `launcher.exe`, `client.exe`, and `server.exe` are present under `out/build/vs2026/verify/bin`.
+- Generated binaries were not committed.
+
+Current blocker: CTest/auditx remediation is required. Representative failures include missing `compat` import resolution in `tools_coverage_inspect`, auditx/governance model assumptions about a root `schema` path, and existing RepoX drift.

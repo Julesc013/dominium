@@ -4,7 +4,7 @@ Status: PROVISIONAL
 
 Phase: POST-CONVERGE
 
-## Current Correction After POST-CONVERGE-10C
+## Current Correction After POST-CONVERGE-10D
 
 POST-CONVERGE-00 confirmed that exception retirement and build/runtime proof must precede platform, render, native shell, worldgen, and broad domain expansion.
 
@@ -12,8 +12,8 @@ POST-CONVERGE-06 completed targeted build, FAST, and AIDE diagnostics:
 
 - the AIDE pack Python compatibility blocker is fixed locally
 - the original FAST `repox_runner` structural crash is reduced to broader RepoX drift findings
-- local `cmake --preset verify` remains blocked by the missing Visual Studio 17 2022 generator
-- build and CTest proof remain pending until a valid verify toolchain or accepted CI lane is available
+- local `cmake --preset verify` was blocked at that time by the missing Visual Studio 17 2022 generator
+- build and CTest proof were pending until a valid verify toolchain or accepted CI lane was available
 
 POST-CONVERGE-07 attempted canonical local runtime proof and is blocked:
 
@@ -61,11 +61,21 @@ POST-CONVERGE-10C fixed the stale client/server CMake and test paths:
 - build remains red because `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`
 - `ctest --preset verify` was not run because build failed
 
+POST-CONVERGE-10D fixed the UI bind generated-output freshness gate:
+
+- `libs/appcore/ui_bind/**` is now pinned to LF line endings for byte-identical generated-source checks
+- `tool_ui_bind --check` passes
+- `verify.winnt10.x64.msvc143.mt.debug` configure and build pass
+- `cmake --preset verify` and `cmake --build --preset verify` pass
+- native product binaries are present under `.dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug/bin/`
+- canonical verify binaries for setup/launcher/client/server are present under `out/build/vs2026/verify/bin/`
+- CTest remains blocked by tools/auditx failures and timeout
+
 Current priority order:
 
-1. remediate stale UI bind generated outputs under `libs/appcore/ui_bind/`
-2. rerun the generated `verify.winnt10.x64.msvc143.mt.debug` tuple build and CTest
-3. remediate or explicitly accept remaining RepoX FAST drift findings
+1. remediate or explicitly classify CTest tools/auditx failures and timeout
+2. remediate or explicitly accept remaining RepoX FAST drift findings
+3. decide whether POST-CONVERGE-11 may proceed with build-green/CTest-warning status
 4. fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
 5. fix or classify direct `apps/server/server_main.py` CLI argument forwarding
 6. add or prove a real portable projection assembly path that emits required manifests and roots
@@ -97,7 +107,7 @@ Planning references:
 
 The repository is ready for scoped work in these areas:
 
-- targeted UI bind generated-output remediation for the existing `verify` preset
+- targeted CTest/auditx remediation for the existing `verify` preset
 - targeted build tuple/probe/preset remediation using `contracts/build/`
 - targeted RepoX FAST drift remediation
 - targeted command-surface remediation for script-level CLI argument forwarding, after build proof is available
@@ -122,9 +132,9 @@ Platform, render, native shell, Universal Reality enforcement, worldgen, domain 
 
 ## Suggested Sequence
 
-1. Fix stale UI bind generated outputs under `libs/appcore/ui_bind/`.
+1. Fix tools/auditx CTest failures and timeout after build proof.
 2. Rerun `tools/build/probe_toolchains.py` and generate ignored local preset data.
-3. Run build and CTest through `verify.winnt10.x64.msvc143.mt.debug` or the canonical `verify` lane.
+3. Rerun CTest through `verify.winnt10.x64.msvc143.mt.debug` or the canonical `verify` lane.
 4. Address remaining RepoX FAST drift findings in a targeted remediation task.
 5. Remediate or explicitly classify setup Python bridge compatibility and the missing `dist/bin/dom` target.
 6. Add or prove a portable projection assembly path that emits `install.manifest.json`, `semantic_contract_registry.json`, `release.manifest.json`, product binaries, and required portable roots.
