@@ -13,4 +13,4 @@ This is a deterministic preview only. It does not publish a release.
 
 ## Notes
 
-- 15 malformed commits were excluded from release-note grouping.
+- 14 malformed commits were excluded from release-note grouping.

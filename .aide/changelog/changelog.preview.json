@@ -41,6 +41,11 @@
         "commit": "d722727e80e1",
         "entry": "refreshed Dominium-local AIDE generated reports and review evidence.",
         "subject": "aide(dominium): regenerate packets and validation evidence"
+      },
+      {
+        "commit": "752918d4f281",
+        "entry": "refreshed final Q33 generated validation artifacts.",
+        "subject": "aide(dominium): refresh final validation artifacts"
       }
     ],
     "Tests": [
@@ -54,11 +59,6 @@
   "commit_count": 20,
   "generated_by": "aide-lite",
   "malformed_commits": [
-    {
-      "commit": "20ecdf86a6321f87360396eb57988e1fa2987557",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
-      "subject": "audit(repo): triage post-converge health and exceptions"
-    },
     {
       "commit": "49ee68ca8f69ee1606847719cc265f914bed455d",
       "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",

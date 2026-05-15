@@ -1,0 +1,20 @@
+schema_version: aide.queue-status.v0
+id: DOMINIUM-AIDE-FRESH-PREFLIGHT-01
+status: needs_review
+result: READY_FOR_Q50_WITH_WARNINGS
+updated: 2026-05-15
+summary: >
+  Dominium identity confirmed, existing AIDE q24 inspected, local AIDE release
+  bundle found and checksum-validated, doctrine/tool preservation rules
+  recorded, and Q50 upgrade dry-run recommended with warnings.
+review_required: true
+install_applied: false
+upgrade_applied: false
+release_bundle_copied_into_target: false
+provider_or_model_calls: false
+network_calls: false
+branch_or_remote_mutation: false
+product_source_changed: false
+doctrine_changed: false
+tool_systems_changed: false
+contracts_or_schemas_changed: false

@@ -71,7 +71,7 @@
       "warnings": []
     },
     {
-      "approx_tokens_if_applicable": 1158,
+      "approx_tokens_if_applicable": 1145,
       "checks_run": 17,
       "errors": [],
       "notes": "Checks the compact task packet shape and forbidden prompt discipline.",
@@ -300,7 +300,7 @@
       "warnings": []
     },
     {
-      "approx_tokens_if_applicable": 1231,
+      "approx_tokens_if_applicable": 1229,
       "checks_run": 20,
       "errors": [],
       "notes": "Checks review packet evidence-only shape.",

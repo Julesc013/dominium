@@ -26,10 +26,10 @@ release_publishing: false
 - added the Q33 queue and evidence recovery surface. (dd843482c92d aide(dominium): add canonical governance sync packet)
 - refreshed Codex adapter guidance for governance-aware task recovery and branch planning. (4f04a866b73c aide(dominium): sync Git workflow policy and reports)
 - refreshed Dominium-local AIDE generated reports and review evidence. (d722727e80e1 aide(dominium): regenerate packets and validation evidence)
+- refreshed final Q33 generated validation artifacts. (752918d4f281 aide(dominium): refresh final validation artifacts)
 
 ## Malformed Commits
 
-- 20ecdf86a632 audit(repo): triage post-converge health and exceptions: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact
 - 49ee68ca8f69 chore(repo): retire generated output root exceptions: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact
 - e81e6d7f2a97 chore(repo): retire root wrapper and tooling exceptions: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact
 - ed571cd32cd9 chore(repo): retire content and pack root exceptions: commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact

@@ -19,7 +19,7 @@
   "source": "",
   "state": {
     "ahead_behind": {
-      "ahead": 5,
+      "ahead": 6,
       "behind": 0,
       "error": "",
       "known": true
@@ -32,7 +32,7 @@
       "origin/recovery/mega-13cb8ca7": "unknown"
     },
     "current_branch": "main",
-    "current_commit": "4252584e060baf01bb1692c68e84348043793f95",
+    "current_commit": "752918d4f281aad12cdb6e892d39460172155e34",
     "current_role": "canonical",
     "detached_head": false,
     "local_branches": [
@@ -64,7 +64,7 @@
     "schema_version": "aide.git-helper-state.v0",
     "unpushed_protected_branches": [
       {
-        "ahead": 5,
+        "ahead": 6,
         "behind": 0,
         "branch": "main",
         "error": "",

@@ -10,7 +10,7 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Task Packet Reference
 
-- `.aide/context/latest-task-packet.md` (4632 chars, 1158 approximate tokens)
+- `.aide/context/latest-task-packet.md` (4580 chars, 1145 approximate tokens)
 
 ## Context Packet Reference
 
@@ -37,14 +37,18 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 - unknown: `.aide/changelog/RELEASE_NOTES.preview.md` (M; does not match active task allowed paths)
 - unknown: `.aide/changelog/changelog.preview.json` (M; does not match active task allowed paths)
 - unknown: `.aide/changelog/malformed-commits.md` (M; does not match active task allowed paths)
+- allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
+- allowed: `.aide/context/latest-task-packet.md` (M; matches active task allowed path)
 - allowed: `.aide/evals/runs/latest-golden-tasks.json` (M; matches active task allowed path)
 - allowed: `.aide/evals/runs/latest-golden-tasks.md` (M; matches active task allowed path)
 - unknown: `.aide/git/latest-helper-plan.json` (M; does not match active task allowed paths)
 - unknown: `.aide/git/latest-helper-plan.md` (M; does not match active task allowed paths)
-- unknown: `.aide/git/workflow-detection.json` (M; does not match active task allowed paths)
-- unknown: `.aide/git/workflow-detection.md` (M; does not match active task allowed paths)
-- allowed: `.aide/reports/token-ledger.jsonl` (M; matches active task allowed path)
-- allowed: `.aide/reports/token-savings-summary.md` (M; matches active task allowed path)
+- unknown: `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01` (??; does not match active task allowed paths)
+- allowed: `.aide/reports/dominium-aide-preservation-plan.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/dominium-existing-tool-preflight.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/dominium-fresh-install-preflight.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/dominium-next-aide-task.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/dominium-release-bundle-readiness.md` (??; matches active task allowed path)
 
 ## Validation Summary
 
@@ -54,8 +58,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - packet_path: `.aide/context/latest-review-packet.md`
 - method: chars / 4, rounded up
-- chars: 4489
-- approx_tokens: 1123
+- chars: 4913
+- approx_tokens: 1229
 - budget_status: PASS
 - max_token_warning: 2400
 - warnings:

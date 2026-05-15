@@ -1,0 +1,53 @@
+schema_version: aide.queue-task.v0
+id: DOMINIUM-AIDE-FRESH-PREFLIGHT-01
+title: Dominium fresh AIDE install/upgrade preflight
+status: needs_review
+work_class: validation_audit
+created: 2026-05-15
+repo: julesc013/dominium
+branch: main
+start_commit: 752918d4f281aad12cdb6e892d39460172155e34
+goal: >
+  Inspect Dominium target state, existing AIDE Lite state, doctrine,
+  XStack/AuditX/RepoX/TestX systems, validation surfaces, ignored local state,
+  and local AIDE release bundle readiness before any install or upgrade.
+touched_paths:
+  - .aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/**
+  - .aide/reports/dominium-fresh-install-preflight.md
+  - .aide/reports/dominium-aide-preservation-plan.md
+  - .aide/reports/dominium-existing-tool-preflight.md
+  - .aide/reports/dominium-release-bundle-readiness.md
+  - .aide/reports/dominium-next-aide-task.md
+  - .aide/context/latest-task-packet.md
+  - .aide/context/latest-review-packet.md
+  - .aide/evals/runs/latest-golden-tasks.*
+  - .aide/git/latest-helper-plan.*
+  - .aide/changelog/*
+relevant_invariants:
+  - docs/canon/constitution_v1.md
+  - docs/canon/glossary_v1.md
+  - AGENTS.md
+  - docs/planning/AUTHORITY_ORDER.md
+  - docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md
+  - docs/planning/MERGED_PROGRAM_STATE.md
+  - docs/planning/EXTEND_NOT_REPLACE_LEDGER.md
+  - docs/planning/GATES_AND_PROOFS.md
+  - docs/planning/POST_PI_EXECUTION_PLAN.md
+  - docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md
+  - docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md
+contracts_schemas: no Dominium product, contract, schema, release, or doctrine files changed
+validation_level: FAST
+expected_artifacts:
+  - evidence/repo-state.md
+  - evidence/existing-aide-state.md
+  - evidence/doctrine-preservation.md
+  - evidence/existing-tool-systems.md
+  - evidence/release-bundle-readiness.md
+  - evidence/install-upgrade-risk-report.md
+  - evidence/q50-readiness.md
+non_goals:
+  - install AIDE
+  - upgrade AIDE
+  - copy release bundle files into Dominium
+  - modify product, doctrine, source, tool, branch, remote, CI, or release state
+  - run provider, model, network, publish, prune, clean, or destructive build commands

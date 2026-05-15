@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - Select the next bounded Dominium task after canonical AIDE governance sync
+Q50 - Dominium Fresh Install / Upgrade from Stable AIDE Pack
 
 ## GOAL
 
-Select the next bounded Dominium task after canonical AIDE governance sync
+Q50 Dominium Fresh Install / Upgrade from Stable AIDE Pack
 
 ## WHY
 
@@ -50,7 +50,7 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 
 - `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
+- `.aide/queue/q50-*` if this task becomes a queue item
 - root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
@@ -121,8 +121,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4632
-- approx_tokens: 1158
+- chars: 4580
+- approx_tokens: 1145
 - budget_status: PASS
 - warnings:
   - none
