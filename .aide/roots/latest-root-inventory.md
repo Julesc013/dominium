@@ -1,9 +1,9 @@
 # Latest Root Inventory
 
 - generated_by: aide-lite
-- source_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
+- source_commit: 52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f
 - source_mode: repo_intelligence_index_plus_tracked_delta
-- file_count: 15428
+- file_count: 15956
 - root_count: 44
 - no_apply: true
 - file_moves: false
@@ -25,7 +25,7 @@
 
 ## Roots
 
-- `.aide`: files=247 status=mixed risk=high
+- `.aide`: files=775 status=mixed risk=high
 - `.aide.local.example`: files=5 status=review_required risk=high
 - `.github`: files=2 status=review_required risk=high
 - `.vscode`: files=1 status=review_required risk=high

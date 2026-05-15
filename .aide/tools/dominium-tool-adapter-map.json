@@ -1,0 +1,286 @@
+{
+  "adapter_count": 11,
+  "adapters": [
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "repo_policy",
+        "validate",
+        "audit"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "No mutation; report XStack catalog/status and known validation entrypoints.",
+      "output_contract_hint": "Structured status JSON plus markdown summary under .aide/tools/.",
+      "proposed_aide_command": "tools run dominium.xstack.status --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "XStack is a legacy governance/tooling system; wrapper-first only.",
+      "source_tool_paths": [
+        "docs/XSTACK.md",
+        "tools/xstack/run.py",
+        "scripts/dev/gate.py"
+      ],
+      "validation_requirement": "Must be proven non-mutating before execution is enabled.",
+      "wrapper_id": "dominium.xstack.status"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "validate",
+        "repo_policy"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "Bundle or registry path; no generated promotion.",
+      "output_contract_hint": "Validation result and evidence refs only.",
+      "proposed_aide_command": "tools run dominium.xstack.validate.bundle --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "May touch validation/build assumptions; execution remains disabled in Q51.",
+      "source_tool_paths": [
+        "tools/xstack/bundle_validate.py",
+        "tools/xstack/bundle_validate",
+        "tools/xstack/ci/xstack_ci_entrypoint.py"
+      ],
+      "validation_requirement": "Q52+ must prove safe arguments and side effects before enabling.",
+      "wrapper_id": "dominium.xstack.validate.bundle"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "audit",
+        "docs",
+        "repo_policy"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "Repo path or scoped audit group; report-only mode required.",
+      "output_contract_hint": "Audit findings under .aide/tools/ without rewriting source reports.",
+      "proposed_aide_command": "tools run dominium.auditx.scan --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "Audit surfaces may reference protected doctrine and release policy.",
+      "source_tool_paths": [
+        "tools/auditx/auditx.py",
+        "tools/auditx/README.md",
+        "tools/xstack/auditx/check.py"
+      ],
+      "validation_requirement": "Must separate generated evidence from canonical doctrine.",
+      "wrapper_id": "dominium.auditx.scan"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "repo_policy",
+        "validate",
+        "security"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "RepoX ruleset path and repository snapshot.",
+      "output_contract_hint": "Policy validation evidence; no branch or file mutation.",
+      "proposed_aide_command": "tools run dominium.repox.rules.validate --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "Repo policy tooling is authority-sensitive and branch-sensitive.",
+      "source_tool_paths": [
+        "scripts/ci/check_repox_rules.py",
+        "repo/repox/rulesets/core.json",
+        "tools/xstack/repox/check.py"
+      ],
+      "validation_requirement": "Must confirm rule checker is read-only before wrapper execution.",
+      "wrapper_id": "dominium.repox.rules.validate"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "test",
+        "validate"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "Named safe suite/profile only after Q52+ proof.",
+      "output_contract_hint": "Test evidence refs and command transcript summary.",
+      "proposed_aide_command": "tools run dominium.testx.fast --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "Do not execute broad historical test runners until safe profile is proven.",
+      "source_tool_paths": [
+        "tools/xstack/testx_all.py",
+        "tools/xstack/testx/README.md",
+        "scripts/dev/run_xstack_group_tests.py",
+        "scripts/dev/testx_proof_engine.py"
+      ],
+      "validation_requirement": "Must classify runtime/build side effects and expected duration.",
+      "wrapper_id": "dominium.testx.fast"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "validate"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "FAST validation profile.",
+      "output_contract_hint": "Pass/fail summary and evidence files.",
+      "proposed_aide_command": "validate dominium.fast --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "Candidate wrapper only; not executed in Q51.",
+      "source_tool_paths": [
+        "scripts/dev/gate.py",
+        "validation/validation_engine.py",
+        "tools/xstack/ci/profiles/FAST.json"
+      ],
+      "validation_requirement": "Confirm the documented FAST command is non-mutating and quick.",
+      "wrapper_id": "dominium.validate.fast"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "validate",
+        "test",
+        "audit"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "STRICT validation profile.",
+      "output_contract_hint": "Validation evidence with runtime/cost estimate.",
+      "proposed_aide_command": "validate dominium.strict --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "May be expensive or broad; keep disabled until proven.",
+      "source_tool_paths": [
+        "scripts/dev/gate.py",
+        "tools/xstack/ci/profiles/STRICT.json",
+        "validation/validation_engine.py"
+      ],
+      "validation_requirement": "Must be opt-in after duration and mutation risk are documented.",
+      "wrapper_id": "dominium.validate.strict"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "build"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "CMake preset and build directory policy.",
+      "output_contract_hint": "Build plan only unless future task authorizes execution.",
+      "proposed_aide_command": "build dominium.native --plan-only",
+      "q51_action": "plan_only",
+      "risk_notes": "Build-sensitive; Q51 records only.",
+      "source_tool_paths": [
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "cmake"
+      ],
+      "validation_requirement": "Never run clean/package by default; build execution requires explicit future scope.",
+      "wrapper_id": "dominium.build.native"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "docs",
+        "audit"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "Documentation scope and authority-order refs.",
+      "output_contract_hint": "Docs consistency evidence without doctrine rewrite.",
+      "proposed_aide_command": "docs dominium.sanity --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "Doctrine-adjacent; report-only by default.",
+      "source_tool_paths": [
+        "docs",
+        "scripts",
+        "tools/auditx/README.md"
+      ],
+      "validation_requirement": "Must respect AGENTS.md and canon authority ordering.",
+      "wrapper_id": "dominium.docs.sanity"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "security",
+        "audit"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "Targeted local scan paths; no network.",
+      "output_contract_hint": "Secret/local-state warnings with redaction.",
+      "proposed_aide_command": "security dominium.scan --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "Security-sensitive; require redaction and no provider calls.",
+      "source_tool_paths": [
+        "security",
+        "scripts",
+        "tools"
+      ],
+      "validation_requirement": "No raw secrets in committed evidence.",
+      "wrapper_id": "dominium.security.scan"
+    },
+    {
+      "apply_allowed": false,
+      "capability_families": [
+        "release",
+        "package",
+        "repo_policy"
+      ],
+      "execution_allowed": false,
+      "future_phase_required": true,
+      "input_contract_hint": "Release gate profile only; no publishing.",
+      "output_contract_hint": "Release readiness evidence; no tags/releases/CI mutation.",
+      "proposed_aide_command": "release dominium.gate --dry-run",
+      "q51_action": "plan_only",
+      "risk_notes": "Release-sensitive; Q51 wrapper plan only.",
+      "source_tool_paths": [
+        "repo/release_policy.toml",
+        "docs/release"
+      ],
+      "validation_requirement": "Future release-control task required before any active release action.",
+      "wrapper_id": "dominium.release.gate"
+    }
+  ],
+  "apply_allowed_default": false,
+  "branch": "main",
+  "execution_allowed_default": false,
+  "generated_at_utc": "2026-05-15T07:25:52.272554+00:00",
+  "q51_policy": "discover -> classify -> map capability -> plan wrapper -> preserve; no deletion, rename, move, migration, or unknown execution in Q51",
+  "repo": "julesc013/dominium",
+  "schema_version": "dominium.tool-absorption.v0",
+  "source_adapter_map_summary": {
+    "source_path": ".aide/tools/latest-tool-adapter-map.json",
+    "top_level_keys": [
+      "adapter_map_id",
+      "execution_allowed",
+      "generated_by",
+      "mappings",
+      "no_apply",
+      "schema_version",
+      "source_commit",
+      "unmapped_tools",
+      "unsupported_tools",
+      "warnings"
+    ]
+  },
+  "source_classification": ".aide/tools/latest-tool-classification.json",
+  "source_commit": "52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f",
+  "source_inventory": ".aide/tools/latest-tool-inventory.json",
+  "source_wrap_plan": ".aide/tools/latest-tool-wrap-plan.json",
+  "source_wrap_plan_summary": {
+    "source_path": ".aide/tools/latest-tool-wrap-plan.json",
+    "top_level_keys": [
+      "execution_allowed",
+      "generated_by",
+      "next_recommended_phase",
+      "no_apply",
+      "plan_id",
+      "schema_version",
+      "source_commit",
+      "source_inputs",
+      "status",
+      "target_repo_mutation",
+      "tool_count",
+      "tool_deletion",
+      "tool_migration",
+      "tool_rename",
+      "warnings",
+      "wrapper_plans"
+    ]
+  }
+}

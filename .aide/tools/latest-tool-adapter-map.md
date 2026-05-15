@@ -1,9 +1,9 @@
 # Tool Adapter Map
 
 - adapter_map_id: q41-latest-tool-adapter-map
-- source_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
-- mapping_count: 1985
-- unmapped_count: 846
+- source_commit: 52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f
+- mapping_count: 2141
+- unmapped_count: 854
 - execution_allowed: false
 - no_apply: true
 
@@ -13,87 +13,95 @@
 - `.aide/cache/latest-cache-keys.json` -> future tools wrapper for test (test)
 - `.aide/cache/latest-cache-keys.md` -> future tools wrapper for test (test)
 - `.aide/changelog/RELEASE_NOTES.preview.md` -> future tools wrapper for release (release)
+- `.aide/changelog/latest-changelog-report.md` -> future tools wrapper for audit (audit)
+- `.aide/changelog/release-notes.preview.json` -> future tools wrapper for release (release)
+- `.aide/changelog/templates/release-notes.md.template` -> future tools wrapper for release (release)
 - `.aide/context/latest-context-packet.md` -> future tools wrapper for context (context)
 - `.aide/context/latest-review-packet.md` -> future tools wrapper for context (context)
 - `.aide/context/latest-task-packet.md` -> future tools wrapper for context (context)
 - `.aide/context/test-map.json` -> future tools wrapper for context (context)
 - `.aide/evals/runs/latest-golden-tasks.json` -> future tools wrapper for test (test)
 - `.aide/evals/runs/latest-golden-tasks.md` -> future tools wrapper for test (test)
+- `.aide/gateway/latest-gateway-status.json` -> future tools wrapper for test (test)
+- `.aide/gateway/latest-gateway-status.md` -> future tools wrapper for test (test)
 - `.aide/git/latest-helper-plan.json` -> future tools wrapper for test (test)
 - `.aide/git/latest-helper-plan.md` -> future tools wrapper for test (test)
 - `.aide/git/sync-policy.md` -> future tools wrapper for repo_policy (repo_policy)
 - `.aide/import-policy.template.yaml` -> future tools wrapper for repo_policy (repo_policy)
 - `.aide/import-report.template.md` -> future tools wrapper for audit (audit)
+- `.aide/install/install-dry-run.schema.json` -> future tools wrapper for install (install)
+- `.aide/install/install-observation.schema.json` -> future tools wrapper for install (install)
+- `.aide/install/install-operation.schema.json` -> future tools wrapper for install (install)
+- `.aide/install/install-plan.schema.json` -> future tools wrapper for install (install)
+- `.aide/install/install-verification.schema.json` -> future tools wrapper for install (install)
+- `.aide/install/latest-conflict-report.json` -> future tools wrapper for audit (audit)
+- `.aide/install/latest-conflict-report.md` -> future tools wrapper for audit (audit)
+- `.aide/install/latest-install-dry-run.json` -> future tools wrapper for install (install)
+- `.aide/install/latest-install-dry-run.md` -> future tools wrapper for install (install)
+- `.aide/install/latest-install-observation.json` -> future tools wrapper for install (install)
+- `.aide/install/latest-install-observation.md` -> future tools wrapper for install (install)
+- `.aide/install/latest-install-plan.json` -> future tools wrapper for install (install)
+- `.aide/install/latest-install-plan.md` -> future tools wrapper for install (install)
+- `.aide/install/latest-ownership-ledger.example.json` -> future tools wrapper for install (install)
+- `.aide/install/latest-preservation-report.md` -> future tools wrapper for audit (audit)
+- `.aide/install/latest-verification-plan.md` -> future tools wrapper for install (install)
+- `.aide/intake/latest-intent-packet.json` -> future tools wrapper for context (context)
+- `.aide/intake/latest-intent-packet.md` -> future tools wrapper for context (context)
+- `.aide/intake/latest-workunit-draft.json` -> future tools wrapper for test (test)
+- `.aide/intake/latest-workunit-draft.md` -> future tools wrapper for test (test)
+- `.aide/policies/doctor.yaml` -> future tools wrapper for validate (validate)
+- `.aide/policies/github-release-draft.yaml` -> future tools wrapper for release (release)
+- `.aide/policies/install-conflicts.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/install-migrations.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/install-ownership.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/install-preservation.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/install-verification.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/install.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/release-artifacts.yaml` -> future tools wrapper for release (release)
+- `.aide/policies/release-bundle.yaml` -> future tools wrapper for package (package)
+- `.aide/policies/release-checklist.yaml` -> future tools wrapper for release (release)
+- `.aide/policies/release-provenance.yaml` -> future tools wrapper for release (release)
+- `.aide/policies/release-publication-boundary.yaml` -> future tools wrapper for release (release)
+- `.aide/policies/release-upload-plan.yaml` -> future tools wrapper for release (release)
+- `.aide/policies/release-validation.yaml` -> future tools wrapper for release (release)
+- `.aide/policies/release-versioning.yaml` -> future tools wrapper for release (release)
+- `.aide/policies/rollback-classes.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/rollback-safety.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/rollback-verification.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/rollback.yaml` -> future tools wrapper for install (install)
 - `.aide/policies/sync-policy.yaml` -> future tools wrapper for repo_policy (repo_policy)
+- `.aide/policies/test-map.yaml` -> future tools wrapper for test (test)
+- `.aide/policies/uninstall-classes.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/uninstall-safety.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/uninstall-verification.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/uninstall.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/upgrade-compatibility.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/upgrade-conflicts.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/upgrade-migrations.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/upgrade-preservation.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/upgrade-verification.yaml` -> future tools wrapper for install (install)
+- `.aide/policies/upgrade.yaml` -> future tools wrapper for install (install)
+- `.aide/providers/latest-provider-status.json` -> future tools wrapper for test (test)
+- `.aide/providers/latest-provider-status.md` -> future tools wrapper for test (test)
+- `.aide/quality/test-coverage-map.schema.json` -> future tools wrapper for test (test)
 - `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/install-upgrade-risk-report.md` -> future tools wrapper for audit (audit)
 - `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/release-bundle-readiness.md` -> future tools wrapper for package (package)
 - `.aide/queue/DOMINIUM-AIDE-PILOT-01/import-report.md` -> future tools wrapper for audit (audit)
-- `.aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/sync-report.md` -> future tools wrapper for audit (audit)
-- `.aide/repo/generated-map.json` -> future tools wrapper for generate (generate)
-- `.aide/repo/latest-repo-intelligence.md` -> future tools wrapper for repo_policy (repo_policy)
-- `.aide/repo/test-map.json` -> future tools wrapper for repo_policy (repo_policy)
-- `.aide/reports/dominium-fresh-install-preflight.md` -> future tools wrapper for audit (audit)
-- `.aide/reports/dominium-release-bundle-readiness.md` -> future tools wrapper for audit (audit)
-- `.aide/routing/latest-route-decision.json` -> future tools wrapper for test (test)
-- `.aide/routing/latest-route-decision.md` -> future tools wrapper for test (test)
-- `.aide/scripts/aide_lite.py` -> future tools wrapper for context (context)
-- `.aide/verification/latest-verification-report.md` -> future tools wrapper for audit (audit)
-- `CMakeLists.txt` -> future tools wrapper for build (build)
-- `apps/client/CMakeLists.txt` -> future tools wrapper for build (build)
-- `apps/client/presentation/frame_graph_builder.cpp` -> future tools wrapper for build (build)
-- `apps/client/presentation/frame_graph_builder.h` -> future tools wrapper for build (build)
-- `apps/launcher/CMakeLists.txt` -> future tools wrapper for build (build)
-- `apps/server/CMakeLists.txt` -> future tools wrapper for build (build)
-- `apps/server/persistence/dom_checkpoint_policy.h` -> future tools wrapper for repo_policy (repo_policy)
-- `apps/server/persistence/dom_checkpointing.cpp` -> future tools wrapper for validate (validate)
-- `apps/server/persistence/dom_checkpointing.h` -> future tools wrapper for validate (validate)
-- `apps/server/persistence/integrity_checkpoints.cpp` -> future tools wrapper for validate (validate)
-- `apps/server/persistence/integrity_checkpoints.h` -> future tools wrapper for validate (validate)
-- `apps/setup/CMakeLists.txt` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/build_all.bat` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/build_codex_verify.bat` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/check_layers.py` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/ci/check_launcher_core_invariants.py` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/ci/launcher_cli_smoke_matrix.py` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/ci/setup_build.bat` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/ci/setup_build.sh` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/ci/setup_test.bat` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/ci/setup_test.sh` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/commit_template.md` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/diagnostics/make_support_bundle.py` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/doc_ratio_check.py` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/gen_base_demo_mod.py` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/gen_changelog.bat` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/gen_launcher_ui_schema_v1.py` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/gen_tools_demo.py` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/legacy/build_legacy_windows.bat` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/legacy/build_legacy_windows.sh` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/legacy/build_packages.bat` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/legacy/build_packages.sh` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/legacy/run_setup_tests.bat` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/legacy/run_setup_tests.sh` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/CMakeLists.txt` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/packaging/dsumanifest.py` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/linux/CMakeLists.txt` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/packaging/linux/build_run.sh` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/control.in` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postinst` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postrm` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/prerm` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/linux/dominium-install.sh` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/linux/dominium-installer.sh.in` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/linux/rpm/dominium.spec.in` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/linux/write_apprun.cmake` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/packaging/macos/CMakeLists.txt` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/packaging/macos/Dominium.app/Contents/Info.plist.in` -> future tools wrapper for context (context)
-- `apps/setup/packages/scripts/packaging/macos/build_dmg.sh` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/packaging/macos/build_pkg.sh` -> future tools wrapper for build (build)
-- `apps/setup/packages/scripts/packaging/macos/pkg_scripts/postinstall` -> future tools wrapper for context (context)
+- `.aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/generated-target-state.md` -> future tools wrapper for generate (generate)
+- `.aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/install-upgrade-decision.md` -> future tools wrapper for install (install)
 
 ## Unmapped Tools
 
 - `.aide/hooks/commit-msg`
 - `.aide/policies/export-import.yaml`
+- `.aide/tools/tool-adapter-map.schema.json`
+- `.aide/tools/tool-capability.schema.json`
+- `.aide/tools/tool-evidence.schema.json`
+- `.aide/tools/tool-inventory.schema.json`
+- `.aide/tools/tool-record.schema.json`
+- `.aide/tools/tool-retirement.schema.json`
+- `.aide/tools/tool-risk.schema.json`
+- `.aide/tools/tool-wrap-plan.schema.json`
 - `.github/workflows/ci.yml`
 - `archive/legacy/setup_core_setup/setup/core/import/dsk_import_legacy.cpp`
 - `contracts/schemas/net_resync_strategy_registry.schema.json`
@@ -164,11 +172,3 @@
 - `tools/chem/tool_replay_degradation_window.cmd`
 - `tools/chem/tool_replay_degradation_window.py`
 - `tools/chem/tool_replay_process_run`
-- `tools/chem/tool_replay_process_run.cmd`
-- `tools/chem/tool_replay_process_run.py`
-- `tools/chem/tool_run_chem_stress`
-- `tools/chem/tool_run_chem_stress.cmd`
-- `tools/chem/tool_run_chem_stress.py`
-- `tools/chem/tool_verify_energy_conservation`
-- `tools/chem/tool_verify_energy_conservation.cmd`
-- `tools/chem/tool_verify_energy_conservation.py`

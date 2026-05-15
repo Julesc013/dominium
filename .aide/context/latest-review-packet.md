@@ -33,31 +33,7 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Changed Files Summary
 
-- unknown: `.aide/changelog/CHANGELOG.preview.md` (M; does not match active task allowed paths)
-- allowed: `.aide/changelog/README.md` (??; matches active task allowed path)
-- unknown: `.aide/changelog/RELEASE_NOTES.preview.md` (M; does not match active task allowed paths)
-- unknown: `.aide/changelog/changelog.preview.json` (M; does not match active task allowed paths)
-- unknown: `.aide/changelog/config.yaml` (??; does not match active task allowed paths)
-- unknown: `.aide/changelog/latest-changelog-report.md` (??; does not match active task allowed paths)
-- unknown: `.aide/changelog/malformed-commits.md` (M; does not match active task allowed paths)
-- unknown: `.aide/changelog/release-notes.preview.json` (??; does not match active task allowed paths)
-- unknown: `.aide/changelog/templates` (??; does not match active task allowed paths)
-- unknown: `.aide/commands/catalog.yaml` (M; does not match active task allowed paths)
-- allowed: `.aide/context/context-index.json` (M; matches active task allowed path)
-- allowed: `.aide/context/ignore.yaml` (M; matches active task allowed path)
-- allowed: `.aide/context/latest-context-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/context/latest-task-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/context/priority.yaml` (M; matches active task allowed path)
-- allowed: `.aide/context/repo-map.json` (M; matches active task allowed path)
-- allowed: `.aide/context/repo-map.md` (M; matches active task allowed path)
-- allowed: `.aide/context/repo-snapshot.json` (M; matches active task allowed path)
-- allowed: `.aide/context/test-map.json` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/catalog.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/changelog_json_shape_golden` (??; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/changelog_preview_golden/acceptance.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/changelog_preview_golden/task.yaml` (M; matches active task allowed path)
-- additional changed paths omitted from compact packet: 243; see task evidence changed-files report
+- none
 
 ## Validation Summary
 
@@ -67,8 +43,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - packet_path: `.aide/context/latest-review-packet.md`
 - method: chars / 4, rounded up
-- chars: 5899
-- approx_tokens: 1475
+- chars: 3625
+- approx_tokens: 907
 - budget_status: PASS
 - max_token_warning: 2400
 - warnings:

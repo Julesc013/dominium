@@ -2,8 +2,8 @@
 
 - plan_id: q41-latest-tool-wrap-plan
 - status: dry_run
-- source_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
-- tool_count: 2831
+- source_commit: 52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f
+- tool_count: 2995
 - execution_allowed: false
 - no_apply: true
 - tool_deletion: false
@@ -16,82 +16,82 @@
 - `.aide/cache/latest-cache-keys.json`: capability=test status=planned execution_allowed=false
 - `.aide/cache/latest-cache-keys.md`: capability=test status=planned execution_allowed=false
 - `.aide/changelog/RELEASE_NOTES.preview.md`: capability=release status=planned execution_allowed=false
+- `.aide/changelog/latest-changelog-report.md`: capability=audit status=planned execution_allowed=false
+- `.aide/changelog/release-notes.preview.json`: capability=release status=planned execution_allowed=false
+- `.aide/changelog/templates/release-notes.md.template`: capability=release status=planned execution_allowed=false
 - `.aide/context/latest-context-packet.md`: capability=context status=planned execution_allowed=false
 - `.aide/context/latest-review-packet.md`: capability=context status=planned execution_allowed=false
 - `.aide/context/latest-task-packet.md`: capability=context status=planned execution_allowed=false
 - `.aide/context/test-map.json`: capability=context status=planned execution_allowed=false
 - `.aide/evals/runs/latest-golden-tasks.json`: capability=test status=planned execution_allowed=false
 - `.aide/evals/runs/latest-golden-tasks.md`: capability=test status=planned execution_allowed=false
+- `.aide/gateway/latest-gateway-status.json`: capability=test status=planned execution_allowed=false
+- `.aide/gateway/latest-gateway-status.md`: capability=test status=planned execution_allowed=false
 - `.aide/git/latest-helper-plan.json`: capability=test status=planned execution_allowed=false
 - `.aide/git/latest-helper-plan.md`: capability=test status=planned execution_allowed=false
 - `.aide/git/sync-policy.md`: capability=repo_policy status=planned execution_allowed=false
 - `.aide/hooks/commit-msg`: capability=unknown status=blocked_until_classified execution_allowed=false
 - `.aide/import-policy.template.yaml`: capability=repo_policy status=planned execution_allowed=false
 - `.aide/import-report.template.md`: capability=audit status=planned execution_allowed=false
+- `.aide/install/install-dry-run.schema.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/install-observation.schema.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/install-operation.schema.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/install-plan.schema.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/install-verification.schema.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/latest-conflict-report.json`: capability=audit status=planned execution_allowed=false
+- `.aide/install/latest-conflict-report.md`: capability=audit status=planned execution_allowed=false
+- `.aide/install/latest-install-dry-run.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/latest-install-dry-run.md`: capability=install status=planned execution_allowed=false
+- `.aide/install/latest-install-observation.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/latest-install-observation.md`: capability=install status=planned execution_allowed=false
+- `.aide/install/latest-install-plan.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/latest-install-plan.md`: capability=install status=planned execution_allowed=false
+- `.aide/install/latest-ownership-ledger.example.json`: capability=install status=planned execution_allowed=false
+- `.aide/install/latest-preservation-report.md`: capability=audit status=planned execution_allowed=false
+- `.aide/install/latest-verification-plan.md`: capability=install status=planned execution_allowed=false
+- `.aide/intake/latest-intent-packet.json`: capability=context status=planned execution_allowed=false
+- `.aide/intake/latest-intent-packet.md`: capability=context status=planned execution_allowed=false
+- `.aide/intake/latest-workunit-draft.json`: capability=test status=planned execution_allowed=false
+- `.aide/intake/latest-workunit-draft.md`: capability=test status=planned execution_allowed=false
+- `.aide/policies/doctor.yaml`: capability=validate status=planned execution_allowed=false
 - `.aide/policies/export-import.yaml`: capability=unknown status=blocked_until_classified execution_allowed=false
+- `.aide/policies/github-release-draft.yaml`: capability=release status=planned execution_allowed=false
+- `.aide/policies/install-conflicts.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/install-migrations.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/install-ownership.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/install-preservation.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/install-verification.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/install.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/release-artifacts.yaml`: capability=release status=planned execution_allowed=false
+- `.aide/policies/release-bundle.yaml`: capability=package status=planned execution_allowed=false
+- `.aide/policies/release-checklist.yaml`: capability=release status=planned execution_allowed=false
+- `.aide/policies/release-provenance.yaml`: capability=release status=planned execution_allowed=false
+- `.aide/policies/release-publication-boundary.yaml`: capability=release status=planned execution_allowed=false
+- `.aide/policies/release-upload-plan.yaml`: capability=release status=planned execution_allowed=false
+- `.aide/policies/release-validation.yaml`: capability=release status=planned execution_allowed=false
+- `.aide/policies/release-versioning.yaml`: capability=release status=planned execution_allowed=false
+- `.aide/policies/rollback-classes.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/rollback-safety.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/rollback-verification.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/rollback.yaml`: capability=install status=planned execution_allowed=false
 - `.aide/policies/sync-policy.yaml`: capability=repo_policy status=planned execution_allowed=false
+- `.aide/policies/test-map.yaml`: capability=test status=planned execution_allowed=false
+- `.aide/policies/uninstall-classes.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/uninstall-safety.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/uninstall-verification.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/uninstall.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/upgrade-compatibility.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/upgrade-conflicts.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/upgrade-migrations.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/upgrade-preservation.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/upgrade-verification.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/policies/upgrade.yaml`: capability=install status=planned execution_allowed=false
+- `.aide/providers/latest-provider-status.json`: capability=test status=planned execution_allowed=false
+- `.aide/providers/latest-provider-status.md`: capability=test status=planned execution_allowed=false
+- `.aide/quality/test-coverage-map.schema.json`: capability=test status=planned execution_allowed=false
 - `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/install-upgrade-risk-report.md`: capability=audit status=planned execution_allowed=false
 - `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/release-bundle-readiness.md`: capability=package status=planned execution_allowed=false
 - `.aide/queue/DOMINIUM-AIDE-PILOT-01/import-report.md`: capability=audit status=planned execution_allowed=false
-- `.aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/sync-report.md`: capability=audit status=planned execution_allowed=false
-- `.aide/repo/generated-map.json`: capability=generate status=planned execution_allowed=false
-- `.aide/repo/latest-repo-intelligence.md`: capability=repo_policy status=planned execution_allowed=false
-- `.aide/repo/test-map.json`: capability=repo_policy status=planned execution_allowed=false
-- `.aide/reports/dominium-fresh-install-preflight.md`: capability=audit status=planned execution_allowed=false
-- `.aide/reports/dominium-release-bundle-readiness.md`: capability=audit status=planned execution_allowed=false
-- `.aide/routing/latest-route-decision.json`: capability=test status=planned execution_allowed=false
-- `.aide/routing/latest-route-decision.md`: capability=test status=planned execution_allowed=false
-- `.aide/scripts/aide_lite.py`: capability=context status=planned execution_allowed=false
-- `.aide/verification/latest-verification-report.md`: capability=audit status=planned execution_allowed=false
-- `.github/workflows/ci.yml`: capability=unknown status=blocked_until_classified execution_allowed=false
-- `CMakeLists.txt`: capability=build status=planned execution_allowed=false
-- `apps/client/CMakeLists.txt`: capability=build status=planned execution_allowed=false
-- `apps/client/presentation/frame_graph_builder.cpp`: capability=build status=planned execution_allowed=false
-- `apps/client/presentation/frame_graph_builder.h`: capability=build status=planned execution_allowed=false
-- `apps/launcher/CMakeLists.txt`: capability=build status=planned execution_allowed=false
-- `apps/server/CMakeLists.txt`: capability=build status=planned execution_allowed=false
-- `apps/server/persistence/dom_checkpoint_policy.h`: capability=repo_policy status=planned execution_allowed=false
-- `apps/server/persistence/dom_checkpointing.cpp`: capability=validate status=planned execution_allowed=false
-- `apps/server/persistence/dom_checkpointing.h`: capability=validate status=planned execution_allowed=false
-- `apps/server/persistence/integrity_checkpoints.cpp`: capability=validate status=planned execution_allowed=false
-- `apps/server/persistence/integrity_checkpoints.h`: capability=validate status=planned execution_allowed=false
-- `apps/setup/CMakeLists.txt`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/build_all.bat`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/build_codex_verify.bat`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/check_layers.py`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/ci/check_launcher_core_invariants.py`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/ci/launcher_cli_smoke_matrix.py`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/ci/setup_build.bat`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/ci/setup_build.sh`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/ci/setup_test.bat`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/ci/setup_test.sh`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/commit_template.md`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/diagnostics/make_support_bundle.py`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/doc_ratio_check.py`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/gen_base_demo_mod.py`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/gen_changelog.bat`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/gen_launcher_ui_schema_v1.py`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/gen_tools_demo.py`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/legacy/build_legacy_windows.bat`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/legacy/build_legacy_windows.sh`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/legacy/build_packages.bat`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/legacy/build_packages.sh`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/legacy/run_setup_tests.bat`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/legacy/run_setup_tests.sh`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/CMakeLists.txt`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/dsumanifest.py`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/CMakeLists.txt`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/build_run.sh`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/control.in`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postinst`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postrm`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/prerm`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/dominium-install.sh`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/dominium-installer.sh.in`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/rpm/dominium.spec.in`: capability=context status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/linux/write_apprun.cmake`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/macos/CMakeLists.txt`: capability=build status=planned execution_allowed=false
-- `apps/setup/packages/scripts/packaging/macos/Dominium.app/Contents/Info.plist.in`: capability=context status=planned execution_allowed=false
 
 ## Boundary
 

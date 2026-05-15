@@ -1,16 +1,44 @@
 # Next AIDE Task
 
-Task: `Q51 Dominium Existing Tool Absorption`
+Task: Q52 Dominium Root Recycling Pilot
 
-Read first:
+## Goal
 
-- `.aide/context/latest-task-packet.md`
-- `.aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/q51-readiness.md`
-- `.aide/tools/latest-tool-inventory.md`
-- `.aide/tools/latest-tool-wrap-plan.md`
-- `.aide/roots/latest-root-inventory.md`
-- `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md`
+Run an evidence-only root recycling pilot using Q51 tool absorption outputs, without moving, deleting, rewriting, or executing unknown legacy tools.
 
-Goal:
+## Recommended First Root
 
-Inventory and classify Dominium's existing XStack/AuditX/RepoX/TestX-like systems and validators for preservation-first wrapping. Do not delete, rename, move, execute unexpectedly, or retire tools.
+Start with `ide/`.
+
+Reason: small, tooling-adjacent, and outside product source/doctrine roots. Treat it as high-risk until ownership and references are confirmed.
+
+## Required Inputs
+
+- `.aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md`
+- `.aide/tools/dominium-tool-inventory.json`
+- `.aide/tools/dominium-tool-classification.json`
+- `.aide/tools/dominium-tool-adapter-map.json`
+- `.aide/tools/dominium-tool-wrap-plan.md`
+- `.aide/roots/latest-root-inventory.*`
+- `.aide/repo/latest-repo-intelligence.md`
+
+## Non-Goals
+
+- No product source edits.
+- No doctrine edits.
+- No root moves/deletes.
+- No branch mutation.
+- No unknown tool execution.
+- No provider/model/network calls.
+
+## Validation
+
+- `git status --short`
+- `git diff --check`
+- `git check-ignore .aide.local/`
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py roots inventory`
+- `py -3 .aide/scripts/aide_lite.py roots validate`
+- `py -3 .aide/scripts/aide_lite.py tools status`
+- targeted secret/local-state scan

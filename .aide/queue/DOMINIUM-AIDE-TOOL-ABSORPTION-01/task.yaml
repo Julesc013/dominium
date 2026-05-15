@@ -1,0 +1,26 @@
+schema_version: aide.queue-task.v0
+task_id: DOMINIUM-AIDE-TOOL-ABSORPTION-01
+title: Q51 Dominium Existing Tool Absorption
+status: needs_review
+repo: julesc013/dominium
+branch: main
+phase: Q51
+work_class: validation_audit
+mode: target_tool_absorption_plan
+non_goals:
+  - delete_tools
+  - rename_tools
+  - move_tools
+  - execute_unknown_tools
+  - migrate_xstack_auditx_repox_testx
+  - rewrite_doctrine
+  - modify_product_source
+  - mutate_branches
+  - call_providers_or_network
+allowed_write_roots:
+  - .aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/
+  - .aide/tools/
+  - .aide/reports/
+  - .aide/context/latest-task-packet.md
+result: READY_FOR_Q52_WITH_WARNINGS
+review_gate: required

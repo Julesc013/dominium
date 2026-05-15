@@ -1,8 +1,8 @@
 # Tool Classification
 
-- source_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
-- tool_count: 2831
-- unknown_tool_count: 846
+- source_commit: 52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f
+- tool_count: 2995
+- unknown_tool_count: 854
 - execution_allowed: false
 - apply_allowed: false
 - drop_candidate_is_deletion_approval: false
@@ -10,18 +10,18 @@
 ## Fate Counts
 
 - keep: 1
-- unknown: 846
-- wrap: 1984
+- unknown: 854
+- wrap: 2140
 
 ## Risk Counts
 
 - destructive: 5
 - high: 6
-- low: 439
-- medium: 1413
-- release: 133
+- low: 442
+- medium: 1542
+- release: 158
 - security: 2
-- unknown: 833
+- unknown: 840
 
 ## Caveats
 

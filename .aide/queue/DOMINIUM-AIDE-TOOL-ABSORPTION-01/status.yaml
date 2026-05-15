@@ -1,0 +1,26 @@
+schema_version: aide.queue-status.v0
+task_id: DOMINIUM-AIDE-TOOL-ABSORPTION-01
+phase: Q51
+status: needs_review
+result: READY_FOR_Q52_WITH_WARNINGS
+repo_identity_confirmed: true
+q50_inspected: true
+tool_inventory_completed: true
+tool_classification_completed: true
+wrap_plan_completed: true
+unknown_tool_execution: false
+tool_deletion: false
+tool_rename: false
+tool_move: false
+tool_migration: false
+product_source_modified: false
+doctrine_modified: false
+branch_mutation: false
+provider_or_model_calls: none
+network_calls: none
+warnings:
+  - AIDE full `eval run` exceeded the local timeout and is recorded as WARN/TIMEOUT, not pass.
+  - AIDE repo validation still reports unknown file classifications; this is an inventory-quality warning.
+  - AIDE verify exits 0 but reports WARN status for missing generated controller report references and active diff-scope warnings.
+  - Legacy tools remain execution-disabled until future phases prove safe command contracts.
+review_gate: required
