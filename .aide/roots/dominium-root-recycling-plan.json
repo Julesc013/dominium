@@ -1,0 +1,57 @@
+{
+  "aliases_created": false,
+  "branch": "main",
+  "file_classifications_ref": ".aide/roots/dominium-root-file-classification.json",
+  "file_deletes": false,
+  "file_moves": false,
+  "file_renames": false,
+  "future_maps": {
+    "move_map": "not proposed in Q52; any future move must include full reference inventory and review",
+    "path_alias_plan": "not proposed in Q52; no alias/shim created",
+    "reference_rewrite_plan": "not proposed in Q52; references are preserved",
+    "salvage_map": "future evidence-only map for tracked README, schema, and examples; no current split proposed"
+  },
+  "generated_at_utc": "2026-05-15T07:52:50.041508+00:00",
+  "no_apply": true,
+  "plan_status": "dry_run_no_apply",
+  "q51_recommendation": "ide/",
+  "reference_rewrites": false,
+  "repo": "julesc013/dominium",
+  "root_plans": [
+    {
+      "blocked_apply_reasons": [
+        "Q52 is no-apply",
+        "root contains schema identity and binding README",
+        "examples need schema validation before any fate change"
+      ],
+      "exception_retirement_conditions": [
+        "Generated IDE project outputs remain ignored under /ide/** except README and manifests.",
+        "Projection manifest schema and examples stay tracked or a future reviewed map proves an equivalent canonical location.",
+        "All references to IDE projection generation commands are inventoried before any path rewrite is proposed."
+      ],
+      "future_move_map_required": false,
+      "future_path_alias_required": false,
+      "future_reference_rewrite_required": false,
+      "future_salvage_map_required": true,
+      "future_validation_required": [
+        "json parse",
+        "projection schema validation",
+        "roots validate",
+        "repo validate",
+        "refactor validate if any future map is proposed"
+      ],
+      "recommended_next_action": "preserve tracked manifest policy files and improve classifier rules for IDE projection fixtures before any migration planning",
+      "risk_class": "high",
+      "root": "ide",
+      "root_status": "review_required"
+    }
+  ],
+  "schema_version": "dominium.root-recycling-pilot.v0",
+  "selected_root_family": "ide",
+  "selected_roots": [
+    "ide"
+  ],
+  "shims_created": false,
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
+  "target_repo_mutation": false
+}

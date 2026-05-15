@@ -1,51 +1,48 @@
 {
   "current_state_summary": {
     "aide_dir_present": true,
-    "installed_file_count": 243,
+    "installed_file_count": 800,
     "managed_section_count": 1,
-    "missing_ledger": true,
-    "preserved_path_count": 3811
+    "missing_ledger": false,
+    "preserved_path_count": 4102
   },
   "generated_by": "aide-lite",
   "install_plan_refs": [
     {
-      "operation_count": 0,
+      "operation_count": 267,
       "path": ".aide/install/latest-install-plan.json",
-      "present": false,
+      "present": true,
       "record_count": 0
     },
     {
-      "operation_count": 0,
+      "operation_count": 5,
       "path": ".aide/repair/latest-repair-plan.json",
-      "present": false,
+      "present": true,
       "record_count": 0
     }
   ],
-  "missing_evidence": [
-    ".aide/install/latest-ownership-ledger.example.json"
-  ],
+  "missing_evidence": [],
   "no_apply": true,
   "ownership_ledger_refs": [
     {
       "operation_count": 0,
       "path": ".aide/install/latest-ownership-ledger.example.json",
-      "present": false,
-      "record_count": 0
+      "present": true,
+      "record_count": 268
     }
   ],
   "schema_version": "aide.rollback-observation.v0",
-  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
   "target_root": ".",
   "upgrade_plan_refs": [
     {
-      "operation_count": 0,
+      "operation_count": 267,
       "path": ".aide/upgrade/latest-upgrade-plan.json",
-      "present": false,
+      "present": true,
       "record_count": 0
     }
   ],
   "warnings": [
-    "ownership ledger evidence is missing; rollback planning stays blocked/manual-review only",
     "tracked local-state or secret-like path observed; rollback apply would be blocked"
   ]
 }

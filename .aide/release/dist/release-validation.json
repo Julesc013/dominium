@@ -1,0 +1,134 @@
+{
+  "blockers": [
+    "release artifact exists: .aide/release/dist/aide-lite-pack-v0.zip",
+    "release artifact exists: .aide/release/dist/aide-lite-pack-v0.tar.gz",
+    "release artifact exists: .aide/release/dist/aide-lite-pack-v0.checksums.json",
+    "release artifact exists: .aide/release/dist/SHA256SUMS.txt",
+    "release artifact exists: .aide/release/dist/manifest.yaml",
+    "release artifact exists: .aide/release/dist/install.md",
+    "release artifact exists: .aide/release/dist/CHANGELOG.preview.md",
+    "release artifact exists: .aide/release/dist/RELEASE_NOTES.preview.md",
+    "release artifact exists: .aide/release/dist/release-provenance.json",
+    "release artifact exists: .aide/release/dist/release-assets.json",
+    "release checksum problem: missing release checksums JSON",
+    "fixture extraction .aide/release/dist/aide-lite-pack-v0.zip: FAIL",
+    "fixture extraction .aide/release/dist/aide-lite-pack-v0.tar.gz: FAIL",
+    "pack-status problem: export pack missing"
+  ],
+  "checks": [
+    {
+      "message": "release artifact exists: .aide/release/dist/aide-lite-pack-v0.zip",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/aide-lite-pack-v0.tar.gz",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/aide-lite-pack-v0.checksums.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/SHA256SUMS.txt",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/manifest.yaml",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/install.md",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/CHANGELOG.preview.md",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/RELEASE_NOTES.preview.md",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/release-validation.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/release-validation.md",
+      "severity": "PASS"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/release-provenance.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release artifact exists: .aide/release/dist/release-assets.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "release checksum problem: missing release checksums JSON",
+      "severity": "FAIL"
+    },
+    {
+      "message": "fixture extraction .aide/release/dist/aide-lite-pack-v0.zip: FAIL",
+      "severity": "FAIL"
+    },
+    {
+      "message": "fixture extraction .aide/release/dist/aide-lite-pack-v0.tar.gz: FAIL",
+      "severity": "FAIL"
+    },
+    {
+      "message": "forbidden paths absent from archives",
+      "severity": "PASS"
+    },
+    {
+      "message": "pack-status problem: export pack missing",
+      "severity": "FAIL"
+    }
+  ],
+  "checksum_validation": {
+    "problems": [
+      "missing release checksums JSON"
+    ],
+    "result": "FAIL"
+  },
+  "commands": [
+    "release bundle",
+    "release validate",
+    "release checksums"
+  ],
+  "fixture_extract": {
+    "archives": [
+      {
+        "archive": ".aide/release/dist/aide-lite-pack-v0.zip",
+        "forbidden_paths": [],
+        "problems": [
+          "archive missing: .aide/release/dist/aide-lite-pack-v0.zip"
+        ],
+        "required_files_present": [],
+        "result": "FAIL",
+        "root_present": false
+      },
+      {
+        "archive": ".aide/release/dist/aide-lite-pack-v0.tar.gz",
+        "forbidden_paths": [],
+        "problems": [
+          "archive missing: .aide/release/dist/aide-lite-pack-v0.tar.gz"
+        ],
+        "required_files_present": [],
+        "result": "FAIL",
+        "root_present": false
+      }
+    ],
+    "result": "FAIL"
+  },
+  "no_publish": true,
+  "pack_status": "FAIL",
+  "preview_only": true,
+  "result": "FAIL",
+  "secret_scan": {
+    "forbidden_path_hits": [],
+    "result": "PASS"
+  },
+  "validation_id": "aide-lite-pack-v0-local-validation",
+  "warnings": []
+}

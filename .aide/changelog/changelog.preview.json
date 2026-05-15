@@ -25,6 +25,31 @@
         "summary": "Dominium Q49 preflight evidence and Q50 dry-run readiness guidance.",
         "type": "aide",
         "validation": "- PASS: `git diff --cached --check`.\n- PASS: AIDE `doctor`, `test`, `selftest`, `eval run`, `commit check --latest`, `git policy`, Q50 `pack` generation, generated JSON parse checks, `.aide.local` ignore check, and release bundle checksum/listing checks.\n- WARN: AIDE `validate` and `verify` retain review-packet/reference/diff-scope warnings; changelog preview reports malformed historical commits.\n- NOT RUN: Dominium XStack/TestX/AuditX/RepoX/CMake validators, because Q49 is evidence-only and those systems can write audit/cache/build outputs."
+      },
+      {
+        "aide_phase": "Q51",
+        "aide_result": "PASS_WITH_WARNINGS",
+        "breaking": false,
+        "category": "Added",
+        "commit": "d22537869be0",
+        "commit_sha": "d22537869be05860d5eda70eebb2f3ed261e276c",
+        "entry": "Dominium existing-tool classification evidence and preservation-first wrapper plan for Q52.",
+        "follow_up": "- Run Q52 Dominium Root Recycling Pilot on `ide/` first, using Q51 outputs as evidence.\n\nAIDE-Task: DOMINIUM-AIDE-TOOL-ABSORPTION-01\nAIDE-Phase: Q51\nAIDE-Result: PASS_WITH_WARNINGS\nAIDE-Scope: .aide tool absorption evidence and generated inventories\nAIDE-Token-Impact: latest-task-packet-1298-approx-tokens\nAIDE-Quality-Gate: doctor-pass-validate-pass-tools-pass-eval-timeout-verify-warn",
+        "risks": "- AIDE still reports unknown file/tool classifications that require future review.\n- Legacy XStack/AuditX/RepoX/TestX commands remain execution-disabled until command contracts are proven.\n- Q52 must stay evidence-only and avoid root moves or product/doctrine/tool edits.",
+        "scope": "aide",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "audit(aide): record Dominium tool absorption plan",
+        "summary": "Dominium existing-tool classification evidence and preservation-first wrapper plan for Q52.",
+        "type": "audit",
+        "validation": "- PASS: `py -3 .aide/scripts/aide_lite.py doctor`, `validate`, `test`, and `selftest`.\n- PASS: `tools validate`, `tools status`, `tools capabilities`, `roots status`, `repo validate`, `quality validate`, `intent validate`, and `git policy`.\n- WARN: `verify` exits 0 but reports generated controller reference and diff-scope warnings.\n- WARN: `eval run` timed out at 240 seconds and lingering eval processes were stopped.\n- PASS: `git diff --check`, JSON parse checks, `.aide.local/` ignore check, and targeted secret scan review."
       }
     ],
     "Changed": [
@@ -77,6 +102,31 @@
         "summary": "added Dominium-local Git workflow reports and dry-run helper plan outputs.",
         "type": "aide",
         "validation": "- PASS: py -3 .aide/scripts/aide_lite.py git detect.\n- PASS: py -3 .aide/scripts/aide_lite.py git doctor, git status, and git policy.\n- PASS: py -3 .aide/scripts/aide_lite.py git sync --dry-run, git land --dry-run --target dev, git promote --dry-run --from dev --to main, and git prune --dry-run all avoided mutation.\n- WARN: changelog preview reports older malformed commits from pre-policy history."
+      },
+      {
+        "aide_phase": "Q50",
+        "aide_result": "READY_FOR_Q51_WITH_WARNINGS",
+        "breaking": false,
+        "category": "Changed",
+        "commit": "52eeb5a1f481",
+        "commit_sha": "52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f",
+        "entry": "upgraded portable Dominium AIDE control plane and generated Q51 readiness evidence.",
+        "follow_up": "- Run Q51 Dominium Existing Tool Absorption against `.aide/tools/latest-tool-inventory.*` and Q49/Q50 evidence.\n- Investigate full golden eval runtime and source bundle portability defects in a future AIDE repair task.\n\nAIDE-Task: DOMINIUM-AIDE-STABLE-INSTALL-01\nAIDE-Phase: Q50\nAIDE-Result: READY_FOR_Q51_WITH_WARNINGS\nAIDE-Scope: .aide\nAIDE-Token-Impact: reduced_context_tokens\nAIDE-Quality-Gate: PASS_WITH_WARNINGS",
+        "risks": "- Source bundle direct import still has an inner checksum defect for a missing `.aide.local.example` file.\n- Gateway/provider status uses report-only target fallbacks because Q50 did not write product-root `core/**` helpers.",
+        "scope": "aide",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "chore(aide): sync stable portable control plane",
+        "summary": "upgraded portable Dominium AIDE control plane and generated Q51 readiness evidence.",
+        "type": "chore",
+        "validation": "- PASS: doctor, validate, test, selftest, representative eval, generated command validators, git diff --check, `.aide.local/` ignore check, and high-confidence secret scan.\n- WARN: verify reports diff-scope warnings and optional controller references; repo intelligence reports unknown classifications.\n- PARTIAL: full 130-task eval timed out and is recorded for follow-up."
       }
     ],
     "Docs": [
@@ -264,8 +314,8 @@
     ]
   },
   "category_counts": {
-    "Added": 1,
-    "Changed": 2,
+    "Added": 2,
+    "Changed": 3,
     "Docs": 1,
     "Fixed": 1,
     "Internal": 4,
@@ -522,36 +572,60 @@
       "summary": "Dominium Q49 preflight evidence and Q50 dry-run readiness guidance.",
       "type": "aide",
       "validation": "- PASS: `git diff --cached --check`.\n- PASS: AIDE `doctor`, `test`, `selftest`, `eval run`, `commit check --latest`, `git policy`, Q50 `pack` generation, generated JSON parse checks, `.aide.local` ignore check, and release bundle checksum/listing checks.\n- WARN: AIDE `validate` and `verify` retain review-packet/reference/diff-scope warnings; changelog preview reports malformed historical commits.\n- NOT RUN: Dominium XStack/TestX/AuditX/RepoX/CMake validators, because Q49 is evidence-only and those systems can write audit/cache/build outputs."
+    },
+    {
+      "aide_phase": "Q50",
+      "aide_result": "READY_FOR_Q51_WITH_WARNINGS",
+      "breaking": false,
+      "category": "Changed",
+      "commit": "52eeb5a1f481",
+      "commit_sha": "52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f",
+      "entry": "upgraded portable Dominium AIDE control plane and generated Q51 readiness evidence.",
+      "follow_up": "- Run Q51 Dominium Existing Tool Absorption against `.aide/tools/latest-tool-inventory.*` and Q49/Q50 evidence.\n- Investigate full golden eval runtime and source bundle portability defects in a future AIDE repair task.\n\nAIDE-Task: DOMINIUM-AIDE-STABLE-INSTALL-01\nAIDE-Phase: Q50\nAIDE-Result: READY_FOR_Q51_WITH_WARNINGS\nAIDE-Scope: .aide\nAIDE-Token-Impact: reduced_context_tokens\nAIDE-Quality-Gate: PASS_WITH_WARNINGS",
+      "risks": "- Source bundle direct import still has an inner checksum defect for a missing `.aide.local.example` file.\n- Gateway/provider status uses report-only target fallbacks because Q50 did not write product-root `core/**` helpers.",
+      "scope": "aide",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "chore(aide): sync stable portable control plane",
+      "summary": "upgraded portable Dominium AIDE control plane and generated Q51 readiness evidence.",
+      "type": "chore",
+      "validation": "- PASS: doctor, validate, test, selftest, representative eval, generated command validators, git diff --check, `.aide.local/` ignore check, and high-confidence secret scan.\n- WARN: verify reports diff-scope warnings and optional controller references; repo intelligence reports unknown classifications.\n- PARTIAL: full 130-task eval timed out and is recorded for follow-up."
+    },
+    {
+      "aide_phase": "Q51",
+      "aide_result": "PASS_WITH_WARNINGS",
+      "breaking": false,
+      "category": "Added",
+      "commit": "d22537869be0",
+      "commit_sha": "d22537869be05860d5eda70eebb2f3ed261e276c",
+      "entry": "Dominium existing-tool classification evidence and preservation-first wrapper plan for Q52.",
+      "follow_up": "- Run Q52 Dominium Root Recycling Pilot on `ide/` first, using Q51 outputs as evidence.\n\nAIDE-Task: DOMINIUM-AIDE-TOOL-ABSORPTION-01\nAIDE-Phase: Q51\nAIDE-Result: PASS_WITH_WARNINGS\nAIDE-Scope: .aide tool absorption evidence and generated inventories\nAIDE-Token-Impact: latest-task-packet-1298-approx-tokens\nAIDE-Quality-Gate: doctor-pass-validate-pass-tools-pass-eval-timeout-verify-warn",
+      "risks": "- AIDE still reports unknown file/tool classifications that require future review.\n- Legacy XStack/AuditX/RepoX/TestX commands remain execution-disabled until command contracts are proven.\n- Q52 must stay evidence-only and avoid root moves or product/doctrine/tool edits.",
+      "scope": "aide",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "audit(aide): record Dominium tool absorption plan",
+      "summary": "Dominium existing-tool classification evidence and preservation-first wrapper plan for Q52.",
+      "type": "audit",
+      "validation": "- PASS: `py -3 .aide/scripts/aide_lite.py doctor`, `validate`, `test`, and `selftest`.\n- PASS: `tools validate`, `tools status`, `tools capabilities`, `roots status`, `repo validate`, `quality validate`, `intent validate`, and `git policy`.\n- WARN: `verify` exits 0 but reports generated controller reference and diff-scope warnings.\n- WARN: `eval run` timed out at 240 seconds and lingering eval processes were stopped.\n- PASS: `git diff --check`, JSON parse checks, `.aide.local/` ignore check, and targeted secret scan review."
     }
   ],
   "generated_by": "aide-lite",
   "malformed_commits": [
-    {
-      "commit": "0374d6c05e12",
-      "commit_sha": "0374d6c05e12c17aff162a8d67724d5eaf01e871",
-      "ignored": false,
-      "legacy": false,
-      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
-      "reasons": [
-        "subject_not_conventional",
-        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
-        "missing_changelog_category"
-      ],
-      "subject": "REPO-DISCOVERY-\u03a92: analyze coupling, drift, and relayout risk before topology options"
-    },
-    {
-      "commit": "67823688efdc",
-      "commit_sha": "67823688efdce93dad2923839b8b3cea05df53e4",
-      "ignored": false,
-      "legacy": false,
-      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
-      "reasons": [
-        "subject_not_conventional",
-        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
-        "missing_changelog_category"
-      ],
-      "subject": "REPO-DESIGN-\u03a90: generate and compare target topology options before preferred-target selection"
-    },
     {
       "commit": "38f6d1840219",
       "commit_sha": "38f6d18402197197fd09f3f4b3d9c3430f366c0b",
@@ -1045,13 +1119,13 @@
       "subject": "audit(test): classify AuditX CTest blockers after native build"
     }
   ],
-  "malformed_count": 42,
+  "malformed_count": 40,
   "network_calls": "none",
   "preview_only": true,
   "provider_or_model_calls": "none",
   "release_publishing": false,
   "schema_version": "aide.changelog-preview.v0",
-  "source_head": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_head": "d22537869be05860d5eda70eebb2f3ed261e276c",
   "source_range": "HEAD latest 50 commits",
   "warnings": [
     "b3d1e62bafbc merge commit ignored"

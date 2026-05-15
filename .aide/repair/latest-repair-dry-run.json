@@ -3,40 +3,44 @@
     {
       "blocking": true,
       "evidence_refs": [
+        ".aide/install/latest-conflict-report.json",
         "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
       ],
       "issue_id": "repair-55d99864bb34",
-      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
       "repair_class": "secret_like_file",
       "severity": "blocking"
     },
     {
       "blocking": true,
       "evidence_refs": [
+        ".aide/install/latest-conflict-report.json",
         "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
       ],
       "issue_id": "repair-7f92516ecaf1",
-      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
       "repair_class": "secret_like_file",
       "severity": "blocking"
     },
     {
       "blocking": true,
       "evidence_refs": [
+        ".aide/install/latest-conflict-report.json",
         "tools/xstack/testx/tests/test_no_secrets_in_bundle.py"
       ],
       "issue_id": "repair-bf518d2b8fea",
-      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
       "repair_class": "secret_like_file",
       "severity": "blocking"
     },
     {
       "blocking": true,
       "evidence_refs": [
+        ".aide/install/latest-conflict-report.json",
         "tools/xstack/testx/tests/test_standards_issues_spec_and_credential.py"
       ],
       "issue_id": "repair-da642231d5b1",
-      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
       "repair_class": "secret_like_file",
       "severity": "blocking"
     }
@@ -77,7 +81,7 @@
       "operation_type": "candidate_repair",
       "overwrite_allowed": false,
       "preserve_target_state": true,
-      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
       "repair_class": "secret_like_file",
       "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
       "source_reference": "",
@@ -101,7 +105,7 @@
       "operation_type": "candidate_repair",
       "overwrite_allowed": false,
       "preserve_target_state": true,
-      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
       "repair_class": "secret_like_file",
       "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
       "source_reference": "",
@@ -125,7 +129,7 @@
       "operation_type": "candidate_repair",
       "overwrite_allowed": false,
       "preserve_target_state": true,
-      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
       "repair_class": "secret_like_file",
       "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
       "source_reference": "",
@@ -149,7 +153,7 @@
       "operation_type": "candidate_repair",
       "overwrite_allowed": false,
       "preserve_target_state": true,
-      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
       "repair_class": "secret_like_file",
       "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
       "source_reference": "",
@@ -170,7 +174,7 @@
   "planned_skips": 5,
   "planned_writes": 0,
   "schema_version": "aide.repair-dry-run.v0",
-  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
   "warnings": [
     "Q44 dry-run applies no repairs, overwrites, deletions, migrations, moves, or rewrites.",
     "Planned writes are future candidates only and require a later explicit apply phase."

@@ -238,6 +238,12 @@ TOOL_WRAP_PLAN_MD_PATH = ".aide/tools/latest-tool-wrap-plan.md"
 TOOL_ADAPTER_MAP_JSON_PATH = ".aide/tools/latest-tool-adapter-map.json"
 TOOL_ADAPTER_MAP_MD_PATH = ".aide/tools/latest-tool-adapter-map.md"
 TOOL_RISK_SUMMARY_MD_PATH = ".aide/tools/tool-risk-summary.md"
+XSTACK_INTEGRATION_CONTRACT_JSON_PATH = ".aide/tools/xstack-integration-contract.json"
+XSTACK_INTEGRATION_CONTRACT_MD_PATH = ".aide/tools/xstack-integration-contract.md"
+XSTACK_WRAPPER_REGISTRY_JSON_PATH = ".aide/tools/xstack-wrapper-registry.json"
+XSTACK_WRAPPER_REGISTRY_MD_PATH = ".aide/tools/xstack-wrapper-registry.md"
+XSTACK_INTEGRATION_STATUS_MD_PATH = ".aide/tools/xstack-integration-status.md"
+XSTACK_INTEGRATION_REPORT_MD_PATH = ".aide/reports/dominium-xstack-aide-integration.md"
 MOVE_MAP_POLICY_PATH = ".aide/policies/move-map.yaml"
 SALVAGE_MAP_POLICY_PATH = ".aide/policies/salvage-map.yaml"
 PATH_ALIASES_POLICY_PATH = ".aide/policies/path-aliases.yaml"
@@ -15641,6 +15647,379 @@ def command_tools_capabilities(args: argparse.Namespace) -> int:
     return 0
 
 
+XSTACK_SYSTEM_DEFINITIONS: tuple[dict[str, object], ...] = (
+    {
+        "system_id": "xstack",
+        "label": "XStack",
+        "wrapper_id": "dominium.xstack.status",
+        "aide_command": "xstack status",
+        "source_globs": ["docs/XSTACK.md", "tools/xstack/**", ".xstack_cache/**"],
+        "capabilities": ["validate", "audit", "repo_policy", "context"],
+        "risk_class": "authority_sensitive",
+        "recommended_fate": "keep_wrap_adapt",
+    },
+    {
+        "system_id": "auditx",
+        "label": "AuditX",
+        "wrapper_id": "dominium.auditx.status",
+        "aide_command": "xstack status --system auditx",
+        "source_globs": ["tools/auditx/**", "tools/xstack/auditx/**", "**/*auditx*"],
+        "capabilities": ["audit", "docs", "repo_policy", "security"],
+        "risk_class": "authority_sensitive",
+        "recommended_fate": "keep_wrap_adapt",
+    },
+    {
+        "system_id": "repox",
+        "label": "RepoX",
+        "wrapper_id": "dominium.repox.policy",
+        "aide_command": "xstack status --system repox",
+        "source_globs": ["repo/repox/**", "tools/repox/**", "tools/xstack/repox/**", "**/*repox*"],
+        "capabilities": ["repo_policy", "validate", "security", "release"],
+        "risk_class": "authority_sensitive",
+        "recommended_fate": "keep_wrap_adapt",
+    },
+    {
+        "system_id": "testx",
+        "label": "TestX",
+        "wrapper_id": "dominium.testx.status",
+        "aide_command": "xstack status --system testx",
+        "source_globs": ["tools/testx/**", "tools/xstack/testx/**", "tools/xstack/testx_all.py", "**/*testx*"],
+        "capabilities": ["test", "validate"],
+        "risk_class": "build_sensitive",
+        "recommended_fate": "keep_wrap_adapt",
+    },
+    {
+        "system_id": "buildx",
+        "label": "BuildX-like build wrappers",
+        "wrapper_id": "dominium.buildx.status",
+        "aide_command": "xstack status --system buildx",
+        "source_globs": ["tools/buildx/**", "tools/xstack/buildx/**", "**/*buildx*", "CMakeLists.txt", "CMakePresets.json", "cmake/**"],
+        "capabilities": ["build", "package", "validate"],
+        "risk_class": "build_sensitive",
+        "recommended_fate": "keep_wrap_adapt",
+    },
+    {
+        "system_id": "validation_profiles",
+        "label": "FAST/STRICT/FULL validation profiles",
+        "wrapper_id": "dominium.validation.profiles",
+        "aide_command": "xstack status --system validation_profiles",
+        "source_globs": ["validation/**", "tools/xstack/ci/profiles/**", "**/*validate*", "**/*validation*", "**/*gate*"],
+        "capabilities": ["validate", "test", "audit"],
+        "risk_class": "build_sensitive",
+        "recommended_fate": "keep_wrap_adapt",
+    },
+)
+
+
+def xstack_candidate_paths(repo_root: Path) -> list[str]:
+    tracked = repo_git_files(repo_root)
+    return tracked or repo_walk_files(repo_root)
+
+
+def xstack_matches(paths: Iterable[str], patterns: Iterable[str]) -> list[str]:
+    lowered_patterns = [normalize_rel(pattern).lower() for pattern in patterns]
+    matched: list[str] = []
+    for rel in paths:
+        normalized = normalize_rel(rel)
+        lower = normalized.lower()
+        if any(fnmatch.fnmatch(lower, pattern) for pattern in lowered_patterns):
+            matched.append(normalized)
+    return sorted(dict.fromkeys(matched))
+
+
+def build_xstack_integration(repo_root: Path) -> tuple[dict[str, object], dict[str, object]]:
+    paths = xstack_candidate_paths(repo_root)
+    systems: list[dict[str, object]] = []
+    wrappers: list[dict[str, object]] = []
+    for definition in XSTACK_SYSTEM_DEFINITIONS:
+        source_globs = [str(item) for item in definition.get("source_globs", [])]
+        matched = xstack_matches(paths, source_globs)
+        system_id = str(definition["system_id"])
+        systems.append(
+            {
+                "system_id": system_id,
+                "label": definition["label"],
+                "present": bool(matched),
+                "matched_path_count": len(matched),
+                "matched_paths": matched[:80],
+                "source_globs": source_globs,
+                "capability_families": definition["capabilities"],
+                "risk_class": definition["risk_class"],
+                "recommended_fate": definition["recommended_fate"],
+                "preservation_required": True,
+                "execution_allowed": False,
+                "apply_allowed": False,
+                "integration_state": "registry_wrapped_plan_only" if matched else "not_detected_or_untracked",
+            }
+        )
+        wrappers.append(
+            {
+                "wrapper_id": definition["wrapper_id"],
+                "system_id": system_id,
+                "source_globs": source_globs,
+                "matched_path_count": len(matched),
+                "matched_paths": matched[:20],
+                "proposed_aide_command": definition["aide_command"],
+                "capability_families": definition["capabilities"],
+                "risk_class": definition["risk_class"],
+                "execution_allowed": False,
+                "apply_allowed": False,
+                "no_apply": True,
+                "input_contract_hint": "No legacy command arguments are accepted until a future wrapper task proves side effects and duration.",
+                "output_contract_hint": "Future wrappers must write target-local evidence under .aide/tools or .aide/queue only.",
+                "validation_required": ["xstack validate", "tools validate", "repo validate", "git diff --check"],
+                "future_enablement_gate": "A later explicit wrapper task must prove read-only behavior, timeout, outputs, and preservation before execution is enabled.",
+            }
+        )
+    present_systems = [system for system in systems if system["present"]]
+    contract = {
+        "schema_version": "aide.xstack-integration-contract.v0",
+        "generated_by": GENERATOR_NAME,
+        "generator_version": GENERATOR_VERSION,
+        "scope": "Dominium target-local AIDE integration for XStack/AuditX/RepoX/TestX-like systems",
+        "status": "plan_only_no_apply",
+        "no_apply": True,
+        "execution_allowed": False,
+        "apply_allowed": False,
+        "provider_or_model_calls": "forbidden",
+        "network_calls": "forbidden",
+        "legacy_tool_execution": "disabled_by_default",
+        "preservation_rule": "Do not delete, rename, move, retire, or replace XStack/AuditX/RepoX/TestX until useful checks are wrapped or migrated with evidence.",
+        "aide_command_family": ["xstack status", "xstack wrap-plan", "xstack validate"],
+        "future_wrapper_requirements": [
+            "discover and classify the source tool",
+            "prove command line, timeout, side effects, and output paths",
+            "run in dry-run/report-only mode first",
+            "write evidence before enabling execution",
+            "preserve Dominium doctrine, validators, and product/source roots",
+        ],
+    }
+    registry = {
+        "schema_version": "aide.xstack-wrapper-registry.v0",
+        "generated_by": GENERATOR_NAME,
+        "generator_version": GENERATOR_VERSION,
+        "no_apply": True,
+        "execution_allowed": False,
+        "apply_allowed": False,
+        "summary": {
+            "system_count": len(systems),
+            "present_system_count": len(present_systems),
+            "wrapper_count": len(wrappers),
+            "candidate_path_count": len(paths),
+            "all_wrappers_execution_disabled": True,
+        },
+        "systems": systems,
+        "wrapper_plans": wrappers,
+    }
+    return contract, registry
+
+
+def render_xstack_contract_md(contract: dict[str, object], registry: dict[str, object]) -> str:
+    summary = registry.get("summary", {}) if isinstance(registry.get("summary"), dict) else {}
+    lines = [
+        "# XStack AIDE Integration Contract",
+        "",
+        "Status: plan-only no-apply integration contract",
+        "",
+        "This contract integrates Dominium's XStack/AuditX/RepoX/TestX-like systems into AIDE as preserved, modular wrapper candidates. It does not execute, delete, rename, move, migrate, retire, or replace legacy systems.",
+        "",
+        "## Boundaries",
+        "",
+        f"- no_apply: {contract.get('no_apply')}",
+        f"- execution_allowed: {contract.get('execution_allowed')}",
+        f"- apply_allowed: {contract.get('apply_allowed')}",
+        f"- provider_or_model_calls: {contract.get('provider_or_model_calls')}",
+        f"- network_calls: {contract.get('network_calls')}",
+        f"- legacy_tool_execution: {contract.get('legacy_tool_execution')}",
+        "",
+        "## AIDE Command Family",
+        "",
+        "- `xstack status`: inspect the registry and preservation posture.",
+        "- `xstack wrap-plan`: regenerate contract, registry, and reports without executing legacy tools.",
+        "- `xstack validate`: validate no-apply boundaries and wrapper registry consistency.",
+        "",
+        "## Summary",
+        "",
+        f"- systems modeled: {summary.get('system_count', 0)}",
+        f"- systems detected: {summary.get('present_system_count', 0)}",
+        f"- wrapper plans: {summary.get('wrapper_count', 0)}",
+        "",
+        "## Preservation Rule",
+        "",
+        str(contract.get("preservation_rule")),
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def render_xstack_registry_md(registry: dict[str, object]) -> str:
+    lines = [
+        "# XStack Wrapper Registry",
+        "",
+        "Status: generated plan-only registry",
+        "",
+        "| System | Present | Matched Paths | Wrapper ID | AIDE Command | Capabilities | Risk | Execution |",
+        "|---|---:|---:|---|---|---|---|---|",
+    ]
+    systems = registry.get("systems", []) if isinstance(registry.get("systems"), list) else []
+    wrappers = registry.get("wrapper_plans", []) if isinstance(registry.get("wrapper_plans"), list) else []
+    wrappers_by_system = {str(wrapper.get("system_id")): wrapper for wrapper in wrappers if isinstance(wrapper, dict)}
+    for system in systems:
+        if not isinstance(system, dict):
+            continue
+        wrapper = wrappers_by_system.get(str(system.get("system_id")), {})
+        capabilities = ", ".join(str(item) for item in system.get("capability_families", []))
+        lines.append(
+            f"| {system.get('label')} | {system.get('present')} | {system.get('matched_path_count')} | `{wrapper.get('wrapper_id', '')}` | `{wrapper.get('proposed_aide_command', '')}` | {capabilities} | {system.get('risk_class')} | disabled |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Enablement Gate",
+            "",
+            "Execution remains disabled. A future wrapper task must prove command side effects, timeout, output paths, and validation before any wrapper can run a legacy tool.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def render_xstack_status_md(contract: dict[str, object], registry: dict[str, object], checks: list[Check]) -> str:
+    summary = registry.get("summary", {}) if isinstance(registry.get("summary"), dict) else {}
+    result = result_from_checks(checks)
+    lines = [
+        "# XStack Integration Status",
+        "",
+        f"Result: {result}",
+        "",
+        f"- systems modeled: {summary.get('system_count', 0)}",
+        f"- systems detected: {summary.get('present_system_count', 0)}",
+        f"- wrapper plans: {summary.get('wrapper_count', 0)}",
+        f"- no_apply: {registry.get('no_apply')}",
+        f"- execution_allowed: {registry.get('execution_allowed')}",
+        f"- apply_allowed: {registry.get('apply_allowed')}",
+        "",
+        "## Checks",
+        "",
+    ]
+    lines.extend(f"- {check.severity} {check.message}" for check in checks)
+    lines.extend(
+        [
+            "",
+            "## Preservation",
+            "",
+            str(contract.get("preservation_rule")),
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def write_xstack_integration_outputs(repo_root: Path, contract: dict[str, object], registry: dict[str, object], checks: list[Check] | None = None) -> dict[str, WriteResult]:
+    effective_checks = checks if checks is not None else validate_xstack_integration_data(contract, registry)
+    contract_md = render_xstack_contract_md(contract, registry)
+    registry_md = render_xstack_registry_md(registry)
+    status_md = render_xstack_status_md(contract, registry, effective_checks)
+    return {
+        "contract_json": write_text_if_changed(repo_root / XSTACK_INTEGRATION_CONTRACT_JSON_PATH, stable_json_text(contract)),
+        "contract_md": write_text_if_changed(repo_root / XSTACK_INTEGRATION_CONTRACT_MD_PATH, contract_md),
+        "registry_json": write_text_if_changed(repo_root / XSTACK_WRAPPER_REGISTRY_JSON_PATH, stable_json_text(registry)),
+        "registry_md": write_text_if_changed(repo_root / XSTACK_WRAPPER_REGISTRY_MD_PATH, registry_md),
+        "status_md": write_text_if_changed(repo_root / XSTACK_INTEGRATION_STATUS_MD_PATH, status_md),
+        "report_md": write_text_if_changed(repo_root / XSTACK_INTEGRATION_REPORT_MD_PATH, status_md),
+    }
+
+
+def latest_or_build_xstack_integration(repo_root: Path) -> tuple[dict[str, object], dict[str, object]]:
+    contract_path = repo_root / XSTACK_INTEGRATION_CONTRACT_JSON_PATH
+    registry_path = repo_root / XSTACK_WRAPPER_REGISTRY_JSON_PATH
+    if contract_path.exists() and registry_path.exists():
+        try:
+            contract = json.loads(read_text(contract_path))
+            registry = json.loads(read_text(registry_path))
+            if isinstance(contract, dict) and isinstance(registry, dict):
+                return contract, registry
+        except json.JSONDecodeError:
+            pass
+    return build_xstack_integration(repo_root)
+
+
+def validate_xstack_integration_data(contract: dict[str, object], registry: dict[str, object]) -> list[Check]:
+    checks: list[Check] = []
+    check_pass(checks, contract.get("schema_version") == "aide.xstack-integration-contract.v0", "XStack contract schema version is v0")
+    check_pass(checks, registry.get("schema_version") == "aide.xstack-wrapper-registry.v0", "XStack wrapper registry schema version is v0")
+    for label, data in [("contract", contract), ("registry", registry)]:
+        check_pass(checks, data.get("no_apply") is True, f"XStack {label} enforces no_apply true")
+        check_pass(checks, data.get("execution_allowed") is False, f"XStack {label} enforces execution_allowed false")
+        check_pass(checks, data.get("apply_allowed") is False, f"XStack {label} enforces apply_allowed false")
+    systems = registry.get("systems", []) if isinstance(registry.get("systems"), list) else []
+    wrappers = registry.get("wrapper_plans", []) if isinstance(registry.get("wrapper_plans"), list) else []
+    check_pass(checks, len(systems) >= 4, "XStack registry models XStack/AuditX/RepoX/TestX families")
+    check_pass(checks, len(wrappers) >= len(systems), "XStack registry contains wrapper plans for modeled systems")
+    present_ids = {str(system.get("system_id")) for system in systems if isinstance(system, dict) and system.get("present")}
+    for required in ["xstack", "auditx", "repox", "testx"]:
+        check_warn(checks, required in present_ids, f"XStack registry detected {required}")
+    for wrapper in wrappers:
+        if not isinstance(wrapper, dict):
+            checks.append(Check("FAIL", "XStack wrapper plan is not an object"))
+            continue
+        wrapper_id = str(wrapper.get("wrapper_id", "unknown"))
+        check_pass(checks, wrapper.get("execution_allowed") is False, f"{wrapper_id} execution_allowed false")
+        check_pass(checks, wrapper.get("apply_allowed") is False, f"{wrapper_id} apply_allowed false")
+        check_pass(checks, wrapper.get("no_apply") is True, f"{wrapper_id} no_apply true")
+    serialized = (stable_json_text(contract) + stable_json_text(registry)).lower()
+    for phrase in ['"execution_allowed": true', '"apply_allowed": true', "safe_to_delete", "delete approved", "rename approved", "migration approved", "execute now"]:
+        check_pass(checks, phrase not in serialized, f"XStack integration excludes forbidden phrase: {phrase}")
+    return checks
+
+
+def command_xstack_wrap_plan(args: argparse.Namespace) -> int:
+    contract, registry = build_xstack_integration(args.repo_root)
+    checks = validate_xstack_integration_data(contract, registry)
+    writes = write_xstack_integration_outputs(args.repo_root, contract, registry, checks)
+    print("AIDE Lite xstack wrap-plan")
+    print(f"result: {result_from_checks(checks)}")
+    for name, result in writes.items():
+        print(f"{name}: {normalize_rel(result.path.relative_to(args.repo_root))} ({result.action})")
+    print("execution_allowed: false")
+    print("apply_allowed: false")
+    print("legacy_tool_execution: false")
+    return 1 if any(check.severity == "FAIL" for check in checks) else 0
+
+
+def command_xstack_validate(args: argparse.Namespace) -> int:
+    contract, registry = latest_or_build_xstack_integration(args.repo_root)
+    checks = validate_xstack_integration_data(contract, registry)
+    write_xstack_integration_outputs(args.repo_root, contract, registry, checks)
+    result = result_from_checks(checks)
+    print("AIDE Lite xstack validate")
+    print(f"result: {result}")
+    for check in checks:
+        print(f"- {check.severity} {check.message}")
+    print("execution_allowed: false")
+    print("apply_allowed: false")
+    print("legacy_tool_execution: false")
+    return 1 if result == "FAIL" else 0
+
+
+def command_xstack_status(args: argparse.Namespace) -> int:
+    contract, registry = latest_or_build_xstack_integration(args.repo_root)
+    checks = validate_xstack_integration_data(contract, registry)
+    summary = registry.get("summary", {}) if isinstance(registry.get("summary"), dict) else {}
+    result = result_from_checks(checks)
+    print("AIDE Lite xstack status")
+    print(f"result: {result}")
+    print(f"contract: {XSTACK_INTEGRATION_CONTRACT_JSON_PATH}")
+    print(f"registry: {XSTACK_WRAPPER_REGISTRY_JSON_PATH}")
+    print(f"systems_modeled: {summary.get('system_count', 0)}")
+    print(f"systems_detected: {summary.get('present_system_count', 0)}")
+    print(f"wrapper_count: {summary.get('wrapper_count', 0)}")
+    print("execution_allowed: false")
+    print("apply_allowed: false")
+    print("legacy_tool_execution: false")
+    return 1 if any(check.severity == "FAIL" for check in checks) else 0
+
+
 def run_git_capture(repo_root: Path, args: list[str]) -> tuple[bool, str, str]:
     try:
         result = subprocess.run(
@@ -22471,6 +22850,8 @@ def classify_scope_path(rel_path: str, status: str, allowed: Iterable[str], forb
 
 
 def git_status_short(repo_root: Path) -> tuple[bool, list[tuple[str, str]], str]:
+    env = os.environ.copy()
+    env["GIT_CEILING_DIRECTORIES"] = str(repo_root.resolve().parent)
     try:
         result = subprocess.run(
             ["git", "-C", str(repo_root), "status", "--short"],
@@ -22478,6 +22859,7 @@ def git_status_short(repo_root: Path) -> tuple[bool, list[tuple[str, str]], str]
             capture_output=True,
             text=True,
             encoding="utf-8",
+            env=env,
         )
     except OSError as exc:
         return False, [], str(exc)
@@ -25006,6 +25388,10 @@ def collect_validation_checks(repo_root: Path) -> list[Check]:
 
     if (repo_root / ".aide/queue/Q41-existing-tool-absorption-v0").exists():
         checks.extend(validate_tool_files(repo_root, require_latest=(repo_root / TOOL_INVENTORY_JSON_PATH).exists()))
+
+    if (repo_root / XSTACK_INTEGRATION_CONTRACT_JSON_PATH).exists() or (repo_root / ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01").exists():
+        contract, registry = latest_or_build_xstack_integration(repo_root)
+        checks.extend(validate_xstack_integration_data(contract, registry))
 
     if (repo_root / ".aide/queue/Q42-move-map-salvage-map-path-alias-v0").exists():
         checks.extend(validate_refactor_map_files(repo_root, require_latest=(repo_root / CURRENT_MOVE_MAP_JSON_PATH).exists()))
@@ -28647,6 +29033,13 @@ def build_parser(default_repo_root: Path) -> argparse.ArgumentParser:
     tools_explain_parser.add_argument("tool_or_path")
     tools_explain_parser.set_defaults(handler=command_tools_explain_tool)
     tools_subparsers.add_parser("capabilities").set_defaults(handler=command_tools_capabilities)
+
+    xstack_parser = subparsers.add_parser("xstack")
+    xstack_parser.set_defaults(handler=command_xstack_status)
+    xstack_subparsers = xstack_parser.add_subparsers(dest="xstack_command", required=False)
+    xstack_subparsers.add_parser("status").set_defaults(handler=command_xstack_status)
+    xstack_subparsers.add_parser("wrap-plan").set_defaults(handler=command_xstack_wrap_plan)
+    xstack_subparsers.add_parser("validate").set_defaults(handler=command_xstack_validate)
 
     install_parser = subparsers.add_parser("install")
     install_parser.set_defaults(handler=command_install_status)

@@ -1,0 +1,52 @@
+[
+    {
+        "Name":  "uninstall_observe",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "uninstall_validate",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "git_detect",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "git_policy",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "git_plan",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "commit_check_latest",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "changelog_preview",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "changelog_validate",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "pack_q54",
+        "Result":  "FAIL",
+        "Code":  null
+    },
+    {
+        "Name":  "estimate_q54",
+        "Result":  "FAIL",
+        "Code":  null
+    }
+]

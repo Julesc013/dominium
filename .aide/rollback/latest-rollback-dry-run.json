@@ -1,36 +1,7 @@
 {
-  "blocking_issues": [
-    "blocked_missing_ledger"
-  ],
+  "blocking_issues": [],
   "no_apply": true,
   "operations": [
-    {
-      "action": "blocked_missing_ledger",
-      "apply_allowed": false,
-      "current_state_ref": ".aide/ownership-evidence",
-      "delete_allowed": false,
-      "managed_section_removal_allowed": false,
-      "operation_id": "rollback-op-14654f56d0b6",
-      "overwrite_allowed": false,
-      "preserve_target_state": true,
-      "previous_source_ref": "",
-      "reason": "Rollback cannot plan destructive recovery without an ownership ledger or equivalent plan evidence.",
-      "rollback_class": "blocked_missing_ledger",
-      "rollback_hint": "Future rollback apply requires ownership evidence, review, validation, and recovery notes.",
-      "target_path": ".aide/ownership-evidence",
-      "validation_required": [
-        "py -3 .aide/scripts/aide_lite.py doctor",
-        "py -3 .aide/scripts/aide_lite.py validate",
-        "py -3 .aide/scripts/aide_lite.py test",
-        "py -3 .aide/scripts/aide_lite.py selftest",
-        "py -3 .aide/scripts/aide_lite.py eval run",
-        "py -3 .aide/scripts/aide_lite.py pack-status",
-        "py -3 .aide/scripts/aide_lite.py install validate",
-        "py -3 .aide/scripts/aide_lite.py repair validate",
-        "py -3 .aide/scripts/aide_lite.py upgrade validate",
-        "py -3 .aide/scripts/aide_lite.py rollback validate"
-      ]
-    },
     {
       "action": "preserve",
       "apply_allowed": false,
@@ -549,5 +520,5 @@
   "planned_preservations": 19,
   "planned_removals": 0,
   "planned_restores": 0,
-  "planned_skips": 1
+  "planned_skips": 0
 }

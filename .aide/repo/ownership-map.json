@@ -125,7 +125,7 @@
       "owner": "AIDE context compiler"
     },
     {
-      "file_count": 211,
+      "file_count": 214,
       "files": [
         ".aide/adapters/targets.yaml",
         ".aide/adapters/templates/AGENTS.md.template",
@@ -252,11 +252,14 @@
         ".aide/reports/aide-workunit-recovery-standard.md",
         ".aide/reports/docs-consistency-report.md",
         ".aide/reports/dominium-aide-preservation-plan.md",
+        ".aide/reports/dominium-existing-tool-absorption.md",
         ".aide/reports/dominium-existing-tool-preflight.md",
         ".aide/reports/dominium-fresh-install-preflight.md",
         ".aide/reports/dominium-next-aide-task.md",
         ".aide/reports/dominium-release-bundle-readiness.md",
         ".aide/reports/dominium-stable-aide-install.md",
+        ".aide/reports/dominium-tool-capability-map.md",
+        ".aide/reports/dominium-tool-preservation-plan.md",
         ".aide/reports/file-quality-ledger.json",
         ".aide/reports/file-quality-ledger.schema.json",
         ".aide/reports/file-quality-summary.md",
@@ -341,7 +344,7 @@
       ],
       "kinds": {
         "doc": 52,
-        "evidence": 20,
+        "evidence": 23,
         "generated": 7,
         "schema": 63,
         "template": 15,
@@ -837,7 +840,7 @@
       "owner": "AIDE root recycling framework"
     },
     {
-      "file_count": 54,
+      "file_count": 68,
       "files": [
         ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/ExecPlan.md",
         ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/changed-files.md",
@@ -891,16 +894,30 @@
         ".aide/queue/DOMINIUM-AIDE-SYNC-01/prompt.md",
         ".aide/queue/DOMINIUM-AIDE-SYNC-01/status.yaml",
         ".aide/queue/DOMINIUM-AIDE-SYNC-01/task.yaml",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/ExecPlan.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/capability-map.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/changed-files.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/preservation-report.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/remaining-risks.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/tool-classification.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/tool-discovery.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/validation.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/wrap-plan.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/xstack-auditx-repox-testx.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/prompt.md",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/status.yaml",
+        ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/task.yaml",
         ".aide/queue/README.template.md",
         ".aide/queue/index.yaml"
       ],
       "kinds": {
-        "evidence": 54
+        "evidence": 68
       },
       "owner": "AIDE self-hosting queue"
     },
     {
-      "file_count": 24,
+      "file_count": 28,
       "files": [
         ".aide/policies/tool-absorption.yaml",
         ".aide/policies/tool-capabilities.yaml",
@@ -909,6 +926,10 @@
         ".aide/policies/tool-risk.yaml",
         ".aide/policies/tool-wrapping.yaml",
         ".aide/tools/README.md",
+        ".aide/tools/dominium-tool-adapter-map.json",
+        ".aide/tools/dominium-tool-classification.json",
+        ".aide/tools/dominium-tool-inventory.json",
+        ".aide/tools/dominium-tool-wrap-plan.md",
         ".aide/tools/latest-tool-adapter-map.json",
         ".aide/tools/latest-tool-adapter-map.md",
         ".aide/tools/latest-tool-classification.json",
@@ -928,10 +949,10 @@
         ".aide/tools/tool-wrap-plan.schema.json"
       ],
       "kinds": {
-        "doc": 6,
+        "doc": 7,
         "policy": 6,
         "schema": 8,
-        "tool": 4
+        "tool": 7
       },
       "owner": "AIDE tool absorption framework"
     },
@@ -16146,5 +16167,5 @@
     }
   ],
   "schema_version": "aide.ownership-map.v0",
-  "source_commit": "52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f"
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c"
 }

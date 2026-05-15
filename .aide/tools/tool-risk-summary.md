@@ -91,6 +91,7 @@
 - `.aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/post-sync-validation.md`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, install_hint:install, medium_risk_hint:install
 - `.aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/sync-report.md`: risk=medium fate=wrap reasons=audit_hint:report, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, install_hint:install
 - `.aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/sync-report.md`: risk=low fate=wrap reasons=audit_hint:report, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, low_risk_hint:report
+- `.aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/xstack-auditx-repox-testx.md`: risk=medium fate=wrap reasons=audit_hint:audit, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:test
 - `.aide/refactors/latest-refactor-plan.example.json`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:test, test_hint:test
 - `.aide/refactors/latest-refactor-plan.example.md`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:test, test_hint:test
 - `.aide/refactors/latest-refactor-readiness.json`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:test, test_hint:test
@@ -155,6 +156,10 @@
 - `.aide/scripts/tests/test_q44_repair_doctor.py`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, candidate_tool_path, medium_risk_hint:test
 - `.aide/scripts/tests/test_q46_rollback_uninstall.py`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, candidate_tool_path, install_hint:install,rollback,uninstall
 - `.aide/tools/README.md`: risk=low fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_path, docs_hint:readme, low_risk_hint:docs
+- `.aide/tools/dominium-tool-adapter-map.json`: risk=unknown fate=unknown reasons=candidate_tool_path, insufficient_evidence_for_wrap_plan, no_capability_hint_matched, repo_intelligence_tool_kind
+- `.aide/tools/dominium-tool-classification.json`: risk=unknown fate=unknown reasons=candidate_tool_path, insufficient_evidence_for_wrap_plan, no_capability_hint_matched, repo_intelligence_tool_kind
+- `.aide/tools/dominium-tool-inventory.json`: risk=low fate=unknown reasons=candidate_tool_path, insufficient_evidence_for_wrap_plan, low_risk_hint:inventory, no_capability_hint_matched
+- `.aide/tools/dominium-tool-wrap-plan.md`: risk=unknown fate=unknown reasons=candidate_tool_path, insufficient_evidence_for_wrap_plan, no_capability_hint_matched, unknown_capability
 - `.aide/tools/tool-adapter-map.schema.json`: risk=unknown fate=unknown reasons=candidate_tool_path, insufficient_evidence_for_wrap_plan, no_capability_hint_matched, unknown_capability
 - `.aide/tools/tool-capability.schema.json`: risk=unknown fate=unknown reasons=candidate_tool_path, insufficient_evidence_for_wrap_plan, no_capability_hint_matched, unknown_capability
 - `.aide/tools/tool-evidence.schema.json`: risk=unknown fate=unknown reasons=candidate_tool_path, insufficient_evidence_for_wrap_plan, no_capability_hint_matched, unknown_capability

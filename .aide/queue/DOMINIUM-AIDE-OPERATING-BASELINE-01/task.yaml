@@ -1,0 +1,39 @@
+schema_version: aide.queue-task.v0
+task_id: DOMINIUM-AIDE-OPERATING-BASELINE-01
+title: Q53 Dominium Operating Baseline
+status: needs_review
+repo: julesc013/dominium
+branch: main
+phase: Q53
+work_class: validation_audit
+mode: operating_baseline
+readiness_classification: PARTIAL_BASELINE_NEEDS_REPAIR
+primary_blocker: git_write_permission_and_commit_finalization
+global_next_after_repair: Q54 Eureka Fresh Upgrade Preflight
+non_goals:
+  - product_implementation
+  - root_moves
+  - tool_renames
+  - doctrine_rewrite
+  - reference_rewrite
+  - install_upgrade_repair_apply
+  - branch_mutation
+  - provider_model_network_calls
+allowed_write_roots:
+  - .aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/
+  - .aide/reports/
+  - .aide/context/latest-task-packet.md
+  - .aide/context/latest-review-packet.md
+  - .aide/intake/
+  - .aide/repo/
+  - .aide/quality/
+  - .aide/roots/
+  - .aide/tools/
+  - .aide/install/
+  - .aide/repair/
+  - .aide/upgrade/
+  - .aide/rollback/
+  - .aide/uninstall/
+  - .aide/git/
+  - .aide/changelog/
+review_gate: required

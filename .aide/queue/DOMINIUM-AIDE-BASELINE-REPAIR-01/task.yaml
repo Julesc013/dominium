@@ -1,0 +1,36 @@
+schema_version: aide.task.v0
+task_id: DOMINIUM-AIDE-BASELINE-REPAIR-01
+title: Q53R Dominium Baseline Repair And XStack AIDE Integration
+phase: Q53R
+status: needs_review
+work_class: validation_audit
+repo: julesc013/dominium
+allowed_paths:
+  - .aide/**
+forbidden_paths:
+  - runtime/**
+  - engine/**
+  - game/**
+  - apps/**
+  - content/**
+  - contracts/**
+  - specs/**
+  - data/**
+  - docs/**
+  - tools/**
+  - scripts/**
+  - cmake/**
+  - .git/**
+  - .github/**
+  - .aide.local/**
+goals:
+  - repair AIDE review-pack/test/selftest validation leakage from nested temp repos
+  - add modular no-apply XStack/AuditX/RepoX/TestX integration surfaces inside AIDE
+  - record validation and remaining blockers before rerunning DCHECK-01
+non_goals:
+  - product implementation
+  - doctrine rewrite
+  - legacy tool execution
+  - root moves
+  - branch mutation
+  - release or network operations

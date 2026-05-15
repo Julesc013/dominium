@@ -1,0 +1,37 @@
+schema_version: aide.queue-status.v0
+task_id: DOMINIUM-AIDE-OPERATING-BASELINE-01
+phase: Q53
+status: needs_review
+readiness_classification: READY_FOR_DCHECK_RERUN_WITH_WARNINGS
+repo_identity_confirmed: true
+q49_inspected: true
+q50_inspected: true
+q51_inspected: true
+q52_inspected: true
+aide_control_plane_installed: true
+capability_matrix_completed: true
+preservation_contract_completed: true
+warning_disposition_completed: true
+latest_task_packet: dcheck_rerun_before_q54
+xstack_aide_integration: pass_no_apply
+commit_status: blocked_by_git_write_permission
+product_source_modified: false
+doctrine_modified: false
+tools_modified: false
+unknown_tools_executed: false
+files_moved: false
+files_deleted: false
+files_renamed: false
+references_rewritten: false
+branch_mutation: false
+provider_or_model_calls: none
+network_calls: none
+warnings:
+  - Q52 evidence exists but is uncommitted because git write operations are blocked in the current sandbox.
+  - Q53, DCHECK, and Q53R evidence are also uncommitted for the same reason.
+  - AIDE `test` and `selftest` pass when run with the Python 3.14 interpreter; earlier stale failure evidence from the default Python path is superseded.
+  - XStack/AuditX/RepoX/TestX integration is no-apply registry/contract level; legacy execution remains disabled.
+  - Full AIDE eval remains timeout-prone and is classified deferred_non_blocking.
+  - AIDE verify reports expected target-specific warnings while Q52/Q53 artifacts are dirty.
+  - Repo/root/tool inventories still contain unknown classifications requiring future classifier improvement.
+review_gate: required

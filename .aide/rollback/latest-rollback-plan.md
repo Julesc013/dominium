@@ -2,16 +2,15 @@
 
 - plan_id: rollback-plan-current
 - status: candidate
-- operations: 20
-- preserved_paths: 3811
-- blocked_reasons: blocked_missing_ledger
+- operations: 19
+- preserved_paths: 4102
+- blocked_reasons: none
 - no_apply: true
 - overwrite_allowed_default: false
 - delete_allowed_default: false
 - managed_section_removal_allowed_default: false
 
 Rollback actions are future candidates only.
-- blocked_missing_ledger: .aide/ownership-evidence (blocked_missing_ledger)
 - preserve: .aide/repo/dependency-map.schema.json (preserve_target_specific)
 - preserve: .aide/repo/doc-link-map.schema.json (preserve_target_specific)
 - preserve: .aide/repo/file-inventory.schema.json (preserve_target_specific)

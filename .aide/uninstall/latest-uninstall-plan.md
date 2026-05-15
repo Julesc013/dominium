@@ -2,8 +2,8 @@
 
 - plan_id: uninstall-plan-current
 - status: candidate
-- operations: 3936
-- preserved_paths: 3935
+- operations: 4442
+- preserved_paths: 4197
 - blocked_reasons: none
 - no_apply: true
 - delete_allowed_default: false
@@ -11,23 +11,23 @@
 - blanket_aide_deletion: false
 
 Removal candidates are future-only and require ownership evidence plus review.
-- preserve_target_specific: .aide/context/latest-context-packet.md (preserve_target_evidence)
-- preserve_target_specific: .aide/context/latest-review-packet.md (preserve_target_evidence)
-- preserve_target_specific: .aide/context/latest-task-packet.md (preserve_target_evidence)
-- preserve_target_specific: .aide/evals/golden-tasks/README.md (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/adapter-managed-section-determinism/acceptance.md (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/adapter-managed-section-determinism/task.yaml (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/branch_role_detection_golden/acceptance.md (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/branch_role_detection_golden/task.yaml (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/catalog.yaml (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/changelog_preview_golden/acceptance.md (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/changelog_preview_golden/task.yaml (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/commit_message_standard_golden/acceptance.md (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/commit_message_standard_golden/task.yaml (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/compact-task-packet-required-sections/acceptance.md (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/compact-task-packet-required-sections/task.yaml (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/context-packet-no-full-repo-dump/acceptance.md (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/context-packet-no-full-repo-dump/task.yaml (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/export_pack_commit_policy_inclusion_golden/acceptance.md (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/export_pack_commit_policy_inclusion_golden/task.yaml (preserve_target_golden_tasks)
-- preserve_target_specific: .aide/evals/golden-tasks/export_pack_excludes_source_branch_state_golden/acceptance.md (preserve_target_golden_tasks)
+- remove_portable_file_future: .aide/adapters/targets.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/cache/README.md (remove_portable_file_future)
+- remove_portable_file_future: .aide/cache/key-policy.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/changelog/README.md (remove_portable_file_future)
+- remove_portable_file_future: .aide/changelog/config.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/changelog/templates/changelog.md.template (remove_portable_file_future)
+- remove_portable_file_future: .aide/changelog/templates/release-notes.md.template (remove_portable_file_future)
+- remove_portable_file_future: .aide/context/compiler.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/context/excerpt-policy.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/context/ignore.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/context/priority.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/gateway/README.md (remove_portable_file_future)
+- remove_portable_file_future: .aide/gateway/architecture.md (remove_portable_file_future)
+- remove_portable_file_future: .aide/gateway/endpoints.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/gateway/lifecycle.yaml (remove_portable_file_future)
+- remove_portable_file_future: .aide/gateway/security-boundary.md (remove_portable_file_future)
+- remove_portable_file_future: .aide/git/README.md (remove_portable_file_future)
+- remove_portable_file_future: .aide/git/branch-roles.md (remove_portable_file_future)
+- remove_portable_file_future: .aide/git/commit-template.md (remove_portable_file_future)
+- remove_portable_file_future: .aide/git/helper-commands.md (remove_portable_file_future)

@@ -985,6 +985,146 @@
       "exportable_hint": "source_specific",
       "kind": "evidence",
       "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/ExecPlan.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/capability-map.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/changed-files.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/preservation-report.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/remaining-risks.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/tool-classification.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/tool-discovery.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/validation.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/wrap-plan.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/xstack-auditx-repox-testx.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/prompt.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/status.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/task.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
       "path": ".aide/queue/README.template.md",
       "reasons": [
         "known_evidence_or_report_path"
@@ -1145,6 +1285,16 @@
       "exportable_hint": "source_specific",
       "kind": "evidence",
       "owner": "AIDE control plane",
+      "path": ".aide/reports/dominium-existing-tool-absorption.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
       "path": ".aide/reports/dominium-existing-tool-preflight.md",
       "reasons": [
         "known_evidence_or_report_path"
@@ -1186,6 +1336,26 @@
       "kind": "evidence",
       "owner": "AIDE control plane",
       "path": ".aide/reports/dominium-stable-aide-install.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/dominium-tool-capability-map.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/dominium-tool-preservation-plan.md",
       "reasons": [
         "known_evidence_or_report_path"
       ],
@@ -1463,5 +1633,5 @@
     }
   ],
   "schema_version": "aide.generated-map.v0",
-  "source_commit": "52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f"
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c"
 }

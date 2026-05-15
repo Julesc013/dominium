@@ -1,8 +1,8 @@
 # AIDE File Quality Summary
 
 - generated_by: aide-lite
-- source_commit: 52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f
-- file_count: 15956
+- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
+- file_count: 15977
 - next_recommended_phase: Q39 Refactor Control Plane v0
 - provider_or_model_calls: none
 - network_calls: none
@@ -22,20 +22,20 @@
 
 ## Quality Level Summary
 
-- exempt: 46
+- exempt: 49
 - pass: 16
-- warn: 15894
+- warn: 15912
 
 ## Top Warnings By Category
 
-- large_module_candidate: 32
-- missing_doc_candidate: 2736
-- missing_test_or_validator_candidate: 3735
-- mixed_purpose_candidate: 10
-- orphan_candidate: 15436
-- public_surface_missing_doc_candidate: 1388
+- large_module_candidate: 34
+- missing_doc_candidate: 2739
+- missing_test_or_validator_candidate: 3738
+- mixed_purpose_candidate: 12
+- orphan_candidate: 15439
+- public_surface_missing_doc_candidate: 1391
 - reuse_candidate: 8183
-- stale_doc_reference_candidate: 3217
+- stale_doc_reference_candidate: 3232
 - unknown_kind: 1669
 - unknown_owner: 15177
 - unknown_status: 1669
@@ -48,9 +48,9 @@
 
 ## Missing Docs Tests Validators
 
-- missing_doc_candidate: 2736
-- public_surface_missing_doc_candidate: 1388
-- missing_test_or_validator_candidate: 3735
+- missing_doc_candidate: 2739
+- public_surface_missing_doc_candidate: 1391
+- missing_test_or_validator_candidate: 3738
 
 ## Generated Evidence Local State Boundaries
 

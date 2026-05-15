@@ -3,14 +3,16 @@
 This is a deterministic preview only. It does not publish a release.
 
 source_range: HEAD latest 50 commits
-source_head: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
+source_head: d22537869be05860d5eda70eebb2f3ed261e276c
 preview_only: true
 
 ## Highlights
 
 - Added: Dominium Q49 preflight evidence and Q50 dry-run readiness guidance. (80dc7bfb58a1)
+- Added: Dominium existing-tool classification evidence and preservation-first wrapper plan for Q52. (d22537869be0)
 - Changed: imported portable AIDE governance and recovery tooling into Dominium. (f2a1b4412cbe)
 - Changed: added Dominium-local Git workflow reports and dry-run helper plan outputs. (4f04a866b73c)
+- Changed: upgraded portable Dominium AIDE control plane and generated Q51 readiness evidence. (52eeb5a1f481)
 - Fixed: prevented AIDE Lite selftest from resolving Dominium product `core` modules. (f2a1b4412cbe)
 - Docs: added compact Dominium AIDE governance sync reference. (4252584e060b)
 - Tests: recorded 25/25 portable golden tasks passing after target-local helper-plan generation. (d722727e80e1)
@@ -57,7 +59,7 @@ preview_only: true
 ## Warnings
 
 - b3d1e62bafbc merge commit ignored
-- 42 malformed or legacy commits require review
+- 40 malformed or legacy commits require review
 
 ## Preview Caveat
 

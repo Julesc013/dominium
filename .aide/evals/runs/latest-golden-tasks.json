@@ -1,16 +1,687 @@
 {
-  "fail_count": 0,
+  "fail_count": 8,
   "generator": "aide-lite",
   "generator_version": "q24.existing-tool-adapter-compiler.v0",
   "network_calls": "none",
-  "pass_count": 1,
+  "pass_count": 122,
   "provider_or_model_calls": "none",
   "raw_prompt_storage": false,
   "raw_response_storage": false,
-  "result": "PASS",
+  "result": "FAIL",
   "schema_version": "aide.golden-tasks-run.v0",
-  "task_count": 1,
+  "task_count": 130,
   "tasks": [
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks managed section replacement on an isolated fixture repo.",
+      "passed_checks": 4,
+      "related_paths": [
+        "AGENTS.md"
+      ],
+      "result": "PASS",
+      "task_id": "adapter-managed-section-determinism",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 15,
+      "errors": [],
+      "notes": "Checks deterministic branch-role classification and conservative unknown handling.",
+      "passed_checks": 15,
+      "related_paths": [
+        ".aide/git/branch-roles.md",
+        ".aide/git/workflow-detection.json",
+        ".aide/policies/branch-roles.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "branch_role_detection_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 20,
+      "errors": [],
+      "notes": "Checks changelog and release-note preview JSON shape.",
+      "passed_checks": 20,
+      "related_paths": [
+        ".aide/changelog/changelog.preview.json",
+        ".aide/changelog/release-notes.preview.json"
+      ],
+      "result": "PASS",
+      "task_id": "changelog_json_shape_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 9,
+      "errors": [],
+      "notes": "Checks deterministic changelog preview grouping and malformed commit reporting.",
+      "passed_checks": 9,
+      "related_paths": [
+        ".aide/changelog/CHANGELOG.preview.md",
+        ".aide/changelog/RELEASE_NOTES.preview.md",
+        ".aide/changelog/config.yaml",
+        ".aide/changelog/templates/changelog.md.template",
+        ".aide/changelog/templates/release-notes.md.template",
+        ".aide/policies/changelog.yaml",
+        ".aide/policies/commit-messages.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "changelog_preview_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 14,
+      "errors": [],
+      "notes": "Checks changelog-ready commit message validation anchors.",
+      "passed_checks": 14,
+      "related_paths": [
+        ".aide/git/commit-template.md",
+        ".aide/hooks/commit-msg",
+        ".aide/policies/commit-messages.yaml",
+        ".aide/reports/aide-commit-message-standard.md"
+      ],
+      "result": "PASS",
+      "task_id": "commit_message_standard_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": 1226,
+      "checks_run": 17,
+      "errors": [],
+      "notes": "Checks the compact task packet shape and forbidden prompt discipline.",
+      "passed_checks": 17,
+      "related_paths": [
+        ".aide/context/latest-task-packet.md",
+        ".aide/policies/token-budget.yaml",
+        ".aide/prompts/compact-task.md"
+      ],
+      "result": "PASS",
+      "task_id": "compact-task-packet-required-sections",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": 463,
+      "checks_run": 17,
+      "errors": [],
+      "notes": "Checks context refs instead of whole-repo dumps.",
+      "passed_checks": 17,
+      "related_paths": [
+        ".aide/context/context-index.json",
+        ".aide/context/latest-context-packet.md",
+        ".aide/context/repo-map.json",
+        ".aide/context/test-map.json"
+      ],
+      "result": "PASS",
+      "task_id": "context-packet-no-full-repo-dump",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks docs consistency warning surfaces.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/policies/docs-consistency.yaml",
+        ".aide/reports/docs-consistency-report.md"
+      ],
+      "result": "PASS",
+      "task_id": "docs_consistency_report_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 7,
+      "errors": [],
+      "notes": "Checks Q42 fates never become deletion approval.",
+      "passed_checks": 7,
+      "related_paths": [
+        ".aide/policies/salvage-map.yaml",
+        ".aide/refactors/current-move-map.json",
+        ".aide/refactors/current-salvage-map.json"
+      ],
+      "result": "PASS",
+      "task_id": "drop_candidate_not_delete_approval_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks portable commit discipline and changelog support are exported from source-pack repos.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/git/commit-template.md",
+        ".aide/hooks/commit-msg",
+        ".aide/policies/commit-messages.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "export_pack_commit_policy_inclusion_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks source-specific Git detection, helper plans, branch policy, and generated previews are not exported as target truth.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/policies/export-import.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "export_pack_excludes_source_branch_state_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks portable Git workflow and helper governance are exported from source-pack repos.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/git/helper-policy.yaml",
+        ".aide/policies/branch-roles.yaml",
+        ".aide/policies/git-workflow.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "export_pack_git_policy_inclusion_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks portable task resumption, WorkUnit, and recovery governance are exported from source-pack repos.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/policies/recovery.yaml",
+        ".aide/policies/task-resumption.yaml",
+        ".aide/policies/work-units.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "export_pack_task_recovery_inclusion_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 10,
+      "errors": [],
+      "notes": "Checks deterministic classification anchors and known AIDE file classes.",
+      "passed_checks": 10,
+      "related_paths": [
+        ".aide/policies/file-classification.yaml",
+        ".aide/scripts/aide_lite.py",
+        "README.md"
+      ],
+      "result": "PASS",
+      "task_id": "file_classification_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 33,
+      "errors": [],
+      "notes": "Checks file quality ledger schema and latest/generated ledger shape.",
+      "passed_checks": 33,
+      "related_paths": [
+        ".aide/quality/file-quality-ledger.schema.json",
+        ".aide/quality/file-quality-record.schema.json",
+        ".aide/reports/file-quality-ledger.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "file_quality_ledger_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 48,
+      "errors": [],
+      "notes": "Checks Q38 file-quality policy anchors and no-call advisory posture.",
+      "passed_checks": 48,
+      "related_paths": [
+        ".aide/policies/docs-consistency.yaml",
+        ".aide/policies/file-quality.yaml",
+        ".aide/policies/module-quality.yaml",
+        ".aide/policies/reuse-modularity.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "file_quality_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks safe fixture import receives governance files and can run portable commit/task/Git commands.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/hooks/commit-msg",
+        ".aide/scripts/aide_lite.py"
+      ],
+      "result": "PASS",
+      "task_id": "fixture_import_governance_commands_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 26,
+      "errors": [],
+      "notes": "Checks Q29 helper policy anchors and generated helper-plan artifacts.",
+      "passed_checks": 26,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/helper-policy.yaml",
+        ".aide/git/latest-helper-plan.json",
+        ".aide/git/latest-helper-plan.md"
+      ],
+      "result": "PASS",
+      "task_id": "git_helper_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks land dry-run planning and no remote mutation anchors.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/latest-helper-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "git_land_plan_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks live-repo helper plans remain no-mutation by default.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/helper-policy.yaml",
+        ".aide/git/latest-helper-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "git_live_repo_no_mutation_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks promotion helper review gates and dry-run command documentation.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/helper-policy.yaml",
+        ".aide/policies/promotion-rules.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "git_promote_plan_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks prune containment and protected-role guards.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/git/helper-commands.md",
+        ".aide/git/helper-policy.yaml",
+        ".aide/policies/prune-policy.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "git_prune_guard_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 16,
+      "errors": [],
+      "notes": "Checks Q28 Git workflow policy anchors and project profiles.",
+      "passed_checks": 16,
+      "related_paths": [
+        ".aide/git/project-profiles.yaml",
+        ".aide/policies/branch-roles.yaml",
+        ".aide/policies/git-workflow.yaml",
+        ".aide/policies/promotion-rules.yaml",
+        ".aide/policies/prune-policy.yaml",
+        ".aide/policies/sync-policy.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "git_workflow_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 12,
+      "errors": [],
+      "notes": "Checks Q35 CI gate advisory without workflow installation.",
+      "passed_checks": 12,
+      "related_paths": [
+        ".aide/github/ci-advisory.json",
+        ".aide/github/ci-advisory.md",
+        ".aide/policies/ci-gates.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "github_ci_advisory_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks Q35 portable policy export and generated advisory exclusion.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/export/aide-lite-pack-v0/manifest.yaml",
+        ".aide/policies/branch-protection.yaml",
+        ".aide/policies/ci-gates.yaml",
+        ".aide/policies/export-import.yaml",
+        ".aide/policies/github-protection.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "github_export_inclusion_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 15,
+      "errors": [],
+      "notes": "Checks Q35 GitHub branch-protection advisory remains report-only.",
+      "passed_checks": 15,
+      "related_paths": [
+        ".aide/github/branch-protection-plan.json",
+        ".aide/policies/branch-protection.yaml",
+        ".aide/policies/github-protection.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "github_protection_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 13,
+      "errors": [],
+      "notes": "Checks GitHub release asset schema shape.",
+      "passed_checks": 13,
+      "related_paths": [
+        ".aide/release/github-release-asset.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "github_release_asset_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 14,
+      "errors": [
+        "github release asset hashes match files",
+        "required asset missing: .aide/release/dist/aide-lite-pack-v0.zip",
+        "required asset missing: .aide/release/dist/aide-lite-pack-v0.tar.gz",
+        "required asset missing: .aide/release/dist/aide-lite-pack-v0.checksums.json",
+        "required asset missing: .aide/release/dist/SHA256SUMS.txt",
+        "required asset missing: .aide/release/dist/manifest.yaml",
+        "required asset missing: .aide/release/dist/install.md",
+        "required asset missing: .aide/release/dist/CHANGELOG.preview.md",
+        "required asset missing: .aide/release/dist/RELEASE_NOTES.preview.md"
+      ],
+      "notes": "Checks release draft asset list includes checksums and validates hashes.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/release/dist/SHA256SUMS.txt",
+        ".aide/release/dist/aide-lite-pack-v0.checksums.json",
+        ".aide/release/github-release-assets.json"
+      ],
+      "result": "FAIL",
+      "task_id": "github_release_assets_have_checksums_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks GitHub release checklist policy and manual review coverage.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/policies/release-checklist.yaml",
+        ".aide/release/github-release-checklist.json",
+        ".aide/release/github-release-checklist.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "github_release_checklist_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 10,
+      "errors": [],
+      "notes": "Checks Q48 release draft policy anchors and publication boundary.",
+      "passed_checks": 10,
+      "related_paths": [
+        ".aide/policies/github-release-draft.yaml",
+        ".aide/policies/release-publication-boundary.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "github_release_draft_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 11,
+      "errors": [],
+      "notes": "Checks GitHub release draft schema shape.",
+      "passed_checks": 11,
+      "related_paths": [
+        ".aide/release/github-release-draft.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "github_release_draft_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 6,
+      "errors": [],
+      "notes": "Checks Q48 generated outputs stay local-only and unpublished.",
+      "passed_checks": 6,
+      "related_paths": [
+        ".aide/release/github-release-draft.json",
+        ".aide/release/github-release-publication-boundary.md",
+        ".aide/release/github-release-upload-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "github_release_no_publish_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 1,
+      "errors": [],
+      "notes": "Checks GitHub release upload plan schema and no-upload posture.",
+      "passed_checks": 1,
+      "related_paths": [
+        ".aide/release/github-release-upload-plan.json",
+        ".aide/release/github-release-upload-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "github_release_upload_plan_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 11,
+      "errors": [
+        "no live workflow files are required"
+      ],
+      "notes": "Checks Q35 report-only behavior and no live GitHub/CI mutation.",
+      "passed_checks": 10,
+      "related_paths": [
+        ".aide/github/github-advisory.json",
+        ".aide/github/github-advisory.md",
+        ".aide/github/latest-github-status.md"
+      ],
+      "result": "FAIL",
+      "task_id": "github_report_only_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 15,
+      "errors": [],
+      "notes": "Checks install conflict report schema and no-apply conflict output.",
+      "passed_checks": 15,
+      "related_paths": [
+        ".aide/install/conflict-record.schema.json",
+        ".aide/install/conflict-report.schema.json",
+        ".aide/install/latest-conflict-report.json"
+      ],
+      "result": "PASS",
+      "task_id": "install_conflict_report_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 3954,
+      "errors": [],
+      "notes": "Checks Q43 install data never enables apply, overwrite, or automatic migration.",
+      "passed_checks": 3954,
+      "related_paths": [
+        ".aide/install/latest-install-dry-run.json",
+        ".aide/install/latest-install-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "install_no_apply_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks source-generated, local, and secret-like state is never planned as target install truth.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/install/latest-install-plan.json",
+        ".aide/policies/install-preservation.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "install_no_source_state_leak_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 14,
+      "errors": [],
+      "notes": "Checks ownership ledger schema and example no-apply ledger shape.",
+      "passed_checks": 14,
+      "related_paths": [
+        ".aide/install/latest-ownership-ledger.example.json",
+        ".aide/install/ownership-ledger.schema.json",
+        ".aide/install/ownership-record.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "install_ownership_ledger_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 3766,
+      "errors": [],
+      "notes": "Checks install plan schema and generated no-apply plan shape.",
+      "passed_checks": 3766,
+      "related_paths": [
+        ".aide/install/install-operation.schema.json",
+        ".aide/install/install-plan.schema.json",
+        ".aide/install/latest-install-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "install_plan_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 66,
+      "errors": [],
+      "notes": "Checks Q43 install policy anchors and no-apply install posture.",
+      "passed_checks": 66,
+      "related_paths": [
+        ".aide/install/install-plan.schema.json",
+        ".aide/policies/install.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "install_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 67,
+      "errors": [],
+      "notes": "Checks preservation rules for target memory, queue, evidence, local state, and manual content.",
+      "passed_checks": 67,
+      "related_paths": [
+        ".aide/install/preservation-report.schema.json",
+        ".aide/policies/install-preservation.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "install_preservation_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 7,
+      "errors": [],
+      "notes": "Checks Q43 preserves target-specific state instead of treating it as install truth.",
+      "passed_checks": 7,
+      "related_paths": [
+        ".aide/install/latest-install-plan.json",
+        ".aide/install/latest-preservation-report.md",
+        ".aide/policies/install-preservation.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "install_preserves_target_state_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks destructive raw prompts cannot execute directly.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/policies/prompt-normalization.yaml",
+        ".aide/policies/risk-classes.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "intent_compile_destructive_prompt_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks Git promotion prompts require branch policy and review evidence.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/policies/git-workflow.yaml",
+        ".aide/policies/intent.yaml",
+        ".aide/policies/promotion-rules.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "intent_compile_git_prompt_golden",
+      "warnings": []
+    },
     {
       "approx_tokens_if_applicable": null,
       "checks_run": 6,
@@ -24,6 +695,1245 @@
       ],
       "result": "PASS",
       "task_id": "intent_compile_install_prompt_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [],
+      "notes": "Checks overbroad prompts become split recommendations.",
+      "passed_checks": 5,
+      "related_paths": [
+        ".aide/policies/prompt-normalization.yaml",
+        ".aide/policies/workunit-sizing.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "intent_compile_overbroad_prompt_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 6,
+      "errors": [],
+      "notes": "Checks that vague prompts do not trigger product work.",
+      "passed_checks": 6,
+      "related_paths": [
+        ".aide/intake/intent-examples.yaml",
+        ".aide/policies/intent.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "intent_compile_vague_prompt_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 85,
+      "errors": [],
+      "notes": "Checks intent packet and WorkUnit draft shape plus raw prompt storage boundaries.",
+      "passed_checks": 85,
+      "related_paths": [
+        ".aide/intake/intent-packet.schema.json",
+        ".aide/intake/workunit-draft.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "intent_packet_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks malformed and legacy commit reporting without history rewrite.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/changelog/malformed-commits.md"
+      ],
+      "result": "PASS",
+      "task_id": "malformed_commit_reporting_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 106,
+      "errors": [],
+      "notes": "Checks Q42 migration ledger policy and draft event shape.",
+      "passed_checks": 106,
+      "related_paths": [
+        ".aide/policies/migration-ledger.yaml",
+        ".aide/refactors/migration-ledger-entry.schema.json",
+        ".aide/refactors/migration-ledger.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "migration_ledger_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 13,
+      "errors": [],
+      "notes": "Checks migration-ledger schema and example dry-run event support.",
+      "passed_checks": 13,
+      "related_paths": [
+        ".aide/refactors/migration-ledger.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "migration_ledger_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 8,
+      "errors": [],
+      "notes": "Checks Q39 migration stages and no mandatory migration boundary.",
+      "passed_checks": 8,
+      "related_paths": [
+        ".aide/policies/migration.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "migration_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 79,
+      "errors": [],
+      "notes": "Checks Q42 move-map policy anchors and candidate-only map shape.",
+      "passed_checks": 79,
+      "related_paths": [
+        ".aide/policies/move-map.yaml",
+        ".aide/refactors/move-map-entry.schema.json",
+        ".aide/refactors/move-map.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "move_map_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 11,
+      "errors": [],
+      "notes": "Checks move-map schema exists and remains no-apply.",
+      "passed_checks": 11,
+      "related_paths": [
+        ".aide/refactors/move-map.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "move_map_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 79,
+      "errors": [],
+      "notes": "Checks Q42 path-alias policy anchors and no-apply alias shape.",
+      "passed_checks": 79,
+      "related_paths": [
+        ".aide/policies/path-aliases.yaml",
+        ".aide/refactors/path-alias-entry.schema.json",
+        ".aide/refactors/path-aliases.schema.json",
+        ".aide/refactors/path-aliases.template.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "path_alias_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 12,
+      "errors": [],
+      "notes": "Checks path-alias schema exists and remains no-apply.",
+      "passed_checks": 12,
+      "related_paths": [
+        ".aide/refactors/path-aliases.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "path_alias_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 6,
+      "errors": [],
+      "notes": "Checks task-to-dev and dev-to-main gate anchors.",
+      "passed_checks": 6,
+      "related_paths": [
+        ".aide/git/promotion-rules.md",
+        ".aide/policies/promotion-rules.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "promotion_rules_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks prune guards require containment and remain dry-run/report-only.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/git/prune-policy.md",
+        ".aide/policies/prune-policy.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "prune_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 28,
+      "errors": [],
+      "notes": "Checks deterministic quality ledger generation from Q37 outputs.",
+      "passed_checks": 28,
+      "related_paths": [
+        ".aide/repo/file-inventory.json",
+        ".aide/reports/file-quality-ledger.json"
+      ],
+      "result": "PASS",
+      "task_id": "quality_ledger_generation_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks Q38 warning outputs never become deletion advice.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/policies/file-quality.yaml",
+        ".aide/reports/file-quality-ledger.json"
+      ],
+      "result": "PASS",
+      "task_id": "quality_no_delete_recommendation_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 63,
+      "errors": [],
+      "notes": "Checks Q42 map outputs and generated bundle remain no-apply/no-mutation.",
+      "passed_checks": 63,
+      "related_paths": [
+        ".aide/refactors/current-move-map.json",
+        ".aide/refactors/current-salvage-map.json",
+        ".aide/refactors/map-validation-report.json",
+        ".aide/refactors/path-aliases.yaml",
+        ".aide/refactors/reference-rewrite-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "refactor_map_no_apply_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 52,
+      "errors": [],
+      "notes": "Checks Q39 has no apply, move, delete, rewrite, or deletion-approval behavior.",
+      "passed_checks": 52,
+      "related_paths": [
+        ".aide/policies/refactor-application.yaml",
+        ".aide/refactors/latest-refactor-plan.example.json",
+        ".aide/refactors/latest-refactor-readiness.json"
+      ],
+      "result": "PASS",
+      "task_id": "refactor_no_apply_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 54,
+      "errors": [],
+      "notes": "Checks refactor plan schema and no-apply example plan shape.",
+      "passed_checks": 54,
+      "related_paths": [
+        ".aide/refactors/latest-refactor-plan.example.json",
+        ".aide/refactors/refactor-operation.schema.json",
+        ".aide/refactors/refactor-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "refactor_plan_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 54,
+      "errors": [],
+      "notes": "Checks Q39 refactor policy anchors and dry-run only posture.",
+      "passed_checks": 54,
+      "related_paths": [
+        ".aide/policies/refactor-application.yaml",
+        ".aide/policies/refactor-safety.yaml",
+        ".aide/policies/refactor.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "refactor_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 513,
+      "errors": [],
+      "notes": "Checks Q42 reference rewrite planning remains candidate-only.",
+      "passed_checks": 513,
+      "related_paths": [
+        ".aide/policies/reference-rewrite.yaml",
+        ".aide/refactors/reference-rewrite-entry.schema.json",
+        ".aide/refactors/reference-rewrite-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "reference_rewrite_plan_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [
+        "release artifact exists: .aide/release/dist/aide-lite-pack-v0.zip",
+        "release artifact exists: .aide/release/dist/aide-lite-pack-v0.tar.gz",
+        "release artifact exists: .aide/release/dist/manifest.yaml",
+        "release artifact exists: .aide/release/dist/install.md"
+      ],
+      "notes": "Checks local archive generation outputs exist and validate.",
+      "passed_checks": 0,
+      "related_paths": [
+        ".aide/release/dist/aide-lite-pack-v0.tar.gz",
+        ".aide/release/dist/aide-lite-pack-v0.zip",
+        ".aide/release/dist/install.md",
+        ".aide/release/dist/manifest.yaml"
+      ],
+      "result": "FAIL",
+      "task_id": "release_archive_generation_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 13,
+      "errors": [],
+      "notes": "Checks release asset schema shape.",
+      "passed_checks": 13,
+      "related_paths": [
+        ".aide/release/release-asset.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "release_asset_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 54,
+      "errors": [],
+      "notes": "Checks Q47 release policy anchors and local-only no-publish posture.",
+      "passed_checks": 54,
+      "related_paths": [
+        ".aide/policies/release-artifacts.yaml",
+        ".aide/policies/release-bundle.yaml",
+        ".aide/policies/release-validation.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "release_bundle_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [
+        "release checksums validate",
+        "missing release checksums JSON",
+        "release checksum artifact exists: .aide/release/dist/aide-lite-pack-v0.checksums.json",
+        "release checksum artifact exists: .aide/release/dist/SHA256SUMS.txt"
+      ],
+      "notes": "Checks release checksum JSON and SHA256SUMS validation.",
+      "passed_checks": 0,
+      "related_paths": [
+        ".aide/release/dist/SHA256SUMS.txt",
+        ".aide/release/dist/aide-lite-pack-v0.checksums.json"
+      ],
+      "result": "FAIL",
+      "task_id": "release_checksum_validation_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [
+        "fixture extraction validates: .aide/release/dist/aide-lite-pack-v0.zip",
+        "fixture extraction validates: .aide/release/dist/aide-lite-pack-v0.tar.gz"
+      ],
+      "notes": "Checks archive extraction fixture validation.",
+      "passed_checks": 2,
+      "related_paths": [
+        ".aide/release/dist/aide-lite-pack-v0.tar.gz",
+        ".aide/release/dist/aide-lite-pack-v0.zip"
+      ],
+      "result": "FAIL",
+      "task_id": "release_fixture_extraction_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [
+        "release archive missing: .aide/release/dist/aide-lite-pack-v0.zip",
+        "release archive missing: .aide/release/dist/aide-lite-pack-v0.tar.gz"
+      ],
+      "notes": "Checks release archives exclude forbidden paths and generated release outputs are not target truth.",
+      "passed_checks": 2,
+      "related_paths": [
+        ".aide/policies/export-import.yaml",
+        ".aide/policies/release-artifacts.yaml",
+        ".aide/release/dist/aide-lite-pack-v0.tar.gz",
+        ".aide/release/dist/aide-lite-pack-v0.zip"
+      ],
+      "result": "FAIL",
+      "task_id": "release_forbidden_paths_excluded_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 11,
+      "errors": [],
+      "notes": "Checks release manifest schema shape.",
+      "passed_checks": 11,
+      "related_paths": [
+        ".aide/release/release-manifest.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "release_manifest_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 9,
+      "errors": [
+        "latest release bundle no_publish true",
+        "latest release bundle publication status is local preview"
+      ],
+      "notes": "Checks Q47 remains local-only and non-publishing.",
+      "passed_checks": 7,
+      "related_paths": [
+        ".aide/policies/release-bundle.yaml",
+        ".aide/release/latest-release-bundle.json",
+        ".aide/scripts/aide_lite.py"
+      ],
+      "result": "FAIL",
+      "task_id": "release_no_publish_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 7,
+      "errors": [],
+      "notes": "Checks release-note preview extraction and preview-only caveat.",
+      "passed_checks": 7,
+      "related_paths": [
+        ".aide/changelog/RELEASE_NOTES.preview.md",
+        ".aide/changelog/release-notes.preview.json"
+      ],
+      "result": "PASS",
+      "task_id": "release_notes_preview_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 6,
+      "errors": [],
+      "notes": "Checks local state and secret-like repair findings are block/manual-review only.",
+      "passed_checks": 6,
+      "related_paths": [
+        ".aide/policies/repair-classes.yaml",
+        ".aide/policies/repair-safety.yaml",
+        ".aide/repair/latest-repair-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "repair_blocks_local_state_and_secrets_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 62,
+      "errors": [],
+      "notes": "Checks repair class vocabulary and safety gate metadata.",
+      "passed_checks": 62,
+      "related_paths": [
+        ".aide/policies/repair-classes.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "repair_classes_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 18,
+      "errors": [],
+      "notes": "Checks doctor repair report schema and advisory-only report shape.",
+      "passed_checks": 18,
+      "related_paths": [
+        ".aide/repair/doctor-report.schema.json",
+        ".aide/repair/latest-doctor-repair-report.json"
+      ],
+      "result": "PASS",
+      "task_id": "repair_doctor_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 19,
+      "errors": [],
+      "notes": "Checks repair dry-run schema and no-apply dry-run shape.",
+      "passed_checks": 19,
+      "related_paths": [
+        ".aide/repair/latest-repair-dry-run.json",
+        ".aide/repair/repair-dry-run.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "repair_dry_run_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 355,
+      "errors": [],
+      "notes": "Checks Q44 repair data never enables apply, overwrite, delete, or automatic migration.",
+      "passed_checks": 355,
+      "related_paths": [
+        ".aide/repair/latest-repair-dry-run.json",
+        ".aide/repair/latest-repair-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "repair_no_apply_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 118,
+      "errors": [],
+      "notes": "Checks repair plan schema and generated no-apply plan shape.",
+      "passed_checks": 118,
+      "related_paths": [
+        ".aide/repair/latest-repair-plan.json",
+        ".aide/repair/repair-operation.schema.json",
+        ".aide/repair/repair-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "repair_plan_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 62,
+      "errors": [],
+      "notes": "Checks Q44 repair policy anchors and preservation-first no-apply posture.",
+      "passed_checks": 62,
+      "related_paths": [
+        ".aide/policies/repair.yaml",
+        ".aide/repair/repair-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "repair_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 9,
+      "errors": [],
+      "notes": "Checks repair plans preserve target-specific state by default.",
+      "passed_checks": 9,
+      "related_paths": [
+        ".aide/policies/repair-safety.yaml",
+        ".aide/repair/latest-repair-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "repair_preserves_target_state_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks deterministic dependency map shape and Python import detection.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/policies/dependency-map.yaml",
+        ".aide/repo/dependency-map.json"
+      ],
+      "result": "PASS",
+      "task_id": "repo_dependency_map_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks doc link map shape and conservative stale-candidate language.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/policies/doc-link-map.yaml",
+        ".aide/repo/doc-link-map.json"
+      ],
+      "result": "PASS",
+      "task_id": "repo_doc_link_map_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks explain-file data for a stable AIDE Lite file.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/repo/file-inventory.json",
+        ".aide/scripts/aide_lite.py"
+      ],
+      "result": "PASS",
+      "task_id": "repo_explain_file_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 3,
+      "errors": [],
+      "notes": "Checks local state exclusion and local-path flagging.",
+      "passed_checks": 3,
+      "related_paths": [
+        ".aide/repo/file-inventory.json",
+        ".gitignore"
+      ],
+      "result": "PASS",
+      "task_id": "repo_intelligence_no_local_state_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 21,
+      "errors": [],
+      "notes": "Checks Q37 inventory schema and required file inventory fields.",
+      "passed_checks": 21,
+      "related_paths": [
+        ".aide/repo/file-inventory.json",
+        ".aide/repo/file-inventory.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "repo_inventory_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5,
+      "errors": [
+        "ownership map includes AIDE harness"
+      ],
+      "notes": "Checks deterministic owner map includes key AIDE surfaces.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/policies/ownership-map.yaml",
+        ".aide/repo/ownership-map.json"
+      ],
+      "result": "FAIL",
+      "task_id": "repo_ownership_map_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 6,
+      "errors": [],
+      "notes": "Checks reuse/modularity candidate-only reporting.",
+      "passed_checks": 6,
+      "related_paths": [
+        ".aide/policies/reuse-modularity.yaml",
+        ".aide/reports/reuse-modularity-report.md"
+      ],
+      "result": "PASS",
+      "task_id": "reuse_modularity_report_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": 1507,
+      "checks_run": 20,
+      "errors": [],
+      "notes": "Checks review packet evidence-only shape.",
+      "passed_checks": 20,
+      "related_paths": [
+        ".aide/context/latest-review-packet.md",
+        ".aide/prompts/evidence-review.md",
+        ".aide/verification/review-packet.template.md"
+      ],
+      "result": "PASS",
+      "task_id": "review-packet-evidence-only",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 443,
+      "errors": [],
+      "notes": "Checks rollback plans and dry-runs never enable apply, overwrite, delete, or managed-section removal.",
+      "passed_checks": 443,
+      "related_paths": [
+        ".aide/rollback/latest-rollback-dry-run.json",
+        ".aide/rollback/latest-rollback-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "rollback_no_apply_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 385,
+      "errors": [],
+      "notes": "Checks rollback plan schema and generated no-apply plan shape.",
+      "passed_checks": 385,
+      "related_paths": [
+        ".aide/rollback/latest-rollback-plan.json",
+        ".aide/rollback/rollback-operation.schema.json",
+        ".aide/rollback/rollback-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "rollback_plan_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 40,
+      "errors": [],
+      "notes": "Checks rollback policy anchors and no-apply preservation posture.",
+      "passed_checks": 40,
+      "related_paths": [
+        ".aide/policies/rollback-safety.yaml",
+        ".aide/policies/rollback.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "rollback_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 11,
+      "errors": [],
+      "notes": "Checks root exception records include retirement conditions.",
+      "passed_checks": 11,
+      "related_paths": [
+        ".aide/refactors/root-exception.schema.json",
+        ".aide/roots/root-exceptions.json"
+      ],
+      "result": "PASS",
+      "task_id": "root_exception_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 7,
+      "errors": [],
+      "notes": "Checks root fate vocabulary never becomes deletion approval.",
+      "passed_checks": 7,
+      "related_paths": [
+        ".aide/policies/root-fates.yaml",
+        ".aide/roots/latest-root-classification.json",
+        ".aide/roots/latest-root-recycling-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "root_fate_no_delete_approval_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 20,
+      "errors": [],
+      "notes": "Checks root file classification output shape and no-apply fates.",
+      "passed_checks": 20,
+      "related_paths": [
+        ".aide/refactors/root-file-classification.schema.json",
+        ".aide/roots/latest-root-classification.json"
+      ],
+      "result": "PASS",
+      "task_id": "root_file_classification_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 18,
+      "errors": [],
+      "notes": "Checks root inventory schema and generated inventory shape.",
+      "passed_checks": 18,
+      "related_paths": [
+        ".aide/refactors/root-inventory.schema.json",
+        ".aide/roots/latest-root-inventory.json"
+      ],
+      "result": "PASS",
+      "task_id": "root_inventory_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 13,
+      "errors": [],
+      "notes": "Checks root record schema shape.",
+      "passed_checks": 13,
+      "related_paths": [
+        ".aide/refactors/root-record.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "root_record_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 40,
+      "errors": [],
+      "notes": "Checks root recycling plan output shape and no-apply posture.",
+      "passed_checks": 40,
+      "related_paths": [
+        ".aide/refactors/root-recycling-plan.schema.json",
+        ".aide/roots/latest-root-recycling-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "root_recycling_plan_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 48,
+      "errors": [],
+      "notes": "Checks Q40 root recycling policy anchors and no-apply posture.",
+      "passed_checks": 48,
+      "related_paths": [
+        ".aide/policies/root-fates.yaml",
+        ".aide/policies/root-inventory.yaml",
+        ".aide/policies/root-recycling.yaml",
+        ".aide/policies/root-risk.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "root_recycling_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 40,
+      "errors": [],
+      "notes": "Checks root inventory, classification, and plan outputs remain no-apply.",
+      "passed_checks": 40,
+      "related_paths": [
+        ".aide/policies/root-recycling.yaml",
+        ".aide/roots/latest-root-classification.json",
+        ".aide/roots/latest-root-recycling-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "roots_no_apply_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 317,
+      "errors": [],
+      "notes": "Checks Q42 salvage-map policy anchors and preservation candidate shape.",
+      "passed_checks": 317,
+      "related_paths": [
+        ".aide/policies/salvage-map.yaml",
+        ".aide/refactors/salvage-map-entry.schema.json",
+        ".aide/refactors/salvage-map.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "salvage_map_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 11,
+      "errors": [],
+      "notes": "Checks salvage-map schema exists and remains no-apply.",
+      "passed_checks": 11,
+      "related_paths": [
+        ".aide/refactors/salvage-map.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "salvage_map_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks multi-machine sync policy anchors remain report-only.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/git/sync-policy.md",
+        ".aide/policies/sync-policy.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "sync_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 15,
+      "errors": [],
+      "notes": "Checks repeated and out-of-order task recovery policy anchors.",
+      "passed_checks": 15,
+      "related_paths": [
+        ".aide/context/latest-task-packet.md",
+        ".aide/policies/task-resumption.yaml",
+        ".aide/queue/index.yaml",
+        ".aide/reports/aide-task-resumption-standard.md"
+      ],
+      "result": "PASS",
+      "task_id": "task_resumption_standard_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4,
+      "errors": [],
+      "notes": "Checks heuristic test coverage map shape.",
+      "passed_checks": 4,
+      "related_paths": [
+        ".aide/quality/test-coverage-map.schema.json",
+        ".aide/reports/test-coverage-map.md"
+      ],
+      "result": "PASS",
+      "task_id": "test_coverage_map_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 14,
+      "errors": [],
+      "notes": "Checks estimated token metadata without raw prompt or response storage.",
+      "passed_checks": 14,
+      "related_paths": [
+        ".aide/policies/token-ledger.yaml",
+        ".aide/reports/token-ledger.jsonl",
+        ".aide/reports/token-savings-summary.md"
+      ],
+      "result": "PASS",
+      "task_id": "token-ledger-budget-check",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 55,
+      "errors": [],
+      "notes": "Checks Q41 tool absorption policy anchors and preservation posture.",
+      "passed_checks": 55,
+      "related_paths": [
+        ".aide/policies/tool-absorption.yaml",
+        ".aide/policies/tool-capabilities.yaml",
+        ".aide/policies/tool-fates.yaml",
+        ".aide/policies/tool-inventory.yaml",
+        ".aide/policies/tool-risk.yaml",
+        ".aide/policies/tool-wrapping.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "tool_absorption_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 42025,
+      "errors": [],
+      "notes": "Checks tool adapter-map schema and advisory mapping output.",
+      "passed_checks": 42025,
+      "related_paths": [
+        ".aide/tools/latest-tool-adapter-map.json",
+        ".aide/tools/tool-adapter-map.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "tool_adapter_map_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 8,
+      "errors": [],
+      "notes": "Checks tool fate vocabulary never becomes deletion or execution approval.",
+      "passed_checks": 8,
+      "related_paths": [
+        ".aide/policies/tool-fates.yaml",
+        ".aide/tools/latest-tool-classification.json",
+        ".aide/tools/latest-tool-wrap-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "tool_fate_no_delete_approval_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 23,
+      "errors": [],
+      "notes": "Checks tool inventory schema and generated inventory shape.",
+      "passed_checks": 23,
+      "related_paths": [
+        ".aide/tools/latest-tool-inventory.json",
+        ".aide/tools/tool-inventory.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "tool_inventory_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 13,
+      "errors": [],
+      "notes": "Checks tool record schema shape.",
+      "passed_checks": 13,
+      "related_paths": [
+        ".aide/tools/tool-record.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "tool_record_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 42029,
+      "errors": [],
+      "notes": "Checks tool wrap-plan schema and no-execution output shape.",
+      "passed_checks": 42029,
+      "related_paths": [
+        ".aide/tools/latest-tool-wrap-plan.json",
+        ".aide/tools/tool-wrap-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "tool_wrap_plan_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 42050,
+      "errors": [],
+      "notes": "Checks Q41 tool outputs never enable unknown execution, apply, rename, deletion, or migration.",
+      "passed_checks": 42050,
+      "related_paths": [
+        ".aide/tools/latest-tool-adapter-map.json",
+        ".aide/tools/latest-tool-classification.json",
+        ".aide/tools/latest-tool-inventory.json",
+        ".aide/tools/latest-tool-wrap-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "tools_no_execution_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 75258,
+      "errors": [],
+      "notes": "Checks uninstall plans and dry-runs never enable apply, delete, or managed-section removal.",
+      "passed_checks": 75258,
+      "related_paths": [
+        ".aide/uninstall/latest-uninstall-dry-run.json",
+        ".aide/uninstall/latest-uninstall-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "uninstall_no_apply_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 75194,
+      "errors": [],
+      "notes": "Checks uninstall never plans blanket .aide deletion.",
+      "passed_checks": 75194,
+      "related_paths": [
+        ".aide/policies/uninstall-safety.yaml",
+        ".aide/uninstall/latest-uninstall-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "uninstall_no_blanket_aide_delete_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 75198,
+      "errors": [],
+      "notes": "Checks uninstall plan schema and generated no-apply plan shape.",
+      "passed_checks": 75198,
+      "related_paths": [
+        ".aide/uninstall/latest-uninstall-plan.json",
+        ".aide/uninstall/uninstall-operation.schema.json",
+        ".aide/uninstall/uninstall-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "uninstall_plan_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 40,
+      "errors": [],
+      "notes": "Checks uninstall policy anchors and no-blanket-delete posture.",
+      "passed_checks": 40,
+      "related_paths": [
+        ".aide/policies/uninstall-safety.yaml",
+        ".aide/policies/uninstall.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "uninstall_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 4110,
+      "errors": [],
+      "notes": "Checks uninstall preserves target-specific memory, queue, evidence, manual content, tools, local state, and unknowns.",
+      "passed_checks": 4110,
+      "related_paths": [
+        ".aide/policies/uninstall-safety.yaml",
+        ".aide/uninstall/latest-uninstall-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "uninstall_preserves_target_state_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 65,
+      "errors": [],
+      "notes": "Checks compatibility dimensions and future-gated migration levels.",
+      "passed_checks": 65,
+      "related_paths": [
+        ".aide/policies/upgrade-compatibility.yaml",
+        ".aide/upgrade/upgrade-compatibility-report.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "upgrade_compatibility_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 21,
+      "errors": [],
+      "notes": "Checks upgrade dry-run schema and no-apply dry-run shape.",
+      "passed_checks": 21,
+      "related_paths": [
+        ".aide/upgrade/latest-upgrade-dry-run.json",
+        ".aide/upgrade/upgrade-dry-run.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "upgrade_dry_run_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 19,
+      "errors": [],
+      "notes": "Checks mandatory migrations are future-gated, non-automatic, and no-apply.",
+      "passed_checks": 19,
+      "related_paths": [
+        ".aide/policies/upgrade-migrations.yaml",
+        ".aide/upgrade/latest-upgrade-migration-report.md",
+        ".aide/upgrade/upgrade-migration-report.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "upgrade_mandatory_migration_gate_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5892,
+      "errors": [],
+      "notes": "Checks Q45 upgrade data never enables apply, overwrite, delete, or automatic migration.",
+      "passed_checks": 5892,
+      "related_paths": [
+        ".aide/upgrade/latest-upgrade-dry-run.json",
+        ".aide/upgrade/latest-upgrade-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "upgrade_no_apply_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 9,
+      "errors": [],
+      "notes": "Checks source-generated, local, and secret-like state is never planned as upgrade truth.",
+      "passed_checks": 9,
+      "related_paths": [
+        ".aide/policies/upgrade-preservation.yaml",
+        ".aide/upgrade/latest-upgrade-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "upgrade_no_source_state_leak_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 5649,
+      "errors": [],
+      "notes": "Checks upgrade plan schema and generated no-apply plan shape.",
+      "passed_checks": 5649,
+      "related_paths": [
+        ".aide/upgrade/latest-upgrade-plan.json",
+        ".aide/upgrade/upgrade-operation.schema.json",
+        ".aide/upgrade/upgrade-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "upgrade_plan_schema_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 63,
+      "errors": [],
+      "notes": "Checks Q45 upgrade policy anchors and preservation-first no-apply posture.",
+      "passed_checks": 63,
+      "related_paths": [
+        ".aide/policies/upgrade.yaml",
+        ".aide/upgrade/upgrade-plan.schema.json"
+      ],
+      "result": "PASS",
+      "task_id": "upgrade_policy_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 9,
+      "errors": [],
+      "notes": "Checks upgrade plans preserve target-specific state by default.",
+      "passed_checks": 9,
+      "related_paths": [
+        ".aide/policies/upgrade-preservation.yaml",
+        ".aide/upgrade/latest-upgrade-plan.json"
+      ],
+      "result": "PASS",
+      "task_id": "upgrade_preserves_target_state_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 3,
+      "errors": [],
+      "notes": "Passes when the verifier refuses to accept malformed evidence silently.",
+      "passed_checks": 3,
+      "related_paths": [
+        ".aide/evals/golden-tasks/verifier-detects-bad-evidence/fixtures/missing-sections.md",
+        ".aide/verification/evidence-packet.template.md"
+      ],
+      "result": "PASS",
+      "task_id": "verifier-detects-bad-evidence",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 17,
+      "errors": [],
+      "notes": "Checks WorkUnit idempotency and no-op behavior.",
+      "passed_checks": 17,
+      "related_paths": [
+        ".aide/policies/recovery.yaml",
+        ".aide/policies/work-units.yaml",
+        ".aide/reports/aide-workunit-recovery-standard.md"
+      ],
+      "result": "PASS",
+      "task_id": "workunit_idempotency_golden",
+      "warnings": []
+    },
+    {
+      "approx_tokens_if_applicable": null,
+      "checks_run": 12,
+      "errors": [],
+      "notes": "Checks WorkUnit sizing policy anchors and split gates.",
+      "passed_checks": 12,
+      "related_paths": [
+        ".aide/policies/workunit-sizing.yaml"
+      ],
+      "result": "PASS",
+      "task_id": "workunit_sizing_policy_golden",
       "warnings": []
     }
   ],

@@ -39,7 +39,7 @@
   ],
   "generated_by": "aide-lite",
   "generated_from": "inline_prompt",
-  "interpreted_goal": "Normalize prompt into a bounded adapter WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.",
+  "interpreted_goal": "Normalize prompt into a bounded evidence WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.",
   "next_action": "draft the smallest safe WorkUnit after repo-state preflight",
   "notes": [
     "deterministic_local: true",
@@ -49,8 +49,8 @@
     "raw_long_prompt_storage: false",
     "flag:target_repo_prompt"
   ],
-  "raw_prompt_excerpt": "Plan Q51 Dominium Existing Tool Absorption",
-  "raw_prompt_hash": "43d6df43431bd842e3b1c4c39292f74937b47c96878bb0f5fa2711fd8c19b559",
+  "raw_prompt_excerpt": "Plan the next bounded Dominium AIDE-controlled task from DCHECK-01 evidence",
+  "raw_prompt_hash": "42a232463d80d4baed33a1535e7ddf281e7c028adcdc110c5d98c11157b710a5",
   "rejected_interpretations": [
     "do not bypass queue, branch, evidence, or policy state",
     "do not execute raw prompt directly",
@@ -60,14 +60,18 @@
     ".aide/context/latest-context-packet.md",
     ".aide/context/latest-review-packet.md",
     ".aide/context/latest-task-packet.md",
-    ".aide/queue/Q50/status.yaml",
-    ".aide/queue/index.yaml"
+    ".aide/queue/Q17/status.yaml",
+    ".aide/queue/index.yaml",
+    ".aide/repo/file-inventory.json",
+    ".aide/repo/latest-repo-intelligence.md",
+    ".aide/reports/file-quality-ledger.json",
+    ".aide/reports/file-quality-summary.md"
   ],
-  "requires_split": true,
+  "requires_split": false,
   "risk_class": "external_side_effect",
   "safe_to_execute": false,
   "schema_version": "aide.intent-packet.v0",
-  "sizing_class": "two_shot",
+  "sizing_class": "audit_only",
   "suggested_workunit": {
     "acceptance": [
       "WorkUnit scope is bounded and repo-grounded.",
@@ -98,7 +102,7 @@
       "raw response logs",
       "target repositories unless target-local queue authorizes work"
     ],
-    "idempotency": "prompt_hash:43d6df43431bd842e3b1c4c39292f74937b47c96878bb0f5fa2711fd8c19b559; status:draft; compile_only:true",
+    "idempotency": "prompt_hash:42a232463d80d4baed33a1535e7ddf281e7c028adcdc110c5d98c11157b710a5; status:draft; compile_only:true",
     "implementation_outline": [
       "Reconcile repo state before editing.",
       "draft the smallest safe WorkUnit after repo-state preflight",
@@ -111,7 +115,7 @@
       "do not execute raw prompt directly",
       "do not mutate target repositories from AIDE source repo"
     ],
-    "objective": "Normalize prompt into a bounded adapter WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.",
+    "objective": "Normalize prompt into a bounded evidence WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.",
     "output_schema": ".aide/intake/workunit-draft.schema.json",
     "preflight": [
       "git status --short",
@@ -121,18 +125,18 @@
     "recovery": "Rerun intent compile from repo state; do not replay raw chat as truth.",
     "risk_class": "external_side_effect",
     "schema_version": "aide.workunit-draft.v0",
-    "sizing_class": "two_shot",
+    "sizing_class": "audit_only",
     "status": "draft",
-    "task_class": "adapter",
-    "title": "Adapter WorkUnit Draft - Draft the smallest safe WorkUnit after repo-state preflight",
+    "task_class": "evidence",
+    "title": "Evidence WorkUnit Draft - Draft the smallest safe WorkUnit after repo-state preflight",
     "validation": [
       "git diff --check",
       "py -3 .aide/scripts/aide_lite.py intent validate"
     ],
     "why": "AIDE compiles raw prompts into bounded WorkUnits before execution.",
-    "workunit_id": "draft-adapter-43d6df43431b"
+    "workunit_id": "draft-evidence-42a232463d80"
   },
-  "task_class": "adapter",
+  "task_class": "evidence",
   "validation_hints": [
     "git diff --check",
     "py -3 .aide/scripts/aide_lite.py intent validate"

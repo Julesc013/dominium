@@ -3,16 +3,16 @@
 This file is generated from local Git history and is a preview only.
 
 source_range: HEAD latest 50 commits
-source_head: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
+source_head: d22537869be05860d5eda70eebb2f3ed261e276c
 commit_count: 50
-malformed_count: 42
+malformed_count: 40
 preview_only: true
 release_publishing: false
 
 ## Summary
 
-- Added: 1
-- Changed: 2
+- Added: 2
+- Changed: 3
 - Fixed: 1
 - Docs: 1
 - Tests: 1
@@ -21,11 +21,13 @@ release_publishing: false
 ## Added
 
 - Dominium Q49 preflight evidence and Q50 dry-run readiness guidance. (80dc7bfb58a1 aide(dominium): preflight stable AIDE install readiness)
+- Dominium existing-tool classification evidence and preservation-first wrapper plan for Q52. (d22537869be0 audit(aide): record Dominium tool absorption plan)
 
 ## Changed
 
 - imported portable AIDE governance and recovery tooling into Dominium. (f2a1b4412cbe aide(dominium): sync portable commit and WorkUnit policies)
 - added Dominium-local Git workflow reports and dry-run helper plan outputs. (4f04a866b73c aide(dominium): sync Git workflow policy and reports)
+- upgraded portable Dominium AIDE control plane and generated Q51 readiness evidence. (52eeb5a1f481 chore(aide): sync stable portable control plane)
 
 ## Fixed
 
@@ -48,8 +50,6 @@ release_publishing: false
 
 ## Malformed Commits
 
-- 0374d6c05e12 REPO-DISCOVERY-Ω2: analyze coupling, drift, and relayout risk before topology options: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category
-- 67823688efdc REPO-DESIGN-Ω0: generate and compare target topology options before preferred-target selection: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category
 - 38f6d1840219 REPO-DESIGN-Ω1: select preferred target topology and freeze authoritative boundary model: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category
 - ff02794de999 REPO-MIGRATION-Ω0: define phased migration, shim classes, validation, and rollback before relayout: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category
 - 5a3f5d84a5e3 C-REPO-MEGA-STRUCTURE-REVIEW: validate relayout design, decide first slice, and emit decision bundle: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category

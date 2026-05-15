@@ -3,15 +3,15 @@
 - schema_version: aide.intent-packet.v0
 - generated_by: aide-lite
 - generated_from: inline_prompt
-- raw_prompt_hash: 43d6df43431bd842e3b1c4c39292f74937b47c96878bb0f5fa2711fd8c19b559
-- raw_prompt_excerpt: Plan Q51 Dominium Existing Tool Absorption
-- interpreted_goal: Normalize prompt into a bounded adapter WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.
+- raw_prompt_hash: 42a232463d80d4baed33a1535e7ddf281e7c028adcdc110c5d98c11157b710a5
+- raw_prompt_excerpt: Plan the next bounded Dominium AIDE-controlled task from DCHECK-01 evidence
+- interpreted_goal: Normalize prompt into a bounded evidence WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.
 - confidence: high
-- task_class: adapter
+- task_class: evidence
 - risk_class: external_side_effect
-- sizing_class: two_shot
+- sizing_class: audit_only
 - safe_to_execute: false
-- requires_split: true
+- requires_split: false
 - blocked: false
 - blocker_reason: none
 - next_action: draft the smallest safe WorkUnit after repo-state preflight
@@ -31,8 +31,12 @@
 - `.aide/context/latest-context-packet.md`
 - `.aide/context/latest-review-packet.md`
 - `.aide/context/latest-task-packet.md`
-- `.aide/queue/Q50/status.yaml`
+- `.aide/queue/Q17/status.yaml`
 - `.aide/queue/index.yaml`
+- `.aide/repo/file-inventory.json`
+- `.aide/repo/latest-repo-intelligence.md`
+- `.aide/reports/file-quality-ledger.json`
+- `.aide/reports/file-quality-summary.md`
 
 ## Branch State Refs
 

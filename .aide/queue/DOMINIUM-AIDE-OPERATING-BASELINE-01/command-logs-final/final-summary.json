@@ -1,0 +1,107 @@
+[
+  {
+    "name": "git_status_short",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_diff_check",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_check_ignore_aide_local",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "doctor",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "test",
+    "result": "FAIL",
+    "code": 1
+  },
+  {
+    "name": "selftest",
+    "result": "FAIL",
+    "code": 1
+  },
+  {
+    "name": "eval_run",
+    "result": "TIMEOUT",
+    "code": "timeout"
+  },
+  {
+    "name": "verify",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "intent_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "repo_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "quality_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "roots_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "tools_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "install_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "repair_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "upgrade_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "rollback_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "uninstall_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "commit_check_latest",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "estimate_latest",
+    "result": "PASS",
+    "code": 0
+  }
+]

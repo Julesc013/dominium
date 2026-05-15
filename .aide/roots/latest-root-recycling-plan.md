@@ -2,7 +2,7 @@
 
 - plan_id: q40-root-recycling-no-apply-plan
 - status: dry_run
-- source_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
+- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
 - risk_class: high
 - no_apply: true
 - file_moves: false
@@ -25,7 +25,7 @@
 
 ## Root Plans
 
-- `.aide`: risk=high status=mixed review_files=249
+- `.aide`: risk=high status=mixed review_files=796
 - `.aide.local.example`: risk=high status=review_required review_files=5
 - `.github`: risk=high status=review_required review_files=2
 - `.vscode`: risk=high status=review_required review_files=1

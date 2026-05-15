@@ -1,6 +1,6 @@
 # Test Coverage Map
 
-- tests_detected: 2514
+- tests_detected: 2528
 
 ## Likely Test Targets
 
@@ -15,6 +15,20 @@
 - .aide/scripts/tests/test_q27_commit_recovery.py: .aide/scripts/aide_lite.py
 - .aide/scripts/tests/test_q28_git_workflow.py: .aide/scripts/aide_lite.py
 - .aide/scripts/tests/test_q29_git_helper.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q31_export_pack_governance.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q34_changelog_release.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q35_github_advisory.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q36_intent_compiler.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q37_repo_intelligence.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q38_file_quality.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q39_refactor_control.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q40_root_recycling.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q41_tool_absorption.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q42_move_map_aliases.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q43_install_plan.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q45_upgrade_model.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q47_release_bundle.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q48_github_release_draft.py: .aide/scripts/aide_lite.py
 - .aide/scripts/tests/test_review_pack.py: .aide/scripts/aide_lite.py
 - .aide/scripts/tests/test_router_profile.py: .aide/scripts/aide_lite.py
 - .aide/scripts/tests/test_token_ledger.py: .aide/policies/token-ledger.yaml, .aide/scripts/aide_lite.py
@@ -90,23 +104,16 @@
 - archive/legacy/source/tests/dom_contract_runtime_schedule_test.cpp:
 - archive/legacy/source/tests/dom_cosmo_bundle_roundtrip_test.cpp:
 - archive/legacy/source/tests/dom_cosmo_graph_determinism_test.cpp:
-- archive/legacy/source/tests/dom_cosmo_transit_determinism_test.cpp:
-- archive/legacy/source/tests/dom_derived_order_independence_test.cpp:
-- archive/legacy/source/tests/dom_econ_access_control_test.cpp:
-- archive/legacy/source/tests/dom_econ_pack_load_test.cpp:
-- archive/legacy/source/tests/dom_frames_transform_roundtrip_test.cpp:
-- archive/legacy/source/tests/dom_frames_validation_test.cpp:
-- archive/legacy/source/tests/dom_handshake_identity_test.cpp:
-- archive/legacy/source/tests/dom_landing_attachment_invariance_test.cpp:
-- archive/legacy/source/tests/dom_ledger_core_tests.c:
-- archive/legacy/source/tests/dom_logistics_inventory_conservation_test.cpp:
-- archive/legacy/source/tests/dom_logistics_save_load_roundtrip_test.cpp:
-- archive/legacy/source/tests/dom_logistics_schedule_determinism_test.cpp:
-- archive/legacy/source/tests/dom_market_auction_determinism_test.cpp:
-- archive/legacy/source/tests/dom_market_barter_determinism_test.cpp:
 
 ## Missing Test Or Validator Candidates
 
+- .aide/tools/dominium-tool-adapter-map.json (tool, AIDE tool absorption framework)
+- .aide/tools/dominium-tool-classification.json (tool, AIDE tool absorption framework)
+- .aide/tools/dominium-tool-inventory.json (tool, AIDE tool absorption framework)
+- .aide/tools/latest-tool-adapter-map.json (tool, AIDE tool absorption framework)
+- .aide/tools/latest-tool-classification.json (tool, AIDE tool absorption framework)
+- .aide/tools/latest-tool-inventory.json (tool, AIDE tool absorption framework)
+- .aide/tools/latest-tool-wrap-plan.json (tool, AIDE tool absorption framework)
 - apps/client/__init__.py (source, unknown)
 - apps/client/adapters/client_fs_adapter.c (source, unknown)
 - apps/client/adapters/client_fs_adapter.h (source, unknown)
@@ -200,13 +207,6 @@
 - apps/launcher/include/launcher/_internal/dom_launcher/launcher_discovery.h (source, unknown)
 - apps/launcher/include/launcher/_internal/dom_launcher/launcher_state.h (source, unknown)
 - apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_cli.h (source, unknown)
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_gui.h (source, unknown)
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_tui.h (source, unknown)
-- apps/launcher/include/launcher/_internal/launcher_internal/launcher_context.h (source, unknown)
-- apps/launcher/include/launcher/_internal/launcher_internal/launcher_db.h (source, unknown)
-- apps/launcher/include/launcher/_internal/launcher_internal/launcher_discovery.h (source, unknown)
-- apps/launcher/include/launcher/_internal/launcher_internal/launcher_logging.h (source, unknown)
-- apps/launcher/include/launcher/_internal/launcher_internal/launcher_plugin_api.h (source, unknown)
 
 ## Caveats
 

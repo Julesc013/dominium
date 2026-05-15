@@ -1,0 +1,34 @@
+schema_version: aide.queue-status.v0
+task_id: DOMINIUM-AIDE-ROOT-RECYCLING-01
+phase: Q52
+status: needs_review
+result: READY_FOR_Q53_WITH_WARNINGS
+repo_identity_confirmed: true
+q50_inspected: true
+q51_inspected: true
+selected_root_family: ide
+selected_roots:
+  - ide/
+root_inventory_completed: true
+file_classification_completed: true
+root_recycling_plan_completed: true
+no_apply: true
+files_moved: false
+files_deleted: false
+files_renamed: false
+references_rewritten: false
+aliases_created: false
+shims_created: false
+product_source_modified: false
+doctrine_modified: false
+tool_systems_modified: false
+unknown_tools_executed: false
+branch_mutation: false
+provider_or_model_calls: none
+network_calls: none
+warnings:
+  - AIDE full `eval run` exceeded the local timeout and is recorded as WARN/TIMEOUT, not pass.
+  - AIDE root inventory marks most roots high-risk due unknown ownership and mixed status.
+  - Baseline AIDE classification marked two IDE projection examples unknown; Dominium Q52 overlay classified them as fixtures that must be preserved.
+  - `ide/` remains review-required because it contains binding root policy and schema identity.
+review_gate: required

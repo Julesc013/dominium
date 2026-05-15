@@ -1,0 +1,132 @@
+[
+    {
+        "Name":  "doctor",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "test",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "selftest",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "eval_run",
+        "Result":  "TIMEOUT",
+        "Code":  "timeout"
+    },
+    {
+        "Name":  "verify",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "review_pack",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "intent_validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "intent_compile_next",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "repo_inventory",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "repo_validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "repo_status",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "quality_ledger",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "quality_validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "quality_status",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "refactor_validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "roots_inventory",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "roots_classify",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "roots_plan",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "roots_validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "roots_status",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "tools_inventory",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "tools_classify",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "tools_wrap_plan",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "tools_validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "tools_status",
+        "Result":  "PASS",
+        "Code":  0
+    }
+]

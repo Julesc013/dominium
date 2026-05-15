@@ -1,5 +1,5 @@
 {
-  "file_count": 15956,
+  "file_count": 15977,
   "file_deletes": false,
   "file_moves": false,
   "generated_at_or_source_ref": ".aide/repo/file-inventory.json",
@@ -9,8 +9,8 @@
   "reference_rewrites": false,
   "roots": [
     {
-      "doc_count": 78,
-      "evidence_count": 79,
+      "doc_count": 79,
+      "evidence_count": 96,
       "evidence_refs": [
         ".aide/repo/file-inventory.json",
         ".aide/reports/file-quality-ledger.json",
@@ -19,15 +19,15 @@
       "exists": true,
       "generated_count": 37,
       "kinds": {
-        "doc": 78,
-        "evidence": 79,
+        "doc": 79,
+        "evidence": 96,
         "fixture": 263,
         "generated": 37,
         "policy": 95,
         "schema": 102,
         "template": 17,
         "test": 29,
-        "tool": 5,
+        "tool": 8,
         "unknown": 70
       },
       "owners": {
@@ -36,15 +36,15 @@
         "AIDE Lite": 32,
         "AIDE changelog preview": 10,
         "AIDE context compiler": 13,
-        "AIDE control plane": 211,
+        "AIDE control plane": 214,
         "AIDE evals": 265,
         "AIDE governance": 71,
         "AIDE intent compiler": 11,
         "AIDE refactor control plane": 35,
         "AIDE repo intelligence": 21,
         "AIDE root recycling framework": 14,
-        "AIDE self-hosting queue": 54,
-        "AIDE tool absorption framework": 24
+        "AIDE self-hosting queue": 68,
+        "AIDE tool absorption framework": 28
       },
       "policy_count": 95,
       "reasons": [
@@ -64,15 +64,15 @@
       "schema_count": 102,
       "source_count": 0,
       "statuses": {
-        "active": 572,
-        "evidence_only": 79,
+        "active": 576,
+        "evidence_only": 96,
         "generated": 37,
         "template_only": 17,
         "unknown": 70
       },
       "test_count": 29,
-      "total_size_bytes": 164296754,
-      "tracked_file_count": 775,
+      "total_size_bytes": 194337717,
+      "tracked_file_count": 796,
       "unknown_count": 70
     },
     {
@@ -1667,7 +1667,7 @@
     }
   ],
   "schema_version": "aide.root-inventory.v0",
-  "source_commit": "52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f",
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
   "source_inputs": [
     {
       "id": "repo_file_inventory",

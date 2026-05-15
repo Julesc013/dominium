@@ -1,10 +1,8 @@
 # Malformed Commits
 
 source_range: HEAD latest 50 commits
-malformed_count: 42
+malformed_count: 40
 
-- 0374d6c05e12 REPO-DISCOVERY-Ω2: analyze coupling, drift, and relayout risk before topology options: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category
-- 67823688efdc REPO-DESIGN-Ω0: generate and compare target topology options before preferred-target selection: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category
 - 38f6d1840219 REPO-DESIGN-Ω1: select preferred target topology and freeze authoritative boundary model: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category
 - ff02794de999 REPO-MIGRATION-Ω0: define phased migration, shim classes, validation, and rollback before relayout: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category
 - 5a3f5d84a5e3 C-REPO-MEGA-STRUCTURE-REVIEW: validate relayout design, decide first slice, and emit decision bundle: subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category

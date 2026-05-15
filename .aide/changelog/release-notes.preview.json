@@ -39,6 +39,14 @@
     {
       "commit": "80dc7bfb58a1",
       "summary": "Run Q50 Dominium Fresh Install / Upgrade from Stable Pack as observe/compare/plan/dry-run only."
+    },
+    {
+      "commit": "52eeb5a1f481",
+      "summary": "Run Q51 Dominium Existing Tool Absorption against `.aide/tools/latest-tool-inventory.*` and Q49/Q50 evidence."
+    },
+    {
+      "commit": "d22537869be0",
+      "summary": "Run Q52 Dominium Root Recycling Pilot on `ide/` first, using Q51 outputs as evidence."
     }
   ],
   "highlights": [
@@ -48,6 +56,13 @@
       "commit": "80dc7bfb58a1",
       "subject": "aide(dominium): preflight stable AIDE install readiness",
       "summary": "Dominium Q49 preflight evidence and Q50 dry-run readiness guidance."
+    },
+    {
+      "breaking": false,
+      "category": "Added",
+      "commit": "d22537869be0",
+      "subject": "audit(aide): record Dominium tool absorption plan",
+      "summary": "Dominium existing-tool classification evidence and preservation-first wrapper plan for Q52."
     },
     {
       "breaking": false,
@@ -62,6 +77,13 @@
       "commit": "4f04a866b73c",
       "subject": "aide(dominium): sync Git workflow policy and reports",
       "summary": "added Dominium-local Git workflow reports and dry-run helper plan outputs."
+    },
+    {
+      "breaking": false,
+      "category": "Changed",
+      "commit": "52eeb5a1f481",
+      "subject": "chore(aide): sync stable portable control plane",
+      "summary": "upgraded portable Dominium AIDE control plane and generated Q51 readiness evidence."
     },
     {
       "breaking": false,
@@ -126,10 +148,18 @@
     {
       "commit": "80dc7bfb58a1",
       "summary": "Target AIDE remains older than Q36-Q48 command families and requires an upgrade dry-run rather than direct apply."
+    },
+    {
+      "commit": "52eeb5a1f481",
+      "summary": "Source bundle direct import still has an inner checksum defect for a missing `.aide.local.example` file."
+    },
+    {
+      "commit": "d22537869be0",
+      "summary": "AIDE still reports unknown file/tool classifications that require future review."
     }
   ],
   "schema_version": "aide.release-notes-preview.v0",
-  "source_head": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_head": "d22537869be05860d5eda70eebb2f3ed261e276c",
   "source_range": "HEAD latest 50 commits",
   "validation_summary": [
     {
@@ -171,10 +201,18 @@
     {
       "commit": "80dc7bfb58a1",
       "summary": "PASS: `git diff --cached --check`."
+    },
+    {
+      "commit": "52eeb5a1f481",
+      "summary": "PASS: doctor, validate, test, selftest, representative eval, generated command validators, git diff --check, `.aide.local/` ignore check, and high-confidence secret scan."
+    },
+    {
+      "commit": "d22537869be0",
+      "summary": "PASS: `py -3 .aide/scripts/aide_lite.py doctor`, `validate`, `test`, and `selftest`."
     }
   ],
   "warnings": [
     "b3d1e62bafbc merge commit ignored",
-    "42 malformed or legacy commits require review"
+    "40 malformed or legacy commits require review"
   ]
 }

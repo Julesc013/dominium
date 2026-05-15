@@ -5,7 +5,7 @@
   "no_apply": true,
   "plan_id": "q41-latest-tool-wrap-plan",
   "schema_version": "aide.tool-wrap-plan-set.v0",
-  "source_commit": "52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f",
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
   "source_inputs": [
     {
       "id": "repo_file_inventory",
@@ -40,12 +40,12 @@
   ],
   "status": "dry_run",
   "target_repo_mutation": false,
-  "tool_count": 2995,
+  "tool_count": 3000,
   "tool_deletion": false,
   "tool_migration": false,
   "tool_rename": false,
   "warnings": [
-    "unknown_tool_candidates: .aide/hooks/commit-msg, .aide/policies/export-import.yaml, .aide/tools/tool-adapter-map.schema.json, .aide/tools/tool-capability.schema.json, .aide/tools/tool-evidence.schema.json, .aide/tools/tool-inventory.schema.json, .aide/tools/tool-record.schema.json, .aide/tools/tool-retirement.schema.json, .aide/tools/tool-risk.schema.json, .aide/tools/tool-wrap-plan.schema.json, .github/workflows/ci.yml, archive/legacy/setup_core_setup/setup/core/import/dsk_import_legacy.cpp",
+    "unknown_tool_candidates: .aide/hooks/commit-msg, .aide/policies/export-import.yaml, .aide/tools/dominium-tool-adapter-map.json, .aide/tools/dominium-tool-classification.json, .aide/tools/dominium-tool-inventory.json, .aide/tools/dominium-tool-wrap-plan.md, .aide/tools/tool-adapter-map.schema.json, .aide/tools/tool-capability.schema.json, .aide/tools/tool-evidence.schema.json, .aide/tools/tool-inventory.schema.json, .aide/tools/tool-record.schema.json, .aide/tools/tool-retirement.schema.json",
     "high_risk_tool_candidates: .aide/changelog/RELEASE_NOTES.preview.md, .aide/changelog/release-notes.preview.json, .aide/changelog/templates/release-notes.md.template, .aide/policies/github-release-draft.yaml, .aide/policies/release-artifacts.yaml, .aide/policies/release-bundle.yaml, .aide/policies/release-checklist.yaml, .aide/policies/release-provenance.yaml, .aide/policies/release-publication-boundary.yaml, .aide/policies/release-upload-plan.yaml, .aide/policies/release-validation.yaml, .aide/policies/release-versioning.yaml"
   ],
   "wrapper_plans": [
@@ -2090,6 +2090,30 @@
       "wrapper_status": "planned"
     },
     {
+      "capability_family": "audit",
+      "evidence_required": [
+        ".aide/tools/latest-tool-inventory.json",
+        ".aide/tools/latest-tool-classification.json"
+      ],
+      "execution_allowed": false,
+      "input_contract_hint": "derive from existing tool docs and dry-run evidence in a future WorkUnit",
+      "no_apply": true,
+      "output_contract_hint": "capture structured evidence only after future reviewed wrapper authorization",
+      "plan_id": "wrap-tool-aide-queue-dominium-aide-tool-absorption-01-evidence-xstack-auditx-repox-testx-md",
+      "risks": [
+        "medium",
+        "unknown_tool_execution_disabled"
+      ],
+      "source_tool": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/xstack-auditx-repox-testx.md",
+      "target_aide_command_hint": "aide audit",
+      "validation_plan": [
+        "tools validate",
+        "repo validate",
+        "quality validate"
+      ],
+      "wrapper_status": "planned"
+    },
+    {
       "capability_family": "test",
       "evidence_required": [
         ".aide/tools/latest-tool-inventory.json",
@@ -3624,6 +3648,102 @@
         "quality validate"
       ],
       "wrapper_status": "planned"
+    },
+    {
+      "capability_family": "unknown",
+      "evidence_required": [
+        ".aide/tools/latest-tool-inventory.json",
+        ".aide/tools/latest-tool-classification.json"
+      ],
+      "execution_allowed": false,
+      "input_contract_hint": "derive from existing tool docs and dry-run evidence in a future WorkUnit",
+      "no_apply": true,
+      "output_contract_hint": "capture structured evidence only after future reviewed wrapper authorization",
+      "plan_id": "wrap-tool-aide-tools-dominium-tool-adapter-map-json",
+      "risks": [
+        "unknown",
+        "unknown_tool_execution_disabled"
+      ],
+      "source_tool": ".aide/tools/dominium-tool-adapter-map.json",
+      "target_aide_command_hint": "review before wrapper mapping",
+      "validation_plan": [
+        "tools validate",
+        "repo validate",
+        "quality validate"
+      ],
+      "wrapper_status": "blocked_until_classified"
+    },
+    {
+      "capability_family": "unknown",
+      "evidence_required": [
+        ".aide/tools/latest-tool-inventory.json",
+        ".aide/tools/latest-tool-classification.json"
+      ],
+      "execution_allowed": false,
+      "input_contract_hint": "derive from existing tool docs and dry-run evidence in a future WorkUnit",
+      "no_apply": true,
+      "output_contract_hint": "capture structured evidence only after future reviewed wrapper authorization",
+      "plan_id": "wrap-tool-aide-tools-dominium-tool-classification-json",
+      "risks": [
+        "unknown",
+        "unknown_tool_execution_disabled"
+      ],
+      "source_tool": ".aide/tools/dominium-tool-classification.json",
+      "target_aide_command_hint": "review before wrapper mapping",
+      "validation_plan": [
+        "tools validate",
+        "repo validate",
+        "quality validate"
+      ],
+      "wrapper_status": "blocked_until_classified"
+    },
+    {
+      "capability_family": "unknown",
+      "evidence_required": [
+        ".aide/tools/latest-tool-inventory.json",
+        ".aide/tools/latest-tool-classification.json"
+      ],
+      "execution_allowed": false,
+      "input_contract_hint": "derive from existing tool docs and dry-run evidence in a future WorkUnit",
+      "no_apply": true,
+      "output_contract_hint": "capture structured evidence only after future reviewed wrapper authorization",
+      "plan_id": "wrap-tool-aide-tools-dominium-tool-inventory-json",
+      "risks": [
+        "low",
+        "unknown_tool_execution_disabled"
+      ],
+      "source_tool": ".aide/tools/dominium-tool-inventory.json",
+      "target_aide_command_hint": "review before wrapper mapping",
+      "validation_plan": [
+        "tools validate",
+        "repo validate",
+        "quality validate"
+      ],
+      "wrapper_status": "blocked_until_classified"
+    },
+    {
+      "capability_family": "unknown",
+      "evidence_required": [
+        ".aide/tools/latest-tool-inventory.json",
+        ".aide/tools/latest-tool-classification.json"
+      ],
+      "execution_allowed": false,
+      "input_contract_hint": "derive from existing tool docs and dry-run evidence in a future WorkUnit",
+      "no_apply": true,
+      "output_contract_hint": "capture structured evidence only after future reviewed wrapper authorization",
+      "plan_id": "wrap-tool-aide-tools-dominium-tool-wrap-plan-md",
+      "risks": [
+        "unknown",
+        "unknown_tool_execution_disabled"
+      ],
+      "source_tool": ".aide/tools/dominium-tool-wrap-plan.md",
+      "target_aide_command_hint": "review before wrapper mapping",
+      "validation_plan": [
+        "tools validate",
+        "repo validate",
+        "quality validate"
+      ],
+      "wrapper_status": "blocked_until_classified"
     },
     {
       "capability_family": "unknown",

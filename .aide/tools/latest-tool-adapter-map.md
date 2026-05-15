@@ -1,9 +1,9 @@
 # Tool Adapter Map
 
 - adapter_map_id: q41-latest-tool-adapter-map
-- source_commit: 52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f
-- mapping_count: 2141
-- unmapped_count: 854
+- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
+- mapping_count: 2142
+- unmapped_count: 858
 - execution_allowed: false
 - no_apply: true
 
@@ -94,6 +94,10 @@
 
 - `.aide/hooks/commit-msg`
 - `.aide/policies/export-import.yaml`
+- `.aide/tools/dominium-tool-adapter-map.json`
+- `.aide/tools/dominium-tool-classification.json`
+- `.aide/tools/dominium-tool-inventory.json`
+- `.aide/tools/dominium-tool-wrap-plan.md`
 - `.aide/tools/tool-adapter-map.schema.json`
 - `.aide/tools/tool-capability.schema.json`
 - `.aide/tools/tool-evidence.schema.json`
@@ -168,7 +172,3 @@
 - `tools/chem/tool_replay_combustion_window`
 - `tools/chem/tool_replay_combustion_window.cmd`
 - `tools/chem/tool_replay_combustion_window.py`
-- `tools/chem/tool_replay_degradation_window`
-- `tools/chem/tool_replay_degradation_window.cmd`
-- `tools/chem/tool_replay_degradation_window.py`
-- `tools/chem/tool_replay_process_run`

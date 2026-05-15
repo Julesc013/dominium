@@ -1,0 +1,299 @@
+{
+  "checks": [
+    {
+      "message": "Q42 required file exists: .aide/policies/move-map.yaml",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/policies/salvage-map.yaml",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/policies/path-aliases.yaml",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/policies/reference-rewrite.yaml",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/policies/migration-ledger.yaml",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/move-map.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/move-map-entry.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/salvage-map.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/salvage-map-entry.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/path-aliases.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/path-alias-entry.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/reference-rewrite-plan.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/reference-rewrite-entry.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/migration-ledger.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/migration-ledger-entry.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/map-validation-report.schema.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 required file exists: .aide/refactors/path-aliases.template.yaml",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/move-map.yaml contains anchor: aide.move-map-policy.v0",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/move-map.yaml contains anchor: candidate_only",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/move-map.yaml contains anchor: no_apply_in_q42",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/move-map.yaml contains anchor: no_file_moves",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/move-map.yaml contains anchor: no_file_deletes",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/salvage-map.yaml contains anchor: aide.salvage-map-policy.v0",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/salvage-map.yaml contains anchor: drop_candidate_is_not_delete_approval",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/salvage-map.yaml contains anchor: no_salvage_extraction",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/path-aliases.yaml contains anchor: aide.path-alias-policy.v0",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/path-aliases.yaml contains anchor: no_alias_application_in_q42",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/path-aliases.yaml contains anchor: temporary_shim",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/reference-rewrite.yaml contains anchor: aide.reference-rewrite-policy.v0",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/reference-rewrite.yaml contains anchor: markdown links",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/reference-rewrite.yaml contains anchor: no_reference_rewrite_application_in_q42",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/migration-ledger.yaml contains anchor: aide.migration-ledger-policy.v0",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/migration-ledger.yaml contains anchor: draft_only_in_q42",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/policies/migration-ledger.yaml contains anchor: future_rollback",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/move-map.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/move-map.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/move-map-entry.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/move-map-entry.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/salvage-map.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/salvage-map.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/salvage-map-entry.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/salvage-map-entry.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/path-aliases.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/path-aliases.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/path-alias-entry.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/path-alias-entry.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/reference-rewrite-plan.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/reference-rewrite-plan.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/reference-rewrite-entry.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/reference-rewrite-entry.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/migration-ledger.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/migration-ledger.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/migration-ledger-entry.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/migration-ledger-entry.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/map-validation-report.schema.json is object schema",
+      "severity": "PASS"
+    },
+    {
+      "message": ".aide/refactors/map-validation-report.schema.json defines required fields",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/current-move-map.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/current-move-map.md",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/current-salvage-map.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/current-salvage-map.md",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/path-aliases.yaml",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/path-aliases.md",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/reference-rewrite-plan.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/reference-rewrite-plan.md",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/migration-ledger.draft.jsonl",
+      "severity": "FAIL"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/map-validation-report.json",
+      "severity": "PASS"
+    },
+    {
+      "message": "Q42 generated output exists: .aide/refactors/map-validation-report.md",
+      "severity": "PASS"
+    },
+    {
+      "message": "move map missing: .aide/refactors/current-move-map.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "salvage map missing: .aide/refactors/current-salvage-map.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "path alias plan missing: .aide/refactors/path-aliases.yaml",
+      "severity": "FAIL"
+    },
+    {
+      "message": "reference rewrite plan missing: .aide/refactors/reference-rewrite-plan.json",
+      "severity": "FAIL"
+    },
+    {
+      "message": "migration ledger draft exists: .aide/refactors/migration-ledger.draft.jsonl",
+      "severity": "FAIL"
+    }
+  ],
+  "generated_by": "aide-lite",
+  "move_delete_rewrite_detected": false,
+  "no_apply": true,
+  "result": "FAIL",
+  "schema_version": "aide.map-validation-report.v0",
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
+  "warnings": []
+}

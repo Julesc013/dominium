@@ -1,13 +1,13 @@
 # Latest AIDE WorkUnit Draft
 
 - schema_version: aide.workunit-draft.v0
-- workunit_id: draft-adapter-43d6df43431b
-- title: Adapter WorkUnit Draft - Draft the smallest safe WorkUnit after repo-state preflight
+- workunit_id: draft-evidence-42a232463d80
+- title: Evidence WorkUnit Draft - Draft the smallest safe WorkUnit after repo-state preflight
 - status: draft
-- task_class: adapter
+- task_class: evidence
 - risk_class: external_side_effect
-- sizing_class: two_shot
-- objective: Normalize prompt into a bounded adapter WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.
+- sizing_class: audit_only
+- objective: Normalize prompt into a bounded evidence WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.
 - why: AIDE compiles raw prompts into bounded WorkUnits before execution.
 
 ## Preflight
@@ -50,5 +50,5 @@
 
 ## Recovery
 
-- idempotency: prompt_hash:43d6df43431bd842e3b1c4c39292f74937b47c96878bb0f5fa2711fd8c19b559; status:draft; compile_only:true
+- idempotency: prompt_hash:42a232463d80d4baed33a1535e7ddf281e7c028adcdc110c5d98c11157b710a5; status:draft; compile_only:true
 - recovery: Rerun intent compile from repo state; do not replay raw chat as truth.

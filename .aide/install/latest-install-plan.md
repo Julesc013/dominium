@@ -2,7 +2,7 @@
 
 - plan_id: q43-install-plan-current-repo
 - status: candidate
-- source_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
+- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
 - operations: 267
 - conflicts: 267
 - mandatory_migration_candidates: 0

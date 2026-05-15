@@ -10,7 +10,7 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Task Packet Reference
 
-- `.aide/context/latest-task-packet.md` (4116 chars, 1029 approximate tokens)
+- `.aide/context/latest-task-packet.md` (4902 chars, 1226 approximate tokens)
 
 ## Context Packet Reference
 
@@ -33,7 +33,31 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Changed Files Summary
 
-- none
+- unknown: `.aide/changelog/CHANGELOG.preview.md` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/RELEASE_NOTES.preview.md` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/changelog.preview.json` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/latest-changelog-report.md` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/malformed-commits.md` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/release-notes.preview.json` (M; does not match active task allowed paths)
+- allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
+- allowed: `.aide/context/latest-task-packet.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/runs/latest-golden-tasks.json` (M; matches active task allowed path)
+- allowed: `.aide/evals/runs/latest-golden-tasks.md` (M; matches active task allowed path)
+- unknown: `.aide/git/latest-helper-plan.json` (M; does not match active task allowed paths)
+- unknown: `.aide/git/latest-helper-plan.md` (M; does not match active task allowed paths)
+- unknown: `.aide/git/workflow-detection.json` (M; does not match active task allowed paths)
+- unknown: `.aide/git/workflow-detection.md` (M; does not match active task allowed paths)
+- unknown: `.aide/github/branch-protection-plan.json` (??; does not match active task allowed paths)
+- unknown: `.aide/github/branch-protection-plan.md` (??; does not match active task allowed paths)
+- unknown: `.aide/github/ci-advisory.json` (??; does not match active task allowed paths)
+- unknown: `.aide/github/ci-advisory.md` (??; does not match active task allowed paths)
+- unknown: `.aide/github/github-advisory.json` (??; does not match active task allowed paths)
+- unknown: `.aide/github/github-advisory.md` (??; does not match active task allowed paths)
+- unknown: `.aide/github/latest-github-status.md` (??; does not match active task allowed paths)
+- unknown: `.aide/install/latest-conflict-report.json` (M; does not match active task allowed paths)
+- unknown: `.aide/install/latest-install-dry-run.json` (M; does not match active task allowed paths)
+- unknown: `.aide/install/latest-install-observation.json` (M; does not match active task allowed paths)
+- additional changed paths omitted from compact packet: 95; see task evidence changed-files report
 
 ## Validation Summary
 
@@ -43,8 +67,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - packet_path: `.aide/context/latest-review-packet.md`
 - method: chars / 4, rounded up
-- chars: 3625
-- approx_tokens: 907
+- chars: 6008
+- approx_tokens: 1502
 - budget_status: PASS
 - max_token_warning: 2400
 - warnings:

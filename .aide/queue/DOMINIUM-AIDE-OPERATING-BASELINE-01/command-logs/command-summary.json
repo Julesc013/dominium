@@ -1,0 +1,267 @@
+[
+  {
+    "name": "git_status_short",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_branch_current",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_branch_all",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_remote_v",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_rev_parse_head",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_tag_list",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_check_ignore_aide_local",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_diff_check",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "doctor",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "test",
+    "result": "FAIL",
+    "code": 1
+  },
+  {
+    "name": "selftest",
+    "result": "FAIL",
+    "code": 1
+  },
+  {
+    "name": "eval_run",
+    "result": "TIMEOUT",
+    "code": "timeout"
+  },
+  {
+    "name": "verify",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "review_pack",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "intent_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "intent_compile_next",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "repo_inventory",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "repo_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "repo_status",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "quality_ledger",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "quality_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "quality_status",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "refactor_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "roots_inventory",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "roots_classify",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "roots_plan",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "roots_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "roots_status",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "tools_inventory",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "tools_classify",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "tools_wrap_plan",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "tools_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "tools_status",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "install_observe",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "install_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "repair_observe",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "repair_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "upgrade_observe_current",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "upgrade_compare",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "upgrade_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "rollback_observe",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "rollback_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "uninstall_observe",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "uninstall_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_detect",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_policy",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "git_plan",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "commit_check_latest",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "changelog_preview",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "changelog_validate",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "pack_q54",
+    "result": "PASS",
+    "code": 0
+  },
+  {
+    "name": "estimate_q54",
+    "result": "PASS",
+    "code": 0
+  }
+]

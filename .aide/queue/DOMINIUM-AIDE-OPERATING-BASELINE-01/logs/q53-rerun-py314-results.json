@@ -1,0 +1,77 @@
+[
+    {
+        "Name":  "install_observe",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "repair_observe",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "upgrade_observe_current",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "upgrade_compare",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "rollback_observe",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "uninstall_observe",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "uninstall_validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "git_detect",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "git_policy",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "git_plan",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "commit_check_latest",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "changelog_preview",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "changelog_validate",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "pack_q54",
+        "Result":  "PASS",
+        "Code":  0
+    },
+    {
+        "Name":  "estimate_q54",
+        "Result":  "PASS",
+        "Code":  0
+    }
+]

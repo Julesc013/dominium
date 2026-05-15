@@ -1,0 +1,36 @@
+schema_version: aide.queue-task.v0
+task_id: DOMINIUM-AIDE-ROOT-RECYCLING-01
+title: Q52 Dominium Root Recycling Pilot
+status: needs_review
+repo: julesc013/dominium
+branch: main
+phase: Q52
+work_class: validation_audit
+mode: root_recycling_no_apply_pilot
+selected_root_family: ide
+selected_roots:
+  - ide/
+result: READY_FOR_Q53_WITH_WARNINGS
+non_goals:
+  - move_files
+  - delete_files
+  - rename_files
+  - rewrite_references
+  - create_aliases
+  - create_shims
+  - modify_product_source
+  - modify_doctrine
+  - modify_tool_systems
+  - run_unknown_tools
+  - mutate_branches
+  - call_providers_or_network
+allowed_write_roots:
+  - .aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/
+  - .aide/roots/
+  - .aide/reports/
+  - .aide/context/latest-task-packet.md
+  - .aide/context/latest-review-packet.md
+  - .aide/repo/
+  - .aide/reports/file-quality-ledger.json
+  - .aide/reports/file-quality-summary.md
+review_gate: required

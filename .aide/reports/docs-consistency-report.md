@@ -1,6 +1,6 @@
 # Docs Consistency Report
 
-- docs_scanned: 4534
+- docs_scanned: 4741
 
 ## Stale Path Candidates
 
@@ -24,8 +24,37 @@
 - .aide/cache/latest-cache-keys.md: aide/routing/latest-route-decision.json
 - .aide/cache/latest-cache-keys.md: aide/verification/latest-verification-report.md
 - .aide/changelog/CHANGELOG.preview.md: test
+- .aide/changelog/README.md: aide/changelog
+- .aide/changelog/README.md: aide/scripts/aide_lite.py
+- .aide/changelog/RELEASE_NOTES.preview.md: aide/scripts/aide_lite.py
+- .aide/changelog/RELEASE_NOTES.preview.md: test
+- .aide/changelog/changelog.preview.json: AGENTS.md/nAIDE-Token-Impact
+- .aide/changelog/changelog.preview.json: aide/changelog
+- .aide/changelog/changelog.preview.json: aide/git
+- .aide/changelog/changelog.preview.json: aide/nAIDE-Token-Impact
+- .aide/changelog/changelog.preview.json: aide/queue/nAIDE-Token-Impact
+- .aide/changelog/changelog.preview.json: aide/scripts/aide_lite.py
+- .aide/changelog/changelog.preview.json: aide/tools/latest-tool-inventory
+- .aide/changelog/changelog.preview.json: aide/tools/latest-tool-inventory.*
+- .aide/changelog/changelog.preview.json: core/**
+- .aide/changelog/changelog.preview.json: docs/reference/nAIDE-Token-Impact
+- .aide/changelog/changelog.preview.json: governance-only/nAIDE-Quality-Gate
+- .aide/changelog/changelog.preview.json: governance/nAIDE-Token-Impact
+- .aide/changelog/changelog.preview.json: py -3 .aide/scripts/aide_lite.py doctor
+- .aide/changelog/changelog.preview.json: scripts/verify_docs_sanity.py./n-
 - .aide/changelog/changelog.preview.json: test
+- .aide/changelog/changelog.preview.json: test./n-
+- .aide/changelog/latest-changelog-report.md: aide/changelog/CHANGELOG.preview.md
+- .aide/changelog/latest-changelog-report.md: aide/changelog/RELEASE_NOTES.preview.md
+- .aide/changelog/latest-changelog-report.md: aide/changelog/changelog.preview.json
+- .aide/changelog/latest-changelog-report.md: aide/changelog/malformed-commits.md
+- .aide/changelog/latest-changelog-report.md: aide/changelog/release-notes.preview.json
 - .aide/changelog/malformed-commits.md: test
+- .aide/changelog/release-notes.preview.json: aide/scripts/aide_lite.py
+- .aide/changelog/release-notes.preview.json: aide/tools/latest-tool-inventory
+- .aide/changelog/release-notes.preview.json: aide/tools/latest-tool-inventory.*
+- .aide/changelog/release-notes.preview.json: py -3 .aide/scripts/aide_lite.py doctor
+- .aide/changelog/release-notes.preview.json: test
 - .aide/context/dominium-doctrine-refs.md: aide/context/repo-map
 - .aide/context/dominium-doctrine-refs.md: aide/context/repo-map.*
 - .aide/context/dominium-doctrine-refs.md: data/reality/*.json
@@ -46,270 +75,241 @@
 - .aide/context/latest-context-packet.md: aide/reports/token-ledger.jsonl
 - .aide/context/latest-context-packet.md: test
 - .aide/context/latest-review-packet.md: aide/cache/latest-cache-keys.json
-- .aide/context/latest-review-packet.md: aide/changelog/README.md
-- .aide/context/latest-review-packet.md: aide/changelog/config.yaml
-- .aide/context/latest-review-packet.md: aide/changelog/templates
-- .aide/context/latest-review-packet.md: aide/commands/catalog.yaml
+- .aide/context/latest-review-packet.md: aide/changelog/CHANGELOG.preview.md
+- .aide/context/latest-review-packet.md: aide/changelog/RELEASE_NOTES.preview.md
+- .aide/context/latest-review-packet.md: aide/changelog/changelog.preview.json
+- .aide/context/latest-review-packet.md: aide/changelog/latest-changelog-report.md
+- .aide/context/latest-review-packet.md: aide/changelog/malformed-commits.md
+- .aide/context/latest-review-packet.md: aide/changelog/release-notes.preview.json
 - .aide/context/latest-review-packet.md: aide/context/context-index.json
-- .aide/context/latest-review-packet.md: aide/context/ignore.yaml
 - .aide/context/latest-review-packet.md: aide/context/latest-context-packet.md
 - .aide/context/latest-review-packet.md: aide/context/latest-review-packet.md
 - .aide/context/latest-review-packet.md: aide/context/latest-task-packet.md
-- .aide/context/latest-review-packet.md: aide/context/priority.yaml
 - .aide/context/latest-review-packet.md: aide/context/repo-map.json
 - .aide/context/latest-review-packet.md: aide/context/test-map.json
 - .aide/context/latest-review-packet.md: aide/controller/latest-outcome-report.md
 - .aide/context/latest-review-packet.md: aide/controller/latest-recommendations.md
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/catalog.yaml
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/changelog_json_shape_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/changelog_preview_golden/acceptance.md
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/changelog_preview_golden/task.yaml
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/docs_consistency_report_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/drop_candidate_not_delete_approval_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/file_classification_policy_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/file_quality_ledger_schema_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/file_quality_policy_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/github_ci_advisory_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/github_export_inclusion_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/github_protection_policy_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/github_release_asset_schema_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/github_release_assets_have_checksums_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/github_release_checklist_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/github_release_draft_policy_golden
-- .aide/context/latest-review-packet.md: aide/evals/golden-tasks/github_release_draft_schema_golden
+- .aide/context/latest-review-packet.md: aide/evals/runs/latest-golden-tasks.json
+- .aide/context/latest-review-packet.md: aide/evals/runs/latest-golden-tasks.md
 - .aide/context/latest-review-packet.md: aide/gateway/latest-gateway-status.json
-- .aide/context/latest-review-packet.md: aide/providers/latest-provider-status.json
-- .aide/context/latest-review-packet.md: aide/queue/README.template.md
-- .aide/context/latest-review-packet.md: aide/queue/index.yaml
-- .aide/context/latest-review-packet.md: aide/reports/token-ledger.jsonl
-- .aide/context/latest-review-packet.md: aide/routing/latest-route-decision.json
-- .aide/context/latest-review-packet.md: aide/verification/latest-verification-report.md
-- .aide/context/latest-review-packet.md: aide/verification/review-decision-policy.yaml
-- .aide/context/latest-task-packet.md: aide.local/**
-- .aide/context/latest-task-packet.md: aide/cache/latest-cache-keys.json
-- .aide/context/latest-task-packet.md: aide/cache/latest-cache-keys.md
-- .aide/context/latest-task-packet.md: aide/context
-- .aide/context/latest-task-packet.md: aide/context/**
-- .aide/context/latest-task-packet.md: aide/context/context-index.json
-- .aide/context/latest-task-packet.md: aide/context/dominium-doctrine-refs.md
-- .aide/context/latest-task-packet.md: aide/context/latest-context-packet.md
-- .aide/context/latest-task-packet.md: aide/context/repo-map.json
-- .aide/context/latest-task-packet.md: aide/context/repo-map.md
-- .aide/context/latest-task-packet.md: aide/context/repo-snapshot.json
-- .aide/context/latest-task-packet.md: aide/context/test-map.json
-- .aide/context/latest-task-packet.md: aide/memory/decisions.md
-- .aide/context/latest-task-packet.md: aide/memory/open-risks.md
-- .aide/context/latest-task-packet.md: aide/memory/project-state.md
-- .aide/context/latest-task-packet.md: aide/policies/cache.yaml
-- .aide/context/latest-task-packet.md: aide/policies/local-state.yaml
-- .aide/context/latest-task-packet.md: aide/policies/token-budget.yaml
-- .aide/context/latest-task-packet.md: aide/prompts/compact-task.md
+- .aide/context/latest-review-packet.md: aide/git/latest-helper-plan.json
+- .aide/context/latest-review-packet.md: aide/git/latest-helper-plan.md
+- .aide/context/latest-review-packet.md: aide/git/workflow-detection.json
+- .aide/context/latest-review-packet.md: aide/git/workflow-detection.md
+- .aide/context/latest-review-packet.md: aide/github/branch-protection-plan.json
+- .aide/context/latest-review-packet.md: aide/github/branch-protection-plan.md
+- .aide/context/latest-review-packet.md: aide/github/ci-advisory.json
+- .aide/context/latest-review-packet.md: aide/github/ci-advisory.md
+- .aide/context/latest-review-packet.md: aide/github/github-advisory.json
+- .aide/context/latest-review-packet.md: aide/github/github-advisory.md
+- .aide/context/latest-review-packet.md: aide/github/latest-github-status.md
+- .aide/context/latest-review-packet.md: aide/install/latest-conflict-report.json
 
 ## Missing Doc Candidates
 
+- .aide/install/conflict-record.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/conflict-report.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/install-dry-run.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/install-observation.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/install-operation.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/install-plan.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/install-verification.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/managed-section.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/ownership-ledger.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/ownership-record.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/install/preservation-report.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/intake/intent-packet.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/intake/workunit-draft.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/adapters.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
+- .aide/policies/branch-protection.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/branch-roles.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
 - .aide/policies/cache.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
+- .aide/policies/changelog.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
+- .aide/policies/ci-gates.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/commit-messages.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/controller.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/dependency-map.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/doc-link-map.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/docs-consistency.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/doctor.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/evals.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/export-import.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/file-classification.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/file-quality.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/gateway.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/git-workflow.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/github-protection.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/github-release-draft.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/install-conflicts.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/install-migrations.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/install-ownership.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/install-verification.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/install.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/intent.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/local-state.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/migration-ledger.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/migration.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/module-quality.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/move-map.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/ownership-map.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/path-aliases.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/promotion-rules.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
+- .aide/policies/prompt-normalization.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/provider-adapters.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/prune-policy.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
 - .aide/policies/recovery.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/refactor-application.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/refactor-evidence.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/refactor-safety.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/refactor.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/reference-rewrite.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/release-artifacts.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/release-bundle.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/release-checklist.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/release-provenance.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/release-publication-boundary.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/release-upload-plan.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/release-validation.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/release-versioning.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/repair-classes.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/repair-detection.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/repair-safety.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/repair-verification.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/repair.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/repo-intelligence.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/reuse-modularity.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/risk-classes.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/rollback-classes.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/rollback-safety.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/rollback-verification.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/rollback.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/root-exceptions.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
+- .aide/policies/root-fates.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/root-inventory.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/root-recycling.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/root-risk.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/routing.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
+- .aide/policies/salvage-map.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/sync-policy.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
+- .aide/policies/task-classes.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/task-resumption.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/test-map.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/token-budget.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 - .aide/policies/token-ledger.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
-- .aide/policies/verification.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
-- .aide/policies/work-units.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
-- .aide/routing/route-decision.schema.json: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
-- .aide/scripts/aide_lite.py: large_module_candidate, missing_doc_candidate, mixed_purpose_candidate, orphan_candidate, public_surface_missing_doc_candidate, reuse_candidate
-- apps/client/__init__.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/adapters/client_fs_adapter.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/adapters/client_fs_adapter.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/adapters/client_network_adapter.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/adapters/client_network_adapter.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/client_command_bridge.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/client_commands_registry.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/client_models_options.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/client_models_options.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/client_models_server.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/client_models_world.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/client_state_machine.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/session_artifacts.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/session_artifacts.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/session_pipeline.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/session_pipeline.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/session_refusal_codes.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/session_refusal_codes.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/session_stage_registry.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/core/session_stage_registry.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/gui/client_app_win32.cpp: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/interaction/__init__.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/interaction/affordance_generator.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/interaction/inspection_overlays.py: large_module_candidate, missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/interaction/interaction_dispatch.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/interaction/interaction_panel.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/interaction/preview_generator.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/local_server/__init__.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/local_server/local_server_controller.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/modes/client_mode_cli.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/modes/client_mode_gui.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/modes/client_mode_tui.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/net/__init__.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/net/loopback_client.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/observability/perceived_model_v1.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/presentation/frame_graph_builder.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/presentation/render_model_adapter_v1.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/presentation/render_prep_system.cpp: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/presentation/render_prep_system.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/presentation/ui_host_v1.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/presentation/ui_host_v1.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/render/__init__.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/render/render_model_adapter.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/render/renderers/__init__.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/render/renderers/hw_renderer_gl.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/render/renderers/null_renderer.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/render/renderers/software_renderer.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/render/representation_resolver.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/render/snapshot_capture.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/shell/client_shell.c: large_module_candidate, missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/shell/client_shell.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/ui/__init__.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/ui/inspect_panels.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/ui/main_menu_surface.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/client/ui/map_views.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/ui/teleport_controller.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/client/ui/viewer_shell.py: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/cli/launcher_ui_shell.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/cli/launcher_ui_shell.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/core/launcher_authority.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/core/launcher_config_stub.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/launcher/core/launcher_core.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/core/launcher_mods_stub.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/launcher/core/launcher_process_stub.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/launcher/core/launcher_profile_stub.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, unknown_owner
-- apps/launcher/gui/launcher_app_win32.cpp: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/gui/launcher_gui_stub.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/gui/win32/launcher_app_win32.cpp: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/gui/win32/launcher_gui_stub.c: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_context.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_db.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_discovery.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_state.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_cli.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_gui.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_tui.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
-- apps/launcher/include/launcher/_internal/launcher_internal/launcher_context.h: missing_doc_candidate, missing_test_or_validator_candidate, orphan_candidate, reuse_candidate, unknown_owner
+- .aide/policies/tool-absorption.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/tool-capabilities.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/tool-fates.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/tool-inventory.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/tool-risk.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/tool-wrapping.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/uninstall-classes.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/uninstall-safety.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/uninstall-verification.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/uninstall.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
+- .aide/policies/upgrade-compatibility.yaml: missing_doc_candidate, orphan_candidate, public_surface_missing_doc_candidate
 
 ## Public Surface Doc Candidates
 
+- .aide/install/conflict-record.schema.json (schema)
+- .aide/install/conflict-report.schema.json (schema)
+- .aide/install/install-dry-run.schema.json (schema)
+- .aide/install/install-observation.schema.json (schema)
+- .aide/install/install-operation.schema.json (schema)
+- .aide/install/install-plan.schema.json (schema)
+- .aide/install/install-verification.schema.json (schema)
+- .aide/install/managed-section.schema.json (schema)
+- .aide/install/ownership-ledger.schema.json (schema)
+- .aide/install/ownership-record.schema.json (schema)
+- .aide/install/preservation-report.schema.json (schema)
+- .aide/intake/intent-packet.schema.json (schema)
+- .aide/intake/workunit-draft.schema.json (schema)
 - .aide/policies/adapters.yaml (policy)
+- .aide/policies/branch-protection.yaml (policy)
 - .aide/policies/branch-roles.yaml (policy)
 - .aide/policies/cache.yaml (policy)
+- .aide/policies/changelog.yaml (policy)
+- .aide/policies/ci-gates.yaml (policy)
 - .aide/policies/commit-messages.yaml (policy)
 - .aide/policies/controller.yaml (policy)
+- .aide/policies/dependency-map.yaml (policy)
+- .aide/policies/doc-link-map.yaml (policy)
+- .aide/policies/docs-consistency.yaml (policy)
+- .aide/policies/doctor.yaml (policy)
 - .aide/policies/evals.yaml (policy)
 - .aide/policies/export-import.yaml (policy)
+- .aide/policies/file-classification.yaml (policy)
+- .aide/policies/file-quality.yaml (policy)
 - .aide/policies/gateway.yaml (policy)
 - .aide/policies/git-workflow.yaml (policy)
+- .aide/policies/github-protection.yaml (policy)
+- .aide/policies/github-release-draft.yaml (policy)
+- .aide/policies/install-conflicts.yaml (policy)
+- .aide/policies/install-migrations.yaml (policy)
+- .aide/policies/install-ownership.yaml (policy)
+- .aide/policies/install-verification.yaml (policy)
+- .aide/policies/install.yaml (policy)
+- .aide/policies/intent.yaml (policy)
 - .aide/policies/local-state.yaml (policy)
+- .aide/policies/migration-ledger.yaml (policy)
+- .aide/policies/migration.yaml (policy)
+- .aide/policies/module-quality.yaml (policy)
+- .aide/policies/move-map.yaml (policy)
+- .aide/policies/ownership-map.yaml (policy)
+- .aide/policies/path-aliases.yaml (policy)
 - .aide/policies/promotion-rules.yaml (policy)
+- .aide/policies/prompt-normalization.yaml (policy)
 - .aide/policies/provider-adapters.yaml (policy)
 - .aide/policies/prune-policy.yaml (policy)
 - .aide/policies/recovery.yaml (policy)
+- .aide/policies/refactor-application.yaml (policy)
+- .aide/policies/refactor-evidence.yaml (policy)
+- .aide/policies/refactor-safety.yaml (policy)
+- .aide/policies/refactor.yaml (policy)
+- .aide/policies/reference-rewrite.yaml (policy)
+- .aide/policies/release-artifacts.yaml (policy)
+- .aide/policies/release-bundle.yaml (policy)
+- .aide/policies/release-checklist.yaml (policy)
+- .aide/policies/release-provenance.yaml (policy)
+- .aide/policies/release-publication-boundary.yaml (policy)
+- .aide/policies/release-upload-plan.yaml (policy)
+- .aide/policies/release-validation.yaml (policy)
+- .aide/policies/release-versioning.yaml (policy)
+- .aide/policies/repair-classes.yaml (policy)
+- .aide/policies/repair-detection.yaml (policy)
+- .aide/policies/repair-safety.yaml (policy)
+- .aide/policies/repair-verification.yaml (policy)
+- .aide/policies/repair.yaml (policy)
+- .aide/policies/repo-intelligence.yaml (policy)
+- .aide/policies/reuse-modularity.yaml (policy)
+- .aide/policies/risk-classes.yaml (policy)
+- .aide/policies/rollback-classes.yaml (policy)
+- .aide/policies/rollback-safety.yaml (policy)
+- .aide/policies/rollback-verification.yaml (policy)
+- .aide/policies/rollback.yaml (policy)
+- .aide/policies/root-exceptions.yaml (policy)
+- .aide/policies/root-fates.yaml (policy)
+- .aide/policies/root-inventory.yaml (policy)
+- .aide/policies/root-recycling.yaml (policy)
+- .aide/policies/root-risk.yaml (policy)
 - .aide/policies/routing.yaml (policy)
+- .aide/policies/salvage-map.yaml (policy)
 - .aide/policies/sync-policy.yaml (policy)
+- .aide/policies/task-classes.yaml (policy)
 - .aide/policies/task-resumption.yaml (policy)
+- .aide/policies/test-map.yaml (policy)
 - .aide/policies/token-budget.yaml (policy)
 - .aide/policies/token-ledger.yaml (policy)
-- .aide/policies/verification.yaml (policy)
-- .aide/policies/work-units.yaml (policy)
-- .aide/routing/route-decision.schema.json (schema)
-- .aide/scripts/aide_lite.py (tool)
-- apps/setup/packages/scripts/build_all.bat (tool)
-- apps/setup/packages/scripts/build_codex_verify.bat (tool)
-- apps/setup/packages/scripts/check_layers.py (tool)
-- apps/setup/packages/scripts/ci/check_launcher_core_invariants.py (tool)
-- apps/setup/packages/scripts/ci/launcher_cli_smoke_matrix.py (tool)
-- apps/setup/packages/scripts/ci/setup_build.bat (tool)
-- apps/setup/packages/scripts/ci/setup_build.sh (tool)
-- apps/setup/packages/scripts/ci/setup_test.bat (tool)
-- apps/setup/packages/scripts/ci/setup_test.sh (tool)
-- apps/setup/packages/scripts/diagnostics/make_support_bundle.py (tool)
-- apps/setup/packages/scripts/doc_ratio_check.py (tool)
-- apps/setup/packages/scripts/gen_base_demo_mod.py (tool)
-- apps/setup/packages/scripts/gen_launcher_ui_schema_v1.py (tool)
-- apps/setup/packages/scripts/gen_tools_demo.py (tool)
-- apps/setup/packages/scripts/legacy/build_legacy_windows.bat (tool)
-- apps/setup/packages/scripts/legacy/build_legacy_windows.sh (tool)
-- apps/setup/packages/scripts/legacy/build_packages.bat (tool)
-- apps/setup/packages/scripts/legacy/build_packages.sh (tool)
-- apps/setup/packages/scripts/legacy/run_setup_tests.bat (tool)
-- apps/setup/packages/scripts/legacy/run_setup_tests.sh (tool)
-- apps/setup/packages/scripts/packaging/CMakeLists.txt (tool)
-- apps/setup/packages/scripts/packaging/dsumanifest.py (tool)
-- apps/setup/packages/scripts/packaging/linux/CMakeLists.txt (tool)
-- apps/setup/packages/scripts/packaging/linux/build_run.sh (tool)
-- apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/control.in (tool)
-- apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postinst (tool)
-- apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postrm (tool)
-- apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/prerm (tool)
-- apps/setup/packages/scripts/packaging/linux/dominium-install.sh (tool)
-- apps/setup/packages/scripts/packaging/linux/dominium-installer.sh.in (tool)
-- apps/setup/packages/scripts/packaging/linux/rpm/dominium.spec.in (tool)
-- apps/setup/packages/scripts/packaging/linux/write_apprun.cmake (tool)
-- apps/setup/packages/scripts/packaging/macos/CMakeLists.txt (tool)
-- apps/setup/packages/scripts/packaging/macos/Dominium.app/Contents/Info.plist.in (tool)
-- apps/setup/packages/scripts/packaging/macos/build_dmg.sh (tool)
-- apps/setup/packages/scripts/packaging/macos/build_pkg.sh (tool)
-- apps/setup/packages/scripts/packaging/macos/pkg_scripts/postinstall (tool)
-- apps/setup/packages/scripts/packaging/macos/postinstall (tool)
-- apps/setup/packages/scripts/packaging/make_deterministic_archive.py (tool)
-- apps/setup/packages/scripts/packaging/pipeline.py (tool)
-- apps/setup/packages/scripts/packaging/scripts/dom-client.cmd.in (tool)
-- apps/setup/packages/scripts/packaging/scripts/dom-client.sh.in (tool)
-- apps/setup/packages/scripts/packaging/scripts/dom-server.cmd.in (tool)
-- apps/setup/packages/scripts/packaging/scripts/dom-server.sh.in (tool)
-- apps/setup/packages/scripts/packaging/scripts/dominium.cmd.in (tool)
-- apps/setup/packages/scripts/packaging/scripts/dominium.sh.in (tool)
-- apps/setup/packages/scripts/packaging/scripts/setup.cmd.in (tool)
-- apps/setup/packages/scripts/packaging/scripts/setup.sh.in (tool)
-- apps/setup/packages/scripts/packaging/stage_dist.cmake (tool)
-- apps/setup/packages/scripts/packaging/windows/CMakeLists.txt (tool)
-- apps/setup/packages/scripts/packaging/windows/Dominium.wxs (tool)
-- apps/setup/packages/scripts/packaging/windows/bootstrapper.wxs (tool)
-- apps/setup/packages/scripts/packaging/windows/generate_dominium_setup_wxs.py (tool)
-- apps/setup/packages/scripts/packaging/windows/generate_dominium_wxs.py (tool)
-- apps/setup/packages/scripts/packaging/windows/license.rtf (tool)
-- apps/setup/packages/scripts/release/run_release_gate.bat (tool)
-- apps/setup/packages/scripts/release/run_release_gate.sh (tool)
-- apps/setup/packages/scripts/release/run_setup_release_gate.bat (tool)
-- apps/setup/packages/scripts/release/run_setup_release_gate.sh (tool)
-- apps/setup/packages/scripts/repro/verify_reproducible_builds.py (tool)
-- apps/setup/packages/scripts/setup/check_frontend_purity.bat (tool)
-- apps/setup/packages/scripts/setup/check_frontend_purity.sh (tool)
-- apps/setup/packages/scripts/setup/check_kernel_purity.bat (tool)
-- apps/setup/packages/scripts/setup/check_kernel_purity.sh (tool)
-- apps/setup/packages/scripts/setup/doc_lint.bat (tool)
-- apps/setup/packages/scripts/setup/doc_lint.sh (tool)
-- apps/setup/packages/scripts/setup/maintenance_checks.bat (tool)
-- apps/setup/packages/scripts/setup/maintenance_checks.sh (tool)
-- apps/setup/packages/scripts/setup/run_conformance.bat (tool)
-- apps/setup/packages/scripts/setup/run_conformance.sh (tool)
-- apps/setup/packages/scripts/setup/schema_freeze_check.bat (tool)
-- apps/setup/packages/scripts/setup/schema_freeze_check.cmake (tool)
-- apps/setup/packages/scripts/setup/schema_freeze_check.sh (tool)
-- apps/setup/packages/scripts/test_all.bat (tool)
-- apps/setup/packages/scripts/test_headless.bat (tool)
-- apps/setup/packages/scripts/test_kernel.bat (tool)
-- apps/setup/packages/scripts/verify_release.bat (tool)
+- .aide/policies/tool-absorption.yaml (policy)
+- .aide/policies/tool-capabilities.yaml (policy)
+- .aide/policies/tool-fates.yaml (policy)
+- .aide/policies/tool-inventory.yaml (policy)
+- .aide/policies/tool-risk.yaml (policy)
+- .aide/policies/tool-wrapping.yaml (policy)
+- .aide/policies/uninstall-classes.yaml (policy)
+- .aide/policies/uninstall-safety.yaml (policy)
+- .aide/policies/uninstall-verification.yaml (policy)
+- .aide/policies/uninstall.yaml (policy)
+- .aide/policies/upgrade-compatibility.yaml (policy)
 
 ## Caveats
 

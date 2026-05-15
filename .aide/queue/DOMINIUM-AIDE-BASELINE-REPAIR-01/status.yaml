@@ -1,0 +1,27 @@
+schema_version: aide.queue-status.v0
+task_id: DOMINIUM-AIDE-BASELINE-REPAIR-01
+phase: Q53R
+status: needs_review
+readiness_after_repair: READY_FOR_DCHECK_RERUN_WITH_WARNINGS
+repo_identity_confirmed: true
+aide_validation_blocker_repaired: true
+xstack_aide_integration_added: true
+legacy_tool_execution_enabled: false
+product_source_modified: false
+doctrine_modified: false
+tools_modified: false
+unknown_tools_executed: false
+files_moved: false
+files_deleted: false
+files_renamed: false
+references_rewritten: false
+branch_mutation: false
+provider_or_model_calls: none
+network_calls: none
+commit_status: blocked_by_git_index_permission
+review_gate: required
+remaining_blockers:
+  - Git index writes still fail in this sandbox, so the repair cannot be committed here.
+remaining_warnings:
+  - Large generated AIDE evidence set remains dirty until commit finalization.
+  - Full eval remains timeout-prone and should be treated as deferred_non_blocking unless rerun with a longer budget.

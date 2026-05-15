@@ -1,0 +1,26 @@
+{
+  "aide_command_family": [
+    "xstack status",
+    "xstack wrap-plan",
+    "xstack validate"
+  ],
+  "apply_allowed": false,
+  "execution_allowed": false,
+  "future_wrapper_requirements": [
+    "discover and classify the source tool",
+    "prove command line, timeout, side effects, and output paths",
+    "run in dry-run/report-only mode first",
+    "write evidence before enabling execution",
+    "preserve Dominium doctrine, validators, and product/source roots"
+  ],
+  "generated_by": "aide-lite",
+  "generator_version": "q24.existing-tool-adapter-compiler.v0",
+  "legacy_tool_execution": "disabled_by_default",
+  "network_calls": "forbidden",
+  "no_apply": true,
+  "preservation_rule": "Do not delete, rename, move, retire, or replace XStack/AuditX/RepoX/TestX until useful checks are wrapped or migrated with evidence.",
+  "provider_or_model_calls": "forbidden",
+  "schema_version": "aide.xstack-integration-contract.v0",
+  "scope": "Dominium target-local AIDE integration for XStack/AuditX/RepoX/TestX-like systems",
+  "status": "plan_only_no_apply"
+}

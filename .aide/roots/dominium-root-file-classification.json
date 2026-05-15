@@ -1,0 +1,261 @@
+{
+  "aliases_created": false,
+  "branch": "main",
+  "file_classifications": [
+    {
+      "aide_baseline": {
+        "apply_allowed": false,
+        "authority_sensitive": false,
+        "build_sensitive": false,
+        "current_role": "doc:active",
+        "generated_sensitive": false,
+        "identity_sensitive": false,
+        "kind": "doc",
+        "owner": "unknown",
+        "path": "ide/README.md",
+        "reasons": [
+          "doc_path_or_extension",
+          "unknown_kind_status_or_owner"
+        ],
+        "recommended_fate": "unknown",
+        "recommended_target_hint": "inspect before any future recycling map",
+        "review_required": true,
+        "root": "ide",
+        "semantic_risk": "high",
+        "status": "active",
+        "validators_required": [
+          "roots validate",
+          "refactor validate"
+        ]
+      },
+      "apply_allowed": false,
+      "authority_sensitive": true,
+      "build_sensitive": false,
+      "current_role": "binding root README and regeneration rule pointer",
+      "generated_sensitive": false,
+      "identity_sensitive": false,
+      "kind": "doc",
+      "owner": "Dominium IDE projection policy",
+      "path": "ide/README.md",
+      "reasons": [
+        "README declares /ide scope as binding",
+        "defines generated-output boundary",
+        "references regeneration scripts but Q52 does not run them"
+      ],
+      "recommended_fate": "keep",
+      "recommended_target_hint": "remain at ide/README.md unless a future reviewed root plan proves a replacement authority path",
+      "review_required": true,
+      "root": "ide",
+      "semantic_risk": "authority_sensitive",
+      "status": "active",
+      "validators_required": [
+        "roots validate",
+        "repo validate",
+        "docs/reference validation if future rewrite is proposed"
+      ]
+    },
+    {
+      "aide_baseline": {
+        "apply_allowed": false,
+        "authority_sensitive": false,
+        "build_sensitive": false,
+        "current_role": "schema:active",
+        "generated_sensitive": false,
+        "identity_sensitive": true,
+        "kind": "schema",
+        "owner": "unknown",
+        "path": "ide/manifests/projection_manifest.schema.json",
+        "reasons": [
+          "schema_path",
+          "unknown_kind_status_or_owner"
+        ],
+        "recommended_fate": "unknown",
+        "recommended_target_hint": "inspect before any future recycling map",
+        "review_required": true,
+        "root": "ide",
+        "semantic_risk": "high",
+        "status": "active",
+        "validators_required": [
+          "roots validate",
+          "refactor validate"
+        ]
+      },
+      "apply_allowed": false,
+      "authority_sensitive": true,
+      "build_sensitive": false,
+      "current_role": "schema identity for tracked IDE projection manifests",
+      "generated_sensitive": false,
+      "identity_sensitive": true,
+      "kind": "schema",
+      "owner": "Dominium IDE projection contract",
+      "path": "ide/manifests/projection_manifest.schema.json",
+      "reasons": [
+        "schema file controls projection manifest identity",
+        "JSON schema parsed successfully",
+        "required_fields=['projection_id', 'product', 'ui_shell', 'toolchain_tier', 'target_os_family', 'target_os_min', 'arch', 'language_mode', 'sdk_pin', 'crt_policy', 'generator', 'input_fingerprint', 'output_paths', 'regeneration_command', 'warnings']"
+      ],
+      "recommended_fate": "keep",
+      "recommended_target_hint": "remain under ide/manifests/ unless future schema ownership review approves a move-map and alias plan",
+      "review_required": true,
+      "root": "ide",
+      "semantic_risk": "identity_sensitive",
+      "status": "active",
+      "validators_required": [
+        "json parse",
+        "schema validation against examples",
+        "roots validate",
+        "refactor validate before any move-map"
+      ]
+    },
+    {
+      "aide_baseline": {
+        "apply_allowed": false,
+        "authority_sensitive": false,
+        "build_sensitive": false,
+        "current_role": "unknown:unknown",
+        "generated_sensitive": false,
+        "identity_sensitive": false,
+        "kind": "unknown",
+        "owner": "unknown",
+        "path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+        "reasons": [
+          "no_deterministic_rule_matched",
+          "unknown_kind_status_or_owner"
+        ],
+        "recommended_fate": "unknown",
+        "recommended_target_hint": "inspect before any future recycling map",
+        "review_required": true,
+        "root": "ide",
+        "semantic_risk": "high",
+        "status": "unknown",
+        "validators_required": [
+          "roots validate",
+          "refactor validate"
+        ]
+      },
+      "apply_allowed": false,
+      "authority_sensitive": false,
+      "build_sensitive": false,
+      "current_role": "tracked projection manifest example fixture",
+      "generated_sensitive": true,
+      "identity_sensitive": false,
+      "kind": "fixture",
+      "owner": "Dominium IDE projection examples",
+      "path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "reasons": [
+        "example projection manifest is explicitly preserved by /ide manifest exception",
+        "JSON parsed successfully",
+        "projection_id=ide-linux-clang-modern-client-gui",
+        "output_paths describe generated IDE projections but are not created in Q52"
+      ],
+      "recommended_fate": "keep",
+      "recommended_target_hint": "remain under ide/manifests/projection_manifest_examples/ unless future example fixture map is approved",
+      "review_required": true,
+      "root": "ide",
+      "semantic_risk": "generated_sensitive",
+      "status": "template_only",
+      "validators_required": [
+        "json parse",
+        "projection_manifest.schema.json validation",
+        "roots validate"
+      ]
+    },
+    {
+      "aide_baseline": {
+        "apply_allowed": false,
+        "authority_sensitive": false,
+        "build_sensitive": false,
+        "current_role": "unknown:unknown",
+        "generated_sensitive": false,
+        "identity_sensitive": false,
+        "kind": "unknown",
+        "owner": "unknown",
+        "path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+        "reasons": [
+          "no_deterministic_rule_matched",
+          "unknown_kind_status_or_owner"
+        ],
+        "recommended_fate": "unknown",
+        "recommended_target_hint": "inspect before any future recycling map",
+        "review_required": true,
+        "root": "ide",
+        "semantic_risk": "high",
+        "status": "unknown",
+        "validators_required": [
+          "roots validate",
+          "refactor validate"
+        ]
+      },
+      "apply_allowed": false,
+      "authority_sensitive": false,
+      "build_sensitive": false,
+      "current_role": "tracked projection manifest example fixture",
+      "generated_sensitive": true,
+      "identity_sensitive": false,
+      "kind": "fixture",
+      "owner": "Dominium IDE projection examples",
+      "path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "reasons": [
+        "example projection manifest is explicitly preserved by /ide manifest exception",
+        "JSON parsed successfully",
+        "projection_id=ide-win-vc6-win9x-client-gui",
+        "output_paths describe generated IDE projections but are not created in Q52"
+      ],
+      "recommended_fate": "keep",
+      "recommended_target_hint": "remain under ide/manifests/projection_manifest_examples/ unless future example fixture map is approved",
+      "review_required": true,
+      "root": "ide",
+      "semantic_risk": "generated_sensitive",
+      "status": "template_only",
+      "validators_required": [
+        "json parse",
+        "projection_manifest.schema.json validation",
+        "roots validate"
+      ]
+    }
+  ],
+  "file_deletes": false,
+  "file_moves": false,
+  "file_renames": false,
+  "gaps": [],
+  "generated_at_utc": "2026-05-15T07:52:50.041508+00:00",
+  "no_apply": true,
+  "q51_recommendation": "ide/",
+  "reference_rewrites": false,
+  "repo": "julesc013/dominium",
+  "root_summary": {
+    "fate_counts": {
+      "keep": 4
+    },
+    "high_risk_count": 4,
+    "kind_counts": {
+      "doc": 1,
+      "fixture": 2,
+      "schema": 1
+    },
+    "risk_class": "high",
+    "risk_counts": {
+      "authority_sensitive": 1,
+      "generated_sensitive": 2,
+      "identity_sensitive": 1
+    },
+    "root": "ide",
+    "root_status": "review_required",
+    "status_counts": {
+      "active": 2,
+      "template_only": 2
+    },
+    "suitable_for_apply": false,
+    "suitable_for_future_salvage_map_planning": true,
+    "tracked_file_count": 4,
+    "unknown_count": 0
+  },
+  "schema_version": "dominium.root-recycling-pilot.v0",
+  "selected_root_family": "ide",
+  "selected_roots": [
+    "ide"
+  ],
+  "shims_created": false,
+  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
+  "target_repo_mutation": false
+}

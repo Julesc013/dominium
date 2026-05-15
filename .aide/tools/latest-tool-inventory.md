@@ -1,8 +1,8 @@
 # Tool Inventory
 
 - generated_by: aide-lite
-- source_commit: 52eeb5a1f481231d55ad0938a8c9b3b54e2aa83f
-- tool_count: 2995
+- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
+- tool_count: 3000
 - no_apply: true
 - execution_allowed: false
 - tool_deletion: false
@@ -11,7 +11,7 @@
 
 ## Capability Counts
 
-- audit: 1040
+- audit: 1041
 - build: 225
 - context: 204
 - docs: 465
@@ -22,10 +22,10 @@
 - migrate: 6
 - package: 206
 - release: 158
-- repo_policy: 251
+- repo_policy: 252
 - security: 18
-- test: 234
-- unknown: 854
+- test: 235
+- unknown: 858
 - validate: 206
 
 ## Tools
@@ -113,7 +113,7 @@
 
 ## Warnings
 
-- unknown_tool_candidates: .aide/hooks/commit-msg, .aide/policies/export-import.yaml, .aide/tools/tool-adapter-map.schema.json, .aide/tools/tool-capability.schema.json, .aide/tools/tool-evidence.schema.json, .aide/tools/tool-inventory.schema.json, .aide/tools/tool-record.schema.json, .aide/tools/tool-retirement.schema.json, .aide/tools/tool-risk.schema.json, .aide/tools/tool-wrap-plan.schema.json, .github/workflows/ci.yml, archive/legacy/setup_core_setup/setup/core/import/dsk_import_legacy.cpp
+- unknown_tool_candidates: .aide/hooks/commit-msg, .aide/policies/export-import.yaml, .aide/tools/dominium-tool-adapter-map.json, .aide/tools/dominium-tool-classification.json, .aide/tools/dominium-tool-inventory.json, .aide/tools/dominium-tool-wrap-plan.md, .aide/tools/tool-adapter-map.schema.json, .aide/tools/tool-capability.schema.json, .aide/tools/tool-evidence.schema.json, .aide/tools/tool-inventory.schema.json, .aide/tools/tool-record.schema.json, .aide/tools/tool-retirement.schema.json
 - high_risk_tool_candidates: .aide/changelog/RELEASE_NOTES.preview.md, .aide/changelog/release-notes.preview.json, .aide/changelog/templates/release-notes.md.template, .aide/policies/github-release-draft.yaml, .aide/policies/release-artifacts.yaml, .aide/policies/release-bundle.yaml, .aide/policies/release-checklist.yaml, .aide/policies/release-provenance.yaml, .aide/policies/release-publication-boundary.yaml, .aide/policies/release-upload-plan.yaml, .aide/policies/release-validation.yaml, .aide/policies/release-versioning.yaml
 
 ## Next

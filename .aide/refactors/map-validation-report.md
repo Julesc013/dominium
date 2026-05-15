@@ -1,0 +1,85 @@
+# Map Validation Report
+
+- result: FAIL
+- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
+- no_apply: true
+- move_delete_rewrite_detected: false
+
+## Checks
+
+- PASS: Q42 required file exists: .aide/policies/move-map.yaml
+- PASS: Q42 required file exists: .aide/policies/salvage-map.yaml
+- PASS: Q42 required file exists: .aide/policies/path-aliases.yaml
+- PASS: Q42 required file exists: .aide/policies/reference-rewrite.yaml
+- PASS: Q42 required file exists: .aide/policies/migration-ledger.yaml
+- PASS: Q42 required file exists: .aide/refactors/move-map.schema.json
+- PASS: Q42 required file exists: .aide/refactors/move-map-entry.schema.json
+- PASS: Q42 required file exists: .aide/refactors/salvage-map.schema.json
+- PASS: Q42 required file exists: .aide/refactors/salvage-map-entry.schema.json
+- PASS: Q42 required file exists: .aide/refactors/path-aliases.schema.json
+- PASS: Q42 required file exists: .aide/refactors/path-alias-entry.schema.json
+- PASS: Q42 required file exists: .aide/refactors/reference-rewrite-plan.schema.json
+- PASS: Q42 required file exists: .aide/refactors/reference-rewrite-entry.schema.json
+- PASS: Q42 required file exists: .aide/refactors/migration-ledger.schema.json
+- PASS: Q42 required file exists: .aide/refactors/migration-ledger-entry.schema.json
+- PASS: Q42 required file exists: .aide/refactors/map-validation-report.schema.json
+- PASS: Q42 required file exists: .aide/refactors/path-aliases.template.yaml
+- PASS: .aide/policies/move-map.yaml contains anchor: aide.move-map-policy.v0
+- PASS: .aide/policies/move-map.yaml contains anchor: candidate_only
+- PASS: .aide/policies/move-map.yaml contains anchor: no_apply_in_q42
+- PASS: .aide/policies/move-map.yaml contains anchor: no_file_moves
+- PASS: .aide/policies/move-map.yaml contains anchor: no_file_deletes
+- PASS: .aide/policies/salvage-map.yaml contains anchor: aide.salvage-map-policy.v0
+- PASS: .aide/policies/salvage-map.yaml contains anchor: drop_candidate_is_not_delete_approval
+- PASS: .aide/policies/salvage-map.yaml contains anchor: no_salvage_extraction
+- PASS: .aide/policies/path-aliases.yaml contains anchor: aide.path-alias-policy.v0
+- PASS: .aide/policies/path-aliases.yaml contains anchor: no_alias_application_in_q42
+- PASS: .aide/policies/path-aliases.yaml contains anchor: temporary_shim
+- PASS: .aide/policies/reference-rewrite.yaml contains anchor: aide.reference-rewrite-policy.v0
+- PASS: .aide/policies/reference-rewrite.yaml contains anchor: markdown links
+- PASS: .aide/policies/reference-rewrite.yaml contains anchor: no_reference_rewrite_application_in_q42
+- PASS: .aide/policies/migration-ledger.yaml contains anchor: aide.migration-ledger-policy.v0
+- PASS: .aide/policies/migration-ledger.yaml contains anchor: draft_only_in_q42
+- PASS: .aide/policies/migration-ledger.yaml contains anchor: future_rollback
+- PASS: .aide/refactors/move-map.schema.json is object schema
+- PASS: .aide/refactors/move-map.schema.json defines required fields
+- PASS: .aide/refactors/move-map-entry.schema.json is object schema
+- PASS: .aide/refactors/move-map-entry.schema.json defines required fields
+- PASS: .aide/refactors/salvage-map.schema.json is object schema
+- PASS: .aide/refactors/salvage-map.schema.json defines required fields
+- PASS: .aide/refactors/salvage-map-entry.schema.json is object schema
+- PASS: .aide/refactors/salvage-map-entry.schema.json defines required fields
+- PASS: .aide/refactors/path-aliases.schema.json is object schema
+- PASS: .aide/refactors/path-aliases.schema.json defines required fields
+- PASS: .aide/refactors/path-alias-entry.schema.json is object schema
+- PASS: .aide/refactors/path-alias-entry.schema.json defines required fields
+- PASS: .aide/refactors/reference-rewrite-plan.schema.json is object schema
+- PASS: .aide/refactors/reference-rewrite-plan.schema.json defines required fields
+- PASS: .aide/refactors/reference-rewrite-entry.schema.json is object schema
+- PASS: .aide/refactors/reference-rewrite-entry.schema.json defines required fields
+- PASS: .aide/refactors/migration-ledger.schema.json is object schema
+- PASS: .aide/refactors/migration-ledger.schema.json defines required fields
+- PASS: .aide/refactors/migration-ledger-entry.schema.json is object schema
+- PASS: .aide/refactors/migration-ledger-entry.schema.json defines required fields
+- PASS: .aide/refactors/map-validation-report.schema.json is object schema
+- PASS: .aide/refactors/map-validation-report.schema.json defines required fields
+- FAIL: Q42 generated output exists: .aide/refactors/current-move-map.json
+- FAIL: Q42 generated output exists: .aide/refactors/current-move-map.md
+- FAIL: Q42 generated output exists: .aide/refactors/current-salvage-map.json
+- FAIL: Q42 generated output exists: .aide/refactors/current-salvage-map.md
+- FAIL: Q42 generated output exists: .aide/refactors/path-aliases.yaml
+- FAIL: Q42 generated output exists: .aide/refactors/path-aliases.md
+- FAIL: Q42 generated output exists: .aide/refactors/reference-rewrite-plan.json
+- FAIL: Q42 generated output exists: .aide/refactors/reference-rewrite-plan.md
+- FAIL: Q42 generated output exists: .aide/refactors/migration-ledger.draft.jsonl
+- PASS: Q42 generated output exists: .aide/refactors/map-validation-report.json
+- PASS: Q42 generated output exists: .aide/refactors/map-validation-report.md
+- FAIL: move map missing: .aide/refactors/current-move-map.json
+- FAIL: salvage map missing: .aide/refactors/current-salvage-map.json
+- FAIL: path alias plan missing: .aide/refactors/path-aliases.yaml
+- FAIL: reference rewrite plan missing: .aide/refactors/reference-rewrite-plan.json
+- FAIL: migration ledger draft exists: .aide/refactors/migration-ledger.draft.jsonl
+
+## Warnings
+
+- none
