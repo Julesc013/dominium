@@ -2,7 +2,7 @@
 
 - plan_id: q41-latest-tool-wrap-plan
 - status: dry_run
-- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
+- source_commit: b4342d70dfdda7903d61ed78113ab0125184dfc7
 - tool_count: 3000
 - execution_allowed: false
 - no_apply: true

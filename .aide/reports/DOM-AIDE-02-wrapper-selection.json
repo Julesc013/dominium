@@ -1,0 +1,95 @@
+{
+  "candidate_validator_families": [
+    {
+      "disposition": "selected",
+      "family": "tools validate",
+      "reason": "Lowest-risk current validator; checks AIDE tool inventory, classification, wrap-plan, and adapter-map evidence without running discovered tools."
+    },
+    {
+      "disposition": "deferred",
+      "family": "repo validate",
+      "reason": "Safe as validation but broader in scope and still reports 1669 unknown file classifications."
+    },
+    {
+      "disposition": "deferred",
+      "family": "roots validate",
+      "reason": "Safe no-apply validation but root recycling remains high-risk/mixed and no move is approved."
+    },
+    {
+      "disposition": "deferred",
+      "family": "quality validate",
+      "reason": "Useful but tied to broad quality ledgers and not the smallest first wrapper."
+    },
+    {
+      "disposition": "deferred",
+      "family": "xstack validate",
+      "reason": "AIDE-local validation is safe, but the underlying legacy systems are authority/build-sensitive and should remain second-wave."
+    },
+    {
+      "disposition": "rejected_for_this_task",
+      "family": "broad XStack FAST/FULL, full CTest, build, package, release, full eval",
+      "reason": "Outside scope and potentially mutating, timeout-prone, or too broad."
+    }
+  ],
+  "evidence_files_inspected": [
+    "AGENTS.md",
+    "docs/canon/constitution_v1.md",
+    "docs/canon/glossary_v1.md",
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "docs/planning/MERGED_PROGRAM_STATE.md",
+    "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+    "docs/planning/GATES_AND_PROOFS.md",
+    "docs/planning/POST_PI_EXECUTION_PLAN.md",
+    "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+    "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
+    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+    "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+    "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+    "data/reality/universal_reality_framework_registry.json",
+    "data/reality/capability_surface_taxonomy.json",
+    "data/reality/representation_ladder_registry.json",
+    "data/reality/formalization_chain_registry.json",
+    "data/reality/player_desire_map.json",
+    "data/reality/cross_domain_bridge_registry.json",
+    "data/planning/final_prompt_inventory.json",
+    "data/planning/dependency_graph_post_pi.json",
+    ".aide/context/latest-task-packet.md",
+    ".aide/context/latest-review-packet.md",
+    ".aide/context/dominium-doctrine-refs.md",
+    ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/q50-readiness.md",
+    ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/q51-readiness.md",
+    ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md",
+    ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/q53-readiness.md",
+    ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/baseline-summary.md",
+    ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/warning-disposition.md",
+    ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/evidence/xstack-integration.md",
+    ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/audit-report.md",
+    ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/readiness-and-next-plan.md",
+    ".aide/reports/dominium-tool-preservation-plan.md",
+    ".aide/reports/dominium-tool-capability-map.md",
+    ".aide/tools/latest-tool-inventory.json",
+    ".aide/tools/latest-tool-classification.json",
+    ".aide/tools/latest-tool-wrap-plan.json",
+    ".aide/tools/latest-tool-adapter-map.json",
+    ".aide/tools/xstack-integration-contract.json",
+    ".aide/tools/xstack-wrapper-registry.json"
+  ],
+  "expected_next_implementation_step": "Review this provisional contract, then select one concrete legacy command for a future report-only adapter proof before enabling execution.",
+  "safety_reasoning": {
+    "apply_allowed": false,
+    "build_outputs": "none",
+    "execution_allowed": false,
+    "network_allowed": false,
+    "product_runtime_impact": "none",
+    "unknown_tools_allowed": false,
+    "why_safe": "The selected validator checks AIDE-local policy and evidence files and confirms discovered tools remain no-apply and execution-disabled."
+  },
+  "selected_family": "aide_tool_wrapper_plan_validator",
+  "selected_underlying_command": "py -3 .aide/scripts/aide_lite.py tools validate",
+  "task_id": "DOM-AIDE-02"
+}

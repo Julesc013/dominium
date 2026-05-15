@@ -5,7 +5,7 @@
   "no_apply": true,
   "plan_id": "q41-latest-tool-wrap-plan",
   "schema_version": "aide.tool-wrap-plan-set.v0",
-  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
+  "source_commit": "b4342d70dfdda7903d61ed78113ab0125184dfc7",
   "source_inputs": [
     {
       "id": "repo_file_inventory",

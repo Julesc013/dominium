@@ -1,7 +1,7 @@
 # Tool Adapter Map
 
 - adapter_map_id: q41-latest-tool-adapter-map
-- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
+- source_commit: b4342d70dfdda7903d61ed78113ab0125184dfc7
 - mapping_count: 2142
 - unmapped_count: 858
 - execution_allowed: false

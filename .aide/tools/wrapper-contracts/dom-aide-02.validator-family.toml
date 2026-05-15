@@ -1,0 +1,48 @@
+[contract]
+id = "dominium.aide.wrapper.dom-aide-02.validator-family.v1"
+task = "DOM-AIDE-02"
+status = "provisional"
+created_by = "codex"
+purpose = "Wrap the first low-risk existing validator family through AIDE planning surfaces."
+
+[selection]
+family = "aide_tool_wrapper_plan_validator"
+reason = "The AIDE tools validate family is the lowest-risk validator with current Q51/Q53/DCHECK evidence: it validates tool inventory, classification, wrap-plan, and adapter-map evidence while enforcing no unknown tool execution, no apply, no deletion, no rename, and no migration."
+risk = "low"
+source_inventory = ".aide/tools/latest-tool-inventory.json"
+preservation_policy = "wrap-before-rename"
+
+[legacy]
+names = ["AIDE tools validate", "Q41 tool absorption validator", "tools validate-style command"]
+paths = [".aide/scripts/aide_lite.py", ".aide/policies/tool-absorption.yaml", ".aide/policies/tool-inventory.yaml", ".aide/policies/tool-fates.yaml", ".aide/policies/tool-wrapping.yaml", ".aide/policies/tool-risk.yaml", ".aide/policies/tool-capabilities.yaml", ".aide/tools/latest-tool-inventory.json", ".aide/tools/latest-tool-classification.json", ".aide/tools/latest-tool-wrap-plan.json", ".aide/tools/latest-tool-adapter-map.json"]
+must_preserve = true
+rename_allowed = false
+delete_allowed = false
+move_allowed = false
+
+[execution]
+execution_allowed = false
+apply_allowed = false
+network_allowed = false
+writes_allowed = false
+unknown_tools_allowed = false
+timeout_seconds = 60
+requires_human_promotion = true
+
+[inputs]
+repo_root_required = true
+requires_clean_worktree = false
+requires_build_outputs = false
+requires_network = false
+
+[outputs]
+allowed_output_roots = [".aide/reports", ".aide/tools"]
+committed_outputs = [".aide/tools/wrapper-contracts/README.md", ".aide/tools/wrapper-contracts/dom-aide-02.validator-family.toml", ".aide/tools/wrapper-plans/DOM-AIDE-02.md", ".aide/tools/wrapper-plans/DOM-AIDE-02.json", ".aide/reports/DOM-AIDE-02-wrapper-selection.md", ".aide/reports/DOM-AIDE-02-wrapper-selection.json", ".aide/reports/DOM-AIDE-02-validation.md", ".aide/reports/DOM-AIDE-02-blockers.md"]
+
+[blockers]
+known = ["858 unknown tool candidates remain in the current AIDE tool classification.", "171 destructive, high, release, or security-risk tool candidates remain review-gated.", "Executable wrappers require human promotion after command side effects, timeout, and output paths are proved."]
+unknowns_require_inventory = true
+
+[follow_up]
+next_tasks = ["DOM-ROOT-02", "DOM-BUILD-01", "DOM-ROOT-03"]
+notes = "Implementation of executable wrappers is deferred until this contract is reviewed."

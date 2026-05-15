@@ -9,7 +9,7 @@ Status: generated plan-only registry
 | RepoX | True | 44 | `dominium.repox.policy` | `xstack status --system repox` | repo_policy, validate, security, release | authority_sensitive | disabled |
 | TestX | True | 1821 | `dominium.testx.status` | `xstack status --system testx` | test, validate | build_sensitive | disabled |
 | BuildX-like build wrappers | True | 35 | `dominium.buildx.status` | `xstack status --system buildx` | build, package, validate | build_sensitive | disabled |
-| FAST/STRICT/FULL validation profiles | True | 299 | `dominium.validation.profiles` | `xstack status --system validation_profiles` | validate, test, audit | build_sensitive | disabled |
+| FAST/STRICT/FULL validation profiles | True | 308 | `dominium.validation.profiles` | `xstack status --system validation_profiles` | validate, test, audit | build_sensitive | disabled |
 
 ## Enablement Gate
 

@@ -19284,7 +19284,7 @@
   ],
   "no_apply": true,
   "schema_version": "aide.tool-adapter-map.v0",
-  "source_commit": "d22537869be05860d5eda70eebb2f3ed261e276c",
+  "source_commit": "b4342d70dfdda7903d61ed78113ab0125184dfc7",
   "unmapped_tools": [
     ".aide/hooks/commit-msg",
     ".aide/policies/export-import.yaml",

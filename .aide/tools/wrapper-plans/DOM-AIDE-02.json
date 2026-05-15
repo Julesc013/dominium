@@ -1,0 +1,101 @@
+{
+  "apply_allowed": false,
+  "blockers": [
+    {
+      "classification": "deferred_non_blocking",
+      "item": "858 unknown tool candidates remain classified for review before execution."
+    },
+    {
+      "classification": "deferred_non_blocking",
+      "item": "171 destructive, high, release, or security-risk tool candidates remain review-gated."
+    },
+    {
+      "classification": "deferred_non_blocking",
+      "item": "Repo validation reports 1669 unknown file classifications."
+    },
+    {
+      "classification": "deferred_non_blocking",
+      "item": "Full eval remains timeout-prone and is skipped."
+    },
+    {
+      "classification": "execution_blocker",
+      "item": "Executable wrapper promotion requires human review after command side effects, output paths, and timeout are proved."
+    }
+  ],
+  "execution_allowed": false,
+  "network_allowed": false,
+  "next_tasks": [
+    "DOM-ROOT-02",
+    "DOM-BUILD-01",
+    "DOM-ROOT-03"
+  ],
+  "preservation_constraints": {
+    "delete_allowed": false,
+    "legacy_systems_to_preserve": [
+      "XStack",
+      "AuditX",
+      "RepoX",
+      "TestX",
+      "BuildX-like surfaces",
+      "existing validators"
+    ],
+    "move_allowed": false,
+    "rename_allowed": false,
+    "unknown_tool_execution_allowed": false,
+    "wrap_before_rename": true
+  },
+  "schema_version": "dominium.aide.wrapper-plan.v1",
+  "selected_commands": [
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py tools validate",
+      "contract_role": "selected validator command",
+      "expected_result": "PASS",
+      "side_effects": "console output only; no discovered tool execution"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py tools classify",
+      "contract_role": "supporting evidence refresh",
+      "expected_result": "PASS",
+      "side_effects": "deterministic AIDE-local .aide/tools classification evidence"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py tools wrap-plan",
+      "contract_role": "supporting evidence refresh",
+      "expected_result": "PASS",
+      "side_effects": "deterministic AIDE-local .aide/tools wrap-plan and adapter-map evidence"
+    }
+  ],
+  "selected_family": "aide_tool_wrapper_plan_validator",
+  "status": "provisional_no_apply",
+  "task_id": "DOM-AIDE-02",
+  "underlying_paths": [
+    ".aide/scripts/aide_lite.py",
+    ".aide/policies/tool-absorption.yaml",
+    ".aide/policies/tool-inventory.yaml",
+    ".aide/policies/tool-fates.yaml",
+    ".aide/policies/tool-wrapping.yaml",
+    ".aide/policies/tool-risk.yaml",
+    ".aide/policies/tool-capabilities.yaml",
+    ".aide/tools/latest-tool-inventory.json",
+    ".aide/tools/latest-tool-classification.json",
+    ".aide/tools/latest-tool-wrap-plan.json",
+    ".aide/tools/latest-tool-adapter-map.json"
+  ],
+  "validations": [
+    "doctor",
+    "validate",
+    "test",
+    "selftest",
+    "tools validate",
+    "tools classify",
+    "tools wrap-plan",
+    "roots validate",
+    "repo validate",
+    "xstack validate",
+    "xstack wrap-plan",
+    "commit check --latest",
+    "git diff --check",
+    "git status --short --branch"
+  ],
+  "writes_allowed": false
+}

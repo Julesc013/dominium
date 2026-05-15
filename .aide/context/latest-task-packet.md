@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - DOMINIUM-AIDE-COMMIT-FINALIZATION-01 - Commit AIDE Baseline Evidence and Re-run Commit Check
+UNSPECIFIED - DOM-AIDE-02 - Wrap Existing Validators Through AIDE Commands
 
 ## GOAL
 
-DOMINIUM-AIDE-COMMIT-FINALIZATION-01 - Commit AIDE Baseline Evidence and Re-run Commit Check
+DOM-AIDE-02 - Wrap Existing Validators Through AIDE Commands
 
 ## WHY
 
@@ -17,6 +17,7 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `.aide/memory/project-state.md`
 - `.aide/memory/decisions.md`
 - `.aide/memory/open-risks.md`
+- `.aide/context/dominium-doctrine-refs.md`
 - `.aide/context/repo-snapshot.json` (present)
 - `.aide/context/repo-map.json` (present)
 - `.aide/context/repo-map.md` (present)
@@ -24,6 +25,10 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `.aide/context/context-index.json` (present)
 - `.aide/context/latest-context-packet.md` (present)
 - `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/tools/latest-tool-inventory.json` (present)
+- `.aide/tools/latest-tool-classification.json` (present)
+- `.aide/tools/latest-tool-wrap-plan.json` (present)
+- `.aide/tools/xstack-wrapper-registry.json` (present)
 - `.aide/repo/file-inventory.json` (present)
 - `.aide/reports/file-quality-summary.md` (present)
 - `.aide/reports/file-quality-ledger.json` (present)
@@ -40,10 +45,14 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 
 ## ALLOWED_PATHS
 
-- `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
-- root docs only when behavior or documentation links change
+- `.aide/reports/DOM-AIDE-02-*`
+- `.aide/tools/wrapper-contracts/**`
+- `.aide/tools/wrapper-plans/**`
+- `.aide/tools/latest-tool-classification.*`
+- `.aide/tools/latest-tool-wrap-plan.*`
+- `.aide/tools/latest-tool-adapter-map.*`
+- `.aide/tools/xstack-wrapper-registry.*`
 
 ## FORBIDDEN_PATHS
 
@@ -96,7 +105,7 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 
 ## NON_GOALS
 
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, autonomous loop, product/source/doctrine/tool-root edits, root moves, tool renames, legacy tool execution, build, package, release, full CTest, full FAST, or full eval.
 
 ## ACCEPTANCE
 
@@ -113,33 +122,35 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 5579
-- approx_tokens: 1395
+- chars: 4182
+- approx_tokens: 1046
 - budget_status: PASS
 - warnings:
   - none
 - formal ledger: `.aide/reports/token-ledger.jsonl`
 
-## DOMINIUM DCHECK-01 NEXT TASK DETAIL
+## DOM-AIDE-02 TASK DETAIL
 
-Task: `DOMINIUM-AIDE-COMMIT-FINALIZATION-01 - Commit AIDE Baseline Evidence and Re-run Commit Check`
+Task: `DOM-AIDE-02 - Wrap Existing Validators Through AIDE Commands`
 
-Immediate goal: make the currently usable Dominium AIDE baseline durable. DCHECK-01 found that Q49-Q53 executed and AIDE core validation works, and the audit checkpoint is committed. Q52/Q53/Q53R evidence, generated `.aide/**` outputs, and the Q53R `.aide/scripts/aide_lite.py` repair are still uncommitted.
+Immediate goal: create provisional AIDE wrapper contracts and wrapper-plan
+evidence for the first low-risk existing validator/check family without
+renaming, deleting, moving, or executing legacy tools.
 
-Required refs:
+Selected validator family:
 
-- `.aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/audit-report.md`
-- `.aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/readiness-and-next-plan.md`
-- `.aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/`
-- `.aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/`
-- `.aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/`
-- `.aide/scripts/aide_lite.py`
+- `aide_tool_wrapper_plan_validator`
+- selected command: `py -3 .aide/scripts/aide_lite.py tools validate`
+- supporting evidence commands: `tools classify`, `tools wrap-plan`
 
 Acceptance:
 
-- Stage only AIDE baseline evidence, generated AIDE status outputs, and the Q53R AIDE repair needed to reproduce validation.
-- Do not edit product/source/doctrine/tool roots.
-- Confirm `.aide.local/` and secrets are not staged.
-- Run `doctor`, `validate`, `test`, `selftest`, `verify`, roots/tools/lifecycle validators, `xstack validate`, `git diff --check`, and `commit check --latest`.
-- Commit with AIDE Commit Discipline v0.
-- After commit finalization, the global path may resume `Q54 Eureka Fresh Upgrade Preflight`.
+- Create DOM-AIDE-02 wrapper contract, wrapper plan, selection report,
+  validation report, and blocker report under `.aide/**`.
+- Keep `execution_allowed = false`, `apply_allowed = false`, network disabled,
+  writes disabled for the provisional wrapper contract, and unknown tool
+  execution disabled.
+- Preserve XStack/AuditX/RepoX/TestX, BuildX-like surfaces, and all existing
+  validators.
+- Do not modify product/source/doctrine/tool roots.
+- Run AIDE validation, `git diff --check`, and scoped status checks.
