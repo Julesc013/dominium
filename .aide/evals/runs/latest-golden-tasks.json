@@ -1,13 +1,13 @@
 {
-  "fail_count": 8,
+  "fail_count": 0,
   "generator": "aide-lite",
   "generator_version": "q24.existing-tool-adapter-compiler.v0",
   "network_calls": "none",
-  "pass_count": 122,
+  "pass_count": 130,
   "provider_or_model_calls": "none",
   "raw_prompt_storage": false,
   "raw_response_storage": false,
-  "result": "FAIL",
+  "result": "PASS",
   "schema_version": "aide.golden-tasks-run.v0",
   "task_count": 130,
   "tasks": [
@@ -89,7 +89,7 @@
       "warnings": []
     },
     {
-      "approx_tokens_if_applicable": 1226,
+      "approx_tokens_if_applicable": 936,
       "checks_run": 17,
       "errors": [],
       "notes": "Checks the compact task packet shape and forbidden prompt discipline.",
@@ -150,10 +150,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 1,
+      "checks_run": 8,
       "errors": [],
-      "notes": "Checks portable commit discipline and changelog support are exported from source-pack repos.",
-      "passed_checks": 1,
+      "notes": "Checks portable commit discipline and changelog support are exported or locally available after import.",
+      "passed_checks": 8,
       "related_paths": [
         ".aide/export/aide-lite-pack-v0/manifest.yaml",
         ".aide/git/commit-template.md",
@@ -166,10 +166,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 1,
+      "checks_run": 294,
       "errors": [],
       "notes": "Checks source-specific Git detection, helper plans, branch policy, and generated previews are not exported as target truth.",
-      "passed_checks": 1,
+      "passed_checks": 294,
       "related_paths": [
         ".aide/export/aide-lite-pack-v0/manifest.yaml",
         ".aide/policies/export-import.yaml"
@@ -180,10 +180,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 1,
+      "checks_run": 15,
       "errors": [],
-      "notes": "Checks portable Git workflow and helper governance are exported from source-pack repos.",
-      "passed_checks": 1,
+      "notes": "Checks portable Git workflow and helper governance are exported or locally available after import.",
+      "passed_checks": 15,
       "related_paths": [
         ".aide/export/aide-lite-pack-v0/manifest.yaml",
         ".aide/git/helper-policy.yaml",
@@ -196,10 +196,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 1,
+      "checks_run": 8,
       "errors": [],
-      "notes": "Checks portable task resumption, WorkUnit, and recovery governance are exported from source-pack repos.",
-      "passed_checks": 1,
+      "notes": "Checks portable task resumption, WorkUnit, and recovery governance are exported or locally available after import.",
+      "passed_checks": 8,
       "related_paths": [
         ".aide/export/aide-lite-pack-v0/manifest.yaml",
         ".aide/policies/recovery.yaml",
@@ -258,10 +258,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 1,
+      "checks_run": 9,
       "errors": [],
       "notes": "Checks safe fixture import receives governance files and can run portable commit/task/Git commands.",
-      "passed_checks": 1,
+      "passed_checks": 9,
       "related_paths": [
         ".aide/export/aide-lite-pack-v0/manifest.yaml",
         ".aide/hooks/commit-msg",
@@ -381,10 +381,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 5,
+      "checks_run": 21,
       "errors": [],
       "notes": "Checks Q35 portable policy export and generated advisory exclusion.",
-      "passed_checks": 5,
+      "passed_checks": 21,
       "related_paths": [
         ".aide/export/aide-lite-pack-v0/manifest.yaml",
         ".aide/policies/branch-protection.yaml",
@@ -426,26 +426,16 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 14,
-      "errors": [
-        "github release asset hashes match files",
-        "required asset missing: .aide/release/dist/aide-lite-pack-v0.zip",
-        "required asset missing: .aide/release/dist/aide-lite-pack-v0.tar.gz",
-        "required asset missing: .aide/release/dist/aide-lite-pack-v0.checksums.json",
-        "required asset missing: .aide/release/dist/SHA256SUMS.txt",
-        "required asset missing: .aide/release/dist/manifest.yaml",
-        "required asset missing: .aide/release/dist/install.md",
-        "required asset missing: .aide/release/dist/CHANGELOG.preview.md",
-        "required asset missing: .aide/release/dist/RELEASE_NOTES.preview.md"
-      ],
+      "checks_run": 26,
+      "errors": [],
       "notes": "Checks release draft asset list includes checksums and validates hashes.",
-      "passed_checks": 5,
+      "passed_checks": 26,
       "related_paths": [
         ".aide/release/dist/SHA256SUMS.txt",
         ".aide/release/dist/aide-lite-pack-v0.checksums.json",
         ".aide/release/github-release-assets.json"
       ],
-      "result": "FAIL",
+      "result": "PASS",
       "task_id": "github_release_assets_have_checksums_golden",
       "warnings": []
     },
@@ -523,17 +513,15 @@
     {
       "approx_tokens_if_applicable": null,
       "checks_run": 11,
-      "errors": [
-        "no live workflow files are required"
-      ],
+      "errors": [],
       "notes": "Checks Q35 report-only behavior and no live GitHub/CI mutation.",
-      "passed_checks": 10,
+      "passed_checks": 11,
       "related_paths": [
         ".aide/github/github-advisory.json",
         ".aide/github/github-advisory.md",
         ".aide/github/latest-github-status.md"
       ],
-      "result": "FAIL",
+      "result": "PASS",
       "task_id": "github_report_only_golden",
       "warnings": []
     },
@@ -597,10 +585,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 3766,
+      "checks_run": 8330,
       "errors": [],
       "notes": "Checks install plan schema and generated no-apply plan shape.",
-      "passed_checks": 3766,
+      "passed_checks": 8330,
       "related_paths": [
         ".aide/install/install-operation.schema.json",
         ".aide/install/install-plan.schema.json",
@@ -985,22 +973,17 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 4,
-      "errors": [
-        "release artifact exists: .aide/release/dist/aide-lite-pack-v0.zip",
-        "release artifact exists: .aide/release/dist/aide-lite-pack-v0.tar.gz",
-        "release artifact exists: .aide/release/dist/manifest.yaml",
-        "release artifact exists: .aide/release/dist/install.md"
-      ],
+      "checks_run": 8,
+      "errors": [],
       "notes": "Checks local archive generation outputs exist and validate.",
-      "passed_checks": 0,
+      "passed_checks": 8,
       "related_paths": [
         ".aide/release/dist/aide-lite-pack-v0.tar.gz",
         ".aide/release/dist/aide-lite-pack-v0.zip",
         ".aide/release/dist/install.md",
         ".aide/release/dist/manifest.yaml"
       ],
-      "result": "FAIL",
+      "result": "PASS",
       "task_id": "release_archive_generation_golden",
       "warnings": []
     },
@@ -1034,56 +1017,45 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 4,
-      "errors": [
-        "release checksums validate",
-        "missing release checksums JSON",
-        "release checksum artifact exists: .aide/release/dist/aide-lite-pack-v0.checksums.json",
-        "release checksum artifact exists: .aide/release/dist/SHA256SUMS.txt"
-      ],
+      "checks_run": 3,
+      "errors": [],
       "notes": "Checks release checksum JSON and SHA256SUMS validation.",
-      "passed_checks": 0,
+      "passed_checks": 3,
       "related_paths": [
         ".aide/release/dist/SHA256SUMS.txt",
         ".aide/release/dist/aide-lite-pack-v0.checksums.json"
       ],
-      "result": "FAIL",
+      "result": "PASS",
       "task_id": "release_checksum_validation_golden",
       "warnings": []
     },
     {
       "approx_tokens_if_applicable": null,
       "checks_run": 4,
-      "errors": [
-        "fixture extraction validates: .aide/release/dist/aide-lite-pack-v0.zip",
-        "fixture extraction validates: .aide/release/dist/aide-lite-pack-v0.tar.gz"
-      ],
+      "errors": [],
       "notes": "Checks archive extraction fixture validation.",
-      "passed_checks": 2,
+      "passed_checks": 4,
       "related_paths": [
         ".aide/release/dist/aide-lite-pack-v0.tar.gz",
         ".aide/release/dist/aide-lite-pack-v0.zip"
       ],
-      "result": "FAIL",
+      "result": "PASS",
       "task_id": "release_fixture_extraction_golden",
       "warnings": []
     },
     {
       "approx_tokens_if_applicable": null,
       "checks_run": 4,
-      "errors": [
-        "release archive missing: .aide/release/dist/aide-lite-pack-v0.zip",
-        "release archive missing: .aide/release/dist/aide-lite-pack-v0.tar.gz"
-      ],
+      "errors": [],
       "notes": "Checks release archives exclude forbidden paths and generated release outputs are not target truth.",
-      "passed_checks": 2,
+      "passed_checks": 4,
       "related_paths": [
         ".aide/policies/export-import.yaml",
         ".aide/policies/release-artifacts.yaml",
         ".aide/release/dist/aide-lite-pack-v0.tar.gz",
         ".aide/release/dist/aide-lite-pack-v0.zip"
       ],
-      "result": "FAIL",
+      "result": "PASS",
       "task_id": "release_forbidden_paths_excluded_golden",
       "warnings": []
     },
@@ -1103,18 +1075,15 @@
     {
       "approx_tokens_if_applicable": null,
       "checks_run": 9,
-      "errors": [
-        "latest release bundle no_publish true",
-        "latest release bundle publication status is local preview"
-      ],
+      "errors": [],
       "notes": "Checks Q47 remains local-only and non-publishing.",
-      "passed_checks": 7,
+      "passed_checks": 9,
       "related_paths": [
         ".aide/policies/release-bundle.yaml",
         ".aide/release/latest-release-bundle.json",
         ".aide/scripts/aide_lite.py"
       ],
-      "result": "FAIL",
+      "result": "PASS",
       "task_id": "release_no_publish_golden",
       "warnings": []
     },
@@ -1204,10 +1173,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 118,
+      "checks_run": 272,
       "errors": [],
       "notes": "Checks repair plan schema and generated no-apply plan shape.",
-      "passed_checks": 118,
+      "passed_checks": 272,
       "related_paths": [
         ".aide/repair/latest-repair-plan.json",
         ".aide/repair/repair-operation.schema.json",
@@ -1233,10 +1202,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 9,
+      "checks_run": 18,
       "errors": [],
       "notes": "Checks repair plans preserve target-specific state by default.",
-      "passed_checks": 9,
+      "passed_checks": 18,
       "related_paths": [
         ".aide/policies/repair-safety.yaml",
         ".aide/repair/latest-repair-plan.json"
@@ -1318,16 +1287,14 @@
     {
       "approx_tokens_if_applicable": null,
       "checks_run": 5,
-      "errors": [
-        "ownership map includes AIDE harness"
-      ],
+      "errors": [],
       "notes": "Checks deterministic owner map includes key AIDE surfaces.",
-      "passed_checks": 4,
+      "passed_checks": 5,
       "related_paths": [
         ".aide/policies/ownership-map.yaml",
         ".aide/repo/ownership-map.json"
       ],
-      "result": "FAIL",
+      "result": "PASS",
       "task_id": "repo_ownership_map_golden",
       "warnings": []
     },
@@ -1346,7 +1313,7 @@
       "warnings": []
     },
     {
-      "approx_tokens_if_applicable": 1507,
+      "approx_tokens_if_applicable": 1655,
       "checks_run": 20,
       "errors": [],
       "notes": "Checks review packet evidence-only shape.",
@@ -1625,10 +1592,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 42025,
+      "checks_run": 44811,
       "errors": [],
       "notes": "Checks tool adapter-map schema and advisory mapping output.",
-      "passed_checks": 42025,
+      "passed_checks": 44811,
       "related_paths": [
         ".aide/tools/latest-tool-adapter-map.json",
         ".aide/tools/tool-adapter-map.schema.json"
@@ -1681,10 +1648,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 42029,
+      "checks_run": 44815,
       "errors": [],
       "notes": "Checks tool wrap-plan schema and no-execution output shape.",
-      "passed_checks": 42029,
+      "passed_checks": 44815,
       "related_paths": [
         ".aide/tools/latest-tool-wrap-plan.json",
         ".aide/tools/tool-wrap-plan.schema.json"
@@ -1695,10 +1662,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 42050,
+      "checks_run": 44836,
       "errors": [],
       "notes": "Checks Q41 tool outputs never enable unknown execution, apply, rename, deletion, or migration.",
-      "passed_checks": 42050,
+      "passed_checks": 44836,
       "related_paths": [
         ".aide/tools/latest-tool-adapter-map.json",
         ".aide/tools/latest-tool-classification.json",
@@ -1725,10 +1692,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 75194,
+      "checks_run": 92027,
       "errors": [],
       "notes": "Checks uninstall never plans blanket .aide deletion.",
-      "passed_checks": 75194,
+      "passed_checks": 92027,
       "related_paths": [
         ".aide/policies/uninstall-safety.yaml",
         ".aide/uninstall/latest-uninstall-plan.json"
@@ -1739,10 +1706,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 75198,
+      "checks_run": 92031,
       "errors": [],
       "notes": "Checks uninstall plan schema and generated no-apply plan shape.",
-      "passed_checks": 75198,
+      "passed_checks": 92031,
       "related_paths": [
         ".aide/uninstall/latest-uninstall-plan.json",
         ".aide/uninstall/uninstall-operation.schema.json",
@@ -1768,10 +1735,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 4110,
+      "checks_run": 4495,
       "errors": [],
       "notes": "Checks uninstall preserves target-specific memory, queue, evidence, manual content, tools, local state, and unknowns.",
-      "passed_checks": 4110,
+      "passed_checks": 4495,
       "related_paths": [
         ".aide/policies/uninstall-safety.yaml",
         ".aide/uninstall/latest-uninstall-plan.json"
@@ -1810,10 +1777,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 19,
+      "checks_run": 27,
       "errors": [],
       "notes": "Checks mandatory migrations are future-gated, non-automatic, and no-apply.",
-      "passed_checks": 19,
+      "passed_checks": 27,
       "related_paths": [
         ".aide/policies/upgrade-migrations.yaml",
         ".aide/upgrade/latest-upgrade-migration-report.md",
@@ -1839,10 +1806,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 9,
+      "checks_run": 13,
       "errors": [],
       "notes": "Checks source-generated, local, and secret-like state is never planned as upgrade truth.",
-      "passed_checks": 9,
+      "passed_checks": 13,
       "related_paths": [
         ".aide/policies/upgrade-preservation.yaml",
         ".aide/upgrade/latest-upgrade-plan.json"
@@ -1853,10 +1820,10 @@
     },
     {
       "approx_tokens_if_applicable": null,
-      "checks_run": 5649,
+      "checks_run": 13296,
       "errors": [],
       "notes": "Checks upgrade plan schema and generated no-apply plan shape.",
-      "passed_checks": 5649,
+      "passed_checks": 13296,
       "related_paths": [
         ".aide/upgrade/latest-upgrade-plan.json",
         ".aide/upgrade/upgrade-operation.schema.json",

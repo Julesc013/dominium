@@ -1,0 +1,41 @@
+{
+  "schema_version": "dominium.aide.polish.final_green_pass.v1",
+  "task_id": "AIDE-POLISH-03",
+  "result": "PASS",
+  "move_planning_authorized": true,
+  "move_apply_authorized": false,
+  "no_apply_invariants": {
+    "moves_applied": false,
+    "deletes_applied": false,
+    "renames_applied": false,
+    "references_rewritten": false,
+    "salvage_maps_applied": false,
+    "move_maps_applied": false,
+    "active_aliases_created": false,
+    "root_exceptions_retired": false,
+    "product_source_runtime_build_changed": false
+  },
+  "validation": {
+    "aide_doctor": "PASS",
+    "aide_validate": "PASS",
+    "aide_test": "PASS",
+    "aide_selftest": "PASS",
+    "aide_tools_validate": "PASS",
+    "aide_roots_validate": "PASS",
+    "aide_repo_validate": "PASS",
+    "aide_eval_run": "PASS",
+    "aide_verify": "PASS",
+    "aide_review_pack": "PASS",
+    "aide_outcome_report": "PASS",
+    "aide_ledger": "PASS",
+    "aide_export_pack": "PASS",
+    "aide_release_validate": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "validator_warning_cleanup": [
+    "tools/validators/check_repo_layout.py",
+    "tools/validators/check_root_allowlist.py"
+  ],
+  "known_warnings": [],
+  "recommended_next_task": "AIDE-MOVE-01-PLAN"
+}

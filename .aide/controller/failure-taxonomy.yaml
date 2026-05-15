@@ -1,0 +1,36 @@
+schema_version: aide.controller-failure-taxonomy.v0
+taxonomy_id: aide-controller-failure-taxonomy-v0
+status: active
+classes:
+  - id: context_missing
+    description: Required compact context evidence is missing or stale.
+  - id: packet_too_large
+    description: A compact task or review packet exceeds its configured token budget.
+  - id: token_budget_exceeded
+    description: A tracked AIDE surface exceeds its token budget.
+  - id: token_regression
+    description: A token surface regressed against its prior baseline.
+  - id: adapter_drift
+    description: Generated adapter guidance drifted from source templates.
+  - id: verifier_gap
+    description: Verification evidence is incomplete.
+  - id: verifier_fail
+    description: Verification evidence reports a hard failure.
+  - id: review_packet_incomplete
+    description: Review packet evidence is missing, stale, or incomplete.
+  - id: golden_task_fail
+    description: A deterministic golden task failed.
+  - id: unclear_acceptance
+    description: Acceptance criteria are ambiguous.
+  - id: validation_failure
+    description: A local validation command failed.
+  - id: policy_violation
+    description: A local policy check failed.
+  - id: stale_artifact
+    description: A generated AIDE evidence artifact is stale.
+  - id: missing_evidence
+    description: Required evidence is absent.
+  - id: secret_risk
+    description: Evidence may contain secret or local-only content.
+  - id: unknown
+    description: Advisory catch-all for metadata-only records.

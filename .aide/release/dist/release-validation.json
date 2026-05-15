@@ -1,52 +1,37 @@
 {
-  "blockers": [
-    "release artifact exists: .aide/release/dist/aide-lite-pack-v0.zip",
-    "release artifact exists: .aide/release/dist/aide-lite-pack-v0.tar.gz",
-    "release artifact exists: .aide/release/dist/aide-lite-pack-v0.checksums.json",
-    "release artifact exists: .aide/release/dist/SHA256SUMS.txt",
-    "release artifact exists: .aide/release/dist/manifest.yaml",
-    "release artifact exists: .aide/release/dist/install.md",
-    "release artifact exists: .aide/release/dist/CHANGELOG.preview.md",
-    "release artifact exists: .aide/release/dist/RELEASE_NOTES.preview.md",
-    "release artifact exists: .aide/release/dist/release-provenance.json",
-    "release artifact exists: .aide/release/dist/release-assets.json",
-    "release checksum problem: missing release checksums JSON",
-    "fixture extraction .aide/release/dist/aide-lite-pack-v0.zip: FAIL",
-    "fixture extraction .aide/release/dist/aide-lite-pack-v0.tar.gz: FAIL",
-    "pack-status problem: export pack missing"
-  ],
+  "blockers": [],
   "checks": [
     {
       "message": "release artifact exists: .aide/release/dist/aide-lite-pack-v0.zip",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/aide-lite-pack-v0.tar.gz",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/aide-lite-pack-v0.checksums.json",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/SHA256SUMS.txt",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/manifest.yaml",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/install.md",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/CHANGELOG.preview.md",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/RELEASE_NOTES.preview.md",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/release-validation.json",
@@ -58,38 +43,36 @@
     },
     {
       "message": "release artifact exists: .aide/release/dist/release-provenance.json",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
       "message": "release artifact exists: .aide/release/dist/release-assets.json",
-      "severity": "FAIL"
+      "severity": "PASS"
     },
     {
-      "message": "release checksum problem: missing release checksums JSON",
-      "severity": "FAIL"
+      "message": "release checksums validate",
+      "severity": "PASS"
     },
     {
-      "message": "fixture extraction .aide/release/dist/aide-lite-pack-v0.zip: FAIL",
-      "severity": "FAIL"
+      "message": "fixture extraction .aide/release/dist/aide-lite-pack-v0.zip: PASS",
+      "severity": "PASS"
     },
     {
-      "message": "fixture extraction .aide/release/dist/aide-lite-pack-v0.tar.gz: FAIL",
-      "severity": "FAIL"
+      "message": "fixture extraction .aide/release/dist/aide-lite-pack-v0.tar.gz: PASS",
+      "severity": "PASS"
     },
     {
       "message": "forbidden paths absent from archives",
       "severity": "PASS"
     },
     {
-      "message": "pack-status problem: export pack missing",
-      "severity": "FAIL"
+      "message": "pack-status compatible for release bundle: DIRTY_SOURCE_RECORDED",
+      "severity": "PASS"
     }
   ],
   "checksum_validation": {
-    "problems": [
-      "missing release checksums JSON"
-    ],
-    "result": "FAIL"
+    "problems": [],
+    "result": "PASS"
   },
   "commands": [
     "release bundle",
@@ -101,30 +84,40 @@
       {
         "archive": ".aide/release/dist/aide-lite-pack-v0.zip",
         "forbidden_paths": [],
-        "problems": [
-          "archive missing: .aide/release/dist/aide-lite-pack-v0.zip"
+        "problems": [],
+        "required_files_present": [
+          "manifest.yaml",
+          "checksums.json",
+          "import-policy.yaml",
+          "install.md",
+          "export-report.md",
+          "files/.aide/scripts/aide_lite.py"
         ],
-        "required_files_present": [],
-        "result": "FAIL",
-        "root_present": false
+        "result": "PASS",
+        "root_present": true
       },
       {
         "archive": ".aide/release/dist/aide-lite-pack-v0.tar.gz",
         "forbidden_paths": [],
-        "problems": [
-          "archive missing: .aide/release/dist/aide-lite-pack-v0.tar.gz"
+        "problems": [],
+        "required_files_present": [
+          "manifest.yaml",
+          "checksums.json",
+          "import-policy.yaml",
+          "install.md",
+          "export-report.md",
+          "files/.aide/scripts/aide_lite.py"
         ],
-        "required_files_present": [],
-        "result": "FAIL",
-        "root_present": false
+        "result": "PASS",
+        "root_present": true
       }
     ],
-    "result": "FAIL"
+    "result": "PASS"
   },
   "no_publish": true,
-  "pack_status": "FAIL",
+  "pack_status": "DIRTY_SOURCE_RECORDED",
   "preview_only": true,
-  "result": "FAIL",
+  "result": "PASS",
   "secret_scan": {
     "forbidden_path_hits": [],
     "result": "PASS"

@@ -1,9 +1,9 @@
 # Latest AIDE Repo Intelligence
 
 - generated_by: aide-lite
-- source_commit: d22537869be05860d5eda70eebb2f3ed261e276c
+- source_commit: 6697758d8754c643020d95779bab71003f194b5b
 - source_mode: git_tracked_files
-- file_count: 15977
+- file_count: 17034
 - next_recommended_phase: Q38 File Quality Ledger v0
 - provider_or_model_calls: none
 - network_calls: none
@@ -13,78 +13,79 @@
 ## File Counts By Kind
 
 - archive: 1099
-- contract: 1064
-- doc: 4252
-- evidence: 96
+- config: 1874
+- contract: 1066
+- doc: 4012
+- evidence: 442
 - fixture: 680
-- generated: 43
-- policy: 95
-- schema: 688
-- source: 1739
-- template: 24
+- generated: 691
+- policy: 99
+- resource: 12
+- schema: 692
+- source: 1742
+- template: 25
 - test: 2528
-- tool: 2000
-- unknown: 1669
+- tool: 2072
 
 ## File Counts By Status
 
-- active: 13046
+- active: 14777
 - archived: 1099
-- evidence_only: 96
-- generated: 43
-- template_only: 24
-- unknown: 1669
+- evidence_only: 442
+- generated: 691
+- template_only: 25
 
 ## Owner Summary
 
 - AIDE Git workflow: 13
-- AIDE GitHub advisory: 1
-- AIDE Lite: 32
+- AIDE GitHub advisory: 8
+- AIDE Lite: 1
 - AIDE changelog preview: 10
 - AIDE context compiler: 13
-- AIDE control plane: 214
-- AIDE evals: 265
-- AIDE governance: 71
+- AIDE control plane: 515
+- AIDE cross-repo export pack: 599
+- AIDE evals: 2
+- AIDE governance: 75
+- AIDE harness: 294
 - AIDE intent compiler: 11
-- AIDE refactor control plane: 35
+- AIDE refactor control plane: 43
 - AIDE repo intelligence: 21
-- AIDE root recycling framework: 14
-- AIDE self-hosting queue: 68
-- AIDE tool absorption framework: 28
-- documentation reference: 4
-- unknown: 15177
+- AIDE root recycling framework: 19
+- AIDE self-hosting queue: 137
+- AIDE tool absorption framework: 42
+- documentation reference: 12
+- unknown: 15219
 
 ## Unknown Files Summary
 
-- unknown_count: 1669
+- unknown_count: 0
 
 ## Generated And Evidence Summary
 
-- generated_count: 43
-- evidence_count: 96
+- generated_count: 691
+- evidence_count: 442
 - generated_map: `.aide/repo/generated-map.json`
 
 ## Stale Doc Link Candidate Summary
 
-- stale_doc_link_candidate_count: 31146
+- stale_doc_link_candidate_count: 37484
 - doc_link_map: `.aide/repo/doc-link-map.json`
 
 ## Orphan Candidate Summary
 
-- orphan_candidate_count: 15439
+- orphan_candidate_count: 15402
 - orphan_candidates: `.aide/repo/orphan-candidates.json`
 - deletion_advice: false
 
 ## Warnings
 
-- 1669 files have unknown deterministic classification
-- 31146 stale doc-link candidates found
+- 37484 stale doc-link candidates found
 
 ## Output Refs
 
-- inventory: `.aide/repo/file-inventory.json` (15977 records)
-- ownership_map: `.aide/repo/ownership-map.json` (16 owners)
+- inventory: `.aide/repo/file-inventory.json` (17034 records)
+- ownership_map: `.aide/repo/ownership-map.json` (18 owners)
 - dependency_map: `.aide/repo/dependency-map.json`
 - test_map: `.aide/repo/test-map.json`
-- doc_link_map: `.aide/repo/doc-link-map.json` (4741 docs)
-- orphan_candidates: `.aide/repo/orphan-candidates.json` (15439 candidates)
+- doc_link_map: `.aide/repo/doc-link-map.json` (5184 docs)
+- orphan_candidates: `.aide/repo/orphan-candidates.json` (15402 candidates)

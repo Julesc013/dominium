@@ -2,120 +2,124 @@
 
 ## PHASE
 
-UNSPECIFIED - AIDE polish root recycling gates and evidence
+AIDE-GREEN-PASS - final warning and blocker cleanup before move planning
 
 ## GOAL
 
-AIDE polish root recycling gates and evidence
+Clear remaining AIDE warnings and blockers from the root-recycling readiness
+work, refresh local AIDE evidence, and keep move application unauthorized.
 
 ## WHY
 
-Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
+The root recycling and readiness gates should enter the next user-requested
+change from a clean local AIDE validation baseline. This task fixes concrete
+AIDE metadata, classifier, controller, export-pack, and release-fixture gaps
+without moving files or changing product/runtime behavior.
 
 ## CONTEXT_REFS
 
-- `.aide/memory/project-state.md`
-- `.aide/memory/decisions.md`
-- `.aide/memory/open-risks.md`
-- `.aide/context/repo-snapshot.json` (present)
-- `.aide/context/repo-map.json` (present)
-- `.aide/context/repo-map.md` (present)
-- `.aide/context/test-map.json` (present)
-- `.aide/context/context-index.json` (present)
-- `.aide/context/latest-context-packet.md` (present)
-- `.aide/repo/latest-repo-intelligence.md` (present)
-- `.aide/repo/file-inventory.json` (present)
-- `.aide/reports/file-quality-summary.md` (present)
-- `.aide/reports/file-quality-ledger.json` (present)
-- `.aide/refactors/latest-refactor-readiness.md` (present)
-- `.aide/refactors/latest-refactor-plan.example.json` (present)
-- `.aide/routing/latest-route-decision.json` (present)
-- `.aide/routing/latest-route-decision.md` (present)
-- `.aide/cache/latest-cache-keys.json` (present)
-- `.aide/cache/latest-cache-keys.md` (present)
-- `.aide/prompts/compact-task.md`
-- `.aide/policies/token-budget.yaml`
-- `.aide/policies/cache.yaml`
-- `.aide/policies/local-state.yaml`
+- `.aide/reports/AIDE-POLISH-02-root-readiness-second-pass.md`
+- `.aide/reports/AIDE-GATE-01-root-move-planning-readiness.md`
+- `.aide/context/repo-map.json`
+- `.aide/context/test-map.json`
+- `.aide/context/context-index.json`
+- `.aide/context/latest-context-packet.md`
+- `.aide/reports/roots/AIDE-ROOT-06-reconciliation.md`
+- `.aide/repo/latest-repo-intelligence.md`
+- `.aide/evals/runs/latest-golden-tasks.md`
+- `.aide/release/latest-release-validation.md`
+- `docs/reference/`
 
 ## ALLOWED_PATHS
 
-- `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
-- root docs only when behavior or documentation links change
+- `.aide/controller/**`
+- `.aide/evals/**`
+- `.aide/export/**`
+- `.aide/import/**`
+- `.aide/models/**`
+- `.aide/policies/**`
+- `.aide/release/**`
+- `.aide/repo/**`
+- `.aide/reports/**`
+- `.aide/rollback/**`
+- `.aide/scripts/aide_lite.py`
+- `.aide/uninstall/**`
+- `.aide/verification/**`
+- `docs/reference/**`
+- `tools/validators/check_repo_layout.py`
+- `tools/validators/check_root_allowlist.py`
 
 ## FORBIDDEN_PATHS
 
 - `.git/**`
+- `.aide.local/**`
 - `.env`
 - `secrets/**`
-- `.aide.local/**`
-- raw provider credentials, API keys, local caches, raw prompt logs
-- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
+- `apps/**`
+- `engine/**`
+- `game/**`
+- `runtime/**`
+- `content/**`
+- `tests/**`
+- `cmake/**`
+- `release/*`
+- product/version root files
+- root move, delete, rename, reference rewrite, path alias activation, salvage
+  application, or move-map application
 
 ## IMPLEMENTATION
 
-- Read the queue packet and relevant repo refs first.
-- Keep changes inside the allowed paths.
-- Make the smallest coherent diff that satisfies acceptance.
-- Preserve generated/manual boundaries.
-- Do not inline whole source files unless exact contents are required.
-- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
+- Patch only AIDE metadata, AIDE validation helpers, generated AIDE evidence,
+  portable AIDE reference docs, no-publish AIDE release fixtures, and warning
+  cleanup in read-only repo layout validators.
+- Preserve all no-apply root recycling invariants.
+- Do not change Dominium product/source/runtime/build behavior.
 
 ## VALIDATION
 
 - `py -3 .aide/scripts/aide_lite.py doctor`
 - `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py index`
-- `py -3 .aide/scripts/aide_lite.py context`
-- `py -3 .aide/scripts/aide_lite.py repo inventory`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- `py -3 .aide/scripts/aide_lite.py verify`
-- `py -3 .aide/scripts/aide_lite.py review-pack`
-- `py -3 .aide/scripts/aide_lite.py route explain`
 - `py -3 .aide/scripts/aide_lite.py test`
 - `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 scripts/aide validate`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py eval run`
+- `py -3 .aide/scripts/aide_lite.py verify --changed-files`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- strict repo/root/distribution/component validators
+- docs/build/UI/ABI supplemental checks
 - `git diff --check`
-
-## COMMITS
-
-- Commit coherent subdeliverables with verbose bodies.
-- Stop at review gates.
+- `git diff --cached --check`
 
 ## EVIDENCE
 
-- changed files
-- validation commands and results
-- verifier result
-- review packet path and result when review-pack is available
-- advisory route decision path and result when Q17 routing is available
-- compact packet size and budget status
-- unresolved risks and deferrals
+- `.aide/verification/latest-verification-report.md`
+- `.aide/context/latest-review-packet.md`
+- `.aide/controller/latest-outcome-report.md`
+- `.aide/evals/runs/latest-golden-tasks.md`
+- `.aide/reports/token-savings-summary.md`
 
 ## NON_GOALS
 
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
+- No root moves, deletes, renames, salvage-map application, move-map
+  application, path alias activation, or reference rewrites.
+- No product/runtime/source/build behavior changes.
 
 ## ACCEPTANCE
 
-- Task-specific acceptance criteria are met.
-- Validation is run and recorded.
-- Evidence is written.
-- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
+- AIDE doctor, validate, test, selftest, repo validate, eval, verify,
+  review-pack, ledger, outcome, and commit checks pass without warnings.
+- Strict repo/root/distribution/component validators and supplemental
+  docs/build/UI/ABI checks pass.
+- The final commit contains only AIDE evidence/tooling/reference-doc updates
+  and preserves move application authorization as false.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
-Include the verifier result when Q12 verifier behavior is available.
+- Final response reports branch, before/after HEAD, origin/main, validation
+  results, commit, push/sync status, worktree status, and next task.
 
 ## TOKEN_ESTIMATE
 
-- method: chars / 4, rounded up
-- chars: 4152
-- approx_tokens: 1038
-- budget_status: PASS
-- warnings:
-  - none
-- formal ledger: `.aide/reports/token-ledger.jsonl`
+- approx_tokens: 700
+- budget_status: within_budget

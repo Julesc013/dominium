@@ -2,15 +2,9 @@
 
 ## Accepted Warnings
 
-- `py -3 .aide/scripts/aide_lite.py repo validate` still reports advisory
-  unknown file classifications.
-- Full eval, full CTest, build, package, release generation, CMake
-  configure/build, and product binaries were not run.
-- The draft first move-planning candidate has high reference complexity and
-  requires `AIDE-MOVE-01-PLAN` review before any application task.
-- `git diff --check` reports CRLF normalization warnings only.
-- AIDE doctor still reports advisory controller/routing warnings.
-- Validator TOML fallback warnings remain where `tomllib` is unavailable.
+- None for the AIDE root-recycling readiness surfaces covered by this pass.
+- Full CTest, CMake configure/build, package generation, and product binaries
+  remain out of scope for the root-recycling no-apply gate sequence.
 
 ## Cleared Warnings
 
@@ -18,3 +12,8 @@
   ignored, untracked local output roots from source-root enforcement.
 - Strict UTF-8 JSON parsing now passes after removing a BOM from tracked AIDE
   queue evidence.
+- AIDE doctor/controller/routing artifacts now pass.
+- Repo validation now reports 0 unknown tracked file classifications.
+- Token ledger, review-pack, verifier, outcome, and eval reports now pass with
+  0 warnings.
+- `git diff --check` now passes without whitespace or line-ending warnings.

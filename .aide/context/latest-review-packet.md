@@ -10,7 +10,7 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Task Packet Reference
 
-- `.aide/context/latest-task-packet.md` (4152 chars, 1038 approximate tokens)
+- `.aide/context/latest-task-packet.md` (3787 chars, 947 approximate tokens)
 
 ## Context Packet Reference
 
@@ -22,9 +22,9 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 ## Verification Report Reference
 
 - `.aide/verification/latest-verification-report.md`
-- verifier_result: WARN
-- report_chars: 4911
-- report_approx_tokens: 1228
+- verifier_result: PASS
+- report_chars: 101565
+- report_approx_tokens: 25392
 
 ## Evidence Packet References
 
@@ -35,29 +35,29 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
 - allowed: `.aide/context/latest-task-packet.md` (M; matches active task allowed path)
-- unknown: `.aide/ledgers` (??; does not match active task allowed paths)
-- unknown: `.aide/policies/evidence.toml` (??; does not match active task allowed paths)
-- unknown: `.aide/policies/migration.toml` (??; does not match active task allowed paths)
-- unknown: `.aide/policies/naming.toml` (??; does not match active task allowed paths)
-- unknown: `.aide/policies/repo_layout.toml` (??; does not match active task allowed paths)
-- allowed: `.aide/refactors/README.md` (M; matches active task allowed path)
-- unknown: `.aide/refactors/draft_move_wave_AIDE-MOVE-01.json` (??; does not match active task allowed paths)
-- unknown: `.aide/refactors/draft_move_wave_AIDE-MOVE-01.toml` (??; does not match active task allowed paths)
-- unknown: `.aide/refactors/move_map.schema.json` (??; does not match active task allowed paths)
-- unknown: `.aide/refactors/path_aliases.toml` (??; does not match active task allowed paths)
-- unknown: `.aide/refactors/root_recycling.schema.json` (??; does not match active task allowed paths)
-- unknown: `.aide/refactors/salvage_map.schema.json` (??; does not match active task allowed paths)
-- allowed: `.aide/reports/AIDE-GATE-00-blockers.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-GATE-00-structure-root-readiness.json` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-GATE-00-structure-root-readiness.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-GATE-00-validation.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-GATE-01-blockers.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-GATE-01-root-move-planning-readiness.json` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-GATE-01-root-move-planning-readiness.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-GATE-01-validation.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-ROOT-00-blockers.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/AIDE-ROOT-00-next-wave-plan.md` (??; matches active task allowed path)
-- additional changed paths omitted from compact packet: 58; see task evidence changed-files report
+- allowed: `.aide/controller/README.md` (A; matches active task allowed path)
+- allowed: `.aide/controller/failure-taxonomy.yaml` (A; matches active task allowed path)
+- allowed: `.aide/controller/latest-outcome-report.md` (A; matches active task allowed path)
+- allowed: `.aide/controller/latest-recommendations.md` (A; matches active task allowed path)
+- allowed: `.aide/controller/outcome-ledger.jsonl` (A; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/rollback_no_apply_golden/acceptance.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/rollback_no_apply_golden/task.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/rollback_plan_schema_golden/acceptance.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/rollback_plan_schema_golden/task.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/rollback_policy_golden/acceptance.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/rollback_policy_golden/task.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_no_apply_golden/acceptance.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_no_apply_golden/task.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_no_blanket_aide_delete_golden/task.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_plan_schema_golden/acceptance.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_plan_schema_golden/task.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_policy_golden/acceptance.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_policy_golden/task.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_preserves_target_state_golden/acceptance.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/uninstall_preserves_target_state_golden/task.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/runs/latest-golden-tasks.json` (M; matches active task allowed path)
+- allowed: `.aide/evals/runs/latest-golden-tasks.md` (M; matches active task allowed path)
+- additional changed paths omitted from compact packet: 670; see task evidence changed-files report
 
 ## Validation Summary
 
@@ -67,8 +67,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - packet_path: `.aide/context/latest-review-packet.md`
 - method: chars / 4, rounded up
-- chars: 6013
-- approx_tokens: 1504
+- chars: 6351
+- approx_tokens: 1588
 - budget_status: PASS
 - max_token_warning: 2400
 - warnings:
@@ -77,8 +77,11 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Outcome Controller Summary
 
-- outcome_report: `.aide/controller/latest-outcome-report.md` (missing)
-- recommendations: `.aide/controller/latest-recommendations.md` (missing)
+- outcome_report: `.aide/controller/latest-outcome-report.md`
+- outcome_result: PASS
+- recommendations: `.aide/controller/latest-recommendations.md`
+- recommendation_count: 1
+- top_recommendation: REC-PROCEED-Q17-WITH-GATES
 - applies_automatically: false
 
 ## Route Decision Summary

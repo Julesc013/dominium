@@ -1,0 +1,24 @@
+{
+  "artifact_hashes": {
+    ".aide/release/dist/CHANGELOG.preview.md": "6479d9618bb6d9f37797ba4eeed8c5e8a2e49e2731f8de4a378d778c9203323f",
+    ".aide/release/dist/RELEASE_NOTES.preview.md": "a1eb1315be02ac748b39e1eb528d70b05519a7ee38a4cad2ab6599acce18870c",
+    ".aide/release/dist/aide-lite-pack-v0.tar.gz": "10602d7158eae749716dee6f6a323eedf79143b32f51f27f6b7ed1335d67c3e4",
+    ".aide/release/dist/aide-lite-pack-v0.zip": "09ee4547454a88d8f8b8122eb35ca3db11f3cb404f1ccfa3dc33052982df0e21",
+    ".aide/release/dist/install.md": "1a0bca61c8c4d7d3806e71754dc8818a3d459cb70ce614f26bf6ab1ab6ba0f7f",
+    ".aide/release/dist/manifest.yaml": "f1ccc05d9a2650ccf6dabefc21b7b2ae6ea6442ed2bcd4a383e964ea4ee2eacb"
+  },
+  "bundle_id": "aide-lite-pack-v0-6697758d8754c643",
+  "dirty_state": true,
+  "dirty_state_error": "",
+  "export_pack_checksums_sha256": "c216f811d3b0c3a66aa479999a1c2cf356f6cab62488cf192c58de24b6596d42",
+  "export_pack_manifest_sha256": "6068344a91b9842beae4abdaf11c6d562b6a8d502509c00b7a1db1969ab8d3b1",
+  "generated_at_or_source_ref": "source_commit:6697758d8754c643020d95779bab71003f194b5b",
+  "generated_by": "aide-lite release bundle q47",
+  "no_publish": true,
+  "preview_only": true,
+  "publication_status": "local_preview_no_publish",
+  "schema_version": "aide.release-provenance.v0",
+  "source_branch": "main",
+  "source_commit": "6697758d8754c643020d95779bab71003f194b5b",
+  "source_repo": "C:/Inbox/Git Repos/dominium"
+}

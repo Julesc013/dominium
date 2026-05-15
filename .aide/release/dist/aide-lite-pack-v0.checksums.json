@@ -1,0 +1,24 @@
+{
+  "algorithm": "sha256",
+  "bundle_id": "aide-lite-pack-v0-6697758d8754c643",
+  "checksum_scope": "release-dist-core-artifacts",
+  "checksums": {
+    "CHANGELOG.preview.md": "6479d9618bb6d9f37797ba4eeed8c5e8a2e49e2731f8de4a378d778c9203323f",
+    "RELEASE_NOTES.preview.md": "a1eb1315be02ac748b39e1eb528d70b05519a7ee38a4cad2ab6599acce18870c",
+    "aide-lite-pack-v0.tar.gz": "10602d7158eae749716dee6f6a323eedf79143b32f51f27f6b7ed1335d67c3e4",
+    "aide-lite-pack-v0.zip": "09ee4547454a88d8f8b8122eb35ca3db11f3cb404f1ccfa3dc33052982df0e21",
+    "install.md": "1a0bca61c8c4d7d3806e71754dc8818a3d459cb70ce614f26bf6ab1ab6ba0f7f",
+    "manifest.yaml": "f1ccc05d9a2650ccf6dabefc21b7b2ae6ea6442ed2bcd4a383e964ea4ee2eacb",
+    "release-assets.json": "9ad402b24627a305fc2c0b4bc99685f5003d9e4033748660aebb00c6a6053b84",
+    "release-provenance.json": "74be56bc5dc392e26eafaf09b77d9830e612e8ace93eb9bcd061394e4323bec7"
+  },
+  "excluded_from_checksums": [
+    "SHA256SUMS.txt",
+    "aide-lite-pack-v0.checksums.json",
+    "release-validation.json",
+    "release-validation.md"
+  ],
+  "no_publish": true,
+  "schema_version": "aide.release-checksums.v0",
+  "sha256sums_ref": ".aide/release/dist/SHA256SUMS.txt"
+}

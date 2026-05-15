@@ -24,7 +24,7 @@ CLASS_UNKNOWN = "unknown_needs_review"
 
 
 def utc_now():
-    return _datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    return _datetime.datetime.now(_datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def posix_path(path):

@@ -1,0 +1,17 @@
+schema_version: aide.target-profile-template.v0
+profile_id: target-aide-lite-profile
+status: template
+target:
+  repository_name: "<target-repository>"
+  owner: "<target-owner>"
+  import_mode: safe
+local_state:
+  keep_target_memory: true
+  keep_target_queue_history: true
+  keep_target_reports: true
+safety:
+  provider_calls_enabled: false
+  model_calls_enabled: false
+  network_calls_enabled: false
+  raw_prompt_storage: false
+  raw_response_storage: false

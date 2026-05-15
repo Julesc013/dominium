@@ -165,7 +165,7 @@ DOMAIN_MOVE_TARGETS = {
 
 
 def _utc_now():
-    return _datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    return _datetime.datetime.now(_datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 def _posix(path):

@@ -1,0 +1,35 @@
+schema_version: aide.import-policy-template.v0
+policy_id: aide-lite-pack-import-policy-template-v0
+status: template
+purpose: >
+  Template import policy copied into the portable AIDE Lite pack so a target
+  repository can review import boundaries before applying any target-local
+  AIDE files.
+mode:
+  default: safe
+  dry_run_required_before_write: true
+allowed_writes:
+  - portable_aide_files
+  - target_memory_templates
+  - local_state_examples
+  - managed_agents_section
+forbidden_writes:
+  - source_repo_queue_history
+  - source_repo_memory
+  - source_repo_generated_context
+  - source_repo_reports
+  - source_repo_route_decisions
+  - source_repo_cache_reports
+  - source_repo_gateway_status
+  - source_repo_provider_status
+  - secrets
+  - raw_prompts
+  - raw_responses
+guards:
+  preserve_existing_manual_content: true
+  no_provider_calls: true
+  no_model_calls: true
+  no_network_calls: true
+  no_git_mutation_without_review: true
+  raw_prompt_storage_default: false
+  raw_response_storage_default: false

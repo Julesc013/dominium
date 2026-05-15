@@ -2,10 +2,11 @@
 
 ## Status
 
-- AIDE structure gates: PASS_WITH_WARNINGS
-- AIDE root inventory waves: PASS_WITH_WARNINGS
-- AIDE root reconciliation: PASS_WITH_WARNINGS
-- AIDE-GATE-01: PASS_WITH_WARNINGS
+- AIDE structure gates: PASS
+- AIDE root inventory waves: PASS
+- AIDE root reconciliation: PASS
+- AIDE-GATE-01: PASS
+- AIDE final green pass: PASS
 - Move planning authorized: true, for `AIDE-MOVE-01-PLAN` only
 - Move application authorized: false
 
@@ -20,10 +21,11 @@ not-approved and no-apply.
 No files were moved, deleted, renamed, rewritten, or applied. No active path
 aliases were created and no exceptions were retired.
 
-## Second Pass
+## Final Green Pass
 
-- AIDE-POLISH-02 completed with PASS_WITH_WARNINGS.
-- Strict JSON parsing now passes for tracked `.aide` and `contracts/repo` JSON.
-- The only file-content fix was BOM removal from a tracked AIDE queue evidence
-  JSON summary.
+- AIDE-POLISH-03 completed with PASS.
+- AIDE doctor, validate, test, selftest, tools validate, roots validate, repo
+  validate, eval, verify, review-pack, ledger, outcome, export-pack, and
+  release validation now pass without warnings.
+- Repo intelligence reports 0 unknown tracked file classifications.
 - The next task remains `AIDE-MOVE-01-PLAN`; move application remains false.
