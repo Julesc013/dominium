@@ -1,0 +1,31 @@
+{
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "blockers": [
+    "AIDE-GATE-02 has not approved apply readiness.",
+    "No approved move map exists.",
+    "No approved salvage map exists.",
+    "Apply-phase reference rewrites must be reviewed before movement.",
+    "Binding authority transfer for ide/README.md must be accepted by gate review."
+  ],
+  "candidate_selected": true,
+  "deletes_applied": false,
+  "gate_02_ready_for_review": true,
+  "known_warnings": [],
+  "move_apply_authorized": false,
+  "moves_applied": false,
+  "next_recommended_task": "AIDE-GATE-02 - Move Plan Apply Readiness Gate",
+  "path_collisions": [],
+  "planned_move_count": 1,
+  "references_rewritten": false,
+  "renames_applied": false,
+  "required_reference_rewrite_count": 6,
+  "review_reference_count": 4,
+  "schema_version": "dominium.aide.move_plan_summary.v1",
+  "selected_root": "ide",
+  "selected_subtree": "ide/README.md",
+  "status": "draft",
+  "target_path_exists": false,
+  "task_id": "AIDE-MOVE-01-PLAN",
+  "validation_result": "PASS"
+}

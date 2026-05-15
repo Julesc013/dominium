@@ -1,0 +1,42 @@
+[plan]
+id = "AIDE-MOVE-01"
+title = "First Low-Risk Move Plan"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+created_by = "AIDE-MOVE-01-PLAN"
+purpose = "Plan the first low-risk move wave. No application authorized."
+
+[selection]
+root = "ide"
+subtree = "ide/README.md"
+recommended = true
+reason = "Narrowed from ROOT-06 to one README file; ide/manifests remains deferred because it is machine-readable authoritative projection metadata."
+risk = "low"
+value = "medium"
+reference_complexity = "high"
+reversibility = "easy"
+
+[constraints]
+moves_allowed = false
+deletes_allowed = false
+renames_allowed = false
+reference_rewrites_allowed = false
+path_aliases_allowed = false
+exception_retirement_allowed = false
+
+[artifacts]
+reference_rewrite_plan = ".aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json"
+validation_plan = ".aide/refactors/AIDE-MOVE-01.validation_plan.json"
+rollback_plan = ".aide/refactors/AIDE-MOVE-01.rollback_plan.json"
+exception_update_plan = ".aide/refactors/AIDE-MOVE-01.exception_update_plan.json"
+
+[[moves]]
+source_path = "ide/README.md"
+target_path = "docs/architecture/IDE_PROJECTIONS.md"
+action = "move"
+reason = "Move the binding IDE projection policy README out of the transitional ide root into existing architecture documentation."
+risk = "low"
+ownership_slot = "docs/architecture projection policy"
+shim_required = false
+rollback = "Move docs/architecture/IDE_PROJECTIONS.md back to ide/README.md and reverse all apply-phase reference rewrites."

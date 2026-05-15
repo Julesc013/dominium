@@ -1,0 +1,170 @@
+{
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "commands": [
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py doctor",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE environment health",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py validate",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE metadata validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py test",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE focused tests",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py selftest",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE selftest",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py tools validate",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE tool registry validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py roots validate",
+      "failure_policy": "block apply until resolved",
+      "reason": "Root recycling evidence validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py repo validate",
+      "failure_policy": "block apply until resolved",
+      "reason": "Repo intelligence classification validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py commit check --latest",
+      "failure_policy": "block apply until resolved",
+      "reason": "Commit metadata validation",
+      "required_after_apply": true,
+      "required_before_apply": false,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 tools/validators/check_repo_layout.py --repo-root . --strict",
+      "failure_policy": "block apply until resolved",
+      "reason": "Strict repo layout validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 tools/validators/check_root_allowlist.py --repo-root . --strict",
+      "failure_policy": "block apply until resolved",
+      "reason": "Strict root allowlist validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 tools/validators/check_distribution_layout.py --repo-root . --strict",
+      "failure_policy": "block apply until resolved",
+      "reason": "Distribution layout validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 tools/validators/check_component_matrices.py --repo-root . --strict",
+      "failure_policy": "block apply until resolved",
+      "reason": "Component matrix validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 scripts/verify_docs_sanity.py --repo-root .",
+      "failure_policy": "block apply until resolved",
+      "reason": "Docs sanity including the moved documentation path after apply",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 scripts/verify_build_target_boundaries.py --repo-root .",
+      "failure_policy": "block apply until resolved",
+      "reason": "Build boundary guard",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 scripts/verify_ui_shell_purity.py --repo-root .",
+      "failure_policy": "block apply until resolved",
+      "reason": "UI shell purity guard",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 scripts/verify_abi_boundaries.py --repo-root .",
+      "failure_policy": "block apply until resolved",
+      "reason": "ABI boundary guard",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "git diff --check",
+      "failure_policy": "block apply until resolved",
+      "reason": "Whitespace and patch hygiene",
+      "required_after_apply": true,
+      "required_before_apply": false,
+      "tier": "tier0"
+    },
+    {
+      "command": "git diff --cached --check",
+      "failure_policy": "block apply until resolved",
+      "reason": "Staged whitespace and patch hygiene",
+      "required_after_apply": true,
+      "required_before_apply": false,
+      "tier": "tier0"
+    },
+    {
+      "command": "targeted reference search for ide/README.md and docs/architecture/IDE_PROJECTIONS.md",
+      "failure_policy": "block apply until resolved",
+      "reason": "Confirm apply-phase references were rewritten and historical references were intentionally preserved",
+      "required_after_apply": true,
+      "required_before_apply": false,
+      "tier": "tier1"
+    },
+    {
+      "command": "not required for this docs-only plan unless AIDE-GATE-02 escalates",
+      "failure_policy": "escalate only if scope changes",
+      "reason": "No build/source paths are planned",
+      "required_after_apply": false,
+      "required_before_apply": false,
+      "tier": "tier2"
+    }
+  ],
+  "expected_tier": "tier0 plus targeted reference search",
+  "schema_version": "dominium.aide.move_validation_plan.v1",
+  "status": "draft",
+  "task_id": "AIDE-MOVE-01-PLAN"
+}

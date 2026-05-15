@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review the current AIDE queue phase from compact evidence only and decide whether it is ready to pass its review gate.
+Review AIDE-MOVE-01-PLAN and decide whether the draft first move plan is ready for AIDE-GATE-02 inspection.
 
 ## Decision Requested
 
@@ -10,11 +10,11 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Task Packet Reference
 
-- `.aide/context/latest-task-packet.md` (3787 chars, 947 approximate tokens)
+- `.aide/context/latest-task-packet.md`
 
 ## Context Packet Reference
 
-- `.aide/context/latest-context-packet.md` (1849 chars, 463 approximate tokens)
+- `.aide/context/latest-context-packet.md`
 - `.aide/context/repo-map.json`
 - `.aide/context/test-map.json`
 - `.aide/context/context-index.json`
@@ -22,134 +22,42 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 ## Verification Report Reference
 
 - `.aide/verification/latest-verification-report.md`
-- verifier_result: PASS
-- report_chars: 101565
-- report_approx_tokens: 25392
+- `.aide/verification/review-decision-policy.yaml`
 
 ## Evidence Packet References
 
-- `.aide/queue/README.template.md`
-- `.aide/queue/index.yaml`
+- `.aide/refactors/AIDE-MOVE-01.plan.toml`
+- `.aide/refactors/AIDE-MOVE-01.plan.json`
+- `.aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.validation_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.rollback_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.exception_update_plan.json`
+- `.aide/reports/AIDE-MOVE-01-PLAN-review.md`
 
 ## Changed Files Summary
 
-- allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/context/latest-task-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/controller/README.md` (A; matches active task allowed path)
-- allowed: `.aide/controller/failure-taxonomy.yaml` (A; matches active task allowed path)
-- allowed: `.aide/controller/latest-outcome-report.md` (A; matches active task allowed path)
-- allowed: `.aide/controller/latest-recommendations.md` (A; matches active task allowed path)
-- allowed: `.aide/controller/outcome-ledger.jsonl` (A; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/rollback_no_apply_golden/acceptance.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/rollback_no_apply_golden/task.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/rollback_plan_schema_golden/acceptance.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/rollback_plan_schema_golden/task.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/rollback_policy_golden/acceptance.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/rollback_policy_golden/task.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_no_apply_golden/acceptance.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_no_apply_golden/task.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_no_blanket_aide_delete_golden/task.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_plan_schema_golden/acceptance.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_plan_schema_golden/task.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_policy_golden/acceptance.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_policy_golden/task.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_preserves_target_state_golden/acceptance.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/golden-tasks/uninstall_preserves_target_state_golden/task.yaml` (M; matches active task allowed path)
-- allowed: `.aide/evals/runs/latest-golden-tasks.json` (M; matches active task allowed path)
-- allowed: `.aide/evals/runs/latest-golden-tasks.md` (M; matches active task allowed path)
-- additional changed paths omitted from compact packet: 670; see task evidence changed-files report
+- Added draft no-apply move plan artifacts under `.aide/refactors/`.
+- Added AIDE-MOVE-01-PLAN reports under `.aide/reports/`.
+- Added root-recycling docs under `docs/repo/root-recycling/`.
+- Updated latest AIDE context, ledger, status, and warning disposition.
+- No candidate source root files changed.
 
 ## Validation Summary
 
-- validation evidence not found
+Validation is run by the active task and recorded in `.aide/reports/AIDE-MOVE-01-PLAN-validation.md`.
 
 ## Token Summary
 
-- packet_path: `.aide/context/latest-review-packet.md`
-- method: chars / 4, rounded up
-- chars: 6351
-- approx_tokens: 1588
-- budget_status: PASS
-- max_token_warning: 2400
-- warnings:
-- none
-- formal ledger: `.aide/reports/token-ledger.jsonl`
-
-## Outcome Controller Summary
-
-- outcome_report: `.aide/controller/latest-outcome-report.md`
-- outcome_result: PASS
-- recommendations: `.aide/controller/latest-recommendations.md`
-- recommendation_count: 1
-- top_recommendation: REC-PROCEED-Q17-WITH-GATES
-- applies_automatically: false
-
-## Route Decision Summary
-
-- route_decision: `.aide/routing/latest-route-decision.json`
-- route_class: frontier
-- task_class: unknown
-- hard_floor_applied: none
-- quality_gate_status: WARN
-- advisory_only: true
-
-## Cache / Local State Summary
-
-- cache_keys: `.aide/cache/latest-cache-keys.json`
-- local_state_ignored: true
-- tracked_local_state_paths: 0
-- raw_prompt_storage: false
-- raw_response_storage: false
-- cache_key_count: 7
-
-## Gateway Skeleton Summary
-
-- gateway_status: `.aide/gateway/latest-gateway-status.json`
-- service: aide-gateway
-- mode: report_only_target_fallback
-- route_class: unknown
-- verifier_status: unknown
-- golden_task_status: unknown
-- provider_calls_enabled: false
-- model_calls_enabled: false
-- outbound_network_enabled: false
-
-## Provider Adapter Summary
-
-- provider_status: `.aide/providers/latest-provider-status.json`
-- provider_family_count: 13
-- validation_result: PASS
-- live_provider_calls: false
-- live_model_calls: false
-- network_calls: false
-- credentials_configured: false
-- metadata_only: true
+This packet is compact and references evidence by path rather than inlining raw source or generated reports.
 
 ## Risk Summary
 
-- This is the first Dominium import; target-specific golden tasks are not yet
-- Quality evidence is limited to AIDE Lite local substrate, generated packets,
-- Doctrine coverage depends on repo-map/context references and may require
-- Compact packets may over-compress constitutional or ownership-sensitive
-- No provider routing, enforcement layer, live model calls, or Gateway
-- No exact tokenizer or provider billing integration is present; token savings
-- Imported pack behavior may need adaptation after Q23 review, especially for
+The planned move is one documentation file from the IDE projection root. Manifest schema/examples remain deferred. Apply-phase reference rewrites require gate review, and move application remains unauthorized.
 
 ## Non-Goals / Scope Guard
 
-- Gateway
-- provider calls
-- model routing
-- Runtime/Service/Commander/UI/Mobile
-- MCP/A2A
-- automatic model calls or repair
+Do not move files, rewrite references, approve maps, apply maps, create aliases, create shims, retire exceptions, or change product/source/runtime/build behavior during review.
 
 ## Reviewer Instructions
 
-- Review only this packet and the referenced evidence when needed.
-- Do not request full chat history unless the packet is insufficient to judge correctness.
-- Do not re-summarize the whole project.
-- Do not reward scope creep.
-- Do not approve missing validation as a pass.
-- Required output sections: `DECISION`, `REASONS`, `REQUIRED_FIXES`, `OPTIONAL_NOTES`, `NEXT_PHASE`.
-- Decision policy: `.aide/verification/review-decision-policy.yaml`.
+Check that every plan remains draft, not-approved, and no-apply. Confirm the selected candidate is narrow enough for AIDE-GATE-02 inspection and that deferred manifest metadata remains untouched.

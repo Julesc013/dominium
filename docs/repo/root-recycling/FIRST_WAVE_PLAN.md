@@ -15,3 +15,7 @@ The root recycling framework and five inventory waves were generated as no-apply
 ## Gate Note
 
 AIDE-GATE-01 may authorize `AIDE-MOVE-01-PLAN` only. Move application remains unauthorized.
+
+## AIDE-MOVE-01-PLAN Result
+
+AIDE-MOVE-01-PLAN narrowed the first candidate to `ide/README.md` -> `docs/architecture/IDE_PROJECTIONS.md`. The manifest schema/examples under `ide/manifests/**` remain deferred. The plan is draft, not approved, and no-apply. `AIDE-GATE-02` may inspect the plan; move application remains unauthorized.

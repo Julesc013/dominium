@@ -1,0 +1,60 @@
+{
+  "abandon_without_apply": "Delete or supersede these draft AIDE-MOVE-01 planning artifacts in a later reviewed planning task; no source files need restoration because no move is applied here.",
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "exception_ledger_rollback": "Restore the pre-apply ide/README.md exception note if an apply task narrows it.",
+  "reverse_moves": [
+    {
+      "condition": "only if apply task moved the file",
+      "from": "docs/architecture/IDE_PROJECTIONS.md",
+      "to": "ide/README.md"
+    }
+  ],
+  "reverse_reference_rewrites": [
+    {
+      "action": "restore !/ide/README.md exception if rollback returns the file to ide/",
+      "file": ".gitignore"
+    },
+    {
+      "action": "restore required doc path to ide/README.md",
+      "file": "scripts/verify_docs_sanity.py"
+    },
+    {
+      "action": "restore authoritative metadata row to /ide/README.md",
+      "file": "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md"
+    },
+    {
+      "action": "restore moved document location references before moving back, or move back and leave original content",
+      "file": "docs/architecture/IDE_PROJECTIONS.md"
+    },
+    {
+      "action": "restore selector wording if it was updated during apply",
+      "file": "tools/aide/select_move_wave.py"
+    }
+  ],
+  "rollback_strategy": "single-file reverse move plus reverse apply-phase reference rewrites",
+  "schema_version": "dominium.aide.move_rollback_plan.v1",
+  "shim_removal": "No shim is planned or authorized.",
+  "status": "draft",
+  "task_id": "AIDE-MOVE-01-PLAN",
+  "validation_after_rollback": [
+    "py -3 .aide/scripts/aide_lite.py doctor",
+    "py -3 .aide/scripts/aide_lite.py validate",
+    "py -3 .aide/scripts/aide_lite.py test",
+    "py -3 .aide/scripts/aide_lite.py selftest",
+    "py -3 .aide/scripts/aide_lite.py tools validate",
+    "py -3 .aide/scripts/aide_lite.py roots validate",
+    "py -3 .aide/scripts/aide_lite.py repo validate",
+    "py -3 .aide/scripts/aide_lite.py commit check --latest",
+    "py -3 tools/validators/check_repo_layout.py --repo-root . --strict",
+    "py -3 tools/validators/check_root_allowlist.py --repo-root . --strict",
+    "py -3 tools/validators/check_distribution_layout.py --repo-root . --strict",
+    "py -3 tools/validators/check_component_matrices.py --repo-root . --strict",
+    "py -3 scripts/verify_docs_sanity.py --repo-root .",
+    "py -3 scripts/verify_build_target_boundaries.py --repo-root .",
+    "py -3 scripts/verify_ui_shell_purity.py --repo-root .",
+    "py -3 scripts/verify_abi_boundaries.py --repo-root .",
+    "git diff --check",
+    "git diff --cached --check"
+  ]
+}

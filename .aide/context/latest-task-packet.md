@@ -2,60 +2,35 @@
 
 ## PHASE
 
-AIDE-GREEN-PASS - final warning and blocker cleanup before move planning
+AIDE-MOVE-01-PLAN - first low-risk root move planning
 
 ## GOAL
 
-Clear remaining AIDE warnings and blockers from the root-recycling readiness
-work, refresh local AIDE evidence, and keep move application unauthorized.
+Create a concrete no-apply move plan for the first low-risk root recycling wave.
 
 ## WHY
 
-The root recycling and readiness gates should enter the next user-requested
-change from a clean local AIDE validation baseline. This task fixes concrete
-AIDE metadata, classifier, controller, export-pack, and release-fixture gaps
-without moving files or changing product/runtime behavior.
+AIDE-GATE-01 authorized move planning only. The next step is a reviewable plan with exact source and target paths, reference rewrites, validation, rollback, and exception-update expectations before any apply task can be considered.
 
 ## CONTEXT_REFS
 
-- `.aide/reports/AIDE-POLISH-02-root-readiness-second-pass.md`
 - `.aide/reports/AIDE-GATE-01-root-move-planning-readiness.md`
-- `.aide/context/repo-map.json`
-- `.aide/context/test-map.json`
-- `.aide/context/context-index.json`
-- `.aide/context/latest-context-packet.md`
-- `.aide/reports/roots/AIDE-ROOT-06-reconciliation.md`
-- `.aide/repo/latest-repo-intelligence.md`
-- `.aide/evals/runs/latest-golden-tasks.md`
-- `.aide/release/latest-release-validation.md`
-- `docs/reference/`
+- `.aide/reports/roots/AIDE-ROOT-06-first-move-recommendation.md`
+- `.aide/reports/roots/AIDE-ROOT-06-move-wave-candidates.md`
+- `.aide/refactors/draft_move_wave_AIDE-MOVE-01.json`
+- `.aide/refactors/AIDE-MOVE-01.plan.json`
+- `docs/repo/root-recycling/AIDE_MOVE_01_FIRST_LOW_RISK_MOVE_PLAN.md`
 
 ## ALLOWED_PATHS
 
-- `.aide/context/**`
-- `.aide/controller/**`
-- `.aide/evals/**`
-- `.aide/export/**`
-- `.aide/import/**`
-- `.aide/models/**`
-- `.aide/policies/**`
-- `.aide/release/**`
-- `.aide/repo/**`
+- `.aide/refactors/**`
 - `.aide/reports/**`
-- `.aide/rollback/**`
-- `.aide/scripts/aide_lite.py`
-- `.aide/uninstall/**`
-- `.aide/verification/**`
-- `docs/reference/**`
-- `tools/validators/check_repo_layout.py`
-- `tools/validators/check_root_allowlist.py`
+- `.aide/context/**`
+- `.aide/ledgers/**`
+- `docs/repo/root-recycling/**`
 
 ## FORBIDDEN_PATHS
 
-- `.git/**`
-- `.aide.local/**`
-- `.env`
-- `secrets/**`
 - `apps/**`
 - `engine/**`
 - `game/**`
@@ -63,63 +38,52 @@ without moving files or changing product/runtime behavior.
 - `content/**`
 - `tests/**`
 - `cmake/**`
-- `release/*`
+- `release/**`
+- `ide/**`
 - product/version root files
-- root move, delete, rename, reference rewrite, path alias activation, salvage
-  application, or move-map application
+- root move, delete, rename, reference rewrite, path alias activation, salvage application, move-map application, or exception retirement
 
 ## IMPLEMENTATION
 
-- Patch only AIDE metadata, AIDE validation helpers, generated AIDE evidence,
-  portable AIDE reference docs, no-publish AIDE release fixtures, and warning
-  cleanup in read-only repo layout validators.
-- Preserve all no-apply root recycling invariants.
-- Do not change Dominium product/source/runtime/build behavior.
+- Select `ide/README.md` as a draft plan only.
+- Defer `ide/manifests/**`.
+- Do not modify source root files.
+- Do not apply references, maps, shims, aliases, or exceptions.
 
 ## VALIDATION
 
-- `py -3 .aide/scripts/aide_lite.py doctor`
-- `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py test`
-- `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- `py -3 .aide/scripts/aide_lite.py eval run`
-- `py -3 .aide/scripts/aide_lite.py verify --changed-files`
-- `py -3 .aide/scripts/aide_lite.py review-pack`
-- strict repo/root/distribution/component validators
-- docs/build/UI/ABI supplemental checks
-- `git diff --check`
-- `git diff --cached --check`
+Run AIDE, plan parse, strict validators, supplemental docs/build/UI/ABI checks, and git diff checks. Record results in `.aide/reports/AIDE-MOVE-01-PLAN-validation.md`.
 
 ## EVIDENCE
 
-- `.aide/verification/latest-verification-report.md`
-- `.aide/context/latest-review-packet.md`
-- `.aide/controller/latest-outcome-report.md`
-- `.aide/evals/runs/latest-golden-tasks.md`
-- `.aide/reports/token-savings-summary.md`
+- `.aide/refactors/AIDE-MOVE-01.plan.toml`
+- `.aide/refactors/AIDE-MOVE-01.plan.json`
+- `.aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.validation_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.rollback_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.exception_update_plan.json`
+- `.aide/reports/AIDE-MOVE-01-PLAN-review.md`
 
 ## NON_GOALS
 
-- No root moves, deletes, renames, salvage-map application, move-map
-  application, path alias activation, or reference rewrites.
-- No product/runtime/source/build behavior changes.
+- Do not move, delete, rename, or rewrite files.
+- Do not approve or apply move maps or salvage maps.
+- Do not create active aliases or compatibility shims.
+- Do not change product/source/runtime/build behavior.
+- Do not start AIDE-GATE-02 or an apply task.
 
 ## ACCEPTANCE
 
-- AIDE doctor, validate, test, selftest, repo validate, eval, verify,
-  review-pack, ledger, outcome, and commit checks pass without warnings.
-- Strict repo/root/distribution/component validators and supplemental
-  docs/build/UI/ABI checks pass.
-- The final commit contains only AIDE evidence/tooling/reference-doc updates
-  and preserves move application authorization as false.
+- Plan artifacts are parseable.
+- All plans remain draft, not-approved, and no-apply.
+- Exactly one planned move is selected.
+- Required reference rewrites, validation, rollback, and exception-update plans exist.
+- Validation passes or only known no-apply warnings remain.
 
 ## OUTPUT_SCHEMA
 
-- Final response reports branch, before/after HEAD, origin/main, validation
-  results, commit, push/sync status, worktree status, and next task.
+Expected artifacts are Markdown, JSON, and TOML planning evidence under the allowed paths. Machine-readable files must include `status`, `approval_status`, and `apply_allowed` fields where applicable.
 
 ## TOKEN_ESTIMATE
 
-- approx_tokens: 700
-- budget_status: within_budget
+Approximate task packet tokens: 650. No raw source bodies are embedded beyond short path references.

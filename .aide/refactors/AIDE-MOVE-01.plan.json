@@ -1,0 +1,317 @@
+{
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "blockers": [
+    "AIDE-GATE-02 has not approved apply readiness.",
+    "No approved move map exists.",
+    "No approved salvage map exists.",
+    "Apply-phase reference rewrites must be reviewed before movement.",
+    "Binding authority transfer for ide/README.md must be accepted by gate review."
+  ],
+  "candidate": {
+    "gate_decision_for_AIDE_GATE_02": "ready_for_gate_review",
+    "reason": "Narrowed from ROOT-06 ide candidate to the single low-risk README file; ide/manifests/** is deferred because it is machine-readable authoritative projection metadata with active references.",
+    "recommended": true,
+    "reference_complexity": "high",
+    "reversibility": "easy",
+    "risk": "low",
+    "root": "ide",
+    "subtree": "ide/README.md",
+    "value": "medium"
+  },
+  "deletes_applied": false,
+  "exception_updates": [
+    {
+      "evidence_required": [
+        "AIDE-GATE-02 approval",
+        "applied move map",
+        "post-apply docs sanity pass"
+      ],
+      "exception_id": "gitignore.ide.readme.exception",
+      "exception_narrows": true,
+      "exception_retires": false,
+      "expected_status_after_apply": "remove or narrow README exception because target is under docs/",
+      "expected_status_before": "tracked exception under otherwise ignored /ide/** root",
+      "path": ".gitignore -> !/ide/README.md",
+      "root_remains": true,
+      "validation_required": [
+        "git status --short --branch",
+        "py -3 scripts/verify_docs_sanity.py --repo-root .",
+        "py -3 tools/validators/check_root_allowlist.py --repo-root . --strict"
+      ]
+    },
+    {
+      "evidence_required": [
+        "post-apply inventory showing ide/manifests/** remains",
+        "reference rewrite report"
+      ],
+      "exception_id": "layout.ide.root.review_exception",
+      "exception_narrows": true,
+      "exception_retires": false,
+      "expected_status_after_apply": "root still present for ide/manifests/** and generated projection outputs; README removed from root",
+      "expected_status_before": "transitional IDE projection root with tracked README and manifests exceptions",
+      "path": "ide/",
+      "root_remains": true,
+      "validation_required": [
+        "py -3 .aide/scripts/aide_lite.py roots validate",
+        "py -3 tools/validators/check_repo_layout.py --repo-root . --strict"
+      ]
+    }
+  ],
+  "gate_02_ready_for_review": true,
+  "moves": [
+    {
+      "action": "move",
+      "deferred_related_paths": [
+        "ide/manifests/projection_manifest.schema.json",
+        "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+        "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json"
+      ],
+      "ownership_slot": "docs/architecture projection policy",
+      "reason": "Move the binding IDE projection policy README out of the transitional ide root into existing architecture documentation while preserving ide/manifests/** in place.",
+      "reference_count": 121,
+      "risk": "low",
+      "rollback": "Move docs/architecture/IDE_PROJECTIONS.md back to ide/README.md and reverse all apply-phase reference rewrites.",
+      "shim_required": false,
+      "source_path": "ide/README.md",
+      "target_path": "docs/architecture/IDE_PROJECTIONS.md"
+    }
+  ],
+  "moves_applied": false,
+  "next_gate": "AIDE-GATE-02",
+  "references_rewritten": false,
+  "renames_applied": false,
+  "rewrites": {
+    "historical_references_preserved": 3,
+    "reference_complexity": "high",
+    "required_apply_rewrites": 6,
+    "review_rewrites": 4,
+    "total_tracked_exact_references_found": 121
+  },
+  "rollback": {
+    "abandon_without_apply": "Delete or supersede these draft AIDE-MOVE-01 planning artifacts in a later reviewed planning task; no source files need restoration because no move is applied here.",
+    "apply_allowed": false,
+    "approval_status": "not_approved",
+    "exception_ledger_rollback": "Restore the pre-apply ide/README.md exception note if an apply task narrows it.",
+    "reverse_moves": [
+      {
+        "condition": "only if apply task moved the file",
+        "from": "docs/architecture/IDE_PROJECTIONS.md",
+        "to": "ide/README.md"
+      }
+    ],
+    "reverse_reference_rewrites": [
+      {
+        "action": "restore !/ide/README.md exception if rollback returns the file to ide/",
+        "file": ".gitignore"
+      },
+      {
+        "action": "restore required doc path to ide/README.md",
+        "file": "scripts/verify_docs_sanity.py"
+      },
+      {
+        "action": "restore authoritative metadata row to /ide/README.md",
+        "file": "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md"
+      },
+      {
+        "action": "restore moved document location references before moving back, or move back and leave original content",
+        "file": "docs/architecture/IDE_PROJECTIONS.md"
+      },
+      {
+        "action": "restore selector wording if it was updated during apply",
+        "file": "tools/aide/select_move_wave.py"
+      }
+    ],
+    "rollback_strategy": "single-file reverse move plus reverse apply-phase reference rewrites",
+    "schema_version": "dominium.aide.move_rollback_plan.v1",
+    "shim_removal": "No shim is planned or authorized.",
+    "status": "draft",
+    "task_id": "AIDE-MOVE-01-PLAN",
+    "validation_after_rollback": [
+      "py -3 .aide/scripts/aide_lite.py doctor",
+      "py -3 .aide/scripts/aide_lite.py validate",
+      "py -3 .aide/scripts/aide_lite.py test",
+      "py -3 .aide/scripts/aide_lite.py selftest",
+      "py -3 .aide/scripts/aide_lite.py tools validate",
+      "py -3 .aide/scripts/aide_lite.py roots validate",
+      "py -3 .aide/scripts/aide_lite.py repo validate",
+      "py -3 .aide/scripts/aide_lite.py commit check --latest",
+      "py -3 tools/validators/check_repo_layout.py --repo-root . --strict",
+      "py -3 tools/validators/check_root_allowlist.py --repo-root . --strict",
+      "py -3 tools/validators/check_distribution_layout.py --repo-root . --strict",
+      "py -3 tools/validators/check_component_matrices.py --repo-root . --strict",
+      "py -3 scripts/verify_docs_sanity.py --repo-root .",
+      "py -3 scripts/verify_build_target_boundaries.py --repo-root .",
+      "py -3 scripts/verify_ui_shell_purity.py --repo-root .",
+      "py -3 scripts/verify_abi_boundaries.py --repo-root .",
+      "git diff --check",
+      "git diff --cached --check"
+    ]
+  },
+  "schema_version": "dominium.aide.move_plan.v1",
+  "status": "draft",
+  "task_id": "AIDE-MOVE-01-PLAN",
+  "validation_result": "PASS",
+  "validators": [
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py doctor",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE environment health",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py validate",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE metadata validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py test",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE focused tests",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py selftest",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE selftest",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py tools validate",
+      "failure_policy": "block apply until resolved",
+      "reason": "AIDE tool registry validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py roots validate",
+      "failure_policy": "block apply until resolved",
+      "reason": "Root recycling evidence validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py repo validate",
+      "failure_policy": "block apply until resolved",
+      "reason": "Repo intelligence classification validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py commit check --latest",
+      "failure_policy": "block apply until resolved",
+      "reason": "Commit metadata validation",
+      "required_after_apply": true,
+      "required_before_apply": false,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 tools/validators/check_repo_layout.py --repo-root . --strict",
+      "failure_policy": "block apply until resolved",
+      "reason": "Strict repo layout validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 tools/validators/check_root_allowlist.py --repo-root . --strict",
+      "failure_policy": "block apply until resolved",
+      "reason": "Strict root allowlist validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 tools/validators/check_distribution_layout.py --repo-root . --strict",
+      "failure_policy": "block apply until resolved",
+      "reason": "Distribution layout validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 tools/validators/check_component_matrices.py --repo-root . --strict",
+      "failure_policy": "block apply until resolved",
+      "reason": "Component matrix validation",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 scripts/verify_docs_sanity.py --repo-root .",
+      "failure_policy": "block apply until resolved",
+      "reason": "Docs sanity including the moved documentation path after apply",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 scripts/verify_build_target_boundaries.py --repo-root .",
+      "failure_policy": "block apply until resolved",
+      "reason": "Build boundary guard",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 scripts/verify_ui_shell_purity.py --repo-root .",
+      "failure_policy": "block apply until resolved",
+      "reason": "UI shell purity guard",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "py -3 scripts/verify_abi_boundaries.py --repo-root .",
+      "failure_policy": "block apply until resolved",
+      "reason": "ABI boundary guard",
+      "required_after_apply": true,
+      "required_before_apply": true,
+      "tier": "tier0"
+    },
+    {
+      "command": "git diff --check",
+      "failure_policy": "block apply until resolved",
+      "reason": "Whitespace and patch hygiene",
+      "required_after_apply": true,
+      "required_before_apply": false,
+      "tier": "tier0"
+    },
+    {
+      "command": "git diff --cached --check",
+      "failure_policy": "block apply until resolved",
+      "reason": "Staged whitespace and patch hygiene",
+      "required_after_apply": true,
+      "required_before_apply": false,
+      "tier": "tier0"
+    },
+    {
+      "command": "targeted reference search for ide/README.md and docs/architecture/IDE_PROJECTIONS.md",
+      "failure_policy": "block apply until resolved",
+      "reason": "Confirm apply-phase references were rewritten and historical references were intentionally preserved",
+      "required_after_apply": true,
+      "required_before_apply": false,
+      "tier": "tier1"
+    },
+    {
+      "command": "not required for this docs-only plan unless AIDE-GATE-02 escalates",
+      "failure_policy": "escalate only if scope changes",
+      "reason": "No build/source paths are planned",
+      "required_after_apply": false,
+      "required_before_apply": false,
+      "tier": "tier2"
+    }
+  ]
+}
