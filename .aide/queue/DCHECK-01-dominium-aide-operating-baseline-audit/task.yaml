@@ -1,0 +1,17 @@
+schema_version: aide.queue-task.v0
+task_id: DCHECK-01-dominium-aide-operating-baseline-audit
+title: Dominium AIDE Operating Baseline Audit
+status: needs_review
+repo: julesc013/dominium
+branch: main
+phase: DCHECK-01
+work_class: validation_audit
+mode: checkpoint_audit
+readiness_classification: PARTIAL_BASELINE_NEEDS_REPAIR
+verdict: PARTIAL
+allowed_write_roots:
+  - .aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/
+  - .aide/context/latest-task-packet.md
+  - .aide/context/latest-review-packet.md
+  - .aide/reports/dominium-next-aide-task.md
+review_gate: required

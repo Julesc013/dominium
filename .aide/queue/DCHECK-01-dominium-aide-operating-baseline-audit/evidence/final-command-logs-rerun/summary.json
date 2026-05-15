@@ -1,0 +1,222 @@
+[
+  {
+    "name": "git_status_short",
+    "command": "git status --short",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.155,
+    "summary": " M .aide/changelog/CHANGELOG.preview.md |  M .aide/changelog/RELEASE_NOTES.preview.md |  M .aide/changelog/changelog.preview.json |  M .aide/changelog/latest-changelog-report.md |  M .aide/changelog/malformed-commits.md |  M .aide/changelog/release-notes.preview.json |  M .aide/context/latest-review-packet.md |  M .aide/context/latest-task-packet.md",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\git_status_short.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\git_status_short.err"
+  },
+  {
+    "name": "git_diff_check",
+    "command": "git diff --check",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 4.213,
+    "summary": "warning: in the working copy of '.aide/changelog/CHANGELOG.preview.md', LF will be replaced by CRLF the next time Git touches it | warning: in the working copy of '.aide/changelog/RELEASE_NOTES.preview.md', LF will be replaced by CRLF the next time Git touches it | warning: in the working copy of '.aide/changelog/changelog.preview.json', LF will be replaced by CRLF the next time Git touches it | warning: in the working copy of '.aide/changelog/latest-changelog-report.md', LF will be replaced by CRLF the next time Git touches it | warning: in the working copy of '.aide/changelog/malformed-commits.md', LF will be replaced by CRLF the next time Git touches it | warning: in the working copy of '.aide/changelog/release-notes.preview.json', LF will be replaced by CRLF the next time Git touches it | warning: in the working copy of '.aide/context/latest-review-packet.md', LF will be replaced by CRLF the next time Git touches it | warning: in the working copy of '.aide/context/latest-task-packet.md', LF will be replaced by CRLF the next time Git touches it",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\git_diff_check.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\git_diff_check.err"
+  },
+  {
+    "name": "git_check_ignore_aide_local",
+    "command": "git check-ignore .aide.local/",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.099,
+    "summary": ".aide.local/",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\git_check_ignore_aide_local.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\git_check_ignore_aide_local.err"
+  },
+  {
+    "name": "doctor",
+    "command": "py -3 .aide/scripts/aide_lite.py doctor",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 11.891,
+    "summary": "AIDE Lite doctor | status: PASS | - repo_root: C:/Inbox/Git Repos/dominium | - PASS required: .aide/policies/token-budget.yaml | - PASS required: .aide/memory/project-state.md | - PASS required: .aide/memory/decisions.md | - PASS required: .aide/memory/open-risks.md | - PASS required: .aide/prompts/compact-task.md",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\doctor.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\doctor.err"
+  },
+  {
+    "name": "validate",
+    "command": "py -3 .aide/scripts/aide_lite.py validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 12.322,
+    "summary": "AIDE Lite validate | status: PASS | - PASS required file: .aide/policies/token-budget.yaml | - PASS required file: .aide/memory/project-state.md | - PASS required file: .aide/memory/decisions.md | - PASS required file: .aide/memory/open-risks.md | - PASS required file: .aide/prompts/compact-task.md | - PASS required file: .aide/prompts/evidence-review.md",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\validate.err"
+  },
+  {
+    "name": "test",
+    "command": "py -3 .aide/scripts/aide_lite.py test",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 17.462,
+    "summary": "AIDE Lite test | status: PASS | - PASS internal estimate, ignore, snapshot, index, context, pack, adapt, drift, line-ref, verifier, review-pack, ledger, eval, commit, changelog, GitHub advisory, task, git workflow, intent, repo intelligence, quality, refactor, roots, tools, install, repair, upgrade, rollback, uninstall, outcome, optimize, route, cache, gateway, provider, adapter, and validate checks",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\test.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\test.err"
+  },
+  {
+    "name": "selftest",
+    "command": "py -3 .aide/scripts/aide_lite.py selftest",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 19.549,
+    "summary": "AIDE Lite selftest | status: PASS | - PASS internal estimate, ignore, snapshot, index, context, pack, adapt, drift, line-ref, verifier, review-pack, ledger, eval, commit, changelog, GitHub advisory, task, git workflow, intent, repo intelligence, quality, refactor, roots, tools, install, repair, upgrade, rollback, uninstall, outcome, optimize, route, cache, gateway, provider, adapter, and validate checks",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\selftest.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\selftest.err"
+  },
+  {
+    "name": "eval_run",
+    "command": "py -3 .aide/scripts/aide_lite.py eval run",
+    "status": "TIMEOUT",
+    "exit_code": null,
+    "duration_seconds": 180.061,
+    "summary": "",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\eval_run.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\eval_run.err"
+  },
+  {
+    "name": "verify",
+    "command": "py -3 .aide/scripts/aide_lite.py verify",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 1.864,
+    "summary": "AIDE Lite verify | result: WARN | checked_files: 68 | changed_files: 119 | info: 154 | warnings: 98 | errors: 0 | - WARN file_references: referenced path does not exist (from .aide/context/latest-review-packet.md) path=.aide/controller/latest-outcome-report.md",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\verify.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\verify.err"
+  },
+  {
+    "name": "intent_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py intent validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.736,
+    "summary": "AIDE Lite intent validate | result: PASS | - PASS Q36 required file exists: .aide/policies/intent.yaml | - PASS Q36 required file exists: .aide/policies/workunit-sizing.yaml | - PASS Q36 required file exists: .aide/policies/task-classes.yaml | - PASS Q36 required file exists: .aide/policies/risk-classes.yaml | - PASS Q36 required file exists: .aide/policies/prompt-normalization.yaml | - PASS Q36 required file exists: .aide/intake/intent-packet.schema.json",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\intent_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\intent_validate.err"
+  },
+  {
+    "name": "repo_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py repo validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 1.362,
+    "summary": "AIDE Lite repo validate | result: WARN | - PASS Q37 required file exists: .aide/policies/repo-intelligence.yaml | - PASS Q37 required file exists: .aide/policies/file-classification.yaml | - PASS Q37 required file exists: .aide/policies/ownership-map.yaml | - PASS Q37 required file exists: .aide/policies/dependency-map.yaml | - PASS Q37 required file exists: .aide/policies/test-map.yaml | - PASS Q37 required file exists: .aide/policies/doc-link-map.yaml",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\repo_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\repo_validate.err"
+  },
+  {
+    "name": "quality_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py quality validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 2.313,
+    "summary": "AIDE Lite quality validate | result: PASS | - PASS Q38 required file exists: .aide/policies/file-quality.yaml | - PASS Q38 required file exists: .aide/policies/docs-consistency.yaml | - PASS Q38 required file exists: .aide/policies/module-quality.yaml | - PASS Q38 required file exists: .aide/policies/reuse-modularity.yaml | - PASS Q38 required file exists: .aide/quality/file-quality-record.schema.json | - PASS Q38 required file exists: .aide/quality/file-quality-ledger.schema.json",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\quality_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\quality_validate.err"
+  },
+  {
+    "name": "roots_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py roots validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 1.377,
+    "summary": "AIDE Lite roots validate | result: PASS | - PASS Q40 required file exists: .aide/policies/root-recycling.yaml | - PASS Q40 required file exists: .aide/policies/root-inventory.yaml | - PASS Q40 required file exists: .aide/policies/root-fates.yaml | - PASS Q40 required file exists: .aide/policies/root-exceptions.yaml | - PASS Q40 required file exists: .aide/policies/root-risk.yaml | - PASS Q40 required file exists: .aide/refactors/root-inventory.schema.json",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\roots_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\roots_validate.err"
+  },
+  {
+    "name": "tools_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py tools validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 1.491,
+    "summary": "AIDE Lite tools validate | result: PASS | - PASS Q41 required file exists: .aide/policies/tool-absorption.yaml | - PASS Q41 required file exists: .aide/policies/tool-inventory.yaml | - PASS Q41 required file exists: .aide/policies/tool-fates.yaml | - PASS Q41 required file exists: .aide/policies/tool-wrapping.yaml | - PASS Q41 required file exists: .aide/policies/tool-risk.yaml | - PASS Q41 required file exists: .aide/policies/tool-capabilities.yaml",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\tools_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\tools_validate.err"
+  },
+  {
+    "name": "install_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py install validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 1.016,
+    "summary": "AIDE Lite install validate | result: PASS | - PASS Q43 required file exists: .aide/policies/install.yaml | - PASS Q43 required file exists: .aide/policies/install-preservation.yaml | - PASS Q43 required file exists: .aide/policies/install-ownership.yaml | - PASS Q43 required file exists: .aide/policies/install-conflicts.yaml | - PASS Q43 required file exists: .aide/policies/install-migrations.yaml | - PASS Q43 required file exists: .aide/policies/install-verification.yaml",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\install_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\install_validate.err"
+  },
+  {
+    "name": "repair_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py repair validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.773,
+    "summary": "AIDE Lite repair validate | result: PASS | - PASS Q44 required file exists: .aide/policies/repair.yaml | - PASS Q44 required file exists: .aide/policies/repair-classes.yaml | - PASS Q44 required file exists: .aide/policies/repair-safety.yaml | - PASS Q44 required file exists: .aide/policies/repair-detection.yaml | - PASS Q44 required file exists: .aide/policies/repair-verification.yaml | - PASS Q44 required file exists: .aide/policies/doctor.yaml",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\repair_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\repair_validate.err"
+  },
+  {
+    "name": "upgrade_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py upgrade validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.969,
+    "summary": "AIDE Lite upgrade validate | result: PASS | - PASS Q45 required file exists: .aide/policies/upgrade.yaml | - PASS Q45 required file exists: .aide/policies/upgrade-compatibility.yaml | - PASS Q45 required file exists: .aide/policies/upgrade-preservation.yaml | - PASS Q45 required file exists: .aide/policies/upgrade-conflicts.yaml | - PASS Q45 required file exists: .aide/policies/upgrade-migrations.yaml | - PASS Q45 required file exists: .aide/policies/upgrade-verification.yaml",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\upgrade_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\upgrade_validate.err"
+  },
+  {
+    "name": "rollback_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py rollback validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.686,
+    "summary": "AIDE Lite rollback validate | result: PASS | - PASS Q46 rollback required file exists: .aide/policies/rollback.yaml | - PASS Q46 rollback required file exists: .aide/policies/rollback-classes.yaml | - PASS Q46 rollback required file exists: .aide/policies/rollback-safety.yaml | - PASS Q46 rollback required file exists: .aide/policies/rollback-verification.yaml | - PASS Q46 rollback required file exists: .aide/rollback/rollback-observation.schema.json | - PASS Q46 rollback required file exists: .aide/rollback/rollback-plan.schema.json",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\rollback_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\rollback_validate.err"
+  },
+  {
+    "name": "uninstall_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py uninstall validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 2.007,
+    "summary": "AIDE Lite uninstall validate | result: PASS | - PASS Q46 uninstall required file exists: .aide/policies/uninstall.yaml | - PASS Q46 uninstall required file exists: .aide/policies/uninstall-classes.yaml | - PASS Q46 uninstall required file exists: .aide/policies/uninstall-safety.yaml | - PASS Q46 uninstall required file exists: .aide/policies/uninstall-verification.yaml | - PASS Q46 uninstall required file exists: .aide/uninstall/uninstall-observation.schema.json | - PASS Q46 uninstall required file exists: .aide/uninstall/uninstall-plan.schema.json",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\uninstall_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\uninstall_validate.err"
+  },
+  {
+    "name": "commit_check_latest",
+    "command": "py -3 .aide/scripts/aide_lite.py commit check --latest",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.739,
+    "summary": "AIDE Lite commit check | result: PASS | source: git log -1 --pretty=%B | policy: .aide/policies/commit-messages.yaml | standard: .aide/reports/aide-commit-message-standard.md | - PASS commit subject is present | - PASS commit subject is 72 characters or fewer | - PASS commit subject follows type(scope): summary",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\commit_check_latest.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\commit_check_latest.err"
+  },
+  {
+    "name": "xstack_validate",
+    "command": "py -3 .aide/scripts/aide_lite.py xstack validate",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.739,
+    "summary": "AIDE Lite xstack validate | result: PASS | - PASS XStack contract schema version is v0 | - PASS XStack wrapper registry schema version is v0 | - PASS XStack contract enforces no_apply true | - PASS XStack contract enforces execution_allowed false | - PASS XStack contract enforces apply_allowed false | - PASS XStack registry enforces no_apply true",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\xstack_validate.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\xstack_validate.err"
+  },
+  {
+    "name": "estimate_latest_task_packet",
+    "command": "py -3 .aide/scripts/aide_lite.py estimate --file .aide/context/latest-task-packet.md",
+    "status": "PASS",
+    "exit_code": 0,
+    "duration_seconds": 0.796,
+    "summary": "AIDE Lite estimate | path: .aide/context/latest-task-packet.md | chars: 5579 | lines: 145 | approx_tokens: 1395 | method: chars / 4, rounded up | surface: task_packet | budget: 3200",
+    "stdout": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\estimate_latest_task_packet.log",
+    "stderr": ".aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\final-command-logs-rerun\\estimate_latest_task_packet.err"
+  }
+]

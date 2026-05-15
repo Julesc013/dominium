@@ -1,44 +1,27 @@
 # Next AIDE Task
 
-Task: Q52 Dominium Root Recycling Pilot
+Task: `DOMINIUM-AIDE-COMMIT-FINALIZATION-01 - Commit AIDE Baseline Evidence and Re-run Commit Check`
 
-## Goal
+## Why
 
-Run an evidence-only root recycling pilot using Q51 tool absorption outputs, without moving, deleting, rewriting, or executing unknown legacy tools.
+DCHECK-01 verifies that Dominium's AIDE control plane is usable, and the audit checkpoint itself is committed. The broader baseline is not durable because Q52/Q53/Q53R evidence, generated AIDE outputs, and the Q53R `.aide/scripts/aide_lite.py` repair remain uncommitted.
 
-## Recommended First Root
+## Allowed Scope
 
-Start with `ide/`.
+- `.aide/scripts/aide_lite.py`
+- `.aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/**`
+- `.aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/**`
+- `.aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/**`
+- `.aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/**`
+- `.aide/reports/dominium-*`
+- generated `.aide/**` validation/status outputs needed for a reproducible baseline
 
-Reason: small, tooling-adjacent, and outside product source/doctrine roots. Treat it as high-risk until ownership and references are confirmed.
+## Acceptance
 
-## Required Inputs
+- Product/source/doctrine/tool roots remain untouched.
+- `.aide.local/` and secrets remain untracked/uncommitted.
+- `doctor`, `validate`, `test`, `selftest`, `verify`, roots/tools/lifecycle validators, and `xstack validate` pass or warnings are classified.
+- Commit message follows AIDE Commit Discipline v0.
+- `commit check --latest` passes after commit.
 
-- `.aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md`
-- `.aide/tools/dominium-tool-inventory.json`
-- `.aide/tools/dominium-tool-classification.json`
-- `.aide/tools/dominium-tool-adapter-map.json`
-- `.aide/tools/dominium-tool-wrap-plan.md`
-- `.aide/roots/latest-root-inventory.*`
-- `.aide/repo/latest-repo-intelligence.md`
-
-## Non-Goals
-
-- No product source edits.
-- No doctrine edits.
-- No root moves/deletes.
-- No branch mutation.
-- No unknown tool execution.
-- No provider/model/network calls.
-
-## Validation
-
-- `git status --short`
-- `git diff --check`
-- `git check-ignore .aide.local/`
-- `py -3 .aide/scripts/aide_lite.py doctor`
-- `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py roots inventory`
-- `py -3 .aide/scripts/aide_lite.py roots validate`
-- `py -3 .aide/scripts/aide_lite.py tools status`
-- targeted secret/local-state scan
+Global next after this: `Q54 Eureka Fresh Upgrade Preflight` / resume the Eureka path already detected read-only in sibling `../eureka`.

@@ -2,11 +2,11 @@
 
 ## PHASE
 
-Q52 - Dominium Root Recycling Pilot
+UNSPECIFIED - DOMINIUM-AIDE-COMMIT-FINALIZATION-01 - Commit AIDE Baseline Evidence and Re-run Commit Check
 
 ## GOAL
 
-Q52 Dominium Root Recycling Pilot
+DOMINIUM-AIDE-COMMIT-FINALIZATION-01 - Commit AIDE Baseline Evidence and Re-run Commit Check
 
 ## WHY
 
@@ -42,7 +42,7 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 
 - `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/queue/q52-*` if this task becomes a queue item
+- `.aide/queue/unspecified-*` if this task becomes a queue item
 - root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
@@ -113,28 +113,33 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4108
-- approx_tokens: 1027
+- chars: 5579
+- approx_tokens: 1395
 - budget_status: PASS
 - warnings:
   - none
 - formal ledger: `.aide/reports/token-ledger.jsonl`
 
-## DOMINIUM Q52 ROOT PILOT REFS
+## DOMINIUM DCHECK-01 NEXT TASK DETAIL
 
-- Q51 evidence: `.aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md`
-- Tool inventory: `.aide/tools/dominium-tool-inventory.json`
-- Tool classification: `.aide/tools/dominium-tool-classification.json`
-- Tool adapter map: `.aide/tools/dominium-tool-adapter-map.json`
-- Tool wrap plan: `.aide/tools/dominium-tool-wrap-plan.md`
-- Root inventory: `.aide/roots/latest-root-inventory.json` and `.aide/roots/latest-root-inventory.md`
-- Repo intelligence: `.aide/repo/latest-repo-intelligence.md`
+Task: `DOMINIUM-AIDE-COMMIT-FINALIZATION-01 - Commit AIDE Baseline Evidence and Re-run Commit Check`
 
-## DOMINIUM Q52 PRESERVATION CONSTRAINTS
+Immediate goal: make the currently usable Dominium AIDE baseline durable. DCHECK-01 found that Q49-Q53 executed and AIDE core validation works, and the audit checkpoint is committed. Q52/Q53/Q53R evidence, generated `.aide/**` outputs, and the Q53R `.aide/scripts/aide_lite.py` repair are still uncommitted.
 
-- Recommended first root family: `ide/`.
-- Treat Q52 as an evidence-only root recycling pilot.
-- Do not move, delete, rename, rewrite references, or normalize roots in Q52.
-- Do not edit product roots, doctrine roots, `tools/**`, `scripts/**`, `validation/**`, `repo/**`, `cmake/**`, `.github/**`, `.git/**`, or `.aide.local/**`.
-- Do not execute XStack/AuditX/RepoX/TestX or other unknown legacy tools.
-- Use Q51 wrapper plans as evidence only until a future task proves safe command contracts.
+Required refs:
+
+- `.aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/audit-report.md`
+- `.aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/readiness-and-next-plan.md`
+- `.aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/`
+- `.aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/`
+- `.aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/`
+- `.aide/scripts/aide_lite.py`
+
+Acceptance:
+
+- Stage only AIDE baseline evidence, generated AIDE status outputs, and the Q53R AIDE repair needed to reproduce validation.
+- Do not edit product/source/doctrine/tool roots.
+- Confirm `.aide.local/` and secrets are not staged.
+- Run `doctor`, `validate`, `test`, `selftest`, `verify`, roots/tools/lifecycle validators, `xstack validate`, `git diff --check`, and `commit check --latest`.
+- Commit with AIDE Commit Discipline v0.
+- After commit finalization, the global path may resume `Q54 Eureka Fresh Upgrade Preflight`.

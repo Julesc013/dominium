@@ -1,0 +1,34 @@
+schema_version: aide.queue-status.v0
+task_id: DCHECK-01-dominium-aide-operating-baseline-audit
+phase: DCHECK-01
+status: needs_review
+verdict: PARTIAL
+readiness_classification: PARTIAL_BASELINE_NEEDS_REPAIR
+repo_identity_confirmed: true
+q49_present: true
+q50_present: true
+q51_present: true
+q52_present: true
+q53_present: true
+q49_to_q53_executed: true
+q49_to_q53_all_accepted: false
+q49_to_q53_all_durable: false
+aide_control_plane_usable: true
+aide_control_plane_fully_accepted: false
+core_validation: pass_with_warnings
+command_counts:
+  pass: 87
+  fail: 5
+  timeout: 1
+product_source_modified_by_dcheck: false
+doctrine_modified_by_dcheck: false
+tool_systems_modified_by_dcheck: false
+root_moves_or_rewrites: false
+unknown_tools_executed: false
+branch_mutation: false
+tags_or_releases: false
+github_or_network_calls: false
+provider_or_model_calls: false
+global_q54_recommendation: pause_until_dominium_commit_finalization
+next_dominium_task: DOMINIUM-AIDE-COMMIT-FINALIZATION-01
+review_gate: required

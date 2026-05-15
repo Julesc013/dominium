@@ -1,0 +1,216 @@
+{
+  "checkpoint": "DCHECK-01-dominium-aide-operating-baseline-audit",
+  "generated_at": "2026-05-15T22:05:33",
+  "results": [
+    {
+      "name": "git_status_short",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.19,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/git_status_short.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/git_status_short.err.log",
+      "stdout_head": " M .aide/changelog/CHANGELOG.preview.md\n M .aide/changelog/RELEASE_NOTES.preview.md\n M .aide/changelog/changelog.preview.json\n M .aide/changelog/latest-changelog-report.md\n M .aide/changelog/malformed-commits.md\n M .aide/changelog/release-notes.preview.json\n M .aide/context/latest-review-packet.md\n M .aide/context/latest-task-packet.md",
+      "stderr_head": ""
+    },
+    {
+      "name": "git_diff_check",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 5.37,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/git_diff_check.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/git_diff_check.err.log",
+      "stdout_head": "",
+      "stderr_head": "warning: in the working copy of '.aide/changelog/CHANGELOG.preview.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.aide/changelog/RELEASE_NOTES.preview.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.aide/changelog/changelog.preview.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.aide/changelog/latest-changelog-report.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.aide/changelog/malformed-commits.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.aide/changelog/release-notes.preview.json', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.aide/context/latest-review-packet.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '.aide/context/latest-task-packet.md', LF will be replaced by CRLF the next time Git touches it"
+    },
+    {
+      "name": "git_check_ignore_aide_local",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.09,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/git_check_ignore_aide_local.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/git_check_ignore_aide_local.err.log",
+      "stdout_head": ".aide.local/",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_doctor",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 13.42,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_doctor.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_doctor.err.log",
+      "stdout_head": "AIDE Lite doctor\nstatus: PASS\n- repo_root: C:/Inbox/Git Repos/dominium\n- PASS required: .aide/policies/token-budget.yaml\n- PASS required: .aide/memory/project-state.md\n- PASS required: .aide/memory/decisions.md\n- PASS required: .aide/memory/open-risks.md\n- PASS required: .aide/prompts/compact-task.md",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 11.95,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_validate.err.log",
+      "stdout_head": "AIDE Lite validate\nstatus: PASS\n- PASS required file: .aide/policies/token-budget.yaml\n- PASS required file: .aide/memory/project-state.md\n- PASS required file: .aide/memory/decisions.md\n- PASS required file: .aide/memory/open-risks.md\n- PASS required file: .aide/prompts/compact-task.md\n- PASS required file: .aide/prompts/evidence-review.md",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_test",
+      "status": "FAIL",
+      "exit_code": 1,
+      "seconds": 4.91,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_test.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_test.err.log",
+      "stdout_head": "AIDE Lite test\nstatus: FAIL\n- [VerificationFinding(severity='INFO', check='review_packet', message='required sections present', path='.aide/context/latest-review-packet.md'), VerificationFinding(severity='INFO', check='review_packet', message='review packet tokens: 1408', path='.aide/context/latest-review-packet.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/latest-task-packet.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/latest-context-packet.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/repo-map.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/test-map.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/context-index.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/verification/latest-verification-report.md'), VerificationFinding(severity='WARN', check='file_references', message='referenced path does not exist (from .aide/context/latest-review-packet.md)', path='.aide/queue/Q20-provider-adapter-v0/evidence'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: .. (from .aide/context/latest-review-packet.md)', path='..'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/CHANGELOG.preview.md (from .aide/context/latest-review-packet.md)', path='../../../../changelog/CHANGELOG.preview.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/RELEASE_NOTES.preview.md (from .aide/context/latest-review-packet.md)', path='../../../../changelog/RELEASE_NOTES.preview.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/changelog.preview.json (from .aide/context/latest-review-packet.md)', path='../../../../changelog/changelog.preview.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/latest-changelog-report.md (from .aide/context/latest-review-packet.md)', path='../../../../changelog/latest-changelog-report.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/malformed-commits.md (from .aide/context/latest-review-packet.md)', path='../../../../changelog/malformed-commits.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/release-notes.preview.json (from .aide/context/latest-review-packet.md)', path='../../../../changelog/release-notes.preview.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../context/latest-review-packet.md (from .aide/context/latest-review-packet.md)', path='../../../../context/latest-review-packet.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../context/latest-task-packet.md (from .aide/context/latest-review-packet.md)', path='../../../../context/latest-task-packet.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../git/latest-helper-plan.json (from .aide/context/latest-review-packet.md)', path='../../../../git/latest-helper-plan.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../git/latest-helper-plan.md (from .aide/context/latest-review-packet.md)', path='../../../../git/latest-helper-plan.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../git/workflow-detection.json (from .aide/context/latest-review-packet.md)', path='../../../../git/workflow-detection.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../git/workflow-detection.md (from .aide/context/latest-review-packet.md)', path='../../../../git/workflow-detection.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/branch-protection-plan.json (from .aide/context/latest-review-packet.md)', path='../../../../github/branch-protection-plan.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/branch-protection-plan.md (from .aide/context/latest-review-packet.md)', path='../../../../github/branch-protection-plan.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/ci-advisory.json (from .aide/context/latest-review-packet.md)', path='../../../../github/ci-advisory.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/ci-advisory.md (from .aide/context/latest-review-packet.md)', path='../../../../github/ci-advisory.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/github-advisory.json (from .aide/context/latest-review-packet.md)', path='../../../../github/github-advisory.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/github-advisory.md (from .aide/context/latest-review-packet.md)', path='../../../../github/github-advisory.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/latest-github-status.md (from .aide/context/latest-review-packet.md)', path='../../../../github/latest-github-status.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../install/latest-conflict-report.json (from .aide/context/latest-review-packet.md)', path='../../../../install/latest-conflict-report.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../install/latest-install-dry-run.json (from .aide/context/latest-review-packet.md)', path='../../../../install/latest-install-dry-run.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../install/latest-install-observation.json (from .aide/context/latest-review-packet.md)', path='../../../../install/latest-install-observation.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../install/latest-install-observation.md (from .aide/context/latest-review-packet.md)', path='../../../../install/latest-install-observation.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/latest-review-packet.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/reports/token-ledger.jsonl'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/controller/latest-outcome-report.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/controller/latest-recommendations.md'), VerificationFinding(severity='WARN', check='file_references', message='referenced path does not exist (from .aide/context/latest-review-packet.md)', path='.aide/routing/latest-route-decision.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/cache/latest-cache-keys.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/gateway/latest-gateway-status.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/providers/latest-provider-status.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/verification/review-decision-policy.yaml')]",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_selftest",
+      "status": "FAIL",
+      "exit_code": 1,
+      "seconds": 4.84,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_selftest.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_selftest.err.log",
+      "stdout_head": "AIDE Lite selftest\nstatus: FAIL\n- [VerificationFinding(severity='INFO', check='review_packet', message='required sections present', path='.aide/context/latest-review-packet.md'), VerificationFinding(severity='INFO', check='review_packet', message='review packet tokens: 1408', path='.aide/context/latest-review-packet.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/latest-task-packet.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/latest-context-packet.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/repo-map.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/test-map.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/context-index.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/verification/latest-verification-report.md'), VerificationFinding(severity='WARN', check='file_references', message='referenced path does not exist (from .aide/context/latest-review-packet.md)', path='.aide/queue/Q20-provider-adapter-v0/evidence'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: .. (from .aide/context/latest-review-packet.md)', path='..'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/CHANGELOG.preview.md (from .aide/context/latest-review-packet.md)', path='../../../../changelog/CHANGELOG.preview.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/RELEASE_NOTES.preview.md (from .aide/context/latest-review-packet.md)', path='../../../../changelog/RELEASE_NOTES.preview.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/changelog.preview.json (from .aide/context/latest-review-packet.md)', path='../../../../changelog/changelog.preview.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/latest-changelog-report.md (from .aide/context/latest-review-packet.md)', path='../../../../changelog/latest-changelog-report.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/malformed-commits.md (from .aide/context/latest-review-packet.md)', path='../../../../changelog/malformed-commits.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../changelog/release-notes.preview.json (from .aide/context/latest-review-packet.md)', path='../../../../changelog/release-notes.preview.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../context/latest-review-packet.md (from .aide/context/latest-review-packet.md)', path='../../../../context/latest-review-packet.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../context/latest-task-packet.md (from .aide/context/latest-review-packet.md)', path='../../../../context/latest-task-packet.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../git/latest-helper-plan.json (from .aide/context/latest-review-packet.md)', path='../../../../git/latest-helper-plan.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../git/latest-helper-plan.md (from .aide/context/latest-review-packet.md)', path='../../../../git/latest-helper-plan.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../git/workflow-detection.json (from .aide/context/latest-review-packet.md)', path='../../../../git/workflow-detection.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../git/workflow-detection.md (from .aide/context/latest-review-packet.md)', path='../../../../git/workflow-detection.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/branch-protection-plan.json (from .aide/context/latest-review-packet.md)', path='../../../../github/branch-protection-plan.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/branch-protection-plan.md (from .aide/context/latest-review-packet.md)', path='../../../../github/branch-protection-plan.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/ci-advisory.json (from .aide/context/latest-review-packet.md)', path='../../../../github/ci-advisory.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/ci-advisory.md (from .aide/context/latest-review-packet.md)', path='../../../../github/ci-advisory.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/github-advisory.json (from .aide/context/latest-review-packet.md)', path='../../../../github/github-advisory.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/github-advisory.md (from .aide/context/latest-review-packet.md)', path='../../../../github/github-advisory.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../github/latest-github-status.md (from .aide/context/latest-review-packet.md)', path='../../../../github/latest-github-status.md'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../install/latest-conflict-report.json (from .aide/context/latest-review-packet.md)', path='../../../../install/latest-conflict-report.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../install/latest-install-dry-run.json (from .aide/context/latest-review-packet.md)', path='../../../../install/latest-install-dry-run.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../install/latest-install-observation.json (from .aide/context/latest-review-packet.md)', path='../../../../install/latest-install-observation.json'), VerificationFinding(severity='ERROR', check='file_references', message='path must stay inside repo: ../../../../install/latest-install-observation.md (from .aide/context/latest-review-packet.md)', path='../../../../install/latest-install-observation.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/context/latest-review-packet.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/reports/token-ledger.jsonl'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/controller/latest-outcome-report.md'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/controller/latest-recommendations.md'), VerificationFinding(severity='WARN', check='file_references', message='referenced path does not exist (from .aide/context/latest-review-packet.md)', path='.aide/routing/latest-route-decision.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/cache/latest-cache-keys.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/gateway/latest-gateway-status.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/providers/latest-provider-status.json'), VerificationFinding(severity='INFO', check='file_references', message='referenced path exists (from .aide/context/latest-review-packet.md)', path='.aide/verification/review-decision-policy.yaml')]",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_eval_run",
+      "status": "TIMEOUT",
+      "exit_code": 124,
+      "seconds": 120.08,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_eval_run.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_eval_run.err.log",
+      "stdout_head": "",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_verify",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 2.33,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_verify.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_verify.err.log",
+      "stdout_head": "AIDE Lite verify\nresult: WARN\nchecked_files: 68\nchanged_files: 109\ninfo: 150\nwarnings: 92\nerrors: 0\n- WARN file_references: referenced path does not exist (from .aide/context/latest-review-packet.md) path=.aide/controller/latest-outcome-report.md",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_intent_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.99,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_intent_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_intent_validate.err.log",
+      "stdout_head": "AIDE Lite intent validate\nresult: PASS\n- PASS Q36 required file exists: .aide/policies/intent.yaml\n- PASS Q36 required file exists: .aide/policies/workunit-sizing.yaml\n- PASS Q36 required file exists: .aide/policies/task-classes.yaml\n- PASS Q36 required file exists: .aide/policies/risk-classes.yaml\n- PASS Q36 required file exists: .aide/policies/prompt-normalization.yaml\n- PASS Q36 required file exists: .aide/intake/intent-packet.schema.json",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_repo_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 1.61,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_repo_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_repo_validate.err.log",
+      "stdout_head": "AIDE Lite repo validate\nresult: WARN\n- PASS Q37 required file exists: .aide/policies/repo-intelligence.yaml\n- PASS Q37 required file exists: .aide/policies/file-classification.yaml\n- PASS Q37 required file exists: .aide/policies/ownership-map.yaml\n- PASS Q37 required file exists: .aide/policies/dependency-map.yaml\n- PASS Q37 required file exists: .aide/policies/test-map.yaml\n- PASS Q37 required file exists: .aide/policies/doc-link-map.yaml",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_quality_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 2.07,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_quality_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_quality_validate.err.log",
+      "stdout_head": "AIDE Lite quality validate\nresult: PASS\n- PASS Q38 required file exists: .aide/policies/file-quality.yaml\n- PASS Q38 required file exists: .aide/policies/docs-consistency.yaml\n- PASS Q38 required file exists: .aide/policies/module-quality.yaml\n- PASS Q38 required file exists: .aide/policies/reuse-modularity.yaml\n- PASS Q38 required file exists: .aide/quality/file-quality-record.schema.json\n- PASS Q38 required file exists: .aide/quality/file-quality-ledger.schema.json",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_roots_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 1.16,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_roots_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_roots_validate.err.log",
+      "stdout_head": "AIDE Lite roots validate\nresult: PASS\n- PASS Q40 required file exists: .aide/policies/root-recycling.yaml\n- PASS Q40 required file exists: .aide/policies/root-inventory.yaml\n- PASS Q40 required file exists: .aide/policies/root-fates.yaml\n- PASS Q40 required file exists: .aide/policies/root-exceptions.yaml\n- PASS Q40 required file exists: .aide/policies/root-risk.yaml\n- PASS Q40 required file exists: .aide/refactors/root-inventory.schema.json",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_tools_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 1.63,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_tools_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_tools_validate.err.log",
+      "stdout_head": "AIDE Lite tools validate\nresult: PASS\n- PASS Q41 required file exists: .aide/policies/tool-absorption.yaml\n- PASS Q41 required file exists: .aide/policies/tool-inventory.yaml\n- PASS Q41 required file exists: .aide/policies/tool-fates.yaml\n- PASS Q41 required file exists: .aide/policies/tool-wrapping.yaml\n- PASS Q41 required file exists: .aide/policies/tool-risk.yaml\n- PASS Q41 required file exists: .aide/policies/tool-capabilities.yaml",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_install_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.79,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_install_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_install_validate.err.log",
+      "stdout_head": "AIDE Lite install validate\nresult: PASS\n- PASS Q43 required file exists: .aide/policies/install.yaml\n- PASS Q43 required file exists: .aide/policies/install-preservation.yaml\n- PASS Q43 required file exists: .aide/policies/install-ownership.yaml\n- PASS Q43 required file exists: .aide/policies/install-conflicts.yaml\n- PASS Q43 required file exists: .aide/policies/install-migrations.yaml\n- PASS Q43 required file exists: .aide/policies/install-verification.yaml",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_repair_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.72,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_repair_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_repair_validate.err.log",
+      "stdout_head": "AIDE Lite repair validate\nresult: PASS\n- PASS Q44 required file exists: .aide/policies/repair.yaml\n- PASS Q44 required file exists: .aide/policies/repair-classes.yaml\n- PASS Q44 required file exists: .aide/policies/repair-safety.yaml\n- PASS Q44 required file exists: .aide/policies/repair-detection.yaml\n- PASS Q44 required file exists: .aide/policies/repair-verification.yaml\n- PASS Q44 required file exists: .aide/policies/doctor.yaml",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_upgrade_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.94,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_upgrade_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_upgrade_validate.err.log",
+      "stdout_head": "AIDE Lite upgrade validate\nresult: PASS\n- PASS Q45 required file exists: .aide/policies/upgrade.yaml\n- PASS Q45 required file exists: .aide/policies/upgrade-compatibility.yaml\n- PASS Q45 required file exists: .aide/policies/upgrade-preservation.yaml\n- PASS Q45 required file exists: .aide/policies/upgrade-conflicts.yaml\n- PASS Q45 required file exists: .aide/policies/upgrade-migrations.yaml\n- PASS Q45 required file exists: .aide/policies/upgrade-verification.yaml",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_rollback_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.67,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_rollback_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_rollback_validate.err.log",
+      "stdout_head": "AIDE Lite rollback validate\nresult: PASS\n- PASS Q46 rollback required file exists: .aide/policies/rollback.yaml\n- PASS Q46 rollback required file exists: .aide/policies/rollback-classes.yaml\n- PASS Q46 rollback required file exists: .aide/policies/rollback-safety.yaml\n- PASS Q46 rollback required file exists: .aide/policies/rollback-verification.yaml\n- PASS Q46 rollback required file exists: .aide/rollback/rollback-observation.schema.json\n- PASS Q46 rollback required file exists: .aide/rollback/rollback-plan.schema.json",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_uninstall_validate",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 2.54,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_uninstall_validate.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_uninstall_validate.err.log",
+      "stdout_head": "AIDE Lite uninstall validate\nresult: PASS\n- PASS Q46 uninstall required file exists: .aide/policies/uninstall.yaml\n- PASS Q46 uninstall required file exists: .aide/policies/uninstall-classes.yaml\n- PASS Q46 uninstall required file exists: .aide/policies/uninstall-safety.yaml\n- PASS Q46 uninstall required file exists: .aide/policies/uninstall-verification.yaml\n- PASS Q46 uninstall required file exists: .aide/uninstall/uninstall-observation.schema.json\n- PASS Q46 uninstall required file exists: .aide/uninstall/uninstall-plan.schema.json",
+      "stderr_head": ""
+    },
+    {
+      "name": "aide_commit_check_latest",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.8,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_commit_check_latest.log",
+      "stderr_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/aide_commit_check_latest.err.log",
+      "stdout_head": "AIDE Lite commit check\nresult: PASS\nsource: git log -1 --pretty=%B\npolicy: .aide/policies/commit-messages.yaml\nstandard: .aide/reports/aide-commit-message-standard.md\n- PASS commit subject is present\n- PASS commit subject is 72 characters or fewer\n- PASS commit subject follows type(scope): summary",
+      "stderr_head": ""
+    },
+    {
+      "name": "secret_scan_high_confidence",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0,
+      "stdout_log": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/secret_scan_high_confidence.log",
+      "stderr_log": "",
+      "stdout_head": ".aide\\scripts\\tests\\test_q27_commit_recovery.py:145:        self.assertNotIn(\"OPENAI_API_KEY=\", hook)\n.aide\\scripts\\tests\\test_q27_commit_recovery.py:146:        self.assertNotIn(\"BEGIN PRIVATE KEY\", template)\n.aide\\queue\\DOMINIUM-AIDE-STABLE-INSTALL-01\\evidence\\validation.md:54:- High-confidence scan returned only Q50 evidence text and test assertions that forbid `OPENAI_API_KEY=` and `BEGIN PRIVATE KEY`; no credential values were found.\n.aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\secret-scan.md:15:- `BEGIN PRIVATE KEY`\n.aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\secret-scan.md:16:- explicit `OPENAI_API_KEY=`, `ANTHROPIC_API_KEY=`, `DEEPSEEK_API_KEY=` assignments\n.aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\secret-scan.md:22:- `.aide/scripts/tests/test_q27_commit_recovery.py` assertions that forbid `OPENAI_API_KEY=` and `BEGIN PRIVATE KEY`.",
+      "stderr_head": ""
+    }
+  ]
+}
