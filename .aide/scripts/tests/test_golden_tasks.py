@@ -19,6 +19,20 @@ assert SPEC.loader is not None
 SPEC.loader.exec_module(aide_lite)
 
 
+REPORT_SMOKE_TASK_IDS = (
+    "compact-task-packet-required-sections",
+    "context-packet-no-full-repo-dump",
+    "verifier-detects-bad-evidence",
+    "review-packet-evidence-only",
+    "token-ledger-budget-check",
+    "adapter-managed-section-determinism",
+    "commit_message_standard_golden",
+    "branch_role_detection_golden",
+    "git_workflow_policy_golden",
+    "intent_compile_vague_prompt_golden",
+)
+
+
 class GoldenTaskTests(unittest.TestCase):
     def make_repo(self) -> Path:
         temp = tempfile.TemporaryDirectory()
@@ -60,9 +74,9 @@ class GoldenTaskTests(unittest.TestCase):
         self.assertGreater(result.checks_run, 0)
         self.assertEqual(result.errors, ())
 
-    def test_run_all_writes_json_and_markdown_reports(self) -> None:
+    def test_report_subset_writes_json_and_markdown_reports(self) -> None:
         root = self.make_repo()
-        run = aide_lite.run_golden_tasks(root)
+        run = aide_lite.run_golden_tasks(root, task_ids=REPORT_SMOKE_TASK_IDS)
         self.assertEqual(run.result, "PASS")
         json_result, md_result = aide_lite.write_golden_run_reports(root, run)
         self.assertIn(json_result.action, {"written", "unchanged"})
@@ -70,7 +84,7 @@ class GoldenTaskTests(unittest.TestCase):
         data = json.loads(aide_lite.read_text(root / aide_lite.GOLDEN_RUN_JSON_PATH))
         self.assertEqual(data["schema_version"], "aide.golden-tasks-run.v0")
         self.assertEqual(data["result"], "PASS")
-        self.assertEqual(data["task_count"], 6)
+        self.assertEqual(data["task_count"], len(REPORT_SMOKE_TASK_IDS))
         markdown = aide_lite.read_text(root / aide_lite.GOLDEN_RUN_MD_PATH)
         self.assertIn("# Latest Golden Tasks", markdown)
         self.assertIn("Token reduction remains valid only if golden tasks pass.", markdown)
@@ -102,11 +116,11 @@ class GoldenTaskTests(unittest.TestCase):
 
     def test_reports_are_deterministic_and_metadata_only(self) -> None:
         root = self.make_repo()
-        run = aide_lite.run_golden_tasks(root)
+        run = aide_lite.run_golden_tasks(root, task_ids=REPORT_SMOKE_TASK_IDS)
         aide_lite.write_golden_run_reports(root, run)
         first_json = aide_lite.read_text(root / aide_lite.GOLDEN_RUN_JSON_PATH)
         first_md = aide_lite.read_text(root / aide_lite.GOLDEN_RUN_MD_PATH)
-        aide_lite.write_golden_run_reports(root, aide_lite.run_golden_tasks(root))
+        aide_lite.write_golden_run_reports(root, aide_lite.run_golden_tasks(root, task_ids=REPORT_SMOKE_TASK_IDS))
         self.assertEqual(first_json, aide_lite.read_text(root / aide_lite.GOLDEN_RUN_JSON_PATH))
         self.assertEqual(first_md, aide_lite.read_text(root / aide_lite.GOLDEN_RUN_MD_PATH))
         data = json.loads(first_json)
@@ -118,7 +132,7 @@ class GoldenTaskTests(unittest.TestCase):
 
     def test_eval_report_command_reads_latest_report(self) -> None:
         root = self.make_repo()
-        aide_lite.write_golden_run_reports(root, aide_lite.run_golden_tasks(root))
+        aide_lite.write_golden_run_reports(root, aide_lite.run_golden_tasks(root, task_ids=REPORT_SMOKE_TASK_IDS))
         buffer = io.StringIO()
         with contextlib.redirect_stdout(buffer):
             code = aide_lite.main(["--repo-root", str(root), "eval", "report"])

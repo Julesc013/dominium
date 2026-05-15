@@ -1,0 +1,86 @@
+{
+  "blocked_reasons": [],
+  "evidence_required": [
+    ".aide/repo/latest-repo-intelligence.md",
+    ".aide/reports/file-quality-summary.md",
+    ".aide/refactors/latest-refactor-readiness.md",
+    "queue evidence for the future refactor WorkUnit"
+  ],
+  "generated_by": "aide-lite",
+  "no_apply": true,
+  "non_goals": [
+    "no file moves",
+    "no file deletes",
+    "no reference rewrites",
+    "no target repo mutation",
+    "no concrete root recycling",
+    "no tool absorption"
+  ],
+  "operating_mode": {
+    "dry_run_first": true,
+    "no_apply": true,
+    "no_file_deletes": true,
+    "no_file_moves": true,
+    "no_reference_rewrites": true,
+    "no_target_repo_mutation": true
+  },
+  "operations": [
+    {
+      "apply_allowed": false,
+      "fate": "unknown",
+      "operation_id": "q39-readiness-gate",
+      "operation_type": "ownership_reclassification",
+      "reason": "Future refactor WorkUnits must use repo intelligence and quality evidence before selecting concrete paths.",
+      "reference_rewrite_required": false,
+      "requires_review": true,
+      "risk": "governance",
+      "rollback_action": "No applied change exists in Q39; discard dry-run artifact if superseded.",
+      "source_path": "",
+      "target_path": "",
+      "validators_required": [
+        "repo validate",
+        "quality validate",
+        "refactor validate"
+      ]
+    }
+  ],
+  "plan_id": "q39-no-apply-readiness-example",
+  "purpose": "Example no-apply refactor readiness plan for future Q40/Q41/Q42 structural phases.",
+  "risk_class": "governance",
+  "rollback_notes": {
+    "q39_applied_changes": "none",
+    "required_before_future_apply": true,
+    "rollback_action": "No rollback is needed for Q39 because no files are moved, deleted, or rewritten."
+  },
+  "schema_version": "aide.refactor-plan.v0",
+  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_inputs": [
+    {
+      "id": "repo_intelligence_index",
+      "path": ".aide/repo/latest-repo-intelligence.md"
+    },
+    {
+      "id": "file_quality_summary",
+      "path": ".aide/reports/file-quality-summary.md"
+    },
+    {
+      "id": "file_quality_ledger",
+      "path": ".aide/reports/file-quality-ledger.json"
+    },
+    {
+      "id": "intent_packet",
+      "path": ".aide/intake/latest-intent-packet.json"
+    },
+    {
+      "id": "branch_policy",
+      "path": ".aide/policies/git-workflow.yaml"
+    }
+  ],
+  "status": "dry_run",
+  "task_class": "refactor",
+  "validation_plan": [
+    "py -3 .aide/scripts/aide_lite.py repo validate",
+    "py -3 .aide/scripts/aide_lite.py quality validate",
+    "py -3 .aide/scripts/aide_lite.py refactor validate"
+  ]
+}

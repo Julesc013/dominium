@@ -1,0 +1,178 @@
+{
+  "blocking_issues": [
+    {
+      "blocking": true,
+      "evidence_refs": [
+        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+      ],
+      "issue_id": "repair-55d99864bb34",
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "severity": "blocking"
+    },
+    {
+      "blocking": true,
+      "evidence_refs": [
+        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+      ],
+      "issue_id": "repair-7f92516ecaf1",
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "severity": "blocking"
+    },
+    {
+      "blocking": true,
+      "evidence_refs": [
+        "tools/xstack/testx/tests/test_no_secrets_in_bundle.py"
+      ],
+      "issue_id": "repair-bf518d2b8fea",
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "severity": "blocking"
+    },
+    {
+      "blocking": true,
+      "evidence_refs": [
+        "tools/xstack/testx/tests/test_standards_issues_spec_and_credential.py"
+      ],
+      "issue_id": "repair-da642231d5b1",
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "severity": "blocking"
+    }
+  ],
+  "generated_by": "aide-lite",
+  "no_apply": true,
+  "operations": [
+    {
+      "action": "manual_review_required",
+      "apply_allowed": false,
+      "delete_allowed": false,
+      "migration_required": false,
+      "operation_id": "repair-op-e2bab7245c1d",
+      "operation_type": "candidate_repair",
+      "overwrite_allowed": false,
+      "preserve_target_state": true,
+      "reason": "Export pack checksums are missing; future repair may regenerate pack evidence.",
+      "repair_class": "invalid_pack_checksum",
+      "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
+      "source_reference": "",
+      "target_path": ".aide/export/aide-lite-pack-v0/checksums.json",
+      "validation_required": [
+        "py -3 .aide/scripts/aide_lite.py doctor",
+        "py -3 .aide/scripts/aide_lite.py validate",
+        "py -3 .aide/scripts/aide_lite.py test",
+        "py -3 .aide/scripts/aide_lite.py selftest",
+        "py -3 .aide/scripts/aide_lite.py install validate",
+        "py -3 .aide/scripts/aide_lite.py repair validate",
+        "py -3 .aide/scripts/aide_lite.py pack-status"
+      ]
+    },
+    {
+      "action": "blocked",
+      "apply_allowed": false,
+      "delete_allowed": false,
+      "migration_required": false,
+      "operation_id": "repair-op-ac47c0ad0aa2",
+      "operation_type": "candidate_repair",
+      "overwrite_allowed": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
+      "source_reference": "",
+      "target_path": "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py",
+      "validation_required": [
+        "py -3 .aide/scripts/aide_lite.py doctor",
+        "py -3 .aide/scripts/aide_lite.py validate",
+        "py -3 .aide/scripts/aide_lite.py test",
+        "py -3 .aide/scripts/aide_lite.py selftest",
+        "py -3 .aide/scripts/aide_lite.py install validate",
+        "py -3 .aide/scripts/aide_lite.py repair validate",
+        "py -3 .aide/scripts/aide_lite.py pack-status"
+      ]
+    },
+    {
+      "action": "blocked",
+      "apply_allowed": false,
+      "delete_allowed": false,
+      "migration_required": false,
+      "operation_id": "repair-op-8886a4d02fbc",
+      "operation_type": "candidate_repair",
+      "overwrite_allowed": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
+      "source_reference": "",
+      "target_path": "tools/auditx/analyzers/e531_secrets_in_log_smell.py",
+      "validation_required": [
+        "py -3 .aide/scripts/aide_lite.py doctor",
+        "py -3 .aide/scripts/aide_lite.py validate",
+        "py -3 .aide/scripts/aide_lite.py test",
+        "py -3 .aide/scripts/aide_lite.py selftest",
+        "py -3 .aide/scripts/aide_lite.py install validate",
+        "py -3 .aide/scripts/aide_lite.py repair validate",
+        "py -3 .aide/scripts/aide_lite.py pack-status"
+      ]
+    },
+    {
+      "action": "blocked",
+      "apply_allowed": false,
+      "delete_allowed": false,
+      "migration_required": false,
+      "operation_id": "repair-op-041d4f16a8c1",
+      "operation_type": "candidate_repair",
+      "overwrite_allowed": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
+      "source_reference": "",
+      "target_path": "tools/xstack/testx/tests/test_no_secrets_in_bundle.py",
+      "validation_required": [
+        "py -3 .aide/scripts/aide_lite.py doctor",
+        "py -3 .aide/scripts/aide_lite.py validate",
+        "py -3 .aide/scripts/aide_lite.py test",
+        "py -3 .aide/scripts/aide_lite.py selftest",
+        "py -3 .aide/scripts/aide_lite.py install validate",
+        "py -3 .aide/scripts/aide_lite.py repair validate",
+        "py -3 .aide/scripts/aide_lite.py pack-status"
+      ]
+    },
+    {
+      "action": "blocked",
+      "apply_allowed": false,
+      "delete_allowed": false,
+      "migration_required": false,
+      "operation_id": "repair-op-11bd45dd0066",
+      "operation_type": "candidate_repair",
+      "overwrite_allowed": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
+      "source_reference": "",
+      "target_path": "tools/xstack/testx/tests/test_standards_issues_spec_and_credential.py",
+      "validation_required": [
+        "py -3 .aide/scripts/aide_lite.py doctor",
+        "py -3 .aide/scripts/aide_lite.py validate",
+        "py -3 .aide/scripts/aide_lite.py test",
+        "py -3 .aide/scripts/aide_lite.py selftest",
+        "py -3 .aide/scripts/aide_lite.py install validate",
+        "py -3 .aide/scripts/aide_lite.py repair validate",
+        "py -3 .aide/scripts/aide_lite.py pack-status"
+      ]
+    }
+  ],
+  "plan_id": "q44-repair-plan-current-repo",
+  "planned_conflicts": 4,
+  "planned_skips": 5,
+  "planned_writes": 0,
+  "schema_version": "aide.repair-dry-run.v0",
+  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "warnings": [
+    "Q44 dry-run applies no repairs, overwrites, deletions, migrations, moves, or rewrites.",
+    "Planned writes are future candidates only and require a later explicit apply phase."
+  ]
+}

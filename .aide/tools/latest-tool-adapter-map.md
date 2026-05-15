@@ -1,0 +1,174 @@
+# Tool Adapter Map
+
+- adapter_map_id: q41-latest-tool-adapter-map
+- source_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
+- mapping_count: 1985
+- unmapped_count: 846
+- execution_allowed: false
+- no_apply: true
+
+## Mappings
+
+- `.aide/adapters/templates/continue-checks.template.md` -> future tools wrapper for validate (validate)
+- `.aide/cache/latest-cache-keys.json` -> future tools wrapper for test (test)
+- `.aide/cache/latest-cache-keys.md` -> future tools wrapper for test (test)
+- `.aide/changelog/RELEASE_NOTES.preview.md` -> future tools wrapper for release (release)
+- `.aide/context/latest-context-packet.md` -> future tools wrapper for context (context)
+- `.aide/context/latest-review-packet.md` -> future tools wrapper for context (context)
+- `.aide/context/latest-task-packet.md` -> future tools wrapper for context (context)
+- `.aide/context/test-map.json` -> future tools wrapper for context (context)
+- `.aide/evals/runs/latest-golden-tasks.json` -> future tools wrapper for test (test)
+- `.aide/evals/runs/latest-golden-tasks.md` -> future tools wrapper for test (test)
+- `.aide/git/latest-helper-plan.json` -> future tools wrapper for test (test)
+- `.aide/git/latest-helper-plan.md` -> future tools wrapper for test (test)
+- `.aide/git/sync-policy.md` -> future tools wrapper for repo_policy (repo_policy)
+- `.aide/import-policy.template.yaml` -> future tools wrapper for repo_policy (repo_policy)
+- `.aide/import-report.template.md` -> future tools wrapper for audit (audit)
+- `.aide/policies/sync-policy.yaml` -> future tools wrapper for repo_policy (repo_policy)
+- `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/install-upgrade-risk-report.md` -> future tools wrapper for audit (audit)
+- `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/release-bundle-readiness.md` -> future tools wrapper for package (package)
+- `.aide/queue/DOMINIUM-AIDE-PILOT-01/import-report.md` -> future tools wrapper for audit (audit)
+- `.aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/sync-report.md` -> future tools wrapper for audit (audit)
+- `.aide/repo/generated-map.json` -> future tools wrapper for generate (generate)
+- `.aide/repo/latest-repo-intelligence.md` -> future tools wrapper for repo_policy (repo_policy)
+- `.aide/repo/test-map.json` -> future tools wrapper for repo_policy (repo_policy)
+- `.aide/reports/dominium-fresh-install-preflight.md` -> future tools wrapper for audit (audit)
+- `.aide/reports/dominium-release-bundle-readiness.md` -> future tools wrapper for audit (audit)
+- `.aide/routing/latest-route-decision.json` -> future tools wrapper for test (test)
+- `.aide/routing/latest-route-decision.md` -> future tools wrapper for test (test)
+- `.aide/scripts/aide_lite.py` -> future tools wrapper for context (context)
+- `.aide/verification/latest-verification-report.md` -> future tools wrapper for audit (audit)
+- `CMakeLists.txt` -> future tools wrapper for build (build)
+- `apps/client/CMakeLists.txt` -> future tools wrapper for build (build)
+- `apps/client/presentation/frame_graph_builder.cpp` -> future tools wrapper for build (build)
+- `apps/client/presentation/frame_graph_builder.h` -> future tools wrapper for build (build)
+- `apps/launcher/CMakeLists.txt` -> future tools wrapper for build (build)
+- `apps/server/CMakeLists.txt` -> future tools wrapper for build (build)
+- `apps/server/persistence/dom_checkpoint_policy.h` -> future tools wrapper for repo_policy (repo_policy)
+- `apps/server/persistence/dom_checkpointing.cpp` -> future tools wrapper for validate (validate)
+- `apps/server/persistence/dom_checkpointing.h` -> future tools wrapper for validate (validate)
+- `apps/server/persistence/integrity_checkpoints.cpp` -> future tools wrapper for validate (validate)
+- `apps/server/persistence/integrity_checkpoints.h` -> future tools wrapper for validate (validate)
+- `apps/setup/CMakeLists.txt` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/build_all.bat` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/build_codex_verify.bat` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/check_layers.py` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/ci/check_launcher_core_invariants.py` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/ci/launcher_cli_smoke_matrix.py` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/ci/setup_build.bat` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/ci/setup_build.sh` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/ci/setup_test.bat` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/ci/setup_test.sh` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/commit_template.md` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/diagnostics/make_support_bundle.py` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/doc_ratio_check.py` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/gen_base_demo_mod.py` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/gen_changelog.bat` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/gen_launcher_ui_schema_v1.py` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/gen_tools_demo.py` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/legacy/build_legacy_windows.bat` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/legacy/build_legacy_windows.sh` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/legacy/build_packages.bat` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/legacy/build_packages.sh` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/legacy/run_setup_tests.bat` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/legacy/run_setup_tests.sh` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/CMakeLists.txt` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/packaging/dsumanifest.py` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/linux/CMakeLists.txt` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/packaging/linux/build_run.sh` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/control.in` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postinst` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postrm` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/prerm` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/linux/dominium-install.sh` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/linux/dominium-installer.sh.in` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/linux/rpm/dominium.spec.in` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/linux/write_apprun.cmake` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/packaging/macos/CMakeLists.txt` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/packaging/macos/Dominium.app/Contents/Info.plist.in` -> future tools wrapper for context (context)
+- `apps/setup/packages/scripts/packaging/macos/build_dmg.sh` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/packaging/macos/build_pkg.sh` -> future tools wrapper for build (build)
+- `apps/setup/packages/scripts/packaging/macos/pkg_scripts/postinstall` -> future tools wrapper for context (context)
+
+## Unmapped Tools
+
+- `.aide/hooks/commit-msg`
+- `.aide/policies/export-import.yaml`
+- `.github/workflows/ci.yml`
+- `archive/legacy/setup_core_setup/setup/core/import/dsk_import_legacy.cpp`
+- `contracts/schemas/net_resync_strategy_registry.schema.json`
+- `contracts/schemas/tools/SPEC_TOOL_CAPABILITIES.md`
+- `contracts/schemas/tools/SPEC_TOOL_INTENTS.md`
+- `contracts/schemas/tools/SPEC_TOOL_SCOPING.md`
+- `contracts/schemas/world/SPEC_WORLD_DATA_IMPORT.md`
+- `data/registries/net_resync_strategy_registry.json`
+- `engine/modules/caps/d_caps_export.c`
+- `game/domains/embodiment/tools/__init__.py`
+- `game/domains/embodiment/tools/logic_tool.py`
+- `game/domains/embodiment/tools/teleport_tool.py`
+- `game/domains/embodiment/tools/terrain_edit_tool.py`
+- `game/domains/embodiment/tools/toolbelt_engine.py`
+- `lib/export/export_engine.py`
+- `lib/import/import_engine.py`
+- `scripts/ci/hygiene_utils.py`
+- `scripts/dev/dev.cmd`
+- `scripts/dev/dev.py`
+- `scripts/dev/env_tools.cmd`
+- `scripts/dev/env_tools.ps1`
+- `scripts/dev/env_tools.py`
+- `scripts/dev/env_tools.sh`
+- `scripts/dev/env_tools_lib.py`
+- `scripts/dev/gate.py`
+- `scripts/dev/gate.py.bak`
+- `scripts/dev/gate_shim.py`
+- `scripts/dev/identity_fingerprint_lib.py`
+- `scripts/dev/tool_shim.py`
+- `scripts/gen_exec_profiles.py`
+- `scripts/ide_gen.bat`
+- `scripts/ide_gen.sh`
+- `scripts/verify_abi_boundaries.py`
+- `scripts/verify_ide_quarantine.py`
+- `scripts/verify_includes_sanity.py`
+- `scripts/verify_projection_regen_clean.py`
+- `scripts/verify_tree_sanity.bat`
+- `scripts/verify_ui_shell_purity.py`
+- `tools/__init__.py`
+- `tools/_shared/tools_shared_stub.c`
+- `tools/ai/ai_cli.py`
+- `tools/animal/animal_cli.cpp`
+- `tools/appshell/appshell4_probe.py`
+- `tools/appshell/appshell6_probe.py`
+- `tools/appshell/ipc_unify_common.py`
+- `tools/appshell/product_stub_cli.py`
+- `tools/appshell/supervised_product_host.py`
+- `tools/appshell/supervisor_hardening_common.py`
+- `tools/appshell/supervisor_service.py`
+- `tools/appshell/tool_replay_ipc_attach.py`
+- `tools/appshell/tool_replay_supervisor.py`
+- `tools/appshell/tool_run_ipc_unify.py`
+- `tools/appshell/tool_run_supervisor_hardening.py`
+- `tools/artifactmeta/tool_artifactmeta.c`
+- `tools/assetc/tool_assetc.c`
+- `tools/astro/sol2_runtime_common.py`
+- `tools/astro/tool_replay_illumination_view.py`
+- `tools/astro/tool_replay_orbit_view.py`
+- `tools/autonomy/autonomy_cli.cpp`
+- `tools/blueprint_editor/main_blueprint_editor.cpp`
+- `tools/chem/tool_replay_chem_window`
+- `tools/chem/tool_replay_chem_window.cmd`
+- `tools/chem/tool_replay_chem_window.py`
+- `tools/chem/tool_replay_combustion_window`
+- `tools/chem/tool_replay_combustion_window.cmd`
+- `tools/chem/tool_replay_combustion_window.py`
+- `tools/chem/tool_replay_degradation_window`
+- `tools/chem/tool_replay_degradation_window.cmd`
+- `tools/chem/tool_replay_degradation_window.py`
+- `tools/chem/tool_replay_process_run`
+- `tools/chem/tool_replay_process_run.cmd`
+- `tools/chem/tool_replay_process_run.py`
+- `tools/chem/tool_run_chem_stress`
+- `tools/chem/tool_run_chem_stress.cmd`
+- `tools/chem/tool_run_chem_stress.py`
+- `tools/chem/tool_verify_energy_conservation`
+- `tools/chem/tool_verify_energy_conservation.cmd`
+- `tools/chem/tool_verify_energy_conservation.py`

@@ -3,7 +3,7 @@
   "canonical_branch": "main",
   "confidence": "medium",
   "current_branch": "main",
-  "current_commit": "4252584e060baf01bb1692c68e84348043793f95",
+  "current_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
   "detected_workflow": "trunk_without_dev",
   "generated_by": "aide-lite",
   "integration_branch": "",
@@ -28,8 +28,7 @@
     ]
   },
   "warnings": [
-    "dirty_tree_detected",
-    "integration_branch_dev_missing"
+    "dirty_tree_detected"
   ],
   "worktree_dirty": true
 }

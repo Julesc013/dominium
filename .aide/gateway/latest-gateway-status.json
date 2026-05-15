@@ -1,0 +1,22 @@
+{
+  "generated_by": "aide-lite",
+  "mode": "report_only_target_fallback",
+  "model_calls_enabled": false,
+  "outbound_network_enabled": false,
+  "provider_calls_enabled": false,
+  "raw_prompt_storage": false,
+  "raw_response_storage": false,
+  "readiness": {
+    "core_helpers": {
+      "missing": [
+        "core/gateway"
+      ],
+      "reason": "target portable sync preserves product-root ownership",
+      "status": "fallback"
+    }
+  },
+  "schema_version": "aide.gateway-status.v0",
+  "service": "aide-gateway",
+  "signals": {},
+  "summaries": {}
+}

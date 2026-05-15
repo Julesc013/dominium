@@ -1,138 +1,1059 @@
 {
   "categories": {
+    "Added": [
+      {
+        "aide_phase": "Q49",
+        "aide_result": "READY_FOR_Q50_WITH_WARNINGS",
+        "breaking": false,
+        "category": "Added",
+        "commit": "80dc7bfb58a1",
+        "commit_sha": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+        "entry": "Dominium Q49 preflight evidence and Q50 dry-run readiness guidance.",
+        "follow_up": "- Run Q50 Dominium Fresh Install / Upgrade from Stable Pack as observe/compare/plan/dry-run only.\n- Preserve target AIDE memory, queue, golden tasks, doctrine refs, generated evidence, and XStack/AuditX/RepoX/TestX systems.\n\nAIDE-Task: DOMINIUM-AIDE-FRESH-PREFLIGHT-01\nAIDE-Phase: Q49\nAIDE-Result: READY_FOR_Q50_WITH_WARNINGS\nAIDE-Scope: .aide preflight evidence\nAIDE-Token-Impact: compact evidence only\nAIDE-Quality-Gate: PASS_WITH_WARNINGS",
+        "risks": "- Target AIDE remains older than Q36-Q48 command families and requires an upgrade dry-run rather than direct apply.\n- The source bundle is local preview/no-publish with apply mode unavailable.\n- Existing Dominium gate systems need separate explicit validation scope before execution.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): preflight stable AIDE install readiness",
+        "summary": "Dominium Q49 preflight evidence and Q50 dry-run readiness guidance.",
+        "type": "aide",
+        "validation": "- PASS: `git diff --cached --check`.\n- PASS: AIDE `doctor`, `test`, `selftest`, `eval run`, `commit check --latest`, `git policy`, Q50 `pack` generation, generated JSON parse checks, `.aide.local` ignore check, and release bundle checksum/listing checks.\n- WARN: AIDE `validate` and `verify` retain review-packet/reference/diff-scope warnings; changelog preview reports malformed historical commits.\n- NOT RUN: Dominium XStack/TestX/AuditX/RepoX/CMake validators, because Q49 is evidence-only and those systems can write audit/cache/build outputs."
+      }
+    ],
     "Changed": [
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Changed",
         "commit": "f2a1b4412cbe",
+        "commit_sha": "f2a1b4412cbeac0c5da1d5e357a5dfdee59a8959",
         "entry": "imported portable AIDE governance and recovery tooling into Dominium.",
-        "subject": "aide(dominium): sync portable commit and WorkUnit policies"
+        "follow_up": "- Generate Dominium-local Git workflow reports, adapter outputs, context packets, and final validation evidence.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide governance\nAIDE-Token-Impact: governance-only\nAIDE-Quality-Gate: test-selftest-pass",
+        "risks": "- This commit does not mutate branches, install hooks, or change product/source files.\n- Target-local generated reports still need refresh in the next commit.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): sync portable commit and WorkUnit policies",
+        "summary": "imported portable AIDE governance and recovery tooling into Dominium.",
+        "type": "aide",
+        "validation": "- PASS: py -3 .aide/scripts/aide_lite.py validate.\n- PASS: py -3 .aide/scripts/aide_lite.py test.\n- PASS: py -3 .aide/scripts/aide_lite.py selftest.\n- WARN: validate still reports stale generated report/adapt warnings until regeneration.\n- FAIL: py -3 .aide/scripts/aide_lite.py eval run before git plan generation; to be rerun after target-local reports exist."
       },
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Changed",
         "commit": "4f04a866b73c",
+        "commit_sha": "4f04a866b73c11156836cb9aff44b743cf8c3235",
         "entry": "added Dominium-local Git workflow reports and dry-run helper plan outputs.",
-        "subject": "aide(dominium): sync Git workflow policy and reports"
+        "follow_up": "- Regenerate context, review, token, and validation evidence for Q33 review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide/git, .aide/changelog, AGENTS.md\nAIDE-Token-Impact: target-local-reporting\nAIDE-Quality-Gate: dry-run-git-helpers",
+        "risks": "- Dominium currently has no local `dev` branch, so helper land/promote plans report blockers rather than readiness.\n- The current branch is `main`; branch mutation remains forbidden for Q33.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): sync Git workflow policy and reports",
+        "summary": "added Dominium-local Git workflow reports and dry-run helper plan outputs.",
+        "type": "aide",
+        "validation": "- PASS: py -3 .aide/scripts/aide_lite.py git detect.\n- PASS: py -3 .aide/scripts/aide_lite.py git doctor, git status, and git policy.\n- PASS: py -3 .aide/scripts/aide_lite.py git sync --dry-run, git land --dry-run --target dev, git promote --dry-run --from dev --to main, and git prune --dry-run all avoided mutation.\n- WARN: changelog preview reports older malformed commits from pre-policy history."
       }
     ],
     "Docs": [
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Docs",
         "commit": "4252584e060b",
+        "commit_sha": "4252584e060baf01bb1692c68e84348043793f95",
         "entry": "added compact Dominium AIDE governance sync reference.",
-        "subject": "docs(dominium): record canonical AIDE governance sync"
+        "follow_up": "- Run final validation and report Q33 for review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: docs/reference\nAIDE-Token-Impact: compact-reference-only\nAIDE-Quality-Gate: docs-sanity-pass",
+        "risks": "- The docs describe local AIDE workflow readiness only; they do not authorize product feature work or branch mutation.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "docs(dominium): record canonical AIDE governance sync",
+        "summary": "added compact Dominium AIDE governance sync reference.",
+        "type": "docs",
+        "validation": "- PASS: py -3 scripts/verify_docs_sanity.py.\n- PASS: docs are limited to AIDE governance sync references and do not edit doctrine roots.\n- NOT RUN: final full validation follows this documentation commit."
       }
     ],
     "Fixed": [
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Fixed",
         "commit": "f2a1b4412cbe",
+        "commit_sha": "f2a1b4412cbeac0c5da1d5e357a5dfdee59a8959",
         "entry": "prevented AIDE Lite selftest from resolving Dominium product `core` modules.",
-        "subject": "aide(dominium): sync portable commit and WorkUnit policies"
+        "follow_up": "- Generate Dominium-local Git workflow reports, adapter outputs, context packets, and final validation evidence.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide governance\nAIDE-Token-Impact: governance-only\nAIDE-Quality-Gate: test-selftest-pass",
+        "risks": "- This commit does not mutate branches, install hooks, or change product/source files.\n- Target-local generated reports still need refresh in the next commit.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): sync portable commit and WorkUnit policies",
+        "summary": "prevented AIDE Lite selftest from resolving Dominium product `core` modules.",
+        "type": "aide",
+        "validation": "- PASS: py -3 .aide/scripts/aide_lite.py validate.\n- PASS: py -3 .aide/scripts/aide_lite.py test.\n- PASS: py -3 .aide/scripts/aide_lite.py selftest.\n- WARN: validate still reports stale generated report/adapt warnings until regeneration.\n- FAIL: py -3 .aide/scripts/aide_lite.py eval run before git plan generation; to be rerun after target-local reports exist."
       }
     ],
     "Internal": [
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Internal",
         "commit": "dd843482c92d",
+        "commit_sha": "dd843482c92d93bd581a6e15303854be98180d3f",
         "entry": "added the Q33 queue and evidence recovery surface.",
-        "subject": "aide(dominium): add canonical governance sync packet"
+        "follow_up": "- Sync portable commit, WorkUnit, and Git workflow governance from the canonical pack.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide/queue\nAIDE-Token-Impact: governance-only\nAIDE-Quality-Gate: baseline-recorded",
+        "risks": "- Direct import is not applied because the dry-run found target-local conflicts.\n- Later commits must preserve Dominium doctrine and target-local AIDE state.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): add canonical governance sync packet",
+        "summary": "added the Q33 queue and evidence recovery surface.",
+        "type": "aide",
+        "validation": "- PASS: git status --short was clean before baseline commands.\n- PASS: py -3 .aide/scripts/aide_lite.py doctor, validate, test, selftest, eval run.\n- WARN: verify reported existing stale generated-report references.\n- FAIL: adapter validate was already missing generated adapter outputs before sync.\n- NOT RUN: final validation waits for the targeted governance sync."
       },
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Internal",
         "commit": "4f04a866b73c",
+        "commit_sha": "4f04a866b73c11156836cb9aff44b743cf8c3235",
         "entry": "refreshed Codex adapter guidance for governance-aware task recovery and branch planning.",
-        "subject": "aide(dominium): sync Git workflow policy and reports"
+        "follow_up": "- Regenerate context, review, token, and validation evidence for Q33 review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide/git, .aide/changelog, AGENTS.md\nAIDE-Token-Impact: target-local-reporting\nAIDE-Quality-Gate: dry-run-git-helpers",
+        "risks": "- Dominium currently has no local `dev` branch, so helper land/promote plans report blockers rather than readiness.\n- The current branch is `main`; branch mutation remains forbidden for Q33.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): sync Git workflow policy and reports",
+        "summary": "refreshed Codex adapter guidance for governance-aware task recovery and branch planning.",
+        "type": "aide",
+        "validation": "- PASS: py -3 .aide/scripts/aide_lite.py git detect.\n- PASS: py -3 .aide/scripts/aide_lite.py git doctor, git status, and git policy.\n- PASS: py -3 .aide/scripts/aide_lite.py git sync --dry-run, git land --dry-run --target dev, git promote --dry-run --from dev --to main, and git prune --dry-run all avoided mutation.\n- WARN: changelog preview reports older malformed commits from pre-policy history."
       },
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Internal",
         "commit": "d722727e80e1",
+        "commit_sha": "d722727e80e10548e12eeea8c316b8803d167fe1",
         "entry": "refreshed Dominium-local AIDE generated reports and review evidence.",
-        "subject": "aide(dominium): regenerate packets and validation evidence"
+        "follow_up": "- Document the governance sync in Dominium reference docs and run final validation.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated reports and evidence\nAIDE-Token-Impact: latest-task-packet-1158-approx-tokens\nAIDE-Quality-Gate: eval-pass-verify-warn",
+        "risks": "- Review/verify warnings remain for optional controller/gateway/provider generated status refs outside Q33 scope.\n- The latest task packet is a next-task selection handoff, not product implementation authorization.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): regenerate packets and validation evidence",
+        "summary": "refreshed Dominium-local AIDE generated reports and review evidence.",
+        "type": "aide",
+        "validation": "- PASS: py -3 .aide/scripts/aide_lite.py snapshot, index, context, pack, and estimate.\n- PASS: py -3 .aide/scripts/aide_lite.py eval run, test, selftest, adapter validate, ledger scan, and ledger report.\n- WARN: py -3 .aide/scripts/aide_lite.py verify reports optional generated-status and diff-scope warnings, with 0 errors.\n- PASS: py -3 scripts/verify_docs_sanity.py."
       },
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Internal",
         "commit": "752918d4f281",
+        "commit_sha": "752918d4f281aad12cdb6e892d39460172155e34",
         "entry": "refreshed final Q33 generated validation artifacts.",
-        "subject": "aide(dominium): refresh final validation artifacts"
+        "follow_up": "- Run final read-only Git and commit checks before reporting Q33 for review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated validation artifacts\nAIDE-Token-Impact: final-review-packet-1123-approx-tokens\nAIDE-Quality-Gate: final-validation-pass-with-warnings",
+        "risks": "- This commit intentionally records generated AIDE reports; it does not mutate branches, install hooks, or change product/doctrine roots.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): refresh final validation artifacts",
+        "summary": "refreshed final Q33 generated validation artifacts.",
+        "type": "aide",
+        "validation": "- PASS: py -3 .aide/scripts/aide_lite.py doctor, validate, test, selftest, and eval run.\n- PASS: py -3 .aide/scripts/aide_lite.py commit check --latest before this final artifact commit.\n- PASS: py -3 .aide/scripts/aide_lite.py git detect, git policy, git plan, and dry-run helper commands.\n- WARN: changelog preview still reports malformed older pre-policy commits.\n- WARN: verify still reports optional generated-status refs and Q33 diff-scope warnings, with 0 errors."
       }
     ],
     "Tests": [
       {
+        "aide_phase": "Q33",
+        "aide_result": "PASS",
+        "breaking": false,
+        "category": "Tests",
         "commit": "d722727e80e1",
+        "commit_sha": "d722727e80e10548e12eeea8c316b8803d167fe1",
         "entry": "recorded 25/25 portable golden tasks passing after target-local helper-plan generation.",
-        "subject": "aide(dominium): regenerate packets and validation evidence"
+        "follow_up": "- Document the governance sync in Dominium reference docs and run final validation.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated reports and evidence\nAIDE-Token-Impact: latest-task-packet-1158-approx-tokens\nAIDE-Quality-Gate: eval-pass-verify-warn",
+        "risks": "- Review/verify warnings remain for optional controller/gateway/provider generated status refs outside Q33 scope.\n- The latest task packet is a next-task selection handoff, not product implementation authorization.",
+        "scope": "dominium",
+        "source_sections_present": [
+          "## Summary",
+          "## Why",
+          "## Changed",
+          "## Validation",
+          "## Changelog",
+          "## Risks",
+          "## Follow-up"
+        ],
+        "subject": "aide(dominium): regenerate packets and validation evidence",
+        "summary": "recorded 25/25 portable golden tasks passing after target-local helper-plan generation.",
+        "type": "aide",
+        "validation": "- PASS: py -3 .aide/scripts/aide_lite.py snapshot, index, context, pack, and estimate.\n- PASS: py -3 .aide/scripts/aide_lite.py eval run, test, selftest, adapter validate, ledger scan, and ledger report.\n- WARN: py -3 .aide/scripts/aide_lite.py verify reports optional generated-status and diff-scope warnings, with 0 errors.\n- PASS: py -3 scripts/verify_docs_sanity.py."
       }
     ]
   },
-  "commit_count": 20,
+  "category_counts": {
+    "Added": 1,
+    "Changed": 2,
+    "Docs": 1,
+    "Fixed": 1,
+    "Internal": 4,
+    "Tests": 1
+  },
+  "commit_count": 50,
+  "entries": [
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Internal",
+      "commit": "dd843482c92d",
+      "commit_sha": "dd843482c92d93bd581a6e15303854be98180d3f",
+      "entry": "added the Q33 queue and evidence recovery surface.",
+      "follow_up": "- Sync portable commit, WorkUnit, and Git workflow governance from the canonical pack.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide/queue\nAIDE-Token-Impact: governance-only\nAIDE-Quality-Gate: baseline-recorded",
+      "risks": "- Direct import is not applied because the dry-run found target-local conflicts.\n- Later commits must preserve Dominium doctrine and target-local AIDE state.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): add canonical governance sync packet",
+      "summary": "added the Q33 queue and evidence recovery surface.",
+      "type": "aide",
+      "validation": "- PASS: git status --short was clean before baseline commands.\n- PASS: py -3 .aide/scripts/aide_lite.py doctor, validate, test, selftest, eval run.\n- WARN: verify reported existing stale generated-report references.\n- FAIL: adapter validate was already missing generated adapter outputs before sync.\n- NOT RUN: final validation waits for the targeted governance sync."
+    },
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Changed",
+      "commit": "f2a1b4412cbe",
+      "commit_sha": "f2a1b4412cbeac0c5da1d5e357a5dfdee59a8959",
+      "entry": "imported portable AIDE governance and recovery tooling into Dominium.",
+      "follow_up": "- Generate Dominium-local Git workflow reports, adapter outputs, context packets, and final validation evidence.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide governance\nAIDE-Token-Impact: governance-only\nAIDE-Quality-Gate: test-selftest-pass",
+      "risks": "- This commit does not mutate branches, install hooks, or change product/source files.\n- Target-local generated reports still need refresh in the next commit.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): sync portable commit and WorkUnit policies",
+      "summary": "imported portable AIDE governance and recovery tooling into Dominium.",
+      "type": "aide",
+      "validation": "- PASS: py -3 .aide/scripts/aide_lite.py validate.\n- PASS: py -3 .aide/scripts/aide_lite.py test.\n- PASS: py -3 .aide/scripts/aide_lite.py selftest.\n- WARN: validate still reports stale generated report/adapt warnings until regeneration.\n- FAIL: py -3 .aide/scripts/aide_lite.py eval run before git plan generation; to be rerun after target-local reports exist."
+    },
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Fixed",
+      "commit": "f2a1b4412cbe",
+      "commit_sha": "f2a1b4412cbeac0c5da1d5e357a5dfdee59a8959",
+      "entry": "prevented AIDE Lite selftest from resolving Dominium product `core` modules.",
+      "follow_up": "- Generate Dominium-local Git workflow reports, adapter outputs, context packets, and final validation evidence.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide governance\nAIDE-Token-Impact: governance-only\nAIDE-Quality-Gate: test-selftest-pass",
+      "risks": "- This commit does not mutate branches, install hooks, or change product/source files.\n- Target-local generated reports still need refresh in the next commit.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): sync portable commit and WorkUnit policies",
+      "summary": "prevented AIDE Lite selftest from resolving Dominium product `core` modules.",
+      "type": "aide",
+      "validation": "- PASS: py -3 .aide/scripts/aide_lite.py validate.\n- PASS: py -3 .aide/scripts/aide_lite.py test.\n- PASS: py -3 .aide/scripts/aide_lite.py selftest.\n- WARN: validate still reports stale generated report/adapt warnings until regeneration.\n- FAIL: py -3 .aide/scripts/aide_lite.py eval run before git plan generation; to be rerun after target-local reports exist."
+    },
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Changed",
+      "commit": "4f04a866b73c",
+      "commit_sha": "4f04a866b73c11156836cb9aff44b743cf8c3235",
+      "entry": "added Dominium-local Git workflow reports and dry-run helper plan outputs.",
+      "follow_up": "- Regenerate context, review, token, and validation evidence for Q33 review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide/git, .aide/changelog, AGENTS.md\nAIDE-Token-Impact: target-local-reporting\nAIDE-Quality-Gate: dry-run-git-helpers",
+      "risks": "- Dominium currently has no local `dev` branch, so helper land/promote plans report blockers rather than readiness.\n- The current branch is `main`; branch mutation remains forbidden for Q33.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): sync Git workflow policy and reports",
+      "summary": "added Dominium-local Git workflow reports and dry-run helper plan outputs.",
+      "type": "aide",
+      "validation": "- PASS: py -3 .aide/scripts/aide_lite.py git detect.\n- PASS: py -3 .aide/scripts/aide_lite.py git doctor, git status, and git policy.\n- PASS: py -3 .aide/scripts/aide_lite.py git sync --dry-run, git land --dry-run --target dev, git promote --dry-run --from dev --to main, and git prune --dry-run all avoided mutation.\n- WARN: changelog preview reports older malformed commits from pre-policy history."
+    },
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Internal",
+      "commit": "4f04a866b73c",
+      "commit_sha": "4f04a866b73c11156836cb9aff44b743cf8c3235",
+      "entry": "refreshed Codex adapter guidance for governance-aware task recovery and branch planning.",
+      "follow_up": "- Regenerate context, review, token, and validation evidence for Q33 review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide/git, .aide/changelog, AGENTS.md\nAIDE-Token-Impact: target-local-reporting\nAIDE-Quality-Gate: dry-run-git-helpers",
+      "risks": "- Dominium currently has no local `dev` branch, so helper land/promote plans report blockers rather than readiness.\n- The current branch is `main`; branch mutation remains forbidden for Q33.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): sync Git workflow policy and reports",
+      "summary": "refreshed Codex adapter guidance for governance-aware task recovery and branch planning.",
+      "type": "aide",
+      "validation": "- PASS: py -3 .aide/scripts/aide_lite.py git detect.\n- PASS: py -3 .aide/scripts/aide_lite.py git doctor, git status, and git policy.\n- PASS: py -3 .aide/scripts/aide_lite.py git sync --dry-run, git land --dry-run --target dev, git promote --dry-run --from dev --to main, and git prune --dry-run all avoided mutation.\n- WARN: changelog preview reports older malformed commits from pre-policy history."
+    },
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Tests",
+      "commit": "d722727e80e1",
+      "commit_sha": "d722727e80e10548e12eeea8c316b8803d167fe1",
+      "entry": "recorded 25/25 portable golden tasks passing after target-local helper-plan generation.",
+      "follow_up": "- Document the governance sync in Dominium reference docs and run final validation.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated reports and evidence\nAIDE-Token-Impact: latest-task-packet-1158-approx-tokens\nAIDE-Quality-Gate: eval-pass-verify-warn",
+      "risks": "- Review/verify warnings remain for optional controller/gateway/provider generated status refs outside Q33 scope.\n- The latest task packet is a next-task selection handoff, not product implementation authorization.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): regenerate packets and validation evidence",
+      "summary": "recorded 25/25 portable golden tasks passing after target-local helper-plan generation.",
+      "type": "aide",
+      "validation": "- PASS: py -3 .aide/scripts/aide_lite.py snapshot, index, context, pack, and estimate.\n- PASS: py -3 .aide/scripts/aide_lite.py eval run, test, selftest, adapter validate, ledger scan, and ledger report.\n- WARN: py -3 .aide/scripts/aide_lite.py verify reports optional generated-status and diff-scope warnings, with 0 errors.\n- PASS: py -3 scripts/verify_docs_sanity.py."
+    },
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Internal",
+      "commit": "d722727e80e1",
+      "commit_sha": "d722727e80e10548e12eeea8c316b8803d167fe1",
+      "entry": "refreshed Dominium-local AIDE generated reports and review evidence.",
+      "follow_up": "- Document the governance sync in Dominium reference docs and run final validation.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated reports and evidence\nAIDE-Token-Impact: latest-task-packet-1158-approx-tokens\nAIDE-Quality-Gate: eval-pass-verify-warn",
+      "risks": "- Review/verify warnings remain for optional controller/gateway/provider generated status refs outside Q33 scope.\n- The latest task packet is a next-task selection handoff, not product implementation authorization.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): regenerate packets and validation evidence",
+      "summary": "refreshed Dominium-local AIDE generated reports and review evidence.",
+      "type": "aide",
+      "validation": "- PASS: py -3 .aide/scripts/aide_lite.py snapshot, index, context, pack, and estimate.\n- PASS: py -3 .aide/scripts/aide_lite.py eval run, test, selftest, adapter validate, ledger scan, and ledger report.\n- WARN: py -3 .aide/scripts/aide_lite.py verify reports optional generated-status and diff-scope warnings, with 0 errors.\n- PASS: py -3 scripts/verify_docs_sanity.py."
+    },
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Docs",
+      "commit": "4252584e060b",
+      "commit_sha": "4252584e060baf01bb1692c68e84348043793f95",
+      "entry": "added compact Dominium AIDE governance sync reference.",
+      "follow_up": "- Run final validation and report Q33 for review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: docs/reference\nAIDE-Token-Impact: compact-reference-only\nAIDE-Quality-Gate: docs-sanity-pass",
+      "risks": "- The docs describe local AIDE workflow readiness only; they do not authorize product feature work or branch mutation.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "docs(dominium): record canonical AIDE governance sync",
+      "summary": "added compact Dominium AIDE governance sync reference.",
+      "type": "docs",
+      "validation": "- PASS: py -3 scripts/verify_docs_sanity.py.\n- PASS: docs are limited to AIDE governance sync references and do not edit doctrine roots.\n- NOT RUN: final full validation follows this documentation commit."
+    },
+    {
+      "aide_phase": "Q33",
+      "aide_result": "PASS",
+      "breaking": false,
+      "category": "Internal",
+      "commit": "752918d4f281",
+      "commit_sha": "752918d4f281aad12cdb6e892d39460172155e34",
+      "entry": "refreshed final Q33 generated validation artifacts.",
+      "follow_up": "- Run final read-only Git and commit checks before reporting Q33 for review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated validation artifacts\nAIDE-Token-Impact: final-review-packet-1123-approx-tokens\nAIDE-Quality-Gate: final-validation-pass-with-warnings",
+      "risks": "- This commit intentionally records generated AIDE reports; it does not mutate branches, install hooks, or change product/doctrine roots.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): refresh final validation artifacts",
+      "summary": "refreshed final Q33 generated validation artifacts.",
+      "type": "aide",
+      "validation": "- PASS: py -3 .aide/scripts/aide_lite.py doctor, validate, test, selftest, and eval run.\n- PASS: py -3 .aide/scripts/aide_lite.py commit check --latest before this final artifact commit.\n- PASS: py -3 .aide/scripts/aide_lite.py git detect, git policy, git plan, and dry-run helper commands.\n- WARN: changelog preview still reports malformed older pre-policy commits.\n- WARN: verify still reports optional generated-status refs and Q33 diff-scope warnings, with 0 errors."
+    },
+    {
+      "aide_phase": "Q49",
+      "aide_result": "READY_FOR_Q50_WITH_WARNINGS",
+      "breaking": false,
+      "category": "Added",
+      "commit": "80dc7bfb58a1",
+      "commit_sha": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+      "entry": "Dominium Q49 preflight evidence and Q50 dry-run readiness guidance.",
+      "follow_up": "- Run Q50 Dominium Fresh Install / Upgrade from Stable Pack as observe/compare/plan/dry-run only.\n- Preserve target AIDE memory, queue, golden tasks, doctrine refs, generated evidence, and XStack/AuditX/RepoX/TestX systems.\n\nAIDE-Task: DOMINIUM-AIDE-FRESH-PREFLIGHT-01\nAIDE-Phase: Q49\nAIDE-Result: READY_FOR_Q50_WITH_WARNINGS\nAIDE-Scope: .aide preflight evidence\nAIDE-Token-Impact: compact evidence only\nAIDE-Quality-Gate: PASS_WITH_WARNINGS",
+      "risks": "- Target AIDE remains older than Q36-Q48 command families and requires an upgrade dry-run rather than direct apply.\n- The source bundle is local preview/no-publish with apply mode unavailable.\n- Existing Dominium gate systems need separate explicit validation scope before execution.",
+      "scope": "dominium",
+      "source_sections_present": [
+        "## Summary",
+        "## Why",
+        "## Changed",
+        "## Validation",
+        "## Changelog",
+        "## Risks",
+        "## Follow-up"
+      ],
+      "subject": "aide(dominium): preflight stable AIDE install readiness",
+      "summary": "Dominium Q49 preflight evidence and Q50 dry-run readiness guidance.",
+      "type": "aide",
+      "validation": "- PASS: `git diff --cached --check`.\n- PASS: AIDE `doctor`, `test`, `selftest`, `eval run`, `commit check --latest`, `git policy`, Q50 `pack` generation, generated JSON parse checks, `.aide.local` ignore check, and release bundle checksum/listing checks.\n- WARN: AIDE `validate` and `verify` retain review-packet/reference/diff-scope warnings; changelog preview reports malformed historical commits.\n- NOT RUN: Dominium XStack/TestX/AuditX/RepoX/CMake validators, because Q49 is evidence-only and those systems can write audit/cache/build outputs."
+    }
+  ],
   "generated_by": "aide-lite",
   "malformed_commits": [
     {
-      "commit": "49ee68ca8f69ee1606847719cc265f914bed455d",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "0374d6c05e12",
+      "commit_sha": "0374d6c05e12c17aff162a8d67724d5eaf01e871",
+      "ignored": false,
+      "legacy": false,
+      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "subject_not_conventional",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "REPO-DISCOVERY-\u03a92: analyze coupling, drift, and relayout risk before topology options"
+    },
+    {
+      "commit": "67823688efdc",
+      "commit_sha": "67823688efdce93dad2923839b8b3cea05df53e4",
+      "ignored": false,
+      "legacy": false,
+      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "subject_not_conventional",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "REPO-DESIGN-\u03a90: generate and compare target topology options before preferred-target selection"
+    },
+    {
+      "commit": "38f6d1840219",
+      "commit_sha": "38f6d18402197197fd09f3f4b3d9c3430f366c0b",
+      "ignored": false,
+      "legacy": false,
+      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "subject_not_conventional",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "REPO-DESIGN-\u03a91: select preferred target topology and freeze authoritative boundary model"
+    },
+    {
+      "commit": "ff02794de999",
+      "commit_sha": "ff02794de9993fb7fd94e53fef22aa22ef3287c9",
+      "ignored": false,
+      "legacy": false,
+      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "subject_not_conventional",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "REPO-MIGRATION-\u03a90: define phased migration, shim classes, validation, and rollback before relayout"
+    },
+    {
+      "commit": "5a3f5d84a5e3",
+      "commit_sha": "5a3f5d84a5e3cdeda52cd4fcc4c682e120dbd9d0",
+      "ignored": false,
+      "legacy": false,
+      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "subject_not_conventional",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "C-REPO-MEGA-STRUCTURE-REVIEW: validate relayout design, decide first slice, and emit decision bundle"
+    },
+    {
+      "commit": "cd2eaafff195",
+      "commit_sha": "cd2eaafff1958a0a8a6eeb503410e3e0b84b4c2d",
+      "ignored": false,
+      "legacy": true,
+      "reason": "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category; legacy_semi_structured_body",
+      "reasons": [
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category",
+        "legacy_semi_structured_body"
+      ],
+      "subject": "chore: import aide lite pack"
+    },
+    {
+      "commit": "14da8a822909",
+      "commit_sha": "14da8a822909af6c77c6d788ac36a556c319e513",
+      "ignored": false,
+      "legacy": true,
+      "reason": "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category; legacy_semi_structured_body",
+      "reasons": [
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category",
+        "legacy_semi_structured_body"
+      ],
+      "subject": "chore: initialize dominium aide state"
+    },
+    {
+      "commit": "47d7d148f42f",
+      "commit_sha": "47d7d148f42f27e83c5cd4fc85171949c5032297",
+      "ignored": false,
+      "legacy": true,
+      "reason": "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category; legacy_semi_structured_body",
+      "reasons": [
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category",
+        "legacy_semi_structured_body"
+      ],
+      "subject": "chore: generate dominium aide snapshot and task packet"
+    },
+    {
+      "commit": "b0feec713e05",
+      "commit_sha": "b0feec713e05710a370157b006bbca9561c7db34",
+      "ignored": false,
+      "legacy": true,
+      "reason": "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category; legacy_semi_structured_body",
+      "reasons": [
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category",
+        "legacy_semi_structured_body"
+      ],
+      "subject": "chore: harden aide lite selftest boundary"
+    },
+    {
+      "commit": "768140b80709",
+      "commit_sha": "768140b807097456bc351a27fb56d4c4a239ee9a",
+      "ignored": false,
+      "legacy": true,
+      "reason": "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category; legacy_semi_structured_body",
+      "reasons": [
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category",
+        "legacy_semi_structured_body"
+      ],
+      "subject": "docs: record dominium aide import pilot evidence"
+    },
+    {
+      "commit": "0f79aed8c265",
+      "commit_sha": "0f79aed8c265cfc9319e8a7cd32cb2785eb6567f",
+      "ignored": false,
+      "legacy": false,
+      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "subject_not_conventional",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "Revise README with updated project information"
+    },
+    {
+      "commit": "ce31cb9a396f",
+      "commit_sha": "ce31cb9a396f94c0ff5f6d24bab752928b376778",
+      "ignored": false,
+      "legacy": false,
+      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "subject_not_conventional",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "Improve formatting and emphasis in README.md"
+    },
+    {
+      "commit": "4daf31c6395a",
+      "commit_sha": "4daf31c6395ab170fb71d5f7633813c35f46de10",
+      "ignored": false,
+      "legacy": false,
+      "reason": "subject_not_conventional; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "subject_not_conventional",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "Update README with additional details and clarifications"
+    },
+    {
+      "commit": "c254afca7222",
+      "commit_sha": "c254afca7222bbe05c3b08598e4d30c48c8aa94d",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_commit_body; missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up; missing_changelog_category",
+      "reasons": [
+        "missing_commit_body",
+        "missing_required_headings: ## Summary, ## Why, ## Changed, ## Validation, ## Changelog, ## Risks, ## Follow-up",
+        "missing_changelog_category"
+      ],
+      "subject": "audit(repo): capture CONVERGE-00 layout baseline"
+    },
+    {
+      "commit": "156cd84de31c",
+      "commit_sha": "156cd84de31cd117bc81efc59ddc7a24f6364a7b",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "audit(repo): capture CONVERGE-00 baseline snapshot"
+    },
+    {
+      "commit": "bd087a97a431",
+      "commit_sha": "bd087a97a431148def05686c2c6dc8958845c787",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "audit(repo): add layout contract and non-blocking root audit"
+    },
+    {
+      "commit": "26be7679958b",
+      "commit_sha": "26be7679958b49adf3b39feb10bb0f28d5e5ab3d",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "audit(repo): add root allowlist and supersede stale layout authority"
+    },
+    {
+      "commit": "948790d7fca5",
+      "commit_sha": "948790d7fca55a20067c3f4ab6cdfd14e15a12a5",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "audit(repo): refine root inventory and convergence move map"
+    },
+    {
+      "commit": "5dc42ca3bd7f",
+      "commit_sha": "5dc42ca3bd7faaec0ccbd9071e95e15f46afe248",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "audit(distribution): add layout projection contract"
+    },
+    {
+      "commit": "008778d301e9",
+      "commit_sha": "008778d301e965a264cca42fd1d66dd92310cea0",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "refactor(repo): converge archive-family roots"
+    },
+    {
+      "commit": "65bda5e3ee94",
+      "commit_sha": "65bda5e3ee9465d5c890b8070ffa89b524b226bf",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "refactor(repo): converge contract and schema roots"
+    },
+    {
+      "commit": "e4feaa13ca7d",
+      "commit_sha": "e4feaa13ca7d20107ab8cb20c8aa78a973fa2e32",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "refactor(repo): converge runtime and appshell roots"
+    },
+    {
+      "commit": "929451f7ff08",
+      "commit_sha": "929451f7ff08461afd45685f80f51763a2cf2e14",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "refactor(repo): converge product entrypoint roots"
+    },
+    {
+      "commit": "be9219ad9885",
+      "commit_sha": "be9219ad988507e4437663c0b97dfacf9a2cfc9d",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "refactor(repo): split domain roots by ownership"
+    },
+    {
+      "commit": "7f4ce5e97d5e",
+      "commit_sha": "7f4ce5e97d5ec2cf0512cc3f6bf091eaaf9af7c1",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "audit(repo): enable strict layout validation with exceptions"
+    },
+    {
+      "commit": "fa4e78290ef5",
+      "commit_sha": "fa4e78290ef512c14de772eff5877bf7289a68c7",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "docs(release): add component and support matrices"
+    },
+    {
+      "commit": "88ed6b4dfadb",
+      "commit_sha": "88ed6b4dfadbc19515431d785f27de75e9a38685",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "docs(repo): close layout convergence audit"
+    },
+    {
+      "commit": "20ecdf86a632",
+      "commit_sha": "20ecdf86a6321f87360396eb57988e1fa2987557",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
+      "subject": "audit(repo): triage post-converge health and exceptions"
+    },
+    {
+      "commit": "49ee68ca8f69",
+      "commit_sha": "49ee68ca8f69ee1606847719cc265f914bed455d",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "chore(repo): retire generated output root exceptions"
     },
     {
-      "commit": "e81e6d7f2a97af5e3c0fe2d26736d8e4cf9e66a6",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "e81e6d7f2a97",
+      "commit_sha": "e81e6d7f2a97af5e3c0fe2d26736d8e4cf9e66a6",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "chore(repo): retire root wrapper and tooling exceptions"
     },
     {
-      "commit": "ed571cd32cd9c5ec53786f24919f87d64710f031",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "ed571cd32cd9",
+      "commit_sha": "ed571cd32cd9c5ec53786f24919f87d64710f031",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "chore(repo): retire content and pack root exceptions"
     },
     {
-      "commit": "44bf83626fd1efade2d8e96ffe5bf8497a5aed3b",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "44bf83626fd1",
+      "commit_sha": "44bf83626fd1efade2d8e96ffe5bf8497a5aed3b",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "chore(repo): narrow high-risk contract root exceptions"
     },
     {
-      "commit": "b08080e478c131b489545e813767c3f3aedc3367",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "b08080e478c1",
+      "commit_sha": "b08080e478c131b489545e813767c3f3aedc3367",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "audit(repo): review core control and net ownership"
     },
     {
-      "commit": "b5d89feadad1fe6ffa67a02ad8b849b7976b5086",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "b5d89feadad1",
+      "commit_sha": "b5d89feadad1fe6ffa67a02ad8b849b7976b5086",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "fix(repo): remediate post-converge build and gate blockers"
     },
     {
-      "commit": "4ccb80276ed4e2b250876fd1e037ccbe98522964",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "4ccb80276ed4",
+      "commit_sha": "4ccb80276ed4e2b250876fd1e037ccbe98522964",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "audit(runtime): classify canonical local playtest blockers"
     },
     {
-      "commit": "9083d064bc3726f10b98727c5371bc94972b5ea7",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "9083d064bc37",
+      "commit_sha": "9083d064bc3726f10b98727c5371bc94972b5ea7",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "audit(apps): classify product boot blockers"
     },
     {
-      "commit": "3455d6976847ad3a3072850fc4b3b49783246830",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "3455d6976847",
+      "commit_sha": "3455d6976847ad3a3072850fc4b3b49783246830",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "audit(distribution): classify portable projection blockers"
     },
     {
-      "commit": "40b71c11a9ffb5e88719bbb557d48fc73980915f",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "40b71c11a9ff",
+      "commit_sha": "40b71c11a9ffb5e88719bbb557d48fc73980915f",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "audit(build): add tuple build contract and probe blockers"
     },
     {
-      "commit": "2aed29926182de61d9f5e20c8c6362b888f5152d",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "2aed29926182",
+      "commit_sha": "2aed29926182de61d9f5e20c8c6362b888f5152d",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "audit(build): reprobe toolchains and classify native build blockers"
     },
     {
-      "commit": "4e256e81c37c8e8a699174d21c4cbc429fbf7cee",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "4e256e81c37c",
+      "commit_sha": "4e256e81c37c8e8a699174d21c4cbc429fbf7cee",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "fix(build): repair stale product source paths and classify next blocker"
     },
     {
-      "commit": "0f842071f543e31c18edc557576adc6ff301cd81",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "0f842071f543",
+      "commit_sha": "0f842071f543e31c18edc557576adc6ff301cd81",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "fix(build): refresh UI bind generated outputs for native build"
     },
     {
-      "commit": "06d383b3d85563f33276e4be8ad561c962c6695e",
-      "reason": "commit body contains heading: ## Changelog; commit body heading has content: ## Changelog; commit body heading has bullet content: ## Changelog; validation section records PASS/WARN/FAIL/NOT RUN outcome; changelog section uses a machine-readable category prefix; commit trailer present: AIDE-Scope; commit trailer present: AIDE-Token-Impact",
+      "commit": "06d383b3d855",
+      "commit_sha": "06d383b3d85563f33276e4be8ad561c962c6695e",
+      "ignored": false,
+      "legacy": false,
+      "reason": "missing_required_headings: ## Changelog; missing_changelog_category",
+      "reasons": [
+        "missing_required_headings: ## Changelog",
+        "missing_changelog_category"
+      ],
       "subject": "audit(test): classify AuditX CTest blockers after native build"
     }
   ],
+  "malformed_count": 42,
   "network_calls": "none",
+  "preview_only": true,
   "provider_or_model_calls": "none",
   "release_publishing": false,
   "schema_version": "aide.changelog-preview.v0",
-  "source_range": "HEAD~20..HEAD"
+  "source_head": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_range": "HEAD latest 50 commits",
+  "warnings": [
+    "b3d1e62bafbc merge commit ignored"
+  ]
 }

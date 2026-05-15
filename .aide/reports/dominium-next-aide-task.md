@@ -1,17 +1,16 @@
 # Next AIDE Task
 
-Recommended task:
+Task: `Q51 Dominium Existing Tool Absorption`
 
-`Q50 Dominium Fresh Install / Upgrade from Stable AIDE Pack`
+Read first:
 
-Recommended status:
+- `.aide/context/latest-task-packet.md`
+- `.aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/q51-readiness.md`
+- `.aide/tools/latest-tool-inventory.md`
+- `.aide/tools/latest-tool-wrap-plan.md`
+- `.aide/roots/latest-root-inventory.md`
+- `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md`
 
-`READY_FOR_Q50_WITH_WARNINGS`
+Goal:
 
-Recommended mode:
-
-Upgrade observe/compare/plan/dry-run from `C:/Inbox/Git Repos/aide/.aide/release/dist/aide-lite-pack-v0.zip` or the matching tar.gz.
-
-Q50 must preserve existing Dominium AIDE memory, queue, golden tasks, context doctrine refs, generated reports, AGENTS/manual content, doctrine/canon/spec/data/contract roots, and XStack/AuditX/RepoX/TestX tools. It must emit a preservation/conflict matrix and stop for review.
-
-Latest task packet generated: `.aide/context/latest-task-packet.md`.
+Inventory and classify Dominium's existing XStack/AuditX/RepoX/TestX-like systems and validators for preservation-first wrapping. Do not delete, rename, move, execute unexpectedly, or retire tools.

@@ -9,7 +9,7 @@ commands:
     status: implemented-portable
     owner_component: aide-lite-pack
     mutates_repo: command-dependent
-    notes: Portable no-call helper for doctor, validate, estimate, snapshot, index, context, pack, verify, review-pack, ledger, eval, outcome, optimize, route, cache, gateway, provider metadata, adapter rendering, adapt, selftest, and test.
+    notes: Portable no-call helper for doctor, validate, estimate, snapshot, index, context, pack, verify, review-pack, ledger, eval, outcome, optimize, route, cache, gateway, provider metadata, adapter rendering, intent compilation, repo intelligence indexing, file quality ledger reporting, refactor dry-run planning, adapt, selftest, and test.
   - id: aide-lite-test
     display_name: AIDE Lite canonical test runner
     invocation: py -3 .aide/scripts/aide_lite.py test
@@ -50,3 +50,43 @@ commands:
     owner_component: git-workflow
     mutates_repo: command-dependent
     notes: policy and dry-run helpers default to no live branch or remote mutation; --apply/--push require explicit future operator intent.
+  - id: aide-lite-github
+    display_name: AIDE Lite GitHub advisory
+    invocation: py -3 .aide/scripts/aide_lite.py github <advisory|status|protection|ci|validate>
+    command_kind: repo-local-helper
+    status: implemented-portable
+    owner_component: github-advisory
+    mutates_repo: command-dependent
+    notes: report-only GitHub protection and CI advisory commands; no GitHub API calls, workflow installation, branch mutation, tags, or releases.
+  - id: aide-lite-intent
+    display_name: AIDE Lite intent compiler
+    invocation: py -3 .aide/scripts/aide_lite.py intent <compile|validate|examples|status>
+    command_kind: repo-local-helper
+    status: implemented-portable
+    owner_component: intent-compiler
+    mutates_repo: command-dependent
+    notes: compile-only deterministic prompt normalization; no compiled WorkUnit execution or provider/model/network calls.
+  - id: aide-lite-repo
+    display_name: AIDE Lite repo intelligence
+    invocation: py -3 .aide/scripts/aide_lite.py repo <inventory|classify|validate|status|explain-file|docs|tests|deps>
+    command_kind: repo-local-helper
+    status: implemented-portable
+    owner_component: repo-intelligence
+    mutates_repo: command-dependent
+    notes: index-only deterministic repo inventory and maps; no file moves, deletes, refactors, target mutation, provider/model/network calls, or deletion advice.
+  - id: aide-lite-quality
+    display_name: AIDE Lite file quality ledger
+    invocation: py -3 .aide/scripts/aide_lite.py quality <ledger|validate|status|explain-file|docs|tests|modules|reuse>
+    command_kind: repo-local-helper
+    status: implemented-portable
+    owner_component: file-quality-ledger
+    mutates_repo: command-dependent
+    notes: advisory-only deterministic quality reports from repo intelligence; no file moves, deletes, refactors, automatic fixes, target mutation, provider/model/network calls, or deletion advice.
+  - id: aide-lite-refactor
+    display_name: AIDE Lite refactor control plane
+    invocation: py -3 .aide/scripts/aide_lite.py refactor <status|plan|validate|dry-run|schemas|ledger>
+    command_kind: repo-local-helper
+    status: implemented-portable
+    owner_component: refactor-control-plane
+    mutates_repo: generated-refactor-artifacts-only
+    notes: dry-run/no-apply planning substrate; no file moves, deletes, reference rewrites, target mutation, provider/model/network calls, or deletion approval.

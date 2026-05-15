@@ -1,0 +1,27 @@
+schema_version: aide.queue-task.v0
+task_id: DOMINIUM-AIDE-STABLE-INSTALL-01
+title: Q50 Dominium Fresh Install / Upgrade from Stable AIDE Pack
+repo: julesc013/dominium
+branch: main
+mode: UPGRADE_EXISTING_AIDE
+status: needs_review
+result: READY_FOR_Q51_WITH_WARNINGS
+created_utc: 2026-05-15
+source_preflight: .aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/
+source_bundle: C:/Inbox/Git Repos/aide/.aide/release/dist/aide-lite-pack-v0.zip
+scope:
+  allowed:
+    - .aide/**
+  forbidden:
+    - product source roots
+    - Dominium doctrine rewrites
+    - XStack/AuditX/RepoX/TestX moves or execution
+    - .aide.local/**
+    - branch, remote, GitHub, provider, model, or network mutation
+preservation:
+  memory: preserved
+  queue: preserved
+  doctrine: preserved
+  tools: preserved
+  product_source: untouched
+

@@ -1,19 +1,15 @@
 # Dominium AIDE Preservation Plan
 
-Q50 must preserve target state first:
+This report is updated by Q50 and points to the full evidence packet:
 
-- `.aide/memory/**`
-- `.aide/queue/**`
-- `.aide/evals/**`
-- `.aide/context/dominium-doctrine-refs.md`
-- `.aide/context/latest-task-packet.md`
-- `.aide/context/latest-review-packet.md`
-- `.aide/reports/**`
-- `.aide/policies/**`
-- `.aide/verification/**`
-- `.aide/git/**`
-- `.aide/changelog/**`
+`.aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/`
 
-Q50 must not overwrite Dominium doctrine or product state. Preserve `AGENTS.md`, `docs/canon/**`, `docs/planning/**`, `specs/reality/**`, `data/reality/**`, `data/planning/**`, `contracts/**`, `schema/**`, `schemas/**`, release/security/update/repo roots, and all XStack/AuditX/RepoX/TestX systems.
+Q50 preservation rules for future AIDE work:
 
-Recommended Q50 flow: observe target, compare bundle, plan dry-run, emit conflict matrix, then stop for review.
+- Preserve `AGENTS.md` manual doctrine and managed sections.
+- Preserve `.aide/memory/**`, `.aide/queue/**`, `.aide/context/dominium-doctrine-refs.md`, and Dominium reports.
+- Regenerate `.aide/context/latest-*` only with Dominium-local AIDE commands.
+- Do not copy source AIDE memory, queue history, generated reports, `.aide.local/**`, raw prompts, raw responses, or secrets.
+- Preserve XStack/AuditX/RepoX/TestX and Dominium validators.
+- Treat existing systems with `discover -> classify -> wrap -> adapt -> migrate -> retire with evidence`.
+- Keep product/source/doctrine/tool roots untouched unless a future reviewed Dominium task explicitly authorizes them.

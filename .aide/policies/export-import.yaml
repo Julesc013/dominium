@@ -20,6 +20,12 @@ portable_include_classes:
   - commit_hook_template
   - commit_template
   - changelog_preview_support
+  - changelog_policy
+  - changelog_config_templates
+  - github_protection_policy
+  - branch_protection_policy
+  - ci_gates_policy
+  - github_ci_advisory_support
   - task_resumption_policy
   - workunit_policy
   - recovery_policy
@@ -46,6 +52,7 @@ portable_exclude_classes:
   - source_repo_git_helper_plan
   - source_repo_branch_policy
   - source_repo_changelog_previews
+  - source_repo_github_advisory_reports
   - generated_context
   - generated_reports
   - generated_status_outputs

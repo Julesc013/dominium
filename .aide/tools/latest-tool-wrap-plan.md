@@ -1,0 +1,98 @@
+# Tool Wrap Plan
+
+- plan_id: q41-latest-tool-wrap-plan
+- status: dry_run
+- source_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
+- tool_count: 2831
+- execution_allowed: false
+- no_apply: true
+- tool_deletion: false
+- tool_rename: false
+- tool_migration: false
+
+## Wrapper Plans
+
+- `.aide/adapters/templates/continue-checks.template.md`: capability=validate status=planned execution_allowed=false
+- `.aide/cache/latest-cache-keys.json`: capability=test status=planned execution_allowed=false
+- `.aide/cache/latest-cache-keys.md`: capability=test status=planned execution_allowed=false
+- `.aide/changelog/RELEASE_NOTES.preview.md`: capability=release status=planned execution_allowed=false
+- `.aide/context/latest-context-packet.md`: capability=context status=planned execution_allowed=false
+- `.aide/context/latest-review-packet.md`: capability=context status=planned execution_allowed=false
+- `.aide/context/latest-task-packet.md`: capability=context status=planned execution_allowed=false
+- `.aide/context/test-map.json`: capability=context status=planned execution_allowed=false
+- `.aide/evals/runs/latest-golden-tasks.json`: capability=test status=planned execution_allowed=false
+- `.aide/evals/runs/latest-golden-tasks.md`: capability=test status=planned execution_allowed=false
+- `.aide/git/latest-helper-plan.json`: capability=test status=planned execution_allowed=false
+- `.aide/git/latest-helper-plan.md`: capability=test status=planned execution_allowed=false
+- `.aide/git/sync-policy.md`: capability=repo_policy status=planned execution_allowed=false
+- `.aide/hooks/commit-msg`: capability=unknown status=blocked_until_classified execution_allowed=false
+- `.aide/import-policy.template.yaml`: capability=repo_policy status=planned execution_allowed=false
+- `.aide/import-report.template.md`: capability=audit status=planned execution_allowed=false
+- `.aide/policies/export-import.yaml`: capability=unknown status=blocked_until_classified execution_allowed=false
+- `.aide/policies/sync-policy.yaml`: capability=repo_policy status=planned execution_allowed=false
+- `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/install-upgrade-risk-report.md`: capability=audit status=planned execution_allowed=false
+- `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/release-bundle-readiness.md`: capability=package status=planned execution_allowed=false
+- `.aide/queue/DOMINIUM-AIDE-PILOT-01/import-report.md`: capability=audit status=planned execution_allowed=false
+- `.aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/sync-report.md`: capability=audit status=planned execution_allowed=false
+- `.aide/repo/generated-map.json`: capability=generate status=planned execution_allowed=false
+- `.aide/repo/latest-repo-intelligence.md`: capability=repo_policy status=planned execution_allowed=false
+- `.aide/repo/test-map.json`: capability=repo_policy status=planned execution_allowed=false
+- `.aide/reports/dominium-fresh-install-preflight.md`: capability=audit status=planned execution_allowed=false
+- `.aide/reports/dominium-release-bundle-readiness.md`: capability=audit status=planned execution_allowed=false
+- `.aide/routing/latest-route-decision.json`: capability=test status=planned execution_allowed=false
+- `.aide/routing/latest-route-decision.md`: capability=test status=planned execution_allowed=false
+- `.aide/scripts/aide_lite.py`: capability=context status=planned execution_allowed=false
+- `.aide/verification/latest-verification-report.md`: capability=audit status=planned execution_allowed=false
+- `.github/workflows/ci.yml`: capability=unknown status=blocked_until_classified execution_allowed=false
+- `CMakeLists.txt`: capability=build status=planned execution_allowed=false
+- `apps/client/CMakeLists.txt`: capability=build status=planned execution_allowed=false
+- `apps/client/presentation/frame_graph_builder.cpp`: capability=build status=planned execution_allowed=false
+- `apps/client/presentation/frame_graph_builder.h`: capability=build status=planned execution_allowed=false
+- `apps/launcher/CMakeLists.txt`: capability=build status=planned execution_allowed=false
+- `apps/server/CMakeLists.txt`: capability=build status=planned execution_allowed=false
+- `apps/server/persistence/dom_checkpoint_policy.h`: capability=repo_policy status=planned execution_allowed=false
+- `apps/server/persistence/dom_checkpointing.cpp`: capability=validate status=planned execution_allowed=false
+- `apps/server/persistence/dom_checkpointing.h`: capability=validate status=planned execution_allowed=false
+- `apps/server/persistence/integrity_checkpoints.cpp`: capability=validate status=planned execution_allowed=false
+- `apps/server/persistence/integrity_checkpoints.h`: capability=validate status=planned execution_allowed=false
+- `apps/setup/CMakeLists.txt`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/build_all.bat`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/build_codex_verify.bat`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/check_layers.py`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/ci/check_launcher_core_invariants.py`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/ci/launcher_cli_smoke_matrix.py`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/ci/setup_build.bat`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/ci/setup_build.sh`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/ci/setup_test.bat`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/ci/setup_test.sh`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/commit_template.md`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/diagnostics/make_support_bundle.py`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/doc_ratio_check.py`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/gen_base_demo_mod.py`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/gen_changelog.bat`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/gen_launcher_ui_schema_v1.py`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/gen_tools_demo.py`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/legacy/build_legacy_windows.bat`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/legacy/build_legacy_windows.sh`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/legacy/build_packages.bat`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/legacy/build_packages.sh`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/legacy/run_setup_tests.bat`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/legacy/run_setup_tests.sh`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/CMakeLists.txt`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/dsumanifest.py`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/CMakeLists.txt`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/build_run.sh`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/control.in`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postinst`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/postrm`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/deb/DEBIAN/prerm`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/dominium-install.sh`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/dominium-installer.sh.in`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/rpm/dominium.spec.in`: capability=context status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/linux/write_apprun.cmake`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/macos/CMakeLists.txt`: capability=build status=planned execution_allowed=false
+- `apps/setup/packages/scripts/packaging/macos/Dominium.app/Contents/Info.plist.in`: capability=context status=planned execution_allowed=false
+
+## Boundary
+
+- Q41 creates future wrapper plans only. No unknown tool is executed.

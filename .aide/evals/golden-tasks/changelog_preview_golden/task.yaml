@@ -2,9 +2,11 @@ schema_version: aide.golden-task.v0
 task_id: changelog_preview_golden
 title: Changelog Preview Golden
 status: active
-purpose: Check Q27 changelog preview grouping and malformed commit reporting.
+purpose: Check Q34 changelog preview grouping, policy anchors, and malformed commit reporting.
 input_refs:
   - .aide/policies/commit-messages.yaml
+  - .aide/policies/changelog.yaml
+  - .aide/changelog/config.yaml
   - .aide/changelog/CHANGELOG.preview.md
 acceptance_ref: .aide/evals/golden-tasks/changelog_preview_golden/acceptance.md
 expected_result: PASS

@@ -1,0 +1,115 @@
+{
+  "candidate_language": [
+    "root recycling is future Q40 work",
+    "drop_candidate is not deletion approval",
+    "archive is not applied",
+    "shim and alias are planned only"
+  ],
+  "file_deletes": false,
+  "file_moves": false,
+  "generated_by": "aide-lite",
+  "next_recommended_phase": "Q40 Root Recycling Framework v0",
+  "no_apply": true,
+  "operating_mode": {
+    "deterministic_local": true,
+    "dry_run_first": true,
+    "no_apply": true,
+    "no_file_deletes": true,
+    "no_file_moves": true,
+    "no_model_calls": true,
+    "no_network_calls": true,
+    "no_provider_calls": true,
+    "no_reference_rewrites": true,
+    "no_target_repo_mutation": true
+  },
+  "purpose": "Assess Q39 no-apply refactor planning readiness for future structural WorkUnits.",
+  "quality_summary": {
+    "artifact_refs": [
+      ".aide/reports/file-quality-summary.md",
+      ".aide/reports/file-quality-ledger.json"
+    ],
+    "fail_count": 0,
+    "file_count": 15420,
+    "quality_level_counts": {
+      "exempt": 30,
+      "pass": 10,
+      "warn": 15380
+    },
+    "warning_counts": {
+      "large_module_candidate": 28,
+      "missing_doc_candidate": 3484,
+      "missing_test_or_validator_candidate": 3731,
+      "mixed_purpose_candidate": 6,
+      "orphan_candidate": 15223,
+      "public_surface_missing_doc_candidate": 2074,
+      "reuse_candidate": 7889,
+      "stale_doc_reference_candidate": 3156,
+      "unknown_kind": 1635,
+      "unknown_owner": 15177,
+      "unknown_status": 1635
+    }
+  },
+  "readiness": {
+    "branch_policy_present": true,
+    "file_quality_ledger_present": true,
+    "intent_packet_present": true,
+    "policies_present": true,
+    "repo_intelligence_present": true,
+    "schemas_present": true
+  },
+  "reference_rewrites": false,
+  "repo_intelligence_summary": {
+    "artifact_refs": [
+      ".aide/repo/latest-repo-intelligence.md",
+      ".aide/repo/file-inventory.json"
+    ],
+    "file_count": 15420
+  },
+  "schema_version": "aide.refactor-readiness.v0",
+  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_inputs": [
+    {
+      "id": "repo_intelligence_summary",
+      "path": ".aide/repo/latest-repo-intelligence.md",
+      "present": true
+    },
+    {
+      "id": "repo_file_inventory",
+      "path": ".aide/repo/file-inventory.json",
+      "present": true
+    },
+    {
+      "id": "file_quality_summary",
+      "path": ".aide/reports/file-quality-summary.md",
+      "present": true
+    },
+    {
+      "id": "file_quality_ledger",
+      "path": ".aide/reports/file-quality-ledger.json",
+      "present": true
+    },
+    {
+      "id": "intent_packet",
+      "path": ".aide/intake/latest-intent-packet.json",
+      "present": true
+    },
+    {
+      "id": "workunit_draft",
+      "path": ".aide/intake/latest-workunit-draft.json",
+      "present": true
+    },
+    {
+      "id": "branch_policy",
+      "path": ".aide/policies/git-workflow.yaml",
+      "present": true
+    },
+    {
+      "id": "validation_policy",
+      "path": ".aide/policies/verification.yaml",
+      "present": true
+    }
+  ],
+  "status": "dry_run",
+  "target_repo_mutation": false,
+  "warnings": []
+}

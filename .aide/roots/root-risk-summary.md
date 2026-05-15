@@ -1,0 +1,51 @@
+# Root Risk Summary
+
+- no_apply: true
+- deletion_approval: false
+
+## Risks
+
+- `.aide`: risk=high status=mixed reasons=identity_sensitive_hint, build_sensitive_file_hint, authority_sensitive_hint, generated_sensitive_content
+- `.aide.local.example`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `.github`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `.vscode`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `apps`: risk=high status=mixed reasons=build_sensitive_file_hint, generated_sensitive_content, generated_source_mix, unknown_kind_or_owner
+- `archive`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `artifacts`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `bundles`: risk=high status=review_required reasons=identity_sensitive_hint, unknown_kind_or_owner
+- `cmake`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `compat`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `content`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `contracts`: risk=high status=review_required reasons=identity_sensitive_hint, authority_sensitive_hint, unknown_kind_or_owner
+- `control`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `core`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `data`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `dist`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `docs`: risk=medium status=mixed reasons=generated_sensitive_content, unknown_kind_or_owner, multiple_file_kinds
+- `engine`: risk=high status=mixed reasons=build_sensitive_file_hint, unknown_kind_or_owner, multiple_file_kinds
+- `game`: risk=high status=mixed reasons=identity_sensitive_hint, build_sensitive_file_hint, authority_sensitive_hint, unknown_kind_or_owner
+- `governance`: risk=high status=review_required reasons=build_sensitive_file_hint, authority_sensitive_hint, unknown_kind_or_owner
+- `ide`: risk=high status=review_required reasons=identity_sensitive_hint, unknown_kind_or_owner
+- `lib`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `libs`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `locks`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `meta`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `modding`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `models`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `net`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `packs`: risk=high status=mixed reasons=identity_sensitive_hint, build_sensitive_file_hint, unknown_kind_or_owner, multiple_file_kinds
+- `performance`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `profiles`: risk=high status=review_required reasons=identity_sensitive_hint, unknown_kind_or_owner
+- `release`: risk=high status=review_required reasons=identity_sensitive_hint, build_sensitive_file_hint, authority_sensitive_hint, unknown_kind_or_owner
+- `repo`: risk=high status=review_required reasons=authority_sensitive_hint, unknown_kind_or_owner
+- `repo-root`: risk=high status=mixed reasons=build_sensitive_file_hint, authority_sensitive_hint, generated_sensitive_content, generated_source_mix
+- `runtime`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `safety`: risk=high status=review_required reasons=build_sensitive_file_hint, authority_sensitive_hint, unknown_kind_or_owner
+- `scripts`: risk=high status=mixed reasons=build_sensitive_file_hint, generated_sensitive_content, generated_source_mix, unknown_kind_or_owner
+- `security`: risk=high status=review_required reasons=build_sensitive_file_hint, authority_sensitive_hint, unknown_kind_or_owner
+- `specs`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner
+- `templates`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `tests`: risk=high status=mixed reasons=identity_sensitive_hint, build_sensitive_file_hint, authority_sensitive_hint, generated_sensitive_content
+- `tools`: risk=high status=mixed reasons=build_sensitive_file_hint, unknown_kind_or_owner, multiple_file_kinds
+- `updates`: risk=high status=review_required reasons=unknown_kind_or_owner
+- `validation`: risk=high status=review_required reasons=build_sensitive_file_hint, unknown_kind_or_owner

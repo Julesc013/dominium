@@ -35,6 +35,16 @@ class TokenLedgerTests(unittest.TestCase):
         self.assertEqual(aide_lite.classify_budget_status(81, 100), "near_budget")
         self.assertEqual(aide_lite.classify_budget_status(101, 100), "over_budget")
 
+    def test_near_budget_is_watchlist_not_warning(self) -> None:
+        near = aide_lite.LedgerRecord("run", "Q", "task_packet", "near.md", 324, 1, 81, "chars/4", "100", "near_budget", "near")
+        over = aide_lite.LedgerRecord("run", "Q", "task_packet", "over.md", 404, 1, 101, "chars/4", "100", "over_budget", "over")
+        self.assertEqual(aide_lite.ledger_budget_watchlist([near, over]), ["near budget: task_packet `near.md` 81/100"])
+        self.assertEqual(aide_lite.ledger_budget_warnings([near, over]), ["over budget: task_packet `over.md` 101/100"])
+
+    def test_eval_report_has_explicit_budget(self) -> None:
+        root = self.make_repo()
+        self.assertEqual(aide_lite.budget_for_surface(root, "eval_report"), 4800)
+
     def test_ledger_record_generation_and_jsonl_omit_raw_content(self) -> None:
         root = self.make_repo()
         raw_marker = "UNIQUE_RAW_PROMPT_BODY_SHOULD_NOT_BE_STORED"

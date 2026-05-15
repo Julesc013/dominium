@@ -4,7 +4,7 @@
 - generated_by: aide-lite
 - non_mutating: true
 - current_branch: main
-- current_commit: 4252584e060baf01bb1692c68e84348043793f95
+- current_commit: 80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0
 - current_branch_role: canonical
 - detected_workflow: trunk_without_dev
 - confidence: medium
@@ -21,7 +21,6 @@
 ## Warnings
 
 - dirty_tree_detected
-- integration_branch_dev_missing
 
 ## Q28 Boundary
 

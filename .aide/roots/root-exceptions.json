@@ -1,0 +1,22 @@
+{
+  "generated_by": "aide-lite",
+  "no_apply": true,
+  "records": [
+    {
+      "created_in": "Q40-root-recycling-framework-v0",
+      "evidence_refs": [
+        ".aide/roots/latest-root-classification.md",
+        ".aide/refactors/latest-refactor-readiness.md"
+      ],
+      "exception_id": "q40-aide-control-plane-mixed-root",
+      "owner": "AIDE control plane",
+      "reason": "AIDE control-plane root intentionally contains policies, scripts, queue evidence, generated outputs, export data, and reports.",
+      "retirement_condition": "Future Q41-Q42 work may split portable and source-specific control-plane surfaces only after reviewed maps exist.",
+      "review_required": true,
+      "root": ".aide",
+      "status": "active"
+    }
+  ],
+  "schema_version": "aide.root-exceptions.v0",
+  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0"
+}

@@ -1,0 +1,18 @@
+schema_version: aide.queue-status.v0
+task_id: DOMINIUM-AIDE-STABLE-INSTALL-01
+status: needs_review
+result: READY_FOR_Q51_WITH_WARNINGS
+mode: UPGRADE_EXISTING_AIDE
+repo_identity: confirmed_dominium
+q49_preflight: READY_FOR_Q50_WITH_WARNINGS
+source_bundle: validated_with_warnings
+portable_sync: completed
+target_generation: completed
+validation_result: pass_with_warnings
+commit_status: committed_in_q50
+warnings:
+  - full 130-task eval run timed out; representative golden task passed
+  - source checksum manifest references missing .aide.local.example/secrets/README.md
+  - source pack lacks .aide/providers/README.md although provider validator expected it
+  - verify reports diff-scope warnings because the active Q49 scope predates Q50 generated files
+  - repo intelligence reports 1635 unknown classifications for Q51 absorption

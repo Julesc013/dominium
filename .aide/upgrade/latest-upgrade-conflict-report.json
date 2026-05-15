@@ -1,0 +1,119 @@
+{
+  "blocking_count": 9,
+  "conflict_count": 9,
+  "conflicts": [
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-6b18b0c0fdec",
+      "conflict_type": "source_pack_missing",
+      "evidence_refs": [
+        ".aide/export/aide-lite-pack-v0/files"
+      ],
+      "path": ".aide/export/aide-lite-pack-v0/files",
+      "reason": "Source export pack payload is missing; upgrade planning falls back to local files.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    },
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-0e0c578a456d",
+      "conflict_type": "source_state_leak",
+      "evidence_refs": [
+        ".aide/reports/aide-commit-message-standard.md"
+      ],
+      "path": ".aide/reports/aide-commit-message-standard.md",
+      "reason": "Source-generated state is excluded from upgrade payload truth.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    },
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-c7ac79dbfef2",
+      "conflict_type": "source_state_leak",
+      "evidence_refs": [
+        ".aide/reports/aide-task-resumption-standard.md"
+      ],
+      "path": ".aide/reports/aide-task-resumption-standard.md",
+      "reason": "Source-generated state is excluded from upgrade payload truth.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    },
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-d84dbdb960b1",
+      "conflict_type": "source_state_leak",
+      "evidence_refs": [
+        ".aide/reports/aide-workunit-recovery-standard.md"
+      ],
+      "path": ".aide/reports/aide-workunit-recovery-standard.md",
+      "reason": "Source-generated state is excluded from upgrade payload truth.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    },
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-beb722d4e5a6",
+      "conflict_type": "source_state_leak",
+      "evidence_refs": [
+        ".aide/reports/file-quality-ledger.schema.json"
+      ],
+      "path": ".aide/reports/file-quality-ledger.schema.json",
+      "reason": "Source-generated state is excluded from upgrade payload truth.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    },
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-9d1982520bd0",
+      "conflict_type": "secret_like_path",
+      "evidence_refs": [
+        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+      ],
+      "path": "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py",
+      "reason": "Tracked secret-like path blocks safe upgrade apply.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    },
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-231e4ad6fbd8",
+      "conflict_type": "secret_like_path",
+      "evidence_refs": [
+        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+      ],
+      "path": "tools/auditx/analyzers/e531_secrets_in_log_smell.py",
+      "reason": "Tracked secret-like path blocks safe upgrade apply.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    },
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-2b887b13ca0d",
+      "conflict_type": "secret_like_path",
+      "evidence_refs": [
+        "tools/xstack/testx/tests/test_no_secrets_in_bundle.py"
+      ],
+      "path": "tools/xstack/testx/tests/test_no_secrets_in_bundle.py",
+      "reason": "Tracked secret-like path blocks safe upgrade apply.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    },
+    {
+      "blocking": true,
+      "conflict_id": "upgrade-conflict-572401b045b5",
+      "conflict_type": "secret_like_path",
+      "evidence_refs": [
+        "tools/xstack/testx/tests/test_standards_issues_spec_and_credential.py"
+      ],
+      "path": "tools/xstack/testx/tests/test_standards_issues_spec_and_credential.py",
+      "reason": "Tracked secret-like path blocks safe upgrade apply.",
+      "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
+      "status": "blocking"
+    }
+  ],
+  "no_apply": true,
+  "schema_version": "aide.upgrade-conflict-report.v0",
+  "warnings": [
+    "upgrade conflicts are advisory/blocking evidence; Q45 applies no changes"
+  ]
+}

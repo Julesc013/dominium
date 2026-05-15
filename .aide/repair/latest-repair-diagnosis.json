@@ -1,0 +1,91 @@
+{
+  "class_counts": {
+    "invalid_pack_checksum": 1,
+    "secret_like_file": 4
+  },
+  "diagnoses": [
+    {
+      "blocker": false,
+      "diagnosis_id": "diagnosis-d9f05a8682b3",
+      "evidence_refs": [
+        ".aide/export/aide-lite-pack-v0/checksums.json"
+      ],
+      "issue_id": "repair-d9f05a8682b3",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Export pack checksums are missing; future repair may regenerate pack evidence.",
+      "repair_class": "invalid_pack_checksum",
+      "risk_class": "high",
+      "severity": "warning"
+    },
+    {
+      "blocker": true,
+      "diagnosis_id": "diagnosis-55d99864bb34",
+      "evidence_refs": [
+        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+      ],
+      "issue_id": "repair-55d99864bb34",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "risk_class": "critical",
+      "severity": "blocking"
+    },
+    {
+      "blocker": true,
+      "diagnosis_id": "diagnosis-7f92516ecaf1",
+      "evidence_refs": [
+        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+      ],
+      "issue_id": "repair-7f92516ecaf1",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "risk_class": "critical",
+      "severity": "blocking"
+    },
+    {
+      "blocker": true,
+      "diagnosis_id": "diagnosis-bf518d2b8fea",
+      "evidence_refs": [
+        "tools/xstack/testx/tests/test_no_secrets_in_bundle.py"
+      ],
+      "issue_id": "repair-bf518d2b8fea",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "risk_class": "critical",
+      "severity": "blocking"
+    },
+    {
+      "blocker": true,
+      "diagnosis_id": "diagnosis-da642231d5b1",
+      "evidence_refs": [
+        "tools/xstack/testx/tests/test_standards_issues_spec_and_credential.py"
+      ],
+      "issue_id": "repair-da642231d5b1",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "risk_class": "critical",
+      "severity": "blocking"
+    }
+  ],
+  "generated_by": "aide-lite",
+  "no_apply": true,
+  "risk_counts": {
+    "critical": 4,
+    "high": 1
+  },
+  "schema_version": "aide.repair-diagnosis-report.v0",
+  "severity_counts": {
+    "blocking": 4,
+    "warning": 1
+  },
+  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "target_root": "."
+}

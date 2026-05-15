@@ -1,0 +1,1205 @@
+{
+  "blocked_reasons": [
+    ".aide: high",
+    ".aide.local.example: high",
+    ".github: high",
+    ".vscode: high",
+    "apps: high",
+    "archive: high",
+    "artifacts: high",
+    "bundles: high",
+    "cmake: high",
+    "compat: high",
+    "content: high",
+    "contracts: high",
+    "control: high",
+    "core: high",
+    "data: high",
+    "dist: high",
+    "engine: high",
+    "game: high",
+    "governance: high",
+    "ide: high",
+    "lib: high",
+    "libs: high",
+    "locks: high",
+    "meta: high",
+    "modding: high",
+    "models: high",
+    "net: high",
+    "packs: high",
+    "performance: high",
+    "profiles: high",
+    "release: high",
+    "repo: high",
+    "repo-root: high",
+    "runtime: high",
+    "safety: high",
+    "scripts: high",
+    "security: high",
+    "specs: high",
+    "templates: high",
+    "tests: high",
+    "tools: high",
+    "updates: high",
+    "validation: high"
+  ],
+  "evidence_required": [
+    ".aide/roots/latest-root-inventory.md",
+    ".aide/roots/latest-root-classification.md",
+    ".aide/roots/root-risk-summary.md",
+    "future queue evidence before any apply phase"
+  ],
+  "file_classifications": [
+    {
+      "fate_counts": {
+        "keep": 212,
+        "unknown": 37
+      },
+      "file_count": 249,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 249,
+      "risk_class": "high",
+      "root": ".aide",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 5
+      },
+      "file_count": 5,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 5,
+      "risk_class": "high",
+      "root": ".aide.local.example",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": ".github",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1
+      },
+      "file_count": 1,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1,
+      "risk_class": "high",
+      "root": ".vscode",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 273
+      },
+      "file_count": 273,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 273,
+      "risk_class": "high",
+      "root": "apps",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1235
+      },
+      "file_count": 1235,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1235,
+      "risk_class": "high",
+      "root": "archive",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 10
+      },
+      "file_count": 10,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 10,
+      "risk_class": "high",
+      "root": "artifacts",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 3
+      },
+      "file_count": 3,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 3,
+      "risk_class": "high",
+      "root": "bundles",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 33
+      },
+      "file_count": 33,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 33,
+      "risk_class": "high",
+      "root": "cmake",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 17
+      },
+      "file_count": 17,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 17,
+      "risk_class": "high",
+      "root": "compat",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 3
+      },
+      "file_count": 3,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 3,
+      "risk_class": "high",
+      "root": "content",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1613
+      },
+      "file_count": 1613,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1613,
+      "risk_class": "high",
+      "root": "contracts",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 21
+      },
+      "file_count": 21,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 21,
+      "risk_class": "high",
+      "root": "control",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 16
+      },
+      "file_count": 16,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 16,
+      "risk_class": "high",
+      "root": "core",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1279
+      },
+      "file_count": 1279,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1279,
+      "risk_class": "high",
+      "root": "data",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 13
+      },
+      "file_count": 13,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 13,
+      "risk_class": "high",
+      "root": "dist",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "keep": 2,
+        "unknown": 4048
+      },
+      "file_count": 4050,
+      "no_apply": true,
+      "recommended_next_action": "classify root before future recycling",
+      "review_required_file_count": 4050,
+      "risk_class": "medium",
+      "root": "docs",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 669
+      },
+      "file_count": 669,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 669,
+      "risk_class": "high",
+      "root": "engine",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 918
+      },
+      "file_count": 918,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 918,
+      "risk_class": "high",
+      "root": "game",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "governance",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 4
+      },
+      "file_count": 4,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 4,
+      "risk_class": "high",
+      "root": "ide",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 22
+      },
+      "file_count": 22,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 22,
+      "risk_class": "high",
+      "root": "lib",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 86
+      },
+      "file_count": 86,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 86,
+      "risk_class": "high",
+      "root": "libs",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1
+      },
+      "file_count": 1,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1,
+      "risk_class": "high",
+      "root": "locks",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 26
+      },
+      "file_count": 26,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 26,
+      "risk_class": "high",
+      "root": "meta",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "modding",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "models",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 17
+      },
+      "file_count": 17,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 17,
+      "risk_class": "high",
+      "root": "net",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 256
+      },
+      "file_count": 256,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 256,
+      "risk_class": "high",
+      "root": "packs",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 3
+      },
+      "file_count": 3,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 3,
+      "risk_class": "high",
+      "root": "performance",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1
+      },
+      "file_count": 1,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1,
+      "risk_class": "high",
+      "root": "profiles",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 6
+      },
+      "file_count": 6,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 6,
+      "risk_class": "high",
+      "root": "release",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 11
+      },
+      "file_count": 11,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 11,
+      "risk_class": "high",
+      "root": "repo",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "keep": 2,
+        "unknown": 28
+      },
+      "file_count": 30,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 30,
+      "risk_class": "high",
+      "root": "repo-root",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 52
+      },
+      "file_count": 52,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 52,
+      "risk_class": "high",
+      "root": "runtime",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "safety",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 48
+      },
+      "file_count": 48,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 48,
+      "risk_class": "high",
+      "root": "scripts",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 4
+      },
+      "file_count": 4,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 4,
+      "risk_class": "high",
+      "root": "security",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 9
+      },
+      "file_count": 9,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 9,
+      "risk_class": "high",
+      "root": "specs",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "templates",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 785
+      },
+      "file_count": 785,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 785,
+      "risk_class": "high",
+      "root": "tests",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 3641
+      },
+      "file_count": 3641,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 3641,
+      "risk_class": "high",
+      "root": "tools",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 6
+      },
+      "file_count": 6,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 6,
+      "risk_class": "high",
+      "root": "updates",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "validation",
+      "root_status": "review_required"
+    }
+  ],
+  "file_deletes": false,
+  "file_moves": false,
+  "generated_by": "aide-lite",
+  "no_apply": true,
+  "non_goals": [
+    "no root moves",
+    "no file deletes",
+    "no reference rewrites",
+    "no tool absorption",
+    "no target repo mutation"
+  ],
+  "plan_id": "q40-root-recycling-no-apply-plan",
+  "recommended_sequence": [
+    "inventory",
+    "classify",
+    "plan",
+    "review",
+    "future_salvage_map",
+    "future_move_map",
+    "future_alias_plan",
+    "future_apply",
+    "future_validate",
+    "future_retire_exception"
+  ],
+  "reference_rewrites": false,
+  "required_future_maps": [
+    "salvage_map",
+    "move_map",
+    "path_aliases",
+    "rollback_notes",
+    "validation_plan"
+  ],
+  "retirement_conditions": [
+    "root exceptions require explicit retirement_condition and review",
+    "drop_candidate remains candidate-only and is not deletion approval",
+    "future apply requires reviewed move/salvage/path-alias maps"
+  ],
+  "risk_class": "high",
+  "root": "*",
+  "root_plans": [
+    {
+      "fate_counts": {
+        "keep": 212,
+        "unknown": 37
+      },
+      "file_count": 249,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 249,
+      "risk_class": "high",
+      "root": ".aide",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 5
+      },
+      "file_count": 5,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 5,
+      "risk_class": "high",
+      "root": ".aide.local.example",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": ".github",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1
+      },
+      "file_count": 1,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1,
+      "risk_class": "high",
+      "root": ".vscode",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 273
+      },
+      "file_count": 273,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 273,
+      "risk_class": "high",
+      "root": "apps",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1235
+      },
+      "file_count": 1235,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1235,
+      "risk_class": "high",
+      "root": "archive",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 10
+      },
+      "file_count": 10,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 10,
+      "risk_class": "high",
+      "root": "artifacts",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 3
+      },
+      "file_count": 3,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 3,
+      "risk_class": "high",
+      "root": "bundles",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 33
+      },
+      "file_count": 33,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 33,
+      "risk_class": "high",
+      "root": "cmake",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 17
+      },
+      "file_count": 17,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 17,
+      "risk_class": "high",
+      "root": "compat",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 3
+      },
+      "file_count": 3,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 3,
+      "risk_class": "high",
+      "root": "content",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1613
+      },
+      "file_count": 1613,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1613,
+      "risk_class": "high",
+      "root": "contracts",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 21
+      },
+      "file_count": 21,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 21,
+      "risk_class": "high",
+      "root": "control",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 16
+      },
+      "file_count": 16,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 16,
+      "risk_class": "high",
+      "root": "core",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1279
+      },
+      "file_count": 1279,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1279,
+      "risk_class": "high",
+      "root": "data",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 13
+      },
+      "file_count": 13,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 13,
+      "risk_class": "high",
+      "root": "dist",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "keep": 2,
+        "unknown": 4048
+      },
+      "file_count": 4050,
+      "no_apply": true,
+      "recommended_next_action": "classify root before future recycling",
+      "review_required_file_count": 4050,
+      "risk_class": "medium",
+      "root": "docs",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 669
+      },
+      "file_count": 669,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 669,
+      "risk_class": "high",
+      "root": "engine",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 918
+      },
+      "file_count": 918,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 918,
+      "risk_class": "high",
+      "root": "game",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "governance",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 4
+      },
+      "file_count": 4,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 4,
+      "risk_class": "high",
+      "root": "ide",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 22
+      },
+      "file_count": 22,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 22,
+      "risk_class": "high",
+      "root": "lib",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 86
+      },
+      "file_count": 86,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 86,
+      "risk_class": "high",
+      "root": "libs",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1
+      },
+      "file_count": 1,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1,
+      "risk_class": "high",
+      "root": "locks",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 26
+      },
+      "file_count": 26,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 26,
+      "risk_class": "high",
+      "root": "meta",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "modding",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "models",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 17
+      },
+      "file_count": 17,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 17,
+      "risk_class": "high",
+      "root": "net",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 256
+      },
+      "file_count": 256,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 256,
+      "risk_class": "high",
+      "root": "packs",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 3
+      },
+      "file_count": 3,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 3,
+      "risk_class": "high",
+      "root": "performance",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 1
+      },
+      "file_count": 1,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 1,
+      "risk_class": "high",
+      "root": "profiles",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 6
+      },
+      "file_count": 6,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 6,
+      "risk_class": "high",
+      "root": "release",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 11
+      },
+      "file_count": 11,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 11,
+      "risk_class": "high",
+      "root": "repo",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "keep": 2,
+        "unknown": 28
+      },
+      "file_count": 30,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 30,
+      "risk_class": "high",
+      "root": "repo-root",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 52
+      },
+      "file_count": 52,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 52,
+      "risk_class": "high",
+      "root": "runtime",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "safety",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 48
+      },
+      "file_count": 48,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 48,
+      "risk_class": "high",
+      "root": "scripts",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 4
+      },
+      "file_count": 4,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 4,
+      "risk_class": "high",
+      "root": "security",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 9
+      },
+      "file_count": 9,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 9,
+      "risk_class": "high",
+      "root": "specs",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "templates",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 785
+      },
+      "file_count": 785,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 785,
+      "risk_class": "high",
+      "root": "tests",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 3641
+      },
+      "file_count": 3641,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 3641,
+      "risk_class": "high",
+      "root": "tools",
+      "root_status": "mixed"
+    },
+    {
+      "fate_counts": {
+        "unknown": 6
+      },
+      "file_count": 6,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 6,
+      "risk_class": "high",
+      "root": "updates",
+      "root_status": "review_required"
+    },
+    {
+      "fate_counts": {
+        "unknown": 2
+      },
+      "file_count": 2,
+      "no_apply": true,
+      "recommended_next_action": "review root evidence and keep no-apply until future maps and validation exist",
+      "review_required_file_count": 2,
+      "risk_class": "high",
+      "root": "validation",
+      "root_status": "review_required"
+    }
+  ],
+  "schema_version": "aide.root-recycling-plan.v0",
+  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_inputs": [
+    {
+      "id": "repo_file_inventory",
+      "path": ".aide/repo/file-inventory.json",
+      "present": true
+    },
+    {
+      "id": "repo_intelligence_summary",
+      "path": ".aide/repo/latest-repo-intelligence.md",
+      "present": true
+    },
+    {
+      "id": "file_quality_ledger",
+      "path": ".aide/reports/file-quality-ledger.json",
+      "present": true
+    },
+    {
+      "id": "file_quality_summary",
+      "path": ".aide/reports/file-quality-summary.md",
+      "present": true
+    },
+    {
+      "id": "refactor_readiness",
+      "path": ".aide/refactors/latest-refactor-readiness.md",
+      "present": true
+    },
+    {
+      "id": "refactor_safety_policy",
+      "path": ".aide/policies/refactor-safety.yaml",
+      "present": true
+    },
+    {
+      "id": "root_recycling_policy",
+      "path": ".aide/policies/root-recycling.yaml",
+      "present": true
+    }
+  ],
+  "status": "dry_run",
+  "target_repo_mutation": false,
+  "validation_plan": [
+    "py -3 .aide/scripts/aide_lite.py repo validate",
+    "py -3 .aide/scripts/aide_lite.py quality validate",
+    "py -3 .aide/scripts/aide_lite.py refactor validate",
+    "py -3 .aide/scripts/aide_lite.py roots validate"
+  ]
+}

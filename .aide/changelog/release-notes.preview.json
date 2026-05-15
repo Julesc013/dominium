@@ -1,0 +1,180 @@
+{
+  "follow_up": [
+    {
+      "commit": "dd843482c92d",
+      "summary": "Sync portable commit, WorkUnit, and Git workflow governance from the canonical pack."
+    },
+    {
+      "commit": "f2a1b4412cbe",
+      "summary": "Generate Dominium-local Git workflow reports, adapter outputs, context packets, and final validation evidence."
+    },
+    {
+      "commit": "f2a1b4412cbe",
+      "summary": "Generate Dominium-local Git workflow reports, adapter outputs, context packets, and final validation evidence."
+    },
+    {
+      "commit": "4f04a866b73c",
+      "summary": "Regenerate context, review, token, and validation evidence for Q33 review."
+    },
+    {
+      "commit": "4f04a866b73c",
+      "summary": "Regenerate context, review, token, and validation evidence for Q33 review."
+    },
+    {
+      "commit": "d722727e80e1",
+      "summary": "Document the governance sync in Dominium reference docs and run final validation."
+    },
+    {
+      "commit": "d722727e80e1",
+      "summary": "Document the governance sync in Dominium reference docs and run final validation."
+    },
+    {
+      "commit": "4252584e060b",
+      "summary": "Run final validation and report Q33 for review."
+    },
+    {
+      "commit": "752918d4f281",
+      "summary": "Run final read-only Git and commit checks before reporting Q33 for review."
+    },
+    {
+      "commit": "80dc7bfb58a1",
+      "summary": "Run Q50 Dominium Fresh Install / Upgrade from Stable Pack as observe/compare/plan/dry-run only."
+    }
+  ],
+  "highlights": [
+    {
+      "breaking": false,
+      "category": "Added",
+      "commit": "80dc7bfb58a1",
+      "subject": "aide(dominium): preflight stable AIDE install readiness",
+      "summary": "Dominium Q49 preflight evidence and Q50 dry-run readiness guidance."
+    },
+    {
+      "breaking": false,
+      "category": "Changed",
+      "commit": "f2a1b4412cbe",
+      "subject": "aide(dominium): sync portable commit and WorkUnit policies",
+      "summary": "imported portable AIDE governance and recovery tooling into Dominium."
+    },
+    {
+      "breaking": false,
+      "category": "Changed",
+      "commit": "4f04a866b73c",
+      "subject": "aide(dominium): sync Git workflow policy and reports",
+      "summary": "added Dominium-local Git workflow reports and dry-run helper plan outputs."
+    },
+    {
+      "breaking": false,
+      "category": "Fixed",
+      "commit": "f2a1b4412cbe",
+      "subject": "aide(dominium): sync portable commit and WorkUnit policies",
+      "summary": "prevented AIDE Lite selftest from resolving Dominium product `core` modules."
+    },
+    {
+      "breaking": false,
+      "category": "Docs",
+      "commit": "4252584e060b",
+      "subject": "docs(dominium): record canonical AIDE governance sync",
+      "summary": "added compact Dominium AIDE governance sync reference."
+    },
+    {
+      "breaking": false,
+      "category": "Tests",
+      "commit": "d722727e80e1",
+      "subject": "aide(dominium): regenerate packets and validation evidence",
+      "summary": "recorded 25/25 portable golden tasks passing after target-local helper-plan generation."
+    }
+  ],
+  "preview_only": true,
+  "risk_summary": [
+    {
+      "commit": "dd843482c92d",
+      "summary": "Direct import is not applied because the dry-run found target-local conflicts."
+    },
+    {
+      "commit": "f2a1b4412cbe",
+      "summary": "This commit does not mutate branches, install hooks, or change product/source files."
+    },
+    {
+      "commit": "f2a1b4412cbe",
+      "summary": "This commit does not mutate branches, install hooks, or change product/source files."
+    },
+    {
+      "commit": "4f04a866b73c",
+      "summary": "Dominium currently has no local `dev` branch, so helper land/promote plans report blockers rather than readiness."
+    },
+    {
+      "commit": "4f04a866b73c",
+      "summary": "Dominium currently has no local `dev` branch, so helper land/promote plans report blockers rather than readiness."
+    },
+    {
+      "commit": "d722727e80e1",
+      "summary": "Review/verify warnings remain for optional controller/gateway/provider generated status refs outside Q33 scope."
+    },
+    {
+      "commit": "d722727e80e1",
+      "summary": "Review/verify warnings remain for optional controller/gateway/provider generated status refs outside Q33 scope."
+    },
+    {
+      "commit": "4252584e060b",
+      "summary": "The docs describe local AIDE workflow readiness only; they do not authorize product feature work or branch mutation."
+    },
+    {
+      "commit": "752918d4f281",
+      "summary": "This commit intentionally records generated AIDE reports; it does not mutate branches, install hooks, or change product/doctrine roots."
+    },
+    {
+      "commit": "80dc7bfb58a1",
+      "summary": "Target AIDE remains older than Q36-Q48 command families and requires an upgrade dry-run rather than direct apply."
+    }
+  ],
+  "schema_version": "aide.release-notes-preview.v0",
+  "source_head": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "source_range": "HEAD latest 50 commits",
+  "validation_summary": [
+    {
+      "commit": "dd843482c92d",
+      "summary": "PASS: git status --short was clean before baseline commands."
+    },
+    {
+      "commit": "f2a1b4412cbe",
+      "summary": "PASS: py -3 .aide/scripts/aide_lite.py validate."
+    },
+    {
+      "commit": "f2a1b4412cbe",
+      "summary": "PASS: py -3 .aide/scripts/aide_lite.py validate."
+    },
+    {
+      "commit": "4f04a866b73c",
+      "summary": "PASS: py -3 .aide/scripts/aide_lite.py git detect."
+    },
+    {
+      "commit": "4f04a866b73c",
+      "summary": "PASS: py -3 .aide/scripts/aide_lite.py git detect."
+    },
+    {
+      "commit": "d722727e80e1",
+      "summary": "PASS: py -3 .aide/scripts/aide_lite.py snapshot, index, context, pack, and estimate."
+    },
+    {
+      "commit": "d722727e80e1",
+      "summary": "PASS: py -3 .aide/scripts/aide_lite.py snapshot, index, context, pack, and estimate."
+    },
+    {
+      "commit": "4252584e060b",
+      "summary": "PASS: py -3 scripts/verify_docs_sanity.py."
+    },
+    {
+      "commit": "752918d4f281",
+      "summary": "PASS: py -3 .aide/scripts/aide_lite.py doctor, validate, test, selftest, and eval run."
+    },
+    {
+      "commit": "80dc7bfb58a1",
+      "summary": "PASS: `git diff --cached --check`."
+    }
+  ],
+  "warnings": [
+    "b3d1e62bafbc merge commit ignored",
+    "42 malformed or legacy commits require review"
+  ]
+}

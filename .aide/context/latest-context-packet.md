@@ -14,7 +14,6 @@
 - `.aide/context/priority.yaml`
 - `.aide/context/excerpt-policy.yaml`
 - `.aide/context/ignore.yaml`
-- `.aide/context/dominium-doctrine-refs.md` (present)
 - `.aide/context/repo-snapshot.json`
 - `.aide/context/context-index.json`
 - `.aide/memory/project-state.md`
@@ -25,29 +24,29 @@
 
 - json: `.aide/context/repo-map.json`
 - markdown: `.aide/context/repo-map.md`
-- file_count: 13789
-- source_snapshot_hash: `b51782b666c036116c63fac723760b31d8b8beace2214688a4052f52cd596b61`
+- file_count: 19388
+- source_snapshot_hash: `44f9854d54ae59a9c84c8f4bd1d50441835e67e2659134622e9ab2098d94b2e0`
 
 ## ROLE_COUNTS
 
-- aide_contract: 64
-- aide_policy: 37
+- aide_contract: 274
+- aide_policy: 112
 - aide_prompt: 3
 - aide_context: 5
-- aide_queue: 17
-- aide_evidence: 8
-- test: 2130
-- docs: 4171
+- aide_queue: 21
+- aide_evidence: 18
+- test: 2287
+- docs: 4786
 - governance: 2
 - script: 49
-- config: 2300
+- config: 4088
 - generated: 9
-- unknown: 4994
+- unknown: 7734
 
 ## TEST_MAP
 
 - path: `.aide/context/test-map.json`
-- mapping_count: 4357
+- mapping_count: 5275
 - mappings_with_existing_candidate: 1
 - complete_coverage_claimed: false
 
@@ -72,6 +71,6 @@
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 1900
-- approx_tokens: 475
+- chars: 1849
+- approx_tokens: 463
 - formal ledger: `.aide/reports/token-ledger.jsonl`

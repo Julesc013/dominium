@@ -1,0 +1,50 @@
+{
+  "adapter_class_counts": {
+    "report_only": 13
+  },
+  "credential_required_count": 0,
+  "credentials_configured": false,
+  "gateway_forwarding": false,
+  "generated_by": "aide-lite",
+  "live_model_calls": false,
+  "live_provider_calls": false,
+  "network_calls": false,
+  "no_credentials_in_status": true,
+  "privacy_class_counts": {
+    "offline": 13
+  },
+  "provider_adapter_contract": "aide.provider-adapter-contract.v0",
+  "provider_class_counts": {
+    "metadata_only": 13
+  },
+  "provider_family_count": 13,
+  "provider_ids": [
+    "deterministic_tools",
+    "human",
+    "local_ollama",
+    "local_lm_studio",
+    "local_llama_cpp",
+    "local_vllm",
+    "local_sglang",
+    "openai",
+    "anthropic",
+    "google_gemini",
+    "deepseek",
+    "openrouter",
+    "other_remote_provider"
+  ],
+  "provider_probe_calls": false,
+  "raw_prompt_storage": false,
+  "raw_response_storage": false,
+  "schema_version": "aide.provider-status.v0",
+  "status_counts": {
+    "future": 13
+  },
+  "validation": {
+    "missing": [
+      "core/providers"
+    ],
+    "mode": "report_only_target_fallback",
+    "result": "PASS"
+  }
+}

@@ -1,0 +1,214 @@
+# Test Coverage Map
+
+- tests_detected: 2514
+
+## Likely Test Targets
+
+- .aide/scripts/tests/test_adapter_compiler.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_aide_lite.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_cache_local_state.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_export_import.py: .aide/policies/export-import.yaml, .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_gateway_commands.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_golden_tasks.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_outcome_controller.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_provider_adapter.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q27_commit_recovery.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q28_git_workflow.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_q29_git_helper.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_review_pack.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_router_profile.py: .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_token_ledger.py: .aide/policies/token-ledger.yaml, .aide/scripts/aide_lite.py
+- .aide/scripts/tests/test_verifier.py: .aide/scripts/aide_lite.py
+- apps/server/tests/domain_shard_partition_tests.cpp:
+- apps/server/tests/integrity_checkpoint_tests.cpp:
+- apps/server/tests/shard_api_tests.cpp:
+- apps/server/tests/shard_regression_tests.cpp:
+- apps/server/tests/shard_routing_tests.cpp:
+- apps/setup/packages/scripts/ci/test_support_bundle_determinism.py:
+- apps/setup/packages/scripts/packaging/tests/exe_validation_test.py:
+- apps/setup/packages/scripts/packaging/tests/macos_validation_test.py:
+- apps/setup/packages/scripts/packaging/tests/msi_validation_test.py:
+- apps/setup/packages/scripts/packaging/tests/packaging_validation_test.py:
+- archive/legacy/engine_modules_engine/engine/ui_codegen/tests/CMakeLists.txt:
+- archive/legacy/engine_modules_engine/engine/ui_codegen/tests/ui_codegen_tests.cpp:
+- archive/legacy/engine_modules_engine/engine/ui_ir/tests/CMakeLists.txt:
+- archive/legacy/engine_modules_engine/engine/ui_ir/tests/ui_ir_fixture_gen.cpp:
+- archive/legacy/engine_modules_engine/engine/ui_ir/tests/ui_ir_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/core/tests/launcher_artifact_store_tx_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/core/tests/launcher_core_smoke.cpp:
+- archive/legacy/launcher_core_launcher/launcher/core/tests/launcher_handshake_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/core/tests/launcher_instance_system_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/core/tests/launcher_pack_ecosystem_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/core/tests/launcher_prelaunch_recovery_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/core/tests/launcher_tlv_migrations_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/core/tests/launcher_tools_registry_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/tests/launcher_control_plane_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/tests/launcher_log_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/tests/launcher_state_smoke_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/tests/launcher_tui_smoke_tests.cpp:
+- archive/legacy/launcher_core_launcher/launcher/tests/launcher_ui_smoke_tests.cpp:
+- archive/legacy/setup_core_setup/setup/tests/CMakeLists.txt:
+- archive/legacy/setup_core_setup/setup/tests/dsu_adapter_smoke_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_cli_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_core_smoke_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_exe_archive_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_invocation_parity_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_job_resume_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_legacy_core_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_linux_parity_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_macos_parity_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_manifest_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_platform_iface_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_resolve_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_setup_matrix_test.c:
+- archive/legacy/setup_core_setup/setup/tests/dsu_txn_test.c:
+- archive/legacy/setup_core_setup/setup/tests/golden/cli/export_log.json:
+- archive/legacy/setup_core_setup/setup/tests/golden/cli/manifest_dump_core.json:
+- archive/legacy/setup_core_setup/setup/tests/golden/cli/plan_install_core.json:
+- archive/legacy/setup_core_setup/setup/tests/golden/cli/resolve_install_core.json:
+- archive/legacy/setup_core_setup/setup/tests/golden/cli/verify_install_core.json:
+- archive/legacy/setup_core_setup/setup/tests/golden/cli/version.json:
+- archive/legacy/source/tests/CMakeLists.txt:
+- archive/legacy/source/tests/agent_behavior_determinism_test.c:
+- archive/legacy/source/tests/coredata_compile_determinism_test.cpp:
+- archive/legacy/source/tests/coredata_compile_schema_failure_test.cpp:
+- archive/legacy/source/tests/coredata_validate_policy_error_fails.cpp:
+- archive/legacy/source/tests/coredata_validate_schema_error_fails.cpp:
+- archive/legacy/source/tests/coredata_validate_tlv_pack_passes.cpp:
+- archive/legacy/source/tests/coredata_validate_valid_passes.cpp:
+- archive/legacy/source/tests/determinism_regression_scan_test.c:
+- archive/legacy/source/tests/dom_ai_budget_baseline_cap_test.cpp:
+- archive/legacy/source/tests/dom_ai_budget_behavior_test.cpp:
+- archive/legacy/source/tests/dom_ai_determinism_same_seed_test.cpp:
+- archive/legacy/source/tests/dom_ai_persistence_roundtrip_test.cpp:
+- archive/legacy/source/tests/dom_ai_replay_test.cpp:
+- archive/legacy/source/tests/dom_caps_hash_test.cpp:
+- archive/legacy/source/tests/dom_construction_overlap_refusal_test.cpp:
+- archive/legacy/source/tests/dom_construction_placement_determinism_test.cpp:
+- archive/legacy/source/tests/dom_construction_replay_test.cpp:
+- archive/legacy/source/tests/dom_construction_save_load_roundtrip_test.cpp:
+- archive/legacy/source/tests/dom_contract_runtime_schedule_test.cpp:
+- archive/legacy/source/tests/dom_cosmo_bundle_roundtrip_test.cpp:
+- archive/legacy/source/tests/dom_cosmo_graph_determinism_test.cpp:
+- archive/legacy/source/tests/dom_cosmo_transit_determinism_test.cpp:
+- archive/legacy/source/tests/dom_derived_order_independence_test.cpp:
+- archive/legacy/source/tests/dom_econ_access_control_test.cpp:
+- archive/legacy/source/tests/dom_econ_pack_load_test.cpp:
+- archive/legacy/source/tests/dom_frames_transform_roundtrip_test.cpp:
+- archive/legacy/source/tests/dom_frames_validation_test.cpp:
+- archive/legacy/source/tests/dom_handshake_identity_test.cpp:
+- archive/legacy/source/tests/dom_landing_attachment_invariance_test.cpp:
+- archive/legacy/source/tests/dom_ledger_core_tests.c:
+- archive/legacy/source/tests/dom_logistics_inventory_conservation_test.cpp:
+- archive/legacy/source/tests/dom_logistics_save_load_roundtrip_test.cpp:
+- archive/legacy/source/tests/dom_logistics_schedule_determinism_test.cpp:
+- archive/legacy/source/tests/dom_market_auction_determinism_test.cpp:
+- archive/legacy/source/tests/dom_market_barter_determinism_test.cpp:
+
+## Missing Test Or Validator Candidates
+
+- apps/client/__init__.py (source, unknown)
+- apps/client/adapters/client_fs_adapter.c (source, unknown)
+- apps/client/adapters/client_fs_adapter.h (source, unknown)
+- apps/client/adapters/client_network_adapter.c (source, unknown)
+- apps/client/adapters/client_network_adapter.h (source, unknown)
+- apps/client/app/main_client.c (source, unknown)
+- apps/client/core/client_command_bridge.c (source, unknown)
+- apps/client/core/client_command_bridge.h (source, unknown)
+- apps/client/core/client_commands_registry.c (source, unknown)
+- apps/client/core/client_commands_registry.h (source, unknown)
+- apps/client/core/client_models_options.c (source, unknown)
+- apps/client/core/client_models_options.h (source, unknown)
+- apps/client/core/client_models_server.c (source, unknown)
+- apps/client/core/client_models_server.h (source, unknown)
+- apps/client/core/client_models_world.c (source, unknown)
+- apps/client/core/client_models_world.h (source, unknown)
+- apps/client/core/client_state_machine.c (source, unknown)
+- apps/client/core/client_state_machine.h (source, unknown)
+- apps/client/core/session_artifacts.c (source, unknown)
+- apps/client/core/session_artifacts.h (source, unknown)
+- apps/client/core/session_pipeline.c (source, unknown)
+- apps/client/core/session_pipeline.h (source, unknown)
+- apps/client/core/session_refusal_codes.c (source, unknown)
+- apps/client/core/session_refusal_codes.h (source, unknown)
+- apps/client/core/session_stage_registry.c (source, unknown)
+- apps/client/core/session_stage_registry.h (source, unknown)
+- apps/client/gui/client_app_win32.cpp (source, unknown)
+- apps/client/input/client_input_bindings.c (source, unknown)
+- apps/client/input/client_input_bindings.h (source, unknown)
+- apps/client/interaction/__init__.py (source, unknown)
+- apps/client/interaction/affordance_generator.py (source, unknown)
+- apps/client/interaction/inspection_overlays.py (source, unknown)
+- apps/client/interaction/interaction_dispatch.py (source, unknown)
+- apps/client/interaction/interaction_panel.py (source, unknown)
+- apps/client/interaction/preview_generator.py (source, unknown)
+- apps/client/local_server/__init__.py (source, unknown)
+- apps/client/local_server/local_server_controller.py (source, unknown)
+- apps/client/modes/client_mode_cli.c (source, unknown)
+- apps/client/modes/client_mode_cli.h (source, unknown)
+- apps/client/modes/client_mode_gui.c (source, unknown)
+- apps/client/modes/client_mode_gui.h (source, unknown)
+- apps/client/modes/client_mode_tui.c (source, unknown)
+- apps/client/modes/client_mode_tui.h (source, unknown)
+- apps/client/net/__init__.py (source, unknown)
+- apps/client/net/loopback_client.py (source, unknown)
+- apps/client/observability/perceived_model_v1.c (source, unknown)
+- apps/client/observability/perceived_model_v1.h (source, unknown)
+- apps/client/observability/readonly_view_model.c (source, unknown)
+- apps/client/observability/readonly_view_model.h (source, unknown)
+- apps/client/presentation/frame_graph_builder.cpp (source, unknown)
+- apps/client/presentation/frame_graph_builder.h (source, unknown)
+- apps/client/presentation/render_model_adapter_v1.c (source, unknown)
+- apps/client/presentation/render_model_v1.h (source, unknown)
+- apps/client/presentation/render_prep_system.cpp (source, unknown)
+- apps/client/presentation/render_prep_system.h (source, unknown)
+- apps/client/presentation/ui_host_v1.c (source, unknown)
+- apps/client/presentation/ui_host_v1.h (source, unknown)
+- apps/client/render/__init__.py (source, unknown)
+- apps/client/render/render_model_adapter.py (source, unknown)
+- apps/client/render/renderers/__init__.py (source, unknown)
+- apps/client/render/renderers/hw_renderer_gl.py (source, unknown)
+- apps/client/render/renderers/null_renderer.py (source, unknown)
+- apps/client/render/renderers/software_renderer.py (source, unknown)
+- apps/client/render/representation_resolver.py (source, unknown)
+- apps/client/render/snapshot_capture.py (source, unknown)
+- apps/client/shell/client_shell.c (source, unknown)
+- apps/client/shell/client_shell.h (source, unknown)
+- apps/client/ui/__init__.py (source, unknown)
+- apps/client/ui/client_ui_compositor.c (source, unknown)
+- apps/client/ui/client_ui_compositor.h (source, unknown)
+- apps/client/ui/inspect_panels.py (source, unknown)
+- apps/client/ui/main_menu_surface.py (source, unknown)
+- apps/client/ui/map_views.py (source, unknown)
+- apps/client/ui/teleport_controller.py (source, unknown)
+- apps/client/ui/viewer_shell.py (source, unknown)
+- apps/launcher/cli/launcher_cli_main.c (source, unknown)
+- apps/launcher/cli/launcher_ui_shell.c (source, unknown)
+- apps/launcher/cli/launcher_ui_shell.h (source, unknown)
+- apps/launcher/core/launcher_authority.c (source, unknown)
+- apps/launcher/core/launcher_config_stub.c (source, unknown)
+- apps/launcher/core/launcher_core.c (source, unknown)
+- apps/launcher/core/launcher_mods_stub.c (source, unknown)
+- apps/launcher/core/launcher_process_stub.c (source, unknown)
+- apps/launcher/core/launcher_profile_stub.c (source, unknown)
+- apps/launcher/gui/launcher_app_win32.cpp (source, unknown)
+- apps/launcher/gui/launcher_gui_stub.c (source, unknown)
+- apps/launcher/gui/win32/launcher_app_win32.cpp (source, unknown)
+- apps/launcher/gui/win32/launcher_gui_stub.c (source, unknown)
+- apps/launcher/include/launcher/_internal/dom_launcher/launcher_context.h (source, unknown)
+- apps/launcher/include/launcher/_internal/dom_launcher/launcher_db.h (source, unknown)
+- apps/launcher/include/launcher/_internal/dom_launcher/launcher_discovery.h (source, unknown)
+- apps/launcher/include/launcher/_internal/dom_launcher/launcher_state.h (source, unknown)
+- apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_cli.h (source, unknown)
+- apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_gui.h (source, unknown)
+- apps/launcher/include/launcher/_internal/dom_launcher/launcher_ui_tui.h (source, unknown)
+- apps/launcher/include/launcher/_internal/launcher_internal/launcher_context.h (source, unknown)
+- apps/launcher/include/launcher/_internal/launcher_internal/launcher_db.h (source, unknown)
+- apps/launcher/include/launcher/_internal/launcher_internal/launcher_discovery.h (source, unknown)
+- apps/launcher/include/launcher/_internal/launcher_internal/launcher_logging.h (source, unknown)
+- apps/launcher/include/launcher/_internal/launcher_internal/launcher_plugin_api.h (source, unknown)
+
+## Caveats
+
+- test targets are heuristic
+- validators are not executed by Q38

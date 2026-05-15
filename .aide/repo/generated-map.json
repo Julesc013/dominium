@@ -1,0 +1,1027 @@
+{
+  "generated_by": "aide-lite",
+  "records": [
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/adapters/templates/AGENTS.md.template",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/adapters/templates/CLAUDE.md.template",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/adapters/templates/aider.conf.yml.template",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/adapters/templates/clinerules.template",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/adapters/templates/continue-checks.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/adapters/templates/cursor-rule.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/adapters/templates/windsurf-rule.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE changelog preview",
+      "path": ".aide/changelog/CHANGELOG.preview.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE changelog preview",
+      "path": ".aide/changelog/RELEASE_NOTES.preview.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE changelog preview",
+      "path": ".aide/changelog/changelog.preview.json",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE changelog preview",
+      "path": ".aide/changelog/malformed-commits.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE context compiler",
+      "path": ".aide/context/context-index.json",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE context compiler",
+      "path": ".aide/context/latest-context-packet.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE context compiler",
+      "path": ".aide/context/latest-review-packet.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE context compiler",
+      "path": ".aide/context/latest-task-packet.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE context compiler",
+      "path": ".aide/context/repo-map.json",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE context compiler",
+      "path": ".aide/context/repo-map.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE context compiler",
+      "path": ".aide/context/repo-snapshot.json",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE context compiler",
+      "path": ".aide/context/test-map.json",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE control plane",
+      "path": ".aide/generated/adapters/AGENTS.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE control plane",
+      "path": ".aide/generated/adapters/CLAUDE.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE control plane",
+      "path": ".aide/generated/adapters/aider.conf.yml",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE control plane",
+      "path": ".aide/generated/adapters/clinerules",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE control plane",
+      "path": ".aide/generated/adapters/continue-checks/aide-token-survival.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE control plane",
+      "path": ".aide/generated/adapters/cursor-rules/aide-token-survival.mdc",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE control plane",
+      "path": ".aide/generated/adapters/windsurf-rules/aide-token-survival.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE Git workflow",
+      "path": ".aide/git/latest-helper-plan.json",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE Git workflow",
+      "path": ".aide/git/latest-helper-plan.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE Git workflow",
+      "path": ".aide/git/workflow-detection.json",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "AIDE Git workflow",
+      "path": ".aide/git/workflow-detection.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/import-policy.template.yaml",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/import-report.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/memory/decisions.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/memory/open-risks.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/memory/project-state.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/profile.template.yaml",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/ExecPlan.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/changed-files.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/doctrine-preservation.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-aide-state.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/install-upgrade-risk-report.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/q50-readiness.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/release-bundle-readiness.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/remaining-risks.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/repo-state.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/validation.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/prompt.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/status.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/task.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/ExecPlan.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/changed-files.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/doctrine-context-report.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/import-report.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/prompt.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/quality-and-limitations.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/remaining-risks.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/status.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/task.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/token-savings-report.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/validation.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/ExecPlan.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/changed-files.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/commit-workunit-git-governance.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/doctrine-preservation.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/remaining-risks.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/source-pack-review.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/sync-report.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/token-quality-confirmation.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/validation.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/prompt.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/status.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/task.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/README.template.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE self-hosting queue",
+      "path": ".aide/queue/index.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/aide-commit-message-standard.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/aide-task-resumption-standard.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/aide-workunit-recovery-standard.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/dominium-aide-preservation-plan.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/dominium-existing-tool-preflight.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/dominium-fresh-install-preflight.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/dominium-next-aide-task.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/dominium-release-bundle-readiness.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/token-baselines.yaml",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/token-ledger.jsonl",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/reports/token-savings-summary.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/verification/evidence-packet.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "evidence",
+      "owner": "AIDE control plane",
+      "path": ".aide/verification/latest-verification-report.md",
+      "reasons": [
+        "known_evidence_or_report_path"
+      ],
+      "status": "evidence_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "AIDE control plane",
+      "path": ".aide/verification/review-packet.template.md",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "unknown",
+      "path": "CHANGELOG.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "unknown",
+      "path": "apps/setup/packages/scripts/gen_changelog.bat",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "unknown",
+      "path": "data/assembly.template.basic",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "unknown",
+      "path": "data/contract.template.basic",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "unknown",
+      "path": "data/governance.template.basic",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "unknown",
+      "path": "data/institution.template.basic",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "unknown",
+      "path": "data/network.template.basic",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "unknown",
+      "path": "data/part.template.basic",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "unknown",
+      "path": "docs/ci/HYGIENE_QUEUE.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "unknown",
+      "path": "docs/release/PROVISIONAL_FEATURE_LIST.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "portable_candidate",
+      "kind": "template",
+      "owner": "unknown",
+      "path": "packs/blueprints/blueprints.default.m1/data/blueprint.space_elevator.template.json",
+      "reasons": [
+        "template_path"
+      ],
+      "status": "template_only"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "unknown",
+      "path": "scripts/repox/repox_changelog.py",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    },
+    {
+      "exportable_hint": "source_specific",
+      "kind": "generated",
+      "owner": "unknown",
+      "path": "tests/fixtures/repox/expected/CHANGELOG.md",
+      "reasons": [
+        "known_generated_path_or_marker"
+      ],
+      "status": "generated"
+    }
+  ],
+  "schema_version": "aide.generated-map.v0",
+  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0"
+}

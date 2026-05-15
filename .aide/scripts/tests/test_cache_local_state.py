@@ -33,7 +33,7 @@ class CacheLocalStateTests(unittest.TestCase):
             verification = aide_lite.build_verification_report(root, task_packet_path=aide_lite.LATEST_PACKET_PATH)
             aide_lite.write_verification_report(root, aide_lite.LATEST_VERIFICATION_REPORT_PATH, verification)
             aide_lite.write_review_packet(root)
-            aide_lite.write_golden_run_reports(root, aide_lite.run_golden_tasks(root))
+            aide_lite.write_golden_run_reports(root, aide_lite.run_golden_tasks(root, task_ids=aide_lite.SELFTEST_GOLDEN_TASK_IDS))
             records = aide_lite.build_ledger_scan_records(root)
             aide_lite.write_ledger_records(root, records)
             aide_lite.write_token_savings_summary(root, records, [])

@@ -1,0 +1,92 @@
+# Install Conflict Report
+
+- conflict_count: 267
+- blocking_count: 4
+- no_apply: true
+
+## Conflicts
+
+- existing_managed_file: `.aide/adapters/targets.yaml` blocking=false
+- existing_managed_file: `.aide/cache/README.md` blocking=false
+- existing_managed_file: `.aide/cache/key-policy.yaml` blocking=false
+- existing_managed_file: `.aide/changelog/README.md` blocking=false
+- existing_managed_file: `.aide/changelog/config.yaml` blocking=false
+- existing_managed_file: `.aide/changelog/templates/changelog.md.template` blocking=false
+- existing_managed_file: `.aide/changelog/templates/release-notes.md.template` blocking=false
+- existing_managed_file: `.aide/context/compiler.yaml` blocking=false
+- existing_managed_file: `.aide/context/excerpt-policy.yaml` blocking=false
+- existing_managed_file: `.aide/context/ignore.yaml` blocking=false
+- existing_managed_file: `.aide/context/priority.yaml` blocking=false
+- existing_managed_file: `.aide/gateway/README.md` blocking=false
+- existing_managed_file: `.aide/gateway/architecture.md` blocking=false
+- existing_managed_file: `.aide/gateway/endpoints.yaml` blocking=false
+- existing_managed_file: `.aide/gateway/lifecycle.yaml` blocking=false
+- existing_managed_file: `.aide/gateway/security-boundary.md` blocking=false
+- existing_managed_file: `.aide/git/README.md` blocking=false
+- existing_managed_file: `.aide/git/branch-roles.md` blocking=false
+- existing_managed_file: `.aide/git/commit-template.md` blocking=false
+- existing_managed_file: `.aide/git/helper-commands.md` blocking=false
+- existing_managed_file: `.aide/git/helper-policy.yaml` blocking=false
+- existing_managed_file: `.aide/git/project-profiles.yaml` blocking=false
+- existing_managed_file: `.aide/git/promotion-rules.md` blocking=false
+- existing_managed_file: `.aide/git/prune-policy.md` blocking=false
+- existing_managed_file: `.aide/git/sync-policy.md` blocking=false
+- existing_managed_file: `.aide/github/README.md` blocking=false
+- existing_managed_file: `.aide/hooks/commit-msg` blocking=false
+- existing_managed_file: `.aide/install/README.md` blocking=false
+- existing_managed_file: `.aide/install/conflict-record.schema.json` blocking=false
+- existing_managed_file: `.aide/install/conflict-report.schema.json` blocking=false
+- existing_managed_file: `.aide/install/install-dry-run.schema.json` blocking=false
+- existing_managed_file: `.aide/install/install-observation.schema.json` blocking=false
+- existing_managed_file: `.aide/install/install-operation.schema.json` blocking=false
+- existing_managed_file: `.aide/install/install-plan.schema.json` blocking=false
+- existing_managed_file: `.aide/install/install-verification.schema.json` blocking=false
+- existing_managed_file: `.aide/install/managed-section.schema.json` blocking=false
+- existing_managed_file: `.aide/install/ownership-ledger.schema.json` blocking=false
+- existing_managed_file: `.aide/install/ownership-record.schema.json` blocking=false
+- existing_managed_file: `.aide/install/preservation-report.schema.json` blocking=false
+- existing_managed_file: `.aide/intake/README.md` blocking=false
+- existing_managed_file: `.aide/intake/intent-examples.yaml` blocking=false
+- existing_managed_file: `.aide/intake/intent-packet.schema.json` blocking=false
+- existing_managed_file: `.aide/intake/workunit-draft.schema.json` blocking=false
+- existing_managed_file: `.aide/models/capabilities.yaml` blocking=false
+- existing_managed_file: `.aide/models/fallback.yaml` blocking=false
+- existing_managed_file: `.aide/models/hard-floors.yaml` blocking=false
+- existing_managed_file: `.aide/models/providers.yaml` blocking=false
+- existing_managed_file: `.aide/models/routes.yaml` blocking=false
+- existing_managed_file: `.aide/policies/adapters.yaml` blocking=false
+- existing_managed_file: `.aide/policies/branch-protection.yaml` blocking=false
+- existing_managed_file: `.aide/policies/branch-roles.yaml` blocking=false
+- existing_managed_file: `.aide/policies/cache.yaml` blocking=false
+- existing_managed_file: `.aide/policies/changelog.yaml` blocking=false
+- existing_managed_file: `.aide/policies/ci-gates.yaml` blocking=false
+- existing_managed_file: `.aide/policies/commit-messages.yaml` blocking=false
+- existing_managed_file: `.aide/policies/controller.yaml` blocking=false
+- existing_managed_file: `.aide/policies/dependency-map.yaml` blocking=false
+- existing_managed_file: `.aide/policies/doc-link-map.yaml` blocking=false
+- existing_managed_file: `.aide/policies/docs-consistency.yaml` blocking=false
+- existing_managed_file: `.aide/policies/doctor.yaml` blocking=false
+- existing_managed_file: `.aide/policies/evals.yaml` blocking=false
+- existing_managed_file: `.aide/policies/export-import.yaml` blocking=false
+- existing_managed_file: `.aide/policies/file-classification.yaml` blocking=false
+- existing_managed_file: `.aide/policies/file-quality.yaml` blocking=false
+- existing_managed_file: `.aide/policies/gateway.yaml` blocking=false
+- existing_managed_file: `.aide/policies/git-workflow.yaml` blocking=false
+- existing_managed_file: `.aide/policies/github-protection.yaml` blocking=false
+- existing_managed_file: `.aide/policies/github-release-draft.yaml` blocking=false
+- existing_managed_file: `.aide/policies/install-conflicts.yaml` blocking=false
+- existing_managed_file: `.aide/policies/install-migrations.yaml` blocking=false
+- existing_managed_file: `.aide/policies/install-ownership.yaml` blocking=false
+- existing_managed_file: `.aide/policies/install-preservation.yaml` blocking=false
+- existing_managed_file: `.aide/policies/install-verification.yaml` blocking=false
+- existing_managed_file: `.aide/policies/install.yaml` blocking=false
+- existing_managed_file: `.aide/policies/intent.yaml` blocking=false
+- existing_managed_file: `.aide/policies/local-state.yaml` blocking=false
+- existing_managed_file: `.aide/policies/migration-ledger.yaml` blocking=false
+- existing_managed_file: `.aide/policies/migration.yaml` blocking=false
+- existing_managed_file: `.aide/policies/module-quality.yaml` blocking=false
+- existing_managed_file: `.aide/policies/move-map.yaml` blocking=false
+
+## Boundary
+
+- Conflicts are planning evidence. Q43 applies no repairs or migrations.

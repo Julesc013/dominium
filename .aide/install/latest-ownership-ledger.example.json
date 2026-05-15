@@ -1,0 +1,3500 @@
+{
+  "generated_by": "aide-lite",
+  "no_apply": true,
+  "records": [
+    {
+      "evidence_refs": [
+        ".aide/adapters/targets.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/adapters/targets.yaml",
+      "preserve": true,
+      "source": "files/.aide/adapters/targets.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/cache/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/cache/README.md",
+      "preserve": true,
+      "source": "files/.aide/cache/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/cache/key-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/cache/key-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/cache/key-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/changelog/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/changelog/README.md",
+      "preserve": true,
+      "source": "files/.aide/changelog/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/changelog/config.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/changelog/config.yaml",
+      "preserve": true,
+      "source": "files/.aide/changelog/config.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/changelog/templates/changelog.md.template"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/changelog/templates/changelog.md.template",
+      "preserve": true,
+      "source": "files/.aide/changelog/templates/changelog.md.template",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/changelog/templates/release-notes.md.template"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/changelog/templates/release-notes.md.template",
+      "preserve": true,
+      "source": "files/.aide/changelog/templates/release-notes.md.template",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/context/compiler.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/context/compiler.yaml",
+      "preserve": true,
+      "source": "files/.aide/context/compiler.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/context/excerpt-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/context/excerpt-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/context/excerpt-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/context/ignore.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/context/ignore.yaml",
+      "preserve": true,
+      "source": "files/.aide/context/ignore.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/context/priority.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/context/priority.yaml",
+      "preserve": true,
+      "source": "files/.aide/context/priority.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/gateway/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/gateway/README.md",
+      "preserve": true,
+      "source": "files/.aide/gateway/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/gateway/architecture.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/gateway/architecture.md",
+      "preserve": true,
+      "source": "files/.aide/gateway/architecture.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/gateway/endpoints.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/gateway/endpoints.yaml",
+      "preserve": true,
+      "source": "files/.aide/gateway/endpoints.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/gateway/lifecycle.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/gateway/lifecycle.yaml",
+      "preserve": true,
+      "source": "files/.aide/gateway/lifecycle.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/gateway/security-boundary.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/gateway/security-boundary.md",
+      "preserve": true,
+      "source": "files/.aide/gateway/security-boundary.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/README.md",
+      "preserve": true,
+      "source": "files/.aide/git/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/branch-roles.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/branch-roles.md",
+      "preserve": true,
+      "source": "files/.aide/git/branch-roles.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/commit-template.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/commit-template.md",
+      "preserve": true,
+      "source": "files/.aide/git/commit-template.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/helper-commands.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/helper-commands.md",
+      "preserve": true,
+      "source": "files/.aide/git/helper-commands.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/helper-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/helper-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/git/helper-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/project-profiles.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/project-profiles.yaml",
+      "preserve": true,
+      "source": "files/.aide/git/project-profiles.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/promotion-rules.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/promotion-rules.md",
+      "preserve": true,
+      "source": "files/.aide/git/promotion-rules.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/prune-policy.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/prune-policy.md",
+      "preserve": true,
+      "source": "files/.aide/git/prune-policy.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/git/sync-policy.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/git/sync-policy.md",
+      "preserve": true,
+      "source": "files/.aide/git/sync-policy.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/github/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/github/README.md",
+      "preserve": true,
+      "source": "files/.aide/github/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/hooks/commit-msg"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/hooks/commit-msg",
+      "preserve": true,
+      "source": "files/.aide/hooks/commit-msg",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/README.md",
+      "preserve": true,
+      "source": "files/.aide/install/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/conflict-record.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/conflict-record.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/conflict-record.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/conflict-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/conflict-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/conflict-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/install-dry-run.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/install-dry-run.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/install-dry-run.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/install-observation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/install-observation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/install-observation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/install-operation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/install-operation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/install-operation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/install-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/install-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/install-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/install-verification.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/install-verification.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/install-verification.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/managed-section.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/managed-section.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/managed-section.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/ownership-ledger.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/ownership-ledger.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/ownership-ledger.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/ownership-record.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/ownership-record.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/ownership-record.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/install/preservation-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/install/preservation-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/install/preservation-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/intake/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/intake/README.md",
+      "preserve": true,
+      "source": "files/.aide/intake/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/intake/intent-examples.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/intake/intent-examples.yaml",
+      "preserve": true,
+      "source": "files/.aide/intake/intent-examples.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/intake/intent-packet.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/intake/intent-packet.schema.json",
+      "preserve": true,
+      "source": "files/.aide/intake/intent-packet.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/intake/workunit-draft.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/intake/workunit-draft.schema.json",
+      "preserve": true,
+      "source": "files/.aide/intake/workunit-draft.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/models/capabilities.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/models/capabilities.yaml",
+      "preserve": true,
+      "source": "files/.aide/models/capabilities.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/models/fallback.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/models/fallback.yaml",
+      "preserve": true,
+      "source": "files/.aide/models/fallback.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/models/hard-floors.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/models/hard-floors.yaml",
+      "preserve": true,
+      "source": "files/.aide/models/hard-floors.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/models/providers.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/models/providers.yaml",
+      "preserve": true,
+      "source": "files/.aide/models/providers.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/models/routes.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/models/routes.yaml",
+      "preserve": true,
+      "source": "files/.aide/models/routes.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/adapters.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/adapters.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/adapters.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/branch-protection.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/branch-protection.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/branch-protection.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/branch-roles.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/branch-roles.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/branch-roles.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/cache.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/cache.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/cache.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/changelog.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/changelog.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/changelog.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/ci-gates.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/ci-gates.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/ci-gates.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/commit-messages.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/commit-messages.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/commit-messages.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/controller.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/controller.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/controller.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/dependency-map.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/dependency-map.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/dependency-map.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/doc-link-map.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/doc-link-map.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/doc-link-map.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/docs-consistency.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/docs-consistency.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/docs-consistency.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/doctor.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/doctor.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/doctor.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/evals.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/evals.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/evals.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/export-import.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/export-import.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/export-import.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/file-classification.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/file-classification.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/file-classification.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/file-quality.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/file-quality.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/file-quality.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/gateway.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/gateway.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/gateway.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/git-workflow.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/git-workflow.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/git-workflow.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/github-protection.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/github-protection.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/github-protection.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/github-release-draft.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/github-release-draft.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/github-release-draft.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/install-conflicts.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/install-conflicts.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/install-conflicts.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/install-migrations.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/install-migrations.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/install-migrations.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/install-ownership.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/install-ownership.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/install-ownership.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/install-preservation.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/install-preservation.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/install-preservation.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/install-verification.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/install-verification.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/install-verification.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/install.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/install.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/install.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/intent.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/intent.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/intent.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/local-state.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/local-state.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/local-state.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/migration-ledger.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/migration-ledger.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/migration-ledger.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/migration.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/migration.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/migration.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/module-quality.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/module-quality.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/module-quality.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/move-map.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/move-map.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/move-map.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/ownership-map.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/ownership-map.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/ownership-map.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/path-aliases.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/path-aliases.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/path-aliases.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/promotion-rules.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/promotion-rules.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/promotion-rules.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/prompt-normalization.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/prompt-normalization.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/prompt-normalization.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/provider-adapters.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/provider-adapters.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/provider-adapters.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/prune-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/prune-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/prune-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/recovery.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/recovery.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/recovery.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/refactor-application.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/refactor-application.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/refactor-application.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/refactor-evidence.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/refactor-evidence.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/refactor-evidence.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/refactor-safety.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/refactor-safety.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/refactor-safety.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/refactor.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/refactor.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/refactor.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/reference-rewrite.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/reference-rewrite.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/reference-rewrite.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/release-artifacts.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/release-artifacts.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/release-artifacts.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/release-bundle.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/release-bundle.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/release-bundle.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/release-checklist.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/release-checklist.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/release-checklist.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/release-provenance.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/release-provenance.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/release-provenance.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/release-publication-boundary.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/release-publication-boundary.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/release-publication-boundary.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/release-upload-plan.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/release-upload-plan.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/release-upload-plan.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/release-validation.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/release-validation.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/release-validation.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/release-versioning.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/release-versioning.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/release-versioning.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/repair-classes.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/repair-classes.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/repair-classes.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/repair-detection.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/repair-detection.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/repair-detection.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/repair-safety.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/repair-safety.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/repair-safety.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/repair-verification.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/repair-verification.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/repair-verification.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/repair.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/repair.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/repair.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/repo-intelligence.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/repo-intelligence.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/repo-intelligence.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/reuse-modularity.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/reuse-modularity.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/reuse-modularity.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/risk-classes.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/risk-classes.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/risk-classes.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/rollback-classes.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/rollback-classes.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/rollback-classes.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/rollback-safety.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/rollback-safety.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/rollback-safety.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/rollback-verification.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/rollback-verification.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/rollback-verification.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/rollback.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/rollback.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/rollback.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/root-exceptions.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/root-exceptions.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/root-exceptions.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/root-fates.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/root-fates.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/root-fates.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/root-inventory.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/root-inventory.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/root-inventory.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/root-recycling.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/root-recycling.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/root-recycling.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/root-risk.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/root-risk.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/root-risk.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/routing.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/routing.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/routing.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/salvage-map.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/salvage-map.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/salvage-map.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/sync-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/sync-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/sync-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/task-classes.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/task-classes.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/task-classes.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/task-resumption.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/task-resumption.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/task-resumption.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/test-map.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/test-map.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/test-map.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/token-budget.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/token-budget.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/token-budget.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/token-ledger.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/token-ledger.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/token-ledger.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/tool-absorption.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/tool-absorption.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/tool-absorption.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/tool-capabilities.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/tool-capabilities.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/tool-capabilities.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/tool-fates.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/tool-fates.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/tool-fates.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/tool-inventory.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/tool-inventory.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/tool-inventory.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/tool-risk.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/tool-risk.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/tool-risk.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/tool-wrapping.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/tool-wrapping.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/tool-wrapping.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/uninstall-classes.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/uninstall-classes.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/uninstall-classes.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/uninstall-safety.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/uninstall-safety.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/uninstall-safety.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/uninstall-verification.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/uninstall-verification.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/uninstall-verification.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/uninstall.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/uninstall.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/uninstall.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/upgrade-compatibility.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/upgrade-compatibility.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/upgrade-compatibility.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/upgrade-conflicts.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/upgrade-conflicts.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/upgrade-conflicts.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/upgrade-migrations.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/upgrade-migrations.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/upgrade-migrations.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/upgrade-preservation.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/upgrade-preservation.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/upgrade-preservation.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/upgrade-verification.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/upgrade-verification.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/upgrade-verification.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/upgrade.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/upgrade.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/upgrade.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/verification.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/verification.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/verification.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/work-units.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/work-units.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/work-units.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/policies/workunit-sizing.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/policies/workunit-sizing.yaml",
+      "preserve": true,
+      "source": "files/.aide/policies/workunit-sizing.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/prompts/codex-token-mode.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/prompts/codex-token-mode.md",
+      "preserve": true,
+      "source": "files/.aide/prompts/codex-token-mode.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/prompts/compact-task.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/prompts/compact-task.md",
+      "preserve": true,
+      "source": "files/.aide/prompts/compact-task.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/prompts/evidence-review.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/prompts/evidence-review.md",
+      "preserve": true,
+      "source": "files/.aide/prompts/evidence-review.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/providers/adapter-contract.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/providers/adapter-contract.yaml",
+      "preserve": true,
+      "source": "files/.aide/providers/adapter-contract.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/providers/capability-matrix.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/providers/capability-matrix.yaml",
+      "preserve": true,
+      "source": "files/.aide/providers/capability-matrix.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/providers/provider-catalog.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/providers/provider-catalog.yaml",
+      "preserve": true,
+      "source": "files/.aide/providers/provider-catalog.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/providers/status.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/providers/status.yaml",
+      "preserve": true,
+      "source": "files/.aide/providers/status.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/quality/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/quality/README.md",
+      "preserve": true,
+      "source": "files/.aide/quality/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/quality/docs-consistency.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/quality/docs-consistency.schema.json",
+      "preserve": true,
+      "source": "files/.aide/quality/docs-consistency.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/quality/file-quality-ledger.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/quality/file-quality-ledger.schema.json",
+      "preserve": true,
+      "source": "files/.aide/quality/file-quality-ledger.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/quality/file-quality-record.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/quality/file-quality-record.schema.json",
+      "preserve": true,
+      "source": "files/.aide/quality/file-quality-record.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/quality/module-quality.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/quality/module-quality.schema.json",
+      "preserve": true,
+      "source": "files/.aide/quality/module-quality.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/quality/reuse-modularity.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/quality/reuse-modularity.schema.json",
+      "preserve": true,
+      "source": "files/.aide/quality/reuse-modularity.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/quality/test-coverage-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/quality/test-coverage-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/quality/test-coverage-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/README.md",
+      "preserve": true,
+      "source": "files/.aide/refactors/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/map-validation-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/map-validation-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/map-validation-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/migration-ledger-entry.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/migration-ledger-entry.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/migration-ledger-entry.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/migration-ledger.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/migration-ledger.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/migration-ledger.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/migration-ledger.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/migration-ledger.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/migration-ledger.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/move-map-entry.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/move-map-entry.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/move-map-entry.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/move-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/move-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/move-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/move-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/move-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/move-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/path-alias-entry.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/path-alias-entry.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/path-alias-entry.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/path-aliases.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/path-aliases.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/path-aliases.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/path-aliases.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/path-aliases.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/path-aliases.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/path-aliases.template.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/path-aliases.template.yaml",
+      "preserve": true,
+      "source": "files/.aide/refactors/path-aliases.template.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/refactor-operation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/refactor-operation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/refactor-operation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/refactor-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/refactor-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/refactor-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/refactor-risk.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/refactor-risk.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/refactor-risk.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/refactor-validation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/refactor-validation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/refactor-validation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/reference-rewrite-entry.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/reference-rewrite-entry.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/reference-rewrite-entry.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/reference-rewrite-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/reference-rewrite-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/reference-rewrite-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/rollback-notes.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/rollback-notes.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/rollback-notes.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/root-exception.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/root-exception.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/root-exception.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/root-file-classification.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/root-file-classification.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/root-file-classification.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/root-inventory.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/root-inventory.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/root-inventory.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/root-record.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/root-record.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/root-record.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/root-recycling-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/root-recycling-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/root-recycling-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/root-retirement.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/root-retirement.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/root-retirement.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/root-risk.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/root-risk.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/root-risk.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/salvage-map-entry.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/salvage-map-entry.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/salvage-map-entry.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/salvage-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/salvage-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/salvage-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/refactors/salvage-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/refactors/salvage-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/refactors/salvage-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/README.md",
+      "preserve": true,
+      "source": "files/.aide/release/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/github-release-asset.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/github-release-asset.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/github-release-asset.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/github-release-checklist.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/github-release-checklist.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/github-release-checklist.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/github-release-draft-validation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/github-release-draft-validation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/github-release-draft-validation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/github-release-draft.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/github-release-draft.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/github-release-draft.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/github-release-publication-boundary.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/github-release-publication-boundary.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/github-release-publication-boundary.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/github-release-upload-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/github-release-upload-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/github-release-upload-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/release-asset.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/release-asset.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/release-asset.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/release-bundle-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/release-bundle-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/release-bundle-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/release-bundle.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/release-bundle.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/release-bundle.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/release-checksums.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/release-checksums.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/release-checksums.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/release-install-notes.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/release-install-notes.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/release-install-notes.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/release-manifest.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/release-manifest.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/release-manifest.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/release-provenance.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/release-provenance.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/release-provenance.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/release/release-validation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/release/release-validation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/release/release-validation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/README.md",
+      "preserve": true,
+      "source": "files/.aide/repair/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/doctor-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/doctor-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/doctor-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/repair-classification.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/repair-classification.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/repair-classification.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/repair-diagnosis.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/repair-diagnosis.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/repair-diagnosis.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/repair-dry-run.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/repair-dry-run.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/repair-dry-run.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/repair-observation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/repair-observation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/repair-observation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/repair-operation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/repair-operation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/repair-operation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/repair-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/repair-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/repair-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/repair-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/repair-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/repair-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repair/repair-verification.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repair/repair-verification.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repair/repair-verification.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repo/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repo/README.md",
+      "preserve": true,
+      "source": "files/.aide/repo/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repo/dependency-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repo/dependency-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repo/dependency-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repo/doc-link-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repo/doc-link-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repo/doc-link-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repo/file-inventory.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repo/file-inventory.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repo/file-inventory.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repo/ownership-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repo/ownership-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repo/ownership-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repo/repo-intelligence-summary.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repo/repo-intelligence-summary.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repo/repo-intelligence-summary.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/repo/test-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/repo/test-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/repo/test-map.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/reports/aide-commit-message-standard.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/reports/aide-commit-message-standard.md",
+      "preserve": true,
+      "source": "files/.aide/reports/aide-commit-message-standard.md",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/reports/aide-task-resumption-standard.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/reports/aide-task-resumption-standard.md",
+      "preserve": true,
+      "source": "files/.aide/reports/aide-task-resumption-standard.md",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/reports/aide-workunit-recovery-standard.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/reports/aide-workunit-recovery-standard.md",
+      "preserve": true,
+      "source": "files/.aide/reports/aide-workunit-recovery-standard.md",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/reports/file-quality-ledger.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/reports/file-quality-ledger.schema.json",
+      "preserve": true,
+      "source": "files/.aide/reports/file-quality-ledger.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/rollback/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/rollback/README.md",
+      "preserve": true,
+      "source": "files/.aide/rollback/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/rollback/rollback-dry-run.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/rollback/rollback-dry-run.schema.json",
+      "preserve": true,
+      "source": "files/.aide/rollback/rollback-dry-run.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/rollback/rollback-observation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/rollback/rollback-observation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/rollback/rollback-observation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/rollback/rollback-operation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/rollback/rollback-operation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/rollback/rollback-operation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/rollback/rollback-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/rollback/rollback-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/rollback/rollback-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/rollback/rollback-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/rollback/rollback-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/rollback/rollback-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/rollback/rollback-verification.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/rollback/rollback-verification.schema.json",
+      "preserve": true,
+      "source": "files/.aide/rollback/rollback-verification.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/roots/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/roots/README.md",
+      "preserve": true,
+      "source": "files/.aide/roots/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/routing/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/routing/README.md",
+      "preserve": true,
+      "source": "files/.aide/routing/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/routing/route-decision.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/routing/route-decision.schema.json",
+      "preserve": true,
+      "source": "files/.aide/routing/route-decision.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/scripts/aide_lite.py"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/scripts/aide_lite.py",
+      "preserve": true,
+      "source": "files/.aide/scripts/aide_lite.py",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/README.md",
+      "preserve": true,
+      "source": "files/.aide/tools/README.md",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/tool-adapter-map.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/tool-adapter-map.schema.json",
+      "preserve": true,
+      "source": "files/.aide/tools/tool-adapter-map.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/tool-capability.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/tool-capability.schema.json",
+      "preserve": true,
+      "source": "files/.aide/tools/tool-capability.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/tool-evidence.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/tool-evidence.schema.json",
+      "preserve": true,
+      "source": "files/.aide/tools/tool-evidence.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/tool-inventory.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/tool-inventory.schema.json",
+      "preserve": true,
+      "source": "files/.aide/tools/tool-inventory.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/tool-record.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/tool-record.schema.json",
+      "preserve": true,
+      "source": "files/.aide/tools/tool-record.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/tool-retirement.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/tool-retirement.schema.json",
+      "preserve": true,
+      "source": "files/.aide/tools/tool-retirement.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/tool-risk.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/tool-risk.schema.json",
+      "preserve": true,
+      "source": "files/.aide/tools/tool-risk.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/tools/tool-wrap-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "preserved_target_artifact",
+      "path": ".aide/tools/tool-wrap-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/tools/tool-wrap-plan.schema.json",
+      "target_specific": true
+    },
+    {
+      "evidence_refs": [
+        ".aide/uninstall/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/uninstall/README.md",
+      "preserve": true,
+      "source": "files/.aide/uninstall/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/uninstall/uninstall-dry-run.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/uninstall/uninstall-dry-run.schema.json",
+      "preserve": true,
+      "source": "files/.aide/uninstall/uninstall-dry-run.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/uninstall/uninstall-observation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/uninstall/uninstall-observation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/uninstall/uninstall-observation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/uninstall/uninstall-operation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/uninstall/uninstall-operation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/uninstall/uninstall-operation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/uninstall/uninstall-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/uninstall/uninstall-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/uninstall/uninstall-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/uninstall/uninstall-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/uninstall/uninstall-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/uninstall/uninstall-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/uninstall/uninstall-verification.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/uninstall/uninstall-verification.schema.json",
+      "preserve": true,
+      "source": "files/.aide/uninstall/uninstall-verification.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/README.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/README.md",
+      "preserve": true,
+      "source": "files/.aide/upgrade/README.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/current-install-observation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/current-install-observation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/current-install-observation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/source-pack-observation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/source-pack-observation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/source-pack-observation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/upgrade-comparison.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/upgrade-comparison.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/upgrade-comparison.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/upgrade-compatibility-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/upgrade-compatibility-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/upgrade-compatibility-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/upgrade-conflict-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/upgrade-conflict-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/upgrade-conflict-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/upgrade-dry-run.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/upgrade-dry-run.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/upgrade-dry-run.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/upgrade-migration-report.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/upgrade-migration-report.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/upgrade-migration-report.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/upgrade-operation.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/upgrade-operation.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/upgrade-operation.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/upgrade-plan.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/upgrade-plan.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/upgrade-plan.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/upgrade/upgrade-verification.schema.json"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/upgrade/upgrade-verification.schema.json",
+      "preserve": true,
+      "source": "files/.aide/upgrade/upgrade-verification.schema.json",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/verification/diff-scope-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/verification/diff-scope-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/verification/diff-scope-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/verification/evidence-packet.template.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/verification/evidence-packet.template.md",
+      "preserve": true,
+      "source": "files/.aide/verification/evidence-packet.template.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/verification/file-reference-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/verification/file-reference-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/verification/file-reference-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/verification/review-decision-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/verification/review-decision-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/verification/review-decision-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/verification/review-packet.template.md"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/verification/review-packet.template.md",
+      "preserve": true,
+      "source": "files/.aide/verification/review-packet.template.md",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        ".aide/verification/secret-scan-policy.yaml"
+      ],
+      "installed_by": "future_apply_only",
+      "local_only": false,
+      "managed_section": false,
+      "ownership_class": "installed_file",
+      "path": ".aide/verification/secret-scan-policy.yaml",
+      "preserve": true,
+      "source": "files/.aide/verification/secret-scan-policy.yaml",
+      "target_specific": false
+    },
+    {
+      "evidence_refs": [
+        "AGENTS.md"
+      ],
+      "installed_by": "future_managed_section_update_only",
+      "local_only": false,
+      "managed_section": true,
+      "ownership_class": "managed_section",
+      "path": "AGENTS.md",
+      "preserve": true,
+      "source": "target_existing_file",
+      "target_specific": false
+    }
+  ],
+  "schema_version": "aide.ownership-ledger.v0",
+  "source_pack_ref": {
+    "available": false,
+    "checksums": ".aide/export/aide-lite-pack-v0/checksums.json",
+    "file_count": 267,
+    "files_root": ".aide/export/aide-lite-pack-v0/files",
+    "manifest": ".aide/export/aide-lite-pack-v0/manifest.yaml",
+    "pack_id": "aide-lite-pack-v0"
+  },
+  "target_repo": "."
+}

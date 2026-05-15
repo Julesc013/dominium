@@ -1,0 +1,64 @@
+{
+  "acceptance": [
+    "WorkUnit scope is bounded and repo-grounded.",
+    "Rejected unsafe interpretations are recorded.",
+    "Validation and evidence requirements are explicit."
+  ],
+  "allowed_paths": [
+    ".aide/queue/<workunit>/**"
+  ],
+  "dependencies": [
+    "repo_policy",
+    "queue_state",
+    "branch_state"
+  ],
+  "evidence": [
+    "changed-files.md",
+    "validation.md",
+    "remaining-risks.md",
+    "intent-compiler-report.md"
+  ],
+  "forbidden_paths": [
+    ".git/**",
+    ".github/**",
+    ".aide.local/**",
+    ".env",
+    "secrets/**",
+    "raw prompt logs",
+    "raw response logs",
+    "target repositories unless target-local queue authorizes work"
+  ],
+  "idempotency": "prompt_hash:43d6df43431bd842e3b1c4c39292f74937b47c96878bb0f5fa2711fd8c19b559; status:draft; compile_only:true",
+  "implementation_outline": [
+    "Reconcile repo state before editing.",
+    "draft the smallest safe WorkUnit after repo-state preflight",
+    "Stop at review gates and record evidence before execution."
+  ],
+  "non_goals": [
+    "no raw prompt execution",
+    "no provider/model/network calls",
+    "do not bypass queue, branch, evidence, or policy state",
+    "do not execute raw prompt directly",
+    "do not mutate target repositories from AIDE source repo"
+  ],
+  "objective": "Normalize prompt into a bounded adapter WorkUnit draft: draft the smallest safe WorkUnit after repo-state preflight.",
+  "output_schema": ".aide/intake/workunit-draft.schema.json",
+  "preflight": [
+    "git status --short",
+    "py -3 .aide/scripts/aide_lite.py task inspect",
+    "py -3 .aide/scripts/aide_lite.py intent validate"
+  ],
+  "recovery": "Rerun intent compile from repo state; do not replay raw chat as truth.",
+  "risk_class": "external_side_effect",
+  "schema_version": "aide.workunit-draft.v0",
+  "sizing_class": "two_shot",
+  "status": "draft",
+  "task_class": "adapter",
+  "title": "Adapter WorkUnit Draft - Draft the smallest safe WorkUnit after repo-state preflight",
+  "validation": [
+    "git diff --check",
+    "py -3 .aide/scripts/aide_lite.py intent validate"
+  ],
+  "why": "AIDE compiles raw prompts into bounded WorkUnits before execution.",
+  "workunit_id": "draft-adapter-43d6df43431b"
+}

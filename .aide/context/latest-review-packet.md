@@ -10,11 +10,11 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Task Packet Reference
 
-- `.aide/context/latest-task-packet.md` (4580 chars, 1145 approximate tokens)
+- `.aide/context/latest-task-packet.md` (4116 chars, 1029 approximate tokens)
 
 ## Context Packet Reference
 
-- `.aide/context/latest-context-packet.md` (1900 chars, 475 approximate tokens)
+- `.aide/context/latest-context-packet.md` (1849 chars, 463 approximate tokens)
 - `.aide/context/repo-map.json`
 - `.aide/context/test-map.json`
 - `.aide/context/context-index.json`
@@ -34,21 +34,30 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 ## Changed Files Summary
 
 - unknown: `.aide/changelog/CHANGELOG.preview.md` (M; does not match active task allowed paths)
+- allowed: `.aide/changelog/README.md` (??; matches active task allowed path)
 - unknown: `.aide/changelog/RELEASE_NOTES.preview.md` (M; does not match active task allowed paths)
 - unknown: `.aide/changelog/changelog.preview.json` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/config.yaml` (??; does not match active task allowed paths)
+- unknown: `.aide/changelog/latest-changelog-report.md` (??; does not match active task allowed paths)
 - unknown: `.aide/changelog/malformed-commits.md` (M; does not match active task allowed paths)
+- unknown: `.aide/changelog/release-notes.preview.json` (??; does not match active task allowed paths)
+- unknown: `.aide/changelog/templates` (??; does not match active task allowed paths)
+- unknown: `.aide/commands/catalog.yaml` (M; does not match active task allowed paths)
+- allowed: `.aide/context/context-index.json` (M; matches active task allowed path)
+- allowed: `.aide/context/ignore.yaml` (M; matches active task allowed path)
+- allowed: `.aide/context/latest-context-packet.md` (M; matches active task allowed path)
 - allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
 - allowed: `.aide/context/latest-task-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/evals/runs/latest-golden-tasks.json` (M; matches active task allowed path)
-- allowed: `.aide/evals/runs/latest-golden-tasks.md` (M; matches active task allowed path)
-- unknown: `.aide/git/latest-helper-plan.json` (M; does not match active task allowed paths)
-- unknown: `.aide/git/latest-helper-plan.md` (M; does not match active task allowed paths)
-- unknown: `.aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01` (??; does not match active task allowed paths)
-- allowed: `.aide/reports/dominium-aide-preservation-plan.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/dominium-existing-tool-preflight.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/dominium-fresh-install-preflight.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/dominium-next-aide-task.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/dominium-release-bundle-readiness.md` (??; matches active task allowed path)
+- allowed: `.aide/context/priority.yaml` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-map.json` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-map.md` (M; matches active task allowed path)
+- allowed: `.aide/context/repo-snapshot.json` (M; matches active task allowed path)
+- allowed: `.aide/context/test-map.json` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/catalog.yaml` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/changelog_json_shape_golden` (??; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/changelog_preview_golden/acceptance.md` (M; matches active task allowed path)
+- allowed: `.aide/evals/golden-tasks/changelog_preview_golden/task.yaml` (M; matches active task allowed path)
+- additional changed paths omitted from compact packet: 243; see task evidence changed-files report
 
 ## Validation Summary
 
@@ -58,8 +67,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - packet_path: `.aide/context/latest-review-packet.md`
 - method: chars / 4, rounded up
-- chars: 4913
-- approx_tokens: 1229
+- chars: 5899
+- approx_tokens: 1475
 - budget_status: PASS
 - max_token_warning: 2400
 - warnings:
@@ -92,15 +101,26 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Gateway Skeleton Summary
 
-- gateway_status: `.aide/gateway/latest-gateway-status.json` (missing; run gateway status)
-- local_skeleton: true
-- provider_or_model_calls: none
+- gateway_status: `.aide/gateway/latest-gateway-status.json`
+- service: aide-gateway
+- mode: report_only_target_fallback
+- route_class: unknown
+- verifier_status: unknown
+- golden_task_status: unknown
+- provider_calls_enabled: false
+- model_calls_enabled: false
+- outbound_network_enabled: false
 
 ## Provider Adapter Summary
 
-- provider_status: `.aide/providers/latest-provider-status.json` (missing; run provider status)
-- offline_metadata_only: true
+- provider_status: `.aide/providers/latest-provider-status.json`
+- provider_family_count: 13
+- validation_result: PASS
 - live_provider_calls: false
+- live_model_calls: false
+- network_calls: false
+- credentials_configured: false
+- metadata_only: true
 
 ## Risk Summary
 

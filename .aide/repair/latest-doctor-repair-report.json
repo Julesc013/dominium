@@ -1,0 +1,71 @@
+{
+  "blocking_issues": [
+    {
+      "blocker": true,
+      "diagnosis_id": "diagnosis-55d99864bb34",
+      "evidence_refs": [
+        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+      ],
+      "issue_id": "repair-55d99864bb34",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "risk_class": "critical",
+      "severity": "blocking"
+    },
+    {
+      "blocker": true,
+      "diagnosis_id": "diagnosis-7f92516ecaf1",
+      "evidence_refs": [
+        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+      ],
+      "issue_id": "repair-7f92516ecaf1",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "risk_class": "critical",
+      "severity": "blocking"
+    },
+    {
+      "blocker": true,
+      "diagnosis_id": "diagnosis-bf518d2b8fea",
+      "evidence_refs": [
+        "tools/xstack/testx/tests/test_no_secrets_in_bundle.py"
+      ],
+      "issue_id": "repair-bf518d2b8fea",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "risk_class": "critical",
+      "severity": "blocking"
+    },
+    {
+      "blocker": true,
+      "diagnosis_id": "diagnosis-da642231d5b1",
+      "evidence_refs": [
+        "tools/xstack/testx/tests/test_standards_issues_spec_and_credential.py"
+      ],
+      "issue_id": "repair-da642231d5b1",
+      "mandatory_migration_candidate": false,
+      "preserve_target_state": true,
+      "reason": "Secret-like path is present; repair may only block or require manual review, never overwrite or delete automatically.",
+      "repair_class": "secret_like_file",
+      "risk_class": "critical",
+      "severity": "blocking"
+    }
+  ],
+  "doctor_status": "FAIL",
+  "generated_by": "aide-lite",
+  "latest_repair_plan_ref": ".aide/repair/latest-repair-plan.md",
+  "next_action": "review latest repair plan; Q44 repair doctor is advisory only and applies no repairs",
+  "no_apply": true,
+  "repair_recommended": true,
+  "schema_version": "aide.doctor-report.v0",
+  "source_commit": "80dc7bfb58a1cdc887ee1fed8a83fb22ff3028e0",
+  "warnings": [
+    "repair-d9f05a8682b3"
+  ]
+}

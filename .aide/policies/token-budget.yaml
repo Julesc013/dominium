@@ -17,6 +17,7 @@ targets:
   review_packet_target_tokens: 1400
   verification_report_target_tokens: 1600
   evidence_packet_target_tokens: 1600
+  eval_report_target_tokens: 3200
   codex_prompt_target_tokens: 2400
   gpt_review_prompt_target_tokens: 1600
 hard_limits:
@@ -25,6 +26,7 @@ hard_limits:
   max_review_packet_tokens: 2400
   max_verification_report_tokens: 2400
   max_evidence_packet_tokens: 2400
+  max_eval_report_tokens: 4800
   max_project_state_tokens: 1600
 forbidden_prompt_patterns:
   - id: full_prior_transcript

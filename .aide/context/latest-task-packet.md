@@ -2,11 +2,11 @@
 
 ## PHASE
 
-Q50 - Dominium Fresh Install / Upgrade from Stable AIDE Pack
+Q51 - Dominium Existing Tool Absorption
 
 ## GOAL
 
-Q50 Dominium Fresh Install / Upgrade from Stable AIDE Pack
+Q51 Dominium Existing Tool Absorption
 
 ## WHY
 
@@ -17,26 +17,18 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `.aide/memory/project-state.md`
 - `.aide/memory/decisions.md`
 - `.aide/memory/open-risks.md`
-- `.aide/context/dominium-doctrine-refs.md` (present)
-- `docs/canon/constitution_v1.md`
-- `docs/canon/glossary_v1.md`
-- `AGENTS.md`
-- `docs/planning/AUTHORITY_ORDER.md`
-- `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
-- `docs/planning/MERGED_PROGRAM_STATE.md`
-- `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`
-- `docs/planning/GATES_AND_PROOFS.md`
-- `docs/planning/POST_PI_EXECUTION_PLAN.md`
-- `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`
-- `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`
-- `specs/reality/`
-- `data/reality/`
 - `.aide/context/repo-snapshot.json` (present)
 - `.aide/context/repo-map.json` (present)
 - `.aide/context/repo-map.md` (present)
 - `.aide/context/test-map.json` (present)
 - `.aide/context/context-index.json` (present)
 - `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
 - `.aide/routing/latest-route-decision.json` (present)
 - `.aide/routing/latest-route-decision.md` (present)
 - `.aide/cache/latest-cache-keys.json` (present)
@@ -50,7 +42,7 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 
 - `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/queue/q50-*` if this task becomes a queue item
+- `.aide/queue/q51-*` if this task becomes a queue item
 - root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
@@ -60,8 +52,6 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `secrets/**`
 - `.aide.local/**`
 - raw provider credentials, API keys, local caches, raw prompt logs
-- Dominium product/source roots unless the queue packet explicitly authorizes them: `runtime/**`, `engine/**`, `client/**`, `server/**`, `apps/**`, `content/**`, `contracts/**`, `specs/**`, `data/**`, `tests/**`
-- Dominium doctrine rewrites unless the queue packet explicitly authorizes a compact pointer-only documentation update
 - Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
@@ -79,6 +69,8 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `py -3 .aide/scripts/aide_lite.py validate`
 - `py -3 .aide/scripts/aide_lite.py index`
 - `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
 - `py -3 .aide/scripts/aide_lite.py verify`
 - `py -3 .aide/scripts/aide_lite.py review-pack`
 - `py -3 .aide/scripts/aide_lite.py route explain`
@@ -121,8 +113,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4580
-- approx_tokens: 1145
+- chars: 4116
+- approx_tokens: 1029
 - budget_status: PASS
 - warnings:
   - none
