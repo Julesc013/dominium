@@ -19,3 +19,11 @@ not-approved and no-apply.
 
 No files were moved, deleted, renamed, rewritten, or applied. No active path
 aliases were created and no exceptions were retired.
+
+## Second Pass
+
+- AIDE-POLISH-02 completed with PASS_WITH_WARNINGS.
+- Strict JSON parsing now passes for tracked `.aide` and `contracts/repo` JSON.
+- The only file-content fix was BOM removal from a tracked AIDE queue evidence
+  JSON summary.
+- The next task remains `AIDE-MOVE-01-PLAN`; move application remains false.

@@ -1,0 +1,57 @@
+{
+  "schema_version": "dominium.aide.polish.second_pass.v1",
+  "task_id": "AIDE-POLISH-02",
+  "result": "PASS_WITH_WARNINGS",
+  "branch": "main",
+  "baseline_head": "3c434cbe1e930ec8f3612ba5f3bf9eef24005217",
+  "origin_main_at_start": "3c434cbe1e930ec8f3612ba5f3bf9eef24005217",
+  "fixes": [
+    {
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/command-logs-current/summary.json",
+      "change": "removed_utf8_bom",
+      "reason": "allow strict UTF-8 JSON parsing without utf-8-sig fallback"
+    }
+  ],
+  "audits": {
+    "strict_json_parse": "PASS",
+    "root_report_sets_present": 24,
+    "draft_salvage_maps_checked": 24,
+    "draft_salvage_maps_no_apply": true,
+    "draft_move_plan_no_apply": true,
+    "approved_salvage_maps_found": false,
+    "approved_move_maps_found": false,
+    "active_aliases_found": false,
+    "moves_applied": false,
+    "deletes_applied": false,
+    "renames_applied": false,
+    "reference_rewrites_applied": false
+  },
+  "validation": [
+    {"command": "py -3 .aide/scripts/aide_lite.py doctor", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py test", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py selftest", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py tools validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py roots validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py repo validate", "result": "WARN"},
+    {"command": "python -m py_compile tools/aide/*.py selected validators", "result": "PASS"},
+    {"command": "python tools/validators/check_repo_layout.py --repo-root . --strict", "result": "PASS"},
+    {"command": "python tools/validators/check_root_allowlist.py --repo-root . --strict", "result": "PASS"},
+    {"command": "python tools/validators/check_distribution_layout.py --repo-root . --strict", "result": "PASS"},
+    {"command": "python tools/validators/check_component_matrices.py --repo-root . --strict", "result": "PASS"},
+    {"command": "python scripts/verify_docs_sanity.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_build_target_boundaries.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_ui_shell_purity.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_abi_boundaries.py --repo-root .", "result": "PASS"}
+  ],
+  "known_warnings": [
+    "AIDE repo validate reports unknown file classifications.",
+    "AIDE doctor reports advisory controller/routing warnings.",
+    "Validator TOML fallback warnings remain where tomllib is unavailable.",
+    "Full eval, full CTest, CMake configure/build, package/release generation, product binaries, and move/apply commands were not run."
+  ],
+  "authorized_next": [
+    "AIDE-MOVE-01-PLAN"
+  ],
+  "move_apply_authorized": false
+}

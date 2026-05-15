@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "name":  "git_status_short",
         "command":  "git status --short",
